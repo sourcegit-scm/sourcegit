@@ -275,7 +275,7 @@
                     </Border>
                   </Grid>
 
-                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="200" Text="{Binding Content, Mode=TwoWay}"/>
+                  <v:CommitMessageToolBox Margin="0,4,0,0" Height="200" CommitMessage="{Binding Content, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>

@@ -36,7 +36,7 @@
     </Grid>
 
     <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8">
-      <v:CommitMessageTextBox x:Name="Editor" Height="400"/>
+      <v:CommitMessageToolBox x:Name="Editor" Height="400"/>
       <Button Classes="flat primary"
               Width="80"
               Margin="0,8,0,4"

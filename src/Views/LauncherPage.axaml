@@ -65,7 +65,7 @@
                 CornerRadius="0,0,8,8"
                 ClipToBounds="True"
                 IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <ContentControl Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
+          <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:Popup">
                 <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">

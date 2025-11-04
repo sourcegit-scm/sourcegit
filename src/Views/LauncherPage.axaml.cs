@@ -15,23 +15,27 @@ namespace SourceGit.Views
 
         private async void OnPopupSureByHotKey(object sender, RoutedEventArgs e)
         {
-            var children = this.GetLogicalDescendants();
+            var children = PopupPanel.GetLogicalDescendants();
             foreach (var child in children)
             {
-                if (child is TextBox { IsFocused: true, Tag: StealHotKey steal } textBox &&
+                if (child is Control { IsKeyboardFocusWithin: true, Tag: StealHotKey steal } control &&
                     steal is { Key: Key.Enter, KeyModifiers: KeyModifiers.None })
                 {
                     var fake = new KeyEventArgs()
                     {
                         RoutedEvent = KeyDownEvent,
                         Route = RoutingStrategies.Direct,
-                        Source = textBox,
+                        Source = control,
                         Key = Key.Enter,
                         KeyModifiers = KeyModifiers.None,
                         PhysicalKey = PhysicalKey.Enter,
                     };
 
-                    textBox.RaiseEvent(fake);
+                    if (control is AvaloniaEdit.TextEditor editor)
+                        editor.TextArea.TextView.RaiseEvent(fake);
+                    else
+                        control.RaiseEvent(fake);
+
                     e.Handled = false;
                     return;
                 }

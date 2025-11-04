@@ -239,7 +239,7 @@
                     Background="Transparent"/>
 
       <!-- Commit Message -->
-      <v:CommitMessageTextBox Grid.Row="2" ShowAdvancedOptions="True" Text="{Binding CommitMessage, Mode=TwoWay}"/>
+      <v:CommitMessageToolBox Grid.Row="2" ShowAdvancedOptions="True" CommitMessage="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
       <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">

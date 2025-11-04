@@ -18,6 +18,6 @@
       <TextBlock Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
     </StackPanel>
 
-    <v:CommitMessageTextBox Height="120" Margin="8,5,8,0" Text="{Binding Message, Mode=TwoWay}"/>
+    <v:CommitMessageToolBox Height="120" Margin="8,5,8,0" CommitMessage="{Binding Message, Mode=TwoWay}"/>
   </StackPanel>
 </UserControl>

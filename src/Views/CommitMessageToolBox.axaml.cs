@@ -1,75 +1,246 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 
+using AvaloniaEdit;
+using AvaloniaEdit.Document;
+using AvaloniaEdit.Editing;
+using AvaloniaEdit.Rendering;
+
 namespace SourceGit.Views
 {
-    public class EnhancedTextBox : TextBox
+    public class CommitMessageTextEditor : TextEditor
     {
-        public static readonly RoutedEvent<KeyEventArgs> PreviewKeyDownEvent =
-            RoutedEvent.Register<EnhancedTextBox, KeyEventArgs>(nameof(KeyEventArgs), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+        public static readonly StyledProperty<string> CommitMessageProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, string>(nameof(CommitMessage), string.Empty);
 
-        public event EventHandler<KeyEventArgs> PreviewKeyDown
+        public string CommitMessage
         {
-            add { AddHandler(PreviewKeyDownEvent, value); }
-            remove { RemoveHandler(PreviewKeyDownEvent, value); }
+            get => GetValue(CommitMessageProperty);
+            set => SetValue(CommitMessageProperty, value);
         }
 
-        protected override Type StyleKeyOverride => typeof(TextBox);
+        public static readonly StyledProperty<int> SubjectLengthProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength), 0);
 
-        public void Paste(string text)
+        public int SubjectLength
         {
-            OnTextInput(new TextInputEventArgs() { Text = text });
+            get => GetValue(SubjectLengthProperty);
+            set => SetValue(SubjectLengthProperty, value);
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
+        public static readonly StyledProperty<IBrush> SubjectLineBrushProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, IBrush>(nameof(SubjectLineBrush), Brushes.Gray);
+
+        public IBrush SubjectLineBrush
         {
-            var dump = new KeyEventArgs()
+            get => GetValue(SubjectLineBrushProperty);
+            set => SetValue(SubjectLineBrushProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextEditor);
+
+        public CommitMessageTextEditor() : base(new TextArea(), new TextDocument())
+        {
+            IsReadOnly = false;
+            WordWrap = true;
+            ShowLineNumbers = false;
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+
+            TextArea.TextView.Margin = new Thickness(4, 2);
+            TextArea.TextView.Options.EnableHyperlinks = false;
+            TextArea.TextView.Options.EnableEmailHyperlinks = false;
+            TextArea.TextView.Options.AllowScrollBelowDocument = false;
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            var w = Bounds.Width;
+            var pen = new Pen(SubjectLineBrush) { DashStyle = DashStyle.Dash };
+
+            if (SubjectLength == 0 || CommitMessage.Trim().Length == 0)
             {
-                RoutedEvent = PreviewKeyDownEvent,
-                Route = RoutingStrategies.Direct,
-                Source = e.Source,
-                Key = e.Key,
-                KeyModifiers = e.KeyModifiers,
-                PhysicalKey = e.PhysicalKey,
-                KeySymbol = e.KeySymbol,
+                var placeholder = new FormattedText(
+                    App.Text("CommitMessageTextBox.Placeholder"),
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface(FontFamily),
+                    FontSize,
+                    Brushes.Gray);
+
+                context.DrawText(placeholder, new Point(4, 2));
+
+                var y = 6 + placeholder.Height;
+                context.DrawLine(pen, new Point(0, y), new Point(w, y));
+                return;
+            }
+
+            if (TextArea.TextView is not { VisualLinesValid: true } view)
+                return;
+
+            var lines = new List<VisualLine>();
+            foreach (var line in view.VisualLines)
+            {
+                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                    continue;
+
+                lines.Add(line);
+            }
+
+            if (lines.Count == 0)
+                return;
+
+            lines.Sort((l, r) => l.StartOffset - r.StartOffset);
+
+            var lastSubjectLine = lines[0];
+            for (var i = 1; i < lines.Count; i++)
+            {
+                if (lines[i].StartOffset > SubjectLength)
+                    break;
+
+                lastSubjectLine = lines[i];
+            }
+
+            var endY = lastSubjectLine.GetTextLineVisualYPosition(lastSubjectLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
+            context.DrawLine(pen, new Point(0, endY), new Point(w, endY));
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            TextArea.TextView.LayoutUpdated += OnTextViewLayoutUpdated;
+            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.LayoutUpdated -= OnTextViewLayoutUpdated;
+
+            base.OnUnloaded(e);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == CommitMessageProperty)
+            {
+                if (!_isEditing)
+                    Text = CommitMessage;
+
+                var chars = CommitMessage.ToCharArray();
+                var lastLinebreakIndex = 0;
+                var lastLinebreakCount = 0;
+                var foundSubjectEnd = false;
+                for (var i = 0; i < chars.Length; i++)
+                {
+                    var ch = chars[i];
+                    if (ch == '\r')
+                        continue;
+
+                    if (ch == '\n')
+                    {
+                        if (lastLinebreakCount > 0)
+                        {
+                            SetCurrentValue(SubjectLengthProperty, lastLinebreakIndex);
+                            foundSubjectEnd = true;
+                            break;
+                        }
+                        else
+                        {
+                            lastLinebreakIndex = i;
+                            lastLinebreakCount = 1;
+                        }
+                    }
+                    else
+                    {
+                        lastLinebreakCount = 0;
+                    }
+                }
+
+                if (!foundSubjectEnd)
+                    SetCurrentValue(SubjectLengthProperty, CommitMessage?.Length ?? 0);
+
+                InvalidateVisual();
+            }
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+
+            _isEditing = true;
+            SetCurrentValue(CommitMessageProperty, Text);
+            _isEditing = false;
+        }
+
+        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            var selection = TextArea.Selection;
+            var hasSelected = selection is { IsEmpty: false };
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.IsEnabled = hasSelected;
+            copy.Click += (o, ev) =>
+            {
+                Copy();
+                ev.Handled = true;
             };
 
-            RaiseEvent(dump);
+            var cut = new MenuItem();
+            cut.Header = App.Text("Cut");
+            cut.Icon = App.CreateMenuIcon("Icons.Cut");
+            cut.IsEnabled = hasSelected;
+            cut.Click += (o, ev) =>
+            {
+                Cut();
+                ev.Handled = true;
+            };
 
-            if (dump.Handled)
-                e.Handled = true;
-            else
-                base.OnKeyDown(e);
+            var paste = new MenuItem();
+            paste.Header = App.Text("Paste");
+            paste.Icon = App.CreateMenuIcon("Icons.Paste");
+            paste.Click += (o, ev) =>
+            {
+                Paste();
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(copy);
+            menu.Items.Add(cut);
+            menu.Items.Add(paste);
+            menu.Open(TextArea.TextView);
+            e.Handled = true;
         }
+
+        private void OnTextViewLayoutUpdated(object sender, EventArgs e)
+        {
+            InvalidateVisual();
+        }
+
+        private bool _isEditing = false;
     }
 
-    public partial class CommitMessageTextBox : UserControl
+    public partial class CommitMessageToolBox : UserControl
     {
-        public enum TextChangeWay
-        {
-            None,
-            FromSource,
-            FromEditor,
-        }
-
         public static readonly StyledProperty<bool> ShowAdvancedOptionsProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, bool>(nameof(ShowAdvancedOptions));
-
-        public static readonly StyledProperty<string> TextProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Text), string.Empty);
-
-        public static readonly StyledProperty<string> SubjectProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Subject), string.Empty);
-
-        public static readonly StyledProperty<string> DescriptionProperty =
-            AvaloniaProperty.Register<CommitMessageTextBox, string>(nameof(Description), string.Empty);
+            AvaloniaProperty.Register<CommitMessageToolBox, bool>(nameof(ShowAdvancedOptions));
 
         public bool ShowAdvancedOptions
         {
@@ -77,100 +248,18 @@ namespace SourceGit.Views
             set => SetValue(ShowAdvancedOptionsProperty, value);
         }
 
-        public string Text
+        public static readonly StyledProperty<string> CommitMessageProperty =
+            AvaloniaProperty.Register<CommitMessageToolBox, string>(nameof(CommitMessage), string.Empty);
+
+        public string CommitMessage
         {
-            get => GetValue(TextProperty);
-            set => SetValue(TextProperty, value);
+            get => GetValue(CommitMessageProperty);
+            set => SetValue(CommitMessageProperty, value);
         }
 
-        public string Subject
-        {
-            get => GetValue(SubjectProperty);
-            set => SetValue(SubjectProperty, value);
-        }
-
-        public string Description
-        {
-            get => GetValue(DescriptionProperty);
-            set => SetValue(DescriptionProperty, value);
-        }
-
-        public CommitMessageTextBox()
+        public CommitMessageToolBox()
         {
             InitializeComponent();
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == TextProperty && _changingWay == TextChangeWay.None)
-            {
-                _changingWay = TextChangeWay.FromSource;
-                var normalized = Text.ReplaceLineEndings("\n");
-                var parts = normalized.Split("\n\n", 2);
-                if (parts.Length != 2)
-                    parts = [normalized, string.Empty];
-                SetCurrentValue(SubjectProperty, parts[0].ReplaceLineEndings(" "));
-                SetCurrentValue(DescriptionProperty, parts[1]);
-                _changingWay = TextChangeWay.None;
-            }
-            else if ((change.Property == SubjectProperty || change.Property == DescriptionProperty) && _changingWay == TextChangeWay.None)
-            {
-                _changingWay = TextChangeWay.FromEditor;
-                SetCurrentValue(TextProperty, $"{Subject}\n\n{Description}");
-                _changingWay = TextChangeWay.None;
-            }
-        }
-
-        private async void OnSubjectTextBoxPreviewKeyDown(object _, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter || (e.Key == Key.Right && SubjectEditor.CaretIndex == Subject.Length))
-            {
-                DescriptionEditor.Focus();
-                DescriptionEditor.CaretIndex = 0;
-                e.Handled = true;
-            }
-            else if (e.Key == Key.V && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
-            {
-                e.Handled = true;
-
-                var text = await App.GetClipboardTextAsync();
-                if (!string.IsNullOrWhiteSpace(text))
-                {
-                    text = text.Trim();
-
-                    if (SubjectEditor.CaretIndex == Subject.Length)
-                    {
-                        var parts = text.Split('\n', 2);
-                        if (parts.Length != 2)
-                        {
-                            SubjectEditor.Paste(text);
-                        }
-                        else
-                        {
-                            SubjectEditor.Paste(parts[0]);
-                            DescriptionEditor.Focus();
-                            DescriptionEditor.CaretIndex = 0;
-                            DescriptionEditor.Paste(parts[1].Trim());
-                        }
-                    }
-                    else
-                    {
-                        SubjectEditor.Paste(text.ReplaceLineEndings(" "));
-                    }
-                }
-            }
-        }
-
-        private void OnDescriptionTextBoxPreviewKeyDown(object _, KeyEventArgs e)
-        {
-            if ((e.Key == Key.Back || e.Key == Key.Left) && DescriptionEditor.CaretIndex == 0)
-            {
-                SubjectEditor.Focus();
-                SubjectEditor.CaretIndex = Subject.Length;
-                e.Handled = true;
-            }
         }
 
         private async void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
@@ -351,39 +440,11 @@ namespace SourceGit.Views
                 _ => string.Empty
             };
 
-            var vm = new ViewModels.ConventionalCommitMessageBuilder(conventionalTypesOverride, text => Text = text);
+            var vm = new ViewModels.ConventionalCommitMessageBuilder(conventionalTypesOverride, text => CommitMessage = text);
             var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
             await builder.ShowDialog(owner);
 
             e.Handled = true;
         }
-
-        private async void CopyAllText(object sender, RoutedEventArgs e)
-        {
-            await App.CopyTextAsync(Text);
-            e.Handled = true;
-        }
-
-        private async void PasteAndReplaceAllText(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var text = await App.GetClipboardTextAsync();
-                if (!string.IsNullOrEmpty(text))
-                {
-                    var parts = text.ReplaceLineEndings("\n").Split("\n", 2);
-                    var subject = parts[0];
-                    Text = parts.Length > 1 ? $"{subject}\n\n{parts[1].Trim()}" : subject;
-                }
-            }
-            catch
-            {
-                // Ignore exceptions.
-            }
-
-            e.Handled = true;
-        }
-
-        private TextChangeWay _changingWay = TextChangeWay.None;
     }
 }

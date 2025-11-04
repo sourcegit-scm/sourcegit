@@ -43,11 +43,7 @@ namespace SourceGit.Views
             _onSave = msg => File.WriteAllText(file, msg);
             _shouldExitApp = true;
 
-            var content = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
-            var parts = content.Split('\n', 2);
-            Editor.SubjectEditor.Text = parts[0];
-            if (parts.Length > 1)
-                Editor.DescriptionEditor.Text = parts[1].Trim();
+            Editor.CommitMessage = File.ReadAllText(file).ReplaceLineEndings("\n").Trim();
         }
 
         public void AsBuiltin(string conventionalTypesOverride, string msg, Action<string> onSave)
@@ -57,10 +53,7 @@ namespace SourceGit.Views
             _onSave = onSave;
             _shouldExitApp = false;
 
-            var parts = msg.Split('\n', 2);
-            Editor.SubjectEditor.Text = parts[0];
-            if (parts.Length > 1)
-                Editor.DescriptionEditor.Text = parts[1].Trim();
+            Editor.CommitMessage = msg;
         }
 
         protected override void OnClosed(EventArgs e)
@@ -73,7 +66,7 @@ namespace SourceGit.Views
 
         private void SaveAndClose(object _1, RoutedEventArgs _2)
         {
-            _onSave?.Invoke(Editor.Text);
+            _onSave?.Invoke(Editor.CommitMessage);
             _exitCode = 0;
             Close();
         }
