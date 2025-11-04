@@ -123,14 +123,14 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
-            TextArea.TextView.LayoutUpdated += OnTextViewLayoutUpdated;
+            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.LayoutUpdated -= OnTextViewLayoutUpdated;
+            TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             base.OnUnloaded(e);
         }
@@ -230,7 +230,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnTextViewLayoutUpdated(object sender, EventArgs e)
+        private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
         {
             InvalidateVisual();
         }
