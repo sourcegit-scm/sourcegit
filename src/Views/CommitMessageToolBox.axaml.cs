@@ -173,8 +173,6 @@ namespace SourceGit.Views
 
                 if (!foundSubjectEnd)
                     SetCurrentValue(SubjectLengthProperty, CommitMessage?.Length ?? 0);
-
-                InvalidateVisual();
             }
         }
 
