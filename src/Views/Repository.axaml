@@ -23,7 +23,7 @@
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
-                     IsChecked="{Binding !IsSearching, Mode=OneWay}">
+                     IsChecked="{Binding !IsSearchingCommits, Mode=OneWay}">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.Repository.Dashboard}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -37,7 +37,7 @@
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
-                     IsChecked="{Binding IsSearching, Mode=TwoWay}">
+                     IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -50,7 +50,7 @@
       </StackPanel>
 
       <!-- Dashboard -->
-      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
+      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearchingCommits}">
         <!-- Page Switcher for Right Panel -->
         <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
           <Border CornerRadius="6" ClipToBounds="True">
@@ -437,7 +437,7 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearchingCommits}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
         <Grid Grid.Row="0" Height="26" Margin="0,4,0,0">
           <TextBox x:Name="TxtSearchCommitsBox"

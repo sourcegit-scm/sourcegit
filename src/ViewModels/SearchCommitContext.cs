@@ -85,6 +85,8 @@ namespace SourceGit.ViewModels
         public void ClearFilter()
         {
             Filter = string.Empty;
+            Selected = null;
+            Results = null;
         }
 
         public void ClearSuggestions()
@@ -158,7 +160,7 @@ namespace SourceGit.ViewModels
                 {
                     IsQuerying = false;
 
-                    if (_repo.IsSearching)
+                    if (_repo.IsSearchingCommits)
                         Results = result;
                 });
             });
@@ -194,7 +196,7 @@ namespace SourceGit.ViewModels
                     {
                         _requestingWorktreeFiles = false;
 
-                        if (_repo.IsSearching)
+                        if (_repo.IsSearchingCommits)
                         {
                             _worktreeFiles = files;
                             UpdateSuggestions();

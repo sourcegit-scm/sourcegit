@@ -263,12 +263,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool IsSearching
+        public bool IsSearchingCommits
         {
-            get => _isSearching;
+            get => _isSearchingCommits;
             set
             {
-                if (SetProperty(ref _isSearching, value))
+                if (SetProperty(ref _isSearchingCommits, value))
                 {
                     if (value)
                         SelectedViewIndex = 0;
@@ -1873,7 +1873,7 @@ namespace SourceGit.ViewModels
         private int _localChangesCount = 0;
         private int _stashesCount = 0;
 
-        private bool _isSearching = false;
+        private bool _isSearchingCommits = false;
         private SearchCommitContext _searchCommitContext = null;
 
         private string _filter = string.Empty;
