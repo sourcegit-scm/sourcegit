@@ -271,83 +271,16 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _isSearching, value))
                 {
                     if (value)
-                    {
                         SelectedViewIndex = 0;
-                        CalcWorktreeFilesForSearching();
-                    }
                     else
-                    {
-                        SearchedCommits = new List<Models.Commit>();
-                        SelectedSearchedCommit = null;
-                        SearchCommitFilter = string.Empty;
-                        MatchedFilesForSearching = null;
-                        _requestingWorktreeFiles = false;
-                        _worktreeFiles = null;
-                    }
+                        _searchCommitContext.EndSearch();
                 }
             }
         }
 
-        public bool IsSearchLoadingVisible
+        public SearchCommitContext SearchCommitContext
         {
-            get => _isSearchLoadingVisible;
-            private set => SetProperty(ref _isSearchLoadingVisible, value);
-        }
-
-        public bool OnlySearchCommitsInCurrentBranch
-        {
-            get => _onlySearchCommitsInCurrentBranch;
-            set
-            {
-                if (SetProperty(ref _onlySearchCommitsInCurrentBranch, value) && !string.IsNullOrEmpty(_searchCommitFilter))
-                    StartSearchCommits();
-            }
-        }
-
-        public int SearchCommitFilterType
-        {
-            get => _searchCommitFilterType;
-            set
-            {
-                if (SetProperty(ref _searchCommitFilterType, value))
-                {
-                    CalcWorktreeFilesForSearching();
-                    if (!string.IsNullOrEmpty(_searchCommitFilter))
-                        StartSearchCommits();
-                }
-            }
-        }
-
-        public string SearchCommitFilter
-        {
-            get => _searchCommitFilter;
-            set
-            {
-                if (SetProperty(ref _searchCommitFilter, value) && IsSearchingCommitsByFilePath())
-                    CalcMatchedFilesForSearching();
-            }
-        }
-
-        public List<string> MatchedFilesForSearching
-        {
-            get => _matchedFilesForSearching;
-            private set => SetProperty(ref _matchedFilesForSearching, value);
-        }
-
-        public List<Models.Commit> SearchedCommits
-        {
-            get => _searchedCommits;
-            set => SetProperty(ref _searchedCommits, value);
-        }
-
-        public Models.Commit SelectedSearchedCommit
-        {
-            get => _selectedSearchedCommit;
-            set
-            {
-                if (SetProperty(ref _selectedSearchedCommit, value) && value != null)
-                    NavigateToCommit(value.SHA);
-            }
+            get => _searchCommitContext;
         }
 
         public bool IsLocalBranchGroupExpanded
@@ -562,6 +495,7 @@ namespace SourceGit.ViewModels
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this) { CommitMessage = _settings.LastCommitMessage };
             _stashesPage = new StashesPage(this);
+            _searchCommitContext = new SearchCommitContext(this);
 
             if (Preferences.Instance.ShowLocalChangesByDefault)
             {
@@ -633,6 +567,7 @@ namespace SourceGit.ViewModels
             _histories.Dispose();
             _workingCopy.Dispose();
             _stashesPage.Dispose();
+            _searchCommitContext.Dispose();
 
             _watcher = null;
             _histories = null;
@@ -650,12 +585,6 @@ namespace SourceGit.ViewModels
             _visibleTags = null;
             _submodules.Clear();
             _visibleSubmodules = null;
-            _searchedCommits.Clear();
-            _selectedSearchedCommit = null;
-
-            _requestingWorktreeFiles = false;
-            _worktreeFiles = null;
-            _matchedFilesForSearching = null;
         }
 
         public bool CanCreatePopup()
@@ -902,83 +831,6 @@ namespace SourceGit.ViewModels
         public void ClearFilter()
         {
             Filter = string.Empty;
-        }
-
-        public void ClearSearchCommitFilter()
-        {
-            SearchCommitFilter = string.Empty;
-        }
-
-        public void ClearMatchedFilesForSearching()
-        {
-            MatchedFilesForSearching = null;
-        }
-
-        public void StartSearchCommits()
-        {
-            if (_histories == null)
-                return;
-
-            IsSearchLoadingVisible = true;
-            SelectedSearchedCommit = null;
-            MatchedFilesForSearching = null;
-
-            Task.Run(async () =>
-            {
-                var visible = new List<Models.Commit>();
-                var method = (Models.CommitSearchMethod)_searchCommitFilterType;
-
-                if (method == Models.CommitSearchMethod.BySHA)
-                {
-                    var isCommitSHA = await new Commands.IsCommitSHA(FullPath, _searchCommitFilter)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-
-                    if (isCommitSHA)
-                    {
-                        var commit = await new Commands.QuerySingleCommit(FullPath, _searchCommitFilter)
-                            .GetResultAsync()
-                            .ConfigureAwait(false);
-
-                        commit.IsMerged = await new Commands.IsAncestor(FullPath, commit.SHA, "HEAD")
-                            .GetResultAsync()
-                            .ConfigureAwait(false);
-
-                        visible.Add(commit);
-                    }
-                }
-                else if (_onlySearchCommitsInCurrentBranch)
-                {
-                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, true)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-
-                    foreach (var c in visible)
-                        c.IsMerged = true;
-                }
-                else
-                {
-                    visible = await new Commands.QueryCommits(FullPath, _searchCommitFilter, method, false)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-
-                    if (visible.Count > 0)
-                    {
-                        var set = await new Commands.QueryCurrentBranchCommitHashes(FullPath, visible[^1].CommitterTime)
-                            .GetResultAsync()
-                            .ConfigureAwait(false);
-
-                        foreach (var c in visible)
-                            c.IsMerged = set.Contains(c.SHA);
-                    }
-                }
-
-                Dispatcher.UIThread.Post(() =>
-                {
-                    SearchedCommits = visible;
-                    IsSearchLoadingVisible = false;
-                });
-            });
         }
 
         public IDisposable LockWatcher()
@@ -1559,7 +1411,7 @@ namespace SourceGit.ViewModels
         {
             if (_histories != null)
             {
-                SelectedSearchedCommit = null;
+                _searchCommitContext.Selected = null;
 
                 var target = await new Commands.QuerySingleCommit(FullPath, branch.Head).GetResultAsync();
                 _histories.AutoSelectedCommit = null;
@@ -1956,65 +1808,6 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        private bool IsSearchingCommitsByFilePath()
-        {
-            return _isSearching && _searchCommitFilterType == (int)Models.CommitSearchMethod.ByPath;
-        }
-
-        private void CalcWorktreeFilesForSearching()
-        {
-            if (!IsSearchingCommitsByFilePath())
-            {
-                _requestingWorktreeFiles = false;
-                _worktreeFiles = null;
-                MatchedFilesForSearching = null;
-                GC.Collect();
-                return;
-            }
-
-            if (_requestingWorktreeFiles)
-                return;
-
-            _requestingWorktreeFiles = true;
-
-            Task.Run(async () =>
-            {
-                _worktreeFiles = await new Commands.QueryRevisionFileNames(FullPath, "HEAD")
-                    .GetResultAsync()
-                    .ConfigureAwait(false);
-
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (IsSearchingCommitsByFilePath() && _requestingWorktreeFiles)
-                        CalcMatchedFilesForSearching();
-
-                    _requestingWorktreeFiles = false;
-                });
-            });
-        }
-
-        private void CalcMatchedFilesForSearching()
-        {
-            if (_worktreeFiles == null || _worktreeFiles.Count == 0 || _searchCommitFilter.Length < 3)
-            {
-                MatchedFilesForSearching = null;
-                return;
-            }
-
-            var matched = new List<string>();
-            foreach (var file in _worktreeFiles)
-            {
-                if (file.Contains(_searchCommitFilter, StringComparison.OrdinalIgnoreCase) && file.Length != _searchCommitFilter.Length)
-                {
-                    matched.Add(file);
-                    if (matched.Count > 100)
-                        break;
-                }
-            }
-
-            MatchedFilesForSearching = matched;
-        }
-
         private void FetchInBackground(object sender)
         {
             Dispatcher.UIThread.Invoke(async Task () =>
@@ -2081,15 +1874,7 @@ namespace SourceGit.ViewModels
         private int _stashesCount = 0;
 
         private bool _isSearching = false;
-        private bool _isSearchLoadingVisible = false;
-        private int _searchCommitFilterType = (int)Models.CommitSearchMethod.ByMessage;
-        private bool _onlySearchCommitsInCurrentBranch = false;
-        private string _searchCommitFilter = string.Empty;
-        private List<Models.Commit> _searchedCommits = [];
-        private Models.Commit _selectedSearchedCommit = null;
-        private bool _requestingWorktreeFiles = false;
-        private List<string> _worktreeFiles = null;
-        private List<string> _matchedFilesForSearching = null;
+        private SearchCommitContext _searchCommitContext = null;
 
         private string _filter = string.Empty;
         private List<Models.Remote> _remotes = [];
