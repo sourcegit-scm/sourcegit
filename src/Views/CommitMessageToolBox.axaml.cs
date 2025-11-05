@@ -11,12 +11,52 @@ using Avalonia.Layout;
 using Avalonia.Media;
 
 using AvaloniaEdit;
+using AvaloniaEdit.CodeCompletion;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
+using AvaloniaEdit.Utils;
 
 namespace SourceGit.Views
 {
+    public class CommitMessageCodeCompletionData : ICompletionData
+    {
+        public IImage Image
+        {
+            get => null;
+        }
+
+        public string Text
+        {
+            get;
+        }
+
+        public object Content
+        {
+            get => Text;
+        }
+
+        public object Description
+        {
+            get => null;
+        }
+
+        public double Priority
+        {
+            get => 0;
+        }
+
+        public CommitMessageCodeCompletionData(string text)
+        {
+            Text = text;
+        }
+
+        public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
+        {
+            textArea.Document.Replace(completionSegment, Text);
+        }
+    }
+
     public class CommitMessageTextEditor : TextEditor
     {
         public static readonly StyledProperty<string> CommitMessageProperty =
@@ -183,9 +223,50 @@ namespace SourceGit.Views
         {
             base.OnTextChanged(e);
 
+            if (!IsLoaded)
+                return;
+
             _isEditing = true;
             SetCurrentValue(CommitMessageProperty, Text);
             _isEditing = false;
+
+            var caretOffset = CaretOffset;
+            var start = caretOffset;
+            while (start > 0 && !char.IsWhiteSpace(Text[start - 1]))
+                start--;
+
+            if (caretOffset == start)
+            {
+                _completionWnd?.Close();
+                return;
+            }
+
+            var word = Text.Substring(start, caretOffset - start);
+            var matches = new List<CommitMessageCodeCompletionData>();
+            foreach (var keyword in _keywords)
+            {
+                if (keyword.StartsWith(word, StringComparison.OrdinalIgnoreCase) && keyword.Length != word.Length)
+                    matches.Add(new(keyword));
+            }
+
+            if (matches.Count > 0)
+            {
+                if (_completionWnd == null)
+                {
+                    _completionWnd = new CompletionWindow(TextArea);
+                    _completionWnd.Closed += (_, ev) => _completionWnd = null;
+                    _completionWnd.Show();
+                }
+
+                _completionWnd.CompletionList.CompletionData.Clear();
+                _completionWnd.CompletionList.CompletionData.AddRange(matches);
+                _completionWnd.StartOffset = start;
+                _completionWnd.EndOffset = caretOffset;
+            }
+            else
+            {
+                _completionWnd?.Close();
+            }
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -235,7 +316,9 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
+        private readonly List<string> _keywords = ["git", "GitHub", "GitLab", "Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "BREAKING CHANGE: "];
         private bool _isEditing = false;
+        private CompletionWindow _completionWnd = null;
     }
 
     public partial class CommitMessageToolBox : UserControl
