@@ -232,8 +232,15 @@ namespace SourceGit.Views
 
             var caretOffset = CaretOffset;
             var start = caretOffset;
-            while (start > 0 && !char.IsWhiteSpace(Text[start - 1]))
-                start--;
+            for (; start > 0; start--)
+            {
+                var ch = Text[start - 1];
+                if (ch == '\n')
+                    break;
+
+                if (!char.IsAscii(ch))
+                    return;
+            }
 
             if (caretOffset == start)
             {
@@ -316,7 +323,7 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private readonly List<string> _keywords = ["git", "GitHub", "GitLab", "Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "BREAKING CHANGE: "];
+        private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "BREAKING CHANGE: "];
         private bool _isEditing = false;
         private CompletionWindow _completionWnd = null;
     }
