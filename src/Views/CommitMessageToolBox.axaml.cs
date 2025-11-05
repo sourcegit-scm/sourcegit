@@ -143,20 +143,16 @@ namespace SourceGit.Views
 
             lines.Sort((l, r) => l.StartOffset - r.StartOffset);
 
-            var lastSubjectLine = lines[0];
-            if (lastSubjectLine.StartOffset > SubjectLength)
-                return;
-
-            for (var i = 1; i < lines.Count; i++)
+            for (var i = 0; i < lines.Count; i++)
             {
-                if (lines[i].StartOffset > SubjectLength)
-                    break;
-
-                lastSubjectLine = lines[i];
+                var line = lines[i];
+                if (line.FirstDocumentLine.LineNumber == _subjectEndLine)
+                {
+                    var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
+                    context.DrawLine(pen, new Point(0, y), new Point(w, y));
+                    return;
+                }
             }
-
-            var endY = lastSubjectLine.GetTextLineVisualYPosition(lastSubjectLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
-            context.DrawLine(pen, new Point(0, endY), new Point(w, endY));
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -184,38 +180,34 @@ namespace SourceGit.Views
                 if (!_isEditing)
                     Text = CommitMessage;
 
-                var chars = CommitMessage.ToCharArray();
-                var lastLinebreakIndex = 0;
-                var lastLinebreakCount = 0;
+                var lines = CommitMessage.ReplaceLineEndings("\n").Split('\n');
+                var subjectLen = 0;
                 var foundSubjectEnd = false;
-                for (var i = 0; i < chars.Length; i++)
-                {
-                    var ch = chars[i];
-                    if (ch == '\r')
-                        continue;
 
-                    if (ch == '\n')
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    var line = lines[i];
+                    if (string.IsNullOrWhiteSpace(line))
                     {
-                        if (lastLinebreakCount > 0)
-                        {
-                            SetCurrentValue(SubjectLengthProperty, lastLinebreakIndex);
-                            foundSubjectEnd = true;
-                            break;
-                        }
-                        else
-                        {
-                            lastLinebreakIndex = i;
-                            lastLinebreakCount = 1;
-                        }
+                        if (subjectLen == 0)
+                            continue;
+
+                        _subjectEndLine = i;
+                        foundSubjectEnd = true;
+                        break;
                     }
+
+                    var validCharLen = line.TrimEnd().Length;
+                    if (subjectLen > 0)
+                        subjectLen += (validCharLen + 1);
                     else
-                    {
-                        lastLinebreakCount = 0;
-                    }
+                        subjectLen = validCharLen;
                 }
 
                 if (!foundSubjectEnd)
-                    SetCurrentValue(SubjectLengthProperty, CommitMessage?.Length ?? 0);
+                    _subjectEndLine = lines.Length;
+
+                SetCurrentValue(SubjectLengthProperty, subjectLen);
             }
         }
 
@@ -325,6 +317,7 @@ namespace SourceGit.Views
 
         private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "BREAKING CHANGE: "];
         private bool _isEditing = false;
+        private int _subjectEndLine = 0;
         private CompletionWindow _completionWnd = null;
     }
 
