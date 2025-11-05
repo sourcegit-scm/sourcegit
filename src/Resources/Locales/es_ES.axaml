@@ -183,6 +183,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Firmante:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Abrir en Navegador</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Ingresa el mensaje de commit. ¡Por favor usa una línea en blanco para separar el título y la descripción!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">ASUNTO</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Configurar Repositorio</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">PLANTILLA DE COMMIT</x:String>
@@ -388,6 +389,7 @@
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Cambios Remotos</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Asumir como sin cambios</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Descartar...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Descartar {0} archivos...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Resolver usando ${0}$</x:String>
@@ -443,6 +445,8 @@
   <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Mostrar solo mis bloqueos</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">Bloqueos LFS</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Desbloquear</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">Desbloquear todos mis candados</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">¿Estás seguro de querer desbloquear todos tus archivos bloqueados?</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Forzar Desbloqueo</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Ejecuta `git lfs prune` para eliminar archivos LFS antiguos del almacenamiento local</x:String>
@@ -536,6 +540,8 @@
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleccionar nodo padre para:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nombre:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git NO ha sido configurado. Por favor, ve a [Preferencias] y configúralo primero.</x:String>
+  <x:String x:Key="Text.Open" xml:space="preserve">Abrir</x:String>
+  <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Editor por defecto (Sistema)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Abrir Directorio de Datos de la App</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
