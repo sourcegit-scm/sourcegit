@@ -16,6 +16,7 @@
       <v:CommitMessageTextEditor Grid.Row="0"
                                  x:Name="Editor"
                                  CommitMessage="{Binding #ThisControl.CommitMessage, Mode=TwoWay}"
+                                 Placeholder="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
                                  SubjectLineBrush="{DynamicResource Brush.Border2}"
                                  Foreground="{DynamicResource Brush.FG1}"
                                  FontFamily="{DynamicResource Fonts.Default}"

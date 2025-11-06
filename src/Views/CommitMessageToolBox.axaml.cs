@@ -68,6 +68,15 @@ namespace SourceGit.Views
             set => SetValue(CommitMessageProperty, value);
         }
 
+        public static readonly StyledProperty<string> PlaceholderProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, string>(nameof(Placeholder), string.Empty);
+
+        public string Placeholder
+        {
+            get => GetValue(PlaceholderProperty);
+            set => SetValue(PlaceholderProperty, value);
+        }
+
         public static readonly StyledProperty<int> SubjectLengthProperty =
             AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength), 0);
 
@@ -109,20 +118,25 @@ namespace SourceGit.Views
             var w = Bounds.Width;
             var pen = new Pen(SubjectLineBrush) { DashStyle = DashStyle.Dash };
 
-            if (SubjectLength == 0 || CommitMessage.Trim().Length == 0)
+            if (SubjectLength == 0)
             {
-                var placeholder = new FormattedText(
-                    App.Text("CommitMessageTextBox.Placeholder"),
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(FontFamily),
-                    FontSize,
-                    Brushes.Gray);
+                var placeholder = Placeholder;
+                if (!string.IsNullOrEmpty(placeholder))
+                {
+                    var formatted = new FormattedText(
+                        Placeholder,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily),
+                        FontSize,
+                        Brushes.Gray);
 
-                context.DrawText(placeholder, new Point(4, 2));
+                    context.DrawText(formatted, new Point(4, 2));
 
-                var y = 6 + placeholder.Height;
-                context.DrawLine(pen, new Point(0, y), new Point(w, y));
+                    var y = 6 + formatted.Height;
+                    context.DrawLine(pen, new Point(0, y), new Point(w, y));
+                }
+
                 return;
             }
 
@@ -208,6 +222,11 @@ namespace SourceGit.Views
                     _subjectEndLine = lines.Length;
 
                 SetCurrentValue(SubjectLengthProperty, subjectLen);
+            }
+            else if (change.Property == PlaceholderProperty && IsLoaded)
+            {
+                if (string.IsNullOrWhiteSpace(CommitMessage))
+                    InvalidateVisual();
             }
         }
 
