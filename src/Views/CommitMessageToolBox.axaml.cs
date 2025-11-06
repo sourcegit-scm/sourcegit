@@ -234,7 +234,7 @@ namespace SourceGit.Views
                     return;
             }
 
-            if (caretOffset == start)
+            if (caretOffset < start + 2)
             {
                 _completionWnd?.Close();
                 return;
