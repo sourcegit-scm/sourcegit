@@ -687,6 +687,7 @@ namespace SourceGit.ViewModels
             }
 
             _repo.MarkBranchesDirtyManually();
+            _repo.MarkWorkingCopyDirtyManually();
             IsCommitting = false;
         }
 
