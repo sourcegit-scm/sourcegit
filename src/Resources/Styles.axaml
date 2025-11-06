@@ -1351,6 +1351,8 @@
 
   <Style Selector="acc|CompletionListBox">
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
     <Setter Property="Padding" Value="8,4"/>
     <Setter Property="CornerRadius" Value="4"/>
   </Style>
