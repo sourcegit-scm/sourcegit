@@ -315,7 +315,7 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "BREAKING CHANGE: "];
+        private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "BREAKING CHANGE: ", "Refs: "];
         private bool _isEditing = false;
         private int _subjectEndLine = 0;
         private CompletionWindow _completionWnd = null;
