@@ -529,7 +529,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
+        private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)
         {
             var owner = TopLevel.GetTopLevel(this) as Window;
             if (owner == null)
@@ -545,7 +545,7 @@ namespace SourceGit.Views
 
             var vm = new ViewModels.ConventionalCommitMessageBuilder(conventionalTypesOverride, text => CommitMessage = text);
             var builder = new ConventionalCommitMessageBuilder() { DataContext = vm };
-            await builder.ShowDialog(owner);
+            builder.Show(owner);
 
             e.Handled = true;
         }
