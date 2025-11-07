@@ -94,13 +94,12 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public InteractiveRebaseItem(int order, Models.Commit c, string message, bool canSquashOrFixup)
+        public InteractiveRebaseItem(int order, Models.Commit c, string message)
         {
             OriginalOrder = order;
             Commit = c;
             FullMessage = message;
             OriginalFullMessage = message;
-            CanSquashOrFixup = canSquashOrFixup;
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
@@ -183,7 +182,7 @@ namespace SourceGit.ViewModels
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
-                    list.Add(new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message, i < commits.Count - 1));
+                    list.Add(new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message));
                 }
 
                 var selected = list.Count > 0 ? list[0] : null;
@@ -200,6 +199,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
+                    UpdateItems();
                     PreSelected = selected;
                     IsLoading = false;
                 });
