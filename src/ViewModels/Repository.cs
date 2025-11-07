@@ -536,14 +536,17 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            try
+            if (Directory.Exists(GitDir))
             {
-                using var stream = File.Create(Path.Combine(GitDir, "sourcegit.filters"));
-                JsonSerializer.Serialize(stream, _historyFilterCollection, JsonCodeGen.Default.HistoryFilterCollection);
-            }
-            catch
-            {
-                // Ignore
+                try
+                {
+                    using var stream = File.Create(Path.Combine(GitDir, "sourcegit.filters"));
+                    JsonSerializer.Serialize(stream, _historyFilterCollection, JsonCodeGen.Default.HistoryFilterCollection);
+                }
+                catch
+                {
+                    // Ignore
+                }
             }
 
             if (_cancellationRefreshBranches is { IsCancellationRequested: false })
@@ -561,6 +564,7 @@ namespace SourceGit.ViewModels
             _autoFetchTimer = null;
 
             _settings = null;
+            _historyFilterCollection = null;
             _historyFilterMode = Models.FilterMode.None;
 
             _watcher?.Dispose();
