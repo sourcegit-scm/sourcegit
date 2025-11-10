@@ -183,6 +183,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Unterzeichner:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Im Browser öffnen</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Commit-Nachricht eingeben. Leerzeile zum Trennen von Betreff und Beschreibung verwenden!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">Betreff</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Einstellungen</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
@@ -389,6 +390,7 @@
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Remote-Änderungen fetchen</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Als unverändert betrachten</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Verwerfen...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Verwerfe {0} Dateien...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Löse mit ${0}$</x:String>
@@ -444,6 +446,8 @@
   <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Zeige nur meine Sperren</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS Sperren</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Entsperren</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">Alle meine Dateien entsperren</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">Sollen alle meine Dateien entsperrt werden?</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Erzwinge entsperren</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Prune</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Führt `git lfs prune` aus um alte LFS Dateien vom lokalen Speicher zu löschen</x:String>
@@ -481,6 +485,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard Modus (Standard)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Befehlspalette öffnen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit-Suchmodus</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, wird direkt ausgeführt</x:String>
@@ -514,6 +519,7 @@
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Ziel Branch:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Link kopieren</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">In Browser öffnen</x:String>
+  <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">Befehle</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">FEHLER</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">INFO</x:String>
   <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">Repositorys öffnen</x:String>
@@ -535,6 +541,8 @@
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Wähle Vorgänger-Knoten für:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git wurde NICHT konfiguriert. Gehe bitte zuerst in die [Einstellungen] und konfiguriere Git.</x:String>
+  <x:String x:Key="Text.Open" xml:space="preserve">Öffnen</x:String>
+  <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Standard-Texteditor (System)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">App-Daten Ordner öffnen</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Öffne in Merge Tool</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
