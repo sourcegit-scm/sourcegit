@@ -55,10 +55,13 @@ namespace SourceGit.ViewModels
 
                 if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
                     await DeleteRemoteBranchAsync(TrackingRemoteBranch, log);
+
+                _repo.HistoryFilterCollection.RemoveFilter(Target.FullName, Models.FilterType.LocalBranch);
             }
             else
             {
                 await DeleteRemoteBranchAsync(Target, log);
+                _repo.HistoryFilterCollection.RemoveFilter(Target.FullName, Models.FilterType.RemoteBranch);
             }
 
             log.Complete();

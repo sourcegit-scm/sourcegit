@@ -44,6 +44,7 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
+            _repo.HistoryFilterCollection.RemoveFilter(Target.Name, Models.FilterType.Tag);
             _repo.MarkTagsDirtyManually();
             return succ;
         }

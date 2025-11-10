@@ -141,6 +141,18 @@ namespace SourceGit.Models
             return FilterMode.None;
         }
 
+        public void RemoveFilter(string pattern, FilterType type)
+        {
+            foreach (var filter in Filters)
+            {
+                if (filter.Type == type && filter.Pattern.Equals(pattern, StringComparison.Ordinal))
+                {
+                    Filters.Remove(filter);
+                    break;
+                }
+            }
+        }
+
         public void RemoveBranchFiltersByPrefix(string pattern)
         {
             var dirty = new List<HistoryFilter>();
