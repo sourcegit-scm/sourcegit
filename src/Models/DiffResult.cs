@@ -176,7 +176,7 @@ namespace SourceGit.Models
                     var line = Lines[i];
                     if (line.Type != TextDiffLineType.Added)
                         continue;
-                    WriteLine(writer, '+', line);
+                    writer.WriteLine($"+{line.Content}");
                 }
             }
 
