@@ -47,7 +47,7 @@ namespace SourceGit.Views
             {
                 HasLeftCaptionButton = true;
                 CaptionHeight = new GridLength(34);
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome | ExtendClientAreaChromeHints.OSXThickTitleBar;
+                ExtendClientAreaChromeHints |= ExtendClientAreaChromeHints.OSXThickTitleBar;
             }
             else if (UseSystemWindowFrame)
             {
@@ -109,14 +109,13 @@ namespace SourceGit.Views
 
             if (change.Property == WindowStateProperty)
             {
-                _lastWindowState = (WindowState)change.OldValue!;
-
                 var state = (WindowState)change.NewValue!;
-                if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
-                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
+                _lastWindowState = (WindowState)change.OldValue!;
 
                 if (OperatingSystem.IsMacOS())
                     HasLeftCaptionButton = state != WindowState.FullScreen;
+                else if (!UseSystemWindowFrame)
+                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
             }
