@@ -526,6 +526,7 @@
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Personnaliser le message de fusion</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Option de merge:</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">Stratégie:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source:</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Fusionner (Plusieurs)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit tous les changement</x:String>

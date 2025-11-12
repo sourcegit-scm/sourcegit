@@ -386,6 +386,7 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">ブランチのマージ</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">マージオプション:</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">マージ戦略:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">ソースブランチ:</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">マージ (複数)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">すべての変更をコミット</x:String>

@@ -525,6 +525,7 @@
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Изменить сообщение слияния</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">Стратегия:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Источник:</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Влить несколько веток</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Зафиксировать все изменения</x:String>

@@ -357,6 +357,7 @@
   <x:String x:Key="Text.Merge" xml:space="preserve">Mesclar Ramo</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opção de Mesclagem:</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">Estratégia:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Mover nó do repositório</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Selecionar nó pai para:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nome:</x:String>

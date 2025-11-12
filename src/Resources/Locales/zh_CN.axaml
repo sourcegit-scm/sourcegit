@@ -528,6 +528,7 @@
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">编辑合并信息</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">合并策略 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并目标 ：</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">合并（多目标）</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">提交变化</x:String>

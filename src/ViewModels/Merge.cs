@@ -20,6 +20,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public Models.MergeStrategy Strategy
+        {
+            get;
+            set;
+        } = Models.MergeStrategy.ForMultiple[0];
+
         public bool Edit
         {
             get;
@@ -65,7 +71,12 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
+            await new Commands.Merge(
+                _repo.FullPath,
+                _sourceName,
+                Mode.Arg,
+                Edit,
+                Strategy?.Arg ?? string.Empty)
                 .Use(log)
                 .ExecAsync();
 

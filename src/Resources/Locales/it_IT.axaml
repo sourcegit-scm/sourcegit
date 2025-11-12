@@ -490,6 +490,7 @@
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Personalizza messaggio di merge</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opzione di Unione:</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">Strategia:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Sorgente:</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Unione (multipla)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit di tutte le modifiche</x:String>

@@ -505,6 +505,7 @@
   <x:String x:Key="Text.Merge.Edit" xml:space="preserve">병합 메시지 수정</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">대상:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">병합 옵션:</x:String>
+  <x:String x:Key="Text.Merge.Strategy" xml:space="preserve">전략:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">소스:</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">병합 (다중)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">모든 변경 사항 커밋</x:String>

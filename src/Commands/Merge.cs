@@ -5,7 +5,7 @@ namespace SourceGit.Commands
 {
     public class Merge : Command
     {
-        public Merge(string repo, string source, string mode, bool edit)
+        public Merge(string repo, string source, string mode, bool edit, string strategy)
         {
             WorkingDirectory = repo;
             Context = repo;
@@ -14,6 +14,8 @@ namespace SourceGit.Commands
             var builder = new StringBuilder();
             builder.Append("merge --progress ");
             builder.Append(edit ? "--edit " : "--no-edit ");
+            if (!string.IsNullOrEmpty(strategy))
+                builder.Append("--strategy=").Append(strategy).Append(' ');
             builder.Append(source);
             builder.Append(' ');
             builder.Append(mode);
