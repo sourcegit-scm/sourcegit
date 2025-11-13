@@ -776,7 +776,10 @@ namespace SourceGit.ViewModels
                 InProgressContext = null;
 
             if (_inProgressContext == null)
+            {
+                LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG"));
                 return;
+            }
 
             if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
                 return;
