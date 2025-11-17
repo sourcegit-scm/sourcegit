@@ -47,7 +47,7 @@ namespace SourceGit.Views
             {
                 HasLeftCaptionButton = true;
                 CaptionHeight = new GridLength(34);
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome | ExtendClientAreaChromeHints.OSXThickTitleBar;
+                ExtendClientAreaChromeHints |= ExtendClientAreaChromeHints.OSXThickTitleBar;
             }
             else if (UseSystemWindowFrame)
             {
@@ -109,14 +109,13 @@ namespace SourceGit.Views
 
             if (change.Property == WindowStateProperty)
             {
-                _lastWindowState = (WindowState)change.OldValue!;
-
                 var state = (WindowState)change.NewValue!;
-                if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
-                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
+                _lastWindowState = (WindowState)change.OldValue!;
 
                 if (OperatingSystem.IsMacOS())
                     HasLeftCaptionButton = state != WindowState.FullScreen;
+                else if (!UseSystemWindowFrame)
+                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
             }
@@ -225,11 +224,15 @@ namespace SourceGit.Views
                             e.Handled = true;
                             return;
                         case Key.F:
-                            repo.IsSearching = true;
+                            repo.IsSearchingCommits = true;
                             e.Handled = true;
                             return;
                         case Key.H when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            repo.IsSearching = false;
+                            repo.IsSearchingCommits = false;
+                            e.Handled = true;
+                            return;
+                        case Key.P when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            vm.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(vm, repo));
                             e.Handled = true;
                             return;
                     }
@@ -250,8 +253,8 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (vm.QuickLauncher != null)
-                    vm.QuickLauncher = null;
+                if (vm.CommandPalette != null)
+                    vm.CancelCommandPalette();
                 else
                     vm.ActivePage.CancelPopup();
 
@@ -355,17 +358,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenQuickLauncher(object sender, RoutedEventArgs e)
+        private void OnOpenPagesCommandPalette(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Launcher launcher)
-                launcher.QuickLauncher = new ViewModels.QuickLauncher(launcher);
+                launcher.OpenCommandPalette(new ViewModels.LauncherPagesCommandPalette(launcher));
             e.Handled = true;
         }
 
-        private void OnCloseQuickLauncher(object sender, PointerPressedEventArgs e)
+        private void OnCloseCommandPalette(object sender, PointerPressedEventArgs e)
         {
             if (e.Source == sender && DataContext is ViewModels.Launcher launcher)
-                launcher.QuickLauncher = null;
+                launcher.CancelCommandPalette();
             e.Handled = true;
         }
 

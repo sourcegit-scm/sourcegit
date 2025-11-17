@@ -318,7 +318,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task OpenRevisionFileWithDefaultEditorAsync(string file)
+        public async Task OpenRevisionFileAsync(string file, Models.ExternalTool tool)
         {
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file);
             var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
@@ -329,7 +329,10 @@ namespace SourceGit.ViewModels
                 .RunAsync(_repo.FullPath, _commit.SHA, file, tmpFile)
                 .ConfigureAwait(false);
 
-            Native.OS.OpenWithDefaultEditor(tmpFile);
+            if (tool == null)
+                Native.OS.OpenWithDefaultEditor(tmpFile);
+            else
+                tool.Open(tmpFile);
         }
 
         public async Task SaveRevisionFileAsync(Models.Object file, string saveTo)

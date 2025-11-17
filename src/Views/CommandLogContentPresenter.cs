@@ -93,12 +93,14 @@ namespace SourceGit.Views
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
+            TextArea.TextView.Options.AllowScrollBelowDocument = false;
         }
 
         public void OnReceiveCommandLog(string line)
         {
             AppendText("\n");
             AppendText(line);
+            ScrollToEnd();
         }
 
         protected override void OnLoaded(RoutedEventArgs e)

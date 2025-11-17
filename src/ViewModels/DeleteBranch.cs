@@ -52,13 +52,18 @@ namespace SourceGit.ViewModels
                 await new Commands.Branch(_repo.FullPath, Target.Name)
                     .Use(log)
                     .DeleteLocalAsync();
+                _repo.HistoryFilterCollection.RemoveFilter(Target.FullName, Models.FilterType.LocalBranch);
 
                 if (_alsoDeleteTrackingRemote && TrackingRemoteBranch != null)
+                {
                     await DeleteRemoteBranchAsync(TrackingRemoteBranch, log);
+                    _repo.HistoryFilterCollection.RemoveFilter(TrackingRemoteBranch.FullName, Models.FilterType.RemoteBranch);
+                }
             }
             else
             {
                 await DeleteRemoteBranchAsync(Target, log);
+                _repo.HistoryFilterCollection.RemoveFilter(Target.FullName, Models.FilterType.RemoteBranch);
             }
 
             log.Complete();

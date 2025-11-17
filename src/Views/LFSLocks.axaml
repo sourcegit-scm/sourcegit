@@ -14,7 +14,7 @@
                     Title="{DynamicResource Text.GitLFS.Locks.Title}"
                     Width="600" Height="400"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,Auto,*">
+  <Grid RowDefinitions="Auto,*,40">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
@@ -37,23 +37,9 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <!-- Filter and Unlock All -->
-    <CheckBox Grid.Row="1"
-              Margin="8,0,0,0"
-              Content="{DynamicResource Text.GitLFS.Locks.OnlyMine}"
-              IsChecked="{Binding ShowOnlyMyLocks, Mode=TwoWay}"
-              VerticalAlignment="Center">
-      <CheckBox.IsEnabled>
-        <MultiBinding Converter="{x:Static BoolConverters.And}">
-          <Binding Path="HasValidUserName"/>
-          <Binding Path="!IsLoading"/>
-        </MultiBinding>
-      </CheckBox.IsEnabled>
-    </CheckBox>
-
     <!-- Locked Files -->
-    <Grid Grid.Row="2">
-      <ListBox Margin="8,0,8,8"
+    <Grid Grid.Row="1">
+      <ListBox Margin="8,8,8,0"
                Background="{DynamicResource Brush.Contents}"
                ItemsSource="{Binding VisibleLocks}"
                SelectionMode="Single"
@@ -113,6 +99,33 @@
       <v:LoadingIcon Width="48" Height="48"
                      HorizontalAlignment="Center" VerticalAlignment="Center"
                      IsVisible="{Binding IsLoading}"/>
+    </Grid>
+
+    <!-- Filter and Unlock All -->
+    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="8,6">
+      <CheckBox Grid.Column="0"
+                Content="{DynamicResource Text.GitLFS.Locks.OnlyMine}"
+                IsChecked="{Binding ShowOnlyMyLocks, Mode=TwoWay}"
+                VerticalAlignment="Center">
+        <CheckBox.IsEnabled>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="HasValidUserName" />
+            <Binding Path="!IsLoading" />
+          </MultiBinding>
+        </CheckBox.IsEnabled>
+      </CheckBox>
+
+      <Button Grid.Column="1"
+              Classes="flat primary"
+              Content="{DynamicResource Text.GitLFS.Locks.UnlockAllMyLocks}"
+              Click="OnUnlockAllMyLocksButtonClicked">
+        <Button.IsEnabled>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="HasValidUserName" />
+            <Binding Path="!IsLoading" />
+          </MultiBinding>
+        </Button.IsEnabled>
+      </Button>
     </Grid>
   </Grid>
 </v:ChromelessWindow>

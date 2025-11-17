@@ -6,8 +6,8 @@
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.QuickLauncher"
-             x:DataType="vm:QuickLauncher">
+             x:Class="SourceGit.Views.LauncherPagesCommandPalette"
+             x:DataType="vm:LauncherPagesCommandPalette">
   <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto">
     <TextBox Grid.Row="0"
              x:Name="FilterTextBox"
@@ -45,7 +45,8 @@
                Margin="6,8,0,4"
                Text="{DynamicResource Text.Launcher.Pages}"
                FontWeight="Bold"
-               Foreground="{DynamicResource Brush.FG2}"/>
+               Foreground="{DynamicResource Brush.FG2}"
+               IsVisible="{Binding VisiblePages, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
 
     <ListBox Grid.Row="2"
              x:Name="PageListBox"
@@ -58,7 +59,8 @@
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              ScrollViewer.VerticalScrollBarVisibility="Auto"
              ItemsSource="{Binding VisiblePages, Mode=OneWay}"
-             SelectedItem="{Binding SelectedPage, Mode=TwoWay}">
+             SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+             IsVisible="{Binding VisiblePages, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -77,7 +79,7 @@
 
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Vertical"/>
+          <VirtualizingStackPanel Orientation="Vertical"/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
 
@@ -115,7 +117,8 @@
                Margin="6,8,0,4"
                Text="{DynamicResource Text.Launcher.OpenRepository}"
                FontWeight="Bold"
-               Foreground="{DynamicResource Brush.FG2}"/>
+               Foreground="{DynamicResource Brush.FG2}"
+               IsVisible="{Binding VisibleRepos, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
 
     <ListBox Grid.Row="4"
              x:Name="RepoListBox"
@@ -128,7 +131,8 @@
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              ScrollViewer.VerticalScrollBarVisibility="Auto"
              ItemsSource="{Binding VisibleRepos, Mode=OneWay}"
-             SelectedItem="{Binding SelectedRepo, Mode=TwoWay}">
+             SelectedItem="{Binding SelectedRepo, Mode=TwoWay}"
+             IsVisible="{Binding VisibleRepos, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -147,7 +151,7 @@
 
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Vertical"/>
+          <VirtualizingStackPanel Orientation="Vertical"/>
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
 

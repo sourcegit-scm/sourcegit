@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -156,14 +157,14 @@ namespace SourceGit.ViewModels
         {
             if (commits.Count == 0)
             {
-                _repo.SelectedSearchedCommit = null;
+                _repo.SearchCommitContext.Selected = null;
                 DetailContext = null;
             }
             else if (commits.Count == 1)
             {
                 var commit = (commits[0] as Models.Commit)!;
-                if (_repo.SelectedSearchedCommit == null || _repo.SelectedSearchedCommit.SHA != commit.SHA)
-                    _repo.SelectedSearchedCommit = _repo.SearchedCommits.Find(x => x.SHA == commit.SHA);
+                if (_repo.SearchCommitContext.Selected == null || _repo.SearchCommitContext.Selected.SHA != commit.SHA)
+                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA == commit.SHA);
 
                 AutoSelectedCommit = commit;
                 NavigationId = _navigationId + 1;
@@ -181,7 +182,7 @@ namespace SourceGit.ViewModels
             }
             else if (commits.Count == 2)
             {
-                _repo.SelectedSearchedCommit = null;
+                _repo.SearchCommitContext.Selected = null;
 
                 var end = commits[0] as Models.Commit;
                 var start = commits[1] as Models.Commit;
@@ -189,7 +190,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                _repo.SelectedSearchedCommit = null;
+                _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(commits.Count);
             }
         }
@@ -325,10 +326,18 @@ namespace SourceGit.ViewModels
         {
             if (head.Parents.Count == 1)
             {
-                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
-                if (parent != null && _repo.CanCreatePopup())
-                    _repo.ShowPopup(new Squash(_repo, parent, message));
+                var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
+                if (parent == null)
+                    return;
+
+                var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                var parentMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+
+                var builder = new StringBuilder();
+                builder.Append(parentMessage).Append("\n\n").Append(headMessage);
+
+                if (_repo.CanCreatePopup())
+                    _repo.ShowPopup(new Squash(_repo, parent, builder.ToString()));
             }
         }
 
@@ -370,7 +379,7 @@ namespace SourceGit.ViewModels
             var head = _commits.Find(x => x.IsCurrentHead);
             if (head == null)
             {
-                _repo.SelectedSearchedCommit = null;
+                _repo.SearchCommitContext.Selected = null;
                 head = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
                 if (head != null)
                     DetailContext = new RevisionCompare(_repo.FullPath, commit, head);

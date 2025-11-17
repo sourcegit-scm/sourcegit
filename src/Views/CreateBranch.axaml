@@ -13,7 +13,12 @@
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.CreateBranch.Title}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,Auto" ColumnDefinitions="140,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,Auto">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" MinWidth="140"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"

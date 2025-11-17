@@ -85,6 +85,87 @@ namespace SourceGit.Views
         }
     }
 
+    public class InteractiveRebaseIndicator : Control
+    {
+        public static readonly StyledProperty<IBrush> FillProperty =
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, IBrush>(nameof(Fill), Brushes.Transparent);
+
+        public IBrush Fill
+        {
+            get => GetValue(FillProperty);
+            set => SetValue(FillProperty, value);
+        }
+
+        public static readonly StyledProperty<Models.InteractiveRebasePendingType> PendingTypeProperty =
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, Models.InteractiveRebasePendingType>(nameof(PendingType));
+
+        public Models.InteractiveRebasePendingType PendingType
+        {
+            get => GetValue(PendingTypeProperty);
+            set => SetValue(PendingTypeProperty, value);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            if (PendingType == Models.InteractiveRebasePendingType.None)
+                return;
+
+            var startW = 4;
+            var endW = Bounds.Width - 6;
+            var height = Bounds.Height;
+            var halfH = height * 0.5;
+            var fill = Fill;
+
+            if (PendingType == Models.InteractiveRebasePendingType.Last)
+            {
+                var center = new Point(startW, halfH);
+                context.DrawEllipse(fill, null, center, 4, 4);
+                context.DrawLine(new Pen(fill, 2), center, new Point(startW, height));
+            }
+            else if (PendingType == Models.InteractiveRebasePendingType.Ignore)
+            {
+                context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
+            }
+            else if (PendingType == Models.InteractiveRebasePendingType.Pending)
+            {
+                context.DrawEllipse(fill, null, new Point(startW, halfH), 4, 4);
+                context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
+            }
+            else
+            {
+                var geoPath = new StreamGeometry();
+                using (var ctx = geoPath.Open())
+                {
+                    ctx.BeginFigure(new Point(startW, 0), false);
+                    ctx.QuadraticBezierTo(new Point(startW, halfH), new Point(endW, halfH));
+                    ctx.EndFigure(false);
+                }
+                context.DrawGeometry(null, new Pen(fill, 2), geoPath);
+
+                var geoArrow = new StreamGeometry();
+                using (var ctx = geoPath.Open())
+                {
+                    ctx.BeginFigure(new Point(endW, halfH), true);
+                    ctx.LineTo(new Point(endW - 4, halfH + 2));
+                    ctx.LineTo(new Point(endW - 4, halfH - 2));
+                    ctx.EndFigure(true);
+                }
+                context.DrawGeometry(fill, null, geoArrow);
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == FillProperty ||
+                change.Property == PendingTypeProperty)
+                InvalidateVisual();
+        }
+    }
+
     public partial class InteractiveRebase : ChromelessWindow
     {
         public InteractiveRebase()
@@ -100,7 +181,14 @@ namespace SourceGit.Views
                 return;
 
             var dialog = new CommitMessageEditor();
-            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg => item.FullMessage = msg);
+            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg =>
+            {
+                if (msg.Equals(item.FullMessage, StringComparison.Ordinal))
+                    return;
+
+                item.FullMessage = msg;
+                item.IsMessageUserEdited = true;
+            });
             dialog.ShowDialog(this);
         }
 
@@ -178,9 +266,7 @@ namespace SourceGit.Views
 
             var p = e.GetPosition(control);
             var before = p.Y < control.Bounds.Height * 0.5;
-
-            dst.IsDropBeforeVisible = before;
-            dst.IsDropAfterVisible = !before;
+            dst.DropDirectionIndicator = before ? new Thickness(0, 2, 0, 0) : new Thickness(0, 0, 0, 2);
             e.DragEffects = DragDropEffects.Move;
             e.Handled = true;
         }
@@ -190,8 +276,7 @@ namespace SourceGit.Views
             if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst })
                 return;
 
-            dst.IsDropBeforeVisible = false;
-            dst.IsDropAfterVisible = false;
+            dst.DropDirectionIndicator = new Thickness(0);
             e.Handled = true;
         }
 
@@ -227,8 +312,7 @@ namespace SourceGit.Views
             vm.Move(commits, before ? idx : idx + 1);
             IRItemListBox.SelectedItems = commits;
 
-            dst.IsDropBeforeVisible = false;
-            dst.IsDropAfterVisible = false;
+            dst.DropDirectionIndicator = new Thickness(0);
             e.DragEffects = DragDropEffects.None;
             e.Handled = true;
         }

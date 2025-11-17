@@ -275,7 +275,7 @@
                     </Border>
                   </Grid>
 
-                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="200" Text="{Binding Content, Mode=TwoWay}"/>
+                  <v:CommitMessageToolBox Margin="0,4,0,0" Height="200" CommitMessage="{Binding Content, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>
@@ -490,6 +490,7 @@
                     <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
                     <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Tag}"/>
                     <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Remote}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.File}"/>
                   </ComboBox>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>

@@ -56,11 +56,18 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
@@ -117,11 +124,18 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
@@ -195,6 +209,44 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("Open");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = change.Index != Models.ChangeState.Deleted;
+            if (openWith.IsEnabled)
+            {
+                var defaultEditor = new MenuItem();
+                defaultEditor.Header = App.Text("Open.SystemDefaultEditor");
+                defaultEditor.Click += async (_, ev) =>
+                {
+                    await vm.OpenRevisionFileAsync(change.Path, null);
+                    ev.Handled = true;
+                };
+
+                openWith.Items.Add(defaultEditor);
+
+                var tools = Native.OS.ExternalTools;
+                if (tools.Count > 0)
+                {
+                    openWith.Items.Add(new MenuItem() { Header = "-" });
+
+                    for (var i = 0; i < tools.Count; i++)
+                    {
+                        var tool = tools[i];
+                        var item = new MenuItem();
+                        item.Header = tool.Name;
+                        item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
+                        item.Click += async (_, ev) =>
+                        {
+                            await vm.OpenRevisionFileAsync(change.Path, tool);
+                            ev.Handled = true;
+                        };
+
+                        openWith.Items.Add(item);
+                    }
+                }
+            }
+
             var openWithMerger = new MenuItem();
             openWithMerger.Header = App.Text("OpenInExternalMergeTool");
             openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
@@ -202,16 +254,6 @@ namespace SourceGit.Views
             openWithMerger.Click += (_, ev) =>
             {
                 vm.OpenChangeInMergeTool(change);
-                ev.Handled = true;
-            };
-
-            var openWith = new MenuItem();
-            openWith.Header = App.Text("OpenWith");
-            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.IsEnabled = change.Index != Models.ChangeState.Deleted;
-            openWith.Click += async (_, ev) =>
-            {
-                await vm.OpenRevisionFileWithDefaultEditorAsync(change.Path);
                 ev.Handled = true;
             };
 
@@ -259,19 +301,26 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
             };
 
             var menu = new ContextMenu();
-            menu.Items.Add(openWithMerger);
             menu.Items.Add(openWith);
+            menu.Items.Add(openWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(history);
@@ -369,6 +418,33 @@ namespace SourceGit.Views
                     menu.Items.Add(lfs);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
+            }
+
+            var actions = repo.GetCustomActions(Models.CustomActionScope.File);
+            if (actions.Count > 0)
+            {
+                var target = new Models.CustomActionTargetFile(change.Path, vm.Commit);
+                var custom = new MenuItem();
+                custom.Header = App.Text("FileCM.CustomAction");
+                custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                foreach (var action in actions)
+                {
+                    var (dup, label) = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = label;
+                    item.Click += async (_, e) =>
+                    {
+                        await repo.ExecCustomActionAsync(dup, target);
+                        e.Handled = true;
+                    };
+
+                    custom.Items.Add(item);
+                }
+
+                menu.Items.Add(custom);
+                menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
             var copyPath = new MenuItem();

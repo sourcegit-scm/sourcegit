@@ -449,10 +449,15 @@ namespace SourceGit.Native
             }
         }
 
-        private string GenerateCommandlineArgsForVisualStudio(string repo)
+        private string GenerateCommandlineArgsForVisualStudio(string path)
         {
-            var sln = FindVSSolutionFile(new DirectoryInfo(repo), 4);
-            return string.IsNullOrEmpty(sln) ? repo.Quoted() : sln.Quoted();
+            if (Directory.Exists(path))
+            {
+                var sln = FindVSSolutionFile(new DirectoryInfo(path), 4);
+                return string.IsNullOrEmpty(sln) ? path.Quoted() : sln.Quoted();
+            }
+
+            return path.Quoted();
         }
 
         private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)

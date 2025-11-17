@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-
 using Avalonia.Collections;
 
 namespace SourceGit.Models
@@ -115,12 +112,6 @@ namespace SourceGit.Models
             get;
             set;
         } = true;
-
-        public AvaloniaList<Filter> HistoriesFilters
-        {
-            get;
-            set;
-        } = [];
 
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
@@ -241,166 +232,6 @@ namespace SourceGit.Models
             get;
             set;
         } = string.Empty;
-
-        public Dictionary<string, FilterMode> CollectHistoriesFilters()
-        {
-            var map = new Dictionary<string, FilterMode>();
-            foreach (var filter in HistoriesFilters)
-                map.Add(filter.Pattern, filter.Mode);
-            return map;
-        }
-
-        public bool UpdateHistoriesFilter(string pattern, FilterType type, FilterMode mode)
-        {
-            // Clear all filters when there's a filter that has different mode.
-            if (mode != FilterMode.None)
-            {
-                var clear = false;
-                foreach (var filter in HistoriesFilters)
-                {
-                    if (filter.Mode != mode)
-                    {
-                        clear = true;
-                        break;
-                    }
-                }
-
-                if (clear)
-                {
-                    HistoriesFilters.Clear();
-                    HistoriesFilters.Add(new Filter(pattern, type, mode));
-                    return true;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < HistoriesFilters.Count; i++)
-                {
-                    var filter = HistoriesFilters[i];
-                    if (filter.Type == type && filter.Pattern.Equals(pattern, StringComparison.Ordinal))
-                    {
-                        HistoriesFilters.RemoveAt(i);
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-
-            foreach (var filter in HistoriesFilters)
-            {
-                if (filter.Type != type)
-                    continue;
-
-                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
-                    return false;
-            }
-
-            HistoriesFilters.Add(new Filter(pattern, type, mode));
-            return true;
-        }
-
-        public void RemoveChildrenBranchFilters(string pattern)
-        {
-            var dirty = new List<Filter>();
-            var prefix = $"{pattern}/";
-
-            foreach (var filter in HistoriesFilters)
-            {
-                if (filter.Type == FilterType.Tag)
-                    continue;
-
-                if (filter.Pattern.StartsWith(prefix, StringComparison.Ordinal))
-                    dirty.Add(filter);
-            }
-
-            foreach (var filter in dirty)
-                HistoriesFilters.Remove(filter);
-        }
-
-        public string BuildHistoriesFilter()
-        {
-            var includedRefs = new List<string>();
-            var excludedBranches = new List<string>();
-            var excludedRemotes = new List<string>();
-            var excludedTags = new List<string>();
-            foreach (var filter in HistoriesFilters)
-            {
-                if (filter.Type == FilterType.LocalBranch)
-                {
-                    if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add(filter.Pattern);
-                    else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan(11)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
-                }
-                else if (filter.Type == FilterType.LocalBranchFolder)
-                {
-                    if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"--branches={filter.Pattern.AsSpan(11)}/*");
-                    else if (filter.Mode == FilterMode.Excluded)
-                        excludedBranches.Add($"--exclude=\"{filter.Pattern.AsSpan(11)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
-                }
-                else if (filter.Type == FilterType.RemoteBranch)
-                {
-                    if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add(filter.Pattern);
-                    else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}\" --decorate-refs-exclude=\"{filter.Pattern}\"");
-                }
-                else if (filter.Type == FilterType.RemoteBranchFolder)
-                {
-                    if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"--remotes={filter.Pattern.AsSpan(13)}/*");
-                    else if (filter.Mode == FilterMode.Excluded)
-                        excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\"");
-                }
-                else if (filter.Type == FilterType.Tag)
-                {
-                    if (filter.Mode == FilterMode.Included)
-                        includedRefs.Add($"refs/tags/{filter.Pattern}");
-                    else if (filter.Mode == FilterMode.Excluded)
-                        excludedTags.Add($"--exclude=\"{filter.Pattern}\" --decorate-refs-exclude=\"refs/tags/{filter.Pattern}\"");
-                }
-            }
-
-            var builder = new StringBuilder();
-            if (includedRefs.Count > 0)
-            {
-                foreach (var r in includedRefs)
-                {
-                    builder.Append(r);
-                    builder.Append(' ');
-                }
-            }
-            else if (excludedBranches.Count + excludedRemotes.Count + excludedTags.Count > 0)
-            {
-                foreach (var b in excludedBranches)
-                {
-                    builder.Append(b);
-                    builder.Append(' ');
-                }
-
-                builder.Append("--exclude=HEAD --branches ");
-
-                foreach (var r in excludedRemotes)
-                {
-                    builder.Append(r);
-                    builder.Append(' ');
-                }
-
-                builder.Append("--exclude=origin/HEAD --remotes ");
-
-                foreach (var t in excludedTags)
-                {
-                    builder.Append(t);
-                    builder.Append(' ');
-                }
-
-                builder.Append("--tags ");
-            }
-
-            return builder.ToString();
-        }
 
         public void PushCommitMessage(string message)
         {

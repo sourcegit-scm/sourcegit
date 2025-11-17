@@ -20,7 +20,7 @@ namespace SourceGit.Models
         {
             Name = name;
             ExecFile = execFile;
-            _execArgsGenerator = execArgsGenerator ?? (repo => repo.Quoted());
+            _execArgsGenerator = execArgsGenerator ?? (path => path.Quoted());
 
             try
             {
@@ -34,13 +34,12 @@ namespace SourceGit.Models
             }
         }
 
-        public void Open(string repo)
+        public void Open(string path)
         {
             Process.Start(new ProcessStartInfo()
             {
-                WorkingDirectory = repo,
                 FileName = ExecFile,
-                Arguments = _execArgsGenerator.Invoke(repo),
+                Arguments = _execArgsGenerator.Invoke(path),
                 UseShellExecute = false,
             });
         }

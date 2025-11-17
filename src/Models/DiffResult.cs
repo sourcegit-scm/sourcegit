@@ -257,16 +257,16 @@ namespace SourceGit.Models
                     else if (line.Type == TextDiffLineType.Added)
                     {
                         if (revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Deleted)
                     {
                         if (!revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Normal)
                     {
-                        writer.WriteLine($" {line.Content}");
+                        WriteLine(writer, ' ', line);
                     }
                 }
             }
@@ -282,15 +282,15 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Normal)
                 {
-                    writer.WriteLine($" {line.Content}");
+                    WriteLine(writer, ' ', line);
                 }
                 else if (line.Type == TextDiffLineType.Added)
                 {
-                    writer.WriteLine($"+{line.Content}");
+                    WriteLine(writer, '+', line);
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
-                    writer.WriteLine($"-{line.Content}");
+                    WriteLine(writer, '-', line);
                 }
             }
 
@@ -380,16 +380,16 @@ namespace SourceGit.Models
                     else if (line.Type == TextDiffLineType.Added)
                     {
                         if (revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Deleted)
                     {
                         if (!revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Normal)
                     {
-                        writer.WriteLine($" {line.Content}");
+                        WriteLine(writer, ' ', line);
                     }
                 }
             }
@@ -405,7 +405,7 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Normal)
                 {
-                    writer.WriteLine($" {line.Content}");
+                    WriteLine(writer, ' ', line);
                 }
                 else if (line.Type == TextDiffLineType.Added)
                 {
@@ -413,7 +413,7 @@ namespace SourceGit.Models
                     {
                         if (revert)
                         {
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                         }
                         else
                         {
@@ -422,20 +422,20 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        writer.WriteLine($"+{line.Content}");
+                        WriteLine(writer, '+', line);
                     }
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
                     if (isOldSide)
                     {
-                        writer.WriteLine($"-{line.Content}");
+                        WriteLine(writer, '-', line);
                     }
                     else
                     {
                         if (!revert)
                         {
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                         }
                         else
                         {
@@ -596,6 +596,14 @@ namespace SourceGit.Models
 
             writer.WriteLine($"@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
             return true;
+        }
+
+        private static void WriteLine(StreamWriter writer, char prefix, TextDiffLine line)
+        {
+            writer.WriteLine($"{prefix}{line.Content}");
+
+            if (line.NoNewLineEndOfFile)
+                writer.WriteLine("\\ No newline at end of file");
         }
 
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]

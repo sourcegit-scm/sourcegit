@@ -335,13 +335,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void OpenWithDefaultEditor(Models.Change c)
-        {
-            var absPath = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
-            if (File.Exists(absPath))
-                Native.OS.OpenWithDefaultEditor(absPath);
-        }
-
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
         {
             var canStaged = await GetCanStageChangesAsync(changes);
@@ -783,7 +776,10 @@ namespace SourceGit.ViewModels
                 InProgressContext = null;
 
             if (_inProgressContext == null)
+            {
+                LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG"));
                 return;
+            }
 
             if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
                 return;
@@ -836,7 +832,7 @@ namespace SourceGit.ViewModels
             {
                 var o = old[idx];
                 var c = cur[idx];
-                if (o.Path != c.Path || o.Index != c.Index || o.WorkTree != c.WorkTree)
+                if (o.Path.Equals(c.Path, StringComparison.Ordinal) || o.Index != c.Index || o.WorkTree != c.WorkTree)
                     return true;
             }
 

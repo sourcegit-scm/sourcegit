@@ -125,8 +125,6 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">குறிகள்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">பாகொவ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">உலாவியில் திற</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">விளக்கம்</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">உறுதிமொழி பொருளை உள்ளிடவும்</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">களஞ்சியம் உள்ளமை</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">உறுதிமொழி வளர்புரு</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">வார்ப்புரு உள்ளடக்கம்:</x:String>
@@ -399,7 +397,6 @@
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">அறிவிலி உள்ளமைக்கப்படவில்லை. [விருப்பத்தேர்வுகள்]க்குச் சென்று முதலில் அதை உள்ளமை. </x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">தரவு சேமிப்பக கோப்பகத்தைத் திற</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">ஒன்றிணை கருவியில் திற</x:String>
-  <x:String x:Key="Text.OpenWith" xml:space="preserve">இதனுடன் திற...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">விருப்பத்தேர்வு.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">புதிய பக்கத்தை உருவாக்கு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">புத்தகக்குறி</x:String>

@@ -3,9 +3,9 @@ using Avalonia.Input;
 
 namespace SourceGit.Views
 {
-    public partial class QuickLauncher : UserControl
+    public partial class LauncherPagesCommandPalette : UserControl
     {
-        public QuickLauncher()
+        public LauncherPagesCommandPalette()
         {
             InitializeComponent();
         }
@@ -14,22 +14,22 @@ namespace SourceGit.Views
         {
             base.OnKeyDown(e);
 
-            if (DataContext is not ViewModels.QuickLauncher switcher)
+            if (DataContext is not ViewModels.LauncherPagesCommandPalette vm)
                 return;
 
             if (e.Key == Key.Enter)
             {
-                switcher.OpenOrSwitchTo();
+                vm.OpenOrSwitchTo();
                 e.Handled = true;
             }
             else if (e.Key == Key.Up)
             {
                 if (RepoListBox.IsKeyboardFocusWithin)
                 {
-                    if (switcher.VisiblePages.Count > 0)
+                    if (vm.VisiblePages.Count > 0)
                     {
                         PageListBox.Focus(NavigationMethod.Directional);
-                        switcher.SelectedPage = switcher.VisiblePages[^1];
+                        vm.SelectedPage = vm.VisiblePages[^1];
                     }
                     else
                     {
@@ -47,19 +47,19 @@ namespace SourceGit.Views
                     return;
                 }
             }
-            else if (e.Key == Key.Down)
+            else if (e.Key == Key.Down || e.Key == Key.Tab)
             {
                 if (FilterTextBox.IsKeyboardFocusWithin)
                 {
-                    if (switcher.VisiblePages.Count > 0)
+                    if (vm.VisiblePages.Count > 0)
                     {
                         PageListBox.Focus(NavigationMethod.Directional);
-                        switcher.SelectedPage = switcher.VisiblePages[0];
+                        vm.SelectedPage = vm.VisiblePages[0];
                     }
-                    else if (switcher.VisibleRepos.Count > 0)
+                    else if (vm.VisibleRepos.Count > 0)
                     {
                         RepoListBox.Focus(NavigationMethod.Directional);
-                        switcher.SelectedRepo = switcher.VisibleRepos[0];
+                        vm.SelectedRepo = vm.VisibleRepos[0];
                     }
 
                     e.Handled = true;
@@ -68,12 +68,19 @@ namespace SourceGit.Views
 
                 if (PageListBox.IsKeyboardFocusWithin)
                 {
-                    if (switcher.VisibleRepos.Count > 0)
+                    if (vm.VisibleRepos.Count > 0)
                     {
                         RepoListBox.Focus(NavigationMethod.Directional);
-                        switcher.SelectedRepo = switcher.VisibleRepos[0];
+                        vm.SelectedRepo = vm.VisibleRepos[0];
                     }
 
+                    e.Handled = true;
+                    return;
+                }
+
+                if (RepoListBox.IsKeyboardFocusWithin && e.Key == Key.Tab)
+                {
+                    FilterTextBox.Focus(NavigationMethod.Directional);
                     e.Handled = true;
                     return;
                 }
@@ -82,9 +89,9 @@ namespace SourceGit.Views
 
         private void OnItemTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.QuickLauncher switcher)
+            if (DataContext is ViewModels.LauncherPagesCommandPalette vm)
             {
-                switcher.OpenOrSwitchTo();
+                vm.OpenOrSwitchTo();
                 e.Handled = true;
             }
         }

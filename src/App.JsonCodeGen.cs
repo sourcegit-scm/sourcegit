@@ -60,6 +60,7 @@ namespace SourceGit
         ]
     )]
     [JsonSerializable(typeof(Models.ExternalToolPaths))]
+    [JsonSerializable(typeof(Models.HistoryFilterCollection))]
     [JsonSerializable(typeof(Models.InteractiveRebaseJobCollection))]
     [JsonSerializable(typeof(Models.JetBrainsState))]
     [JsonSerializable(typeof(Models.ThemeOverrides))]

@@ -84,6 +84,7 @@ namespace SourceGit.Models
         public void MarkBranchUpdated()
         {
             Interlocked.Exchange(ref _updateBranch, 0);
+            Interlocked.Exchange(ref _updateWC, 0);
         }
 
         public void MarkTagUpdated()

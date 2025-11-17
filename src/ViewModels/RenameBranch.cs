@@ -61,7 +61,7 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
-                foreach (var filter in _repo.Settings.HistoriesFilters)
+                foreach (var filter in _repo.HistoryFilterCollection.Filters)
                 {
                     if (filter.Type == Models.FilterType.LocalBranch &&
                         filter.Pattern.Equals(oldName, StringComparison.Ordinal))

@@ -12,6 +12,15 @@ namespace SourceGit.Models
         Drop,
     }
 
+    public enum InteractiveRebasePendingType
+    {
+        None = 0,
+        Target,
+        Pending,
+        Ignore,
+        Last,
+    }
+
     public class InteractiveCommit
     {
         public Commit Commit { get; set; } = new Commit();

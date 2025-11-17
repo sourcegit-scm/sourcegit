@@ -102,7 +102,7 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
+            if (_repo.HistoryFilterMode == Models.FilterMode.Included)
                 _repo.SetBranchFilterMode(LocalBranch, Models.FilterMode.Included, false, false);
 
             _repo.MarkBranchesDirtyManually();

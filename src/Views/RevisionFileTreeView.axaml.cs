@@ -495,15 +495,43 @@ namespace SourceGit.Views
             var menu = new ContextMenu();
 
             var openWith = new MenuItem();
-            openWith.Header = App.Text("OpenWith");
+            openWith.Header = App.Text("Open");
             openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-            openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
             openWith.IsEnabled = file.Type == Models.ObjectType.Blob;
-            openWith.Click += async (_, ev) =>
+            if (openWith.IsEnabled)
             {
-                await vm.OpenRevisionFileWithDefaultEditorAsync(file.Path);
-                ev.Handled = true;
-            };
+                var defaultEditor = new MenuItem();
+                defaultEditor.Header = App.Text("Open.SystemDefaultEditor");
+                defaultEditor.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
+                defaultEditor.Click += async (_, ev) =>
+                {
+                    await vm.OpenRevisionFileAsync(file.Path, null);
+                    ev.Handled = true;
+                };
+
+                openWith.Items.Add(defaultEditor);
+
+                var tools = Native.OS.ExternalTools;
+                if (tools.Count > 0)
+                {
+                    openWith.Items.Add(new MenuItem() { Header = "-" });
+
+                    for (var i = 0; i < tools.Count; i++)
+                    {
+                        var tool = tools[i];
+                        var item = new MenuItem();
+                        item.Header = tool.Name;
+                        item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
+                        item.Click += async (_, ev) =>
+                        {
+                            await vm.OpenRevisionFileAsync(file.Path, tool);
+                            ev.Handled = true;
+                        };
+
+                        openWith.Items.Add(item);
+                    }
+                }
+            }
 
             var saveAs = new MenuItem();
             saveAs.Header = App.Text("SaveAs");
@@ -665,6 +693,33 @@ namespace SourceGit.Views
                     menu.Items.Add(lfs);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
+            }
+
+            var actions = repo.GetCustomActions(Models.CustomActionScope.File);
+            if (actions.Count > 0)
+            {
+                var target = new Models.CustomActionTargetFile(file.Path, vm.Commit);
+                var custom = new MenuItem();
+                custom.Header = App.Text("FileCM.CustomAction");
+                custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                foreach (var action in actions)
+                {
+                    var (dup, label) = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = label;
+                    item.Click += async (_, e) =>
+                    {
+                        await repo.ExecCustomActionAsync(dup, target);
+                        e.Handled = true;
+                    };
+
+                    custom.Items.Add(item);
+                }
+
+                menu.Items.Add(custom);
+                menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
             var copyPath = new MenuItem();

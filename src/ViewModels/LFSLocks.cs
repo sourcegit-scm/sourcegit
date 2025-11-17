@@ -72,6 +72,35 @@ namespace SourceGit.ViewModels
             IsLoading = false;
         }
 
+        public async Task UnlockAllMyLocksAsync()
+        {
+            if (_isLoading || string.IsNullOrEmpty(_userName))
+                return;
+
+            var locks = new List<string>();
+            foreach (var lfsLock in _cachedLocks)
+            {
+                if (lfsLock.Owner.Name.Equals(_userName, StringComparison.Ordinal))
+                    locks.Add(lfsLock.Path);
+            }
+
+            if (locks.Count == 0)
+                return;
+
+            IsLoading = true;
+
+            var log = _repo.CreateLog("Unlock LFS Locks");
+            var succ = await new Commands.LFS(_repo.FullPath).Use(log).UnlockMultipleAsync(_remote, locks, true);
+            if (succ)
+            {
+                _cachedLocks.RemoveAll(lfsLock => lfsLock.Owner.Name.Equals(_userName, StringComparison.Ordinal));
+                UpdateVisibleLocks();
+            }
+
+            log.Complete();
+            IsLoading = false;
+        }
+
         private void UpdateVisibleLocks()
         {
             var visible = new List<Models.LFSLock>();

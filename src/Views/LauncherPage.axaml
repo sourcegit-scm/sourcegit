@@ -65,14 +65,18 @@
                 CornerRadius="0,0,8,8"
                 ClipToBounds="True"
                 IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <ContentControl Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
+          <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:Popup">
                 <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
                   <!-- Popup Widget -->
-                  <ContentPresenter Margin="8,16,8,8"
-                                    DataContextChanged="OnPopupDataContextChanged"
-                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
+                  <ContentControl Margin="8,16,8,8"
+                                  Content="{Binding}"
+                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                    <ContentControl.DataTemplates>
+                      <v:PopupDataTemplates/>
+                    </ContentControl.DataTemplates>
+                  </ContentControl>
 
                   <!-- Options -->
                   <StackPanel Margin="8,4,8,8"

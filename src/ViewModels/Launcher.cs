@@ -35,6 +35,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _activePage, value))
                 {
+                    CancelCommandPalette();
                     UpdateTitle();
 
                     if (!_ignoreIndexChange && value is { Data: Repository repo })
@@ -43,10 +44,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public QuickLauncher QuickLauncher
+        public ICommandPalette CommandPalette
         {
-            get => _quickLauncher;
-            set => SetProperty(ref _quickLauncher, value);
+            get => _commandPalette;
+            set => SetProperty(ref _commandPalette, value);
         }
 
         public Launcher(string startupRepo)
@@ -253,6 +254,7 @@ namespace SourceGit.ViewModels
                     last.Popup = null;
                     UpdateTitle();
 
+                    CancelCommandPalette();
                     GC.Collect();
                 }
                 else
@@ -376,6 +378,20 @@ namespace SourceGit.ViewModels
                 ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(node.Id);
         }
 
+        public void OpenCommandPalette(ICommandPalette commandPalette)
+        {
+            var old = _commandPalette;
+            CommandPalette = commandPalette;
+            old?.Dispose();
+        }
+
+        public void CancelCommandPalette()
+        {
+            _commandPalette?.Dispose();
+            CommandPalette = null;
+            GC.Collect();
+        }
+
         public void DispatchNotification(string pageId, string message, bool isError)
         {
             if (!Dispatcher.UIThread.CheckAccess())
@@ -481,6 +497,6 @@ namespace SourceGit.ViewModels
         private LauncherPage _activePage = null;
         private bool _ignoreIndexChange = false;
         private string _title = string.Empty;
-        private QuickLauncher _quickLauncher = null;
+        private ICommandPalette _commandPalette = null;
     }
 }

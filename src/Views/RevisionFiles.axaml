@@ -151,7 +151,7 @@
                       HotKey="{OnPlatform Ctrl+O, macOS=⌘+O}">
                 <ToolTip.Tip>
                   <TextBlock>
-                    <Run Text="{DynamicResource Text.OpenWith}"/>
+                    <Run Text="{DynamicResource Text.Open}"/>
                     <Run Text=" "/>
                     <Run Text="{OnPlatform Ctrl+O, macOS=⌘+O}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                   </TextBlock>

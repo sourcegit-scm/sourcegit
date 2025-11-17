@@ -106,7 +106,7 @@ namespace SourceGit
         #endregion
 
         #region Utility Functions
-        public static object CreateViewForViewModel(object data)
+        public static Control CreateViewForViewModel(object data)
         {
             var dataTypeName = data.GetType().FullName;
             if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
@@ -115,7 +115,7 @@ namespace SourceGit
             var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
             var viewType = Type.GetType(viewTypeName);
             if (viewType != null)
-                return Activator.CreateInstance(viewType);
+                return Activator.CreateInstance(viewType) as Control;
 
             return null;
         }
@@ -387,6 +387,9 @@ namespace SourceGit
                         e.Cancel = true;
                 });
 
+                if (TryLaunchAsFileHistoryViewer(desktop))
+                    return;
+
                 if (TryLaunchAsCoreEditor(desktop))
                     return;
 
@@ -510,6 +513,33 @@ namespace SourceGit
                 }
             }
 
+            return true;
+        }
+
+        private bool TryLaunchAsFileHistoryViewer(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args is not { Length: > 1 } || !args[0].Equals("--file-history", StringComparison.Ordinal))
+                return false;
+
+            var file = Path.GetFullPath(args[1]);
+            var dir = Path.GetDirectoryName(file);
+
+            var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+            {
+                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var repo = test.StdOut.Trim();
+            var relFile = Path.GetRelativePath(repo, file);
+            var viewer = new Views.FileHistories()
+            {
+                DataContext = new ViewModels.FileHistories(repo, relFile)
+            };
+            desktop.MainWindow = viewer;
             return true;
         }
 

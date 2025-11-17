@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class QuickLauncher : ObservableObject
+    public class LauncherPagesCommandPalette : ICommandPalette
     {
         public List<LauncherPage> VisiblePages
         {
@@ -48,7 +47,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public QuickLauncher(Launcher launcher)
+        public LauncherPagesCommandPalette(Launcher launcher)
         {
             _launcher = launcher;
 
@@ -59,6 +58,17 @@ namespace SourceGit.ViewModels
             }
 
             UpdateVisible();
+        }
+
+        public override void Cleanup()
+        {
+            _launcher = null;
+            _opened.Clear();
+            _visiblePages.Clear();
+            _visibleRepos.Clear();
+            _searchFilter = null;
+            _selectedPage = null;
+            _selectedRepo = null;
         }
 
         public void ClearFilter()
@@ -73,25 +83,33 @@ namespace SourceGit.ViewModels
             else if (_selectedRepo != null)
                 _launcher.OpenRepositoryInTab(_selectedRepo, null);
 
-            _launcher.QuickLauncher = null;
+            _launcher?.CancelCommandPalette();
         }
 
         private void UpdateVisible()
         {
             var pages = new List<LauncherPage>();
-            foreach (var page in _launcher.Pages)
-            {
-                if (string.IsNullOrEmpty(_searchFilter) ||
-                    page.Node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
-                    (page.Node.IsRepository && page.Node.Id.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase)))
-                    pages.Add(page);
-            }
+            CollectVisiblePages(pages);
 
             var repos = new List<RepositoryNode>();
             CollectVisibleRepository(repos, Preferences.Instance.RepositoryNodes);
 
             VisiblePages = pages;
             VisibleRepos = repos;
+        }
+
+        private void CollectVisiblePages(List<LauncherPage> pages)
+        {
+            foreach (var page in _launcher.Pages)
+            {
+                if (page == _launcher.ActivePage)
+                    continue;
+
+                if (string.IsNullOrEmpty(_searchFilter) ||
+                    page.Node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
+                    (page.Node.IsRepository && page.Node.Id.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase)))
+                    pages.Add(page);
+            }
         }
 
         private void CollectVisibleRepository(List<RepositoryNode> outs, List<RepositoryNode> nodes)

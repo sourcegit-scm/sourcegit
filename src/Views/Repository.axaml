@@ -23,7 +23,7 @@
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
-                     IsChecked="{Binding !IsSearching, Mode=OneWay}">
+                     IsChecked="{Binding !IsSearchingCommits, Mode=OneWay}">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.Repository.Dashboard}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -37,7 +37,7 @@
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
-                     IsChecked="{Binding IsSearching, Mode=TwoWay}">
+                     IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -50,7 +50,7 @@
       </StackPanel>
 
       <!-- Dashboard -->
-      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
+      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearchingCommits}">
         <!-- Page Switcher for Right Panel -->
         <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
           <Border CornerRadius="6" ClipToBounds="True">
@@ -437,7 +437,7 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearchingCommits}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
         <Grid Grid.Row="0" Height="26" Margin="0,4,0,0">
           <TextBox x:Name="TxtSearchCommitsBox"
@@ -447,7 +447,7 @@
                    Background="{DynamicResource Brush.Contents}"
                    CornerRadius="12"
                    Watermark="{DynamicResource Text.Repository.Search}"
-                   Text="{Binding SearchCommitFilter, Mode=TwoWay}"
+                   Text="{Binding SearchCommitContext.Filter, Mode=TwoWay}"
                    VerticalContentAlignment="Center"
                    KeyDown="OnSearchKeyDown">
             <TextBox.InnerLeftContent>
@@ -461,8 +461,8 @@
               <Button Classes="icon_button"
                       Width="16"
                       Margin="0,0,6,0"
-                      Command="{Binding ClearSearchCommitFilter}"
-                      IsVisible="{Binding SearchCommitFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                      Click="OnClearSearchCommitFilter"
+                      IsVisible="{Binding SearchCommitContext.Filter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                       HorizontalAlignment="Right">
                 <Path Width="14" Height="14"
                       Margin="0,1,0,0"
@@ -477,7 +477,7 @@
                  HorizontalOffset="-8" VerticalAlignment="-8">
             <Popup.IsOpen>
               <MultiBinding Converter="{x:Static BoolConverters.And}">
-                <Binding Path="MatchedFilesForSearching" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
+                <Binding Path="SearchCommitContext.Suggestions" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
                 <Binding Path="$parent[Window].IsActive"/>
               </MultiBinding>
             </Popup.IsOpen>
@@ -487,7 +487,7 @@
                 <ListBox x:Name="SearchSuggestionBox"
                          Background="Transparent"
                          SelectionMode="Single"
-                         ItemsSource="{Binding MatchedFilesForSearching}"
+                         ItemsSource="{Binding SearchCommitContext.Suggestions}"
                          MaxHeight="400"
                          Focusable="True"
                          KeyDown="OnSearchSuggestionBoxKeyDown">
@@ -509,7 +509,7 @@
 
                   <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                      <StackPanel Orientation="Vertical"/>
+                      <VirtualizingStackPanel Orientation="Vertical"/>
                     </ItemsPanelTemplate>
                   </ListBox.ItemsPanel>
 
@@ -535,7 +535,7 @@
                     Padding="4,0"
                     Background="Transparent"
                     BorderThickness="0"
-                    SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
+                    SelectedIndex="{Binding SearchCommitContext.Method, Mode=TwoWay}">
             <ComboBox.Items>
               <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
@@ -548,8 +548,8 @@
 
           <CheckBox Height="24"
                     Margin="4,0,0,0"
-                    IsChecked="{Binding OnlySearchCommitsInCurrentBranch, Mode=TwoWay}"
-                    IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    IsChecked="{Binding SearchCommitContext.OnlySearchCurrentBranch, Mode=TwoWay}"
+                    IsVisible="{Binding SearchCommitContext.Method, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
             <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}"/>
           </CheckBox>
         </StackPanel>
@@ -557,9 +557,9 @@
         <ListBox Grid.Row="2"
                  Margin="0,8,0,0"
                  Padding="4"
-                 ItemsSource="{Binding SearchedCommits}"
+                 ItemsSource="{Binding SearchCommitContext.Results}"
                  SelectionMode="Single"
-                 SelectedItem="{Binding SelectedSearchedCommit, Mode=TwoWay}"
+                 SelectedItem="{Binding SearchCommitContext.Selected, Mode=TwoWay}"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Background="{DynamicResource Brush.Contents}"
@@ -613,8 +613,8 @@
               Fill="{DynamicResource Brush.FG2}">
           <Path.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="SearchedCommits.Count" Converter="{x:Static c:IntConverters.IsZero}"/>
-              <Binding Path="IsSearchLoadingVisible" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="SearchCommitContext.Results" Converter="{x:Static c:ListConverters.IsNullOrEmpty}"/>
+              <Binding Path="SearchCommitContext.IsQuerying" Converter="{x:Static BoolConverters.Not}"/>
             </MultiBinding>
           </Path.IsVisible>
         </Path>
@@ -622,7 +622,7 @@
         <v:LoadingIcon Grid.Row="2"
                        Width="48" Height="48"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                       IsVisible="{Binding IsSearchLoadingVisible}"/>
+                       IsVisible="{Binding SearchCommitContext.IsQuerying}"/>
       </Grid>
     </Grid>
 
@@ -785,7 +785,7 @@
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-            <Binding Path="Settings.HistoriesFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            <Binding Path="HistoryFilterCollection.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
           </MultiBinding>
         </Border.IsVisible>
 
@@ -795,15 +795,15 @@
                 Width="12" Height="12"
                 Data="{StaticResource Icons.Filter}"
                 Fill="{DynamicResource Brush.FG2}"
-                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+                IsVisible="{Binding HistoryFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
           <Path Grid.Column="0"
                 Margin="8,0,0,0"
                 Width="12" Height="12"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG2}"
-                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+                IsVisible="{Binding HistoryFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
 
-          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding Settings.HistoriesFilters}">
+          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding HistoryFilterCollection.Filters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" ItemHeight="22"/>
@@ -811,7 +811,7 @@
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemTemplate>
-              <DataTemplate DataType="m:Filter">
+              <DataTemplate DataType="m:HistoryFilter">
                 <Border Height="20"
                         Margin="0,0,6,0"
                         CornerRadius="12"
@@ -823,7 +823,7 @@
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
                     <TextBlock Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
 
-                    <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoriesFilter">
+                    <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoryFilter">
                       <Path Width="8" Height="8" Data="{StaticResource Icons.Close}"/>
                     </Button>
                   </StackPanel>
@@ -832,7 +832,7 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
 
-          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
+          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoryFilters}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
             <Path Width="14" Height="14" Margin="16,0,8,0" Data="{StaticResource Icons.RemoveAll}"/>
           </Button>
         </Grid>
