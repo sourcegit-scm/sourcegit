@@ -769,26 +769,19 @@ namespace SourceGit.ViewModels
             else
                 InProgressContext = null;
 
-            if (_inProgressContext == null)
-            {
-                LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG"));
-                return;
-            }
-
-            if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
+            if (_inProgressContext != null && _inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
                 return;
 
-            do
-            {
-                if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
-                    break;
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
+                return;
 
-                if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
-                    break;
+            if (_inProgressContext is not RebaseInProgress { } rebasing)
+                return;
 
-                if (_inProgressContext is RebaseInProgress { StoppedAt: { } stopAt })
-                    CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, stopAt.SHA).GetResult();
-            } while (false);
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
+                return;
+
+            CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
         }
 
         private bool LoadCommitMessageFromFile(string file)
