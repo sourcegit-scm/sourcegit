@@ -540,10 +540,8 @@ namespace SourceGit.ViewModels
                 if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
                     await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                var succ = await _inProgressContext.ContinueAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
+                await _inProgressContext.ContinueAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -559,10 +557,8 @@ namespace SourceGit.ViewModels
                 using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
 
-                var succ = await _inProgressContext.SkipAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
+                await _inProgressContext.SkipAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -578,10 +574,8 @@ namespace SourceGit.ViewModels
                 using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
 
-                var succ = await _inProgressContext.AbortAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
+                await _inProgressContext.AbortAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
