@@ -9,9 +9,15 @@
              x:Class="SourceGit.Views.MergeMultiple"
              x:DataType="vm:MergeMultiple">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.MergeMultiple}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Merge}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.MergeMultiple}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" RowDefinitions="Auto,32,32" ColumnDefinitions="100,*">
       <TextBlock Grid.Row="0" Grid.Column="0"

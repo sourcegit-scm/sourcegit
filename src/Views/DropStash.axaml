@@ -7,9 +7,16 @@
              x:Class="SourceGit.Views.DropStash"
              x:DataType="vm:DropStash">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.StashDropConfirm}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Clear}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.StashDropConfirm}"/>
+    </StackPanel>
+    
     <Grid Margin="0,16,8,0" Height="28" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

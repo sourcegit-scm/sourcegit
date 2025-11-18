@@ -8,10 +8,17 @@
              x:Class="SourceGit.Views.AddRemote"
              x:DataType="vm:AddRemote">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Remote.AddTitle}"/>
-
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Margin="0,2,0,0"
+            Data="{StaticResource Icons.Remote.Add}"/>
+      
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Remote.AddTitle}"/>
+    </StackPanel>
+    
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

@@ -8,7 +8,15 @@
              x:Class="SourceGit.Views.CreateGroup"
              x:DataType="vm:CreateGroup">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Welcome.AddRootFolder}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Folder.Add}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Welcome.AddRootFolder}"/>
+    </StackPanel>
 
     <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="8,0" Text="{DynamicResource Text.Name}"/>

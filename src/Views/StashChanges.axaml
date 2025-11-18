@@ -9,9 +9,16 @@
              x:Class="SourceGit.Views.StashChanges"
              x:DataType="vm:StashChanges">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Stash.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Stashes.Add}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Stash.Title}"/>
+    </StackPanel>
+    
     <Grid Margin="8,20,0,0" RowDefinitions="32,Auto,Auto,Auto,Auto" ColumnDefinitions="100,356">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"

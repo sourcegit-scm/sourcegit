@@ -7,9 +7,16 @@
              x:Class="SourceGit.Views.DeleteSubmodule"
              x:DataType="vm:DeleteSubmodule">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.DeleteSubmodule}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Clear}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.DeleteSubmodule}"/>
+    </StackPanel>
+    
     <StackPanel Orientation="Horizontal" Margin="0,16,0,0" Height="28" HorizontalAlignment="Center">
       <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"

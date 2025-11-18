@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.Discard"
              x:DataType="vm:Discard">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Discard}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Undo}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Discard}"/>
+    </StackPanel>
 
     <ContentControl Margin="0,16,0,8" Content="{Binding Mode}">
       <ContentControl.DataTemplates>

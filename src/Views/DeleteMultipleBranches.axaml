@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.DeleteMultipleBranches"
              x:DataType="vm:DeleteMultipleBranches">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.DeleteMultiBranch}" />
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Clear}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.DeleteMultiBranch}"/>
+    </StackPanel>
 
     <Border Margin="4,16,0,0"
             Background="{DynamicResource Brush.Contents}"

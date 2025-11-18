@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.EditBranchDescription"
              x:DataType="vm:EditBranchDescription">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.EditBranchDescription}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Edit}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.EditBranchDescription}"/>
+    </StackPanel>
 
     <StackPanel Margin="8,16,8,0" Orientation="Horizontal">
       <TextBlock Text="{DynamicResource Text.EditBranchDescription.Target}"/>

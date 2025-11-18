@@ -10,9 +10,16 @@
              x:Class="SourceGit.Views.CreateTag"
              x:DataType="vm:CreateTag">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.CreateTag.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Tag.Add}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.CreateTag.Title}"/>
+    </StackPanel>
+    
     <Grid Margin="0,16,8,0" RowDefinitions="32,32,32,Auto,Auto,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
