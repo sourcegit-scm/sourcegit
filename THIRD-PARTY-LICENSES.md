@@ -7,7 +7,7 @@ The project uses the following third-party libraries or assets
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.3.8
+- **Version**: 11.3.9
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
