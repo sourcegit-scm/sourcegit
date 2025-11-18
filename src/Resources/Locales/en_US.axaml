@@ -63,6 +63,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Delete selected {0} branches</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Edit description for ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward to ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
@@ -371,6 +372,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">Drop Commit</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">New HEAD:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Edit Branch's Description</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Bookmark:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">New Name:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</x:String>

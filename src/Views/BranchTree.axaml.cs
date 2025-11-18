@@ -229,6 +229,45 @@ namespace SourceGit.Views
         }
     }
 
+    public class BranchTreeNodeDescription : TextBlock
+    {
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        public BranchTreeNodeDescription()
+        {
+            IsVisible = false;
+        }
+
+        protected override async void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            var visible = false;
+
+            do
+            {
+                if (DataContext is not Models.Branch branch)
+                    break;
+
+                if (e.Root is not PopupRoot { Parent: Popup { Parent: Border owner } })
+                    break;
+
+                var tree = owner.FindAncestorOfType<BranchTree>();
+                if (tree is not { DataContext: ViewModels.Repository repo })
+                    break;
+
+                var description = await new Commands.Config(repo.FullPath).GetAsync($"branch.{branch.Name}.description");
+                if (string.IsNullOrEmpty(description))
+                    break;
+
+                Text = description;
+                visible = true;
+            } while (false);
+
+            SetCurrentValue(IsVisibleProperty, visible);
+        }
+    }
+
     public partial class BranchTree : UserControl
     {
         public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
@@ -805,6 +844,17 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            var editDescription = new MenuItem();
+            editDescription.Header = App.Text("BranchCM.EditDescription", branch.Name);
+            editDescription.Icon = App.CreateMenuIcon("Icons.Edit");
+            editDescription.Click += async (_, e) =>
+            {
+                var desc = await new Commands.Config(repo.FullPath).GetAsync($"branch.{branch.Name}.description");
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.EditBranchDescription(repo, branch, desc));
+                e.Handled = true;
+            };
+
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", branch.Name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -837,6 +887,7 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(editDescription);
             menu.Items.Add(rename);
             menu.Items.Add(delete);
             menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1068,6 +1119,17 @@ namespace SourceGit.Views
             }
             menu.Items.Add(new MenuItem() { Header = "-" });
 
+            var editDescription = new MenuItem();
+            editDescription.Header = App.Text("BranchCM.EditDescription", branch.Name);
+            editDescription.Icon = App.CreateMenuIcon("Icons.Edit");
+            editDescription.Click += async (_, e) =>
+            {
+                var desc = await new Commands.Config(repo.FullPath).GetAsync($"branch.{branch.Name}.description");
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.EditBranchDescription(repo, branch, desc));
+                e.Handled = true;
+            };
+
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", name);
             delete.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -1078,6 +1140,7 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            menu.Items.Add(editDescription);
             menu.Items.Add(delete);
             menu.Items.Add(new MenuItem() { Header = "-" });
 

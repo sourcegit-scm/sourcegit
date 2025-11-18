@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">编辑 ${0}$ 的描述...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到 ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">拉取(fetch) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成 ${0}$</x:String>
@@ -375,6 +376,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">丢弃提交</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">提交 ：</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">丢弃后 HEAD ：</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">编辑分支描述</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>

@@ -89,6 +89,8 @@
                              Text="{Binding WorktreePath, Mode=OneWay}"
                              IsVisible="{Binding HasWorktree}"/>
                 </Grid>
+
+                <v:BranchTreeNodeDescription Margin="0,8,0,0"/>
               </StackPanel>
             </DataTemplate>
 
