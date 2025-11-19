@@ -41,7 +41,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.LocalChanges}"/>
       <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReapply}"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>

@@ -107,7 +107,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Avertissement: une récupération vers un commit aboutiera vers un HEAD détaché</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Annuler</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Mettre à jour tous les sous-modules</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branche :</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Votre HEAD actuel contient un ou plusieurs commits non connectés à une branche/tag ! Voulez-vous continuer ?</x:String>
@@ -287,7 +287,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Récupérer la branche créée</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nom de la nouvelle branche :</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Entrez le nom de la branche.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Créer une branche locale</x:String>
@@ -635,7 +635,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Mettre à jour tous les sous-modules</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Dépôt distant :</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>

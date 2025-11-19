@@ -103,7 +103,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Peringatan: Dengan melakukan checkout commit, Head akan terlepas</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Perubahan Lokal:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Buang</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Perbarui semua submodule</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">HEAD saat ini mengandung commit yang tidak terhubung ke branch/tag manapun! Lanjutkan?</x:String>
@@ -272,7 +272,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout branch yang dibuat</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Perubahan Lokal:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Buang</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nama Branch Baru:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Masukkan nama branch.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Buat Branch Lokal</x:String>
@@ -610,7 +610,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Ke:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Perubahan Lokal:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Buang</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Terapkan Ulang</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Perbarui semua submodule</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
