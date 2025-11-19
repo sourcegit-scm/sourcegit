@@ -25,6 +25,23 @@ namespace SourceGit.Models
 
     public class CustomActionControl : ObservableObject
     {
+        public CustomActionControl()
+        {
+        }
+
+        public CustomActionControl(CustomActionControl cac)
+        {
+            if (cac != null)
+            {
+                Type = cac.Type;
+                Description = cac.Description;
+                Label = cac.Label;
+                Description = cac.Description;
+                StringValue = cac.StringValue;
+                BoolValue = cac.BoolValue;
+            }
+        }
+
         public CustomActionControlType Type
         {
             get => _type;
@@ -64,6 +81,24 @@ namespace SourceGit.Models
 
     public class CustomAction : ObservableObject
     {
+        public CustomAction()
+        {
+        }
+
+        public CustomAction(CustomAction action)
+        {
+            if (action != null)
+            {
+                Name = action.Name;
+                Scope = action.Scope;
+                Executable = action.Executable;
+                Arguments = action.Arguments;
+                WaitForExit = action.WaitForExit;
+                foreach (var control in action.Controls)
+                    Controls.Add(new CustomActionControl(control));
+            }
+        }
+
         public string Name
         {
             get => _name;
