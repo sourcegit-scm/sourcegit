@@ -581,6 +581,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Thème</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Dérogations de thème</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Utiliser les barres de défilement masquées automatiquement</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Utiliser des onglets de taille fixe dans la barre de titre</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Utiliser un cadre de fenêtre natif</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">OUTIL DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Chemin d'installation</x:String>

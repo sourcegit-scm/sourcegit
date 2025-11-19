@@ -439,6 +439,7 @@
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Моноширинний шрифт</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Тема</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Перевизначення теми</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Використовувати фіксовану ширину вкладки в заголовку</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Використовувати системну рамку вікна</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ІНСТРУМЕНТ DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Шлях встановлення</x:String>

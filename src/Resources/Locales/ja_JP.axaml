@@ -434,6 +434,7 @@
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">等幅フォント</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">テーマ</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">テーマの上書き</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">タイトルバーの固定タブ幅を使用</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">ネイティブウィンドウフレームを使用</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">差分/マージ ツール</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">インストール パス</x:String>
