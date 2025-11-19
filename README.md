@@ -6,6 +6,20 @@
 [![latest](https://img.shields.io/github/v/release/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/releases/latest)
 [![downloads](https://img.shields.io/github/downloads/sourcegit-scm/sourcegit/total)](https://github.com/sourcegit-scm/sourcegit/releases)
 
+## Screenshots
+
+* Dark Theme
+
+  ![Theme Dark](./screenshots/theme_dark.png)
+
+* Light Theme
+
+  ![Theme Light](./screenshots/theme_light.png)
+
+* Custom
+
+  You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git). And welcome to share your own themes.
+
 ## Highlights
 
 * Supports Windows/macOS/Linux
@@ -200,20 +214,6 @@ You can define your own conventional commit types (per-repository) by following 
 ]
 ```
 2. Configure the `Conventional Commit Types` in repository configuration window.  
-
-## Screenshots
-
-* Dark Theme
-
-  ![Theme Dark](./screenshots/theme_dark.png)
-
-* Light Theme
-
-  ![Theme Light](./screenshots/theme_light.png)
-
-* Custom
-
-  You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git). And welcome to share your own themes.
 
 ## Contributing
 
