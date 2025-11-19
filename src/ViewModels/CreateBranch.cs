@@ -186,20 +186,9 @@ namespace SourceGit.ViewModels
                     .CreateAsync(_baseOnRevision, _allowOverwrite);
             }
 
-            if (succ && BasedOn is Models.Branch { IsLocal: false } basedOn)
+            if (succ && BasedOn is Models.Branch { IsLocal: false } basedOn && _name.Equals(basedOn.Name, StringComparison.Ordinal))
             {
-                var autoSetUpstream = true;
-                foreach (var b in _repo.Branches)
-                {
-                    if (b.IsLocal && b.Upstream.Equals(basedOn.FullName, StringComparison.Ordinal))
-                    {
-                        autoSetUpstream = false;
-                        break;
-                    }
-                }
-
-                if (autoSetUpstream)
-                    await new Commands.Branch(_repo.FullPath, _name)
+                await new Commands.Branch(_repo.FullPath, _name)
                         .Use(log)
                         .SetUpstreamAsync(basedOn);
             }
