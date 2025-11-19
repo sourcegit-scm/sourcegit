@@ -65,7 +65,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-94.59%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-94.60%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -122,7 +122,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-76.05%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-76.07%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -347,7 +347,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-97.68%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-97.57%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -370,13 +370,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.OpenRepository
 - Text.Open
 - Text.Open.SystemDefaultEditor
+- Text.Preferences.Appearance.UseFixedTabWidth
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Submodule.Status.Unmerged
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-69.76%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-69.79%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -669,7 +670,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-76.16%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-76.19%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -893,7 +894,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-77.26%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-77.29%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
