@@ -10,7 +10,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff -a --ignore-cr-at-eol --check {opt}";
+            Args = $"diff --no-color --no-ext-diff -a --ignore-cr-at-eol --check {opt}";
         }
 
         public bool GetResult()

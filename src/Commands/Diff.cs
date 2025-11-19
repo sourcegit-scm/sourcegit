@@ -26,11 +26,11 @@ namespace SourceGit.Commands
             Context = repo;
 
             if (ignoreWhitespace)
-                Args = $"diff --no-ext-diff --patch --ignore-all-space --unified={unified} {opt}";
+                Args = $"diff --no-color --no-ext-diff --patch --ignore-all-space --unified={unified} {opt}";
             else if (Models.DiffOption.IgnoreCRAtEOL)
-                Args = $"diff --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
+                Args = $"diff --no-color --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
             else
-                Args = $"diff --no-ext-diff --patch --unified={unified} {opt}";
+                Args = $"diff --no-color --no-ext-diff --patch --unified={unified} {opt}";
         }
 
         public async Task<Models.DiffResult> ReadAsync()

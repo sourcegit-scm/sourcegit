@@ -17,7 +17,7 @@ namespace SourceGit.Commands
             {
                 WorkingDirectory = repo;
                 Context = repo;
-                Args = $"diff --diff-algorithm=minimal {opt}";
+                Args = $"diff --no-color --no-ext-diff --diff-algorithm=minimal {opt}";
             }
 
             public async Task<Result> ReadAsync()
