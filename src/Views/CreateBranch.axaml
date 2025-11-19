@@ -77,7 +77,7 @@
         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
           <RadioButton GroupName="LocalChanges"
                        Margin="0,0,8,0"
-                       Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
+                       Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReapply}"
                        IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
           <RadioButton GroupName="LocalChanges"
                        Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"/>

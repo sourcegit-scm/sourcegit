@@ -75,7 +75,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Попередження: Перехід на коміт призведе до стану "від'єднаний HEAD"</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Додати джерело до повідомлення коміту</x:String>
@@ -189,7 +189,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Перейти на створену гілку</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Назва нової гілки:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Введіть назву гілки.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Створити локальну гілку</x:String>
@@ -487,7 +487,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Віддалене сховище:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Використовувати rebase замість merge</x:String>

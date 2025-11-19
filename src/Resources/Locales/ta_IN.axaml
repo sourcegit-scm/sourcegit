@@ -74,7 +74,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">முன்னறிவிப்பு: ஒரு உறுதிமொழி சரிபார்பதன் மூலம், உங்கள் தலை பிரிக்கப்படும்</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">கிளை:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">கனி பறி</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">உறுதிமொழி செய்திக்கு மூலத்தைச் சேர்</x:String>
@@ -184,7 +184,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">உருவாக்கப்பட்ட கிளையைப் சரிபார்</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">புதிய கிளை பெயர்:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">கிளை பெயரை உள்ளிடவும்.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">உள்ளக கிளையை உருவாக்கு</x:String>
@@ -482,7 +482,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">இதனுள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">இழு (எடுத்து ஒன்றிணை)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">ஒன்றிணை என்பதற்குப் பதிலாக மறுதளத்தைப் பயன்படுத்து</x:String>

@@ -108,7 +108,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">注意: 執行該操作後，目前 HEAD 會變為分離 (detached) 狀態!</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您目前的分離的 HEAD 包含與任何分支/標籤無關的提交! 您要繼續嗎?</x:String>
@@ -289,7 +289,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成後切換到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名稱:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">輸入分支名稱。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本機分支</x:String>
@@ -640,7 +640,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉取 (提取並合併)</x:String>
