@@ -45,6 +45,12 @@ namespace SourceGit.ViewModels
             _launcher = launcher;
             _repo = repo;
 
+            _cmds.Add(new("OpenFile", () =>
+            {
+                var sub = new OpenFileCommandPalette(_launcher, _repo.FullPath);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
             _cmds.Add(new("FileHistory", () =>
             {
                 var sub = new FileHistoryCommandPalette(_launcher, _repo.FullPath);
