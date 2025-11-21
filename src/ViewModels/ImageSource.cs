@@ -169,17 +169,18 @@ namespace SourceGit.ViewModels
                 if (tiff == null)
                     return new ImageSource(null, 0);
 
+                // Currently only supports image when its `BITSPERSAMPLE` is one in [1,2,4,8,16]
                 var width = tiff.GetField(TiffTag.IMAGEWIDTH)[0].ToInt();
                 var height = tiff.GetField(TiffTag.IMAGELENGTH)[0].ToInt();
                 var pixels = new int[width * height];
-
-                // Currently only supports image when its `BITSPERSAMPLE` is one in [1,2,4,8,16]
                 tiff.ReadRGBAImageOriented(width, height, pixels, Orientation.TOPLEFT);
 
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(pixels, 0);
                 var pixelSize = new PixelSize(width, height);
                 var dpi = new Vector(96, 96);
-                var bitmap = new Bitmap(PixelFormats.Rgba8888, AlphaFormat.Unpremul, ptr, pixelSize, dpi, width * 4);
+                var bitmap = new WriteableBitmap(pixelSize, dpi, PixelFormats.Rgba8888, AlphaFormat.Unpremul);
+
+                using var frameBuffer = bitmap.Lock();
+                Marshal.Copy(pixels, 0, frameBuffer.Address, pixels.Length);
                 return new ImageSource(bitmap, size);
             }
         }
