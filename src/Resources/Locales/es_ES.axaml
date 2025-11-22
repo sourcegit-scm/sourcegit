@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Eliminar {0} ramas seleccionadas</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Editar la descripción para ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward a ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finalizar ${0}$</x:String>
@@ -375,6 +376,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">Eliminar Commit</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Nuevo HEAD:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Editar la descripción de la rama</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Marcador:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Nuevo Nombre:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destino:</x:String>
@@ -543,6 +546,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Abrir</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Editor por defecto (Sistema)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Abrir Directorio de Datos de la App</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Abrir Archivo</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Crear Nueva Página</x:String>
