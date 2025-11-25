@@ -371,7 +371,10 @@ namespace SourceGit.ViewModels
                     item.FullMessage = item.OriginalFullMessage;
                     item.IsMessageUserEdited = false;
 
-                    pendingMessages.Add(item.OriginalFullMessage);
+                    if (item.Action == Models.InteractiveRebaseAction.Squash)
+                    {
+                        pendingMessages.Add(item.OriginalFullMessage);
+                    }
                     hasPending = true;
                     continue;
                 }
