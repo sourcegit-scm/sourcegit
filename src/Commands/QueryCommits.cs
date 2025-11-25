@@ -63,7 +63,7 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
-                while (await proc.StandardOutput.ReadLineAsync() is { } line)
+                while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
                 {
                     var parts = line.Split('\0');
                     if (parts.Length != 8)

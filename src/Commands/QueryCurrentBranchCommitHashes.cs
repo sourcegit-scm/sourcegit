@@ -25,7 +25,7 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
-                while (await proc.StandardOutput.ReadLineAsync() is { Length: > 8 } line)
+                while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { Length: > 8 } line)
                     outs.Add(line);
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);

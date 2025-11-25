@@ -370,7 +370,7 @@ namespace SourceGit.ViewModels
                 var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA)
                     .GetResultAsync()
                     .ConfigureAwait(false);
-                var inlines = await ParseInlinesInMessageAsync(message);
+                var inlines = await ParseInlinesInMessageAsync(message).ConfigureAwait(false);
 
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Post(() =>

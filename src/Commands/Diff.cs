@@ -41,7 +41,7 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
-                while (await proc.StandardOutput.ReadLineAsync() is { } line)
+                while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
                     ParseLine(line);
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);
