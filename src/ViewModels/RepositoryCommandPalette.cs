@@ -45,9 +45,21 @@ namespace SourceGit.ViewModels
             _launcher = launcher;
             _repo = repo;
 
-            _cmds.Add(new("OpenFile", () =>
+            _cmds.Add(new("Blame", () =>
             {
-                var sub = new OpenFileCommandPalette(_launcher, _repo.FullPath);
+                var sub = new BlameCommandPalette(_launcher, _repo.FullPath);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("BranchCompare", () =>
+            {
+                var sub = new BranchCompareCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("Checkout", () =>
+            {
+                var sub = new CheckoutCommandPalette(_launcher, _repo);
                 _launcher.OpenCommandPalette(sub);
             }));
 
@@ -57,21 +69,15 @@ namespace SourceGit.ViewModels
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("Blame", () =>
-            {
-                var sub = new BlameCommandPalette(_launcher, _repo.FullPath);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
             _cmds.Add(new("Merge", () =>
             {
                 var sub = new MergeCommandPalette(_launcher, _repo);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("BranchCompare", () =>
+            _cmds.Add(new("OpenFile", () =>
             {
-                var sub = new BranchCompareCommandPalette(_launcher, _repo);
+                var sub = new OpenFileCommandPalette(_launcher, _repo.FullPath);
                 _launcher.OpenCommandPalette(sub);
             }));
 
