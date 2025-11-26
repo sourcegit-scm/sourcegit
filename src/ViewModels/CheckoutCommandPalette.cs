@@ -84,7 +84,14 @@ namespace SourceGit.ViewModels
                 return l.IsLocal ? -1 : 1;
             });
 
+            var autoSelected = _selectedBranch;
+            if (branches.Count == 0)
+                autoSelected = null;
+            else if (_selectedBranch == null || !branches.Contains(_selectedBranch))
+                autoSelected = branches[0];
+
             Branches = branches;
+            SelectedBranch = autoSelected;
         }
 
         private Launcher _launcher;

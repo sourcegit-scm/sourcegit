@@ -82,6 +82,7 @@ namespace SourceGit.ViewModels
             }));
 
             _visibleCmds = _cmds;
+            _selectedCmd = _cmds[0];
         }
 
         public override void Cleanup()
@@ -116,13 +117,20 @@ namespace SourceGit.ViewModels
             else
             {
                 var visible = new List<RepositoryCommandPaletteCmd>();
-                foreach (var cmd in VisibleCmds)
+
+                foreach (var cmd in _cmds)
                 {
                     if (cmd.Key.Contains(_filter, StringComparison.OrdinalIgnoreCase) ||
                         cmd.Label.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                         visible.Add(cmd);
                 }
+
+                var autoSelected = _selectedCmd;
+                if (!visible.Contains(_selectedCmd))
+                    autoSelected = visible.Count > 0 ? visible[0] : null;
+
                 VisibleCmds = visible;
+                SelectedCmd = autoSelected;
             }
         }
 
