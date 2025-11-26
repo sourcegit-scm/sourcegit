@@ -94,8 +94,69 @@ namespace SourceGit.ViewModels
             var repos = new List<RepositoryNode>();
             CollectVisibleRepository(repos, Preferences.Instance.RepositoryNodes);
 
+            var autoSelectPage = _selectedPage;
+            var autoSelectRepo = _selectedRepo;
+
+            if (_selectedPage != null)
+            {
+                if (pages.Contains(_selectedPage))
+                {
+                    // Keep selection
+                }
+                else if (pages.Count > 0)
+                {
+                    autoSelectPage = pages[0];
+                }
+                else if (repos.Count > 0)
+                {
+                    autoSelectPage = null;
+                    autoSelectRepo = repos[0];
+                }
+                else
+                {
+                    autoSelectPage = null;
+                }
+            }
+            else if (_selectedRepo != null)
+            {
+                if (repos.Contains(_selectedRepo))
+                {
+                    // Keep selection
+                }
+                else if (repos.Count > 0)
+                {
+                    autoSelectRepo = repos[0];
+                }
+                else if (pages.Count > 0)
+                {
+                    autoSelectPage = pages[0];
+                    autoSelectRepo = null;
+                }
+                else
+                {
+                    autoSelectRepo = null;
+                }
+            }
+            else if (pages.Count > 0)
+            {
+                autoSelectPage = pages[0];
+                autoSelectRepo = null;
+            }
+            else if (repos.Count > 0)
+            {
+                autoSelectPage = null;
+                autoSelectRepo = repos[0];
+            }
+            else
+            {
+                autoSelectPage = null;
+                autoSelectRepo = null;
+            }
+
             VisiblePages = pages;
             VisibleRepos = repos;
+            SelectedPage = autoSelectPage;
+            SelectedRepo = autoSelectRepo;
         }
 
         private void CollectVisiblePages(List<LauncherPage> pages)
