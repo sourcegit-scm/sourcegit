@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -25,12 +26,16 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
 
+            var builder = new StringBuilder(256);
+            builder.Append("diff --no-color --no-ext-diff --patch ");
+            if (Models.DiffOption.IgnoreCRAtEOL)
+                builder.Append("--ignore-cr-at-eol ");
             if (ignoreWhitespace)
-                Args = $"diff --no-color --no-ext-diff --patch --ignore-space-change --ignore-cr-at-eol --unified={unified} {opt}";
-            else if (Models.DiffOption.IgnoreCRAtEOL)
-                Args = $"diff --no-color --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
-            else
-                Args = $"diff --no-color --no-ext-diff --patch --unified={unified} {opt}";
+                builder.Append("--ignore-space-change ");
+            builder.Append("--unified=").Append(unified).Append(' ');
+            builder.Append(opt.ToString());
+
+            Args = builder.ToString();
         }
 
         public async Task<Models.DiffResult> ReadAsync()
