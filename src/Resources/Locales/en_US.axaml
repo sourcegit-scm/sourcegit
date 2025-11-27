@@ -332,7 +332,7 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">BINARY DIFF</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">First Difference</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore All Whitespace Changes</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore Whitespace Changes</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">BLEND</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">DIFFERENCE</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">SIDE-BY-SIDE</x:String>

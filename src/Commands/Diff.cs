@@ -26,7 +26,7 @@ namespace SourceGit.Commands
             Context = repo;
 
             if (ignoreWhitespace)
-                Args = $"diff --no-color --no-ext-diff --patch --ignore-all-space --unified={unified} {opt}";
+                Args = $"diff --no-color --no-ext-diff --patch --ignore-space-change --ignore-cr-at-eol --unified={unified} {opt}";
             else if (Models.DiffOption.IgnoreCRAtEOL)
                 Args = $"diff --no-color --no-ext-diff --patch --ignore-cr-at-eol --unified={unified} {opt}";
             else
