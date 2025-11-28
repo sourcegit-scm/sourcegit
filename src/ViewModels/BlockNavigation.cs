@@ -7,7 +7,7 @@ namespace SourceGit.ViewModels
     {
         public record Block(int Start, int End)
         {
-            public bool IsInRange(int line)
+            public bool Contains(int line)
             {
                 return line >= Start && line <= End;
             }
@@ -27,7 +27,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public BlockNavigation(List<Models.TextDiffLine> lines)
+        public BlockNavigation(List<Models.TextDiffLine> lines, bool gotoFirst)
         {
             _blocks.Clear();
             _current = -1;
@@ -65,6 +65,9 @@ namespace SourceGit.ViewModels
                 blocks.Add(new Block(blockStartIdx, lines.Count));
 
             _blocks.AddRange(blocks);
+
+            if (gotoFirst)
+                GotoFirst();
         }
 
         public Block GetCurrentBlock()
@@ -126,7 +129,7 @@ namespace SourceGit.ViewModels
             if (_current >= 0 && _current < _blocks.Count)
             {
                 var block = _blocks[_current];
-                if (block.IsInRange(caretLine))
+                if (block.Contains(caretLine))
                     return;
             }
 

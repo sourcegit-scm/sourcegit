@@ -221,7 +221,7 @@ namespace SourceGit.Views
                 if (_presenter.Document == null || !textView.VisualLinesValid)
                     return;
 
-                var changeBlock = _presenter.BlockNavigation?.GetCurrentBlock();
+                var changeBlock = _presenter.BlockNavigation.GetCurrentBlock();
                 var changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
                 var changeBlockFG = new Pen(Brushes.Gray);
 
@@ -285,7 +285,7 @@ namespace SourceGit.Views
                         }
                     }
 
-                    if (changeBlock != null && changeBlock.IsInRange(index))
+                    if (changeBlock != null && changeBlock.Contains(index))
                     {
                         drawingContext.DrawRectangle(changeBlockBG, null, new Rect(0, startY, width, endY - startY));
                         if (index == changeBlock.Start)
@@ -498,7 +498,7 @@ namespace SourceGit.Views
 
         public virtual void GotoFirstChange()
         {
-            var first = BlockNavigation?.GotoFirst();
+            var first = BlockNavigation.GotoFirst();
             if (first != null)
             {
                 TextArea.Caret.Line = first.Start;
@@ -508,7 +508,7 @@ namespace SourceGit.Views
 
         public virtual void GotoPrevChange()
         {
-            var prev = BlockNavigation?.GotoPrev();
+            var prev = BlockNavigation.GotoPrev();
             if (prev != null)
             {
                 TextArea.Caret.Line = prev.Start;
@@ -518,7 +518,7 @@ namespace SourceGit.Views
 
         public virtual void GotoNextChange()
         {
-            var next = BlockNavigation?.GotoNext();
+            var next = BlockNavigation.GotoNext();
             if (next != null)
             {
                 TextArea.Caret.Line = next.Start;
@@ -528,7 +528,7 @@ namespace SourceGit.Views
 
         public virtual void GotoLastChange()
         {
-            var next = BlockNavigation?.GotoLast();
+            var next = BlockNavigation.GotoLast();
             if (next != null)
             {
                 TextArea.Caret.Line = next.Start;
@@ -627,6 +627,23 @@ namespace SourceGit.Views
             }
         }
 
+        protected override void OnDataContextBeginUpdate()
+        {
+            base.OnDataContextBeginUpdate();
+            AutoScrollToFirstChange();
+        }
+
+        protected override void OnSizeChanged(SizeChangedEventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            if (!_execSizeChanged)
+            {
+                _execSizeChanged = true;
+                AutoScrollToFirstChange();
+            }
+        }
+
         private async void OnTextAreaKeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyModifiers.Equals(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
@@ -644,7 +661,7 @@ namespace SourceGit.Views
 
         private void OnTextAreaCaretPositionChanged(object sender, EventArgs e)
         {
-            BlockNavigation?.UpdateByCaretPosition(TextArea?.Caret?.Line ?? 0);
+            BlockNavigation.UpdateByCaretPosition(TextArea?.Caret?.Line ?? 0);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -783,6 +800,34 @@ namespace SourceGit.Views
             }
         }
 
+        private void AutoScrollToFirstChange()
+        {
+            if (Bounds.Height < 0.1)
+                return;
+
+            if (DataContext is not ViewModels.TextDiffContext ctx)
+                return;
+
+            if (ctx.IsSideBySide() && !IsOld)
+                return;
+
+            var curBlock = ctx.BlockNavigation.GetCurrentBlock();
+            if (curBlock == null)
+                return;
+
+            var lineHeight = TextArea.TextView.DefaultLineHeight;
+            var vOffset = lineHeight * (curBlock.Start - 1) - Bounds.Height * 0.5;
+            if (vOffset >= 0)
+            {
+                var scroller = this.FindDescendantOfType<ScrollViewer>();
+                if (scroller != null)
+                {
+                    ctx.ScrollOffset = new Vector(0, vOffset);
+                    scroller.Offset = ctx.ScrollOffset;
+                }
+            }
+        }
+
         private async Task CopyWithoutIndicatorsAsync()
         {
             var selection = TextArea.Selection;
@@ -852,6 +897,7 @@ namespace SourceGit.Views
             await App.CopyTextAsync(builder.ToString());
         }
 
+        private bool _execSizeChanged = false;
         private TextMate.Installation _textMate = null;
         private TextLocation _lastSelectStart = TextLocation.Empty;
         private TextLocation _lastSelectEnd = TextLocation.Empty;
