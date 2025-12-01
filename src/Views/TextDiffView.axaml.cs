@@ -1552,31 +1552,24 @@ namespace SourceGit.Views
 
             using var lockWatcher = repo.LockWatcher();
 
-            if (!selection.HasLeftChanges)
+            var tmpFile = Path.GetTempFileName();
+            if (change.WorkTree == Models.ChangeState.Untracked)
             {
-                await new Commands.Add(repo.FullPath, change).ExecAsync();
+                diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
+            }
+            else if (chunk.Combined)
+            {
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
             }
             else
             {
-                var tmpFile = Path.GetTempFileName();
-                if (change.WorkTree == Models.ChangeState.Untracked)
-                {
-                    diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
-                }
-                else if (chunk.Combined)
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
-                }
-                else
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
-                }
-
-                await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
-                File.Delete(tmpFile);
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
             }
+
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
+            File.Delete(tmpFile);
 
             repo.MarkWorkingCopyDirtyManually();
         }
@@ -1600,27 +1593,17 @@ namespace SourceGit.Views
 
             using var lockWatcher = repo.LockWatcher();
 
-            if (!selection.HasLeftChanges)
-            {
-                if (change.DataForAmend != null)
-                    await new Commands.UnstageChangesForAmend(repo.FullPath, [change]).ExecAsync();
-                else
-                    await new Commands.Restore(repo.FullPath, change).ExecAsync();
-            }
+            var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+            var tmpFile = Path.GetTempFileName();
+            if (change.Index == Models.ChangeState.Added)
+                diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+            else if (chunk.Combined)
+                diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
             else
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                var tmpFile = Path.GetTempFileName();
-                if (change.Index == Models.ChangeState.Added)
-                    diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                else if (chunk.Combined)
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                else
-                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
+                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
-                await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
-                File.Delete(tmpFile);
-            }
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
+            File.Delete(tmpFile);
 
             repo.MarkWorkingCopyDirtyManually();
         }
@@ -1645,31 +1628,24 @@ namespace SourceGit.Views
 
             using var lockWatcher = repo.LockWatcher();
 
-            if (!selection.HasLeftChanges)
+            var tmpFile = Path.GetTempFileName();
+            if (change.Index == Models.ChangeState.Added)
             {
-                await Commands.Discard.ChangesAsync(repo.FullPath, [change], null);
+                diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+            }
+            else if (chunk.Combined)
+            {
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
             }
             else
             {
-                var tmpFile = Path.GetTempFileName();
-                if (change.Index == Models.ChangeState.Added)
-                {
-                    diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
-                }
-                else if (chunk.Combined)
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                }
-                else
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
-                }
-
-                await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
-                File.Delete(tmpFile);
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
             }
+
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
+            File.Delete(tmpFile);
 
             repo.MarkWorkingCopyDirtyManually();
         }
