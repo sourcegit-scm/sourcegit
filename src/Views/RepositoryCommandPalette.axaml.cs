@@ -36,10 +36,7 @@ namespace SourceGit.Views
                 if (FilterTextBox.IsKeyboardFocusWithin)
                 {
                     if (vm.VisibleCmds.Count > 0)
-                    {
                         CmdListBox.Focus(NavigationMethod.Directional);
-                        vm.SelectedCmd = vm.VisibleCmds[0];
-                    }
 
                     e.Handled = true;
                     return;

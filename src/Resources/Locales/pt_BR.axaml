@@ -67,7 +67,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Aviso: Ao fazer o checkout de um commit, seu Head ficará desanexado</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Adicionar origem à mensagem de commit</x:String>
@@ -167,7 +167,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checar o branch criado</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nome do Novo Branch:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Insira o nome do branch.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Criar Branch Local</x:String>
@@ -398,6 +398,7 @@
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Fonte Monoespaçada</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Tema</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Substituições de Tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usar largura fixa de aba na barra de título</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usar moldura de janela nativa</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">FERRAMENTA DE DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Caminho de Instalação</x:String>
@@ -441,7 +442,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Puxar (Buscar &amp; Mesclar)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Usar rebase em vez de merge</x:String>

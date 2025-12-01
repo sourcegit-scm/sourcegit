@@ -8,6 +8,38 @@ using Avalonia.Media;
 
 namespace SourceGit.Views
 {
+    public class LauncherTabSizeBox : Border
+    {
+        public static readonly StyledProperty<bool> UseFixedWidthProperty =
+            AvaloniaProperty.Register<LauncherTabSizeBox, bool>(nameof(UseFixedWidth), true);
+
+        public bool UseFixedWidth
+        {
+            get => GetValue(UseFixedWidthProperty);
+            set => SetValue(UseFixedWidthProperty, value);
+        }
+
+        public LauncherTabSizeBox()
+        {
+            Width = 200;
+        }
+
+        protected override Type StyleKeyOverride => typeof(Border);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == UseFixedWidthProperty)
+            {
+                if (UseFixedWidth)
+                    Width = 200;
+                else
+                    Width = double.NaN;
+            }
+        }
+    }
+
     public partial class LauncherTabBar : UserControl
     {
         public static readonly StyledProperty<bool> IsScrollerVisibleProperty =

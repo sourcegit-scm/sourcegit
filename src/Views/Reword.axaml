@@ -9,9 +9,15 @@
              x:Class="SourceGit.Views.Reword"
              x:DataType="vm:Reword">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Reword}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Edit}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Reword}"/>
+    </StackPanel>
 
     <StackPanel Margin="8,16,8,0" Orientation="Horizontal" HorizontalAlignment="Right">
       <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>

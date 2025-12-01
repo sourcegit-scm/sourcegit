@@ -12,7 +12,7 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff {Models.Commit.EmptyTreeSHA1} {commit} --numstat -- {path.Quoted()}";
+            Args = $"diff --no-color --no-ext-diff --numstat {Models.Commit.EmptyTreeSHA1} {commit} -- {path.Quoted()}";
             RaiseError = false;
         }
 

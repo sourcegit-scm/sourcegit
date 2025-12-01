@@ -7,9 +7,15 @@
              x:Class="SourceGit.Views.ClearStashes"
              x:DataType="vm:ClearStashes">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.ClearStashes}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.RemoveAll}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.ClearStashes}"/>
+    </StackPanel>
 
     <TextBlock Margin="0,16,0,8"
                Text="{DynamicResource Text.ClearStashes.Message}"

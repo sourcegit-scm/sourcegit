@@ -63,6 +63,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Delete selected {0} branches</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Edit description for ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward to ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$</x:String>
@@ -103,7 +104,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warning: By doing a commit checkout, your Head will be detached</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Local Changes:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Update all submodules</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Your current HEAD contains commit(s) not connected to any branches/tags! Do you want to continue?</x:String>
@@ -284,7 +285,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Check out the created branch</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Local Changes:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">New Branch Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
@@ -331,7 +332,7 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">BINARY DIFF</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">File Mode Changed</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">First Difference</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore All Whitespace Changes</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignore Whitespace Changes</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">BLEND</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">DIFFERENCE</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">SIDE-BY-SIDE</x:String>
@@ -371,6 +372,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">Drop Commit</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">New HEAD:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Edit Branch's Description</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Target:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Bookmark:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">New Name:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Target:</x:String>
@@ -539,6 +542,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Default Editor (System)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Open Data Storage Directory</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Open File</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Open in Merge Tool</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Tab</x:String>
@@ -579,6 +583,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Theme</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Theme Overrides</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Use auto-hide scrollbars</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
@@ -632,7 +637,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Local Changes:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Discard</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reapply</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Update all submodules</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>

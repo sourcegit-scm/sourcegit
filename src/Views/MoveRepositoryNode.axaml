@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.MoveRepositoryNode"
              x:DataType="vm:MoveRepositoryNode">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.MoveRepositoryNode}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.MoveTo}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.MoveRepositoryNode}"/>
+    </StackPanel>
 
     <StackPanel Height="28" Margin="4,16,4,0" Orientation="Horizontal">
       <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Text="{DynamicResource Text.MoveRepositoryNode.Target}"/>

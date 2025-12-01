@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.LFSFetch"
              x:DataType="vm:LFSFetch">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.GitLFS.Fetch.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Fetch}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.GitLFS.Fetch.Title}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,Auto" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"

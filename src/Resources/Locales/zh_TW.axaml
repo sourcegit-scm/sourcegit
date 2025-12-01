@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">刪除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">刪除所選的 {0} 個分支</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">編輯 ${0}$ 的描述...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快轉 (fast-forward) 到 ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">提取 (fetch) ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git 工作流 - 完成 ${0}$</x:String>
@@ -107,7 +108,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">注意: 執行該操作後，目前 HEAD 會變為分離 (detached) 狀態!</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您目前的分離的 HEAD 包含與任何分支/標籤無關的提交! 您要繼續嗎?</x:String>
@@ -288,7 +289,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成後切換到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名稱:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">輸入分支名稱。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">建立本機分支</x:String>
@@ -375,6 +376,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">捨棄提交</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">提交:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">捨棄後新的 HEAD:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">編輯分支的描述</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">目標:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">書籤:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">名稱:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目標:</x:String>
@@ -543,6 +546,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">開啟</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系統預設編輯器</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">瀏覽程式資料目錄</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">開啟檔案</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">使用外部比對工具檢視</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">選填。</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新增分頁</x:String>
@@ -583,6 +587,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">佈景主題</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">自訂主題</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">允許自動隱藏捲軸</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">使用固定寬度的分頁標籤</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
@@ -636,7 +641,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">擱置變更並自動復原</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉取 (提取並合併)</x:String>

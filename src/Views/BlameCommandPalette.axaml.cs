@@ -36,10 +36,7 @@ namespace SourceGit.Views
                 if (FilterTextBox.IsKeyboardFocusWithin)
                 {
                     if (vm.VisibleFiles.Count > 0)
-                    {
                         FileListBox.Focus(NavigationMethod.Directional);
-                        vm.SelectedFile = vm.VisibleFiles[0];
-                    }
 
                     e.Handled = true;
                     return;

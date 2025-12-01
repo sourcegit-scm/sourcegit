@@ -510,6 +510,7 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="Button.flat.primary">
+    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}"/>
     <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
   </Style>
@@ -517,70 +518,17 @@
     <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
   </Style>
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="Button.flat.primary:disabled">
     <Setter Property="Opacity" Value=".65"/>
   </Style>
-  <Style Selector="Button.flat.primary TextBlock">
+  <Style Selector="Button.flat.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
   </Style>
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-  </Style>
-
-  <Style Selector="SplitButton">
-    <Setter Property="MinHeight" Value="24"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Grid ColumnDefinitions="*,1,Auto">
-          <Button x:Name="PART_PrimaryButton"
-                  Grid.Column="0"
-                  Classes="flat primary"
-                  MinWidth="32"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  Content="{TemplateBinding Content}"
-                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                  Command="{TemplateBinding Command}"
-                  CommandParameter="{TemplateBinding CommandParameter}"
-                  CornerRadius="3,0,0,3"
-                  Padding="{TemplateBinding Padding}"
-                  Focusable="False"
-                  KeyboardNavigation.IsTabStop="False" />
-
-          <Button x:Name="PART_SecondaryButton"
-                  Grid.Column="2"
-                  Classes="flat primary"
-                  Width="32"
-                  CornerRadius="0,3,3,0"
-                  Padding="0"
-                  Focusable="False"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  KeyboardNavigation.IsTabStop="False">
-            <Path Height="12" Width="12"
-                  Margin="0,4,0,0"
-                  Fill="{DynamicResource AccentButtonForeground}"
-                  Data="{DynamicResource Icons.Down}"/>
-          </Button>
-        </Grid>
-      </ControlTemplate>
-    </Setter>
-
-    <Style Selector="^:disabled /template/ Button">
-      <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-      <Setter Property="Background" Value="Transparent"/>
-    </Style>
-
-    <Style Selector="^:disabled TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-    </Style>
-
-    <Style Selector="^:disabled Path">
-      <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
-    </Style>
   </Style>
 
   <Style Selector="aee|TextArea">

@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">编辑 ${0}$ 的描述...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到 ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">拉取(fetch) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成 ${0}$</x:String>
@@ -107,7 +108,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">注意：执行该操作后，当前HEAD会变为游离(detached)状态!</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同时更新所有子模块</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您当前游离的HEAD包含未被任何分支及标签引用的提交！是否继续？</x:String>
@@ -288,7 +289,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成后切换到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填写分支名称。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">创建本地分支</x:String>
@@ -375,6 +376,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">丢弃提交</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">提交 ：</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">丢弃后 HEAD ：</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">编辑分支描述</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">名称 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">目标 ：</x:String>
@@ -543,6 +546,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">打开</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系统默认编辑器</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">浏览应用数据目录</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">打开文件</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">使用外部对比工具查看</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页</x:String>
@@ -583,6 +587,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">主题自定义</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">允许滚动条自动隐藏</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">主标签使用固定宽度</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系统默认窗体样式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">对比/合并工具</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">安装路径</x:String>
@@ -636,7 +641,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本地分支 ：</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">贮藏并自动恢复</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同时更新所有子模块</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">远程 ：</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取并合并）</x:String>

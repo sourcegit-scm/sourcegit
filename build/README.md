@@ -5,7 +5,7 @@
 
 ## How to build this project manually
 
-1. Make sure [.NET SDK 9](https://dotnet.microsoft.com/en-us/download) is installed on your machine.
+1. Make sure [.NET SDK 10](https://dotnet.microsoft.com/en-us/download) is installed on your machine.
 2. Clone this project
 3. Run the follow command under the project root dir
 ```sh

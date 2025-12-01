@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.CheckoutCommit"
              x:DataType="vm:CheckoutCommit">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Checkout.Commit}" />
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Detached}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Checkout.Commit}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" ColumnDefinitions="Auto,*">
       <Grid.RowDefinitions>
@@ -35,7 +41,7 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.LocalChanges}"/>
       <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReapply}"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>

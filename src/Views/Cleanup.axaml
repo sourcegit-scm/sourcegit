@@ -7,9 +7,16 @@
              x:Class="SourceGit.Views.Cleanup"
              x:DataType="vm:Cleanup">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Repository.Clean}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Clean}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Repository.Clean}"/>
+    </StackPanel>
+    
     <TextBlock Text="{DynamicResource Text.Repository.CleanTips}"
                Margin="0,16,0,0"
                HorizontalAlignment="Center"/>

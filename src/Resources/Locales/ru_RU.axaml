@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Изменить действие</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Удалить выбранные {0} ветки</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Править описание для ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Перемотать вперёд к ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Извлечь ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git-процесс - Завершение ${0}$</x:String>
@@ -107,7 +108,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Предупреждение: После переключения ревизии ваша Голова (HEAD) будет отсоединена</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Обновить все подкаталоги</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Ваша текущая ГОЛОВА содержит ревизию(и), не связанные ни с к какими ветками или метками! Вы хотите продолжить?</x:String>
@@ -288,7 +289,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Переключиться на созданную ветку</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Имя новой ветки:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Введите имя ветки.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Создать локальную ветку</x:String>
@@ -375,6 +376,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">Бросить ревизию</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Ревизия:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Новая ГОЛОВА:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Править описание ветки</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Цель:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Закладка:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Новое имя:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Цель:</x:String>
@@ -543,6 +546,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Открыть</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Редактор по умолчанию (Системный)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Открыть каталог данных программы</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Открыть файл</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Открыть в инструменте слияния</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необязательно.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Создать новую вкладку</x:String>
@@ -583,6 +587,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Тема</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Переопределение темы</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Автоматически скрывать прокрутку</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Использовать фиксированную ширину табуляции в строке заголовка.</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Использовать системное окно</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ИНСТРУМЕНТ СРАВНЕНИЙ/СЛИЯНИЯ</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Путь установки</x:String>
@@ -636,7 +641,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Локальные изменения:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Отложить и применить повторно</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Обновить все подмодули</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Загрузить (Получить и слить)</x:String>

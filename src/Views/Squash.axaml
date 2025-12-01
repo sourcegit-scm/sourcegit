@@ -9,9 +9,15 @@
              x:Class="SourceGit.Views.Squash"
              x:DataType="vm:Squash">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Squash}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.SquashIntoParent}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Squash}"/>
+    </StackPanel>
 
     <Grid Margin="0,18,0,0" ColumnDefinitions="Auto,Auto,Auto,*">
       <TextBlock Grid.Column="0"

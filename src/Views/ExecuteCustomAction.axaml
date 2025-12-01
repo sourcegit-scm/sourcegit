@@ -10,9 +10,15 @@
              x:DataType="vm:ExecuteCustomAction"
              Loaded="OnLoaded">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{Binding CustomAction.Name}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Action}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{Binding CustomAction.Name}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" Height="32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"

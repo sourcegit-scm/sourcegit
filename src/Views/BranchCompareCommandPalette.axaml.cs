@@ -36,10 +36,7 @@ namespace SourceGit.Views
                 if (FilterTextBox.IsKeyboardFocusWithin)
                 {
                     if (vm.Branches.Count > 0)
-                    {
                         BranchListBox.Focus(NavigationMethod.Directional);
-                        vm.SelectedBranch = vm.Branches[0];
-                    }
 
                     e.Handled = true;
                     return;

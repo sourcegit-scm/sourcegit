@@ -45,21 +45,9 @@ namespace SourceGit.ViewModels
             _launcher = launcher;
             _repo = repo;
 
-            _cmds.Add(new("FileHistory", () =>
-            {
-                var sub = new FileHistoryCommandPalette(_launcher, _repo.FullPath);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
             _cmds.Add(new("Blame", () =>
             {
                 var sub = new BlameCommandPalette(_launcher, _repo.FullPath);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new("Merge", () =>
-            {
-                var sub = new MergeCommandPalette(_launcher, _repo);
                 _launcher.OpenCommandPalette(sub);
             }));
 
@@ -69,7 +57,32 @@ namespace SourceGit.ViewModels
                 _launcher.OpenCommandPalette(sub);
             }));
 
+            _cmds.Add(new("Checkout", () =>
+            {
+                var sub = new CheckoutCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("FileHistory", () =>
+            {
+                var sub = new FileHistoryCommandPalette(_launcher, _repo.FullPath);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("Merge", () =>
+            {
+                var sub = new MergeCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("OpenFile", () =>
+            {
+                var sub = new OpenFileCommandPalette(_launcher, _repo.FullPath);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
             _visibleCmds = _cmds;
+            _selectedCmd = _cmds[0];
         }
 
         public override void Cleanup()
@@ -104,13 +117,20 @@ namespace SourceGit.ViewModels
             else
             {
                 var visible = new List<RepositoryCommandPaletteCmd>();
-                foreach (var cmd in VisibleCmds)
+
+                foreach (var cmd in _cmds)
                 {
                     if (cmd.Key.Contains(_filter, StringComparison.OrdinalIgnoreCase) ||
                         cmd.Label.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                         visible.Add(cmd);
                 }
+
+                var autoSelected = _selectedCmd;
+                if (!visible.Contains(_selectedCmd))
+                    autoSelected = visible.Count > 0 ? visible[0] : null;
+
                 VisibleCmds = visible;
+                SelectedCmd = autoSelected;
             }
         }
 

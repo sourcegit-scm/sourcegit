@@ -65,13 +65,22 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
+            var succ = await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
                 .Use(log)
                 .ExecAsync();
 
+            if (succ)
+            {
+                var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
+                if (submodules.Count > 0)
+                    await new Commands.Submodule(_repo.FullPath)
+                        .Use(log)
+                        .UpdateAsync(submodules, true, true);
+            }
+
             log.Complete();
 
-            if (_repo.SelectedViewIndex == 0)
+            if (succ && _repo.SelectedViewIndex == 0)
             {
                 var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
                 _repo.NavigateToCommit(head, true);

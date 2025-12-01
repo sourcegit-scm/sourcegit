@@ -8,9 +8,16 @@
              x:Class="SourceGit.Views.InitGitFlow"
              x:DataType="vm:InitGitFlow">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.GitFlow.Init}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Init}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.GitFlow.Init}"/>
+    </StackPanel>
+    
     <Grid Margin="8,16,0,0" RowDefinitions="32,32,8,32,32,32,32" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

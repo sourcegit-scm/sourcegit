@@ -100,7 +100,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">경고: 커밋 체크아웃을 하면, HEAD가 분리됩니다(detached)</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">폐기</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">스태시 &amp; 재적용</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">모든 서브모듈 업데이트</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">브랜치:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">현재 HEAD에 브랜치/태그에 연결되지 않은 커밋이 있습니다! 계속하시겠습니까?</x:String>
@@ -271,7 +271,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">생성된 브랜치로 체크아웃</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">폐기</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">스태시 &amp; 재적용</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">새 브랜치 이름:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">브랜치 이름을 입력하세요.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">로컬 브랜치 생성</x:String>
@@ -318,7 +318,7 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">바이너리 비교</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">파일 모드 변경됨</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">첫 번째 차이점</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">모든 공백 변경 사항 무시</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">공백 변경 사항 무시</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">혼합</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">차이점</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">나란히 보기</x:String>
@@ -611,7 +611,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">대상:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">폐기</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">스태시 &amp; 재적용</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">모든 서브모듈 업데이트</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">원격:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; 병합)</x:String>

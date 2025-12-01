@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Lösche ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Lösche alle ausgewählten {0} Branches</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Beschreibung für ${0}$ bearbeiten...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward zu ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetche ${0}$ in ${1}$ hinein...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Abschließen ${0}$</x:String>
@@ -107,7 +108,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warnung: Beim Auschecken eines Commits wird dein HEAD losgelöst (detached) sein!</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Alle Submodule updaten</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Dein aktueller HEAD enthält Commit(s) ohne Verbindung zu einem Branch/Tag. Möchtest du trotzdem fortfahren?</x:String>
@@ -261,7 +262,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Bezeichnung:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Einträge:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Nutze '|', um Einträge zu trennen</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Die vordefinierten Parameter ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, and ${TAG} bleiben hier verwendbar</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Die vordefinierten Parameter ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE} und ${TAG} bleiben hier verwendbar</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Typ:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Farbe</x:String>
@@ -289,7 +290,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Erstellten Branch auschecken</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Neuer Branch-Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Branch-Name</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Lokalen Branch erstellen</x:String>
@@ -376,6 +377,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">Commit entfernen</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Neuer HEAD:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Beschreibung eines Branches bearbeiten</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Lesezeichen:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Neuer Name:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Ziel:</x:String>
@@ -544,6 +547,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Öffnen</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Standard-Texteditor (System)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">App-Daten Ordner öffnen</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Datei öffnen</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Öffne in Merge Tool</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Neue Seite erstellen</x:String>
@@ -584,6 +588,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Design</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Scrollbars automatisch ausblenden</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Verwende nativen Fensterrahmen</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Installationspfad</x:String>
@@ -637,7 +642,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Lokaler Branch:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Alle Submodule aktualisieren</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>

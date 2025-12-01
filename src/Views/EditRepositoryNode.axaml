@@ -10,15 +10,21 @@
              x:Class="SourceGit.Views.EditRepositoryNode"
              x:DataType="vm:EditRepositoryNode">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.EditRepositoryNode.TitleForGroup}"
-               IsVisible="{Binding !IsRepository}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Margin="0,0,8,0"
+            Data="{StaticResource Icons.Edit}"/>
 
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.EditRepositoryNode.TitleForRepository}"
-               IsVisible="{Binding IsRepository}"/>
+      <TextBlock FontSize="18"
+                 Classes="bold"
+                 Text="{DynamicResource Text.EditRepositoryNode.TitleForGroup}"
+                 IsVisible="{Binding !IsRepository}"/>
+
+      <TextBlock FontSize="18"
+                 Classes="bold"
+                 Text="{DynamicResource Text.EditRepositoryNode.TitleForRepository}"
+                 IsVisible="{Binding IsRepository}"/>
+    </StackPanel>
 
     <Grid Height="28" Margin="8,16,0,0" ColumnDefinitions="120,*" >
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Target}"/>

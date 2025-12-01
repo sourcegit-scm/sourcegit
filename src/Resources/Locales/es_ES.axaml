@@ -67,6 +67,7 @@
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Eliminar {0} ramas seleccionadas</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Editar la descripción para ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward a ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finalizar ${0}$</x:String>
@@ -107,7 +108,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Advertencia: Al hacer un checkout de commit, tu Head se separará</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Actualizar todos los submódulos</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Rama:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">¡Tu HEAD actual contiene commit(s) que no están conectados a ningunas ramas/etiquetas! ¿Quieres continuar?</x:String>
@@ -288,7 +289,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout de la rama creada</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nombre de la Nueva Rama:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Introduzca el nombre de la rama.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Crear Rama Local</x:String>
@@ -375,6 +376,8 @@
   <x:String x:Key="Text.DropHead" xml:space="preserve">Eliminar Commit</x:String>
   <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Nuevo HEAD:</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Editar la descripción de la rama</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Marcador:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Nuevo Nombre:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Destino:</x:String>
@@ -543,6 +546,7 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Abrir</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Editor por defecto (Sistema)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Abrir Directorio de Datos de la App</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Abrir Archivo</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Crear Nueva Página</x:String>
@@ -583,6 +587,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Tema</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Sobreescritura de temas</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Usar barras de desplazamiento que se oculten automáticamente</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usar ancho de pestaña fijo en la barra de título</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usar marco de ventana nativo</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">HERRAMIENTA DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Ruta de instalación</x:String>
@@ -636,7 +641,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Cambios Locales:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Actualizar todos los submódulos</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>

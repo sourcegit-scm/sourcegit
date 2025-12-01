@@ -7,9 +7,16 @@
              x:Class="SourceGit.Views.CheckoutAndFastForward"
              x:DataType="vm:CheckoutAndFastForward">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Checkout.WithFastForward}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Margin="0,4,0,0"
+            Data="{StaticResource Icons.Check}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Checkout.WithFastForward}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" ColumnDefinitions="140,*">
       <Grid.RowDefinitions>
@@ -56,7 +63,7 @@
       <WrapPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
         <RadioButton GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+                     Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReapply}"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
         <RadioButton GroupName="LocalChanges"
                      Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"/>

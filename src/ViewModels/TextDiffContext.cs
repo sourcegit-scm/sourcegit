@@ -5,6 +5,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public record TextDiffDisplayRange(int Start, int End);
+
     public record TextDiffSelectedChunk(double Y, double Height, int StartIdx, int EndIdx, bool Combined, bool IsOldSide)
     {
         public static bool IsChanged(TextDiffSelectedChunk oldValue, TextDiffSelectedChunk newValue)
@@ -22,10 +24,6 @@ namespace SourceGit.ViewModels
                 newValue.Combined != oldValue.Combined ||
                 newValue.IsOldSide != oldValue.IsOldSide;
         }
-    }
-
-    public record TextDiffDisplayRange(int Start, int End)
-    {
     }
 
     public class TextDiffContext : ObservableObject
@@ -147,10 +145,16 @@ namespace SourceGit.ViewModels
         public CombinedTextDiff(Models.TextDiff diff, CombinedTextDiff previous = null)
         {
             _data = diff;
-            _blockNavigation = new BlockNavigation(_data.Lines);
 
             if (previous != null && previous.File.Equals(File, StringComparison.Ordinal))
-                _scrollOffset = previous.ScrollOffset;
+            {
+                _blockNavigation = new BlockNavigation(_data.Lines, false);
+                _scrollOffset = previous._scrollOffset;
+            }
+            else
+            {
+                _blockNavigation = new BlockNavigation(_data.Lines, true);
+            }
         }
 
         public override TextDiffContext SwitchMode()
@@ -187,10 +191,16 @@ namespace SourceGit.ViewModels
             }
 
             FillEmptyLines();
-            _blockNavigation = new BlockNavigation(Old);
 
             if (previous != null && previous.File.Equals(File, StringComparison.Ordinal))
+            {
+                _blockNavigation = new BlockNavigation(_data.Lines, false);
                 _scrollOffset = previous._scrollOffset;
+            }
+            else
+            {
+                _blockNavigation = new BlockNavigation(_data.Lines, true);
+            }
         }
 
         public override bool IsSideBySide()

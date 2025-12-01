@@ -10,9 +10,16 @@
              x:Class="SourceGit.Views.CreateBranch"
              x:DataType="vm:CreateBranch">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.CreateBranch.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Branch.Add}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.CreateBranch.Title}"/>
+    </StackPanel>
+    
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,Auto">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" MinWidth="140"/>
@@ -70,7 +77,7 @@
         <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
           <RadioButton GroupName="LocalChanges"
                        Margin="0,0,8,0"
-                       Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReply}"
+                       Content="{DynamicResource Text.CreateBranch.LocalChanges.StashAndReapply}"
                        IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
           <RadioButton GroupName="LocalChanges"
                        Content="{DynamicResource Text.CreateBranch.LocalChanges.Discard}"/>

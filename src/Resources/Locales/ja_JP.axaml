@@ -74,7 +74,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">警告: コミットをチェックアウトするとHEADが切断されます</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">チェリーピック</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">ソースをコミットメッセージに追加</x:String>
@@ -184,7 +184,7 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">作成したブランチにチェックアウト</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新しいブランチの名前:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">ブランチの名前を入力</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">ローカルブランチを作成</x:String>
@@ -434,6 +434,7 @@
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">等幅フォント</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">テーマ</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">テーマの上書き</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">タイトルバーの固定タブ幅を使用</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">ネイティブウィンドウフレームを使用</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">差分/マージ ツール</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">インストール パス</x:String>
@@ -481,7 +482,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージの代わりにリベースを使用</x:String>

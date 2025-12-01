@@ -43,15 +43,15 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:LauncherPage">
-              <Border Width="200" Height="30"
-                      Padding="0,2,0,0"
-                      Background="Transparent"
-                      PointerPressed="OnPointerPressedTab"
-                      PointerMoved="OnPointerMovedOverTab"
-                      PointerReleased="OnPointerReleasedTab"
-                      ContextRequested="OnTabContextRequested"
-                      DragDrop.AllowDrop="True"
-                      DragDrop.Drop="DropTab">
+              <v:LauncherTabSizeBox UseFixedWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth}" Height="30"
+                                    Padding="0,2,0,0"
+                                    Background="Transparent"
+                                    PointerPressed="OnPointerPressedTab"
+                                    PointerMoved="OnPointerMovedOverTab"
+                                    PointerReleased="OnPointerReleasedTab"
+                                    ContextRequested="OnTabContextRequested"
+                                    DragDrop.AllowDrop="True"
+                                    DragDrop.Drop="DropTab">
                 <ToolTip.Tip>
                   <Grid>
                     <TextBlock Text="{DynamicResource Text.Welcome}" IsVisible="{Binding !Node.IsRepository}"/>
@@ -122,7 +122,7 @@
                     <Path Width="9" Height="9" Data="{StaticResource Icons.Close}"/>
                   </Button>
                 </Grid>
-              </Border>
+              </v:LauncherTabSizeBox>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>

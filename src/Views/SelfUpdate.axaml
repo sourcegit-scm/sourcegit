@@ -66,8 +66,8 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center">
                   <StackPanel Orientation="Horizontal">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Pull}" Fill="White"/>
-                    <TextBlock Text="{DynamicResource Text.SelfUpdate.GotoDownload}" Margin="8,0,0,0"/>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Pull}" Fill="{DynamicResource AccentButtonForeground}"/>
+                    <TextBlock Text="{DynamicResource Text.SelfUpdate.GotoDownload}" Margin="8,0,0,0" Foreground="{DynamicResource AccentButtonForeground}"/>
                   </StackPanel>
                 </Button>
 

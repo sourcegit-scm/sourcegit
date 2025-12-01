@@ -540,10 +540,8 @@ namespace SourceGit.ViewModels
                 if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
                     await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                var succ = await _inProgressContext.ContinueAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
+                await _inProgressContext.ContinueAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -559,10 +557,8 @@ namespace SourceGit.ViewModels
                 using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
 
-                var succ = await _inProgressContext.SkipAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
+                await _inProgressContext.SkipAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -578,10 +574,8 @@ namespace SourceGit.ViewModels
                 using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
 
-                var succ = await _inProgressContext.AbortAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
+                await _inProgressContext.AbortAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -775,26 +769,19 @@ namespace SourceGit.ViewModels
             else
                 InProgressContext = null;
 
-            if (_inProgressContext == null)
-            {
-                LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG"));
-                return;
-            }
-
-            if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
+            if (_inProgressContext != null && _inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
                 return;
 
-            do
-            {
-                if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
-                    break;
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
+                return;
 
-                if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
-                    break;
+            if (_inProgressContext is not RebaseInProgress { } rebasing)
+                return;
 
-                if (_inProgressContext is RebaseInProgress { StoppedAt: { } stopAt })
-                    CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, stopAt.SHA).GetResult();
-            } while (false);
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
+                return;
+
+            CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
         }
 
         private bool LoadCommitMessageFromFile(string file)

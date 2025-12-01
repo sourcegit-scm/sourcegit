@@ -91,16 +91,28 @@ namespace SourceGit.ViewModels
                 if (string.IsNullOrEmpty(_filter))
                 {
                     VisibleFiles = _repoFiles;
+
+                    if (string.IsNullOrEmpty(_selectedFile))
+                        SelectedFile = _repoFiles[0];
                 }
                 else
                 {
                     var visible = new List<string>();
+
                     foreach (var f in _repoFiles)
                     {
                         if (f.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                             visible.Add(f);
                     }
+
+                    var autoSelected = _selectedFile;
+                    if (visible.Count == 0)
+                        autoSelected = null;
+                    else if (string.IsNullOrEmpty(_selectedFile) || !visible.Contains(_selectedFile))
+                        autoSelected = visible[0];
+
                     VisibleFiles = visible;
+                    SelectedFile = autoSelected;
                 }
             }
         }
