@@ -252,10 +252,10 @@ namespace SourceGit.Commands
                         foreach (var chunk in chunks)
                         {
                             if (chunk.DeletedCount > 0)
-                                left.Highlights.Add(new Models.TextInlineRange(chunk.DeletedStart, chunk.DeletedCount));
+                                left.Highlights.Add(new Models.TextRange(chunk.DeletedStart, chunk.DeletedCount));
 
                             if (chunk.AddedCount > 0)
-                                right.Highlights.Add(new Models.TextInlineRange(chunk.AddedStart, chunk.AddedCount));
+                                right.Highlights.Add(new Models.TextRange(chunk.AddedStart, chunk.AddedCount));
                         }
                     }
                 }

@@ -14,7 +14,7 @@ namespace SourceGit.Models
         Deleted,
     }
 
-    public class TextInlineRange(int p, int n)
+    public class TextRange(int p, int n)
     {
         public int Start { get; set; } = p;
         public int End { get; set; } = p + n - 1;
@@ -26,7 +26,7 @@ namespace SourceGit.Models
         public string Content { get; set; } = "";
         public int OldLineNumber { get; set; } = 0;
         public int NewLineNumber { get; set; } = 0;
-        public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
+        public List<TextRange> Highlights { get; set; } = new List<TextRange>();
         public bool NoNewLineEndOfFile { get; set; } = false;
 
         public string OldLine => OldLineNumber == 0 ? string.Empty : OldLineNumber.ToString();
@@ -49,11 +49,6 @@ namespace SourceGit.Models
         public bool HasChanges { get; set; } = false;
         public int IgnoredAdds { get; set; } = 0;
         public int IgnoredDeletes { get; set; } = 0;
-
-        public bool IsInRange(int idx)
-        {
-            return idx >= StartLine - 1 && idx < EndLine;
-        }
     }
 
     public partial class TextDiff
@@ -129,7 +124,11 @@ namespace SourceGit.Models
                     var line = Lines[i];
                     if (line.Type != TextDiffLineType.Added)
                         continue;
-                    writer.WriteLine($"{(selection.IsInRange(i) ? "+" : " ")}{line.Content}");
+
+                    if (i >= selection.StartLine - 1 && i < selection.EndLine)
+                        writer.WriteLine($"+{line.Content}");
+                    else
+                        writer.WriteLine($" {line.Content}");
                 }
             }
             else
