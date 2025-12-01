@@ -30,6 +30,7 @@
              VerticalContentAlignment="Top"
              AcceptsReturn="True" AcceptsTab="False"
              Text="{Binding Description, Mode=TwoWay}"
+             TextWrapping="Wrap"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              ScrollViewer.VerticalScrollBarVisibility="Auto"
              Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
