@@ -194,12 +194,12 @@ namespace SourceGit.ViewModels
 
             if (previous != null && previous.File.Equals(File, StringComparison.Ordinal))
             {
-                _blockNavigation = new BlockNavigation(_data.Lines, false);
+                _blockNavigation = new BlockNavigation(Old, false);
                 _scrollOffset = previous._scrollOffset;
             }
             else
             {
-                _blockNavigation = new BlockNavigation(_data.Lines, true);
+                _blockNavigation = new BlockNavigation(Old, true);
             }
         }
 
