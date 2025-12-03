@@ -53,8 +53,6 @@ namespace SourceGit.Models
 
     public partial class TextDiff
     {
-        public string File { get; set; } = string.Empty;
-        public DiffOption Option { get; set; } = null;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public int MaxLineNumber = 0;
 

@@ -38,10 +38,7 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged();
 
                     if (Content is TextDiffContext ctx)
-                    {
-                        ctx.Data.File = string.Empty; // Just to ignore both previous `ScrollOffset` and `BlockNavigation`
                         LoadContent();
-                    }
                 }
             }
         }
@@ -156,7 +153,8 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var numLines = Preferences.Instance.UseFullTextDiff ? _entireFileLine : _unifiedLines;
+                var showEntireFile = Preferences.Instance.UseFullTextDiff;
+                var numLines = showEntireFile ? _entireFileLine : _unifiedLines;
                 var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
 
                 var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace)
@@ -200,10 +198,7 @@ namespace SourceGit.ViewModels
                     }
 
                     if (!isSubmodule)
-                    {
-                        latest.TextDiff.File = _option.Path;
                         rs = latest.TextDiff;
-                    }
                 }
                 else if (latest.IsBinary)
                 {
@@ -282,9 +277,9 @@ namespace SourceGit.ViewModels
                         IsTextDiff = true;
 
                         if (Preferences.Instance.UseSideBySideDiff)
-                            Content = new TwoSideTextDiff(cur, _content as TwoSideTextDiff);
+                            Content = new TwoSideTextDiff(_option, showEntireFile, cur, _content as TwoSideTextDiff);
                         else
-                            Content = new CombinedTextDiff(cur, _content as CombinedTextDiff);
+                            Content = new CombinedTextDiff(_option, showEntireFile, cur, _content as CombinedTextDiff);
                     }
                     else
                     {

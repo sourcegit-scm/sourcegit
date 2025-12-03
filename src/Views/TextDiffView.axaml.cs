@@ -439,15 +439,6 @@ namespace SourceGit.Views
             set => SetValue(TabWidthProperty, value);
         }
 
-        public static readonly StyledProperty<bool> EnableChunkSelectionProperty =
-            AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(EnableChunkSelection));
-
-        public bool EnableChunkSelection
-        {
-            get => GetValue(EnableChunkSelectionProperty);
-            set => SetValue(EnableChunkSelectionProperty, value);
-        }
-
         public static readonly StyledProperty<ViewModels.TextDiffSelectedChunk> SelectedChunkProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, ViewModels.TextDiffSelectedChunk>(nameof(SelectedChunk));
 
@@ -688,51 +679,57 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
-            if (EnableChunkSelection && sender is TextView view)
+            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+                return;
+
+            if (sender is not TextView view)
+                return;
+
+            var selection = TextArea.Selection;
+            if (selection == null || selection.IsEmpty)
             {
-                var selection = TextArea.Selection;
-                if (selection == null || selection.IsEmpty)
+                if (_lastSelectStart != _lastSelectEnd)
                 {
-                    if (_lastSelectStart != _lastSelectEnd)
-                    {
-                        _lastSelectStart = TextLocation.Empty;
-                        _lastSelectEnd = TextLocation.Empty;
-                    }
-
-                    var chunk = SelectedChunk;
-                    if (chunk != null)
-                    {
-                        var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
-                        if (rect.Contains(e.GetPosition(this)))
-                            return;
-                    }
-
-                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
-                    return;
+                    _lastSelectStart = TextLocation.Empty;
+                    _lastSelectEnd = TextLocation.Empty;
                 }
 
-                var start = selection.StartPosition.Location;
-                var end = selection.EndPosition.Location;
-                if (_lastSelectStart != start || _lastSelectEnd != end)
+                var chunk = SelectedChunk;
+                if (chunk != null)
                 {
-                    _lastSelectStart = start;
-                    _lastSelectEnd = end;
-                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
-                    return;
+                    var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+                    if (rect.Contains(e.GetPosition(this)))
+                        return;
                 }
 
-                if (SelectedChunk == null)
-                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                return;
             }
+
+            var start = selection.StartPosition.Location;
+            var end = selection.EndPosition.Location;
+            if (_lastSelectStart != start || _lastSelectEnd != end)
+            {
+                _lastSelectStart = start;
+                _lastSelectEnd = end;
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                return;
+            }
+
+            if (SelectedChunk == null)
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (EnableChunkSelection && sender is TextView view)
-            {
-                var y = e.GetPosition(view).Y + view.VerticalOffset;
-                Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
-            }
+            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+                return;
+
+            if (sender is not TextView view)
+                return;
+
+            var y = e.GetPosition(view).Y + view.VerticalOffset;
+            Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
         }
 
         private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
@@ -1535,11 +1532,7 @@ namespace SourceGit.Views
 
         private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff })
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1576,11 +1569,7 @@ namespace SourceGit.Views
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff })
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } })
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1610,11 +1599,7 @@ namespace SourceGit.Views
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff })
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1622,7 +1607,6 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
