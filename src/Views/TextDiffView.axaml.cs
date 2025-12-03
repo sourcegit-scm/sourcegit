@@ -805,9 +805,6 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.TextDiffContext ctx)
                 return;
 
-            if (ctx.IsSideBySide() && !IsOld)
-                return;
-
             var curBlock = ctx.BlockNavigation.GetCurrentBlock();
             if (curBlock == null)
                 return;
