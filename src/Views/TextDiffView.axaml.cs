@@ -487,44 +487,38 @@ namespace SourceGit.Views
         {
         }
 
-        public virtual void GotoFirstChange()
+        protected virtual void SyncScrollOffset()
         {
-            var first = BlockNavigation.GotoFirst();
-            if (first != null)
+        }
+
+        private void GotoChange(ViewModels.BlockNavigation.Block block)
+        {
+            if (block != null)
             {
-                TextArea.Caret.Line = first.Start;
-                ScrollToLine(first.Start);
+                TextArea.Caret.Line = block.Start;
+                ScrollToLine(block.Start);
+                SyncScrollOffset();
             }
         }
 
-        public virtual void GotoPrevChange()
+        public void GotoFirstChange()
         {
-            var prev = BlockNavigation.GotoPrev();
-            if (prev != null)
-            {
-                TextArea.Caret.Line = prev.Start;
-                ScrollToLine(prev.Start);
-            }
+            GotoChange(BlockNavigation.GotoFirst());
         }
 
-        public virtual void GotoNextChange()
+        public void GotoPrevChange()
         {
-            var next = BlockNavigation.GotoNext();
-            if (next != null)
-            {
-                TextArea.Caret.Line = next.Start;
-                ScrollToLine(next.Start);
-            }
+            GotoChange(BlockNavigation.GotoPrev());
         }
 
-        public virtual void GotoLastChange()
+        public void GotoNextChange()
         {
-            var next = BlockNavigation.GotoLast();
-            if (next != null)
-            {
-                TextArea.Caret.Line = next.Start;
-                ScrollToLine(next.Start);
-            }
+            GotoChange(BlockNavigation.GotoNext());
+        }
+
+        public void GotoLastChange()
+        {
+            GotoChange(BlockNavigation.GotoLast());
         }
 
         public override void Render(DrawingContext context)
@@ -1095,30 +1089,6 @@ namespace SourceGit.Views
             return [];
         }
 
-        public override void GotoFirstChange()
-        {
-            base.GotoFirstChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoPrevChange()
-        {
-            base.GotoPrevChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoNextChange()
-        {
-            base.GotoNextChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoLastChange()
-        {
-            base.GotoLastChange();
-            SyncScrollOffset();
-        }
-
         public override void UpdateSelectedChunk(double y)
         {
             if (DataContext is not ViewModels.TwoSideTextDiff diff)
@@ -1315,7 +1285,7 @@ namespace SourceGit.Views
                 TextArea?.TextView?.Redraw();
         }
 
-        private void SyncScrollOffset()
+        protected override void SyncScrollOffset()
         {
             if (_scrollViewer is not null && DataContext is ViewModels.TwoSideTextDiff diff)
                 diff.ScrollOffset = _scrollViewer.Offset;

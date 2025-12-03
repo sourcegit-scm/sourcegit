@@ -136,8 +136,7 @@ namespace SourceGit.ViewModels
 
                 if (ctx.IsSideBySide() != UseSideBySide)
                 {
-                    ctx = ctx.SwitchMode();
-                    Content = ctx;
+                    Content = ctx.SwitchMode();
                 }
             }
         }
