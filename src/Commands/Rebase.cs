@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Text;
+
+namespace SourceGit.Commands
 {
     public class Rebase : Command
     {
@@ -6,10 +8,13 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "rebase ";
+
+            var builder = new StringBuilder(512);
+            builder.Append("rebase ");
             if (autoStash)
-                Args += "--autostash ";
-            Args += basedOn;
+                builder.Append("--autostash ");
+
+            Args = builder.Append(basedOn).ToString();
         }
     }
 }

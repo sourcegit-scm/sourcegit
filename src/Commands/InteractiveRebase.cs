@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Text;
+
+namespace SourceGit.Commands
 {
     public class InteractiveRebase : Command
     {
@@ -7,10 +9,13 @@
             WorkingDirectory = repo;
             Context = repo;
             Editor = EditorType.RebaseEditor;
-            Args = "rebase -i --autosquash ";
+
+            var builder = new StringBuilder(512);
+            builder.Append("rebase -i --autosquash ");
             if (autoStash)
-                Args += "--autostash ";
-            Args += basedOn;
+                builder.Append("--autostash ");
+
+            Args = builder.Append(basedOn).ToString();
         }
     }
 }

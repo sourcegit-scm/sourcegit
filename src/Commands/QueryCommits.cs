@@ -8,12 +8,12 @@ namespace SourceGit.Commands
 {
     public class QueryCommits : Command
     {
-        public QueryCommits(string repo, string limits, bool needFindHead = true)
+        public QueryCommits(string repo, string limits, bool markMerged = true)
         {
             WorkingDirectory = repo;
             Context = repo;
             Args = $"log --no-show-signature --decorate=full --format=%H%x00%P%x00%D%x00%aN±%aE%x00%at%x00%cN±%cE%x00%ct%x00%s {limits}";
-            _findFirstMerged = needFindHead;
+            _markMerged = markMerged;
         }
 
         public QueryCommits(string repo, string filter, Models.CommitSearchMethod method, bool onlyCurrentBranch)
@@ -51,7 +51,7 @@ namespace SourceGit.Commands
             WorkingDirectory = repo;
             Context = repo;
             Args = builder.ToString();
-            _findFirstMerged = false;
+            _markMerged = false;
         }
 
         public async Task<List<Models.Commit>> GetResultAsync()
@@ -63,6 +63,7 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
+                var findHead = false;
                 while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
                 {
                     var parts = line.Split('\0');
@@ -79,13 +80,12 @@ namespace SourceGit.Commands
                     commit.Subject = parts[7];
                     commits.Add(commit);
 
-                    if (commit.IsMerged && !_isHeadFound)
-                        _isHeadFound = true;
+                    findHead |= commit.IsMerged;
                 }
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);
 
-                if (_findFirstMerged && !_isHeadFound && commits.Count > 0)
+                if (_markMerged && !findHead && commits.Count > 0)
                 {
                     var set = await new QueryCurrentBranchCommitHashes(WorkingDirectory, commits[^1].CommitterTime)
                         .GetResultAsync()
@@ -109,7 +109,6 @@ namespace SourceGit.Commands
             return commits;
         }
 
-        private bool _findFirstMerged = false;
-        private bool _isHeadFound = false;
+        private bool _markMerged = false;
     }
 }

@@ -190,7 +190,7 @@ namespace SourceGit.Commands
                 start.Environment.Add("LC_ALL", "C");
             }
 
-            var builder = new StringBuilder();
+            var builder = new StringBuilder(2048);
             builder
                 .Append("--no-pager -c core.quotepath=off -c credential.helper=")
                 .Append(Native.OS.CredentialHelper)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
@@ -65,26 +66,20 @@ namespace SourceGit.Commands
 
         public async Task<bool> AddAsync(string fullpath, string name, bool createNew, string tracking)
         {
-            Args = "worktree add ";
-
+            var builder = new StringBuilder(1024);
+            builder.Append("worktree add ");
             if (!string.IsNullOrEmpty(tracking))
-                Args += "--track ";
-
+                builder.Append("--track ");
             if (!string.IsNullOrEmpty(name))
-            {
-                if (createNew)
-                    Args += $"-b {name} ";
-                else
-                    Args += $"-B {name} ";
-            }
-
-            Args += $"{fullpath.Quoted()} ";
+                builder.Append(createNew ? "-b " : "-B ").Append(name).Append(' ');
+            builder.Append(fullpath.Quoted()).Append(' ');
 
             if (!string.IsNullOrEmpty(tracking))
-                Args += tracking;
+                builder.Append(tracking);
             else if (!string.IsNullOrEmpty(name) && !createNew)
-                Args += name;
+                builder.Append(name);
 
+            Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
         }
 

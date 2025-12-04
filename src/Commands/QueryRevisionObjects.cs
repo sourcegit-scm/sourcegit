@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -14,10 +15,13 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree {sha}";
 
+            var builder = new StringBuilder(1024);
+            builder.Append("ls-tree ").Append(sha);
             if (!string.IsNullOrEmpty(parentFolder))
-                Args += $" -- {parentFolder.Quoted()}";
+                builder.Append(" -- ").Append(parentFolder.Quoted());
+
+            Args = builder.ToString();
         }
 
         public async Task<List<Models.Object>> GetResultAsync()
