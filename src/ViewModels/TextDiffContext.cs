@@ -167,7 +167,7 @@ namespace SourceGit.ViewModels
 
     public class CombinedTextDiff : TextDiffContext
     {
-        public CombinedTextDiff(Models.DiffOption option, Models.TextDiff diff, CombinedTextDiff previous = null)
+        public CombinedTextDiff(Models.DiffOption option, Models.TextDiff diff, TextDiffContext previous = null)
         {
             _option = option;
             _data = diff;
@@ -177,7 +177,7 @@ namespace SourceGit.ViewModels
 
         public override TextDiffContext SwitchMode()
         {
-            return new TwoSideTextDiff(_option, _data);
+            return new TwoSideTextDiff(_option, _data, this);
         }
     }
 
@@ -186,7 +186,7 @@ namespace SourceGit.ViewModels
         public List<Models.TextDiffLine> Old { get; } = [];
         public List<Models.TextDiffLine> New { get; } = [];
 
-        public TwoSideTextDiff(Models.DiffOption option, Models.TextDiff diff, TwoSideTextDiff previous = null)
+        public TwoSideTextDiff(Models.DiffOption option, Models.TextDiff diff, TextDiffContext previous = null)
         {
             _option = option;
             _data = diff;
@@ -220,7 +220,7 @@ namespace SourceGit.ViewModels
 
         public override TextDiffContext SwitchMode()
         {
-            return new CombinedTextDiff(_option, _data);
+            return new CombinedTextDiff(_option, _data, this);
         }
 
         public void ConvertsToCombinedRange(ref int startLine, ref int endLine, bool isOldSide)
