@@ -487,43 +487,16 @@ namespace SourceGit.Views
         {
         }
 
-        public virtual void GotoFirstChange()
+        public void GotoChange(ViewModels.BlockNavigationDirection direction)
         {
-            var first = BlockNavigation.GotoFirst();
-            if (first != null)
-            {
-                TextArea.Caret.Line = first.Start;
-                ScrollToLine(first.Start);
-            }
-        }
+            if (DataContext is not ViewModels.TextDiffContext ctx)
+                return;
 
-        public virtual void GotoPrevChange()
-        {
-            var prev = BlockNavigation.GotoPrev();
-            if (prev != null)
+            var block = BlockNavigation.Goto(direction);
+            if (block != null)
             {
-                TextArea.Caret.Line = prev.Start;
-                ScrollToLine(prev.Start);
-            }
-        }
-
-        public virtual void GotoNextChange()
-        {
-            var next = BlockNavigation.GotoNext();
-            if (next != null)
-            {
-                TextArea.Caret.Line = next.Start;
-                ScrollToLine(next.Start);
-            }
-        }
-
-        public virtual void GotoLastChange()
-        {
-            var next = BlockNavigation.GotoLast();
-            if (next != null)
-            {
-                TextArea.Caret.Line = next.Start;
-                ScrollToLine(next.Start);
+                TextArea.Caret.Line = block.Start;
+                ScrollToLine(block.Start);
             }
         }
 
@@ -618,9 +591,9 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnDataContextBeginUpdate()
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            base.OnDataContextBeginUpdate();
+            base.OnDataContextChanged(e);
             AutoScrollToFirstChange();
         }
 
@@ -805,9 +778,6 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.TextDiffContext ctx)
                 return;
 
-            if (ctx.IsSideBySide() && !IsOld)
-                return;
-
             var curBlock = ctx.BlockNavigation.GetCurrentBlock();
             if (curBlock == null)
                 return;
@@ -819,8 +789,9 @@ namespace SourceGit.Views
                 var scroller = this.FindDescendantOfType<ScrollViewer>();
                 if (scroller != null)
                 {
-                    ctx.ScrollOffset = new Vector(0, vOffset);
-                    scroller.Offset = ctx.ScrollOffset;
+                    var scrollOffset = new Vector(0, vOffset);
+                    scroller.Offset = scrollOffset;
+                    ctx.ScrollOffset = scrollOffset;
                 }
             }
         }
@@ -1098,30 +1069,6 @@ namespace SourceGit.Views
             return [];
         }
 
-        public override void GotoFirstChange()
-        {
-            base.GotoFirstChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoPrevChange()
-        {
-            base.GotoPrevChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoNextChange()
-        {
-            base.GotoNextChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoLastChange()
-        {
-            base.GotoLastChange();
-            SyncScrollOffset();
-        }
-
         public override void UpdateSelectedChunk(double y)
         {
             if (DataContext is not ViewModels.TwoSideTextDiff diff)
@@ -1316,12 +1263,6 @@ namespace SourceGit.Views
         {
             if ("Indicator".Equals(e.PropertyName, StringComparison.Ordinal))
                 TextArea?.TextView?.Redraw();
-        }
-
-        private void SyncScrollOffset()
-        {
-            if (_scrollViewer is not null && DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.ScrollOffset = _scrollViewer.Offset;
         }
 
         private ScrollViewer _scrollViewer = null;
