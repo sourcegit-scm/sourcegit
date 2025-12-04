@@ -130,30 +130,33 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        protected bool TryKeepPrevScrollOffset(TextDiffContext prev)
+        protected void TryKeepPrevState(TextDiffContext prev, List<Models.TextDiffLine> lines)
         {
             var fastTest = prev != null &&
-                prev._showEntireFile == _showEntireFile &&
                 prev._option.IsUnstaged == _option.IsUnstaged &&
                 prev._option.Path.Equals(_option.Path, StringComparison.Ordinal) &&
                 prev._option.OrgPath.Equals(_option.OrgPath, StringComparison.Ordinal) &&
                 prev._option.Revisions.Count == _option.Revisions.Count;
 
             if (!fastTest)
-                return false;
+            {
+                _blockNavigation = new BlockNavigation(lines, 0);
+                return;
+            }
 
             for (int i = 0; i < _option.Revisions.Count; i++)
             {
                 if (!prev._option.Revisions[i].Equals(_option.Revisions[i], StringComparison.Ordinal))
-                    return false;
+                {
+                    _blockNavigation = new BlockNavigation(lines, 0);
+                    return;
+                }
             }
 
-            _scrollOffset = prev._scrollOffset;
-            return true;
+            _blockNavigation = new BlockNavigation(lines, prev._blockNavigation.GetCurrentBlockIndex());
         }
 
         protected Models.DiffOption _option = null;
-        protected bool _showEntireFile = false;
         protected Models.TextDiff _data = null;
         protected Vector _scrollOffset = Vector.Zero;
         protected BlockNavigation _blockNavigation = null;
@@ -164,19 +167,17 @@ namespace SourceGit.ViewModels
 
     public class CombinedTextDiff : TextDiffContext
     {
-        public CombinedTextDiff(Models.DiffOption option, bool showEntireFile, Models.TextDiff diff, CombinedTextDiff previous = null)
+        public CombinedTextDiff(Models.DiffOption option, Models.TextDiff diff, CombinedTextDiff previous = null)
         {
             _option = option;
-            _showEntireFile = showEntireFile;
             _data = diff;
 
-            var keep = TryKeepPrevScrollOffset(previous);
-            _blockNavigation = new BlockNavigation(_data.Lines, !keep);
+            TryKeepPrevState(previous, _data.Lines);
         }
 
         public override TextDiffContext SwitchMode()
         {
-            return new TwoSideTextDiff(_option, _showEntireFile, _data);
+            return new TwoSideTextDiff(_option, _data);
         }
     }
 
@@ -185,10 +186,9 @@ namespace SourceGit.ViewModels
         public List<Models.TextDiffLine> Old { get; } = [];
         public List<Models.TextDiffLine> New { get; } = [];
 
-        public TwoSideTextDiff(Models.DiffOption option, bool showEntireFile, Models.TextDiff diff, TwoSideTextDiff previous = null)
+        public TwoSideTextDiff(Models.DiffOption option, Models.TextDiff diff, TwoSideTextDiff previous = null)
         {
             _option = option;
-            _showEntireFile = showEntireFile;
             _data = diff;
 
             foreach (var line in diff.Lines)
@@ -210,9 +210,7 @@ namespace SourceGit.ViewModels
             }
 
             FillEmptyLines();
-
-            var keep = TryKeepPrevScrollOffset(previous);
-            _blockNavigation = new BlockNavigation(Old, !keep);
+            TryKeepPrevState(previous, Old);
         }
 
         public override bool IsSideBySide()
@@ -222,7 +220,7 @@ namespace SourceGit.ViewModels
 
         public override TextDiffContext SwitchMode()
         {
-            return new CombinedTextDiff(_option, _showEntireFile, _data);
+            return new CombinedTextDiff(_option, _data);
         }
 
         public void ConvertsToCombinedRange(ref int startLine, ref int endLine, bool isOldSide)

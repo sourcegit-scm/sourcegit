@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -35,13 +36,15 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public BlockNavigation(List<Models.TextDiffLine> lines, bool gotoFirst)
+        public BlockNavigation(List<Models.TextDiffLine> lines, int cur)
         {
             _blocks.Clear();
-            _current = -1;
 
             if (lines.Count == 0)
+            {
+                _current = -1;
                 return;
+            }
 
             var lineIdx = 0;
             var blockStartIdx = 0;
@@ -73,9 +76,12 @@ namespace SourceGit.ViewModels
                 blocks.Add(new Block(blockStartIdx, lines.Count));
 
             _blocks.AddRange(blocks);
+            _current = Math.Min(_blocks.Count - 1, cur);
+        }
 
-            if (gotoFirst)
-                Goto(BlockNavigationDirection.First);
+        public int GetCurrentBlockIndex()
+        {
+            return _current;
         }
 
         public Block GetCurrentBlock()
