@@ -478,10 +478,6 @@ namespace SourceGit.Views
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
 
-        public virtual void UpdateSelectedChunk(double y)
-        {
-        }
-
         public void GotoChange(ViewModels.BlockNavigationDirection direction)
         {
             if (DataContext is not ViewModels.TextDiffContext ctx)
@@ -601,6 +597,10 @@ namespace SourceGit.Views
                 _execSizeChanged = true;
                 AutoScrollToFirstChange();
             }
+        }
+
+        protected virtual void UpdateSelectedChunk(double y)
+        {
         }
 
         private async void OnTextAreaKeyDown(object sender, KeyEventArgs e)
@@ -889,7 +889,62 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
-        public override void UpdateSelectedChunk(double y)
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+            }
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            if (_scrollViewer != null)
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+
+            base.OnUnloaded(e);
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.CombinedTextDiff { Data: { } diff })
+            {
+                var builder = new StringBuilder();
+                foreach (var line in diff.Lines)
+                {
+                    if (line.Content.Length > 1000)
+                    {
+                        builder.Append(line.Content.AsSpan(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                    }
+                    else
+                    {
+                        builder.Append(line.Content);
+                    }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.AppendLine();
+                }
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
+
+            GC.Collect();
+        }
+
+        protected override void UpdateSelectedChunk(double y)
         {
             if (DataContext is not ViewModels.CombinedTextDiff { Data: { } diff } combined)
                 return;
@@ -988,61 +1043,6 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
-                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-            }
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            if (_scrollViewer != null)
-                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-
-            base.OnUnloaded(e);
-        }
-
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-
-            if (DataContext is ViewModels.CombinedTextDiff { Data: { } diff })
-            {
-                var builder = new StringBuilder();
-                foreach (var line in diff.Lines)
-                {
-                    if (line.Content.Length > 10000)
-                    {
-                        builder.Append(line.Content.AsSpan(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} character trimmed)");
-                    }
-                    else
-                    {
-                        builder.Append(line.Content);
-                    }
-
-                    if (line.NoNewLineEndOfFile)
-                        builder.Append("\u26D4");
-
-                    builder.AppendLine();
-                }
-
-                Text = builder.ToString();
-            }
-            else
-            {
-                Text = string.Empty;
-            }
-
-            GC.Collect();
-        }
-
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (!TextArea.TextView.IsPointerOver)
@@ -1061,7 +1061,78 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
-        public override void UpdateSelectedChunk(double y)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == BlockNavigationProperty)
+            {
+                if (change.OldValue is ViewModels.BlockNavigation oldValue)
+                    oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
+                if (change.NewValue is ViewModels.BlockNavigation newValue)
+                    newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
+            }
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
+            }
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+                _scrollViewer = null;
+            }
+
+            base.OnUnloaded(e);
+            GC.Collect();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.TwoSideTextDiff diff)
+            {
+                var builder = new StringBuilder();
+                var lines = IsOld ? diff.Old : diff.New;
+                foreach (var line in lines)
+                {
+                    if (line.Content.Length > 1000)
+                    {
+                        builder.Append(line.Content.AsSpan(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                    }
+                    else
+                    {
+                        builder.Append(line.Content);
+                    }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.AppendLine();
+                }
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
+        }
+
+        protected override void UpdateSelectedChunk(double y)
         {
             if (DataContext is not ViewModels.TwoSideTextDiff diff)
                 return;
@@ -1160,77 +1231,6 @@ namespace SourceGit.Views
 
                 diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
-            }
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == BlockNavigationProperty)
-            {
-                if (change.OldValue is ViewModels.BlockNavigation oldValue)
-                    oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
-                if (change.NewValue is ViewModels.BlockNavigation newValue)
-                    newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
-            }
-        }
-
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
-            }
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-                _scrollViewer = null;
-            }
-
-            base.OnUnloaded(e);
-            GC.Collect();
-        }
-
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-
-            if (DataContext is ViewModels.TwoSideTextDiff diff)
-            {
-                var builder = new StringBuilder();
-                var lines = IsOld ? diff.Old : diff.New;
-                foreach (var line in lines)
-                {
-                    if (line.Content.Length > 1000)
-                    {
-                        builder.Append(line.Content.AsSpan(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
-                    }
-                    else
-                    {
-                        builder.Append(line.Content);
-                    }
-
-                    if (line.NoNewLineEndOfFile)
-                        builder.Append("\u26D4");
-
-                    builder.AppendLine();
-                }
-
-                Text = builder.ToString();
-            }
-            else
-            {
-                Text = string.Empty;
             }
         }
 
