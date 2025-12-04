@@ -478,11 +478,6 @@ namespace SourceGit.Views
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
 
-        public virtual List<Models.TextDiffLine> GetLines()
-        {
-            return [];
-        }
-
         public virtual void UpdateSelectedChunk(double y)
         {
         }
@@ -745,6 +740,17 @@ namespace SourceGit.Views
                 SetCurrentValue(SelectedChunkProperty, chunk);
         }
 
+        private List<Models.TextDiffLine> GetLines()
+        {
+            if (DataContext is ViewModels.CombinedTextDiff combined)
+                return combined.Data.Lines;
+
+            if (DataContext is ViewModels.TwoSideTextDiff twoSides)
+                return IsOld ? twoSides.Old : twoSides.New;
+
+            return [];
+        }
+
         private void UpdateTextMate()
         {
             if (UseSyntaxHighlighting)
@@ -881,13 +887,6 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineNumberMargin(false, false));
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
-        }
-
-        public override List<Models.TextDiffLine> GetLines()
-        {
-            if (DataContext is ViewModels.CombinedTextDiff { Data: { } diff })
-                return diff.Lines;
-            return [];
         }
 
         public override void UpdateSelectedChunk(double y)
@@ -1060,13 +1059,6 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineNumberMargin(true, false));
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
-        }
-
-        public override List<Models.TextDiffLine> GetLines()
-        {
-            if (DataContext is ViewModels.TwoSideTextDiff diff)
-                return IsOld ? diff.Old : diff.New;
-            return [];
         }
 
         public override void UpdateSelectedChunk(double y)
