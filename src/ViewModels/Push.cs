@@ -97,6 +97,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public string AdditionalFlags
+        {
+            get => _additionalFlags;
+            set => SetProperty(ref _additionalFlags, value);
+        }
+
         public Push(Repository repo, Models.Branch localBranch)
         {
             _repo = repo;
@@ -204,7 +210,8 @@ namespace SourceGit.ViewModels
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
                 _isSetTrackOptionVisible && _tracking,
-                ForcePush).Use(log).RunAsync();
+                ForcePush,
+                AdditionalFlags).Use(log).RunAsync();
 
             log.Complete();
             return succ;
@@ -263,5 +270,6 @@ namespace SourceGit.ViewModels
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
         private bool _tracking = true;
+        private string _additionalFlags = string.Empty;
     }
 }

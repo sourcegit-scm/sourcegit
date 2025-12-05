@@ -18,7 +18,7 @@
                  Text="{DynamicResource Text.Push.Title}"/>
     </StackPanel>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,32,32" ColumnDefinitions="130,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,32,32,32" ColumnDefinitions="130,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -122,6 +122,16 @@
                 Content="{DynamicResource Text.Push.Force}"
                 IsChecked="{Binding ForcePush, Mode=TwoWay}"
                 ToolTip.Tip="--force-with-lease"/>
+
+      <TextBlock Grid.Row="7" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Push.AdditionalFlags}"/>
+      <TextBox Grid.Row="7" Grid.Column="1"
+               Height="28" Padding="8,0"
+               VerticalAlignment="Center" HorizontalAlignment="Stretch"
+               Text="{Binding AdditionalFlags, Mode=TwoWay}"
+               Watermark="--no-verify, --dry-run, etc."/>
     </Grid>
   </StackPanel>
 </UserControl>
