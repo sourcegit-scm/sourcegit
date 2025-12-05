@@ -555,6 +555,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">關閉其他分頁</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">關閉右側分頁</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">複製存放庫路徑</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">刷新</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新分頁</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} 天前</x:String>
