@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Push : Command
     {
-        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force)
+        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, string additionalFlags = "")
         {
             _remote = remote;
 
@@ -20,6 +20,8 @@ namespace SourceGit.Commands
                 Args += "-u ";
             if (force)
                 Args += "--force-with-lease ";
+            if (!string.IsNullOrWhiteSpace(additionalFlags))
+                Args += $"{additionalFlags.Trim()} ";
 
             Args += $"{remote} {local}:{remoteBranch}";
         }
