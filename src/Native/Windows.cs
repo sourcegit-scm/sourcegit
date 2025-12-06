@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,8 +9,10 @@ using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Platform;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Native
 {
@@ -69,49 +71,215 @@ namespace SourceGit.Native
             window.ExtendClientAreaToDecorationsHint = true;
             window.Classes.Add("fix_maximized_padding");
 
-            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
+            // Track the last hovered button for proper enter/leave handling
+            Control lastHoveredButton = null;
+            // Track the button that received the left button down event
+            Control pressedButton = null;
+
+            Win32Properties.CustomWndProcHookCallback hookCallback = (hWnd, msg, wParam, lParam, ref handled) =>
             {
-                // Custom WM_NCHITTEST
-                if (msg == 0x0084)
+                const uint WM_NCHITTEST = 0x0084;
+                const uint WM_NCMOUSEMOVE = 0x00A0;
+                const uint WM_NCLBUTTONDOWN = 0x00A1;
+                const uint WM_NCLBUTTONUP = 0x00A2;
+                const uint WM_NCMOUSELEAVE = 0x02A2;
+                const uint WM_MOUSEMOVE = 0x0200;
+                const uint WM_MOUSELEAVE = 0x02A3;
+
+
+                const int HTCLIENT = 1;
+                const int HTMINBUTTON = 8;
+                const int HTMAXBUTTON = 9;
+                const int HTCLOSE = 20;
+
+                switch (msg)
                 {
-                    handled = true;
+                    // Handle non-client mouse move - update button hover states
+                    case WM_NCMOUSEMOVE:
+                        {
+                            var hitTest = wParam.ToInt32();
 
-                    if (window.WindowState == WindowState.FullScreen || window.WindowState == WindowState.Maximized)
-                        return 1; // HTCLIENT
+                            if (hitTest is HTMINBUTTON or HTMAXBUTTON or HTCLOSE)
+                            {
+                                var screenPoint = IntPtrToPixelPoint(lParam);
+                                GetWindowRect(hWnd, out var rcWindow);
 
-                    var p = IntPtrToPixelPoint(lParam);
-                    GetWindowRect(hWnd, out var rcWindow);
+                                // Find the button control at the current position
+                                var button = GetButtonAtPoint(window, screenPoint, rcWindow);
 
-                    var borderThickness = (int)(4 * window.RenderScaling);
-                    int y = 1;
-                    int x = 1;
-                    if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThickness)
-                        x = 0;
-                    else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThickness)
-                        x = 2;
+                                if (button != lastHoveredButton)
+                                {
+                                    // Mouse left the previous button
+                                    if (lastHoveredButton != null)
+                                    {
+                                        ((IPseudoClasses)lastHoveredButton.Classes).Remove(":pointerover");
+                                    }
 
-                    if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThickness)
-                        y = 0;
-                    else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
-                        y = 2;
+                                    // Mouse entered new button
+                                    if (button != null)
+                                    {
+                                        ((IPseudoClasses)button.Classes).Add(":pointerover");
+                                    }
 
-                    var zone = y * 3 + x;
-                    return zone switch
-                    {
-                        0 => 13, // HTTOPLEFT
-                        1 => 12, // HTTOP
-                        2 => 14, // HTTOPRIGHT
-                        3 => 10, // HTLEFT
-                        4 => 1, // HTCLIENT
-                        5 => 11, // HTRIGHT
-                        6 => 16, // HTBOTTOMLEFT
-                        7 => 15, // HTBOTTOM
-                        _ => 17,
-                    };
+                                    lastHoveredButton = button;
+                                }
+
+                                handled = true;
+                                return IntPtr.Zero;
+                            }
+
+                            // Mouse moved to non-button area, clear hover state
+                            if (lastHoveredButton != null)
+                            {
+                                ((IPseudoClasses)lastHoveredButton.Classes).Remove(":pointerover");
+                                lastHoveredButton = null;
+                            }
+
+                            break;
+                        }
+                    // Handle client area mouse move/leave - clear hover state if mouse enters client area
+                    case WM_NCMOUSELEAVE:
+                    case WM_MOUSEMOVE:
+                    case WM_MOUSELEAVE:
+                        {
+                            if (lastHoveredButton != null)
+                            {
+                                ((IPseudoClasses)lastHoveredButton.Classes).Remove(":pointerover");
+                                lastHoveredButton = null;
+                            }
+
+                            break;
+                        }
+                    // Handle non-client left button down - trigger button press
+                    case WM_NCLBUTTONDOWN:
+                        {
+                            var hitTest = wParam.ToInt32();
+
+                            if (hitTest == HTMINBUTTON || hitTest == HTMAXBUTTON || hitTest == HTCLOSE)
+                            {
+                                var screenPoint = IntPtrToPixelPoint(lParam);
+                                GetWindowRect(hWnd, out var rcWindow);
+
+                                // Find the button control at the current position
+                                var button = GetButtonAtPoint(window, screenPoint, rcWindow);
+
+                                if (button != null)
+                                {
+                                    ((IPseudoClasses)button.Classes).Add(":pressed");
+                                    pressedButton = button;
+                                }
+
+                                handled = true;
+                                return IntPtr.Zero;
+                            }
+
+                            break;
+                        }
+                    // Handle non-client left button up - trigger button click
+                    case WM_NCLBUTTONUP:
+                        {
+                            var hitTest = wParam.ToInt32();
+
+                            if (hitTest == HTMINBUTTON || hitTest == HTMAXBUTTON || hitTest == HTCLOSE)
+                            {
+                                var screenPoint = IntPtrToPixelPoint(lParam);
+                                GetWindowRect(hWnd, out var rcWindow);
+
+                                var button = GetButtonAtPoint(window, screenPoint, rcWindow);
+
+                                if (pressedButton != null)
+                                {
+                                    ((IPseudoClasses)pressedButton.Classes).Remove(":pressed");
+                                }
+
+                                // If released on the same button that was pressed, trigger click
+                                if (button != null && button == pressedButton)
+                                {
+                                    // Use Dispatcher to invoke the click after WndProc returns
+                                    Dispatcher.UIThread.Post(() =>
+                                    {
+                                        // Simulate a button click by raising the Click event
+                                        button.RaiseEvent(new Avalonia.Interactivity.RoutedEventArgs(Button.ClickEvent));
+                                    });
+                                }
+
+                                // Reset the pressed button regardless of where the mouse was released
+                                pressedButton = null;
+
+                                handled = true;
+                                return IntPtr.Zero;
+                            }
+
+                            break;
+                        }
+                    // Custom WM_NCHITTEST
+                    case WM_NCHITTEST:
+                        {
+                            handled = true;
+
+                            var p = IntPtrToPixelPoint(lParam);
+                            GetWindowRect(hWnd, out var rcWindow);
+
+                            // Check caption buttons first (for Snap Layouts support)
+                            var hitTestValue = HitTestVisual(window, p, rcWindow);
+
+                            // Return appropriate non-client hit test value for caption buttons
+                            // This enables Windows 11 Snap Layouts
+                            if (IsCaptionButton(hitTestValue))
+                            {
+                                var htValue = hitTestValue switch
+                                {
+                                    Win32HitTestHelper.HitTestValue.MinButton => HTMINBUTTON,
+                                    Win32HitTestHelper.HitTestValue.MaxButton => HTMAXBUTTON,
+                                    Win32HitTestHelper.HitTestValue.Close => HTCLOSE,
+                                    _ => HTCLIENT
+                                };
+                                return new IntPtr(htValue);
+                            }
+
+                            if (window.WindowState is WindowState.FullScreen or WindowState.Maximized)
+                                return new IntPtr(HTCLIENT);
+
+                            var borderThickness = (int)(4 * window.RenderScaling);
+                            var y = 1;
+                            var x = 1;
+                            if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThickness)
+                                x = 0;
+                            else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThickness)
+                                x = 2;
+
+                            if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThickness)
+                                y = 0;
+                            else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
+                                y = 2;
+
+                            var zone = y * 3 + x;
+                            var htResult = zone switch
+                            {
+                                0 => 13, // HTTOPLEFT
+                                1 => 12, // HTTOP
+                                2 => 14, // HTTOPRIGHT
+                                3 => 10, // HTLEFT
+                                4 => 1,  // HTCLIENT
+                                5 => 11, // HTRIGHT
+                                6 => 16, // HTBOTTOMLEFT
+                                7 => 15, // HTBOTTOM
+                                _ => 17, // HTBOTTOMRIGHT
+                            };
+                            return new IntPtr(htResult);
+                        }
                 }
 
                 return IntPtr.Zero;
-            });
+            };
+
+            Win32Properties.AddWndProcHookCallback(window, hookCallback);
+
+            // Remove hook when window is closed
+            window.Closed += (_, _) =>
+            {
+                Win32Properties.RemoveWndProcHookCallback(window, hookCallback);
+            };
         }
 
         public string FindGitExecutable()
@@ -281,6 +449,61 @@ namespace SourceGit.Native
         {
             var v = IntPtr.Size == 4 ? param.ToInt32() : (int)(param.ToInt64() & 0xFFFFFFFF);
             return new PixelPoint((short)(v & 0xffff), (short)(v >> 16));
+        }
+
+        private static PixelPoint PointToClient(PixelPoint screenPoint, RECT windowRect)
+        {
+            return new PixelPoint(
+                screenPoint.X - windowRect.left,
+                screenPoint.Y - windowRect.top);
+        }
+
+        private static Control FindParentButton(Visual visual)
+        {
+            while (visual != null)
+            {
+                if (visual is Button button)
+                    return button;
+                visual = visual.GetVisualParent();
+            }
+            return null;
+        }
+
+        private static Control GetButtonAtPoint(Window window, PixelPoint screenPoint, RECT windowRect)
+        {
+            var clientPos = PointToClient(screenPoint, windowRect);
+            var point = new Point(clientPos.X / window.RenderScaling, clientPos.Y / window.RenderScaling);
+
+            var visual = window.GetVisualAt(point, v =>
+            {
+                if (v is IInputElement ie && (!ie.IsHitTestVisible || !ie.IsEffectivelyVisible))
+                    return false;
+                return true;
+            });
+
+            return FindParentButton(visual);
+        }
+
+        private static Win32HitTestHelper.HitTestValue HitTestVisual(Window window, PixelPoint screenPoint, RECT windowRect)
+        {
+            var clientPos = new PixelPoint(screenPoint.X - windowRect.left, screenPoint.Y - windowRect.top);
+            var point = new Point(clientPos.X / window.RenderScaling, clientPos.Y / window.RenderScaling);
+
+            var visual = window.GetVisualAt(point, v =>
+            {
+                if (v is IInputElement ie && (!ie.IsHitTestVisible || !ie.IsEffectivelyVisible))
+                    return false;
+                return true;
+            });
+
+            return visual != null ? Win32HitTestHelper.GetHitTestResult(visual) : Win32HitTestHelper.HitTestValue.Client;
+        }
+
+        private static bool IsCaptionButton(Win32HitTestHelper.HitTestValue hitTest)
+        {
+            return hitTest is Win32HitTestHelper.HitTestValue.MinButton
+                or Win32HitTestHelper.HitTestValue.MaxButton
+                or Win32HitTestHelper.HitTestValue.Close;
         }
 
         #region EXTERNAL_EDITOR_FINDER

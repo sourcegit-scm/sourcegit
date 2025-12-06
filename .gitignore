@@ -36,6 +36,7 @@ build/*.tar.gz
 build/*.deb
 build/*.rpm
 build/*.AppImage
+publish/
 SourceGit.app/
 build.command
 src/Properties/launchSettings.json
