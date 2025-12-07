@@ -556,6 +556,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Andere Tabs schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Rechte Tabs schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Kopiere Repository-Pfad</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Einfügen</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">Vor {0} Tagen</x:String>
