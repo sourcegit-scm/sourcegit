@@ -56,7 +56,7 @@
 	</Folder>
 
 	<Folder Name="/files/">
-		<File Path=".editconfig"/>
+		<File Path=".editorconfig"/>
 		<File Path=".gitattributes"/>
 		<File Path=".gitignore"/>
 		<File Path=".issuetracker"/>
