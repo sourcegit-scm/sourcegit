@@ -67,7 +67,7 @@ namespace SourceGit.Native
         {
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
             window.ExtendClientAreaToDecorationsHint = true;
-            window.Classes.Add("fix_maximized_padding");
+            window.BorderThickness = new Thickness(1);
 
             Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
             {
