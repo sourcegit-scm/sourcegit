@@ -1814,7 +1814,12 @@ namespace SourceGit.ViewModels
 
         private void FetchInBackground(object sender)
         {
-            Dispatcher.UIThread.Invoke(async Task () =>
+            Dispatcher.UIThread.Invoke(FetchInBackgroundOnUiThread);
+        }
+
+        private async Task FetchInBackgroundOnUiThread()
+        {
+            try
             {
                 if (_settings is not { EnableAutoFetch: true })
                     return;
@@ -1856,7 +1861,11 @@ namespace SourceGit.ViewModels
 
                 _lastFetchTime = DateTime.Now;
                 IsAutoFetching = false;
-            });
+            }
+            catch (OperationCanceledException)
+            {
+                // Ignore cancellation.
+            }
         }
 
         private readonly bool _isWorktree = false;
