@@ -152,6 +152,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">메시지 수정</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">패치로 저장...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">부모에 합치기</x:String>
+  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">부모에 합치기(Fixup)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">변경 사항</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">변경된 파일</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">변경 사항 검색...</x:String>
