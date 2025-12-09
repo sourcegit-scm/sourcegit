@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 
 using Avalonia.Collections;
 using Avalonia.Threading;
@@ -467,10 +468,14 @@ namespace SourceGit.ViewModels
 
         private void UpdateTitle()
         {
-            if (_activeWorkspace == null)
-                return;
+            var builder = new StringBuilder(512);
+            if (_activeWorkspace != null)
+            {
+                var workspaces = Preferences.Instance.Workspaces;
+                if (workspaces.Count == 0 || workspaces.Count > 1 || workspaces[0] != _activeWorkspace)
+                    builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
+            }
 
-            var workspace = _activeWorkspace.Name;
             if (_activePage is { Data: Repository })
             {
                 var node = _activePage.Node;
@@ -485,12 +490,14 @@ namespace SourceGit.ViewModels
                         path = $"~{path.AsSpan(prefixLen)}";
                 }
 
-                Title = $"[{workspace}] {name} ({path})";
+                builder.Append(name).Append(" (").Append(path).Append(')');
             }
             else
             {
-                Title = $"[{workspace}] Repositories";
+                builder.Append("Repositories");
             }
+
+            Title = builder.ToString();
         }
 
         private Workspace _activeWorkspace = null;
