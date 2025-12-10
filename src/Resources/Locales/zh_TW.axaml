@@ -184,7 +184,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息。注意：主題與詳細訊息之間必須留一行空行。</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息，標題與詳細描述之間請使用單行空白區隔。</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
@@ -208,7 +208,7 @@
   ${BRANCH_FRIENDLY_NAME} 所選的分支。對於遠端分支，不包含遠端名稱
   ${SHA} 所選的提交編號
   ${TAG} 所選的標籤
-  ${FILE} 所選的檔案，相對於儲存庫根目錄的路徑
+  ${FILE} 所選的檔案，相對於存放庫根目錄的路徑
   $1, $2 ... 輸入控制項中的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控制項:</x:String>
@@ -449,7 +449,7 @@
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS 物件鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">解鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">解鎖所有由我鎖定的檔案</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">您確定要解鎖所有由您自己鎖定的檔案嗎？</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">您確定要解鎖所有由您自己鎖定的檔案嗎?</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">強制解鎖</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">清理 (prune)</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">執行 `git lfs prune` 以從本機中清理目前版本不需要的 LFS 物件</x:String>
@@ -555,7 +555,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">關閉其他分頁</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">關閉右側分頁</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">複製存放庫路徑</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">刷新</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">重新整理</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新分頁</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} 天前</x:String>
@@ -920,7 +920,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暫存所有檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">檢視不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本: ${0}$</x:String>
-  <x:String x:Key="Text.Workspace" xml:space="preserve">工作區:</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">工作區: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">設定工作區...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本機工作區</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">複製工作區路徑</x:String>
