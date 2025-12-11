@@ -16,7 +16,7 @@
         <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Info}"/>
       </TabItem.Header>
 
-      <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <ScrollViewer Offset="{Binding ScrollOffset, Mode=TwoWay}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
           <v:CommitBaseInfo Content="{Binding Commit}"

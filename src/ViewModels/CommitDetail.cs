@@ -5,7 +5,9 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Avalonia;
 using Avalonia.Threading;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -155,6 +157,12 @@ namespace SourceGit.ViewModels
         {
             get => _canOpenRevisionFileWithDefaultEditor;
             private set => SetProperty(ref _canOpenRevisionFileWithDefaultEditor, value);
+        }
+
+        public Vector ScrollOffset
+        {
+            get => _scrollOffset;
+            set => SetProperty(ref _scrollOffset, value);
         }
 
         public CommitDetail(Repository repo, CommitDetailSharedData sharedData)
@@ -355,6 +363,7 @@ namespace SourceGit.ViewModels
             Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
+            ScrollOffset = Vector.Zero;
 
             if (_commit == null)
                 return;
@@ -640,5 +649,6 @@ namespace SourceGit.ViewModels
         private string _revisionFileSearchFilter = string.Empty;
         private List<string> _revisionFileSearchSuggestion = null;
         private bool _canOpenRevisionFileWithDefaultEditor = false;
+        private Vector _scrollOffset = Vector.Zero;
     }
 }
