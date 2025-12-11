@@ -35,13 +35,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _activePage, value))
-                {
-                    CancelCommandPalette();
-                    UpdateTitle();
-
-                    if (!_ignoreIndexChange && value is { Data: Repository repo })
-                        _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
-                }
+                    PostActivePageChanged(value?.Data as Repository);
             }
         }
 
@@ -59,64 +53,43 @@ namespace SourceGit.ViewModels
             AddNewTab();
 
             var pref = Preferences.Instance;
-            if (string.IsNullOrEmpty(startupRepo))
+            ActiveWorkspace = pref.GetActiveWorkspace();
+
+            var repos = ActiveWorkspace.Repositories.ToArray();
+            foreach (var repo in repos)
             {
-                ActiveWorkspace = pref.GetActiveWorkspace();
-
-                var repos = ActiveWorkspace.Repositories.ToArray();
-                foreach (var repo in repos)
-                {
-                    var node = pref.FindNode(repo) ??
-                        new RepositoryNode
-                        {
-                            Id = repo,
-                            Name = Path.GetFileName(repo),
-                            Bookmark = 0,
-                            IsRepository = true,
-                        };
-
-                    OpenRepositoryInTab(node, null);
-                }
-
-                var activeIdx = ActiveWorkspace.ActiveIdx;
-                if (activeIdx >= 0 && activeIdx < Pages.Count)
-                {
-                    ActivePage = Pages[activeIdx];
-                }
-                else
-                {
-                    ActivePage = Pages[0];
-                    ActiveWorkspace.ActiveIdx = 0;
-                }
-            }
-            else
-            {
-                ActiveWorkspace = new Workspace() { Name = "Unnamed" };
-
-                foreach (var w in pref.Workspaces)
-                    w.IsActive = false;
-
-                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResult();
-                if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
-                {
-                    Pages[0].Notifications.Add(new Models.Notification
+                var node = pref.FindNode(repo) ??
+                    new RepositoryNode
                     {
-                        IsError = true,
-                        Message = $"Given path: '{startupRepo}' is NOT a valid repository!"
-                    });
-                }
-                else
-                {
-                    var node = pref.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
-                    Welcome.Instance.Refresh();
-                    OpenRepositoryInTab(node, null);
-                }
+                        Id = repo,
+                        Name = Path.GetFileName(repo),
+                        Bookmark = 0,
+                        IsRepository = true,
+                    };
+
+                OpenRepositoryInTab(node, null);
             }
 
             _ignoreIndexChange = false;
 
-            if (string.IsNullOrEmpty(_title))
-                UpdateTitle();
+            if (!string.IsNullOrEmpty(startupRepo))
+            {
+                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResult();
+                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
+                {
+                    var node = pref.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
+                    Welcome.Instance.Refresh();
+
+                    OpenRepositoryInTab(node, null);
+                    return;
+                }
+            }
+
+            var activeIdx = ActiveWorkspace.ActiveIdx;
+            if (activeIdx >= 0 && activeIdx < Pages.Count)
+                ActivePage = Pages[activeIdx];
+            else
+                ActivePage = Pages[0];
         }
 
         public void Quit()
@@ -173,18 +146,14 @@ namespace SourceGit.ViewModels
                 OpenRepositoryInTab(node, null);
             }
 
+            _ignoreIndexChange = false;
+
             var activeIdx = to.ActiveIdx;
             if (activeIdx >= 0 && activeIdx < Pages.Count)
-            {
                 ActivePage = Pages[activeIdx];
-            }
             else
-            {
                 ActivePage = Pages[0];
-                to.ActiveIdx = 0;
-            }
 
-            _ignoreIndexChange = false;
             Preferences.Instance.Save();
             GC.Collect();
         }
@@ -203,17 +172,16 @@ namespace SourceGit.ViewModels
             var fromIdx = Pages.IndexOf(from);
             var toIdx = Pages.IndexOf(to);
             Pages.Move(fromIdx, toIdx);
-            ActivePage = from;
 
-            ActiveWorkspace.Repositories.Clear();
+            _activeWorkspace.Repositories.Clear();
             foreach (var p in Pages)
             {
                 if (p.Data is Repository r)
-                    ActiveWorkspace.Repositories.Add(r.FullPath);
+                    _activeWorkspace.Repositories.Add(r.FullPath);
             }
-            ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(from.Node.Id);
 
             _ignoreIndexChange = false;
+            ActivePage = from;
         }
 
         public void GotoNextTab()
@@ -243,8 +211,8 @@ namespace SourceGit.ViewModels
                 var last = Pages[0];
                 if (last.Data is Repository repo)
                 {
-                    ActiveWorkspace.Repositories.Clear();
-                    ActiveWorkspace.ActiveIdx = 0;
+                    _activeWorkspace.Repositories.Clear();
+                    _activeWorkspace.ActiveIdx = 0;
 
                     repo.Close();
 
@@ -253,9 +221,8 @@ namespace SourceGit.ViewModels
                     last.Data = Welcome.Instance;
                     last.Popup?.Cleanup();
                     last.Popup = null;
-                    UpdateTitle();
 
-                    CancelCommandPalette();
+                    PostActivePageChanged(null);
                     GC.Collect();
                 }
                 else
@@ -293,9 +260,9 @@ namespace SourceGit.ViewModels
             }
 
             Pages = new AvaloniaList<LauncherPage> { ActivePage };
-            ActiveWorkspace.ActiveIdx = 0;
             OnPropertyChanged(nameof(Pages));
 
+            _activeWorkspace.ActiveIdx = 0;
             _ignoreIndexChange = false;
             GC.Collect();
         }
@@ -345,14 +312,14 @@ namespace SourceGit.ViewModels
 
             if (page == null)
             {
-                if (ActivePage == null || ActivePage.Node.IsRepository)
+                if (_activePage == null || _activePage.Node.IsRepository)
                 {
                     page = new LauncherPage(node, repo);
                     Pages.Add(page);
                 }
                 else
                 {
-                    page = ActivePage;
+                    page = _activePage;
                     page.Node = node;
                     page.Data = repo;
                 }
@@ -363,20 +330,17 @@ namespace SourceGit.ViewModels
                 page.Data = repo;
             }
 
-            if (page != _activePage)
-                ActivePage = page;
-            else
-                UpdateTitle();
-
-            ActiveWorkspace.Repositories.Clear();
+            _activeWorkspace.Repositories.Clear();
             foreach (var p in Pages)
             {
                 if (p.Data is Repository r)
-                    ActiveWorkspace.Repositories.Add(r.FullPath);
+                    _activeWorkspace.Repositories.Add(r.FullPath);
             }
 
-            if (!_ignoreIndexChange)
-                ActiveWorkspace.ActiveIdx = ActiveWorkspace.Repositories.IndexOf(node.Id);
+            if (_activePage == page)
+                PostActivePageChanged(repo);
+            else
+                ActivePage = page;
         }
 
         public void OpenCommandPalette(ICommandPalette commandPalette)
@@ -388,9 +352,12 @@ namespace SourceGit.ViewModels
 
         public void CancelCommandPalette()
         {
-            _commandPalette?.Dispose();
-            CommandPalette = null;
-            GC.Collect();
+            if (_commandPalette != null)
+            {
+                _commandPalette?.Dispose();
+                CommandPalette = null;
+                GC.Collect();
+            }
         }
 
         public void DispatchNotification(string pageId, string message, bool isError)
@@ -456,7 +423,7 @@ namespace SourceGit.ViewModels
             if (page.Data is Repository repo)
             {
                 if (removeFromWorkspace)
-                    ActiveWorkspace.Repositories.Remove(repo.FullPath);
+                    _activeWorkspace.Repositories.Remove(repo.FullPath);
 
                 repo.Close();
             }
@@ -466,8 +433,11 @@ namespace SourceGit.ViewModels
             page.Data = null;
         }
 
-        private void UpdateTitle()
+        private void PostActivePageChanged(Repository repo)
         {
+            if (_ignoreIndexChange)
+                return;
+
             var builder = new StringBuilder(512);
             if (_activeWorkspace != null)
             {
@@ -497,7 +467,11 @@ namespace SourceGit.ViewModels
                 builder.Append("Repositories");
             }
 
+            CancelCommandPalette();
             Title = builder.ToString();
+
+            if (repo != null)
+                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
         }
 
         private Workspace _activeWorkspace = null;
