@@ -797,8 +797,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上游分支 ：</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">跳转到提交</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">压缩为单个提交</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">合并入：</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">合并修改至父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">修复至父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">父提交：</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH密钥 ：</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>

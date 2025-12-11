@@ -559,7 +559,7 @@ namespace SourceGit.Views
                     squash.IsEnabled = commit.Parents.Count == 1;
                     squash.Click += async (_, e) =>
                     {
-                        await vm.SquashHeadAsync(commit);
+                        await vm.SquashOrFixupHeadAsync(commit, false);
                         e.Handled = true;
                     };
                     menu.Items.Add(squash);
@@ -570,7 +570,7 @@ namespace SourceGit.Views
                     fixup.IsEnabled = commit.Parents.Count == 1;
                     fixup.Click += async (_, e) =>
                     {
-                        await vm.FixupHeadAsync(commit);
+                        await vm.SquashOrFixupHeadAsync(commit, true);
                         e.Handled = true;
                     };
                     menu.Items.Add(fixup);

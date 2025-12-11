@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -322,7 +321,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task SquashHeadAsync(Models.Commit head)
+        public async Task SquashOrFixupHeadAsync(Models.Commit head, bool fixup)
         {
             if (head.Parents.Count == 1)
             {
@@ -330,29 +329,15 @@ namespace SourceGit.ViewModels
                 if (parent == null)
                     return;
 
-                var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                var parentMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
-
-                var builder = new StringBuilder();
-                builder.Append(parentMessage).Append("\n\n").Append(headMessage);
-
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new Squash(_repo, parent, builder.ToString()));
-            }
-        }
-
-        public async Task FixupHeadAsync(Models.Commit head)
-        {
-            if (head.Parents.Count == 1)
-            {
-                var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
-                if (parent == null)
-                    return;
-
-                var parentMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+                string message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+                if (!fixup)
+                {
+                    var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                    message = $"{message}\n\n{headMessage}";
+                }
 
                 if (_repo.CanCreatePopup())
-                    await _repo.ShowAndStartPopupAsync(new Squash(_repo, parent, parentMessage));
+                    _repo.ShowPopup(new SquashOrFixupHead(_repo, parent, message, fixup));
             }
         }
 

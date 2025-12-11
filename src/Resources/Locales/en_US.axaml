@@ -793,8 +793,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copy SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Go to</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">Into:</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">Squash HEAD into Parent</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">Fixup HEAD into Parent</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">Into:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH Private Key:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Private SSH key store path</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>

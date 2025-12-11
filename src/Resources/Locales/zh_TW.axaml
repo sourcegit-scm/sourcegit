@@ -797,8 +797,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上游分支:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">前往此提交</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">壓縮為單個提交</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">合併入:</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">合併變更入父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">修正至父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">父提交:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH 金鑰:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH 金鑰檔案</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開  始</x:String>

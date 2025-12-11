@@ -3,8 +3,13 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class Squash : Popup
+    public class SquashOrFixupHead : Popup
     {
+        public bool IsFixupMode
+        {
+            get;
+        }
+
         public Models.Commit Target
         {
             get;
@@ -17,19 +22,21 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _message, value, true);
         }
 
-        public Squash(Repository repo, Models.Commit target, string message)
+        public SquashOrFixupHead(Repository repo, Models.Commit target, string message, bool fixup)
         {
+            IsFixupMode = fixup;
+            Target = target;
+
             _repo = repo;
             _message = message;
-            Target = target;
         }
 
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
-            ProgressDescription = "Squashing ...";
+            ProgressDescription = IsFixupMode ? "Fixup ..." : "Squashing ...";
 
-            var log = _repo.CreateLog("Squash");
+            var log = _repo.CreateLog(IsFixupMode ? "Fixup" : "Squash");
             Use(log);
 
             var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
@@ -51,7 +58,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PushAsync("SQUASH_AUTO_STASH");
+                    .PushAsync(IsFixupMode ? "FIXUP_AUTO_STASH" : "SQUASH_AUTO_STASH");
                 if (!succ)
                 {
                     log.Complete();
