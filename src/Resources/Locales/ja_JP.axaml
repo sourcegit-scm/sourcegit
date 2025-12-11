@@ -601,8 +601,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上流ブランチ:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHAをコピー</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Go to</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">スカッシュコミット</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH プライベートキー:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">プライベートSSHキーストアのパス</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">スタート</x:String>

@@ -763,8 +763,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">업스트림:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA 복사</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">이동</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">커밋 스쿼시</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">대상:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH 개인 키:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">개인 SSH 키 저장 경로</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">시작</x:String>

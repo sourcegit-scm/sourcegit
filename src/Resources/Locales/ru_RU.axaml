@@ -795,8 +795,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Основная ветка:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Перейти</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Втиснуть ревизии</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Приватный ключ SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Путь хранения приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ЗАПУСК</x:String>

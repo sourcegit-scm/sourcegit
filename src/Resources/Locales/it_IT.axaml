@@ -742,8 +742,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copia SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Vai a</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Compatta Commit</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Chiave Privata SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Percorso per la chiave SSH privata</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">AVVIA</x:String>
