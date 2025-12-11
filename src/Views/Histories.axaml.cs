@@ -563,6 +563,17 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
                     menu.Items.Add(squash);
+
+                    var fixup = new MenuItem();
+                    fixup.Header = App.Text("CommitCM.Fixup");
+                    fixup.Icon = App.CreateMenuIcon("Icons.Fix");
+                    fixup.IsEnabled = commit.Parents.Count == 1;
+                    fixup.Click += async (_, e) =>
+                    {
+                        await vm.FixupHeadAsync(commit);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(fixup);
                 }
                 else
                 {

@@ -341,6 +341,21 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public async Task FixupHeadAsync(Models.Commit head)
+        {
+            if (head.Parents.Count == 1)
+            {
+                var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
+                if (parent == null)
+                    return;
+
+                var parentMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+
+                if (_repo.CanCreatePopup())
+                    await _repo.ShowAndStartPopupAsync(new Squash(_repo, parent, parentMessage));
+            }
+        }
+
         public async Task DropHeadAsync(Models.Commit head)
         {
             var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
