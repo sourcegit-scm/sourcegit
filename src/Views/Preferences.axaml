@@ -501,8 +501,7 @@
                       Height="32"
                       Margin="0,0,16,0"
                       IsVisible="{OnPlatform True, macOS=False}">
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           Text="{DynamicResource Text.Preferences.Shell.Path}"
+                <TextBlock Text="{DynamicResource Text.Preferences.Shell.Path}"
                            HorizontalAlignment="Right" />
               </Border>
               <TextBox Grid.Row="1" Grid.Column="1"
@@ -521,8 +520,7 @@
                       Height="32"
                       Margin="0,0,16,0"
                       IsVisible="{OnPlatform True, macOS=False}">
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           Text="{DynamicResource Text.Preferences.Shell.Args}"
+                <TextBlock Text="{DynamicResource Text.Preferences.Shell.Args}"
                            HorizontalAlignment="Right" />
               </Border>
               <TextBox Grid.Row="2" Grid.Column="1"
@@ -537,7 +535,7 @@
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.DiffMerge}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
-            <Grid Margin="8,0,0,8" RowDefinitions="32,Auto,32,32">
+            <Grid Margin="8,0,0,8" RowDefinitions="32,Auto,Auto,Auto">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
@@ -570,8 +568,7 @@
                       Height="32"
                       Margin="0,0,16,0"
                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           Text="{DynamicResource Text.Preferences.DiffMerge.Path}"
+                <TextBlock Text="{DynamicResource Text.Preferences.DiffMerge.Path}"
                            HorizontalAlignment="Right" />
               </Border>
               <TextBox Grid.Row="1" Grid.Column="1"
@@ -587,23 +584,31 @@
                 </TextBox.InnerRightContent>
               </TextBox>
 
-              <TextBlock Grid.Row="2" Grid.Column="0"
-                         Text="{DynamicResource Text.Preferences.DiffMerge.DiffArgs}"
-                         HorizontalAlignment="Right"
-                         Margin="0,0,16,0"/>
+              <Border Grid.Row="2" Grid.Column="0"
+                      Height="32"
+                      Margin="0,0,16,0"
+                      IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBlock Text="{DynamicResource Text.Preferences.DiffMerge.DiffArgs}"
+                           HorizontalAlignment="Right" />
+              </Border>
               <TextBox Grid.Row="2" Grid.Column="1"
                        Height="28"
                        CornerRadius="3"
-                       Text="{Binding ExternalMergeToolDiffArgs, Mode=TwoWay}"/>
+                       Text="{Binding ExternalMergeToolDiffArgs, Mode=TwoWay}"
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
 
-              <TextBlock Grid.Row="3" Grid.Column="0"
-                         Text="{DynamicResource Text.Preferences.DiffMerge.MergeArgs}"
-                         HorizontalAlignment="Right"
-                         Margin="0,0,16,0"/>
+              <Border Grid.Row="3" Grid.Column="0"
+                      Height="32"
+                      Margin="0,0,16,0"
+                      IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBlock Text="{DynamicResource Text.Preferences.DiffMerge.MergeArgs}"
+                           HorizontalAlignment="Right" />
+              </Border>
               <TextBox Grid.Row="3" Grid.Column="1"
                        Height="28"
                        CornerRadius="3"
-                       Text="{Binding ExternalMergeToolMergeArgs, Mode=TwoWay}"/>
+                       Text="{Binding ExternalMergeToolMergeArgs, Mode=TwoWay}"
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
             </Grid>
           </StackPanel>
         </TabItem>
