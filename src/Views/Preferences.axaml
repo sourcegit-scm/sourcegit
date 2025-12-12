@@ -527,7 +527,13 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding ShellOrTerminalArgs, Mode=TwoWay}"
-                       IsVisible="{OnPlatform True, macOS=False}"/>
+                       IsVisible="{OnPlatform True, macOS=False}">
+                <TextBox.InnerRightContent>
+                  <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.Shell.Args.Tip}">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Border>
+                </TextBox.InnerRightContent>
+              </TextBox>
             </Grid>
 
             <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
@@ -595,7 +601,13 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding ExternalMergeToolDiffArgs, Mode=TwoWay}"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBox.InnerRightContent>
+                  <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.DiffMerge.DiffArgs.Tip}">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Border>
+                </TextBox.InnerRightContent>
+              </TextBox>
 
               <Border Grid.Row="3" Grid.Column="0"
                       Height="32"
@@ -608,7 +620,13 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding ExternalMergeToolMergeArgs, Mode=TwoWay}"
-                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+                       IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBox.InnerRightContent>
+                  <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.DiffMerge.MergeArgs.Tip}">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Border>
+                </TextBox.InnerRightContent>
+              </TextBox>
             </Grid>
           </StackPanel>
         </TabItem>
