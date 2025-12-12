@@ -593,6 +593,8 @@
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">主标签使用固定宽度</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系统默认窗体样式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">对比/合并工具</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">对比命令参数</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">合并命令参数</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">填写工具可执行文件所在位置</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">工具</x:String>

@@ -94,6 +94,18 @@ namespace SourceGit.Native
             set;
         } = string.Empty;
 
+        public static string ExternalMergeArgs
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public static string ExternalDiffArgs
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public static bool UseSystemWindowFrame
         {
             get => OperatingSystem.IsLinux() && _enableSystemWindowFrame;
@@ -187,7 +199,7 @@ namespace SourceGit.Native
                 return null;
 
             var tool = Models.ExternalMerger.Supported[ExternalMergerType];
-            return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? tool.DiffCmd : tool.MergeCmd);
+            return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? ExternalDiffArgs : ExternalMergeArgs);
         }
 
         public static void AutoSelectExternalMergeToolExecFile()
@@ -202,6 +214,15 @@ namespace SourceGit.Native
                     ExternalMergerExecFile = merger.Finder;
                 else
                     ExternalMergerExecFile = string.Empty;
+
+                ExternalDiffArgs = merger.DiffCmd;
+                ExternalMergeArgs = merger.MergeCmd;
+            }
+            else
+            {
+                ExternalMergerExecFile = string.Empty;
+                ExternalDiffArgs = string.Empty;
+                ExternalMergeArgs = string.Empty;
             }
         }
 

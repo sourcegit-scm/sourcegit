@@ -589,6 +589,8 @@
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Diff Arguments</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">Merge Arguments</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Install Path</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Tool</x:String>

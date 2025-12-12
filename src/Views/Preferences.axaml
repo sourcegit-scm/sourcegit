@@ -537,7 +537,7 @@
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.DiffMerge}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
-            <Grid Margin="8,0,0,8" RowDefinitions="32,Auto">
+            <Grid Margin="8,0,0,8" RowDefinitions="32,Auto,32,32">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
@@ -566,11 +566,14 @@
                 </ComboBox.ItemTemplate>
               </ComboBox>
 
-              <TextBlock Grid.Row="1" Grid.Column="0"
-                         Text="{DynamicResource Text.Preferences.DiffMerge.Path}"
-                         HorizontalAlignment="Right"
-                         Margin="0,0,16,0"
-                         IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+              <Border Grid.Row="1" Grid.Column="0"
+                      Height="32"
+                      Margin="0,0,16,0"
+                      IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="{DynamicResource Text.Preferences.DiffMerge.Path}"
+                           HorizontalAlignment="Right" />
+              </Border>
               <TextBox Grid.Row="1" Grid.Column="1"
                        Height="28"
                        CornerRadius="3"
@@ -583,6 +586,24 @@
                   </Button>
                 </TextBox.InnerRightContent>
               </TextBox>
+
+              <TextBlock Grid.Row="2" Grid.Column="0"
+                         Text="{DynamicResource Text.Preferences.DiffMerge.DiffArgs}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <TextBox Grid.Row="2" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding ExternalMergeToolDiffArgs, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="3" Grid.Column="0"
+                         Text="{DynamicResource Text.Preferences.DiffMerge.MergeArgs}"
+                         HorizontalAlignment="Right"
+                         Margin="0,0,16,0"/>
+              <TextBox Grid.Row="3" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding ExternalMergeToolMergeArgs, Mode=TwoWay}"/>
             </Grid>
           </StackPanel>
         </TabItem>

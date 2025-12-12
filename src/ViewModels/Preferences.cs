@@ -23,6 +23,7 @@ namespace SourceGit.ViewModels
 
                 _instance.PrepareGit();
                 _instance.PrepareShellOrTerminal();
+                _instance.PrepareExternalDiffMergeTool();
                 _instance.PrepareWorkspaces();
 
                 return _instance;
@@ -402,6 +403,8 @@ namespace SourceGit.ViewModels
                     {
                         Native.OS.AutoSelectExternalMergeToolExecFile();
                         OnPropertyChanged(nameof(ExternalMergeToolPath));
+                        OnPropertyChanged(nameof(ExternalMergeToolDiffArgs));
+                        OnPropertyChanged(nameof(ExternalMergeToolMergeArgs));
                     }
                 }
             }
@@ -415,6 +418,32 @@ namespace SourceGit.ViewModels
                 if (!Native.OS.ExternalMergerExecFile.Equals(value, StringComparison.Ordinal))
                 {
                     Native.OS.ExternalMergerExecFile = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ExternalMergeToolDiffArgs
+        {
+            get => Native.OS.ExternalDiffArgs;
+            set
+            {
+                if (!Native.OS.ExternalDiffArgs.Equals(value, StringComparison.Ordinal))
+                {
+                    Native.OS.ExternalDiffArgs = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ExternalMergeToolMergeArgs
+        {
+            get => Native.OS.ExternalMergeArgs;
+            set
+            {
+                if (!Native.OS.ExternalMergeArgs.Equals(value, StringComparison.Ordinal))
+                {
+                    Native.OS.ExternalMergeArgs = value;
                     OnPropertyChanged();
                 }
             }
@@ -627,6 +656,19 @@ namespace SourceGit.ViewModels
                     ShellOrTerminalType = i;
                     break;
                 }
+            }
+        }
+
+        private void PrepareExternalDiffMergeTool()
+        {
+            var mergerType = Native.OS.ExternalMergerType;
+            if (mergerType > 0 && mergerType < Models.ExternalMerger.Supported.Count)
+            {
+                var merger = Models.ExternalMerger.Supported[mergerType];
+                if (string.IsNullOrEmpty(Native.OS.ExternalDiffArgs))
+                    Native.OS.ExternalDiffArgs = merger.DiffCmd;
+                if (string.IsNullOrEmpty(Native.OS.ExternalMergeArgs))
+                    Native.OS.ExternalMergeArgs = merger.MergeCmd;
             }
         }
 
