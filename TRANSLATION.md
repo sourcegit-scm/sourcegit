@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.13%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.80%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -14,15 +14,18 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.02%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.69%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -31,15 +34,18 @@ This document shows the translation status of each locale file in the repository
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-98.36%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-98.04%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -54,15 +60,18 @@ This document shows the translation status of each locale file in the repository
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-96.18%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-95.87%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -95,8 +104,11 @@ This document shows the translation status of each locale file in the repository
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.SquashOrFixup.Squash
@@ -105,7 +117,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-93.56%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-93.25%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -153,12 +165,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
 - Text.Preferences.General.UseGitHubStyleAvatar
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.ScanRepositories.UseCustomDir
@@ -172,7 +187,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-75.11%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-74.86%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -319,7 +334,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
@@ -327,6 +344,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.Pull.RecurseSubmodules
 - Text.Push.New
 - Text.Push.Revision
@@ -408,7 +426,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-96.51%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-96.19%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -437,8 +455,11 @@ This document shows the translation status of each locale file in the repository
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.Appearance.UseFixedTabWidth
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.SquashOrFixup.Squash
@@ -448,7 +469,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-68.89%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-68.66%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -631,7 +652,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.General.DateFormat
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
@@ -643,6 +666,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.SSLVerify
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.Pull.RecurseSubmodules
 - Text.Push.New
 - Text.Push.Revision
@@ -741,7 +765,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.02%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.69%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -750,15 +774,18 @@ This document shows the translation status of each locale file in the repository
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-75.22%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-74.97%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -905,7 +932,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
@@ -913,6 +942,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.Pull.RecurseSubmodules
 - Text.Push.New
 - Text.Push.Revision
@@ -993,7 +1023,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-76.31%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-76.06%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1135,7 +1165,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
@@ -1143,6 +1175,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
 - Text.Pull.RecurseSubmodules
 - Text.Push.New
 - Text.Push.Revision
