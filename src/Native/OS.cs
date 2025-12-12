@@ -21,7 +21,7 @@ namespace SourceGit.Native
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
 
-            void OpenTerminal(string workdir);
+            void OpenTerminal(string workdir, string args);
             void OpenInFileManager(string path, bool select);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
@@ -65,6 +65,12 @@ namespace SourceGit.Native
         } = "manager";
 
         public static string ShellOrTerminal
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public static string ShellOrTerminalArgs
         {
             get;
             set;
@@ -168,6 +174,8 @@ namespace SourceGit.Native
                 ShellOrTerminal = string.Empty;
             else
                 ShellOrTerminal = _backend.FindTerminal(shell);
+
+            ShellOrTerminalArgs = shell.Args;
         }
 
         public static Models.DiffMergeTool GetDiffMergeTool(bool onlyDiff)
@@ -212,7 +220,7 @@ namespace SourceGit.Native
             if (string.IsNullOrEmpty(ShellOrTerminal))
                 App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
             else
-                _backend.OpenTerminal(workdir);
+                _backend.OpenTerminal(workdir, ShellOrTerminalArgs);
         }
 
         public static void OpenWithDefaultEditor(string file)

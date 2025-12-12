@@ -203,7 +203,7 @@ namespace SourceGit.Native
             Process.Start(info);
         }
 
-        public void OpenTerminal(string workdir)
+        public void OpenTerminal(string workdir, string args)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
@@ -218,11 +218,7 @@ namespace SourceGit.Native
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = cwd;
             startInfo.FileName = terminal;
-
-            // Directly launching `Windows Terminal` need to specify the `-d` parameter
-            if (terminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"-d {cwd.Quoted()}";
-
+            startInfo.Arguments = args;
             Process.Start(startInfo);
         }
 

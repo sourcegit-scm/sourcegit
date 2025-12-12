@@ -62,15 +62,7 @@ namespace SourceGit.Native
 
         public string FindTerminal(Models.ShellOrTerminal shell)
         {
-            return shell.Type switch
-            {
-                "mac-terminal" => "Terminal",
-                "iterm2" => "iTerm",
-                "warp" => "Warp",
-                "ghostty" => "Ghostty",
-                "kitty" => "kitty",
-                _ => string.Empty,
-            };
+            return shell.Exec;
         }
 
         public List<Models.ExternalTool> FindExternalTools()
@@ -101,7 +93,7 @@ namespace SourceGit.Native
                 Process.Start("open", $"{path.Quoted()} -R");
         }
 
-        public void OpenTerminal(string workdir)
+        public void OpenTerminal(string workdir, string _)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var dir = string.IsNullOrEmpty(workdir) ? home : workdir;

@@ -349,7 +349,7 @@ namespace SourceGit.ViewModels
             get => _shellOrTerminal;
             set
             {
-                if (SetProperty(ref _shellOrTerminal, value))
+                if (SetProperty(ref _shellOrTerminal, value) && !_isLoading)
                 {
                     if (value >= 0 && value < Models.ShellOrTerminal.Supported.Count)
                         Native.OS.SetShellOrTerminal(Models.ShellOrTerminal.Supported[value]);
@@ -357,6 +357,7 @@ namespace SourceGit.ViewModels
                         Native.OS.SetShellOrTerminal(null);
 
                     OnPropertyChanged(nameof(ShellOrTerminalPath));
+                    OnPropertyChanged(nameof(ShellOrTerminalArgs));
                 }
             }
         }
@@ -369,6 +370,19 @@ namespace SourceGit.ViewModels
                 if (value != Native.OS.ShellOrTerminal)
                 {
                     Native.OS.ShellOrTerminal = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ShellOrTerminalArgs
+        {
+            get => Native.OS.ShellOrTerminalArgs;
+            set
+            {
+                if (value != Native.OS.ShellOrTerminalArgs)
+                {
+                    Native.OS.ShellOrTerminalArgs = value;
                     OnPropertyChanged();
                 }
             }

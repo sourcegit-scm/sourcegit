@@ -87,20 +87,15 @@ namespace SourceGit.Native
             }
         }
 
-        public void OpenTerminal(string workdir)
+        public void OpenTerminal(string workdir, string args)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
-            var terminal = OS.ShellOrTerminal;
 
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = cwd;
-            startInfo.FileName = terminal;
-
-            if (terminal.EndsWith("wezterm", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"start --cwd {cwd.Quoted()}";
-            else if (terminal.EndsWith("ptyxis", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"--new-window --working-directory={cwd.Quoted()}";
+            startInfo.FileName = OS.ShellOrTerminal;
+            startInfo.Arguments = args;
 
             try
             {

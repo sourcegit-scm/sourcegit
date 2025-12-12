@@ -471,7 +471,7 @@
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.Shell}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
-            <Grid Margin="8,0,0,0" RowDefinitions="32,Auto">
+            <Grid Margin="8,0,0,0" RowDefinitions="32,Auto,Auto">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
@@ -479,7 +479,7 @@
 
               <TextBlock Grid.Row="0" Grid.Column="0"
                          Text="{DynamicResource Text.Preferences.Shell.Type}"
-                         HorizontalAlignment="Right"
+                         HorizontalAlignment="Right" VerticalAlignment="Center"
                          Margin="0,0,16,0"/>
               <ComboBox Grid.Row="0" Grid.Column="1"
                         MinHeight="28"
@@ -497,11 +497,14 @@
                 </ComboBox.ItemTemplate>
               </ComboBox>
 
-              <TextBlock Grid.Row="1" Grid.Column="0"
-                         Text="{DynamicResource Text.Preferences.Shell.Path}"
-                         HorizontalAlignment="Right"
-                         Margin="0,0,16,0"
-                         IsVisible="{OnPlatform True, macOS=False}"/>
+              <Border Grid.Row="1" Grid.Column="0"
+                      Height="32"
+                      Margin="0,0,16,0"
+                      IsVisible="{OnPlatform True, macOS=False}">
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="{DynamicResource Text.Preferences.Shell.Path}"
+                           HorizontalAlignment="Right" />
+              </Border>
               <TextBox Grid.Row="1" Grid.Column="1"
                        Height="28"
                        CornerRadius="3"
@@ -513,6 +516,20 @@
                   </Button>
                 </TextBox.InnerRightContent>
               </TextBox>
+
+              <Border Grid.Row="2" Grid.Column="0"
+                      Height="32"
+                      Margin="0,0,16,0"
+                      IsVisible="{OnPlatform True, macOS=False}">
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="{DynamicResource Text.Preferences.Shell.Args}"
+                           HorizontalAlignment="Right" />
+              </Border>
+              <TextBox Grid.Row="2" Grid.Column="1"
+                       Height="28"
+                       CornerRadius="3"
+                       Text="{Binding ShellOrTerminalArgs, Mode=TwoWay}"
+                       IsVisible="{OnPlatform True, macOS=False}"/>
             </Grid>
 
             <StackPanel Orientation="Horizontal" Margin="0,24,0,0">
