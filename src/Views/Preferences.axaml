@@ -530,7 +530,7 @@
                        IsVisible="{OnPlatform True, macOS=False}">
                 <TextBox.InnerRightContent>
                   <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.Shell.Args.Tip}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}" Opacity="0.8"/>
                   </Border>
                 </TextBox.InnerRightContent>
               </TextBox>
@@ -604,7 +604,7 @@
                        IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                 <TextBox.InnerRightContent>
                   <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.DiffMerge.DiffArgs.Tip}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}" Opacity="0.8"/>
                   </Border>
                 </TextBox.InnerRightContent>
               </TextBox>
@@ -623,7 +623,7 @@
                        IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                 <TextBox.InnerRightContent>
                   <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.DiffMerge.MergeArgs.Tip}">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}" Opacity="0.8"/>
                   </Border>
                 </TextBox.InnerRightContent>
               </TextBox>
