@@ -486,7 +486,7 @@
                         Padding="8,0"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding Source={x:Static m:ShellOrTerminal.Supported}}"
-                        SelectedIndex="{Binding ShellOrTerminal, Mode=TwoWay}">
+                        SelectedIndex="{Binding ShellOrTerminalType, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                   <DataTemplate x:DataType="{x:Type m:ShellOrTerminal}">
                     <Grid ColumnDefinitions="Auto,*">

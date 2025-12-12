@@ -344,12 +344,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public int ShellOrTerminal
+        public int ShellOrTerminalType
         {
-            get => _shellOrTerminal;
+            get => _shellOrTerminalType;
             set
             {
-                if (SetProperty(ref _shellOrTerminal, value) && !_isLoading)
+                if (SetProperty(ref _shellOrTerminalType, value) && !_isLoading)
                 {
                     if (value >= 0 && value < Models.ShellOrTerminal.Supported.Count)
                         Native.OS.SetShellOrTerminal(Models.ShellOrTerminal.Supported[value]);
@@ -616,7 +616,7 @@ namespace SourceGit.ViewModels
 
         private void PrepareShellOrTerminal()
         {
-            if (_shellOrTerminal >= 0)
+            if (_shellOrTerminalType >= 0)
                 return;
 
             for (int i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
@@ -624,7 +624,7 @@ namespace SourceGit.ViewModels
                 var shell = Models.ShellOrTerminal.Supported[i];
                 if (Native.OS.TestShellOrTerminal(shell))
                 {
-                    ShellOrTerminal = i;
+                    ShellOrTerminalType = i;
                     break;
                 }
             }
@@ -761,7 +761,7 @@ namespace SourceGit.ViewModels
         private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
-        private int _shellOrTerminal = -1;
+        private int _shellOrTerminalType = -1;
         private uint _statisticsSampleColor = 0xFF00FF00;
     }
 }
