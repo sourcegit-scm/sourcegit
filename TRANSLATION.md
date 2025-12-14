@@ -765,23 +765,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.69%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.89%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
-- Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
-- Text.PageTabBar.Tab.MoveToWorkspace
-- Text.PageTabBar.Tab.Refresh
 - Text.Preferences.DiffMerge.DiffArgs
-- Text.Preferences.DiffMerge.DiffArgs.Tip
-- Text.Preferences.DiffMerge.MergeArgs
-- Text.Preferences.DiffMerge.MergeArgs.Tip
-- Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
-- Text.SquashOrFixup.Squash
-- Text.SquashOrFixup.Fixup
-- Text.SquashOrFixup.Into
 
 </details>
 
