@@ -439,15 +439,6 @@ namespace SourceGit.Views
             set => SetValue(TabWidthProperty, value);
         }
 
-        public static readonly StyledProperty<bool> EnableChunkSelectionProperty =
-            AvaloniaProperty.Register<ThemedTextDiffPresenter, bool>(nameof(EnableChunkSelection));
-
-        public bool EnableChunkSelection
-        {
-            get => GetValue(EnableChunkSelectionProperty);
-            set => SetValue(EnableChunkSelectionProperty, value);
-        }
-
         public static readonly StyledProperty<ViewModels.TextDiffSelectedChunk> SelectedChunkProperty =
             AvaloniaProperty.Register<ThemedTextDiffPresenter, ViewModels.TextDiffSelectedChunk>(nameof(SelectedChunk));
 
@@ -487,52 +478,16 @@ namespace SourceGit.Views
             TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
         }
 
-        public virtual List<Models.TextDiffLine> GetLines()
+        public void GotoChange(ViewModels.BlockNavigationDirection direction)
         {
-            return [];
-        }
+            if (DataContext is not ViewModels.TextDiffContext ctx)
+                return;
 
-        public virtual void UpdateSelectedChunk(double y)
-        {
-        }
-
-        public virtual void GotoFirstChange()
-        {
-            var first = BlockNavigation.GotoFirst();
-            if (first != null)
+            var block = BlockNavigation.Goto(direction);
+            if (block != null)
             {
-                TextArea.Caret.Line = first.Start;
-                ScrollToLine(first.Start);
-            }
-        }
-
-        public virtual void GotoPrevChange()
-        {
-            var prev = BlockNavigation.GotoPrev();
-            if (prev != null)
-            {
-                TextArea.Caret.Line = prev.Start;
-                ScrollToLine(prev.Start);
-            }
-        }
-
-        public virtual void GotoNextChange()
-        {
-            var next = BlockNavigation.GotoNext();
-            if (next != null)
-            {
-                TextArea.Caret.Line = next.Start;
-                ScrollToLine(next.Start);
-            }
-        }
-
-        public virtual void GotoLastChange()
-        {
-            var next = BlockNavigation.GotoLast();
-            if (next != null)
-            {
-                TextArea.Caret.Line = next.Start;
-                ScrollToLine(next.Start);
+                TextArea.Caret.Line = block.Start;
+                ScrollToLine(block.Start);
             }
         }
 
@@ -627,9 +582,9 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnDataContextBeginUpdate()
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            base.OnDataContextBeginUpdate();
+            base.OnDataContextChanged(e);
             AutoScrollToFirstChange();
         }
 
@@ -642,6 +597,10 @@ namespace SourceGit.Views
                 _execSizeChanged = true;
                 AutoScrollToFirstChange();
             }
+        }
+
+        protected virtual void UpdateSelectedChunk(double y)
+        {
         }
 
         private async void OnTextAreaKeyDown(object sender, KeyEventArgs e)
@@ -688,51 +647,57 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
-            if (EnableChunkSelection && sender is TextView view)
+            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+                return;
+
+            if (sender is not TextView view)
+                return;
+
+            var selection = TextArea.Selection;
+            if (selection == null || selection.IsEmpty)
             {
-                var selection = TextArea.Selection;
-                if (selection == null || selection.IsEmpty)
+                if (_lastSelectStart != _lastSelectEnd)
                 {
-                    if (_lastSelectStart != _lastSelectEnd)
-                    {
-                        _lastSelectStart = TextLocation.Empty;
-                        _lastSelectEnd = TextLocation.Empty;
-                    }
-
-                    var chunk = SelectedChunk;
-                    if (chunk != null)
-                    {
-                        var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
-                        if (rect.Contains(e.GetPosition(this)))
-                            return;
-                    }
-
-                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
-                    return;
+                    _lastSelectStart = TextLocation.Empty;
+                    _lastSelectEnd = TextLocation.Empty;
                 }
 
-                var start = selection.StartPosition.Location;
-                var end = selection.EndPosition.Location;
-                if (_lastSelectStart != start || _lastSelectEnd != end)
+                var chunk = SelectedChunk;
+                if (chunk != null)
                 {
-                    _lastSelectStart = start;
-                    _lastSelectEnd = end;
-                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
-                    return;
+                    var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+                    if (rect.Contains(e.GetPosition(this)))
+                        return;
                 }
 
-                if (SelectedChunk == null)
-                    UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                return;
             }
+
+            var start = selection.StartPosition.Location;
+            var end = selection.EndPosition.Location;
+            if (_lastSelectStart != start || _lastSelectEnd != end)
+            {
+                _lastSelectStart = start;
+                _lastSelectEnd = end;
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
+                return;
+            }
+
+            if (SelectedChunk == null)
+                UpdateSelectedChunk(e.GetPosition(view).Y + view.VerticalOffset);
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (EnableChunkSelection && sender is TextView view)
-            {
-                var y = e.GetPosition(view).Y + view.VerticalOffset;
-                Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
-            }
+            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+                return;
+
+            if (sender is not TextView view)
+                return;
+
+            var y = e.GetPosition(view).Y + view.VerticalOffset;
+            Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
         }
 
         private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
@@ -775,6 +740,17 @@ namespace SourceGit.Views
                 SetCurrentValue(SelectedChunkProperty, chunk);
         }
 
+        private List<Models.TextDiffLine> GetLines()
+        {
+            if (DataContext is ViewModels.CombinedTextDiff combined)
+                return combined.Data.Lines;
+
+            if (DataContext is ViewModels.TwoSideTextDiff twoSides)
+                return IsOld ? twoSides.Old : twoSides.New;
+
+            return [];
+        }
+
         private void UpdateTextMate()
         {
             if (UseSyntaxHighlighting)
@@ -808,9 +784,6 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.TextDiffContext ctx)
                 return;
 
-            if (ctx.IsSideBySide() && !IsOld)
-                return;
-
             var curBlock = ctx.BlockNavigation.GetCurrentBlock();
             if (curBlock == null)
                 return;
@@ -822,8 +795,9 @@ namespace SourceGit.Views
                 var scroller = this.FindDescendantOfType<ScrollViewer>();
                 if (scroller != null)
                 {
-                    ctx.ScrollOffset = new Vector(0, vOffset);
-                    scroller.Offset = ctx.ScrollOffset;
+                    var scrollOffset = new Vector(0, vOffset);
+                    scroller.Offset = scrollOffset;
+                    ctx.ScrollOffset = scrollOffset;
                 }
             }
         }
@@ -915,14 +889,62 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
-        public override List<Models.TextDiffLine> GetLines()
+        protected override void OnLoaded(RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.CombinedTextDiff { Data: { } diff })
-                return diff.Lines;
-            return [];
+            base.OnLoaded(e);
+
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+            }
         }
 
-        public override void UpdateSelectedChunk(double y)
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            if (_scrollViewer != null)
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+
+            base.OnUnloaded(e);
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.CombinedTextDiff { Data: { } diff })
+            {
+                var builder = new StringBuilder();
+                foreach (var line in diff.Lines)
+                {
+                    if (line.Content.Length > 1000)
+                    {
+                        builder.Append(line.Content.AsSpan(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                    }
+                    else
+                    {
+                        builder.Append(line.Content);
+                    }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.AppendLine();
+                }
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
+
+            GC.Collect();
+        }
+
+        protected override void UpdateSelectedChunk(double y)
         {
             if (DataContext is not ViewModels.CombinedTextDiff { Data: { } diff } combined)
                 return;
@@ -1021,61 +1043,6 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
-                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-            }
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            if (_scrollViewer != null)
-                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-
-            base.OnUnloaded(e);
-        }
-
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-
-            if (DataContext is ViewModels.CombinedTextDiff { Data: { } diff })
-            {
-                var builder = new StringBuilder();
-                foreach (var line in diff.Lines)
-                {
-                    if (line.Content.Length > 10000)
-                    {
-                        builder.Append(line.Content.AsSpan(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} character trimmed)");
-                    }
-                    else
-                    {
-                        builder.Append(line.Content);
-                    }
-
-                    if (line.NoNewLineEndOfFile)
-                        builder.Append("\u26D4");
-
-                    builder.AppendLine();
-                }
-
-                Text = builder.ToString();
-            }
-            else
-            {
-                Text = string.Empty;
-            }
-
-            GC.Collect();
-        }
-
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (!TextArea.TextView.IsPointerOver)
@@ -1094,38 +1061,78 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineModifyTypeMargin());
         }
 
-        public override List<Models.TextDiffLine> GetLines()
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == BlockNavigationProperty)
+            {
+                if (change.OldValue is ViewModels.BlockNavigation oldValue)
+                    oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
+                if (change.NewValue is ViewModels.BlockNavigation newValue)
+                    newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
+            }
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
+            }
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
+                _scrollViewer = null;
+            }
+
+            base.OnUnloaded(e);
+            GC.Collect();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
             if (DataContext is ViewModels.TwoSideTextDiff diff)
-                return IsOld ? diff.Old : diff.New;
-            return [];
+            {
+                var builder = new StringBuilder();
+                var lines = IsOld ? diff.Old : diff.New;
+                foreach (var line in lines)
+                {
+                    if (line.Content.Length > 1000)
+                    {
+                        builder.Append(line.Content.AsSpan(0, 1000));
+                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                    }
+                    else
+                    {
+                        builder.Append(line.Content);
+                    }
+
+                    if (line.NoNewLineEndOfFile)
+                        builder.Append("\u26D4");
+
+                    builder.AppendLine();
+                }
+
+                Text = builder.ToString();
+            }
+            else
+            {
+                Text = string.Empty;
+            }
         }
 
-        public override void GotoFirstChange()
-        {
-            base.GotoFirstChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoPrevChange()
-        {
-            base.GotoPrevChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoNextChange()
-        {
-            base.GotoNextChange();
-            SyncScrollOffset();
-        }
-
-        public override void GotoLastChange()
-        {
-            base.GotoLastChange();
-            SyncScrollOffset();
-        }
-
-        public override void UpdateSelectedChunk(double y)
+        protected override void UpdateSelectedChunk(double y)
         {
             if (DataContext is not ViewModels.TwoSideTextDiff diff)
                 return;
@@ -1227,77 +1234,6 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == BlockNavigationProperty)
-            {
-                if (change.OldValue is ViewModels.BlockNavigation oldValue)
-                    oldValue.PropertyChanged -= OnBlockNavigationPropertyChanged;
-                if (change.NewValue is ViewModels.BlockNavigation newValue)
-                    newValue.PropertyChanged += OnBlockNavigationPropertyChanged;
-            }
-        }
-
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
-            }
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged -= OnTextViewScrollChanged;
-                _scrollViewer = null;
-            }
-
-            base.OnUnloaded(e);
-            GC.Collect();
-        }
-
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-
-            if (DataContext is ViewModels.TwoSideTextDiff diff)
-            {
-                var builder = new StringBuilder();
-                var lines = IsOld ? diff.Old : diff.New;
-                foreach (var line in lines)
-                {
-                    if (line.Content.Length > 1000)
-                    {
-                        builder.Append(line.Content.AsSpan(0, 1000));
-                        builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
-                    }
-                    else
-                    {
-                        builder.Append(line.Content);
-                    }
-
-                    if (line.NoNewLineEndOfFile)
-                        builder.Append("\u26D4");
-
-                    builder.AppendLine();
-                }
-
-                Text = builder.ToString();
-            }
-            else
-            {
-                Text = string.Empty;
-            }
-        }
-
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (_scrollViewer == null || DataContext is not ViewModels.TwoSideTextDiff diff)
@@ -1319,12 +1255,6 @@ namespace SourceGit.Views
         {
             if ("Indicator".Equals(e.PropertyName, StringComparison.Ordinal))
                 TextArea?.TextView?.Redraw();
-        }
-
-        private void SyncScrollOffset()
-        {
-            if (_scrollViewer is not null && DataContext is ViewModels.TwoSideTextDiff diff)
-                diff.ScrollOffset = _scrollViewer.Offset;
         }
 
         private ScrollViewer _scrollViewer = null;
@@ -1535,11 +1465,7 @@ namespace SourceGit.Views
 
         private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff })
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1552,42 +1478,31 @@ namespace SourceGit.Views
 
             using var lockWatcher = repo.LockWatcher();
 
-            if (!selection.HasLeftChanges)
+            var tmpFile = Path.GetTempFileName();
+            if (change.WorkTree == Models.ChangeState.Untracked)
             {
-                await new Commands.Add(repo.FullPath, change).ExecAsync();
+                diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
+            }
+            else if (chunk.Combined)
+            {
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
             }
             else
             {
-                var tmpFile = Path.GetTempFileName();
-                if (change.WorkTree == Models.ChangeState.Untracked)
-                {
-                    diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
-                }
-                else if (chunk.Combined)
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
-                }
-                else
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
-                }
-
-                await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
-                File.Delete(tmpFile);
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
             }
+
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
+            File.Delete(tmpFile);
 
             repo.MarkWorkingCopyDirtyManually();
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff })
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } })
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1600,38 +1515,24 @@ namespace SourceGit.Views
 
             using var lockWatcher = repo.LockWatcher();
 
-            if (!selection.HasLeftChanges)
-            {
-                if (change.DataForAmend != null)
-                    await new Commands.UnstageChangesForAmend(repo.FullPath, [change]).ExecAsync();
-                else
-                    await new Commands.Restore(repo.FullPath, change).ExecAsync();
-            }
+            var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+            var tmpFile = Path.GetTempFileName();
+            if (change.Index == Models.ChangeState.Added)
+                diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+            else if (chunk.Combined)
+                diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
             else
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                var tmpFile = Path.GetTempFileName();
-                if (change.Index == Models.ChangeState.Added)
-                    diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                else if (chunk.Combined)
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                else
-                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
+                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
-                await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
-                File.Delete(tmpFile);
-            }
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
+            File.Delete(tmpFile);
 
             repo.MarkWorkingCopyDirtyManually();
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff })
-                return;
-
-            var change = diff.Option.WorkingCopyChange;
-            if (change == null)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1639,37 +1540,29 @@ namespace SourceGit.Views
                 return;
 
             var repoView = this.FindAncestorOfType<Repository>();
-
             if (repoView?.DataContext is not ViewModels.Repository repo)
                 return;
 
             using var lockWatcher = repo.LockWatcher();
 
-            if (!selection.HasLeftChanges)
+            var tmpFile = Path.GetTempFileName();
+            if (change.Index == Models.ChangeState.Added)
             {
-                await Commands.Discard.ChangesAsync(repo.FullPath, [change], null);
+                diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+            }
+            else if (chunk.Combined)
+            {
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
             }
             else
             {
-                var tmpFile = Path.GetTempFileName();
-                if (change.Index == Models.ChangeState.Added)
-                {
-                    diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
-                }
-                else if (chunk.Combined)
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
-                }
-                else
-                {
-                    var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                    diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
-                }
-
-                await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
-                File.Delete(tmpFile);
+                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
+                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
             }
+
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
+            File.Delete(tmpFile);
 
             repo.MarkWorkingCopyDirtyManually();
         }

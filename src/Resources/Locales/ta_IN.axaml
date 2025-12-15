@@ -602,8 +602,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">மேல்ஓடை:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA ஐ நகலெடு</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">இதற்கு செல்</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">நொறுக்கு உறுதிமொழிகள்</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">இதில்:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">பாஓடு தனியார் திறவுகோல்:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">தனியார் பாஓடு திறவுகோல் கடை பாதை</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">தொடங்கு</x:String>

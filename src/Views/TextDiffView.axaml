@@ -14,7 +14,7 @@
         <DataTemplate DataType="vm:CombinedTextDiff">
           <Grid ColumnDefinitions="*,1,12">
             <v:CombinedTextDiffPresenter Grid.Column="0"
-                                         FileName="{Binding File}"
+                                         FileName="{Binding Option.Path}"
                                          Foreground="{DynamicResource Brush.FG1}"
                                          LineBrush="{DynamicResource Brush.Border2}"
                                          EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
@@ -29,7 +29,6 @@
                                          UseSyntaxHighlighting="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting}"
                                          WordWrap="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableDiffViewWordWrap}"
                                          ShowHiddenSymbols="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                         EnableChunkSelection="{Binding EnableChunkOption}"
                                          SelectedChunk="{Binding SelectedChunk, Mode=TwoWay}"
                                          BlockNavigation="{Binding BlockNavigation, Mode=OneWay}"/>
 
@@ -46,7 +45,7 @@
           <Grid ColumnDefinitions="*,1,*,1,12">
             <v:SingleSideTextDiffPresenter Grid.Column="0"
                                            IsOld="True"
-                                           FileName="{Binding File}"
+                                           FileName="{Binding Option.Path}"
                                            Foreground="{DynamicResource Brush.FG1}"
                                            LineBrush="{DynamicResource Brush.Border2}"
                                            EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
@@ -61,7 +60,6 @@
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting}"
                                            WordWrap="False"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                           EnableChunkSelection="{Binding EnableChunkOption, Mode=OneWay}"
                                            SelectedChunk="{Binding SelectedChunk, Mode=TwoWay}"
                                            BlockNavigation="{Binding BlockNavigation, Mode=OneWay}"/>
 
@@ -69,7 +67,7 @@
 
             <v:SingleSideTextDiffPresenter Grid.Column="2"
                                            IsOld="False"
-                                           FileName="{Binding File}"
+                                           FileName="{Binding Option.Path}"
                                            Foreground="{DynamicResource Brush.FG1}"
                                            LineBrush="{DynamicResource Brush.Border2}"
                                            EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
@@ -84,7 +82,6 @@
                                            UseSyntaxHighlighting="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting}"
                                            WordWrap="False"
                                            ShowHiddenSymbols="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowHiddenSymbolsInDiffView}"
-                                           EnableChunkSelection="{Binding EnableChunkOption, Mode=OneWay}"
                                            SelectedChunk="{Binding SelectedChunk, Mode=TwoWay}"
                                            BlockNavigation="{Binding BlockNavigation, Mode=OneWay}"/>
 
@@ -100,7 +97,7 @@
     </ContentControl>
 
     <StackPanel x:Name="Popup" IsVisible="False" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" Effect="drop-shadow(0 0 8 #80000000)">
-      <Button Classes="flat" Click="OnStageChunk" HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}" IsVisible="{Binding IsUnstaged}">
+      <Button Classes="flat" Click="OnStageChunk" HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}" IsVisible="{Binding Option.IsUnstaged}">
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Stage}"/>
           <Run Text=" "/>
@@ -111,7 +108,7 @@
         </TextBlock>
       </Button>
 
-      <Button Classes="flat" Click="OnUnstageChunk" HotKey="{OnPlatform Ctrl+U, macOS=⌘+U}" IsVisible="{Binding IsUnstaged, Converter={x:Static BoolConverters.Not}}">
+      <Button Classes="flat" Click="OnUnstageChunk" HotKey="{OnPlatform Ctrl+U, macOS=⌘+U}" IsVisible="{Binding Option.IsUnstaged, Converter={x:Static BoolConverters.Not}}">
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Unstage}"/>
           <Run Text=" "/>
@@ -122,7 +119,7 @@
         </TextBlock>
       </Button>
 
-      <Button Classes="flat" Margin="8,0,0,0" HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}" Click="OnDiscardChunk" IsVisible="{Binding IsUnstaged}">
+      <Button Classes="flat" Margin="8,0,0,0" HotKey="{OnPlatform Ctrl+D, macOS=⌘+D}" Click="OnDiscardChunk" IsVisible="{Binding Option.IsUnstaged}">
         <TextBlock>
           <Run Text="{DynamicResource Text.Hunk.Discard}"/>
           <Run Text=" "/>

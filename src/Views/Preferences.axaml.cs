@@ -307,7 +307,7 @@ namespace SourceGit.Views
 
         private async void SelectShellOrTerminal(object _, RoutedEventArgs e)
         {
-            var type = ViewModels.Preferences.Instance.ShellOrTerminal;
+            var type = ViewModels.Preferences.Instance.ShellOrTerminalType;
             if (type == -1)
                 return;
 

@@ -6,13 +6,13 @@
              x:Class="SourceGit.Views.CaptionButtons"
              x:Name="ThisControl">
   <StackPanel Orientation="Horizontal">
-    <Button Classes="caption_button" Click="MinimizeWindow" IsVisible="{Binding !#ThisControl.IsCloseButtonOnly}">
+    <Button Classes="caption_button" Click="MinimizeWindow" Win32Properties.NonClientHitTestResult="MinButton" IsVisible="{Binding !#ThisControl.IsCloseButtonOnly}">
       <Path Width="11" Height="11" Margin="0,2,0,0" Data="{StaticResource Icons.Window.Minimize}"/>
     </Button>
-    <Button Classes="caption_button max_or_restore_btn" Click="MaximizeOrRestoreWindow" IsVisible="{Binding !#ThisControl.IsCloseButtonOnly}">
+    <Button Classes="caption_button max_or_restore_btn" Win32Properties.NonClientHitTestResult="MaxButton" Click="MaximizeOrRestoreWindow" IsVisible="{Binding !#ThisControl.IsCloseButtonOnly}">
       <Path Width="10" Height="10" Margin="0,4,0,0"/>
     </Button>
-    <Button Classes="caption_button" Click="CloseWindow">
+    <Button Classes="caption_button" Win32Properties.NonClientHitTestResult="Close" Click="CloseWindow">
       <Path Width="9" Height="9" Margin="0,4,2,0" Data="{StaticResource Icons.Window.Close}"/>
     </Button>
   </StackPanel>

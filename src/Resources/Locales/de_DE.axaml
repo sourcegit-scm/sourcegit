@@ -160,6 +160,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Umformulieren</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Als Patch speichern...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash in den Vorgänger</x:String>
+  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">Fixup in den Vorgänger</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">geänderte Datei(en)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen...</x:String>
@@ -556,6 +557,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Andere Tabs schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Rechte Tabs schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Kopiere Repository-Pfad</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Einfügen</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">Vor {0} Tagen</x:String>
@@ -795,8 +797,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Zum Commit wechseln</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH privater Schlüssel:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>

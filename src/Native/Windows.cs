@@ -67,18 +67,13 @@ namespace SourceGit.Native
         {
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
             window.ExtendClientAreaToDecorationsHint = true;
-            window.Classes.Add("fix_maximized_padding");
+            window.BorderThickness = new Thickness(1);
 
             Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
             {
-                // Custom WM_NCHITTEST
-                if (msg == 0x0084)
+                // Custom WM_NCHITTEST only used to limit the resize border to 4 * window.RenderScaling pixels.
+                if (msg == 0x0084 && window.WindowState == WindowState.Normal)
                 {
-                    handled = true;
-
-                    if (window.WindowState == WindowState.FullScreen || window.WindowState == WindowState.Maximized)
-                        return 1; // HTCLIENT
-
                     var p = IntPtrToPixelPoint(lParam);
                     GetWindowRect(hWnd, out var rcWindow);
 
@@ -95,18 +90,23 @@ namespace SourceGit.Native
                     else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
                         y = 2;
 
+                    // If it's in the client area, do not handle it here.
                     var zone = y * 3 + x;
+                    if (zone == 4)
+                        return IntPtr.Zero;
+
+                    // If it's in the resize border area, return the proper HT code.
+                    handled = true;
                     return zone switch
                     {
                         0 => 13, // HTTOPLEFT
                         1 => 12, // HTTOP
                         2 => 14, // HTTOPRIGHT
                         3 => 10, // HTLEFT
-                        4 => 1, // HTCLIENT
                         5 => 11, // HTRIGHT
                         6 => 16, // HTBOTTOMLEFT
                         7 => 15, // HTBOTTOM
-                        _ => 17,
+                        _ => 17, // HTBOTTOMRIGHT
                     };
                 }
 
@@ -203,7 +203,7 @@ namespace SourceGit.Native
             Process.Start(info);
         }
 
-        public void OpenTerminal(string workdir)
+        public void OpenTerminal(string workdir, string args)
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
@@ -218,11 +218,7 @@ namespace SourceGit.Native
             var startInfo = new ProcessStartInfo();
             startInfo.WorkingDirectory = cwd;
             startInfo.FileName = terminal;
-
-            // Directly launching `Windows Terminal` need to specify the `-d` parameter
-            if (terminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"-d {cwd.Quoted()}";
-
+            startInfo.Arguments = args;
             Process.Start(startInfo);
         }
 

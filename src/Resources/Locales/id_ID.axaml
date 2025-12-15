@@ -154,6 +154,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reword</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash ke Parent</x:String>
+  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">Fixup ke Parent</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">PERUBAHAN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">berkas berubah</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Cari Perubahan...</x:String>
@@ -761,8 +762,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Salin SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Ke</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commit</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">Ke:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Kunci SSH Privat:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Jalur penyimpanan kunci SSH privat</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">MULAI</x:String>

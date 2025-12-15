@@ -21,7 +21,7 @@ namespace SourceGit.Native
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
 
-            void OpenTerminal(string workdir);
+            void OpenTerminal(string workdir, string args);
             void OpenInFileManager(string path, bool select);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
@@ -70,6 +70,12 @@ namespace SourceGit.Native
             set;
         } = string.Empty;
 
+        public static string ShellOrTerminalArgs
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public static List<Models.ExternalTool> ExternalTools
         {
             get;
@@ -83,6 +89,18 @@ namespace SourceGit.Native
         } = 0;
 
         public static string ExternalMergerExecFile
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public static string ExternalMergeArgs
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public static string ExternalDiffArgs
         {
             get;
             set;
@@ -168,6 +186,8 @@ namespace SourceGit.Native
                 ShellOrTerminal = string.Empty;
             else
                 ShellOrTerminal = _backend.FindTerminal(shell);
+
+            ShellOrTerminalArgs = shell.Args;
         }
 
         public static Models.DiffMergeTool GetDiffMergeTool(bool onlyDiff)
@@ -179,7 +199,7 @@ namespace SourceGit.Native
                 return null;
 
             var tool = Models.ExternalMerger.Supported[ExternalMergerType];
-            return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? tool.DiffCmd : tool.MergeCmd);
+            return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? ExternalDiffArgs : ExternalMergeArgs);
         }
 
         public static void AutoSelectExternalMergeToolExecFile()
@@ -194,6 +214,15 @@ namespace SourceGit.Native
                     ExternalMergerExecFile = merger.Finder;
                 else
                     ExternalMergerExecFile = string.Empty;
+
+                ExternalDiffArgs = merger.DiffCmd;
+                ExternalMergeArgs = merger.MergeCmd;
+            }
+            else
+            {
+                ExternalMergerExecFile = string.Empty;
+                ExternalDiffArgs = string.Empty;
+                ExternalMergeArgs = string.Empty;
             }
         }
 
@@ -212,7 +241,7 @@ namespace SourceGit.Native
             if (string.IsNullOrEmpty(ShellOrTerminal))
                 App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
             else
-                _backend.OpenTerminal(workdir);
+                _backend.OpenTerminal(workdir, ShellOrTerminalArgs);
         }
 
         public static void OpenWithDefaultEditor(string file)

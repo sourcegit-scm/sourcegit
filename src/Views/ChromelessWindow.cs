@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -70,6 +70,25 @@ namespace SourceGit.Views
                         border.PointerPressed -= OnWindowBorderPointerPressed;
                         border.PointerPressed += OnWindowBorderPointerPressed;
                     }
+                }
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == WindowStateProperty && OperatingSystem.IsWindows())
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    BorderThickness = new Thickness(0);
+                    Padding = new Thickness(8, 6, 8, 8);
+                }
+                else
+                {
+                    BorderThickness = new Thickness(1);
+                    Padding = new Thickness(0);
                 }
             }
         }

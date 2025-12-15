@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Text;
+
+namespace SourceGit.Commands
 {
     public class Apply : Command
     {
@@ -6,14 +8,19 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = "apply ";
+
+            var builder = new StringBuilder(1024);
+            builder.Append("apply ");
+
             if (ignoreWhitespace)
-                Args += "--ignore-whitespace ";
+                builder.Append("--ignore-whitespace ");
             else
-                Args += $"--whitespace={whitespaceMode} ";
+                builder.Append("--whitespace=").Append(whitespaceMode).Append(' ');
+
             if (!string.IsNullOrEmpty(extra))
-                Args += $"{extra} ";
-            Args += $"{file.Quoted()}";
+                builder.Append(extra).Append(' ');
+
+            Args = builder.Append(file.Quoted()).ToString();
         }
     }
 }

@@ -547,8 +547,6 @@
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Atualização de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Não há atualizações disponíveis no momento.</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copiar SHA</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash Commits</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">Squash commits em:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Chave SSH Privada:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Caminho para a chave SSH privada</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>

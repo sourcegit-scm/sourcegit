@@ -160,6 +160,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Изменить комментарий</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатки...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Объединить с предыдущей ревизией</x:String>
+  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">Исправить в родительском</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">изменённый(х) файл(ов)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Найти изменения....</x:String>
@@ -480,6 +481,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Перейти на предыдущую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Создать новую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Открыть диалоговое окно настроек</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Показать рабочее пространство в выпадющем меню</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Переключиться на вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">РЕПОЗИТОРИЙ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Зафиксировать сформированные изменения</x:String>
@@ -555,6 +557,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Закрыть другие вкладки</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Закрыть вкладки справа</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Копировать путь репозитория</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Переместить в рабочее пространство</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Репозитории</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Вставить</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} дней назад</x:String>
@@ -590,6 +594,9 @@
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Использовать фиксированную ширину табуляции в строке заголовка.</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Использовать системное окно</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ИНСТРУМЕНТ СРАВНЕНИЙ/СЛИЯНИЯ</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">Доступны переменные: $LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">Слить аргументы</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">Доступны переменные: $BASE, $LOCAL, $REMOTE, $MERGED</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Путь установки</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Введите путь для инструмента сравнения/слияния</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Инструмент</x:String>
@@ -630,6 +637,8 @@
   <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">Ключ GPG подписи пользователя</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">ВНЕДРЕНИЕ</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">ОБОЛОЧКА/ТЕРМИНАЛ</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Аргументы</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Используйте, пожалуйста, точку «.» для индикации рабочего каталога</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Путь</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Оболочка/Терминал</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Удалить внешний репозиторий</x:String>
@@ -794,8 +803,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Основная ветка:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Копировать SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Перейти</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Втиснуть ревизии</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">В:</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">Втиснуть ГОЛОВУ (HEAD) в родительскую</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">Исправить ГОЛОВУ (HEAD) в родительском</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Приватный ключ SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Путь хранения приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ЗАПУСК</x:String>

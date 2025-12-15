@@ -160,6 +160,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">編輯提交訊息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合併此提交到上一個提交</x:String>
+  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">修正至父提交</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">變更對比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">個檔案已變更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">搜尋變更...</x:String>
@@ -184,7 +185,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息。注意：主題與詳細訊息之間必須留一行空行。</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息，標題與詳細描述之間請使用單行空白區隔。</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
@@ -208,7 +209,7 @@
   ${BRANCH_FRIENDLY_NAME} 所選的分支。對於遠端分支，不包含遠端名稱
   ${SHA} 所選的提交編號
   ${TAG} 所選的標籤
-  ${FILE} 所選的檔案，相對於儲存庫根目錄的路徑
+  ${FILE} 所選的檔案，相對於存放庫根目錄的路徑
   $1, $2 ... 輸入控制項中的值</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">可執行檔案路徑:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">輸入控制項:</x:String>
@@ -449,7 +450,7 @@
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS 物件鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">解鎖</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">解鎖所有由我鎖定的檔案</x:String>
-  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">您確定要解鎖所有由您自己鎖定的檔案嗎？</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">您確定要解鎖所有由您自己鎖定的檔案嗎?</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">強制解鎖</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">清理 (prune)</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">執行 `git lfs prune` 以從本機中清理目前版本不需要的 LFS 物件</x:String>
@@ -480,6 +481,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切換到上一個頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新增頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">開啟偏好設定面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">顯示工作區的下拉式選單</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">切換目前頁面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">存放庫頁面快速鍵</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暫存區變更</x:String>
@@ -555,6 +557,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">關閉其他分頁</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">關閉右側分頁</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">複製存放庫路徑</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">移至工作區</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">重新整理</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新分頁</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">貼上</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} 天前</x:String>
@@ -590,6 +594,10 @@
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">使用固定寬度的分頁標籤</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">對比命令參數</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">可用參數：$LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">合併命令參數</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">可用參數：$BASE, $LOCAL, $REMOTE, $MERGED</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">填寫可執行檔案所在路徑</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">工具</x:String>
@@ -630,6 +638,8 @@
   <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">填寫簽章提交所使用的金鑰</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">第三方工具整合</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">終端機/Shell</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">啟動參數</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">請使用「.」標示當前工作目錄</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">終端機/Shell</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理遠端已刪除分支</x:String>
@@ -794,8 +804,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上游分支:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">複製提交編號</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">前往此提交</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">壓縮為單個提交</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">合併入:</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">合併變更入父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">修正至父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">父提交:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH 金鑰:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH 金鑰檔案</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開  始</x:String>
@@ -919,7 +930,7 @@
   <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">暫存所有檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">檢視不追蹤變更的檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本: ${0}$</x:String>
-  <x:String x:Key="Text.Workspace" xml:space="preserve">工作區:</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">工作區: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">設定工作區...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本機工作區</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">複製工作區路徑</x:String>

@@ -287,6 +287,88 @@ namespace SourceGit.Views
                 DataContext is ViewModels.Launcher vm)
             {
                 var menu = new ContextMenu();
+
+                if (vm.ActivePage.Data is ViewModels.Repository repo)
+                {
+                    var refresh = new MenuItem();
+                    refresh.Header = App.Text("PageTabBar.Tab.Refresh");
+                    refresh.Icon = App.CreateMenuIcon("Icons.Loading");
+                    refresh.Tag = "F5";
+                    refresh.Click += (_, ev) =>
+                    {
+                        repo.RefreshAll();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(refresh);
+
+                    var copyPath = new MenuItem();
+                    copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
+                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Click += async (_, ev) =>
+                    {
+                        await page.CopyPathAsync();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(copyPath);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    var bookmark = new MenuItem();
+                    bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
+                    bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
+
+                    for (int i = 0; i < Models.Bookmarks.Brushes.Length; i++)
+                    {
+                        var brush = Models.Bookmarks.Brushes[i];
+                        var icon = App.CreateMenuIcon("Icons.Bookmark");
+                        if (brush != null)
+                            icon.Fill = brush;
+
+                        var dupIdx = i;
+                        var setter = new MenuItem();
+                        setter.Header = icon;
+                        setter.Click += (_, ev) =>
+                        {
+                            page.Node.Bookmark = dupIdx;
+                            ev.Handled = true;
+                        };
+                        bookmark.Items.Add(setter);
+                    }
+                    menu.Items.Add(bookmark);
+
+                    var workspaces = ViewModels.Preferences.Instance.Workspaces;
+                    if (workspaces.Count > 1)
+                    {
+                        var moveTo = new MenuItem();
+                        moveTo.Header = App.Text("PageTabBar.Tab.MoveToWorkspace");
+                        moveTo.Icon = App.CreateMenuIcon("Icons.MoveTo");
+
+                        foreach (var ws in workspaces)
+                        {
+                            var dupWs = ws;
+                            var isCurrent = dupWs == vm.ActiveWorkspace;
+
+                            var target = new MenuItem();
+                            target.Header = ws.Name;
+                            target.Icon = App.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            target.Click += (_, ev) =>
+                            {
+                                if (!isCurrent)
+                                {
+                                    vm.CloseTab(page);
+                                    dupWs.Repositories.Add(repo.FullPath);
+                                }
+
+                                ev.Handled = true;
+                            };
+                            moveTo.Items.Add(target);
+                        }
+
+                        menu.Items.Add(moveTo);
+                    }
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
                 var close = new MenuItem();
                 close.Header = App.Text("PageTabBar.Tab.Close");
                 close.Tag = OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W";
@@ -314,44 +396,6 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(closeRight);
-
-                if (page.Node.IsRepository)
-                {
-                    var bookmark = new MenuItem();
-                    bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
-                    bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
-
-                    for (int i = 0; i < Models.Bookmarks.Brushes.Length; i++)
-                    {
-                        var brush = Models.Bookmarks.Brushes[i];
-                        var icon = App.CreateMenuIcon("Icons.Bookmark");
-                        if (brush != null)
-                            icon.Fill = brush;
-
-                        var dupIdx = i;
-                        var setter = new MenuItem();
-                        setter.Header = icon;
-                        setter.Click += (_, ev) =>
-                        {
-                            page.Node.Bookmark = dupIdx;
-                            ev.Handled = true;
-                        };
-                        bookmark.Items.Add(setter);
-                    }
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(bookmark);
-
-                    var copyPath = new MenuItem();
-                    copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyPath.Click += async (_, ev) =>
-                    {
-                        await page.CopyPathAsync();
-                        ev.Handled = true;
-                    };
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(copyPath);
-                }
                 menu.Open(border);
             }
 

@@ -561,8 +561,8 @@ namespace SourceGit.Views
 
                 var menu = new ContextMenu();
                 menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
-                menu.Items.Add(byCreatorDate);
                 menu.Items.Add(byName);
+                menu.Items.Add(byCreatorDate);
                 menu.Open(button);
             }
 

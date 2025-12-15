@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -322,7 +321,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task SquashHeadAsync(Models.Commit head)
+        public async Task SquashOrFixupHeadAsync(Models.Commit head, bool fixup)
         {
             if (head.Parents.Count == 1)
             {
@@ -330,14 +329,15 @@ namespace SourceGit.ViewModels
                 if (parent == null)
                     return;
 
-                var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                var parentMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
-
-                var builder = new StringBuilder();
-                builder.Append(parentMessage).Append("\n\n").Append(headMessage);
+                string message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+                if (!fixup)
+                {
+                    var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                    message = $"{message}\n\n{headMessage}";
+                }
 
                 if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new Squash(_repo, parent, builder.ToString()));
+                    _repo.ShowPopup(new SquashOrFixupHead(_repo, parent, message, fixup));
             }
         }
 

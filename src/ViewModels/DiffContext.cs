@@ -38,10 +38,7 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged();
 
                     if (Content is TextDiffContext ctx)
-                    {
-                        ctx.Data.File = string.Empty; // Just to ignore both previous `ScrollOffset` and `BlockNavigation`
                         LoadContent();
-                    }
                 }
             }
         }
@@ -138,10 +135,7 @@ namespace SourceGit.ViewModels
                 }
 
                 if (ctx.IsSideBySide() != UseSideBySide)
-                {
-                    ctx = ctx.SwitchMode();
-                    Content = ctx;
-                }
+                    Content = ctx.SwitchMode();
             }
         }
 
@@ -200,10 +194,7 @@ namespace SourceGit.ViewModels
                     }
 
                     if (!isSubmodule)
-                    {
-                        latest.TextDiff.File = _option.Path;
                         rs = latest.TextDiff;
-                    }
                 }
                 else if (latest.IsBinary)
                 {
@@ -282,9 +273,9 @@ namespace SourceGit.ViewModels
                         IsTextDiff = true;
 
                         if (Preferences.Instance.UseSideBySideDiff)
-                            Content = new TwoSideTextDiff(cur, _content as TwoSideTextDiff);
+                            Content = new TwoSideTextDiff(_option, cur, _content as TextDiffContext);
                         else
-                            Content = new CombinedTextDiff(cur, _content as CombinedTextDiff);
+                            Content = new CombinedTextDiff(_option, cur, _content as TextDiffContext);
                     }
                     else
                     {

@@ -607,8 +607,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Копіювати SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Перейти до</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash (Склеїти коміти)</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Приватний ключ SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Шлях до сховища приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ПОЧАТИ</x:String>

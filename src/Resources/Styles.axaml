@@ -24,25 +24,38 @@
   </Style>
 
   <Style Selector="Window">
-    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-    <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
-    <Setter Property="SystemDecorations" Value="Full"/>
-    <Setter Property="Padding" Value="0"/>
-
     <Style.Resources>
       <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
       <Color x:Key="SystemErrorTextColor">Red</Color>
     </Style.Resources>
-  </Style>
-
-  <Style Selector="Window[WindowState=Maximized]">
+    
+    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
     <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
+    <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
-  </Style>
 
-  <Style Selector="Window[WindowState=Maximized].fix_maximized_padding">
-    <Setter Property="Padding" Value="8,6,8,8"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                ClipToBounds="True">
+          <Border Margin="{TemplateBinding Padding}">
+            <VisualLayerManager>
+              <Border>
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+              </Border>
+            </VisualLayerManager>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
   </Style>
 
   <Style Selector="Window.custom_window_frame">

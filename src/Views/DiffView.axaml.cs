@@ -21,25 +21,25 @@ namespace SourceGit.Views
 
         private void OnGotoFirstChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoFirstChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.First);
             e.Handled = true;
         }
 
         private void OnGotoPrevChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoPrevChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.Prev);
             e.Handled = true;
         }
 
         private void OnGotoNextChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoNextChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.Next);
             e.Handled = true;
         }
 
         private void OnGotoLastChange(object _, RoutedEventArgs e)
         {
-            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoLastChange();
+            this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.Last);
             e.Handled = true;
         }
     }

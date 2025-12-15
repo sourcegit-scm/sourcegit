@@ -89,12 +89,6 @@ This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationD
 For **Windows** users:
 
 * **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
-* You can install the latest stable from `winget` with follow commands:
-  ```shell
-  winget install SourceGit
-  ```
-> [!NOTE]
-> `winget` will install this software as a commandline tool. You need run `SourceGit` from console or `Win+R` at the first time. Then you can add it to the taskbar.
 * You can install the latest stable by `scoop` with follow commands:
   ```shell
   scoop bucket add extras

@@ -160,6 +160,7 @@
   <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">编辑提交信息</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存为补丁 ...</x:String>
   <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">合并此提交到上一个提交</x:String>
+  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">修复至父提交</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">变更对比</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">个文件发生变更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">查找变更...</x:String>
@@ -480,6 +481,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">切换到上一个页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新建页面</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">打开偏好设置面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">显示工作区下拉菜单</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">切换显示页面</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">仓库页面快捷键</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暂存区更改</x:String>
@@ -555,6 +557,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">关闭其他标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">关闭右侧标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">复制仓库路径</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">移至工作区</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">刷新</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新标签页</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">粘贴</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}天前</x:String>
@@ -590,6 +594,10 @@
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">主标签使用固定宽度</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系统默认窗体样式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">对比/合并工具</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">对比命令参数</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">可用参数：$LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">合并命令参数</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">可用参数：$BASE, $LOCAL, $REMOTE, $MERGED</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">填写工具可执行文件所在位置</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">工具</x:String>
@@ -630,6 +638,8 @@
   <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">输入签名提交所使用的KEY</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">第三方工具集成</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">终端/SHELL</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">启动参数</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">请使用 '.' 来指定工作目录</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">终端/SHELL</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理远程已删除分支</x:String>
@@ -794,8 +804,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上游分支 ：</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">复制提交指纹</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">跳转到提交</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">压缩为单个提交</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">合并入：</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">合并修改至父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">修复至父提交</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">父提交：</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH密钥 ：</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH密钥文件</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">开    始</x:String>

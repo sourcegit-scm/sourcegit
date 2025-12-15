@@ -14,7 +14,7 @@ namespace SourceGit.Models
         Deleted,
     }
 
-    public class TextInlineRange(int p, int n)
+    public class TextRange(int p, int n)
     {
         public int Start { get; set; } = p;
         public int End { get; set; } = p + n - 1;
@@ -26,7 +26,7 @@ namespace SourceGit.Models
         public string Content { get; set; } = "";
         public int OldLineNumber { get; set; } = 0;
         public int NewLineNumber { get; set; } = 0;
-        public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
+        public List<TextRange> Highlights { get; set; } = new List<TextRange>();
         public bool NoNewLineEndOfFile { get; set; } = false;
 
         public string OldLine => OldLineNumber == 0 ? string.Empty : OldLineNumber.ToString();
@@ -47,20 +47,12 @@ namespace SourceGit.Models
         public int StartLine { get; set; } = 0;
         public int EndLine { get; set; } = 0;
         public bool HasChanges { get; set; } = false;
-        public bool HasLeftChanges { get; set; } = false;
         public int IgnoredAdds { get; set; } = 0;
         public int IgnoredDeletes { get; set; } = 0;
-
-        public bool IsInRange(int idx)
-        {
-            return idx >= StartLine - 1 && idx < EndLine;
-        }
     }
 
     public partial class TextDiff
     {
-        public string File { get; set; } = string.Empty;
-        public DiffOption Option { get; set; } = null;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public int MaxLineNumber = 0;
 
@@ -74,15 +66,9 @@ namespace SourceGit.Models
             {
                 var line = Lines[i];
                 if (line.Type == TextDiffLineType.Added)
-                {
-                    rs.HasLeftChanges = true;
                     rs.IgnoredAdds++;
-                }
                 else if (line.Type == TextDiffLineType.Deleted)
-                {
-                    rs.HasLeftChanges = true;
                     rs.IgnoredDeletes++;
-                }
             }
 
             for (int i = startLine - 1; i < endLine; i++)
@@ -90,46 +76,17 @@ namespace SourceGit.Models
                 var line = Lines[i];
                 if (line.Type == TextDiffLineType.Added)
                 {
-                    if (isCombined)
+                    if (isCombined || !isOldSide)
                     {
                         rs.HasChanges = true;
                         break;
-                    }
-                    if (isOldSide)
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasChanges = true;
                     }
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
-                    if (isCombined)
+                    if (isCombined || isOldSide)
                     {
                         rs.HasChanges = true;
-                        break;
-                    }
-                    if (isOldSide)
-                    {
-                        rs.HasChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                }
-            }
-
-            if (!rs.HasLeftChanges)
-            {
-                for (int i = endLine; i < Lines.Count; i++)
-                {
-                    var line = Lines[i];
-                    if (line.Type == TextDiffLineType.Added || line.Type == TextDiffLineType.Deleted)
-                    {
-                        rs.HasLeftChanges = true;
                         break;
                     }
                 }
@@ -165,7 +122,11 @@ namespace SourceGit.Models
                     var line = Lines[i];
                     if (line.Type != TextDiffLineType.Added)
                         continue;
-                    writer.WriteLine($"{(selection.IsInRange(i) ? "+" : " ")}{line.Content}");
+
+                    if (i >= selection.StartLine - 1 && i < selection.EndLine)
+                        writer.WriteLine($"+{line.Content}");
+                    else
+                        writer.WriteLine($" {line.Content}");
                 }
             }
             else
