@@ -108,6 +108,12 @@ namespace SourceGit.ViewModels
                     case ImageFormat.Rgb8:
                         pixelFormat = PixelFormats.Gray8;
                         break;
+                    case ImageFormat.R16f:
+                        pixelFormat = PixelFormats.Gray16;
+                        break;
+                    case ImageFormat.R32f:
+                        pixelFormat = PixelFormats.Gray32Float;
+                        break;
                     case ImageFormat.R5g5b5:
                         pixelFormat = PixelFormats.Bgr555;
                         break;
