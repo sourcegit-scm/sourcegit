@@ -71,9 +71,14 @@ namespace SourceGit.ViewModels
             Use(log);
 
             if (Mode is DiscardAllMode all)
+            {
                 await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeUntracked, all.IncludeIgnored, log);
+                _repo.ClearCommitMessage();
+            }
             else
+            {
                 await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
+            }
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();

@@ -888,6 +888,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void SetCommitMessage(string message)
+        {
+            if (_workingCopy is not null)
+                _workingCopy.CommitMessage = message;
+        }
+
         public void ClearCommitMessage()
         {
             if (_workingCopy is not null)
