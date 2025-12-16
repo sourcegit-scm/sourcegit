@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -51,13 +52,43 @@ namespace SourceGit.ViewModels
         public bool SetTrackingBranch
         {
             get => _setTrackingBranch;
-            set => SetProperty(ref _setTrackingBranch, value);
+            set
+            {
+                if (SetProperty(ref _setTrackingBranch, value))
+                {
+                    if (value)
+                    {
+                        var remoteAndBranchName = RemoteBranches.Where(b => b.EndsWith(SelectedBranch));
+                        SetSelectedTrackingBranch = remoteAndBranchName.FirstOrDefault();
+                    }
+                        
+                }
+            }
         }
 
-        public string SelectedTrackingBranch
+        [Required(ErrorMessage = "Tracking branch is required!")]
+        [CustomValidation(typeof(AddWorktree), nameof(ValidateTrackingBranch))]
+        public string SetSelectedTrackingBranch
         {
-            get;
-            set;
+            get => _setTrackingBranch ? _selectedTrackingBranch : string.Empty;
+            set => SetProperty(ref _selectedTrackingBranch, value, validate: true);
+        }
+
+        public static ValidationResult ValidateTrackingBranch(string trackingBranch, ValidationContext ctx)
+        {
+            if (ctx.ObjectInstance is not AddWorktree creator)
+                return new ValidationResult("Missing runtime context to create branch!");
+
+            if(!creator._setTrackingBranch)
+                return ValidationResult.Success;
+            
+            if (string.IsNullOrEmpty(trackingBranch))
+                return new ValidationResult("Tracking branch is required!");
+            
+            if(!creator.RemoteBranches.Contains(trackingBranch))
+                return new ValidationResult("Invalid tracking branch!");
+            
+            return ValidationResult.Success;
         }
 
         public AddWorktree(Repository repo)
@@ -75,9 +106,9 @@ namespace SourceGit.ViewModels
             }
 
             if (RemoteBranches.Count > 0)
-                SelectedTrackingBranch = RemoteBranches[0];
+                SetSelectedTrackingBranch = RemoteBranches[0];
             else
-                SelectedTrackingBranch = string.Empty;
+                SetSelectedTrackingBranch = string.Empty;
         }
 
         public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)
@@ -110,7 +141,7 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Adding worktree ...";
 
             var branchName = _selectedBranch;
-            var tracking = _setTrackingBranch ? SelectedTrackingBranch : string.Empty;
+            var tracking = _setTrackingBranch ? _selectedTrackingBranch : string.Empty;
             var log = _repo.CreateLog("Add Worktree");
 
             Use(log);
@@ -128,5 +159,6 @@ namespace SourceGit.ViewModels
         private bool _createNewBranch = true;
         private string _selectedBranch = string.Empty;
         private bool _setTrackingBranch = false;
+        private string _selectedTrackingBranch = string.Empty;
     }
 }

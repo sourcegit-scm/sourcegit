@@ -88,7 +88,7 @@
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
                 IsTextSearchEnabled="True"
-                SelectedItem="{Binding SelectedTrackingBranch, Mode=TwoWay}"
+                SelectedItem="{Binding SetSelectedTrackingBranch, Mode=TwoWay}"
                 IsVisible="{Binding SetTrackingBranch, Mode=OneWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate>
