@@ -57,8 +57,8 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
     <PackageReference Include="OpenAI" Version="2.8.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
-    <PackageReference Include="TextMateSharp" Version="1.0.70" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.70" />
+    <PackageReference Include="TextMateSharp" Version="2.0.2" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
