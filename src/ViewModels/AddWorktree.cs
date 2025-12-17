@@ -129,7 +129,7 @@ namespace SourceGit.ViewModels
                 return;
 
             var name = string.IsNullOrEmpty(_selectedBranch) ? System.IO.Path.GetFileName(_path.TrimEnd('/', '\\')) : _selectedBranch;
-            var remoteBranch = RemoteBranches.Find(b => b.Substring(b.IndexOf('/') + 1).Equals(name, StringComparison.Ordinal));
+            var remoteBranch = RemoteBranches.Find(b => b.EndsWith(name, StringComparison.Ordinal));
             if (string.IsNullOrEmpty(remoteBranch))
                 remoteBranch = RemoteBranches[0];
 
