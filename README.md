@@ -107,7 +107,7 @@ For **macOS** users:
 * Thanks [@ybeapps](https://github.com/ybeapps) for making `SourceGit` available on `Homebrew`. You can simply install it with following command:
   ```shell
   brew tap ybeapps/homebrew-sourcegit
-  brew install --cask --no-quarantine sourcegit
+  brew install --cask sourcegit
   ```
 * If you want to install `SourceGit.app` from GitHub Release manually, you need run following command to make sure it works:
   ```shell
