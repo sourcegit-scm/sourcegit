@@ -25,7 +25,7 @@
 
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <DataGrid x:Name="CommitListContainer"
-                Classes.static_scrollbar="{Binding Source={x:Static vm:Preferences.Instance}, Path=!UseAutoHideScrollBars, Mode=OneWay}"
+                ScrollViewer.AllowAutoHide="False"
                 Background="{DynamicResource Brush.Window}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
@@ -52,14 +52,17 @@
           <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="{DynamicResource Color.Border0}" />
         </DataGrid.Resources>
 
-        <DataGrid.Styles>     
-          <Style Selector="DataGrid.static_scrollbar">
+        <DataGrid.Styles>
+          <Style Selector="DataGrid">
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
               <Setter Property="Grid.RowSpan" Value="1" />
               <Setter Property="Grid.ColumnSpan" Value="2" />
             </Style>
             <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
               <Setter Property="Grid.ColumnSpan" Value="1" />
+            </Style>
+            <Style Selector="^ /template/ ScrollBar">
+              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             </Style>
           </Style>
           

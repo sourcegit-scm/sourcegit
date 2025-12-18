@@ -240,6 +240,7 @@
     <Setter Property="MinHeight" Value="12"/>
     <Setter Property="ShowDelay" Value="0:0:0.1"/>
     <Setter Property="HideDelay" Value="0:0:0.2"/>
+    <Setter Property="Background" Value="Transparent"/>
 
     <Style Selector="^ /template/ RepeatButton">
       <Setter Property="Background" Value="Transparent" />
@@ -264,7 +265,7 @@
       <Setter Property="Height" Value="8" />
       <Setter Property="Template">
         <ControlTemplate>
-          <Border Background="Transparent" UseLayoutRounding="False">
+          <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
             <Grid Name="PART_RootGrid" ColumnDefinitions="12,*,12">
               <RepeatButton Name="PART_LineUpButton"
                             Grid.Row="0" Grid.Column="0"
@@ -318,7 +319,7 @@
       <Setter Property="Width" Value="8" />
       <Setter Property="Template">
         <ControlTemplate TargetType="ScrollBar">
-          <Border Background="Transparent" UseLayoutRounding="False">
+          <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
             <Grid RowDefinitions="12,*,12">
               <RepeatButton Name="PART_LineUpButton"
                             Grid.Row="0"
