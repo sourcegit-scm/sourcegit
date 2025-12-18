@@ -5,7 +5,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool noTags, bool force)
+        public Fetch(string repo, string remote, bool? noTags, bool force)
         {
             _remote = remote;
 
@@ -14,7 +14,8 @@ namespace SourceGit.Commands
 
             var builder = new StringBuilder(512);
             builder.Append("fetch --progress --verbose ");
-            builder.Append(noTags ? "--no-tags " : "--tags ");
+            if (noTags.HasValue)
+                builder.Append(noTags.Value ? "--no-tags " : "--tags ");
             if (force)
                 builder.Append("--force ");
             builder.Append(remote);

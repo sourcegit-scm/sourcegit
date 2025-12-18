@@ -1850,11 +1850,14 @@ namespace SourceGit.ViewModels
                     remotes.Add(r.Name);
 
                 IsAutoFetching = true;
+                var log = CreateLog("background Fetch");
 
                 if (_settings.FetchAllRemotes)
                 {
                     foreach (var remote in remotes)
-                        await new Commands.Fetch(FullPath, remote, false, false) { RaiseError = false }.RunAsync();
+                        await new Commands.Fetch(FullPath, remote, null, false) { RaiseError = false }
+                            .Use(log)
+                            .RunAsync();
                 }
                 else if (remotes.Count > 0)
                 {
@@ -1862,8 +1865,12 @@ namespace SourceGit.ViewModels
                         remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
                         remotes[0];
 
-                    await new Commands.Fetch(FullPath, remote, false, false) { RaiseError = false }.RunAsync();
+                    await new Commands.Fetch(FullPath, remote, null, false) { RaiseError = false }
+                        .Use(log)
+                        .RunAsync();
                 }
+
+                log.Complete();
 
                 _lastFetchTime = DateTime.Now;
                 IsAutoFetching = false;
