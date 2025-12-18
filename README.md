@@ -113,6 +113,9 @@ For **macOS** users:
   ```shell
   sudo xattr -cr /Applications/SourceGit.app
   ```
+> [!NOTE]
+> macOS packages in the `Release` page of this project are all unsigned. If you are worried about potential security issues with the above command, you can download the signed package from the [distribution repository](https://github.com/ybeapps/homebrew-sourcegit/releases) provided by [@ybeapps](https://github.com/ybeapps) (there is no need to execute the above command while installing `SourceGit`).
+
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
 * You can run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to generate a custom PATH env file to introduce `PATH` env to SourceGit.
 
