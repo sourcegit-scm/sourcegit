@@ -644,8 +644,15 @@ namespace SourceGit.ViewModels
             if (!File.Exists(path))
                 return false;
 
-            var content = File.ReadAllText(path);
-            return content.Contains("git lfs pre-push");
+            try
+            {
+                var content = File.ReadAllText(path);
+                return content.Contains("git lfs pre-push");
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task InstallLFSAsync()
