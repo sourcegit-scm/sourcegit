@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _activePage, value))
-                    PostActivePageChanged(value?.Data as Repository);
+                    PostActivePageChanged();
             }
         }
 
@@ -86,10 +86,14 @@ namespace SourceGit.ViewModels
             }
 
             var activeIdx = ActiveWorkspace.ActiveIdx;
-            if (activeIdx >= 0 && activeIdx < Pages.Count)
+            if (activeIdx > 0 && activeIdx < Pages.Count)
+            {
                 ActivePage = Pages[activeIdx];
-            else
-                ActivePage = Pages[0];
+                return;
+            }
+
+            ActivePage = Pages[0];
+            PostActivePageChanged();
         }
 
         public void Quit()
@@ -222,7 +226,7 @@ namespace SourceGit.ViewModels
                     last.Popup?.Cleanup();
                     last.Popup = null;
 
-                    PostActivePageChanged(null);
+                    PostActivePageChanged();
                     GC.Collect();
                 }
                 else
@@ -338,7 +342,7 @@ namespace SourceGit.ViewModels
             }
 
             if (_activePage == page)
-                PostActivePageChanged(repo);
+                PostActivePageChanged();
             else
                 ActivePage = page;
         }
@@ -433,7 +437,7 @@ namespace SourceGit.ViewModels
             page.Data = null;
         }
 
-        private void PostActivePageChanged(Repository repo)
+        private void PostActivePageChanged()
         {
             if (_ignoreIndexChange)
                 return;
@@ -446,8 +450,10 @@ namespace SourceGit.ViewModels
                     builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
             }
 
-            if (_activePage is { Data: Repository })
+            if (_activePage is { Data: Repository repo })
             {
+                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
+
                 var node = _activePage.Node;
                 var name = node.Name;
                 var path = node.Id;
@@ -469,9 +475,6 @@ namespace SourceGit.ViewModels
 
             CancelCommandPalette();
             Title = builder.ToString();
-
-            if (repo != null)
-                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
         }
 
         private Workspace _activeWorkspace = null;
