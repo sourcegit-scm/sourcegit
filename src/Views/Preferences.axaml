@@ -136,7 +136,7 @@
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowChangesPageByDefault}"
                       IsChecked="{Binding ShowLocalChangesByDefault, Mode=TwoWay}"/>
-            
+
             <CheckBox Grid.Row="6" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowChangesTabInCommitDetailByDefault}"
@@ -300,7 +300,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.Path}"
                        HorizontalAlignment="Right"
@@ -389,6 +389,11 @@
                       IsChecked="{Binding #ThisControl.EnableHTTPSSLVerify, Mode=TwoWay}"/>
 
             <CheckBox Grid.Row="8" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Git.PreferHttpWhenVisit}"
+                      IsChecked="{Binding PreferHttpWhenVisit, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Git.UseLibsecret}"
                       IsChecked="{Binding UseLibsecretInsteadOfGCM, Mode=TwoWay}"

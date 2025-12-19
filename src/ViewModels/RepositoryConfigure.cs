@@ -101,6 +101,19 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableAutoFetch = value;
         }
 
+        public bool PreferHttpWhenVisit
+        {
+            get => Preferences.Instance.PreferHttpWhenVisit;
+            set
+            {
+                if (Preferences.Instance.PreferHttpWhenVisit != value)
+                {
+                    Preferences.Instance.PreferHttpWhenVisit = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public int? AutoFetchInterval
         {
             get => _repo.Settings.AutoFetchInterval;

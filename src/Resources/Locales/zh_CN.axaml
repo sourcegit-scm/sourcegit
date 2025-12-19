@@ -623,6 +623,7 @@
   <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">对比文件时，默认忽略换行符变更 (--ignore-cr-at-eol)</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">本软件要求GIT最低版本为2.25.1</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安装路径</x:String>
+  <x:String x:Key="Text.Preferences.Git.PreferHttpWhenVisit" xml:space="preserve">访问URL时优先使用HTTP</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">启用HTTP SSL验证</x:String>
   <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">使用 git-credential-libsecret 替代 git-credential-manager</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">用户名</x:String>

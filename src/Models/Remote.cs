@@ -31,6 +31,7 @@ namespace SourceGit.Models
 
         public string Name { get; set; }
         public string URL { get; set; }
+        public bool PreferHttpWhenVisit { get; set; }
 
         public static bool IsSSH(string url)
         {
@@ -78,7 +79,8 @@ namespace SourceGit.Models
             var match = REG_TO_VISIT_URL_CAPTURE().Match(URL);
             if (match.Success)
             {
-                url = $"https://{match.Groups[1].Value}/{match.Groups[2].Value}";
+                var scheme = PreferHttpWhenVisit ? "http" : "https";
+                url = $"{scheme}://{match.Groups[1].Value}/{match.Groups[2].Value}";
                 return true;
             }
 

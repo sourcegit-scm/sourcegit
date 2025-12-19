@@ -264,6 +264,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showHiddenSymbolsInDiffView, value);
         }
 
+        public bool PreferHttpWhenVisit
+        {
+            get => _preferHttpWhenVisit;
+            set => SetProperty(ref _preferHttpWhenVisit, value);
+        }
+
         public bool UseFullTextDiff
         {
             get => _useFullTextDiff;
@@ -792,6 +798,7 @@ namespace SourceGit.ViewModels
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
+        private bool _preferHttpWhenVisit = false;
         private bool _useFullTextDiff = false;
         private int _lfsImageActiveIdx = 0;
         private int _imageDiffActiveIdx = 0;

@@ -619,6 +619,7 @@
   <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Enable --ignore-cr-at-eol in diff</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) is required by this app</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Install Path</x:String>
+  <x:String x:Key="Text.Preferences.Git.PreferHttpWhenVisit" xml:space="preserve">Prefer HTTP when generating visit URLs</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Enable HTTP SSL Verify</x:String>
   <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Use git-credential-libsecret instead of git-credential-manager</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">User Name</x:String>

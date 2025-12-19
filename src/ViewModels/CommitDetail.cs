@@ -172,6 +172,10 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _sharedData = sharedData ?? new CommitDetailSharedData();
+
+            foreach (var r in repo.Remotes)
+                r.PreferHttpWhenVisit = Preferences.Instance.PreferHttpWhenVisit;
+
             WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 

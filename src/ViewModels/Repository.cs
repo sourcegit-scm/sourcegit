@@ -1091,6 +1091,11 @@ namespace SourceGit.ViewModels
                 var remotes = await new Commands.QueryRemotes(FullPath).GetResultAsync().ConfigureAwait(false);
                 var builder = BuildBranchTree(branches, remotes);
 
+                foreach (var r in remotes)
+                {
+                    r.PreferHttpWhenVisit = Preferences.Instance.PreferHttpWhenVisit;
+                }
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (token.IsCancellationRequested)
