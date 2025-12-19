@@ -40,6 +40,8 @@ namespace SourceGit.Models
                         outs.Add(new($"Gitea ({route})", $"{link}/commit/"));
                     else if (host.Equals("git.sr.ht", StringComparison.Ordinal))
                         outs.Add(new($"sourcehut ({route})", $"{link}/commit/"));
+                    else if (host.Equals("gitcode.com", StringComparison.Ordinal))
+                        outs.Add(new($"GitCode ({route})", $"{link}/commit/"));
                 }
             }
 
