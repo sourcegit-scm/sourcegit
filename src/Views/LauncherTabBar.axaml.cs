@@ -346,10 +346,12 @@ namespace SourceGit.Views
                         {
                             var dupWs = ws;
                             var isCurrent = dupWs == vm.ActiveWorkspace;
+                            var icon = App.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            icon.Fill = dupWs.Brush;
 
                             var target = new MenuItem();
                             target.Header = ws.Name;
-                            target.Icon = App.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            target.Icon = icon;
                             target.Click += (_, ev) =>
                             {
                                 if (!isCurrent)
