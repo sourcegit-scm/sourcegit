@@ -22,6 +22,17 @@ namespace SourceGit.Commands
             Args = builder.ToString();
         }
 
+        public Fetch(string repo, string remote)
+        {
+            _remote = remote;
+
+            WorkingDirectory = repo;
+            Context = repo;
+            RaiseError = false;
+
+            Args = $"fetch --progress --verbose {remote}";
+        }
+
         public Fetch(string repo, Models.Branch local, Models.Branch remote)
         {
             _remote = remote.Remote;
