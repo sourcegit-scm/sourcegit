@@ -443,44 +443,28 @@ namespace SourceGit.ViewModels
                 return;
 
             var builder = new StringBuilder(512);
-            if (_activeWorkspace != null)
-            {
-                var workspaces = Preferences.Instance.Workspaces;
-                if (workspaces.Count == 0 || workspaces.Count > 1 || workspaces[0] != _activeWorkspace)
-                    builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
-            }
+            var workspaces = Preferences.Instance.Workspaces;
+            if (workspaces.Count == 0 || workspaces.Count > 1 || workspaces[0] != _activeWorkspace)
+                builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
 
             if (_activePage is { Data: Repository repo })
             {
                 _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
-
-                var node = _activePage.Node;
-                var name = node.Name;
-                var path = node.Id;
-
-                if (!OperatingSystem.IsWindows())
-                {
-                    var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                    var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
-                    if (path.StartsWith(home, StringComparison.Ordinal))
-                        path = $"~{path.AsSpan(prefixLen)}";
-                }
-
-                builder.Append(name).Append(" (").Append(path).Append(')');
+                builder.Append(_activePage.Node.Name);
             }
             else
             {
                 builder.Append("Repositories");
             }
 
-            CancelCommandPalette();
             Title = builder.ToString();
+            CancelCommandPalette();
         }
 
-        private Workspace _activeWorkspace = null;
-        private LauncherPage _activePage = null;
-        private bool _ignoreIndexChange = false;
+        private Workspace _activeWorkspace;
+        private LauncherPage _activePage;
+        private bool _ignoreIndexChange;
         private string _title = string.Empty;
-        private ICommandPalette _commandPalette = null;
+        private ICommandPalette _commandPalette;
     }
 }
