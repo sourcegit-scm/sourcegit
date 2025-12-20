@@ -46,8 +46,21 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
-                while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
+                var text = await proc.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
+
+                var start = 0;
+                var end = text.IndexOf('\n', start);
+                while (end > 0)
+                {
+                    var line = text[start..end];
                     ParseLine(line);
+
+                    start = end + 1;
+                    end = text.IndexOf('\n', start);
+                }
+
+                if (start < text.Length)
+                    ParseLine(text[start..]);
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);
             }
