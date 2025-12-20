@@ -121,8 +121,8 @@ namespace SourceGit.Views
                 InvalidateMeasure();
             }
 
-            private readonly bool _usePresenter = false;
-            private readonly bool _isOld = false;
+            private readonly bool _usePresenter;
+            private readonly bool _isOld;
         }
 
         public class LineModifyTypeMargin : AbstractMargin
@@ -307,7 +307,7 @@ namespace SourceGit.Views
                 };
             }
 
-            private readonly ThemedTextDiffPresenter _presenter = null;
+            private readonly ThemedTextDiffPresenter _presenter;
         }
 
         public class LineStyleTransformer(ThemedTextDiffPresenter presenter) : DocumentColorizingTransformer
@@ -480,7 +480,7 @@ namespace SourceGit.Views
 
         public void GotoChange(ViewModels.BlockNavigationDirection direction)
         {
-            if (DataContext is not ViewModels.TextDiffContext ctx)
+            if (DataContext is not ViewModels.TextDiffContext)
                 return;
 
             var block = BlockNavigation.Goto(direction);
@@ -871,11 +871,11 @@ namespace SourceGit.Views
             await App.CopyTextAsync(builder.ToString());
         }
 
-        private bool _execSizeChanged = false;
-        private TextMate.Installation _textMate = null;
+        private bool _execSizeChanged;
+        private TextMate.Installation _textMate;
         private TextLocation _lastSelectStart = TextLocation.Empty;
         private TextLocation _lastSelectEnd = TextLocation.Empty;
-        private LineStyleTransformer _lineStyleTransformer = null;
+        private LineStyleTransformer _lineStyleTransformer;
     }
 
     public class CombinedTextDiffPresenter : ThemedTextDiffPresenter
@@ -1049,7 +1049,7 @@ namespace SourceGit.Views
                 TrySetChunk(null);
         }
 
-        private ScrollViewer _scrollViewer = null;
+        private ScrollViewer _scrollViewer;
     }
 
     public class SingleSideTextDiffPresenter : ThemedTextDiffPresenter
@@ -1257,7 +1257,7 @@ namespace SourceGit.Views
                 TextArea?.TextView?.Redraw();
         }
 
-        private ScrollViewer _scrollViewer = null;
+        private ScrollViewer _scrollViewer;
     }
 
     public class TextDiffViewMinimap : Control
@@ -1356,10 +1356,9 @@ namespace SourceGit.Views
             if (range == null || range.End == 0)
                 return;
 
-            var total = 0;
+            int total;
             if (DataContext is ViewModels.TwoSideTextDiff twoSideDiff)
             {
-                var halfWidth = Bounds.Width * 0.5;
                 total = Math.Max(twoSideDiff.Old.Count, twoSideDiff.New.Count);
             }
             else if (DataContext is ViewModels.CombinedTextDiff combined)
@@ -1380,7 +1379,7 @@ namespace SourceGit.Views
                 return;
 
             var line = Math.Max(1, Math.Min(total, (int)Math.Ceiling(pressedY * total / height)));
-            if (this.Parent is Control parent)
+            if (Parent is Control parent)
                 parent.FindLogicalDescendantOfType<ThemedTextDiffPresenter>()?.ScrollToLine(line);
 
             e.Handled = true;
