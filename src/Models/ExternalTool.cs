@@ -180,17 +180,24 @@ namespace SourceGit.Models
             var state = Path.Combine(platformFinder(), "state.json");
             if (File.Exists(state))
             {
-                using var stream = File.OpenRead(state);
-                var stateData = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.JetBrainsState);
-                foreach (var tool in stateData.Tools)
+                try
                 {
-                    if (exclude.Contains(tool.ToolId.ToLowerInvariant()))
-                        continue;
+                    using var stream = File.OpenRead(state);
+                    var stateData = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.JetBrainsState);
+                    foreach (var tool in stateData.Tools)
+                    {
+                        if (exclude.Contains(tool.ToolId.ToLowerInvariant()))
+                            continue;
 
-                    Tools.Add(new ExternalTool(
-                        $"{tool.DisplayName} {tool.DisplayVersion}",
-                        supportedIcons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
-                        Path.Combine(tool.InstallLocation, tool.LaunchCommand)));
+                        Tools.Add(new ExternalTool(
+                            $"{tool.DisplayName} {tool.DisplayVersion}",
+                            supportedIcons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
+                            Path.Combine(tool.InstallLocation, tool.LaunchCommand)));
+                    }
+                }
+                catch
+                {
+                    // Ignore exceptions.
                 }
             }
         }
