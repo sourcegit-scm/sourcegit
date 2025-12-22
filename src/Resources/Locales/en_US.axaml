@@ -386,6 +386,7 @@
   <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch all remotes</x:String>
   <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Force override local refs</x:String>
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch without tags</x:String>
+  <x:String x:Key="Text.Fetch.Prune" xml:space="preserve">Prune deleted branches</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch Remote Changes</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Assume unchanged</x:String>

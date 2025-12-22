@@ -5,7 +5,7 @@ namespace SourceGit.Commands
 {
     public class Fetch : Command
     {
-        public Fetch(string repo, string remote, bool noTags, bool force)
+        public Fetch(string repo, string remote, bool noTags, bool force, bool prune)
         {
             _remote = remote;
 
@@ -17,6 +17,8 @@ namespace SourceGit.Commands
             builder.Append(noTags ? "--no-tags " : "--tags ");
             if (force)
                 builder.Append("--force ");
+            if (prune)
+                builder.Append("--prune ");
             builder.Append(remote);
 
             Args = builder.ToString();

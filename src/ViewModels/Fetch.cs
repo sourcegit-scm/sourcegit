@@ -43,6 +43,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableForceOnFetch = value;
         }
 
+        public bool Prune
+        {
+            get => _prune;
+            set => SetProperty(ref _prune, value);
+        }
+
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
@@ -62,6 +68,10 @@ namespace SourceGit.ViewModels
             {
                 SelectedRemote = _repo.Remotes[0];
             }
+
+            // Initialize prune from git config
+            var pruneConfig = new Commands.Config(_repo.FullPath).Get("fetch.prune");
+            _prune = pruneConfig == "true";
         }
 
         public override async Task<bool> Sure()
@@ -71,19 +81,20 @@ namespace SourceGit.ViewModels
             var navigateToUpstreamHEAD = _repo.SelectedView is Histories { AutoSelectedCommit: { IsCurrentHead: true } };
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
+            var prune = Prune;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
             if (FetchAllRemotes)
             {
                 foreach (var remote in _repo.Remotes)
-                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
+                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force, prune)
                         .Use(log)
                         .RunAsync();
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force, prune)
                     .Use(log)
                     .RunAsync();
             }
@@ -106,5 +117,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private bool _fetchAllRemotes = false;
+        private bool _prune = false;
     }
 }

@@ -18,7 +18,7 @@
                  Text="{DynamicResource Text.Fetch.Title}"/>
     </StackPanel>
     
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,32" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -60,6 +60,11 @@
                 Content="{DynamicResource Text.Fetch.NoTags}"
                 IsChecked="{Binding NoTags, Mode=TwoWay}"
                 ToolTip.Tip="--no-tags"/>
+
+      <CheckBox Grid.Row="4" Grid.Column="1"
+                Content="{DynamicResource Text.Fetch.Prune}"
+                IsChecked="{Binding Prune, Mode=TwoWay}"
+                ToolTip.Tip="--prune"/>
     </Grid>
   </StackPanel>
 </UserControl>
