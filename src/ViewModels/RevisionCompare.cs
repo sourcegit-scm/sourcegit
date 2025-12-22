@@ -28,6 +28,12 @@ namespace SourceGit.ViewModels
 
         public bool CanSaveAsPatch { get; }
 
+        public int TotalChanges
+        {
+            get => _totalChanges;
+            private set => SetProperty(ref _totalChanges, value);
+        }
+
         public List<Models.Change> VisibleChanges
         {
             get => _visibleChanges;
@@ -182,6 +188,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    TotalChanges = _changes.Count;
                     VisibleChanges = visible;
                     IsLoading = false;
 
@@ -202,6 +209,7 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private object _startPoint = null;
         private object _endPoint = null;
+        private int _totalChanges = 0;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

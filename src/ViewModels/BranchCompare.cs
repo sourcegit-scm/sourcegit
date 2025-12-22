@@ -43,6 +43,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _toHead, value);
         }
 
+        public int TotalChanges
+        {
+            get => _totalChanges;
+            private set => SetProperty(ref _totalChanges, value);
+        }
+
         public List<Models.Change> VisibleChanges
         {
             get => _visibleChanges;
@@ -175,6 +181,7 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    TotalChanges = _changes.Count;
                     VisibleChanges = visible;
                     IsLoading = false;
 
@@ -214,6 +221,7 @@ namespace SourceGit.ViewModels
         private Models.Branch _to = null;
         private Models.Commit _baseHead = null;
         private Models.Commit _toHead = null;
+        private int _totalChanges = 0;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;
