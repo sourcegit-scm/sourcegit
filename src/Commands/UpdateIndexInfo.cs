@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public class UnstageChangesForAmend
+    public class UpdateIndexInfo
     {
-        public UnstageChangesForAmend(string repo, List<Models.Change> changes)
+        public UpdateIndexInfo(string repo, List<Models.Change> changes)
         {
             _repo = repo;
 
@@ -18,7 +18,7 @@ namespace SourceGit.Commands
                 {
                     _patchBuilder.Append("0 0000000000000000000000000000000000000000\t");
                     _patchBuilder.Append(c.Path);
-                    _patchBuilder.Append("\0100644 ");
+                    _patchBuilder.Append("\n100644 ");
                     _patchBuilder.Append(c.DataForAmend.ObjectHash);
                     _patchBuilder.Append("\t");
                     _patchBuilder.Append(c.OriginalPath);
@@ -60,6 +60,8 @@ namespace SourceGit.Commands
             starter.RedirectStandardInput = true;
             starter.RedirectStandardOutput = false;
             starter.RedirectStandardError = true;
+            starter.StandardInputEncoding = new UTF8Encoding(false);
+            starter.StandardErrorEncoding = Encoding.UTF8;
 
             try
             {
@@ -78,7 +80,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                App.RaiseException(_repo, "Failed to unstage changes: " + e.Message);
+                App.RaiseException(_repo, "Failed to update index: " + e.Message);
                 return false;
             }
         }

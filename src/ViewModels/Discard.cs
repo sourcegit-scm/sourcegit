@@ -67,7 +67,7 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
 
-            var log = _repo.CreateLog("Discard all");
+            var log = _repo.CreateLog("Discard Changes");
             Use(log);
 
             if (Mode is DiscardAllMode all)

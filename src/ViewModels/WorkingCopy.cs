@@ -348,22 +348,15 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Stage");
-            if (count == _unstaged.Count)
+            var pathSpecFile = Path.GetTempFileName();
+            await using (var writer = new StreamWriter(pathSpecFile))
             {
-                await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync();
+                foreach (var c in canStaged)
+                    await writer.WriteLineAsync(c.Path);
             }
-            else
-            {
-                var pathSpecFile = Path.GetTempFileName();
-                await using (var writer = new StreamWriter(pathSpecFile))
-                {
-                    foreach (var c in canStaged)
-                        await writer.WriteLineAsync(c.Path);
-                }
 
-                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
-                File.Delete(pathSpecFile);
-            }
+            await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
+            File.Delete(pathSpecFile);
             log.Complete();
 
             _repo.MarkWorkingCopyDirtyManually();
@@ -385,7 +378,7 @@ namespace SourceGit.ViewModels
             if (_useAmend)
             {
                 log.AppendLine("$ git update-index --index-info ");
-                await new Commands.UnstageChangesForAmend(_repo.FullPath, changes).ExecAsync();
+                await new Commands.UpdateIndexInfo(_repo.FullPath, changes).ExecAsync();
             }
             else
             {
@@ -646,16 +639,11 @@ namespace SourceGit.ViewModels
             IsCommitting = true;
             _repo.Settings.PushCommitMessage(_commitMessage);
 
-            var log = _repo.CreateLog("Commit");
-            var succ = true;
             if (autoStage && _unstaged.Count > 0)
-                succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked)
-                    .Use(log)
-                    .ExecAsync()
-                    .ConfigureAwait(false);
+                await StageChangesAsync(_unstaged, null);
 
-            if (succ)
-                succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
+            var log = _repo.CreateLog("Commit");
+            var succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
                     .Use(log)
                     .RunAsync()
                     .ConfigureAwait(false);
