@@ -477,7 +477,9 @@ namespace SourceGit.Views
                     menu.Items.Add(clearHistoryItem);
                 }
 
+                button.IsEnabled = false;
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu.Closed += (o, ev) => button.IsEnabled = true;
                 menu.Open(button);
             }
 
@@ -486,7 +488,7 @@ namespace SourceGit.Views
 
         private async void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.WorkingCopy vm && sender is Control control && ShowAdvancedOptions)
+            if (DataContext is ViewModels.WorkingCopy vm && sender is Button button && ShowAdvancedOptions)
             {
                 var repo = vm.Repository;
 
@@ -509,7 +511,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var menu = new ContextMenu() { Placement = PlacementMode.TopEdgeAlignedLeft };
+                var menu = new ContextMenu();
                 foreach (var service in services)
                 {
                     var dup = service;
@@ -523,7 +525,11 @@ namespace SourceGit.Views
 
                     menu.Items.Add(item);
                 }
-                menu.Open(control);
+
+                button.IsEnabled = false;
+                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu.Closed += (o, ev) => button.IsEnabled = true;
+                menu.Open(button);
             }
 
             e.Handled = true;

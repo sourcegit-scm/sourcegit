@@ -37,7 +37,7 @@
         <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="0,4">
           <Button Grid.Column="0"
                   Classes="icon_button"
-                  Width="24"
+                  Width="28"
                   Margin="0,0,4,0" Padding="0"
                   Click="OnOpenCommitMessagePicker"
                   IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
@@ -47,7 +47,7 @@
 
           <Button Grid.Column="1"
                   Classes="icon_button"
-                  Width="24"
+                  Width="28"
                   Margin="0,0,4,0" Padding="0"
                   Click="OnOpenOpenAIHelper"
                   IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
@@ -57,8 +57,8 @@
 
           <Button Grid.Column="2"
                   Classes="icon_button"
-                  Width="24"
-                  Margin="0,0,4,0" Padding="0"
+                  Width="28"
+                  Margin="0" Padding="0"
                   Click="OnOpenConventionalCommitHelper"
                   ToolTip.Tip="{DynamicResource Text.ConventionalCommit}">
             <Path Width="13" Height="13" Margin="0,1,0,0" Data="{StaticResource Icons.CommitMessageGenerator}"/>
