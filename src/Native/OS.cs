@@ -198,7 +198,6 @@ namespace SourceGit.Native
             if (ExternalMergerType != 0 && (string.IsNullOrEmpty(ExternalMergerExecFile) || !File.Exists(ExternalMergerExecFile)))
                 return null;
 
-            var tool = Models.ExternalMerger.Supported[ExternalMergerType];
             return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? ExternalDiffArgs : ExternalMergeArgs);
         }
 
