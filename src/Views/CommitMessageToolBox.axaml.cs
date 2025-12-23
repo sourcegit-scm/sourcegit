@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -365,8 +365,16 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private ContextMenu _commitMessagePickerMenu = null;
+
         private async void OnOpenCommitMessagePicker(object sender, RoutedEventArgs e)
         {
+            if (_commitMessagePickerMenu != null)
+            {
+                e.Handled = true;
+                return;
+            }
+
             if (sender is Button button && DataContext is ViewModels.WorkingCopy vm && ShowAdvancedOptions)
             {
                 var repo = vm.Repository;
@@ -478,14 +486,28 @@ namespace SourceGit.Views
                 }
 
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu.Closed += async (_, _) =>
+                {
+                    await Task.Delay(100); // Let the click event be processed
+                    _commitMessagePickerMenu = null;
+                };
+                _commitMessagePickerMenu = menu;
                 menu.Open(button);
             }
 
             e.Handled = true;
         }
 
+        private ContextMenu _openAIHelperMenu = null;
+
         private async void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
         {
+            if (_openAIHelperMenu != null)
+            {
+                e.Handled = true;
+                return;
+            }
+
             if (DataContext is ViewModels.WorkingCopy vm && sender is Control control && ShowAdvancedOptions)
             {
                 var repo = vm.Repository;
@@ -523,6 +545,12 @@ namespace SourceGit.Views
 
                     menu.Items.Add(item);
                 }
+                menu.Closed += async (_, _) =>
+                {
+                    await Task.Delay(100); // Let the click event be processed
+                    _openAIHelperMenu = null;
+                };
+                _openAIHelperMenu = menu;
                 menu.Open(control);
             }
 

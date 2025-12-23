@@ -1,6 +1,8 @@
 .vs/
 .vscode/
 .idea/
+# DevExpress CodeRush related files
+.cr/
 
 *.sln.docstates
 *.user
