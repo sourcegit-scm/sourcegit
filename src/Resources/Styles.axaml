@@ -215,7 +215,7 @@
           <Border Name="LayoutRoot"
                   Margin="4"
                   Padding="12"
-                  Background="{DynamicResource Brush.Popup}"
+                  Background="Transparent"
                   BorderThickness="0"
                   CornerRadius="{TemplateBinding CornerRadius}">
             <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
