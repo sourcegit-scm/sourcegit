@@ -370,6 +370,8 @@ namespace SourceGit.Views
             if (sender is Button button && DataContext is ViewModels.WorkingCopy vm && ShowAdvancedOptions)
             {
                 var repo = vm.Repository;
+                var foreground = this.FindResource("Brush.FG1") as IBrush;
+
                 var menu = new ContextMenu();
                 menu.MaxWidth = 480;
 
@@ -388,10 +390,13 @@ namespace SourceGit.Views
                 {
                     for (int i = 0; i < templateCount; i++)
                     {
+                        var icon = App.CreateMenuIcon("Icons.Code");
+                        icon.Fill = foreground;
+
                         var template = repo.Settings.CommitTemplates[i];
                         var item = new MenuItem();
                         item.Header = App.Text("WorkingCopy.UseCommitTemplate", template.Name);
-                        item.Icon = App.CreateMenuIcon("Icons.Code");
+                        item.Icon = icon;
                         item.Click += (_, ev) =>
                         {
                             vm.ApplyCommitMessageTemplate(template);
@@ -414,9 +419,12 @@ namespace SourceGit.Views
                                 friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
                         }
 
+                        var icon = App.CreateMenuIcon("Icons.Code");
+                        icon.Fill = foreground;
+
                         var gitTemplateItem = new MenuItem();
                         gitTemplateItem.Header = App.Text("WorkingCopy.UseCommitTemplate", friendlyName);
-                        gitTemplateItem.Icon = App.CreateMenuIcon("Icons.Code");
+                        gitTemplateItem.Icon = icon;
                         gitTemplateItem.Click += (_, ev) =>
                         {
                             if (File.Exists(gitTemplate))
@@ -451,9 +459,12 @@ namespace SourceGit.Views
                             TextTrimming = TextTrimming.CharacterEllipsis
                         };
 
+                        var icon = App.CreateMenuIcon("Icons.Histories");
+                        icon.Fill = foreground;
+
                         var item = new MenuItem();
                         item.Header = header;
-                        item.Icon = App.CreateMenuIcon("Icons.Histories");
+                        item.Icon = icon;
                         item.Click += (_, ev) =>
                         {
                             vm.CommitMessage = dup;
@@ -465,9 +476,12 @@ namespace SourceGit.Views
 
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
+                    var clearIcon = App.CreateMenuIcon("Icons.Clear");
+                    clearIcon.Fill = foreground;
+
                     var clearHistoryItem = new MenuItem();
                     clearHistoryItem.Header = App.Text("WorkingCopy.ClearCommitHistories");
-                    clearHistoryItem.Icon = App.CreateMenuIcon("Icons.Clear");
+                    clearHistoryItem.Icon = clearIcon;
                     clearHistoryItem.Click += async (_, ev) =>
                     {
                         await vm.ClearCommitMessageHistoryAsync();
