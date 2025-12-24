@@ -113,54 +113,37 @@ namespace SourceGit.Views
 
             var geo = new StreamGeometry();
             const double angle = Math.PI / 2;
-            var y = height + 0.5;
+            var bottom = height + 0.5;
+            var cornerSize = new Size(5, 5);
+
             using (var ctx = geo.Open())
             {
-                double x;
-
                 var drawLeftX = activeStartX - startX + LauncherTabsScroller.Bounds.X;
-                var drawRightX = activeEndX - startX + LauncherTabsScroller.Bounds.X;
                 if (drawLeftX < LauncherTabsScroller.Bounds.X)
                 {
-                    x = LauncherTabsScroller.Bounds.X;
-                    ctx.BeginFigure(new Point(x, y), true);
-                    y = 1;
-                    ctx.LineTo(new Point(x, y));
+                    ctx.BeginFigure(new Point(LauncherTabsScroller.Bounds.X, bottom), true);
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.X, 1));
                 }
                 else
                 {
-                    x = drawLeftX - 5;
-                    ctx.BeginFigure(new Point(x, y), true);
-                    x = drawLeftX;
-                    y -= 5;
-                    ctx.ArcTo(new Point(x, y), new Size(5, 5), angle, false, SweepDirection.CounterClockwise);
-                    y = 6;
-                    ctx.LineTo(new Point(x, y));
-                    x += 6;
-                    y = 1;
-                    ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
+                    ctx.BeginFigure(new Point(drawLeftX - 5, bottom), true);
+                    ctx.ArcTo(new Point(drawLeftX, bottom - 5), cornerSize, angle, false, SweepDirection.CounterClockwise);
+                    ctx.LineTo(new Point(drawLeftX, 6));
+                    ctx.ArcTo(new Point(drawLeftX + 5, 1), cornerSize, angle, false, SweepDirection.Clockwise);
                 }
 
-                x = drawRightX - 6;
-
+                var drawRightX = activeEndX - startX + LauncherTabsScroller.Bounds.X;
                 if (drawRightX <= LauncherTabsScroller.Bounds.Right)
                 {
-                    ctx.LineTo(new Point(x, y));
-                    x = drawRightX;
-                    y = 6;
-                    ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
-                    y = height + 0.5 - 5;
-                    ctx.LineTo(new Point(x, y));
-                    x += 5;
-                    y = height + 0.5;
-                    ctx.ArcTo(new Point(x, y), new Size(5, 5), angle, false, SweepDirection.CounterClockwise);
+                    ctx.LineTo(new Point(drawRightX - 5, 1));
+                    ctx.ArcTo(new Point(drawRightX, 6), cornerSize, angle, false, SweepDirection.Clockwise);
+                    ctx.LineTo(new Point(drawRightX, bottom - 5));
+                    ctx.ArcTo(new Point(drawRightX + 5, bottom), cornerSize, angle, false, SweepDirection.CounterClockwise);
                 }
                 else
                 {
-                    x = LauncherTabsScroller.Bounds.Right;
-                    ctx.LineTo(new Point(x, y));
-                    y = height + 0.5;
-                    ctx.LineTo(new Point(x, y));
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right, 1));
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right, bottom));
                 }
             }
 
