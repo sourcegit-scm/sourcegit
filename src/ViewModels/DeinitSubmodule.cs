@@ -36,6 +36,7 @@ namespace SourceGit.ViewModels
                 .DeinitAsync(Submodule, false);
 
             log.Complete();
+            _repo.MarkSubmodulesDirtyManually();
             return succ;
         }
 

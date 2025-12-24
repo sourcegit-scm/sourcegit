@@ -96,6 +96,7 @@ namespace SourceGit.ViewModels
                 .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
 
             log.Complete();
+            _repo.MarkSubmodulesDirtyManually();
             return true;
         }
 

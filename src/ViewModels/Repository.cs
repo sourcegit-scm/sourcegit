@@ -877,6 +877,12 @@ namespace SourceGit.ViewModels
             RefreshStashes();
         }
 
+        public void MarkSubmodulesDirtyManually()
+        {
+            _watcher?.MarkSubmodulesUpdated();
+            RefreshSubmodules();
+        }
+
         public void MarkFetched()
         {
             _lastFetchTime = DateTime.Now;

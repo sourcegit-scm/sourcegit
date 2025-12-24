@@ -118,6 +118,11 @@ namespace SourceGit.Models
             Interlocked.Exchange(ref _updateStashes, 0);
         }
 
+        public void MarkSubmodulesUpdated()
+        {
+            Interlocked.Exchange(ref _updateSubmodules, 0);
+        }
+
         public void Dispose()
         {
             foreach (var watcher in _watchers)
