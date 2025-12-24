@@ -109,7 +109,6 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
-  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Alle Submodule updaten</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Dein aktueller HEAD enthält Commit(s) ohne Verbindung zu einem Branch/Tag. Möchtest du trotzdem fortfahren?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Auschecken &amp; Fast-Forward</x:String>
@@ -645,7 +644,6 @@
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
-  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Alle Submodule aktualisieren</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Rebase anstatt Merge verwenden</x:String>

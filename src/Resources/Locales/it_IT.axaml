@@ -98,7 +98,6 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stasha e Ripristina</x:String>
-  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Aggiorna tutti i sottomoduli</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Il tuo HEAD attuale contiene commit non connessi ad alcun branch/tag! Sicuro di voler continuare?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Avanzamento Veloce</x:String>
@@ -593,7 +592,6 @@
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stasha e Riapplica</x:String>
-  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Aggiorna tutti i sottomoduli</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Scarica (Recupera e Unisci)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Riallineare anziché unire</x:String>

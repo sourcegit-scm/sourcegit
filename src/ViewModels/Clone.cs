@@ -140,7 +140,7 @@ namespace SourceGit.ViewModels
 
             if (InitAndUpdateSubmodules)
             {
-                var submodules = await new Commands.QueryUpdatableSubmodules(path).GetResultAsync();
+                var submodules = await new Commands.QueryUpdatableSubmodules(path, true).GetResultAsync();
                 if (submodules.Count > 0)
                     await new Commands.Submodule(path)
                         .Use(log)

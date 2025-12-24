@@ -22,7 +22,6 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
-        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -46,13 +45,6 @@
         <RadioButton GroupName="LocalChanges"
                      Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"/>
       </WrapPanel>
-
-      <CheckBox Grid.Row="2" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Checkout.RecurseSubmodules}"
-                IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
-                IsVisible="{Binding IsRecurseSubmoduleVisible}"
-                ToolTip.Tip="--recurse-submodules"/>
     </Grid>
   </StackPanel>
 </UserControl>

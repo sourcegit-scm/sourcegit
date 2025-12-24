@@ -107,12 +107,6 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public bool UpdateSubmodulesOnCheckoutBranch
-        {
-            get;
-            set;
-        } = true;
-
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
             get;

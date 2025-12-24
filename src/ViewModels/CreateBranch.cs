@@ -54,17 +54,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool IsRecurseSubmoduleVisible
-        {
-            get => _repo.Submodules.Count > 0;
-        }
-
-        public bool RecurseSubmodules
-        {
-            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
-            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
-        }
-
         public CreateBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
@@ -164,14 +153,11 @@ namespace SourceGit.ViewModels
 
                 if (succ)
                 {
-                    if (IsRecurseSubmoduleVisible && RecurseSubmodules)
-                    {
-                        var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
-                        if (submodules.Count > 0)
-                            await new Commands.Submodule(_repo.FullPath)
-                                .Use(log)
-                                .UpdateAsync(submodules, true, true);
-                    }
+                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath, false).GetResultAsync();
+                    if (submodules.Count > 0)
+                        await new Commands.Submodule(_repo.FullPath)
+                            .Use(log)
+                            .UpdateAsync(submodules, false, true);
 
                     if (needPopStash)
                         await new Commands.Stash(_repo.FullPath)
