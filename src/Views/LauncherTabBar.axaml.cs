@@ -69,7 +69,7 @@ namespace SourceGit.Views
 
             var selectedIdx = LauncherTabsList.SelectedIndex;
             var count = LauncherTabsList.ItemCount;
-            var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush, 0.5);
+            var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush);
             var separatorY = (height - 18) * 0.5 + 1;
 
             if (!IsScrollerVisible && selectedIdx > 0)
@@ -77,7 +77,7 @@ namespace SourceGit.Views
                 var container = LauncherTabsList.ContainerFromIndex(0);
                 if (container != null)
                 {
-                    var x = container.Bounds.Left - startX + LauncherTabsScroller.Bounds.X;
+                    var x = container.Bounds.Left - startX + LauncherTabsScroller.Bounds.X - 0.5;
                     context.DrawLine(separatorPen, new Point(x, separatorY), new Point(x, separatorY + 18));
                 }
             }
@@ -98,7 +98,7 @@ namespace SourceGit.Views
                 if (IsScrollerVisible && i == count - 1)
                     break;
 
-                var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
+                var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X - 0.5;
                 context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 18));
             }
 
@@ -121,29 +121,29 @@ namespace SourceGit.Views
                 var drawLeftX = activeStartX - startX + LauncherTabsScroller.Bounds.X;
                 if (drawLeftX < LauncherTabsScroller.Bounds.X)
                 {
-                    ctx.BeginFigure(new Point(LauncherTabsScroller.Bounds.X, bottom), true);
-                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.X, 1));
+                    ctx.BeginFigure(new Point(LauncherTabsScroller.Bounds.X - 0.5, bottom), true);
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.X - 0.5, 0.5));
                 }
                 else
                 {
-                    ctx.BeginFigure(new Point(drawLeftX - 5, bottom), true);
-                    ctx.ArcTo(new Point(drawLeftX, bottom - 5), cornerSize, angle, false, SweepDirection.CounterClockwise);
-                    ctx.LineTo(new Point(drawLeftX, 6));
-                    ctx.ArcTo(new Point(drawLeftX + 5, 1), cornerSize, angle, false, SweepDirection.Clockwise);
+                    ctx.BeginFigure(new Point(drawLeftX - 5.5, bottom), true);
+                    ctx.ArcTo(new Point(drawLeftX - 0.5, bottom - 5), cornerSize, angle, false, SweepDirection.CounterClockwise);
+                    ctx.LineTo(new Point(drawLeftX - 0.5, 5.5));
+                    ctx.ArcTo(new Point(drawLeftX + 4.5, 0.5), cornerSize, angle, false, SweepDirection.Clockwise);
                 }
 
                 var drawRightX = activeEndX - startX + LauncherTabsScroller.Bounds.X;
                 if (drawRightX <= LauncherTabsScroller.Bounds.Right)
                 {
-                    ctx.LineTo(new Point(drawRightX - 5, 1));
-                    ctx.ArcTo(new Point(drawRightX, 6), cornerSize, angle, false, SweepDirection.Clockwise);
-                    ctx.LineTo(new Point(drawRightX, bottom - 5));
-                    ctx.ArcTo(new Point(drawRightX + 5, bottom), cornerSize, angle, false, SweepDirection.CounterClockwise);
+                    ctx.LineTo(new Point(drawRightX - 5.5, 0.5));
+                    ctx.ArcTo(new Point(drawRightX - 0.5, 5.5), cornerSize, angle, false, SweepDirection.Clockwise);
+                    ctx.LineTo(new Point(drawRightX - 0.5, bottom - 5));
+                    ctx.ArcTo(new Point(drawRightX + 4.5, bottom), cornerSize, angle, false, SweepDirection.CounterClockwise);
                 }
                 else
                 {
-                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right, 1));
-                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right, bottom));
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right - 0.5, 0.5));
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right - 0.5, bottom));
                 }
             }
 
