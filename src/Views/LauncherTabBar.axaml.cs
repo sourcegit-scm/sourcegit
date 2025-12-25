@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace SourceGit.Views
 {
@@ -69,7 +70,7 @@ namespace SourceGit.Views
 
             var selectedIdx = LauncherTabsList.SelectedIndex;
             var count = LauncherTabsList.ItemCount;
-            var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush);
+            var separatorPen = new Pen(new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? Colors.White : Colors.Black, 0.2));
             var separatorY = (height - 18) * 0.5 + 1;
 
             if (!IsScrollerVisible && selectedIdx > 0)
@@ -150,6 +151,14 @@ namespace SourceGit.Views
             var fill = this.FindResource("Brush.ToolBar") as IBrush;
             var stroke = new Pen(this.FindResource("Brush.Border0") as IBrush);
             context.DrawGeometry(fill, stroke, geo);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property.Name == nameof(ActualThemeVariant))
+                InvalidateVisual();
         }
 
         private void ScrollTabs(object _, PointerWheelEventArgs e)
