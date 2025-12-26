@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,18 +10,21 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
         private static partial Regex REG_FORMAT();
-        private static readonly string[] UNTRACKED = ["no", "all"];
+        private bool _includeUntracked;
+        private bool _useFastPathForUntrackedFiles;
 
-        public QueryLocalChanges(string repo, bool includeUntracked = true)
+        public QueryLocalChanges(string repo, bool includeUntracked = true, bool useFastPathForUntrackedFiles = false)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"--no-optional-locks status -u{UNTRACKED[includeUntracked ? 1 : 0]} --ignore-submodules=dirty --porcelain";
+            _includeUntracked = includeUntracked;
+            _useFastPathForUntrackedFiles = useFastPathForUntrackedFiles;
         }
 
-        public async Task<List<Models.Change>> GetResultAsync()
+        private async Task<(List<Models.Change>, List<string>)> RunGitAndParseOutput()
         {
-            var outs = new List<Models.Change>();
+            var outChanges = new List<Models.Change>();
+            var outUntrackedDirs = new List<string>();
 
             try
             {
@@ -153,8 +157,15 @@ namespace SourceGit.Commands
                             break;
                     }
 
-                    if (change.Index != Models.ChangeState.None || change.WorkTree != Models.ChangeState.None)
-                        outs.Add(change);
+                    if (change.WorkTree == Models.ChangeState.Untracked && change.Path.EndsWith("/"))
+                    {
+                        outUntrackedDirs.Add(change.Path);
+                    }
+                    else
+                    {
+                        if (change.Index != Models.ChangeState.None || change.WorkTree != Models.ChangeState.None)
+                            outChanges.Add(change);
+                    }
                 }
             }
             catch
@@ -162,7 +173,41 @@ namespace SourceGit.Commands
                 // Ignore exceptions.
             }
 
-            return outs;
+            return (outChanges, outUntrackedDirs);
+        }
+        public async Task<List<Models.Change>> GetResultAsync()
+        {
+            if (!_useFastPathForUntrackedFiles)
+            {
+                Args = $"--no-optional-locks status -u{(_includeUntracked ? "all" : "no")} --ignore-submodules=dirty --porcelain";
+                var (changes, _) = await RunGitAndParseOutput().ConfigureAwait(false);
+                return changes;
+            }
+            else
+            {
+                // Collect untracked dirs
+                Args = $"--no-optional-locks status --ignore-submodules=dirty --porcelain";
+                var (changes, untrackedDirs) = await RunGitAndParseOutput().ConfigureAwait(false);
+
+                // 'git status' does not support pathspec-from-file
+                for (int i = 0; i < untrackedDirs.Count; i += 32)
+                {
+                    var count = Math.Min(32, untrackedDirs.Count - i);
+                    var step = untrackedDirs.GetRange(i, count);
+
+                    Args = $"--no-optional-locks status -uall --ignore-submodules=dirty --porcelain --";
+                    foreach (var dir in step)
+                    {
+                        Args += $" \"{dir}\"";
+                    }
+
+                    var (stepChanges, dirs) = await RunGitAndParseOutput().ConfigureAwait(false);
+                    Debug.Assert(dirs.Count == 0);
+                    changes.AddRange(stepChanges);
+                }
+
+                return changes;
+            }
         }
     }
 }

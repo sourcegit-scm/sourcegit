@@ -29,7 +29,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Drop '{Target.SHA}'");
             Use(log);
 
-            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, true).GetResultAsync();
+            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, true, _repo.UseFastPathForUntrackedFiles).GetResultAsync();
             var needAutoStash = changes.Count > 0;
             var succ = false;
 

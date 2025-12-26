@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Reword HEAD");
             Use(log);
 
-            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
+            var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false, _repo.UseFastPathForUntrackedFiles).GetResultAsync();
             var signOff = _repo.Settings.EnableSignOffForCommit;
             var noVerify = _repo.Settings.NoVerifyOnCommit;
             var needAutoStash = false;

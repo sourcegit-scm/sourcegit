@@ -10,6 +10,7 @@ using Avalonia.Collections;
 using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Commands;
 
 namespace SourceGit.ViewModels
 {
@@ -55,6 +56,11 @@ namespace SourceGit.ViewModels
         public bool HasAllowedSignersFile
         {
             get => _hasAllowedSignersFile;
+        }
+
+        public bool UseFastPathForUntrackedFiles
+        {
+            get => _useFastPathForUntrackedFiles;
         }
 
         public int SelectedViewIndex
@@ -509,8 +515,29 @@ namespace SourceGit.ViewModels
             }
 
             _lastFetchTime = DateTime.Now;
-            _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);
-            RefreshAll();
+
+            Task.Run(async () =>
+            {
+                var canonicalizedConfig = new Commands.Config(FullPath);
+                Task<bool?> fsmonitor = canonicalizedConfig.GetBoolAsync("core.fsmonitor");
+                Task<bool?> untrackedCache = canonicalizedConfig.GetBoolAsync("core.untrackedCache");
+                Task<bool?> manyFiles = canonicalizedConfig.GetBoolAsync("feature.manyFiles");
+                _useFastPathForUntrackedFiles = (await fsmonitor) == true && ((await untrackedCache) == true || ((await untrackedCache) == null && (await manyFiles) == true));
+
+                // Run a normal, index-locking 'git status' to populate/update untracked cache
+                // Slow for the first time
+                if (_useFastPathForUntrackedFiles)
+                {
+                    var status = new Command();
+                    status.WorkingDirectory = FullPath;
+                    status.Context = FullPath;
+                    status.Args = "status";
+                    await status.ExecAsync();
+                }
+
+                _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);
+                RefreshAll();
+            });
         }
 
         public void Close()
@@ -1308,7 +1335,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var changes = await new Commands.QueryLocalChanges(FullPath, _settings.IncludeUntrackedInLocalChanges)
+                var changes = await new Commands.QueryLocalChanges(FullPath, _settings.IncludeUntrackedInLocalChanges, UseFastPathForUntrackedFiles)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
@@ -1901,6 +1928,7 @@ namespace SourceGit.ViewModels
         private Models.HistoryFilterCollection _historyFilterCollection = null;
         private Models.FilterMode _historyFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
+        private bool _useFastPathForUntrackedFiles = false;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;

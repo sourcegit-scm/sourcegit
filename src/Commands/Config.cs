@@ -74,6 +74,27 @@ namespace SourceGit.Commands
             return rs.StdOut.Trim();
         }
 
+        // Get config value with type canonicalization
+        // Weird values will be converted by git, like "000" -> "false", "010" -> "true"
+        // git will report bad values like "fatal: bad boolean config value 'kkk' for 'core.untrackedcache'"
+        public async Task<bool?> GetBoolAsync(string key)
+        {
+            Args = $"config get --bool {key}";
+
+            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            var stdout = rs.StdOut.Trim();
+            switch (rs.StdOut.Trim())
+            {
+                case "true":
+                    return true;
+                case "false":
+                    return false;
+                default:
+                    // Illegal values behave as if they are not set
+                    return null;
+            }
+        }
+
         public async Task<bool> SetAsync(string key, string value, bool allowEmpty = false)
         {
             var scope = _isLocal ? "--local" : "--global";

@@ -73,7 +73,7 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        var all = await new Commands.QueryLocalChanges(_repo.FullPath, false)
+                        var all = await new Commands.QueryLocalChanges(_repo.FullPath, false, _repo.UseFastPathForUntrackedFiles)
                             .Use(log)
                             .GetResultAsync();
 
