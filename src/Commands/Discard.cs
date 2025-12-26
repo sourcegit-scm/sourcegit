@@ -86,7 +86,7 @@ namespace SourceGit.Commands
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, restores).ConfigureAwait(false);
-                await new Restore(repo, pathSpecFile, false).Use(log).ExecAsync().ConfigureAwait(false);
+                await new Restore(repo, pathSpecFile).Use(log).ExecAsync().ConfigureAwait(false);
                 File.Delete(pathSpecFile);
             }
         }

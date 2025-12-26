@@ -1,20 +1,12 @@
-﻿using System.Text;
-
-namespace SourceGit.Commands
+﻿namespace SourceGit.Commands
 {
     public class Restore : Command
     {
-        public Restore(string repo, string pathspecFile, bool isStaged)
+        public Restore(string repo, string pathspecFile)
         {
             WorkingDirectory = repo;
             Context = repo;
-
-            var builder = new StringBuilder();
-            builder.Append("restore --progress ");
-            builder.Append(isStaged ? "--staged " : "--worktree --recurse-submodules ");
-            builder.Append("--pathspec-from-file=").Append(pathspecFile.Quoted());
-
-            Args = builder.ToString();
+            Args = $"restore --progress --worktree --recurse-submodules --pathspec-from-file={pathspecFile.Quoted()}";
         }
     }
 }

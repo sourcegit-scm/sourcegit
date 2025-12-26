@@ -393,7 +393,7 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                await new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).ExecAsync();
+                await new Commands.Reset(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
             log.Complete();
