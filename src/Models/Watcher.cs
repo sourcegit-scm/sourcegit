@@ -333,14 +333,13 @@ namespace SourceGit.Models
 
         private bool IsInSubmodule(string folder)
         {
+            if (string.IsNullOrEmpty(folder) || folder.Equals(_root, StringComparison.Ordinal))
+                return false;
+
             if (File.Exists($"{folder}/.git"))
                 return true;
 
-            var parent = Path.GetDirectoryName(folder);
-            if (parent == null || parent.Equals(_root, StringComparison.Ordinal))
-                return false;
-
-            return IsInSubmodule(parent);
+            return IsInSubmodule(Path.GetDirectoryName(folder));
         }
 
         private readonly IRepository _repo;
