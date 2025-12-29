@@ -57,7 +57,7 @@ namespace SourceGit.ViewModels
                 {
                     succ = await new Commands.Stash(_repo.FullPath)
                         .Use(log)
-                        .PushAsync("CHECKOUT_AND_FASTFORWARD_AUTO_STASH");
+                        .PushAsync("CHECKOUT_AND_FASTFORWARD_AUTO_STASH", false);
                     if (!succ)
                     {
                         log.Complete();

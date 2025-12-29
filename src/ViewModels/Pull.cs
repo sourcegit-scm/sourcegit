@@ -117,7 +117,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH");
+                    var succ = await new Commands.Stash(_repo.FullPath).Use(log).PushAsync("PULL_AUTO_STASH", false);
                     if (!succ)
                     {
                         log.Complete();
