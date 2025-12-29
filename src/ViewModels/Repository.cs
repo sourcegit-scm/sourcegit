@@ -1305,10 +1305,11 @@ namespace SourceGit.ViewModels
 
             _cancellationRefreshWorkingCopyChanges = new CancellationTokenSource();
             var token = _cancellationRefreshWorkingCopyChanges.Token;
+            var noOptionalLocks = Interlocked.Add(ref _queryLocalChangesTimes, 1) > 1;
 
             Task.Run(async () =>
             {
-                var changes = await new Commands.QueryLocalChanges(FullPath, _settings.IncludeUntrackedInLocalChanges)
+                var changes = await new Commands.QueryLocalChanges(FullPath, _settings.IncludeUntrackedInLocalChanges, noOptionalLocks)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
@@ -1901,6 +1902,7 @@ namespace SourceGit.ViewModels
         private Models.HistoryFilterCollection _historyFilterCollection = null;
         private Models.FilterMode _historyFilterMode = Models.FilterMode.None;
         private bool _hasAllowedSignersFile = false;
+        private ulong _queryLocalChangesTimes = 0;
 
         private Models.Watcher _watcher = null;
         private Histories _histories = null;
