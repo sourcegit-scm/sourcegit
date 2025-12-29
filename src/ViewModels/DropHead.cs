@@ -37,7 +37,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PushAsync("DROP_HEAD_AUTO_STASH", true);
+                    .PushAsync("DROP_HEAD_AUTO_STASH", false);
                 if (!succ)
                 {
                     log.Complete();
