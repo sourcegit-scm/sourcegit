@@ -931,7 +931,7 @@ namespace SourceGit.Views
                     if (line.NoNewLineEndOfFile)
                         builder.Append("\u26D4");
 
-                    builder.AppendLine();
+                    builder.Append('\n');
                 }
 
                 Text = builder.ToString();
@@ -1121,7 +1121,7 @@ namespace SourceGit.Views
                     if (line.NoNewLineEndOfFile)
                         builder.Append("\u26D4");
 
-                    builder.AppendLine();
+                    builder.Append('\n');
                 }
 
                 Text = builder.ToString();
