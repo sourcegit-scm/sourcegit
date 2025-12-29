@@ -37,7 +37,7 @@ namespace SourceGit.Models
                 var combined = new FileSystemWatcher();
                 combined.Path = fullpath;
                 combined.Filter = "*";
-                combined.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
+                combined.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
                 combined.IncludeSubdirectories = true;
                 combined.Created += OnRepositoryChanged;
                 combined.Renamed += OnRepositoryChanged;
@@ -52,7 +52,7 @@ namespace SourceGit.Models
                 var wc = new FileSystemWatcher();
                 wc.Path = fullpath;
                 wc.Filter = "*";
-                wc.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.Size | NotifyFilters.CreationTime;
+                wc.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.DirectoryName | NotifyFilters.FileName;
                 wc.IncludeSubdirectories = true;
                 wc.Created += OnWorkingCopyChanged;
                 wc.Renamed += OnWorkingCopyChanged;
