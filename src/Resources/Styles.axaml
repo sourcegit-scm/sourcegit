@@ -1252,6 +1252,7 @@
   </Style>
 
   <Style Selector="ToggleButton.group_expander">
+    <Setter Property="Height" Value="28"/>
     <Setter Property="Margin" Value="6,0,0,0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
