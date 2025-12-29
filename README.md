@@ -171,7 +171,6 @@ This app supports open repository in external tools listed in the table below.
 | Visual Studio Code - Insiders | YES     | YES   | YES   |
 | VSCodium                      | YES     | YES   | YES   |
 | Cursor                        | YES     | YES   | YES   |
-| Fleet                         | YES     | YES   | YES   |
 | Sublime Text                  | YES     | YES   | YES   |
 | Zed                           | YES     | YES   | YES   |
 | Visual Studio                 | YES     | NO    | NO    |

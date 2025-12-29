@@ -153,11 +153,6 @@ namespace SourceGit.Models
             TryAdd("VSCodium", "codium", platformFinder);
         }
 
-        public void Fleet(Func<string> platformFinder)
-        {
-            TryAdd("Fleet", "fleet", platformFinder);
-        }
-
         public void SublimeText(Func<string> platformFinder)
         {
             TryAdd("Sublime Text", "sublime_text", platformFinder);

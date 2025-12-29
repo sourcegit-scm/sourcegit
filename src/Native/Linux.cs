@@ -54,7 +54,6 @@ namespace SourceGit.Native
             finder.VSCodeInsiders(() => FindExecutable("code-insiders"));
             finder.VSCodium(() => FindExecutable("codium"));
             finder.Cursor(() => FindExecutable("cursor"));
-            finder.Fleet(() => FindJetBrainsFleet(localAppDataDir));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, "JetBrains/Toolbox"));
             finder.SublimeText(() => FindExecutable("subl"));
             finder.Zed(() =>
@@ -134,12 +133,6 @@ namespace SourceGit.Native
 
             var local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "bin", filename);
             return File.Exists(local) ? local : string.Empty;
-        }
-
-        private string FindJetBrainsFleet(string localAppDataDir)
-        {
-            var path = Path.Combine(localAppDataDir, "JetBrains/Toolbox/apps/fleet/bin/Fleet");
-            return File.Exists(path) ? path : FindExecutable("fleet");
         }
     }
 }
