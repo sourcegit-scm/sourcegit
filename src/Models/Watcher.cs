@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.Models
 {
@@ -27,6 +28,7 @@ namespace SourceGit.Models
         {
             _repo = repo;
             _root = new DirectoryInfo(fullpath).FullName;
+            _watchers = new List<FileSystemWatcher>();
 
             var testGitDir = new DirectoryInfo(Path.Combine(fullpath, ".git")).FullName;
             var desiredDir = new DirectoryInfo(gitDir).FullName;
@@ -41,7 +43,7 @@ namespace SourceGit.Models
                 combined.Renamed += OnRepositoryChanged;
                 combined.Changed += OnRepositoryChanged;
                 combined.Deleted += OnRepositoryChanged;
-                combined.EnableRaisingEvents = true;
+                combined.EnableRaisingEvents = false;
 
                 _watchers.Add(combined);
             }
@@ -56,7 +58,7 @@ namespace SourceGit.Models
                 wc.Renamed += OnWorkingCopyChanged;
                 wc.Changed += OnWorkingCopyChanged;
                 wc.Deleted += OnWorkingCopyChanged;
-                wc.EnableRaisingEvents = true;
+                wc.EnableRaisingEvents = false;
 
                 var git = new FileSystemWatcher();
                 git.Path = gitDir;
@@ -67,13 +69,27 @@ namespace SourceGit.Models
                 git.Renamed += OnGitDirChanged;
                 git.Changed += OnGitDirChanged;
                 git.Deleted += OnGitDirChanged;
-                git.EnableRaisingEvents = true;
+                git.EnableRaisingEvents = false;
 
                 _watchers.Add(wc);
                 _watchers.Add(git);
             }
 
             _timer = new Timer(Tick, null, 100, 100);
+
+            // Starts filesystem watchers in another thread to avoid UI blocking
+            Task.Run(() =>
+            {
+                try
+                {
+                    foreach (var watcher in _watchers)
+                        watcher.EnableRaisingEvents = true;
+                }
+                catch
+                {
+                    // Ignore exceptions. This may occur while `Dispose` is called.
+                }
+            });
         }
 
         public IDisposable Lock()
@@ -100,6 +116,11 @@ namespace SourceGit.Models
         public void MarkStashUpdated()
         {
             Interlocked.Exchange(ref _updateStashes, 0);
+        }
+
+        public void MarkSubmodulesUpdated()
+        {
+            Interlocked.Exchange(ref _updateSubmodules, 0);
         }
 
         public void Dispose()
@@ -312,26 +333,25 @@ namespace SourceGit.Models
 
         private bool IsInSubmodule(string folder)
         {
+            if (string.IsNullOrEmpty(folder) || folder.Equals(_root, StringComparison.Ordinal))
+                return false;
+
             if (File.Exists($"{folder}/.git"))
                 return true;
 
-            var parent = Path.GetDirectoryName(folder);
-            if (parent == null || parent.Equals(_root, StringComparison.Ordinal))
-                return false;
-
-            return IsInSubmodule(parent);
+            return IsInSubmodule(Path.GetDirectoryName(folder));
         }
 
-        private readonly IRepository _repo = null;
-        private readonly string _root = null;
-        private List<FileSystemWatcher> _watchers = [];
-        private Timer _timer = null;
+        private readonly IRepository _repo;
+        private readonly string _root;
+        private List<FileSystemWatcher> _watchers;
+        private Timer _timer;
 
-        private long _lockCount = 0;
-        private long _updateWC = 0;
-        private long _updateBranch = 0;
-        private long _updateSubmodules = 0;
-        private long _updateStashes = 0;
-        private long _updateTags = 0;
+        private long _lockCount;
+        private long _updateWC;
+        private long _updateBranch;
+        private long _updateSubmodules;
+        private long _updateStashes;
+        private long _updateTags;
     }
 }

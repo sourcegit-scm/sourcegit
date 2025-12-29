@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _activePage, value))
-                    PostActivePageChanged(value?.Data as Repository);
+                    PostActivePageChanged();
             }
         }
 
@@ -86,10 +86,14 @@ namespace SourceGit.ViewModels
             }
 
             var activeIdx = ActiveWorkspace.ActiveIdx;
-            if (activeIdx >= 0 && activeIdx < Pages.Count)
+            if (activeIdx > 0 && activeIdx < Pages.Count)
+            {
                 ActivePage = Pages[activeIdx];
-            else
-                ActivePage = Pages[0];
+                return;
+            }
+
+            ActivePage = Pages[0];
+            PostActivePageChanged();
         }
 
         public void Quit()
@@ -222,7 +226,7 @@ namespace SourceGit.ViewModels
                     last.Popup?.Cleanup();
                     last.Popup = null;
 
-                    PostActivePageChanged(null);
+                    PostActivePageChanged();
                     GC.Collect();
                 }
                 else
@@ -338,7 +342,7 @@ namespace SourceGit.ViewModels
             }
 
             if (_activePage == page)
-                PostActivePageChanged(repo);
+                PostActivePageChanged();
             else
                 ActivePage = page;
         }
@@ -433,51 +437,34 @@ namespace SourceGit.ViewModels
             page.Data = null;
         }
 
-        private void PostActivePageChanged(Repository repo)
+        private void PostActivePageChanged()
         {
             if (_ignoreIndexChange)
                 return;
 
             var builder = new StringBuilder(512);
-            if (_activeWorkspace != null)
+            var workspaces = Preferences.Instance.Workspaces;
+            if (workspaces.Count == 0 || workspaces.Count > 1 || workspaces[0] != _activeWorkspace)
+                builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
+
+            if (_activePage is { Data: Repository repo })
             {
-                var workspaces = Preferences.Instance.Workspaces;
-                if (workspaces.Count == 0 || workspaces.Count > 1 || workspaces[0] != _activeWorkspace)
-                    builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
-            }
-
-            if (_activePage is { Data: Repository })
-            {
-                var node = _activePage.Node;
-                var name = node.Name;
-                var path = node.Id;
-
-                if (!OperatingSystem.IsWindows())
-                {
-                    var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                    var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
-                    if (path.StartsWith(home, StringComparison.Ordinal))
-                        path = $"~{path.AsSpan(prefixLen)}";
-                }
-
-                builder.Append(name).Append(" (").Append(path).Append(')');
+                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
+                builder.Append(_activePage.Node.Name);
             }
             else
             {
                 builder.Append("Repositories");
             }
 
-            CancelCommandPalette();
             Title = builder.ToString();
-
-            if (repo != null)
-                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
+            CancelCommandPalette();
         }
 
-        private Workspace _activeWorkspace = null;
-        private LauncherPage _activePage = null;
-        private bool _ignoreIndexChange = false;
+        private Workspace _activeWorkspace;
+        private LauncherPage _activePage;
+        private bool _ignoreIndexChange;
         private string _title = string.Empty;
-        private ICommandPalette _commandPalette = null;
+        private ICommandPalette _commandPalette;
     }
 }

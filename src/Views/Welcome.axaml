@@ -107,7 +107,7 @@
           <DataTemplate DataType="vm:RepositoryNode">
             <Grid Background="Transparent"
                   Height="30"
-                  ColumnDefinitions="16,18,*,Auto,16"
+                  ColumnDefinitions="16,18,*,Auto,8"
                   Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                   ClipToBounds="True"
                   ContextRequested="OnTreeNodeContextRequested"

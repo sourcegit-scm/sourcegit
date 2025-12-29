@@ -109,7 +109,6 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
-  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您目前的分離的 HEAD 包含與任何分支/標籤無關的提交! 您要繼續嗎?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">簽出分支並快轉</x:String>
@@ -652,7 +651,6 @@
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交變更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
-  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同時更新所有子模組</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">遠端:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉取 (提取並合併)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用重定基底 (rebase) 合併分支</x:String>

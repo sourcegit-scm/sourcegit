@@ -758,12 +758,13 @@
                     </TextBox>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
-                    <Grid Margin="0,4,0,0" ColumnDefinitions="*,Auto">
-                      <TextBox Grid.Column="0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
-                      <Border Grid.Column="1" Width="22" Height="28" Background="Transparent" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}">
-                        <Path Width="14" Height="14" Data="{StaticResource Icons.Info}"/>
-                      </Border>
-                    </Grid>
+                    <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Arguments, Mode=TwoWay}">
+                      <TextBox.InnerRightContent>
+                        <Border Width="28" Height="28" Background="Transparent" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}">
+                          <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
+                        </Border>
+                      </TextBox.InnerRightContent>
+                    </TextBox>
 
                     <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                   </StackPanel>

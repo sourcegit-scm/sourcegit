@@ -108,7 +108,6 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Annuler</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
-  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">Mettre à jour tous les sous-modules</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branche :</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Votre HEAD actuel contient un ou plusieurs commits non connectés à une branche/tag ! Voulez-vous continuer ?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Récupérer &amp; Fast-Forward</x:String>
@@ -637,7 +636,6 @@
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
-  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">Mettre à jour tous les sous-modules</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Dépôt distant :</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Utiliser rebase au lieu de merge</x:String>

@@ -109,7 +109,6 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
-  <x:String x:Key="Text.Checkout.RecurseSubmodules" xml:space="preserve">同时更新所有子模块</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您当前游离的HEAD包含未被任何分支及标签引用的提交！是否继续？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">检出分支并快进</x:String>
@@ -652,7 +651,6 @@
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
-  <x:String x:Key="Text.Pull.RecurseSubmodules" xml:space="preserve">同时更新所有子模块</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">远程 ：</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取并合并）</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用变基方式合并分支</x:String>

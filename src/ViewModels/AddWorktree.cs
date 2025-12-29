@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -51,7 +52,11 @@ namespace SourceGit.ViewModels
         public bool SetTrackingBranch
         {
             get => _setTrackingBranch;
-            set => SetProperty(ref _setTrackingBranch, value);
+            set
+            {
+                if (SetProperty(ref _setTrackingBranch, value))
+                    AutoSelectTrackingBranch();
+            }
         }
 
         public string SelectedTrackingBranch
@@ -73,11 +78,6 @@ namespace SourceGit.ViewModels
                 else
                     RemoteBranches.Add(branch.FriendlyName);
             }
-
-            if (RemoteBranches.Count > 0)
-                SelectedTrackingBranch = RemoteBranches[0];
-            else
-                SelectedTrackingBranch = string.Empty;
         }
 
         public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)
@@ -121,6 +121,23 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             return succ;
+        }
+
+        private void AutoSelectTrackingBranch()
+        {
+            if (!_setTrackingBranch || RemoteBranches.Count == 0)
+                return;
+
+            var name = string.IsNullOrEmpty(_selectedBranch) ? System.IO.Path.GetFileName(_path.TrimEnd('/', '\\')) : _selectedBranch;
+            var remoteBranch = RemoteBranches.Find(b => b.EndsWith(name, StringComparison.Ordinal));
+            if (string.IsNullOrEmpty(remoteBranch))
+                remoteBranch = RemoteBranches[0];
+
+            if (!remoteBranch.Equals(SelectedTrackingBranch, StringComparison.Ordinal))
+            {
+                SelectedTrackingBranch = remoteBranch;
+                OnPropertyChanged(nameof(SelectedTrackingBranch));
+            }
         }
 
         private Repository _repo = null;

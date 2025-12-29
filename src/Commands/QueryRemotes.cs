@@ -40,6 +40,16 @@ namespace SourceGit.Commands
                 if (outs.Find(x => x.Name == remote.Name) != null)
                     continue;
 
+                if (remote.URL.StartsWith("git@", StringComparison.Ordinal))
+                {
+                    var hostEnd = remote.URL.IndexOf(':', 4);
+                    if (hostEnd > 4)
+                    {
+                        var host = remote.URL.Substring(4, hostEnd - 4);
+                        Models.HTTPSValidator.Add(host);
+                    }
+                }
+
                 outs.Add(remote);
             }
 

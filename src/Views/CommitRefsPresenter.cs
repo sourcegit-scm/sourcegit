@@ -116,18 +116,18 @@ namespace SourceGit.Views
             var fg = Foreground;
             var bg = Background;
             var allowWrap = AllowWrap;
-            var x = 1.0;
-            var y = 0.0;
+            var x = 1.5;
+            var y = 0.5;
 
             foreach (var item in _items)
             {
-                if (allowWrap && x > 1.0 && x + item.Width > Bounds.Width)
+                if (allowWrap && x > 1.5 && x + item.Width > Bounds.Width)
                 {
-                    x = 1.0;
+                    x = 1.5;
                     y += 20.0;
                 }
 
-                var entireRect = new RoundedRect(new Rect(x, y, item.Width, 16), new CornerRadius(2));
+                var entireRect = new RoundedRect(new Rect(x, y, item.Width, 16), new CornerRadius(4));
 
                 if (item.IsHead)
                 {
@@ -147,7 +147,7 @@ namespace SourceGit.Views
                     if (bg != null)
                         context.DrawRectangle(bg, null, entireRect);
 
-                    var labelRect = new RoundedRect(new Rect(x + 16, y, item.Label.Width + 8, 16), new CornerRadius(0, 2, 2, 0));
+                    var labelRect = new RoundedRect(new Rect(x + 16, y, item.Label.Width + 8, 16), new CornerRadius(0, 4, 4, 0));
                     using (context.PushOpacity(.2))
                         context.DrawRectangle(item.Brush, null, labelRect);
 

@@ -23,7 +23,6 @@
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
         <RowDefinition Height="Auto"/>
-        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
       
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -49,14 +48,7 @@
                      GroupName="LocalChanges"/>
       </WrapPanel>
 
-      <CheckBox Grid.Row="2" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Checkout.RecurseSubmodules}"
-                IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
-                IsVisible="{Binding IsRecurseSubmoduleVisible}"
-                ToolTip.Tip="--recurse-submodules"/>
-
-      <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+      <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
         <Path Grid.Column="0"
               Width="14" Height="14"
               Data="{StaticResource Icons.Error}"

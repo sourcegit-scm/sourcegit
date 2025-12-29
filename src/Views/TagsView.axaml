@@ -19,6 +19,7 @@
       <ListBox Classes="repo_left_content_list"
                ItemsSource="{Binding Rows}"
                SelectionMode="Multiple"
+               Padding="0,0,2,0"
                KeyDown="OnKeyDown"
                SelectionChanged="OnSelectionChanged"
                ContextRequested="OnTagsContextMenuRequested">
@@ -53,7 +54,7 @@
                 </TextBlock>
 
                 <Border Grid.Column="3" IsVisible="{Binding !IsFolder}">
-                  <v:FilterModeSwitchButton Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
+                  <v:FilterModeSwitchButton Margin="0,0,8,0" Mode="{Binding FilterMode}"/>
                 </Border>
               </Grid>
             </Border>
@@ -65,6 +66,7 @@
     <DataTemplate DataType="vm:TagCollectionAsList">
       <ListBox Classes="repo_left_content_list"
                Margin="8,0,0,0"
+               Padding="0,0,2,0"
                ItemsSource="{Binding TagItems}"
                SelectionMode="Multiple"
                KeyDown="OnKeyDown"
@@ -104,7 +106,7 @@
                            Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis"/>
 
-                <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
+                <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,8,0" Mode="{Binding FilterMode}"/>
               </Grid>
             </Border>
           </DataTemplate>

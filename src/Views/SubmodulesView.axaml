@@ -10,7 +10,7 @@
              x:Class="SourceGit.Views.SubmodulesView">
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:SubmoduleCollectionAsTree">
-      <ListBox Classes="repo_left_content_list" ItemsSource="{Binding Rows}" SelectionMode="Single">
+      <ListBox Classes="repo_left_content_list" Padding="0,0,2,0" ItemsSource="{Binding Rows}" SelectionMode="Single">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="CornerRadius" Value="4"/>
@@ -127,7 +127,7 @@
 
                 <Path Grid.Column="3"
                       Width="8" Height="8"
-                      Margin="0,0,12,0"
+                      Margin="0,0,8,0"
                       Fill="Goldenrod"
                       Data="{StaticResource Icons.Modified}"
                       IsVisible="{Binding IsDirty}"/>
@@ -235,7 +235,7 @@
                 <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" TextTrimming="CharacterEllipsis"/>
                 <Path Grid.Column="2"
                       Width="8" Height="8"
-                      Margin="8,0,12,0"
+                      Margin="8,0,8,0"
                       Fill="Goldenrod"
                       Data="{StaticResource Icons.Modified}"
                       IsVisible="{Binding IsDirty}"/>

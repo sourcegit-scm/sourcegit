@@ -50,17 +50,6 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.PreferRebaseInsteadOfMerge = value;
         }
 
-        public bool IsRecurseSubmoduleVisible
-        {
-            get => _repo.Submodules.Count > 0;
-        }
-
-        public bool RecurseSubmodules
-        {
-            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
-            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
-        }
-
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
         {
             _repo = repo;
@@ -118,7 +107,6 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Pull");
             Use(log);
 
-            var updateSubmodules = IsRecurseSubmoduleVisible && RecurseSubmodules;
             var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
             var needPopStash = false;
             if (changes > 0)
@@ -147,12 +135,9 @@ namespace SourceGit.ViewModels
                 UseRebase).Use(log).RunAsync();
             if (rs)
             {
-                if (updateSubmodules)
-                {
-                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
-                    if (submodules.Count > 0)
-                        await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, true, true);
-                }
+                var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath, false).GetResultAsync();
+                if (submodules.Count > 0)
+                    await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, false, true);
 
                 if (needPopStash)
                     await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");

@@ -53,6 +53,9 @@ namespace SourceGit.ViewModels
             get => _commit;
             set
             {
+                if (_commit != null && value != null && _commit.SHA.Equals(value.SHA, StringComparison.Ordinal))
+                    return;
+
                 if (SetProperty(ref _commit, value))
                     Refresh();
             }

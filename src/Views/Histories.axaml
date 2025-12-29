@@ -25,7 +25,9 @@
 
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <DataGrid x:Name="CommitListContainer"
-                Background="{DynamicResource Brush.Contents}"
+                Classes="static_scrollbar"
+                ScrollViewer.AllowAutoHide="False"
+                Background="{DynamicResource Brush.Window}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
                 SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
@@ -52,6 +54,19 @@
         </DataGrid.Resources>
 
         <DataGrid.Styles>
+          <Style Selector="DataGrid.static_scrollbar">
+            <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
+              <Setter Property="Grid.RowSpan" Value="1" />
+              <Setter Property="Grid.ColumnSpan" Value="2" />
+            </Style>
+            <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
+              <Setter Property="Grid.Column" Value="0" />
+            </Style>
+            <Style Selector="^ /template/ ScrollBar">
+              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+            </Style>
+          </Style>
+          
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
             <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
@@ -92,6 +107,10 @@
                 </Grid>
               </ControlTemplate>
             </Setter>
+          </Style>
+
+          <Style Selector="DataGridRowsPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
           </Style>
         </DataGrid.Styles>
 
@@ -169,7 +188,7 @@
                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                             IsHitTestVisible="False"/>
 
-                  <Border Grid.Column="1" Padding="8,0,4,0" ClipToBounds="True">
+                  <Border Grid.Column="1" Padding="8,0" ClipToBounds="True">
                     <TextBlock Text="{Binding Author.Name}"
                                FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"

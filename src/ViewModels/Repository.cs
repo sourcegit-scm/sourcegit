@@ -644,8 +644,15 @@ namespace SourceGit.ViewModels
             if (!File.Exists(path))
                 return false;
 
-            var content = File.ReadAllText(path);
-            return content.Contains("git lfs pre-push");
+            try
+            {
+                var content = File.ReadAllText(path);
+                return content.Contains("git lfs pre-push");
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task InstallLFSAsync()
@@ -870,6 +877,12 @@ namespace SourceGit.ViewModels
             RefreshStashes();
         }
 
+        public void MarkSubmodulesDirtyManually()
+        {
+            _watcher?.MarkSubmodulesUpdated();
+            RefreshSubmodules();
+        }
+
         public void MarkFetched()
         {
             _lastFetchTime = DateTime.Now;
@@ -886,6 +899,12 @@ namespace SourceGit.ViewModels
                 SelectedViewIndex = 0;
                 _histories?.NavigateTo(sha);
             }
+        }
+
+        public void SetCommitMessage(string message)
+        {
+            if (_workingCopy is not null)
+                _workingCopy.CommitMessage = message;
         }
 
         public void ClearCommitMessage()
@@ -1819,6 +1838,8 @@ namespace SourceGit.ViewModels
 
         private async Task AutoFetchOnUIThread()
         {
+            CommandLog log = null;
+
             try
             {
                 if (_settings is not { EnableAutoFetch: true })
@@ -1843,20 +1864,24 @@ namespace SourceGit.ViewModels
                 foreach (var r in _remotes)
                     remotes.Add(r.Name);
 
+                if (remotes.Count == 0)
+                    return;
+
                 IsAutoFetching = true;
+                log = CreateLog("Auto-Fetch");
 
                 if (_settings.FetchAllRemotes)
                 {
                     foreach (var remote in remotes)
-                        await new Commands.Fetch(FullPath, remote, false, false) { RaiseError = false }.RunAsync();
+                        await new Commands.Fetch(FullPath, remote).Use(log).RunAsync();
                 }
-                else if (remotes.Count > 0)
+                else
                 {
                     var remote = string.IsNullOrEmpty(_settings.DefaultRemote) ?
                         remotes.Find(x => x.Equals(_settings.DefaultRemote, StringComparison.Ordinal)) :
                         remotes[0];
 
-                    await new Commands.Fetch(FullPath, remote, false, false) { RaiseError = false }.RunAsync();
+                    await new Commands.Fetch(FullPath, remote).Use(log).RunAsync();
                 }
 
                 _lastFetchTime = DateTime.Now;
@@ -1866,6 +1891,8 @@ namespace SourceGit.ViewModels
             {
                 // Ignore all exceptions.
             }
+
+            log?.Complete();
         }
 
         private readonly bool _isWorktree = false;

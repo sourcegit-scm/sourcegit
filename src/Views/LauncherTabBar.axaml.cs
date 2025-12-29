@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace SourceGit.Views
 {
@@ -69,7 +70,7 @@ namespace SourceGit.Views
 
             var selectedIdx = LauncherTabsList.SelectedIndex;
             var count = LauncherTabsList.ItemCount;
-            var separatorPen = new Pen(this.FindResource("Brush.FG2") as IBrush, 0.5);
+            var separatorPen = new Pen(new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? Colors.White : Colors.Black, 0.2));
             var separatorY = (height - 18) * 0.5 + 1;
 
             if (!IsScrollerVisible && selectedIdx > 0)
@@ -77,7 +78,7 @@ namespace SourceGit.Views
                 var container = LauncherTabsList.ContainerFromIndex(0);
                 if (container != null)
                 {
-                    var x = container.Bounds.Left - startX + LauncherTabsScroller.Bounds.X;
+                    var x = container.Bounds.Left - startX + LauncherTabsScroller.Bounds.X - 0.5;
                     context.DrawLine(separatorPen, new Point(x, separatorY), new Point(x, separatorY + 18));
                 }
             }
@@ -98,7 +99,7 @@ namespace SourceGit.Views
                 if (IsScrollerVisible && i == count - 1)
                     break;
 
-                var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X;
+                var separatorX = containerEndX - startX + LauncherTabsScroller.Bounds.X - 0.5;
                 context.DrawLine(separatorPen, new Point(separatorX, separatorY), new Point(separatorX, separatorY + 18));
             }
 
@@ -113,60 +114,51 @@ namespace SourceGit.Views
 
             var geo = new StreamGeometry();
             const double angle = Math.PI / 2;
-            var y = height + 0.5;
+            var bottom = height + 0.5;
+            var cornerSize = new Size(5, 5);
+
             using (var ctx = geo.Open())
             {
-                double x;
-
                 var drawLeftX = activeStartX - startX + LauncherTabsScroller.Bounds.X;
-                var drawRightX = activeEndX - startX + LauncherTabsScroller.Bounds.X;
                 if (drawLeftX < LauncherTabsScroller.Bounds.X)
                 {
-                    x = LauncherTabsScroller.Bounds.X;
-                    ctx.BeginFigure(new Point(x, y), true);
-                    y = 1;
-                    ctx.LineTo(new Point(x, y));
+                    ctx.BeginFigure(new Point(LauncherTabsScroller.Bounds.X - 0.5, bottom), true);
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.X - 0.5, 0.5));
                 }
                 else
                 {
-                    x = drawLeftX - 5;
-                    ctx.BeginFigure(new Point(x, y), true);
-                    x = drawLeftX;
-                    y -= 5;
-                    ctx.ArcTo(new Point(x, y), new Size(5, 5), angle, false, SweepDirection.CounterClockwise);
-                    y = 6;
-                    ctx.LineTo(new Point(x, y));
-                    x += 6;
-                    y = 1;
-                    ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
+                    ctx.BeginFigure(new Point(drawLeftX - 5.5, bottom), true);
+                    ctx.ArcTo(new Point(drawLeftX - 0.5, bottom - 5), cornerSize, angle, false, SweepDirection.CounterClockwise);
+                    ctx.LineTo(new Point(drawLeftX - 0.5, 5.5));
+                    ctx.ArcTo(new Point(drawLeftX + 4.5, 0.5), cornerSize, angle, false, SweepDirection.Clockwise);
                 }
 
-                x = drawRightX - 6;
-
+                var drawRightX = activeEndX - startX + LauncherTabsScroller.Bounds.X;
                 if (drawRightX <= LauncherTabsScroller.Bounds.Right)
                 {
-                    ctx.LineTo(new Point(x, y));
-                    x = drawRightX;
-                    y = 6;
-                    ctx.ArcTo(new Point(x, y), new Size(6, 6), angle, false, SweepDirection.Clockwise);
-                    y = height + 0.5 - 5;
-                    ctx.LineTo(new Point(x, y));
-                    x += 5;
-                    y = height + 0.5;
-                    ctx.ArcTo(new Point(x, y), new Size(5, 5), angle, false, SweepDirection.CounterClockwise);
+                    ctx.LineTo(new Point(drawRightX - 5.5, 0.5));
+                    ctx.ArcTo(new Point(drawRightX - 0.5, 5.5), cornerSize, angle, false, SweepDirection.Clockwise);
+                    ctx.LineTo(new Point(drawRightX - 0.5, bottom - 5));
+                    ctx.ArcTo(new Point(drawRightX + 4.5, bottom), cornerSize, angle, false, SweepDirection.CounterClockwise);
                 }
                 else
                 {
-                    x = LauncherTabsScroller.Bounds.Right;
-                    ctx.LineTo(new Point(x, y));
-                    y = height + 0.5;
-                    ctx.LineTo(new Point(x, y));
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right - 0.5, 0.5));
+                    ctx.LineTo(new Point(LauncherTabsScroller.Bounds.Right - 0.5, bottom));
                 }
             }
 
             var fill = this.FindResource("Brush.ToolBar") as IBrush;
             var stroke = new Pen(this.FindResource("Brush.Border0") as IBrush);
             context.DrawGeometry(fill, stroke, geo);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property.Name == nameof(ActualThemeVariant))
+                InvalidateVisual();
         }
 
         private void ScrollTabs(object _, PointerWheelEventArgs e)
@@ -346,10 +338,12 @@ namespace SourceGit.Views
                         {
                             var dupWs = ws;
                             var isCurrent = dupWs == vm.ActiveWorkspace;
+                            var icon = App.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            icon.Fill = dupWs.Brush;
 
                             var target = new MenuItem();
                             target.Header = ws.Name;
-                            target.Icon = App.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            target.Icon = icon;
                             target.Click += (_, ev) =>
                             {
                                 if (!isCurrent)
