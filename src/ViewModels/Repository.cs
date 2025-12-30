@@ -897,8 +897,24 @@ namespace SourceGit.ViewModels
             else
             {
                 SelectedViewIndex = 0;
+                if (sha == "HEAD")
+                    sha = _currentBranch.Head;
                 _histories?.NavigateTo(sha);
             }
+        }
+
+        public void NavigateToBranch(string branch, bool isDelayMode = false)
+        {
+            var b = _branches.Find(b => b.FullName.Equals(branch, StringComparison.Ordinal));
+            if (b != null)
+                NavigateToCommit(b.Head);
+        }
+
+        public void NavigateToTag(string tag, bool isDelayMode = false)
+        {
+            var t = _tags.Find(t => t.Name.Equals(tag, StringComparison.Ordinal));
+            if (t != null)
+                NavigateToCommit(t.SHA);
         }
 
         public void SetCommitMessage(string message)
