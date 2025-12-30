@@ -42,7 +42,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property.Name == "ActualThemeVariant")
+            if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
                 _bgBrush = null;
                 InvalidateVisual();

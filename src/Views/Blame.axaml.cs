@@ -366,7 +366,7 @@ namespace SourceGit.Views
             {
                 Options.IndentationSize = TabWidth;
             }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
