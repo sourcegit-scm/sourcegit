@@ -36,6 +36,10 @@ namespace SourceGit.Models
 
         public void Open(string path)
         {
+            // The executable file may be removed after the tool list is loaded (once time on startup).
+            if (!File.Exists(ExecFile))
+                return;
+
             Process.Start(new ProcessStartInfo()
             {
                 FileName = ExecFile,
