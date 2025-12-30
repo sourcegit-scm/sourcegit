@@ -270,7 +270,7 @@
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
                           <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
-                            <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                            <v:CommitBaseInfo MaxHeight="256" Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
                           </Border>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
@@ -294,7 +294,7 @@
                     <ContentControl Content="{Binding New}">
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
-                          <v:CommitBaseInfo MaxHeight="256" Margin="0,0,0,4" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                          <v:CommitBaseInfo MaxHeight="256" Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
                     </ContentControl>

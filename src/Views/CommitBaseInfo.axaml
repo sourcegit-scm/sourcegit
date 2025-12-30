@@ -17,7 +17,7 @@
           <!-- Author -->
           <Grid ColumnDefinitions="96,*">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
-            <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
+            <StackPanel Grid.Column="1" Margin="16,0,4,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
               <Border Margin="0,10,0,8" Background="Transparent" ToolTip.Tip="{Binding Author}" Tag="{Binding Author}" ContextRequested="OnUserContextRequested">
                 <TextBlock Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis">
@@ -35,7 +35,7 @@
           <!-- Committer -->
           <Grid ColumnDefinitions="96,*" IsVisible="{Binding IsCommitterVisible}">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Committer}"/>
-            <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
+            <StackPanel Grid.Column="1" Margin="16,0,4,0" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
               <Border Margin="0,10,0,8" Background="Transparent" ToolTip.Tip="{Binding Committer}" Tag="{Binding Committer}" ContextRequested="OnUserContextRequested">
                 <TextBlock Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis">
@@ -52,7 +52,7 @@
         </UniformGrid>
 
         <!-- Line -->
-        <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
+        <Rectangle Height=".65" Margin="8,8,0,8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
         <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
@@ -196,7 +196,7 @@
           <!-- Messages -->
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
           <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
-                                    Margin="12,4,8,0"
+                                    Margin="12,4,0,0"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap">

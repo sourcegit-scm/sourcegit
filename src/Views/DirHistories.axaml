@@ -120,7 +120,7 @@
                     BorderBrush="{DynamicResource Brush.Border0}"/>
 
       <!-- Commit Detail -->
-      <Border Grid.Column="2" Padding="0,4,4,8" IsVisible="{Binding !IsLoading}">
+      <Border Grid.Column="2" Padding="0,4" IsVisible="{Binding !IsLoading}">
         <ContentControl Content="{Binding Detail, Mode=OneWay}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:CommitDetail">

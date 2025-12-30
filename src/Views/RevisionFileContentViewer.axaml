@@ -60,10 +60,10 @@
     </DataTemplate>
 
     <DataTemplate DataType="m:RevisionSubmodule">
-      <Grid RowDefinitions="Auto,*" Margin="8,0">
+      <Grid RowDefinitions="Auto,*">
         <TextBlock Grid.Row="0" Margin="0,8,0,0" Text="{DynamicResource Text.CommitDetail.Files.Submodule}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <ScrollViewer Grid.Row="1" Margin="0,16,0,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-          <v:CommitBaseInfo Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+          <v:CommitBaseInfo Content="{Binding Commit}" Margin="4,0,12,0" FullMessage="{Binding FullMessage}"/>
         </ScrollViewer>
       </Grid>
     </DataTemplate>
