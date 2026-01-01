@@ -335,7 +335,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
+        public async Task StageChangesAsync(List<Models.Change> changes)
         {
             var canStaged = await GetCanStageChangesAsync(changes);
             var count = canStaged.Count;
@@ -343,7 +343,6 @@ namespace SourceGit.ViewModels
                 return;
 
             IsStaging = true;
-            _selectedUnstaged = next != null ? [next] : [];
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -363,14 +362,13 @@ namespace SourceGit.ViewModels
             IsStaging = false;
         }
 
-        public async Task UnstageChangesAsync(List<Models.Change> changes, Models.Change next)
+        public async Task UnstageChangesAsync(List<Models.Change> changes)
         {
             var count = changes.Count;
             if (count == 0)
                 return;
 
             IsUnstaging = true;
-            _selectedStaged = next != null ? [next] : [];
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -640,7 +638,7 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
 
             if (autoStage && _unstaged.Count > 0)
-                await StageChangesAsync(_unstaged, null);
+                await StageChangesAsync(_unstaged);
 
             var log = _repo.CreateLog("Commit");
             var succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)

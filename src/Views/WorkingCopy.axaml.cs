@@ -72,8 +72,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var next = UnstagedChangesView.GetNextChangeWithoutSelection();
-                await vm.StageChangesAsync(vm.SelectedUnstaged, next);
+                await vm.StageChangesAsync(vm.SelectedUnstaged);
                 UnstagedChangesView.TakeFocus();
                 e.Handled = true;
             }
@@ -83,8 +82,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var next = StagedChangesView.GetNextChangeWithoutSelection();
-                await vm.UnstageChangesAsync(vm.SelectedStaged, next);
+                await vm.UnstageChangesAsync(vm.SelectedStaged);
                 StagedChangesView.TakeFocus();
                 e.Handled = true;
             }
@@ -96,8 +94,7 @@ namespace SourceGit.Views
             {
                 if (e.Key is Key.Space or Key.Enter)
                 {
-                    var next = UnstagedChangesView.GetNextChangeWithoutSelection();
-                    await vm.StageChangesAsync(vm.SelectedUnstaged, next);
+                    await vm.StageChangesAsync(vm.SelectedUnstaged);
                     UnstagedChangesView.TakeFocus();
                     e.Handled = true;
                 }
@@ -137,8 +134,7 @@ namespace SourceGit.Views
             {
                 if (e.Key is Key.Space or Key.Enter)
                 {
-                    var next = StagedChangesView.GetNextChangeWithoutSelection();
-                    await vm.UnstageChangesAsync(vm.SelectedStaged, next);
+                    await vm.UnstageChangesAsync(vm.SelectedStaged);
                     StagedChangesView.TakeFocus();
                     e.Handled = true;
                 }
@@ -171,8 +167,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var next = UnstagedChangesView.GetNextChangeWithoutSelection();
-                await vm.StageChangesAsync(vm.SelectedUnstaged, next);
+                await vm.StageChangesAsync(vm.SelectedUnstaged);
                 UnstagedChangesView.TakeFocus();
             }
 
@@ -182,7 +177,7 @@ namespace SourceGit.Views
         private async void OnStageAllButtonClicked(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)
-                await vm.StageChangesAsync(vm.VisibleUnstaged, null);
+                await vm.StageChangesAsync(vm.VisibleUnstaged);
 
             e.Handled = true;
         }
@@ -191,8 +186,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
-                var next = StagedChangesView.GetNextChangeWithoutSelection();
-                await vm.UnstageChangesAsync(vm.SelectedStaged, next);
+                await vm.UnstageChangesAsync(vm.SelectedStaged);
                 StagedChangesView.TakeFocus();
             }
 
@@ -202,7 +196,7 @@ namespace SourceGit.Views
         private async void OnUnstageAllButtonClicked(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)
-                await vm.UnstageChangesAsync(vm.VisibleStaged, null);
+                await vm.UnstageChangesAsync(vm.VisibleStaged);
 
             e.Handled = true;
         }
@@ -347,7 +341,7 @@ namespace SourceGit.Views
                     stage.Tag = "Enter/Space";
                     stage.Click += async (_, e) =>
                     {
-                        await vm.StageChangesAsync(selectedUnstaged, null);
+                        await vm.StageChangesAsync(selectedUnstaged);
                         e.Handled = true;
                     };
 
@@ -753,7 +747,7 @@ namespace SourceGit.Views
                 stage.Tag = "Enter/Space";
                 stage.Click += async (_, e) =>
                 {
-                    await vm.StageChangesAsync(selectedUnstaged, null);
+                    await vm.StageChangesAsync(selectedUnstaged);
                     e.Handled = true;
                 };
 
@@ -946,7 +940,7 @@ namespace SourceGit.Views
                 unstage.Tag = "Enter/Space";
                 unstage.Click += async (_, e) =>
                 {
-                    await vm.UnstageChangesAsync(selectedStaged, null);
+                    await vm.UnstageChangesAsync(selectedStaged);
                     e.Handled = true;
                 };
 
@@ -1163,7 +1157,7 @@ namespace SourceGit.Views
                 unstage.Tag = "Enter/Space";
                 unstage.Click += async (_, e) =>
                 {
-                    await vm.UnstageChangesAsync(selectedStaged, null);
+                    await vm.UnstageChangesAsync(selectedStaged);
                     e.Handled = true;
                 };
 
