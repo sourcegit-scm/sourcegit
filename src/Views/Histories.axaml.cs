@@ -142,8 +142,8 @@ namespace SourceGit.Views
 
             if (change.Property == NavigationIdProperty)
             {
-                if (CommitListContainer is { SelectedItems.Count: 1, IsLoaded: true } dataGrid)
-                    dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
+                if (CommitListContainer is { SelectedItems.Count: > 0, IsLoaded: true } dataGrid)
+                    dataGrid.ScrollIntoView(dataGrid.SelectedItems[^1], null);
             }
         }
 
@@ -208,8 +208,11 @@ namespace SourceGit.Views
 
         private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
         {
+            if (DataGridExtension.GetIsUpdatingSelectedItems(CommitListContainer))
+                return;
+
             if (DataContext is ViewModels.Histories histories)
-                histories.Select(CommitListContainer.SelectedItems);
+                histories.Select(CommitListContainer.SelectedItems, false);
 
             e.Handled = true;
         }
