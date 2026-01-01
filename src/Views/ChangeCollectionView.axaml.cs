@@ -145,68 +145,6 @@ namespace SourceGit.Views
             }
         }
 
-        public Models.Change GetNextChangeWithoutSelection()
-        {
-            var selected = SelectedChanges;
-            var changes = Changes;
-            if (selected == null || selected.Count == 0)
-                return changes.Count > 0 ? changes[0] : null;
-            if (selected.Count == changes.Count)
-                return null;
-
-            var set = new HashSet<string>();
-            foreach (var c in selected)
-            {
-                if (!c.IsConflicted)
-                    set.Add(c.Path);
-            }
-
-            if (Content is ViewModels.ChangeCollectionAsTree tree)
-            {
-                var lastUnselected = -1;
-                for (int i = tree.Rows.Count - 1; i >= 0; i--)
-                {
-                    var row = tree.Rows[i];
-                    if (!row.IsFolder)
-                    {
-                        if (set.Contains(row.FullPath))
-                        {
-                            if (lastUnselected == -1)
-                                continue;
-
-                            break;
-                        }
-
-                        lastUnselected = i;
-                    }
-                }
-
-                if (lastUnselected != -1)
-                    return tree.Rows[lastUnselected].Change;
-            }
-            else
-            {
-                var lastUnselected = -1;
-                for (int i = changes.Count - 1; i >= 0; i--)
-                {
-                    if (set.Contains(changes[i].Path))
-                    {
-                        if (lastUnselected == -1)
-                            continue;
-
-                        break;
-                    }
-
-                    lastUnselected = i;
-                }
-
-                if (lastUnselected != -1)
-                    return changes[lastUnselected];
-            }
-
-            return null;
-        }
-
         public void TakeFocus()
         {
             var container = this.FindDescendantOfType<ChangeCollectionContainer>();

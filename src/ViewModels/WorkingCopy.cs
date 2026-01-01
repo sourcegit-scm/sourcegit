@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -166,6 +168,7 @@ namespace SourceGit.ViewModels
                 {
                     if (value == null || value.Count == 0)
                     {
+                        _selectedUnstagedIndices = [];
                         if (_selectedStaged == null || _selectedStaged.Count == 0)
                             SetDetail(null, true);
                     }
@@ -173,6 +176,8 @@ namespace SourceGit.ViewModels
                     {
                         if (_selectedStaged is { Count: > 0 })
                             SelectedStaged = [];
+
+                        _selectedUnstagedIndices = value.Select(c => _visibleUnstaged.IndexOf(c)).ToArray();
 
                         if (value.Count == 1)
                             SetDetail(value[0], true);
@@ -192,6 +197,7 @@ namespace SourceGit.ViewModels
                 {
                     if (value == null || value.Count == 0)
                     {
+                        _selectedStagedIndices = [];
                         if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
                             SetDetail(null, false);
                     }
@@ -199,6 +205,8 @@ namespace SourceGit.ViewModels
                     {
                         if (_selectedUnstaged is { Count: > 0 })
                             SelectedUnstaged = [];
+                        
+                        _selectedStagedIndices = value.Select(c => _visibleStaged.IndexOf(c)).ToArray();
 
                         if (value.Count == 1)
                             SetDetail(value[0], false);
@@ -315,6 +323,8 @@ namespace SourceGit.ViewModels
                     selectedStaged.Add(c);
             }
 
+            SelectNextOrPreviousIfNeeded(visibleStaged, visibleUnstaged, selectedStaged, selectedUnstaged);
+
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -335,7 +345,52 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
+        private void SelectNextOrPreviousIfNeeded(
+            List<Change> visibleStaged, List<Change> visibleUnstaged,
+            List<Change> selectedStaged, List<Change> selectedUnstaged)
+        {
+            // when we cannot find the previous selections in the respective groups on a refresh 
+            // we move the selection accordingly. this path is mainly hit during staging/unstaging
+            // when the whole file was moved.
+
+            var previousSelectionIndex = -1;
+            List<Change> collectionToUpdate = null;
+            List<Change> selectionSource = null;
+            
+            if (_selectedUnstaged.Count == 1 && selectedUnstaged.Count == 0)
+            {
+                previousSelectionIndex = _selectedUnstagedIndices[0];
+                collectionToUpdate = selectedUnstaged;
+                selectionSource = visibleUnstaged;
+            } 
+            else if (_selectedStaged.Count == 1 && selectedStaged.Count == 0)
+            {
+                previousSelectionIndex = _selectedStagedIndices[0];
+                collectionToUpdate = selectedStaged;
+                selectionSource = visibleStaged;
+            }
+            
+            if(collectionToUpdate == null)
+            {
+                return;
+            }
+            
+            // we have 2 selection paths: 
+            // 1. select at same index if not staging the last item
+            // 2. select the last item if we have any
+            
+            
+            if (previousSelectionIndex < selectionSource.Count)
+            {
+                collectionToUpdate.Add(selectionSource[previousSelectionIndex]);
+            } 
+            else if (selectionSource.Count > 0)
+            {
+                collectionToUpdate.Add(selectionSource[^1]);
+            }
+        }
+
+        public async Task StageChangesAsync(List<Models.Change> changes)
         {
             var canStaged = await GetCanStageChangesAsync(changes);
             var count = canStaged.Count;
@@ -343,7 +398,6 @@ namespace SourceGit.ViewModels
                 return;
 
             IsStaging = true;
-            _selectedUnstaged = next != null ? [next] : [];
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -363,14 +417,13 @@ namespace SourceGit.ViewModels
             IsStaging = false;
         }
 
-        public async Task UnstageChangesAsync(List<Models.Change> changes, Models.Change next)
+        public async Task UnstageChangesAsync(List<Models.Change> changes)
         {
             var count = changes.Count;
             if (count == 0)
                 return;
 
             IsUnstaging = true;
-            _selectedStaged = next != null ? [next] : [];
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -640,7 +693,7 @@ namespace SourceGit.ViewModels
             _repo.Settings.PushCommitMessage(_commitMessage);
 
             if (autoStage && _unstaged.Count > 0)
-                await StageChangesAsync(_unstaged, null);
+                await StageChangesAsync(_unstaged);
 
             var log = _repo.CreateLog("Commit");
             var succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
@@ -828,7 +881,9 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _staged = [];
         private List<Models.Change> _visibleStaged = [];
         private List<Models.Change> _selectedUnstaged = [];
+        private int[] _selectedUnstagedIndices = [];
         private List<Models.Change> _selectedStaged = [];
+        private int[] _selectedStagedIndices = [];
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;
