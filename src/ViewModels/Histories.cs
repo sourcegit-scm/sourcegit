@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-
 using Avalonia.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -154,7 +155,75 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Select(IList commits)
+        public void UpdateFromSelection()
+        {
+            var localBranchCommitSHAs =
+                CollectSelectedCommitSHAsRecursive(_repo.LocalBranchTrees);
+
+            var remoteBranchCommitSHAs =
+                CollectSelectedCommitSHAsRecursive(_repo.RemoteBranchTrees);
+
+            var tagsCommitSHAs =
+                _repo.VisibleTags switch
+                {
+                    TagCollectionAsTree tree =>
+                        CollectSelectedCommitSHAsRecursive(tree.Tree),
+                    TagCollectionAsList list => list.TagItems.Where(t => t.IsSelected)
+                        .Select(t => t.Tag.SHA),
+                    _ => Enumerable.Empty<string>()
+                };
+
+            var neededCommitSHAs =
+                localBranchCommitSHAs.Union(remoteBranchCommitSHAs).Union(tagsCommitSHAs).ToHashSet();
+            var foundCommits = new List<Commit>();
+
+            // perf: we expect only a view commits to be selected (1-2), hence the cost is similar to the 
+            // NaviateToCommit() even though we have a O(N*M) loop here, we loop the large commit list once, 
+            // and the needed commits N times
+            foreach (var commit in _commits)
+            {
+                var match = neededCommitSHAs.FirstOrDefault(a => commit.SHA.StartsWith(a, StringComparison.Ordinal));
+                if (match != null)
+                {
+                    foundCommits.Add(commit);
+                    neededCommitSHAs.Remove(match);
+                }
+            }
+
+            if (neededCommitSHAs.Count == 0)
+            {
+                Dispatcher.UIThread.Post(() => Select(foundCommits, true));
+            }
+            else
+            {
+                Task.Run(async () =>
+                {
+                    var remaining = await Task.WhenAll(neededCommitSHAs.Select(sha =>
+                        new Commands.QuerySingleCommit(_repo.FullPath, sha)
+                            .GetResultAsync()
+                    )).ConfigureAwait(false);
+                    foundCommits.AddRange(remaining);
+                    Dispatcher.UIThread.Post(() => Select(foundCommits, true));
+                });
+            }
+        }
+
+        private static IEnumerable<string> CollectSelectedCommitSHAsRecursive(IEnumerable<ICommitTreeNode> treeNodes)
+        {
+            foreach (var node in treeNodes)
+            {
+                if (node.IsSelected && !string.IsNullOrEmpty(node.CommitSHA))
+                {
+                    yield return node.CommitSHA;
+                }
+
+                foreach (var child in CollectSelectedCommitSHAsRecursive(node.Children))
+                {
+                    yield return child;
+                }
+            }
+        }
+
         public void Select(IList commits, bool autoSelect)
         {
             if (commits.Count == 0)

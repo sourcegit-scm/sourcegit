@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels
         }
     }
 
-    public class TagTreeNode : ObservableObject
+    public class TagTreeNode : ObservableObject, ICommitTreeNode
     {
         public string FullPath { get; private set; }
         public int Depth { get; private set; } = 0;
@@ -34,6 +34,10 @@ namespace SourceGit.ViewModels
         public TagToolTip ToolTip { get; private set; } = null;
         public List<TagTreeNode> Children { get; private set; } = [];
         public int Counter { get; set; } = 0;
+        
+        IEnumerable<ICommitTreeNode> ICommitTreeNode.Children => Children; 
+        string ICommitTreeNode.CommitSHA => Tag.SHA; 
+
 
         public bool IsFolder
         {
