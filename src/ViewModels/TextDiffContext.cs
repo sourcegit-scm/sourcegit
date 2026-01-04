@@ -191,18 +191,24 @@ namespace SourceGit.ViewModels
             _option = option;
             _data = diff;
 
-            foreach (var line in diff.Lines)
+            var sourceIndices = new int[diff.Lines.Count];
+
+            for (var sourceIndex = 0; sourceIndex < diff.Lines.Count; sourceIndex++)
             {
+                var line = diff.Lines[sourceIndex];
                 switch (line.Type)
                 {
                     case Models.TextDiffLineType.Added:
+                        sourceIndices[New.Count] = sourceIndex;
                         New.Add(line);
                         break;
                     case Models.TextDiffLineType.Deleted:
+                        sourceIndices[Old.Count] = sourceIndex;
                         Old.Add(line);
                         break;
                     default:
                         FillEmptyLines();
+                        sourceIndices[Old.Count] = sourceIndex;
                         Old.Add(line);
                         New.Add(line);
                         break;
@@ -210,6 +216,7 @@ namespace SourceGit.ViewModels
             }
 
             FillEmptyLines();
+            _sourceIndices = ResizeSourceIndices(sourceIndices);
             TryKeepPrevState(previous, Old);
         }
 
@@ -223,43 +230,9 @@ namespace SourceGit.ViewModels
             return new CombinedTextDiff(_option, _data, this);
         }
 
-        public void ConvertsToCombinedRange(ref int startLine, ref int endLine, bool isOldSide)
+        public int ConvertToCombined(int line)
         {
-            endLine = Math.Min(endLine, _data.Lines.Count - 1);
-
-            var oneSide = isOldSide ? Old : New;
-            var firstContentLine = -1;
-            for (int i = startLine; i <= endLine; i++)
-            {
-                var line = oneSide[i];
-                if (line.Type != Models.TextDiffLineType.None)
-                {
-                    firstContentLine = i;
-                    break;
-                }
-            }
-
-            if (firstContentLine < 0)
-                return;
-
-            var endContentLine = -1;
-            for (int i = Math.Min(endLine, oneSide.Count - 1); i >= startLine; i--)
-            {
-                var line = oneSide[i];
-                if (line.Type != Models.TextDiffLineType.None)
-                {
-                    endContentLine = i;
-                    break;
-                }
-            }
-
-            if (endContentLine < 0)
-                return;
-
-            var firstContent = oneSide[firstContentLine];
-            var endContent = oneSide[endContentLine];
-            startLine = _data.Lines.IndexOf(firstContent);
-            endLine = _data.Lines.IndexOf(endContent);
+            return 0 <= line && line < _sourceIndices.Length ? _sourceIndices[line] : line;
         }
 
         private void FillEmptyLines()
@@ -277,5 +250,19 @@ namespace SourceGit.ViewModels
                     New.Add(new Models.TextDiffLine());
             }
         }
+
+        private int[] ResizeSourceIndices(int[] sourceIndices)
+        {
+            var length = Old.Count; // same as `New.Count`
+
+            if (length == sourceIndices.Length)
+                return sourceIndices;
+
+            var resized = new int[length];
+            Array.Copy(sourceIndices, resized, length);
+            return resized;
+        }
+
+        private readonly int[] _sourceIndices;
     }
 }

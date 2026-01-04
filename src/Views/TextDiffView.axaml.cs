@@ -1183,7 +1183,8 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
+                startIdx = diff.ConvertToCombined(startIdx);
+                endIdx = diff.ConvertToCombined(endIdx);
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, false, IsOld));
             }
             else
@@ -1229,7 +1230,8 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
+                startIdx = diff.ConvertToCombined(startIdx);
+                endIdx = diff.ConvertToCombined(endIdx);
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
             }
         }
