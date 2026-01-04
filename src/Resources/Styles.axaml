@@ -34,13 +34,20 @@
                 ClipToBounds="True">
           <Border Margin="{TemplateBinding Padding}">
             <VisualLayerManager>
-              <Border>
-                <ContentPresenter Name="PART_ContentPresenter"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Content="{TemplateBinding Content}"
-                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-              </Border>
+              <LayoutTransformControl>
+                <LayoutTransformControl.LayoutTransform>
+                  <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                  ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+                </LayoutTransformControl.LayoutTransform>
+                
+                <Border>
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
+              </LayoutTransformControl>
             </VisualLayerManager>
           </Border>
         </Border>
@@ -129,13 +136,20 @@
                     BorderThickness="1"
                     CornerRadius="{TemplateBinding CornerRadius}">
               <VisualLayerManager>
-                <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
-                  <ContentPresenter Name="PART_ContentPresenter"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </Border>
+                <LayoutTransformControl>
+                  <LayoutTransformControl.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                    ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+                  </LayoutTransformControl.LayoutTransform>
+                  
+                  <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                  </Border>
+                </LayoutTransformControl>
               </VisualLayerManager>
             </Border>
           </Grid>

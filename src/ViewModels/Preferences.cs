@@ -104,6 +104,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _editorTabWidth, value);
         }
 
+        public double Zoom
+        {
+            get => _zoom;
+            set => SetProperty(ref _zoom, value);
+        }
+
         public LayoutInfo Layout
         {
             get => _layout;
@@ -770,6 +776,7 @@ namespace SourceGit.ViewModels
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;
+        private double _zoom = 1.0;
         private LayoutInfo _layout = new();
 
         private int _maxHistoryCommits = 20000;

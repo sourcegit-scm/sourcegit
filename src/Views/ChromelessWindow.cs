@@ -97,10 +97,30 @@ namespace SourceGit.Views
         {
             base.OnKeyDown(e);
 
-            if (e is { Handled: false, Key: Key.Escape, KeyModifiers: KeyModifiers.None } && CloseOnESC)
+            if (e.Handled)
+                return;
+
+            if (e is { Key: Key.Escape, KeyModifiers: KeyModifiers.None } && CloseOnESC)
             {
                 Close();
                 e.Handled = true;
+                return;
+            }
+
+            if (e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                if (e.Key == Key.OemPlus)
+                {
+                    var zoom = Math.Min(ViewModels.Preferences.Instance.Zoom + 0.05, 2.5);
+                    ViewModels.Preferences.Instance.Zoom = zoom;
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.OemMinus)
+                {
+                    var zoom = Math.Max(ViewModels.Preferences.Instance.Zoom - 0.05, 1);
+                    ViewModels.Preferences.Instance.Zoom = zoom;
+                    e.Handled = true;
+                }
             }
         }
 
