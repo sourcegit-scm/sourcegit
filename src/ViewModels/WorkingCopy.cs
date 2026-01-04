@@ -271,8 +271,6 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            _cached = changes;
-
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
             if (_selectedUnstaged is { Count: > 0 })
@@ -321,6 +319,7 @@ namespace SourceGit.ViewModels
                     return;
 
                 _isLoadingData = true;
+                _cached = changes;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
                 VisibleStaged = visibleStaged;
