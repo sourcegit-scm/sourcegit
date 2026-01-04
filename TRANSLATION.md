@@ -6,12 +6,13 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.80%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.69%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.Preferences.DiffMerge.DiffArgs
 - Text.Preferences.DiffMerge.DiffArgs.Tip
@@ -25,9 +26,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.89%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-98.04%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Hotkeys.Global.Zoom
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-97.93%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -38,6 +46,7 @@ This document shows the translation status of each locale file in the repository
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.OpenFile
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
@@ -53,7 +62,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-95.86%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-95.75%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -77,6 +86,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -99,7 +109,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-93.24%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-93.14%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -136,6 +146,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -169,7 +180,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-75.03%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-74.95%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -296,6 +307,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -406,7 +418,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-96.18%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-96.08%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -425,6 +437,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -449,7 +462,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-68.81%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-68.74%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -601,6 +614,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.Clone
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InProgress.CherryPick.Head
@@ -743,9 +757,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.89%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-75.14%25-yellow)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Hotkeys.Global.Zoom
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-75.05%25-yellow)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -872,6 +893,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -981,7 +1003,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-76.23%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-76.14%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1103,6 +1125,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
