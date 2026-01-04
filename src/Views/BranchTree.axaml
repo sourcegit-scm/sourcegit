@@ -36,7 +36,6 @@
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:BranchTreeNode">
         <Border Background="Transparent"
-                PointerPressed="OnNodePointerPressed"
                 ToolTip.Tip="{Binding Backend}"
                 ToolTip.Placement="Right">
           <Border.DataTemplates>

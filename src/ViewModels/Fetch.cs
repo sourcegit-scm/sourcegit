@@ -68,7 +68,8 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
-            var navigateToUpstreamHEAD = _repo.SelectedView is Histories { AutoSelectedCommit: { IsCurrentHead: true } };
+            var navigateToUpstreamHEAD = _repo.SelectedView is Histories { AutoSelectedCommits.Count: 1 } h &&
+                                         h.AutoSelectedCommits[0].IsCurrentHead;
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
             var log = _repo.CreateLog("Fetch");

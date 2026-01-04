@@ -72,12 +72,22 @@ namespace SourceGit.Views
         {
             RemoteBranchTree.UnselectAll();
             TagsList.UnselectAll();
+            UpdateHistoriesSelection();
         }
 
         private void OnRemoteBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
             LocalBranchTree.UnselectAll();
             TagsList.UnselectAll();
+            UpdateHistoriesSelection();
+        }
+
+        private void UpdateHistoriesSelection()
+        {
+            if (DataContext is ViewModels.Repository { SelectedView: ViewModels.Histories histories })
+            {
+                histories.UpdateFromSelection();
+            }
         }
 
         private void OnTagsRowsChanged(object _, RoutedEventArgs e)
@@ -90,6 +100,7 @@ namespace SourceGit.Views
         {
             LocalBranchTree.UnselectAll();
             RemoteBranchTree.UnselectAll();
+            UpdateHistoriesSelection();
         }
 
         private void OnSubmodulesRowsChanged(object _, RoutedEventArgs e)

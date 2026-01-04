@@ -1438,7 +1438,7 @@ namespace SourceGit.ViewModels
                 _searchCommitContext.Selected = null;
 
                 var target = await new Commands.QuerySingleCommit(FullPath, branch.Head).GetResultAsync();
-                _histories.AutoSelectedCommit = null;
+                _histories.AutoSelectedCommits = null;
                 _histories.DetailContext = new RevisionCompare(FullPath, target, null);
             }
         }
