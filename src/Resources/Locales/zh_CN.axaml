@@ -68,17 +68,17 @@
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">删除选中的 {0} 个分支</x:String>
   <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">编辑 ${0}$ 的描述...</x:String>
-  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward)到 ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">快进(fast-forward) 到 ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">拉取(fetch) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">GIT工作流 - 完成 ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">合并 {0} 个分支到当前分支</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">合并(merge) ${0}$ 到 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">合并(merge) {0} 个分支到当前分支</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">拉回(pull) ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">拉回(pull) ${0}$ 内容至 ${1}$...</x:String>
-  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push)${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">推送(push) ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">重命名 ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置 ${0}$ 到 ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置(reset) ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">切换到 ${0}$ (工作树)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
   <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
