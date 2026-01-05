@@ -481,7 +481,9 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Zum vorherigen Tab wechseln</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Neuen Tab erstellen</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Einstellungen öffnen</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Arbeitsplatz-Auswahlmenü anzeigen</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Aktiven Tab wechseln</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">Zoom vergrößern/verkleinern</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORY</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Gestagte Änderungen committen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Gestagte Änderungen committen und pushen</x:String>
@@ -556,6 +558,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Andere Tabs schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Rechte Tabs schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Kopiere Repository-Pfad</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Zu Arbeitsplatz verschieben</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Einfügen</x:String>
@@ -592,6 +595,10 @@
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Verwende nativen Fensterrahmen</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Argumente für Diff</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">Verwendbare Variablen: $LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">Argumente für Merge</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">Verwendbare Variablen: $BASE, $LOCAL, $REMOTE, $MERGED</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Installationspfad</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Pfad zum Diff/Merge Tool</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Tool</x:String>
@@ -632,6 +639,8 @@
   <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">GPG Benutzer Signierungsschlüssel</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRATIONEN</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Argumente</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Bitte verwende '.' für das aktuelle Verzeichnis</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Pfad</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote löschen</x:String>
@@ -795,6 +804,9 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Zum Commit wechseln</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">Squash HEAD in Vorgänger</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">Fixup HEAD in Vorgänger</x:String>
+  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH privater Schlüssel:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>
