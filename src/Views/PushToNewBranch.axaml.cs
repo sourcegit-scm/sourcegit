@@ -12,7 +12,7 @@ namespace SourceGit.Views
 
         public void SetRemote(string remote)
         {
-            TxtPrefix.Text = remote + "/";
+            TxtPrefix.Text = remote;
         }
 
         private void OnSure(object _1, RoutedEventArgs _2)
