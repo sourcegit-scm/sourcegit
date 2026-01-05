@@ -6,9 +6,10 @@ namespace SourceGit.Models
 {
     public class ConventionalCommitType
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string PrefillShortDesc { get; set; } = string.Empty;
 
         public ConventionalCommitType(string name, string type, string description)
         {

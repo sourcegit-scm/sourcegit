@@ -199,7 +199,8 @@ You can define your own conventional commit types (per-repository) by following 
   {
     "Name": "New Feature",
     "Type": "Feature",
-    "Description": "Adding a new feature"
+    "Description": "Adding a new feature",
+    "PrefillShortDesc": "this is a test"
   },
   {
     "Name": "Bug Fixes",

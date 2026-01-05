@@ -20,7 +20,11 @@ namespace SourceGit.ViewModels
         public Models.ConventionalCommitType SelectedType
         {
             get => _selectedType;
-            set => SetProperty(ref _selectedType, value, true);
+            set
+            {
+                if (SetProperty(ref _selectedType, value, true) && value is { PrefillShortDesc: { Length: > 0 } })
+                    Description = value.PrefillShortDesc;
+            }
         }
 
         public string Scope
