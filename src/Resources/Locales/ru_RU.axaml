@@ -59,6 +59,7 @@
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Переключиться на ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Сравнить две выбранные ветки</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Сравнить с ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копировать имя ветки</x:String>
@@ -482,6 +483,7 @@
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Открыть диалоговое окно настроек</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Показать рабочее пространство в выпадющем меню</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Переключиться на вкладку</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">Масштабирование</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">РЕПОЗИТОРИЙ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Зафиксировать сформированные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Зафиксировать и выложить сформированные изменения</x:String>
@@ -856,6 +858,8 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">РАЗМЕТЧИК</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">ВРЕМЯ</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Сравнить две ветки</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Сообщение</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Имя</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Разметчик</x:String>
