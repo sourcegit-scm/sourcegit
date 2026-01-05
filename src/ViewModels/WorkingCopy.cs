@@ -103,7 +103,7 @@ namespace SourceGit.ViewModels
                         ResetAuthor = false;
                     }
 
-                    Staged = GetStagedChanges();
+                    Staged = GetStagedChanges(_cached);
                     VisibleStaged = GetVisibleChanges(_staged);
                     SelectedStaged = [];
                 }
@@ -303,7 +303,7 @@ namespace SourceGit.ViewModels
                     selectedUnstaged.Add(c);
             }
 
-            var staged = GetStagedChanges();
+            var staged = GetStagedChanges(changes);
 
             var visibleStaged = GetVisibleChanges(staged);
             var selectedStaged = new List<Models.Change>();
@@ -714,7 +714,7 @@ namespace SourceGit.ViewModels
             return outs;
         }
 
-        private List<Models.Change> GetStagedChanges()
+        private List<Models.Change> GetStagedChanges(List<Models.Change> cached)
         {
             if (_useAmend)
             {
@@ -723,7 +723,7 @@ namespace SourceGit.ViewModels
             }
 
             var rs = new List<Models.Change>();
-            foreach (var c in _cached)
+            foreach (var c in cached)
             {
                 if (c.Index != Models.ChangeState.None)
                     rs.Add(c);
