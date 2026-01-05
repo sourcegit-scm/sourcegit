@@ -857,6 +857,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">確  定</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">建立者</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">建立時間</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">標籤訊息</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">標籤名稱</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">建立者</x:String>

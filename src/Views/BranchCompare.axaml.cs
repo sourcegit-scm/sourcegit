@@ -21,7 +21,6 @@ namespace SourceGit.Views
                 sender is ChangeCollectionView view)
             {
                 var menu = new ContextMenu();
-                var repo = vm.RepositoryPath;
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
@@ -48,7 +47,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo, $"Failed to save as patch: {exception.Message}");
+                        App.RaiseException(null, $"Failed to save as patch: {exception.Message}");
                     }
 
                     e.Handled = true;
@@ -63,14 +62,14 @@ namespace SourceGit.Views
                     openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                     openWithMerger.Click += (_, ev) =>
                     {
-                        new Commands.DiffTool(repo, new Models.DiffOption(vm.Base.Head, vm.To.Head, change)).Open();
+                        vm.OpenInExternalDiffTool(change);
                         ev.Handled = true;
                     };
                     menu.Items.Add(openWithMerger);
 
                     if (change.Index != Models.ChangeState.Deleted)
                     {
-                        var full = Path.GetFullPath(Path.Combine(repo, change.Path));
+                        var full = vm.GetAbsPath(change.Path);
                         var explore = new MenuItem();
                         explore.Header = App.Text("RevealFile");
                         explore.Icon = App.CreateMenuIcon("Icons.Explore");
@@ -99,7 +98,7 @@ namespace SourceGit.Views
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(Native.OS.GetAbsPath(repo, change.Path));
+                        await App.CopyTextAsync(vm.GetAbsPath(change.Path));
                         ev.Handled = true;
                     };
 
@@ -133,7 +132,7 @@ namespace SourceGit.Views
                     {
                         var builder = new StringBuilder();
                         foreach (var c in selected)
-                            builder.AppendLine(Native.OS.GetAbsPath(repo, c.Path));
+                            builder.AppendLine(vm.GetAbsPath(c.Path));
 
                         await App.CopyTextAsync(builder.ToString());
                         ev.Handled = true;

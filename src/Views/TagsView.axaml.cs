@@ -257,6 +257,14 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
+                var compareWithHead = new MenuItem();
+                compareWithHead.Header = App.Text("TagCM.CompareWithHead");
+                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Click += (_, _) =>
+                {
+                    App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, tag, repo.CurrentBranch));
+                };
+
                 var archive = new MenuItem();
                 archive.Icon = App.CreateMenuIcon("Icons.Archive");
                 archive.Header = App.Text("Archive");
@@ -272,6 +280,8 @@ namespace SourceGit.Views
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(pushTag);
                 menu.Items.Add(deleteTag);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(compareWithHead);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(archive);
                 menu.Items.Add(new MenuItem() { Header = "-" });
