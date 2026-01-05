@@ -6,25 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.69%25-yellow)
-
-<details>
-<summary>Missing keys in de_DE.axaml</summary>
-
-- Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
-- Text.Hotkeys.Global.Zoom
-- Text.PageTabBar.Tab.MoveToWorkspace
-- Text.Preferences.DiffMerge.DiffArgs
-- Text.Preferences.DiffMerge.DiffArgs.Tip
-- Text.Preferences.DiffMerge.MergeArgs
-- Text.Preferences.DiffMerge.MergeArgs.Tip
-- Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
-- Text.SquashOrFixup.Squash
-- Text.SquashOrFixup.Fixup
-- Text.SquashOrFixup.Into
-
-</details>
+### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
 
 ### ![es__ES](https://img.shields.io/badge/es__ES-99.89%25-yellow)
 
