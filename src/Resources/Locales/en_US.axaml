@@ -55,6 +55,7 @@
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame on Previous Revision</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Compare selected 2 branches</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Compare with ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Compare with Worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copy Branch Name</x:String>
@@ -853,6 +854,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">TAGGER</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">TIME</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Compare 2 tags</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Message</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Name</x:String>

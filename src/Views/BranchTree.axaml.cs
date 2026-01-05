@@ -517,32 +517,50 @@ namespace SourceGit.Views
                 var menu = branch.IsLocal ? CreateContextMenuForLocalBranch(repo, branch) : CreateContextMenuForRemoteBranch(repo, branch);
                 menu.Open(this);
             }
-            else if (branches.Find(x => x.IsCurrent) == null)
+            else
             {
                 var menu = new ContextMenu();
 
-                var mergeMulti = new MenuItem();
-                mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
-                mergeMulti.Icon = App.CreateMenuIcon("Icons.Merge");
-                mergeMulti.Click += (_, ev) =>
+                if (branches.Count == 2)
                 {
-                    repo.MergeMultipleBranches(branches);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(mergeMulti);
-                menu.Items.Add(new MenuItem() { Header = "-" });
+                    var compare = new MenuItem();
+                    compare.Header = App.Text("BranchCM.CompareTwo");
+                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compare.Click += (_, ev) =>
+                    {
+                        App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, branches[0], branches[1]));
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(compare);
+                }
 
-                var deleteMulti = new MenuItem();
-                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
-                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
-                deleteMulti.Click += (_, ev) =>
+                if (branches.Find(x => x.IsCurrent) == null)
                 {
-                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(deleteMulti);
+                    var mergeMulti = new MenuItem();
+                    mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
+                    mergeMulti.Icon = App.CreateMenuIcon("Icons.Merge");
+                    mergeMulti.Click += (_, ev) =>
+                    {
+                        repo.MergeMultipleBranches(branches);
+                        ev.Handled = true;
+                    };
 
-                menu.Open(this);
+                    var deleteMulti = new MenuItem();
+                    deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                    deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
+                    deleteMulti.Click += (_, ev) =>
+                    {
+                        repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(mergeMulti);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(deleteMulti);
+                }
+
+                if (menu.Items.Count > 0)
+                    menu.Open(this);
             }
         }
 

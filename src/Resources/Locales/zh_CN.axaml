@@ -59,6 +59,7 @@
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">对当前版本的前一版本执行逐行追溯操作</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比较选中的 2 个分支</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">与当前 ${0}$ 比较</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
@@ -857,6 +858,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">创建者</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">创建时间</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">比较 2 个标签</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">与当前 HEAD 比较</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">标签信息</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">标签名</x:String>

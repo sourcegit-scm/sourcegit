@@ -356,6 +356,25 @@ namespace SourceGit.Views
             }
             else if (selected.Count > 0)
             {
+                var menu = new ContextMenu();
+
+                if (selected.Count == 2)
+                {
+                    var compare = new MenuItem();
+                    compare.Header = App.Text("TagCM.CompareTwo");
+                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compare.Click += (_, ev) =>
+                    {
+                        var (based, to) = (selected[0], selected[1]);
+                        if (based.CreatorDate > to.CreatorDate)
+                            (based, to) = (to, based);
+
+                        App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, based, to));
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(compare);
+                }
+
                 var deleteMultiple = new MenuItem();
                 deleteMultiple.Header = App.Text("TagCM.DeleteMultiple", selected.Count);
                 deleteMultiple.Icon = App.CreateMenuIcon("Icons.Clear");
@@ -367,7 +386,6 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
-                var menu = new ContextMenu();
                 menu.Items.Add(deleteMultiple);
                 menu.Open(listBox);
             }
