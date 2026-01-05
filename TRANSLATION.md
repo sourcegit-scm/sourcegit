@@ -6,30 +6,35 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.89%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.67%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.BranchCM.CompareTwo
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.78%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.57%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
+- Text.BranchCM.CompareTwo
 - Text.Hotkeys.Global.Zoom
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-97.82%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-97.61%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.EditDescription
 - Text.CommitMessageTextBox.Placeholder
 - Text.EditBranchDescription
@@ -49,17 +54,19 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-95.65%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-95.44%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
 - Text.About.ReleaseNotes
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -97,17 +104,19 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-93.04%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-92.83%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
 - Text.About.ReleaseNotes
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -165,6 +174,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
@@ -173,7 +183,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-74.86%25-red)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-74.70%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -194,6 +204,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
@@ -385,6 +396,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
@@ -412,13 +424,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-95.97%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-95.77%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
 
 - Text.Blame.BlameOnPreviousRevision
 - Text.Blame.TypeNotSupported
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -453,11 +466,12 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.Submodule.Status.Unmerged
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-68.66%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-68.51%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -484,6 +498,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.CustomAction
@@ -724,6 +739,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
@@ -753,17 +769,19 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.78%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.57%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.BranchCM.CompareTwo
 - Text.Hotkeys.Global.Zoom
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-74.97%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-74.81%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -784,6 +802,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWithCurrent
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
@@ -974,6 +993,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
@@ -1001,7 +1021,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-76.06%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-75.90%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1022,6 +1042,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -1207,6 +1228,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
 - Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
