@@ -43,8 +43,6 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Автор рядка</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">ПОШУК АВТОРА РЯДКА ДЛЯ ЦЬОГО ФАЙЛУ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Перейти на ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Порівняти з ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копіювати назву гілки</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>

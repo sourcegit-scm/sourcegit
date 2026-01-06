@@ -54,8 +54,6 @@
   <x:String x:Key="Text.Bisect.WaitingForRange">이진 탐색 중. 현재 커밋을 '좋음' 또는 '나쁨'으로 표시하고 다른 커밋을 체크아웃하세요.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">블레임</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ 체크아웃...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">${0}$와(과) 비교</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">워크트리와 비교</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">브랜치 이름 복사</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$ 삭제...</x:String>

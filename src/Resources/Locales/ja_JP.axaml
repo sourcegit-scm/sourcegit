@@ -43,7 +43,6 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAMEではこのファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ をチェックアウトする...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">ブランチ名をコピー</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$を削除...</x:String>

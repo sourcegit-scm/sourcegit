@@ -59,8 +59,6 @@
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blâmer sur la révision précédente</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">LE BLÂME SUR CE FICHIER N'EST PAS SUPPORTÉ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Récupérer ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Comparer avec ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Comparer avec le worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copier le nom de la branche</x:String>
   <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Créer une PR...</x:String>
   <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Créer une PR pour l'upstream ${0}$...</x:String>

@@ -57,8 +57,6 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME PADA BERKAS INI TIDAK DIDUKUNG!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Bandingkan dengan ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Bandingkan dengan Worktree</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Salin Nama Branch</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Aksi Kustom</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Hapus ${0}$...</x:String>
