@@ -187,7 +187,6 @@
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息，標題與詳細描述之間請使用單行空白區隔。</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
-  <x:String x:Key="Text.Compare" xml:space="preserve">比較 ：</x:String>
   <x:String x:Key="Text.Compare.Base" xml:space="preserve">相較於 ：</x:String>
   <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
