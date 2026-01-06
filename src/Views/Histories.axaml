@@ -30,7 +30,7 @@
                 Background="{DynamicResource Brush.Window}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
-                SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
+                SelectedItem="{Binding SelectedCommit, Mode=OneWay}"
                 CanUserReorderColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"
