@@ -42,14 +42,14 @@
                   Margin="4,0,0,0" Padding="4,0">
             <StackPanel Orientation="Horizontal">
               <TextBlock Text="{DynamicResource Text.Compare.Base}" Foreground="White" FontWeight="Bold"/>
-              <ContentControl Content="{Binding BasedOn}" Margin="4,0,0,0">
+              <ContentControl Content="{Binding BasedOn}" Margin="4,0,0,0" MaxWidth="100">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Branch">
-                    <TextBlock Text="{Binding FriendlyName}" Foreground="White"/>
+                    <TextBlock Text="{Binding FriendlyName}" Foreground="White" TextTrimming="CharacterEllipsis"/>
                   </DataTemplate>
 
                   <DataTemplate DataType="m:Tag">
-                    <TextBlock Text="{Binding Name}" Foreground="White"/>
+                    <TextBlock Text="{Binding Name}" Foreground="White" TextTrimming="CharacterEllipsis"/>
                   </DataTemplate>
                 </ContentControl.DataTemplates>
               </ContentControl>
