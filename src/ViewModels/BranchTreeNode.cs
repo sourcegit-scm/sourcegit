@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class BranchTreeNode : ObservableObject
+    public class BranchTreeNode : ObservableObject, ICommitTreeNode
     {
         public string Name { get; private set; } = string.Empty;
         public string Path { get; private set; } = string.Empty;
@@ -15,6 +15,9 @@ namespace SourceGit.ViewModels
         public bool IsSelected { get; set; } = false;
         public List<BranchTreeNode> Children { get; private set; } = new List<BranchTreeNode>();
         public int Counter { get; set; } = 0;
+
+        IEnumerable<ICommitTreeNode> ICommitTreeNode.Children => Children; 
+        string ICommitTreeNode.CommitSHA => Backend is Models.Branch b ? b.Head :  string.Empty; 
 
         public Models.FilterMode FilterMode
         {

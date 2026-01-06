@@ -2,11 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-
 using Avalonia.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -23,11 +24,13 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                var lastSelected = AutoSelectedCommit;
+                var lastSelected = AutoSelectedCommits;
                 if (SetProperty(ref _commits, value))
                 {
                     if (value.Count > 0 && lastSelected != null)
-                        AutoSelectedCommit = value.Find(x => x.SHA == lastSelected.SHA);
+                    {
+                        AutoSelectedCommits = value.Where(x => lastSelected.Any(s => x.SHA == s.SHA)).ToArray();
+                    }
                 }
             }
         }
@@ -38,10 +41,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _graph, value);
         }
 
-        public Models.Commit AutoSelectedCommit
+        public IReadOnlyList<Models.Commit> AutoSelectedCommits
         {
-            get => _autoSelectedCommit;
-            set => SetProperty(ref _autoSelectedCommit, value);
+            get => _autoSelectedCommits;
+            set => SetProperty(ref _autoSelectedCommits, value);
         }
 
         public long NavigationId
@@ -97,7 +100,7 @@ namespace SourceGit.ViewModels
             Commits = [];
             _repo = null;
             _graph = null;
-            _autoSelectedCommit = null;
+            _autoSelectedCommits = null;
             _detailContext?.Dispose();
             _detailContext = null;
         }
@@ -152,7 +155,76 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Select(IList commits)
+        public void UpdateFromSelection()
+        {
+            var localBranchCommitSHAs =
+                CollectSelectedCommitSHAsRecursive(_repo.LocalBranchTrees);
+
+            var remoteBranchCommitSHAs =
+                CollectSelectedCommitSHAsRecursive(_repo.RemoteBranchTrees);
+
+            var tagsCommitSHAs =
+                _repo.VisibleTags switch
+                {
+                    TagCollectionAsTree tree =>
+                        CollectSelectedCommitSHAsRecursive(tree.Tree),
+                    TagCollectionAsList list => list.TagItems.Where(t => t.IsSelected)
+                        .Select(t => t.Tag.SHA),
+                    _ => Enumerable.Empty<string>()
+                };
+
+            var neededCommitSHAs =
+                localBranchCommitSHAs.Union(remoteBranchCommitSHAs).Union(tagsCommitSHAs).ToHashSet();
+            var foundCommits = new List<Commit>();
+
+            // perf: we expect only a view commits to be selected (1-2), hence the cost is similar to the 
+            // NaviateToCommit() even though we have a O(N*M) loop here, we loop the large commit list once, 
+            // and the needed commits N times
+            foreach (var commit in _commits)
+            {
+                var match = neededCommitSHAs.FirstOrDefault(a => commit.SHA.StartsWith(a, StringComparison.Ordinal));
+                if (match != null)
+                {
+                    foundCommits.Add(commit);
+                    neededCommitSHAs.Remove(match);
+                }
+            }
+
+            if (neededCommitSHAs.Count == 0)
+            {
+                Dispatcher.UIThread.Post(() => Select(foundCommits, true));
+            }
+            else
+            {
+                Task.Run(async () =>
+                {
+                    var remaining = await Task.WhenAll(neededCommitSHAs.Select(sha =>
+                        new Commands.QuerySingleCommit(_repo.FullPath, sha)
+                            .GetResultAsync()
+                    )).ConfigureAwait(false);
+                    foundCommits.AddRange(remaining);
+                    Dispatcher.UIThread.Post(() => Select(foundCommits, true));
+                });
+            }
+        }
+
+        private static IEnumerable<string> CollectSelectedCommitSHAsRecursive(IEnumerable<ICommitTreeNode> treeNodes)
+        {
+            foreach (var node in treeNodes)
+            {
+                if (node.IsSelected && !string.IsNullOrEmpty(node.CommitSHA))
+                {
+                    yield return node.CommitSHA;
+                }
+
+                foreach (var child in CollectSelectedCommitSHAsRecursive(node.Children))
+                {
+                    yield return child;
+                }
+            }
+        }
+
+        public void Select(IList commits, bool autoSelect)
         {
             if (commits.Count == 0)
             {
@@ -163,10 +235,8 @@ namespace SourceGit.ViewModels
             {
                 var commit = (commits[0] as Models.Commit)!;
                 if (_repo.SearchCommitContext.Selected == null || _repo.SearchCommitContext.Selected.SHA != commit.SHA)
-                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA == commit.SHA);
-
-                AutoSelectedCommit = commit;
-                NavigationId = _navigationId + 1;
+                    _repo.SearchCommitContext.Selected =
+                        _repo.SearchCommitContext.Results?.Find(x => x.SHA == commit.SHA);
 
                 if (_detailContext is CommitDetail detail)
                 {
@@ -191,6 +261,13 @@ namespace SourceGit.ViewModels
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(commits.Count);
+            }
+
+            if (autoSelect && commits.Count > 0)
+            {
+                AutoSelectedCommits =
+                    commits as IReadOnlyList<Commit> ?? commits.OfType<Models.Commit>().ToArray();
+                NavigationId = _navigationId + 1;
             }
         }
 
@@ -397,7 +474,7 @@ namespace SourceGit.ViewModels
 
         private void NavigateTo(Models.Commit commit)
         {
-            AutoSelectedCommit = commit;
+            AutoSelectedCommits = [commit];
 
             if (commit == null)
             {
@@ -425,7 +502,7 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;
-        private Models.Commit _autoSelectedCommit = null;
+        private IReadOnlyList<Models.Commit> _autoSelectedCommits = null;
         private Models.Bisect _bisect = null;
         private long _navigationId = 0;
         private IDisposable _detailContext = null;
