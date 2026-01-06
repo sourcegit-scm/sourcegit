@@ -8,16 +8,16 @@ using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
 {
-    public partial class BranchCompare : ChromelessWindow
+    public partial class Compare : ChromelessWindow
     {
-        public BranchCompare()
+        public Compare()
         {
             InitializeComponent();
         }
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.BranchCompare { SelectedChanges: { Count: > 0 } selected } vm &&
+            if (DataContext is ViewModels.Compare { SelectedChanges: { Count: > 0 } selected } vm &&
                 sender is ChangeCollectionView view)
             {
                 var menu = new ContextMenu();
@@ -152,7 +152,7 @@ namespace SourceGit.Views
 
         private void OnPressedSHA(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.BranchCompare vm && sender is TextBlock block)
+            if (DataContext is ViewModels.Compare vm && sender is TextBlock block)
                 vm.NavigateTo(block.Text);
 
             e.Handled = true;
@@ -160,7 +160,7 @@ namespace SourceGit.Views
 
         private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
         {
-            if (DataContext is not ViewModels.BranchCompare vm)
+            if (DataContext is not ViewModels.Compare vm)
                 return;
 
             if (sender is not ChangeCollectionView { SelectedChanges: { Count: > 0 } selectedChanges })

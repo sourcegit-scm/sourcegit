@@ -80,7 +80,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Réinitialiser ${0}$ sur ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Basculer vers ${0}$ (worktree)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Définir la branche de suivi...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Comparer les branches</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} commit(s) en avance</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit(s) en avance, {1} commit(s) en retard</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit(s) en retard</x:String>
@@ -184,6 +183,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signataire :</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Ouvrir dans le navigateur</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUJET</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Comparer</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Configurer le dépôt</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">MODÈLE DE COMMIT</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Paramètres intégrés : 

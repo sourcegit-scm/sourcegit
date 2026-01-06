@@ -262,7 +262,17 @@ namespace SourceGit.Views
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, tag, repo.CurrentBranch));
+                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, tag, repo.CurrentBranch));
+                };
+
+                var compareWith = new MenuItem();
+                compareWith.Header = App.Text("TagCM.CompareWith");
+                compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWith.Click += (_, _) =>
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher != null)
+                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, tag));
                 };
 
                 var archive = new MenuItem();
@@ -282,6 +292,7 @@ namespace SourceGit.Views
                 menu.Items.Add(deleteTag);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithHead);
+                menu.Items.Add(compareWith);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(archive);
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -369,7 +380,7 @@ namespace SourceGit.Views
                         if (based.CreatorDate > to.CreatorDate)
                             (based, to) = (to, based);
 
-                        App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, based, to));
+                        App.ShowWindow(new ViewModels.Compare(repo.FullPath, based, to));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);

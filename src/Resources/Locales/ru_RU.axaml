@@ -82,7 +82,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Сбросить ${0}$ к ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Переключить на ${0}$ (рабочий каталог)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Отслеживать ветку...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Сравнение веток</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} ревизий вперёд</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} ревизий вперёд, {1} ревизий назад</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} ревизий назад</x:String>
@@ -187,6 +186,7 @@
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Открыть в браузере</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Введите сообщение ревизии. Пожалуйста, используйте пустые строки для разделения субъекта и описания!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">СУБЪЕКТ</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Сравнение</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Встроенные параметры: 

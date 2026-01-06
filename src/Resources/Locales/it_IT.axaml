@@ -75,7 +75,6 @@
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rinomina ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Resetta ${0}$ a ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Imposta Branch di Tracciamento...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Confronto Branch</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Invalido</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTO</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">TRACCIAMENTO</x:String>
@@ -170,6 +169,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Firmatario:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Apri nel Browser</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">OGGETTO</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Confronto</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Configura Repository</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">TEMPLATE DI COMMIT</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Contenuto Template:</x:String>

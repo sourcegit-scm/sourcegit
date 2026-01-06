@@ -3,9 +3,9 @@ using Avalonia.Input;
 
 namespace SourceGit.Views
 {
-    public partial class BranchCompareCommandPalette : UserControl
+    public partial class CompareCommandPalette : UserControl
     {
-        public BranchCompareCommandPalette()
+        public CompareCommandPalette()
         {
             InitializeComponent();
         }
@@ -14,7 +14,7 @@ namespace SourceGit.Views
         {
             base.OnKeyDown(e);
 
-            if (DataContext is not ViewModels.BranchCompareCommandPalette vm)
+            if (DataContext is not ViewModels.CompareCommandPalette vm)
                 return;
 
             if (e.Key == Key.Enter)
@@ -24,7 +24,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Up)
             {
-                if (BranchListBox.IsKeyboardFocusWithin)
+                if (RefsListBox.IsKeyboardFocusWithin)
                 {
                     FilterTextBox.Focus(NavigationMethod.Directional);
                     e.Handled = true;
@@ -35,14 +35,14 @@ namespace SourceGit.Views
             {
                 if (FilterTextBox.IsKeyboardFocusWithin)
                 {
-                    if (vm.Branches.Count > 0)
-                        BranchListBox.Focus(NavigationMethod.Directional);
+                    if (vm.Refs.Count > 0)
+                        RefsListBox.Focus(NavigationMethod.Directional);
 
                     e.Handled = true;
                     return;
                 }
 
-                if (BranchListBox.IsKeyboardFocusWithin && e.Key == Key.Tab)
+                if (RefsListBox.IsKeyboardFocusWithin && e.Key == Key.Tab)
                 {
                     FilterTextBox.Focus(NavigationMethod.Directional);
                     e.Handled = true;
@@ -53,7 +53,7 @@ namespace SourceGit.Views
 
         private void OnItemTapped(object sender, TappedEventArgs e)
         {
-            if (DataContext is ViewModels.BranchCompareCommandPalette vm)
+            if (DataContext is ViewModels.CompareCommandPalette vm)
             {
                 vm.Launch();
                 e.Handled = true;

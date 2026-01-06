@@ -7,8 +7,8 @@
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.BranchCompareCommandPalette"
-             x:DataType="vm:BranchCompareCommandPalette">
+             x:Class="SourceGit.Views.CompareCommandPalette"
+             x:DataType="vm:CompareCommandPalette">
   <Grid RowDefinitions="Auto,Auto">
     <v:RepositoryCommandPaletteTextBox Grid.Row="0"
                                        x:Name="FilterTextBox"
@@ -30,9 +30,30 @@
                   Height="18"
                   CornerRadius="4"
                   Margin="4,0,0,0" Padding="4,0">
-            <TextBlock Text="{DynamicResource Text.BranchCompare}"
+            <TextBlock Text="{DynamicResource Text.Compare}"
                        Foreground="Black"
                        FontWeight="Bold"/>
+          </Border>
+
+          <Border BorderThickness="0"
+                  Background="Green"
+                  Height="18"
+                  CornerRadius="4"
+                  Margin="4,0,0,0" Padding="4,0">
+            <StackPanel Orientation="Horizontal">
+              <TextBlock Text="{DynamicResource Text.Compare.Base}" Foreground="White" FontWeight="Bold"/>
+              <ContentControl Content="{Binding BasedOn}" Margin="4,0,0,0">
+                <ContentControl.DataTemplates>
+                  <DataTemplate DataType="m:Branch">
+                    <TextBlock Text="{Binding FriendlyName}" Foreground="White"/>
+                  </DataTemplate>
+
+                  <DataTemplate DataType="m:Tag">
+                    <TextBlock Text="{Binding Name}" Foreground="White"/>
+                  </DataTemplate>
+                </ContentControl.DataTemplates>
+              </ContentControl>
+            </StackPanel>
           </Border>
         </StackPanel>
       </TextBox.InnerLeftContent>
@@ -53,7 +74,7 @@
     </v:RepositoryCommandPaletteTextBox>
 
     <ListBox Grid.Row="1"
-             x:Name="BranchListBox"
+             x:Name="RefsListBox"
              MaxHeight="250"
              Margin="4,8,4,0"
              BorderThickness="0"
@@ -62,9 +83,9 @@
              Focusable="True"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding Branches, Mode=OneWay}"
-             SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
-             IsVisible="{Binding Branches, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+             ItemsSource="{Binding Refs, Mode=OneWay}"
+             SelectedItem="{Binding CompareTo, Mode=TwoWay}"
+             IsVisible="{Binding Refs, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -87,7 +108,7 @@
         </ItemsPanelTemplate>
       </ListBox.ItemsPanel>
 
-      <ListBox.ItemTemplate>
+      <ListBox.DataTemplates>
         <DataTemplate DataType="m:Branch">
           <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
             <Path Grid.Column="0"
@@ -95,13 +116,27 @@
                   Data="{StaticResource Icons.Branch}"
                   IsHitTestVisible="False"/>
             <TextBlock Grid.Column="1"
-                       Margin="4,0,0,0"
+                       Margin="6,0,0,0"
                        VerticalAlignment="Center"
                        IsHitTestVisible="False"
                        Text="{Binding FriendlyName, Mode=OneWay}"/>
           </Grid>
         </DataTemplate>
-      </ListBox.ItemTemplate>
+
+        <DataTemplate DataType="m:Tag">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+            <Path Grid.Column="0"
+                  Width="12" Height="12"
+                  Data="{StaticResource Icons.Tag}"
+                  IsHitTestVisible="False"/>
+            <TextBlock Grid.Column="1"
+                       Margin="6,0,0,0"
+                       VerticalAlignment="Center"
+                       IsHitTestVisible="False"
+                       Text="{Binding Name, Mode=OneWay}"/>
+          </Grid>
+        </DataTemplate>
+      </ListBox.DataTemplates>
     </ListBox>
   </Grid>
 </UserControl>

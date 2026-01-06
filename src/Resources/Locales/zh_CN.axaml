@@ -60,8 +60,8 @@
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比较选中的 2 个分支</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">与当前 ${0}$ 比较</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">与其他分支或标签比较...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">与当前 HEAD 比较</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">复制分支名</x:String>
   <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">创建合并请求 ...</x:String>
   <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">为上游分支 ${0}$ 创建合并请求 ...</x:String>
@@ -82,7 +82,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">重置(reset) ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">切换到 ${0}$ (工作树)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">切换上游分支 ...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">分支比较</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">领先 {0} 个提交</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">领先 {0} 个提交，落后 {1} 个提交</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">落后 {0} 个提交</x:String>
@@ -187,6 +186,9 @@
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">浏览器中查看</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">请输入提交的信息。注意：主题与具体描述中间需要空白行分隔！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">主题</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">比较</x:String>
+  <x:String x:Key="Text.Compare.Base" xml:space="preserve">左侧 ：</x:String>
+  <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">与当前 HEAD 对比</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">仓库配置</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交信息模板</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">内置变量：
@@ -859,6 +861,7 @@
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">创建者</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">创建时间</x:String>
   <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">比较 2 个标签</x:String>
+  <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">与其他分支或标签比较...</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">与当前 HEAD 比较</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">标签信息</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">标签名</x:String>

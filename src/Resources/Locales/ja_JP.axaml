@@ -59,7 +59,6 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">${0}$ を ${1}$ でリベースする...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">${0}$ をリネームする...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">トラッキングブランチを設定...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">ブランチの比較</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">キャンセル</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">親リビジョンにリセット</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">このリビジョンにリセット</x:String>
@@ -125,6 +124,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">参照</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">ブラウザで開く</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">リポジトリの設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">コミットテンプレート</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">テンプレート内容:</x:String>

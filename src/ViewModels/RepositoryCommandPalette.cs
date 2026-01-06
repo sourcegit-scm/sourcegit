@@ -51,15 +51,15 @@ namespace SourceGit.ViewModels
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("BranchCompare", () =>
-            {
-                var sub = new BranchCompareCommandPalette(_launcher, _repo);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
             _cmds.Add(new("Checkout", () =>
             {
                 var sub = new CheckoutCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
+            _cmds.Add(new("Compare.WithHead", () =>
+            {
+                var sub = new CompareCommandPalette(_launcher, _repo, _repo.CurrentBranch);
                 _launcher.OpenCommandPalette(sub);
             }));
 

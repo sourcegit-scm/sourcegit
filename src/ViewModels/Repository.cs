@@ -1431,18 +1431,6 @@ namespace SourceGit.ViewModels
                 await _histories.CheckoutBranchByCommitAsync(c);
         }
 
-        public async Task CompareBranchWithWorktreeAsync(Models.Branch branch)
-        {
-            if (_histories != null)
-            {
-                _searchCommitContext.Selected = null;
-
-                var target = await new Commands.QuerySingleCommit(FullPath, branch.Head).GetResultAsync();
-                _histories.AutoSelectedCommit = null;
-                _histories.DetailContext = new RevisionCompare(FullPath, target, null);
-            }
-        }
-
         public void DeleteBranch(Models.Branch branch)
         {
             if (CanCreatePopup())

@@ -81,7 +81,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Setze ${0}$ zurück auf ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Zu ${0}$ wechseln (Worktree)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Setze verfolgten Branch...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Branch Vergleich</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} Commit(s) voraus</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} Commit(s) voraus, {1} Commit(s) zurück</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} Commit(s) zurück</x:String>
@@ -186,6 +185,7 @@
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Im Browser öffnen</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Commit-Nachricht eingeben. Leerzeile zum Trennen von Betreff und Beschreibung verwenden!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">Betreff</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Vergleich</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository Einstellungen</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT TEMPLATE</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Vordefinierte Parameter:

@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class BranchCompare : ObservableObject
+    public class Compare : ObservableObject
     {
         public bool IsLoading
         {
@@ -81,7 +81,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _diffContext, value);
         }
 
-        public BranchCompare(string repo, object based, object to)
+        public Compare(string repo, object based, object to)
         {
             _repo = repo;
             _based = GetSHA(based);

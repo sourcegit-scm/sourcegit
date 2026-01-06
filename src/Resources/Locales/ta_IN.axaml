@@ -59,7 +59,6 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">மறுதளம் ${0}$ இதன்மேல் ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">மறுபெயரிடு ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">கண்காணிப்பு கிளையை அமை...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">கிளை ஒப்பிடு</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">விடு</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">பெற்றோர் திருத்தத்திற்கு மீட்டமை</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">இந்த திருத்தத்திற்கு மீட்டமை</x:String>
@@ -125,6 +124,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">குறிகள்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">பாகொவ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">உலாவியில் திற</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">ஒப்பிடு</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">களஞ்சியம் உள்ளமை</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">உறுதிமொழி வளர்புரு</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">வார்ப்புரு உள்ளடக்கம்:</x:String>

@@ -76,7 +76,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Reset ${0}$ ke ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Pindah ke ${0}$ (worktree)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Atur Tracking Branch...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Perbandingan Branch</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} commit di depan</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit di depan, {1} commit di belakang</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit di belakang</x:String>
@@ -179,6 +178,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Penanda Tangan:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Buka di Browser</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJEK</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Perbandingan</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Konfigurasi Repositori</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">TEMPLATE COMMIT</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Konten Template:</x:String>
