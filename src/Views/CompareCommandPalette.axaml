@@ -30,18 +30,9 @@
                   Height="18"
                   CornerRadius="4"
                   Margin="4,0,0,0" Padding="4,0">
-            <TextBlock Text="{DynamicResource Text.Compare}"
-                       Foreground="Black"
-                       FontWeight="Bold"/>
-          </Border>
-
-          <Border BorderThickness="0"
-                  Background="Green"
-                  Height="18"
-                  CornerRadius="4"
-                  Margin="4,0,0,0" Padding="4,0">
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{DynamicResource Text.Compare.Base}" Foreground="White" FontWeight="Bold"/>
+              <TextBlock Text="{DynamicResource Text.Compare}" Foreground="Black" FontWeight="Bold"/>
+              
               <ContentControl Content="{Binding BasedOn}" Margin="4,0,0,0" MaxWidth="100">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Branch">
