@@ -59,7 +59,7 @@ namespace SourceGit
             typeof(DataGridLengthConverter),
         ]
     )]
-    [JsonSerializable(typeof(Models.ExternalToolPaths))]
+    [JsonSerializable(typeof(Models.ExternalToolCustomization))]
     [JsonSerializable(typeof(Models.HistoryFilterCollection))]
     [JsonSerializable(typeof(Models.InteractiveRebaseJobCollection))]
     [JsonSerializable(typeof(Models.JetBrainsState))]

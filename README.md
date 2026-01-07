@@ -176,13 +176,19 @@ This app supports open repository in external tools listed in the table below.
 | Visual Studio                 | YES     | NO    | NO    |
 
 > [!NOTE]
-> This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.
-> To solve this problem you can add a file named `external_editors.json` in app data storage directory and provide the path directly. For example:
+> This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.  
+> To solve this problem you can add a file named `external_editors.json` in app data storage directory and provide the path directly.  
+> User can also exclude some editors by using `external_editors.json`.
+
+The format of `external_editors.json`:
 ```json
 {
     "tools": {
         "Visual Studio Code": "D:\\VSCode\\Code.exe"
-    }
+    },
+    "excludes": [
+        "Visual Studio Community 2019"
+    ]
 }
 ```
 
