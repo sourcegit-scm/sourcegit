@@ -75,7 +75,7 @@ namespace SourceGit.ViewModels
             branches.Sort((l, r) =>
             {
                 if (l.IsLocal == r.IsLocal)
-                    return l.Name.CompareTo(r.Name);
+                    return Models.NumericSort.Compare(l.Name, r.Name);
 
                 return l.IsLocal ? -1 : 1;
             });

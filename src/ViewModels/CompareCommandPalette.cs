@@ -91,7 +91,7 @@ namespace SourceGit.ViewModels
                     if (r is Models.Branch rb)
                     {
                         if (lb.IsLocal == rb.IsLocal)
-                            return lb.FriendlyName.CompareTo(rb.FriendlyName);
+                            return Models.NumericSort.Compare(lb.FriendlyName, rb.FriendlyName);
                         return lb.IsLocal ? -1 : 1;
                     }
 
@@ -101,7 +101,7 @@ namespace SourceGit.ViewModels
                 if (r is Models.Branch)
                     return 1;
 
-                return (l as Models.Tag).Name.CompareTo((r as Models.Tag).Name);
+                return Models.NumericSort.Compare((l as Models.Tag).Name, (r as Models.Tag).Name);
             });
 
             var autoSelected = _compareTo;
