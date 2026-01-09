@@ -381,10 +381,7 @@
                   <TextBox Grid.Row="5" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding URLTemplate, Mode=TwoWay}"/>
                   <TextBlock Grid.Row="6" Margin="0,2,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
 
-                  <CheckBox Grid.Row="7" Grid.Column="1"
-                            Margin="0,4,0,0"
-                            Content="{DynamicResource Text.Configure.IssueTracker.Share}"
-                            IsChecked="{Binding IsShared, Mode=TwoWay}"/>
+                  <CheckBox Grid.Row="7" Margin="0,4,0,0" Content="{DynamicResource Text.Configure.IssueTracker.Share}" IsChecked="{Binding IsShared, Mode=TwoWay}"/>
                 </Grid>
               </DataTemplate>
             </ContentControl.DataTemplates>

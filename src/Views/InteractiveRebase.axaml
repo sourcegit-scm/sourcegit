@@ -70,7 +70,7 @@
     <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
       <Grid RowDefinitions="*,3,*">
         <v:InteractiveRebaseListBox Grid.Row="0"
-                                    x:Name="IRItemListBox"
+                                    x:Name="ItemListBox"
                                     Focusable="True"
                                     Background="{DynamicResource Brush.Contents}"
                                     ItemsSource="{Binding Items}"

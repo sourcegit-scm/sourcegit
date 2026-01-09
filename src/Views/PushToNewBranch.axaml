@@ -47,7 +47,7 @@
                v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerLeftContent>
           <Border Height="22" CornerRadius="10" Margin="4,0,0,0" Background="Green">
-            <TextBlock Grid.Column="0" x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>
+            <TextBlock x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>
           </Border>
         </TextBox.InnerLeftContent>
       </TextBox>
