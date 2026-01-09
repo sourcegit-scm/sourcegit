@@ -255,7 +255,7 @@
                         Nodes="{Binding LocalBranchTrees}"
                         IsVisible="{Binding IsLocalBranchGroupExpanded}"
                         SelectionChanged="OnLocalBranchTreeSelectionChanged"
-                        RowsChanged="OnBranchTreeRowsChanged"/>
+                        RowsChanged="OnLeftSidebarRowsChanged"/>
 
           <!-- Remotes -->
           <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
@@ -288,7 +288,7 @@
                         Nodes="{Binding RemoteBranchTrees}"
                         IsVisible="{Binding IsRemoteGroupExpanded}"
                         SelectionChanged="OnRemoteBranchTreeSelectionChanged"
-                        RowsChanged="OnBranchTreeRowsChanged"/>
+                        RowsChanged="OnLeftSidebarRowsChanged"/>
 
           <!-- Tags -->
           <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
@@ -333,7 +333,7 @@
                       Focusable="False"
                       IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                       SelectionChanged="OnTagsSelectionChanged"
-                      RowsChanged="OnTagsRowsChanged"/>
+                      RowsChanged="OnLeftSidebarRowsChanged"/>
 
           <!-- Submodules -->
           <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
@@ -373,7 +373,7 @@
                             Height="0"
                             Margin="8,0,4,0"
                             Content="{Binding VisibleSubmodules}"
-                            RowsChanged="OnSubmodulesRowsChanged"
+                            RowsChanged="OnLeftSidebarRowsChanged"
                             Focusable="False"
                             IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}"/>
 

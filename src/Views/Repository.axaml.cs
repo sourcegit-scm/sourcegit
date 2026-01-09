@@ -62,12 +62,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnBranchTreeRowsChanged(object _, RoutedEventArgs e)
-        {
-            UpdateLeftSidebarLayout();
-            e.Handled = true;
-        }
-
         private void OnLocalBranchTreeSelectionChanged(object _1, RoutedEventArgs _2)
         {
             RemoteBranchTree.UnselectAll();
@@ -80,22 +74,10 @@ namespace SourceGit.Views
             TagsList.UnselectAll();
         }
 
-        private void OnTagsRowsChanged(object _, RoutedEventArgs e)
-        {
-            UpdateLeftSidebarLayout();
-            e.Handled = true;
-        }
-
         private void OnTagsSelectionChanged(object _1, RoutedEventArgs _2)
         {
             LocalBranchTree.UnselectAll();
             RemoteBranchTree.UnselectAll();
-        }
-
-        private void OnSubmodulesRowsChanged(object _, RoutedEventArgs e)
-        {
-            UpdateLeftSidebarLayout();
-            e.Handled = true;
         }
 
         private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
@@ -179,6 +161,12 @@ namespace SourceGit.Views
         {
             if (e.Property == ItemsControl.ItemsSourceProperty || e.Property == IsVisibleProperty)
                 UpdateLeftSidebarLayout();
+        }
+
+        private void OnLeftSidebarRowsChanged(object _, RoutedEventArgs e)
+        {
+            UpdateLeftSidebarLayout();
+            e.Handled = true;
         }
 
         private void OnLeftSidebarSizeChanged(object _, SizeChangedEventArgs e)
