@@ -46,7 +46,7 @@
         <TextBlock Grid.Column="1"
                    Margin="4,0,0,0"
                    VerticalAlignment="Center"
-                   Text="{Binding FilePath, Mode=OneWay}"/>
+                   Text="{Binding File, Mode=OneWay}"/>
 
         <Button Grid.Column="2"
                 Classes="icon_button"
@@ -101,6 +101,7 @@
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                          TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
+                         File="{Binding File, Mode=OneWay}"
                          BlameData="{Binding Data}"
                          IsVisible="{Binding IsBinary, Converter={x:Static BoolConverters.Not}}">
         <ToolTip.IsOpen>
