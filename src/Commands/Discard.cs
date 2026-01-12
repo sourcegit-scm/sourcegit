@@ -46,7 +46,7 @@ namespace SourceGit.Commands
                 await new Clean(repo, Models.CleanMode.OnlyIgnoredFiles).Use(log).ExecAsync().ConfigureAwait(false);
             }
 
-            await new Reset(repo, "HEAD", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
+            await new Reset(repo, "", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
         }
 
         /// <summary>
