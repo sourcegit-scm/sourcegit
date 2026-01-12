@@ -30,7 +30,7 @@
                 Background="{DynamicResource Brush.Window}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
-                SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
+                SelectedItem="{Binding SelectedCommit, Mode=OneWay}"
                 CanUserReorderColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"
@@ -49,10 +49,6 @@
                 ContextRequested="OnCommitListContextRequested"
                 DoubleTapped="OnCommitListDoubleTapped"
                 KeyDown="OnCommitListKeyDown">
-        <DataGrid.Resources>
-          <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="{DynamicResource Color.Border0}" />
-        </DataGrid.Resources>
-
         <DataGrid.Styles>
           <Style Selector="DataGrid.static_scrollbar">
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
@@ -61,6 +57,9 @@
             </Style>
             <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
               <Setter Property="Grid.Column" Value="0" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
+              <Setter Property="Fill" Value="{DynamicResource Brush.Border0}"/>
             </Style>
             <Style Selector="^ /template/ ScrollBar">
               <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>

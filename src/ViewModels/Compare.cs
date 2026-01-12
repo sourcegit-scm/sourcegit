@@ -6,29 +6,24 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class BranchCompare : ObservableObject
+    public class Compare : ObservableObject
     {
-        public string RepositoryPath
-        {
-            get => _repo;
-        }
-
         public bool IsLoading
         {
             get => _isLoading;
             private set => SetProperty(ref _isLoading, value);
         }
 
-        public Models.Branch Base
+        public string BaseName
         {
-            get => _based;
-            private set => SetProperty(ref _based, value);
+            get => _baseName;
+            private set => SetProperty(ref _baseName, value);
         }
 
-        public Models.Branch To
+        public string ToName
         {
-            get => _to;
-            private set => SetProperty(ref _to, value);
+            get => _toName;
+            private set => SetProperty(ref _toName, value);
         }
 
         public Models.Commit BaseHead
@@ -63,7 +58,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _selectedChanges, value))
                 {
                     if (value is { Count: 1 })
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_based.Head, _to.Head, value[0]), _diffContext);
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_based, _to, value[0]), _diffContext);
                     else
                         DiffContext = null;
                 }
@@ -86,11 +81,13 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _diffContext, value);
         }
 
-        public BranchCompare(string repo, Models.Branch baseBranch, Models.Branch toBranch)
+        public Compare(string repo, object based, object to)
         {
             _repo = repo;
-            _based = baseBranch;
-            _to = toBranch;
+            _based = GetSHA(based);
+            _to = GetSHA(to);
+            _baseName = GetName(based);
+            _toName = GetName(to);
 
             Refresh();
         }
@@ -113,10 +110,8 @@ namespace SourceGit.ViewModels
 
         public void Swap()
         {
-            (Base, To) = (_to, _based);
-
-            VisibleChanges = [];
-            SelectedChanges = [];
+            (_based, _to) = (_to, _based);
+            (BaseName, ToName) = (_toName, _baseName);
 
             if (_baseHead != null)
                 (BaseHead, ToHead) = (_toHead, _baseHead);
@@ -134,9 +129,14 @@ namespace SourceGit.ViewModels
             return Native.OS.GetAbsPath(_repo, path);
         }
 
+        public void OpenInExternalDiffTool(Models.Change change)
+        {
+            new Commands.DiffTool(_repo, new Models.DiffOption(_based, _to, change)).Open();
+        }
+
         public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
         {
-            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes, _based.Head, _to.Head, saveTo);
+            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes, _based, _to, saveTo);
             if (succ)
                 App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
         }
@@ -144,16 +144,18 @@ namespace SourceGit.ViewModels
         private void Refresh()
         {
             IsLoading = true;
+            VisibleChanges = [];
+            SelectedChanges = [];
 
             Task.Run(async () =>
             {
                 if (_baseHead == null)
                 {
-                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based.Head)
+                    var baseHead = await new Commands.QuerySingleCommit(_repo, _based)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
-                    var toHead = await new Commands.QuerySingleCommit(_repo, _to.Head)
+                    var toHead = await new Commands.QuerySingleCommit(_repo, _to)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
@@ -164,7 +166,7 @@ namespace SourceGit.ViewModels
                     });
                 }
 
-                _changes = await new Commands.CompareRevisions(_repo, _based.Head, _to.Head)
+                _changes = await new Commands.CompareRevisions(_repo, _based, _to)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
@@ -215,10 +217,34 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private string GetName(object obj)
+        {
+            return obj switch
+            {
+                Models.Branch b => b.FriendlyName,
+                Models.Tag t => t.Name,
+                Models.Commit c => c.SHA.Substring(0, 10),
+                _ => "HEAD",
+            };
+        }
+
+        private string GetSHA(object obj)
+        {
+            return obj switch
+            {
+                Models.Branch b => b.Head,
+                Models.Tag t => t.SHA,
+                Models.Commit c => c.SHA,
+                _ => "HEAD",
+            };
+        }
+
         private string _repo;
         private bool _isLoading = true;
-        private Models.Branch _based = null;
-        private Models.Branch _to = null;
+        private string _based = string.Empty;
+        private string _to = string.Empty;
+        private string _baseName = string.Empty;
+        private string _toName = string.Empty;
         private Models.Commit _baseHead = null;
         private Models.Commit _toHead = null;
         private int _totalChanges = 0;

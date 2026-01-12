@@ -28,7 +28,7 @@
               PointerPressed="BeginMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" Width="72" IsVisible="{Binding #ThisControl.HasLeftCaptionButton}"/>
+      <Border Grid.Column="0" Width="{Binding #ThisControl.LeftCaptionButtonWidth}" IsVisible="{Binding #ThisControl.HasLeftCaptionButton}"/>
 
       <!-- Menu (Windows/Linux) -->
       <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,0,3" IsVisible="{OnPlatform True, macOS=False}">

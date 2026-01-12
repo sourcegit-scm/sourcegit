@@ -107,6 +107,18 @@ namespace SourceGit.ViewModels
 
         public void NavigateToCommit(string commitSHA, bool isBackOrForward)
         {
+            if (App.GetLauncher() is { Pages: { } pages })
+            {
+                foreach (var page in pages)
+                {
+                    if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
+                    {
+                        repo.NavigateToCommit(commitSHA);
+                        break;
+                    }
+                }
+            }
+
             if (Revision.SHA.StartsWith(commitSHA, StringComparison.Ordinal))
                 return;
 
@@ -123,18 +135,6 @@ namespace SourceGit.ViewModels
             }
 
             SetBlameData(commitSHA);
-
-            if (App.GetLauncher() is { Pages: { } pages })
-            {
-                foreach (var page in pages)
-                {
-                    if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
-                    {
-                        repo.NavigateToCommit(commitSHA);
-                        break;
-                    }
-                }
-            }
         }
 
         private void SetBlameData(string commitSHA)

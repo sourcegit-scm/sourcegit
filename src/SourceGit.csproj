@@ -32,6 +32,10 @@
     <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>    
+    <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))"/>
+  </ItemGroup>
+
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />

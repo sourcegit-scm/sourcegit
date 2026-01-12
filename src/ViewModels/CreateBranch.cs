@@ -136,7 +136,7 @@ namespace SourceGit.ViewModels
                     {
                         succ = await new Commands.Stash(_repo.FullPath)
                             .Use(log)
-                            .PushAsync("CREATE_BRANCH_AUTO_STASH");
+                            .PushAsync("CREATE_BRANCH_AUTO_STASH", false);
                         if (!succ)
                         {
                             log.Complete();

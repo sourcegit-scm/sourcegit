@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -9,13 +10,21 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^(\s?[\w\?]{1,4})\s+(.+)$")]
         private static partial Regex REG_FORMAT();
-        private static readonly string[] UNTRACKED = ["no", "all"];
 
-        public QueryLocalChanges(string repo, bool includeUntracked = true)
+        public QueryLocalChanges(string repo, bool includeUntracked = true, bool noOptionalLocks = true)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"--no-optional-locks status -u{UNTRACKED[includeUntracked ? 1 : 0]} --ignore-submodules=dirty --porcelain";
+
+            var builder = new StringBuilder();
+            if (noOptionalLocks)
+                builder.Append("--no-optional-locks ");
+            if (includeUntracked)
+                builder.Append("-c core.untrackedCache=true -c status.showUntrackedFiles=all status -uall --ignore-submodules=dirty --porcelain");
+            else
+                builder.Append("status -uno --ignore-submodules=dirty --porcelain");
+
+            Args = builder.ToString();
         }
 
         public async Task<List<Models.Change>> GetResultAsync()

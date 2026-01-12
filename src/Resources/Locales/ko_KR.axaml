@@ -54,8 +54,6 @@
   <x:String x:Key="Text.Bisect.WaitingForRange">이진 탐색 중. 현재 커밋을 '좋음' 또는 '나쁨'으로 표시하고 다른 커밋을 체크아웃하세요.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">블레임</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ 체크아웃...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">${0}$와(과) 비교</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">워크트리와 비교</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">브랜치 이름 복사</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$ 삭제...</x:String>
@@ -73,7 +71,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">${0}$을(를) ${1}$(으)로 리셋...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">${0}$(워크트리)로 전환</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">추적 브랜치 설정...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">브랜치 비교</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0}개 커밋 앞섬</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0}개 커밋 앞섬, {1}개 커밋 뒤처짐</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0}개 커밋 뒤처짐</x:String>
@@ -177,6 +174,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">서명자:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">브라우저에서 열기</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">제목</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">비교</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">저장소 설정</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">커밋 템플릿</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">${files_num}, ${branch_name}, ${files} 및 ${files:N} (N은 출력할 최대 파일 경로 수)을(를) 사용할 수 있습니다.</x:String>

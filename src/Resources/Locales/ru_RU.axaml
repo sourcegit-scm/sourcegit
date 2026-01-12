@@ -5,6 +5,7 @@
 
   <x:String x:Key="Text.About" xml:space="preserve">О программе</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">О SourceGit</x:String>
+  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Дата выпуска: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Примечания выпуска</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Бесплатный графический клиент Git с исходным кодом</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Добавить файл(ы) к игнорируемым</x:String>
@@ -59,8 +60,9 @@
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Переключиться на ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Сравнить с ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Сравнить с рабочим каталогом</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Сравнить две выбранные ветки</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">Сравнить с ...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копировать имя ветки</x:String>
   <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Создать PR...</x:String>
   <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Создать PR для основной ветки ${0}$...</x:String>
@@ -81,7 +83,6 @@
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Сбросить ${0}$ к ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Переключить на ${0}$ (рабочий каталог)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Отслеживать ветку...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Сравнение веток</x:String>
   <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} ревизий вперёд</x:String>
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} ревизий вперёд, {1} ревизий назад</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} ревизий назад</x:String>
@@ -186,6 +187,8 @@
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Открыть в браузере</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Введите сообщение ревизии. Пожалуйста, используйте пустые строки для разделения субъекта и описания!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">СУБЪЕКТ</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Сравнить</x:String>
+  <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Настройка репозитория</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Встроенные параметры: 
@@ -482,6 +485,7 @@
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Открыть диалоговое окно настроек</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Показать рабочее пространство в выпадющем меню</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Переключиться на вкладку</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">Масштабирование</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">РЕПОЗИТОРИЙ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Зафиксировать сформированные изменения</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Зафиксировать и выложить сформированные изменения</x:String>
@@ -856,6 +860,9 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">РАЗМЕТЧИК</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">ВРЕМЯ</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Сравнить две ветки</x:String>
+  <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Сравнить с ...</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Сообщение</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Имя</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Разметчик</x:String>

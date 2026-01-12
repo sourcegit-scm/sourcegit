@@ -5,7 +5,7 @@
         xmlns:v="using:SourceGit.Views"
         xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
-        xmlns:acc="using:AvaloniaEdit.CodeCompletion"
+        xmlns:aec="using:AvaloniaEdit.CodeCompletion"
         xmlns:aee="using:AvaloniaEdit.Editing"
         xmlns:aes="using:AvaloniaEdit.Search">
   <Design.PreviewWith>
@@ -34,13 +34,20 @@
                 ClipToBounds="True">
           <Border Margin="{TemplateBinding Padding}">
             <VisualLayerManager>
-              <Border>
-                <ContentPresenter Name="PART_ContentPresenter"
-                                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                                  Content="{TemplateBinding Content}"
-                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-              </Border>
+              <LayoutTransformControl>
+                <LayoutTransformControl.LayoutTransform>
+                  <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                  ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+                </LayoutTransformControl.LayoutTransform>
+                
+                <Border>
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
+              </LayoutTransformControl>
             </VisualLayerManager>
           </Border>
         </Border>
@@ -129,13 +136,20 @@
                     BorderThickness="1"
                     CornerRadius="{TemplateBinding CornerRadius}">
               <VisualLayerManager>
-                <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
-                  <ContentPresenter Name="PART_ContentPresenter"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </Border>
+                <LayoutTransformControl>
+                  <LayoutTransformControl.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                    ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+                  </LayoutTransformControl.LayoutTransform>
+                  
+                  <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                  </Border>
+                </LayoutTransformControl>
               </VisualLayerManager>
             </Border>
           </Grid>
@@ -719,90 +733,6 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
   </Style>
 
-  <Style Selector="aee|TextArea">
-    <Setter Property="SelectionBorder">
-      <Setter.Value>
-        <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
-      </Setter.Value>
-    </Setter>
-    <Setter Property="SelectionBrush">
-      <Setter.Value>
-        <SolidColorBrush Opacity="0.5" Color="{DynamicResource SystemAccentColor}" />
-      </Setter.Value>
-    </Setter>
-  </Style>
-
-  <Style Selector="aes|SearchPanel">
-    <Setter Property="Template">
-      <ControlTemplate TargetType="aes:SearchPanel">
-        <Border Name="PART_Border"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}"
-                BorderBrush="{DynamicResource Brush.Border2}"
-                Background="{DynamicResource Brush.Popup}"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Padding="10">
-          <Grid RowDefinitions="Auto,Auto">
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
-                       Name="PART_searchTextBox"
-                       Width="265" Height="28"
-                       Margin="0,0,0,0"
-                       CornerRadius="2"
-                       Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
-                <TextBox.InnerRightContent>
-                  <StackPanel Orientation="Horizontal">
-                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
-                                  IsChecked="{Binding $parent[aes:SearchPanel].MatchCase, Mode=TwoWay}"
-                                  ToolTip.Tip="Match case"
-                                  Width="24" Height="20"
-                                  VerticalAlignment="Center">
-                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource CaseSensitiveIconPath}" Fill="{DynamicResource Brush.FG1}"/>
-                    </ToggleButton>
-                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
-                                  IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
-                                  ToolTip.Tip="Match whole words"
-                                  Margin="3,0,0,0" Width="24" Height="20"
-                                  VerticalAlignment="Center">
-                      <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource CompleteWordIconPath}" Fill="{DynamicResource Brush.FG1}"/>
-                    </ToggleButton>
-                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
-                                  IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
-                                  ToolTip.Tip="Use regular expressions"
-                                  Margin="3,0,5,0" Width="24" Height="20"
-                                  VerticalAlignment="Center">
-                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource RegularExpressionIconPath}" Fill="{DynamicResource Brush.FG1}"/>
-                    </ToggleButton>
-                  </StackPanel>
-                </TextBox.InnerRightContent>
-              </TextBox>
-              <Button Margin="5,0,0,0"
-                      Width="28"
-                      Background="Transparent"
-                      VerticalAlignment="Stretch"
-                      Command="{x:Static aes:SearchCommands.FindPrevious}"
-                      ToolTip.Tip="Find Previous (Shift+F3)">
-                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Up}" Fill="{DynamicResource Brush.FG1}"/>
-              </Button>
-              <Button Margin="3,0,0,0"
-                      VerticalAlignment="Stretch"
-                      Width="28"
-                      Background="Transparent"
-                      Command="{x:Static aes:SearchCommands.FindNext}"
-                      ToolTip.Tip="Find Next (F3)">
-                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Down}" Fill="{DynamicResource Brush.FG1}"/>
-              </Button>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Name="PART_MessageView" IsVisible="False" Orientation="Horizontal" Margin="0 5 0 0">
-              <TextBlock Name="PART_MessageContent" FontSize="11" />
-            </StackPanel>
-          </Grid>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-  </Style>
-
   <Style Selector="ListBox.launcher_page_tabbar">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
@@ -891,7 +821,7 @@
                   MaxWidth="{TemplateBinding MaxWidth}"
                   MinHeight="{TemplateBinding MinHeight}"
                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-            <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+            <ScrollViewer>
               <ItemsPresenter Name="PART_ItemsPresenter"
                               ItemsPanel="{TemplateBinding ItemsPanel}"
                               Margin="{DynamicResource MenuFlyoutScrollerMargin}"
@@ -922,7 +852,6 @@
                   Padding="4,2"
                   CornerRadius="{TemplateBinding CornerRadius}">
             <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                          Theme="{StaticResource FluentMenuScrollViewer}"
                           VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
               <ItemsPresenter Name="PART_ItemsPresenter"
                               ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -995,16 +924,14 @@
               </ContentPresenter>
 
               <TextBlock Grid.Column="2"
-                         Classes="CaptionTextBlockStyle"
                          Margin="{DynamicResource MenuInputGestureTextMargin}"
-                         Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
+                         Text="{TemplateBinding InputGesture, Converter={x:Static c:StringConverters.FromKeyGesture}}"
                          HorizontalAlignment="Right"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
                          FontSize="11"/>
 
               <TextBlock Grid.Column="2"
-                         Classes="CaptionTextBlockStyle"
                          Margin="{DynamicResource MenuInputGestureTextMargin}"
                          Text="{TemplateBinding Tag}"
                          HorizontalAlignment="Right"
@@ -1038,7 +965,7 @@
               </Border>
 
               <Border BorderThickness="0" Margin="8,4" MaxHeight="400">
-                <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+                <ScrollViewer>
                   <ItemsPresenter Name="PART_ItemsPresenter"
                                   Margin="{DynamicResource MenuFlyoutScrollerMargin}"
                                   Grid.IsSharedSizeScope="True">
@@ -1252,6 +1179,7 @@
   </Style>
 
   <Style Selector="ToggleButton.group_expander">
+    <Setter Property="Height" Value="28"/>
     <Setter Property="Margin" Value="6,0,0,0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
@@ -1485,7 +1413,91 @@
     </Style>
   </Style>
 
-  <Style Selector="acc|CompletionListBox">
+  <Style Selector="aee|TextArea">
+    <Setter Property="SelectionBorder">
+      <Setter.Value>
+        <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
+      </Setter.Value>
+    </Setter>
+    <Setter Property="SelectionBrush">
+      <Setter.Value>
+        <SolidColorBrush Opacity="0.5" Color="{DynamicResource SystemAccentColor}" />
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style Selector="aes|SearchPanel">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="aes:SearchPanel">
+        <Border Name="PART_Border"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                BorderBrush="{DynamicResource Brush.Border2}"
+                Background="{DynamicResource Brush.Popup}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Padding="10">
+          <Grid RowDefinitions="Auto,Auto">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
+                       Name="PART_searchTextBox"
+                       Width="265" Height="28"
+                       Margin="0,0,0,0"
+                       CornerRadius="2"
+                       Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
+                <TextBox.InnerRightContent>
+                  <StackPanel Orientation="Horizontal">
+                    <ToggleButton IsChecked="{Binding $parent[aes:SearchPanel].MatchCase, Mode=TwoWay}"
+                                  ToolTip.Tip="Match case"
+                                  Padding="0"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.CaseSensitive}" Fill="{DynamicResource Brush.FG1}"/>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
+                                  ToolTip.Tip="Match whole words"
+                                  Margin="3,0,0,0" Padding="0"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.CompleteWord}" Fill="{DynamicResource Brush.FG1}"/>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
+                                  ToolTip.Tip="Use regular expressions"
+                                  Margin="3,0,5,0" Padding="0"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.RegularExpression}" Fill="{DynamicResource Brush.FG1}"/>
+                    </ToggleButton>
+                  </StackPanel>
+                </TextBox.InnerRightContent>
+              </TextBox>
+              <Button Margin="5,0,0,0"
+                      Width="28"
+                      Background="Transparent"
+                      VerticalAlignment="Stretch"
+                      Command="{x:Static aes:SearchCommands.FindPrevious}"
+                      ToolTip.Tip="Find Previous (Shift+F3)">
+                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Up}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+              <Button Margin="3,0,0,0"
+                      VerticalAlignment="Stretch"
+                      Width="28"
+                      Background="Transparent"
+                      Command="{x:Static aes:SearchCommands.FindNext}"
+                      ToolTip.Tip="Find Next (F3)">
+                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Down}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Name="PART_MessageView" IsVisible="False" Orientation="Horizontal" Margin="0 5 0 0">
+              <TextBlock Name="PART_MessageContent" FontSize="11" />
+            </StackPanel>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="aec|CompletionListBox">
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
@@ -1493,7 +1505,7 @@
     <Setter Property="CornerRadius" Value="4"/>
   </Style>
 
-  <Style Selector="acc|CompletionListBox ListBoxItem">
+  <Style Selector="aec|CompletionListBox ListBoxItem">
     <Setter Property="Height" Value="24"/>
     <Setter Property="Margin" Value="0,2"/>
     <Setter Property="CornerRadius" Value="4"/>

@@ -6,38 +6,56 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.80%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.13%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
-- Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
-- Text.PageTabBar.Tab.MoveToWorkspace
-- Text.Preferences.DiffMerge.DiffArgs
-- Text.Preferences.DiffMerge.DiffArgs.Tip
-- Text.Preferences.DiffMerge.MergeArgs
-- Text.Preferences.DiffMerge.MergeArgs.Tip
-- Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
-- Text.SquashOrFixup.Squash
-- Text.SquashOrFixup.Fixup
-- Text.SquashOrFixup.Into
+- Text.About.ReleaseDate
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
+- Text.Compare.WithHead
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.03%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-98.04%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.About.ReleaseDate
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
+- Text.Compare.WithHead
+- Text.Hotkeys.Global.Zoom
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-97.08%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
+- Text.About.ReleaseDate
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.EditDescription
 - Text.CommitMessageTextBox.Placeholder
+- Text.Compare.WithHead
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.OpenFile
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
@@ -50,21 +68,29 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-95.86%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-94.91%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
 - Text.CommitCM.Drop
 - Text.CommitMessageTextBox.Placeholder
+- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
@@ -77,6 +103,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -96,16 +123,23 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-93.24%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-92.32%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -120,6 +154,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.CopyName
 - Text.CommitDetail.Info.CopyNameAndEmail
 - Text.CommitMessageTextBox.Placeholder
+- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
@@ -136,6 +171,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -162,6 +198,9 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Squash
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
 - Text.WorkingCopy.NoVerify
@@ -169,11 +208,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-75.03%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-74.35%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
@@ -190,7 +230,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
-- Text.BranchCM.CompareWithCurrent
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -235,6 +277,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -296,6 +339,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -380,6 +424,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
 - Text.TagCM.Copy.Tagger
@@ -406,17 +453,22 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-96.18%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-95.24%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.Blame.BlameOnPreviousRevision
 - Text.Blame.TypeNotSupported
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
 - Text.CommitMessageTextBox.Placeholder
+- Text.Compare.WithHead
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.EditBranchDescription
@@ -425,6 +477,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -446,14 +499,18 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.Submodule.Status.Unmerged
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-68.81%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-68.07%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
@@ -476,6 +533,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.CustomAction
@@ -527,6 +587,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -601,6 +662,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Global.Clone
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InProgress.CherryPick.Head
@@ -715,6 +777,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
 - Text.TagCM.Copy.Tagger
@@ -745,11 +810,12 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-75.14%25-yellow)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-74.46%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
@@ -766,7 +832,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
-- Text.BranchCM.CompareWithCurrent
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -811,6 +879,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -872,6 +941,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -955,6 +1025,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
 - Text.TagCM.Copy.Tagger
@@ -981,11 +1054,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-76.23%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-75.43%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
 
+- Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
@@ -1002,6 +1076,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.Skip
 - Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -1046,6 +1123,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -1103,6 +1181,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
+- Text.Hotkeys.Global.Zoom
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
 - Text.InteractiveRebase.ReorderTip
@@ -1186,6 +1265,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.URL
 - Text.Tag.Tagger
 - Text.Tag.Time
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
 - Text.TagCM.Copy.Message
 - Text.TagCM.Copy.Name
 - Text.TagCM.Copy.Tagger

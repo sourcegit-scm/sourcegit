@@ -56,7 +56,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PushAsync("REWORD_AUTO_STASH");
+                    .PushAsync("REWORD_AUTO_STASH", false);
                 if (!succ)
                 {
                     log.Complete();

@@ -42,7 +42,7 @@
              HorizontalAlignment="Center"
              VerticalAlignment="Center"/>
 
-      <Grid Grid.Column="1" Margin="0,0,8,0" RowDefinitions="Auto,Auto,Auto,Auto" VerticalAlignment="Center">
+      <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto" VerticalAlignment="Center">
         <StackPanel Grid.Row="0" Height="40" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
           <Border Margin="12,0,0,0" Height="20"
@@ -56,7 +56,7 @@
           </Border>
         </StackPanel>
 
-        <Border Grid.Row="1" Margin="2,4,0,0">
+        <Border Grid.Row="1" Margin="0,4,0,0">
           <TextBlock Text="{DynamicResource Text.About.SubTitle}" FontSize="16" TextWrapping="Wrap"/>
         </Border>
 
@@ -70,7 +70,8 @@
           </Button>
         </StackPanel>
 
-        <TextBlock Grid.Row="3" x:Name="TxtCopyright" Margin="0,40,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+        <TextBlock Grid.Row="3" x:Name="TxtReleaseDate" Margin="0,28,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+        <TextBlock Grid.Row="4" x:Name="TxtCopyright" Margin="0,2,0,0" Foreground="{DynamicResource Brush.FG2}"/>
       </Grid>
     </Grid>
   </Grid>

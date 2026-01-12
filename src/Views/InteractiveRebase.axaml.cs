@@ -172,7 +172,7 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
-            IRItemListBox?.Focus();
+            ItemListBox?.Focus();
         }
 
         public void OpenCommitMessageEditor(ViewModels.InteractiveRebaseItem item)
@@ -206,7 +206,7 @@ namespace SourceGit.Views
             if (isFirstTimeHere)
                 _firstSelectionChangedHandled = true;
 
-            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
             var items = new List<ViewModels.InteractiveRebaseItem>();
             foreach (var item in selected)
             {
@@ -230,10 +230,10 @@ namespace SourceGit.Views
                 return;
 
             var builder = new StringBuilder();
-            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
             if (selected.Count > 0 && !selected.Contains(item))
             {
-                IRItemListBox.SelectedItem = item;
+                ItemListBox.SelectedItem = item;
                 builder.Append(item.Commit.SHA).Append(';');
             }
             else
@@ -252,7 +252,7 @@ namespace SourceGit.Views
 
         private void OnRowDragOver(object sender, DragEventArgs e)
         {
-            if (DataContext is not ViewModels.InteractiveRebase vm)
+            if (DataContext is not ViewModels.InteractiveRebase)
                 return;
 
             if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 0 } hashes)
@@ -294,7 +294,7 @@ namespace SourceGit.Views
             if (hashes.IndexOf(dst.Commit.SHA, StringComparison.Ordinal) >= 0)
                 return;
 
-            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
             if (selected.Count == 0)
                 return;
 
@@ -310,7 +310,7 @@ namespace SourceGit.Views
             }
 
             vm.Move(commits, before ? idx : idx + 1);
-            IRItemListBox.SelectedItems = commits;
+            ItemListBox.SelectedItems = commits;
 
             dst.DropDirectionIndicator = new Thickness(0);
             e.DragEffects = DragDropEffects.None;
@@ -322,7 +322,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
-            if (IRItemListBox.SelectedItems is not { Count: > 0 } selected)
+            if (ItemListBox.SelectedItems is not { Count: > 0 } selected)
                 return;
 
             var hashes = new HashSet<string>();
@@ -347,7 +347,7 @@ namespace SourceGit.Views
             }
 
             vm.Move(items, idx);
-            IRItemListBox.SelectedItems = items;
+            ItemListBox.SelectedItems = items;
             e.Handled = true;
         }
 
@@ -356,7 +356,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
-            if (IRItemListBox.SelectedItems is not { Count: > 0 } selected)
+            if (ItemListBox.SelectedItems is not { Count: > 0 } selected)
                 return;
 
             var hashes = new HashSet<string>();
@@ -381,7 +381,7 @@ namespace SourceGit.Views
             }
 
             vm.Move(items, idx);
-            IRItemListBox.SelectedItems = items;
+            ItemListBox.SelectedItems = items;
             e.Handled = true;
         }
 
@@ -461,7 +461,7 @@ namespace SourceGit.Views
             menuItem.Icon = new Ellipse() { Width = 14, Height = 14, Fill = iconBrush };
             menuItem.Header = header;
             menuItem.Tag = hotkey;
-            menuItem.Click += (_, __) => ChangeItemsAction(item, action);
+            menuItem.Click += (_, _) => ChangeItemsAction(item, action);
 
             flyout.Items.Add(menuItem);
         }
@@ -471,7 +471,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
-            var selected = IRItemListBox.SelectedItems ?? new List<object>();
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
             var items = new List<ViewModels.InteractiveRebaseItem>();
             foreach (var item in selected)
             {
@@ -491,7 +491,7 @@ namespace SourceGit.Views
                 OpenCommitMessageEditor(items[0]);
         }
 
-        private bool _firstSelectionChangedHandled = false;
+        private bool _firstSelectionChangedHandled;
         private readonly DataFormat<string> _dndItemFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-ir-item");
     }
 }

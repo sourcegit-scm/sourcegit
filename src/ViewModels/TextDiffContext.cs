@@ -223,7 +223,7 @@ namespace SourceGit.ViewModels
             return new CombinedTextDiff(_option, _data, this);
         }
 
-        public void ConvertsToCombinedRange(ref int startLine, ref int endLine, bool isOldSide)
+        public void GetCombinedRangeForSingleSide(ref int startLine, ref int endLine, bool isOldSide)
         {
             endLine = Math.Min(endLine, _data.Lines.Count - 1);
 
@@ -260,6 +260,32 @@ namespace SourceGit.ViewModels
             var endContent = oneSide[endContentLine];
             startLine = _data.Lines.IndexOf(firstContent);
             endLine = _data.Lines.IndexOf(endContent);
+        }
+
+        public void GetCombinedRangeForBothSides(ref int startLine, ref int endLine, bool isOldSide)
+        {
+            var fromSide = isOldSide ? Old : New;
+            endLine = Math.Min(endLine, fromSide.Count - 1);
+
+            // Since this function is only used for auto-detected hunk, we just need to find out the a first changed line
+            // and then use `FindRangeByIndex` to get the range of hunk.
+            for (int i = startLine; i <= endLine; i++)
+            {
+                var line = fromSide[i];
+                if (line.Type == Models.TextDiffLineType.Added || line.Type == Models.TextDiffLineType.Deleted)
+                {
+                    (startLine, endLine) = FindRangeByIndex(_data.Lines, _data.Lines.IndexOf(line));
+                    return;
+                }
+
+                if (line.Type == Models.TextDiffLineType.None)
+                {
+                    var otherSide = isOldSide ? New : Old;
+                    var changedLine = otherSide[i]; // Find the changed line on the other side in the same position
+                    (startLine, endLine) = FindRangeByIndex(_data.Lines, _data.Lines.IndexOf(changedLine));
+                    return;
+                }
+            }
         }
 
         private void FillEmptyLines()

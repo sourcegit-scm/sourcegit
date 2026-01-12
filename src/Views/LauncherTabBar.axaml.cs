@@ -157,7 +157,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property.Name == nameof(ActualThemeVariant))
+            if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
                 InvalidateVisual();
         }
 

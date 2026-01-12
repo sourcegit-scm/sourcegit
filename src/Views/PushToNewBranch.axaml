@@ -39,15 +39,18 @@
         <TextBlock Text="{DynamicResource Text.PushToNewBranch.Title}"/>
       </Border>
 
-      <Grid ColumnDefinitions="Auto,*" Margin="16,8,16,0">
-        <TextBlock Grid.Column="0" x:Name="TxtPrefix" Text="REMOTE/" Margin="0,0,6,0"/>
-        <TextBox Grid.Column="1"
-                 x:Name="TxtName"
-                 MinWidth="300" Height="32"
-                 CornerRadius="3"
-                 Focusable="True"
-                 v:AutoFocusBehaviour.IsEnabled="True"/>
-      </Grid>
+      <TextBox x:Name="TxtName"
+               MinWidth="300" Height="32"
+               Margin="16,8,16,0"
+               CornerRadius="3"
+               Focusable="True"
+               v:AutoFocusBehaviour.IsEnabled="True">
+        <TextBox.InnerLeftContent>
+          <Border Height="22" CornerRadius="10" Margin="4,0,0,0" Background="Green">
+            <TextBlock x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>
+          </Border>
+        </TextBox.InnerLeftContent>
+      </TextBox>
 
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
         <Button Classes="flat primary"

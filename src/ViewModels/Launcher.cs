@@ -150,14 +150,14 @@ namespace SourceGit.ViewModels
                 OpenRepositoryInTab(node, null);
             }
 
-            _ignoreIndexChange = false;
-
             var activeIdx = to.ActiveIdx;
             if (activeIdx >= 0 && activeIdx < Pages.Count)
                 ActivePage = Pages[activeIdx];
             else
                 ActivePage = Pages[0];
 
+            _ignoreIndexChange = false;
+            PostActivePageChanged();
             Preferences.Instance.Save();
             GC.Collect();
         }
@@ -442,20 +442,15 @@ namespace SourceGit.ViewModels
             if (_ignoreIndexChange)
                 return;
 
+            if (_activePage is { Data: Repository repo })
+                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
+
             var builder = new StringBuilder(512);
+            builder.Append(string.IsNullOrEmpty(_activePage.Node.Name) ? "Repositories" : _activePage.Node.Name);
+
             var workspaces = Preferences.Instance.Workspaces;
             if (workspaces.Count == 0 || workspaces.Count > 1 || workspaces[0] != _activeWorkspace)
-                builder.Append('[').Append(_activeWorkspace.Name).Append("] ");
-
-            if (_activePage is { Data: Repository repo })
-            {
-                _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
-                builder.Append(_activePage.Node.Name);
-            }
-            else
-            {
-                builder.Append("Repositories");
-            }
+                builder.Append(" - ").Append(_activeWorkspace.Name);
 
             Title = builder.ToString();
             CancelCommandPalette();

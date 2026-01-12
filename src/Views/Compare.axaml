@@ -6,11 +6,11 @@
                     xmlns:v="using:SourceGit.Views"
                     xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.BranchCompare"
-                    x:DataType="vm:BranchCompare"
+                    x:Class="SourceGit.Views.Compare"
+                    x:DataType="vm:Compare"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="{DynamicResource Text.BranchCompare}"
+                    Title="{DynamicResource Text.Compare}"
                     MinWidth="1280" MinHeight="720">
   <Grid RowDefinitions="Auto,64,*">
     <!-- TitleBar -->
@@ -28,7 +28,7 @@
             IsVisible="{OnPlatform True, macOS=False}"/>
 
       <TextBlock Classes="bold"
-                 Text="{DynamicResource Text.BranchCompare}"
+                 Text="{DynamicResource Text.Compare}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
@@ -48,7 +48,7 @@
                         User="{Binding BaseHead.Author}"/>
               <TextBlock Grid.Column="1" Text="{Binding BaseHead.Author.Name}" Margin="8,0,0,0"/>
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                <TextBlock Text="{Binding Base.FriendlyName}" Margin="4,0" Foreground="#FFDDDDDD"/>
+                <TextBlock Text="{Binding BaseName}" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
               <TextBlock Grid.Column="3" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
               <TextBlock Grid.Column="4" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
@@ -72,7 +72,7 @@
                         User="{Binding ToHead.Author}"/>
               <TextBlock Grid.Column="1" Text="{Binding ToHead.Author.Name}" Margin="8,0,0,0"/>
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-                <TextBlock Text="{Binding To.FriendlyName}" Margin="4,0" Foreground="#FFDDDDDD"/>
+                <TextBlock Text="{Binding ToName}" Margin="4,0" Foreground="#FFDDDDDD"/>
               </Border>
               <TextBlock Grid.Column="3" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
               <TextBlock Grid.Column="4" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>

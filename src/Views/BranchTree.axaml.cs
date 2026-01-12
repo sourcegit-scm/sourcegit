@@ -517,32 +517,50 @@ namespace SourceGit.Views
                 var menu = branch.IsLocal ? CreateContextMenuForLocalBranch(repo, branch) : CreateContextMenuForRemoteBranch(repo, branch);
                 menu.Open(this);
             }
-            else if (branches.Find(x => x.IsCurrent) == null)
+            else
             {
                 var menu = new ContextMenu();
 
-                var mergeMulti = new MenuItem();
-                mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
-                mergeMulti.Icon = App.CreateMenuIcon("Icons.Merge");
-                mergeMulti.Click += (_, ev) =>
+                if (branches.Count == 2)
                 {
-                    repo.MergeMultipleBranches(branches);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(mergeMulti);
-                menu.Items.Add(new MenuItem() { Header = "-" });
+                    var compare = new MenuItem();
+                    compare.Header = App.Text("BranchCM.CompareTwo");
+                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compare.Click += (_, ev) =>
+                    {
+                        App.ShowWindow(new ViewModels.Compare(repo.FullPath, branches[0], branches[1]));
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(compare);
+                }
 
-                var deleteMulti = new MenuItem();
-                deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
-                deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
-                deleteMulti.Click += (_, ev) =>
+                if (branches.Find(x => x.IsCurrent) == null)
                 {
-                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
-                    ev.Handled = true;
-                };
-                menu.Items.Add(deleteMulti);
+                    var mergeMulti = new MenuItem();
+                    mergeMulti.Header = App.Text("BranchCM.MergeMultiBranches", branches.Count);
+                    mergeMulti.Icon = App.CreateMenuIcon("Icons.Merge");
+                    mergeMulti.Click += (_, ev) =>
+                    {
+                        repo.MergeMultipleBranches(branches);
+                        ev.Handled = true;
+                    };
 
-                menu.Open(this);
+                    var deleteMulti = new MenuItem();
+                    deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                    deleteMulti.Icon = App.CreateMenuIcon("Icons.Clear");
+                    deleteMulti.Click += (_, ev) =>
+                    {
+                        repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(mergeMulti);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(deleteMulti);
+                }
+
+                if (menu.Items.Count > 0)
+                    menu.Open(this);
             }
         }
 
@@ -698,6 +716,18 @@ namespace SourceGit.Views
                 }
 
                 menu.Items.Add(push);
+
+                var compareWith = new MenuItem();
+                compareWith.Header = App.Text("BranchCM.CompareWith");
+                compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWith.Click += (_, _) =>
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher != null)
+                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                };
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(compareWith);
             }
             else
             {
@@ -792,27 +822,25 @@ namespace SourceGit.Views
                 }
 
                 var compareWithCurrent = new MenuItem();
-                compareWithCurrent.Header = App.Text("BranchCM.CompareWithCurrent", current.Name);
+                compareWithCurrent.Header = App.Text("BranchCM.CompareWithHead");
                 compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithCurrent.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, branch, current));
+                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, branch, current));
+                };
+
+                var compareWith = new MenuItem();
+                compareWith.Header = App.Text("BranchCM.CompareWith");
+                compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWith.Click += (_, _) =>
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher != null)
+                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithCurrent);
-
-                if (repo.LocalChangesCount > 0)
-                {
-                    var compareWithWorktree = new MenuItem();
-                    compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
-                    compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                    compareWithWorktree.Click += async (_, e) =>
-                    {
-                        await repo.CompareBranchWithWorktreeAsync(branch);
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(compareWithWorktree);
-                }
+                menu.Items.Add(compareWith);
             }
 
             if (!repo.IsBare)
@@ -1090,33 +1118,32 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
 
+                var compareWithHead = new MenuItem();
+                compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
+                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Click += (_, _) =>
+                {
+                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, branch, current));
+                };
+
+                var compareWith = new MenuItem();
+                compareWith.Header = App.Text("BranchCM.CompareWith");
+                compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWith.Click += (_, _) =>
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher != null)
+                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                };
+
                 menu.Items.Add(pull);
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
-
-                var compareWithHead = new MenuItem();
-                compareWithHead.Header = App.Text("BranchCM.CompareWithCurrent", current.Name);
-                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithHead.Click += (_, _) =>
-                {
-                    App.ShowWindow(new ViewModels.BranchCompare(repo.FullPath, branch, current));
-                };
                 menu.Items.Add(compareWithHead);
+                menu.Items.Add(compareWith);
             }
 
-            if (repo.LocalChangesCount > 0)
-            {
-                var compareWithWorktree = new MenuItem();
-                compareWithWorktree.Header = App.Text("BranchCM.CompareWithWorktree");
-                compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
-                compareWithWorktree.Click += async (_, e) =>
-                {
-                    await repo.CompareBranchWithWorktreeAsync(branch);
-                    e.Handled = true;
-                };
-                menu.Items.Add(compareWithWorktree);
-            }
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var editDescription = new MenuItem();

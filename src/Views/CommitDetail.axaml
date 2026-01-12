@@ -9,14 +9,14 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitDetail"
              x:DataType="vm:CommitDetail">
-  <TabControl SelectedIndex="{Binding ActiveTabIndex, Mode=TwoWay}" Padding="4">
+  <TabControl SelectedIndex="{Binding ActiveTabIndex, Mode=TwoWay}" Padding="0,4">
     <!-- Information Page -->
     <TabItem>
       <TabItem.Header>
         <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Info}"/>
       </TabItem.Header>
 
-      <ScrollViewer Offset="{Binding ScrollOffset, Mode=TwoWay}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <ScrollViewer Margin="4,0,0,0" Offset="{Binding ScrollOffset, Mode=TwoWay}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
           <v:CommitBaseInfo Content="{Binding Commit}"
@@ -24,14 +24,15 @@
                             SignInfo="{Binding SignInfo}"
                             SupportsContainsIn="True"
                             WebLinks="{Binding WebLinks}"
-                            Children="{Binding Children}"/>
+                            Children="{Binding Children}"
+                            Margin="0,0,12,0"/>
 
           <!-- Line -->
-          <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>
+          <Rectangle Height=".65" Margin="8,8,12,8" Fill="{DynamicResource Brush.Border2}"/>
 
           <!-- Change List -->
           <ListBox Background="Transparent"
-                   Margin="64,0,8,4"
+                   Margin="64,0,12,4"
                    SelectionMode="Single"
                    ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}"
                    KeyDown="OnCommitListKeyDown">
@@ -72,7 +73,7 @@
           </ListBox>
 
           <!-- Only Top100 Tip -->
-          <TextBlock Margin="108,0,0,16"
+          <TextBlock Margin="108,0,12,16"
                      Text="{DynamicResource Text.CommitDetail.Info.GotoChangesPage}"
                      Foreground="{DynamicResource Brush.FG2}"
                      IsVisible="{Binding Changes, Converter={x:Static c:ListConverters.IsOnlyTop100Shows}}"/>
@@ -84,14 +85,14 @@
       <TabItem.Header>
         <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Changes}"/>
       </TabItem.Header>
-      <v:CommitChanges/>
+      <v:CommitChanges Margin="4,0"/>
     </TabItem>
 
     <TabItem>
       <TabItem.Header>
         <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Files}"/>
       </TabItem.Header>
-      <v:RevisionFiles/>
+      <v:RevisionFiles Margin="4,0"/>
     </TabItem>
   </TabControl>
 </UserControl>

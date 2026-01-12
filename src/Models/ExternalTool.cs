@@ -36,6 +36,10 @@ namespace SourceGit.Models
 
         public void Open(string path)
         {
+            // The executable file may be removed after the tool list is loaded (once time on startup).
+            if (!File.Exists(ExecFile))
+                return;
+
             Process.Start(new ProcessStartInfo()
             {
                 FileName = ExecFile,
@@ -91,10 +95,12 @@ namespace SourceGit.Models
         public string LaunchCommand { get; set; }
     }
 
-    public class ExternalToolPaths
+    public class ExternalToolCustomization
     {
         [JsonPropertyName("tools")]
         public Dictionary<string, string> Tools { get; set; } = new Dictionary<string, string>();
+        [JsonPropertyName("excludes")]
+        public List<string> Excludes { get; set; } = new List<string>();
     }
 
     public class ExternalToolsFinder
@@ -113,7 +119,7 @@ namespace SourceGit.Models
                 if (File.Exists(customPathsConfig))
                 {
                     using var stream = File.OpenRead(customPathsConfig);
-                    _customPaths = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.ExternalToolPaths);
+                    _customization = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.ExternalToolCustomization);
                 }
             }
             catch
@@ -121,12 +127,15 @@ namespace SourceGit.Models
                 // Ignore
             }
 
-            _customPaths ??= new ExternalToolPaths();
+            _customization ??= new ExternalToolCustomization();
         }
 
         public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null)
         {
-            if (_customPaths.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
+            if (_customization.Excludes.Contains(name))
+                return;
+
+            if (_customization.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
             {
                 Tools.Add(new ExternalTool(name, icon, customPath, execArgsGenerator));
             }
@@ -151,11 +160,6 @@ namespace SourceGit.Models
         public void VSCodium(Func<string> platformFinder)
         {
             TryAdd("VSCodium", "codium", platformFinder);
-        }
-
-        public void Fleet(Func<string> platformFinder)
-        {
-            TryAdd("Fleet", "fleet", platformFinder);
         }
 
         public void SublimeText(Func<string> platformFinder)
@@ -202,6 +206,6 @@ namespace SourceGit.Models
             }
         }
 
-        private ExternalToolPaths _customPaths = null;
+        private ExternalToolCustomization _customization = null;
     }
 }

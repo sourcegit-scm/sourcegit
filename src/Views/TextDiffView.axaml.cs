@@ -568,7 +568,7 @@ namespace SourceGit.Views
             {
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
             }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
@@ -1183,7 +1183,7 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
+                diff.GetCombinedRangeForSingleSide(ref startIdx, ref endIdx, IsOld);
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, false, IsOld));
             }
             else
@@ -1229,7 +1229,7 @@ namespace SourceGit.Views
                     endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
-                diff.ConvertsToCombinedRange(ref startIdx, ref endIdx, IsOld);
+                diff.GetCombinedRangeForBothSides(ref startIdx, ref endIdx, IsOld);
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
             }
         }

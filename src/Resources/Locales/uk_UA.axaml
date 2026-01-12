@@ -43,8 +43,6 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Автор рядка</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">ПОШУК АВТОРА РЯДКА ДЛЯ ЦЬОГО ФАЙЛУ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Перейти на ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Порівняти з ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копіювати назву гілки</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>
@@ -60,7 +58,6 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Перебазувати ${0}$ на ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Перейменувати ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Встановити відстежувану гілку...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Порівняти гілки</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">СКАСУВАТИ</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Скинути до батьківської ревізії</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Скинути до цієї ревізії</x:String>
@@ -126,6 +123,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">ПОСИЛАННЯ (Refs)</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Відкрити в браузері</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Порівняти</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Налаштування сховища</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН КОМІТУ</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Зміст шаблону:</x:String>

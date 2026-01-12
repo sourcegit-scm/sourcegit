@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PushAsync(IsFixupMode ? "FIXUP_AUTO_STASH" : "SQUASH_AUTO_STASH");
+                    .PushAsync(IsFixupMode ? "FIXUP_AUTO_STASH" : "SQUASH_AUTO_STASH", false);
                 if (!succ)
                 {
                     log.Complete();
