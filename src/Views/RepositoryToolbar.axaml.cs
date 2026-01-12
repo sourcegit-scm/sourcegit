@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -61,13 +62,35 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Header = App.Text("Repository.OpenIn", dupTool.Name);
                         item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
-                        item.Click += (_, e) =>
-                        {
-                            dupTool.Open(fullpath);
-                            e.Handled = true;
-                        };
 
-                        menu.Items.Add(item);
+                        var subOptions = dupTool.FindSubOptions(fullpath);
+                        if (subOptions != null && subOptions.Count > 1)
+                        {
+                            foreach (var subOption in subOptions)
+                            {
+                                var subItem = new MenuItem();
+                                subItem.Header = Path.GetFileName(subOption);
+                                subItem.Click += (_, e) =>
+                                {
+                                    dupTool.Open(subOption);
+                                    e.Handled = true;
+                                };
+
+                                item.Items.Add(subItem);
+                            }
+
+                            menu.Items.Add(item);
+                        }
+                        else
+                        {
+                            item.Click += (_, e) =>
+                            {
+                                dupTool.Open(fullpath);
+                                e.Handled = true;
+                            };
+
+                            menu.Items.Add(item);
+                        }
                     }
                 }
 
