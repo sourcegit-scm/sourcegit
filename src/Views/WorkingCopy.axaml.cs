@@ -1290,7 +1290,7 @@ namespace SourceGit.Views
                         item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
                         item.Click += (_, e) =>
                         {
-                            tool.Open(fullpath);
+                            tool.Launch(fullpath.Quoted());
                             e.Handled = true;
                         };
 

@@ -401,7 +401,7 @@ namespace SourceGit.Native
                     {
                         var exec = instance.ProductPath;
                         var icon = instance.IsPrerelease ? "vs-preview" : "vs";
-                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio, FindVisualStudioSolutions);
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateVSProjectLaunchOptions);
                     }
                 }
             }
@@ -444,35 +444,34 @@ namespace SourceGit.Native
             }
         }
 
-        private string GenerateCommandlineArgsForVisualStudio(string path)
+        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
-            var solutions = FindVisualStudioSolutions(path);
-            return solutions.Count > 0 ? solutions[0].Quoted() : path.Quoted();
-        }
-
-        public List<string> FindVisualStudioSolutions(string path)
-        {
-            var solutions = new List<string>();
-            if (!Directory.Exists(path))
-                return solutions;
-
-            void Search(DirectoryInfo dir, int depth)
+            if (Directory.Exists(path))
             {
-                if (depth < 0)
-                    return;
+                void Search(List<Models.ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
+                {
+                    if (depth < 0)
+                        return;
 
-                foreach (var file in dir.GetFiles("*.sln"))
-                    solutions.Add(file.FullName);
+                    foreach (var file in dir.GetFiles())
+                    {
+                        if (file.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                            file.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                            opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
+                    }
 
-                foreach (var file in dir.GetFiles("*.slnx"))
-                    solutions.Add(file.FullName);
+                    foreach (var subDir in dir.GetDirectories())
+                        Search(opts, subDir, root, depth - 1);
+                }
 
-                foreach (var subDir in dir.GetDirectories())
-                    Search(subDir, depth - 1);
+                var rootDir = new DirectoryInfo(path);
+                var options = new List<Models.ExternalTool.LaunchOption>();
+                Search(options, rootDir, rootDir.FullName, 4);
+                if (options.Count > 0)
+                    return options;
             }
-            Search(new DirectoryInfo(path), 4);
 
-            return solutions;
+            return null;
         }
     }
 }

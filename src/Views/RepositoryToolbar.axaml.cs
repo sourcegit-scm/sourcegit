@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -63,34 +62,42 @@ namespace SourceGit.Views
                         item.Header = App.Text("Repository.OpenIn", dupTool.Name);
                         item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
 
-                        var subOptions = dupTool.FindSubOptions(fullpath);
-                        if (subOptions != null && subOptions.Count > 1)
+                        var options = dupTool.MakeLaunchOptions(fullpath);
+                        if (options is { Count: > 0 })
                         {
-                            foreach (var subOption in subOptions)
+                            var openAsFolder = new MenuItem();
+                            openAsFolder.Header = App.Text("Repository.OpenAsFolder");
+                            openAsFolder.Click += (_, e) =>
+                            {
+                                dupTool.Launch(fullpath.Quoted());
+                                e.Handled = true;
+                            };
+                            item.Items.Add(openAsFolder);
+                            item.Items.Add(new MenuItem() { Header = "-" });
+
+                            foreach (var opt in options)
                             {
                                 var subItem = new MenuItem();
-                                subItem.Header = Path.GetFileName(subOption);
+                                subItem.Header = opt.Title;
                                 subItem.Click += (_, e) =>
                                 {
-                                    dupTool.Open(subOption);
+                                    dupTool.Launch(opt.Args);
                                     e.Handled = true;
                                 };
 
                                 item.Items.Add(subItem);
                             }
-
-                            menu.Items.Add(item);
                         }
                         else
                         {
                             item.Click += (_, e) =>
                             {
-                                dupTool.Open(fullpath);
+                                dupTool.Launch(fullpath.Quoted());
                                 e.Handled = true;
                             };
-
-                            menu.Items.Add(item);
                         }
+
+                        menu.Items.Add(item);
                     }
                 }
 

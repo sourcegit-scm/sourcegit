@@ -343,7 +343,7 @@ namespace SourceGit.ViewModels
             if (tool == null)
                 Native.OS.OpenWithDefaultEditor(tmpFile);
             else
-                tool.Open(tmpFile);
+                tool.Launch(tmpFile.Quoted());
         }
 
         public async Task SaveRevisionFileAsync(Models.Object file, string saveTo)
