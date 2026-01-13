@@ -866,7 +866,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualizar Submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Todos los submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inicializar según sea necesario</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Recursivamente</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submódulo:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Actualizar la rama de seguimiento remota del submódulo</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>

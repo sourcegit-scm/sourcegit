@@ -876,7 +876,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">如未初始化子模块，先初始化</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">递归更新子孙模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">更新到子模块自己的远程踪分支</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">仓库地址 ：</x:String>
