@@ -148,6 +148,16 @@ For **Linux** users:
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
 * If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`.
 
+## Commandline arguments
+
+Users can also launcher `SourceGit` from commandline. Usage:
+
+```
+<SOURCEGIT_EXEC> <DIR>                       // Open repository in existing `SourceGit` instance or a new one
+<SOURCEGIT_EXEC> --file-history <FILE_PATH>  // Launch `SourceGit` to see the history of a file
+<SOURCEGIT_EXEC> --blame <FILE_PATH>         // Launch `SourceGit` to blame a file (HEAD version only) 
+```
+
 ## OpenAI
 
 This software supports using OpenAI or other AI service that has an OpenAI compatible HTTP API to generate commit message. You need configurate the service in `Preference` window.
