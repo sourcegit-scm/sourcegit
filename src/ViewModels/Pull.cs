@@ -137,7 +137,7 @@ namespace SourceGit.ViewModels
             {
                 var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath, false).GetResultAsync();
                 if (submodules.Count > 0)
-                    await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules, false, true);
+                    await new Commands.Submodule(_repo.FullPath).Use(log).UpdateAsync(submodules);
 
                 if (needPopStash)
                     await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");

@@ -144,7 +144,7 @@ namespace SourceGit.ViewModels
                 if (submodules.Count > 0)
                     await new Commands.Submodule(path)
                         .Use(log)
-                        .UpdateAsync(submodules, true, true);
+                        .UpdateAsync(submodules, true);
             }
 
             log.Complete();
