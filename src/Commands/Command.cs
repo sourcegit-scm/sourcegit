@@ -181,7 +181,7 @@ namespace SourceGit.Commands
 
             // If an SSH private key was provided, sets the environment.
             if (!start.Environment.ContainsKey("GIT_SSH_COMMAND") && !string.IsNullOrEmpty(SSHKey))
-                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}' -F '/dev/null'");
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}' -F '{Native.OS.NullDevice}'");
 
             // Force using en_US.UTF-8 locale
             if (OperatingSystem.IsLinux())

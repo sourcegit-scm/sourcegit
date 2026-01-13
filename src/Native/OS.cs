@@ -27,6 +27,14 @@ namespace SourceGit.Native
             void OpenWithDefaultEditor(string file);
         }
 
+        public static readonly string NullDevice = OperatingSystem.IsWindows() ? "NUL" : "/dev/null";
+
+        public static bool IsNullDevice(string path)
+        {
+            return path.Equals("/dev/null", StringComparison.Ordinal) ||
+                   path.Equals("NUL", StringComparison.OrdinalIgnoreCase);
+        }
+
         public static string DataDir
         {
             get;

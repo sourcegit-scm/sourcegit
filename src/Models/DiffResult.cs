@@ -106,7 +106,7 @@ namespace SourceGit.Models
             if (!revert && !isTracked)
                 writer.WriteLine("new file mode 100644");
             writer.WriteLine($"index 00000000...{fileGuid}");
-            writer.WriteLine($"--- {(revert || isTracked ? $"a/{change.Path}" : "/dev/null")}");
+            writer.WriteLine($"--- {(revert || isTracked ? $"a/{change.Path}" : Native.OS.NullDevice)}");
             writer.WriteLine($"+++ b/{change.Path}");
 
             var additions = selection.EndLine - selection.StartLine;

@@ -97,7 +97,7 @@ namespace SourceGit.ViewModels
                 _info = previous._info;
             }
 
-            if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
+            if (string.IsNullOrEmpty(_option.OrgPath) || Native.OS.IsNullDevice(_option.OrgPath))
                 Title = _option.Path;
             else
                 Title = $"{_option.OrgPath} → {_option.Path}";
@@ -216,7 +216,7 @@ namespace SourceGit.ViewModels
                         }
                         else
                         {
-                            if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
+                            if (!Native.OS.IsNullDevice(oldPath))
                             {
                                 var oldImage = await ImageSource.FromRevisionAsync(_repo, "HEAD", oldPath, imgDecoder).ConfigureAwait(false);
                                 imgDiff.Old = oldImage.Bitmap;

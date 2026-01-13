@@ -39,7 +39,7 @@ namespace SourceGit.Models
                     case ChangeState.Added:
                     case ChangeState.Untracked:
                         _extra = "--no-index";
-                        _orgPath = "/dev/null";
+                        _orgPath = Native.OS.NullDevice;
                         break;
                 }
             }
