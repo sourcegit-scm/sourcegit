@@ -16,11 +16,12 @@ namespace SourceGit.Models
         public string ExecFile { get; }
         public Bitmap IconImage { get; }
 
-        public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null)
+        public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null, Func<string, List<string>> subOptionsFinder = null)
         {
             Name = name;
             ExecFile = execFile;
             _execArgsGenerator = execArgsGenerator ?? (path => path.Quoted());
+            _subOptionsFinder = subOptionsFinder;
 
             try
             {
@@ -48,7 +49,16 @@ namespace SourceGit.Models
             });
         }
 
+        public List<string> FindSubOptions(string path)
+        {
+            if (_subOptionsFinder == null)
+                return null;
+
+            return _subOptionsFinder.Invoke(path);
+        }
+
         private Func<string, string> _execArgsGenerator = null;
+        private Func<string, List<string>> _subOptionsFinder = null;
     }
 
     public class VisualStudioInstance
@@ -130,20 +140,20 @@ namespace SourceGit.Models
             _customization ??= new ExternalToolCustomization();
         }
 
-        public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null)
+        public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null, Func<string, List<string>> subOptionsFinder = null)
         {
             if (_customization.Excludes.Contains(name))
                 return;
 
             if (_customization.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
             {
-                Tools.Add(new ExternalTool(name, icon, customPath, execArgsGenerator));
+                Tools.Add(new ExternalTool(name, icon, customPath, execArgsGenerator, subOptionsFinder));
             }
             else
             {
                 var path = finder();
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                    Tools.Add(new ExternalTool(name, icon, path, execArgsGenerator));
+                    Tools.Add(new ExternalTool(name, icon, path, execArgsGenerator, subOptionsFinder));
             }
         }
 
