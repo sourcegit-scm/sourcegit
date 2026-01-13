@@ -390,6 +390,9 @@ namespace SourceGit
                 if (TryLaunchAsFileHistoryViewer(desktop))
                     return;
 
+                if (TryLaunchAsBlameViewer(desktop))
+                    return;
+
                 if (TryLaunchAsCoreEditor(desktop))
                     return;
 
@@ -538,6 +541,41 @@ namespace SourceGit
             var viewer = new Views.FileHistories()
             {
                 DataContext = new ViewModels.FileHistories(repo, relFile)
+            };
+            desktop.MainWindow = viewer;
+            return true;
+        }
+
+        private bool TryLaunchAsBlameViewer(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args is not { Length: > 1 } || !args[0].Equals("--blame", StringComparison.Ordinal))
+                return false;
+
+            var file = Path.GetFullPath(args[1]);
+            var dir = Path.GetDirectoryName(file);
+
+            var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+            {
+                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var repo = test.StdOut.Trim();
+            var head = new Commands.QuerySingleCommit(repo, "HEAD").GetResult();
+            if (head == null)
+            {
+                Console.Out.WriteLine($"{repo} has no commits!");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var relFile = Path.GetRelativePath(repo, file);
+            var viewer = new Views.Blame()
+            {
+                DataContext = new ViewModels.Blame(repo, relFile, head)
             };
             desktop.MainWindow = viewer;
             return true;
