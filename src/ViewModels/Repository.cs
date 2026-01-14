@@ -1508,7 +1508,7 @@ namespace SourceGit.ViewModels
                     builder.Append("\n");
 
                     var msg = App.Text("Checkout.WarnUpdatingSubmodules", builder.ToString());
-                    var shouldContinue = await App.AskConfirmAsync(msg);
+                    var shouldContinue = await App.AskConfirmAsync(msg, Models.ConfirmButtonType.YesNo);
                     if (!shouldContinue)
                         break;
                 }

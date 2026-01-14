@@ -549,6 +549,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">調整存放庫分組</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名稱:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">不，謝謝</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">尚未設定 Git。請開啟 [偏好設定] 以設定 Git 路徑。</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">開啟</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系統預設編輯器</x:String>
@@ -945,4 +946,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">開啟工作區</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作區</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除鎖定工作區</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
 </ResourceDictionary>

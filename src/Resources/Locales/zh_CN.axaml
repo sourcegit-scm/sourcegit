@@ -549,6 +549,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">调整仓库分组</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">请选择目标分组：</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名称 ：</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">不用了</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">GIT尚未配置。请打开【偏好设置】配置GIT路径。</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">打开</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系统默认编辑器</x:String>
@@ -945,4 +946,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">打开工作树</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
 </ResourceDictionary>

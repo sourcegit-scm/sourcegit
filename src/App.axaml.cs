@@ -159,12 +159,12 @@ namespace SourceGit
             }
         }
 
-        public static async Task<bool> AskConfirmAsync(string message)
+        public static async Task<bool> AskConfirmAsync(string message, Models.ConfirmButtonType buttonType = Models.ConfirmButtonType.OkCancel)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
             {
                 var confirm = new Views.Confirm();
-                confirm.Message.Text = message;
+                confirm.SetData(message, buttonType);
                 return await confirm.ShowDialog<bool>(owner);
             }
 

@@ -545,6 +545,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">NO</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git has NOT been configured. Please to go [Preferences] and configure it first.</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Default Editor (System)</x:String>
@@ -941,4 +942,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
 </ResourceDictionary>

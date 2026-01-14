@@ -42,21 +42,21 @@
     <!-- Buttons -->
     <StackPanel Grid.Row="2" Margin="0,0,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
       <Button Classes="flat"
+              x:Name="BtnYes"
               Width="80"
               Height="30"
               Margin="4,0"
               Click="Sure"
-              Content="{DynamicResource Text.Sure}"
               HorizontalAlignment="Center"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
 
       <Button Classes="flat primary"
+              x:Name="BtnNo"
               Width="80"
               Height="30"
               Margin="4,0"
               Click="CloseWindow"
-              Content="{DynamicResource Text.Cancel}"
               HorizontalAlignment="Center"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
