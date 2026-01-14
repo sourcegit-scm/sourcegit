@@ -161,6 +161,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool AskBeforeAutoUpdatingSubmodules
+        {
+            get;
+            set;
+        } = false;
+
         public int ChangesAfterStashing
         {
             get;

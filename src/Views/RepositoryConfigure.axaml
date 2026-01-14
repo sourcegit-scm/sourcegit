@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -174,7 +174,11 @@
                     Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
                     IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
 
-          <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
+          <CheckBox Grid.Row="10" Grid.Column="1"
+                    Content="{DynamicResource Text.Configure.Git.AskBeforeAutoUpdatingSubmodules}"
+                    IsChecked="{Binding AskBeforeAutoUpdatingSubmodules, Mode=TwoWay}"/>
+
+          <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>

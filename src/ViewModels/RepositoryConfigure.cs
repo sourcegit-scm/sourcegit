@@ -95,6 +95,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool AskBeforeAutoUpdatingSubmodules
+        {
+            get => _repo.Settings.AskBeforeAutoUpdatingSubmodules;
+            set => _repo.Settings.AskBeforeAutoUpdatingSubmodules = value;
+        }
+
         public bool EnableAutoFetch
         {
             get => _repo.Settings.EnableAutoFetch;
