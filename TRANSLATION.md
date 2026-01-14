@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.03%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.81%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -15,7 +15,9 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.Compare.WithHead
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Repository.OpenAsFolder
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
@@ -23,7 +25,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.92%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.70%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -32,7 +34,9 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.Compare.WithHead
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Hotkeys.Global.Zoom
 - Text.Repository.OpenAsFolder
 - Text.TagCM.CompareTwo
@@ -41,7 +45,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-96.97%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-96.76%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -51,8 +55,10 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
 - Text.BranchCM.EditDescription
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
@@ -77,7 +83,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-94.81%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-94.60%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -91,10 +97,12 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitCM.Drop
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.DropHead
@@ -133,7 +141,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-92.21%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-92.01%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -153,6 +161,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Behind
 - Text.BranchTree.Status
 - Text.BranchTree.Worktree
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitCM.Drop
 - Text.CommitDetail.Info.CopyEmail
 - Text.CommitDetail.Info.CopyName
@@ -160,6 +169,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.Diff.Image.Difference
@@ -213,7 +223,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-74.24%25-red)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-74.08%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -256,6 +266,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.WarnLostCommits
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
@@ -290,6 +301,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.File
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
@@ -459,7 +471,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-95.13%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-94.92%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -473,8 +485,10 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.EditBranchDescription
@@ -512,7 +526,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-67.97%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-67.82%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -563,6 +577,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.WarnLostCommits
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.Clone.RecurseSubmodules
@@ -604,6 +619,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
 - Text.Configure.CustomAction.WaitForExit
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
@@ -816,16 +832,18 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.89%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.68%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.Checkout.WarnUpdatingSubmodules
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Repository.OpenAsFolder
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-74.35%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-74.19%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -868,6 +886,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.WarnLostCommits
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
@@ -902,6 +921,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.File
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.Configure.Git.PreferredMergeMode
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
@@ -1070,7 +1090,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-75.32%25-yellow)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-75.16%25-yellow)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1113,6 +1133,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
 - Text.Checkout.WarnLostCommits
+- Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
 - Text.CommitCM.CopyAuthor
@@ -1147,6 +1168,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Configure.CustomAction.Scope.File
 - Text.Configure.CustomAction.Scope.Remote
 - Text.Configure.CustomAction.Scope.Tag
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
 - Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit
 - Text.Configure.IssueTracker.Share
