@@ -91,7 +91,7 @@ namespace SourceGit.ViewModels
                     _repo.SetCommitMessage(msg);
                 }
 
-                await _repo.TryAutoUpdateSubmodules(log);
+                await _repo.AutoUpdateSubmodulesAsync(log);
             }
 
             log.Complete();

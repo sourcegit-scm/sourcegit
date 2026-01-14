@@ -1491,7 +1491,7 @@ namespace SourceGit.ViewModels
                 ShowPopup(new UpdateSubmodules(this, null));
         }
 
-        public async Task TryAutoUpdateSubmodules(Models.ICommandLog log)
+        public async Task AutoUpdateSubmodulesAsync(Models.ICommandLog log)
         {
             var submodules = await new Commands.QueryUpdatableSubmodules(FullPath, false).GetResultAsync();
             if (submodules.Count == 0)

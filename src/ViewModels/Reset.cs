@@ -40,7 +40,7 @@ namespace SourceGit.ViewModels
                 .Use(log)
                 .ExecAsync();
 
-            await _repo.TryAutoUpdateSubmodules(log);
+            await _repo.AutoUpdateSubmodulesAsync(log);
 
             log.Complete();
             return succ;

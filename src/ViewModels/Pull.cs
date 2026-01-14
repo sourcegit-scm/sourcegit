@@ -135,7 +135,7 @@ namespace SourceGit.ViewModels
                 UseRebase).Use(log).RunAsync();
             if (rs)
             {
-                await _repo.TryAutoUpdateSubmodules(log);
+                await _repo.AutoUpdateSubmodulesAsync(log);
 
                 if (needPopStash)
                     await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");

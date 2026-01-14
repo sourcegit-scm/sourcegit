@@ -69,7 +69,7 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
-                await _repo.TryAutoUpdateSubmodules(log);
+                await _repo.AutoUpdateSubmodulesAsync(log);
 
                 if (needPopStash)
                     await new Commands.Stash(_repo.FullPath)
