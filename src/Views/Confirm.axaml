@@ -36,7 +36,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock x:Name="Message" MaxWidth="520" TextWrapping="Wrap"/>
+      <TextBlock x:Name="Message" MaxWidth="520" MinWidth="240" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->
