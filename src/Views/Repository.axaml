@@ -821,8 +821,14 @@
                   <StackPanel Orientation="Horizontal" Margin="8,0">
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
-                    <TextBlock Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
-
+                    <Button Margin="4,0,8,0"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Classes="icon_button"
+                            Click="OnNavigateToFilter"
+                            Content="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}"
+                            />
                     <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoryFilter">
                       <Path Width="8" Height="8" Data="{StaticResource Icons.Close}"/>
                     </Button>
