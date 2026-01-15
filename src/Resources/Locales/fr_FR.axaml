@@ -688,12 +688,14 @@
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Lancer `git gc` pour ce repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Tout effacer</x:String>
   <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Nettoyer</x:String>
+  <x:String x:Key="Text.Repository.CollapseAll" xml:space="preserve">Tout Réduire</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configurer ce repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUER</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Actions personnalisées</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Pas d'actions personnalisées</x:String>
   <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Tableau de bord</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Rejeter tous les changements</x:String>
+  <x:String x:Key="Text.Repository.ExpandAll" xml:space="preserve">Tout Développer</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Ouvrir dans l'explorateur de fichiers</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Rechercher Branches/Tags/Submodules</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilité dans le graphique</x:String>

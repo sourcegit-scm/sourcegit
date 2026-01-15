@@ -387,6 +387,84 @@ namespace SourceGit.Views
             _disableSelectionChangingEvent = false;
         }
 
+        public void ExpandAll()
+        {
+            if (Nodes == null || Nodes.Count == 0)
+                return;
+
+            _disableSelectionChangingEvent = true;
+
+            // Set IsExpanded = true on all folder nodes recursively
+            SetExpandedRecursive(Nodes, true);
+
+            // Rebuild rows
+            var rows = Rows;
+            rows.Clear();
+            var newRows = new List<ViewModels.BranchTreeNode>();
+            MakeRows(newRows, Nodes, 0);
+            rows.AddRange(newRows);
+
+            // Persist state for all nodes
+            var repo = DataContext as ViewModels.Repository;
+            if (repo != null)
+                PersistExpandedState(Nodes, repo);
+
+            RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            _disableSelectionChangingEvent = false;
+        }
+
+        public void CollapseAll()
+        {
+            if (Nodes == null || Nodes.Count == 0)
+                return;
+
+            _disableSelectionChangingEvent = true;
+
+            // Set IsExpanded = false on all folder nodes recursively
+            SetExpandedRecursive(Nodes, false);
+
+            // Rebuild rows (only root nodes visible)
+            var rows = Rows;
+            rows.Clear();
+            var newRows = new List<ViewModels.BranchTreeNode>();
+            MakeRows(newRows, Nodes, 0);
+            rows.AddRange(newRows);
+
+            // Persist state for all nodes
+            var repo = DataContext as ViewModels.Repository;
+            if (repo != null)
+                PersistExpandedState(Nodes, repo);
+
+            RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            _disableSelectionChangingEvent = false;
+        }
+
+        private void SetExpandedRecursive(List<ViewModels.BranchTreeNode> nodes, bool expanded)
+        {
+            foreach (var node in nodes)
+            {
+                // Only set IsExpanded for folder nodes (not branch leaves)
+                if (node.Backend is not Models.Branch)
+                    node.IsExpanded = expanded;
+
+                // Recurse into children
+                if (node.Children != null && node.Children.Count > 0)
+                    SetExpandedRecursive(node.Children, expanded);
+            }
+        }
+
+        private void PersistExpandedState(List<ViewModels.BranchTreeNode> nodes, ViewModels.Repository repo)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.Backend is not Models.Branch)
+                    repo.UpdateBranchNodeIsExpanded(node);
+
+                if (node.Children != null && node.Children.Count > 0)
+                    PersistExpandedState(node.Children, repo);
+            }
+        }
+
         protected override void OnSizeChanged(SizeChangedEventArgs e)
         {
             base.OnSizeChanged(e);

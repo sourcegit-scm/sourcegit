@@ -598,5 +598,41 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private void OnExpandAllNodes(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                repo.IsLocalBranchGroupExpanded = true;
+                repo.IsRemoteGroupExpanded = true;
+                repo.IsTagGroupExpanded = true;
+                repo.IsSubmoduleGroupExpanded = true;
+                repo.IsWorktreeGroupExpanded = true;
+            }
+
+            LocalBranchTree?.ExpandAll();
+            RemoteBranchTree?.ExpandAll();
+            TagsList?.ExpandAll();
+            SubmoduleList?.ExpandAll();
+            e.Handled = true;
+        }
+
+        private void OnCollapseAllNodes(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                repo.IsLocalBranchGroupExpanded = false;
+                repo.IsRemoteGroupExpanded = false;
+                repo.IsTagGroupExpanded = false;
+                repo.IsSubmoduleGroupExpanded = false;
+                repo.IsWorktreeGroupExpanded = false;
+            }
+
+            LocalBranchTree?.CollapseAll();
+            RemoteBranchTree?.CollapseAll();
+            TagsList?.CollapseAll();
+            SubmoduleList?.CollapseAll();
+            e.Handled = true;
+        }
     }
 }
