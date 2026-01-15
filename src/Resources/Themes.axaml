@@ -26,6 +26,7 @@
       <Color x:Key="Color.Diff.DeletedHighlight">#F19B9D</Color>
       <Color x:Key="Color.Link">#0000EE</Color>
       <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
+      <Color x:Key="Color.InlineCodeFG">Black</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -53,6 +54,7 @@
       <Color x:Key="Color.Diff.DeletedHighlight">#A09F4247</Color>
       <Color x:Key="Color.Link">#4DAAFC</Color>
       <Color x:Key="Color.InlineCode">#FF383838</Color>
+      <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -82,6 +84,7 @@
   <SolidColorBrush x:Key="Brush.Diff.DeletedHighlight" Color="{DynamicResource Color.Diff.DeletedHighlight}"/>
   <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
   <SolidColorBrush x:Key="Brush.InlineCode" Color="{DynamicResource Color.InlineCode}"/>
+  <SolidColorBrush x:Key="Brush.InlineCodeFG" Color="{DynamicResource Color.InlineCodeFG}"/>
 
   <FontFamily x:Key="Fonts.Default">fonts:Inter#Inter</FontFamily>
   <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono</FontFamily>

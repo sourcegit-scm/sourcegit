@@ -54,8 +54,16 @@ namespace SourceGit.Views
                     if (link.Start > pos)
                         inlines.Add(new Run(message.Substring(pos, link.Start - pos)));
 
+                    var cls = link.Type switch
+                    {
+                        Models.InlineElementType.Link => "issue_link",
+                        Models.InlineElementType.CommitSHA => "commit_link",
+                        Models.InlineElementType.Code => "inline_code",
+                        _ => "normal"
+                    };
+
                     var run = new Run(message.Substring(link.Start, link.Length));
-                    run.Classes.Add(link.Type == Models.InlineElementType.CommitSHA ? "commit_link" : "issue_link");
+                    run.Classes.Add(cls);
                     inlines.Add(run);
 
                     pos = link.Start + link.Length;
@@ -273,7 +281,7 @@ namespace SourceGit.Views
 
         private void SetHoveredIssueLink(Models.InlineElement link)
         {
-            if (link == _lastHover)
+            if (link == _lastHover || link.Type == Models.InlineElementType.Code)
                 return;
 
             SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
