@@ -164,15 +164,18 @@
 
           <CheckBox Grid.Row="7" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
-                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
+                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"
+                    ToolTip.Tip="commit.gpgsign=true"/>
 
           <CheckBox Grid.Row="8" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
-                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
+                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"
+                    ToolTip.Tip="tag.gpgsign=true"/>
 
           <CheckBox Grid.Row="9" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
-                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
+                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"
+                    ToolTip.Tip="fetch.prune=true"/>
 
           <CheckBox Grid.Row="10" Grid.Column="1"
                     Content="{DynamicResource Text.Configure.Git.AskBeforeAutoUpdatingSubmodules}"
