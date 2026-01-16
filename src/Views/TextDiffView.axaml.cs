@@ -1496,6 +1496,10 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
             File.Delete(tmpFile);
 
+            if (!selection.HasRemainingChanges)
+            {
+                repoView.SelectNextUnstagedChangeWithoutSelection();
+            }
             repo.MarkWorkingCopyDirtyManually();
         }
 
@@ -1526,6 +1530,11 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
             File.Delete(tmpFile);
 
+            if (!selection.HasRemainingChanges)
+            {
+                repoView.SelectNextStagedChangeWithoutSelection();
+            }            
+            
             repo.MarkWorkingCopyDirtyManually();
         }
 
@@ -1563,6 +1572,10 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
             File.Delete(tmpFile);
 
+            if (selection.HasRemainingChanges)
+            {
+                repoView.SelectNextUnstagedChangeWithoutSelection();
+            }
             repo.MarkWorkingCopyDirtyManually();
         }
     }
