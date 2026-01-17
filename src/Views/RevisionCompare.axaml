@@ -53,7 +53,7 @@
 
       <!-- Save As Patch Button -->
       <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
-        <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+        <Path Width="16" Height="16" Data="{DynamicResource Icons.Save}"/>
       </Button>
     </Grid>
 

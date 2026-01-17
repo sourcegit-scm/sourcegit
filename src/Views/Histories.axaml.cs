@@ -373,7 +373,7 @@ namespace SourceGit.Views
             }
 
             var saveToPatch = new MenuItem();
-            saveToPatch.Icon = App.CreateMenuIcon("Icons.Diff");
+            saveToPatch.Icon = App.CreateMenuIcon("Icons.Save");
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) =>
             {
@@ -411,6 +411,19 @@ namespace SourceGit.Views
             menu.Items.Add(saveToPatch);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
+            var copyInfos = new MenuItem();
+            copyInfos.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
+            copyInfos.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyInfos.Click += async (_, e) =>
+            {
+                var builder = new StringBuilder();
+                foreach (var c in selected)
+                    builder.Append(c.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(c.Subject);
+
+                await App.CopyTextAsync(builder.ToString());
+                e.Handled = true;
+            };
+
             var copyShas = new MenuItem();
             copyShas.Header = App.Text("CommitCM.CopySHA");
             copyShas.Icon = App.CreateMenuIcon("Icons.Hash");
@@ -424,23 +437,9 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
-            var copyInfos = new MenuItem();
-            copyInfos.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
-            copyInfos.Icon = App.CreateMenuIcon("Icons.ShaAndSubject");
-            copyInfos.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
-            copyInfos.Click += async (_, e) =>
-            {
-                var builder = new StringBuilder();
-                foreach (var c in selected)
-                    builder.Append(c.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(c.Subject);
-
-                await App.CopyTextAsync(builder.ToString());
-                e.Handled = true;
-            };
-
             var copyMessage = new MenuItem();
             copyMessage.Header = App.Text("CommitCM.CopyCommitMessage");
-            copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
+            copyMessage.Icon = App.CreateMenuIcon("Icons.Message");
             copyMessage.Click += async (_, e) =>
             {
                 var vm = DataContext as ViewModels.Histories;
@@ -458,8 +457,9 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Items.Add(copyShas);
             copy.Items.Add(copyInfos);
+            copy.Items.Add(new MenuItem() { Header = "-" });
+            copy.Items.Add(copyShas);
             copy.Items.Add(copyMessage);
             menu.Items.Add(copy);
             return menu;
@@ -801,7 +801,7 @@ namespace SourceGit.Views
             }
 
             var saveToPatch = new MenuItem();
-            saveToPatch.Icon = App.CreateMenuIcon("Icons.Diff");
+            saveToPatch.Icon = App.CreateMenuIcon("Icons.Save");
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) =>
             {
@@ -867,6 +867,15 @@ namespace SourceGit.Views
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
+            var copyInfo = new MenuItem();
+            copyInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
+            copyInfo.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyInfo.Click += async (_, e) =>
+            {
+                await App.CopyTextAsync($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
+                e.Handled = true;
+            };
+
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
             copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
@@ -885,19 +894,9 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
-            var copyInfo = new MenuItem();
-            copyInfo.Header = App.Text("CommitCM.CopySHA") + " - " + App.Text("CommitCM.CopySubject");
-            copyInfo.Icon = App.CreateMenuIcon("Icons.ShaAndSubject");
-            copyInfo.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
-            copyInfo.Click += async (_, e) =>
-            {
-                await App.CopyTextAsync($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
-                e.Handled = true;
-            };
-
             var copyMessage = new MenuItem();
             copyMessage.Header = App.Text("CommitCM.CopyCommitMessage");
-            copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
+            copyMessage.Icon = App.CreateMenuIcon("Icons.Message");
             copyMessage.Click += async (_, e) =>
             {
                 var message = await vm.GetCommitFullMessageAsync(commit);
@@ -926,9 +925,10 @@ namespace SourceGit.Views
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Items.Add(copyInfo);
+            copy.Items.Add(new MenuItem() { Header = "-" });
             copy.Items.Add(copySHA);
             copy.Items.Add(copySubject);
-            copy.Items.Add(copyInfo);
             copy.Items.Add(copyMessage);
             copy.Items.Add(copyAuthor);
             copy.Items.Add(copyCommitter);
