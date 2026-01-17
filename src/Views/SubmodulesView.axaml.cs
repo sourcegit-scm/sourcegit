@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -115,6 +116,61 @@ namespace SourceGit.Views
                 tree.ToggleExpand(node);
                 Rows = tree.Rows.Count;
                 RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            }
+        }
+
+        public void ExpandAll()
+        {
+            if (Content is ViewModels.SubmoduleCollectionAsTree tree)
+            {
+                SetExpandedRecursive(tree.Tree, true);
+
+                // Rebuild rows manually
+                tree.Rows.Clear();
+                MakeTreeRows(tree.Rows, tree.Tree);
+
+                Rows = tree.Rows.Count;
+                RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            }
+        }
+
+        public void CollapseAll()
+        {
+            if (Content is ViewModels.SubmoduleCollectionAsTree tree)
+            {
+                SetExpandedRecursive(tree.Tree, false);
+
+                // Rebuild rows manually
+                tree.Rows.Clear();
+                MakeTreeRows(tree.Rows, tree.Tree);
+
+                Rows = tree.Rows.Count;
+                RaiseEvent(new RoutedEventArgs(RowsChangedEvent));
+            }
+        }
+
+        private void MakeTreeRows(Avalonia.Collections.AvaloniaList<ViewModels.SubmoduleTreeNode> rows, List<ViewModels.SubmoduleTreeNode> nodes)
+        {
+            foreach (var node in nodes)
+            {
+                rows.Add(node);
+
+                if (!node.IsExpanded || !node.IsFolder)
+                    continue;
+
+                MakeTreeRows(rows, node.Children);
+            }
+        }
+
+        private void SetExpandedRecursive(List<ViewModels.SubmoduleTreeNode> nodes, bool expanded)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.IsFolder)
+                    node.IsExpanded = expanded;
+
+                if (node.Children != null && node.Children.Count > 0)
+                    SetExpandedRecursive(node.Children, expanded);
             }
         }
 

@@ -642,12 +642,14 @@
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Esegui il comando `git gc` per questo repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Cancella tutto</x:String>
   <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Cancella</x:String>
+  <x:String x:Key="Text.Repository.CollapseAll" xml:space="preserve">Comprimi Tutto</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configura questo repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUA</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Azioni Personalizzate</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Nessuna Azione Personalizzata</x:String>
   <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Scarta tutte le modifiche</x:String>
+  <x:String x:Key="Text.Repository.ExpandAll" xml:space="preserve">Espandi Tutto</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Apri nell'Esplora File</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Cerca Branch/Tag/Sottomodulo</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilità nel grafico</x:String>
