@@ -112,6 +112,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Отложить и применить повторно</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Ваша текущая ГОЛОВА содержит ревизию(и), не связанные ни с к какими ветками или метками! Вы хотите продолжить?</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Подмодулям требуется обновление:{0}Обновить их?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Переключиться и перемотать</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Перемотать к:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
@@ -228,6 +229,7 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Адрес электронной почты</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Адрес электронной почты</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Спрашивать перед автоматическим обновлением подмодулей.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автозагрузка изменений</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Общепринятые типы ревизии</x:String>
@@ -547,6 +549,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Переместить репозиторий в другую группу</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Выбрать группу для:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Имя:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">Нет</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git НЕ был настроен. Пожалуйста, перейдите в [Настройки] и сначала настройте его.</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">Открыть</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Редактор по умолчанию (Системный)</x:String>
@@ -733,6 +736,7 @@
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Создать ветку</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ОЧИСТКА УВЕДОМЛЕНИЙ</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Подсвечивать только текущую ветку</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Открыть как каталог</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Открыть в {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Открыть в расширенном инструменте</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">ВНЕШНИЕ РЕПОЗИТОРИИ</x:String>
@@ -942,4 +946,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Открыть</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Удалить</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Разблокировать</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">Да</x:String>
 </ResourceDictionary>
