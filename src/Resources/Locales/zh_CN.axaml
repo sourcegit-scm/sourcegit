@@ -741,6 +741,7 @@
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具打开</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">远程列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">添加远程</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解决冲突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">查找提交</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">提交者</x:String>

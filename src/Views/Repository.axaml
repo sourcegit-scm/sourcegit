@@ -636,7 +636,7 @@
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
-      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="m:Commit">
@@ -707,6 +707,15 @@
         </ContentControl>
 
         <Button Grid.Column="1"
+                Classes="flat"
+                FontWeight="Regular"
+                BorderThickness="0"
+                Content="{DynamicResource Text.Repository.Resolve}"
+                Padding="8,2" Margin="0,0,8,0"
+                Click="OnResolveInProgress"
+                IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsNotOne}}"/>
+
+        <Button Grid.Column="2"
                 Classes="flat"
                 FontWeight="Regular"
                 BorderThickness="0"
