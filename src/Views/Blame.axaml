@@ -12,7 +12,7 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Blame}"
                     MinWidth="1280" MinHeight="720">
-  <Grid RowDefinitions="Auto,24,*">
+  <Grid RowDefinitions="Auto,28,*,36">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
@@ -80,23 +80,23 @@
         <Button Grid.Column="5"
                 Classes="icon_button"
                 IsEnabled="{Binding PrevRevision, Converter={x:Static ObjectConverters.IsNotNull}}"
-                Width="18" Margin="4,0,0,0"
+                Width="28" Margin="4,0,0,0"
                 Command="{Binding GotoPrevRevision}"
                 ToolTip.Tip="{DynamicResource Text.Blame.BlameOnPreviousRevision}">
-          <Path Width="12" Height="12" Data="{StaticResource Icons.GotoParent}"/>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.GotoParent}"/>
         </Button>
       </Grid>
     </Border>
 
     <!-- Body -->
-    <Grid Grid.Row="2" Background="{DynamicResource Brush.Contents}">
+    <Grid Grid.Row="2">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto"
                          Margin="4,0,4,4"
                          BorderBrush="{DynamicResource Brush.Border2}"
                          BorderThickness="1"
-                         Background="Transparent"
+                         Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
@@ -122,6 +122,13 @@
 
       <!-- Loading -->
       <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
+    </Grid>
+
+    <!-- Option -->
+    <Grid Grid.Row="3" Margin="8,0" Height="32" VerticalAlignment="Top">
+      <CheckBox Content="{DynamicResource Text.Blame.IgnoreWhitespace}"
+                IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
+                ToolTip.Tip="-w"/>
     </Grid>
   </Grid>
 </v:ChromelessWindow>

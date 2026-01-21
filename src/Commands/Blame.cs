@@ -10,12 +10,19 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^\^?([0-9a-f]+)\s+(.*)\s+\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)")]
         private static partial Regex REG_FORMAT();
 
-        public Blame(string repo, string file, string revision)
+        public Blame(string repo, string file, string revision, bool ignoreWhitespace)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"blame -f -t {revision} -- {file.Quoted()}";
             RaiseError = false;
+
+            var builder = new StringBuilder();
+            builder.Append("blame -f -t ");
+            if (ignoreWhitespace)
+                builder.Append("-w ");
+            builder.Append(revision).Append(" -- ").Append(file.Quoted());
+
+            Args = builder.ToString();
         }
 
         public async Task<Models.BlameData> ReadAsync()

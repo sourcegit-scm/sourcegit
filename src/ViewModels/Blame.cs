@@ -16,6 +16,16 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _file, value);
         }
 
+        public bool IgnoreWhitespace
+        {
+            get => _ignoreWhitespace;
+            set
+            {
+                if (SetProperty(ref _ignoreWhitespace, value))
+                    SetBlameData(_navigationHistory[0]);
+            }
+        }
+
         public Models.Commit Revision
         {
             get => _revision;
@@ -181,7 +191,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var result = await new Commands.Blame(_repo, rev.File, rev.SHA)
+                var result = await new Commands.Blame(_repo, rev.File, rev.SHA, _ignoreWhitespace)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
@@ -207,6 +217,7 @@ namespace SourceGit.ViewModels
 
         private string _repo;
         private string _file;
+        private bool _ignoreWhitespace = false;
         private Models.Commit _revision;
         private Models.Commit _prevRevision;
         private CancellationTokenSource _cancellationSource = null;
