@@ -248,12 +248,18 @@ namespace SourceGit.Views
             foreach (var rule in rules)
                 rule.Matches(_elements, subject);
 
-            var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
-            if (!keywordMatch.Success)
-                keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
-
-            if (keywordMatch.Success && _elements.Intersect(0, keywordMatch.Length) == null)
-                _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+            var keywordMatch = REG_KEYWORD_FORMAT().Match(subject);
+            if (keywordMatch.Success)
+            {
+                if (_elements.Intersect(0, keywordMatch.Length) == null)
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+            }
+            else
+            {
+                var colonIdx = subject.IndexOf(':', StringComparison.Ordinal);
+                if (colonIdx > 0 && colonIdx < 32 && colonIdx < subject.Length - 2 && char.IsWhiteSpace(subject[colonIdx + 1]) && _elements.Intersect(0, colonIdx + 1) == null)
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, colonIdx + 1, string.Empty));
+            }
 
             var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
             foreach (Match match in codeMatches)
@@ -370,11 +376,8 @@ namespace SourceGit.Views
         [GeneratedRegex(@"`.*?`")]
         private static partial Regex REG_INLINECODE_FORMAT();
 
-        [GeneratedRegex(@"^\[[\w\s]+\]")]
-        private static partial Regex REG_KEYWORD_FORMAT1();
-
-        [GeneratedRegex(@"^\S+([\<\(][\w\s_\-\*,]+[\>\)])?\!?\s?:\s")]
-        private static partial Regex REG_KEYWORD_FORMAT2();
+        [GeneratedRegex(@"^\[[^]]{1,48}?\]")]
+        private static partial Regex REG_KEYWORD_FORMAT();
 
         private class Inline
         {
