@@ -60,7 +60,7 @@
     <!-- Changes View -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
+        <ColumnDefinition Width="256" MinWidth="200"/>
         <ColumnDefinition Width="4"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
