@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Avalonia.Media.Imaging;
+using SourceGit.ViewModels;
 
 namespace SourceGit.Models
 {
@@ -49,6 +50,7 @@ namespace SourceGit.Models
         public bool HasChanges { get; set; } = false;
         public int IgnoredAdds { get; set; } = 0;
         public int IgnoredDeletes { get; set; } = 0;
+        public bool HasRemainingChanges { get; set; } = false;
     }
 
     public partial class TextDiff
@@ -65,10 +67,17 @@ namespace SourceGit.Models
             for (int i = 0; i < startLine - 1; i++)
             {
                 var line = Lines[i];
-                if (line.Type == TextDiffLineType.Added)
-                    rs.IgnoredAdds++;
-                else if (line.Type == TextDiffLineType.Deleted)
-                    rs.IgnoredDeletes++;
+                switch (line.Type)
+                {
+                    case TextDiffLineType.Added:
+                        rs.IgnoredAdds++;
+                        rs.HasRemainingChanges = true;
+                        break;
+                    case TextDiffLineType.Deleted:
+                        rs.IgnoredDeletes++;
+                        rs.HasRemainingChanges = true;
+                        break;
+                }
             }
 
             for (int i = startLine - 1; i < endLine; i++)
@@ -89,6 +98,18 @@ namespace SourceGit.Models
                         rs.HasChanges = true;
                         break;
                     }
+                }
+            }
+
+            for (var i = endLine; i < Lines.Count; i++)
+            {
+                var line = Lines[i];
+                switch (line.Type)
+                {
+                    case TextDiffLineType.Added:
+                    case TextDiffLineType.Deleted:
+                        rs.HasRemainingChanges = true;
+                        break;
                 }
             }
 

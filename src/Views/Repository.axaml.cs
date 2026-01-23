@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -605,6 +606,18 @@ namespace SourceGit.Views
                 await repo.ExecBisectCommandAsync(button.Tag as string);
 
             e.Handled = true;
+        }
+        
+        public void SelectNextStagedChangeWithoutSelection()
+        {
+            this.FindDescendantOfType<WorkingCopy>()
+                ?.SelectNextStagedChangeWithoutSelection();
+        }
+
+        public void SelectNextUnstagedChangeWithoutSelection()
+        {
+            this.FindDescendantOfType<WorkingCopy>()
+                ?.SelectNextUnstagedChangeWithoutSelection();
         }
     }
 }

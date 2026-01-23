@@ -79,6 +79,15 @@ namespace SourceGit.Views
             }
         }
 
+        public void SelectNextUnstagedChangeWithoutSelection()
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+            {
+                var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                vm.SelectedUnstaged = next != null ? [next] : [];
+            }
+        }
+
         private async void OnStagedChangeDoubleTapped(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm)
@@ -87,6 +96,15 @@ namespace SourceGit.Views
                 await vm.UnstageChangesAsync(vm.SelectedStaged, next);
                 StagedChangesView.TakeFocus();
                 e.Handled = true;
+            }
+        }
+        
+        public void SelectNextStagedChangeWithoutSelection()
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+            {
+                var next = StagedChangesView.GetNextChangeWithoutSelection();
+                vm.SelectedStaged = next != null ? [next] : [];
             }
         }
 
