@@ -437,6 +437,19 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            var copySubjects = new MenuItem();
+            copySubjects.Header = App.Text("CommitCM.CopySubject");
+            copySubjects.Icon = App.CreateMenuIcon("Icons.Subject");
+            copySubjects.Click += async (_, e) =>
+            {
+                var builder = new StringBuilder();
+                foreach (var c in selected)
+                    builder.AppendLine(c.Subject);
+
+                await App.CopyTextAsync(builder.ToString());
+                e.Handled = true;
+            };
+
             var copyMessage = new MenuItem();
             copyMessage.Header = App.Text("CommitCM.CopyCommitMessage");
             copyMessage.Icon = App.CreateMenuIcon("Icons.Message");
@@ -460,6 +473,7 @@ namespace SourceGit.Views
             copy.Items.Add(copyInfos);
             copy.Items.Add(new MenuItem() { Header = "-" });
             copy.Items.Add(copyShas);
+            copy.Items.Add(copySubjects);
             copy.Items.Add(copyMessage);
             menu.Items.Add(copy);
             return menu;
