@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -11,6 +11,26 @@ namespace SourceGit.ViewModels
 {
     public class WorkingCopy : ObservableObject, IDisposable
     {
+        public bool EnableOFPADecoding
+        {
+            get => _repo.Settings.EnableOFPADecoding;
+            set
+            {
+                if (_repo.Settings.EnableOFPADecoding != value)
+                {
+                    _repo.Settings.EnableOFPADecoding = value;
+                    OnPropertyChanged();
+
+                    if (value)
+                        _ = DecodeOFPAPathsAsync(_cached);
+                    else
+                        ClearDecodedPaths();
+                }
+            }
+        }
+
+        public IReadOnlyDictionary<string, string> DecodedPaths => _decodedPaths;
+
         public Repository Repository
         {
             get => _repo;
@@ -331,6 +351,10 @@ namespace SourceGit.ViewModels
 
                 UpdateDetail();
                 UpdateInProgressState();
+
+                // Decode OFPA paths asynchronously if enabled
+                if (_repo.Settings.EnableOFPADecoding)
+                    _ = DecodeOFPAPathsAsync(changes);
             });
         }
 
@@ -834,5 +858,58 @@ namespace SourceGit.ViewModels
 
         private bool _hasUnsolvedConflicts = false;
         private InProgressContext _inProgressContext = null;
+        private Dictionary<string, string> _decodedPaths = new Dictionary<string, string>();
+
+        private async Task DecodeOFPAPathsAsync(List<Models.Change> changes)
+        {
+            if (!_repo.Settings.EnableOFPADecoding || changes == null || changes.Count == 0)
+                return;
+
+            var repoPath = _repo.FullPath;
+            var pathsToProcess = new List<(string RelativePath, string FullPath)>();
+
+            foreach (var change in changes)
+            {
+                if (Commands.DecodeOFPAPath.IsOFPAFile(change.Path) &&
+                    !_decodedPaths.ContainsKey(change.Path))
+                {
+                    var fullPath = Path.Combine(repoPath, change.Path);
+                    if (File.Exists(fullPath))
+                        pathsToProcess.Add((change.Path, fullPath));
+                }
+            }
+
+            if (pathsToProcess.Count == 0)
+                return;
+
+            var newDecodedPaths = new Dictionary<string, string>();
+
+            await Task.Run(() =>
+            {
+                foreach (var (relativePath, fullPath) in pathsToProcess)
+                {
+                    var result = Commands.DecodeOFPAPath.Decode(fullPath);
+                    if (result.HasValue)
+                        newDecodedPaths[relativePath] = result.Value.LabelValue;
+                }
+            });
+
+            if (newDecodedPaths.Count > 0)
+            {
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    foreach (var kvp in newDecodedPaths)
+                        _decodedPaths[kvp.Key] = kvp.Value;
+
+                    OnPropertyChanged(nameof(DecodedPaths));
+                });
+            }
+        }
+
+        private void ClearDecodedPaths()
+        {
+            _decodedPaths.Clear();
+            OnPropertyChanged(nameof(DecodedPaths));
+        }
     }
 }

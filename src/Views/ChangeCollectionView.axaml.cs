@@ -97,6 +97,15 @@ namespace SourceGit.Views
             set => SetValue(SelectedChangesProperty, value);
         }
 
+        public static readonly StyledProperty<IReadOnlyDictionary<string, string>> DecodedPathsProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, IReadOnlyDictionary<string, string>>(nameof(DecodedPaths));
+
+        public IReadOnlyDictionary<string, string> DecodedPaths
+        {
+            get => GetValue(DecodedPathsProperty);
+            set => SetValue(DecodedPathsProperty, value);
+        }
+
         public static readonly RoutedEvent<RoutedEventArgs> ChangeDoubleTappedEvent =
             RoutedEvent.Register<ChangeCollectionView, RoutedEventArgs>(nameof(ChangeDoubleTapped), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
 
@@ -224,6 +233,8 @@ namespace SourceGit.Views
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
                 UpdateSelection();
+            else if (change.Property == DecodedPathsProperty && ViewMode == Models.ChangeViewMode.Tree)
+                UpdateDataSource(true);
 
             if (change.Property == EnableCompactFoldersProperty && ViewMode == Models.ChangeViewMode.Tree)
                 UpdateDataSource(true);
@@ -357,7 +368,7 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, EnableCompactFolders);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, EnableCompactFolders, DecodedPaths);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);
