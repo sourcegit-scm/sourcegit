@@ -128,9 +128,9 @@ namespace SourceGit.ViewModels
             await _wc.UseExternalMergeToolAsync(_change);
         }
 
-        public ThreeWayMerge CreateBuiltinMergeViewModel()
+        public MergeConflictEditor CreateBuiltinMergeViewModel()
         {
-            return new ThreeWayMerge(_repo, _change.Path);
+            return new MergeConflictEditor(_repo, _change.Path);
         }
 
         private Repository _repo = null;

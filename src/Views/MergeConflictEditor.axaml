@@ -5,8 +5,8 @@
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
-                    x:Class="SourceGit.Views.ThreeWayMerge"
-                    x:DataType="vm:ThreeWayMerge"
+                    x:Class="SourceGit.Views.MergeConflictEditor"
+                    x:DataType="vm:MergeConflictEditor"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{Binding Title}"
@@ -46,13 +46,13 @@
         <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
           <!-- Navigation -->
           <Button Classes="icon_button"
-                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.PrevConflict}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
                   Click="OnGotoPrevConflict"
                   IsEnabled="{Binding HasPrevConflict}">
             <Path Width="12" Height="12" Data="{StaticResource Icons.Up}"/>
           </Button>
           <Button Classes="icon_button"
-                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.NextConflict}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
                   Click="OnGotoNextConflict"
                   IsEnabled="{Binding HasNextConflict}">
             <Path Width="12" Height="12" Data="{StaticResource Icons.Down}"/>
@@ -62,35 +62,35 @@
 
           <!-- Current Conflict Resolution -->
           <Button Classes="flat"
-                  Content="{DynamicResource Text.ThreeWayMerge.UseMine}"
+                  Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
                   Click="OnUseCurrentMine"
-                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.UseMine.Tip}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.UseMine.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
           <Button Classes="flat"
-                  Content="{DynamicResource Text.ThreeWayMerge.UseTheirs}"
+                  Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
                   Click="OnUseCurrentTheirs"
-                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.UseTheirs.Tip}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.UseTheirs.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
 
           <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
 
           <!-- All Conflicts Resolution -->
           <Button Classes="flat"
-                  Content="{DynamicResource Text.ThreeWayMerge.AcceptMine}"
+                  Content="{DynamicResource Text.MergeConflictEditor.AcceptMine}"
                   Click="OnAcceptMine"
-                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.AcceptMine.Tip}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.AcceptMine.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
           <Button Classes="flat"
-                  Content="{DynamicResource Text.ThreeWayMerge.AcceptTheirs}"
+                  Content="{DynamicResource Text.MergeConflictEditor.AcceptTheirs}"
                   Click="OnAcceptTheirs"
-                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.AcceptTheirs.Tip}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.AcceptTheirs.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
 
           <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
 
           <!-- Save -->
           <Button Classes="flat primary"
-                  Content="{DynamicResource Text.ThreeWayMerge.SaveAndStage}"
+                  Content="{DynamicResource Text.MergeConflictEditor.SaveAndStage}"
                   Click="OnSaveAndStage"
                   IsEnabled="{Binding CanSave}"/>
         </StackPanel>
@@ -110,7 +110,7 @@
           <Border Grid.Column="0" Margin="0,0,2,0">
             <Grid RowDefinitions="Auto,*">
               <Border Grid.Row="0" Padding="8,4" Background="#0078D7">
-                <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Mine}"
+                <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Mine}"
                            Foreground="White"
                            FontWeight="Bold"/>
               </Border>
@@ -135,7 +135,7 @@
           <Border Grid.Column="1" Margin="2,0,0,0">
             <Grid RowDefinitions="Auto,*">
               <Border Grid.Row="0" Padding="8,4" Background="DarkOrange">
-                <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Theirs}"
+                <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Theirs}"
                            Foreground="White"
                            FontWeight="Bold"/>
               </Border>
@@ -161,7 +161,7 @@
         <Border Grid.Row="1" Margin="4,2,4,4">
           <Grid RowDefinitions="Auto,*">
             <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.FG1}">
-              <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Result}"
+              <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Result}"
                          Foreground="{DynamicResource Brush.Window}"
                          FontWeight="Bold"/>
             </Border>

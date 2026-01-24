@@ -507,9 +507,9 @@ namespace SourceGit.Views
         private readonly MergeDiffPresenter _presenter;
     }
 
-    public partial class ThreeWayMerge : ChromelessWindow
+    public partial class MergeConflictEditor : ChromelessWindow
     {
-        public ThreeWayMerge()
+        public MergeConflictEditor()
         {
             InitializeComponent();
         }
@@ -529,7 +529,7 @@ namespace SourceGit.Views
                 SetupScrollSync();
             }, Avalonia.Threading.DispatcherPriority.Loaded);
 
-            if (DataContext is ViewModels.ThreeWayMerge vm)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 vm.PropertyChanged += OnViewModelPropertyChanged;
             }
@@ -586,9 +586,9 @@ namespace SourceGit.Views
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModels.ThreeWayMerge.IsLoading))
+            if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.IsLoading))
             {
-                if (DataContext is ViewModels.ThreeWayMerge vm && !vm.IsLoading)
+                if (DataContext is ViewModels.MergeConflictEditor vm && !vm.IsLoading)
                 {
                     Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                     {
@@ -597,7 +597,7 @@ namespace SourceGit.Views
                     }, Avalonia.Threading.DispatcherPriority.Loaded);
                 }
             }
-            else if (e.PropertyName == nameof(ViewModels.ThreeWayMerge.CurrentConflictLine))
+            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.CurrentConflictLine))
             {
                 UpdateCurrentConflictHighlight();
             }
@@ -605,7 +605,7 @@ namespace SourceGit.Views
 
         private void UpdateCurrentConflictHighlight()
         {
-            if (DataContext is not ViewModels.ThreeWayMerge vm)
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
             var startLine = vm.CurrentConflictStartLine;
@@ -635,10 +635,10 @@ namespace SourceGit.Views
             if (_forceClose)
                 return;
 
-            if (DataContext is ViewModels.ThreeWayMerge vm && vm.HasUnsavedChanges())
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnsavedChanges())
             {
                 e.Cancel = true;
-                var result = await App.AskConfirmAsync(App.Text("ThreeWayMerge.UnsavedChanges"));
+                var result = await App.AskConfirmAsync(App.Text("MergeConflictEditor.UnsavedChanges"));
                 if (result)
                 {
                     _forceClose = true;
@@ -680,7 +680,7 @@ namespace SourceGit.Views
             if (e.Handled)
                 return;
 
-            var vm = DataContext as ViewModels.ThreeWayMerge;
+            var vm = DataContext as ViewModels.MergeConflictEditor;
             if (vm == null)
                 return;
 
@@ -712,7 +712,7 @@ namespace SourceGit.Views
 
         private void OnGotoPrevConflict(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm && vm.HasPrevConflict)
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasPrevConflict)
             {
                 vm.GotoPrevConflict();
                 UpdateCurrentConflictHighlight();
@@ -723,7 +723,7 @@ namespace SourceGit.Views
 
         private void OnGotoNextConflict(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm && vm.HasNextConflict)
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasNextConflict)
             {
                 vm.GotoNextConflict();
                 UpdateCurrentConflictHighlight();
@@ -734,7 +734,7 @@ namespace SourceGit.Views
 
         private void OnUseCurrentMine(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptCurrentOurs();
@@ -746,7 +746,7 @@ namespace SourceGit.Views
 
         private void OnUseCurrentTheirs(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptCurrentTheirs();
@@ -758,7 +758,7 @@ namespace SourceGit.Views
 
         private void OnAcceptMine(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptOurs();
@@ -770,7 +770,7 @@ namespace SourceGit.Views
 
         private void OnAcceptTheirs(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptTheirs();
@@ -815,7 +815,7 @@ namespace SourceGit.Views
 
         private async Task SaveAndCloseAsync()
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 var success = await vm.SaveAndStageAsync();
                 if (success)
@@ -828,7 +828,7 @@ namespace SourceGit.Views
 
         private void ScrollToCurrentConflict()
         {
-            if (DataContext is ViewModels.ThreeWayMerge vm && vm.CurrentConflictLine >= 0)
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.CurrentConflictLine >= 0)
             {
                 if (_oursPresenter != null)
                 {

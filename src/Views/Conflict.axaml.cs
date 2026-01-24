@@ -53,7 +53,7 @@ namespace SourceGit.Views
                 await mergeVm.LoadAsync();
 
                 var window = TopLevel.GetTopLevel(this) as Window;
-                var mergeWindow = new ThreeWayMerge { DataContext = mergeVm };
+                var mergeWindow = new MergeConflictEditor { DataContext = mergeVm };
                 await mergeWindow.ShowDialog(window);
             }
 

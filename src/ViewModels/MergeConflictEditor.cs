@@ -9,9 +9,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class ThreeWayMerge : ObservableObject
+    public class MergeConflictEditor : ObservableObject
     {
-        public string Title => App.Text("ThreeWayMerge.Title", _filePath);
+        public string Title => App.Text("Text.MergeConflictEditor.Title", _filePath);
 
         public string FilePath
         {
@@ -90,8 +90,8 @@ namespace SourceGit.ViewModels
             get
             {
                 if (_unresolvedConflictCount > 0)
-                    return App.Text("ThreeWayMerge.ConflictsRemaining", _unresolvedConflictCount);
-                return App.Text("ThreeWayMerge.AllResolved");
+                    return App.Text("Text.MergeConflictEditor.ConflictsRemaining", _unresolvedConflictCount);
+                return App.Text("Text.MergeConflictEditor.AllResolved");
             }
         }
 
@@ -131,7 +131,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _currentConflictEndLine, value);
         }
 
-        public ThreeWayMerge(Repository repo, string filePath)
+        public MergeConflictEditor(Repository repo, string filePath)
         {
             _repo = repo;
             _filePath = filePath;

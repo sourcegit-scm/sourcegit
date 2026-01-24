@@ -874,25 +874,25 @@
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Delete selected {0} tags...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AcceptMine" xml:space="preserve">ACCEPT ALL MINE</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AcceptMine.Tip" xml:space="preserve">Resolve all conflicts using Mine version</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AcceptTheirs" xml:space="preserve">ACCEPT ALL THEIRS</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AcceptTheirs.Tip" xml:space="preserve">Resolve all conflicts using Theirs version</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AllResolved" xml:space="preserve">All conflicts resolved</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.Base" xml:space="preserve">BASE</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.ConflictsRemaining" xml:space="preserve">{0} conflict(s) remaining</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.Mine" xml:space="preserve">MINE</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.NextConflict" xml:space="preserve">Next Conflict</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.PrevConflict" xml:space="preserve">Previous Conflict</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.Result" xml:space="preserve">RESULT</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.SaveAndStage" xml:space="preserve">SAVE &amp; STAGE</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.Theirs" xml:space="preserve">THEIRS</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.Title" xml:space="preserve">Merge Conflict - {0}</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.UnsavedChanges" xml:space="preserve">Discard unsaved changes?</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.UseMine" xml:space="preserve">USE MINE</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.UseMine.Tip" xml:space="preserve">Resolve current conflict using Mine version</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.UseTheirs.Tip" xml:space="preserve">Resolve current conflict using Theirs version</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptMine" xml:space="preserve">ACCEPT ALL MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptMine.Tip" xml:space="preserve">Resolve all conflicts using Mine version</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptTheirs" xml:space="preserve">ACCEPT ALL THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptTheirs.Tip" xml:space="preserve">Resolve all conflicts using Theirs version</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">All conflicts resolved</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Base" xml:space="preserve">BASE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} conflict(s) remaining</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Next Conflict</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">Previous Conflict</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">RESULT</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">SAVE &amp; STAGE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Merge Conflict - {0}</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Discard unsaved changes?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">USE MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine.Tip" xml:space="preserve">Resolve current conflict using Mine version</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs.Tip" xml:space="preserve">Resolve current conflict using Theirs version</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
