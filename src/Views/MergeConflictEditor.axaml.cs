@@ -165,6 +165,15 @@ namespace SourceGit.Views
             set => SetValue(CurrentConflictEndLineProperty, value);
         }
 
+        public static readonly StyledProperty<List<(int Start, int End)>> ResolvedConflictRangesProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, List<(int Start, int End)>>(nameof(ResolvedConflictRanges));
+
+        public List<(int Start, int End)> ResolvedConflictRanges
+        {
+            get => GetValue(ResolvedConflictRangesProperty);
+            set => SetValue(ResolvedConflictRangesProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -233,7 +242,9 @@ namespace SourceGit.Views
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
-            else if (change.Property == CurrentConflictStartLineProperty || change.Property == CurrentConflictEndLineProperty)
+            else if (change.Property == CurrentConflictStartLineProperty ||
+                     change.Property == CurrentConflictEndLineProperty ||
+                     change.Property == ResolvedConflictRangesProperty)
             {
                 TextArea.TextView.InvalidateVisual();
             }
@@ -407,6 +418,7 @@ namespace SourceGit.Views
             var width = textView.Bounds.Width;
             var conflictStart = _presenter.CurrentConflictStartLine;
             var conflictEnd = _presenter.CurrentConflictEndLine;
+            var resolvedRanges = _presenter.ResolvedConflictRanges;
 
             foreach (var line in textView.VisualLines)
             {
@@ -423,13 +435,28 @@ namespace SourceGit.Views
                 var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                 var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
 
+                // Check if this line is in a resolved conflict region (for desaturation)
+                bool isInResolvedRegion = false;
+                if (resolvedRanges != null)
+                {
+                    foreach (var range in resolvedRanges)
+                    {
+                        if (lineIndex >= range.Start && lineIndex <= range.End)
+                        {
+                            isInResolvedRegion = true;
+                            break;
+                        }
+                    }
+                }
+
                 // Draw current conflict highlight first (underneath)
-                if (conflictStart >= 0 && conflictEnd >= 0 && lineIndex >= conflictStart && lineIndex <= conflictEnd)
+                bool isCurrentConflict = conflictStart >= 0 && conflictEnd >= 0 && lineIndex >= conflictStart && lineIndex <= conflictEnd;
+                if (isCurrentConflict)
                 {
                     drawingContext.DrawRectangle(_presenter.CurrentConflictHighlight, null, new Rect(0, startY, width, endY - startY));
                 }
 
-                var bg = GetBrushByLineType(info.Type);
+                var bg = GetBrushByLineType(info.Type, isInResolvedRegion);
                 if (bg != null)
                 {
                     drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
@@ -479,11 +506,12 @@ namespace SourceGit.Views
             }
         }
 
-        private IBrush GetBrushByLineType(Models.TextDiffLineType type)
+        private IBrush GetBrushByLineType(Models.TextDiffLineType type, bool isDesaturated = false)
         {
+            IBrush brush;
             if (_presenter.IsResultPanel)
             {
-                return type switch
+                brush = type switch
                 {
                     Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
                     Models.TextDiffLineType.Added => _presenter.TheirsContentBackground,
@@ -494,7 +522,7 @@ namespace SourceGit.Views
             }
             else
             {
-                return type switch
+                brush = type switch
                 {
                     Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
                     Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
@@ -502,6 +530,17 @@ namespace SourceGit.Views
                     _ => null,
                 };
             }
+
+            // Apply desaturation for resolved conflicts (reduce opacity)
+            if (isDesaturated && brush is SolidColorBrush solidBrush)
+            {
+                var color = solidBrush.Color;
+                // Reduce opacity by 70% to make it look faded/desaturated
+                var desaturatedColor = Color.FromArgb((byte)(color.A * 0.3), color.R, color.G, color.B);
+                return new SolidColorBrush(desaturatedColor);
+            }
+
+            return brush;
         }
 
         private readonly MergeDiffPresenter _presenter;
@@ -593,6 +632,7 @@ namespace SourceGit.Views
                     Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                     {
                         UpdateCurrentConflictHighlight();
+                        UpdateResolvedRanges();
                         ScrollToCurrentConflict();
                     }, Avalonia.Threading.DispatcherPriority.Loaded);
                 }
@@ -601,6 +641,24 @@ namespace SourceGit.Views
             {
                 UpdateCurrentConflictHighlight();
             }
+            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.ResolvedConflictRanges))
+            {
+                UpdateResolvedRanges();
+            }
+        }
+
+        private void UpdateResolvedRanges()
+        {
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            var ranges = vm.ResolvedConflictRanges;
+
+            if (_oursPresenter != null)
+                _oursPresenter.ResolvedConflictRanges = ranges;
+            if (_theirsPresenter != null)
+                _theirsPresenter.ResolvedConflictRanges = ranges;
+            // Note: Result panel doesn't use resolved ranges since it shows current state
         }
 
         private void UpdateCurrentConflictHighlight()
@@ -739,6 +797,7 @@ namespace SourceGit.Views
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptCurrentOurs();
                 UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
                 RestoreScrollOffset(savedOffset);
             }
             e.Handled = true;
@@ -751,6 +810,7 @@ namespace SourceGit.Views
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptCurrentTheirs();
                 UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
                 RestoreScrollOffset(savedOffset);
             }
             e.Handled = true;
@@ -763,6 +823,7 @@ namespace SourceGit.Views
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptOurs();
                 UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
                 RestoreScrollOffset(savedOffset);
             }
             e.Handled = true;
@@ -775,6 +836,7 @@ namespace SourceGit.Views
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptTheirs();
                 UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
                 RestoreScrollOffset(savedOffset);
             }
             e.Handled = true;
