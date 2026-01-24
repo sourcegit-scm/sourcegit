@@ -26,7 +26,7 @@ namespace SourceGit.ViewModels
 
     public class MergeConflictEditor : ObservableObject
     {
-        public string Title => App.Text("Text.MergeConflictEditor.Title", _filePath);
+        public string Title => App.Text("MergeConflictEditor.Title", _filePath);
 
         public string FilePath
         {
@@ -105,8 +105,8 @@ namespace SourceGit.ViewModels
             get
             {
                 if (_unresolvedConflictCount > 0)
-                    return App.Text("Text.MergeConflictEditor.ConflictsRemaining", _unresolvedConflictCount);
-                return App.Text("Text.MergeConflictEditor.AllResolved");
+                    return App.Text("MergeConflictEditor.ConflictsRemaining", _unresolvedConflictCount);
+                return App.Text("MergeConflictEditor.AllResolved");
             }
         }
 

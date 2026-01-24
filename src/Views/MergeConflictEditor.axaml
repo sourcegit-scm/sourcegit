@@ -126,7 +126,7 @@
                                     DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                     AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
                                     DeletedHighlightBrush="{DynamicResource Brush.Diff.MineBG}"
-                                                                        BorderThickness="1"
+                                    BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
           </Border>
@@ -151,7 +151,7 @@
                                     DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
                                     AddedHighlightBrush="{DynamicResource Brush.Diff.TheirsBG}"
                                     DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                                                        BorderThickness="1"
+                                    BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
           </Border>
@@ -181,7 +181,7 @@
                                   IndicatorBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                   MineContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                   TheirsContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
-                                                                    BorderThickness="1"
+                                  BorderThickness="1"
                                   BorderBrush="{DynamicResource Brush.Border2}"/>
           </Grid>
         </Border>
