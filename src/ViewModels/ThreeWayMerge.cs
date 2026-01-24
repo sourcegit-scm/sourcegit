@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Avalonia;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -33,6 +35,31 @@ namespace SourceGit.ViewModels
         {
             get => _theirsContent;
             private set => SetProperty(ref _theirsContent, value);
+        }
+
+        // Aligned diff data for side-by-side view
+        public List<Models.TextDiffLine> OursDiffLines
+        {
+            get => _oursDiffLines;
+            private set => SetProperty(ref _oursDiffLines, value);
+        }
+
+        public List<Models.TextDiffLine> TheirsDiffLines
+        {
+            get => _theirsDiffLines;
+            private set => SetProperty(ref _theirsDiffLines, value);
+        }
+
+        public int DiffMaxLineNumber
+        {
+            get => _diffMaxLineNumber;
+            private set => SetProperty(ref _diffMaxLineNumber, value);
+        }
+
+        public Vector DiffScrollOffset
+        {
+            get => _diffScrollOffset;
+            set => SetProperty(ref _diffScrollOffset, value);
         }
 
         public string ResultContent
@@ -124,16 +151,18 @@ namespace SourceGit.ViewModels
             {
                 var repoPath = _repo.FullPath;
 
-                // Fetch all three versions in parallel
+                // Fetch all three versions and diff in parallel
                 var baseTask = Commands.QueryConflictContent.GetBaseContentAsync(repoPath, _filePath);
                 var oursTask = Commands.QueryConflictContent.GetOursContentAsync(repoPath, _filePath);
                 var theirsTask = Commands.QueryConflictContent.GetTheirsContentAsync(repoPath, _filePath);
+                var diffTask = new Commands.DiffConflictStages(repoPath, _filePath).ReadAsync();
 
-                await Task.WhenAll(baseTask, oursTask, theirsTask).ConfigureAwait(false);
+                await Task.WhenAll(baseTask, oursTask, theirsTask, diffTask).ConfigureAwait(false);
 
                 var baseContent = await baseTask;
                 var oursContent = await oursTask;
                 var theirsContent = await theirsTask;
+                var diffResult = await diffTask;
 
                 // Read working copy with conflict markers
                 var workingCopyPath = Path.Combine(repoPath, _filePath);
@@ -143,11 +172,42 @@ namespace SourceGit.ViewModels
                     workingCopyContent = await File.ReadAllTextAsync(workingCopyPath).ConfigureAwait(false);
                 }
 
+                // Create aligned diff lines for side-by-side view
+                var oursLines = new List<Models.TextDiffLine>();
+                var theirsLines = new List<Models.TextDiffLine>();
+                var maxLineNumber = 0;
+
+                if (diffResult?.TextDiff != null)
+                {
+                    foreach (var line in diffResult.TextDiff.Lines)
+                    {
+                        switch (line.Type)
+                        {
+                            case Models.TextDiffLineType.Added:
+                                theirsLines.Add(line);
+                                break;
+                            case Models.TextDiffLineType.Deleted:
+                                oursLines.Add(line);
+                                break;
+                            default:
+                                FillEmptyLines(oursLines, theirsLines);
+                                oursLines.Add(line);
+                                theirsLines.Add(line);
+                                break;
+                        }
+                    }
+                    FillEmptyLines(oursLines, theirsLines);
+                    maxLineNumber = diffResult.TextDiff.MaxLineNumber;
+                }
+
                 Dispatcher.UIThread.Post(() =>
                 {
                     BaseContent = baseContent;
                     OursContent = oursContent;
                     TheirsContent = theirsContent;
+                    OursDiffLines = oursLines;
+                    TheirsDiffLines = theirsLines;
+                    DiffMaxLineNumber = maxLineNumber;
                     ResultContent = workingCopyContent;
                     _originalContent = workingCopyContent;
                     IsModified = false;
@@ -165,6 +225,22 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void FillEmptyLines(List<Models.TextDiffLine> ours, List<Models.TextDiffLine> theirs)
+        {
+            if (ours.Count < theirs.Count)
+            {
+                int diff = theirs.Count - ours.Count;
+                for (int i = 0; i < diff; i++)
+                    ours.Add(new Models.TextDiffLine());
+            }
+            else if (ours.Count > theirs.Count)
+            {
+                int diff = ours.Count - theirs.Count;
+                for (int i = 0; i < diff; i++)
+                    theirs.Add(new Models.TextDiffLine());
+            }
+        }
+
         public void AcceptOurs()
         {
             if (string.IsNullOrEmpty(_resultContent))
@@ -174,7 +250,7 @@ namespace SourceGit.ViewModels
             if (markers.Count == 0)
                 return;
 
-            var result = ResolveConflicts(_resultContent, markers, useOurs: true);
+            var result = ResolveAllConflicts(_resultContent, markers, useOurs: true);
             ResultContent = result;
             UpdateConflictInfo();
         }
@@ -188,7 +264,27 @@ namespace SourceGit.ViewModels
             if (markers.Count == 0)
                 return;
 
-            var result = ResolveConflicts(_resultContent, markers, useOurs: false);
+            var result = ResolveAllConflicts(_resultContent, markers, useOurs: false);
+            ResultContent = result;
+            UpdateConflictInfo();
+        }
+
+        public void AcceptCurrentOurs()
+        {
+            if (string.IsNullOrEmpty(_resultContent) || _currentConflictIndex < 0)
+                return;
+
+            var result = ResolveConflictAtIndex(_resultContent, _currentConflictIndex, useOurs: true);
+            ResultContent = result;
+            UpdateConflictInfo();
+        }
+
+        public void AcceptCurrentTheirs()
+        {
+            if (string.IsNullOrEmpty(_resultContent) || _currentConflictIndex < 0)
+                return;
+
+            var result = ResolveConflictAtIndex(_resultContent, _currentConflictIndex, useOurs: false);
             ResultContent = result;
             UpdateConflictInfo();
         }
@@ -294,7 +390,83 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private string ResolveConflicts(string content, System.Collections.Generic.List<Models.ConflictMarkerInfo> markers, bool useOurs)
+        private string ResolveConflictAtIndex(string content, int conflictIndex, bool useOurs)
+        {
+            var lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            var resultLines = new System.Collections.Generic.List<string>();
+
+            int i = 0;
+            int currentConflict = 0;
+
+            while (i < lines.Length)
+            {
+                var line = lines[i];
+
+                if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
+                {
+                    bool isTargetConflict = (currentConflict == conflictIndex);
+
+                    // Collect sections
+                    var oursLines = new System.Collections.Generic.List<string>();
+                    var theirsLines = new System.Collections.Generic.List<string>();
+                    var currentSection = oursLines;
+                    int conflictStartLine = i;
+                    i++;
+
+                    while (i < lines.Length)
+                    {
+                        line = lines[i];
+                        if (line.StartsWith("|||||||", StringComparison.Ordinal))
+                        {
+                            // diff3 base section - skip to separator
+                            i++;
+                            while (i < lines.Length && !lines[i].StartsWith("=======", StringComparison.Ordinal))
+                                i++;
+                            if (i < lines.Length)
+                                currentSection = theirsLines;
+                        }
+                        else if (line.StartsWith("=======", StringComparison.Ordinal))
+                        {
+                            currentSection = theirsLines;
+                        }
+                        else if (line.StartsWith(">>>>>>>", StringComparison.Ordinal))
+                        {
+                            // End of conflict
+                            if (isTargetConflict)
+                            {
+                                // Resolve this conflict
+                                if (useOurs)
+                                    resultLines.AddRange(oursLines);
+                                else
+                                    resultLines.AddRange(theirsLines);
+                            }
+                            else
+                            {
+                                // Keep conflict markers for non-target conflicts
+                                for (int j = conflictStartLine; j <= i; j++)
+                                    resultLines.Add(lines[j]);
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            currentSection.Add(line);
+                        }
+                        i++;
+                    }
+                    currentConflict++;
+                }
+                else
+                {
+                    resultLines.Add(line);
+                }
+                i++;
+            }
+
+            return string.Join(Environment.NewLine, resultLines);
+        }
+
+        private string ResolveAllConflicts(string content, System.Collections.Generic.List<Models.ConflictMarkerInfo> markers, bool useOurs)
         {
             if (markers.Count == 0)
                 return content;
@@ -370,5 +542,9 @@ namespace SourceGit.ViewModels
         private int _currentConflictIndex = -1;
         private int _currentConflictLine = -1;
         private int _totalConflicts = 0;
+        private List<Models.TextDiffLine> _oursDiffLines = [];
+        private List<Models.TextDiffLine> _theirsDiffLines = [];
+        private int _diffMaxLineNumber = 0;
+        private Vector _diffScrollOffset = Vector.Zero;
     }
 }

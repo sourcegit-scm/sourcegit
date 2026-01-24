@@ -47,27 +47,43 @@
           <!-- Navigation -->
           <Button Classes="icon_button"
                   ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.PrevConflict}"
-                  Command="{Binding GotoPrevConflict}"
+                  Click="OnGotoPrevConflict"
                   IsEnabled="{Binding HasPrevConflict}">
             <Path Width="12" Height="12" Data="{StaticResource Icons.Up}"/>
           </Button>
           <Button Classes="icon_button"
                   ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.NextConflict}"
-                  Command="{Binding GotoNextConflict}"
+                  Click="OnGotoNextConflict"
                   IsEnabled="{Binding HasNextConflict}">
             <Path Width="12" Height="12" Data="{StaticResource Icons.Down}"/>
           </Button>
 
           <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
 
-          <!-- Resolution Actions -->
+          <!-- Current Conflict Resolution -->
+          <Button Classes="flat"
+                  Content="{DynamicResource Text.ThreeWayMerge.UseMine}"
+                  Click="OnUseCurrentMine"
+                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.UseMine.Tip}"
+                  IsEnabled="{Binding HasUnresolvedConflicts}"/>
+          <Button Classes="flat"
+                  Content="{DynamicResource Text.ThreeWayMerge.UseTheirs}"
+                  Click="OnUseCurrentTheirs"
+                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.UseTheirs.Tip}"
+                  IsEnabled="{Binding HasUnresolvedConflicts}"/>
+
+          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
+
+          <!-- All Conflicts Resolution -->
           <Button Classes="flat"
                   Content="{DynamicResource Text.ThreeWayMerge.AcceptMine}"
                   Click="OnAcceptMine"
+                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.AcceptMine.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
           <Button Classes="flat"
                   Content="{DynamicResource Text.ThreeWayMerge.AcceptTheirs}"
                   Click="OnAcceptTheirs"
+                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.AcceptTheirs.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
 
           <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
@@ -101,28 +117,36 @@
                                IsReadOnly="True"
                                Content="{Binding BaseContent, Mode=OneWay}"
                                FilePath="{Binding FilePath}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
                                BorderThickness="1"
                                BorderBrush="{DynamicResource Brush.Border2}"/>
           </Grid>
         </Border>
 
-        <!-- Mine and Theirs Panels -->
+        <!-- Mine and Theirs Panels (Side-by-Side Diff) -->
         <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="4,2,4,2">
           <!-- Mine (Ours) Panel -->
           <Border Grid.Column="0" Margin="0,0,2,0">
             <Grid RowDefinitions="Auto,*">
-              <Border Grid.Row="0" Padding="8,4" Background="Green">
+              <Border Grid.Row="0" Padding="8,4" Background="#0078D7">
                 <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Mine}"
                            Foreground="White"
                            FontWeight="Bold"/>
               </Border>
-              <v:MergeTextEditor Grid.Row="1"
-                                 x:Name="OursEditor"
-                                 IsReadOnly="True"
-                                 Content="{Binding OursContent, Mode=OneWay}"
-                                 FilePath="{Binding FilePath}"
-                                 BorderThickness="1"
-                                 BorderBrush="{DynamicResource Brush.Border2}"/>
+              <v:MergeDiffPresenter Grid.Row="1"
+                                    x:Name="OursPresenter"
+                                    DiffLines="{Binding OursDiffLines, Mode=OneWay}"
+                                    MaxLineNumber="{Binding DiffMaxLineNumber}"
+                                    FileName="{Binding FilePath}"
+                                    IsOldSide="True"
+                                    FontFamily="{DynamicResource Fonts.Monospace}"
+                                    EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                    AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                    DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                    AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
           </Border>
 
@@ -134,13 +158,20 @@
                            Foreground="White"
                            FontWeight="Bold"/>
               </Border>
-              <v:MergeTextEditor Grid.Row="1"
-                                 x:Name="TheirsEditor"
-                                 IsReadOnly="True"
-                                 Content="{Binding TheirsContent, Mode=OneWay}"
-                                 FilePath="{Binding FilePath}"
-                                 BorderThickness="1"
-                                 BorderBrush="{DynamicResource Brush.Border2}"/>
+              <v:MergeDiffPresenter Grid.Row="1"
+                                    x:Name="TheirsPresenter"
+                                    DiffLines="{Binding TheirsDiffLines, Mode=OneWay}"
+                                    MaxLineNumber="{Binding DiffMaxLineNumber}"
+                                    FileName="{Binding FilePath}"
+                                    IsOldSide="False"
+                                    FontFamily="{DynamicResource Fonts.Monospace}"
+                                    EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                    AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                    DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                    AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
           </Border>
         </Grid>
@@ -158,6 +189,7 @@
                                IsReadOnly="False"
                                Content="{Binding ResultContent, Mode=OneWay}"
                                FilePath="{Binding FilePath}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
                                HighlightConflictMarkers="True"
                                BorderThickness="1"
                                BorderBrush="{DynamicResource Brush.Border2}"/>

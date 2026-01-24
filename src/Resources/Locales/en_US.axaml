@@ -874,8 +874,10 @@
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Delete selected {0} tags...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AcceptMine" xml:space="preserve">ACCEPT MINE</x:String>
-  <x:String x:Key="Text.ThreeWayMerge.AcceptTheirs" xml:space="preserve">ACCEPT THEIRS</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.AcceptMine" xml:space="preserve">ACCEPT ALL MINE</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.AcceptMine.Tip" xml:space="preserve">Resolve all conflicts using Mine version</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.AcceptTheirs" xml:space="preserve">ACCEPT ALL THEIRS</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.AcceptTheirs.Tip" xml:space="preserve">Resolve all conflicts using Theirs version</x:String>
   <x:String x:Key="Text.ThreeWayMerge.AllResolved" xml:space="preserve">All conflicts resolved</x:String>
   <x:String x:Key="Text.ThreeWayMerge.Base" xml:space="preserve">BASE</x:String>
   <x:String x:Key="Text.ThreeWayMerge.ConflictsRemaining" xml:space="preserve">{0} conflict(s) remaining</x:String>
@@ -887,6 +889,10 @@
   <x:String x:Key="Text.ThreeWayMerge.Theirs" xml:space="preserve">THEIRS</x:String>
   <x:String x:Key="Text.ThreeWayMerge.Title" xml:space="preserve">Merge Conflict - {0}</x:String>
   <x:String x:Key="Text.ThreeWayMerge.UnsavedChanges" xml:space="preserve">Discard unsaved changes?</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.UseMine" xml:space="preserve">USE MINE</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.UseMine.Tip" xml:space="preserve">Resolve current conflict using Mine version</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
+  <x:String x:Key="Text.ThreeWayMerge.UseTheirs.Tip" xml:space="preserve">Resolve current conflict using Theirs version</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
