@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Avalonia;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -150,6 +151,20 @@ namespace SourceGit.ViewModels
         {
             get => _resolvedConflictRanges;
             private set => SetProperty(ref _resolvedConflictRanges, value);
+        }
+
+        // All conflict ranges (for fading non-current conflicts)
+        public List<(int Start, int End)> AllConflictRanges
+        {
+            get => _allConflictRanges;
+            private set => SetProperty(ref _allConflictRanges, value);
+        }
+
+        // Shared scroll offset for synchronized scrolling
+        public Vector ScrollOffset
+        {
+            get => _scrollOffset;
+            set => SetProperty(ref _scrollOffset, value);
         }
 
         public MergeConflictEditor(Repository repo, string filePath)
@@ -676,15 +691,24 @@ namespace SourceGit.ViewModels
         private void UpdateResolvedRanges()
         {
             // Build list of resolved conflict ranges for UI desaturation
-            var ranges = new List<(int Start, int End)>();
+            var resolvedRanges = new List<(int Start, int End)>();
+            var allRanges = new List<(int Start, int End)>();
+
             foreach (var region in _conflictRegions)
             {
-                if (region.IsResolved && region.PanelStartLine >= 0 && region.PanelEndLine >= 0)
+                if (region.PanelStartLine >= 0 && region.PanelEndLine >= 0)
                 {
-                    ranges.Add((region.PanelStartLine, region.PanelEndLine));
+                    allRanges.Add((region.PanelStartLine, region.PanelEndLine));
+
+                    if (region.IsResolved)
+                    {
+                        resolvedRanges.Add((region.PanelStartLine, region.PanelEndLine));
+                    }
                 }
             }
-            ResolvedConflictRanges = ranges;
+
+            ResolvedConflictRanges = resolvedRanges;
+            AllConflictRanges = allRanges;
         }
 
         private void UpdateCurrentConflictLine()
@@ -861,5 +885,7 @@ namespace SourceGit.ViewModels
         private int _diffMaxLineNumber = 0;
         private List<ConflictRegion> _conflictRegions = [];
         private List<(int Start, int End)> _resolvedConflictRanges = [];
+        private List<(int Start, int End)> _allConflictRanges = [];
+        private Vector _scrollOffset = Vector.Zero;
     }
 }

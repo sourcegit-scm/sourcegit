@@ -126,8 +126,7 @@
                                     DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                     AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
                                     DeletedHighlightBrush="{DynamicResource Brush.Diff.MineBG}"
-                                    CurrentConflictHighlight="{DynamicResource Brush.Diff.CurrentConflict}"
-                                    BorderThickness="1"
+                                                                        BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
           </Border>
@@ -152,8 +151,7 @@
                                     DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
                                     AddedHighlightBrush="{DynamicResource Brush.Diff.TheirsBG}"
                                     DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                    CurrentConflictHighlight="{DynamicResource Brush.Diff.CurrentConflict}"
-                                    BorderThickness="1"
+                                                                        BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
           </Border>
@@ -180,11 +178,10 @@
                                   DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
                                   AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
                                   DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
-                                  IndicatorBackground="{DynamicResource Brush.Accent}"
+                                  IndicatorBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                   MineContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                   TheirsContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
-                                  CurrentConflictHighlight="{DynamicResource Brush.Diff.CurrentConflict}"
-                                  BorderThickness="1"
+                                                                    BorderThickness="1"
                                   BorderBrush="{DynamicResource Brush.Border2}"/>
           </Grid>
         </Border>

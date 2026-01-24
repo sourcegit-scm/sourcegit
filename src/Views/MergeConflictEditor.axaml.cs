@@ -174,6 +174,15 @@ namespace SourceGit.Views
             set => SetValue(ResolvedConflictRangesProperty, value);
         }
 
+        public static readonly StyledProperty<List<(int Start, int End)>> AllConflictRangesProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, List<(int Start, int End)>>(nameof(AllConflictRanges));
+
+        public List<(int Start, int End)> AllConflictRanges
+        {
+            get => GetValue(AllConflictRangesProperty);
+            set => SetValue(AllConflictRangesProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -190,6 +199,7 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new MergeDiffLineNumberMargin(this));
             TextArea.LeftMargins.Add(new MergeDiffVerticalSeparatorMargin(this));
             TextArea.TextView.BackgroundRenderers.Add(new MergeDiffLineBackgroundRenderer(this));
+            TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
         }
 
         public ScrollViewer GetScrollViewer()
@@ -208,11 +218,34 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
 
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Avalonia.Data.Binding("ScrollOffset", Avalonia.Data.BindingMode.OneWay));
+            }
+        }
+
+        private void OnScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_scrollViewer == null || DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            if (vm.ScrollOffset.NearlyEquals(_scrollViewer.Offset))
+                return;
+
+            if (IsPointerOver || e.OffsetDelta.SquaredLength > 1.0f)
+            {
+                vm.ScrollOffset = _scrollViewer.Offset;
+            }
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            _scrollViewer = null;
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged -= OnScrollViewerScrollChanged;
+                _scrollViewer = null;
+            }
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
@@ -244,7 +277,8 @@ namespace SourceGit.Views
             }
             else if (change.Property == CurrentConflictStartLineProperty ||
                      change.Property == CurrentConflictEndLineProperty ||
-                     change.Property == ResolvedConflictRangesProperty)
+                     change.Property == ResolvedConflictRangesProperty ||
+                     change.Property == AllConflictRangesProperty)
             {
                 TextArea.TextView.InvalidateVisual();
             }
@@ -400,6 +434,57 @@ namespace SourceGit.Views
         private readonly MergeDiffPresenter _presenter;
     }
 
+    public class MergeDiffIndicatorElementGenerator : VisualLineElementGenerator
+    {
+        public MergeDiffIndicatorElementGenerator(MergeDiffPresenter presenter)
+        {
+            _presenter = presenter;
+        }
+
+        public override int GetFirstInterestedOffset(int startOffset)
+        {
+            return -1; // We don't generate inline elements
+        }
+
+        public override VisualLineElement ConstructElement(int offset)
+        {
+            return null;
+        }
+
+        private readonly MergeDiffPresenter _presenter;
+    }
+
+    public class MergeDiffIndicatorTransformer : DocumentColorizingTransformer
+    {
+        public MergeDiffIndicatorTransformer(MergeDiffPresenter presenter)
+        {
+            _presenter = presenter;
+        }
+
+        protected override void ColorizeLine(DocumentLine line)
+        {
+            var lines = _presenter.DiffLines;
+            if (lines == null || line.LineNumber > lines.Count)
+                return;
+
+            var info = lines[line.LineNumber - 1];
+            if (info.Type == Models.TextDiffLineType.Indicator)
+            {
+                // Make indicator lines (conflict markers) italic and gray
+                ChangeLinePart(line.Offset, line.EndOffset, element =>
+                {
+                    element.TextRunProperties.SetTypeface(new Typeface(
+                        _presenter.FontFamily,
+                        FontStyle.Italic,
+                        FontWeight.Normal));
+                    element.TextRunProperties.SetForegroundBrush(Brushes.Gray);
+                });
+            }
+        }
+
+        private readonly MergeDiffPresenter _presenter;
+    }
+
     public class MergeDiffLineBackgroundRenderer : IBackgroundRenderer
     {
         public KnownLayer Layer => KnownLayer.Background;
@@ -418,7 +503,7 @@ namespace SourceGit.Views
             var width = textView.Bounds.Width;
             var conflictStart = _presenter.CurrentConflictStartLine;
             var conflictEnd = _presenter.CurrentConflictEndLine;
-            var resolvedRanges = _presenter.ResolvedConflictRanges;
+            var allConflictRanges = _presenter.AllConflictRanges;
 
             foreach (var line in textView.VisualLines)
             {
@@ -435,28 +520,26 @@ namespace SourceGit.Views
                 var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                 var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
 
-                // Check if this line is in a resolved conflict region (for desaturation)
-                bool isInResolvedRegion = false;
-                if (resolvedRanges != null)
+                // Check if this line is in the current conflict
+                bool isCurrentConflict = conflictStart >= 0 && conflictEnd >= 0 && lineIndex >= conflictStart && lineIndex <= conflictEnd;
+
+                // Check if this line is in any OTHER conflict (not the current one) - should be faded
+                bool isInOtherConflict = false;
+                if (!isCurrentConflict && allConflictRanges != null)
                 {
-                    foreach (var range in resolvedRanges)
+                    foreach (var range in allConflictRanges)
                     {
                         if (lineIndex >= range.Start && lineIndex <= range.End)
                         {
-                            isInResolvedRegion = true;
+                            isInOtherConflict = true;
                             break;
                         }
                     }
                 }
 
-                // Draw current conflict highlight first (underneath)
-                bool isCurrentConflict = conflictStart >= 0 && conflictEnd >= 0 && lineIndex >= conflictStart && lineIndex <= conflictEnd;
-                if (isCurrentConflict)
-                {
-                    drawingContext.DrawRectangle(_presenter.CurrentConflictHighlight, null, new Rect(0, startY, width, endY - startY));
-                }
-
-                var bg = GetBrushByLineType(info.Type, isInResolvedRegion);
+                // No yellow highlight - just use saturation difference
+                // Current conflict = full color, other conflicts = desaturated
+                var bg = GetBrushByLineType(info.Type, isInOtherConflict);
                 if (bg != null)
                 {
                     drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
@@ -562,65 +645,10 @@ namespace SourceGit.Views
             _theirsPresenter = this.FindControl<MergeDiffPresenter>("TheirsPresenter");
             _resultPresenter = this.FindControl<MergeDiffPresenter>("ResultPresenter");
 
-            // Subscribe to scroll events after a short delay to ensure presenters are fully loaded
-            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-            {
-                SetupScrollSync();
-            }, Avalonia.Threading.DispatcherPriority.Loaded);
-
             if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 vm.PropertyChanged += OnViewModelPropertyChanged;
             }
-        }
-
-        private void SetupScrollSync()
-        {
-            if (_oursPresenter != null)
-            {
-                var sv = _oursPresenter.GetScrollViewer();
-                if (sv != null)
-                    sv.ScrollChanged += OnScrollViewerChanged;
-            }
-            if (_theirsPresenter != null)
-            {
-                var sv = _theirsPresenter.GetScrollViewer();
-                if (sv != null)
-                    sv.ScrollChanged += OnScrollViewerChanged;
-            }
-            if (_resultPresenter != null)
-            {
-                var sv = _resultPresenter.GetScrollViewer();
-                if (sv != null)
-                    sv.ScrollChanged += OnScrollViewerChanged;
-            }
-        }
-
-        private void OnScrollViewerChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (_isSyncingScroll)
-                return;
-
-            _isSyncingScroll = true;
-
-            var sv = sender as ScrollViewer;
-            if (sv != null)
-            {
-                var offset = sv.Offset;
-
-                var oursSv = _oursPresenter?.GetScrollViewer();
-                var theirsSv = _theirsPresenter?.GetScrollViewer();
-                var resultSv = _resultPresenter?.GetScrollViewer();
-
-                if (oursSv != null && oursSv != sv)
-                    oursSv.Offset = offset;
-                if (theirsSv != null && theirsSv != sv)
-                    theirsSv.Offset = offset;
-                if (resultSv != null && resultSv != sv)
-                    resultSv.Offset = offset;
-            }
-
-            _isSyncingScroll = false;
         }
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -641,7 +669,8 @@ namespace SourceGit.Views
             {
                 UpdateCurrentConflictHighlight();
             }
-            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.ResolvedConflictRanges))
+            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.ResolvedConflictRanges) ||
+                     e.PropertyName == nameof(ViewModels.MergeConflictEditor.AllConflictRanges))
             {
                 UpdateResolvedRanges();
             }
@@ -652,13 +681,13 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            var ranges = vm.ResolvedConflictRanges;
+            var allRanges = vm.AllConflictRanges;
 
             if (_oursPresenter != null)
-                _oursPresenter.ResolvedConflictRanges = ranges;
+                _oursPresenter.AllConflictRanges = allRanges;
             if (_theirsPresenter != null)
-                _theirsPresenter.ResolvedConflictRanges = ranges;
-            // Note: Result panel doesn't use resolved ranges since it shows current state
+                _theirsPresenter.AllConflictRanges = allRanges;
+            // Note: Result panel doesn't use conflict ranges since it shows current state
         }
 
         private void UpdateCurrentConflictHighlight()
@@ -707,26 +736,6 @@ namespace SourceGit.Views
 
         protected override void OnClosed(EventArgs e)
         {
-            // Unsubscribe from scroll events
-            if (_oursPresenter != null)
-            {
-                var sv = _oursPresenter.GetScrollViewer();
-                if (sv != null)
-                    sv.ScrollChanged -= OnScrollViewerChanged;
-            }
-            if (_theirsPresenter != null)
-            {
-                var sv = _theirsPresenter.GetScrollViewer();
-                if (sv != null)
-                    sv.ScrollChanged -= OnScrollViewerChanged;
-            }
-            if (_resultPresenter != null)
-            {
-                var sv = _resultPresenter.GetScrollViewer();
-                if (sv != null)
-                    sv.ScrollChanged -= OnScrollViewerChanged;
-            }
-
             base.OnClosed(e);
             GC.Collect();
         }
@@ -844,9 +853,8 @@ namespace SourceGit.Views
 
         private Vector SaveScrollOffset()
         {
-            var sv = _oursPresenter?.GetScrollViewer();
-            if (sv != null)
-                return sv.Offset;
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                return vm.ScrollOffset;
             return new Vector(0, 0);
         }
 
@@ -854,18 +862,8 @@ namespace SourceGit.Views
         {
             Avalonia.Threading.Dispatcher.UIThread.Post(() =>
             {
-                _isSyncingScroll = true;
-                var oursSv = _oursPresenter?.GetScrollViewer();
-                var theirsSv = _theirsPresenter?.GetScrollViewer();
-                var resultSv = _resultPresenter?.GetScrollViewer();
-
-                if (oursSv != null)
-                    oursSv.Offset = offset;
-                if (theirsSv != null)
-                    theirsSv.Offset = offset;
-                if (resultSv != null)
-                    resultSv.Offset = offset;
-                _isSyncingScroll = false;
+                if (DataContext is ViewModels.MergeConflictEditor vm)
+                    vm.ScrollOffset = offset;
             }, Avalonia.Threading.DispatcherPriority.Loaded);
         }
 
@@ -898,24 +896,13 @@ namespace SourceGit.Views
                     var vOffset = lineHeight * vm.CurrentConflictLine;
                     var targetOffset = new Vector(0, Math.Max(0, vOffset - _oursPresenter.Bounds.Height * 0.3));
 
-                    _isSyncingScroll = true;
-                    var oursSv = _oursPresenter.GetScrollViewer();
-                    var theirsSv = _theirsPresenter?.GetScrollViewer();
-                    var resultSv = _resultPresenter?.GetScrollViewer();
-
-                    if (oursSv != null)
-                        oursSv.Offset = targetOffset;
-                    if (theirsSv != null)
-                        theirsSv.Offset = targetOffset;
-                    if (resultSv != null)
-                        resultSv.Offset = targetOffset;
-                    _isSyncingScroll = false;
+                    // Set scroll offset via ViewModel - binding will sync all presenters
+                    vm.ScrollOffset = targetOffset;
                 }
             }
         }
 
         private bool _forceClose = false;
-        private bool _isSyncingScroll = false;
         private MergeDiffPresenter _oursPresenter;
         private MergeDiffPresenter _theirsPresenter;
         private MergeDiffPresenter _resultPresenter;
