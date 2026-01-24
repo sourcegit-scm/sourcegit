@@ -103,28 +103,9 @@
       <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding IsLoading}"/>
 
       <!-- Editor Panels -->
-      <Grid RowDefinitions="Auto,*,*" IsVisible="{Binding !IsLoading}">
-        <!-- Base Panel (Common Ancestor) -->
-        <Border Grid.Row="0" Height="200" Margin="4,4,4,2">
-          <Grid RowDefinitions="Auto,*">
-            <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Accent}">
-              <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Base}"
-                         Foreground="White"
-                         FontWeight="Bold"/>
-            </Border>
-            <v:MergeTextEditor Grid.Row="1"
-                               x:Name="BaseEditor"
-                               IsReadOnly="True"
-                               Content="{Binding BaseContent, Mode=OneWay}"
-                               FilePath="{Binding FilePath}"
-                               FontFamily="{DynamicResource Fonts.Monospace}"
-                               BorderThickness="1"
-                               BorderBrush="{DynamicResource Brush.Border2}"/>
-          </Grid>
-        </Border>
-
-        <!-- Mine and Theirs Panels (Side-by-Side Diff) -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="4,2,4,2">
+      <Grid RowDefinitions="*,*" IsVisible="{Binding !IsLoading}">
+        <!-- Mine and Theirs Panels (Side-by-Side) -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="4,4,4,2">
           <!-- Mine (Ours) Panel -->
           <Border Grid.Column="0" Margin="0,0,2,0">
             <Grid RowDefinitions="Auto,*">
@@ -142,9 +123,9 @@
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                     AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                    DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                    DeletedContentBackground="#400078D7"
                                     AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                    DeletedHighlightBrush="#600078D7"
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
@@ -166,9 +147,9 @@
                                     IsOldSide="False"
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                    AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                    AddedContentBackground="#40FF8C00"
                                     DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                    AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                    AddedHighlightBrush="#60FF8C00"
                                     DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
@@ -176,23 +157,32 @@
           </Border>
         </Grid>
 
-        <!-- Result Panel (Editable) -->
-        <Border Grid.Row="2" Margin="4,2,4,4">
+        <!-- Result Panel -->
+        <Border Grid.Row="1" Margin="4,2,4,4">
           <Grid RowDefinitions="Auto,*">
             <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.FG1}">
               <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Result}"
                          Foreground="{DynamicResource Brush.Window}"
                          FontWeight="Bold"/>
             </Border>
-            <v:MergeTextEditor Grid.Row="1"
-                               x:Name="ResultEditor"
-                               IsReadOnly="False"
-                               Content="{Binding ResultContent, Mode=OneWay}"
-                               FilePath="{Binding FilePath}"
-                               FontFamily="{DynamicResource Fonts.Monospace}"
-                               HighlightConflictMarkers="True"
-                               BorderThickness="1"
-                               BorderBrush="{DynamicResource Brush.Border2}"/>
+            <v:MergeDiffPresenter Grid.Row="1"
+                                  x:Name="ResultPresenter"
+                                  DiffLines="{Binding ResultDiffLines, Mode=OneWay}"
+                                  MaxLineNumber="{Binding DiffMaxLineNumber}"
+                                  FileName="{Binding FilePath}"
+                                  IsOldSide="False"
+                                  IsResultPanel="True"
+                                  FontFamily="{DynamicResource Fonts.Monospace}"
+                                  EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                  AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                  DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                  AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                  DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                  IndicatorBackground="{DynamicResource Brush.Accent}"
+                                  MineContentBackground="#400078D7"
+                                  TheirsContentBackground="#40FF8C00"
+                                  BorderThickness="1"
+                                  BorderBrush="{DynamicResource Brush.Border2}"/>
           </Grid>
         </Border>
       </Grid>

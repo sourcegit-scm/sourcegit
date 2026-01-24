@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -20,9 +19,6 @@ using AvaloniaEdit.Utils;
 
 namespace SourceGit.Views
 {
-    /// <summary>
-    /// Presenter for displaying diff lines in the merge conflict view (MINE/THEIRS panels)
-    /// </summary>
     public class MergeDiffPresenter : TextEditor
     {
         public static readonly StyledProperty<string> FileNameProperty =
@@ -59,6 +55,15 @@ namespace SourceGit.Views
         {
             get => GetValue(IsOldSideProperty);
             set => SetValue(IsOldSideProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> IsResultPanelProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, bool>(nameof(IsResultPanel), false);
+
+        public bool IsResultPanel
+        {
+            get => GetValue(IsResultPanelProperty);
+            set => SetValue(IsResultPanelProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> EmptyContentBackgroundProperty =
@@ -106,6 +111,60 @@ namespace SourceGit.Views
             set => SetValue(DeletedHighlightBrushProperty, value);
         }
 
+        public static readonly StyledProperty<IBrush> IndicatorBackgroundProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(IndicatorBackground), new SolidColorBrush(Color.FromArgb(100, 100, 100, 100)));
+
+        public IBrush IndicatorBackground
+        {
+            get => GetValue(IndicatorBackgroundProperty);
+            set => SetValue(IndicatorBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> MineContentBackgroundProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(MineContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 120, 215)));
+
+        public IBrush MineContentBackground
+        {
+            get => GetValue(MineContentBackgroundProperty);
+            set => SetValue(MineContentBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> TheirsContentBackgroundProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(TheirsContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 140, 0)));
+
+        public IBrush TheirsContentBackground
+        {
+            get => GetValue(TheirsContentBackgroundProperty);
+            set => SetValue(TheirsContentBackgroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> CurrentConflictHighlightProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(CurrentConflictHighlight), new SolidColorBrush(Color.FromArgb(40, 255, 255, 0)));
+
+        public IBrush CurrentConflictHighlight
+        {
+            get => GetValue(CurrentConflictHighlightProperty);
+            set => SetValue(CurrentConflictHighlightProperty, value);
+        }
+
+        public static readonly StyledProperty<int> CurrentConflictStartLineProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictStartLine), -1);
+
+        public int CurrentConflictStartLine
+        {
+            get => GetValue(CurrentConflictStartLineProperty);
+            set => SetValue(CurrentConflictStartLineProperty, value);
+        }
+
+        public static readonly StyledProperty<int> CurrentConflictEndLineProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictEndLine), -1);
+
+        public int CurrentConflictEndLine
+        {
+            get => GetValue(CurrentConflictEndLineProperty);
+            set => SetValue(CurrentConflictEndLineProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -124,6 +183,11 @@ namespace SourceGit.Views
             TextArea.TextView.BackgroundRenderers.Add(new MergeDiffLineBackgroundRenderer(this));
         }
 
+        public ScrollViewer GetScrollViewer()
+        {
+            return _scrollViewer;
+        }
+
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
@@ -133,11 +197,13 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+
+            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            base.OnUnloaded(e);
+            _scrollViewer = null;
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
@@ -146,6 +212,8 @@ namespace SourceGit.Views
                 _textMate.Dispose();
                 _textMate = null;
             }
+
+            base.OnUnloaded(e);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -164,6 +232,10 @@ namespace SourceGit.Views
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
+            }
+            else if (change.Property == CurrentConflictStartLineProperty || change.Property == CurrentConflictEndLineProperty)
+            {
+                TextArea.TextView.InvalidateVisual();
             }
         }
 
@@ -218,6 +290,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate;
+        private ScrollViewer _scrollViewer;
     }
 
     public class MergeDiffLineNumberMargin : AbstractMargin
@@ -240,6 +313,7 @@ namespace SourceGit.Views
                 return;
 
             var isOld = _presenter.IsOldSide;
+            var isResult = _presenter.IsResultPanel;
             var typeface = view.CreateTypeface();
 
             foreach (var line in view.VisualLines)
@@ -252,7 +326,13 @@ namespace SourceGit.Views
                     break;
 
                 var info = lines[index - 1];
-                var lineNumber = isOld ? info.OldLine : info.NewLine;
+
+                string lineNumber;
+                if (isResult)
+                    lineNumber = info.NewLine;
+                else
+                    lineNumber = isOld ? info.OldLine : info.NewLine;
+
                 if (string.IsNullOrEmpty(lineNumber))
                     continue;
 
@@ -325,6 +405,9 @@ namespace SourceGit.Views
                 return;
 
             var width = textView.Bounds.Width;
+            var conflictStart = _presenter.CurrentConflictStartLine;
+            var conflictEnd = _presenter.CurrentConflictEndLine;
+
             foreach (var line in textView.VisualLines)
             {
                 if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
@@ -335,9 +418,16 @@ namespace SourceGit.Views
                     break;
 
                 var info = lines[index - 1];
+                var lineIndex = index - 1;
 
                 var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                 var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
+
+                // Draw current conflict highlight first (underneath)
+                if (conflictStart >= 0 && conflictEnd >= 0 && lineIndex >= conflictStart && lineIndex <= conflictEnd)
+                {
+                    drawingContext.DrawRectangle(_presenter.CurrentConflictHighlight, null, new Rect(0, startY, width, endY - startY));
+                }
 
                 var bg = GetBrushByLineType(info.Type);
                 if (bg != null)
@@ -391,299 +481,30 @@ namespace SourceGit.Views
 
         private IBrush GetBrushByLineType(Models.TextDiffLineType type)
         {
-            return type switch
+            if (_presenter.IsResultPanel)
             {
-                Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
-                Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
-                Models.TextDiffLineType.Deleted => _presenter.DeletedContentBackground,
-                _ => null,
-            };
+                return type switch
+                {
+                    Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
+                    Models.TextDiffLineType.Added => _presenter.TheirsContentBackground,
+                    Models.TextDiffLineType.Deleted => _presenter.MineContentBackground,
+                    Models.TextDiffLineType.Indicator => _presenter.IndicatorBackground,
+                    _ => null,
+                };
+            }
+            else
+            {
+                return type switch
+                {
+                    Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
+                    Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
+                    Models.TextDiffLineType.Deleted => _presenter.DeletedContentBackground,
+                    _ => null,
+                };
+            }
         }
 
         private readonly MergeDiffPresenter _presenter;
-    }
-
-    public class MergeConflictBackgroundRenderer : IBackgroundRenderer
-    {
-        public KnownLayer Layer => KnownLayer.Background;
-
-        private enum ConflictSection
-        {
-            None,
-            MineMarker,     // <<<<<<< line
-            MineContent,    // Content between <<<<<<< and ||||||| or =======
-            BaseMarker,     // ||||||| line (diff3)
-            BaseContent,    // Content between ||||||| and =======
-            Separator,      // ======= line
-            TheirsContent,  // Content between ======= and >>>>>>>
-            TheirsMarker    // >>>>>>> line
-        }
-
-        public MergeConflictBackgroundRenderer(MergeTextEditor editor)
-        {
-            _editor = editor;
-        }
-
-        public void Draw(TextView textView, DrawingContext drawingContext)
-        {
-            if (!_editor.HighlightConflictMarkers || _editor.Document == null || !textView.VisualLinesValid)
-                return;
-
-            // Build a map of line numbers to their conflict sections
-            var lineSections = new Dictionary<int, ConflictSection>();
-            var currentSection = ConflictSection.None;
-
-            for (int i = 1; i <= _editor.Document.LineCount; i++)
-            {
-                var docLine = _editor.Document.GetLineByNumber(i);
-                var lineText = _editor.Document.GetText(docLine.Offset, docLine.Length);
-
-                if (lineText.StartsWith("<<<<<<<", StringComparison.Ordinal))
-                {
-                    currentSection = ConflictSection.MineMarker;
-                    lineSections[i] = currentSection;
-                    currentSection = ConflictSection.MineContent;
-                }
-                else if (lineText.StartsWith("|||||||", StringComparison.Ordinal))
-                {
-                    lineSections[i] = ConflictSection.BaseMarker;
-                    currentSection = ConflictSection.BaseContent;
-                }
-                else if (lineText.StartsWith("=======", StringComparison.Ordinal))
-                {
-                    lineSections[i] = ConflictSection.Separator;
-                    currentSection = ConflictSection.TheirsContent;
-                }
-                else if (lineText.StartsWith(">>>>>>>", StringComparison.Ordinal))
-                {
-                    lineSections[i] = ConflictSection.TheirsMarker;
-                    currentSection = ConflictSection.None;
-                }
-                else if (currentSection != ConflictSection.None)
-                {
-                    lineSections[i] = currentSection;
-                }
-            }
-
-            // Draw backgrounds for visible lines
-            var width = textView.Bounds.Width;
-            foreach (var line in textView.VisualLines)
-            {
-                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
-                    continue;
-
-                var lineNumber = line.FirstDocumentLine.LineNumber;
-                if (!lineSections.TryGetValue(lineNumber, out var section))
-                    continue;
-
-                var brush = GetBrushForSection(section);
-                if (brush != null)
-                {
-                    var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
-                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
-                    drawingContext.DrawRectangle(brush, null, new Rect(0, startY, width, endY - startY));
-                }
-            }
-        }
-
-        private IBrush GetBrushForSection(ConflictSection section)
-        {
-            return section switch
-            {
-                ConflictSection.MineMarker => _editor.ConflictMineMarkerBrush,
-                ConflictSection.MineContent => _editor.ConflictMineContentBrush,
-                ConflictSection.BaseMarker => _editor.ConflictBaseMarkerBrush,
-                ConflictSection.BaseContent => _editor.ConflictBaseContentBrush,
-                ConflictSection.Separator => _editor.ConflictSeparatorBrush,
-                ConflictSection.TheirsContent => _editor.ConflictTheirsContentBrush,
-                ConflictSection.TheirsMarker => _editor.ConflictTheirsMarkerBrush,
-                _ => null
-            };
-        }
-
-        private readonly MergeTextEditor _editor;
-    }
-
-    public class MergeTextEditor : TextEditor
-    {
-        public static readonly StyledProperty<string> FilePathProperty =
-            AvaloniaProperty.Register<MergeTextEditor, string>(nameof(FilePath));
-
-        public string FilePath
-        {
-            get => GetValue(FilePathProperty);
-            set => SetValue(FilePathProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> HighlightConflictMarkersProperty =
-            AvaloniaProperty.Register<MergeTextEditor, bool>(nameof(HighlightConflictMarkers), false);
-
-        public bool HighlightConflictMarkers
-        {
-            get => GetValue(HighlightConflictMarkersProperty);
-            set => SetValue(HighlightConflictMarkersProperty, value);
-        }
-
-        public static readonly StyledProperty<string> ContentProperty =
-            AvaloniaProperty.Register<MergeTextEditor, string>(nameof(Content), string.Empty);
-
-        public string Content
-        {
-            get => GetValue(ContentProperty);
-            set => SetValue(ContentProperty, value);
-        }
-
-        // Brush for <<<<<<< marker line
-        public static readonly StyledProperty<IBrush> ConflictMineMarkerBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictMineMarkerBrush), new SolidColorBrush(Color.FromArgb(120, 0, 120, 215)));
-
-        public IBrush ConflictMineMarkerBrush
-        {
-            get => GetValue(ConflictMineMarkerBrushProperty);
-            set => SetValue(ConflictMineMarkerBrushProperty, value);
-        }
-
-        // Brush for content between <<<<<<< and ======= (mine/ours content)
-        public static readonly StyledProperty<IBrush> ConflictMineContentBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictMineContentBrush), new SolidColorBrush(Color.FromArgb(60, 0, 120, 215)));
-
-        public IBrush ConflictMineContentBrush
-        {
-            get => GetValue(ConflictMineContentBrushProperty);
-            set => SetValue(ConflictMineContentBrushProperty, value);
-        }
-
-        // Brush for ||||||| marker line (diff3 base)
-        public static readonly StyledProperty<IBrush> ConflictBaseMarkerBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictBaseMarkerBrush), new SolidColorBrush(Color.FromArgb(120, 128, 128, 128)));
-
-        public IBrush ConflictBaseMarkerBrush
-        {
-            get => GetValue(ConflictBaseMarkerBrushProperty);
-            set => SetValue(ConflictBaseMarkerBrushProperty, value);
-        }
-
-        // Brush for content between ||||||| and ======= (base content in diff3)
-        public static readonly StyledProperty<IBrush> ConflictBaseContentBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictBaseContentBrush), new SolidColorBrush(Color.FromArgb(40, 128, 128, 128)));
-
-        public IBrush ConflictBaseContentBrush
-        {
-            get => GetValue(ConflictBaseContentBrushProperty);
-            set => SetValue(ConflictBaseContentBrushProperty, value);
-        }
-
-        // Brush for ======= separator line
-        public static readonly StyledProperty<IBrush> ConflictSeparatorBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictSeparatorBrush), new SolidColorBrush(Color.FromArgb(100, 128, 128, 128)));
-
-        public IBrush ConflictSeparatorBrush
-        {
-            get => GetValue(ConflictSeparatorBrushProperty);
-            set => SetValue(ConflictSeparatorBrushProperty, value);
-        }
-
-        // Brush for content between ======= and >>>>>>> (theirs content)
-        public static readonly StyledProperty<IBrush> ConflictTheirsContentBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictTheirsContentBrush), new SolidColorBrush(Color.FromArgb(60, 215, 120, 0)));
-
-        public IBrush ConflictTheirsContentBrush
-        {
-            get => GetValue(ConflictTheirsContentBrushProperty);
-            set => SetValue(ConflictTheirsContentBrushProperty, value);
-        }
-
-        // Brush for >>>>>>> marker line
-        public static readonly StyledProperty<IBrush> ConflictTheirsMarkerBrushProperty =
-            AvaloniaProperty.Register<MergeTextEditor, IBrush>(nameof(ConflictTheirsMarkerBrush), new SolidColorBrush(Color.FromArgb(120, 215, 120, 0)));
-
-        public IBrush ConflictTheirsMarkerBrush
-        {
-            get => GetValue(ConflictTheirsMarkerBrushProperty);
-            set => SetValue(ConflictTheirsMarkerBrushProperty, value);
-        }
-
-        protected override Type StyleKeyOverride => typeof(TextEditor);
-
-        public MergeTextEditor() : base(new TextArea(), new TextDocument())
-        {
-            ShowLineNumbers = true;
-            WordWrap = false;
-            Options.EnableHyperlinks = false;
-            Options.EnableEmailHyperlinks = false;
-
-            _textMate = Models.TextMateHelper.CreateForEditor(this);
-
-            TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.BackgroundRenderers.Add(new MergeConflictBackgroundRenderer(this));
-        }
-
-        public void ScrollToConflictLine(int lineNumber)
-        {
-            if (lineNumber > 0 && lineNumber <= Document.LineCount)
-            {
-                var line = Document.GetLineByNumber(lineNumber);
-                ScrollTo(lineNumber, 0);
-                TextArea.Caret.Offset = line.Offset;
-            }
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            base.OnUnloaded(e);
-
-            TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-
-            if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == FilePathProperty)
-            {
-                if (FilePath is { Length: > 0 })
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FilePath);
-            }
-            else if (change.Property == ContentProperty)
-            {
-                Text = Content ?? string.Empty;
-            }
-            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
-            {
-                Models.TextMateHelper.SetThemeByApp(_textMate);
-            }
-        }
-
-        private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
-        {
-            var selected = SelectedText;
-            if (string.IsNullOrEmpty(selected))
-                return;
-
-            var copy = new MenuItem();
-            copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
-            copy.Click += async (_, ev) =>
-            {
-                await App.CopyTextAsync(selected);
-                ev.Handled = true;
-            };
-
-            var menu = new ContextMenu();
-            menu.Items.Add(copy);
-            menu.Open(TextArea.TextView);
-
-            e.Handled = true;
-        }
-
-        private TextMate.Installation _textMate = null;
     }
 
     public partial class ThreeWayMerge : ChromelessWindow
@@ -697,17 +518,70 @@ namespace SourceGit.Views
         {
             base.OnOpened(e);
 
-            // Set up scroll synchronization for side-by-side editors
-            SetupScrollSync();
+            // Get presenter references
+            _oursPresenter = this.FindControl<MergeDiffPresenter>("OursPresenter");
+            _theirsPresenter = this.FindControl<MergeDiffPresenter>("TheirsPresenter");
+            _resultPresenter = this.FindControl<MergeDiffPresenter>("ResultPresenter");
 
-            // Set up text change tracking for result editor
-            SetupResultEditorBinding();
+            // Subscribe to scroll events after a short delay to ensure presenters are fully loaded
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                SetupScrollSync();
+            }, Avalonia.Threading.DispatcherPriority.Loaded);
 
-            // Watch for content loaded to scroll to first conflict
             if (DataContext is ViewModels.ThreeWayMerge vm)
             {
                 vm.PropertyChanged += OnViewModelPropertyChanged;
             }
+        }
+
+        private void SetupScrollSync()
+        {
+            if (_oursPresenter != null)
+            {
+                var sv = _oursPresenter.GetScrollViewer();
+                if (sv != null)
+                    sv.ScrollChanged += OnScrollViewerChanged;
+            }
+            if (_theirsPresenter != null)
+            {
+                var sv = _theirsPresenter.GetScrollViewer();
+                if (sv != null)
+                    sv.ScrollChanged += OnScrollViewerChanged;
+            }
+            if (_resultPresenter != null)
+            {
+                var sv = _resultPresenter.GetScrollViewer();
+                if (sv != null)
+                    sv.ScrollChanged += OnScrollViewerChanged;
+            }
+        }
+
+        private void OnScrollViewerChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_isSyncingScroll)
+                return;
+
+            _isSyncingScroll = true;
+
+            var sv = sender as ScrollViewer;
+            if (sv != null)
+            {
+                var offset = sv.Offset;
+
+                var oursSv = _oursPresenter?.GetScrollViewer();
+                var theirsSv = _theirsPresenter?.GetScrollViewer();
+                var resultSv = _resultPresenter?.GetScrollViewer();
+
+                if (oursSv != null && oursSv != sv)
+                    oursSv.Offset = offset;
+                if (theirsSv != null && theirsSv != sv)
+                    theirsSv.Offset = offset;
+                if (resultSv != null && resultSv != sv)
+                    resultSv.Offset = offset;
+            }
+
+            _isSyncingScroll = false;
         }
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -716,12 +590,41 @@ namespace SourceGit.Views
             {
                 if (DataContext is ViewModels.ThreeWayMerge vm && !vm.IsLoading)
                 {
-                    // Content loaded, scroll to first conflict after a short delay to let UI render
                     Avalonia.Threading.Dispatcher.UIThread.Post(() =>
                     {
+                        UpdateCurrentConflictHighlight();
                         ScrollToCurrentConflict();
                     }, Avalonia.Threading.DispatcherPriority.Loaded);
                 }
+            }
+            else if (e.PropertyName == nameof(ViewModels.ThreeWayMerge.CurrentConflictLine))
+            {
+                UpdateCurrentConflictHighlight();
+            }
+        }
+
+        private void UpdateCurrentConflictHighlight()
+        {
+            if (DataContext is not ViewModels.ThreeWayMerge vm)
+                return;
+
+            var startLine = vm.CurrentConflictStartLine;
+            var endLine = vm.CurrentConflictEndLine;
+
+            if (_oursPresenter != null)
+            {
+                _oursPresenter.CurrentConflictStartLine = startLine;
+                _oursPresenter.CurrentConflictEndLine = endLine;
+            }
+            if (_theirsPresenter != null)
+            {
+                _theirsPresenter.CurrentConflictStartLine = startLine;
+                _theirsPresenter.CurrentConflictEndLine = endLine;
+            }
+            if (_resultPresenter != null)
+            {
+                _resultPresenter.CurrentConflictStartLine = startLine;
+                _resultPresenter.CurrentConflictEndLine = endLine;
             }
         }
 
@@ -729,12 +632,16 @@ namespace SourceGit.Views
         {
             base.OnClosing(e);
 
+            if (_forceClose)
+                return;
+
             if (DataContext is ViewModels.ThreeWayMerge vm && vm.HasUnsavedChanges())
             {
                 e.Cancel = true;
                 var result = await App.AskConfirmAsync(App.Text("ThreeWayMerge.UnsavedChanges"));
                 if (result)
                 {
+                    _forceClose = true;
                     Close();
                 }
             }
@@ -742,6 +649,26 @@ namespace SourceGit.Views
 
         protected override void OnClosed(EventArgs e)
         {
+            // Unsubscribe from scroll events
+            if (_oursPresenter != null)
+            {
+                var sv = _oursPresenter.GetScrollViewer();
+                if (sv != null)
+                    sv.ScrollChanged -= OnScrollViewerChanged;
+            }
+            if (_theirsPresenter != null)
+            {
+                var sv = _theirsPresenter.GetScrollViewer();
+                if (sv != null)
+                    sv.ScrollChanged -= OnScrollViewerChanged;
+            }
+            if (_resultPresenter != null)
+            {
+                var sv = _resultPresenter.GetScrollViewer();
+                if (sv != null)
+                    sv.ScrollChanged -= OnScrollViewerChanged;
+            }
+
             base.OnClosed(e);
             GC.Collect();
         }
@@ -761,65 +688,26 @@ namespace SourceGit.Views
 
             if (e.KeyModifiers == modifier)
             {
-                // Ctrl+S to save
                 if (e.Key == Key.S && vm.CanSave)
                 {
                     _ = SaveAndCloseAsync();
                     e.Handled = true;
                 }
-                // Ctrl+Up to go to previous conflict
                 else if (e.Key == Key.Up && vm.HasPrevConflict)
                 {
                     vm.GotoPrevConflict();
+                    UpdateCurrentConflictHighlight();
                     ScrollToCurrentConflict();
                     e.Handled = true;
                 }
-                // Ctrl+Down to go to next conflict
                 else if (e.Key == Key.Down && vm.HasNextConflict)
                 {
                     vm.GotoNextConflict();
+                    UpdateCurrentConflictHighlight();
                     ScrollToCurrentConflict();
                     e.Handled = true;
                 }
             }
-        }
-
-        private void OnUseCurrentMine(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
-            {
-                vm.AcceptCurrentOurs();
-                ScrollToCurrentConflict();
-            }
-            e.Handled = true;
-        }
-
-        private void OnUseCurrentTheirs(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
-            {
-                vm.AcceptCurrentTheirs();
-                ScrollToCurrentConflict();
-            }
-            e.Handled = true;
-        }
-
-        private void OnAcceptMine(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
-            {
-                vm.AcceptOurs();
-            }
-            e.Handled = true;
-        }
-
-        private void OnAcceptTheirs(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.ThreeWayMerge vm)
-            {
-                vm.AcceptTheirs();
-            }
-            e.Handled = true;
         }
 
         private void OnGotoPrevConflict(object sender, RoutedEventArgs e)
@@ -827,6 +715,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.ThreeWayMerge vm && vm.HasPrevConflict)
             {
                 vm.GotoPrevConflict();
+                UpdateCurrentConflictHighlight();
                 ScrollToCurrentConflict();
             }
             e.Handled = true;
@@ -837,9 +726,85 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.ThreeWayMerge vm && vm.HasNextConflict)
             {
                 vm.GotoNextConflict();
+                UpdateCurrentConflictHighlight();
                 ScrollToCurrentConflict();
             }
             e.Handled = true;
+        }
+
+        private void OnUseCurrentMine(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.ThreeWayMerge vm)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptCurrentOurs();
+                UpdateCurrentConflictHighlight();
+                RestoreScrollOffset(savedOffset);
+            }
+            e.Handled = true;
+        }
+
+        private void OnUseCurrentTheirs(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.ThreeWayMerge vm)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptCurrentTheirs();
+                UpdateCurrentConflictHighlight();
+                RestoreScrollOffset(savedOffset);
+            }
+            e.Handled = true;
+        }
+
+        private void OnAcceptMine(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.ThreeWayMerge vm)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptOurs();
+                UpdateCurrentConflictHighlight();
+                RestoreScrollOffset(savedOffset);
+            }
+            e.Handled = true;
+        }
+
+        private void OnAcceptTheirs(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.ThreeWayMerge vm)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptTheirs();
+                UpdateCurrentConflictHighlight();
+                RestoreScrollOffset(savedOffset);
+            }
+            e.Handled = true;
+        }
+
+        private Vector SaveScrollOffset()
+        {
+            var sv = _oursPresenter?.GetScrollViewer();
+            if (sv != null)
+                return sv.Offset;
+            return new Vector(0, 0);
+        }
+
+        private void RestoreScrollOffset(Vector offset)
+        {
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                _isSyncingScroll = true;
+                var oursSv = _oursPresenter?.GetScrollViewer();
+                var theirsSv = _theirsPresenter?.GetScrollViewer();
+                var resultSv = _resultPresenter?.GetScrollViewer();
+
+                if (oursSv != null)
+                    oursSv.Offset = offset;
+                if (theirsSv != null)
+                    theirsSv.Offset = offset;
+                if (resultSv != null)
+                    resultSv.Offset = offset;
+                _isSyncingScroll = false;
+            }, Avalonia.Threading.DispatcherPriority.Loaded);
         }
 
         private async void OnSaveAndStage(object sender, RoutedEventArgs e)
@@ -855,71 +820,9 @@ namespace SourceGit.Views
                 var success = await vm.SaveAndStageAsync();
                 if (success)
                 {
+                    _forceClose = true;
                     Close();
                 }
-            }
-        }
-
-        private void SetupScrollSync()
-        {
-            // Sync scrolling only between Mine and Theirs diff presenters (they have aligned content)
-            var oursPresenter = this.FindControl<MergeDiffPresenter>("OursPresenter");
-            var theirsPresenter = this.FindControl<MergeDiffPresenter>("TheirsPresenter");
-
-            if (oursPresenter != null)
-                _oursScrollViewer = oursPresenter.FindDescendantOfType<ScrollViewer>();
-            if (theirsPresenter != null)
-                _theirsScrollViewer = theirsPresenter.FindDescendantOfType<ScrollViewer>();
-
-            // Set up scroll sync only for MINE/THEIRS (they are properly aligned)
-            if (_oursScrollViewer != null)
-                _oursScrollViewer.ScrollChanged += OnOursTheirsScrollChanged;
-            if (_theirsScrollViewer != null)
-                _theirsScrollViewer.ScrollChanged += OnOursTheirsScrollChanged;
-
-            // Note: BASE and RESULT have different line counts and content structure,
-            // so scroll syncing with them doesn't make sense without proper line alignment.
-        }
-
-        private void OnOursTheirsScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (_isSyncingScroll)
-                return;
-
-            _isSyncingScroll = true;
-
-            var sourceScrollViewer = sender as ScrollViewer;
-            if (sourceScrollViewer == null)
-            {
-                _isSyncingScroll = false;
-                return;
-            }
-
-            var offset = sourceScrollViewer.Offset;
-
-            // Sync MINE and THEIRS (side-by-side, aligned content)
-            if (_oursScrollViewer != null && _oursScrollViewer != sourceScrollViewer)
-                _oursScrollViewer.Offset = offset;
-            if (_theirsScrollViewer != null && _theirsScrollViewer != sourceScrollViewer)
-                _theirsScrollViewer.Offset = offset;
-
-            _isSyncingScroll = false;
-        }
-
-        private void SetupResultEditorBinding()
-        {
-            var resultEditor = this.FindControl<MergeTextEditor>("ResultEditor");
-            if (resultEditor != null)
-            {
-                resultEditor.TextChanged += (s, e) =>
-                {
-                    if (DataContext is ViewModels.ThreeWayMerge vm && !_isUpdatingContent)
-                    {
-                        _isUpdatingContent = true;
-                        vm.ResultContent = resultEditor.Text;
-                        _isUpdatingContent = false;
-                    }
-                };
             }
         }
 
@@ -927,23 +830,32 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.ThreeWayMerge vm && vm.CurrentConflictLine >= 0)
             {
-                // Disable scroll sync during programmatic scrolling
-                _isSyncingScroll = true;
-
-                var resultEditor = this.FindControl<MergeTextEditor>("ResultEditor");
-                resultEditor?.ScrollToConflictLine(vm.CurrentConflictLine + 1);
-
-                // Re-enable scroll sync after a short delay to let the scroll complete
-                Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                if (_oursPresenter != null)
                 {
+                    var lineHeight = _oursPresenter.TextArea.TextView.DefaultLineHeight;
+                    var vOffset = lineHeight * vm.CurrentConflictLine;
+                    var targetOffset = new Vector(0, Math.Max(0, vOffset - _oursPresenter.Bounds.Height * 0.3));
+
+                    _isSyncingScroll = true;
+                    var oursSv = _oursPresenter.GetScrollViewer();
+                    var theirsSv = _theirsPresenter?.GetScrollViewer();
+                    var resultSv = _resultPresenter?.GetScrollViewer();
+
+                    if (oursSv != null)
+                        oursSv.Offset = targetOffset;
+                    if (theirsSv != null)
+                        theirsSv.Offset = targetOffset;
+                    if (resultSv != null)
+                        resultSv.Offset = targetOffset;
                     _isSyncingScroll = false;
-                }, Avalonia.Threading.DispatcherPriority.Background);
+                }
             }
         }
 
+        private bool _forceClose = false;
         private bool _isSyncingScroll = false;
-        private bool _isUpdatingContent = false;
-        private ScrollViewer _oursScrollViewer;
-        private ScrollViewer _theirsScrollViewer;
+        private MergeDiffPresenter _oursPresenter;
+        private MergeDiffPresenter _theirsPresenter;
+        private MergeDiffPresenter _resultPresenter;
     }
 }
