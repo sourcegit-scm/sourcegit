@@ -85,7 +85,8 @@
                           Classes="icon_button"
                           Width="26" Height="14"
                           ToolTip.Tip="{DynamicResource Text.WorkingCopy.EnableOFPADecoding}"
-                          IsChecked="{Binding EnableOFPADecoding, Mode=TwoWay}">
+                          IsChecked="{Binding EnableOFPADecoding, Mode=TwoWay}"
+                          IsVisible="{Binding IsOFPASupported}">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Rename}"/>
             </ToggleButton>
             <Button Grid.Column="7"

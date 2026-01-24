@@ -70,8 +70,12 @@ namespace SourceGit.Utilities
         /// </summary>
         public static bool IsOFPAFile(string path)
         {
-            return path.Contains("__ExternalActors__", StringComparison.Ordinal) ||
-                   path.Contains("__ExternalObjects__", StringComparison.Ordinal);
+            // OFPA files are only .uasset entries.
+            if (!path.EndsWith(".uasset", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            return path.Contains("__ExternalActors__", StringComparison.OrdinalIgnoreCase) ||
+                   path.Contains("__ExternalObjects__", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
