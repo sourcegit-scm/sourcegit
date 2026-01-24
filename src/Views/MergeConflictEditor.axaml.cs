@@ -138,15 +138,6 @@ namespace SourceGit.Views
             set => SetValue(TheirsContentBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> CurrentConflictHighlightProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(CurrentConflictHighlight), new SolidColorBrush(Color.FromArgb(40, 255, 255, 0)));
-
-        public IBrush CurrentConflictHighlight
-        {
-            get => GetValue(CurrentConflictHighlightProperty);
-            set => SetValue(CurrentConflictHighlightProperty, value);
-        }
-
         public static readonly StyledProperty<int> CurrentConflictStartLineProperty =
             AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictStartLine), -1);
 
@@ -163,15 +154,6 @@ namespace SourceGit.Views
         {
             get => GetValue(CurrentConflictEndLineProperty);
             set => SetValue(CurrentConflictEndLineProperty, value);
-        }
-
-        public static readonly StyledProperty<List<(int Start, int End)>> ResolvedConflictRangesProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, List<(int Start, int End)>>(nameof(ResolvedConflictRanges));
-
-        public List<(int Start, int End)> ResolvedConflictRanges
-        {
-            get => GetValue(ResolvedConflictRangesProperty);
-            set => SetValue(ResolvedConflictRangesProperty, value);
         }
 
         public static readonly StyledProperty<List<(int Start, int End)>> AllConflictRangesProperty =
@@ -277,7 +259,6 @@ namespace SourceGit.Views
             }
             else if (change.Property == CurrentConflictStartLineProperty ||
                      change.Property == CurrentConflictEndLineProperty ||
-                     change.Property == ResolvedConflictRangesProperty ||
                      change.Property == AllConflictRangesProperty)
             {
                 TextArea.TextView.InvalidateVisual();
@@ -429,26 +410,6 @@ namespace SourceGit.Views
         protected override Size MeasureOverride(Size availableSize)
         {
             return new Size(1, 0);
-        }
-
-        private readonly MergeDiffPresenter _presenter;
-    }
-
-    public class MergeDiffIndicatorElementGenerator : VisualLineElementGenerator
-    {
-        public MergeDiffIndicatorElementGenerator(MergeDiffPresenter presenter)
-        {
-            _presenter = presenter;
-        }
-
-        public override int GetFirstInterestedOffset(int startOffset)
-        {
-            return -1; // We don't generate inline elements
-        }
-
-        public override VisualLineElement ConstructElement(int offset)
-        {
-            return null;
         }
 
         private readonly MergeDiffPresenter _presenter;
@@ -669,8 +630,7 @@ namespace SourceGit.Views
             {
                 UpdateCurrentConflictHighlight();
             }
-            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.ResolvedConflictRanges) ||
-                     e.PropertyName == nameof(ViewModels.MergeConflictEditor.AllConflictRanges))
+            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.AllConflictRanges))
             {
                 UpdateResolvedRanges();
             }
@@ -895,8 +855,6 @@ namespace SourceGit.Views
                     var lineHeight = _oursPresenter.TextArea.TextView.DefaultLineHeight;
                     var vOffset = lineHeight * vm.CurrentConflictLine;
                     var targetOffset = new Vector(0, Math.Max(0, vOffset - _oursPresenter.Bounds.Height * 0.3));
-
-                    // Set scroll offset via ViewModel - binding will sync all presenters
                     vm.ScrollOffset = targetOffset;
                 }
             }

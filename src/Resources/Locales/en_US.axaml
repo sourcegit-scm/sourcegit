@@ -879,7 +879,6 @@
   <x:String x:Key="Text.MergeConflictEditor.AcceptTheirs" xml:space="preserve">ACCEPT ALL THEIRS</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptTheirs.Tip" xml:space="preserve">Resolve all conflicts using Theirs version</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">All conflicts resolved</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.Base" xml:space="preserve">BASE</x:String>
   <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} conflict(s) remaining</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>
   <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Next Conflict</x:String>

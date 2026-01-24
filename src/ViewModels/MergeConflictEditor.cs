@@ -146,13 +146,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _currentConflictEndLine, value);
         }
 
-        // Track which conflict regions have been resolved (for desaturation)
-        public List<(int Start, int End)> ResolvedConflictRanges
-        {
-            get => _resolvedConflictRanges;
-            private set => SetProperty(ref _resolvedConflictRanges, value);
-        }
-
         // All conflict ranges (for fading non-current conflicts)
         public List<(int Start, int End)> AllConflictRanges
         {
@@ -690,8 +683,7 @@ namespace SourceGit.ViewModels
 
         private void UpdateResolvedRanges()
         {
-            // Build list of resolved conflict ranges for UI desaturation
-            var resolvedRanges = new List<(int Start, int End)>();
+            // Build list of all conflict ranges for UI fading of non-current conflicts
             var allRanges = new List<(int Start, int End)>();
 
             foreach (var region in _conflictRegions)
@@ -699,15 +691,9 @@ namespace SourceGit.ViewModels
                 if (region.PanelStartLine >= 0 && region.PanelEndLine >= 0)
                 {
                     allRanges.Add((region.PanelStartLine, region.PanelEndLine));
-
-                    if (region.IsResolved)
-                    {
-                        resolvedRanges.Add((region.PanelStartLine, region.PanelEndLine));
-                    }
                 }
             }
 
-            ResolvedConflictRanges = resolvedRanges;
             AllConflictRanges = allRanges;
         }
 
@@ -884,7 +870,6 @@ namespace SourceGit.ViewModels
         private List<Models.TextDiffLine> _resultDiffLines = [];
         private int _diffMaxLineNumber = 0;
         private List<ConflictRegion> _conflictRegions = [];
-        private List<(int Start, int End)> _resolvedConflictRanges = [];
         private List<(int Start, int End)> _allConflictRanges = [];
         private Vector _scrollOffset = Vector.Zero;
     }
