@@ -44,5 +44,20 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private async void OnOpenBuiltinMergeTool(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Conflict vm)
+            {
+                var mergeVm = vm.CreateBuiltinMergeViewModel();
+                await mergeVm.LoadAsync();
+
+                var window = TopLevel.GetTopLevel(this) as Window;
+                var mergeWindow = new ThreeWayMerge { DataContext = mergeVm };
+                await mergeWindow.ShowDialog(window);
+            }
+
+            e.Handled = true;
+        }
     }
 }

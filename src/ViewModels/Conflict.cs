@@ -60,8 +60,19 @@ namespace SourceGit.ViewModels
             private set;
         } = false;
 
+        public bool CanUseBuiltinMergeTool
+        {
+            get => CanUseExternalMergeTool;
+        }
+
+        public string FilePath
+        {
+            get => _change.Path;
+        }
+
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
+            _repo = repo;
             _wc = wc;
             _change = change;
 
@@ -117,6 +128,12 @@ namespace SourceGit.ViewModels
             await _wc.UseExternalMergeToolAsync(_change);
         }
 
+        public ThreeWayMerge CreateBuiltinMergeViewModel()
+        {
+            return new ThreeWayMerge(_repo, _change.Path);
+        }
+
+        private Repository _repo = null;
         private WorkingCopy _wc = null;
         private Models.Change _change = null;
     }

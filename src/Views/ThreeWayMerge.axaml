@@ -1,0 +1,174 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+                    x:Class="SourceGit.Views.ThreeWayMerge"
+                    x:DataType="vm:ThreeWayMerge"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{Binding Title}"
+                    MinWidth="1024" MinHeight="600">
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="12" Height="12"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Conflict}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{Binding Title}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Toolbar -->
+    <Border Grid.Row="1" Padding="8" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <!-- File Path -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.File}"/>
+          <TextBlock Margin="8,0,0,0" Text="{Binding FilePath}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Navigation and Actions -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+          <!-- Navigation -->
+          <Button Classes="icon_button"
+                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.PrevConflict}"
+                  Command="{Binding GotoPrevConflict}"
+                  IsEnabled="{Binding HasPrevConflict}">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Up}"/>
+          </Button>
+          <Button Classes="icon_button"
+                  ToolTip.Tip="{DynamicResource Text.ThreeWayMerge.NextConflict}"
+                  Command="{Binding GotoNextConflict}"
+                  IsEnabled="{Binding HasNextConflict}">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Down}"/>
+          </Button>
+
+          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
+
+          <!-- Resolution Actions -->
+          <Button Classes="flat"
+                  Content="{DynamicResource Text.ThreeWayMerge.AcceptMine}"
+                  Click="OnAcceptMine"
+                  IsEnabled="{Binding HasUnresolvedConflicts}"/>
+          <Button Classes="flat"
+                  Content="{DynamicResource Text.ThreeWayMerge.AcceptTheirs}"
+                  Click="OnAcceptTheirs"
+                  IsEnabled="{Binding HasUnresolvedConflicts}"/>
+
+          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
+
+          <!-- Save -->
+          <Button Classes="flat primary"
+                  Content="{DynamicResource Text.ThreeWayMerge.SaveAndStage}"
+                  Click="OnSaveAndStage"
+                  IsEnabled="{Binding CanSave}"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Main Content -->
+    <Grid Grid.Row="2">
+      <!-- Loading Indicator -->
+      <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding IsLoading}"/>
+
+      <!-- Editor Panels -->
+      <Grid RowDefinitions="Auto,*,*" IsVisible="{Binding !IsLoading}">
+        <!-- Base Panel (Common Ancestor) -->
+        <Border Grid.Row="0" Height="200" Margin="4,4,4,2">
+          <Grid RowDefinitions="Auto,*">
+            <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Accent}">
+              <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Base}"
+                         Foreground="White"
+                         FontWeight="Bold"/>
+            </Border>
+            <v:MergeTextEditor Grid.Row="1"
+                               x:Name="BaseEditor"
+                               IsReadOnly="True"
+                               Content="{Binding BaseContent, Mode=OneWay}"
+                               FilePath="{Binding FilePath}"
+                               BorderThickness="1"
+                               BorderBrush="{DynamicResource Brush.Border2}"/>
+          </Grid>
+        </Border>
+
+        <!-- Mine and Theirs Panels -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="4,2,4,2">
+          <!-- Mine (Ours) Panel -->
+          <Border Grid.Column="0" Margin="0,0,2,0">
+            <Grid RowDefinitions="Auto,*">
+              <Border Grid.Row="0" Padding="8,4" Background="Green">
+                <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Mine}"
+                           Foreground="White"
+                           FontWeight="Bold"/>
+              </Border>
+              <v:MergeTextEditor Grid.Row="1"
+                                 x:Name="OursEditor"
+                                 IsReadOnly="True"
+                                 Content="{Binding OursContent, Mode=OneWay}"
+                                 FilePath="{Binding FilePath}"
+                                 BorderThickness="1"
+                                 BorderBrush="{DynamicResource Brush.Border2}"/>
+            </Grid>
+          </Border>
+
+          <!-- Theirs Panel -->
+          <Border Grid.Column="1" Margin="2,0,0,0">
+            <Grid RowDefinitions="Auto,*">
+              <Border Grid.Row="0" Padding="8,4" Background="DarkOrange">
+                <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Theirs}"
+                           Foreground="White"
+                           FontWeight="Bold"/>
+              </Border>
+              <v:MergeTextEditor Grid.Row="1"
+                                 x:Name="TheirsEditor"
+                                 IsReadOnly="True"
+                                 Content="{Binding TheirsContent, Mode=OneWay}"
+                                 FilePath="{Binding FilePath}"
+                                 BorderThickness="1"
+                                 BorderBrush="{DynamicResource Brush.Border2}"/>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <!-- Result Panel (Editable) -->
+        <Border Grid.Row="2" Margin="4,2,4,4">
+          <Grid RowDefinitions="Auto,*">
+            <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.FG1}">
+              <TextBlock Text="{DynamicResource Text.ThreeWayMerge.Result}"
+                         Foreground="{DynamicResource Brush.Window}"
+                         FontWeight="Bold"/>
+            </Border>
+            <v:MergeTextEditor Grid.Row="1"
+                               x:Name="ResultEditor"
+                               IsReadOnly="False"
+                               Content="{Binding ResultContent, Mode=OneWay}"
+                               FilePath="{Binding FilePath}"
+                               HighlightConflictMarkers="True"
+                               BorderThickness="1"
+                               BorderBrush="{DynamicResource Brush.Border2}"/>
+          </Grid>
+        </Border>
+      </Grid>
+    </Grid>
+
+    <!-- Status Bar -->
+    <Border Grid.Row="3" Padding="8,4" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Brush.Border2}">
+      <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center"/>
+    </Border>
+  </Grid>
+</v:ChromelessWindow>
