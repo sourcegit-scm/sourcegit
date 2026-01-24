@@ -233,7 +233,7 @@ namespace SourceGit.Views
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
                 UpdateSelection();
-            else if (change.Property == DecodedPathsProperty && ViewMode == Models.ChangeViewMode.Tree)
+            else if (change.Property == DecodedPathsProperty)
                 UpdateDataSource(true);
 
             if (change.Property == EnableCompactFoldersProperty && ViewMode == Models.ChangeViewMode.Tree)

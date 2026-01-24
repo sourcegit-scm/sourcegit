@@ -865,42 +865,54 @@ namespace SourceGit.ViewModels
             if (!_repo.Settings.EnableOFPADecoding || changes == null || changes.Count == 0)
                 return;
 
-            var repoPath = _repo.FullPath;
-            var pathsToProcess = new List<(string RelativePath, string FullPath)>();
+            var repositoryPath = _repo.FullPath;
+            var filesToProcess = new List<(string RelativePath, string FullPath)>();
 
             foreach (var change in changes)
             {
-                if (Commands.DecodeOFPAPath.IsOFPAFile(change.Path) &&
+                if (Utilities.OFPAParser.IsOFPAFile(change.Path) &&
                     !_decodedPaths.ContainsKey(change.Path))
                 {
-                    var fullPath = Path.Combine(repoPath, change.Path);
+                    var fullPath = Path.Combine(repositoryPath, change.Path);
                     if (File.Exists(fullPath))
-                        pathsToProcess.Add((change.Path, fullPath));
+                        filesToProcess.Add((change.Path, fullPath));
                 }
             }
 
-            if (pathsToProcess.Count == 0)
+            if (filesToProcess.Count == 0)
                 return;
 
-            var newDecodedPaths = new Dictionary<string, string>();
+            var results = new Dictionary<string, string>();
 
             await Task.Run(() =>
             {
-                foreach (var (relativePath, fullPath) in pathsToProcess)
+                foreach (var (relativePath, fullPath) in filesToProcess)
                 {
-                    var result = Commands.DecodeOFPAPath.Decode(fullPath);
-                    if (result.HasValue)
-                        newDecodedPaths[relativePath] = result.Value.LabelValue;
+                    try
+                    {
+                        var result = Utilities.OFPAParser.Decode(fullPath);
+                        if (result.HasValue)
+                            results[relativePath] = result.Value.LabelValue;
+                    }
+                    catch
+                    {
+                        // Ignore individual file errors to keep processing others
+                    }
                 }
             });
 
-            if (newDecodedPaths.Count > 0)
+            if (results.Count > 0)
             {
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    foreach (var kvp in newDecodedPaths)
-                        _decodedPaths[kvp.Key] = kvp.Value;
+                    if (!_repo.Settings.EnableOFPADecoding)
+                        return;
 
+                    var updated = new Dictionary<string, string>(_decodedPaths);
+                    foreach (var kvp in results)
+                        updated[kvp.Key] = kvp.Value;
+
+                    _decodedPaths = updated;
                     OnPropertyChanged(nameof(DecodedPaths));
                 });
             }
@@ -908,7 +920,7 @@ namespace SourceGit.ViewModels
 
         private void ClearDecodedPaths()
         {
-            _decodedPaths.Clear();
+            _decodedPaths = new Dictionary<string, string>();
             OnPropertyChanged(nameof(DecodedPaths));
         }
     }

@@ -5,7 +5,7 @@ using System.Buffers.Binary;
 using System.IO;
 using System.Text;
 
-namespace SourceGit.Commands
+namespace SourceGit.Utilities
 {
     /// <summary>
     /// Decodes human-readable names from Unreal Engine OFPA (One File Per Actor) .uasset files.
@@ -20,7 +20,11 @@ namespace SourceGit.Commands
     /// Compatibility: UE 4.26 - 5.7+
     /// Performance: ~0.1 ms/file
     /// </summary>
-    public static class DecodeOFPAPath
+    /// <summary>
+    /// Decodes human-readable names from Unreal Engine OFPA (One File Per Actor) .uasset files.
+    /// These files have hashed names like "KCBX0GWLTFQT9RJ8M1LY8.uasset" in __ExternalActors__ folders.
+    /// </summary>
+    public static class OFPAParser
     {
         // Unreal Engine asset magic number (little-endian: 0x9E2A83C1)
         private static readonly byte[] UnrealMagic = { 0xC1, 0x83, 0x2A, 0x9E };
@@ -28,6 +32,8 @@ namespace SourceGit.Commands
         private const int HeaderScanLimit = 1024;
         private const int MaxStringLength = 256;
         private const int PropertyTagWindow = 150;
+        private const int MinimumHeaderSize = 20;
+        private const int PatternLength = 16;
 
         /// <summary>
         /// Result of decoding an OFPA file.
@@ -77,6 +83,9 @@ namespace SourceGit.Commands
         {
             try
             {
+                if (!File.Exists(filePath))
+                    return null;
+
                 var data = File.ReadAllBytes(filePath);
                 return DecodeFromData(data);
             }
@@ -93,7 +102,7 @@ namespace SourceGit.Commands
         /// <returns>Decoded label or null if data is invalid</returns>
         public static DecodeResult? DecodeFromData(byte[] data)
         {
-            if (data == null || data.Length < 20)
+            if (data == null || data.Length < MinimumHeaderSize)
                 return null;
 
             // Check magic number
@@ -104,48 +113,47 @@ namespace SourceGit.Commands
             return ParseUAsset(data);
         }
 
-        private static DecodeResult? ParseUAsset(byte[] data)
+        private static DecodeResult? ParseUAsset(byte[] buffer)
         {
-            int size = data.Length;
+            int fileSize = buffer.Length;
 
             // Fast path: find '/' to locate FolderName string
-            int start = 20;
-            int slashOff = FindByte(data, (byte)'/', 20, Math.Min(size, HeaderScanLimit));
-            if (slashOff >= 24)
+            int searchStart = MinimumHeaderSize;
+            int slashOffset = FindByte(buffer, (byte)'/', MinimumHeaderSize, Math.Min(fileSize, HeaderScanLimit));
+            if (slashOffset >= 24)
             {
-                int pLen = ReadInt32(data, slashOff - 4);
-                if (pLen > 0 && pLen < MaxStringLength)
-                    start = slashOff - 4;
+                int length = ReadInt32(buffer, slashOffset - 4);
+                if (length > 0 && length < MaxStringLength)
+                    searchStart = slashOffset - 4;
             }
 
-            // Scan for name_count and name_offset
-            int headerLen = Math.Min(size, HeaderScanLimit);
-            int limit = headerLen - 20;
+            // Scan for NameMap count and offset
+            int headerLength = Math.Min(fileSize, HeaderScanLimit);
+            int scanLimit = headerLength - MinimumHeaderSize;
             int nameCount = 0;
             int nameOffset = 0;
 
-            for (int off = start; off < limit; off++)
+            for (int currentPos = searchStart; currentPos < scanLimit; currentPos++)
             {
-                int pLen = ReadInt32(data, off);
-                if (pLen > 0 && pLen < MaxStringLength)
+                int stringLength = ReadInt32(buffer, currentPos);
+                if (stringLength > 0 && stringLength < MaxStringLength)
                 {
-                    int strEnd = off + 4 + pLen;
-                    if (strEnd > limit)
+                    int stringEnd = currentPos + 4 + stringLength;
+                    if (stringEnd > scanLimit)
                         break;
 
-                    byte ch = data[off + 4];
+                    byte firstChar = buffer[currentPos + 4];
                     // Check for '/' or "None"
-                    if (ch == 47 || (ch == 78 && MatchBytes(data, off + 4, "None")))
+                    if (firstChar == 47 || (firstChar == 78 && MatchBytes(buffer, currentPos + 4, "None")))
                     {
-                        int baseOff = strEnd;
-                        if (baseOff + 12 <= headerLen)
+                        if (stringEnd + 12 <= headerLength)
                         {
-                            int nc = ReadInt32(data, baseOff + 4);
-                            int no = ReadInt32(data, baseOff + 8);
-                            if (nc > 0 && nc < 100000 && no > 0 && no < size)
+                            int count = ReadInt32(buffer, stringEnd + 4);
+                            int offset = ReadInt32(buffer, stringEnd + 8);
+                            if (count > 0 && count < 100000 && offset > 0 && offset < fileSize)
                             {
-                                nameCount = nc;
-                                nameOffset = no;
+                                nameCount = count;
+                                nameOffset = offset;
                                 break;
                             }
                         }
@@ -157,118 +165,118 @@ namespace SourceGit.Commands
                 return null;
 
             // Parse Name Map - find target indices
-            int labelIdx = -1;
-            int strIdx = -1;
+            int labelIndex = -1;
+            int propertyIndex = -1;
             string? labelType = null;
 
-            int pos = nameOffset;
-            for (int i = 0; i < nameCount && pos + 4 <= size; i++)
+            int position = nameOffset;
+            for (int i = 0; i < nameCount && position + 4 <= fileSize; i++)
             {
-                int sLen = ReadInt32(data, pos);
-                pos += 4;
+                int stringLength = ReadInt32(buffer, position);
+                position += 4;
 
-                if (sLen > 0)
+                if (stringLength > 0)
                 {
-                    int end = pos + sLen;
-                    if (end > size)
+                    int end = position + stringLength;
+                    if (end > fileSize)
                         break;
 
                     // Check for target strings
-                    if (sLen == 11 && labelIdx < 0 && MatchBytes(data, pos, "ActorLabel"))
+                    if (stringLength == 11 && labelIndex < 0 && MatchBytes(buffer, position, "ActorLabel"))
                     {
-                        labelIdx = i;
+                        labelIndex = i;
                         labelType = "ActorLabel";
                     }
-                    else if (sLen == 12)
+                    else if (stringLength == 12)
                     {
-                        if (MatchBytes(data, pos, "StrProperty"))
+                        if (MatchBytes(buffer, position, "StrProperty"))
                         {
-                            strIdx = i;
+                            propertyIndex = i;
                         }
-                        else if (labelIdx < 0 && MatchBytes(data, pos, "FolderLabel"))
+                        else if (labelIndex < 0 && MatchBytes(buffer, position, "FolderLabel"))
                         {
-                            labelIdx = i;
+                            labelIndex = i;
                             labelType = "FolderLabel";
                         }
                     }
-                    else if (sLen == 6 && labelIdx < 0 && MatchBytes(data, pos, "Label"))
+                    else if (stringLength == 6 && labelIndex < 0 && MatchBytes(buffer, position, "Label"))
                     {
-                        labelIdx = i;
+                        labelIndex = i;
                         labelType = "Label";
                     }
 
-                    pos = end;
+                    position = end;
 
-                    if (labelIdx >= 0 && strIdx >= 0)
+                    if (labelIndex >= 0 && propertyIndex >= 0)
                         break;
                 }
-                else if (sLen < 0)
+                else if (stringLength < 0)
                 {
                     // UTF-16 string
-                    pos += (-sLen) * 2;
+                    position += (-stringLength) * 2;
                 }
 
                 // Skip hash value if present
-                if (pos + 4 <= size)
+                if (position + 4 <= fileSize)
                 {
-                    int nv = ReadInt32(data, pos);
-                    if (nv == 0 || nv < -512 || nv > 512)
-                        pos += 4;
+                    int hash = ReadInt32(buffer, position);
+                    if (hash == 0 || hash < -512 || hash > 512)
+                        position += 4;
                 }
             }
 
-            if (labelIdx < 0 || strIdx < 0 || labelType == null)
+            if (labelIndex < 0 || propertyIndex < 0 || labelType == null)
                 return null;
 
-            // Find property tag pattern: [labelIdx, 0, strIdx, 0]
-            byte[] pattern = new byte[16];
-            BinaryPrimitives.WriteInt32LittleEndian(pattern.AsSpan(0), labelIdx);
+            // Find property tag pattern: [labelIndex, 0, propertyIndex, 0]
+            byte[] pattern = new byte[PatternLength];
+            BinaryPrimitives.WriteInt32LittleEndian(pattern.AsSpan(0), labelIndex);
             BinaryPrimitives.WriteInt32LittleEndian(pattern.AsSpan(4), 0);
-            BinaryPrimitives.WriteInt32LittleEndian(pattern.AsSpan(8), strIdx);
+            BinaryPrimitives.WriteInt32LittleEndian(pattern.AsSpan(8), propertyIndex);
             BinaryPrimitives.WriteInt32LittleEndian(pattern.AsSpan(12), 0);
 
-            int tagOff = FindPattern(data, pattern);
-            if (tagOff == -1)
+            int tagOffset = FindPattern(buffer, pattern);
+            if (tagOffset == -1)
                 return null;
 
             // Extract string value
-            int searchStart = tagOff + 16;
-            int searchEnd = Math.Min(searchStart + PropertyTagWindow, size);
+            int valueSearchStart = tagOffset + PatternLength;
+            int valueSearchEnd = Math.Min(valueSearchStart + PropertyTagWindow, fileSize);
 
-            for (int i = searchStart; i < searchEnd - 4; i++)
+            for (int i = valueSearchStart; i < valueSearchEnd - 4; i++)
             {
-                int pLen = ReadInt32(data, i);
+                int stringLength = ReadInt32(buffer, i);
 
-                if (pLen > 0 && pLen < 128)
+                if (stringLength > 0 && stringLength < 128)
                 {
-                    int strEnd = i + 4 + pLen - 1; // -1 for null terminator
-                    if (strEnd <= searchEnd)
+                    int stringEnd = i + 4 + stringLength - 1; // -1 for null terminator
+                    if (stringEnd <= valueSearchEnd)
                     {
                         // Check if it's printable ASCII
                         bool valid = true;
-                        for (int j = i + 4; j < strEnd && valid; j++)
+                        for (int j = i + 4; j < stringEnd && valid; j++)
                         {
-                            byte b = data[j];
+                            byte b = buffer[j];
                             if (b < 32 || b > 126)
                                 valid = false;
                         }
 
-                        if (valid && strEnd > i + 4)
+                        if (valid && stringEnd > i + 4)
                         {
-                            string value = Encoding.ASCII.GetString(data, i + 4, strEnd - i - 4);
+                            string value = Encoding.ASCII.GetString(buffer, i + 4, stringEnd - i - 4);
                             return new DecodeResult(labelType, value);
                         }
                     }
                 }
-                else if (pLen < 0 && pLen > -128)
+                else if (stringLength < 0 && stringLength > -128)
                 {
                     // UTF-16 string
-                    int strEnd = i + 4 + ((-pLen) * 2) - 2; // -2 for null terminator
-                    if (strEnd <= searchEnd && strEnd > i + 4)
+                    int stringEnd = i + 4 + ((-stringLength) * 2) - 2; // -2 for null terminator
+                    if (stringEnd <= valueSearchEnd && stringEnd > i + 4)
                     {
                         try
                         {
-                            string value = Encoding.Unicode.GetString(data, i + 4, strEnd - i - 4);
+                            string value = Encoding.Unicode.GetString(buffer, i + 4, stringEnd - i - 4);
                             return new DecodeResult(labelType, value);
                         }
                         catch

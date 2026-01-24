@@ -1,8 +1,8 @@
-using SourceGit.Commands;
+using SourceGit.Utilities;
 
 namespace SourceGit.Tests;
 
-public class DecodeOFPAPathTests
+public class OFPAParserTests
 {
     private static string GetTestDataPath(string relativePath)
     {
@@ -16,7 +16,7 @@ public class DecodeOFPAPathTests
         var path = "Content/__ExternalActors__/Maps/Test/ABC123.uasset";
 
         // Act
-        var result = DecodeOFPAPath.IsOFPAFile(path);
+        var result = OFPAParser.IsOFPAFile(path);
 
         // Assert
         Assert.True(result);
@@ -29,7 +29,7 @@ public class DecodeOFPAPathTests
         var path = "Content/__ExternalObjects__/Blueprints/XYZ789.uasset";
 
         // Act
-        var result = DecodeOFPAPath.IsOFPAFile(path);
+        var result = OFPAParser.IsOFPAFile(path);
 
         // Assert
         Assert.True(result);
@@ -42,7 +42,7 @@ public class DecodeOFPAPathTests
         var path = "Content/Blueprints/BP_Player.uasset";
 
         // Act
-        var result = DecodeOFPAPath.IsOFPAFile(path);
+        var result = OFPAParser.IsOFPAFile(path);
 
         // Assert
         Assert.False(result);
@@ -55,7 +55,7 @@ public class DecodeOFPAPathTests
         var filePath = GetTestDataPath("UE5_3/J28ZVKRUOZJY0PHKR205X.uasset");
 
         // Act
-        var result = DecodeOFPAPath.Decode(filePath);
+        var result = OFPAParser.Decode(filePath);
 
         // Assert
         Assert.NotNull(result);
@@ -70,7 +70,7 @@ public class DecodeOFPAPathTests
         var filePath = GetTestDataPath("UE5_6/TIK1LLNYUFCW2RY3OQGQCH.uasset");
 
         // Act
-        var result = DecodeOFPAPath.Decode(filePath);
+        var result = OFPAParser.Decode(filePath);
 
         // Assert
         Assert.NotNull(result);
@@ -85,7 +85,7 @@ public class DecodeOFPAPathTests
         var filePath = GetTestDataPath("UE5_7/QD0WQDX4NT49M879U915NN.uasset");
 
         // Act
-        var result = DecodeOFPAPath.Decode(filePath);
+        var result = OFPAParser.Decode(filePath);
 
         // Assert
         Assert.NotNull(result);
@@ -100,7 +100,7 @@ public class DecodeOFPAPathTests
         var filePath = GetTestDataPath("NonExistent/file.uasset");
 
         // Act
-        var result = DecodeOFPAPath.Decode(filePath);
+        var result = OFPAParser.Decode(filePath);
 
         // Assert
         Assert.Null(result);
@@ -116,7 +116,7 @@ public class DecodeOFPAPathTests
             File.WriteAllBytes(tempFile, new byte[] { 0x00, 0x01, 0x02, 0x03 });
 
             // Act
-            var result = DecodeOFPAPath.Decode(tempFile);
+            var result = OFPAParser.Decode(tempFile);
 
             // Assert
             Assert.Null(result);
@@ -135,7 +135,7 @@ public class DecodeOFPAPathTests
         var data = File.ReadAllBytes(filePath);
 
         // Act
-        var result = DecodeOFPAPath.DecodeFromData(data);
+        var result = OFPAParser.DecodeFromData(data);
 
         // Assert
         Assert.NotNull(result);
