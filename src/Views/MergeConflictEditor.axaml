@@ -109,7 +109,7 @@
           <!-- Mine (Ours) Panel -->
           <Border Grid.Column="0" Margin="0,0,2,0">
             <Grid RowDefinitions="Auto,*">
-              <Border Grid.Row="0" Padding="8,4" Background="#0078D7">
+              <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Diff.MineHeader}">
                 <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Mine}"
                            Foreground="White"
                            FontWeight="Bold"/>
@@ -123,9 +123,9 @@
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                     AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                    DeletedContentBackground="#400078D7"
+                                    DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                     AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                    DeletedHighlightBrush="#600078D7"
+                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.MineBG}"
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
             </Grid>
@@ -134,7 +134,7 @@
           <!-- Theirs Panel -->
           <Border Grid.Column="1" Margin="2,0,0,0">
             <Grid RowDefinitions="Auto,*">
-              <Border Grid.Row="0" Padding="8,4" Background="DarkOrange">
+              <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Diff.TheirsHeader}">
                 <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Theirs}"
                            Foreground="White"
                            FontWeight="Bold"/>
@@ -147,9 +147,9 @@
                                     IsOldSide="False"
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                    AddedContentBackground="#40FF8C00"
+                                    AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
                                     DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                    AddedHighlightBrush="#60FF8C00"
+                                    AddedHighlightBrush="{DynamicResource Brush.Diff.TheirsBG}"
                                     DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
@@ -179,8 +179,8 @@
                                   AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
                                   DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
                                   IndicatorBackground="{DynamicResource Brush.Accent}"
-                                  MineContentBackground="#400078D7"
-                                  TheirsContentBackground="#40FF8C00"
+                                  MineContentBackground="{DynamicResource Brush.Diff.MineBG}"
+                                  TheirsContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
                                   BorderThickness="1"
                                   BorderBrush="{DynamicResource Brush.Border2}"/>
           </Grid>

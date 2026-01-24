@@ -638,7 +638,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnsavedChanges())
             {
                 e.Cancel = true;
-                var result = await App.AskConfirmAsync(App.Text("MergeConflictEditor.UnsavedChanges"));
+                var result = await App.AskConfirmAsync(App.Text("Text.MergeConflictEditor.UnsavedChanges"));
                 if (result)
                 {
                     _forceClose = true;

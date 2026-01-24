@@ -24,6 +24,11 @@
       <Color x:Key="Color.Diff.DeletedBG">#80FF9797</Color>
       <Color x:Key="Color.Diff.AddedHighlight">#A7E1A7</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#F19B9D</Color>
+      <Color x:Key="Color.Diff.MineBG">#400078D7</Color>
+      <Color x:Key="Color.Diff.TheirsBG">#40FF8C00</Color>
+      <Color x:Key="Color.Diff.MineHeader">#FF0078D7</Color>
+      <Color x:Key="Color.Diff.TheirsHeader">#FFFF8C00</Color>
+      <Color x:Key="Color.Diff.CurrentConflict">#40FFFF00</Color>
       <Color x:Key="Color.Link">#0000EE</Color>
       <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
       <Color x:Key="Color.InlineCodeFG">Black</Color>
@@ -52,6 +57,11 @@
       <Color x:Key="Color.Diff.DeletedBG">#C0633F3E</Color>
       <Color x:Key="Color.Diff.AddedHighlight">#A0308D3C</Color>
       <Color x:Key="Color.Diff.DeletedHighlight">#A09F4247</Color>
+      <Color x:Key="Color.Diff.MineBG">#400078D7</Color>
+      <Color x:Key="Color.Diff.TheirsBG">#40FF8C00</Color>
+      <Color x:Key="Color.Diff.MineHeader">#FF0078D7</Color>
+      <Color x:Key="Color.Diff.TheirsHeader">#FFFF8C00</Color>
+      <Color x:Key="Color.Diff.CurrentConflict">#40FFFF00</Color>
       <Color x:Key="Color.Link">#4DAAFC</Color>
       <Color x:Key="Color.InlineCode">#FF383838</Color>
       <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
@@ -82,6 +92,11 @@
   <SolidColorBrush x:Key="Brush.Diff.DeletedBG" Color="{DynamicResource Color.Diff.DeletedBG}"/>
   <SolidColorBrush x:Key="Brush.Diff.AddedHighlight" Color="{DynamicResource Color.Diff.AddedHighlight}"/>
   <SolidColorBrush x:Key="Brush.Diff.DeletedHighlight" Color="{DynamicResource Color.Diff.DeletedHighlight}"/>
+  <SolidColorBrush x:Key="Brush.Diff.MineBG" Color="{DynamicResource Color.Diff.MineBG}"/>
+  <SolidColorBrush x:Key="Brush.Diff.TheirsBG" Color="{DynamicResource Color.Diff.TheirsBG}"/>
+  <SolidColorBrush x:Key="Brush.Diff.MineHeader" Color="{DynamicResource Color.Diff.MineHeader}"/>
+  <SolidColorBrush x:Key="Brush.Diff.TheirsHeader" Color="{DynamicResource Color.Diff.TheirsHeader}"/>
+  <SolidColorBrush x:Key="Brush.Diff.CurrentConflict" Color="{DynamicResource Color.Diff.CurrentConflict}"/>
   <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
   <SolidColorBrush x:Key="Brush.InlineCode" Color="{DynamicResource Color.InlineCode}"/>
   <SolidColorBrush x:Key="Brush.InlineCodeFG" Color="{DynamicResource Color.InlineCodeFG}"/>
