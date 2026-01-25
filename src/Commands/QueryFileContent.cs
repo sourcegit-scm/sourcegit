@@ -49,8 +49,6 @@ namespace SourceGit.Commands
             {
                 App.RaiseException(repo, $"Failed to query file content: {e}");
             }
-            sw.Stop();
-            Utilities.PerformanceLogger.Log($"[GitShow] {objectSpec} : {sw.ElapsedMilliseconds}ms");
 
             stream.Position = 0;
             return stream;
@@ -76,19 +74,9 @@ namespace SourceGit.Commands
                 RedirectStandardOutput = true,
             };
 
-            var swTotal = Stopwatch.StartNew();
-            var swStart = Stopwatch.StartNew();
-            long startMs = 0, firstReadMs = 0, dataReadMs = 0, waitExitMs = 0;
-            int missingCount = 0;
-            long totalBytesRead = 0;
-            long totalBytesInObjects = 0;
-            int minSize = int.MaxValue, maxSize = 0;
-
             try
             {
                 using var proc = Process.Start(starter)!;
-                swStart.Stop();
-                startMs = swStart.ElapsedMilliseconds;
 
                 // Write requests in background to avoid deadlock (pipe buffer full)
                 var writeTask = Task.Run(async () =>
@@ -101,60 +89,34 @@ namespace SourceGit.Commands
                 });
 
                 await using var output = proc.StandardOutput.BaseStream;
-
-                var swFirstRead = Stopwatch.StartNew();
-                var swDataRead = new Stopwatch();
-                bool firstReadDone = false;
-
                 for (int i = 0; i < objectSpecs.Count; i++)
                 {
                     var header = await ReadBatchHeaderLineAsync(output).ConfigureAwait(false);
-
-                    if (!firstReadDone)
-                    {
-                        swFirstRead.Stop();
-                        firstReadMs = swFirstRead.ElapsedMilliseconds;
-                        firstReadDone = true;
-                    }
-
                     if (header == null)
                         break;
 
                     if (header.EndsWith(" missing", StringComparison.Ordinal))
-                    {
-                        missingCount++;
                         continue;
-                    }
 
                     var size = ParseBatchObjectSize(header);
                     if (size > 0)
                     {
-                        totalBytesInObjects += size;
-                        if (size < minSize) minSize = size;
-                        if (size > maxSize) maxSize = size;
-
                         // If maxBytesPerObject is set, read only that many bytes and skip the rest.
                         var bytesToRead = (maxBytesPerObject > 0 && size > maxBytesPerObject)
                             ? maxBytesPerObject
                             : size;
                         var bytesToSkip = size - bytesToRead;
 
-                        swDataRead.Start();
                         var data = await ReadExactBytesAsync(output, bytesToRead).ConfigureAwait(false);
-                        swDataRead.Stop();
-
                         if (data != null)
                         {
                             results[objectSpecs[i]] = data;
-                            totalBytesRead += data.Length;
                         }
 
                         // Skip remaining bytes if we limited the read.
                         if (bytesToSkip > 0)
                         {
-                            swDataRead.Start();
                             await SkipBytesAsync(output, bytesToSkip).ConfigureAwait(false);
-                            swDataRead.Stop();
                         }
                     }
 
@@ -162,27 +124,14 @@ namespace SourceGit.Commands
                     _ = await ReadSingleByteAsync(output).ConfigureAwait(false);
                 }
 
-                dataReadMs = swDataRead.ElapsedMilliseconds;
-
                 // Ensure writing is finished (should be, or implies error)
                 await writeTask.ConfigureAwait(false);
-
-                var swWait = Stopwatch.StartNew();
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-                swWait.Stop();
-                waitExitMs = swWait.ElapsedMilliseconds;
             }
             catch (Exception e)
             {
                 App.RaiseException(repo, $"Failed to query batch file content: {e}");
             }
-
-            swTotal.Stop();
-            var avgSize = results.Count > 0 ? totalBytesInObjects / results.Count : 0;
-            Utilities.PerformanceLogger.Log(
-                $"[GitBatch] {objectSpecs.Count} specs, {results.Count} found, {missingCount} missing | " +
-                $"Data:{totalBytesRead / 1024}KB (min:{minSize / 1024}KB avg:{avgSize / 1024}KB max:{maxSize / 1024}KB) | " +
-                $"Start:{startMs}ms FirstRead:{firstReadMs}ms DataRead:{dataReadMs}ms Exit:{waitExitMs}ms Total:{swTotal.ElapsedMilliseconds}ms");
 
             return results;
         }

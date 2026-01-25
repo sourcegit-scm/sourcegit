@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ApplicationManifest>App.manifest</ApplicationManifest>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\\..\\VERSION"))</Version>
@@ -34,6 +34,10 @@
 
   <ItemGroup>    
     <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SourceGit.Tests" />
   </ItemGroup>
 
   <ItemGroup>

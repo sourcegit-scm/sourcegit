@@ -58,10 +58,20 @@ namespace SourceGit.ViewModels
             get => _hasAllowedSignersFile;
         }
 
-        public bool IsUnrealEngineProject
+        public bool EnableUnrealEngineSupport
         {
-            get;
-            private set;
+            get => (_settings ??= new Models.RepositorySettings()).EnableUnrealEngineSupport;
+            set
+            {
+                _settings ??= new Models.RepositorySettings();
+                if (_settings.EnableUnrealEngineSupport != value)
+                {
+                    _settings.EnableUnrealEngineSupport = value;
+                    if (value && !_settings.EnableOFPADecoding)
+                        _settings.EnableOFPADecoding = true;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public int SelectedViewIndex
@@ -514,9 +524,6 @@ namespace SourceGit.ViewModels
                 _selectedView = _histories;
                 _selectedViewIndex = 0;
             }
-
-            IsUnrealEngineProject = Directory.EnumerateFiles(FullPath, "*.uproject").Any() ||
-                                    Directory.EnumerateFiles(FullPath, "*.uplugin").Any();
 
             _lastFetchTime = DateTime.Now;
             _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);

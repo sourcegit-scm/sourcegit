@@ -923,7 +923,6 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USE MINE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>
-  <x:String x:Key="Text.WorkingCopy.EnableOFPADecoding" xml:space="preserve">DECODE UNREAL ENGINE OFPA FILENAMES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO COMMIT TEMPLATES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">No-Verify</x:String>
@@ -946,4 +945,8 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
+  <x:String x:Key="Text.WorkingCopy.EnableOFPADecoding" xml:space="preserve">Unreal Engine: show OFPA actor names</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine" xml:space="preserve">Unreal Engine</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine.Support" xml:space="preserve">Enable Unreal Engine support</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine.Support.Tip" xml:space="preserve">Enables Unreal Engine-specific features such as OFPA file name decoding.</x:String>
 </ResourceDictionary>

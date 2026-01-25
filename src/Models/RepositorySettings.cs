@@ -59,6 +59,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool EnableUnrealEngineSupport
+        {
+            get;
+            set;
+        } = false;
+
         public bool EnableForceOnFetch
         {
             get;

@@ -17,8 +17,12 @@ namespace SourceGit.Converters
             string path = values[0] as string ?? string.Empty;
             var decodedPaths = values[1] as IReadOnlyDictionary<string, string>;
 
-            if (decodedPaths != null && decodedPaths.TryGetValue(path, out var decoded))
+            if (decodedPaths != null &&
+                decodedPaths.TryGetValue(path, out var decoded) &&
+                !string.IsNullOrEmpty(decoded))
+            {
                 return decoded;
+            }
 
             if (parameter as string == "PureFileName")
                 return Path.GetFileName(path);

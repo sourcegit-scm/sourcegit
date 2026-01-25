@@ -25,7 +25,7 @@ namespace SourceGit.Utilities
         // Unreal Engine asset magic number (little-endian: 0x9E2A83C1)
         private static readonly byte[] UnrealMagic = { 0xC1, 0x83, 0x2A, 0x9E };
 
-        private const int HeaderScanLimit = 1024;
+        private const int MaxHeaderScanSize = 256 * 1024;
         private const int MaxStringLength = 256;
         private const int PropertyTagWindow = 150;
         private const int MinimumHeaderSize = 20;
@@ -119,7 +119,7 @@ namespace SourceGit.Utilities
 
             // Fast path: find '/' to locate FolderName string
             int searchStart = MinimumHeaderSize;
-            int slashOffset = FindByte(buffer, (byte)'/', MinimumHeaderSize, Math.Min(fileSize, HeaderScanLimit));
+            int slashOffset = FindByte(buffer, (byte)'/', MinimumHeaderSize, Math.Min(fileSize, MaxHeaderScanSize));
             if (slashOffset >= 24)
             {
                 int length = ReadInt32(buffer, slashOffset - 4);
@@ -128,7 +128,7 @@ namespace SourceGit.Utilities
             }
 
             // Scan for NameMap count and offset
-            int headerLength = Math.Min(fileSize, HeaderScanLimit);
+            int headerLength = Math.Min(fileSize, MaxHeaderScanSize);
             int scanLimit = headerLength - MinimumHeaderSize;
             int nameCount = 0;
             int nameOffset = 0;

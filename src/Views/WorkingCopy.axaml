@@ -82,12 +82,12 @@
                           ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
                           IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
             <ToggleButton Grid.Column="6"
-                          Classes="icon_button"
+                          Classes="line_path"
                           Width="26" Height="14"
                           ToolTip.Tip="{DynamicResource Text.WorkingCopy.EnableOFPADecoding}"
                           IsChecked="{Binding EnableOFPADecoding, Mode=TwoWay}"
-                          IsVisible="{Binding IsOFPASupported}">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Rename}"/>
+                          IsVisible="{Binding IsUnrealEngineSupportEnabled}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Unreal}"/>
             </ToggleButton>
             <Button Grid.Column="7"
                     Classes="icon_button"
