@@ -594,55 +594,42 @@ namespace SourceGit.Views
 
         private void SetupScrollSync()
         {
+            // Capture wheel events using Tunnel strategy to intercept before TextEditor handles them
+            if (_oursPresenter != null)
+                _oursPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
+            if (_theirsPresenter != null)
+                _theirsPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
+            if (_resultPresenter != null)
+                _resultPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
+        }
+
+        private void OnPresenterPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
             var oursScroll = _oursPresenter?.GetScrollViewer();
             var theirsScroll = _theirsPresenter?.GetScrollViewer();
             var resultScroll = _resultPresenter?.GetScrollViewer();
 
+            // Calculate scroll delta (negative because wheel up = scroll up = decrease offset)
+            var delta = e.Delta.Y * 50;
+
+            // Get current offset
+            var currentOffset = oursScroll?.Offset ?? Vector.Zero;
+            var newY = Math.Max(0, currentOffset.Y - delta);
+            var newOffset = new Vector(currentOffset.X, newY);
+
+            // Apply to all scroll viewers
             if (oursScroll != null)
-                oursScroll.ScrollChanged += OnPanelScrollChanged;
+                oursScroll.Offset = newOffset;
             if (theirsScroll != null)
-                theirsScroll.ScrollChanged += OnPanelScrollChanged;
+                theirsScroll.Offset = newOffset;
             if (resultScroll != null)
-                resultScroll.ScrollChanged += OnPanelScrollChanged;
-        }
+                resultScroll.Offset = newOffset;
 
-        private void OnPanelScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (_isSyncingScroll || sender is not ScrollViewer source)
-                return;
+            // Update ViewModel
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.ScrollOffset = newOffset;
 
-            // Only sync if this panel initiated the scroll (pointer is over it or significant delta)
-            var presenter = source.FindAncestorOfType<MergeDiffPresenter>();
-            if (presenter == null)
-                return;
-
-            if (!presenter.IsPointerOver && e.OffsetDelta.SquaredLength <= 1.0f)
-                return;
-
-            _isSyncingScroll = true;
-            try
-            {
-                var offset = source.Offset;
-
-                var oursScroll = _oursPresenter?.GetScrollViewer();
-                var theirsScroll = _theirsPresenter?.GetScrollViewer();
-                var resultScroll = _resultPresenter?.GetScrollViewer();
-
-                if (oursScroll != null && oursScroll != source)
-                    oursScroll.Offset = offset;
-                if (theirsScroll != null && theirsScroll != source)
-                    theirsScroll.Offset = offset;
-                if (resultScroll != null && resultScroll != source)
-                    resultScroll.Offset = offset;
-
-                // Update ViewModel
-                if (DataContext is ViewModels.MergeConflictEditor vm)
-                    vm.ScrollOffset = offset;
-            }
-            finally
-            {
-                _isSyncingScroll = false;
-            }
+            e.Handled = true;
         }
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -884,26 +871,18 @@ namespace SourceGit.Views
                     var targetOffset = new Vector(0, Math.Max(0, vOffset - _oursPresenter.Bounds.Height * 0.3));
 
                     // Sync all panels to this offset
-                    _isSyncingScroll = true;
-                    try
-                    {
-                        var oursScroll = _oursPresenter?.GetScrollViewer();
-                        var theirsScroll = _theirsPresenter?.GetScrollViewer();
-                        var resultScroll = _resultPresenter?.GetScrollViewer();
+                    var oursScroll = _oursPresenter?.GetScrollViewer();
+                    var theirsScroll = _theirsPresenter?.GetScrollViewer();
+                    var resultScroll = _resultPresenter?.GetScrollViewer();
 
-                        if (oursScroll != null)
-                            oursScroll.Offset = targetOffset;
-                        if (theirsScroll != null)
-                            theirsScroll.Offset = targetOffset;
-                        if (resultScroll != null)
-                            resultScroll.Offset = targetOffset;
+                    if (oursScroll != null)
+                        oursScroll.Offset = targetOffset;
+                    if (theirsScroll != null)
+                        theirsScroll.Offset = targetOffset;
+                    if (resultScroll != null)
+                        resultScroll.Offset = targetOffset;
 
-                        vm.ScrollOffset = targetOffset;
-                    }
-                    finally
-                    {
-                        _isSyncingScroll = false;
-                    }
+                    vm.ScrollOffset = targetOffset;
                 }
             }
         }
@@ -911,23 +890,18 @@ namespace SourceGit.Views
         protected override void OnClosed(EventArgs e)
         {
             // Clean up scroll handlers
-            var oursScroll = _oursPresenter?.GetScrollViewer();
-            var theirsScroll = _theirsPresenter?.GetScrollViewer();
-            var resultScroll = _resultPresenter?.GetScrollViewer();
-
-            if (oursScroll != null)
-                oursScroll.ScrollChanged -= OnPanelScrollChanged;
-            if (theirsScroll != null)
-                theirsScroll.ScrollChanged -= OnPanelScrollChanged;
-            if (resultScroll != null)
-                resultScroll.ScrollChanged -= OnPanelScrollChanged;
+            if (_oursPresenter != null)
+                _oursPresenter.RemoveHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged);
+            if (_theirsPresenter != null)
+                _theirsPresenter.RemoveHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged);
+            if (_resultPresenter != null)
+                _resultPresenter.RemoveHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged);
 
             base.OnClosed(e);
             GC.Collect();
         }
 
         private bool _forceClose = false;
-        private bool _isSyncingScroll = false;
         private MergeDiffPresenter _oursPresenter;
         private MergeDiffPresenter _theirsPresenter;
         private MergeDiffPresenter _resultPresenter;
