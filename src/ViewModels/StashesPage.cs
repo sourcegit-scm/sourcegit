@@ -9,6 +9,16 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject, IDisposable
     {
+        public IReadOnlyDictionary<string, string> DecodedPaths
+        {
+            get
+            {
+                if (_repo == null || !_repo.Settings.EnableUnrealEngineSupport || !_repo.Settings.EnableOFPADecoding)
+                    return null;
+                return _decodedPaths;
+            }
+        }
+
         public List<Models.Stash> Stashes
         {
             get => _stashes;
@@ -78,6 +88,9 @@ namespace SourceGit.ViewModels
                                 {
                                     _untracked = untracked;
                                     Changes = changes;
+
+                                    if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
+                                        _currentDecodeTask = DecodeOFPAPathsAsync(value, changes, untracked);
                                 }
                             });
                         });
@@ -122,10 +135,15 @@ namespace SourceGit.ViewModels
         public StashesPage(Repository repo)
         {
             _repo = repo;
+            if (_repo != null)
+                _repo.PropertyChanged += OnRepositoryPropertyChanged;
         }
 
         public void Dispose()
         {
+            if (_repo != null)
+                _repo.PropertyChanged -= OnRepositoryPropertyChanged;
+
             _stashes?.Clear();
             _changes?.Clear();
             _selectedChanges?.Clear();
@@ -266,6 +284,92 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void OnRepositoryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Repository.EnableUnrealEngineSupport))
+            {
+                OnPropertyChanged(nameof(DecodedPaths));
+                if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding && _selectedStash != null)
+                    _currentDecodeTask = DecodeOFPAPathsAsync(_selectedStash, _changes, _untracked);
+            }
+        }
+
+        private async Task DecodeOFPAPathsAsync(Models.Stash stash, List<Models.Change> changes, List<Models.Change> untracked)
+        {
+            await _currentDecodeTask.ConfigureAwait(false);
+
+            if (_repo == null || stash == null ||
+                !_repo.Settings.EnableUnrealEngineSupport ||
+                !_repo.Settings.EnableOFPADecoding ||
+                changes == null || changes.Count == 0)
+                return;
+
+            var repositoryPath = _repo.FullPath;
+            var untrackedSet = new HashSet<Models.Change>(untracked);
+            var results = new Dictionary<string, string>(StringComparer.Ordinal);
+
+            await Task.Run(async () =>
+            {
+                var objectSpecs = new List<(string RelativePath, string Spec)>();
+                foreach (var change in changes)
+                {
+                    if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
+                        continue;
+
+                    string spec;
+                    if (untrackedSet.Contains(change) && stash.Parents.Count == 3)
+                    {
+                        // Untracked files are in the 3rd parent commit.
+                        spec = $"{stash.Parents[2]}:{change.Path}";
+                    }
+                    else
+                    {
+                        // Standard stash changes (index + worktree).
+                        // Deleted files need to be looked up in the parent.
+                        if (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
+                            spec = $"{stash.Parents[0]}:{change.Path}";
+                        else
+                            spec = $"{stash.SHA}:{change.Path}";
+                    }
+
+                    objectSpecs.Add((change.Path, spec));
+                }
+
+                if (objectSpecs.Count == 0)
+                    return;
+
+                var specs = new List<string>();
+                foreach (var entry in objectSpecs)
+                    specs.Add(entry.Spec);
+
+                var dataMap = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, specs, MaxOFPASampleSize).ConfigureAwait(false);
+                foreach (var entry in objectSpecs)
+                {
+                    if (dataMap.TryGetValue(entry.Spec, out var data))
+                    {
+                        var decoded = Utilities.OFPAParser.DecodeFromData(data);
+                        results[entry.RelativePath] = decoded?.LabelValue;
+                    }
+                }
+
+                var updated = new Dictionary<string, string>(StringComparer.Ordinal);
+                foreach (var kvp in results)
+                    updated[kvp.Key] = kvp.Value;
+                _decodedPaths = updated;
+            });
+
+            if (results.Count > 0)
+            {
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    if (_repo == null || !_repo.Settings.EnableUnrealEngineSupport || !_repo.Settings.EnableOFPADecoding)
+                        return;
+
+                    OnPropertyChanged(nameof(DecodedPaths));
+                });
+            }
+        }
+
         private Repository _repo = null;
         private List<Models.Stash> _stashes = [];
         private List<Models.Stash> _visibleStashes = [];
@@ -275,5 +379,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _untracked = [];
         private List<Models.Change> _selectedChanges = [];
         private DiffContext _diffContext = null;
+        private Dictionary<string, string> _decodedPaths = null;
+        private Task _currentDecodeTask = Task.CompletedTask;
+        private const int MaxOFPASampleSize = 256 * 1024;
     }
 }
