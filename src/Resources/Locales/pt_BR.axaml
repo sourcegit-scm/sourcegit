@@ -4,7 +4,7 @@
   </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">Sobre</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Sobre o SourceGit</x:String>
-  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Data de Lan çamento</x:String>
+  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Data de Lançamento</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Notas de Lançamento</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI Livre e de Código Aberto</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Adicionar Arquivo(s) ao Ignore</x:String>
