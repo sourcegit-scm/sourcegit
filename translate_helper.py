@@ -17,7 +17,7 @@ def get_locale_dir():
     """Constructs the absolute path for the locales files"""
     try:
         script_dir = os.path.dirname(os.path.realpath(__file__))
-        project_root = os.path.abspath(os.path.join(script_dir, '..'))
+        project_root = os.path.abspath(os.path.join(script_dir, '.'))
         locales_dir = os.path.join(project_root, 'src', 'Resources', 'Locales')
     except NameError:
         project_root = os.path.abspath(os.getcwd())
