@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -184,11 +185,6 @@ namespace SourceGit.Views
             TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
         }
 
-        public ScrollViewer GetScrollViewer()
-        {
-            return _scrollViewer;
-        }
-
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
@@ -198,36 +194,17 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-
-            _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged += OnScrollViewerScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Avalonia.Data.Binding("ScrollOffset", Avalonia.Data.BindingMode.OneWay));
-            }
         }
 
-        private void OnScrollViewerScrollChanged(object sender, ScrollChangedEventArgs e)
+        public ScrollViewer GetScrollViewer()
         {
-            if (_scrollViewer == null || DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            if (vm.ScrollOffset.NearlyEquals(_scrollViewer.Offset))
-                return;
-
-            if (IsPointerOver || e.OffsetDelta.SquaredLength > 1.0f)
-            {
-                vm.ScrollOffset = _scrollViewer.Offset;
-            }
+            _scrollViewer ??= this.FindDescendantOfType<ScrollViewer>();
+            return _scrollViewer;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            if (_scrollViewer != null)
-            {
-                _scrollViewer.ScrollChanged -= OnScrollViewerScrollChanged;
-                _scrollViewer = null;
-            }
+            _scrollViewer = null;
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
@@ -606,9 +583,65 @@ namespace SourceGit.Views
             _theirsPresenter = this.FindControl<MergeDiffPresenter>("TheirsPresenter");
             _resultPresenter = this.FindControl<MergeDiffPresenter>("ResultPresenter");
 
+            // Set up scroll synchronization
+            SetupScrollSync();
+
             if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 vm.PropertyChanged += OnViewModelPropertyChanged;
+            }
+        }
+
+        private void SetupScrollSync()
+        {
+            var oursScroll = _oursPresenter?.GetScrollViewer();
+            var theirsScroll = _theirsPresenter?.GetScrollViewer();
+            var resultScroll = _resultPresenter?.GetScrollViewer();
+
+            if (oursScroll != null)
+                oursScroll.ScrollChanged += OnPanelScrollChanged;
+            if (theirsScroll != null)
+                theirsScroll.ScrollChanged += OnPanelScrollChanged;
+            if (resultScroll != null)
+                resultScroll.ScrollChanged += OnPanelScrollChanged;
+        }
+
+        private void OnPanelScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_isSyncingScroll || sender is not ScrollViewer source)
+                return;
+
+            // Only sync if this panel initiated the scroll (pointer is over it or significant delta)
+            var presenter = source.FindAncestorOfType<MergeDiffPresenter>();
+            if (presenter == null)
+                return;
+
+            if (!presenter.IsPointerOver && e.OffsetDelta.SquaredLength <= 1.0f)
+                return;
+
+            _isSyncingScroll = true;
+            try
+            {
+                var offset = source.Offset;
+
+                var oursScroll = _oursPresenter?.GetScrollViewer();
+                var theirsScroll = _theirsPresenter?.GetScrollViewer();
+                var resultScroll = _resultPresenter?.GetScrollViewer();
+
+                if (oursScroll != null && oursScroll != source)
+                    oursScroll.Offset = offset;
+                if (theirsScroll != null && theirsScroll != source)
+                    theirsScroll.Offset = offset;
+                if (resultScroll != null && resultScroll != source)
+                    resultScroll.Offset = offset;
+
+                // Update ViewModel
+                if (DataContext is ViewModels.MergeConflictEditor vm)
+                    vm.ScrollOffset = offset;
+            }
+            finally
+            {
+                _isSyncingScroll = false;
             }
         }
 
@@ -692,12 +725,6 @@ namespace SourceGit.Views
                     Close();
                 }
             }
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            GC.Collect();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -855,12 +882,52 @@ namespace SourceGit.Views
                     var lineHeight = _oursPresenter.TextArea.TextView.DefaultLineHeight;
                     var vOffset = lineHeight * vm.CurrentConflictLine;
                     var targetOffset = new Vector(0, Math.Max(0, vOffset - _oursPresenter.Bounds.Height * 0.3));
-                    vm.ScrollOffset = targetOffset;
+
+                    // Sync all panels to this offset
+                    _isSyncingScroll = true;
+                    try
+                    {
+                        var oursScroll = _oursPresenter?.GetScrollViewer();
+                        var theirsScroll = _theirsPresenter?.GetScrollViewer();
+                        var resultScroll = _resultPresenter?.GetScrollViewer();
+
+                        if (oursScroll != null)
+                            oursScroll.Offset = targetOffset;
+                        if (theirsScroll != null)
+                            theirsScroll.Offset = targetOffset;
+                        if (resultScroll != null)
+                            resultScroll.Offset = targetOffset;
+
+                        vm.ScrollOffset = targetOffset;
+                    }
+                    finally
+                    {
+                        _isSyncingScroll = false;
+                    }
                 }
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            // Clean up scroll handlers
+            var oursScroll = _oursPresenter?.GetScrollViewer();
+            var theirsScroll = _theirsPresenter?.GetScrollViewer();
+            var resultScroll = _resultPresenter?.GetScrollViewer();
+
+            if (oursScroll != null)
+                oursScroll.ScrollChanged -= OnPanelScrollChanged;
+            if (theirsScroll != null)
+                theirsScroll.ScrollChanged -= OnPanelScrollChanged;
+            if (resultScroll != null)
+                resultScroll.ScrollChanged -= OnPanelScrollChanged;
+
+            base.OnClosed(e);
+            GC.Collect();
+        }
+
         private bool _forceClose = false;
+        private bool _isSyncingScroll = false;
         private MergeDiffPresenter _oursPresenter;
         private MergeDiffPresenter _theirsPresenter;
         private MergeDiffPresenter _resultPresenter;
