@@ -22,6 +22,9 @@ namespace SourceGit.ViewModels
         // Line indices in the built static panels (0-based)
         public int PanelStartLine { get; set; } = -1;
         public int PanelEndLine { get; set; } = -1;
+
+        // Content chosen when resolved (null = unresolved, empty list = deleted)
+        public List<string> ResolvedContent { get; set; } = null;
     }
 
     public class MergeConflictEditor : ObservableObject
@@ -66,7 +69,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _resultContent, value))
                 {
                     IsModified = true;
-                    UpdateResultLines();
+                    BuildAlignedResultPanel();
                     UpdateConflictInfo();
                 }
             }
@@ -194,8 +197,8 @@ namespace SourceGit.ViewModels
                     // Build static MINE/THEIRS panels (these won't change)
                     BuildStaticPanels();
 
-                    // Build result panel (this changes when conflicts are resolved)
-                    UpdateResultLines();
+                    // Build result panel aligned with MINE/THEIRS (this changes when conflicts are resolved)
+                    BuildAlignedResultPanel();
                     UpdateConflictInfo();
                     IsLoading = false;
                 });
@@ -389,126 +392,188 @@ namespace SourceGit.ViewModels
             DiffMaxLineNumber = maxLineNumber;
         }
 
-        private void UpdateResultLines()
+        private void BuildAlignedResultPanel()
         {
-            // Build RESULT panel from current _resultContent
-            // Result panel shows the current state - conflicts with markers if unresolved,
-            // or just the resolved content if resolved
+            // Build RESULT panel aligned with MINE/THEIRS panels
+            // This ensures all three panels have the same number of lines for scroll sync
             var resultLines = new List<Models.TextDiffLine>();
 
-            if (string.IsNullOrEmpty(_resultContent))
+            if (_oursDiffLines == null || _oursDiffLines.Count == 0)
             {
                 ResultDiffLines = resultLines;
                 return;
             }
 
-            var lines = _resultContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
             int resultLineNumber = 1;
+            int currentLine = 0;
+            int conflictIdx = 0;
 
-            int i = 0;
-            while (i < lines.Length)
+            while (currentLine < _oursDiffLines.Count)
             {
-                var line = lines[i];
-
-                if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
+                // Check if we're at a conflict region
+                ConflictRegion currentRegion = null;
+                if (conflictIdx < _conflictRegions.Count)
                 {
-                    // Start of unresolved conflict
-                    resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, resultLineNumber++));
-                    i++;
+                    var region = _conflictRegions[conflictIdx];
+                    if (region.PanelStartLine == currentLine)
+                        currentRegion = region;
+                }
 
-                    // Mine content
-                    while (i < lines.Length &&
-                           !lines[i].StartsWith("|||||||", StringComparison.Ordinal) &&
-                           !lines[i].StartsWith("=======", StringComparison.Ordinal))
+                if (currentRegion != null)
+                {
+                    int regionLines = currentRegion.PanelEndLine - currentRegion.PanelStartLine + 1;
+
+                    if (currentRegion.ResolvedContent != null)
                     {
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, lines[i], 0, resultLineNumber++));
-                        i++;
+                        // Resolved - show resolved content + padding
+                        foreach (var line in currentRegion.ResolvedContent)
+                        {
+                            resultLines.Add(new Models.TextDiffLine(
+                                Models.TextDiffLineType.Normal, line, resultLineNumber, resultLineNumber));
+                            resultLineNumber++;
+                        }
+                        // Pad with empty lines to match Mine/Theirs panel height
+                        int padding = regionLines - currentRegion.ResolvedContent.Count;
+                        for (int p = 0; p < padding; p++)
+                            resultLines.Add(new Models.TextDiffLine());
+                    }
+                    else
+                    {
+                        // Unresolved - show conflict markers with content, aligned with Mine/Theirs
+                        // First line: start marker placeholder (matches <<<<<< line)
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "<<<<<<< (unresolved)", 0, 0));
+
+                        // Second line: separator placeholder (matches ======= line)
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "=======", 0, 0));
+
+                        // Mine content lines (matches the deleted lines in Ours panel)
+                        foreach (var line in currentRegion.OursContent)
+                        {
+                            resultLines.Add(new Models.TextDiffLine(
+                                Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
+                        }
+
+                        // Theirs content lines (matches the added lines in Theirs panel)
+                        foreach (var line in currentRegion.TheirsContent)
+                        {
+                            resultLines.Add(new Models.TextDiffLine(
+                                Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
+                        }
+
+                        // End marker placeholder (matches >>>>>>> line)
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, ">>>>>>> (unresolved)", 0, 0));
                     }
 
-                    // Skip diff3 base section if present
-                    if (i < lines.Length && lines[i].StartsWith("|||||||", StringComparison.Ordinal))
-                    {
-                        i++;
-                        while (i < lines.Length && !lines[i].StartsWith("=======", StringComparison.Ordinal))
-                            i++;
-                    }
-
-                    // Separator
-                    if (i < lines.Length && lines[i].StartsWith("=======", StringComparison.Ordinal))
-                    {
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, lines[i], 0, resultLineNumber++));
-                        i++;
-                    }
-
-                    // Theirs content
-                    while (i < lines.Length && !lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
-                    {
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, lines[i], 0, resultLineNumber++));
-                        i++;
-                    }
-
-                    // End marker
-                    if (i < lines.Length && lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
-                    {
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, lines[i], 0, resultLineNumber++));
-                        i++;
-                    }
+                    currentLine = currentRegion.PanelEndLine + 1;
+                    conflictIdx++;
                 }
                 else
                 {
-                    // Normal line (including resolved conflict content)
-                    resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line, resultLineNumber, resultLineNumber++));
-                    i++;
+                    // Normal line - copy from ours panel
+                    var oursLine = _oursDiffLines[currentLine];
+                    if (oursLine.Type == Models.TextDiffLineType.Normal)
+                    {
+                        resultLines.Add(new Models.TextDiffLine(
+                            Models.TextDiffLineType.Normal, oursLine.Content,
+                            resultLineNumber, resultLineNumber));
+                        resultLineNumber++;
+                    }
+                    else
+                    {
+                        // Empty placeholder line (shouldn't happen outside conflicts, but handle it)
+                        resultLines.Add(new Models.TextDiffLine());
+                    }
+                    currentLine++;
                 }
             }
 
             ResultDiffLines = resultLines;
-            if (resultLineNumber > DiffMaxLineNumber)
-                DiffMaxLineNumber = resultLineNumber;
         }
 
         public void AcceptOurs()
         {
-            if (string.IsNullOrEmpty(_resultContent))
+            if (_conflictRegions.Count == 0)
                 return;
 
-            var markers = Commands.QueryConflictContent.GetConflictMarkers(_resultContent);
-            if (markers.Count == 0)
-                return;
+            bool anyResolved = false;
+            foreach (var region in _conflictRegions)
+            {
+                if (!region.IsResolved)
+                {
+                    region.ResolvedContent = new List<string>(region.OursContent);
+                    region.IsResolved = true;
+                    anyResolved = true;
+                }
+            }
 
-            var result = ResolveAllConflicts(_resultContent, markers, useOurs: true);
-            ResultContent = result;
+            if (anyResolved)
+            {
+                RebuildResultContent();
+                BuildAlignedResultPanel();
+                UpdateConflictInfo();
+                IsModified = true;
+            }
         }
 
         public void AcceptTheirs()
         {
-            if (string.IsNullOrEmpty(_resultContent))
+            if (_conflictRegions.Count == 0)
                 return;
 
-            var markers = Commands.QueryConflictContent.GetConflictMarkers(_resultContent);
-            if (markers.Count == 0)
-                return;
+            bool anyResolved = false;
+            foreach (var region in _conflictRegions)
+            {
+                if (!region.IsResolved)
+                {
+                    region.ResolvedContent = new List<string>(region.TheirsContent);
+                    region.IsResolved = true;
+                    anyResolved = true;
+                }
+            }
 
-            var result = ResolveAllConflicts(_resultContent, markers, useOurs: false);
-            ResultContent = result;
+            if (anyResolved)
+            {
+                RebuildResultContent();
+                BuildAlignedResultPanel();
+                UpdateConflictInfo();
+                IsModified = true;
+            }
         }
 
         public void AcceptCurrentOurs()
         {
-            if (string.IsNullOrEmpty(_resultContent) || _currentConflictIndex < 0)
+            if (_currentConflictIndex < 0 || _currentConflictIndex >= _conflictRegions.Count)
                 return;
 
-            var result = ResolveConflictAtIndex(_resultContent, _currentConflictIndex, useOurs: true);
-            ResultContent = result;
+            var region = _conflictRegions[_currentConflictIndex];
+            if (region.IsResolved)
+                return;
+
+            region.ResolvedContent = new List<string>(region.OursContent);
+            region.IsResolved = true;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
         }
 
         public void AcceptCurrentTheirs()
         {
-            if (string.IsNullOrEmpty(_resultContent) || _currentConflictIndex < 0)
+            if (_currentConflictIndex < 0 || _currentConflictIndex >= _conflictRegions.Count)
                 return;
 
-            var result = ResolveConflictAtIndex(_resultContent, _currentConflictIndex, useOurs: false);
-            ResultContent = result;
+            var region = _conflictRegions[_currentConflictIndex];
+            if (region.IsResolved)
+                return;
+
+            region.ResolvedContent = new List<string>(region.TheirsContent);
+            region.IsResolved = true;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
         }
 
         public void GotoPrevConflict()
@@ -697,6 +762,70 @@ namespace SourceGit.ViewModels
             AllConflictRanges = allRanges;
         }
 
+        private void RebuildResultContent()
+        {
+            // Rebuild _resultContent based on _originalContent and resolved regions
+            // This keeps _resultContent in sync with the resolved state for saving
+            if (string.IsNullOrEmpty(_originalContent))
+            {
+                _resultContent = string.Empty;
+                return;
+            }
+
+            var lines = _originalContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            var resultLines = new List<string>();
+
+            int i = 0;
+            int conflictIdx = 0;
+
+            while (i < lines.Length)
+            {
+                var line = lines[i];
+
+                if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
+                {
+                    // Get the current conflict region
+                    ConflictRegion region = null;
+                    if (conflictIdx < _conflictRegions.Count)
+                        region = _conflictRegions[conflictIdx];
+
+                    if (region != null && region.ResolvedContent != null)
+                    {
+                        // Conflict is resolved - add resolved content
+                        resultLines.AddRange(region.ResolvedContent);
+
+                        // Skip past the entire conflict in original content
+                        while (i < lines.Length && !lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
+                            i++;
+                        i++; // Skip the >>>>>>> line
+                    }
+                    else
+                    {
+                        // Conflict is not resolved - keep original conflict markers
+                        while (i < lines.Length)
+                        {
+                            resultLines.Add(lines[i]);
+                            if (lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
+                            {
+                                i++;
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                    conflictIdx++;
+                }
+                else
+                {
+                    // Normal line - copy as-is
+                    resultLines.Add(line);
+                    i++;
+                }
+            }
+
+            _resultContent = string.Join(Environment.NewLine, resultLines);
+        }
+
         private void UpdateCurrentConflictLine()
         {
             if (_currentConflictIndex < 0 || _currentConflictIndex >= _conflictRegions.Count)
@@ -712,145 +841,6 @@ namespace SourceGit.ViewModels
             CurrentConflictLine = region.PanelStartLine;
             CurrentConflictStartLine = region.PanelStartLine;
             CurrentConflictEndLine = region.PanelEndLine;
-        }
-
-        private string ResolveConflictAtIndex(string content, int conflictIndex, bool useOurs)
-        {
-            var lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            var resultLines = new List<string>();
-
-            int i = 0;
-            int currentConflict = 0;
-
-            while (i < lines.Length)
-            {
-                var line = lines[i];
-
-                if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
-                {
-                    bool isTargetConflict = (currentConflict == conflictIndex);
-
-                    // Collect sections
-                    var oursLines = new List<string>();
-                    var theirsLines = new List<string>();
-                    var currentSection = oursLines;
-                    int conflictStartLine = i;
-                    i++;
-
-                    while (i < lines.Length)
-                    {
-                        line = lines[i];
-                        if (line.StartsWith("|||||||", StringComparison.Ordinal))
-                        {
-                            // diff3 base section - skip to separator
-                            i++;
-                            while (i < lines.Length && !lines[i].StartsWith("=======", StringComparison.Ordinal))
-                                i++;
-                            if (i < lines.Length)
-                                currentSection = theirsLines;
-                        }
-                        else if (line.StartsWith("=======", StringComparison.Ordinal))
-                        {
-                            currentSection = theirsLines;
-                        }
-                        else if (line.StartsWith(">>>>>>>", StringComparison.Ordinal))
-                        {
-                            // End of conflict
-                            if (isTargetConflict)
-                            {
-                                // Resolve this conflict
-                                if (useOurs)
-                                    resultLines.AddRange(oursLines);
-                                else
-                                    resultLines.AddRange(theirsLines);
-                            }
-                            else
-                            {
-                                // Keep conflict markers for non-target conflicts
-                                for (int j = conflictStartLine; j <= i; j++)
-                                    resultLines.Add(lines[j]);
-                            }
-                            break;
-                        }
-                        else
-                        {
-                            currentSection.Add(line);
-                        }
-                        i++;
-                    }
-                    currentConflict++;
-                }
-                else
-                {
-                    resultLines.Add(line);
-                }
-                i++;
-            }
-
-            return string.Join(Environment.NewLine, resultLines);
-        }
-
-        private string ResolveAllConflicts(string content, List<Models.ConflictMarkerInfo> markers, bool useOurs)
-        {
-            if (markers.Count == 0)
-                return content;
-
-            var lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-            var resultLines = new List<string>();
-
-            int i = 0;
-            while (i < lines.Length)
-            {
-                var line = lines[i];
-
-                if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
-                {
-                    // Start of conflict - collect sections
-                    var oursLines = new List<string>();
-                    var theirsLines = new List<string>();
-                    var currentSection = oursLines;
-                    i++;
-
-                    while (i < lines.Length)
-                    {
-                        line = lines[i];
-                        if (line.StartsWith("|||||||", StringComparison.Ordinal))
-                        {
-                            // diff3 base section - skip to separator
-                            i++;
-                            while (i < lines.Length && !lines[i].StartsWith("=======", StringComparison.Ordinal))
-                                i++;
-                            if (i < lines.Length)
-                                currentSection = theirsLines;
-                        }
-                        else if (line.StartsWith("=======", StringComparison.Ordinal))
-                        {
-                            currentSection = theirsLines;
-                        }
-                        else if (line.StartsWith(">>>>>>>", StringComparison.Ordinal))
-                        {
-                            // End of conflict - add resolved content
-                            if (useOurs)
-                                resultLines.AddRange(oursLines);
-                            else
-                                resultLines.AddRange(theirsLines);
-                            break;
-                        }
-                        else
-                        {
-                            currentSection.Add(line);
-                        }
-                        i++;
-                    }
-                }
-                else
-                {
-                    resultLines.Add(line);
-                }
-                i++;
-            }
-
-            return string.Join(Environment.NewLine, resultLines);
         }
 
         private readonly Repository _repo;
