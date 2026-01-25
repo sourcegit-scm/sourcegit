@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -55,6 +56,12 @@ namespace SourceGit.ViewModels
         public bool HasAllowedSignersFile
         {
             get => _hasAllowedSignersFile;
+        }
+
+        public bool IsUnrealEngineProject
+        {
+            get;
+            private set;
         }
 
         public int SelectedViewIndex
@@ -507,6 +514,9 @@ namespace SourceGit.ViewModels
                 _selectedView = _histories;
                 _selectedViewIndex = 0;
             }
+
+            IsUnrealEngineProject = Directory.EnumerateFiles(FullPath, "*.uproject").Any() ||
+                                    Directory.EnumerateFiles(FullPath, "*.uplugin").Any();
 
             _lastFetchTime = DateTime.Now;
             _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);

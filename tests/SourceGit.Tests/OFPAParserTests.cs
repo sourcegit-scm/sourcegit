@@ -49,6 +49,32 @@ public class OFPAParserTests
     }
 
     [Fact]
+    public void IsOFPAFile_WithLowercaseExternalActorsPath_ReturnsTrue()
+    {
+        // Arrange
+        var path = "Content/__externalactors__/Maps/Test/abc.uasset";
+
+        // Act
+        var result = OFPAParser.IsOFPAFile(path);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void IsOFPAFile_WithExternalActorsNonUAsset_ReturnsFalse()
+    {
+        // Arrange
+        var path = "Content/__ExternalActors__/Maps/Test/abc.uexp";
+
+        // Act
+        var result = OFPAParser.IsOFPAFile(path);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
     public void Decode_WithUE53File_ReturnsActorLabel()
     {
         // Arrange

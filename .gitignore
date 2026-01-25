@@ -39,3 +39,11 @@ build/*.AppImage
 SourceGit.app/
 build.command
 src/Properties/launchSettings.json
+
+# Temporary and tool-specific files
+.claude/
+error_showcase.png
+publish/
+nul
+progress.md
+build_release.bat

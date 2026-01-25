@@ -20,10 +20,6 @@ namespace SourceGit.Utilities
     /// Compatibility: UE 4.26 - 5.7+
     /// Performance: ~0.1 ms/file
     /// </summary>
-    /// <summary>
-    /// Decodes human-readable names from Unreal Engine OFPA (One File Per Actor) .uasset files.
-    /// These files have hashed names like "KCBX0GWLTFQT9RJ8M1LY8.uasset" in __ExternalActors__ folders.
-    /// </summary>
     public static class OFPAParser
     {
         // Unreal Engine asset magic number (little-endian: 0x9E2A83C1)

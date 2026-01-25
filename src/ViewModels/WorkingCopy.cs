@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,22 +21,25 @@ namespace SourceGit.ViewModels
                 {
                     _repo.Settings.EnableOFPADecoding = value;
                     OnPropertyChanged();
+                    OnPropertyChanged(nameof(DecodedPaths));
 
                     if (value)
-                        _ = DecodeOFPAPathsAsync(_cached);
-                    else
-                        ClearDecodedPaths();
+                        _currentDecodeTask = DecodeOFPAPathsAsync(_cached);
                 }
             }
         }
 
-        public IReadOnlyDictionary<string, string> DecodedPaths => _decodedPaths;
-
-        public bool IsOFPASupported
+        public IReadOnlyDictionary<string, string> DecodedPaths
         {
-            get => _isOFPASupported;
-            private set => SetProperty(ref _isOFPASupported, value);
+            get
+            {
+                if (!_repo.Settings.EnableOFPADecoding)
+                    return null;
+                return _decodedPaths;
+            }
         }
+
+        public bool IsOFPASupported => _repo?.IsUnrealEngineProject ?? false;
 
         public Repository Repository
         {
@@ -349,8 +352,6 @@ namespace SourceGit.ViewModels
 
                 _isLoadingData = true;
                 _cached = changes;
-                IsOFPASupported = Directory.EnumerateFiles(_repo.FullPath, "*.uproject").Any() ||
-                                  Directory.EnumerateFiles(_repo.FullPath, "*.uplugin").Any();
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
                 VisibleStaged = visibleStaged;
@@ -365,7 +366,7 @@ namespace SourceGit.ViewModels
 
                 // Decode OFPA paths asynchronously if enabled
                 if (_repo.Settings.EnableOFPADecoding)
-                    _ = DecodeOFPAPathsAsync(changes);
+                    _currentDecodeTask = DecodeOFPAPathsAsync(changes);
             });
         }
 
@@ -870,82 +871,109 @@ namespace SourceGit.ViewModels
         private bool _hasUnsolvedConflicts = false;
         private InProgressContext _inProgressContext = null;
         private bool _isDisposed = false;
-        private bool _isOFPASupported = false;
-        private Dictionary<string, string> _decodedPaths = new Dictionary<string, string>();
+        private Dictionary<string, string> _decodedPaths = new Dictionary<string, string>(StringComparer.Ordinal);
         // Tracks file size/mtime for decoded paths to refresh when content changes.
-        private Dictionary<string, (long Length, DateTime LastWriteUtc)> _decodedPathStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>();
+        private Dictionary<string, (long Length, DateTime LastWriteUtc)> _decodedPathStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>(StringComparer.Ordinal);
+        // Track current decode task to ensure sequential execution and proper caching.
+        private Task _currentDecodeTask = Task.CompletedTask;
 
         private async Task DecodeOFPAPathsAsync(List<Models.Change> changes)
         {
+            // Wait for previous decode to complete so _decodedPaths cache is up-to-date.
+            await _currentDecodeTask.ConfigureAwait(false);
+
+            var swTotal = System.Diagnostics.Stopwatch.StartNew();
             if (_isDisposed || _repo == null || !_repo.Settings.EnableOFPADecoding || changes == null || changes.Count == 0)
                 return;
 
+            var swScan = System.Diagnostics.Stopwatch.StartNew();
             var repositoryPath = _repo.FullPath;
             var filesToProcess = new List<(string RelativePath, string FullPath)>();
             var missingWorkingTreePaths = new List<string>();
 
+            int cacheHits = 0;
             foreach (var change in changes)
             {
                 if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
                     continue;
 
-                var fullPath = Path.Combine(repositoryPath, change.Path);
-                if (File.Exists(fullPath))
+                // Optimization: use change state to avoid unnecessary File.Exists calls.
+                bool isDeleted = change.WorkTree == Models.ChangeState.Deleted || 
+                                 (change.Index == Models.ChangeState.Deleted && change.WorkTree == Models.ChangeState.None);
+                
+                if (!isDeleted)
                 {
-                    try
+                    var fullPath = Path.Combine(repositoryPath, change.Path);
+                    if (File.Exists(fullPath))
                     {
-                        var info = new FileInfo(fullPath);
-                        // Skip re-decoding if content stats are unchanged.
-                        if (_decodedPaths.ContainsKey(change.Path) &&
-                            _decodedPathStats.TryGetValue(change.Path, out var stats) &&
-                            stats.Length == info.Length &&
-                            stats.LastWriteUtc == info.LastWriteTimeUtc)
-                            continue;
+                        try
+                        {
+                            var info = new FileInfo(fullPath);
+                            // Skip re-decoding if content stats are unchanged.
+                            if (_decodedPaths.TryGetValue(change.Path, out var cached) &&
+                                _decodedPathStats.TryGetValue(change.Path, out var stats) &&
+                                stats.Length == info.Length &&
+                                stats.LastWriteUtc == info.LastWriteTimeUtc)
+                            {
+                                cacheHits++;
+                                continue;
+                            }
+                        }
+                        catch
+                        {
+                            // File might disappear between Exists and stat access.
+                            missingWorkingTreePaths.Add(change.Path);
+                        }
+                        filesToProcess.Add((change.Path, fullPath));
                     }
-                    catch
+                    else
                     {
-                        // File might disappear between Exists and stat access.
-                        missingWorkingTreePaths.Add(change.Path);
+                        isDeleted = true;
                     }
                 }
-                else
+
+                if (isDeleted)
                 {
                     // Remove stats when the working-tree file disappears.
                     if (_decodedPathStats.ContainsKey(change.Path))
                         missingWorkingTreePaths.Add(change.Path);
 
                     if (_decodedPaths.ContainsKey(change.Path))
+                    {
+                        cacheHits++;
                         continue;
+                    }
+                    filesToProcess.Add((change.Path, string.Empty));
                 }
-
-                filesToProcess.Add((change.Path, fullPath));
             }
+            swScan.Stop();
 
             if (filesToProcess.Count == 0 && missingWorkingTreePaths.Count == 0)
-                return;
-
-            var results = new Dictionary<string, string>();
-            var updatedStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>();
-
-            // Read bytes from either MemoryStream or a generic stream.
-            static async Task<byte[]> ReadAllBytesAsync(Stream stream)
             {
-                if (stream is MemoryStream memoryStream)
-                    return memoryStream.ToArray();
-
-                await using var buffer = new MemoryStream();
-                await stream.CopyToAsync(buffer).ConfigureAwait(false);
-                return buffer.ToArray();
+                if (cacheHits > 0)
+                    Utilities.PerformanceLogger.Log($"[OFPA] All {cacheHits} files found in cache. Skipping.");
+                return;
             }
+
+            Utilities.PerformanceLogger.Log($"[OFPA] Cache size: {_decodedPaths.Count}, Hits: {cacheHits}, To process: {filesToProcess.Count}");
+
+            var results = new Dictionary<string, string>(StringComparer.Ordinal);
+            var updatedStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>(StringComparer.Ordinal);
+
+            int diskCount = 0;
+            int gitCount = 0;
+            var swDecode = System.Diagnostics.Stopwatch.StartNew();
 
             await Task.Run(async () =>
             {
+                var gitEntries = new List<(string RelativePath, string IndexSpec, string HeadSpec)>();
                 foreach (var (relativePath, fullPath) in filesToProcess)
                 {
                     try
                     {
-                        if (File.Exists(fullPath))
+                        if (!string.IsNullOrEmpty(fullPath) && File.Exists(fullPath))
                         {
+                            System.Threading.Interlocked.Increment(ref diskCount);
                             // Prefer working-tree content when available.
                             var result = Utilities.OFPAParser.Decode(fullPath);
                             if (result.HasValue)
@@ -958,63 +986,119 @@ namespace SourceGit.ViewModels
                             continue;
                         }
 
-                        // Fallback to Git index/HEAD for missing working-tree files.
-                        await using var indexStream = await Commands.QueryFileContent.RunIndexAsync(repositoryPath, relativePath).ConfigureAwait(false);
-                        var data = await ReadAllBytesAsync(indexStream).ConfigureAwait(false);
-                        if (data.Length == 0)
-                        {
-                            await using var headStream = await Commands.QueryFileContent.RunAsync(repositoryPath, "HEAD", relativePath).ConfigureAwait(false);
-                            data = await ReadAllBytesAsync(headStream).ConfigureAwait(false);
-                        }
-
-                        var decoded = data.Length > 0 ? Utilities.OFPAParser.DecodeFromData(data) : null;
-                        if (decoded.HasValue)
-                            results[relativePath] = decoded.Value.LabelValue;
+                        System.Threading.Interlocked.Increment(ref gitCount);
+                        gitEntries.Add((relativePath, $":{relativePath}", $"HEAD:{relativePath}"));
                     }
                     catch
                     {
                         // Ignore individual file errors to keep processing others
                     }
                 }
+
+                // Batch read from Git for deleted/staged files.
+                if (gitEntries.Count > 0)
+                {
+                    var indexSpecs = new List<string>(gitEntries.Count);
+                    foreach (var entry in gitEntries)
+                        indexSpecs.Add(entry.IndexSpec);
+
+                    var indexData = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, indexSpecs).ConfigureAwait(false);
+
+                    var headSpecs = new List<string>();
+                    var headEntries = new List<(string RelativePath, string HeadSpec)>();
+
+                    foreach (var entry in gitEntries)
+                    {
+                        if (indexData.TryGetValue(entry.IndexSpec, out var data) && data.Length > 0)
+                        {
+                            var decoded = Utilities.OFPAParser.DecodeFromData(data);
+                            results[entry.RelativePath] = decoded?.LabelValue;
+                        }
+                        else
+                        {
+                            headSpecs.Add(entry.HeadSpec);
+                            headEntries.Add((entry.RelativePath, entry.HeadSpec));
+                        }
+                    }
+
+                    if (headEntries.Count > 0)
+                    {
+                        var headData = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, headSpecs).ConfigureAwait(false);
+                        foreach (var entry in headEntries)
+                        {
+                            if (headData.TryGetValue(entry.HeadSpec, out var data) && data.Length > 0)
+                            {
+                                var decoded = Utilities.OFPAParser.DecodeFromData(data);
+                                results[entry.RelativePath] = decoded?.LabelValue;
+                            }
+                            else
+                            {
+                                results[entry.RelativePath] = null;
+                            }
+                        }
+                    }
+
+                }
+
+                // Update cache immediately inside Task.Run to prevent race conditions
+                // with subsequent fire-and-forget DecodeOFPAPathsAsync calls.
+                if (results.Count > 0)
+                {
+                    var updated = new Dictionary<string, string>(_decodedPaths, StringComparer.Ordinal);
+                    foreach (var kvp in results)
+                        updated[kvp.Key] = kvp.Value;
+                    _decodedPaths = updated;
+                }
             });
+            swDecode.Stop();
 
             if (results.Count > 0 || missingWorkingTreePaths.Count > 0 || updatedStats.Count > 0)
             {
+
+                if (missingWorkingTreePaths.Count > 0)
+                {
+                    foreach (var path in missingWorkingTreePaths)
+                        _decodedPathStats.Remove(path);
+                }
+
+                if (updatedStats.Count > 0)
+                {
+                    foreach (var kvp in updatedStats)
+                        _decodedPathStats[kvp.Key] = kvp.Value;
+                }
+
+                var swUiWait = System.Diagnostics.Stopwatch.StartNew();
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
+                    swUiWait.Stop();
+                    var swUiWork = System.Diagnostics.Stopwatch.StartNew();
+
                     if (_isDisposed || _repo == null || !_repo.Settings.EnableOFPADecoding)
                         return;
 
-                    if (results.Count > 0)
-                    {
-                        var updated = new Dictionary<string, string>(_decodedPaths);
-                        foreach (var kvp in results)
-                            updated[kvp.Key] = kvp.Value;
-
-                        _decodedPaths = updated;
-                    }
-
-                    if (missingWorkingTreePaths.Count > 0)
-                    {
-                        foreach (var path in missingWorkingTreePaths)
-                            _decodedPathStats.Remove(path);
-                    }
-
-                    if (updatedStats.Count > 0)
-                    {
-                        foreach (var kvp in updatedStats)
-                            _decodedPathStats[kvp.Key] = kvp.Value;
-                    }
-
                     OnPropertyChanged(nameof(DecodedPaths));
+
+                    swUiWork.Stop();
+                    swTotal.Stop();
+
+                    var logMsg = $"--- OFPA PROFILER ---\n" +
+                                 $"Total changes in WC: {changes.Count}\n" +
+                                 $"Files to process: {filesToProcess.Count}\n" +
+                                 $"Scan/Filter time: {swScan.ElapsedMilliseconds}ms\n" +
+                                 $"Decode time (Disk:{diskCount}, Git:{gitCount}): {swDecode.ElapsedMilliseconds}ms\n" +
+                                 $"UI Dispatcher Wait: {swUiWait.ElapsedMilliseconds}ms\n" +
+                                 $"UI Update Work: {swUiWork.ElapsedMilliseconds}ms\n" +
+                                 $"TOTAL TIME: {swTotal.ElapsedMilliseconds}ms\n" +
+                                 $"---------------------";
+                    Utilities.PerformanceLogger.Log(logMsg);
                 });
             }
         }
 
         private void ClearDecodedPaths()
         {
-            _decodedPaths = new Dictionary<string, string>();
-            _decodedPathStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>();
+            _decodedPaths = new Dictionary<string, string>(StringComparer.Ordinal);
+            _decodedPathStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>(StringComparer.Ordinal);
             OnPropertyChanged(nameof(DecodedPaths));
         }
     }
