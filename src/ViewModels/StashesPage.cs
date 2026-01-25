@@ -9,6 +9,8 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject, IDisposable
     {
+        private const int MaxOFPASampleSize = 256 * 1024;
+
         public IReadOnlyDictionary<string, string> DecodedPaths
         {
             get
@@ -310,7 +312,7 @@ namespace SourceGit.ViewModels
 
             await Task.Run(async () =>
             {
-                var objectSpecs = new List<(string RelativePath, string Spec)>();
+                var filesToDecode = new List<(string RelativePath, string Spec)>();
                 foreach (var change in changes)
                 {
                     if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
@@ -332,20 +334,20 @@ namespace SourceGit.ViewModels
                             spec = $"{stash.SHA}:{change.Path}";
                     }
 
-                    objectSpecs.Add((change.Path, spec));
+                    filesToDecode.Add((change.Path, spec));
                 }
 
-                if (objectSpecs.Count == 0)
+                if (filesToDecode.Count == 0)
                     return;
 
-                var specs = new List<string>();
-                foreach (var entry in objectSpecs)
-                    specs.Add(entry.Spec);
+                var batchRequests = new List<string>();
+                foreach (var entry in filesToDecode)
+                    batchRequests.Add(entry.Spec);
 
-                var dataMap = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, specs, MaxOFPASampleSize).ConfigureAwait(false);
-                foreach (var entry in objectSpecs)
+                var batchResults = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, batchRequests, MaxOFPASampleSize).ConfigureAwait(false);
+                foreach (var entry in filesToDecode)
                 {
-                    if (dataMap.TryGetValue(entry.Spec, out var data))
+                    if (batchResults.TryGetValue(entry.Spec, out var data))
                     {
                         var decoded = Utilities.OFPAParser.DecodeFromData(data);
                         results[entry.RelativePath] = decoded?.LabelValue;
@@ -381,6 +383,5 @@ namespace SourceGit.ViewModels
         private DiffContext _diffContext = null;
         private Dictionary<string, string> _decodedPaths = null;
         private Task _currentDecodeTask = Task.CompletedTask;
-        private const int MaxOFPASampleSize = 256 * 1024;
     }
 }

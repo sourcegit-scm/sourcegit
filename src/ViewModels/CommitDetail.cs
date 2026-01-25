@@ -28,6 +28,8 @@ namespace SourceGit.ViewModels
 
     public partial class CommitDetail : ObservableObject, IDisposable
     {
+        private const int MaxOFPASampleSize = 256 * 1024;
+
         public Repository Repository
         {
             get => _repo;
@@ -693,30 +695,32 @@ namespace SourceGit.ViewModels
 
             await Task.Run(async () =>
             {
-                var objectSpecs = new List<(string RelativePath, string Spec)>();
+                var filesToDecode = new List<(string RelativePath, string Spec)>();
                 foreach (var change in changes)
                 {
                     if (Utilities.OFPAParser.IsOFPAFile(change.Path))
                     {
-                        // For deleted files, read from parent. For others, read from current commit.
+                        // Use heuristic to determine revision:
+                        // - Deleted files (WorkTree or Index) -> fetch from Parent commit.
+                        // - Added/Modified files -> fetch from Current commit.
                         var spec = (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
                             ? $"{parent}:{change.Path}"
                             : $"{_commit.SHA}:{change.Path}";
-                        objectSpecs.Add((change.Path, spec));
+                        filesToDecode.Add((change.Path, spec));
                     }
                 }
 
-                if (objectSpecs.Count == 0)
+                if (filesToDecode.Count == 0)
                     return;
 
-                var specs = new List<string>();
-                foreach (var entry in objectSpecs)
-                    specs.Add(entry.Spec);
+                var batchRequests = new List<string>();
+                foreach (var entry in filesToDecode)
+                    batchRequests.Add(entry.Spec);
 
-                var dataMap = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, specs, MaxOFPASampleSize).ConfigureAwait(false);
-                foreach (var entry in objectSpecs)
+                var batchResults = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, batchRequests, MaxOFPASampleSize).ConfigureAwait(false);
+                foreach (var entry in filesToDecode)
                 {
-                    if (dataMap.TryGetValue(entry.Spec, out var data))
+                    if (batchResults.TryGetValue(entry.Spec, out var data))
                     {
                         var decoded = Utilities.OFPAParser.DecodeFromData(data);
                         results[entry.RelativePath] = decoded?.LabelValue;
@@ -763,6 +767,5 @@ namespace SourceGit.ViewModels
         private Vector _scrollOffset = Vector.Zero;
         private Dictionary<string, string> _decodedPaths = null;
         private Task _currentDecodeTask = Task.CompletedTask;
-        private const int MaxOFPASampleSize = 256 * 1024;
     }
 }
