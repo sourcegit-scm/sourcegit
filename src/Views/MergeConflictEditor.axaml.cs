@@ -848,7 +848,7 @@ namespace SourceGit.Views
             var theirsScroll = _theirsPresenter?.GetScrollViewer();
             var resultScroll = _resultPresenter?.GetScrollViewer();
 
-            // Wheel events
+            // Wheel events for scroll sync
             if (_oursPresenter != null)
                 _oursPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
             if (_theirsPresenter != null)
@@ -856,13 +856,22 @@ namespace SourceGit.Views
             if (_resultPresenter != null)
                 _resultPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
 
-            // ScrollChanged for scrollbar drag
+            // ScrollChanged for scrollbar drag sync
             if (oursScroll != null)
                 oursScroll.ScrollChanged += OnScrollChanged;
             if (theirsScroll != null)
                 theirsScroll.ScrollChanged += OnScrollChanged;
             if (resultScroll != null)
                 resultScroll.ScrollChanged += OnScrollChanged;
+        }
+
+        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_isSyncingScroll || sender is not ScrollViewer source)
+                return;
+
+            // Sync on any scroll change (scrollbar drag, programmatic, etc.)
+            SyncAllScrollViewers(source.Offset);
         }
 
         private void OnPresenterPointerWheelChanged(object sender, PointerWheelEventArgs e)
@@ -879,20 +888,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (_isSyncingScroll || sender is not ScrollViewer source)
-                return;
-
-            // Only sync if significant movement (scrollbar drag)
-            if (e.OffsetDelta.SquaredLength > 0.5f)
-            {
-                SyncAllScrollViewers(source.Offset);
-            }
-        }
-
         private void SyncAllScrollViewers(Vector offset)
         {
+            if (_isSyncingScroll)
+                return;
+
             _isSyncingScroll = true;
             try
             {
@@ -900,6 +900,7 @@ namespace SourceGit.Views
                 var theirsScroll = _theirsPresenter?.GetScrollViewer();
                 var resultScroll = _resultPresenter?.GetScrollViewer();
 
+                // Direct offset assignment for immediate sync
                 if (oursScroll != null)
                     oursScroll.Offset = offset;
                 if (theirsScroll != null)
@@ -907,6 +908,7 @@ namespace SourceGit.Views
                 if (resultScroll != null)
                     resultScroll.Offset = offset;
 
+                // Also update ViewModel for state tracking
                 if (DataContext is ViewModels.MergeConflictEditor vm)
                     vm.ScrollOffset = offset;
             }
