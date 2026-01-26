@@ -223,6 +223,20 @@
                           Click="OnUseTheirsFromHover"/>
                 </StackPanel>
               </Border>
+              <Border x:Name="ResultUndoPopup"
+                      IsVisible="False"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Background="{DynamicResource Brush.ToolBar}"
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      BorderThickness="1"
+                      CornerRadius="4"
+                      Padding="4,2"
+                      BoxShadow="0 2 8 0 #40000000">
+                <Button Classes="flat"
+                        Content="{DynamicResource Text.MergeConflictEditor.Undo}"
+                        Click="OnUndoResolution"/>
+              </Border>
             </Grid>
           </Grid>
         </Border>

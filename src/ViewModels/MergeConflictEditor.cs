@@ -21,7 +21,8 @@ namespace SourceGit.ViewModels
         double Y,
         double Height,
         int ConflictIndex,
-        MergeConflictPanelType Panel
+        MergeConflictPanelType Panel,
+        bool IsResolved
     );
 
     // Represents a single conflict region with its original content and panel positions
@@ -39,6 +40,14 @@ namespace SourceGit.ViewModels
 
         // Content chosen when resolved (null = unresolved, empty list = deleted)
         public List<string> ResolvedContent { get; set; } = null;
+
+        // Real markers from the file
+        public string StartMarker { get; set; } = "<<<<<<<";
+        public string SeparatorMarker { get; set; } = "=======";
+        public string EndMarker { get; set; } = ">>>>>>>";
+
+        // Track the type of resolution
+        public Models.ConflictResolution ResolutionType { get; set; } = Models.ConflictResolution.None;
     }
 
     public class MergeConflictEditor : ObservableObject
@@ -251,6 +260,8 @@ namespace SourceGit.ViewModels
                 if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
                 {
                     var region = new ConflictRegion { StartLineInOriginal = i };
+                    // Capture the start marker (e.g., "<<<<<<< HEAD")
+                    region.StartMarker = line;
                     i++;
 
                     // Collect ours content
@@ -270,9 +281,12 @@ namespace SourceGit.ViewModels
                             i++;
                     }
 
-                    // Skip separator
+                    // Capture separator marker
                     if (i < lines.Length && lines[i].StartsWith("=======", StringComparison.Ordinal))
+                    {
+                        region.SeparatorMarker = lines[i];
                         i++;
+                    }
 
                     // Collect theirs content
                     while (i < lines.Length && !lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
@@ -281,9 +295,10 @@ namespace SourceGit.ViewModels
                         i++;
                     }
 
-                    // End marker
+                    // Capture end marker (e.g., ">>>>>>> feature-branch")
                     if (i < lines.Length && lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
+                        region.EndMarker = lines[i];
                         region.EndLineInOriginal = i;
                         i++;
                     }
@@ -446,11 +461,18 @@ namespace SourceGit.ViewModels
 
                     if (currentRegion.ResolvedContent != null)
                     {
-                        // Resolved - show resolved content + padding
+                        // Resolved - show resolved content with color based on resolution type
+                        var lineType = currentRegion.ResolutionType switch
+                        {
+                            Models.ConflictResolution.UseOurs => Models.TextDiffLineType.Deleted,   // Mine color
+                            Models.ConflictResolution.UseTheirs => Models.TextDiffLineType.Added,  // Theirs color
+                            _ => Models.TextDiffLineType.Normal
+                        };
+
                         foreach (var line in currentRegion.ResolvedContent)
                         {
                             resultLines.Add(new Models.TextDiffLine(
-                                Models.TextDiffLineType.Normal, line, resultLineNumber, resultLineNumber));
+                                lineType, line, resultLineNumber, resultLineNumber));
                             resultLineNumber++;
                         }
                         // Pad with empty lines to match Mine/Theirs panel height
@@ -461,11 +483,11 @@ namespace SourceGit.ViewModels
                     else
                     {
                         // Unresolved - show conflict markers with content, aligned with Mine/Theirs
-                        // First line: start marker placeholder (matches <<<<<< line)
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "<<<<<<< (unresolved)", 0, 0));
+                        // First line: start marker (use real marker from file)
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.StartMarker, 0, 0));
 
-                        // Second line: separator placeholder (matches ======= line)
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, "=======", 0, 0));
+                        // Second line: separator marker
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.SeparatorMarker, 0, 0));
 
                         // Mine content lines (matches the deleted lines in Ours panel)
                         foreach (var line in currentRegion.OursContent)
@@ -481,8 +503,8 @@ namespace SourceGit.ViewModels
                                 Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
                         }
 
-                        // End marker placeholder (matches >>>>>>> line)
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, ">>>>>>> (unresolved)", 0, 0));
+                        // End marker (use real marker from file)
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.EndMarker, 0, 0));
                     }
 
                     currentLine = currentRegion.PanelEndLine + 1;
@@ -523,6 +545,7 @@ namespace SourceGit.ViewModels
                 {
                     region.ResolvedContent = new List<string>(region.OursContent);
                     region.IsResolved = true;
+                    region.ResolutionType = Models.ConflictResolution.UseOurs;
                     anyResolved = true;
                 }
             }
@@ -548,6 +571,7 @@ namespace SourceGit.ViewModels
                 {
                     region.ResolvedContent = new List<string>(region.TheirsContent);
                     region.IsResolved = true;
+                    region.ResolutionType = Models.ConflictResolution.UseTheirs;
                     anyResolved = true;
                 }
             }
@@ -572,6 +596,7 @@ namespace SourceGit.ViewModels
 
             region.ResolvedContent = new List<string>(region.OursContent);
             region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseOurs;
 
             RebuildResultContent();
             BuildAlignedResultPanel();
@@ -590,6 +615,7 @@ namespace SourceGit.ViewModels
 
             region.ResolvedContent = new List<string>(region.TheirsContent);
             region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseTheirs;
 
             RebuildResultContent();
             BuildAlignedResultPanel();
@@ -610,6 +636,7 @@ namespace SourceGit.ViewModels
 
             region.ResolvedContent = new List<string>(region.OursContent);
             region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseOurs;
 
             RebuildResultContent();
             BuildAlignedResultPanel();
@@ -628,6 +655,26 @@ namespace SourceGit.ViewModels
 
             region.ResolvedContent = new List<string>(region.TheirsContent);
             region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseTheirs;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
+        }
+
+        public void UndoResolutionAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (!region.IsResolved)
+                return;
+
+            region.ResolvedContent = null;
+            region.IsResolved = false;
+            region.ResolutionType = Models.ConflictResolution.None;
 
             RebuildResultContent();
             BuildAlignedResultPanel();

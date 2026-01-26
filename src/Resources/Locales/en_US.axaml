@@ -892,6 +892,7 @@
   <x:String x:Key="Text.MergeConflictEditor.UseMine.Tip" xml:space="preserve">Resolve current conflict using Mine version</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseTheirs.Tip" xml:space="preserve">Resolve current conflict using Theirs version</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">UNDO</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>

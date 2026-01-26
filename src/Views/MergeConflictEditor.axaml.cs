@@ -342,7 +342,11 @@ namespace SourceGit.Views
             for (int i = 0; i < conflictRegions.Count; i++)
             {
                 var region = conflictRegions[i];
-                if (region.IsResolved || region.PanelStartLine < 0 || region.PanelEndLine < 0)
+                // For Result panel, allow hover on resolved conflicts (for undo)
+                // For Mine/Theirs panels, skip resolved conflicts
+                if (region.PanelStartLine < 0 || region.PanelEndLine < 0)
+                    continue;
+                if (region.IsResolved && PanelType != ViewModels.MergeConflictPanelType.Result)
                     continue;
 
                 // Get the visual bounds of this conflict region
@@ -400,12 +404,13 @@ namespace SourceGit.Views
                 if (isWithinRegion)
                 {
                     var newChunk = new ViewModels.MergeConflictSelectedChunk(
-                        viewportY, height, i, PanelType);
+                        viewportY, height, i, PanelType, region.IsResolved);
 
                     // Only update if changed
                     if (currentChunk == null ||
                         currentChunk.ConflictIndex != newChunk.ConflictIndex ||
                         currentChunk.Panel != newChunk.Panel ||
+                        currentChunk.IsResolved != newChunk.IsResolved ||
                         Math.Abs(currentChunk.Y - newChunk.Y) > 1 ||
                         Math.Abs(currentChunk.Height - newChunk.Height) > 1)
                     {
@@ -465,7 +470,9 @@ namespace SourceGit.Views
                 return;
 
             var region = conflictRegions[chunk.ConflictIndex];
-            if (region.IsResolved)
+            // For Result panel, keep showing chunk for resolved conflicts (for undo)
+            // For Mine/Theirs panels, clear if resolved
+            if (region.IsResolved && PanelType != ViewModels.MergeConflictPanelType.Result)
             {
                 vm.SelectedChunk = null;
                 return;
@@ -521,7 +528,7 @@ namespace SourceGit.Views
 
             // Update chunk with new position
             var newChunk = new ViewModels.MergeConflictSelectedChunk(
-                viewportY, height, chunk.ConflictIndex, PanelType);
+                viewportY, height, chunk.ConflictIndex, PanelType, region.IsResolved);
 
             if (Math.Abs(chunk.Y - newChunk.Y) > 1 || Math.Abs(chunk.Height - newChunk.Height) > 1)
             {
@@ -824,6 +831,7 @@ namespace SourceGit.Views
             _minePopup = this.FindControl<Border>("MinePopup");
             _theirsPopup = this.FindControl<Border>("TheirsPopup");
             _resultPopup = this.FindControl<Border>("ResultPopup");
+            _resultUndoPopup = this.FindControl<Border>("ResultUndoPopup");
 
             // Set up scroll synchronization
             SetupScrollSync();
@@ -984,6 +992,8 @@ namespace SourceGit.Views
                 _theirsPopup.IsVisible = false;
             if (_resultPopup != null)
                 _resultPopup.IsVisible = false;
+            if (_resultUndoPopup != null)
+                _resultUndoPopup.IsVisible = false;
 
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
@@ -1001,14 +1011,23 @@ namespace SourceGit.Views
                 _ => null
             };
 
-            // Show the appropriate popup based on panel type
-            Border popup = chunk.Panel switch
+            // Show the appropriate popup based on panel type and resolved state
+            Border popup;
+            if (chunk.Panel == ViewModels.MergeConflictPanelType.Result && chunk.IsResolved)
             {
-                ViewModels.MergeConflictPanelType.Mine => _minePopup,
-                ViewModels.MergeConflictPanelType.Theirs => _theirsPopup,
-                ViewModels.MergeConflictPanelType.Result => _resultPopup,
-                _ => null
-            };
+                // Show Undo popup for resolved conflicts in Result panel
+                popup = _resultUndoPopup;
+            }
+            else
+            {
+                popup = chunk.Panel switch
+                {
+                    ViewModels.MergeConflictPanelType.Mine => _minePopup,
+                    ViewModels.MergeConflictPanelType.Theirs => _theirsPopup,
+                    ViewModels.MergeConflictPanelType.Result => _resultPopup,
+                    _ => null
+                };
+            }
 
             if (popup != null && presenter != null)
             {
@@ -1045,6 +1064,20 @@ namespace SourceGit.Views
             {
                 var savedOffset = SaveScrollOffset();
                 vm.AcceptTheirsAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+                vm.SelectedChunk = null;
+            }
+            e.Handled = true;
+        }
+
+        private void OnUndoResolution(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.UndoResolutionAtIndex(chunk.ConflictIndex);
                 UpdateCurrentConflictHighlight();
                 UpdateResolvedRanges();
                 RestoreScrollOffset(savedOffset);
@@ -1264,5 +1297,6 @@ namespace SourceGit.Views
         private Border _minePopup;
         private Border _theirsPopup;
         private Border _resultPopup;
+        private Border _resultUndoPopup;
     }
 }
