@@ -264,6 +264,29 @@ namespace SourceGit.Views
 
                 if (!change.IsConflicted || change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
                 {
+                    if (change.IsConflicted)
+                    {
+                        var isBinary = new Commands.IsBinary(repo.FullPath, "HEAD", change.Path).GetResultAsync().GetAwaiter().GetResult();
+                        if (!isBinary)
+                        {
+                            var openBuiltinMerger = new MenuItem();
+                            openBuiltinMerger.Header = App.Text("OpenInBuiltinMergeTool");
+                            openBuiltinMerger.Icon = App.CreateMenuIcon("Icons.Conflict");
+                            openBuiltinMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+M" : "Ctrl+Shift+M";
+                            openBuiltinMerger.Click += async (_, e) =>
+                            {
+                                var mergeVm = new ViewModels.MergeConflictEditor(repo, change.Path);
+                                await mergeVm.LoadAsync();
+
+                                var window = TopLevel.GetTopLevel(this) as Window;
+                                var mergeWindow = new MergeConflictEditor { DataContext = mergeVm };
+                                await mergeWindow.ShowDialog(window);
+
+                                e.Handled = true;
+                            };
+                            menu.Items.Add(openBuiltinMerger);
+                        }
+                    }
                     var openMerger = new MenuItem();
                     openMerger.Header = App.Text("OpenInExternalMergeTool");
                     openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
@@ -278,6 +301,7 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
                     menu.Items.Add(openMerger);
+
                 }
 
                 var explore = new MenuItem();
