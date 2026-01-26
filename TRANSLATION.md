@@ -554,57 +554,21 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-67.53%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-71.08%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
 
-- Text.About.ReleaseDate
-- Text.About.ReleaseNotes
-- Text.AddToIgnore
-- Text.AddToIgnore.Pattern
-- Text.AddToIgnore.Storage
-- Text.AIAssistant.Regen
-- Text.AIAssistant.Use
-- Text.App.Hide
-- Text.App.ShowAll
-- Text.ApplyStash
-- Text.ApplyStash.DropAfterApply
-- Text.ApplyStash.RestoreIndex
-- Text.ApplyStash.Stash
-- Text.Askpass.Passphrase
-- Text.Avatar.Load
-- Text.Bisect
-- Text.Bisect.Abort
-- Text.Bisect.Bad
-- Text.Bisect.Detecting
-- Text.Bisect.Good
-- Text.Bisect.Skip
-- Text.Bisect.WaitingForRange
 - Text.Blame.BlameOnPreviousRevision
-- Text.Blame.IgnoreWhitespace
-- Text.BranchCM.CompareTwo
-- Text.BranchCM.CompareWith
-- Text.BranchCM.CompareWithHead
-- Text.BranchCM.CreatePR
-- Text.BranchCM.CreatePRForUpstream
-- Text.BranchCM.CustomAction
-- Text.BranchCM.EditDescription
-- Text.BranchCM.MergeMultiBranches
-- Text.BranchCM.ResetToSelectedCommit
-- Text.BranchCM.SwitchToWorktree
-- Text.BranchTree.Ahead
 - Text.BranchTree.AheadBehind
 - Text.BranchTree.Behind
-- Text.BranchTree.InvalidUpstream
-- Text.BranchTree.Remote
-- Text.BranchTree.Status
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
 - Text.BranchTree.Worktree
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
+- Text.Checkout.LocalChanges.StashAndReapply
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
@@ -638,6 +602,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
+- Text.Compare
 - Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -673,6 +638,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
 - Text.CopyFullPath
+- Text.CreateBranch.LocalChanges.StashAndReapply
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
@@ -761,6 +727,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
+- Text.Pull.LocalChanges.StashAndReapply
 - Text.Push.New
 - Text.Push.Revision
 - Text.Push.Revision.Title
