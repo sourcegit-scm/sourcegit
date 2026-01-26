@@ -486,15 +486,15 @@ namespace SourceGit.ViewModels
                         // First line: start marker (use real marker from file)
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.StartMarker, 0, 0));
 
-                        // Second line: separator marker
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.SeparatorMarker, 0, 0));
-
                         // Mine content lines (matches the deleted lines in Ours panel)
                         foreach (var line in currentRegion.OursContent)
                         {
                             resultLines.Add(new Models.TextDiffLine(
                                 Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
                         }
+
+                        // Separator marker between Mine and Theirs
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.SeparatorMarker, 0, 0));
 
                         // Theirs content lines (matches the added lines in Theirs panel)
                         foreach (var line in currentRegion.TheirsContent)
