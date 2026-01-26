@@ -355,20 +355,50 @@ namespace SourceGit.Views
                 var startVisualLine = textView.GetVisualLine(startLine);
                 var endVisualLine = textView.GetVisualLine(endLine);
 
-                if (startVisualLine == null || endVisualLine == null)
-                    continue;
+                // Handle partially visible conflicts (same pattern as UpdateSelectedChunkPosition)
+                double viewportY, height;
+                bool isWithinRegion;
 
-                var regionStartY = startVisualLine.GetTextLineVisualYPosition(
-                    startVisualLine.TextLines[0], VisualYPosition.LineTop);
-                var regionEndY = endVisualLine.GetTextLineVisualYPosition(
-                    endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
-
-                if (y >= regionStartY && y <= regionEndY)
+                if (startVisualLine != null && endVisualLine != null)
                 {
-                    // Calculate position relative to the viewport
-                    var viewportY = regionStartY - textView.VerticalOffset;
-                    var height = regionEndY - regionStartY;
+                    // Both lines visible
+                    var regionStartY = startVisualLine.GetTextLineVisualYPosition(
+                        startVisualLine.TextLines[0], VisualYPosition.LineTop);
+                    var regionEndY = endVisualLine.GetTextLineVisualYPosition(
+                        endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
 
+                    isWithinRegion = y >= regionStartY && y <= regionEndY;
+                    viewportY = regionStartY - textView.VerticalOffset;
+                    height = regionEndY - regionStartY;
+                }
+                else if (startVisualLine == null && endVisualLine != null)
+                {
+                    // Start scrolled out, end visible - clamp to top
+                    var regionEndY = endVisualLine.GetTextLineVisualYPosition(
+                        endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
+
+                    isWithinRegion = y <= regionEndY;
+                    viewportY = 0;
+                    height = regionEndY - textView.VerticalOffset;
+                }
+                else if (startVisualLine != null && endVisualLine == null)
+                {
+                    // Start visible, end scrolled out - clamp to bottom
+                    var regionStartY = startVisualLine.GetTextLineVisualYPosition(
+                        startVisualLine.TextLines[0], VisualYPosition.LineTop);
+
+                    isWithinRegion = y >= regionStartY;
+                    viewportY = regionStartY - textView.VerticalOffset;
+                    height = textView.Bounds.Height - viewportY;
+                }
+                else
+                {
+                    // Both scrolled out - conflict not visible
+                    continue;
+                }
+
+                if (isWithinRegion)
+                {
                     var newChunk = new ViewModels.MergeConflictSelectedChunk(
                         viewportY, height, i, PanelType);
 
