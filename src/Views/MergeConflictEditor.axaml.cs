@@ -205,6 +205,8 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
             TextArea.TextView.PointerExited += OnTextViewPointerExited;
+            TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
+            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
         }
 
         public ScrollViewer GetScrollViewer()
@@ -220,6 +222,8 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
             TextArea.TextView.PointerExited -= OnTextViewPointerExited;
+            TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
+            TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             if (_textMate != null)
             {
@@ -318,6 +322,15 @@ namespace SourceGit.Views
             if (!textView.VisualLinesValid)
                 return;
 
+            // Check if pointer is still within current chunk bounds (like TextDiffView does)
+            var currentChunk = vm.SelectedChunk;
+            if (currentChunk != null && currentChunk.Panel == PanelType)
+            {
+                var rect = new Rect(0, currentChunk.Y, Bounds.Width, currentChunk.Height);
+                if (rect.Contains(e.GetPosition(this)))
+                    return; // Still within chunk, don't update
+            }
+
             var conflictRegions = vm.GetConflictRegions();
             if (conflictRegions == null || conflictRegions.Count == 0)
                 return;
@@ -356,21 +369,134 @@ namespace SourceGit.Views
                     var viewportY = regionStartY - textView.VerticalOffset;
                     var height = regionEndY - regionStartY;
 
-                    vm.SelectedChunk = new ViewModels.MergeConflictSelectedChunk(
+                    var newChunk = new ViewModels.MergeConflictSelectedChunk(
                         viewportY, height, i, PanelType);
+
+                    // Only update if changed
+                    if (currentChunk == null ||
+                        currentChunk.ConflictIndex != newChunk.ConflictIndex ||
+                        currentChunk.Panel != newChunk.Panel ||
+                        Math.Abs(currentChunk.Y - newChunk.Y) > 1 ||
+                        Math.Abs(currentChunk.Height - newChunk.Height) > 1)
+                    {
+                        vm.SelectedChunk = newChunk;
+                    }
                     return;
                 }
             }
 
-            // Not hovering over any unresolved conflict
+            // Not hovering over any unresolved conflict - clear chunk
             vm.SelectedChunk = null;
         }
 
         private void OnTextViewPointerExited(object sender, PointerEventArgs e)
         {
+            // Don't clear here - the chunk stays visible until pointer moves to non-conflict area
+        }
+
+        private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
+        {
             var window = this.FindAncestorOfType<MergeConflictEditor>();
-            if (window?.DataContext is ViewModels.MergeConflictEditor vm)
+            if (window?.DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            if (vm.SelectedChunk == null || vm.SelectedChunk.Panel != PanelType)
+                return;
+
+            // Update chunk position after scroll
+            Avalonia.Threading.Dispatcher.UIThread.Post(() => UpdateSelectedChunkPosition(vm));
+        }
+
+        private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
+        {
+            var window = this.FindAncestorOfType<MergeConflictEditor>();
+            if (window?.DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            if (vm.SelectedChunk == null || vm.SelectedChunk.Panel != PanelType)
+                return;
+
+            // Update chunk position when visual lines change
+            UpdateSelectedChunkPosition(vm);
+        }
+
+        private void UpdateSelectedChunkPosition(ViewModels.MergeConflictEditor vm)
+        {
+            var chunk = vm.SelectedChunk;
+            if (chunk == null || chunk.Panel != PanelType)
+                return;
+
+            var textView = TextArea.TextView;
+            if (!textView.VisualLinesValid)
+                return;
+
+            var conflictRegions = vm.GetConflictRegions();
+            if (conflictRegions == null || chunk.ConflictIndex >= conflictRegions.Count)
+                return;
+
+            var region = conflictRegions[chunk.ConflictIndex];
+            if (region.IsResolved)
+            {
                 vm.SelectedChunk = null;
+                return;
+            }
+
+            var startLine = region.PanelStartLine + 1;
+            var endLine = region.PanelEndLine + 1;
+
+            if (startLine > Document.LineCount || endLine > Document.LineCount)
+                return;
+
+            var startVisualLine = textView.GetVisualLine(startLine);
+            var endVisualLine = textView.GetVisualLine(endLine);
+
+            // Calculate visible portion of the conflict
+            double viewportY, height;
+
+            if (startVisualLine != null && endVisualLine != null)
+            {
+                // Both lines visible
+                var regionStartY = startVisualLine.GetTextLineVisualYPosition(
+                    startVisualLine.TextLines[0], VisualYPosition.LineTop);
+                var regionEndY = endVisualLine.GetTextLineVisualYPosition(
+                    endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
+
+                viewportY = regionStartY - textView.VerticalOffset;
+                height = regionEndY - regionStartY;
+            }
+            else if (startVisualLine == null && endVisualLine != null)
+            {
+                // Start scrolled out, end visible - clamp to top
+                var regionEndY = endVisualLine.GetTextLineVisualYPosition(
+                    endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
+
+                viewportY = 0;
+                height = regionEndY - textView.VerticalOffset;
+            }
+            else if (startVisualLine != null && endVisualLine == null)
+            {
+                // Start visible, end scrolled out - clamp to bottom
+                var regionStartY = startVisualLine.GetTextLineVisualYPosition(
+                    startVisualLine.TextLines[0], VisualYPosition.LineTop);
+
+                viewportY = regionStartY - textView.VerticalOffset;
+                height = textView.Bounds.Height - viewportY;
+            }
+            else
+            {
+                // Both scrolled out - conflict not visible, clear chunk
+                vm.SelectedChunk = null;
+                return;
+            }
+
+            // Update chunk with new position
+            var newChunk = new ViewModels.MergeConflictSelectedChunk(
+                viewportY, height, chunk.ConflictIndex, PanelType);
+
+            if (Math.Abs(chunk.Y - newChunk.Y) > 1 || Math.Abs(chunk.Height - newChunk.Height) > 1)
+            {
+                vm.SelectedChunk = newChunk;
+            }
         }
 
         private TextMate.Installation _textMate;
@@ -665,9 +791,9 @@ namespace SourceGit.Views
             _resultPresenter = this.FindControl<MergeDiffPresenter>("ResultPresenter");
 
             // Get popup references
-            _minePopup = this.FindControl<StackPanel>("MinePopup");
-            _theirsPopup = this.FindControl<StackPanel>("TheirsPopup");
-            _resultPopup = this.FindControl<StackPanel>("ResultPopup");
+            _minePopup = this.FindControl<Border>("MinePopup");
+            _theirsPopup = this.FindControl<Border>("TheirsPopup");
+            _resultPopup = this.FindControl<Border>("ResultPopup");
 
             // Set up scroll synchronization
             SetupScrollSync();
@@ -712,11 +838,6 @@ namespace SourceGit.Views
             var newOffset = new Vector(currentOffset.X, Math.Max(0, currentOffset.Y - delta));
 
             SyncAllScrollViewers(newOffset);
-
-            // Clear popup when scrolling via wheel
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                vm.SelectedChunk = null;
-
             e.Handled = true;
         }
 
@@ -729,10 +850,6 @@ namespace SourceGit.Views
             if (e.OffsetDelta.SquaredLength > 0.5f)
             {
                 SyncAllScrollViewers(source.Offset);
-
-                // Clear popup when scrolling
-                if (DataContext is ViewModels.MergeConflictEditor vm)
-                    vm.SelectedChunk = null;
             }
         }
 
@@ -845,8 +962,17 @@ namespace SourceGit.Views
             if (chunk == null)
                 return;
 
+            // Get the presenter for bounds checking
+            MergeDiffPresenter presenter = chunk.Panel switch
+            {
+                ViewModels.MergeConflictPanelType.Mine => _oursPresenter,
+                ViewModels.MergeConflictPanelType.Theirs => _theirsPresenter,
+                ViewModels.MergeConflictPanelType.Result => _resultPresenter,
+                _ => null
+            };
+
             // Show the appropriate popup based on panel type
-            StackPanel popup = chunk.Panel switch
+            Border popup = chunk.Panel switch
             {
                 ViewModels.MergeConflictPanelType.Mine => _minePopup,
                 ViewModels.MergeConflictPanelType.Theirs => _theirsPopup,
@@ -854,10 +980,18 @@ namespace SourceGit.Views
                 _ => null
             };
 
-            if (popup != null)
+            if (popup != null && presenter != null)
             {
+                // Position popup - clamp to visible area
+                var top = chunk.Y + (chunk.Height >= 36 ? 8 : 2);
+
+                // Clamp top to ensure popup is visible
+                var popupHeight = popup.Bounds.Height > 0 ? popup.Bounds.Height : 32;
+                var presenterHeight = presenter.Bounds.Height;
+                top = Math.Max(4, Math.Min(top, presenterHeight - popupHeight - 4));
+
+                popup.Margin = new Thickness(0, top, 24, 0);
                 popup.IsVisible = true;
-                popup.Margin = new Thickness(0, chunk.Y + 8, 8, 0);
             }
         }
 
@@ -1097,8 +1231,8 @@ namespace SourceGit.Views
         private MergeDiffPresenter _oursPresenter;
         private MergeDiffPresenter _theirsPresenter;
         private MergeDiffPresenter _resultPresenter;
-        private StackPanel _minePopup;
-        private StackPanel _theirsPopup;
-        private StackPanel _resultPopup;
+        private Border _minePopup;
+        private Border _theirsPopup;
+        private Border _resultPopup;
     }
 }

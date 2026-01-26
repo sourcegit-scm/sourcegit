@@ -62,20 +62,6 @@
 
           <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
 
-          <!-- Current Conflict Resolution -->
-          <Button Classes="flat"
-                  Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
-                  Click="OnUseCurrentMine"
-                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.UseMine.Tip}"
-                  IsEnabled="{Binding HasUnresolvedConflicts}"/>
-          <Button Classes="flat"
-                  Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
-                  Click="OnUseCurrentTheirs"
-                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.UseTheirs.Tip}"
-                  IsEnabled="{Binding HasUnresolvedConflicts}"/>
-
-          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
-
           <!-- All Conflicts Resolution -->
           <Button Classes="flat"
                   Content="{DynamicResource Text.MergeConflictEditor.AcceptMine}"
@@ -131,23 +117,20 @@
                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.MineBG}"
                                       BorderThickness="1"
                                       BorderBrush="{DynamicResource Brush.Border2}"/>
-                <StackPanel x:Name="MinePopup"
-                            IsVisible="False"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,8,0">
-                  <Border Background="{DynamicResource Brush.ToolBar}"
-                          BorderBrush="{DynamicResource Brush.Border2}"
-                          BorderThickness="1"
-                          CornerRadius="4"
-                          Padding="4,2"
-                          BoxShadow="0 2 8 0 #40000000">
-                    <Button Classes="flat primary"
-                            Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
-                            Click="OnUseMineFromHover"/>
-                  </Border>
-                </StackPanel>
+                <Border x:Name="MinePopup"
+                        IsVisible="False"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource Brush.ToolBar}"
+                        BorderBrush="{DynamicResource Brush.Border2}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="4,2"
+                        BoxShadow="0 2 8 0 #40000000">
+                  <Button Classes="flat primary"
+                          Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
+                          Click="OnUseMineFromHover"/>
+                </Border>
               </Grid>
             </Grid>
           </Border>
@@ -175,23 +158,20 @@
                                       DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
                                       BorderThickness="1"
                                       BorderBrush="{DynamicResource Brush.Border2}"/>
-                <StackPanel x:Name="TheirsPopup"
-                            IsVisible="False"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Right"
-                            Margin="0,0,8,0">
-                  <Border Background="{DynamicResource Brush.ToolBar}"
-                          BorderBrush="{DynamicResource Brush.Border2}"
-                          BorderThickness="1"
-                          CornerRadius="4"
-                          Padding="4,2"
-                          BoxShadow="0 2 8 0 #40000000">
-                    <Button Classes="flat primary"
-                            Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
-                            Click="OnUseTheirsFromHover"/>
-                  </Border>
-                </StackPanel>
+                <Border x:Name="TheirsPopup"
+                        IsVisible="False"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource Brush.ToolBar}"
+                        BorderBrush="{DynamicResource Brush.Border2}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="4,2"
+                        BoxShadow="0 2 8 0 #40000000">
+                  <Button Classes="flat primary"
+                          Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
+                          Click="OnUseTheirsFromHover"/>
+                </Border>
               </Grid>
             </Grid>
           </Border>
@@ -224,34 +204,25 @@
                                     TheirsContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"/>
-              <StackPanel x:Name="ResultPopup"
-                          IsVisible="False"
-                          Orientation="Horizontal"
-                          VerticalAlignment="Top"
-                          HorizontalAlignment="Right"
-                          Margin="0,0,8,0"
-                          Spacing="4">
-                <Border Background="{DynamicResource Brush.ToolBar}"
-                        BorderBrush="{DynamicResource Brush.Border2}"
-                        BorderThickness="1"
-                        CornerRadius="4"
-                        Padding="4,2"
-                        BoxShadow="0 2 8 0 #40000000">
+              <Border x:Name="ResultPopup"
+                      IsVisible="False"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Background="{DynamicResource Brush.ToolBar}"
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      BorderThickness="1"
+                      CornerRadius="4"
+                      Padding="4,2"
+                      BoxShadow="0 2 8 0 #40000000">
+                <StackPanel Orientation="Horizontal" Spacing="4">
                   <Button Classes="flat primary"
                           Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
                           Click="OnUseMineFromHover"/>
-                </Border>
-                <Border Background="{DynamicResource Brush.ToolBar}"
-                        BorderBrush="{DynamicResource Brush.Border2}"
-                        BorderThickness="1"
-                        CornerRadius="4"
-                        Padding="4,2"
-                        BoxShadow="0 2 8 0 #40000000">
                   <Button Classes="flat primary"
                           Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
                           Click="OnUseTheirsFromHover"/>
-                </Border>
-              </StackPanel>
+                </StackPanel>
+              </Border>
             </Grid>
           </Grid>
         </Border>
