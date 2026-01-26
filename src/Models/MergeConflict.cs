@@ -8,6 +8,8 @@ namespace SourceGit.Models
         UseOurs,
         UseTheirs,
         UseBoth,
+        UseBothMineFirst,
+        UseBothTheirsFirst,
         Manual,
     }
 

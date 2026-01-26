@@ -878,6 +878,11 @@
   <x:String x:Key="Text.MergeConflictEditor.AcceptMine.Tip" xml:space="preserve">Resolve all conflicts using Mine version</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptTheirs" xml:space="preserve">ACCEPT ALL THEIRS</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptTheirs.Tip" xml:space="preserve">Resolve all conflicts using Theirs version</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth" xml:space="preserve">ACCEPT ALL BOTH</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.Tip" xml:space="preserve">Resolve all conflicts using both versions</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">First Mine, then Theirs</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">First Theirs, then Mine</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">USE BOTH</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">All conflicts resolved</x:String>
   <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} conflict(s) remaining</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>

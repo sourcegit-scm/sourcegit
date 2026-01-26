@@ -462,18 +462,49 @@ namespace SourceGit.ViewModels
                     if (currentRegion.ResolvedContent != null)
                     {
                         // Resolved - show resolved content with color based on resolution type
-                        var lineType = currentRegion.ResolutionType switch
+                        if (currentRegion.ResolutionType == Models.ConflictResolution.UseBothMineFirst)
                         {
-                            Models.ConflictResolution.UseOurs => Models.TextDiffLineType.Deleted,   // Mine color
-                            Models.ConflictResolution.UseTheirs => Models.TextDiffLineType.Added,  // Theirs color
-                            _ => Models.TextDiffLineType.Normal
-                        };
+                            // First portion is Mine (Deleted color), second is Theirs (Added color)
+                            int mineCount = currentRegion.OursContent.Count;
+                            for (int i = 0; i < currentRegion.ResolvedContent.Count; i++)
+                            {
+                                var lineType = i < mineCount
+                                    ? Models.TextDiffLineType.Deleted
+                                    : Models.TextDiffLineType.Added;
+                                resultLines.Add(new Models.TextDiffLine(
+                                    lineType, currentRegion.ResolvedContent[i], resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
+                        }
+                        else if (currentRegion.ResolutionType == Models.ConflictResolution.UseBothTheirsFirst)
+                        {
+                            // First portion is Theirs (Added color), second is Mine (Deleted color)
+                            int theirsCount = currentRegion.TheirsContent.Count;
+                            for (int i = 0; i < currentRegion.ResolvedContent.Count; i++)
+                            {
+                                var lineType = i < theirsCount
+                                    ? Models.TextDiffLineType.Added
+                                    : Models.TextDiffLineType.Deleted;
+                                resultLines.Add(new Models.TextDiffLine(
+                                    lineType, currentRegion.ResolvedContent[i], resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
+                        }
+                        else
+                        {
+                            var lineType = currentRegion.ResolutionType switch
+                            {
+                                Models.ConflictResolution.UseOurs => Models.TextDiffLineType.Deleted,   // Mine color
+                                Models.ConflictResolution.UseTheirs => Models.TextDiffLineType.Added,  // Theirs color
+                                _ => Models.TextDiffLineType.Normal
+                            };
 
-                        foreach (var line in currentRegion.ResolvedContent)
-                        {
-                            resultLines.Add(new Models.TextDiffLine(
-                                lineType, line, resultLineNumber, resultLineNumber));
-                            resultLineNumber++;
+                            foreach (var line in currentRegion.ResolvedContent)
+                            {
+                                resultLines.Add(new Models.TextDiffLine(
+                                    lineType, line, resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
                         }
                         // Pad with empty lines to match Mine/Theirs panel height
                         int padding = regionLines - currentRegion.ResolvedContent.Count;
@@ -656,6 +687,104 @@ namespace SourceGit.ViewModels
             region.ResolvedContent = new List<string>(region.TheirsContent);
             region.IsResolved = true;
             region.ResolutionType = Models.ConflictResolution.UseTheirs;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
+        }
+
+        public void AcceptBothMineFirst()
+        {
+            if (_conflictRegions.Count == 0)
+                return;
+
+            bool anyResolved = false;
+            foreach (var region in _conflictRegions)
+            {
+                if (!region.IsResolved)
+                {
+                    var combined = new List<string>(region.OursContent);
+                    combined.AddRange(region.TheirsContent);
+                    region.ResolvedContent = combined;
+                    region.IsResolved = true;
+                    region.ResolutionType = Models.ConflictResolution.UseBothMineFirst;
+                    anyResolved = true;
+                }
+            }
+
+            if (anyResolved)
+            {
+                RebuildResultContent();
+                BuildAlignedResultPanel();
+                UpdateConflictInfo();
+                IsModified = true;
+            }
+        }
+
+        public void AcceptBothTheirsFirst()
+        {
+            if (_conflictRegions.Count == 0)
+                return;
+
+            bool anyResolved = false;
+            foreach (var region in _conflictRegions)
+            {
+                if (!region.IsResolved)
+                {
+                    var combined = new List<string>(region.TheirsContent);
+                    combined.AddRange(region.OursContent);
+                    region.ResolvedContent = combined;
+                    region.IsResolved = true;
+                    region.ResolutionType = Models.ConflictResolution.UseBothTheirsFirst;
+                    anyResolved = true;
+                }
+            }
+
+            if (anyResolved)
+            {
+                RebuildResultContent();
+                BuildAlignedResultPanel();
+                UpdateConflictInfo();
+                IsModified = true;
+            }
+        }
+
+        public void AcceptBothMineFirstAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            var combined = new List<string>(region.OursContent);
+            combined.AddRange(region.TheirsContent);
+            region.ResolvedContent = combined;
+            region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseBothMineFirst;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
+        }
+
+        public void AcceptBothTheirsFirstAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            var combined = new List<string>(region.TheirsContent);
+            combined.AddRange(region.OursContent);
+            region.ResolvedContent = combined;
+            region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseBothTheirsFirst;
 
             RebuildResultContent();
             BuildAlignedResultPanel();

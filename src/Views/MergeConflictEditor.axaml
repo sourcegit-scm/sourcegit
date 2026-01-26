@@ -73,6 +73,34 @@
                   Click="OnAcceptTheirs"
                   ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.AcceptTheirs.Tip}"
                   IsEnabled="{Binding HasUnresolvedConflicts}"/>
+          <Button Classes="flat"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.AcceptBoth.Tip}"
+                  IsEnabled="{Binding HasUnresolvedConflicts}">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+              <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth}"/>
+              <Path Width="10" Height="10" Data="{StaticResource Icons.Down}" VerticalAlignment="Center"/>
+            </StackPanel>
+            <Button.Flyout>
+              <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                <MenuItem Click="OnAcceptBothMineFirst">
+                  <MenuItem.Icon>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.MineHeader}"/>
+                  </MenuItem.Icon>
+                  <MenuItem.Header>
+                    <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.MineFirst}"/>
+                  </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Click="OnAcceptBothTheirsFirst">
+                  <MenuItem.Icon>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.TheirsHeader}"/>
+                  </MenuItem.Icon>
+                  <MenuItem.Header>
+                    <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.TheirsFirst}"/>
+                  </MenuItem.Header>
+                </MenuItem>
+              </MenuFlyout>
+            </Button.Flyout>
+          </Button>
 
           <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
 
@@ -221,6 +249,32 @@
                   <Button Classes="flat primary"
                           Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
                           Click="OnUseTheirsFromHover"/>
+                  <Button Classes="flat primary">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                      <TextBlock Text="{DynamicResource Text.MergeConflictEditor.UseBoth}"/>
+                      <Path Width="8" Height="8" Data="{StaticResource Icons.Down}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button.Flyout>
+                      <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuItem Click="OnUseBothMineFirstFromHover">
+                          <MenuItem.Icon>
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.MineHeader}"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.MineFirst}"/>
+                          </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="OnUseBothTheirsFirstFromHover">
+                          <MenuItem.Icon>
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.TheirsHeader}"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.TheirsFirst}"/>
+                          </MenuItem.Header>
+                        </MenuItem>
+                      </MenuFlyout>
+                    </Button.Flyout>
+                  </Button>
                 </StackPanel>
               </Border>
               <Border x:Name="ResultUndoPopup"

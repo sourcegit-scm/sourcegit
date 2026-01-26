@@ -1218,6 +1218,60 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnAcceptBothMineFirst(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptBothMineFirst();
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+            }
+            e.Handled = true;
+        }
+
+        private void OnAcceptBothTheirsFirst(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptBothTheirsFirst();
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+            }
+            e.Handled = true;
+        }
+
+        private void OnUseBothMineFirstFromHover(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptBothMineFirstAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+                vm.SelectedChunk = null;
+            }
+            e.Handled = true;
+        }
+
+        private void OnUseBothTheirsFirstFromHover(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptBothTheirsFirstAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+                vm.SelectedChunk = null;
+            }
+            e.Handled = true;
+        }
+
         private Vector SaveScrollOffset()
         {
             if (DataContext is ViewModels.MergeConflictEditor vm)
