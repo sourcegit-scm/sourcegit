@@ -120,6 +120,8 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged(nameof(HasUnresolvedConflicts));
                     OnPropertyChanged(nameof(StatusText));
                     OnPropertyChanged(nameof(CanSave));
+                    OnPropertyChanged(nameof(HasPrevConflict));
+                    OnPropertyChanged(nameof(HasNextConflict));
                 }
             }
         }
@@ -151,8 +153,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool HasPrevConflict => _currentConflictIndex > 0;
-        public bool HasNextConflict => _currentConflictIndex < _totalConflicts - 1;
+        public bool HasPrevConflict => UnresolvedConflictCount > 0;
+        public bool HasNextConflict => UnresolvedConflictCount > 0;
 
         public int CurrentConflictLine
         {
@@ -813,19 +815,55 @@ namespace SourceGit.ViewModels
 
         public void GotoPrevConflict()
         {
-            if (_currentConflictIndex > 0)
+            if (UnresolvedConflictCount == 0 || _conflictRegions.Count == 0)
+                return;
+
+            // Handle edge case where no conflict is currently selected
+            int startIndex = _currentConflictIndex >= 0 ? _currentConflictIndex : 0;
+
+            // Search for the previous unresolved conflict with wrap-around
+            int index = startIndex - 1;
+            if (index < 0)
+                index = _conflictRegions.Count - 1;
+
+            int iterations = 0;
+            while (iterations < _conflictRegions.Count)
             {
-                CurrentConflictIndex--;
-                UpdateCurrentConflictLine();
+                if (!_conflictRegions[index].IsResolved)
+                {
+                    CurrentConflictIndex = index;
+                    UpdateCurrentConflictLine();
+                    return;
+                }
+                index--;
+                if (index < 0)
+                    index = _conflictRegions.Count - 1;
+                iterations++;
             }
         }
 
         public void GotoNextConflict()
         {
-            if (_currentConflictIndex < _totalConflicts - 1)
+            if (UnresolvedConflictCount == 0 || _conflictRegions.Count == 0)
+                return;
+
+            // Handle edge case where no conflict is currently selected
+            int startIndex = _currentConflictIndex >= 0 ? _currentConflictIndex : -1;
+
+            // Search for the next unresolved conflict with wrap-around
+            int index = (startIndex + 1) % _conflictRegions.Count;
+
+            int iterations = 0;
+            while (iterations < _conflictRegions.Count)
             {
-                CurrentConflictIndex++;
-                UpdateCurrentConflictLine();
+                if (!_conflictRegions[index].IsResolved)
+                {
+                    CurrentConflictIndex = index;
+                    UpdateCurrentConflictLine();
+                    return;
+                }
+                index = (index + 1) % _conflictRegions.Count;
+                iterations++;
             }
         }
 
