@@ -554,7 +554,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-71.08%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-71.51%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -568,7 +568,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
-- Text.Checkout.LocalChanges.StashAndReapply
 - Text.Checkout.WarnLostCommits
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
@@ -602,7 +601,6 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Info.Signer
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Compare
 - Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
@@ -638,7 +636,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
 - Text.CopyFullPath
-- Text.CreateBranch.LocalChanges.StashAndReapply
 - Text.CreateBranch.OverwriteExisting
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
@@ -727,7 +724,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
-- Text.Pull.LocalChanges.StashAndReapply
 - Text.Push.New
 - Text.Push.Revision
 - Text.Push.Revision.Title
