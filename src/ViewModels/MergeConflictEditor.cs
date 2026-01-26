@@ -10,6 +10,20 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public enum MergeConflictPanelType
+    {
+        Mine,
+        Theirs,
+        Result
+    }
+
+    public record MergeConflictSelectedChunk(
+        double Y,
+        double Height,
+        int ConflictIndex,
+        MergeConflictPanelType Panel
+    );
+
     // Represents a single conflict region with its original content and panel positions
     public class ConflictRegion
     {
@@ -161,6 +175,13 @@ namespace SourceGit.ViewModels
         {
             get => _scrollOffset;
             set => SetProperty(ref _scrollOffset, value);
+        }
+
+        // Selected chunk for hover-based conflict resolution
+        public MergeConflictSelectedChunk SelectedChunk
+        {
+            get => _selectedChunk;
+            set => SetProperty(ref _selectedChunk, value);
         }
 
         public MergeConflictEditor(Repository repo, string filePath)
@@ -576,6 +597,44 @@ namespace SourceGit.ViewModels
             IsModified = true;
         }
 
+        public IReadOnlyList<ConflictRegion> GetConflictRegions() => _conflictRegions;
+
+        public void AcceptOursAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            region.ResolvedContent = new List<string>(region.OursContent);
+            region.IsResolved = true;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
+        }
+
+        public void AcceptTheirsAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            region.ResolvedContent = new List<string>(region.TheirsContent);
+            region.IsResolved = true;
+
+            RebuildResultContent();
+            BuildAlignedResultPanel();
+            UpdateConflictInfo();
+            IsModified = true;
+        }
+
         public void GotoPrevConflict()
         {
             if (_currentConflictIndex > 0)
@@ -862,5 +921,6 @@ namespace SourceGit.ViewModels
         private List<ConflictRegion> _conflictRegions = [];
         private List<(int Start, int End)> _allConflictRanges = [];
         private Vector _scrollOffset = Vector.Zero;
+        private MergeConflictSelectedChunk _selectedChunk;
     }
 }

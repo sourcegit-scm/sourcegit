@@ -166,6 +166,15 @@ namespace SourceGit.Views
             set => SetValue(AllConflictRangesProperty, value);
         }
 
+        public static readonly StyledProperty<ViewModels.MergeConflictPanelType> PanelTypeProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, ViewModels.MergeConflictPanelType>(nameof(PanelType));
+
+        public ViewModels.MergeConflictPanelType PanelType
+        {
+            get => GetValue(PanelTypeProperty);
+            set => SetValue(PanelTypeProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -194,6 +203,8 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
+            TextArea.TextView.PointerExited += OnTextViewPointerExited;
         }
 
         public ScrollViewer GetScrollViewer()
@@ -207,6 +218,8 @@ namespace SourceGit.Views
             _scrollViewer = null;
 
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
+            TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
+            TextArea.TextView.PointerExited -= OnTextViewPointerExited;
 
             if (_textMate != null)
             {
@@ -290,6 +303,74 @@ namespace SourceGit.Views
             menu.Open(TextArea.TextView);
 
             e.Handled = true;
+        }
+
+        private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
+        {
+            var window = this.FindAncestorOfType<MergeConflictEditor>();
+            if (window?.DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            if (vm.IsLoading)
+                return;
+
+            var textView = TextArea.TextView;
+            if (!textView.VisualLinesValid)
+                return;
+
+            var conflictRegions = vm.GetConflictRegions();
+            if (conflictRegions == null || conflictRegions.Count == 0)
+                return;
+
+            var position = e.GetPosition(textView);
+            var y = position.Y + textView.VerticalOffset;
+
+            // Find which conflict region contains this Y position
+            for (int i = 0; i < conflictRegions.Count; i++)
+            {
+                var region = conflictRegions[i];
+                if (region.IsResolved || region.PanelStartLine < 0 || region.PanelEndLine < 0)
+                    continue;
+
+                // Get the visual bounds of this conflict region
+                var startLine = region.PanelStartLine + 1; // Document lines are 1-indexed
+                var endLine = region.PanelEndLine + 1;
+
+                if (startLine > Document.LineCount || endLine > Document.LineCount)
+                    continue;
+
+                var startVisualLine = textView.GetVisualLine(startLine);
+                var endVisualLine = textView.GetVisualLine(endLine);
+
+                if (startVisualLine == null || endVisualLine == null)
+                    continue;
+
+                var regionStartY = startVisualLine.GetTextLineVisualYPosition(
+                    startVisualLine.TextLines[0], VisualYPosition.LineTop);
+                var regionEndY = endVisualLine.GetTextLineVisualYPosition(
+                    endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
+
+                if (y >= regionStartY && y <= regionEndY)
+                {
+                    // Calculate position relative to the viewport
+                    var viewportY = regionStartY - textView.VerticalOffset;
+                    var height = regionEndY - regionStartY;
+
+                    vm.SelectedChunk = new ViewModels.MergeConflictSelectedChunk(
+                        viewportY, height, i, PanelType);
+                    return;
+                }
+            }
+
+            // Not hovering over any unresolved conflict
+            vm.SelectedChunk = null;
+        }
+
+        private void OnTextViewPointerExited(object sender, PointerEventArgs e)
+        {
+            var window = this.FindAncestorOfType<MergeConflictEditor>();
+            if (window?.DataContext is ViewModels.MergeConflictEditor vm)
+                vm.SelectedChunk = null;
         }
 
         private TextMate.Installation _textMate;
@@ -583,6 +664,11 @@ namespace SourceGit.Views
             _theirsPresenter = this.FindControl<MergeDiffPresenter>("TheirsPresenter");
             _resultPresenter = this.FindControl<MergeDiffPresenter>("ResultPresenter");
 
+            // Get popup references
+            _minePopup = this.FindControl<StackPanel>("MinePopup");
+            _theirsPopup = this.FindControl<StackPanel>("TheirsPopup");
+            _resultPopup = this.FindControl<StackPanel>("ResultPopup");
+
             // Set up scroll synchronization
             SetupScrollSync();
 
@@ -626,6 +712,11 @@ namespace SourceGit.Views
             var newOffset = new Vector(currentOffset.X, Math.Max(0, currentOffset.Y - delta));
 
             SyncAllScrollViewers(newOffset);
+
+            // Clear popup when scrolling via wheel
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.SelectedChunk = null;
+
             e.Handled = true;
         }
 
@@ -638,6 +729,10 @@ namespace SourceGit.Views
             if (e.OffsetDelta.SquaredLength > 0.5f)
             {
                 SyncAllScrollViewers(source.Offset);
+
+                // Clear popup when scrolling
+                if (DataContext is ViewModels.MergeConflictEditor vm)
+                    vm.SelectedChunk = null;
             }
         }
 
@@ -688,6 +783,10 @@ namespace SourceGit.Views
             {
                 UpdateResolvedRanges();
             }
+            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.SelectedChunk))
+            {
+                UpdatePopupVisibility();
+            }
         }
 
         private void UpdateResolvedRanges()
@@ -727,6 +826,67 @@ namespace SourceGit.Views
                 _resultPresenter.CurrentConflictStartLine = startLine;
                 _resultPresenter.CurrentConflictEndLine = endLine;
             }
+        }
+
+        private void UpdatePopupVisibility()
+        {
+            // Hide all popups first
+            if (_minePopup != null)
+                _minePopup.IsVisible = false;
+            if (_theirsPopup != null)
+                _theirsPopup.IsVisible = false;
+            if (_resultPopup != null)
+                _resultPopup.IsVisible = false;
+
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            var chunk = vm.SelectedChunk;
+            if (chunk == null)
+                return;
+
+            // Show the appropriate popup based on panel type
+            StackPanel popup = chunk.Panel switch
+            {
+                ViewModels.MergeConflictPanelType.Mine => _minePopup,
+                ViewModels.MergeConflictPanelType.Theirs => _theirsPopup,
+                ViewModels.MergeConflictPanelType.Result => _resultPopup,
+                _ => null
+            };
+
+            if (popup != null)
+            {
+                popup.IsVisible = true;
+                popup.Margin = new Thickness(0, chunk.Y + 8, 8, 0);
+            }
+        }
+
+        private void OnUseMineFromHover(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptOursAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+                vm.SelectedChunk = null;
+            }
+            e.Handled = true;
+        }
+
+        private void OnUseTheirsFromHover(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = SaveScrollOffset();
+                vm.AcceptTheirsAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                RestoreScrollOffset(savedOffset);
+                vm.SelectedChunk = null;
+            }
+            e.Handled = true;
         }
 
         protected override async void OnClosing(WindowClosingEventArgs e)
@@ -937,5 +1097,8 @@ namespace SourceGit.Views
         private MergeDiffPresenter _oursPresenter;
         private MergeDiffPresenter _theirsPresenter;
         private MergeDiffPresenter _resultPresenter;
+        private StackPanel _minePopup;
+        private StackPanel _theirsPopup;
+        private StackPanel _resultPopup;
     }
 }
