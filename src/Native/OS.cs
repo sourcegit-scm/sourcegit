@@ -149,6 +149,19 @@ namespace SourceGit.Native
                     return;
                 }
             }
+            else if (OperatingSystem.IsLinux())
+            {
+                var appImage = Environment.GetEnvironmentVariable("APPIMAGE");
+                if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))
+                {
+                    var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");
+                    if (Directory.Exists(portableDir))
+                    {
+                        DataDir = portableDir;
+                        return;
+                    }
+                }
+            }
 
             var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             if (string.IsNullOrEmpty(osAppDataDir))
