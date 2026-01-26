@@ -374,7 +374,7 @@ namespace SourceGit.Views
 
                     var patch = new MenuItem();
                     patch.Header = App.Text("FileCM.SaveAsPatch");
-                    patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                    patch.Icon = App.CreateMenuIcon("Icons.Save");
                     patch.Click += async (_, e) =>
                     {
                         var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -780,7 +780,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -963,7 +963,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -1180,7 +1180,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -1290,7 +1290,7 @@ namespace SourceGit.Views
                         item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
                         item.Click += (_, e) =>
                         {
-                            tool.Open(fullpath);
+                            tool.Launch(fullpath.Quoted());
                             e.Handled = true;
                         };
 

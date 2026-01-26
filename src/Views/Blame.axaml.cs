@@ -223,7 +223,7 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
-                                blame.NavigateToCommit(info.CommitSHA, false);
+                                blame.NavigateToCommit(info.File, info.CommitSHA);
 
                             e.Handled = true;
                             break;
@@ -254,6 +254,15 @@ namespace SourceGit.Views
             }
 
             private readonly BlameTextEditor _editor = null;
+        }
+
+        public static readonly StyledProperty<string> FileProperty =
+            AvaloniaProperty.Register<BlameTextEditor, string>(nameof(File));
+
+        public string File
+        {
+            get => GetValue(FileProperty);
+            set => SetValue(FileProperty, value);
         }
 
         public static readonly StyledProperty<Models.BlameData> BlameDataProperty =
@@ -350,17 +359,17 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
+            if (change.Property == FileProperty)
+            {
+                if (File is { Length: > 0 })
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, File);
+            }
             if (change.Property == BlameDataProperty)
             {
                 if (BlameData is { IsBinary: false } blame)
-                {
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, blame.File);
                     Text = blame.Content;
-                }
                 else
-                {
                     Text = string.Empty;
-                }
             }
             else if (change.Property == TabWidthProperty)
             {

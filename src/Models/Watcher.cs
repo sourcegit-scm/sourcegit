@@ -302,6 +302,13 @@ namespace SourceGit.Models
             {
                 Interlocked.Exchange(ref _updateBranch, DateTime.Now.AddSeconds(.5).ToFileTime());
             }
+            else if (name.StartsWith("reftable/", StringComparison.Ordinal))
+            {
+                var desired = DateTime.Now.AddSeconds(.5).ToFileTime();
+                Interlocked.Exchange(ref _updateBranch, desired);
+                Interlocked.Exchange(ref _updateTags, desired);
+                Interlocked.Exchange(ref _updateStashes, desired);
+            }
             else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
             {
                 Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());

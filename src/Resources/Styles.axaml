@@ -532,6 +532,10 @@
     <Setter Property="Foreground" Value="DarkOrange"/>
     <Setter Property="TextDecorations" Value="Underline"/>
   </Style>
+  <Style Selector="Run.inline_code">
+    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Monospace}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.InlineCodeFG}"/>
+  </Style>
 
   <Style Selector="SelectableTextBlock">
     <Setter Property="HorizontalAlignment" Value="Left"/>

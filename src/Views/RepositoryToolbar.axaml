@@ -10,7 +10,7 @@
   <Grid ColumnDefinitions="*,Auto,*">
     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
       <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.OpenWith}"/>
       </Button>
 
       <Button Classes="icon_button" Width="32" Click="OpenGitLogs" ToolTip.Tip="{DynamicResource Text.Repository.ViewLogs}">

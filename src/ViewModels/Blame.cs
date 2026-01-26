@@ -10,9 +10,20 @@ namespace SourceGit.ViewModels
 {
     public class Blame : ObservableObject
     {
-        public string FilePath
+        public string File
         {
-            get;
+            get => _file;
+            private set => SetProperty(ref _file, value);
+        }
+
+        public bool IgnoreWhitespace
+        {
+            get => _ignoreWhitespace;
+            set
+            {
+                if (SetProperty(ref _ignoreWhitespace, value))
+                    SetBlameData(_navigationHistory[0]);
+            }
         }
 
         public Models.Commit Revision
@@ -55,14 +66,9 @@ namespace SourceGit.ViewModels
         public Blame(string repo, string file, Models.Commit commit)
         {
             var sha = commit.SHA.Substring(0, 10);
-
-            FilePath = file;
-            Revision = commit;
-            PrevRevision = null;
-
             _repo = repo;
-            _navigationHistory.Add(sha);
-            SetBlameData(sha);
+            _navigationHistory.Add(new RevisionInfo(file, sha));
+            SetBlameData(_navigationHistory[0]);
         }
 
         public string GetCommitMessage(string sha)
@@ -83,7 +89,7 @@ namespace SourceGit.ViewModels
             _navigationActiveIndex--;
             OnPropertyChanged(nameof(CanBack));
             OnPropertyChanged(nameof(CanForward));
-            NavigateToCommit(_navigationHistory[_navigationActiveIndex], true);
+            NavigateToCommit(_navigationHistory[_navigationActiveIndex]);
         }
 
         public void Forward()
@@ -94,18 +100,16 @@ namespace SourceGit.ViewModels
             _navigationActiveIndex++;
             OnPropertyChanged(nameof(CanBack));
             OnPropertyChanged(nameof(CanForward));
-            NavigateToCommit(_navigationHistory[_navigationActiveIndex], true);
+            NavigateToCommit(_navigationHistory[_navigationActiveIndex]);
         }
 
         public void GotoPrevRevision()
         {
-            if (_prevRevision == null)
-                return;
-
-            NavigateToCommit(_prevRevision.SHA, false);
+            if (_prevRevision != null)
+                NavigateToCommit(_file, _prevRevision.SHA.Substring(0, 10));
         }
 
-        public void NavigateToCommit(string commitSHA, bool isBackOrForward)
+        public void NavigateToCommit(string file, string sha)
         {
             if (App.GetLauncher() is { Pages: { } pages })
             {
@@ -113,31 +117,46 @@ namespace SourceGit.ViewModels
                 {
                     if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
                     {
-                        repo.NavigateToCommit(commitSHA);
+                        repo.NavigateToCommit(sha);
                         break;
                     }
                 }
             }
 
-            if (Revision.SHA.StartsWith(commitSHA, StringComparison.Ordinal))
+            if (Revision.SHA.StartsWith(sha, StringComparison.Ordinal))
                 return;
 
-            if (!isBackOrForward)
-            {
-                var count = _navigationHistory.Count;
-                if (_navigationActiveIndex < count - 1)
-                    _navigationHistory.RemoveRange(_navigationActiveIndex + 1, count - _navigationActiveIndex - 1);
+            var count = _navigationHistory.Count;
+            if (_navigationActiveIndex < count - 1)
+                _navigationHistory.RemoveRange(_navigationActiveIndex + 1, count - _navigationActiveIndex - 1);
 
-                _navigationHistory.Add(commitSHA);
-                _navigationActiveIndex++;
-                OnPropertyChanged(nameof(CanBack));
-                OnPropertyChanged(nameof(CanForward));
-            }
-
-            SetBlameData(commitSHA);
+            var rev = new RevisionInfo(file, sha);
+            _navigationHistory.Add(rev);
+            _navigationActiveIndex++;
+            OnPropertyChanged(nameof(CanBack));
+            OnPropertyChanged(nameof(CanForward));
+            SetBlameData(rev);
         }
 
-        private void SetBlameData(string commitSHA)
+        private void NavigateToCommit(RevisionInfo rev)
+        {
+            if (App.GetLauncher() is { Pages: { } pages })
+            {
+                foreach (var page in pages)
+                {
+                    if (page.Data is Repository repo && repo.FullPath.Equals(_repo))
+                    {
+                        repo.NavigateToCommit(rev.SHA);
+                        break;
+                    }
+                }
+            }
+
+            if (!Revision.SHA.StartsWith(rev.SHA, StringComparison.Ordinal))
+                SetBlameData(rev);
+        }
+
+        private void SetBlameData(RevisionInfo rev)
         {
             if (_cancellationSource is { IsCancellationRequested: false })
                 _cancellationSource.Cancel();
@@ -145,14 +164,16 @@ namespace SourceGit.ViewModels
             _cancellationSource = new CancellationTokenSource();
             var token = _cancellationSource.Token;
 
+            File = rev.File;
+
             Task.Run(async () =>
             {
                 var argsBuilder = new StringBuilder();
                 argsBuilder
                     .Append("--date-order -n 2 ")
-                    .Append(commitSHA ?? string.Empty)
+                    .Append(rev.SHA)
                     .Append(" -- ")
-                    .Append(FilePath.Quoted());
+                    .Append(rev.File.Quoted());
 
                 var commits = await new Commands.QueryCommits(_repo, argsBuilder.ToString(), false)
                     .GetResultAsync()
@@ -163,14 +184,14 @@ namespace SourceGit.ViewModels
                     if (!token.IsCancellationRequested)
                     {
                         Revision = commits.Count > 0 ? commits[0] : null;
-                        PrevRevision = commits.Count == 2 ? commits[1] : null;
+                        PrevRevision = commits.Count > 1 ? commits[1] : null;
                     }
                 });
             });
 
             Task.Run(async () =>
             {
-                var result = await new Commands.Blame(_repo, FilePath, commitSHA)
+                var result = await new Commands.Blame(_repo, rev.File, rev.SHA, _ignoreWhitespace)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
@@ -182,12 +203,26 @@ namespace SourceGit.ViewModels
             }, token);
         }
 
+        private class RevisionInfo
+        {
+            public string File { get; set; } = string.Empty;
+            public string SHA { get; set; } = string.Empty;
+
+            public RevisionInfo(string file, string sha)
+            {
+                File = file;
+                SHA = sha;
+            }
+        }
+
         private string _repo;
+        private string _file;
+        private bool _ignoreWhitespace = false;
         private Models.Commit _revision;
         private Models.Commit _prevRevision;
         private CancellationTokenSource _cancellationSource = null;
         private int _navigationActiveIndex = 0;
-        private List<string> _navigationHistory = [];
+        private List<RevisionInfo> _navigationHistory = [];
         private Models.BlameData _data = null;
         private Dictionary<string, string> _commitMessages = new();
     }

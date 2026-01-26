@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -164,17 +164,24 @@
 
           <CheckBox Grid.Row="7" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
-                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
+                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"
+                    ToolTip.Tip="commit.gpgsign=true"/>
 
           <CheckBox Grid.Row="8" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
-                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
+                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"
+                    ToolTip.Tip="tag.gpgsign=true"/>
 
           <CheckBox Grid.Row="9" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
-                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
+                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"
+                    ToolTip.Tip="fetch.prune=true"/>
 
-          <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
+          <CheckBox Grid.Row="10" Grid.Column="1"
+                    Content="{DynamicResource Text.Configure.Git.AskBeforeAutoUpdatingSubmodules}"
+                    IsChecked="{Binding AskBeforeAutoUpdatingSubmodules, Mode=TwoWay}"/>
+
+          <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>

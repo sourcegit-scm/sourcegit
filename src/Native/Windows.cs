@@ -401,7 +401,7 @@ namespace SourceGit.Native
                     {
                         var exec = instance.ProductPath;
                         var icon = instance.IsPrerelease ? "vs-preview" : "vs";
-                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateVSProjectLaunchOptions);
                     }
                 }
             }
@@ -444,36 +444,31 @@ namespace SourceGit.Native
             }
         }
 
-        private string GenerateCommandlineArgsForVisualStudio(string path)
+        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
             if (Directory.Exists(path))
             {
-                var sln = FindVSSolutionFile(new DirectoryInfo(path), 4);
-                return string.IsNullOrEmpty(sln) ? path.Quoted() : sln.Quoted();
-            }
+                void Search(List<Models.ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
+                {
+                    if (depth < 0)
+                        return;
 
-            return path.Quoted();
-        }
+                    foreach (var file in dir.GetFiles())
+                    {
+                        if (file.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                            file.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                            opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
+                    }
 
-        private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)
-        {
-            var files = dir.GetFiles();
-            foreach (var f in files)
-            {
-                if (f.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase) ||
-                    f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
-                    return f.FullName;
-            }
+                    foreach (var subDir in dir.GetDirectories())
+                        Search(opts, subDir, root, depth - 1);
+                }
 
-            if (leftDepth <= 0)
-                return null;
-
-            var subDirs = dir.GetDirectories();
-            foreach (var subDir in subDirs)
-            {
-                var first = FindVSSolutionFile(subDir, leftDepth - 1);
-                if (!string.IsNullOrEmpty(first))
-                    return first;
+                var rootDir = new DirectoryInfo(path);
+                var options = new List<Models.ExternalTool.LaunchOption>();
+                Search(options, rootDir, rootDir.FullName, 4);
+                if (options.Count > 0)
+                    return options;
             }
 
             return null;

@@ -343,7 +343,7 @@ namespace SourceGit.ViewModels
             if (tool == null)
                 Native.OS.OpenWithDefaultEditor(tmpFile);
             else
-                tool.Open(tmpFile);
+                tool.Launch(tmpFile.Quoted());
         }
 
         public async Task SaveRevisionFileAsync(Models.Object file, string saveTo)
@@ -483,6 +483,17 @@ namespace SourceGit.ViewModels
                 var isCommitSHA = await new Commands.IsCommitSHA(_repo.FullPath, sha).GetResultAsync().ConfigureAwait(false);
                 if (isCommitSHA)
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
+            }
+
+            var inlineCodeMatches = REG_INLINECODE_FORMAT().Matches(message);
+            foreach (Match match in inlineCodeMatches)
+            {
+                var start = match.Index;
+                var len = match.Length;
+                if (inlines.Intersect(start, len) != null)
+                    continue;
+
+                inlines.Add(new Models.InlineElement(Models.InlineElementType.Code, start + 1, len - 2, string.Empty));
             }
 
             inlines.Sort();
@@ -632,6 +643,9 @@ namespace SourceGit.ViewModels
 
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
+
+        [GeneratedRegex(@"`.*?`")]
+        private static partial Regex REG_INLINECODE_FORMAT();
 
         private Repository _repo = null;
         private CommitDetailSharedData _sharedData = null;

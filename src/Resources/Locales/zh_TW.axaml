@@ -58,6 +58,7 @@
   <x:String x:Key="Text.Bisect.WaitingForRange">二分搜尋進行中。請標記目前的提交為「良好」或「錯誤」，然後簽出另一個提交。</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行溯源 (blame)</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">對上一個版本執行逐行溯源</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace">忽略空白符號變化</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">所選擇的檔案不支援該操作!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">簽出 (checkout) ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比較所選的 2 個分支</x:String>
@@ -112,6 +113,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您目前的分離的 HEAD 包含與任何分支/標籤無關的提交! 您要繼續嗎?</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模組需要更新:{0}您想立即更新它們嗎？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">簽出分支並快轉</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支: </x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
@@ -228,6 +230,7 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">電子郵件地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git 設定</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">在自動更新子模組之前詢問用戶</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">自訂約定式提交類型</x:String>
@@ -547,6 +550,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">調整存放庫分組</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名稱:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">不，謝謝</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">尚未設定 Git。請開啟 [偏好設定] 以設定 Git 路徑。</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">開啟</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系統預設編輯器</x:String>
@@ -622,8 +626,8 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">預設複製 (clone) 路徑</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">預設 Git 使用者電子郵件</x:String>
-  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">拉取變更時進行清理 (--prune)</x:String>
-  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">對比檔案時，預設忽略行末的 CR 變更 (--ignore-cr-at-eol)</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">拉取變更時進行清理</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">對比檔案時，預設忽略行末的 CR 變更</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">本軟體要求 Git 最低版本為 2.25.1</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">啟用 HTTP SSL 驗證</x:String>
@@ -733,10 +737,12 @@
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新增分支</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">清除所有通知</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">路線圖中僅對目前分支上色</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">此存放庫（資料夾）</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">在 {0} 中開啟</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具開啟</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">遠端列表</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">新增遠端</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">解決衝突</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">搜尋提交</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">提交者</x:String>
@@ -875,7 +881,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">如果子模組尚未初始化，則將其初始化</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">遞迴更新子孫模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">子模組:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">更新至子模組的遠端追蹤分支</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
@@ -943,4 +948,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">開啟工作區</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作區</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除鎖定工作區</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
 </ResourceDictionary>

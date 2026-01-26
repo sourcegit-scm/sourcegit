@@ -71,7 +71,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("StashCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, ev) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;

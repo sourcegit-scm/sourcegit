@@ -54,6 +54,7 @@
   <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Mark current commit as good or bad and checkout another one.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame on Previous Revision</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace">Ignore whitespace changes</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Compare selected 2 branches</x:String>
@@ -108,6 +109,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reapply</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Your current HEAD contains commit(s) not connected to any branches/tags! Do you want to continue?</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">The following submodules need to be updated:{0}Do you want to update them?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward to:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
@@ -224,6 +226,7 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Ask before auto-updating submodules</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(s)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Conventional Commit Types</x:String>
@@ -543,6 +546,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">NO</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git has NOT been configured. Please to go [Preferences] and configure it first.</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Default Editor (System)</x:String>
@@ -618,8 +622,8 @@
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</x:String>
   <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">User Email</x:String>
   <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Global git user email</x:String>
-  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Enable --prune on fetch</x:String>
-  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Enable --ignore-cr-at-eol in diff</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Prune dead branches after fetching</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Ignore CR at end-of-line in text diff</x:String>
   <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Git (&gt;= 2.25.1) is required by this app</x:String>
   <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Install Path</x:String>
   <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Enable HTTP SSL Verify</x:String>
@@ -729,10 +733,12 @@
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Create Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">CLEAR NOTIFICATIONS</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Only highlight current branch</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Open as Folder</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Open in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Open in External Tools</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">Add Remote</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOLVE</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Search Commit</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Author</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
@@ -871,7 +877,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Traverse submodules recursively</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Update to submodule's remote tracking branch</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
@@ -939,4 +944,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
 </ResourceDictionary>

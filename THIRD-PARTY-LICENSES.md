@@ -7,14 +7,14 @@ The project uses the following third-party libraries or assets
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.3.9
+- **Version**: 11.3.11
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
 ### AvaloniaEdit
 
 - **Source**: https://github.com/AvaloniaUI/AvaloniaEdit
-- **Version**: 11.3.0
+- **Version**: 11.4.0-rc1
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/AvaloniaEdit/blob/master/LICENSE
 
@@ -28,7 +28,7 @@ The project uses the following third-party libraries or assets
 ### TextMateSharp
 
 - **Source**: https://github.com/danipen/TextMateSharp
-- **Version**: 1.0.70
+- **Version**: 2.0.2
 - **License**: MIT License
 - **License Link**: https://github.com/danipen/TextMateSharp/blob/master/LICENSE.md
 

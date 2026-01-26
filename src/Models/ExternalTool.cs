@@ -12,15 +12,28 @@ namespace SourceGit.Models
 {
     public class ExternalTool
     {
+        public class LaunchOption
+        {
+            public string Title { get; set; }
+            public string Args { get; set; }
+
+            public LaunchOption(string title, string args)
+            {
+                Title = title;
+                Args = args;
+            }
+        }
+
         public string Name { get; }
         public string ExecFile { get; }
         public Bitmap IconImage { get; }
 
-        public ExternalTool(string name, string icon, string execFile, Func<string, string> execArgsGenerator = null)
+        public ExternalTool(string name, string icon, string execFile, Func<string, List<LaunchOption>> optionsGenerator = null)
         {
             Name = name;
             ExecFile = execFile;
-            _execArgsGenerator = execArgsGenerator ?? (path => path.Quoted());
+
+            _optionsGenerator = optionsGenerator;
 
             try
             {
@@ -34,21 +47,25 @@ namespace SourceGit.Models
             }
         }
 
-        public void Open(string path)
+        public List<LaunchOption> MakeLaunchOptions(string repo)
         {
-            // The executable file may be removed after the tool list is loaded (once time on startup).
-            if (!File.Exists(ExecFile))
-                return;
-
-            Process.Start(new ProcessStartInfo()
-            {
-                FileName = ExecFile,
-                Arguments = _execArgsGenerator.Invoke(path),
-                UseShellExecute = false,
-            });
+            return _optionsGenerator?.Invoke(repo);
         }
 
-        private Func<string, string> _execArgsGenerator = null;
+        public void Launch(string args)
+        {
+            if (File.Exists(ExecFile))
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = ExecFile,
+                    Arguments = args,
+                    UseShellExecute = false,
+                });
+            }
+        }
+
+        private Func<string, List<LaunchOption>> _optionsGenerator = null;
     }
 
     public class VisualStudioInstance
@@ -130,20 +147,20 @@ namespace SourceGit.Models
             _customization ??= new ExternalToolCustomization();
         }
 
-        public void TryAdd(string name, string icon, Func<string> finder, Func<string, string> execArgsGenerator = null)
+        public void TryAdd(string name, string icon, Func<string> finder, Func<string, List<ExternalTool.LaunchOption>> optionsGenerator = null)
         {
             if (_customization.Excludes.Contains(name))
                 return;
 
             if (_customization.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
             {
-                Tools.Add(new ExternalTool(name, icon, customPath, execArgsGenerator));
+                Tools.Add(new ExternalTool(name, icon, customPath, optionsGenerator));
             }
             else
             {
                 var path = finder();
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                    Tools.Add(new ExternalTool(name, icon, path, execArgsGenerator));
+                    Tools.Add(new ExternalTool(name, icon, path, optionsGenerator));
             }
         }
 

@@ -91,11 +91,7 @@ namespace SourceGit.ViewModels
                     _repo.SetCommitMessage(msg);
                 }
 
-                var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath, false).GetResultAsync();
-                if (submodules.Count > 0)
-                    await new Commands.Submodule(_repo.FullPath)
-                        .Use(log)
-                        .UpdateAsync(submodules, false, true);
+                await _repo.AutoUpdateSubmodulesAsync(log);
             }
 
             log.Complete();

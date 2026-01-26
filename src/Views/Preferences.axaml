@@ -376,17 +376,20 @@
             <CheckBox Grid.Row="5" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
-                      IsChecked="{Binding #ThisControl.EnablePruneOnFetch, Mode=TwoWay}"/>
+                      IsChecked="{Binding #ThisControl.EnablePruneOnFetch, Mode=TwoWay}"
+                      ToolTip.Tip="fetch.prune=true"/>
 
             <CheckBox Grid.Row="6" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Git.IgnoreCRAtEOLInDiff}"
-                      IsChecked="{Binding IgnoreCRAtEOLInDiff, Mode=TwoWay}"/>
+                      IsChecked="{Binding IgnoreCRAtEOLInDiff, Mode=TwoWay}"
+                      ToolTip.Tip="--ignore-cr-at-eol"/>
 
             <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Git.SSLVerify}"
-                      IsChecked="{Binding #ThisControl.EnableHTTPSSLVerify, Mode=TwoWay}"/>
+                      IsChecked="{Binding #ThisControl.EnableHTTPSSLVerify, Mode=TwoWay}"
+                      ToolTip.Tip="http.sslverify=true"/>
 
             <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
@@ -452,11 +455,13 @@
 
             <CheckBox Grid.Row="3" Grid.Column="1"
                       Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
-                      IsChecked="{Binding #ThisControl.EnableGPGCommitSigning, Mode=TwoWay}"/>
+                      IsChecked="{Binding #ThisControl.EnableGPGCommitSigning, Mode=TwoWay}"
+                      ToolTip.Tip="commit.gpgsign=true"/>
 
             <CheckBox Grid.Row="4" Grid.Column="1"
                       Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
-                      IsChecked="{Binding #ThisControl.EnableGPGTagSigning, Mode=TwoWay}"/>
+                      IsChecked="{Binding #ThisControl.EnableGPGTagSigning, Mode=TwoWay}"
+                      ToolTip.Tip="tag.gpgsign=true"/>
           </Grid>
         </TabItem>
 

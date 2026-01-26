@@ -49,6 +49,8 @@ namespace SourceGit.Models
                 Directory.CreateDirectory(_storePath);
 
             LoadDefaultAvatar("noreply@github.com", "github.png");
+            LoadDefaultAvatar("action@github.com", "github.png");
+            LoadDefaultAvatar("github-actions[bot]@users.noreply.github.com", "github.png");
             LoadDefaultAvatar("unrealbot@epicgames.com", "unreal.png");
 
             Task.Run(async () =>

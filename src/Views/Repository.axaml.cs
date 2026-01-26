@@ -573,6 +573,14 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnResolveInProgress(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                repo.SelectedViewIndex = 1;
+
+            e.Handled = true;
+        }
+
         private async void OnAbortInProgress(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

@@ -61,11 +61,41 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Header = App.Text("Repository.OpenIn", dupTool.Name);
                         item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
-                        item.Click += (_, e) =>
+
+                        var options = dupTool.MakeLaunchOptions(fullpath);
+                        if (options is { Count: > 0 })
                         {
-                            dupTool.Open(fullpath);
-                            e.Handled = true;
-                        };
+                            var openAsFolder = new MenuItem();
+                            openAsFolder.Header = App.Text("Repository.OpenAsFolder");
+                            openAsFolder.Click += (_, e) =>
+                            {
+                                dupTool.Launch(fullpath.Quoted());
+                                e.Handled = true;
+                            };
+                            item.Items.Add(openAsFolder);
+                            item.Items.Add(new MenuItem() { Header = "-" });
+
+                            foreach (var opt in options)
+                            {
+                                var subItem = new MenuItem();
+                                subItem.Header = opt.Title;
+                                subItem.Click += (_, e) =>
+                                {
+                                    dupTool.Launch(opt.Args);
+                                    e.Handled = true;
+                                };
+
+                                item.Items.Add(subItem);
+                            }
+                        }
+                        else
+                        {
+                            item.Click += (_, e) =>
+                            {
+                                dupTool.Launch(fullpath.Quoted());
+                                e.Handled = true;
+                            };
+                        }
 
                         menu.Items.Add(item);
                     }

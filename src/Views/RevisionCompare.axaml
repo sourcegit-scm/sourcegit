@@ -53,16 +53,16 @@
 
       <!-- Save As Patch Button -->
       <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
-        <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+        <Path Width="16" Height="16" Data="{DynamicResource Icons.Save}"/>
       </Button>
     </Grid>
 
     <!-- Changes View -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
+        <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
         <ColumnDefinition Width="4"/>
-        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*" MinWidth="100"/>
       </Grid.ColumnDefinitions>
 
       <Grid Grid.Column="0" RowDefinitions="26,*,26">

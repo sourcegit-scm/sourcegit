@@ -68,6 +68,23 @@
 
 You can find the current translation status in [TRANSLATION.md](https://github.com/sourcegit-scm/sourcegit/blob/develop/TRANSLATION.md)
 
+### Translate Utility Script
+
+A script that assists with translations by reading the target language, comparing it with the base language, and going through missing keys one by one, so the translator can provide the translations interactively without needing to check each key manually.
+
+#### Usage
+
+Check for a given language (e.g., `pt_BR`) and optionally check for missing translations:
+
+```bash
+python translate_helper.py pt_BR [--check]
+```
+
+- `pt_BR` is the target language code (change as needed), it should correspond to a file named `pt_BR.axaml` in the `src/Resources/Locales/` directory, so you can replace it with any other language code you want to translate, e.g., `de_DE`, `es_ES`, etc.
+- `--check` is an optional flag used to only check for missing keys without prompting for translations, useful for getting a list of missing translations.
+
+The script will read the base language file (`en_US.axaml`) and the target language file (e.g., `pt_BR.axaml`), identify missing keys, and prompt you to provide translations for those keys. If the `--check` flag is used, it will only list the missing keys without prompting for translations.
+
 ## How to Use
 
 **To use this tool, you need to install Git(>=2.25.1) first.**
@@ -147,6 +164,16 @@ For **Linux** users:
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) or [git-credential-libsecret](https://pkgs.org/search/?q=git-credential-libsecret) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
 * If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`.
+
+## Commandline arguments
+
+Users can also launcher `SourceGit` from commandline. Usage:
+
+```
+<SOURCEGIT_EXEC> <DIR>                       // Open repository in existing `SourceGit` instance or a new one
+<SOURCEGIT_EXEC> --file-history <FILE_PATH>  // Launch `SourceGit` to see the history of a file
+<SOURCEGIT_EXEC> --blame <FILE_PATH>         // Launch `SourceGit` to blame a file (HEAD version only) 
+```
 
 ## OpenAI
 

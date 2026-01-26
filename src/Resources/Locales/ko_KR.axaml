@@ -821,7 +821,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">서브모듈 업데이트</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">모든 서브모듈</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">필요시 초기화</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">서브모듈 재귀적으로 탐색</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">서브모듈:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">서브모듈의 원격 추적 브랜치로 업데이트</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>

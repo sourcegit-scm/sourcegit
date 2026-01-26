@@ -1491,6 +1491,34 @@ namespace SourceGit.ViewModels
                 ShowPopup(new UpdateSubmodules(this, null));
         }
 
+        public async Task AutoUpdateSubmodulesAsync(Models.ICommandLog log)
+        {
+            var submodules = await new Commands.QueryUpdatableSubmodules(FullPath, false).GetResultAsync();
+            if (submodules.Count == 0)
+                return;
+
+            do
+            {
+                if (_settings.AskBeforeAutoUpdatingSubmodules)
+                {
+                    var builder = new StringBuilder();
+                    builder.Append("\n\n");
+                    foreach (var s in submodules)
+                        builder.Append("- ").Append(s).Append('\n');
+                    builder.Append("\n");
+
+                    var msg = App.Text("Checkout.WarnUpdatingSubmodules", builder.ToString());
+                    var shouldContinue = await App.AskConfirmAsync(msg, Models.ConfirmButtonType.YesNo);
+                    if (!shouldContinue)
+                        break;
+                }
+
+                await new Commands.Submodule(FullPath)
+                    .Use(log)
+                    .UpdateAsync(submodules);
+            } while (false);
+        }
+
         public void OpenSubmodule(string submodule)
         {
             var selfPage = GetOwnerPage();

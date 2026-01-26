@@ -821,7 +821,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Perbarui Submodule</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Semua submodule</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inisialisasi sesuai kebutuhan</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Telusuri submodule secara rekursif</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Perbarui ke remote tracking branch submodule</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>

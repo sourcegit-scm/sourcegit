@@ -644,7 +644,6 @@
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Оновити підмодулі</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Усі підмодулі</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Ініціалізувати за потреби</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Рекурсивно</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Підмодуль:</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Попередження</x:String>
