@@ -833,8 +833,9 @@ namespace SourceGit.Views
             _resultPopup = this.FindControl<Border>("ResultPopup");
             _resultUndoPopup = this.FindControl<Border>("ResultUndoPopup");
 
-            // Set up scroll synchronization
-            SetupScrollSync();
+            // Defer scroll sync setup to ensure ScrollViewers are available in the visual tree
+            Avalonia.Threading.Dispatcher.UIThread.Post(SetupScrollSync,
+                Avalonia.Threading.DispatcherPriority.Loaded);
 
             if (DataContext is ViewModels.MergeConflictEditor vm)
             {
