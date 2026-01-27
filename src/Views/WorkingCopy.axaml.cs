@@ -338,21 +338,16 @@ namespace SourceGit.Views
 
                     if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
                     {
-                        var isBinary = new Commands.IsBinary(repo.FullPath, "HEAD", change.Path).GetResultAsync().GetAwaiter().GetResult();
-                        if (!isBinary)
+                        var mergeBuiltin = new MenuItem();
+                        mergeBuiltin.Header = App.Text("ChangeCM.Merge");
+                        mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
+                        mergeBuiltin.Click += async (_, e) =>
                         {
-                            var mergeBuiltin = new MenuItem();
-                            mergeBuiltin.Header = App.Text("ChangeCM.Merge");
-                            mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
-                            mergeBuiltin.Click += async (_, e) =>
-                            {
-                                var ctx = new ViewModels.MergeConflictEditor(repo, change.Path);
-                                await ctx.LoadAsync();
-                                await App.ShowDialog(ctx);
-                                e.Handled = true;
-                            };
-                            menu.Items.Add(mergeBuiltin);
-                        }
+                            var ctx = new ViewModels.MergeConflictEditor(repo, change.Path);
+                            await ctx.LoadAsync();
+                            await App.ShowDialog(ctx);
+                            e.Handled = true;
+                        };
 
                         var mergeExternal = new MenuItem();
                         mergeExternal.Header = App.Text("ChangeCM.MergeExternal");
@@ -362,6 +357,8 @@ namespace SourceGit.Views
                             await vm.UseExternalMergeToolAsync(change);
                             e.Handled = true;
                         };
+
+                        menu.Items.Add(mergeBuiltin);
                         menu.Items.Add(mergeExternal);
                     }
 
