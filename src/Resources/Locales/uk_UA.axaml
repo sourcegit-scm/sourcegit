@@ -675,7 +675,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Індексувати всі зміни та закомітити</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">Ви проіндексували {0} файл(ів), але відображено лише {1} ({2} файлів відфільтровано). Продовжити?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ВИЯВЛЕНО КОНФЛІКТИ</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">ВІДКРИТИ ЗОВНІШНІЙ ІНСТРУМЕНТ ЗЛИТТЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ВІДКРИТИ ВСІ КОНФЛІКТИ В ЗОВНІШНЬОМУ ІНСТРУМЕНТІ ЗЛИТТЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛІКТИ ФАЙЛІВ ВИРІШЕНО</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">ВИКОРИСТАТИ МОЮ ВЕРСІЮ</x:String>

@@ -861,7 +861,6 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Anda membuat commit pada HEAD yang terlepas. Lanjutkan?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Anda telah stage {0} berkas tetapi hanya {1} berkas yang ditampilkan ({2} berkas disaring). Lanjutkan?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIK TERDETEKSI</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">BUKA MERGETOOL EKSTERNAL</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">BUKA SEMUA KONFLIK DI MERGETOOL EKSTERNAL</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">KONFLIK BERKAS DISELESAIKAN</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">GUNAKAN MILIK SAYA</x:String>

@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-96.32%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.11%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -16,16 +16,11 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Compare.WithHead
 - Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
-- Text.No
-- Text.OpenInBuiltinMergeTool
-- Text.Repository.OpenAsFolder
-- Text.Repository.Resolve
-- Text.TagCM.CompareTwo
-- Text.TagCM.CompareWith
-- Text.TagCM.CompareWithHead
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -44,12 +39,19 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
 - Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.No
+- Text.Repository.OpenAsFolder
+- Text.Repository.Resolve
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.Yes
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-96.21%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-96.00%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -59,17 +61,12 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Compare.WithHead
 - Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Hotkeys.Global.Zoom
-- Text.No
-- Text.OpenInBuiltinMergeTool
-- Text.Repository.OpenAsFolder
-- Text.Repository.Resolve
-- Text.TagCM.CompareTwo
-- Text.TagCM.CompareWith
-- Text.TagCM.CompareWithHead
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -88,12 +85,19 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
 - Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.No
+- Text.Repository.OpenAsFolder
+- Text.Repository.Resolve
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.Yes
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-94.32%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-94.11%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -104,6 +108,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
 - Text.BranchCM.EditDescription
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
@@ -113,9 +119,26 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.MergeConflictEditor.AcceptBoth.MineFirst
+- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
+- Text.MergeConflictEditor.UseBoth
+- Text.MergeConflictEditor.AllResolved
+- Text.MergeConflictEditor.ConflictsRemaining
+- Text.MergeConflictEditor.Mine
+- Text.MergeConflictEditor.NextConflict
+- Text.MergeConflictEditor.PrevConflict
+- Text.MergeConflictEditor.Result
+- Text.MergeConflictEditor.SaveAndStage
+- Text.MergeConflictEditor.Theirs
+- Text.MergeConflictEditor.Title
+- Text.MergeConflictEditor.UnsavedChanges
+- Text.MergeConflictEditor.UseMine
+- Text.MergeConflictEditor.UseMine.Tip
+- Text.MergeConflictEditor.UseTheirs
+- Text.MergeConflictEditor.UseTheirs.Tip
+- Text.MergeConflictEditor.Undo
 - Text.No
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.DiffMerge.DiffArgs
@@ -132,30 +155,13 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.Yes
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-92.21%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-92.01%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -170,6 +176,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitCM.Drop
 - Text.CommitMessageTextBox.Placeholder
@@ -191,29 +199,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
-- Text.No
-- Text.Open
-- Text.Open.SystemDefaultEditor
-- Text.OpenFile
-- Text.OpenInBuiltinMergeTool
-- Text.PageTabBar.Tab.MoveToWorkspace
-- Text.PageTabBar.Tab.Refresh
-- Text.Preferences.DiffMerge.DiffArgs
-- Text.Preferences.DiffMerge.DiffArgs.Tip
-- Text.Preferences.DiffMerge.MergeArgs
-- Text.Preferences.DiffMerge.MergeArgs.Tip
-- Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
-- Text.PushToNewBranch
-- Text.PushToNewBranch.Title
-- Text.Repository.OpenAsFolder
-- Text.Repository.Resolve
-- Text.SquashOrFixup.Squash
-- Text.SquashOrFixup.Fixup
-- Text.SquashOrFixup.Into
-- Text.TagCM.CompareTwo
-- Text.TagCM.CompareWith
-- Text.TagCM.CompareWithHead
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -232,12 +217,35 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
 - Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.No
+- Text.Open
+- Text.Open.SystemDefaultEditor
+- Text.OpenFile
+- Text.PageTabBar.Tab.MoveToWorkspace
+- Text.PageTabBar.Tab.Refresh
+- Text.Preferences.DiffMerge.DiffArgs
+- Text.Preferences.DiffMerge.DiffArgs.Tip
+- Text.Preferences.DiffMerge.MergeArgs
+- Text.Preferences.DiffMerge.MergeArgs.Tip
+- Text.Preferences.Shell.Args
+- Text.Preferences.Shell.Args.Tip
+- Text.PushToNewBranch
+- Text.PushToNewBranch.Title
+- Text.Repository.OpenAsFolder
+- Text.Repository.Resolve
+- Text.SquashOrFixup.Squash
+- Text.SquashOrFixup.Fixup
+- Text.SquashOrFixup.Into
+- Text.TagCM.CompareTwo
+- Text.TagCM.CompareWith
+- Text.TagCM.CompareWithHead
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.Yes
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-89.68%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-89.48%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -258,6 +266,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Behind
 - Text.BranchTree.Status
 - Text.BranchTree.Worktree
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitCM.Drop
 - Text.CommitDetail.Info.CopyEmail
@@ -286,11 +296,28 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
+- Text.MergeConflictEditor.AcceptBoth.MineFirst
+- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
+- Text.MergeConflictEditor.UseBoth
+- Text.MergeConflictEditor.AllResolved
+- Text.MergeConflictEditor.ConflictsRemaining
+- Text.MergeConflictEditor.Mine
+- Text.MergeConflictEditor.NextConflict
+- Text.MergeConflictEditor.PrevConflict
+- Text.MergeConflictEditor.Result
+- Text.MergeConflictEditor.SaveAndStage
+- Text.MergeConflictEditor.Theirs
+- Text.MergeConflictEditor.Title
+- Text.MergeConflictEditor.UnsavedChanges
+- Text.MergeConflictEditor.UseMine
+- Text.MergeConflictEditor.UseMine.Tip
+- Text.MergeConflictEditor.UseTheirs
+- Text.MergeConflictEditor.UseTheirs.Tip
+- Text.MergeConflictEditor.Undo
 - Text.No
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.AI.ReadApiKeyFromEnv
@@ -316,34 +343,17 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.WorkingCopy.NoVerify
 - Text.Worktree.Open
 - Text.Yes
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-72.21%25-red)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-72.13%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -383,6 +393,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
 - Text.BranchTree.Worktree
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -486,6 +498,24 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Pages
 - Text.Launcher.Workspaces
 - Text.Merge.Edit
+- Text.MergeConflictEditor.AcceptBoth.MineFirst
+- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
+- Text.MergeConflictEditor.UseBoth
+- Text.MergeConflictEditor.AllResolved
+- Text.MergeConflictEditor.ConflictsRemaining
+- Text.MergeConflictEditor.Mine
+- Text.MergeConflictEditor.NextConflict
+- Text.MergeConflictEditor.PrevConflict
+- Text.MergeConflictEditor.Result
+- Text.MergeConflictEditor.SaveAndStage
+- Text.MergeConflictEditor.Theirs
+- Text.MergeConflictEditor.Title
+- Text.MergeConflictEditor.UnsavedChanges
+- Text.MergeConflictEditor.UseMine
+- Text.MergeConflictEditor.UseMine.Tip
+- Text.MergeConflictEditor.UseTheirs
+- Text.MergeConflictEditor.UseTheirs.Tip
+- Text.MergeConflictEditor.Undo
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
@@ -493,7 +523,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.AI.ReadApiKeyFromEnv
@@ -575,6 +604,61 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.TagCM.DeleteMultiple
+- Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
+- Text.ViewLogs
+- Text.ViewLogs.Clear
+- Text.ViewLogs.CopyLog
+- Text.ViewLogs.Delete
+- Text.WorkingCopy.AddToGitIgnore.InFolder
+- Text.WorkingCopy.ClearCommitHistories
+- Text.WorkingCopy.ClearCommitHistories.Confirm
+- Text.WorkingCopy.ConfirmCommitWithDetachedHead
+- Text.WorkingCopy.ConfirmCommitWithFilter
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
+- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
+- Text.WorkingCopy.Conflicts.UseMine
+- Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.NoVerify
+- Text.WorkingCopy.ResetAuthor
+- Text.Worktree.Open
+- Text.Yes
+
+</details>
+
+### ![ko__KR](https://img.shields.io/badge/ko__KR-92.32%25-yellow)
+
+<details>
+<summary>Missing keys in ko_KR.axaml</summary>
+
+- Text.About.ReleaseDate
+- Text.Blame.BlameOnPreviousRevision
+- Text.Blame.IgnoreWhitespace
+- Text.Blame.TypeNotSupported
+- Text.BranchCM.CompareTwo
+- Text.BranchCM.CompareWith
+- Text.BranchCM.CompareWithHead
+- Text.BranchCM.CreatePR
+- Text.BranchCM.CreatePRForUpstream
+- Text.BranchCM.EditDescription
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
+- Text.Checkout.WarnUpdatingSubmodules
+- Text.CommitMessageTextBox.Placeholder
+- Text.Compare.WithHead
+- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
+- Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringValue.Tip
+- Text.EditBranchDescription
+- Text.EditBranchDescription.Target
+- Text.FileCM.CustomAction
+- Text.GitLFS.Locks.UnlockAllMyLocks
+- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
+- Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
+- Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.OpenCommandPalette
+- Text.Launcher.Commands
+- Text.Launcher.OpenRepository
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -593,64 +677,10 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
 - Text.MergeConflictEditor.Undo
-- Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
-- Text.ViewLogs
-- Text.ViewLogs.Clear
-- Text.ViewLogs.CopyLog
-- Text.ViewLogs.Delete
-- Text.WorkingCopy.AddToGitIgnore.InFolder
-- Text.WorkingCopy.ClearCommitHistories
-- Text.WorkingCopy.ClearCommitHistories.Confirm
-- Text.WorkingCopy.ConfirmCommitWithDetachedHead
-- Text.WorkingCopy.ConfirmCommitWithFilter
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
-- Text.WorkingCopy.Conflicts.UseMine
-- Text.WorkingCopy.Conflicts.UseTheirs
-- Text.WorkingCopy.NoVerify
-- Text.WorkingCopy.ResetAuthor
-- Text.Worktree.Open
-- Text.Yes
-
-</details>
-
-### ![ko__KR](https://img.shields.io/badge/ko__KR-92.53%25-yellow)
-
-<details>
-<summary>Missing keys in ko_KR.axaml</summary>
-
-- Text.About.ReleaseDate
-- Text.Blame.BlameOnPreviousRevision
-- Text.Blame.IgnoreWhitespace
-- Text.Blame.TypeNotSupported
-- Text.BranchCM.CompareTwo
-- Text.BranchCM.CompareWith
-- Text.BranchCM.CompareWithHead
-- Text.BranchCM.CreatePR
-- Text.BranchCM.CreatePRForUpstream
-- Text.BranchCM.EditDescription
-- Text.Checkout.WarnUpdatingSubmodules
-- Text.CommitMessageTextBox.Placeholder
-- Text.Compare.WithHead
-- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
-- Text.Configure.Git.ConventionalTypesOverride
-- Text.ConfigureCustomActionControls.StringValue.Tip
-- Text.EditBranchDescription
-- Text.EditBranchDescription.Target
-- Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAllMyLocks
-- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
-- Text.Hotkeys.Global.Zoom
-- Text.Hotkeys.Repo.OpenCommandPalette
-- Text.Launcher.Commands
-- Text.Launcher.OpenRepository
 - Text.No
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.Appearance.UseFixedTabWidth
@@ -671,30 +701,13 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.Yes
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-70.00%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-69.93%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -705,6 +718,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
 - Text.BranchTree.Worktree
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -831,6 +846,24 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Workspaces
 - Text.Merge.Edit
 - Text.Merge.Source
+- Text.MergeConflictEditor.AcceptBoth.MineFirst
+- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
+- Text.MergeConflictEditor.UseBoth
+- Text.MergeConflictEditor.AllResolved
+- Text.MergeConflictEditor.ConflictsRemaining
+- Text.MergeConflictEditor.Mine
+- Text.MergeConflictEditor.NextConflict
+- Text.MergeConflictEditor.PrevConflict
+- Text.MergeConflictEditor.Result
+- Text.MergeConflictEditor.SaveAndStage
+- Text.MergeConflictEditor.Theirs
+- Text.MergeConflictEditor.Title
+- Text.MergeConflictEditor.UnsavedChanges
+- Text.MergeConflictEditor.UseMine
+- Text.MergeConflictEditor.UseMine.Tip
+- Text.MergeConflictEditor.UseTheirs
+- Text.MergeConflictEditor.UseTheirs.Tip
+- Text.MergeConflictEditor.Undo
 - Text.MergeMultiple
 - Text.MergeMultiple.CommitChanges
 - Text.MergeMultiple.Strategy
@@ -842,7 +875,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.AI.ReadApiKeyFromEnv
@@ -945,24 +977,6 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.TagCM.DeleteMultiple
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs
 - Text.ViewLogs.Clear
@@ -974,8 +988,8 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
 - Text.WorkingCopy.ConfirmCommitWithFilter
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
@@ -987,14 +1001,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.68%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-97.48%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.Blame.IgnoreWhitespace
-- Text.OpenInBuiltinMergeTool
-- Text.Repository.Resolve
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -1013,11 +1027,13 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
 - Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.Repository.Resolve
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-72.32%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-72.24%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1057,6 +1073,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
 - Text.BranchTree.Worktree
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -1160,6 +1178,24 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Pages
 - Text.Launcher.Workspaces
 - Text.Merge.Edit
+- Text.MergeConflictEditor.AcceptBoth.MineFirst
+- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
+- Text.MergeConflictEditor.UseBoth
+- Text.MergeConflictEditor.AllResolved
+- Text.MergeConflictEditor.ConflictsRemaining
+- Text.MergeConflictEditor.Mine
+- Text.MergeConflictEditor.NextConflict
+- Text.MergeConflictEditor.PrevConflict
+- Text.MergeConflictEditor.Result
+- Text.MergeConflictEditor.SaveAndStage
+- Text.MergeConflictEditor.Theirs
+- Text.MergeConflictEditor.Title
+- Text.MergeConflictEditor.UnsavedChanges
+- Text.MergeConflictEditor.UseMine
+- Text.MergeConflictEditor.UseMine.Tip
+- Text.MergeConflictEditor.UseTheirs
+- Text.MergeConflictEditor.UseTheirs.Tip
+- Text.MergeConflictEditor.Undo
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
@@ -1167,7 +1203,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.AI.ReadApiKeyFromEnv
@@ -1248,24 +1283,6 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.TagCM.DeleteMultiple
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
 - Text.UpdateSubmodules.Target
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs
@@ -1276,8 +1293,8 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
-- Text.WorkingCopy.Conflicts.OpenExternalMergeTool
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
@@ -1288,7 +1305,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-73.26%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-73.08%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1328,6 +1345,8 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
 - Text.BranchTree.Worktree
+- Text.ChangeCM.Merge
+- Text.ChangeCM.MergeExternal
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -1427,6 +1446,24 @@ This document shows the translation status of each locale file in the repository
 - Text.Launcher.Pages
 - Text.Launcher.Workspaces
 - Text.Merge.Edit
+- Text.MergeConflictEditor.AcceptBoth.MineFirst
+- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
+- Text.MergeConflictEditor.UseBoth
+- Text.MergeConflictEditor.AllResolved
+- Text.MergeConflictEditor.ConflictsRemaining
+- Text.MergeConflictEditor.Mine
+- Text.MergeConflictEditor.NextConflict
+- Text.MergeConflictEditor.PrevConflict
+- Text.MergeConflictEditor.Result
+- Text.MergeConflictEditor.SaveAndStage
+- Text.MergeConflictEditor.Theirs
+- Text.MergeConflictEditor.Title
+- Text.MergeConflictEditor.UnsavedChanges
+- Text.MergeConflictEditor.UseMine
+- Text.MergeConflictEditor.UseMine.Tip
+- Text.MergeConflictEditor.UseTheirs
+- Text.MergeConflictEditor.UseTheirs.Tip
+- Text.MergeConflictEditor.Undo
 - Text.MoveSubmodule
 - Text.MoveSubmodule.MoveTo
 - Text.MoveSubmodule.Submodule
@@ -1434,7 +1471,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
-- Text.OpenInBuiltinMergeTool
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.AI.ReadApiKeyFromEnv
@@ -1515,24 +1551,6 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.CopyName
 - Text.TagCM.CustomAction
 - Text.TagCM.DeleteMultiple
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
 - Text.UpdateSubmodules.UpdateToRemoteTrackingBranch
 - Text.ViewLogs
 - Text.ViewLogs.Clear
@@ -1542,7 +1560,8 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
+- Text.WorkingCopy.Conflicts.Merge
+- Text.WorkingCopy.Conflicts.MergeExternal
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
 - Text.Worktree.Open
@@ -1550,58 +1569,22 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-97.89%25-yellow)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.79%25-yellow)
 
 <details>
 <summary>Missing keys in zh_CN.axaml</summary>
 
-- Text.OpenInBuiltinMergeTool
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
 - Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
 
 </details>
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-97.89%25-yellow)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.79%25-yellow)
 
 <details>
 <summary>Missing keys in zh_TW.axaml</summary>
 
-- Text.OpenInBuiltinMergeTool
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
 - Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
 - Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
-- Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool
 
 </details>

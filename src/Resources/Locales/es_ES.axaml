@@ -906,7 +906,6 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Estas creando un commit en una HEAD separada. ¿Quieres continuar?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Tienes {0} archivo(s) en stage, pero solo {1} archivo(s) mostrado(s) ({2} archivo(s) están filtrados). ¿Quieres continuar?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTOS DETECTADOS</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">ABRIR HERRAMIENTA DE MERGE EXTERNA</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ABRIR TODOS LOS CONFLICTOS EN HERRAMIENTA DE MERGE EXTERNA</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LOS CONFLICTOS DE ARCHIVOS ESTÁN RESUELTOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USAR MÍOS</x:String>

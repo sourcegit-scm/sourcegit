@@ -839,7 +839,6 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead" xml:space="preserve">Stai creando un commit su un HEAD distaccato. Vuoi continuare?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">Hai stageato {0} file ma solo {1} file mostrati ({2} file sono stati filtrati). Vuoi procedere?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLITTI RILEVATI</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">APRI STRUMENTO DI MERGE ESTERNO</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">APRI TUTTI I CONFLITTI NELLO STRUMENTO DI MERGE ESTERNO</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">CONFLITTI NEI FILE RISOLTI</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USO IL MIO</x:String>
