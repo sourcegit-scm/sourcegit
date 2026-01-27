@@ -124,6 +124,16 @@
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
+          <Button Classes="flat primary"
+                  Margin="8,0,0,0"
+                  Click="OnOpenBuiltinMergeTool"
+                  IsVisible="{Binding CanUseBuiltinMergeTool}"
+                  HotKey="{OnPlatform Ctrl+Shift+M, macOS=⌘+Shift+M}">
+            <StackPanel Orientation="Horizontal">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Conflict}"/>
+              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool}" VerticalAlignment="Center"/>
+            </StackPanel>
+          </Button>
           <Button Classes="flat"
                   Margin="8,0,0,0"
                   Click="OnOpenExternalMergeTool"

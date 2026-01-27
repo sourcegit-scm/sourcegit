@@ -1,0 +1,260 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+                    x:Class="SourceGit.Views.MergeConflictEditor"
+                    x:DataType="vm:MergeConflictEditor"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{Binding Title}"
+                    MinWidth="1024" MinHeight="600">
+  <Grid RowDefinitions="Auto,Auto,*,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="12" Height="12"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Conflict}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{Binding Title}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Toolbar -->
+    <Border Grid.Row="1" Padding="8" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <!-- File Path -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.File}"/>
+          <TextBlock Margin="8,0,0,0" Text="{Binding FilePath}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Navigation and Actions -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+          <!-- Navigation -->
+          <Button Classes="icon_button"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
+                  Click="OnGotoPrevConflict"
+                  IsEnabled="{Binding HasPrevConflict}">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Up}" Margin="0,6,0,0"/>
+          </Button>
+          <Button Classes="icon_button"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
+                  Click="OnGotoNextConflict"
+                  IsEnabled="{Binding HasNextConflict}">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Down}" Margin="0,6,0,0"/>
+          </Button>
+          <!-- Info Bar -->
+          <TextBlock Text="{Binding StatusText}" VerticalAlignment="Center"/>
+
+          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,4"/>
+
+          <!-- Save -->
+          <Button Classes="flat primary"
+                  Content="{DynamicResource Text.MergeConflictEditor.SaveAndStage}"
+                  Click="OnSaveAndStage"
+                  IsEnabled="{Binding CanSave}"/>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Main Content -->
+    <Grid Grid.Row="2">
+      <!-- Loading Indicator -->
+      <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding IsLoading}"/>
+
+      <!-- Editor Panels -->
+      <Grid RowDefinitions="*,*" IsVisible="{Binding !IsLoading}">
+        <!-- Mine and Theirs Panels (Side-by-Side) -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="4,4,4,2">
+          <!-- Mine (Ours) Panel -->
+          <Border Grid.Column="0" Margin="0,0,2,0">
+            <Grid RowDefinitions="Auto,*">
+              <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Diff.MineHeader}">
+                <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Mine}"
+                           Foreground="White"
+                           FontWeight="Bold"/>
+              </Border>
+              <Grid Grid.Row="1">
+                <v:MergeDiffPresenter x:Name="OursPresenter"
+                                      PanelType="Mine"
+                                      DiffLines="{Binding OursDiffLines, Mode=OneWay}"
+                                      MaxLineNumber="{Binding DiffMaxLineNumber}"
+                                      FileName="{Binding FilePath}"
+                                      IsOldSide="True"
+                                      FontFamily="{DynamicResource Fonts.Monospace}"
+                                      EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                      AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                      DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
+                                      AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                      DeletedHighlightBrush="{DynamicResource Brush.Diff.MineBG}"
+                                      BorderThickness="1"
+                                      BorderBrush="{DynamicResource Brush.Border2}"/>
+                <Border x:Name="MinePopup"
+                        IsVisible="False"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource Brush.ToolBar}"
+                        BorderBrush="{DynamicResource Brush.Border2}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="4,2"
+                        BoxShadow="0 2 8 0 #40000000">
+                  <Button Classes="flat primary"
+                          Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
+                          Click="OnUseMineFromHover"/>
+                </Border>
+              </Grid>
+            </Grid>
+          </Border>
+
+          <!-- Theirs Panel -->
+          <Border Grid.Column="1" Margin="2,0,0,0">
+            <Grid RowDefinitions="Auto,*">
+              <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Diff.TheirsHeader}">
+                <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Theirs}"
+                           Foreground="White"
+                           FontWeight="Bold"/>
+              </Border>
+              <Grid Grid.Row="1">
+                <v:MergeDiffPresenter x:Name="TheirsPresenter"
+                                      PanelType="Theirs"
+                                      DiffLines="{Binding TheirsDiffLines, Mode=OneWay}"
+                                      MaxLineNumber="{Binding DiffMaxLineNumber}"
+                                      FileName="{Binding FilePath}"
+                                      IsOldSide="False"
+                                      FontFamily="{DynamicResource Fonts.Monospace}"
+                                      EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                      AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
+                                      DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                      AddedHighlightBrush="{DynamicResource Brush.Diff.TheirsBG}"
+                                      DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                      BorderThickness="1"
+                                      BorderBrush="{DynamicResource Brush.Border2}"/>
+                <Border x:Name="TheirsPopup"
+                        IsVisible="False"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Background="{DynamicResource Brush.ToolBar}"
+                        BorderBrush="{DynamicResource Brush.Border2}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Padding="4,2"
+                        BoxShadow="0 2 8 0 #40000000">
+                  <Button Classes="flat primary"
+                          Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
+                          Click="OnUseTheirsFromHover"/>
+                </Border>
+              </Grid>
+            </Grid>
+          </Border>
+        </Grid>
+
+        <!-- Result Panel -->
+        <Border Grid.Row="1" Margin="4,2,4,4">
+          <Grid RowDefinitions="Auto,*">
+            <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.FG1}">
+              <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Result}"
+                         Foreground="{DynamicResource Brush.Window}"
+                         FontWeight="Bold"/>
+            </Border>
+            <Grid Grid.Row="1">
+              <v:MergeDiffPresenter x:Name="ResultPresenter"
+                                    PanelType="Result"
+                                    DiffLines="{Binding ResultDiffLines, Mode=OneWay}"
+                                    MaxLineNumber="{Binding DiffMaxLineNumber}"
+                                    FileName="{Binding FilePath}"
+                                    IsOldSide="False"
+                                    IsResultPanel="True"
+                                    FontFamily="{DynamicResource Fonts.Monospace}"
+                                    EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                    AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                    DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
+                                    AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
+                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                    IndicatorBackground="{DynamicResource Brush.Diff.EmptyBG}"
+                                    MineContentBackground="{DynamicResource Brush.Diff.MineBG}"
+                                    TheirsContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource Brush.Border2}"/>
+              <Border x:Name="ResultPopup"
+                      IsVisible="False"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Background="{DynamicResource Brush.ToolBar}"
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      BorderThickness="1"
+                      CornerRadius="4"
+                      Padding="4,2"
+                      BoxShadow="0 2 8 0 #40000000">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                  <Button Classes="flat primary"
+                          Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
+                          Click="OnUseMineFromHover"/>
+                  <Button Classes="flat primary"
+                          Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
+                          Click="OnUseTheirsFromHover"/>
+                  <Button Classes="flat primary">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                      <TextBlock Text="{DynamicResource Text.MergeConflictEditor.UseBoth}"/>
+                      <Path Width="8" Height="8" Data="{StaticResource Icons.Down}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button.Flyout>
+                      <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuItem Click="OnUseBothMineFirstFromHover">
+                          <MenuItem.Icon>
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.MineHeader}"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.MineFirst}"/>
+                          </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Click="OnUseBothTheirsFirstFromHover">
+                          <MenuItem.Icon>
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.TheirsHeader}"/>
+                          </MenuItem.Icon>
+                          <MenuItem.Header>
+                            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.TheirsFirst}"/>
+                          </MenuItem.Header>
+                        </MenuItem>
+                      </MenuFlyout>
+                    </Button.Flyout>
+                  </Button>
+                </StackPanel>
+              </Border>
+              <Border x:Name="ResultUndoPopup"
+                      IsVisible="False"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Background="{DynamicResource Brush.ToolBar}"
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      BorderThickness="1"
+                      CornerRadius="4"
+                      Padding="4,2"
+                      BoxShadow="0 2 8 0 #40000000">
+                <Button Classes="flat"
+                        Content="{DynamicResource Text.MergeConflictEditor.Undo}"
+                        Click="OnUndoResolution"/>
+              </Border>
+            </Grid>
+          </Grid>
+        </Border>
+      </Grid>
+    </Grid>
+
+    
+  </Grid>
+</v:ChromelessWindow>
