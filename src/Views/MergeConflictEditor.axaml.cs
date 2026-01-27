@@ -113,24 +113,24 @@ namespace SourceGit.Views
             set => SetValue(CurrentConflictIndexProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.MergeConflictSelectedChunk> SelectedChunkProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, ViewModels.MergeConflictSelectedChunk>(nameof(SelectedChunk));
+        public static readonly StyledProperty<Models.ConflictSelectedChunk> SelectedChunkProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, Models.ConflictSelectedChunk>(nameof(SelectedChunk));
 
-        public ViewModels.MergeConflictSelectedChunk SelectedChunk
+        public Models.ConflictSelectedChunk SelectedChunk
         {
             get => GetValue(SelectedChunkProperty);
             set => SetValue(SelectedChunkProperty, value);
         }
 
-        protected ViewModels.MergeConflictPanelType PanelType
+        protected Models.ConflictPanelType PanelType
         {
             get
             {
                 if (IsResultPanel)
-                    return ViewModels.MergeConflictPanelType.Result;
+                    return Models.ConflictPanelType.Result;
                 if (IsOldSide)
-                    return ViewModels.MergeConflictPanelType.Mine;
-                return ViewModels.MergeConflictPanelType.Theirs;
+                    return Models.ConflictPanelType.Mine;
+                return Models.ConflictPanelType.Theirs;
             }
         }
 
@@ -365,7 +365,7 @@ namespace SourceGit.Views
 
                 if (isWithinRegion)
                 {
-                    var newChunk = new ViewModels.MergeConflictSelectedChunk(
+                    var newChunk = new Models.ConflictSelectedChunk(
                         viewportY, height, i, panelType, region.IsResolved);
 
                     // Only update if changed
@@ -505,7 +505,7 @@ namespace SourceGit.Views
             }
 
             // Update chunk with new position
-            var newChunk = new ViewModels.MergeConflictSelectedChunk(
+            var newChunk = new Models.ConflictSelectedChunk(
                 viewportY, height, chunk.ConflictIndex, panelType, region.IsResolved);
 
             if (Math.Abs(chunk.Y - newChunk.Y) > 1 || Math.Abs(chunk.Height - newChunk.Height) > 1)
@@ -668,24 +668,24 @@ namespace SourceGit.Views
 
                 var lineIndex = index - 1;
                 var info = lines[lineIndex];
-                var lineType = vm.GetLineType(lineIndex);
+                var lineState = vm.GetLineState(lineIndex);
 
                 var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                 var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
                 var rect = new Rect(0, startY, width, endY - startY);
 
-                if (lineType == ViewModels.MergeConflictLineType.ConflictBlockStart)
+                if (lineState == Models.ConflictLineState.ConflictBlockStart)
                     drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
-                else if (lineType == ViewModels.MergeConflictLineType.ConflictBlockEnd)
+                else if (lineState == Models.ConflictLineState.ConflictBlockEnd)
                     drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
-                else if (lineType == ViewModels.MergeConflictLineType.ResolvedBlockStart)
+                else if (lineState == Models.ConflictLineState.ResolvedBlockStart)
                     drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
-                else if (lineType == ViewModels.MergeConflictLineType.ResolvedBlockEnd)
+                else if (lineState == Models.ConflictLineState.ResolvedBlockEnd)
                     drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
 
-                if (lineType >= ViewModels.MergeConflictLineType.ResolvedBlockStart)
+                if (lineState >= Models.ConflictLineState.ResolvedBlockStart)
                     drawingContext.DrawRectangle(new SolidColorBrush(Colors.Green, 0.1), null, rect);
-                else if (lineType >= ViewModels.MergeConflictLineType.ConflictBlockStart)
+                else if (lineState >= Models.ConflictLineState.ConflictBlockStart)
                     drawingContext.DrawRectangle(new SolidColorBrush(Colors.Red, 0.1), null, rect);
 
                 var bg = GetBrushByLineType(info.Type);
@@ -898,29 +898,20 @@ namespace SourceGit.Views
             // Get the presenter for bounds checking
             MergeDiffPresenter presenter = chunk.Panel switch
             {
-                ViewModels.MergeConflictPanelType.Mine => OursPresenter,
-                ViewModels.MergeConflictPanelType.Theirs => TheirsPresenter,
-                ViewModels.MergeConflictPanelType.Result => ResultPresenter,
+                Models.ConflictPanelType.Mine => OursPresenter,
+                Models.ConflictPanelType.Theirs => TheirsPresenter,
+                Models.ConflictPanelType.Result => ResultPresenter,
                 _ => null
             };
 
             // Show the appropriate popup based on panel type and resolved state
-            Border popup;
-            if (chunk.Panel == ViewModels.MergeConflictPanelType.Result && chunk.IsResolved)
+            Border popup = chunk.Panel switch
             {
-                // Show Undo popup for resolved conflicts in Result panel
-                popup = ResultUndoPopup;
-            }
-            else
-            {
-                popup = chunk.Panel switch
-                {
-                    ViewModels.MergeConflictPanelType.Mine => MinePopup,
-                    ViewModels.MergeConflictPanelType.Theirs => TheirsPopup,
-                    ViewModels.MergeConflictPanelType.Result => ResultPopup,
-                    _ => null
-                };
-            }
+                Models.ConflictPanelType.Mine => MinePopup,
+                Models.ConflictPanelType.Theirs => TheirsPopup,
+                Models.ConflictPanelType.Result => chunk.IsResolved ? ResultUndoPopup : ResultPopup,
+                _ => null
+            };
 
             if (popup != null && presenter != null)
             {

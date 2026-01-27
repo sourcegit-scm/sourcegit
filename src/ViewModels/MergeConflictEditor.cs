@@ -9,57 +9,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public enum MergeConflictPanelType
-    {
-        Mine,
-        Theirs,
-        Result
-    }
-
-    public enum MergeConflictLineType
-    {
-        Normal,
-        ConflictBlockStart,
-        ConflictBlock,
-        ConflictBlockEnd,
-        ResolvedBlockStart,
-        ResolvedBlock,
-        ResolvedBlockEnd,
-    }
-
-    public record MergeConflictSelectedChunk(
-        double Y,
-        double Height,
-        int ConflictIndex,
-        MergeConflictPanelType Panel,
-        bool IsResolved
-    );
-
-    // Represents a single conflict region with its original content and panel positions
-    public class ConflictRegion
-    {
-        public int StartLineInOriginal { get; set; }
-        public int EndLineInOriginal { get; set; }
-        public List<string> OursContent { get; set; } = new();
-        public List<string> TheirsContent { get; set; } = new();
-        public bool IsResolved { get; set; } = false;
-
-        // Line indices in the built static panels (0-based)
-        public int PanelStartLine { get; set; } = -1;
-        public int PanelEndLine { get; set; } = -1;
-
-        // Content chosen when resolved (null = unresolved, empty list = deleted)
-        public List<string> ResolvedContent { get; set; } = null;
-
-        // Real markers from the file
-        public string StartMarker { get; set; } = "<<<<<<<";
-        public string SeparatorMarker { get; set; } = "=======";
-        public string EndMarker { get; set; } = ">>>>>>>";
-
-        // Track the type of resolution
-        public Models.ConflictResolution ResolutionType { get; set; } = Models.ConflictResolution.None;
-    }
-
     public class MergeConflictEditor : ObservableObject
     {
         public string FilePath
@@ -139,13 +88,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _scrollOffset, value);
         }
 
-        public MergeConflictSelectedChunk SelectedChunk
+        public Models.ConflictSelectedChunk SelectedChunk
         {
             get => _selectedChunk;
             set => SetProperty(ref _selectedChunk, value);
         }
 
-        public IReadOnlyList<ConflictRegion> ConflictRegions => _conflictRegions;
+        public IReadOnlyList<Models.ConflictRegion> ConflictRegions => _conflictRegions;
         public bool HasUnresolvedConflicts => _unresolvedConflictCount > 0;
         public bool HasUnsavedChanges => _isModified && !_resultContent.Equals(_originalContent, StringComparison.Ordinal);
         public bool CanSave => _unresolvedConflictCount == 0 && _isModified;
@@ -193,11 +142,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public MergeConflictLineType GetLineType(int line)
+        public Models.ConflictLineState GetLineState(int line)
         {
-            if (line >= 0 && line < _lineTypes.Count)
-                return _lineTypes[line];
-            return MergeConflictLineType.Normal;
+            if (line >= 0 && line < _lineStates.Count)
+                return _lineStates[line];
+            return Models.ConflictLineState.Normal;
         }
 
         public void AcceptOursAtIndex(int conflictIndex)
@@ -380,7 +329,7 @@ namespace SourceGit.ViewModels
 
                 if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
                 {
-                    var region = new ConflictRegion { StartLineInOriginal = i };
+                    var region = new Models.ConflictRegion { StartLineInOriginal = i };
                     // Capture the start marker (e.g., "<<<<<<< HEAD")
                     region.StartMarker = line;
                     i++;
@@ -554,7 +503,7 @@ namespace SourceGit.ViewModels
             // Build RESULT panel aligned with MINE/THEIRS panels
             // This ensures all three panels have the same number of lines for scroll sync
             var resultLines = new List<Models.TextDiffLine>();
-            _lineTypes.Clear();
+            _lineStates.Clear();
 
             if (_oursDiffLines == null || _oursDiffLines.Count == 0)
             {
@@ -569,7 +518,7 @@ namespace SourceGit.ViewModels
             while (currentLine < _oursDiffLines.Count)
             {
                 // Check if we're at a conflict region
-                ConflictRegion currentRegion = null;
+                Models.ConflictRegion currentRegion = null;
                 if (conflictIdx < _conflictRegions.Count)
                 {
                     var region = _conflictRegions[conflictIdx];
@@ -636,41 +585,41 @@ namespace SourceGit.ViewModels
                             resultLines.Add(new Models.TextDiffLine());
 
                         int added = resultLines.Count - oldLineCount;
-                        _lineTypes.Add(MergeConflictLineType.ResolvedBlockStart);
+                        _lineStates.Add(Models.ConflictLineState.ResolvedBlockStart);
                         for (var i = 0; i < added - 2; i++)
-                            _lineTypes.Add(MergeConflictLineType.ResolvedBlock);
-                        _lineTypes.Add(MergeConflictLineType.ResolvedBlockEnd);
+                            _lineStates.Add(Models.ConflictLineState.ResolvedBlock);
+                        _lineStates.Add(Models.ConflictLineState.ResolvedBlockEnd);
                     }
                     else
                     {
                         // Unresolved - show conflict markers with content, aligned with Mine/Theirs
                         // First line: start marker (use real marker from file)
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.StartMarker, 0, 0));
-                        _lineTypes.Add(MergeConflictLineType.ConflictBlockStart);
+                        _lineStates.Add(Models.ConflictLineState.ConflictBlockStart);
 
                         // Mine content lines (matches the deleted lines in Ours panel)
                         foreach (var line in currentRegion.OursContent)
                         {
                             resultLines.Add(new Models.TextDiffLine(
                                 Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
-                            _lineTypes.Add(MergeConflictLineType.ConflictBlock);
+                            _lineStates.Add(Models.ConflictLineState.ConflictBlock);
                         }
 
                         // Separator marker between Mine and Theirs
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.SeparatorMarker, 0, 0));
-                        _lineTypes.Add(MergeConflictLineType.ConflictBlock);
+                        _lineStates.Add(Models.ConflictLineState.ConflictBlock);
 
                         // Theirs content lines (matches the added lines in Theirs panel)
                         foreach (var line in currentRegion.TheirsContent)
                         {
                             resultLines.Add(new Models.TextDiffLine(
                                 Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
-                            _lineTypes.Add(MergeConflictLineType.ConflictBlock);
+                            _lineStates.Add(Models.ConflictLineState.ConflictBlock);
                         }
 
                         // End marker (use real marker from file)
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.EndMarker, 0, 0));
-                        _lineTypes.Add(MergeConflictLineType.ConflictBlockEnd);
+                        _lineStates.Add(Models.ConflictLineState.ConflictBlockEnd);
                     }
 
                     currentLine = currentRegion.PanelEndLine + 1;
@@ -693,7 +642,7 @@ namespace SourceGit.ViewModels
                         resultLines.Add(new Models.TextDiffLine());
                     }
 
-                    _lineTypes.Add(MergeConflictLineType.Normal);
+                    _lineStates.Add(Models.ConflictLineState.Normal);
                     currentLine++;
                 }
             }
@@ -852,7 +801,7 @@ namespace SourceGit.ViewModels
                 if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
                 {
                     // Get the current conflict region
-                    ConflictRegion region = null;
+                    Models.ConflictRegion region = null;
                     if (conflictIdx < _conflictRegions.Count)
                         region = _conflictRegions[conflictIdx];
 
@@ -965,14 +914,14 @@ namespace SourceGit.ViewModels
         private bool _isModified = false;
         private int _unresolvedConflictCount = 0;
         private int _currentConflictIndex = -1;
+        private int _diffMaxLineNumber = 0;
         private List<Models.TextDiffLine> _oursDiffLines = [];
         private List<Models.TextDiffLine> _theirsDiffLines = [];
         private List<Models.TextDiffLine> _resultDiffLines = [];
-        private int _diffMaxLineNumber = 0;
-        private List<ConflictRegion> _conflictRegions = [];
-        private List<MergeConflictLineType> _lineTypes = [];
+        private List<Models.ConflictRegion> _conflictRegions = [];
+        private List<Models.ConflictLineState> _lineStates = [];
         private Vector _scrollOffset = Vector.Zero;
-        private MergeConflictSelectedChunk _selectedChunk;
+        private Models.ConflictSelectedChunk _selectedChunk;
         private string _error = string.Empty;
     }
 }
