@@ -174,7 +174,7 @@
                   <Setter Property="Background" Value="Transparent"/>
                 </Style>
 
-                <Style Selector="^:disabled TextBlock">
+                <Style Selector="^:disabled AccessText">
                   <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
                 </Style>
 
