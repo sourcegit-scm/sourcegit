@@ -84,15 +84,19 @@ namespace SourceGit.ViewModels
                                     changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                             }
 
+                            Dictionary<string, string> decodedPaths = null;
+                            if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
+                                decodedPaths = await CalculateDecodedPathsAsync(value, changes, untracked).ConfigureAwait(false);
+
                             Dispatcher.UIThread.Post(() =>
                             {
                                 if (value.SHA.Equals(_selectedStash?.SHA ?? string.Empty, StringComparison.Ordinal))
                                 {
+                                    _decodedPaths = decodedPaths;
+                                    OnPropertyChanged(nameof(DecodedPaths));
+
                                     _untracked = untracked;
                                     Changes = changes;
-
-                                    if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
-                                        _currentDecodeTask = DecodeOFPAPathsAsync(value, changes, untracked);
                                 }
                             });
                         });
@@ -306,70 +310,70 @@ namespace SourceGit.ViewModels
                 changes == null || changes.Count == 0)
                 return;
 
+            _currentDecodeTask = Task.Run(async () =>
+            {
+                var results = await CalculateDecodedPathsAsync(stash, changes, untracked).ConfigureAwait(false);
+                if (results != null)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        _decodedPaths = results;
+                        OnPropertyChanged(nameof(DecodedPaths));
+                    });
+                }
+            });
+        }
+
+        private async Task<Dictionary<string, string>> CalculateDecodedPathsAsync(Models.Stash stash, List<Models.Change> changes, List<Models.Change> untracked)
+        {
+            if (_repo == null || stash == null || changes == null || changes.Count == 0)
+                return null;
+
             var repositoryPath = _repo.FullPath;
             var untrackedSet = new HashSet<Models.Change>(untracked);
-            var results = new Dictionary<string, string>(StringComparer.Ordinal);
+            var filesToDecode = new List<(string RelativePath, string Spec)>();
 
-            await Task.Run(async () =>
+            foreach (var change in changes)
             {
-                var filesToDecode = new List<(string RelativePath, string Spec)>();
-                foreach (var change in changes)
-                {
-                    if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
-                        continue;
+                if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
+                    continue;
 
-                    string spec;
-                    if (untrackedSet.Contains(change) && stash.Parents.Count == 3)
-                    {
-                        // Untracked files are in the 3rd parent commit.
-                        spec = $"{stash.Parents[2]}:{change.Path}";
-                    }
+                string spec;
+                if (untrackedSet.Contains(change) && stash.Parents.Count == 3)
+                {
+                    spec = $"{stash.Parents[2]}:{change.Path}";
+                }
+                else
+                {
+                    if (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
+                        spec = $"{stash.Parents[0]}:{change.Path}";
                     else
-                    {
-                        // Standard stash changes (index + worktree).
-                        // Deleted files need to be looked up in the parent.
-                        if (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
-                            spec = $"{stash.Parents[0]}:{change.Path}";
-                        else
-                            spec = $"{stash.SHA}:{change.Path}";
-                    }
-
-                    filesToDecode.Add((change.Path, spec));
+                        spec = $"{stash.SHA}:{change.Path}";
                 }
 
-                if (filesToDecode.Count == 0)
-                    return;
-
-                var batchRequests = new List<string>();
-                foreach (var entry in filesToDecode)
-                    batchRequests.Add(entry.Spec);
-
-                var batchResults = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, batchRequests, MaxOFPASampleSize).ConfigureAwait(false);
-                foreach (var entry in filesToDecode)
-                {
-                    if (batchResults.TryGetValue(entry.Spec, out var data))
-                    {
-                        var decoded = Utilities.OFPAParser.DecodeFromData(data);
-                        results[entry.RelativePath] = decoded?.LabelValue;
-                    }
-                }
-
-                var updated = new Dictionary<string, string>(StringComparer.Ordinal);
-                foreach (var kvp in results)
-                    updated[kvp.Key] = kvp.Value;
-                _decodedPaths = updated;
-            });
-
-            if (results.Count > 0)
-            {
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    if (_repo == null || !_repo.Settings.EnableUnrealEngineSupport || !_repo.Settings.EnableOFPADecoding)
-                        return;
-
-                    OnPropertyChanged(nameof(DecodedPaths));
-                });
+                filesToDecode.Add((change.Path, spec));
             }
+
+            if (filesToDecode.Count == 0)
+                return null;
+
+            var batchRequests = new List<string>();
+            foreach (var entry in filesToDecode)
+                batchRequests.Add(entry.Spec);
+
+            var batchResults = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, batchRequests, MaxOFPASampleSize).ConfigureAwait(false);
+            var results = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var entry in filesToDecode)
+            {
+                if (batchResults.TryGetValue(entry.Spec, out var data))
+                {
+                    var decoded = Utilities.OFPAParser.DecodeFromData(data);
+                    if (decoded.HasValue)
+                        results[entry.RelativePath] = decoded.Value.LabelValue;
+                }
+            }
+
+            return results;
         }
 
         private Repository _repo = null;
