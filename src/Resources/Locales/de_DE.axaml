@@ -187,28 +187,27 @@
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository-Einstellungen</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT-VORLAGE</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Vordefinierte Parameter:
-  
-  ${branch_name} Name des aktuellen lokalen Branches.
-  ${files_num} Anzahl der geänderten Dateien
-  ${files} Pfade der geänderten Dateien
-  ${files:N} Maximale Anzahl N an Pfaden geänderter Dateien
-  ${pure_files} Wie ${files}, aber nur die reinen Dateinamen
-  ${pure_files:N} Wie ${files:N}, aber ohne Ordner</x:String>
+
+${branch_name} Name des aktuellen lokalen Branches.
+${files_num} Anzahl der geänderten Dateien
+${files} Pfade der geänderten Dateien
+${files:N} Maximale Anzahl N an Pfaden geänderter Dateien
+${pure_files} Wie ${files}, aber nur die reinen Dateinamen
+${pure_files:N} Wie ${files:N}, aber ohne Ordner</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Template Inhalt:</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Template Name:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">BENUTZERDEFINIERTE AKTION</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumente:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Vordefinierte Parameter:
 
-  ${REPO} Repository-Pfad
-  ${REMOTE} selektierter Remote oder selektierter Branch-Remote
-  ${BRANCH} selektierter Branch, ohne ${REMOTE}-Teil für Remote-Branches
-  ${BRANCH_FRIENDLY_NAME} Freundlicher Name des selektierten Branches, enthält ${REMOTE}-Teil für Remote-Branches
-  ${SHA} Hash des selektierten Commits
-  ${TAG} selektiertes Tag
-  ${FILE} Ausgewählte Datei, relativ zum Stammverzeichnis des Repositorys
-  $1, $2 … Werte der Eingabe-Steuerelemente
-</x:String>
+${REPO} Repository-Pfad
+${REMOTE} Selektierter Remote oder selektierter Branch-Remote
+${BRANCH} Selektierter Branch, ohne ${REMOTE}-Teil für Remote-Branches
+${BRANCH_FRIENDLY_NAME} Benutzerfreundlicher Name des selektierten Branches, enthält ${REMOTE}-Teil für Remote-Branches
+${SHA} Hash des selektierten Commits
+${TAG} Ausgewählter Tag
+${FILE} Ausgewählte Datei, relativ zum Stammverzeichnis des Repositorys
+$1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Ausführbare Datei:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Eingabe-Steuerelemente:</x:String>
   <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Bearbeiten</x:String>
