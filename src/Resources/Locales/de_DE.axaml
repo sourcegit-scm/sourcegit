@@ -5,6 +5,7 @@
 
   <x:String x:Key="Text.About" xml:space="preserve">Info</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">Über SourceGit</x:String>
+  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Veröffentlichungsdatum: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Versionshinweise</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Open Source &amp; freier Git GUI-Client</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Zu ignorierende Datei(en) hinzufügen</x:String>
@@ -57,8 +58,12 @@
   <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Aktuellen Commit als gut oder schlecht markieren und einen anderen auschecken.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame auf vorheriger Revision</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace">Leerzeichen-Änderungen ignorieren</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME WIRD BEI DIESER DATEI NICHT UNTERSTÜTZT!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Auschecken von ${0}$…</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Ausgewählte 2 Branches vergleichen</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">Vergleichen mit…</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Vergleichen mit HEAD</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Branch-Namen kopieren</x:String>
   <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">PR erstellen…</x:String>
   <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">PR für Upstream ${0}$ erstellen…</x:String>
@@ -92,6 +97,8 @@
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Auf Vorgänger-Revision zurücksetzen</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Auf diese Revision zurücksetzen</x:String>
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generiere Commit-Nachricht</x:String>
+  <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">Merge (integriert)</x:String>
+  <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">Merge (extern)</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ANZEIGEMODUS ÄNDERN</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Zeige als Datei- und Ordnerliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Zeige als Pfadliste</x:String>
@@ -108,6 +115,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Dein aktueller HEAD enthält Commit(s) ohne Verbindung zu einem Branch / Tag. Möchtest du trotzdem fortfahren?</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Die folgenden Submodule müssen aktualisiert werden:{0}Möchtest du sie aktualisieren?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Auschecken &amp; Fast Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast Forward zu:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
@@ -184,6 +192,7 @@
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Commit-Nachricht eingeben. Leerzeile zum Trennen von Betreff und Beschreibung verwenden!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">BETREFF</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Vergleichen</x:String>
+  <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">Vergleichen mit HEAD</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository-Einstellungen</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT-VORLAGE</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Vordefinierte Parameter:
@@ -223,6 +232,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">E-Mail-Adresse</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">E-Mail-Adresse</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Vor dem Auto-Aktualisieren von Submodulen fragen</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Remotes automatisch fetchen</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minute(n)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Konventionelle Commit-Typen</x:String>
@@ -532,6 +542,24 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge-Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Quelle:</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">Zuerst meine, dann deren</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">Zuerst deren, dann meine</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">BEIDE VERWENDEN</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">Alle Konflikte gelöst</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} Konflikt(e) verbleibend</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MEINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Nächster Konflikt</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">Vorheriger Konflikt</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">ERGEBNIS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">SPEICHERN &amp; STAGEN</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">DEREN</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Merge-Konflikt – {0}</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Ungespeicherte Änderungen verwerfen?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">MEINE VERWENDEN</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine.Tip" xml:space="preserve">Aktuellen Konflikt mit meiner Version lösen</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">DEREN VERWENDEN</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs.Tip" xml:space="preserve">Aktuellen Konflikt mit deren Version lösen</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">RÜCKGÄNGIG MACHEN</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (mehrere)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Alle Änderungen committen</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategie:</x:String>
@@ -542,6 +570,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Verschiebe Repository-Knoten</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Wähle Vorgänger-Knoten für:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">NEIN</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git wurde NICHT konfiguriert. Gehe bitte zunächst in die [Einstellungen] und konfiguriere es.</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">Öffnen</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Standard-Texteditor (System)</x:String>
@@ -728,10 +757,12 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BENACHRICHTIGUNGEN LÖSCHEN</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Nur aktuellen Branch hervorheben</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Als Ordner öffnen</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Öffne in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Öffne in externen Tools</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">Remote hinzufügen</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">AUFLÖSEN</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Commit suchen</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Autor</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
@@ -855,6 +886,9 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">TAGGER</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">ZEIT</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Vergleiche 2 Tags</x:String>
+  <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Vergleichen mit…</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Vergleichen mit HEAD</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Nachricht</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Name</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Tagger</x:String>
@@ -907,6 +941,8 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Du erzeugst einen Commit auf einem losgelösten (‚detached‘) HEAD. Möchtest du trotzdem fortfahren?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Du hast {0} Datei(en) gestaged, aber nur {1} werden angezeigt ({2} sind herausgefiltert). Möchtest du trotzdem fortfahren?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIKTE ERKANNT</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">MERGE</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.MergeExternal" xml:space="preserve">Merge mit externem Tool</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ALLE KONFLIKTE IN EXTERNEM MERGE-TOOL ÖFFNEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">DATEI-KONFLIKTE SIND GELÖST</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">MEINE VERSION VERWENDEN</x:String>
@@ -933,4 +969,5 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Öffnen</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Entfernen</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Entsperren</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">JA</x:String>
 </ResourceDictionary>
