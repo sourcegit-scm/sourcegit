@@ -236,7 +236,7 @@
                     BoxShadow="0 2 8 0 #40000000">
               <Button Classes="flat"
                       Content="{DynamicResource Text.MergeConflictEditor.Undo}"
-                      Click="OnUndoResolution"/>
+                      Click="OnUndo"/>
             </Border>
           </Grid>
         </Grid>

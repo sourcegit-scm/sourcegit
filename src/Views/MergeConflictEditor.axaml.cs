@@ -104,15 +104,6 @@ namespace SourceGit.Views
             set => SetValue(IndicatorBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<int> CurrentConflictIndexProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictIndex), -1);
-
-        public int CurrentConflictIndex
-        {
-            get => GetValue(CurrentConflictIndexProperty);
-            set => SetValue(CurrentConflictIndexProperty, value);
-        }
-
         public static readonly StyledProperty<Models.ConflictSelectedChunk> SelectedChunkProperty =
             AvaloniaProperty.Register<MergeDiffPresenter, Models.ConflictSelectedChunk>(nameof(SelectedChunk));
 
@@ -202,22 +193,13 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == DiffLinesProperty)
-            {
                 UpdateContent();
-            }
             else if (change.Property == FileNameProperty)
-            {
-                if (_textMate != null && !string.IsNullOrEmpty(FileName))
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
-            }
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
-            {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
-            }
             else if (change.Property == SelectedChunkProperty)
-            {
                 TextArea.TextView.InvalidateVisual();
-            }
         }
 
         private void UpdateContent()
@@ -746,14 +728,12 @@ namespace SourceGit.Views
                 }
                 else if (e.Key == Key.Up)
                 {
-                    vm.GotoPrevConflict();
-                    ScrollToCurrentConflict();
+                    OnGotoPrevConflict(null, null);
                     e.Handled = true;
                 }
                 else if (e.Key == Key.Down)
                 {
-                    vm.GotoNextConflict();
-                    ScrollToCurrentConflict();
+                    OnGotoNextConflict(null, null);
                     e.Handled = true;
                 }
             }
@@ -763,11 +743,12 @@ namespace SourceGit.Views
         {
             base.OnClosing(e);
 
-            if (_forceClose)
-            {
-                if (DataContext is ViewModels.MergeConflictEditor vm)
-                    vm.PropertyChanged -= OnViewModelPropertyChanged;
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
 
+            if (_forceClose || !vm.HasUnsavedChanges)
+            {
+                vm.PropertyChanged -= OnViewModelPropertyChanged;
                 return;
             }
 
@@ -798,60 +779,126 @@ namespace SourceGit.Views
 
         private void OnGotoPrevConflict(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
+            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnresolvedConflicts)
             {
-                vm.GotoPrevConflict();
-                ScrollToCurrentConflict();
+                var view = OursPresenter.TextArea?.TextView;
+                var lines = vm.OursDiffLines;
+                var minY = double.MaxValue;
+                var minLineIdx = lines.Count;
+                if (view is { VisualLinesValid: true })
+                {
+                    foreach (var line in view.VisualLines)
+                    {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
+                        var index = line.FirstDocumentLine.LineNumber;
+                        if (index > lines.Count)
+                            break;
+
+                        var lineIndex = index - 1;
+                        var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
+                        if (startY < minY)
+                        {
+                            minY = startY;
+                            minLineIdx = lineIndex;
+                        }
+                    }
+
+                    for (var i = vm.ConflictRegions.Count - 1; i >= 0; i--)
+                    {
+                        var r = vm.ConflictRegions[i];
+                        if (r.PanelStartLine < minLineIdx && !r.IsResolved)
+                        {
+                            OursPresenter.ScrollToLine(r.PanelStartLine + 1);
+                            break;
+                        }
+                    }
+                }
             }
+
             e.Handled = true;
         }
 
         private void OnGotoNextConflict(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
+            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnresolvedConflicts)
             {
-                vm.GotoNextConflict();
-                ScrollToCurrentConflict();
+                var view = OursPresenter.TextArea?.TextView;
+                var lines = vm.OursDiffLines;
+                var maxY = 0.0;
+                var maxLineIdx = 0;
+                if (view is { VisualLinesValid: true })
+                {
+                    foreach (var line in view.VisualLines)
+                    {
+                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                            continue;
+
+                        var index = line.FirstDocumentLine.LineNumber;
+                        if (index > lines.Count)
+                            break;
+
+                        var lineIndex = index - 1;
+                        var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
+                        if (startY > maxY)
+                        {
+                            maxY = startY;
+                            maxLineIdx = lineIndex;
+                        }
+                    }
+
+                    for (var i = 0; i < vm.ConflictRegions.Count; i++)
+                    {
+                        var r = vm.ConflictRegions[i];
+                        if (r.PanelStartLine > maxLineIdx && !r.IsResolved)
+                        {
+                            OursPresenter.ScrollToLine(r.PanelStartLine + 1);
+                            break;
+                        }
+                    }
+                }
             }
+
             e.Handled = true;
         }
 
         private void OnUseMine(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-                vm.AcceptOursAtIndex(chunk.ConflictIndex);
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.AcceptOurs();
 
             e.Handled = true;
         }
 
         private void OnUseTheirs(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-                vm.AcceptTheirsAtIndex(chunk.ConflictIndex);
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.AcceptTheirs();
 
             e.Handled = true;
         }
 
         private void OnUseBothMineFirst(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-                vm.AcceptBothMineFirstAtIndex(chunk.ConflictIndex);
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.AcceptBothMineFirst();
 
             e.Handled = true;
         }
 
         private void OnUseBothTheirsFirst(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-                vm.AcceptBothTheirsFirstAtIndex(chunk.ConflictIndex);
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.AcceptBothTheirsFirst();
 
             e.Handled = true;
         }
 
-        private void OnUndoResolution(object sender, RoutedEventArgs e)
+        private void OnUndo(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-                vm.UndoResolutionAtIndex(chunk.ConflictIndex);
+            if (DataContext is ViewModels.MergeConflictEditor vm)
+                vm.Undo();
 
             e.Handled = true;
         }
@@ -866,17 +913,6 @@ namespace SourceGit.Views
                     _forceClose = true;
                     Close();
                 }
-            }
-        }
-
-        private void ScrollToCurrentConflict()
-        {
-            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor { CurrentConflictIndex: >= 0 } vm)
-            {
-                var region = vm.ConflictRegions[vm.CurrentConflictIndex];
-                var lineHeight = OursPresenter.TextArea.TextView.DefaultLineHeight;
-                var vOffset = lineHeight * region.PanelStartLine;
-                vm.ScrollOffset = new Vector(0, Math.Max(0, vOffset - OursPresenter.Bounds.Height * 0.3));
             }
         }
 
