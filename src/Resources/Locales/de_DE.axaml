@@ -68,7 +68,7 @@
   <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Beschreibung für ${0}$ bearbeiten…</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward zu ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetche ${0}$ in ${1}$ hinein…</x:String>
-  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Abschließen ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow – Abschließen ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Merge ${0}$ in ${1}$ hinein…</x:String>
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Merge ausgewählte {0} Branches in aktuellen hinein</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
@@ -411,9 +411,9 @@
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Development-Branch:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
   <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Feature-Prefix:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW - Feature abschließen</x:String>
-  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Hotfix abschließen</x:String>
-  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Release abschließen</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW – Feature abschließen</x:String>
+  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW – Hotfix abschließen</x:String>
+  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW – Release abschließen</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Push zu Remote(s) nach Abschluss</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash beim Merge</x:String>
@@ -425,12 +425,12 @@
   <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Release:</x:String>
   <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Release-Prefix:</x:String>
   <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Feature starten</x:String>
-  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW - Feature starten</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW – Feature starten</x:String>
   <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Hotfix starten…</x:String>
-  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW - Hotfix starten</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW – Hotfix starten</x:String>
   <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Name eingeben</x:String>
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Release starten…</x:String>
-  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Release starten</x:String>
+  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW – Release starten</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Versions-Tag-Prefix:</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
   <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Verfolgungsmuster hinzufügen…</x:String>
