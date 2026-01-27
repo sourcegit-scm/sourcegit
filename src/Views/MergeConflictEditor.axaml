@@ -198,8 +198,8 @@
                         Click="OnUseTheirs"/>
                 <Button Classes="flat primary">
                   <StackPanel Orientation="Horizontal" Spacing="4">
-                    <TextBlock Text="{DynamicResource Text.MergeConflictEditor.UseBoth}"/>
-                    <Path Width="12" Height="12" Margin="4,4,0,0" Data="{StaticResource Icons.Down}"/>
+                    <TextBlock Text="{DynamicResource Text.MergeConflictEditor.UseBoth}" Foreground="White"/>
+                    <Path Width="12" Height="12" Margin="4,4,0,0" Data="{StaticResource Icons.Down}" Fill="White"/>
                   </StackPanel>
                   <Button.Flyout>
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
@@ -242,5 +242,23 @@
         </Grid>
       </Border>
     </Grid>
+
+    <!-- Error -->
+    <Border Grid.Row="2"
+            Background="{DynamicResource Brush.Popup}"
+            Padding="16"
+            CornerRadius="6"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Effect="drop-shadow(0 0 12 #60000000)"
+            IsVisible="{Binding Error, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+      <StackPanel Orientation="Vertical">
+        <Path Width="28" Height="28" Data="{StaticResource Icons.Error}"/>
+        <TextBlock Text="{Binding Error, Mode=OneWay}"
+                   MaxWidth="500"
+                   Margin="0,12,0,0"
+                   FontSize="16"
+                   TextWrapping="Wrap"/>
+      </StackPanel>
+    </Border>
   </Grid>
 </v:ChromelessWindow>

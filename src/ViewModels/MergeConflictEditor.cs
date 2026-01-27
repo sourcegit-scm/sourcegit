@@ -73,6 +73,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isLoading, value);
         }
 
+        public string Error
+        {
+            get => _error;
+            private set => SetProperty(ref _error, value);
+        }
+
         public List<Models.TextDiffLine> OursDiffLines
         {
             get => _oursDiffLines;
@@ -156,15 +162,13 @@ namespace SourceGit.ViewModels
 
             try
             {
-                var repoPath = _repo.FullPath;
-
-                // Read working copy with conflict markers
-                var workingCopyPath = Path.Combine(repoPath, _filePath);
+                var workingCopyPath = Path.Combine(_repo.FullPath, _filePath);
                 var workingCopyContent = string.Empty;
                 if (File.Exists(workingCopyPath))
-                {
                     workingCopyContent = await File.ReadAllTextAsync(workingCopyPath).ConfigureAwait(false);
-                }
+
+                if (workingCopyContent.IndexOf('\0', StringComparison.Ordinal) >= 0)
+                    throw new Exception("Binary file is not supported!!!");
 
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -183,8 +187,8 @@ namespace SourceGit.ViewModels
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    App.RaiseException(_repo.FullPath, $"Failed to load conflict data: {ex.Message}");
                     IsLoading = false;
+                    Error = ex.Message;
                 });
             }
         }
@@ -969,5 +973,6 @@ namespace SourceGit.ViewModels
         private List<MergeConflictLineType> _lineTypes = [];
         private Vector _scrollOffset = Vector.Zero;
         private MergeConflictSelectedChunk _selectedChunk;
+        private string _error = string.Empty;
     }
 }
