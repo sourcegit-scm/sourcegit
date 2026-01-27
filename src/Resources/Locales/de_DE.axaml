@@ -173,7 +173,7 @@
   <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">E-Mail-Adresse kopieren</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Name kopieren</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Namen &amp; E-Mail-Adresse kopieren</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Zeigt nur die ersten 100 Änderungen. Alle Änderungen im ÄNDERUNGEN Tab.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Zeigt nur die ersten 100 Änderungen. Alle Änderungen im ‚ÄNDERUNGEN‘-Tab.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Schlüssel:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">COMMIT-NACHRICHT</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">VORGÄNGER</x:String>
@@ -246,7 +246,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Verwende bitte $1, $2 um auf Regex-Gruppenwerte zuzugreifen.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Bevorzugter Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Der ausgewählte 'Bevorzugte Service' wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Services verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Der ausgewählte ‚Bevorzugte Service‘ wird nur in diesem Repository gesetzt und verwendet. Wenn keiner gesetzt ist und mehrere Services verfügbar sind wird ein Kontextmenü zur Auswahl angezeigt.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP-Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP-Proxy für dieses Repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Benutzername</x:String>
@@ -259,7 +259,7 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Auf Ordner einschränken</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Bezeichnung:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Einträge:</x:String>
-  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Nutze '|', um Einträge zu trennen</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Nutze ‚|‘, um Einträge zu trennen</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Die vordefinierten Parameter ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE} und ${TAG} bleiben hier verwendbar</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Typ:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Arbeitsplätze</x:String>
@@ -305,7 +305,7 @@
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Art:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">Mit Anmerkung</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Ohne Anmerkung</x:String>
-  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Halte Strg gedrückt, um direkt auszuführen</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Halte ‚Strg‘ gedrückt, um direkt auszuführen</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Ausschneiden</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Deinitialisiere Submodul</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Erzwinge Deinitialisierung, selbst wenn es lokale Änderungen enthält.</x:String>
@@ -459,7 +459,7 @@
   <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Pushe große Dateien in der Warteschlange zum Git-LFS-Endpunkt</x:String>
   <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">LFS-Objekte pushen</x:String>
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
-  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Verfolge alle '{0}' Dateien</x:String>
+  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Verfolge alle ‚{0}‘ Dateien</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Verfolge alle *{0} Dateien</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Verlauf</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
@@ -468,7 +468,7 @@
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS AUSGEWÄHLT</x:String>
-  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Halte 'Strg' oder 'Umschalt', um mehrere Commits auszuwählen.</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Halte ‚Strg‘ oder ‚Umschalt‘, um mehrere Commits auszuwählen.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Halte ⌘ oder ⇧, um mehrere Commits auszuwählen</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPPS:</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Tastaturkürzel-Referenz</x:String>
@@ -493,9 +493,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Erzwinge Neuladen des Repositorys</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Wechsle zu 'Änderungen'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Wechsle zu 'Verlauf'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Wechsle zu 'Stashes'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Wechsle zu ‚Änderungen‘</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Wechsle zu ‚Verlauf‘</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Wechsle zu ‚Stashes‘</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXTEDITOR</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Suchpanel schließen</x:String>
   <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Suche nächste Übereinstimmung</x:String>
@@ -607,8 +607,8 @@
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Sprache</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Zeige Autor-Zeitpunkt anstatt Commit-Zeitpunkt</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Standardmäßig Seite `Änderungen` anzeigen</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Standardmäßig Tab `ÄNDERUNGEN` in Commit-Details anzeigen</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Standardmäßig Seite ‚ÄNDERUNGEN‘ anzeigen</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Standardmäßig Tab ‚ÄNDERUNGEN‘ in Commit-Details anzeigen</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Zeige Nachfolger in den Commit-Details</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Zeige Tags im Commit-Verlauf</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Längenvorgabe für Commit-Nachrichten</x:String>
@@ -638,7 +638,7 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRATIONEN</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Argumente</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Bitte verwende '.' für das aktuelle Verzeichnis</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Bitte verwende ‚.‘ für das aktuelle Verzeichnis</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Pfad</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote löschen</x:String>
@@ -760,7 +760,7 @@
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Öffne im Terminal</x:String>
   <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Verwende relative Zeitangeben</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Logs ansehen</x:String>
-  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Öffne '{0}' im Browser</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Öffne ‚{0}‘ im Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">WORKTREE HINZUFÜGEN</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">PRUNE</x:String>
@@ -905,7 +905,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Klick-Ereignis auslösen</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Bearbeitung)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Du erzeugst einen Commit auf einem losgelösten (detached) HEAD. Möchtest du trotzdem fortfahren?</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Du erzeugst einen Commit auf einem losgelösten (‚detached‘) HEAD. Möchtest du trotzdem fortfahren?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Du hast {0} Datei(en) gestaged, aber nur {1} werden angezeigt ({2} sind herausgefiltert). Möchtest du trotzdem fortfahren?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">KONFLIKTE ERKANNT</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ALLE KONFLIKTE IN EXTERNEM MERGE-TOOL ÖFFNEN</x:String>
