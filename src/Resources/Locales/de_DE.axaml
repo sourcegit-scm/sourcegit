@@ -401,8 +401,8 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Stashe {0} Dateien…</x:String>
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Unstagen</x:String>
   <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">{0} Dateien unstagen</x:String>
-  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">"Meine" verwenden (checkout --ours)</x:String>
-  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">"Ihre" verwenden (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Meine verwenden (checkout --ours)</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Deren verwenden (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Dateiverlauf</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">ÄNDERUNG</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">INHALT</x:String>
@@ -640,10 +640,10 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Bitte verwende ‚.‘ für das aktuelle Verzeichnis</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Pfad</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell / Terminal</x:String>
-  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote löschen</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Remote bereinigen</x:String>
   <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Ziel:</x:String>
-  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Worktrees löschen</x:String>
-  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Worktree-Informationen in `$GIT_COMMON_DIR/worktrees` löschen</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Worktrees bereinigen</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Worktree-Informationen in `$GIT_COMMON_DIR/worktrees` bereinigen</x:String>
   <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote-Branch:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Lokaler Branch:</x:String>
@@ -910,7 +910,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ALLE KONFLIKTE IN EXTERNEM MERGE-TOOL ÖFFNEN</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">DATEI-KONFLIKTE SIND GELÖST</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">MEINE VERSION VERWENDEN</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">IHRE VERSION VERWENDEN</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">DEREN VERSION VERWENDEN</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">NICHT-VERFOLGTE DATEIEN EINBEZIEHEN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">KEINE BISHERIGEN COMMIT-NACHRICHTEN</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">KEINE COMMIT-VORLAGEN</x:String>
