@@ -97,6 +97,8 @@
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重置文件到上一版本</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">重置文件到该版本</x:String>
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">生成提交信息</x:String>
+  <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">解决冲突（内部工具）</x:String>
+  <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">解决冲突（外部工具）</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">切换变更显示模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">文件名+路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路径列表模式</x:String>
@@ -540,6 +542,22 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并目标 ：</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">先应用 MINE 后 THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">先应用 THEIRS 后 MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">应用全部</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">所有冲突已解决</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} 个冲突未解决</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">下一个冲突</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">上一个冲突</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">合并结果</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">保存并暂存</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">合并冲突</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">放弃所有更改?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">仅应用 MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">仅应用 THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">撤销更改</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">合并（多目标）</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">提交变化</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">合并策略 ：</x:String>
@@ -921,7 +939,8 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">您正在向一个游离的 HEAD 提交变更，是否继续提交？</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">当前有 {0} 个文件在暂存区中，但仅显示了 {1} 个文件（{2} 个文件被过滤掉了），是否继续提交？</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">检测到冲突</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">打开合并工具</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">解决冲突</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.MergeExternal" xml:space="preserve">使用外部工具解决冲突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">打开合并工具解决冲突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">文件冲突已解决</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用 MINE</x:String>

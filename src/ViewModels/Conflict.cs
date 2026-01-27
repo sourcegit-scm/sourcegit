@@ -54,16 +54,11 @@ namespace SourceGit.ViewModels
             private set;
         } = false;
 
-        public bool CanUseExternalMergeTool
+        public bool CanMerge
         {
             get;
             private set;
         } = false;
-
-        public bool CanUseBuiltinMergeTool
-        {
-            get => CanUseExternalMergeTool;
-        }
 
         public string FilePath
         {
@@ -79,7 +74,7 @@ namespace SourceGit.ViewModels
             var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
             if (!isSubmodule && (_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified))
             {
-                CanUseExternalMergeTool = true;
+                CanMerge = true;
                 IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
             }
 
@@ -123,14 +118,20 @@ namespace SourceGit.ViewModels
             await _wc.UseMineAsync([_change]);
         }
 
-        public async Task OpenExternalMergeToolAsync()
+        public async Task MergeAsync()
         {
-            await _wc.UseExternalMergeToolAsync(_change);
+            if (CanMerge)
+            {
+                var ctx = new MergeConflictEditor(_repo, _change.Path);
+                await ctx.LoadAsync();
+                await App.ShowDialog(ctx);
+            }
         }
 
-        public MergeConflictEditor CreateBuiltinMergeViewModel()
+        public async Task MergeExternalAsync()
         {
-            return new MergeConflictEditor(_repo, _change.Path);
+            if (CanMerge)
+                await _wc.UseExternalMergeToolAsync(_change);
         }
 
         private Repository _repo = null;

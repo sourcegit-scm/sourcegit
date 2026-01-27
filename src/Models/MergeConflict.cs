@@ -7,10 +7,8 @@ namespace SourceGit.Models
         None,
         UseOurs,
         UseTheirs,
-        UseBoth,
         UseBothMineFirst,
         UseBothTheirsFirst,
-        Manual,
     }
 
     public class MergeConflictRegion

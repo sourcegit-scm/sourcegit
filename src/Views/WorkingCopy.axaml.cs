@@ -260,48 +260,22 @@ namespace SourceGit.Views
             {
                 var change = selectedUnstaged[0];
                 var path = Native.OS.GetAbsPath(repo.FullPath, change.Path);
-                TryAddOpenFileToContextMenu(menu, path);
 
-                if (!change.IsConflicted || change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
+                if (!change.IsConflicted)
                 {
-                    if (change.IsConflicted)
+                    TryAddOpenFileToContextMenu(menu, path);
+
+                    var diffWithMerger = new MenuItem();
+                    diffWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                    diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                    diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                    diffWithMerger.Click += (_, ev) =>
                     {
-                        var isBinary = new Commands.IsBinary(repo.FullPath, "HEAD", change.Path).GetResultAsync().GetAwaiter().GetResult();
-                        if (!isBinary)
-                        {
-                            var openBuiltinMerger = new MenuItem();
-                            openBuiltinMerger.Header = App.Text("OpenInBuiltinMergeTool");
-                            openBuiltinMerger.Icon = App.CreateMenuIcon("Icons.Conflict");
-                            openBuiltinMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+M" : "Ctrl+Shift+M";
-                            openBuiltinMerger.Click += async (_, e) =>
-                            {
-                                var mergeVm = new ViewModels.MergeConflictEditor(repo, change.Path);
-                                await mergeVm.LoadAsync();
-
-                                var window = TopLevel.GetTopLevel(this) as Window;
-                                var mergeWindow = new MergeConflictEditor { DataContext = mergeVm };
-                                await mergeWindow.ShowDialog(window);
-
-                                e.Handled = true;
-                            };
-                            menu.Items.Add(openBuiltinMerger);
-                        }
-                    }
-                    var openMerger = new MenuItem();
-                    openMerger.Header = App.Text("OpenInExternalMergeTool");
-                    openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                    openMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                    openMerger.Click += async (_, e) =>
-                    {
-                        if (change.IsConflicted)
-                            await vm.UseExternalMergeToolAsync(change);
-                        else
-                            vm.UseExternalDiffTool(change, true);
-
-                        e.Handled = true;
+                        vm.UseExternalDiffTool(change, false);
+                        ev.Handled = true;
                     };
-                    menu.Items.Add(openMerger);
 
+                    menu.Items.Add(diffWithMerger);
                 }
 
                 var explore = new MenuItem();
@@ -361,6 +335,36 @@ namespace SourceGit.Views
 
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
+
+                    if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
+                    {
+                        var isBinary = new Commands.IsBinary(repo.FullPath, "HEAD", change.Path).GetResultAsync().GetAwaiter().GetResult();
+                        if (!isBinary)
+                        {
+                            var mergeBuiltin = new MenuItem();
+                            mergeBuiltin.Header = App.Text("ChangeCM.Merge");
+                            mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
+                            mergeBuiltin.Click += async (_, e) =>
+                            {
+                                var ctx = new ViewModels.MergeConflictEditor(repo, change.Path);
+                                await ctx.LoadAsync();
+                                await App.ShowDialog(ctx);
+                                e.Handled = true;
+                            };
+                            menu.Items.Add(mergeBuiltin);
+                        }
+
+                        var mergeExternal = new MenuItem();
+                        mergeExternal.Header = App.Text("ChangeCM.MergeExternal");
+                        mergeExternal.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                        mergeExternal.Click += async (_, e) =>
+                        {
+                            await vm.UseExternalMergeToolAsync(change);
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(mergeExternal);
+                    }
+
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
                 else

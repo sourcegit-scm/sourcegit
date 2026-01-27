@@ -124,26 +124,82 @@
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat primary"
-                  Margin="8,0,0,0"
-                  Click="OnOpenBuiltinMergeTool"
-                  IsVisible="{Binding CanUseBuiltinMergeTool}"
-                  HotKey="{OnPlatform Ctrl+Shift+M, macOS=⌘+Shift+M}">
+          <SplitButton Height="28"
+                       Margin="8,0,0,0" Padding="8,0"
+                       Click="OnMerge"
+                       IsVisible="{Binding CanMerge, Mode=OneWay}">
+            <SplitButton.Styles>
+              <Style Selector="SplitButton">
+                <Setter Property="MinHeight" Value="24"/>
+                <Setter Property="Template">
+                  <ControlTemplate>
+                    <Grid ColumnDefinitions="*,1,Auto">
+                      <Button x:Name="PART_PrimaryButton"
+                              Grid.Column="0"
+                              Classes="flat primary"
+                              MinWidth="32"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Command="{TemplateBinding Command}"
+                              CommandParameter="{TemplateBinding CommandParameter}"
+                              CornerRadius="3,0,0,3"
+                              Padding="{TemplateBinding Padding}"
+                              Focusable="False"
+                              KeyboardNavigation.IsTabStop="False" />
+
+                      <Button x:Name="PART_SecondaryButton"
+                              Grid.Column="2"
+                              Classes="flat primary"
+                              Width="32"
+                              CornerRadius="0,3,3,0"
+                              Padding="0"
+                              Focusable="False"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              KeyboardNavigation.IsTabStop="False">
+                        <Path Height="12" Width="12"
+                              Margin="0,4,0,0"
+                              Fill="{DynamicResource AccentButtonForeground}"
+                              Data="{DynamicResource Icons.Down}"/>
+                      </Button>
+                    </Grid>
+                  </ControlTemplate>
+                </Setter>
+
+                <Style Selector="^:disabled /template/ Button">
+                  <Setter Property="BorderThickness" Value="1"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+                  <Setter Property="Background" Value="Transparent"/>
+                </Style>
+
+                <Style Selector="^:disabled TextBlock">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+                </Style>
+
+                <Style Selector="^:disabled Path">
+                  <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+                </Style>
+              </Style>
+            </SplitButton.Styles>
+            
+            <SplitButton.Flyout>
+              <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                <MenuItem Header="{DynamicResource Text.WorkingCopy.Conflicts.MergeExternal}"
+                          Click="OnMergeExternal">
+                  <MenuItem.Icon>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+              </MenuFlyout>
+            </SplitButton.Flyout>
+
             <StackPanel Orientation="Horizontal">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Conflict}"/>
-              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenBuiltinMergeTool}" VerticalAlignment="Center"/>
+              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.Merge}"/>
             </StackPanel>
-          </Button>
-          <Button Classes="flat"
-                  Margin="8,0,0,0"
-                  Click="OnOpenExternalMergeTool"
-                  IsVisible="{Binding CanUseExternalMergeTool}"
-                  HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
-            <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
-              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" VerticalAlignment="Center"/>
-            </StackPanel>
-          </Button>
+          </SplitButton>
         </StackPanel>
       </StackPanel>
 

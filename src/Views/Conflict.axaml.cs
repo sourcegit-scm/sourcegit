@@ -37,25 +37,18 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnOpenExternalMergeTool(object _, RoutedEventArgs e)
+        private async void OnMerge(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Conflict vm)
-                await vm.OpenExternalMergeToolAsync();
+                await vm.MergeAsync();
 
             e.Handled = true;
         }
 
-        private async void OnOpenBuiltinMergeTool(object _, RoutedEventArgs e)
+        private async void OnMergeExternal(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Conflict vm)
-            {
-                var mergeVm = vm.CreateBuiltinMergeViewModel();
-                await mergeVm.LoadAsync();
-
-                var window = TopLevel.GetTopLevel(this) as Window;
-                var mergeWindow = new MergeConflictEditor { DataContext = mergeVm };
-                await mergeWindow.ShowDialog(window);
-            }
+                await vm.MergeExternalAsync();
 
             e.Handled = true;
         }

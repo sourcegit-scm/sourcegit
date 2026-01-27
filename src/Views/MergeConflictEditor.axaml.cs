@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.VisualTree;
+
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
@@ -188,9 +189,21 @@ namespace SourceGit.Views
 
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.LeftMargins.Add(new MergeDiffLineNumberMargin(this));
-            TextArea.LeftMargins.Add(new MergeDiffVerticalSeparatorMargin(this));
+            TextArea.LeftMargins.Add(new MergeDiffVerticalSeparatorMargin());
             TextArea.TextView.BackgroundRenderers.Add(new MergeDiffLineBackgroundRenderer(this));
             TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
+        }
+
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            _scrollViewer = e.NameScope.Find<ScrollViewer>("PART_ScrollViewer");
+            if (_scrollViewer != null)
+            {
+                _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
+            }
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -208,16 +221,8 @@ namespace SourceGit.Views
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
         }
 
-        public ScrollViewer GetScrollViewer()
-        {
-            _scrollViewer ??= this.FindDescendantOfType<ScrollViewer>();
-            return _scrollViewer;
-        }
-
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            _scrollViewer = null;
-
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
             TextArea.TextView.PointerExited -= OnTextViewPointerExited;
@@ -310,8 +315,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
         {
-            var window = this.FindAncestorOfType<MergeConflictEditor>();
-            if (window?.DataContext is not ViewModels.MergeConflictEditor vm)
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
             if (vm.IsLoading)
@@ -430,8 +434,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            var window = this.FindAncestorOfType<MergeConflictEditor>();
-            if (window?.DataContext is not ViewModels.MergeConflictEditor vm)
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
             if (vm.SelectedChunk == null || vm.SelectedChunk.Panel != PanelType)
@@ -443,8 +446,7 @@ namespace SourceGit.Views
 
         private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
         {
-            var window = this.FindAncestorOfType<MergeConflictEditor>();
-            if (window?.DataContext is not ViewModels.MergeConflictEditor vm)
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
             if (vm.SelectedChunk == null || vm.SelectedChunk.Panel != PanelType)
@@ -452,6 +454,23 @@ namespace SourceGit.Views
 
             // Update chunk position when visual lines change
             UpdateSelectedChunkPosition(vm);
+        }
+
+        private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (_scrollViewer == null || DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            if (vm.ScrollOffset.NearlyEquals(_scrollViewer.Offset))
+                return;
+
+            if (IsPointerOver || e.OffsetDelta.SquaredLength > 1.0f)
+            {
+                vm.ScrollOffset = _scrollViewer.Offset;
+
+                if (!TextArea.TextView.IsPointerOver)
+                    vm.SelectedChunk = null;
+            }
         }
 
         private void UpdateSelectedChunkPosition(ViewModels.MergeConflictEditor vm)
@@ -616,11 +635,6 @@ namespace SourceGit.Views
 
     public class MergeDiffVerticalSeparatorMargin : AbstractMargin
     {
-        public MergeDiffVerticalSeparatorMargin(MergeDiffPresenter presenter)
-        {
-            _presenter = presenter;
-        }
-
         public override void Render(DrawingContext context)
         {
             var pen = new Pen(Brushes.DarkGray);
@@ -631,8 +645,6 @@ namespace SourceGit.Views
         {
             return new Size(1, 0);
         }
-
-        private readonly MergeDiffPresenter _presenter;
     }
 
     public class MergeDiffIndicatorTransformer : DocumentColorizingTransformer
@@ -817,105 +829,91 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        protected override void OnOpened(EventArgs e)
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            base.OnOpened(e);
-
-            // Get presenter references
-            _oursPresenter = this.FindControl<MergeDiffPresenter>("OursPresenter");
-            _theirsPresenter = this.FindControl<MergeDiffPresenter>("TheirsPresenter");
-            _resultPresenter = this.FindControl<MergeDiffPresenter>("ResultPresenter");
-
-            // Get popup references
-            _minePopup = this.FindControl<Border>("MinePopup");
-            _theirsPopup = this.FindControl<Border>("TheirsPopup");
-            _resultPopup = this.FindControl<Border>("ResultPopup");
-            _resultUndoPopup = this.FindControl<Border>("ResultUndoPopup");
-
-            // Defer scroll sync setup to ensure ScrollViewers are available in the visual tree
-            Avalonia.Threading.Dispatcher.UIThread.Post(SetupScrollSync,
-                Avalonia.Threading.DispatcherPriority.Loaded);
+            base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.MergeConflictEditor vm)
             {
+                ScrollToCurrentConflict();
                 vm.PropertyChanged += OnViewModelPropertyChanged;
             }
         }
 
-        private void SetupScrollSync()
+        protected override void OnSizeChanged(SizeChangedEventArgs e)
         {
-            var oursScroll = _oursPresenter?.GetScrollViewer();
-            var theirsScroll = _theirsPresenter?.GetScrollViewer();
-            var resultScroll = _resultPresenter?.GetScrollViewer();
+            base.OnSizeChanged(e);
 
-            // Wheel events for scroll sync
-            if (_oursPresenter != null)
-                _oursPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
-            if (_theirsPresenter != null)
-                _theirsPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
-            if (_resultPresenter != null)
-                _resultPresenter.AddHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged, RoutingStrategies.Tunnel);
-
-            // ScrollChanged for scrollbar drag sync
-            if (oursScroll != null)
-                oursScroll.ScrollChanged += OnScrollChanged;
-            if (theirsScroll != null)
-                theirsScroll.ScrollChanged += OnScrollChanged;
-            if (resultScroll != null)
-                resultScroll.ScrollChanged += OnScrollChanged;
-        }
-
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (_isSyncingScroll || sender is not ScrollViewer source)
-                return;
-
-            // Sync on any scroll change (scrollbar drag, programmatic, etc.)
-            SyncAllScrollViewers(source.Offset);
-        }
-
-        private void OnPresenterPointerWheelChanged(object sender, PointerWheelEventArgs e)
-        {
-            var oursScroll = _oursPresenter?.GetScrollViewer();
-            var theirsScroll = _theirsPresenter?.GetScrollViewer();
-            var resultScroll = _resultPresenter?.GetScrollViewer();
-
-            var delta = e.Delta.Y * 50;
-            var currentOffset = oursScroll?.Offset ?? Vector.Zero;
-            var newOffset = new Vector(currentOffset.X, Math.Max(0, currentOffset.Y - delta));
-
-            SyncAllScrollViewers(newOffset);
-            e.Handled = true;
-        }
-
-        private void SyncAllScrollViewers(Vector offset)
-        {
-            if (_isSyncingScroll)
-                return;
-
-            _isSyncingScroll = true;
-            try
+            if (!_execSizeChanged)
             {
-                var oursScroll = _oursPresenter?.GetScrollViewer();
-                var theirsScroll = _theirsPresenter?.GetScrollViewer();
-                var resultScroll = _resultPresenter?.GetScrollViewer();
+                _execSizeChanged = true;
+                ScrollToCurrentConflict();
+            }
+        }
 
-                // Direct offset assignment for immediate sync
-                if (oursScroll != null)
-                    oursScroll.Offset = offset;
-                if (theirsScroll != null)
-                    theirsScroll.Offset = offset;
-                if (resultScroll != null)
-                    resultScroll.Offset = offset;
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
 
-                // Also update ViewModel for state tracking
+            if (e.Handled)
+                return;
+
+            var vm = DataContext as ViewModels.MergeConflictEditor;
+            if (vm == null)
+                return;
+
+            var modifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+
+            if (e.KeyModifiers == modifier)
+            {
+                if (e.Key == Key.S && vm.CanSave)
+                {
+                    OnSaveAndStage(null, null);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Up && vm.HasPrevConflict)
+                {
+                    vm.GotoPrevConflict();
+                    UpdateCurrentConflictHighlight();
+                    ScrollToCurrentConflict();
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Down && vm.HasNextConflict)
+                {
+                    vm.GotoNextConflict();
+                    UpdateCurrentConflictHighlight();
+                    ScrollToCurrentConflict();
+                    e.Handled = true;
+                }
+            }
+        }
+
+        protected override async void OnClosing(WindowClosingEventArgs e)
+        {
+            base.OnClosing(e);
+
+            if (_forceClose)
+            {
                 if (DataContext is ViewModels.MergeConflictEditor vm)
-                    vm.ScrollOffset = offset;
+                    vm.PropertyChanged -= OnViewModelPropertyChanged;
+
+                return;
             }
-            finally
+
+            e.Cancel = true;
+
+            var result = await App.AskConfirmAsync(App.Text("MergeConflictEditor.UnsavedChanges"));
+            if (result)
             {
-                _isSyncingScroll = false;
+                _forceClose = true;
+                Close();
             }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            GC.Collect();
         }
 
         private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -946,204 +944,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void UpdateResolvedRanges()
-        {
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            var allRanges = vm.AllConflictRanges;
-
-            if (_oursPresenter != null)
-                _oursPresenter.AllConflictRanges = allRanges;
-            if (_theirsPresenter != null)
-                _theirsPresenter.AllConflictRanges = allRanges;
-            // Note: Result panel doesn't use conflict ranges since it shows current state
-        }
-
-        private void UpdateCurrentConflictHighlight()
-        {
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            var startLine = vm.CurrentConflictStartLine;
-            var endLine = vm.CurrentConflictEndLine;
-
-            if (_oursPresenter != null)
-            {
-                _oursPresenter.CurrentConflictStartLine = startLine;
-                _oursPresenter.CurrentConflictEndLine = endLine;
-            }
-            if (_theirsPresenter != null)
-            {
-                _theirsPresenter.CurrentConflictStartLine = startLine;
-                _theirsPresenter.CurrentConflictEndLine = endLine;
-            }
-            if (_resultPresenter != null)
-            {
-                _resultPresenter.CurrentConflictStartLine = startLine;
-                _resultPresenter.CurrentConflictEndLine = endLine;
-            }
-        }
-
-        private void UpdatePopupVisibility()
-        {
-            // Hide all popups first
-            if (_minePopup != null)
-                _minePopup.IsVisible = false;
-            if (_theirsPopup != null)
-                _theirsPopup.IsVisible = false;
-            if (_resultPopup != null)
-                _resultPopup.IsVisible = false;
-            if (_resultUndoPopup != null)
-                _resultUndoPopup.IsVisible = false;
-
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            var chunk = vm.SelectedChunk;
-            if (chunk == null)
-                return;
-
-            // Get the presenter for bounds checking
-            MergeDiffPresenter presenter = chunk.Panel switch
-            {
-                ViewModels.MergeConflictPanelType.Mine => _oursPresenter,
-                ViewModels.MergeConflictPanelType.Theirs => _theirsPresenter,
-                ViewModels.MergeConflictPanelType.Result => _resultPresenter,
-                _ => null
-            };
-
-            // Show the appropriate popup based on panel type and resolved state
-            Border popup;
-            if (chunk.Panel == ViewModels.MergeConflictPanelType.Result && chunk.IsResolved)
-            {
-                // Show Undo popup for resolved conflicts in Result panel
-                popup = _resultUndoPopup;
-            }
-            else
-            {
-                popup = chunk.Panel switch
-                {
-                    ViewModels.MergeConflictPanelType.Mine => _minePopup,
-                    ViewModels.MergeConflictPanelType.Theirs => _theirsPopup,
-                    ViewModels.MergeConflictPanelType.Result => _resultPopup,
-                    _ => null
-                };
-            }
-
-            if (popup != null && presenter != null)
-            {
-                // Position popup - clamp to visible area
-                var top = chunk.Y + (chunk.Height >= 36 ? 8 : 2);
-
-                // Clamp top to ensure popup is visible
-                var popupHeight = popup.Bounds.Height > 0 ? popup.Bounds.Height : 32;
-                var presenterHeight = presenter.Bounds.Height;
-                top = Math.Max(4, Math.Min(top, presenterHeight - popupHeight - 4));
-
-                popup.Margin = new Thickness(0, top, 24, 0);
-                popup.IsVisible = true;
-            }
-        }
-
-        private void OnUseMineFromHover(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptOursAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-                vm.SelectedChunk = null;
-            }
-            e.Handled = true;
-        }
-
-        private void OnUseTheirsFromHover(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptTheirsAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-                vm.SelectedChunk = null;
-            }
-            e.Handled = true;
-        }
-
-        private void OnUndoResolution(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.UndoResolutionAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-                vm.SelectedChunk = null;
-            }
-            e.Handled = true;
-        }
-
-        protected override async void OnClosing(WindowClosingEventArgs e)
-        {
-            base.OnClosing(e);
-
-            if (_forceClose)
-                return;
-
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnsavedChanges())
-            {
-                e.Cancel = true;
-                var result = await App.AskConfirmAsync(App.Text("MergeConflictEditor.UnsavedChanges"));
-                if (result)
-                {
-                    _forceClose = true;
-                    Close();
-                }
-            }
-        }
-
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-
-            if (e.Handled)
-                return;
-
-            var vm = DataContext as ViewModels.MergeConflictEditor;
-            if (vm == null)
-                return;
-
-            var modifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-
-            if (e.KeyModifiers == modifier)
-            {
-                if (e.Key == Key.S && vm.CanSave)
-                {
-                    _ = SaveAndCloseAsync();
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Up && vm.HasPrevConflict)
-                {
-                    vm.GotoPrevConflict();
-                    UpdateCurrentConflictHighlight();
-                    ScrollToCurrentConflict();
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down && vm.HasNextConflict)
-                {
-                    vm.GotoNextConflict();
-                    UpdateCurrentConflictHighlight();
-                    ScrollToCurrentConflict();
-                    e.Handled = true;
-                }
-            }
-        }
-
         private void OnGotoPrevConflict(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasPrevConflict)
@@ -1166,135 +966,77 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnUseCurrentMine(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptCurrentOurs();
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-            }
-            e.Handled = true;
-        }
-
-        private void OnUseCurrentTheirs(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptCurrentTheirs();
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-            }
-            e.Handled = true;
-        }
-
-        private void OnAcceptMine(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptOurs();
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-            }
-            e.Handled = true;
-        }
-
-        private void OnAcceptTheirs(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptTheirs();
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-            }
-            e.Handled = true;
-        }
-
-        private void OnAcceptBothMineFirst(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptBothMineFirst();
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-            }
-            e.Handled = true;
-        }
-
-        private void OnAcceptBothTheirsFirst(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                var savedOffset = SaveScrollOffset();
-                vm.AcceptBothTheirsFirst();
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
-            }
-            e.Handled = true;
-        }
-
-        private void OnUseBothMineFirstFromHover(object sender, RoutedEventArgs e)
+        private void OnUseMine(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
             {
-                var savedOffset = SaveScrollOffset();
+                var savedOffset = vm.ScrollOffset;
+                vm.AcceptOursAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                vm.SelectedChunk = null;
+                vm.ScrollOffset = savedOffset;
+            }
+            e.Handled = true;
+        }
+
+        private void OnUseTheirs(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = vm.ScrollOffset;
+                vm.AcceptTheirsAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                vm.SelectedChunk = null;
+                vm.ScrollOffset = savedOffset;
+            }
+            e.Handled = true;
+        }
+
+        private void OnUseBothMineFirst(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
+            {
+                var savedOffset = vm.ScrollOffset;
                 vm.AcceptBothMineFirstAtIndex(chunk.ConflictIndex);
                 UpdateCurrentConflictHighlight();
                 UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
                 vm.SelectedChunk = null;
+                vm.ScrollOffset = savedOffset;
             }
             e.Handled = true;
         }
 
-        private void OnUseBothTheirsFirstFromHover(object sender, RoutedEventArgs e)
+        private void OnUseBothTheirsFirst(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
             {
-                var savedOffset = SaveScrollOffset();
+                var savedOffset = vm.ScrollOffset;
                 vm.AcceptBothTheirsFirstAtIndex(chunk.ConflictIndex);
                 UpdateCurrentConflictHighlight();
                 UpdateResolvedRanges();
-                RestoreScrollOffset(savedOffset);
                 vm.SelectedChunk = null;
+                vm.ScrollOffset = savedOffset;
             }
             e.Handled = true;
         }
 
-        private Vector SaveScrollOffset()
+        private void OnUndoResolution(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                return vm.ScrollOffset;
-            return new Vector(0, 0);
-        }
-
-        private void RestoreScrollOffset(Vector offset)
-        {
-            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
             {
-                if (DataContext is ViewModels.MergeConflictEditor vm)
-                    vm.ScrollOffset = offset;
-            }, Avalonia.Threading.DispatcherPriority.Loaded);
-        }
-
-        private async void OnSaveAndStage(object sender, RoutedEventArgs e)
-        {
-            await SaveAndCloseAsync();
+                var savedOffset = vm.ScrollOffset;
+                vm.UndoResolutionAtIndex(chunk.ConflictIndex);
+                UpdateCurrentConflictHighlight();
+                UpdateResolvedRanges();
+                vm.SelectedChunk = null;
+                vm.ScrollOffset = savedOffset;
+            }
             e.Handled = true;
         }
 
-        private async Task SaveAndCloseAsync()
+        private async void OnSaveAndStage(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm)
             {
@@ -1309,50 +1051,97 @@ namespace SourceGit.Views
 
         private void ScrollToCurrentConflict()
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.CurrentConflictLine >= 0)
+            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.CurrentConflictLine >= 0)
             {
-                if (_oursPresenter != null)
-                {
-                    var lineHeight = _oursPresenter.TextArea.TextView.DefaultLineHeight;
-                    var vOffset = lineHeight * vm.CurrentConflictLine;
-                    var targetOffset = new Vector(0, Math.Max(0, vOffset - _oursPresenter.Bounds.Height * 0.3));
-                    SyncAllScrollViewers(targetOffset);
-                }
+                var lineHeight = OursPresenter.TextArea.TextView.DefaultLineHeight;
+                var vOffset = lineHeight * vm.CurrentConflictLine;
+                vm.ScrollOffset = new Vector(0, Math.Max(0, vOffset - OursPresenter.Bounds.Height * 0.3));
             }
         }
 
-        protected override void OnClosed(EventArgs e)
+        private void UpdateResolvedRanges()
         {
-            var oursScroll = _oursPresenter?.GetScrollViewer();
-            var theirsScroll = _theirsPresenter?.GetScrollViewer();
-            var resultScroll = _resultPresenter?.GetScrollViewer();
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
 
-            if (_oursPresenter != null)
-                _oursPresenter.RemoveHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged);
-            if (_theirsPresenter != null)
-                _theirsPresenter.RemoveHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged);
-            if (_resultPresenter != null)
-                _resultPresenter.RemoveHandler(PointerWheelChangedEvent, OnPresenterPointerWheelChanged);
+            var allRanges = vm.AllConflictRanges;
+            OursPresenter.AllConflictRanges = allRanges;
+            TheirsPresenter.AllConflictRanges = allRanges;
+        }
 
-            if (oursScroll != null)
-                oursScroll.ScrollChanged -= OnScrollChanged;
-            if (theirsScroll != null)
-                theirsScroll.ScrollChanged -= OnScrollChanged;
-            if (resultScroll != null)
-                resultScroll.ScrollChanged -= OnScrollChanged;
+        private void UpdateCurrentConflictHighlight()
+        {
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
 
-            base.OnClosed(e);
-            GC.Collect();
+            var startLine = vm.CurrentConflictStartLine;
+            var endLine = vm.CurrentConflictEndLine;
+            OursPresenter.CurrentConflictStartLine = startLine;
+            OursPresenter.CurrentConflictEndLine = endLine;
+            TheirsPresenter.CurrentConflictStartLine = startLine;
+            TheirsPresenter.CurrentConflictEndLine = endLine;
+            ResultPresenter.CurrentConflictStartLine = startLine;
+            ResultPresenter.CurrentConflictEndLine = endLine;
+        }
+
+        private void UpdatePopupVisibility()
+        {
+            // Hide all popups first
+            MinePopup.IsVisible = false;
+            TheirsPopup.IsVisible = false;
+            ResultPopup.IsVisible = false;
+            ResultUndoPopup.IsVisible = false;
+
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            var chunk = vm.SelectedChunk;
+            if (chunk == null)
+                return;
+
+            // Get the presenter for bounds checking
+            MergeDiffPresenter presenter = chunk.Panel switch
+            {
+                ViewModels.MergeConflictPanelType.Mine => OursPresenter,
+                ViewModels.MergeConflictPanelType.Theirs => TheirsPresenter,
+                ViewModels.MergeConflictPanelType.Result => ResultPresenter,
+                _ => null
+            };
+
+            // Show the appropriate popup based on panel type and resolved state
+            Border popup;
+            if (chunk.Panel == ViewModels.MergeConflictPanelType.Result && chunk.IsResolved)
+            {
+                // Show Undo popup for resolved conflicts in Result panel
+                popup = ResultUndoPopup;
+            }
+            else
+            {
+                popup = chunk.Panel switch
+                {
+                    ViewModels.MergeConflictPanelType.Mine => MinePopup,
+                    ViewModels.MergeConflictPanelType.Theirs => TheirsPopup,
+                    ViewModels.MergeConflictPanelType.Result => ResultPopup,
+                    _ => null
+                };
+            }
+
+            if (popup != null && presenter != null)
+            {
+                // Position popup - clamp to visible area
+                var top = chunk.Y + (chunk.Height >= 36 ? 8 : 2);
+
+                // Clamp top to ensure popup is visible
+                var popupHeight = popup.Bounds.Height > 0 ? popup.Bounds.Height : 32;
+                var presenterHeight = presenter.Bounds.Height;
+                top = Math.Max(4, Math.Min(top, presenterHeight - popupHeight - 4));
+
+                popup.Margin = new Thickness(0, top, 24, 0);
+                popup.IsVisible = true;
+            }
         }
 
         private bool _forceClose = false;
-        private bool _isSyncingScroll = false;
-        private MergeDiffPresenter _oursPresenter;
-        private MergeDiffPresenter _theirsPresenter;
-        private MergeDiffPresenter _resultPresenter;
-        private Border _minePopup;
-        private Border _theirsPopup;
-        private Border _resultPopup;
-        private Border _resultUndoPopup;
+        private bool _execSizeChanged = false;
     }
 }
