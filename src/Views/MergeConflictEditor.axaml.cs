@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 
@@ -94,24 +95,6 @@ namespace SourceGit.Views
             set => SetValue(DeletedContentBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> AddedHighlightBrushProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(AddedHighlightBrush), new SolidColorBrush(Color.FromArgb(90, 0, 255, 0)));
-
-        public IBrush AddedHighlightBrush
-        {
-            get => GetValue(AddedHighlightBrushProperty);
-            set => SetValue(AddedHighlightBrushProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> DeletedHighlightBrushProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(DeletedHighlightBrush), new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)));
-
-        public IBrush DeletedHighlightBrush
-        {
-            get => GetValue(DeletedHighlightBrushProperty);
-            set => SetValue(DeletedHighlightBrushProperty, value);
-        }
-
         public static readonly StyledProperty<IBrush> IndicatorBackgroundProperty =
             AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(IndicatorBackground), new SolidColorBrush(Color.FromArgb(100, 100, 100, 100)));
 
@@ -121,58 +104,34 @@ namespace SourceGit.Views
             set => SetValue(IndicatorBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> MineContentBackgroundProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(MineContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 120, 215)));
+        public static readonly StyledProperty<int> CurrentConflictIndexProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictIndex), -1);
 
-        public IBrush MineContentBackground
+        public int CurrentConflictIndex
         {
-            get => GetValue(MineContentBackgroundProperty);
-            set => SetValue(MineContentBackgroundProperty, value);
+            get => GetValue(CurrentConflictIndexProperty);
+            set => SetValue(CurrentConflictIndexProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> TheirsContentBackgroundProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(TheirsContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 140, 0)));
+        public static readonly StyledProperty<ViewModels.MergeConflictSelectedChunk> SelectedChunkProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, ViewModels.MergeConflictSelectedChunk>(nameof(SelectedChunk));
 
-        public IBrush TheirsContentBackground
+        public ViewModels.MergeConflictSelectedChunk SelectedChunk
         {
-            get => GetValue(TheirsContentBackgroundProperty);
-            set => SetValue(TheirsContentBackgroundProperty, value);
+            get => GetValue(SelectedChunkProperty);
+            set => SetValue(SelectedChunkProperty, value);
         }
 
-        public static readonly StyledProperty<int> CurrentConflictStartLineProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictStartLine), -1);
-
-        public int CurrentConflictStartLine
+        protected ViewModels.MergeConflictPanelType PanelType
         {
-            get => GetValue(CurrentConflictStartLineProperty);
-            set => SetValue(CurrentConflictStartLineProperty, value);
-        }
-
-        public static readonly StyledProperty<int> CurrentConflictEndLineProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(CurrentConflictEndLine), -1);
-
-        public int CurrentConflictEndLine
-        {
-            get => GetValue(CurrentConflictEndLineProperty);
-            set => SetValue(CurrentConflictEndLineProperty, value);
-        }
-
-        public static readonly StyledProperty<List<(int Start, int End)>> AllConflictRangesProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, List<(int Start, int End)>>(nameof(AllConflictRanges));
-
-        public List<(int Start, int End)> AllConflictRanges
-        {
-            get => GetValue(AllConflictRangesProperty);
-            set => SetValue(AllConflictRangesProperty, value);
-        }
-
-        public static readonly StyledProperty<ViewModels.MergeConflictPanelType> PanelTypeProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, ViewModels.MergeConflictPanelType>(nameof(PanelType));
-
-        public ViewModels.MergeConflictPanelType PanelType
-        {
-            get => GetValue(PanelTypeProperty);
-            set => SetValue(PanelTypeProperty, value);
+            get
+            {
+                if (IsResultPanel)
+                    return ViewModels.MergeConflictPanelType.Result;
+                if (IsOldSide)
+                    return ViewModels.MergeConflictPanelType.Mine;
+                return ViewModels.MergeConflictPanelType.Theirs;
+            }
         }
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
@@ -191,7 +150,6 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new MergeDiffLineNumberMargin(this));
             TextArea.LeftMargins.Add(new MergeDiffVerticalSeparatorMargin());
             TextArea.TextView.BackgroundRenderers.Add(new MergeDiffLineBackgroundRenderer(this));
-            TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -219,6 +177,7 @@ namespace SourceGit.Views
             TextArea.TextView.PointerExited += OnTextViewPointerExited;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
+            TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -255,9 +214,7 @@ namespace SourceGit.Views
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }
-            else if (change.Property == CurrentConflictStartLineProperty ||
-                     change.Property == CurrentConflictEndLineProperty ||
-                     change.Property == AllConflictRangesProperty)
+            else if (change.Property == SelectedChunkProperty)
             {
                 TextArea.TextView.InvalidateVisual();
             }
@@ -327,17 +284,19 @@ namespace SourceGit.Views
 
             // Check if pointer is still within current chunk bounds (like TextDiffView does)
             var currentChunk = vm.SelectedChunk;
-            if (currentChunk != null && currentChunk.Panel == PanelType)
+            var panelType = PanelType;
+            if (currentChunk != null && currentChunk.Panel == panelType)
             {
                 var rect = new Rect(0, currentChunk.Y, Bounds.Width, currentChunk.Height);
                 if (rect.Contains(e.GetPosition(this)))
                     return; // Still within chunk, don't update
             }
 
-            var conflictRegions = vm.GetConflictRegions();
+            var conflictRegions = vm.ConflictRegions;
             if (conflictRegions == null || conflictRegions.Count == 0)
                 return;
 
+            var isResultPanel = IsResultPanel;
             var position = e.GetPosition(textView);
             var y = position.Y + textView.VerticalOffset;
 
@@ -349,7 +308,7 @@ namespace SourceGit.Views
                 // For Mine/Theirs panels, skip resolved conflicts
                 if (region.PanelStartLine < 0 || region.PanelEndLine < 0)
                     continue;
-                if (region.IsResolved && PanelType != ViewModels.MergeConflictPanelType.Result)
+                if (region.IsResolved && !isResultPanel)
                     continue;
 
                 // Get the visual bounds of this conflict region
@@ -407,7 +366,7 @@ namespace SourceGit.Views
                 if (isWithinRegion)
                 {
                     var newChunk = new ViewModels.MergeConflictSelectedChunk(
-                        viewportY, height, i, PanelType, region.IsResolved);
+                        viewportY, height, i, panelType, region.IsResolved);
 
                     // Only update if changed
                     if (currentChunk == null ||
@@ -476,21 +435,22 @@ namespace SourceGit.Views
         private void UpdateSelectedChunkPosition(ViewModels.MergeConflictEditor vm)
         {
             var chunk = vm.SelectedChunk;
-            if (chunk == null || chunk.Panel != PanelType)
+            var panelType = PanelType;
+            if (chunk == null || chunk.Panel != panelType)
                 return;
 
             var textView = TextArea.TextView;
             if (!textView.VisualLinesValid)
                 return;
 
-            var conflictRegions = vm.GetConflictRegions();
+            var conflictRegions = vm.ConflictRegions;
             if (conflictRegions == null || chunk.ConflictIndex >= conflictRegions.Count)
                 return;
 
             var region = conflictRegions[chunk.ConflictIndex];
             // For Result panel, keep showing chunk for resolved conflicts (for undo)
             // For Mine/Theirs panels, clear if resolved
-            if (region.IsResolved && PanelType != ViewModels.MergeConflictPanelType.Result)
+            if (region.IsResolved && !IsResultPanel)
             {
                 vm.SelectedChunk = null;
                 return;
@@ -546,7 +506,7 @@ namespace SourceGit.Views
 
             // Update chunk with new position
             var newChunk = new ViewModels.MergeConflictSelectedChunk(
-                viewportY, height, chunk.ConflictIndex, PanelType, region.IsResolved);
+                viewportY, height, chunk.ConflictIndex, panelType, region.IsResolved);
 
             if (Math.Abs(chunk.Y - newChunk.Y) > 1 || Math.Abs(chunk.Height - newChunk.Height) > 1)
             {
@@ -693,11 +653,10 @@ namespace SourceGit.Views
             if (lines == null || _presenter.Document == null || !textView.VisualLinesValid)
                 return;
 
-            var width = textView.Bounds.Width;
-            var conflictStart = _presenter.CurrentConflictStartLine;
-            var conflictEnd = _presenter.CurrentConflictEndLine;
-            var allConflictRanges = _presenter.AllConflictRanges;
+            if (_presenter.DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
 
+            var width = textView.Bounds.Width;
             foreach (var line in textView.VisualLines)
             {
                 if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
@@ -707,116 +666,44 @@ namespace SourceGit.Views
                 if (index > lines.Count)
                     break;
 
-                var info = lines[index - 1];
                 var lineIndex = index - 1;
+                var info = lines[lineIndex];
+                var lineType = vm.GetLineType(lineIndex);
 
                 var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                 var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
+                var rect = new Rect(0, startY, width, endY - startY);
 
-                // Check if this line is in the current conflict
-                bool isCurrentConflict = conflictStart >= 0 && conflictEnd >= 0 && lineIndex >= conflictStart && lineIndex <= conflictEnd;
+                if (lineType == ViewModels.MergeConflictLineType.ConflictBlockStart)
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
+                else if (lineType == ViewModels.MergeConflictLineType.ConflictBlockEnd)
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
+                else if (lineType == ViewModels.MergeConflictLineType.ResolvedBlockStart)
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
+                else if (lineType == ViewModels.MergeConflictLineType.ResolvedBlockEnd)
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
 
-                // Check if this line is in any OTHER conflict (not the current one) - should be faded
-                bool isInOtherConflict = false;
-                if (!isCurrentConflict && allConflictRanges != null)
-                {
-                    foreach (var range in allConflictRanges)
-                    {
-                        if (lineIndex >= range.Start && lineIndex <= range.End)
-                        {
-                            isInOtherConflict = true;
-                            break;
-                        }
-                    }
-                }
+                if (lineType >= ViewModels.MergeConflictLineType.ResolvedBlockStart)
+                    drawingContext.DrawRectangle(new SolidColorBrush(Colors.Green, 0.1), null, rect);
+                else if (lineType >= ViewModels.MergeConflictLineType.ConflictBlockStart)
+                    drawingContext.DrawRectangle(new SolidColorBrush(Colors.Red, 0.1), null, rect);
 
-                // No yellow highlight - just use saturation difference
-                // Current conflict = full color, other conflicts = desaturated
-                var bg = GetBrushByLineType(info.Type, isInOtherConflict);
+                var bg = GetBrushByLineType(info.Type);
                 if (bg != null)
-                {
-                    drawingContext.DrawRectangle(bg, null, new Rect(0, startY, width, endY - startY));
-
-                    // Draw inline highlights
-                    if (info.Highlights.Count > 0)
-                    {
-                        var highlightBG = info.Type == Models.TextDiffLineType.Added
-                            ? _presenter.AddedHighlightBrush
-                            : _presenter.DeletedHighlightBrush;
-
-                        var processingIdxStart = 0;
-                        var processingIdxEnd = 0;
-                        var nextHighlight = 0;
-
-                        foreach (var tl in line.TextLines)
-                        {
-                            processingIdxEnd += tl.Length;
-
-                            var y = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineTop) - textView.VerticalOffset;
-                            var h = line.GetTextLineVisualYPosition(tl, VisualYPosition.LineBottom) - textView.VerticalOffset - y;
-
-                            while (nextHighlight < info.Highlights.Count)
-                            {
-                                var highlight = info.Highlights[nextHighlight];
-                                if (highlight.Start >= processingIdxEnd)
-                                    break;
-
-                                var start = line.GetVisualColumn(highlight.Start < processingIdxStart ? processingIdxStart : highlight.Start);
-                                var end = line.GetVisualColumn(highlight.End >= processingIdxEnd ? processingIdxEnd : highlight.End + 1);
-
-                                var x = line.GetTextLineVisualXPosition(tl, start) - textView.HorizontalOffset;
-                                var w = line.GetTextLineVisualXPosition(tl, end) - textView.HorizontalOffset - x;
-                                var rect = new Rect(x, y, w, h);
-                                drawingContext.DrawRectangle(highlightBG, null, rect);
-
-                                if (highlight.End >= processingIdxEnd)
-                                    break;
-
-                                nextHighlight++;
-                            }
-
-                            processingIdxStart = processingIdxEnd;
-                        }
-                    }
-                }
+                    drawingContext.DrawRectangle(bg, null, rect);
             }
         }
 
-        private IBrush GetBrushByLineType(Models.TextDiffLineType type, bool isDesaturated = false)
+        private IBrush GetBrushByLineType(Models.TextDiffLineType type)
         {
-            IBrush brush;
-            if (_presenter.IsResultPanel)
+            return type switch
             {
-                brush = type switch
-                {
-                    Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
-                    Models.TextDiffLineType.Added => _presenter.TheirsContentBackground,
-                    Models.TextDiffLineType.Deleted => _presenter.MineContentBackground,
-                    Models.TextDiffLineType.Indicator => _presenter.IndicatorBackground,
-                    _ => null,
-                };
-            }
-            else
-            {
-                brush = type switch
-                {
-                    Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
-                    Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
-                    Models.TextDiffLineType.Deleted => _presenter.DeletedContentBackground,
-                    _ => null,
-                };
-            }
-
-            // Apply desaturation for resolved conflicts (reduce opacity)
-            if (isDesaturated && brush is SolidColorBrush solidBrush)
-            {
-                var color = solidBrush.Color;
-                // Reduce opacity by 70% to make it look faded/desaturated
-                var desaturatedColor = Color.FromArgb((byte)(color.A * 0.3), color.R, color.G, color.B);
-                return new SolidColorBrush(desaturatedColor);
-            }
-
-            return brush;
+                Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
+                Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
+                Models.TextDiffLineType.Deleted => _presenter.DeletedContentBackground,
+                Models.TextDiffLineType.Indicator => _presenter.IndicatorBackground,
+                _ => null,
+            };
         }
 
         private readonly MergeDiffPresenter _presenter;
@@ -834,21 +721,7 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.MergeConflictEditor vm)
-            {
-                ScrollToCurrentConflict();
                 vm.PropertyChanged += OnViewModelPropertyChanged;
-            }
-        }
-
-        protected override void OnSizeChanged(SizeChangedEventArgs e)
-        {
-            base.OnSizeChanged(e);
-
-            if (!_execSizeChanged)
-            {
-                _execSizeChanged = true;
-                ScrollToCurrentConflict();
-            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -871,17 +744,15 @@ namespace SourceGit.Views
                     OnSaveAndStage(null, null);
                     e.Handled = true;
                 }
-                else if (e.Key == Key.Up && vm.HasPrevConflict)
+                else if (e.Key == Key.Up)
                 {
                     vm.GotoPrevConflict();
-                    UpdateCurrentConflictHighlight();
                     ScrollToCurrentConflict();
                     e.Handled = true;
                 }
-                else if (e.Key == Key.Down && vm.HasNextConflict)
+                else if (e.Key == Key.Down)
                 {
                     vm.GotoNextConflict();
-                    UpdateCurrentConflictHighlight();
                     ScrollToCurrentConflict();
                     e.Handled = true;
                 }
@@ -902,7 +773,10 @@ namespace SourceGit.Views
 
             e.Cancel = true;
 
-            var result = await App.AskConfirmAsync(App.Text("MergeConflictEditor.UnsavedChanges"));
+            var confirm = new Confirm();
+            confirm.SetData(App.Text("MergeConflictEditor.UnsavedChanges"), Models.ConfirmButtonType.OkCancel);
+
+            var result = await confirm.ShowDialog<bool>(this);
             if (result)
             {
                 _forceClose = true;
@@ -916,40 +790,17 @@ namespace SourceGit.Views
             GC.Collect();
         }
 
-        private void OnViewModelPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.IsLoading))
-            {
-                if (DataContext is ViewModels.MergeConflictEditor vm && !vm.IsLoading)
-                {
-                    Avalonia.Threading.Dispatcher.UIThread.Post(() =>
-                    {
-                        UpdateCurrentConflictHighlight();
-                        UpdateResolvedRanges();
-                        ScrollToCurrentConflict();
-                    }, Avalonia.Threading.DispatcherPriority.Loaded);
-                }
-            }
-            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.CurrentConflictLine))
-            {
-                UpdateCurrentConflictHighlight();
-            }
-            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.AllConflictRanges))
-            {
-                UpdateResolvedRanges();
-            }
-            else if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.SelectedChunk))
-            {
+            if (e.PropertyName == nameof(ViewModels.MergeConflictEditor.SelectedChunk))
                 UpdatePopupVisibility();
-            }
         }
 
         private void OnGotoPrevConflict(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasPrevConflict)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 vm.GotoPrevConflict();
-                UpdateCurrentConflictHighlight();
                 ScrollToCurrentConflict();
             }
             e.Handled = true;
@@ -957,10 +808,9 @@ namespace SourceGit.Views
 
         private void OnGotoNextConflict(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.MergeConflictEditor vm && vm.HasNextConflict)
+            if (DataContext is ViewModels.MergeConflictEditor vm)
             {
                 vm.GotoNextConflict();
-                UpdateCurrentConflictHighlight();
                 ScrollToCurrentConflict();
             }
             e.Handled = true;
@@ -969,70 +819,40 @@ namespace SourceGit.Views
         private void OnUseMine(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = vm.ScrollOffset;
                 vm.AcceptOursAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                vm.SelectedChunk = null;
-                vm.ScrollOffset = savedOffset;
-            }
+
             e.Handled = true;
         }
 
         private void OnUseTheirs(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = vm.ScrollOffset;
                 vm.AcceptTheirsAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                vm.SelectedChunk = null;
-                vm.ScrollOffset = savedOffset;
-            }
+
             e.Handled = true;
         }
 
         private void OnUseBothMineFirst(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = vm.ScrollOffset;
                 vm.AcceptBothMineFirstAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                vm.SelectedChunk = null;
-                vm.ScrollOffset = savedOffset;
-            }
+
             e.Handled = true;
         }
 
         private void OnUseBothTheirsFirst(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = vm.ScrollOffset;
                 vm.AcceptBothTheirsFirstAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                vm.SelectedChunk = null;
-                vm.ScrollOffset = savedOffset;
-            }
+
             e.Handled = true;
         }
 
         private void OnUndoResolution(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.MergeConflictEditor vm && vm.SelectedChunk is { } chunk)
-            {
-                var savedOffset = vm.ScrollOffset;
                 vm.UndoResolutionAtIndex(chunk.ConflictIndex);
-                UpdateCurrentConflictHighlight();
-                UpdateResolvedRanges();
-                vm.SelectedChunk = null;
-                vm.ScrollOffset = savedOffset;
-            }
+
             e.Handled = true;
         }
 
@@ -1051,37 +871,13 @@ namespace SourceGit.Views
 
         private void ScrollToCurrentConflict()
         {
-            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.CurrentConflictLine >= 0)
+            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor { CurrentConflictIndex: >= 0 } vm)
             {
+                var region = vm.ConflictRegions[vm.CurrentConflictIndex];
                 var lineHeight = OursPresenter.TextArea.TextView.DefaultLineHeight;
-                var vOffset = lineHeight * vm.CurrentConflictLine;
+                var vOffset = lineHeight * region.PanelStartLine;
                 vm.ScrollOffset = new Vector(0, Math.Max(0, vOffset - OursPresenter.Bounds.Height * 0.3));
             }
-        }
-
-        private void UpdateResolvedRanges()
-        {
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            var allRanges = vm.AllConflictRanges;
-            OursPresenter.AllConflictRanges = allRanges;
-            TheirsPresenter.AllConflictRanges = allRanges;
-        }
-
-        private void UpdateCurrentConflictHighlight()
-        {
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            var startLine = vm.CurrentConflictStartLine;
-            var endLine = vm.CurrentConflictEndLine;
-            OursPresenter.CurrentConflictStartLine = startLine;
-            OursPresenter.CurrentConflictEndLine = endLine;
-            TheirsPresenter.CurrentConflictStartLine = startLine;
-            TheirsPresenter.CurrentConflictEndLine = endLine;
-            ResultPresenter.CurrentConflictStartLine = startLine;
-            ResultPresenter.CurrentConflictEndLine = endLine;
         }
 
         private void UpdatePopupVisibility()
@@ -1142,6 +938,5 @@ namespace SourceGit.Views
         }
 
         private bool _forceClose = false;
-        private bool _execSizeChanged = false;
     }
 }

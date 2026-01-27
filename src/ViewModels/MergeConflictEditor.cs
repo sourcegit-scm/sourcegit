@@ -16,6 +16,17 @@ namespace SourceGit.ViewModels
         Result
     }
 
+    public enum MergeConflictLineType
+    {
+        Normal,
+        ConflictBlockStart,
+        ConflictBlock,
+        ConflictBlockEnd,
+        ResolvedBlockStart,
+        ResolvedBlock,
+        ResolvedBlockEnd,
+    }
+
     public record MergeConflictSelectedChunk(
         double Y,
         double Height,
@@ -56,7 +67,12 @@ namespace SourceGit.ViewModels
             get => _filePath;
         }
 
-        // Aligned diff data for all three panels
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set => SetProperty(ref _isLoading, value);
+        }
+
         public List<Models.TextDiffLine> OursDiffLines
         {
             get => _oursDiffLines;
@@ -81,32 +97,6 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _diffMaxLineNumber, value);
         }
 
-        public string ResultContent
-        {
-            get => _resultContent;
-            private set
-            {
-                if (SetProperty(ref _resultContent, value))
-                {
-                    IsModified = true;
-                    BuildAlignedResultPanel();
-                    UpdateConflictInfo();
-                }
-            }
-        }
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            private set => SetProperty(ref _isLoading, value);
-        }
-
-        public bool IsModified
-        {
-            get => _isModified;
-            private set => SetProperty(ref _isModified, value);
-        }
-
         public int UnresolvedConflictCount
         {
             get => _unresolvedConflictCount;
@@ -117,13 +107,9 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged(nameof(HasUnresolvedConflicts));
                     OnPropertyChanged(nameof(StatusText));
                     OnPropertyChanged(nameof(CanSave));
-                    OnPropertyChanged(nameof(HasPrevConflict));
-                    OnPropertyChanged(nameof(HasNextConflict));
                 }
             }
         }
-
-        public bool HasUnresolvedConflicts => _unresolvedConflictCount > 0;
 
         public string StatusText
         {
@@ -135,62 +121,28 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool CanSave => !HasUnresolvedConflicts && IsModified;
-
         public int CurrentConflictIndex
         {
             get => _currentConflictIndex;
-            private set
-            {
-                if (SetProperty(ref _currentConflictIndex, value))
-                {
-                    OnPropertyChanged(nameof(HasPrevConflict));
-                    OnPropertyChanged(nameof(HasNextConflict));
-                }
-            }
+            private set => SetProperty(ref _currentConflictIndex, value);
         }
 
-        public bool HasPrevConflict => UnresolvedConflictCount > 0;
-        public bool HasNextConflict => UnresolvedConflictCount > 0;
-
-        public int CurrentConflictLine
-        {
-            get => _currentConflictLine;
-            private set => SetProperty(ref _currentConflictLine, value);
-        }
-
-        public int CurrentConflictStartLine
-        {
-            get => _currentConflictStartLine;
-            private set => SetProperty(ref _currentConflictStartLine, value);
-        }
-
-        public int CurrentConflictEndLine
-        {
-            get => _currentConflictEndLine;
-            private set => SetProperty(ref _currentConflictEndLine, value);
-        }
-
-        // All conflict ranges (for fading non-current conflicts)
-        public List<(int Start, int End)> AllConflictRanges
-        {
-            get => _allConflictRanges;
-            private set => SetProperty(ref _allConflictRanges, value);
-        }
-
-        // Shared scroll offset for synchronized scrolling
         public Vector ScrollOffset
         {
             get => _scrollOffset;
             set => SetProperty(ref _scrollOffset, value);
         }
 
-        // Selected chunk for hover-based conflict resolution
         public MergeConflictSelectedChunk SelectedChunk
         {
             get => _selectedChunk;
             set => SetProperty(ref _selectedChunk, value);
         }
+
+        public IReadOnlyList<ConflictRegion> ConflictRegions => _conflictRegions;
+        public bool HasUnresolvedConflicts => _unresolvedConflictCount > 0;
+        public bool HasUnsavedChanges => _isModified && !_resultContent.Equals(_originalContent, StringComparison.Ordinal);
+        public bool CanSave => _unresolvedConflictCount == 0 && _isModified;
 
         public MergeConflictEditor(Repository repo, string filePath)
         {
@@ -218,15 +170,10 @@ namespace SourceGit.ViewModels
                 {
                     _resultContent = workingCopyContent;
                     _originalContent = workingCopyContent;
-                    IsModified = false;
+                    _isModified = false;
 
-                    // Parse and store original conflict regions
                     ParseOriginalConflicts(workingCopyContent);
-
-                    // Build static MINE/THEIRS panels (these won't change)
                     BuildStaticPanels();
-
-                    // Build result panel aligned with MINE/THEIRS (this changes when conflicts are resolved)
                     BuildAlignedResultPanel();
                     UpdateConflictInfo();
                     IsLoading = false;
@@ -239,6 +186,177 @@ namespace SourceGit.ViewModels
                     App.RaiseException(_repo.FullPath, $"Failed to load conflict data: {ex.Message}");
                     IsLoading = false;
                 });
+            }
+        }
+
+        public MergeConflictLineType GetLineType(int line)
+        {
+            if (line >= 0 && line < _lineTypes.Count)
+                return _lineTypes[line];
+            return MergeConflictLineType.Normal;
+        }
+
+        public void AcceptOursAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            region.ResolvedContent = new List<string>(region.OursContent);
+            region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseOurs;
+            Resolve();
+        }
+
+        public void AcceptTheirsAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            region.ResolvedContent = new List<string>(region.TheirsContent);
+            region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseTheirs;
+            Resolve();
+        }
+
+        public void AcceptBothMineFirstAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            var combined = new List<string>(region.OursContent);
+            combined.AddRange(region.TheirsContent);
+            region.ResolvedContent = combined;
+            region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseBothMineFirst;
+            Resolve();
+        }
+
+        public void AcceptBothTheirsFirstAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (region.IsResolved)
+                return;
+
+            var combined = new List<string>(region.TheirsContent);
+            combined.AddRange(region.OursContent);
+            region.ResolvedContent = combined;
+            region.IsResolved = true;
+            region.ResolutionType = Models.ConflictResolution.UseBothTheirsFirst;
+            Resolve();
+        }
+
+        public void UndoResolutionAtIndex(int conflictIndex)
+        {
+            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
+                return;
+
+            var region = _conflictRegions[conflictIndex];
+            if (!region.IsResolved)
+                return;
+
+            region.ResolvedContent = null;
+            region.IsResolved = false;
+            region.ResolutionType = Models.ConflictResolution.None;
+            Resolve();
+        }
+
+        public void GotoPrevConflict()
+        {
+            if (_unresolvedConflictCount == 0 || _conflictRegions.Count == 0)
+                return;
+
+            // Handle edge case where no conflict is currently selected
+            int startIndex = _currentConflictIndex >= 0 ? _currentConflictIndex : 0;
+
+            // Search for the previous unresolved conflict with wrap-around
+            int index = startIndex - 1;
+            if (index < 0)
+                index = _conflictRegions.Count - 1;
+
+            int iterations = 0;
+            while (iterations < _conflictRegions.Count)
+            {
+                if (!_conflictRegions[index].IsResolved)
+                {
+                    CurrentConflictIndex = index;
+                    return;
+                }
+                index--;
+                if (index < 0)
+                    index = _conflictRegions.Count - 1;
+                iterations++;
+            }
+        }
+
+        public void GotoNextConflict()
+        {
+            if (_unresolvedConflictCount == 0 || _conflictRegions.Count == 0)
+                return;
+
+            // Handle edge case where no conflict is currently selected
+            int startIndex = _currentConflictIndex >= 0 ? _currentConflictIndex : -1;
+
+            // Search for the next unresolved conflict with wrap-around
+            int index = (startIndex + 1) % _conflictRegions.Count;
+
+            int iterations = 0;
+            while (iterations < _conflictRegions.Count)
+            {
+                if (!_conflictRegions[index].IsResolved)
+                {
+                    CurrentConflictIndex = index;
+                    return;
+                }
+                index = (index + 1) % _conflictRegions.Count;
+                iterations++;
+            }
+        }
+
+        public async Task<bool> SaveAndStageAsync()
+        {
+            if (HasUnresolvedConflicts)
+            {
+                App.RaiseException(_repo.FullPath, "Cannot save: there are still unresolved conflicts.");
+                return false;
+            }
+
+            try
+            {
+                // Write merged content to file
+                var fullPath = Path.Combine(_repo.FullPath, _filePath);
+                await File.WriteAllTextAsync(fullPath, _resultContent).ConfigureAwait(false);
+
+                // Stage the file
+                var pathSpecFile = Path.GetTempFileName();
+                await File.WriteAllTextAsync(pathSpecFile, _filePath);
+                await new Commands.Add(_repo.FullPath, pathSpecFile).ExecAsync();
+                File.Delete(pathSpecFile);
+
+                _repo.MarkWorkingCopyDirtyManually();
+                _isModified = false;
+                _originalContent = _resultContent;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(_repo.FullPath, $"Failed to save and stage: {ex.Message}");
+                return false;
             }
         }
 
@@ -432,6 +550,7 @@ namespace SourceGit.ViewModels
             // Build RESULT panel aligned with MINE/THEIRS panels
             // This ensures all three panels have the same number of lines for scroll sync
             var resultLines = new List<Models.TextDiffLine>();
+            _lineTypes.Clear();
 
             if (_oursDiffLines == null || _oursDiffLines.Count == 0)
             {
@@ -460,6 +579,8 @@ namespace SourceGit.ViewModels
 
                     if (currentRegion.ResolvedContent != null)
                     {
+                        var oldLineCount = resultLines.Count;
+
                         // Resolved - show resolved content with color based on resolution type
                         if (currentRegion.ResolutionType == Models.ConflictResolution.UseBothMineFirst)
                         {
@@ -509,32 +630,43 @@ namespace SourceGit.ViewModels
                         int padding = regionLines - currentRegion.ResolvedContent.Count;
                         for (int p = 0; p < padding; p++)
                             resultLines.Add(new Models.TextDiffLine());
+
+                        int added = resultLines.Count - oldLineCount;
+                        _lineTypes.Add(MergeConflictLineType.ResolvedBlockStart);
+                        for (var i = 0; i < added - 2; i++)
+                            _lineTypes.Add(MergeConflictLineType.ResolvedBlock);
+                        _lineTypes.Add(MergeConflictLineType.ResolvedBlockEnd);
                     }
                     else
                     {
                         // Unresolved - show conflict markers with content, aligned with Mine/Theirs
                         // First line: start marker (use real marker from file)
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.StartMarker, 0, 0));
+                        _lineTypes.Add(MergeConflictLineType.ConflictBlockStart);
 
                         // Mine content lines (matches the deleted lines in Ours panel)
                         foreach (var line in currentRegion.OursContent)
                         {
                             resultLines.Add(new Models.TextDiffLine(
                                 Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
+                            _lineTypes.Add(MergeConflictLineType.ConflictBlock);
                         }
 
                         // Separator marker between Mine and Theirs
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.SeparatorMarker, 0, 0));
+                        _lineTypes.Add(MergeConflictLineType.ConflictBlock);
 
                         // Theirs content lines (matches the added lines in Theirs panel)
                         foreach (var line in currentRegion.TheirsContent)
                         {
                             resultLines.Add(new Models.TextDiffLine(
                                 Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
+                            _lineTypes.Add(MergeConflictLineType.ConflictBlock);
                         }
 
                         // End marker (use real marker from file)
                         resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.EndMarker, 0, 0));
+                        _lineTypes.Add(MergeConflictLineType.ConflictBlockEnd);
                     }
 
                     currentLine = currentRegion.PanelEndLine + 1;
@@ -556,6 +688,8 @@ namespace SourceGit.ViewModels
                         // Empty placeholder line (shouldn't happen outside conflicts, but handle it)
                         resultLines.Add(new Models.TextDiffLine());
                     }
+
+                    _lineTypes.Add(MergeConflictLineType.Normal);
                     currentLine++;
                 }
             }
@@ -563,197 +697,14 @@ namespace SourceGit.ViewModels
             ResultDiffLines = resultLines;
         }
 
-        public IReadOnlyList<ConflictRegion> GetConflictRegions() => _conflictRegions;
-
-        public void AcceptOursAtIndex(int conflictIndex)
+        private void Resolve()
         {
-            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
-                return;
-
-            var region = _conflictRegions[conflictIndex];
-            if (region.IsResolved)
-                return;
-
-            region.ResolvedContent = new List<string>(region.OursContent);
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseOurs;
-
-            IsModified = true;
+            var scroll = _scrollOffset;
             RebuildResultContent();
             BuildAlignedResultPanel();
             UpdateConflictInfo();
-        }
-
-        public void AcceptTheirsAtIndex(int conflictIndex)
-        {
-            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
-                return;
-
-            var region = _conflictRegions[conflictIndex];
-            if (region.IsResolved)
-                return;
-
-            region.ResolvedContent = new List<string>(region.TheirsContent);
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseTheirs;
-
-            IsModified = true;
-            RebuildResultContent();
-            BuildAlignedResultPanel();
-            UpdateConflictInfo();
-        }
-
-        public void AcceptBothMineFirstAtIndex(int conflictIndex)
-        {
-            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
-                return;
-
-            var region = _conflictRegions[conflictIndex];
-            if (region.IsResolved)
-                return;
-
-            var combined = new List<string>(region.OursContent);
-            combined.AddRange(region.TheirsContent);
-            region.ResolvedContent = combined;
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseBothMineFirst;
-
-            IsModified = true;
-            RebuildResultContent();
-            BuildAlignedResultPanel();
-            UpdateConflictInfo();
-        }
-
-        public void AcceptBothTheirsFirstAtIndex(int conflictIndex)
-        {
-            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
-                return;
-
-            var region = _conflictRegions[conflictIndex];
-            if (region.IsResolved)
-                return;
-
-            var combined = new List<string>(region.TheirsContent);
-            combined.AddRange(region.OursContent);
-            region.ResolvedContent = combined;
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseBothTheirsFirst;
-
-            IsModified = true;
-            RebuildResultContent();
-            BuildAlignedResultPanel();
-            UpdateConflictInfo();
-        }
-
-        public void UndoResolutionAtIndex(int conflictIndex)
-        {
-            if (conflictIndex < 0 || conflictIndex >= _conflictRegions.Count)
-                return;
-
-            var region = _conflictRegions[conflictIndex];
-            if (!region.IsResolved)
-                return;
-
-            region.ResolvedContent = null;
-            region.IsResolved = false;
-            region.ResolutionType = Models.ConflictResolution.None;
-
-            IsModified = true;
-            RebuildResultContent();
-            BuildAlignedResultPanel();
-            UpdateConflictInfo();
-        }
-
-        public void GotoPrevConflict()
-        {
-            if (UnresolvedConflictCount == 0 || _conflictRegions.Count == 0)
-                return;
-
-            // Handle edge case where no conflict is currently selected
-            int startIndex = _currentConflictIndex >= 0 ? _currentConflictIndex : 0;
-
-            // Search for the previous unresolved conflict with wrap-around
-            int index = startIndex - 1;
-            if (index < 0)
-                index = _conflictRegions.Count - 1;
-
-            int iterations = 0;
-            while (iterations < _conflictRegions.Count)
-            {
-                if (!_conflictRegions[index].IsResolved)
-                {
-                    CurrentConflictIndex = index;
-                    UpdateCurrentConflictLine();
-                    return;
-                }
-                index--;
-                if (index < 0)
-                    index = _conflictRegions.Count - 1;
-                iterations++;
-            }
-        }
-
-        public void GotoNextConflict()
-        {
-            if (UnresolvedConflictCount == 0 || _conflictRegions.Count == 0)
-                return;
-
-            // Handle edge case where no conflict is currently selected
-            int startIndex = _currentConflictIndex >= 0 ? _currentConflictIndex : -1;
-
-            // Search for the next unresolved conflict with wrap-around
-            int index = (startIndex + 1) % _conflictRegions.Count;
-
-            int iterations = 0;
-            while (iterations < _conflictRegions.Count)
-            {
-                if (!_conflictRegions[index].IsResolved)
-                {
-                    CurrentConflictIndex = index;
-                    UpdateCurrentConflictLine();
-                    return;
-                }
-                index = (index + 1) % _conflictRegions.Count;
-                iterations++;
-            }
-        }
-
-        public async Task<bool> SaveAndStageAsync()
-        {
-            if (HasUnresolvedConflicts)
-            {
-                App.RaiseException(_repo.FullPath, "Cannot save: there are still unresolved conflicts.");
-                return false;
-            }
-
-            try
-            {
-                // Write merged content to file
-                var fullPath = Path.Combine(_repo.FullPath, _filePath);
-                await File.WriteAllTextAsync(fullPath, _resultContent).ConfigureAwait(false);
-
-                // Stage the file
-                var pathSpecFile = Path.GetTempFileName();
-                await File.WriteAllTextAsync(pathSpecFile, _filePath);
-                await new Commands.Add(_repo.FullPath, pathSpecFile).ExecAsync();
-                File.Delete(pathSpecFile);
-
-                _repo.MarkWorkingCopyDirtyManually();
-                IsModified = false;
-                _originalContent = _resultContent;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                App.RaiseException(_repo.FullPath, $"Failed to save and stage: {ex.Message}");
-                return false;
-            }
-        }
-
-        public bool HasUnsavedChanges()
-        {
-            return IsModified && _resultContent != _originalContent;
+            SelectedChunk = null;
+            ScrollOffset = scroll;
         }
 
         private void UpdateConflictInfo()
@@ -762,12 +713,10 @@ namespace SourceGit.ViewModels
             {
                 UnresolvedConflictCount = 0;
                 CurrentConflictIndex = -1;
-                UpdateResolvedRanges();
                 return;
             }
 
-            // Count unresolved conflicts in current content
-            var markers = Commands.QueryConflictContent.GetConflictMarkers(_resultContent);
+            var markers = GetConflictMarkers(_resultContent);
             var conflictStarts = new List<Models.ConflictMarkerInfo>();
             foreach (var m in markers)
             {
@@ -827,9 +776,6 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            // Update resolved ranges for UI desaturation
-            UpdateResolvedRanges();
-
             // Find the first unresolved conflict for current index
             if (unresolvedCount > 0)
             {
@@ -872,31 +818,11 @@ namespace SourceGit.ViewModels
                     }
                     CurrentConflictIndex = found;
                 }
-                UpdateCurrentConflictLine();
             }
             else
             {
                 CurrentConflictIndex = -1;
-                CurrentConflictLine = -1;
-                CurrentConflictStartLine = -1;
-                CurrentConflictEndLine = -1;
             }
-        }
-
-        private void UpdateResolvedRanges()
-        {
-            // Build list of all conflict ranges for UI fading of non-current conflicts
-            var allRanges = new List<(int Start, int End)>();
-
-            foreach (var region in _conflictRegions)
-            {
-                if (region.PanelStartLine >= 0 && region.PanelEndLine >= 0)
-                {
-                    allRanges.Add((region.PanelStartLine, region.PanelEndLine));
-                }
-            }
-
-            AllConflictRanges = allRanges;
         }
 
         private void RebuildResultContent()
@@ -961,23 +887,70 @@ namespace SourceGit.ViewModels
             }
 
             _resultContent = string.Join(Environment.NewLine, resultLines);
+            _isModified = true;
         }
 
-        private void UpdateCurrentConflictLine()
+        private List<Models.ConflictMarkerInfo> GetConflictMarkers(string content)
         {
-            if (_currentConflictIndex < 0 || _currentConflictIndex >= _conflictRegions.Count)
+            var markers = new List<Models.ConflictMarkerInfo>();
+            if (string.IsNullOrEmpty(content))
+                return markers;
+
+            var lines = content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            int offset = 0;
+
+            for (int i = 0; i < lines.Length; i++)
             {
-                CurrentConflictLine = -1;
-                CurrentConflictStartLine = -1;
-                CurrentConflictEndLine = -1;
-                return;
+                var line = lines[i];
+                var lineStart = offset;
+                var lineEnd = offset + line.Length;
+
+                if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
+                {
+                    markers.Add(new Models.ConflictMarkerInfo
+                    {
+                        LineNumber = i,
+                        StartOffset = lineStart,
+                        EndOffset = lineEnd,
+                        Type = Models.ConflictMarkerType.Start
+                    });
+                }
+                else if (line.StartsWith("|||||||", StringComparison.Ordinal))
+                {
+                    markers.Add(new Models.ConflictMarkerInfo
+                    {
+                        LineNumber = i,
+                        StartOffset = lineStart,
+                        EndOffset = lineEnd,
+                        Type = Models.ConflictMarkerType.Base
+                    });
+                }
+                else if (line.StartsWith("=======", StringComparison.Ordinal))
+                {
+                    markers.Add(new Models.ConflictMarkerInfo
+                    {
+                        LineNumber = i,
+                        StartOffset = lineStart,
+                        EndOffset = lineEnd,
+                        Type = Models.ConflictMarkerType.Separator
+                    });
+                }
+                else if (line.StartsWith(">>>>>>>", StringComparison.Ordinal))
+                {
+                    markers.Add(new Models.ConflictMarkerInfo
+                    {
+                        LineNumber = i,
+                        StartOffset = lineStart,
+                        EndOffset = lineEnd,
+                        Type = Models.ConflictMarkerType.End
+                    });
+                }
+
+                // Account for line ending (approximate)
+                offset = lineEnd + (i < lines.Length - 1 ? Environment.NewLine.Length : 0);
             }
 
-            // Use the pre-computed panel positions from the conflict region
-            var region = _conflictRegions[_currentConflictIndex];
-            CurrentConflictLine = region.PanelStartLine;
-            CurrentConflictStartLine = region.PanelStartLine;
-            CurrentConflictEndLine = region.PanelEndLine;
+            return markers;
         }
 
         private readonly Repository _repo;
@@ -988,15 +961,12 @@ namespace SourceGit.ViewModels
         private bool _isModified = false;
         private int _unresolvedConflictCount = 0;
         private int _currentConflictIndex = -1;
-        private int _currentConflictLine = -1;
-        private int _currentConflictStartLine = -1;
-        private int _currentConflictEndLine = -1;
         private List<Models.TextDiffLine> _oursDiffLines = [];
         private List<Models.TextDiffLine> _theirsDiffLines = [];
         private List<Models.TextDiffLine> _resultDiffLines = [];
         private int _diffMaxLineNumber = 0;
         private List<ConflictRegion> _conflictRegions = [];
-        private List<(int Start, int End)> _allConflictRanges = [];
+        private List<MergeConflictLineType> _lineTypes = [];
         private Vector _scrollOffset = Vector.Zero;
         private MergeConflictSelectedChunk _selectedChunk;
     }

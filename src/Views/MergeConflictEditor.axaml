@@ -50,14 +50,14 @@
                   Width="24"
                   ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
                   Click="OnGotoPrevConflict"
-                  IsEnabled="{Binding HasPrevConflict}">
+                  IsEnabled="{Binding HasUnresolvedConflicts, Mode=OneWay}">
             <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
           </Button>
           <Button Classes="icon_button"
                   Width="24"
                   ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
                   Click="OnGotoNextConflict"
-                  IsEnabled="{Binding HasNextConflict}">
+                  IsEnabled="{Binding HasUnresolvedConflicts, Mode=OneWay}">
             <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
           </Button>
           
@@ -81,7 +81,7 @@
       <Grid Grid.Row="0" ColumnDefinitions="*,*" Margin="4,4,4,2">
         <!-- Mine (Ours) Panel -->
         <Border Grid.Column="0" Margin="0,0,2,0">
-          <Grid RowDefinitions="Auto,*">
+          <Grid RowDefinitions="Auto,*" Background="{DynamicResource Brush.Contents}">
             <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Diff.MineHeader}">
               <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Mine}"
                           Foreground="White"
@@ -89,20 +89,17 @@
             </Border>
             <Grid Grid.Row="1">
               <v:MergeDiffPresenter x:Name="OursPresenter"
-                                    PanelType="Mine"
                                     DiffLines="{Binding OursDiffLines, Mode=OneWay}"
                                     MaxLineNumber="{Binding DiffMaxLineNumber}"
                                     FileName="{Binding FilePath}"
+                                    SelectedChunk="{Binding SelectedChunk}"
                                     IsOldSide="True"
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                    AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
+                                    AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
                                     DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
-                                    AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.MineBG}"
                                     BorderThickness="1"
-                                    BorderBrush="{DynamicResource Brush.Border2}"
-                                    Background="{DynamicResource Brush.Contents}"/>
+                                    BorderBrush="{DynamicResource Brush.Border2}"/>
               <Border x:Name="MinePopup"
                       IsVisible="False"
                       VerticalAlignment="Top"
@@ -123,7 +120,7 @@
 
         <!-- Theirs Panel -->
         <Border Grid.Column="1" Margin="2,0,0,0">
-          <Grid RowDefinitions="Auto,*">
+          <Grid RowDefinitions="Auto,*" Background="{DynamicResource Brush.Contents}">
             <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.Diff.TheirsHeader}">
               <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Theirs}"
                           Foreground="White"
@@ -131,20 +128,17 @@
             </Border>
             <Grid Grid.Row="1">
               <v:MergeDiffPresenter x:Name="TheirsPresenter"
-                                    PanelType="Theirs"
                                     DiffLines="{Binding TheirsDiffLines, Mode=OneWay}"
                                     MaxLineNumber="{Binding DiffMaxLineNumber}"
                                     FileName="{Binding FilePath}"
+                                    SelectedChunk="{Binding SelectedChunk}"
                                     IsOldSide="False"
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                     AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
-                                    DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                    AddedHighlightBrush="{DynamicResource Brush.Diff.TheirsBG}"
-                                    DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                    DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                     BorderThickness="1"
-                                    BorderBrush="{DynamicResource Brush.Border2}"
-                                    Background="{DynamicResource Brush.Contents}"/>
+                                    BorderBrush="{DynamicResource Brush.Border2}"/>
               <Border x:Name="TheirsPopup"
                       IsVisible="False"
                       VerticalAlignment="Top"
@@ -166,32 +160,25 @@
 
       <!-- Result Panel -->
       <Border Grid.Row="1" Margin="4,2,4,4">
-        <Grid RowDefinitions="Auto,*">
-          <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.FG1}">
-            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Result}"
-                        Foreground="{DynamicResource Brush.Window}"
-                        FontWeight="Bold"/>
+        <Grid RowDefinitions="Auto,*" Background="{DynamicResource Brush.Contents}">
+          <Border Grid.Row="0" Padding="8,4" Background="{DynamicResource Brush.ToolBar}" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource Brush.Border2}">
+            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Result}" FontWeight="Bold"/>
           </Border>
           <Grid Grid.Row="1">
             <v:MergeDiffPresenter x:Name="ResultPresenter"
-                                  PanelType="Result"
                                   DiffLines="{Binding ResultDiffLines, Mode=OneWay}"
                                   MaxLineNumber="{Binding DiffMaxLineNumber}"
                                   FileName="{Binding FilePath}"
+                                  SelectedChunk="{Binding SelectedChunk}"
                                   IsOldSide="False"
                                   IsResultPanel="True"
                                   FontFamily="{DynamicResource Fonts.Monospace}"
                                   EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                  AddedContentBackground="{DynamicResource Brush.Diff.AddedBG}"
-                                  DeletedContentBackground="{DynamicResource Brush.Diff.DeletedBG}"
-                                  AddedHighlightBrush="{DynamicResource Brush.Diff.AddedHighlight}"
-                                  DeletedHighlightBrush="{DynamicResource Brush.Diff.DeletedHighlight}"
+                                  AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
+                                  DeletedContentBackground="{DynamicResource Brush.Diff.MineBG}"
                                   IndicatorBackground="{DynamicResource Brush.Diff.EmptyBG}"
-                                  MineContentBackground="{DynamicResource Brush.Diff.MineBG}"
-                                  TheirsContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
                                   BorderThickness="1"
-                                  BorderBrush="{DynamicResource Brush.Border2}"
-                                  Background="{DynamicResource Brush.Contents}"/>
+                                  BorderBrush="{DynamicResource Brush.Border2}"/>
             <Border x:Name="ResultPopup"
                     IsVisible="False"
                     VerticalAlignment="Top"
