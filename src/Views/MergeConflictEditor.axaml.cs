@@ -11,6 +11,7 @@ using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
@@ -32,6 +33,15 @@ namespace SourceGit.Views
             set => SetValue(FileNameProperty, value);
         }
 
+        public static readonly StyledProperty<Models.ConflictPanelType> PanelTypeProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, Models.ConflictPanelType>(nameof(PanelType));
+
+        public Models.ConflictPanelType PanelType
+        {
+            get => GetValue(PanelTypeProperty);
+            set => SetValue(PanelTypeProperty, value);
+        }
+
         public static readonly StyledProperty<List<Models.TextDiffLine>> DiffLinesProperty =
             AvaloniaProperty.Register<MergeDiffPresenter, List<Models.TextDiffLine>>(nameof(DiffLines));
 
@@ -48,24 +58,6 @@ namespace SourceGit.Views
         {
             get => GetValue(MaxLineNumberProperty);
             set => SetValue(MaxLineNumberProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> IsOldSideProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, bool>(nameof(IsOldSide));
-
-        public bool IsOldSide
-        {
-            get => GetValue(IsOldSideProperty);
-            set => SetValue(IsOldSideProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> IsResultPanelProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, bool>(nameof(IsResultPanel), false);
-
-        public bool IsResultPanel
-        {
-            get => GetValue(IsResultPanelProperty);
-            set => SetValue(IsResultPanelProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> EmptyContentBackgroundProperty =
@@ -113,18 +105,6 @@ namespace SourceGit.Views
             set => SetValue(SelectedChunkProperty, value);
         }
 
-        protected Models.ConflictPanelType PanelType
-        {
-            get
-            {
-                if (IsResultPanel)
-                    return Models.ConflictPanelType.Result;
-                if (IsOldSide)
-                    return Models.ConflictPanelType.Mine;
-                return Models.ConflictPanelType.Theirs;
-            }
-        }
-
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -164,20 +144,18 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            TextArea.TextView.PointerMoved += OnTextViewPointerMoved;
-            TextArea.TextView.PointerExited += OnTextViewPointerExited;
+            TextArea.TextView.PointerEntered += OnTextViewPointerChanged;
+            TextArea.TextView.PointerMoved += OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
-            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
-            TextArea.TextView.PointerMoved -= OnTextViewPointerMoved;
-            TextArea.TextView.PointerExited -= OnTextViewPointerExited;
+            TextArea.TextView.PointerEntered -= OnTextViewPointerChanged;
+            TextArea.TextView.PointerMoved -= OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
-            TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             if (_textMate != null)
             {
@@ -252,125 +230,15 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnTextViewPointerMoved(object sender, PointerEventArgs e)
+        private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
+            if (DataContext is not ViewModels.MergeConflictEditor { IsLoading: false } vm)
                 return;
 
-            if (vm.IsLoading)
+            if (sender is not TextView view)
                 return;
 
-            var textView = TextArea.TextView;
-            if (!textView.VisualLinesValid)
-                return;
-
-            // Check if pointer is still within current chunk bounds (like TextDiffView does)
-            var currentChunk = vm.SelectedChunk;
-            var panelType = PanelType;
-            if (currentChunk != null && currentChunk.Panel == panelType)
-            {
-                var rect = new Rect(0, currentChunk.Y, Bounds.Width, currentChunk.Height);
-                if (rect.Contains(e.GetPosition(this)))
-                    return; // Still within chunk, don't update
-            }
-
-            var conflictRegions = vm.ConflictRegions;
-            if (conflictRegions == null || conflictRegions.Count == 0)
-                return;
-
-            var isResultPanel = IsResultPanel;
-            var position = e.GetPosition(textView);
-            var y = position.Y + textView.VerticalOffset;
-
-            // Find which conflict region contains this Y position
-            for (int i = 0; i < conflictRegions.Count; i++)
-            {
-                var region = conflictRegions[i];
-                // For Result panel, allow hover on resolved conflicts (for undo)
-                // For Mine/Theirs panels, skip resolved conflicts
-                if (region.PanelStartLine < 0 || region.PanelEndLine < 0)
-                    continue;
-                if (region.IsResolved && !isResultPanel)
-                    continue;
-
-                // Get the visual bounds of this conflict region
-                var startLine = region.PanelStartLine + 1; // Document lines are 1-indexed
-                var endLine = region.PanelEndLine + 1;
-
-                if (startLine > Document.LineCount || endLine > Document.LineCount)
-                    continue;
-
-                var startVisualLine = textView.GetVisualLine(startLine);
-                var endVisualLine = textView.GetVisualLine(endLine);
-
-                // Handle partially visible conflicts (same pattern as UpdateSelectedChunkPosition)
-                double viewportY, height;
-                bool isWithinRegion;
-
-                if (startVisualLine != null && endVisualLine != null)
-                {
-                    // Both lines visible
-                    var regionStartY = startVisualLine.GetTextLineVisualYPosition(
-                        startVisualLine.TextLines[0], VisualYPosition.LineTop);
-                    var regionEndY = endVisualLine.GetTextLineVisualYPosition(
-                        endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
-
-                    isWithinRegion = y >= regionStartY && y <= regionEndY;
-                    viewportY = regionStartY - textView.VerticalOffset;
-                    height = regionEndY - regionStartY;
-                }
-                else if (startVisualLine == null && endVisualLine != null)
-                {
-                    // Start scrolled out, end visible - clamp to top
-                    var regionEndY = endVisualLine.GetTextLineVisualYPosition(
-                        endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
-
-                    isWithinRegion = y <= regionEndY;
-                    viewportY = 0;
-                    height = regionEndY - textView.VerticalOffset;
-                }
-                else if (startVisualLine != null && endVisualLine == null)
-                {
-                    // Start visible, end scrolled out - clamp to bottom
-                    var regionStartY = startVisualLine.GetTextLineVisualYPosition(
-                        startVisualLine.TextLines[0], VisualYPosition.LineTop);
-
-                    isWithinRegion = y >= regionStartY;
-                    viewportY = regionStartY - textView.VerticalOffset;
-                    height = textView.Bounds.Height - viewportY;
-                }
-                else
-                {
-                    // Both scrolled out - conflict not visible
-                    continue;
-                }
-
-                if (isWithinRegion)
-                {
-                    var newChunk = new Models.ConflictSelectedChunk(
-                        viewportY, height, i, panelType, region.IsResolved);
-
-                    // Only update if changed
-                    if (currentChunk == null ||
-                        currentChunk.ConflictIndex != newChunk.ConflictIndex ||
-                        currentChunk.Panel != newChunk.Panel ||
-                        currentChunk.IsResolved != newChunk.IsResolved ||
-                        Math.Abs(currentChunk.Y - newChunk.Y) > 1 ||
-                        Math.Abs(currentChunk.Height - newChunk.Height) > 1)
-                    {
-                        vm.SelectedChunk = newChunk;
-                    }
-                    return;
-                }
-            }
-
-            // Not hovering over any unresolved conflict - clear chunk
-            vm.SelectedChunk = null;
-        }
-
-        private void OnTextViewPointerExited(object sender, PointerEventArgs e)
-        {
-            // Don't clear here - the chunk stays visible until pointer moves to non-conflict area
+            UpdateSelectedChunkPosition(vm, e.GetPosition(view).Y + view.VerticalOffset);
         }
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
@@ -378,23 +246,11 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            if (vm.SelectedChunk == null || vm.SelectedChunk.Panel != PanelType)
+            if (sender is not TextView view)
                 return;
 
-            // Update chunk position after scroll
-            Avalonia.Threading.Dispatcher.UIThread.Post(() => UpdateSelectedChunkPosition(vm));
-        }
-
-        private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
-        {
-            if (DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            if (vm.SelectedChunk == null || vm.SelectedChunk.Panel != PanelType)
-                return;
-
-            // Update chunk position when visual lines change
-            UpdateSelectedChunkPosition(vm);
+            var y = e.GetPosition(view).Y + view.VerticalOffset;
+            Dispatcher.UIThread.Post(() => UpdateSelectedChunkPosition(vm, y));
         }
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -414,86 +270,65 @@ namespace SourceGit.Views
             }
         }
 
-        private void UpdateSelectedChunkPosition(ViewModels.MergeConflictEditor vm)
+        private void UpdateSelectedChunkPosition(ViewModels.MergeConflictEditor vm, double y)
         {
-            var chunk = vm.SelectedChunk;
-            var panelType = PanelType;
-            if (chunk == null || chunk.Panel != panelType)
-                return;
+            var lines = DiffLines;
+            var panel = PanelType;
+            var view = TextArea.TextView;
+            var lineIdx = -1;
+            foreach (var line in view.VisualLines)
+            {
+                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                    continue;
 
-            var textView = TextArea.TextView;
-            if (!textView.VisualLinesValid)
-                return;
+                var index = line.FirstDocumentLine.LineNumber;
+                if (index > lines.Count)
+                    break;
 
-            var conflictRegions = vm.ConflictRegions;
-            if (conflictRegions == null || chunk.ConflictIndex >= conflictRegions.Count)
-                return;
+                var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
+                if (endY > y)
+                {
+                    lineIdx = index - 1;
+                    break;
+                }
+            }
 
-            var region = conflictRegions[chunk.ConflictIndex];
-            // For Result panel, keep showing chunk for resolved conflicts (for undo)
-            // For Mine/Theirs panels, clear if resolved
-            if (region.IsResolved && !IsResultPanel)
+            if (lineIdx == -1)
             {
                 vm.SelectedChunk = null;
                 return;
             }
 
-            var startLine = region.PanelStartLine + 1;
-            var endLine = region.PanelEndLine + 1;
-
-            if (startLine > Document.LineCount || endLine > Document.LineCount)
-                return;
-
-            var startVisualLine = textView.GetVisualLine(startLine);
-            var endVisualLine = textView.GetVisualLine(endLine);
-
-            // Calculate visible portion of the conflict
-            double viewportY, height;
-
-            if (startVisualLine != null && endVisualLine != null)
+            for (var i = 0; i < vm.ConflictRegions.Count; i++)
             {
-                // Both lines visible
-                var regionStartY = startVisualLine.GetTextLineVisualYPosition(
-                    startVisualLine.TextLines[0], VisualYPosition.LineTop);
-                var regionEndY = endVisualLine.GetTextLineVisualYPosition(
-                    endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
+                var r = vm.ConflictRegions[i];
+                if (r.StartLineInOriginal <= lineIdx && r.EndLineInOriginal >= lineIdx)
+                {
+                    if (r.IsResolved && panel != Models.ConflictPanelType.Result)
+                    {
+                        vm.SelectedChunk = null;
+                        return;
+                    }
 
-                viewportY = regionStartY - textView.VerticalOffset;
-                height = regionEndY - regionStartY;
-            }
-            else if (startVisualLine == null && endVisualLine != null)
-            {
-                // Start scrolled out, end visible - clamp to top
-                var regionEndY = endVisualLine.GetTextLineVisualYPosition(
-                    endVisualLine.TextLines[^1], VisualYPosition.LineBottom);
+                    var startLine = r.StartLineInOriginal + 1;
+                    var endLine = r.EndLineInOriginal + 1;
+                    if (startLine > Document.LineCount || endLine > Document.LineCount)
+                    {
+                        vm.SelectedChunk = null;
+                        return;
+                    }
 
-                viewportY = 0;
-                height = regionEndY - textView.VerticalOffset;
-            }
-            else if (startVisualLine != null && endVisualLine == null)
-            {
-                // Start visible, end scrolled out - clamp to bottom
-                var regionStartY = startVisualLine.GetTextLineVisualYPosition(
-                    startVisualLine.TextLines[0], VisualYPosition.LineTop);
-
-                viewportY = regionStartY - textView.VerticalOffset;
-                height = textView.Bounds.Height - viewportY;
-            }
-            else
-            {
-                // Both scrolled out - conflict not visible, clear chunk
-                vm.SelectedChunk = null;
-                return;
+                    var vOffset = view.VerticalOffset;
+                    var startVisualLine = view.GetVisualLine(startLine);
+                    var endVisualLine = view.GetVisualLine(endLine);
+                    var topY = startVisualLine?.GetTextLineVisualYPosition(startVisualLine.TextLines[0], VisualYPosition.LineTop) ?? vOffset;
+                    var bottomY = endVisualLine?.GetTextLineVisualYPosition(endVisualLine.TextLines[^1], VisualYPosition.LineBottom) ?? (view.Bounds.Height + vOffset);
+                    vm.SelectedChunk = new Models.ConflictSelectedChunk(topY - vOffset, bottomY - topY, i, panel, r.IsResolved);
+                    return;
+                }
             }
 
-            // Update chunk with new position
-            var newChunk = new Models.ConflictSelectedChunk(
-                viewportY, height, chunk.ConflictIndex, panelType, region.IsResolved);
-
-            if (Math.Abs(chunk.Y - newChunk.Y) > 1 || Math.Abs(chunk.Height - newChunk.Height) > 1)
-            {
-                vm.SelectedChunk = newChunk;
-            }
+            vm.SelectedChunk = null;
         }
 
         private TextMate.Installation _textMate;
@@ -519,8 +354,7 @@ namespace SourceGit.Views
             if (view is not { VisualLinesValid: true })
                 return;
 
-            var isOld = _presenter.IsOldSide;
-            var isResult = _presenter.IsResultPanel;
+            var panel = _presenter.PanelType;
             var typeface = view.CreateTypeface();
 
             foreach (var line in view.VisualLines)
@@ -534,11 +368,11 @@ namespace SourceGit.Views
 
                 var info = lines[index - 1];
 
-                string lineNumber;
-                if (isResult)
-                    lineNumber = info.NewLine;
-                else
-                    lineNumber = isOld ? info.OldLine : info.NewLine;
+                string lineNumber = panel switch
+                {
+                    Models.ConflictPanelType.Mine => info.OldLine,
+                    _ => info.NewLine,
+                };
 
                 if (string.IsNullOrEmpty(lineNumber))
                     continue;
@@ -808,9 +642,9 @@ namespace SourceGit.Views
                     for (var i = vm.ConflictRegions.Count - 1; i >= 0; i--)
                     {
                         var r = vm.ConflictRegions[i];
-                        if (r.PanelStartLine < minLineIdx && !r.IsResolved)
+                        if (r.StartLineInOriginal < minLineIdx && !r.IsResolved)
                         {
-                            OursPresenter.ScrollToLine(r.PanelStartLine + 1);
+                            OursPresenter.ScrollToLine(r.StartLineInOriginal + 1);
                             break;
                         }
                     }
@@ -851,54 +685,14 @@ namespace SourceGit.Views
                     for (var i = 0; i < vm.ConflictRegions.Count; i++)
                     {
                         var r = vm.ConflictRegions[i];
-                        if (r.PanelStartLine > maxLineIdx && !r.IsResolved)
+                        if (r.StartLineInOriginal > maxLineIdx && !r.IsResolved)
                         {
-                            OursPresenter.ScrollToLine(r.PanelStartLine + 1);
+                            OursPresenter.ScrollToLine(r.StartLineInOriginal + 1);
                             break;
                         }
                     }
                 }
             }
-
-            e.Handled = true;
-        }
-
-        private void OnUseMine(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                vm.AcceptOurs();
-
-            e.Handled = true;
-        }
-
-        private void OnUseTheirs(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                vm.AcceptTheirs();
-
-            e.Handled = true;
-        }
-
-        private void OnUseBothMineFirst(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                vm.AcceptBothMineFirst();
-
-            e.Handled = true;
-        }
-
-        private void OnUseBothTheirsFirst(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                vm.AcceptBothTheirsFirst();
-
-            e.Handled = true;
-        }
-
-        private void OnUndo(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.MergeConflictEditor vm)
-                vm.Undo();
 
             e.Handled = true;
         }

@@ -124,82 +124,25 @@ namespace SourceGit.ViewModels
             return Models.ConflictLineState.Normal;
         }
 
-        public void AcceptOurs()
+        public void Resolve(object param)
         {
             if (_selectedChunk == null)
                 return;
 
             var region = _conflictRegions[_selectedChunk.ConflictIndex];
-            if (region.IsResolved)
+            if (param is not Models.ConflictResolution resolution)
                 return;
 
-            region.ResolvedContent = new List<string>(region.OursContent);
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseOurs;
-            RefreshDisplayData();
-        }
-
-        public void AcceptTheirs()
-        {
-            if (_selectedChunk == null)
+            // Try to resolve a resolved region.
+            if (resolution != Models.ConflictResolution.None && region.IsResolved)
                 return;
 
-            var region = _conflictRegions[_selectedChunk.ConflictIndex];
-            if (region.IsResolved)
+            // Try to undo an unresolved region.
+            if (resolution == Models.ConflictResolution.None && !region.IsResolved)
                 return;
 
-            region.ResolvedContent = new List<string>(region.TheirsContent);
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseTheirs;
-            RefreshDisplayData();
-        }
-
-        public void AcceptBothMineFirst()
-        {
-            if (_selectedChunk == null)
-                return;
-
-            var region = _conflictRegions[_selectedChunk.ConflictIndex];
-            if (region.IsResolved)
-                return;
-
-            var combined = new List<string>(region.OursContent);
-            combined.AddRange(region.TheirsContent);
-            region.ResolvedContent = combined;
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseBothMineFirst;
-            RefreshDisplayData();
-        }
-
-        public void AcceptBothTheirsFirst()
-        {
-            if (_selectedChunk == null)
-                return;
-
-            var region = _conflictRegions[_selectedChunk.ConflictIndex];
-            if (region.IsResolved)
-                return;
-
-            var combined = new List<string>(region.TheirsContent);
-            combined.AddRange(region.OursContent);
-            region.ResolvedContent = combined;
-            region.IsResolved = true;
-            region.ResolutionType = Models.ConflictResolution.UseBothTheirsFirst;
-            RefreshDisplayData();
-        }
-
-        public void Undo()
-        {
-            if (_selectedChunk == null)
-                return;
-
-            var region = _conflictRegions[_selectedChunk.ConflictIndex];
-            if (!region.IsResolved)
-                return;
-
-            region.ResolvedContent = null;
-            region.IsResolved = false;
-            region.ResolutionType = Models.ConflictResolution.None;
+            region.IsResolved = resolution != Models.ConflictResolution.None;
+            region.ResolutionType = resolution;
             RefreshDisplayData();
         }
 
@@ -223,8 +166,32 @@ namespace SourceGit.ViewModels
                 for (var i = lastLineIdx; i < r.StartLineInOriginal; i++)
                     builder.Append(lines[i]).Append('\n');
 
-                foreach (var l in r.ResolvedContent)
-                    builder.Append(l).Append('\n');
+                if (r.ResolutionType == Models.ConflictResolution.UseOurs)
+                {
+                    foreach (var l in r.OursContent)
+                        builder.Append(l).Append('\n');
+                }
+                else if (r.ResolutionType == Models.ConflictResolution.UseTheirs)
+                {
+                    foreach (var l in r.TheirsContent)
+                        builder.Append(l).Append('\n');
+                }
+                else if (r.ResolutionType == Models.ConflictResolution.UseBothMineFirst)
+                {
+                    foreach (var l in r.OursContent)
+                        builder.Append(l).Append('\n');
+
+                    foreach (var l in r.TheirsContent)
+                        builder.Append(l).Append('\n');
+                }
+                else if (r.ResolutionType == Models.ConflictResolution.UseBothTheirsFirst)
+                {
+                    foreach (var l in r.TheirsContent)
+                        builder.Append(l).Append('\n');
+
+                    foreach (var l in r.OursContent)
+                        builder.Append(l).Append('\n');
+                }
 
                 lastLineIdx = r.EndLineInOriginal + 1;
             }
@@ -278,7 +245,6 @@ namespace SourceGit.ViewModels
                     var region = new Models.ConflictRegion
                     {
                         StartLineInOriginal = i,
-                        PanelStartLine = oursLines.Count,
                         StartMarker = line,
                     };
 
@@ -339,7 +305,6 @@ namespace SourceGit.ViewModels
 
                         region.EndMarker = lines[i];
                         region.EndLineInOriginal = i;
-                        region.PanelEndLine = oursLines.Count - 1;
                         i++;
                     }
 
@@ -383,71 +348,79 @@ namespace SourceGit.ViewModels
                 if (conflictIdx < _conflictRegions.Count)
                 {
                     var region = _conflictRegions[conflictIdx];
-                    if (region.PanelStartLine == currentLine)
+                    if (region.StartLineInOriginal == currentLine)
                         currentRegion = region;
                 }
 
                 if (currentRegion != null)
                 {
-                    int regionLines = currentRegion.PanelEndLine - currentRegion.PanelStartLine + 1;
-
-                    if (currentRegion.ResolvedContent != null)
+                    int regionLines = currentRegion.EndLineInOriginal - currentRegion.StartLineInOriginal + 1;
+                    if (currentRegion.IsResolved)
                     {
                         var oldLineCount = resultLines.Count;
+                        var resolveType = currentRegion.ResolutionType;
 
                         // Resolved - show resolved content with color based on resolution type
-                        if (currentRegion.ResolutionType == Models.ConflictResolution.UseBothMineFirst)
+                        if (resolveType == Models.ConflictResolution.UseBothMineFirst)
                         {
-                            // First portion is Mine (Deleted color), second is Theirs (Added color)
                             int mineCount = currentRegion.OursContent.Count;
-                            for (int i = 0; i < currentRegion.ResolvedContent.Count; i++)
+                            for (int i = 0; i < mineCount; i++)
                             {
-                                var lineType = i < mineCount
-                                    ? Models.TextDiffLineType.Deleted
-                                    : Models.TextDiffLineType.Added;
-                                resultLines.Add(new Models.TextDiffLine(
-                                    lineType, currentRegion.ResolvedContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, currentRegion.OursContent[i], resultLineNumber, resultLineNumber));
                                 resultLineNumber++;
                             }
-                        }
-                        else if (currentRegion.ResolutionType == Models.ConflictResolution.UseBothTheirsFirst)
-                        {
-                            // First portion is Theirs (Added color), second is Mine (Deleted color)
-                            int theirsCount = currentRegion.TheirsContent.Count;
-                            for (int i = 0; i < currentRegion.ResolvedContent.Count; i++)
-                            {
-                                var lineType = i < theirsCount
-                                    ? Models.TextDiffLineType.Added
-                                    : Models.TextDiffLineType.Deleted;
-                                resultLines.Add(new Models.TextDiffLine(
-                                    lineType, currentRegion.ResolvedContent[i], resultLineNumber, resultLineNumber));
-                                resultLineNumber++;
-                            }
-                        }
-                        else
-                        {
-                            var lineType = currentRegion.ResolutionType switch
-                            {
-                                Models.ConflictResolution.UseOurs => Models.TextDiffLineType.Deleted,   // Mine color
-                                Models.ConflictResolution.UseTheirs => Models.TextDiffLineType.Added,  // Theirs color
-                                _ => Models.TextDiffLineType.Normal
-                            };
 
-                            foreach (var line in currentRegion.ResolvedContent)
+                            int theirsCount = currentRegion.TheirsContent.Count;
+                            for (int i = 0; i < theirsCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(
-                                    lineType, line, resultLineNumber, resultLineNumber));
+                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, currentRegion.TheirsContent[i], resultLineNumber, resultLineNumber));
                                 resultLineNumber++;
                             }
                         }
+                        else if (resolveType == Models.ConflictResolution.UseBothTheirsFirst)
+                        {
+                            int theirsCount = currentRegion.TheirsContent.Count;
+                            for (int i = 0; i < theirsCount; i++)
+                            {
+                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, currentRegion.TheirsContent[i], resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
+
+                            int mineCount = currentRegion.OursContent.Count;
+                            for (int i = 0; i < mineCount; i++)
+                            {
+                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, currentRegion.OursContent[i], resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
+                        }
+                        else if (resolveType == Models.ConflictResolution.UseOurs)
+                        {
+                            int mineCount = currentRegion.OursContent.Count;
+                            for (int i = 0; i < mineCount; i++)
+                            {
+                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, currentRegion.OursContent[i], resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
+                        }
+                        else if (resolveType == Models.ConflictResolution.UseTheirs)
+                        {
+                            int theirsCount = currentRegion.TheirsContent.Count;
+                            for (int i = 0; i < theirsCount; i++)
+                            {
+                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, currentRegion.TheirsContent[i], resultLineNumber, resultLineNumber));
+                                resultLineNumber++;
+                            }
+                        }
+
                         // Pad with empty lines to match Mine/Theirs panel height
-                        int padding = regionLines - currentRegion.ResolvedContent.Count;
+                        int added = resultLines.Count - oldLineCount;
+                        int padding = regionLines - added;
                         for (int p = 0; p < padding; p++)
                             resultLines.Add(new Models.TextDiffLine());
 
-                        int added = resultLines.Count - oldLineCount;
+                        int blockSize = resultLines.Count - oldLineCount - 2;
                         _lineStates.Add(Models.ConflictLineState.ResolvedBlockStart);
-                        for (var i = 0; i < added - 2; i++)
+                        for (var i = 0; i < blockSize; i++)
                             _lineStates.Add(Models.ConflictLineState.ResolvedBlock);
                         _lineStates.Add(Models.ConflictLineState.ResolvedBlockEnd);
                     }
@@ -461,8 +434,7 @@ namespace SourceGit.ViewModels
                         // Mine content lines (matches the deleted lines in Ours panel)
                         foreach (var line in currentRegion.OursContent)
                         {
-                            resultLines.Add(new Models.TextDiffLine(
-                                Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
+                            resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
                             _lineStates.Add(Models.ConflictLineState.ConflictBlock);
                         }
 
@@ -473,8 +445,7 @@ namespace SourceGit.ViewModels
                         // Theirs content lines (matches the added lines in Theirs panel)
                         foreach (var line in currentRegion.TheirsContent)
                         {
-                            resultLines.Add(new Models.TextDiffLine(
-                                Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
+                            resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
                             _lineStates.Add(Models.ConflictLineState.ConflictBlock);
                         }
 
@@ -483,7 +454,7 @@ namespace SourceGit.ViewModels
                         _lineStates.Add(Models.ConflictLineState.ConflictBlockEnd);
                     }
 
-                    currentLine = currentRegion.PanelEndLine + 1;
+                    currentLine = currentRegion.EndLineInOriginal + 1;
                     conflictIdx++;
                 }
                 else
@@ -492,9 +463,7 @@ namespace SourceGit.ViewModels
                     var oursLine = _oursDiffLines[currentLine];
                     if (oursLine.Type == Models.TextDiffLineType.Normal)
                     {
-                        resultLines.Add(new Models.TextDiffLine(
-                            Models.TextDiffLineType.Normal, oursLine.Content,
-                            resultLineNumber, resultLineNumber));
+                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, oursLine.Content, resultLineNumber, resultLineNumber));
                         resultLineNumber++;
                     }
                     else

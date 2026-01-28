@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
@@ -89,11 +90,11 @@
             </Border>
             <Grid Grid.Row="1">
               <v:MergeDiffPresenter x:Name="OursPresenter"
+                                    PanelType="Mine"
                                     DiffLines="{Binding OursDiffLines, Mode=OneWay}"
                                     MaxLineNumber="{Binding DiffMaxLineNumber}"
                                     FileName="{Binding FilePath}"
                                     SelectedChunk="{Binding SelectedChunk}"
-                                    IsOldSide="True"
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                     AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
@@ -112,7 +113,8 @@
                       BoxShadow="0 2 8 0 #40000000">
                 <Button Classes="flat primary"
                         Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
-                        Click="OnUseMine"/>
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseOurs}"/>
               </Border>
             </Grid>
           </Grid>
@@ -128,11 +130,11 @@
             </Border>
             <Grid Grid.Row="1">
               <v:MergeDiffPresenter x:Name="TheirsPresenter"
+                                    PanelType="Theirs"
                                     DiffLines="{Binding TheirsDiffLines, Mode=OneWay}"
                                     MaxLineNumber="{Binding DiffMaxLineNumber}"
                                     FileName="{Binding FilePath}"
                                     SelectedChunk="{Binding SelectedChunk}"
-                                    IsOldSide="False"
                                     FontFamily="{DynamicResource Fonts.Monospace}"
                                     EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                     AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
@@ -151,7 +153,8 @@
                       BoxShadow="0 2 8 0 #40000000">
                 <Button Classes="flat primary"
                         Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
-                        Click="OnUseTheirs"/>
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseTheirs}"/>
               </Border>
             </Grid>
           </Grid>
@@ -166,12 +169,11 @@
           </Border>
           <Grid Grid.Row="1">
             <v:MergeDiffPresenter x:Name="ResultPresenter"
+                                  PanelType="Result"
                                   DiffLines="{Binding ResultDiffLines, Mode=OneWay}"
                                   MaxLineNumber="{Binding DiffMaxLineNumber}"
                                   FileName="{Binding FilePath}"
                                   SelectedChunk="{Binding SelectedChunk}"
-                                  IsOldSide="False"
-                                  IsResultPanel="True"
                                   FontFamily="{DynamicResource Fonts.Monospace}"
                                   EmptyContentBackground="{DynamicResource Brush.Diff.EmptyBG}"
                                   AddedContentBackground="{DynamicResource Brush.Diff.TheirsBG}"
@@ -192,10 +194,12 @@
               <StackPanel Orientation="Horizontal" Spacing="4">
                 <Button Classes="flat primary"
                         Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
-                        Click="OnUseMine"/>
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseOurs}"/>
                 <Button Classes="flat primary"
                         Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
-                        Click="OnUseTheirs"/>
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseTheirs}"/>
                 <Button Classes="flat primary">
                   <StackPanel Orientation="Horizontal" Spacing="4">
                     <TextBlock Text="{DynamicResource Text.MergeConflictEditor.UseBoth}" Foreground="White"/>
@@ -203,7 +207,7 @@
                   </StackPanel>
                   <Button.Flyout>
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                      <MenuItem Click="OnUseBothMineFirst">
+                      <MenuItem Command="{Binding Resolve}" CommandParameter="{x:Static m:ConflictResolution.UseBothMineFirst}">
                         <MenuItem.Icon>
                           <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.MineHeader}"/>
                         </MenuItem.Icon>
@@ -211,7 +215,7 @@
                           <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.MineFirst}"/>
                         </MenuItem.Header>
                       </MenuItem>
-                      <MenuItem Click="OnUseBothTheirsFirst">
+                      <MenuItem Command="{Binding Resolve}" CommandParameter="{x:Static m:ConflictResolution.UseBothTheirsFirst}">
                         <MenuItem.Icon>
                           <Path Width="12" Height="12" Data="{StaticResource Icons.February}" Fill="{DynamicResource Brush.Diff.TheirsHeader}"/>
                         </MenuItem.Icon>
@@ -236,7 +240,8 @@
                     BoxShadow="0 2 8 0 #40000000">
               <Button Classes="flat"
                       Content="{DynamicResource Text.MergeConflictEditor.Undo}"
-                      Click="OnUndo"/>
+                      Command="{Binding Resolve}"
+                      CommandParameter="{x:Static m:ConflictResolution.None}"/>
             </Border>
           </Grid>
         </Grid>

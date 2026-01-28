@@ -57,23 +57,15 @@ namespace SourceGit.Models
     {
         public int StartLineInOriginal { get; set; }
         public int EndLineInOriginal { get; set; }
-        public List<string> OursContent { get; set; } = new();
-        public List<string> TheirsContent { get; set; } = new();
-        public bool IsResolved { get; set; } = false;
 
-        // Line indices in the built static panels (0-based)
-        public int PanelStartLine { get; set; } = -1;
-        public int PanelEndLine { get; set; } = -1;
-
-        // Content chosen when resolved (null = unresolved, empty list = deleted)
-        public List<string> ResolvedContent { get; set; } = null;
-
-        // Real markers from the file
         public string StartMarker { get; set; } = "<<<<<<<";
         public string SeparatorMarker { get; set; } = "=======";
         public string EndMarker { get; set; } = ">>>>>>>";
 
-        // Track the type of resolution
+        public List<string> OursContent { get; set; } = new();
+        public List<string> TheirsContent { get; set; } = new();
+
+        public bool IsResolved { get; set; } = false;
         public ConflictResolution ResolutionType { get; set; } = ConflictResolution.None;
     }
 }
