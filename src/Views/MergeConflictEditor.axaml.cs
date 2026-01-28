@@ -269,6 +269,9 @@ namespace SourceGit.Views
 
         private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
         {
+            if (Design.IsDesignMode)
+                return;
+
             if (!TextArea.TextView.VisualLinesValid)
             {
                 SetCurrentValue(DisplayRangeProperty, null);
