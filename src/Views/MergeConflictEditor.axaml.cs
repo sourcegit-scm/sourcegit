@@ -232,7 +232,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
-            if (DataContext is not ViewModels.MergeConflictEditor { IsLoading: false } vm)
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
             if (sender is not TextView view)
@@ -538,39 +538,6 @@ namespace SourceGit.Views
 
             if (DataContext is ViewModels.MergeConflictEditor vm)
                 vm.PropertyChanged += OnViewModelPropertyChanged;
-        }
-
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-
-            if (e.Handled)
-                return;
-
-            var vm = DataContext as ViewModels.MergeConflictEditor;
-            if (vm == null)
-                return;
-
-            var modifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-
-            if (e.KeyModifiers == modifier)
-            {
-                if (e.Key == Key.S && vm.CanSave)
-                {
-                    OnSaveAndStage(null, null);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Up)
-                {
-                    OnGotoPrevConflict(null, null);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    OnGotoNextConflict(null, null);
-                    e.Handled = true;
-                }
-            }
         }
 
         protected override async void OnClosing(WindowClosingEventArgs e)

@@ -41,7 +41,6 @@
         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
           <Path Width="14" Height="14" Data="{StaticResource Icons.File}"/>
           <TextBlock Margin="8" Text="{Binding FilePath}" VerticalAlignment="Center"/>
-          <v:LoadingIcon Width="14" Height="14" IsVisible="{Binding IsLoading}"/>
         </StackPanel>
 
         <!-- Navigation and Actions -->
@@ -51,6 +50,7 @@
                   Width="24"
                   ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
                   Click="OnGotoPrevConflict"
+                  HotKey="{OnPlatform Ctrl+Up, macOS=⌘+Up}"
                   IsEnabled="{Binding HasUnresolvedConflicts, Mode=OneWay}">
             <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
           </Button>
@@ -58,6 +58,7 @@
                   Width="24"
                   ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
                   Click="OnGotoNextConflict"
+                  HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"
                   IsEnabled="{Binding HasUnresolvedConflicts, Mode=OneWay}">
             <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
           </Button>
@@ -71,7 +72,7 @@
                   Margin="0,2" Padding="6,3"
                   Content="{DynamicResource Text.MergeConflictEditor.SaveAndStage}"
                   Click="OnSaveAndStage"
-                  IsEnabled="{Binding CanSave, Mode=OneWay}"/>
+                  HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}"/>
         </StackPanel>
       </Grid>
     </Border>
@@ -257,12 +258,18 @@
             Effect="drop-shadow(0 0 12 #60000000)"
             IsVisible="{Binding Error, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
       <StackPanel Orientation="Vertical">
-        <Path Width="28" Height="28" Data="{StaticResource Icons.Error}"/>
+        <Path Width="32" Height="32" Fill="Orange" Data="{StaticResource Icons.Error}"/>
         <TextBlock Text="{Binding Error, Mode=OneWay}"
                    MaxWidth="500"
-                   Margin="0,12,0,0"
-                   FontSize="16"
+                   Margin="0,16"
                    TextWrapping="Wrap"/>
+        <Button Classes="flat primary"
+                MinWidth="80"
+                Margin="0"
+                HorizontalAlignment="Center"
+                Content="{DynamicResource Text.Sure}"
+                Command="{Binding ClearErrorMessage}"
+                HotKey="Escape"/>
       </StackPanel>
     </Border>
   </Grid>

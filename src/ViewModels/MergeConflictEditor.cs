@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -15,12 +14,6 @@ namespace SourceGit.ViewModels
         public string FilePath
         {
             get => _filePath;
-        }
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            private set => SetProperty(ref _isLoading, value);
         }
 
         public string Error
@@ -78,43 +71,25 @@ namespace SourceGit.ViewModels
         public IReadOnlyList<Models.ConflictRegion> ConflictRegions => _conflictRegions;
         public bool HasUnresolvedConflicts => _unresolvedConflictCount > 0;
         public bool HasUnsavedChanges => _unresolvedConflictCount < _conflictRegions.Count;
-        public bool CanSave => _unresolvedConflictCount == 0;
 
         public MergeConflictEditor(Repository repo, string filePath)
         {
             _repo = repo;
             _filePath = filePath;
-        }
 
-        public async Task LoadAsync()
-        {
-            IsLoading = true;
+            var workingCopyPath = Path.Combine(_repo.FullPath, _filePath);
+            var workingCopyContent = string.Empty;
+            if (File.Exists(workingCopyPath))
+                workingCopyContent = File.ReadAllText(workingCopyPath);
 
-            try
+            if (workingCopyContent.IndexOf('\0', StringComparison.Ordinal) >= 0)
             {
-                var workingCopyPath = Path.Combine(_repo.FullPath, _filePath);
-                var workingCopyContent = string.Empty;
-                if (File.Exists(workingCopyPath))
-                    workingCopyContent = await File.ReadAllTextAsync(workingCopyPath).ConfigureAwait(false);
-
-                if (workingCopyContent.IndexOf('\0', StringComparison.Ordinal) >= 0)
-                    throw new Exception("Binary file is not supported!!!");
-
-                Dispatcher.UIThread.Post(() =>
-                {
-                    ParseOriginalContent(workingCopyContent);
-                    RefreshDisplayData();
-                    IsLoading = false;
-                });
+                _error = "Binary file is not supported.";
+                return;
             }
-            catch (Exception ex)
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    IsLoading = false;
-                    Error = ex.Message;
-                });
-            }
+
+            ParseOriginalContent(workingCopyContent);
+            RefreshDisplayData();
         }
 
         public Models.ConflictLineState GetLineState(int line)
@@ -153,7 +128,7 @@ namespace SourceGit.ViewModels
 
             if (_unresolvedConflictCount > 0)
             {
-                App.RaiseException(_repo.FullPath, "Cannot save: there are still unresolved conflicts.");
+                Error = "Cannot save: there are still unresolved conflicts.";
                 return false;
             }
 
@@ -203,7 +178,7 @@ namespace SourceGit.ViewModels
             {
                 // Write merged content to file
                 var fullPath = Path.Combine(_repo.FullPath, _filePath);
-                await File.WriteAllTextAsync(fullPath, builder.ToString()).ConfigureAwait(false);
+                await File.WriteAllTextAsync(fullPath, builder.ToString());
 
                 // Stage the file
                 var pathSpecFile = Path.GetTempFileName();
@@ -216,9 +191,14 @@ namespace SourceGit.ViewModels
             }
             catch (Exception ex)
             {
-                App.RaiseException(_repo.FullPath, $"Failed to save and stage: {ex.Message}");
+                Error = $"Failed to save and stage: {ex.Message}";
                 return false;
             }
+        }
+
+        public void ClearErrorMessage()
+        {
+            Error = string.Empty;
         }
 
         private void ParseOriginalContent(string content)
@@ -491,12 +471,10 @@ namespace SourceGit.ViewModels
             _unresolvedConflictCount = unresolved.Count;
             OnPropertyChanged(nameof(StatusText));
             OnPropertyChanged(nameof(HasUnresolvedConflicts));
-            OnPropertyChanged(nameof(CanSave));
         }
 
         private readonly Repository _repo;
         private readonly string _filePath;
-        private bool _isLoading = false;
         private string _originalContent = string.Empty;
         private int _unresolvedConflictCount = 0;
         private int _diffMaxLineNumber = 0;

@@ -121,11 +121,7 @@ namespace SourceGit.ViewModels
         public async Task MergeAsync()
         {
             if (CanMerge)
-            {
-                var ctx = new MergeConflictEditor(_repo, _change.Path);
-                await ctx.LoadAsync();
-                await App.ShowDialog(ctx);
-            }
+                await App.ShowDialog(new MergeConflictEditor(_repo, _change.Path));
         }
 
         public async Task MergeExternalAsync()
