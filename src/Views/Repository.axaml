@@ -133,9 +133,8 @@
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <Border Grid.Column="2"
                           Height="18"
+                          Margin="6,0" Padding="9,0"
                           CornerRadius="9"
-                          Padding="9,0"
-                          Margin="6,0"
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
                           IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
@@ -166,9 +165,8 @@
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
                   <Border Grid.Column="2"
                           Height="18"
+                          Margin="6,0" Padding="9,0"
                           CornerRadius="9"
-                          Padding="6,0"
-                          Margin="6,0"
                           VerticalAlignment="Center"
                           Background="{DynamicResource Brush.Badge}"
                           IsVisible="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
