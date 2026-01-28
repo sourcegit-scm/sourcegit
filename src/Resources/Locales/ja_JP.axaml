@@ -41,9 +41,8 @@
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">バイナリファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">BLAMEではこのファイルはサポートされていません!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAMEではこのファイルはサポートされていません!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ をチェックアウトする...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">ワークツリーと比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">ブランチ名をコピー</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$を削除...</x:String>
@@ -59,8 +58,6 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">${0}$ を ${1}$ でリベースする...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">${0}$ をリネームする...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">トラッキングブランチを設定...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">ブランチの比較</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">無効な上流ブランチ!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">キャンセル</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">親リビジョンにリセット</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">このリビジョンにリセット</x:String>
@@ -77,7 +74,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">警告: コミットをチェックアウトするとHEADが切断されます</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">チェリーピック</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">ソースをコミットメッセージに追加</x:String>
@@ -128,8 +125,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">参照</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">ブラウザで開く</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">説明</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">コミットのタイトルを入力</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">リポジトリの設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">コミットテンプレート</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">テンプレート内容:</x:String>
@@ -189,10 +185,9 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">作成したブランチにチェックアウト</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新しいブランチの名前:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">ブランチの名前を入力</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">スペースはダッシュに置き換えられます。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">ローカルブランチを作成</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">タグを作成...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">付与されるコミット:</x:String>
@@ -244,7 +239,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">スワップ</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">シンタックスハイライト</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">行の折り返し</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">ブロックナビゲーションを有効化</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">マージツールで開く</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">すべての行を表示</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">表示する行数を減らす</x:String>
@@ -404,7 +398,6 @@
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Gitが設定されていません。まず[設定]に移動して設定を行ってください。</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">アプリケーションデータのディレクトリを開く</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">マージツールで開く</x:String>
-  <x:String x:Key="Text.OpenWith" xml:space="preserve">外部ツールで開く...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">任意。</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新しいページを開く</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">ブックマーク</x:String>
@@ -440,7 +433,6 @@
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">デフォルト</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">エディタ</x:String>
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">等幅フォント</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">テキストエディタでは等幅フォントのみを使用する</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">テーマ</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">テーマの上書き</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">タイトルバーの固定タブ幅を使用</x:String>
@@ -491,7 +483,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">スタッシュして再適用</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージの代わりにリベースを使用</x:String>
@@ -610,8 +602,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上流ブランチ:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHAをコピー</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Go to</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">スカッシュコミット</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">宛先:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH プライベートキー:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">プライベートSSHキーストアのパス</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">スタート</x:String>
@@ -645,15 +635,12 @@
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">このモジュールを保存するフォルダの相対パス</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">サブモジュールを削除</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">タグ名をコピー</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">タグメッセージをコピー</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">${0}$ を削除...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$ を ${1}$ にマージ...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">${0}$ をプッシュ...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">サブモジュールを更新</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">すべてのサブモジュール</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">必要に応じて初期化</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">再帰的に更新</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">サブモジュール:</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>

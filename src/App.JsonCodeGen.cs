@@ -59,12 +59,15 @@ namespace SourceGit
             typeof(DataGridLengthConverter),
         ]
     )]
-    [JsonSerializable(typeof(Models.ExternalToolPaths))]
+    [JsonSerializable(typeof(Models.ExternalToolCustomization))]
+    [JsonSerializable(typeof(Models.HistoryFilterCollection))]
     [JsonSerializable(typeof(Models.InteractiveRebaseJobCollection))]
     [JsonSerializable(typeof(Models.JetBrainsState))]
     [JsonSerializable(typeof(Models.ThemeOverrides))]
     [JsonSerializable(typeof(Models.Version))]
     [JsonSerializable(typeof(Models.RepositorySettings))]
+    [JsonSerializable(typeof(List<Models.ConventionalCommitType>))]
+    [JsonSerializable(typeof(List<Models.LFSLock>))]
     [JsonSerializable(typeof(List<Models.VisualStudioInstance>))]
     [JsonSerializable(typeof(ViewModels.Preferences))]
     internal partial class JsonCodeGen : JsonSerializerContext { }

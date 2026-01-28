@@ -13,7 +13,7 @@ jobs:
             os: windows-2022
             runtime: win-arm64
           - name: macOS (Intel)
-            os: macos-13
+            os: macos-15-intel
             runtime: osx-x64
           - name: macOS (Apple Silicon)
             os: macos-latest
@@ -43,7 +43,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
       - name: Configure arm64 packages
         if: matrix.runtime == 'linux-arm64'
         run: |

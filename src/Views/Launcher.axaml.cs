@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
 
@@ -46,7 +47,7 @@ namespace SourceGit.Views
             {
                 HasLeftCaptionButton = true;
                 CaptionHeight = new GridLength(34);
-                ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome | ExtendClientAreaChromeHints.OSXThickTitleBar;
+                ExtendClientAreaChromeHints |= ExtendClientAreaChromeHints.OSXThickTitleBar;
             }
             else if (UseSystemWindowFrame)
             {
@@ -108,14 +109,13 @@ namespace SourceGit.Views
 
             if (change.Property == WindowStateProperty)
             {
-                _lastWindowState = (WindowState)change.OldValue!;
-
                 var state = (WindowState)change.NewValue!;
-                if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
-                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
+                _lastWindowState = (WindowState)change.OldValue!;
 
                 if (OperatingSystem.IsMacOS())
                     HasLeftCaptionButton = state != WindowState.FullScreen;
+                else if (!UseSystemWindowFrame)
+                    CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
             }
@@ -149,54 +149,34 @@ namespace SourceGit.Views
                 return;
             }
 
-            // Ctrl+, opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
+            // Register hotkeys for Windows/Linux (macOS has registered these keys in system menu bar)
+            if (!OperatingSystem.IsMacOS())
             {
-                await App.ShowDialog(new Preferences());
-                e.Handled = true;
-                return;
-            }
+                if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
+                {
+                    await App.ShowDialog(new Preferences());
+                    e.Handled = true;
+                    return;
+                }
 
-            // F1 opens preference dialog (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e.Key == Key.F1)
-            {
-                await App.ShowDialog(new Hotkeys());
-                return;
-            }
+                if (e is { KeyModifiers: KeyModifiers.None, Key: Key.F1 })
+                {
+                    await App.ShowDialog(new Hotkeys());
+                    return;
+                }
 
-            // Ctrl+Q quits the application (macOS use hotkeys in system menu bar)
-            if (!OperatingSystem.IsMacOS() && e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
-            {
-                App.Quit(0);
-                return;
+                if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
+                {
+                    App.Quit(0);
+                    return;
+                }
             }
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.P)
-                {
-                    vm.OpenWorkspaceSwitcher();
-                    e.Handled = true;
-                    return;
-                }
-
-                if (e.Key == Key.P)
-                {
-                    vm.OpenTabSwitcher();
-                    e.Handled = true;
-                    return;
-                }
-
                 if (e.Key == Key.W)
                 {
                     vm.CloseTab(null);
-                    e.Handled = true;
-                    return;
-                }
-
-                if (e.Key == Key.T && !e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                {
-                    vm.AddNewTab();
                     e.Handled = true;
                     return;
                 }
@@ -244,11 +224,15 @@ namespace SourceGit.Views
                             e.Handled = true;
                             return;
                         case Key.F:
-                            repo.IsSearching = true;
+                            repo.IsSearchingCommits = true;
                             e.Handled = true;
                             return;
                         case Key.H when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            repo.IsSearching = false;
+                            repo.IsSearchingCommits = false;
+                            e.Handled = true;
+                            return;
+                        case Key.P when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            vm.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(vm, repo));
                             e.Handled = true;
                             return;
                     }
@@ -269,8 +253,8 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (vm.Switcher != null)
-                    vm.CancelSwitcher();
+                if (vm.CommandPalette != null)
+                    vm.CancelCommandPalette();
                 else
                     vm.ActivePage.CancelPopup();
 
@@ -283,6 +267,12 @@ namespace SourceGit.Views
                 {
                     repo.RefreshAll();
                     e.Handled = true;
+                    return;
+                }
+                else if (vm.ActivePage.Data is ViewModels.Welcome welcome)
+                {
+                    e.Handled = true;
+                    await welcome.UpdateStatusAsync(true, null);
                     return;
                 }
             }
@@ -317,6 +307,19 @@ namespace SourceGit.Views
             {
                 var pref = ViewModels.Preferences.Instance;
                 var menu = new ContextMenu();
+                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+                menu.VerticalOffset = -6;
+
+                var groupHeader = new TextBlock()
+                {
+                    Text = App.Text("Launcher.Workspaces"),
+                    FontWeight = FontWeight.Bold,
+                };
+
+                var workspaces = new MenuItem();
+                workspaces.Header = groupHeader;
+                workspaces.IsEnabled = false;
+                menu.Items.Add(workspaces);
 
                 for (var i = 0; i < pref.Workspaces.Count; i++)
                 {
@@ -328,12 +331,12 @@ namespace SourceGit.Views
                     var item = new MenuItem();
                     item.Header = workspace.Name;
                     item.Icon = icon;
-                    item.Click += (_, e) =>
+                    item.Click += (_, ev) =>
                     {
                         if (!workspace.IsActive)
                             launcher.SwitchWorkspace(workspace);
 
-                        e.Handled = true;
+                        ev.Handled = true;
                     };
 
                     menu.Items.Add(item);
@@ -343,10 +346,10 @@ namespace SourceGit.Views
 
                 var configure = new MenuItem();
                 configure.Header = App.Text("Workspace.Configure");
-                configure.Click += async (_, e) =>
+                configure.Click += async (_, ev) =>
                 {
                     await App.ShowDialog(new ViewModels.ConfigureWorkspace());
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(configure);
                 menu.Open(btn);
@@ -355,10 +358,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnCancelSwitcher(object sender, PointerPressedEventArgs e)
+        private void OnOpenPagesCommandPalette(object sender, RoutedEventArgs e)
         {
-            if (e.Source == sender)
-                (DataContext as ViewModels.Launcher)?.CancelSwitcher();
+            if (DataContext is ViewModels.Launcher launcher)
+                launcher.OpenCommandPalette(new ViewModels.LauncherPagesCommandPalette(launcher));
+            e.Handled = true;
+        }
+
+        private void OnCloseCommandPalette(object sender, PointerPressedEventArgs e)
+        {
+            if (e.Source == sender && DataContext is ViewModels.Launcher launcher)
+                launcher.CancelCommandPalette();
             e.Handled = true;
         }
 

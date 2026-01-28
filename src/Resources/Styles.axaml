@@ -5,6 +5,7 @@
         xmlns:v="using:SourceGit.Views"
         xmlns:c="using:SourceGit.Converters"
         xmlns:ae="using:AvaloniaEdit"
+        xmlns:aec="using:AvaloniaEdit.CodeCompletion"
         xmlns:aee="using:AvaloniaEdit.Editing"
         xmlns:aes="using:AvaloniaEdit.Search">
   <Design.PreviewWith>
@@ -12,35 +13,46 @@
     </StackPanel>
   </Design.PreviewWith>
 
-  <Style Selector="ScrollBar">
-    <Style.Resources>
-      <x:Double x:Key="ScrollBarSize">12</x:Double>
-    </Style.Resources>
-
-    <Setter Property="ShowDelay" Value="0:0:0.1"/>
-    <Setter Property="HideDelay" Value="0:0:0.2"/>
-  </Style>
-
   <Style Selector="Window">
-    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-    <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
-    <Setter Property="SystemDecorations" Value="Full"/>
-    <Setter Property="Padding" Value="0"/>
-
     <Style.Resources>
       <SolidColorBrush x:Key="SystemControlErrorTextForegroundBrush" Color="Red"/>
       <Color x:Key="SystemErrorTextColor">Red</Color>
     </Style.Resources>
-  </Style>
-
-  <Style Selector="Window[WindowState=Maximized]">
+    
+    <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
     <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
+    <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
-  </Style>
 
-  <Style Selector="Window[WindowState=Maximized].fix_maximized_padding">
-    <Setter Property="Padding" Value="8,6,8,8"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border BorderThickness="{TemplateBinding BorderThickness}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                ClipToBounds="True">
+          <Border Margin="{TemplateBinding Padding}">
+            <VisualLayerManager>
+              <LayoutTransformControl>
+                <LayoutTransformControl.LayoutTransform>
+                  <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                  ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+                </LayoutTransformControl.LayoutTransform>
+                
+                <Border>
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                </Border>
+              </LayoutTransformControl>
+            </VisualLayerManager>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
   </Style>
 
   <Style Selector="Window.custom_window_frame">
@@ -124,13 +136,20 @@
                     BorderThickness="1"
                     CornerRadius="{TemplateBinding CornerRadius}">
               <VisualLayerManager>
-                <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
-                  <ContentPresenter Name="PART_ContentPresenter"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </Border>
+                <LayoutTransformControl>
+                  <LayoutTransformControl.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                    ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+                  </LayoutTransformControl.LayoutTransform>
+                  
+                  <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                  </Border>
+                </LayoutTransformControl>
               </VisualLayerManager>
             </Border>
           </Grid>
@@ -210,7 +229,7 @@
           <Border Name="LayoutRoot"
                   Margin="4"
                   Padding="12"
-                  Background="{DynamicResource Brush.Popup}"
+                  Background="Transparent"
                   BorderThickness="0"
                   CornerRadius="{TemplateBinding CornerRadius}">
             <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
@@ -228,6 +247,191 @@
         </Grid>
       </ControlTemplate>
     </Setter>
+  </Style>
+
+  <Style Selector="ScrollBar">
+    <Setter Property="MinWidth" Value="12"/>
+    <Setter Property="MinHeight" Value="12"/>
+    <Setter Property="ShowDelay" Value="0:0:0.1"/>
+    <Setter Property="HideDelay" Value="0:0:0.2"/>
+    <Setter Property="Background" Value="Transparent"/>
+
+    <Style Selector="^ /template/ RepeatButton">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Padding="0" Background="{TemplateBinding Background}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Content="{TemplateBinding Content}"
+                              Foreground="{TemplateBinding Foreground}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="^:horizontal">
+      <Setter Property="Height" Value="8" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
+            <Grid Name="PART_RootGrid" ColumnDefinitions="12,*,12">
+              <RepeatButton Name="PART_LineUpButton"
+                            Grid.Row="0" Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Focusable="False">
+                <Path Width="8" Height="8"
+                      Data="M16.32 6.96v10.13a.5.5 0 0 1-.78.41l-7.6-5.06a.5.5 0 0 1 0-.83l7.6-5.07a.5.5 0 0 1 .78.42Z"
+                      Fill="{DynamicResource Brush.FG2}"/>
+              </RepeatButton>
+              <Track Grid.Column="1"
+                     DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                     Maximum="{TemplateBinding Maximum}"
+                     Minimum="{TemplateBinding Minimum}"
+                     Orientation="{TemplateBinding Orientation}"
+                     ViewportSize="{TemplateBinding ViewportSize}"
+                     Value="{TemplateBinding Value, Mode=TwoWay}">
+                <Track.DecreaseButton>
+                  <RepeatButton Name="PART_PageUpButton"
+                                MinWidth="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="0"
+                                Focusable="False"/>
+                </Track.DecreaseButton>
+                <Track.IncreaseButton>
+                  <RepeatButton Name="PART_PageDownButton"
+                                MinWidth="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="0"
+                                Focusable="False"/>
+                </Track.IncreaseButton>
+                <Thumb MinWidth="24" Height="8" VerticalAlignment="Center"/>
+              </Track>
+              <RepeatButton Name="PART_LineDownButton"
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Focusable="False">
+                <Path Width="8" Height="8"
+                      Data="M9 17.07V6.93c0-.4.45-.63.78-.41l7.6 5.06c.3.2.3.64 0 .84l-7.6 5.06a.5.5 0 0 1-.78-.41Z"
+                      Fill="{DynamicResource Brush.FG2}"/>
+              </RepeatButton>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="^:vertical">
+      <Setter Property="Width" Value="8" />
+      <Setter Property="Template">
+        <ControlTemplate TargetType="ScrollBar">
+          <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
+            <Grid RowDefinitions="12,*,12">
+              <RepeatButton Name="PART_LineUpButton"
+                            Grid.Row="0"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Focusable="False">
+                <Path Width="8" Height="8"
+                      Data="M17.08 16.32H6.95a.5.5 0 0 1-.41-.78l5.06-7.6c.2-.3.64-.3.83 0l5.07 7.6a.5.5 0 0 1-.42.78Z"
+                      Fill="{DynamicResource Brush.FG2}"/>
+              </RepeatButton>
+              <Track Grid.Row="1"
+                     DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                     IsDirectionReversed="True"
+                     Maximum="{TemplateBinding Maximum}"
+                     Minimum="{TemplateBinding Minimum}"
+                     Orientation="{TemplateBinding Orientation}"
+                     ViewportSize="{TemplateBinding ViewportSize}"
+                     Value="{TemplateBinding Value, Mode=TwoWay}">
+                <Track.DecreaseButton>
+                  <RepeatButton Name="PART_PageUpButton"
+                                MinHeight="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="0"
+                                Focusable="False"/>
+                </Track.DecreaseButton>
+                <Track.IncreaseButton>
+                  <RepeatButton Name="PART_PageDownButton"
+                                MinHeight="0"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                CornerRadius="0"
+                                Focusable="False" />
+                </Track.IncreaseButton>
+                <Thumb MinHeight="24" Width="8" HorizontalAlignment="Center"/>
+              </Track>
+              <RepeatButton Name="PART_LineDownButton"
+                            Grid.Row="2"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Focusable="False">
+                <Path Width="8" Height="8"
+                      Data="M6.95 7.72h10.13c.4 0 .64.45.42.78l-5.07 7.6a.5.5 0 0 1-.83 0L6.54 8.5a.5.5 0 0 1 .41-.78Z"
+                      Fill="{DynamicResource Brush.FG2}"/>
+              </RepeatButton>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="^ /template/ Thumb">
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Width" Duration="0:0:0.1" />
+          <DoubleTransition Property="Height" Duration="0:0:0.1" />
+        </Transitions>
+      </Setter>
+      <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Foreground}" CornerRadius="4" UseLayoutRounding="False" />
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="^ /template/ RepeatButton:pointerover > Path">
+      <Setter Property="Fill" Value="{DynamicResource Brush.FG1}" />
+    </Style>
+    
+    <Style Selector="^ /template/ Thumb:pointerover">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}" />
+    </Style>
+    
+    <Style Selector="^[IsExpanded=False]">
+      <Style Selector="^ /template/ RepeatButton">
+        <Setter Property="IsVisible" Value="False" />
+      </Style>
+      <Style Selector="^:vertical /template/ Thumb">
+        <Setter Property="Width" Value="2" />
+      </Style>
+      <Style Selector="^:horizontal /template/ Thumb">
+        <Setter Property="Height" Value="2" />
+      </Style>
+    </Style>
+  </Style>
+
+  <Style Selector="ScrollViewer">
+    <Setter Property="Classes.static_scrollbar" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=!UseAutoHideScrollBars, Mode=OneWay}"/>
+  </Style>
+
+  <Style Selector="ScrollViewer.static_scrollbar">
+    <Setter Property="AllowAutoHide" Value="False"/>    
+    <Style Selector="^ /template/ ScrollContentPresenter#PART_ContentPresenter">
+      <Setter Property="Grid.RowSpan" Value="1"/>
+      <Setter Property="Grid.ColumnSpan" Value="1"/>
+    </Style>
   </Style>
 
   <Style Selector="Path">
@@ -300,13 +504,9 @@
   <Style Selector="TextBlock.italic">
     <Setter Property="FontStyle" Value="Italic"/>
   </Style>
-  <Style Selector="TextBlock.primary, SelectableTextBlock.primary">
-    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Primary}"/>
-  </Style>
   <Style Selector="TextBlock.group_header_label">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
     <Setter Property="FontWeight" Value="Bold"/>
-    <Setter Property="Margin" Value="10,0,0,0"/>
   </Style>
   <Style Selector="TextBlock.table_header">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
@@ -331,6 +531,10 @@
   <Style Selector="Run.commit_link">
     <Setter Property="Foreground" Value="DarkOrange"/>
     <Setter Property="TextDecorations" Value="Underline"/>
+  </Style>
+  <Style Selector="Run.inline_code">
+    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Monospace}"/>
+    <Setter Property="Foreground" Value="{DynamicResource Brush.InlineCodeFG}"/>
   </Style>
 
   <Style Selector="SelectableTextBlock">
@@ -512,6 +716,7 @@
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="Button.flat.primary">
+    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}"/>
     <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
   </Style>
@@ -519,154 +724,17 @@
     <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
   </Style>
   <Style Selector="Button.flat.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
     <Setter Property="Background" Value="Transparent"/>
   </Style>
   <Style Selector="Button.flat.primary:disabled">
     <Setter Property="Opacity" Value=".65"/>
   </Style>
-  <Style Selector="Button.flat.primary TextBlock">
+  <Style Selector="Button.flat.primary:disabled /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
   </Style>
   <Style Selector="Button.flat.primary ToolTip TextBlock">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-  </Style>
-
-  <Style Selector="SplitButton">
-    <Setter Property="MinHeight" Value="24"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Grid ColumnDefinitions="*,1,Auto">
-          <Button x:Name="PART_PrimaryButton"
-                  Grid.Column="0"
-                  Classes="flat primary"
-                  MinWidth="32"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  Content="{TemplateBinding Content}"
-                  ContentTemplate="{TemplateBinding ContentTemplate}"
-                  Command="{TemplateBinding Command}"
-                  CommandParameter="{TemplateBinding CommandParameter}"
-                  CornerRadius="3,0,0,3"
-                  Padding="{TemplateBinding Padding}"
-                  Focusable="False"
-                  KeyboardNavigation.IsTabStop="False" />
-
-          <Button x:Name="PART_SecondaryButton"
-                  Grid.Column="2"
-                  Classes="flat primary"
-                  Width="32"
-                  CornerRadius="0,3,3,0"
-                  Padding="0"
-                  Focusable="False"
-                  HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch"
-                  KeyboardNavigation.IsTabStop="False">
-            <Path Height="12" Width="12"
-                  Margin="0,4,0,0"
-                  Fill="{DynamicResource AccentButtonForeground}"
-                  Data="{DynamicResource Icons.Down}"/>
-          </Button>
-        </Grid>
-      </ControlTemplate>
-    </Setter>
-
-    <Style Selector="^:disabled /template/ Button">
-      <Setter Property="BorderThickness" Value="1"/>
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-      <Setter Property="Background" Value="Transparent"/>
-    </Style>
-
-    <Style Selector="^:disabled TextBlock">
-      <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-    </Style>
-
-    <Style Selector="^:disabled Path">
-      <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
-    </Style>
-  </Style>
-
-  <Style Selector="aee|TextArea">
-    <Setter Property="SelectionBorder">
-      <Setter.Value>
-        <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
-      </Setter.Value>
-    </Setter>
-    <Setter Property="SelectionBrush">
-      <Setter.Value>
-        <SolidColorBrush Opacity="0.5" Color="{DynamicResource SystemAccentColor}" />
-      </Setter.Value>
-    </Setter>
-  </Style>
-
-  <Style Selector="aes|SearchPanel">
-    <Setter Property="Template">
-      <ControlTemplate TargetType="aes:SearchPanel">
-        <Border Name="PART_Border"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}"
-                BorderBrush="{DynamicResource Brush.Border2}"
-                Background="{DynamicResource Brush.Popup}"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Padding="10">
-          <Grid RowDefinitions="Auto,Auto">
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
-                       Name="PART_searchTextBox"
-                       Width="265" Height="28"
-                       Margin="0,0,0,0"
-                       CornerRadius="2"
-                       Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
-                <TextBox.InnerRightContent>
-                  <StackPanel Orientation="Horizontal">
-                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
-                                  IsChecked="{Binding $parent[aes:SearchPanel].MatchCase, Mode=TwoWay}"
-                                  ToolTip.Tip="Match case"
-                                  Width="24" Height="20"
-                                  VerticalAlignment="Center">
-                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource CaseSensitiveIconPath}" Fill="{DynamicResource Brush.FG1}"/>
-                    </ToggleButton>
-                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
-                                  IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
-                                  ToolTip.Tip="Match whole words"
-                                  Margin="3,0,0,0" Width="24" Height="20"
-                                  VerticalAlignment="Center">
-                      <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource CompleteWordIconPath}" Fill="{DynamicResource Brush.FG1}"/>
-                    </ToggleButton>
-                    <ToggleButton Theme="{StaticResource SearchPanelTextBoxButton}"
-                                  IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
-                                  ToolTip.Tip="Use regular expressions"
-                                  Margin="3,0,5,0" Width="24" Height="20"
-                                  VerticalAlignment="Center">
-                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource RegularExpressionIconPath}" Fill="{DynamicResource Brush.FG1}"/>
-                    </ToggleButton>
-                  </StackPanel>
-                </TextBox.InnerRightContent>
-              </TextBox>
-              <Button Margin="5,0,0,0"
-                      Width="28"
-                      Background="Transparent"
-                      VerticalAlignment="Stretch"
-                      Command="{x:Static aes:SearchCommands.FindPrevious}"
-                      ToolTip.Tip="Find Previous (Shift+F3)">
-                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Up}" Fill="{DynamicResource Brush.FG1}"/>
-              </Button>
-              <Button Margin="3,0,0,0"
-                      VerticalAlignment="Stretch"
-                      Width="28"
-                      Background="Transparent"
-                      Command="{x:Static aes:SearchCommands.FindNext}"
-                      ToolTip.Tip="Find Next (F3)">
-                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Down}" Fill="{DynamicResource Brush.FG1}"/>
-              </Button>
-            </StackPanel>
-            <StackPanel Grid.Row="1" Name="PART_MessageView" IsVisible="False" Orientation="Horizontal" Margin="0 5 0 0">
-              <TextBlock Name="PART_MessageContent" FontSize="11" />
-            </StackPanel>
-          </Grid>
-        </Border>
-      </ControlTemplate>
-    </Setter>
   </Style>
 
   <Style Selector="ListBox.launcher_page_tabbar">
@@ -740,6 +808,7 @@
   </Style>
 
   <Style Selector="ContextMenu">
+    <Setter Property="MaxWidth" Value="1024"/>
     <Setter Property="HorizontalOffset" Value="-4"/>
     <Setter Property="VerticalOffset" Value="-4"/>
     <Setter Property="Template">
@@ -756,7 +825,7 @@
                   MaxWidth="{TemplateBinding MaxWidth}"
                   MinHeight="{TemplateBinding MinHeight}"
                   HorizontalAlignment="{TemplateBinding HorizontalAlignment}">
-            <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+            <ScrollViewer>
               <ItemsPresenter Name="PART_ItemsPresenter"
                               ItemsPanel="{TemplateBinding ItemsPanel}"
                               Margin="{DynamicResource MenuFlyoutScrollerMargin}"
@@ -787,7 +856,6 @@
                   Padding="4,2"
                   CornerRadius="{TemplateBinding CornerRadius}">
             <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-                          Theme="{StaticResource FluentMenuScrollViewer}"
                           VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}">
               <ItemsPresenter Name="PART_ItemsPresenter"
                               ItemsPanel="{TemplateBinding ItemsPanel}"
@@ -852,7 +920,7 @@
                     <StackPanel Orientation="Horizontal">
                       <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
                       <Border Margin="4,0,0,0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" IsVisible="{Binding IsGlobal}">
-                        <TextBlock Classes="primary" Text="GLOBAL" Margin="8,0" FontSize="10" Foreground="White"/>
+                        <TextBlock Text="GLOBAL" Margin="8,0" FontSize="10" Foreground="White"/>
                       </Border>
                     </StackPanel>
                   </DataTemplate>
@@ -860,16 +928,14 @@
               </ContentPresenter>
 
               <TextBlock Grid.Column="2"
-                         Classes="CaptionTextBlockStyle"
                          Margin="{DynamicResource MenuInputGestureTextMargin}"
-                         Text="{TemplateBinding InputGesture, Converter={StaticResource KeyGestureConverter}}"
+                         Text="{TemplateBinding InputGesture, Converter={x:Static c:StringConverters.FromKeyGesture}}"
                          HorizontalAlignment="Right"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
                          FontSize="11"/>
 
               <TextBlock Grid.Column="2"
-                         Classes="CaptionTextBlockStyle"
                          Margin="{DynamicResource MenuInputGestureTextMargin}"
                          Text="{TemplateBinding Tag}"
                          HorizontalAlignment="Right"
@@ -903,7 +969,7 @@
               </Border>
 
               <Border BorderThickness="0" Margin="8,4" MaxHeight="400">
-                <ScrollViewer Theme="{StaticResource FluentMenuScrollViewer}">
+                <ScrollViewer>
                   <ItemsPresenter Name="PART_ItemsPresenter"
                                   Margin="{DynamicResource MenuFlyoutScrollerMargin}"
                                   Grid.IsSharedSizeScope="True">
@@ -1094,11 +1160,22 @@
     <Style Selector="^:checked">
       <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
     </Style>
+
+    <Style Selector="^ Path">
+      <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+      <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    <Style Selector="^:pointerover Path, ^:checked Path">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
     <Style Selector="^:checked Path">
       <Setter Property="Fill" Value="White"/>
     </Style>
     <Style Selector="^ TextBlock">
       <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+    </Style>
+    <Style Selector="^:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     </Style>
     <Style Selector="^:checked TextBlock">
       <Setter Property="Foreground" Value="White"/>
@@ -1106,6 +1183,7 @@
   </Style>
 
   <Style Selector="ToggleButton.group_expander">
+    <Setter Property="Height" Value="28"/>
     <Setter Property="Margin" Value="6,0,0,0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>
@@ -1217,6 +1295,9 @@
   <Style Selector="ToggleButton.line_path:checked /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
   </Style>
+  <Style Selector="ToggleButton.line_path:pointerover Path">
+    <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+  </Style>
   <Style Selector="ToggleButton.line_path:checked Path">
     <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
   </Style>
@@ -1268,13 +1349,14 @@
                 Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Opacity="0.65"/>
+                Opacity="0.8"/>
         </Border>
       </ControlTemplate>
     </Setter>
 
     <Style Selector="^:checked /template/ Path#ChevronPath">
       <Setter Property="Fill" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Opacity" Value="1"/>
     </Style>
 
     <Style Selector="^:pointerover /template/ Path#ChevronPath">
@@ -1333,5 +1415,103 @@
     <Style Selector="^ /template/ TextBox#PART_TextBox /template/ Border#PART_BorderElement">
       <Setter Property="IsVisible" Value="False"/>
     </Style>
+  </Style>
+
+  <Style Selector="aee|TextArea">
+    <Setter Property="SelectionBorder">
+      <Setter.Value>
+        <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
+      </Setter.Value>
+    </Setter>
+    <Setter Property="SelectionBrush">
+      <Setter.Value>
+        <SolidColorBrush Opacity="0.5" Color="{DynamicResource SystemAccentColor}" />
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style Selector="aes|SearchPanel">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="aes:SearchPanel">
+        <Border Name="PART_Border"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                BorderBrush="{DynamicResource Brush.Border2}"
+                Background="{DynamicResource Brush.Popup}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Padding="10">
+          <Grid RowDefinitions="Auto,Auto">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
+                       Name="PART_searchTextBox"
+                       Width="265" Height="28"
+                       Margin="0,0,0,0"
+                       CornerRadius="2"
+                       Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
+                <TextBox.InnerRightContent>
+                  <StackPanel Orientation="Horizontal">
+                    <ToggleButton IsChecked="{Binding $parent[aes:SearchPanel].MatchCase, Mode=TwoWay}"
+                                  ToolTip.Tip="Match case"
+                                  Padding="0"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.CaseSensitive}" Fill="{DynamicResource Brush.FG1}"/>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding $parent[aes:SearchPanel].WholeWords, Mode=TwoWay}"
+                                  ToolTip.Tip="Match whole words"
+                                  Margin="3,0,0,0" Padding="0"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.CompleteWord}" Fill="{DynamicResource Brush.FG1}"/>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding $parent[aes:SearchPanel].UseRegex, Mode=TwoWay}"
+                                  ToolTip.Tip="Use regular expressions"
+                                  Margin="3,0,5,0" Padding="0"
+                                  Width="24" Height="20"
+                                  VerticalAlignment="Center">
+                      <Path Width="12" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.RegularExpression}" Fill="{DynamicResource Brush.FG1}"/>
+                    </ToggleButton>
+                  </StackPanel>
+                </TextBox.InnerRightContent>
+              </TextBox>
+              <Button Margin="5,0,0,0"
+                      Width="28"
+                      Background="Transparent"
+                      VerticalAlignment="Stretch"
+                      Command="{x:Static aes:SearchCommands.FindPrevious}"
+                      ToolTip.Tip="Find Previous (Shift+F3)">
+                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Up}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+              <Button Margin="3,0,0,0"
+                      VerticalAlignment="Stretch"
+                      Width="28"
+                      Background="Transparent"
+                      Command="{x:Static aes:SearchCommands.FindNext}"
+                      ToolTip.Tip="Find Next (F3)">
+                <Path Width="14" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" Data="{StaticResource Icons.Down}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Name="PART_MessageView" IsVisible="False" Orientation="Horizontal" Margin="0 5 0 0">
+              <TextBlock Name="PART_MessageContent" FontSize="11" />
+            </StackPanel>
+          </Grid>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="aec|CompletionListBox">
+    <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border0}"/>
+    <Setter Property="Padding" Value="8,4"/>
+    <Setter Property="CornerRadius" Value="4"/>
+  </Style>
+
+  <Style Selector="aec|CompletionListBox ListBoxItem">
+    <Setter Property="Height" Value="24"/>
+    <Setter Property="Margin" Value="0,2"/>
+    <Setter Property="CornerRadius" Value="4"/>
   </Style>
 </Styles>

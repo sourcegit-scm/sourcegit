@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,12 +22,11 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _text, value);
         }
 
-        public AIAssistant(Repository repo, Models.OpenAIService service, List<Models.Change> changes, Action<string> onApply)
+        public AIAssistant(Repository repo, Models.OpenAIService service, List<Models.Change> changes)
         {
             _repo = repo;
             _service = service;
             _changes = changes;
-            _onApply = onApply;
             _cancel = new CancellationTokenSource();
 
             Gen();
@@ -44,7 +42,7 @@ namespace SourceGit.ViewModels
 
         public void Apply()
         {
-            _onApply?.Invoke(Text);
+            _repo.SetCommitMessage(Text);
         }
 
         public void Cancel()
@@ -72,7 +70,6 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private Models.OpenAIService _service = null;
         private List<Models.Change> _changes = null;
-        private Action<string> _onApply = null;
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;
         private string _text = string.Empty;

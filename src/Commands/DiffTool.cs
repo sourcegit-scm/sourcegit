@@ -1,47 +1,77 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
 
 namespace SourceGit.Commands
 {
     public class DiffTool : Command
     {
-        public DiffTool(string repo, int type, string exec, Models.DiffOption option)
+        public DiffTool(string repo, Models.DiffOption option)
         {
             WorkingDirectory = repo;
             Context = repo;
-
-            _merger = Models.ExternalMerger.Supported.Find(x => x.Type == type);
-            _exec = exec;
             _option = option;
         }
 
         public void Open()
         {
-            if (_merger == null)
+            var tool = Native.OS.GetDiffMergeTool(true);
+            if (tool == null)
             {
-                App.RaiseException(Context, "Invalid merge tool in preference setting!");
+                App.RaiseException(Context, "Invalid diff/merge tool in preference setting!");
                 return;
             }
 
-            if (_merger.Type == 0)
+            if (string.IsNullOrEmpty(tool.Cmd))
             {
+                if (!CheckGitConfiguration())
+                    return;
+
                 Args = $"difftool -g --no-prompt {_option}";
-            }
-            else if (File.Exists(_exec))
-            {
-                var cmd = $"{_exec.Quoted()} {_merger.DiffCmd}";
-                Args = $"-c difftool.sourcegit.cmd={cmd.Quoted()} difftool --tool=sourcegit --no-prompt {_option}";
             }
             else
             {
-                App.RaiseException(Context, $"Can NOT find external diff tool in '{_exec}'!");
-                return;
+                var cmd = $"{tool.Exec.Quoted()} {tool.Cmd}";
+                Args = $"-c difftool.sourcegit.cmd={cmd.Quoted()} difftool --tool=sourcegit --no-prompt {_option}";
             }
 
-            Exec();
+            try
+            {
+                Process.Start(CreateGitStartInfo(false));
+            }
+            catch (Exception ex)
+            {
+                App.RaiseException(Context, ex.Message);
+            }
         }
 
-        private Models.ExternalMerger _merger;
-        private string _exec;
+        private bool CheckGitConfiguration()
+        {
+            var config = new Config(WorkingDirectory).ReadAll();
+            if (config.TryGetValue("diff.guitool", out var guiTool))
+                return CheckCLIBasedTool(guiTool);
+            if (config.TryGetValue("merge.guitool", out var mergeGuiTool))
+                return CheckCLIBasedTool(mergeGuiTool);
+            if (config.TryGetValue("diff.tool", out var diffTool))
+                return CheckCLIBasedTool(diffTool);
+            if (config.TryGetValue("merge.tool", out var mergeTool))
+                return CheckCLIBasedTool(mergeTool);
+
+            App.RaiseException(Context, "Missing git configuration: diff.guitool");
+            return false;
+        }
+
+        private bool CheckCLIBasedTool(string tool)
+        {
+            if (tool.StartsWith("vimdiff", StringComparison.Ordinal) ||
+                tool.StartsWith("nvimdiff", StringComparison.Ordinal))
+            {
+                App.RaiseException(Context, $"CLI based diff tool \"{tool}\" is not supported by this app!");
+                return false;
+            }
+
+            return true;
+        }
+
         private Models.DiffOption _option;
     }
 }

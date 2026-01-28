@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-
 using Avalonia.Data.Converters;
 
 namespace SourceGit.Converters
@@ -14,17 +12,6 @@ namespace SourceGit.Converters
             new(v => Path.GetDirectoryName(v) ?? "");
 
         public static readonly FuncValueConverter<string, string> RelativeToHome =
-            new(v =>
-            {
-                if (OperatingSystem.IsWindows())
-                    return v;
-
-                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
-                if (v.StartsWith(home, StringComparison.Ordinal))
-                    return $"~{v.AsSpan(prefixLen)}";
-
-                return v;
-            });
+            new(Native.OS.GetRelativePathToHome);
     }
 }

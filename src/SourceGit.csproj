@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ApplicationManifest>App.manifest</ApplicationManifest>
     <ApplicationIcon>App.ico</ApplicationIcon>
     <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\\..\\VERSION"))</Version>
@@ -24,9 +24,17 @@
     <TrimMode>link</TrimMode>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(DisableUpdateDetection)' == 'true'">
     <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>    
+    <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))"/>
+  </ItemGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
@@ -39,30 +47,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.2.8" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.8" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.2.8" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.8" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.8" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.2.8" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
-    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.2.0" />
-    <PackageReference Include="Azure.AI.OpenAI" Version="2.2.0-beta.4" />
+    <PackageReference Include="Avalonia" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.4.0-rc1" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.0-rc1" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.8.0-beta.1" />
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc5.4" />
-    <PackageReference Include="OpenAI" Version="2.2.0-beta.4" />
-    <PackageReference Include="Pfim" Version="0.11.3" />
-    <PackageReference Include="TextMateSharp" Version="1.0.66" />
-    <PackageReference Include="TextMateSharp.Grammars" Version="1.0.66" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
+    <PackageReference Include="OpenAI" Version="2.8.0" />
+    <PackageReference Include="Pfim" Version="0.11.4" />
+    <PackageReference Include="TextMateSharp" Version="2.0.2" />
+    <PackageReference Include="TextMateSharp.Grammars" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-    <LinkerArg Include="-mmacosx-version-min=11.0" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 </Project>

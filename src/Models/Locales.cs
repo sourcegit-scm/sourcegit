@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
@@ -12,6 +12,7 @@ namespace SourceGit.Models
             new Locale("English", "en_US"),
             new Locale("Español", "es_ES"),
             new Locale("Français", "fr_FR"),
+            new Locale("Bahasa Indonesia", "id_ID"),
             new Locale("Italiano", "it_IT"),
             new Locale("Português (Brasil)", "pt_BR"),
             new Locale("Українська", "uk_UA"),
@@ -20,6 +21,7 @@ namespace SourceGit.Models
             new Locale("繁體中文", "zh_TW"),
             new Locale("日本語", "ja_JP"),
             new Locale("தமிழ் (Tamil)", "ta_IN"),
+            new Locale("한국어", "ko_KR"),
         };
 
         public Locale(string name, string key)

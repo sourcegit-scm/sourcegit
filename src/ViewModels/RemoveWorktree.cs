@@ -23,7 +23,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Remove worktree ...";
 
             var log = _repo.CreateLog("Remove worktree");
@@ -34,7 +34,6 @@ namespace SourceGit.ViewModels
                 .RemoveAsync(Target.FullPath, Force);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

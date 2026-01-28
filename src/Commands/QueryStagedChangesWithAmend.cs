@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -20,9 +19,9 @@ namespace SourceGit.Commands
             _parent = parent;
         }
 
-        public async Task<List<Models.Change>> GetResultAsync()
+        public List<Models.Change> GetResult()
         {
-            var rs = await ReadToEndAsync().ConfigureAwait(false);
+            var rs = ReadToEnd();
             if (!rs.IsSuccess)
                 return [];
 

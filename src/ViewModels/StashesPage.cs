@@ -9,11 +9,6 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject, IDisposable
     {
-        public string RepositoryPath
-        {
-            get => _repo.FullPath;
-        }
-
         public List<Models.Stash> Stashes
         {
             get => _stashes;
@@ -146,6 +141,11 @@ namespace SourceGit.ViewModels
             SearchFilter = string.Empty;
         }
 
+        public string GetAbsPath(string path)
+        {
+            return Native.OS.GetAbsPath(_repo.FullPath, path);
+        }
+
         public void Apply(Models.Stash stash)
         {
             if (_repo.CanCreatePopup())
@@ -158,7 +158,7 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new DropStash(_repo, stash));
         }
 
-        public async Task SaveStashAsPathAsync(Models.Stash stash, string saveTo)
+        public async Task SaveStashAsPatchAsync(Models.Stash stash, string saveTo)
         {
             var opts = new List<Models.DiffOption>();
             var changes = await new Commands.CompareRevisions(_repo.FullPath, $"{stash.SHA}^", stash.SHA)
@@ -193,30 +193,56 @@ namespace SourceGit.ViewModels
             else
                 opt = new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, change);
 
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, opt).Open();
         }
 
         public async Task CheckoutSingleFileAsync(Models.Change change)
         {
-            var fullPath = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
-            var log = _repo.CreateLog($"Reset File to '{_selectedStash.SHA}'");
+            var revision = _selectedStash.SHA;
+            if (_untracked.Contains(change) && _selectedStash.Parents.Count == 3)
+                revision = _selectedStash.Parents[2];
+            else if (change.Index == Models.ChangeState.Added && _selectedStash.Parents.Count > 1)
+                revision = _selectedStash.Parents[1];
 
-            if (_untracked.Contains(change))
+            var log = _repo.CreateLog($"Reset File to '{_selectedStash.Name}'");
+            await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .FileWithRevisionAsync(change.Path, revision);
+            log.Complete();
+        }
+
+        public async Task CheckoutMultipleFileAsync(List<Models.Change> changes)
+        {
+            var untracked = new List<string>();
+            var added = new List<string>();
+            var modified = new List<string>();
+
+            foreach (var c in changes)
             {
-                await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _selectedStash.Parents[2], change.Path, fullPath);
+                if (_untracked.Contains(c) && _selectedStash.Parents.Count == 3)
+                    untracked.Add(c.Path);
+                else if (c.Index == Models.ChangeState.Added && _selectedStash.Parents.Count > 1)
+                    added.Add(c.Path);
+                else
+                    modified.Add(c.Path);
             }
-            else if (change.Index == Models.ChangeState.Added)
-            {
-                await Commands.SaveRevisionFile.RunAsync(_repo.FullPath, _selectedStash.SHA, change.Path, fullPath);
-            }
-            else
-            {
+
+            var log = _repo.CreateLog($"Reset File to '{_selectedStash.Name}'");
+
+            if (untracked.Count > 0)
                 await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .FileWithRevisionAsync(change.Path, $"{_selectedStash.SHA}");
-            }
+                    .MultipleFilesWithRevisionAsync(untracked, _selectedStash.Parents[2]);
+
+            if (added.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(added, _selectedStash.Parents[1]);
+
+            if (modified.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(modified, _selectedStash.SHA);
 
             log.Complete();
         }

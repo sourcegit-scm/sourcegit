@@ -18,7 +18,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Deleting remote ...";
 
             var log = _repo.CreateLog("Delete Remote");
@@ -30,7 +30,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

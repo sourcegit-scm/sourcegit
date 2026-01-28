@@ -110,7 +110,22 @@ namespace SourceGit.Views
                     e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
                     vm.SelectedUnstaged is { Count: 1 })
                 {
-                    vm.OpenWithDefaultEditor(vm.SelectedUnstaged[0]);
+                    var change = vm.SelectedUnstaged[0];
+                    var fullpath = Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        Native.OS.OpenWithDefaultEditor(fullpath);
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.C &&
+                         e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                         vm.SelectedUnstaged is { Count: 1 })
+                {
+                    var change = vm.SelectedUnstaged[0];
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                        await App.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
+                    else
+                        await App.CopyTextAsync(change.Path);
+
                     e.Handled = true;
                 }
             }
@@ -131,7 +146,22 @@ namespace SourceGit.Views
                     e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
                     vm.SelectedStaged is { Count: 1 })
                 {
-                    vm.OpenWithDefaultEditor(vm.SelectedStaged[0]);
+                    var change = vm.SelectedStaged[0];
+                    var fullpath = Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path);
+                    if (File.Exists(fullpath))
+                        Native.OS.OpenWithDefaultEditor(fullpath);
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.C &&
+                         e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                         vm.SelectedStaged is { Count: 1 })
+                {
+                    var change = vm.SelectedStaged[0];
+                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                        await App.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
+                    else
+                        await App.CopyTextAsync(change.Path);
+
                     e.Handled = true;
                 }
             }
@@ -193,6 +223,30 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnCommit(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, false);
+
+            e.Handled = true;
+        }
+
+        private async void OnCommitWithAutoStage(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(true, false);
+
+            e.Handled = true;
+        }
+
+        private async void OnCommitWithPush(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, true);
+
+            e.Handled = true;
+        }
+
         private ContextMenu CreateContextMenuForUnstagedChanges(ViewModels.WorkingCopy vm, string selectedSingleFolder)
         {
             var repo = vm.Repository;
@@ -207,35 +261,22 @@ namespace SourceGit.Views
                 var change = selectedUnstaged[0];
                 var path = Native.OS.GetAbsPath(repo.FullPath, change.Path);
 
-                if (!change.IsConflicted || change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
+                if (!change.IsConflicted)
                 {
-                    var openMerger = new MenuItem();
-                    openMerger.Header = App.Text("OpenInExternalMergeTool");
-                    openMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                    openMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                    openMerger.Click += async (_, e) =>
+                    TryAddOpenFileToContextMenu(menu, path);
+
+                    var diffWithMerger = new MenuItem();
+                    diffWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                    diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                    diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                    diffWithMerger.Click += (_, ev) =>
                     {
-                        if (change.IsConflicted)
-                            await vm.UseExternalMergeToolAsync(change);
-                        else
-                            vm.UseExternalDiffTool(change, true);
-
-                        e.Handled = true;
+                        vm.UseExternalDiffTool(change, false);
+                        ev.Handled = true;
                     };
-                    menu.Items.Add(openMerger);
-                }
 
-                var openWith = new MenuItem();
-                openWith.Header = App.Text("OpenWith");
-                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
-                openWith.IsEnabled = File.Exists(path);
-                openWith.Click += (_, e) =>
-                {
-                    vm.OpenWithDefaultEditor(change);
-                    e.Handled = true;
-                };
-                menu.Items.Add(openWith);
+                    menu.Items.Add(diffWithMerger);
+                }
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
@@ -294,6 +335,31 @@ namespace SourceGit.Views
 
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
+
+                    if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
+                    {
+                        var mergeBuiltin = new MenuItem();
+                        mergeBuiltin.Header = App.Text("ChangeCM.Merge");
+                        mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
+                        mergeBuiltin.Click += async (_, e) =>
+                        {
+                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, change.Path));
+                            e.Handled = true;
+                        };
+
+                        var mergeExternal = new MenuItem();
+                        mergeExternal.Header = App.Text("ChangeCM.MergeExternal");
+                        mergeExternal.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                        mergeExternal.Click += async (_, e) =>
+                        {
+                            await vm.UseExternalMergeToolAsync(change);
+                            e.Handled = true;
+                        };
+
+                        menu.Items.Add(mergeBuiltin);
+                        menu.Items.Add(mergeExternal);
+                    }
+
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
                 else
@@ -324,14 +390,14 @@ namespace SourceGit.Views
                     stash.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                            repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged, true));
+                            repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged));
 
                         e.Handled = true;
                     };
 
                     var patch = new MenuItem();
                     patch.Header = App.Text("FileCM.SaveAsPatch");
-                    patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                    patch.Icon = App.CreateMenuIcon("Icons.Save");
                     patch.Click += async (_, e) =>
                     {
                         var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -343,9 +409,16 @@ namespace SourceGit.Views
                         options.DefaultExtension = ".patch";
                         options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                        var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                        if (storageFile != null)
-                            await vm.SaveChangesToPatchAsync(selectedUnstaged, true, storageFile.Path.LocalPath);
+                        try
+                        {
+                            var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                            if (storageFile != null)
+                                await vm.SaveChangesToPatchAsync(selectedUnstaged, true, storageFile.Path.LocalPath);
+                        }
+                        catch (Exception exception)
+                        {
+                            App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        }
 
                         e.Handled = true;
                     };
@@ -391,7 +464,7 @@ namespace SourceGit.Views
                         }
                         else
                         {
-                            var isRooted = change.Path.IndexOf('/') <= 0;
+                            var isRooted = change.Path!.IndexOf('/') <= 0;
                             var singleFile = new MenuItem();
                             singleFile.Header = App.Text("WorkingCopy.AddToGitIgnore.SingleFile");
                             singleFile.Click += (_, e) =>
@@ -457,7 +530,7 @@ namespace SourceGit.Views
                         lfs.Header = App.Text("GitLFS");
                         lfs.Icon = App.CreateMenuIcon("Icons.LFS");
 
-                        var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResultAsync().Result;
+                        var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResult();
                         if (!isLFSFiltered)
                         {
                             var filename = Path.GetFileName(change.Path);
@@ -572,7 +645,7 @@ namespace SourceGit.Views
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo, change.Path));
+                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
                         e.Handled = true;
                     };
 
@@ -590,6 +663,8 @@ namespace SourceGit.Views
                     menu.Items.Add(blame);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
+
+                TryToAddCustomActionsToContextMenu(repo, menu, change.Path);
 
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
@@ -721,14 +796,14 @@ namespace SourceGit.Views
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged, true));
+                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedUnstaged));
 
                     e.Handled = true;
                 };
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -740,9 +815,16 @@ namespace SourceGit.Views
                     options.DefaultExtension = ".patch";
                     options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                    if (storageFile != null)
-                        await vm.SaveChangesToPatchAsync(selectedUnstaged, true, storageFile.Path.LocalPath);
+                    try
+                    {
+                        var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                        if (storageFile != null)
+                            await vm.SaveChangesToPatchAsync(selectedUnstaged, true, storageFile.Path.LocalPath);
+                    }
+                    catch (Exception exception)
+                    {
+                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    }
 
                     e.Handled = true;
                 };
@@ -831,7 +913,7 @@ namespace SourceGit.Views
                 {
                     ai.Click += async (_, e) =>
                     {
-                        await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], selectedStaged, t => vm.CommitMessage = t));
+                        await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], selectedStaged));
                         e.Handled = true;
                     };
                 }
@@ -845,7 +927,7 @@ namespace SourceGit.Views
                         item.Header = service.Name;
                         item.Click += async (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, selectedStaged, t => vm.CommitMessage = t));
+                            await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, selectedStaged));
                             e.Handled = true;
                         };
 
@@ -868,17 +950,6 @@ namespace SourceGit.Views
                 {
                     vm.UseExternalDiffTool(change, false);
                     ev.Handled = true;
-                };
-
-                var openWith = new MenuItem();
-                openWith.Header = App.Text("OpenWith");
-                openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
-                openWith.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
-                openWith.IsEnabled = File.Exists(path);
-                openWith.Click += (_, e) =>
-                {
-                    vm.OpenWithDefaultEditor(change);
-                    e.Handled = true;
                 };
 
                 var explore = new MenuItem();
@@ -908,14 +979,14 @@ namespace SourceGit.Views
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged, true));
+                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged));
 
                     e.Handled = true;
                 };
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -927,15 +998,22 @@ namespace SourceGit.Views
                     options.DefaultExtension = ".patch";
                     options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                    if (storageFile != null)
-                        await vm.SaveChangesToPatchAsync(selectedStaged, false, storageFile.Path.LocalPath);
+                    try
+                    {
+                        var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                        if (storageFile != null)
+                            await vm.SaveChangesToPatchAsync(selectedStaged, false, storageFile.Path.LocalPath);
+                    }
+                    catch (Exception exception)
+                    {
+                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    }
 
                     e.Handled = true;
                 };
 
+                TryAddOpenFileToContextMenu(menu, path);
                 menu.Items.Add(openWithMerger);
-                menu.Items.Add(openWith);
                 menu.Items.Add(explore);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(unstage);
@@ -1038,7 +1116,7 @@ namespace SourceGit.Views
                     history.Icon = App.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo, change.Path));
+                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
                         e.Handled = true;
                     };
 
@@ -1056,6 +1134,8 @@ namespace SourceGit.Views
                     menu.Items.Add(blame);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                 }
+
+                TryToAddCustomActionsToContextMenu(repo, menu, change.Path);
 
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
@@ -1116,17 +1196,17 @@ namespace SourceGit.Views
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged, true));
+                        repo.ShowPopup(new ViewModels.StashChanges(repo, selectedStaged));
 
                     e.Handled = true;
                 };
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Diff");
+                patch.Icon = App.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
-                    var storageProvider = TopLevel.GetTopLevel(this).StorageProvider;
+                    var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
                     if (storageProvider == null)
                         return;
 
@@ -1135,9 +1215,16 @@ namespace SourceGit.Views
                     options.DefaultExtension = ".patch";
                     options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                    if (storageFile != null)
-                        await vm.SaveChangesToPatchAsync(selectedStaged, false, storageFile.Path.LocalPath);
+                    try
+                    {
+                        var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                        if (storageFile != null)
+                            await vm.SaveChangesToPatchAsync(selectedStaged, false, storageFile.Path.LocalPath);
+                    }
+                    catch (Exception exception)
+                    {
+                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    }
 
                     e.Handled = true;
                 };
@@ -1192,6 +1279,79 @@ namespace SourceGit.Views
             }
 
             return menu;
+        }
+
+        private void TryAddOpenFileToContextMenu(ContextMenu menu, string fullpath)
+        {
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("Open");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = File.Exists(fullpath);
+            if (openWith.IsEnabled)
+            {
+                var defaultEditor = new MenuItem();
+                defaultEditor.Header = App.Text("Open.SystemDefaultEditor");
+                defaultEditor.Tag = OperatingSystem.IsMacOS() ? "⌘+O" : "Ctrl+O";
+                defaultEditor.Click += (_, ev) =>
+                {
+                    Native.OS.OpenWithDefaultEditor(fullpath);
+                    ev.Handled = true;
+                };
+
+                openWith.Items.Add(defaultEditor);
+
+                var tools = Native.OS.ExternalTools;
+                if (tools.Count > 0)
+                {
+                    openWith.Items.Add(new MenuItem() { Header = "-" });
+
+                    for (var i = 0; i < tools.Count; i++)
+                    {
+                        var tool = tools[i];
+                        var item = new MenuItem();
+                        item.Header = tool.Name;
+                        item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
+                        item.Click += (_, e) =>
+                        {
+                            tool.Launch(fullpath.Quoted());
+                            e.Handled = true;
+                        };
+
+                        openWith.Items.Add(item);
+                    }
+                }
+            }
+            menu.Items.Add(openWith);
+        }
+
+        private void TryToAddCustomActionsToContextMenu(ViewModels.Repository repo, ContextMenu menu, string path)
+        {
+            var actions = repo.GetCustomActions(Models.CustomActionScope.File);
+            if (actions.Count == 0)
+                return;
+
+            var target = new Models.CustomActionTargetFile(path, null);
+            var custom = new MenuItem();
+            custom.Header = App.Text("FileCM.CustomAction");
+            custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+            foreach (var action in actions)
+            {
+                var (dup, label) = action;
+                var item = new MenuItem();
+                item.Icon = App.CreateMenuIcon("Icons.Action");
+                item.Header = label;
+                item.Click += async (_, e) =>
+                {
+                    await repo.ExecCustomActionAsync(dup, target);
+                    e.Handled = true;
+                };
+
+                custom.Items.Add(item);
+            }
+
+            menu.Items.Add(custom);
+            menu.Items.Add(new MenuItem() { Header = "-" });
         }
     }
 }

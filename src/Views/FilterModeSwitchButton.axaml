@@ -11,11 +11,12 @@
           Padding="0"
           Background="Transparent"
           VerticalContentAlignment="Center"
-          Click="OnChangeFilterModeButtonClicked">
+          Click="OnChangeFilterModeButtonClicked"
+          ToolTip.Tip="{DynamicResource Text.Repository.FilterCommits}">
     <Grid>
       <Path Width="12" Height="12"
             Data="{StaticResource Icons.Eye}"
-            Fill="{DynamicResource Brush.FG2}"
+            Fill="{DynamicResource Brush.FG1}"
             IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.None}}"/>
 
       <Path Width="12" Height="12"

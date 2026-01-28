@@ -32,12 +32,12 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> SetUpstreamAsync(string upstream)
+        public async Task<bool> SetUpstreamAsync(Models.Branch tracking)
         {
-            if (string.IsNullOrEmpty(upstream))
+            if (tracking == null)
                 Args = $"branch {_name} --unset-upstream";
             else
-                Args = $"branch {_name} -u {upstream}";
+                Args = $"branch {_name} -u {tracking.FriendlyName}";
 
             return await ExecAsync().ConfigureAwait(false);
         }

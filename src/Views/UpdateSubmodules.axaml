@@ -8,10 +8,17 @@
              x:Class="SourceGit.Views.UpdateSubmodules"
              x:DataType="vm:UpdateSubmodules">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.UpdateSubmodules}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto,32,32" ColumnDefinitions="120,*">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Loading}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.UpdateSubmodules}"/>
+    </StackPanel>
+    
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -52,11 +59,6 @@
                 ToolTip.Tip="--init"/>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
-                Content="{DynamicResource Text.UpdateSubmodules.Recursive}"
-                IsChecked="{Binding EnableRecursive, Mode=TwoWay}"
-                ToolTip.Tip="--recursive"/>
-
-      <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.UpdateSubmodules.UpdateToRemoteTrackingBranch}"
                 IsChecked="{Binding EnableRemote, Mode=TwoWay}"
                 ToolTip.Tip="--remote"/>

@@ -21,6 +21,21 @@ namespace SourceGit.Views
                 await configure.SaveAsync();
         }
 
+        private async void SelectConventionalTypesFile(object sender, RoutedEventArgs e)
+        {
+            var options = new FilePickerOpenOptions()
+            {
+                FileTypeFilter = [new FilePickerFileType("Conventional Commit Types") { Patterns = ["*.json"] }],
+                AllowMultiple = false,
+            };
+
+            var selected = await StorageProvider.OpenFilePickerAsync(options);
+            if (selected.Count == 1 && DataContext is ViewModels.RepositoryConfigure vm)
+                vm.ConventionalTypesOverride = selected[0].Path.LocalPath;
+
+            e.Handled = true;
+        }
+
         private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)
         {
             var options = new FilePickerOpenOptions()
@@ -50,15 +65,15 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnNewCustomIssueTracker(object sender, RoutedEventArgs e)
+        private void OnNewCustomIssueTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
-                await vm.AddIssueTrackerAsync("New Issue Tracker", @"#(\d+)", "https://xxx/$1");
+                vm.AddIssueTracker("New Issue Tracker", @"#(\d+)", "https://xxx/$1");
 
             e.Handled = true;
         }
 
-        private async void OnAddGitHubIssueTracker(object sender, RoutedEventArgs e)
+        private void OnAddGitHubIssueTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
@@ -73,17 +88,17 @@ namespace SourceGit.Views
                     }
                 }
 
-                await vm.AddIssueTrackerAsync("GitHub Issue", @"#(\d+)", link);
+                vm.AddIssueTracker("GitHub Issue", @"#(\d+)", link);
             }
 
             e.Handled = true;
         }
 
-        private async void OnAddJiraIssueTracker(object sender, RoutedEventArgs e)
+        private void OnAddJiraIssueTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
-                await vm.AddIssueTrackerAsync(
+                vm.AddIssueTracker(
                     "Jira Tracker",
                     @"PROJ-(\d+)",
                     "https://jira.yourcompany.com/browse/PROJ-$1");
@@ -92,11 +107,11 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnAddAzureWorkItemTracker(object sender, RoutedEventArgs e)
+        private void OnAddAzureWorkItemTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
-                await vm.AddIssueTrackerAsync(
+                vm.AddIssueTracker(
                     "Azure DevOps Tracker",
                     @"#(\d+)",
                     "https://dev.azure.com/yourcompany/workspace/_workitems/edit/$1");
@@ -105,7 +120,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnAddGitLabIssueTracker(object sender, RoutedEventArgs e)
+        private void OnAddGitLabIssueTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
@@ -117,13 +132,13 @@ namespace SourceGit.Views
                     break;
                 }
 
-                await vm.AddIssueTrackerAsync("GitLab Issue", @"#(\d+)", link);
+                vm.AddIssueTracker("GitLab Issue", @"#(\d+)", link);
             }
 
             e.Handled = true;
         }
 
-        private async void OnAddGitLabMergeRequestTracker(object sender, RoutedEventArgs e)
+        private void OnAddGitLabMergeRequestTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
@@ -135,13 +150,13 @@ namespace SourceGit.Views
                     break;
                 }
 
-                await vm.AddIssueTrackerAsync("GitLab MR", @"!(\d+)", link);
+                vm.AddIssueTracker("GitLab MR", @"!(\d+)", link);
             }
 
             e.Handled = true;
         }
 
-        private async void OnAddGiteeIssueTracker(object sender, RoutedEventArgs e)
+        private void OnAddGiteeIssueTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
@@ -156,13 +171,13 @@ namespace SourceGit.Views
                     }
                 }
 
-                await vm.AddIssueTrackerAsync("Gitee Issue", @"#([0-9A-Z]{6,10})", link);
+                vm.AddIssueTracker("Gitee Issue", @"#([0-9A-Z]{6,10})", link);
             }
 
             e.Handled = true;
         }
 
-        private async void OnAddGiteePullRequestTracker(object sender, RoutedEventArgs e)
+        private void OnAddGiteePullRequestTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
@@ -177,17 +192,17 @@ namespace SourceGit.Views
                     }
                 }
 
-                await vm.AddIssueTrackerAsync("Gitee Pull Request", @"!(\d+)", link);
+                vm.AddIssueTracker("Gitee Pull Request", @"!(\d+)", link);
             }
 
             e.Handled = true;
         }
 
-        private async void OnAddGerritChangeIdTracker(object sender, RoutedEventArgs e)
+        private void OnAddGerritChangeIdTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
             {
-                await vm.AddIssueTrackerAsync(
+                vm.AddIssueTracker(
                     "Gerrit Change-Id",
                     @"(I[A-Za-z0-9]{40})",
                     "https://gerrit.yourcompany.com/q/$1");
@@ -196,18 +211,10 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnRemoveIssueTracker(object sender, RoutedEventArgs e)
+        private void OnRemoveIssueTracker(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.RepositoryConfigure vm)
-                await vm.RemoveIssueTrackerAsync();
-
-            e.Handled = true;
-        }
-
-        private async void OnIssueTrackerIsSharedChanged(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.RepositoryConfigure vm)
-                await vm.ChangeIssueTrackerShareModeAsync();
+                vm.RemoveIssueTracker();
 
             e.Handled = true;
         }

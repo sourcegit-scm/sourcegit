@@ -23,20 +23,34 @@
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
-                     IsChecked="{Binding !IsSearching, Mode=OneWay}">
+                     IsChecked="{Binding !IsSearchingCommits, Mode=OneWay}">
+          <ToolTip.Tip>
+            <TextBlock>
+              <Run Text="{DynamicResource Text.Repository.Dashboard}" Foreground="{DynamicResource Brush.FG1}"/>
+              <Run Text=" "/>
+              <Run Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+            </TextBlock>
+          </ToolTip.Tip>
           <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
         </RadioButton>
 
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
-                     IsChecked="{Binding IsSearching, Mode=TwoWay}">
+                     IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
+          <ToolTip.Tip>
+            <TextBlock>
+              <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
+              <Run Text=" "/>
+              <Run Text="{OnPlatform Ctrl+F, macOS=⌘+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+            </TextBlock>
+          </ToolTip.Tip>
           <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
         </RadioButton>
       </StackPanel>
 
       <!-- Dashboard -->
-      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
+      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearchingCommits}">
         <!-- Page Switcher for Right Panel -->
         <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
           <Border CornerRadius="6" ClipToBounds="True">
@@ -106,7 +120,8 @@
                   <Button Grid.Column="4"
                           Classes="icon_button"
                           Width="26" Height="26"
-                          Click="OnOpenAdvancedHistoriesOption">
+                          Click="OnOpenAdvancedHistoriesOption"
+                          ToolTip.Tip="{DynamicResource Text.Repository.MoreOptions}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
                   </Button>
                 </Grid>
@@ -116,14 +131,18 @@
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
-                  <v:CounterPresenter Grid.Column="2"
-                                      Margin="6,0"
-                                      VerticalAlignment="Center"
-                                      Count="{Binding LocalChangesCount}"
-                                      FontFamily="{DynamicResource Fonts.Monospace}"
-                                      FontSize="10"
-                                      Foreground="{DynamicResource Brush.BadgeFG}"
-                                      Background="{DynamicResource Brush.Badge}"/>
+                  <Border Grid.Column="2"
+                          Height="18"
+                          Margin="6,0" Padding="9,0"
+                          CornerRadius="9"
+                          VerticalAlignment="Center"
+                          Background="{DynamicResource Brush.Badge}"
+                          IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}"
+                               Foreground="{DynamicResource Brush.BadgeFG}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
+                               FontSize="10"/>
+                  </Border>
                   <Path Grid.Column="3"
                         Width="12" Height="12"
                         Margin="0,0,6,0"
@@ -144,14 +163,18 @@
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
-                  <v:CounterPresenter Grid.Column="2"
-                                      Margin="6,0"
-                                      VerticalAlignment="Center"
-                                      Count="{Binding StashesCount}"
-                                      FontFamily="{DynamicResource Fonts.Monospace}"
-                                      FontSize="10"
-                                      Foreground="{DynamicResource Brush.BadgeFG}"
-                                      Background="{DynamicResource Brush.Badge}"/>
+                  <Border Grid.Column="2"
+                          Height="18"
+                          Margin="6,0" Padding="9,0"
+                          CornerRadius="9"
+                          VerticalAlignment="Center"
+                          Background="{DynamicResource Brush.Badge}"
+                          IsVisible="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    <TextBlock Text="{Binding StashesCount, Mode=OneWay}"
+                               Foreground="{DynamicResource Brush.BadgeFG}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
+                               FontSize="10"/>
+                  </Border>
                   <Button Grid.Column="3"
                           Classes="icon_button"
                           Width="26" Height="26"
@@ -203,10 +226,10 @@
           <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Local}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
-                <Run Text="{DynamicResource Text.Repository.LocalBranches}"/>
-                <Run Text="{Binding LocalBranchesCount, StringFormat='({0})', Mode=OneWay}"/>
-              </TextBlock>
+              <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
+                <TextBlock Classes="group_header_label" Text="{Binding LocalBranchesCount, StringFormat='({0})'}" Margin="4,0,0,0"/>
+              </StackPanel>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
@@ -230,16 +253,16 @@
                         Nodes="{Binding LocalBranchTrees}"
                         IsVisible="{Binding IsLocalBranchGroupExpanded}"
                         SelectionChanged="OnLocalBranchTreeSelectionChanged"
-                        RowsChanged="OnBranchTreeRowsChanged"/>
+                        RowsChanged="OnLeftSidebarRowsChanged"/>
 
           <!-- Remotes -->
           <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
-                <Run Text="{DynamicResource Text.Repository.Remotes}"/>
-                <Run Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
-              </TextBlock>
+              <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+              </StackPanel>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
@@ -263,16 +286,16 @@
                         Nodes="{Binding RemoteBranchTrees}"
                         IsVisible="{Binding IsRemoteGroupExpanded}"
                         SelectionChanged="OnRemoteBranchTreeSelectionChanged"
-                        RowsChanged="OnBranchTreeRowsChanged"/>
+                        RowsChanged="OnLeftSidebarRowsChanged"/>
 
           <!-- Tags -->
           <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
               <Path Grid.Column="0" Width="11" Height="11" Margin="2,1,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
-                <Run Text="{DynamicResource Text.Repository.Tags}"/>
-                <Run Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
-              </TextBlock>
+              <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Tags}"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+              </StackPanel>
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
                             Width="14"
@@ -308,16 +331,16 @@
                       Focusable="False"
                       IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                       SelectionChanged="OnTagsSelectionChanged"
-                      RowsChanged="OnTagsRowsChanged"/>
+                      RowsChanged="OnLeftSidebarRowsChanged"/>
 
           <!-- Submodules -->
           <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
               <Path Grid.Column="0" Width="10" Height="10" Margin="2,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
-                <Run Text="{DynamicResource Text.Repository.Submodules}"/>
-                <Run Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
-              </TextBlock>
+              <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Submodules}"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+              </StackPanel>
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
                             Width="14"
@@ -348,7 +371,7 @@
                             Height="0"
                             Margin="8,0,4,0"
                             Content="{Binding VisibleSubmodules}"
-                            RowsChanged="OnSubmodulesRowsChanged"
+                            RowsChanged="OnLeftSidebarRowsChanged"
                             Focusable="False"
                             IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}"/>
 
@@ -356,15 +379,15 @@
           <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
             <Grid ColumnDefinitions="16,*,Auto,Auto">
               <Path Grid.Column="0" Width="11" Height="11" Margin="1,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Grid.Column="1" Classes="group_header_label" Margin="0">
-                <Run Text="{DynamicResource Text.Repository.Worktrees}"/>
-                <Run Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
-              </TextBlock>
+              <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Worktrees}"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+              </StackPanel>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
                       Margin="8,0"
-                      Command="{Binding PruneWorktrees}"
+                      Click="OnPruneWorktrees"
                       IsVisible="{Binding Worktrees, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
                       ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Prune}">
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
@@ -399,9 +422,9 @@
               <DataTemplate DataType="m:Worktree">
                 <Grid ColumnDefinitions="Auto,*,22" Background="Transparent">
                   <Path Grid.Column="0" Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
-                    <Run Text="{Binding Name}"/>
-                    <Run Text="{Binding RelativePath}" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Grid.Column="1" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis">
+                    <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG1}"/>
+                    <Run Text="{Binding RelativePath}"/>
                   </TextBlock>
                   <Path Grid.Column="2" Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
                 </Grid>
@@ -412,7 +435,7 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearchingCommits}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
         <Grid Grid.Row="0" Height="26" Margin="0,4,0,0">
           <TextBox x:Name="TxtSearchCommitsBox"
@@ -422,7 +445,7 @@
                    Background="{DynamicResource Brush.Contents}"
                    CornerRadius="12"
                    Watermark="{DynamicResource Text.Repository.Search}"
-                   Text="{Binding SearchCommitFilter, Mode=TwoWay}"
+                   Text="{Binding SearchCommitContext.Filter, Mode=TwoWay}"
                    VerticalContentAlignment="Center"
                    KeyDown="OnSearchKeyDown">
             <TextBox.InnerLeftContent>
@@ -436,8 +459,8 @@
               <Button Classes="icon_button"
                       Width="16"
                       Margin="0,0,6,0"
-                      Command="{Binding ClearSearchCommitFilter}"
-                      IsVisible="{Binding SearchCommitFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                      Click="OnClearSearchCommitFilter"
+                      IsVisible="{Binding SearchCommitContext.Filter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                       HorizontalAlignment="Right">
                 <Path Width="14" Height="14"
                       Margin="0,1,0,0"
@@ -452,7 +475,7 @@
                  HorizontalOffset="-8" VerticalAlignment="-8">
             <Popup.IsOpen>
               <MultiBinding Converter="{x:Static BoolConverters.And}">
-                <Binding Path="MatchedFilesForSearching" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
+                <Binding Path="SearchCommitContext.Suggestions" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
                 <Binding Path="$parent[Window].IsActive"/>
               </MultiBinding>
             </Popup.IsOpen>
@@ -462,7 +485,7 @@
                 <ListBox x:Name="SearchSuggestionBox"
                          Background="Transparent"
                          SelectionMode="Single"
-                         ItemsSource="{Binding MatchedFilesForSearching}"
+                         ItemsSource="{Binding SearchCommitContext.Suggestions}"
                          MaxHeight="400"
                          Focusable="True"
                          KeyDown="OnSearchSuggestionBoxKeyDown">
@@ -484,7 +507,7 @@
 
                   <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                      <StackPanel Orientation="Vertical"/>
+                      <VirtualizingStackPanel Orientation="Vertical"/>
                     </ItemsPanelTemplate>
                   </ListBox.ItemsPanel>
 
@@ -493,9 +516,9 @@
                       <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
                         <StackPanel Orientation="Horizontal">
                           <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-                          <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                          <TextBlock Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                         </StackPanel>
-                        <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                        <TextBlock FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
                       </StackPanel>
                     </DataTemplate>
                   </ListBox.ItemTemplate>
@@ -510,7 +533,7 @@
                     Padding="4,0"
                     Background="Transparent"
                     BorderThickness="0"
-                    SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
+                    SelectedIndex="{Binding SearchCommitContext.Method, Mode=TwoWay}">
             <ComboBox.Items>
               <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
@@ -523,8 +546,8 @@
 
           <CheckBox Height="24"
                     Margin="4,0,0,0"
-                    IsChecked="{Binding OnlySearchCommitsInCurrentBranch, Mode=TwoWay}"
-                    IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    IsChecked="{Binding SearchCommitContext.OnlySearchCurrentBranch, Mode=TwoWay}"
+                    IsVisible="{Binding SearchCommitContext.Method, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
             <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}"/>
           </CheckBox>
         </StackPanel>
@@ -532,9 +555,9 @@
         <ListBox Grid.Row="2"
                  Margin="0,8,0,0"
                  Padding="4"
-                 ItemsSource="{Binding SearchedCommits}"
+                 ItemsSource="{Binding SearchCommitContext.Results}"
                  SelectionMode="Single"
-                 SelectedItem="{Binding SelectedSearchedCommit, Mode=TwoWay}"
+                 SelectedItem="{Binding SearchCommitContext.Selected, Mode=TwoWay}"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Background="{DynamicResource Brush.Contents}"
@@ -566,9 +589,11 @@
                   <ColumnDefinition Width="Auto" SharedSizeGroup="SearchCommitTimeColumn"/>
                 </Grid.ColumnDefinitions>
                 <v:Avatar Grid.Column="0" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Subject}" Margin="2,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <Grid Grid.Column="1" ColumnDefinitions="Auto,*">
+                  <Path Grid.Column="0" Width="14" Height="14" Margin="0,2,2,0" Data="{StaticResource Icons.Check}" Fill="Green" IsVisible="{Binding IsMerged, Mode=OneWay}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Subject}" Margin="2,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                </Grid>
                 <TextBlock Grid.Column="2"
-                           Classes="primary"
                            Margin="4,0"
                            Foreground="{DynamicResource Brush.FG2}"
                            Text="{Binding CommitterTimeShortStr}"
@@ -586,8 +611,8 @@
               Fill="{DynamicResource Brush.FG2}">
           <Path.IsVisible>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="SearchedCommits.Count" Converter="{x:Static c:IntConverters.IsZero}"/>
-              <Binding Path="IsSearchLoadingVisible" Converter="{x:Static BoolConverters.Not}"/>
+              <Binding Path="SearchCommitContext.Results" Converter="{x:Static c:ListConverters.IsNullOrEmpty}"/>
+              <Binding Path="SearchCommitContext.IsQuerying" Converter="{x:Static BoolConverters.Not}"/>
             </MultiBinding>
           </Path.IsVisible>
         </Path>
@@ -595,7 +620,7 @@
         <v:LoadingIcon Grid.Row="2"
                        Width="48" Height="48"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
-                       IsVisible="{Binding IsSearchLoadingVisible}"/>
+                       IsVisible="{Binding SearchCommitContext.IsQuerying}"/>
       </Grid>
     </Grid>
 
@@ -609,18 +634,18 @@
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
-      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="m:Commit">
               <StackPanel MinWidth="400" Orientation="Vertical">
                 <Grid ColumnDefinitions="Auto,*,Auto">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                  <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                 </Grid>
 
-                <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
               </StackPanel>
             </DataTemplate>
 
@@ -680,6 +705,15 @@
         </ContentControl>
 
         <Button Grid.Column="1"
+                Classes="flat"
+                FontWeight="Regular"
+                BorderThickness="0"
+                Content="{DynamicResource Text.Repository.Resolve}"
+                Padding="8,2" Margin="0,0,8,0"
+                Click="OnResolveInProgress"
+                IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsNotOne}}"/>
+
+        <Button Grid.Column="2"
                 Classes="flat"
                 FontWeight="Regular"
                 BorderThickness="0"
@@ -758,44 +792,45 @@
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-            <Binding Path="Settings.HistoriesFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            <Binding Path="HistoryFilterCollection.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
           </MultiBinding>
         </Border.IsVisible>
 
-        <Grid Height="28" ColumnDefinitions="Auto,*,Auto">
+        <Grid ColumnDefinitions="Auto,*,Auto">
           <Path Grid.Column="0"
                 Margin="8,0,0,0"
                 Width="12" Height="12"
                 Data="{StaticResource Icons.Filter}"
                 Fill="{DynamicResource Brush.FG2}"
-                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+                IsVisible="{Binding HistoryFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
           <Path Grid.Column="0"
                 Margin="8,0,0,0"
                 Width="12" Height="12"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG2}"
-                IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+                IsVisible="{Binding HistoryFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
 
-          <ItemsControl Grid.Column="1" Margin="8,0,0,0" ItemsSource="{Binding Settings.HistoriesFilters}">
+          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding HistoryFilterCollection.Filters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                <WrapPanel Orientation="Horizontal" ItemHeight="22"/>
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemTemplate>
-              <DataTemplate DataType="m:Filter">
+              <DataTemplate DataType="m:HistoryFilter">
                 <Border Height="20"
                         Margin="0,0,6,0"
                         CornerRadius="12"
                         BorderThickness="1"
-                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}">
+                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}"
+                        VerticalAlignment="Center">
                   <StackPanel Orientation="Horizontal" Margin="8,0">
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
                     <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
-                    <TextBlock Classes="primary" Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
+                    <TextBlock Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}" Margin="4,0,8,0"/>
 
-                    <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoriesFilter">
+                    <Button Classes="icon_button" VerticalAlignment="Center" Margin="0" Padding="0" Click="OnRemoveSelectedHistoryFilter">
                       <Path Width="8" Height="8" Data="{StaticResource Icons.Close}"/>
                     </Button>
                   </StackPanel>
@@ -804,7 +839,7 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
 
-          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
+          <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoryFilters}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
             <Path Width="14" Height="14" Margin="16,0,8,0" Data="{StaticResource Icons.RemoveAll}"/>
           </Button>
         </Grid>

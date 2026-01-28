@@ -1,21 +1,27 @@
+using System.Collections;
 using System.Collections.Generic;
 
+using Avalonia;
 using Avalonia.Collections;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class TagTreeNodeToolTip
+    public class TagToolTip
     {
         public string Name { get; private set; }
         public bool IsAnnotated { get; private set; }
+        public Models.User Creator { get; private set; }
+        public string CreatorDateStr { get; private set; }
         public string Message { get; private set; }
 
-        public TagTreeNodeToolTip(Models.Tag t)
+        public TagToolTip(Models.Tag t)
         {
             Name = t.Name;
             IsAnnotated = t.IsAnnotated;
+            Creator = t.Creator;
+            CreatorDateStr = t.CreatorDateStr;
             Message = t.Message;
         }
     }
@@ -25,13 +31,31 @@ namespace SourceGit.ViewModels
         public string FullPath { get; private set; }
         public int Depth { get; private set; } = 0;
         public Models.Tag Tag { get; private set; } = null;
-        public TagTreeNodeToolTip ToolTip { get; private set; } = null;
+        public TagToolTip ToolTip { get; private set; } = null;
         public List<TagTreeNode> Children { get; private set; } = [];
         public int Counter { get; set; } = 0;
 
         public bool IsFolder
         {
             get => Tag == null;
+        }
+
+        public bool IsSelected
+        {
+            get;
+            set;
+        }
+
+        public Models.FilterMode FilterMode
+        {
+            get => _filterMode;
+            set => SetProperty(ref _filterMode, value);
+        }
+
+        public CornerRadius CornerRadius
+        {
+            get => _cornerRadius;
+            set => SetProperty(ref _cornerRadius, value);
         }
 
         public bool IsExpanded
@@ -50,7 +74,7 @@ namespace SourceGit.ViewModels
             FullPath = t.Name;
             Depth = depth;
             Tag = t;
-            ToolTip = new TagTreeNodeToolTip(t);
+            ToolTip = new TagToolTip(t);
             IsExpanded = false;
         }
 
@@ -60,6 +84,19 @@ namespace SourceGit.ViewModels
             Depth = depth;
             IsExpanded = isExpanded;
             Counter = 1;
+        }
+
+        public void UpdateFilterMode(Dictionary<string, Models.FilterMode> filters)
+        {
+            if (Tag == null)
+            {
+                foreach (var child in Children)
+                    child.UpdateFilterMode(filters);
+            }
+            else
+            {
+                FilterMode = filters.GetValueOrDefault(FullPath, Models.FilterMode.None);
+            }
         }
 
         public static List<TagTreeNode> Build(List<Models.Tag> tags, HashSet<string> expanded)
@@ -127,16 +164,103 @@ namespace SourceGit.ViewModels
             collection.Add(subFolder);
         }
 
+        private Models.FilterMode _filterMode = Models.FilterMode.None;
+        private CornerRadius _cornerRadius = new CornerRadius(4);
         private bool _isExpanded = true;
+    }
+
+    public class TagListItem : ObservableObject
+    {
+        public Models.Tag Tag
+        {
+            get;
+            set;
+        }
+
+        public bool IsSelected
+        {
+            get;
+            set;
+        }
+
+        public Models.FilterMode FilterMode
+        {
+            get => _filterMode;
+            set => SetProperty(ref _filterMode, value);
+        }
+
+        public TagToolTip ToolTip
+        {
+            get;
+            set;
+        }
+
+        public CornerRadius CornerRadius
+        {
+            get => _cornerRadius;
+            set => SetProperty(ref _cornerRadius, value);
+        }
+
+        private Models.FilterMode _filterMode = Models.FilterMode.None;
+        private CornerRadius _cornerRadius = new CornerRadius(4);
     }
 
     public class TagCollectionAsList
     {
-        public List<Models.Tag> Tags
+        public List<TagListItem> TagItems
         {
             get;
             set;
         } = [];
+
+        public TagCollectionAsList(List<Models.Tag> tags)
+        {
+            foreach (var tag in tags)
+                TagItems.Add(new TagListItem() { Tag = tag, ToolTip = new TagToolTip(tag) });
+        }
+
+        public void ClearSelection()
+        {
+            foreach (var item in TagItems)
+            {
+                item.IsSelected = false;
+                item.CornerRadius = new CornerRadius(4);
+            }
+        }
+
+        public void UpdateSelection(IList selectedItems)
+        {
+            var set = new HashSet<string>();
+            foreach (var item in selectedItems)
+            {
+                if (item is TagListItem tagItem)
+                    set.Add(tagItem.Tag.Name);
+            }
+
+            TagListItem last = null;
+            foreach (var item in TagItems)
+            {
+                item.IsSelected = set.Contains(item.Tag.Name);
+                if (item.IsSelected)
+                {
+                    if (last is { IsSelected: true })
+                    {
+                        last.CornerRadius = new CornerRadius(last.CornerRadius.TopLeft, 0);
+                        item.CornerRadius = new CornerRadius(0, 4);
+                    }
+                    else
+                    {
+                        item.CornerRadius = new CornerRadius(4);
+                    }
+                }
+                else
+                {
+                    item.CornerRadius = new CornerRadius(4);
+                }
+
+                last = item;
+            }
+        }
     }
 
     public class TagCollectionAsTree
@@ -206,6 +330,46 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public void ClearSelection()
+        {
+            foreach (var node in Tree)
+                ClearSelectionRecursively(node);
+        }
+
+        public void UpdateSelection(IList selectedItems)
+        {
+            var set = new HashSet<string>();
+            foreach (var item in selectedItems)
+            {
+                if (item is TagTreeNode node)
+                    set.Add(node.FullPath);
+            }
+
+            TagTreeNode last = null;
+            foreach (var row in Rows)
+            {
+                row.IsSelected = set.Contains(row.FullPath);
+                if (row.IsSelected)
+                {
+                    if (last is { IsSelected: true })
+                    {
+                        last.CornerRadius = new CornerRadius(last.CornerRadius.TopLeft, 0);
+                        row.CornerRadius = new CornerRadius(0, 4);
+                    }
+                    else
+                    {
+                        row.CornerRadius = new CornerRadius(4);
+                    }
+                }
+                else
+                {
+                    row.CornerRadius = new CornerRadius(4);
+                }
+
+                last = row;
+            }
+        }
+
         private static void MakeTreeRows(List<TagTreeNode> rows, List<TagTreeNode> nodes)
         {
             foreach (var node in nodes)
@@ -217,6 +381,18 @@ namespace SourceGit.ViewModels
 
                 MakeTreeRows(rows, node.Children);
             }
+        }
+
+        private static void ClearSelectionRecursively(TagTreeNode node)
+        {
+            if (node.IsSelected)
+            {
+                node.IsSelected = false;
+                node.CornerRadius = new CornerRadius(4);
+            }
+
+            foreach (var child in node.Children)
+                ClearSelectionRecursively(child);
         }
     }
 }

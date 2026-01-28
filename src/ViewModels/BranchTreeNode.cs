@@ -252,8 +252,8 @@ namespace SourceGit.ViewModels
                     SortNodesByTime(node.Children);
             }
 
-            private readonly Models.BranchSortMode _localSortMode = Models.BranchSortMode.Name;
-            private readonly Models.BranchSortMode _remoteSortMode = Models.BranchSortMode.Name;
+            private readonly Models.BranchSortMode _localSortMode;
+            private readonly Models.BranchSortMode _remoteSortMode;
             private readonly HashSet<string> _expanded = new HashSet<string>();
         }
     }

@@ -23,6 +23,7 @@ namespace SourceGit.ViewModels
 
                 _instance.PrepareGit();
                 _instance.PrepareShellOrTerminal();
+                _instance.PrepareExternalDiffMergeTool();
                 _instance.PrepareWorkspaces();
 
                 return _instance;
@@ -65,7 +66,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _defaultFontFamily, value) && !_isLoading)
-                    App.SetFonts(value, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                    App.SetFonts(value, _monospaceFontFamily);
             }
         }
 
@@ -75,17 +76,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _monospaceFontFamily, value) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, value, _onlyUseMonoFontInEditor);
-            }
-        }
-
-        public bool OnlyUseMonoFontInEditor
-        {
-            get => _onlyUseMonoFontInEditor;
-            set
-            {
-                if (SetProperty(ref _onlyUseMonoFontInEditor, value) && !_isLoading)
-                    App.SetFonts(_defaultFontFamily, _monospaceFontFamily, _onlyUseMonoFontInEditor);
+                    App.SetFonts(_defaultFontFamily, value);
             }
         }
 
@@ -113,11 +104,29 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _editorTabWidth, value);
         }
 
+        public double Zoom
+        {
+            get => _zoom;
+            set => SetProperty(ref _zoom, value);
+        }
+
         public LayoutInfo Layout
         {
             get => _layout;
             set => SetProperty(ref _layout, value);
         }
+
+        public bool ShowLocalChangesByDefault
+        {
+            get;
+            set;
+        } = false;
+
+        public bool ShowChangesInCommitDetailByDefault
+        {
+            get;
+            set;
+        } = false;
 
         public int MaxHistoryCommits
         {
@@ -150,6 +159,18 @@ namespace SourceGit.ViewModels
         {
             get => _useFixedTabWidth;
             set => SetProperty(ref _useFixedTabWidth, value);
+        }
+
+        public bool UseAutoHideScrollBars
+        {
+            get => _useAutoHideScrollBars;
+            set => SetProperty(ref _useAutoHideScrollBars, value);
+        }
+
+        public bool UseGitHubStyleAvatar
+        {
+            get => _useGitHubStyleAvatar;
+            set => SetProperty(ref _useGitHubStyleAvatar, value);
         }
 
         public bool Check4UpdatesOnStartup
@@ -255,16 +276,22 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useFullTextDiff, value);
         }
 
-        public bool UseBlockNavigationInDiffView
-        {
-            get => _useBlockNavigationInDiffView;
-            set => SetProperty(ref _useBlockNavigationInDiffView, value);
-        }
-
         public int LFSImageActiveIdx
         {
             get => _lfsImageActiveIdx;
             set => SetProperty(ref _lfsImageActiveIdx, value);
+        }
+
+        public int ImageDiffActiveIdx
+        {
+            get => _imageDiffActiveIdx;
+            set => SetProperty(ref _imageDiffActiveIdx, value);
+        }
+
+        public bool EnableCompactFoldersInChangesTree
+        {
+            get => _enableCompactFoldersInChangesTree;
+            set => SetProperty(ref _enableCompactFoldersInChangesTree, value);
         }
 
         public Models.ChangeViewMode UnstagedChangeViewMode
@@ -348,12 +375,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public int ShellOrTerminal
+        public int ShellOrTerminalType
         {
-            get => _shellOrTerminal;
+            get => _shellOrTerminalType;
             set
             {
-                if (SetProperty(ref _shellOrTerminal, value))
+                if (SetProperty(ref _shellOrTerminalType, value) && !_isLoading)
                 {
                     if (value >= 0 && value < Models.ShellOrTerminal.Supported.Count)
                         Native.OS.SetShellOrTerminal(Models.ShellOrTerminal.Supported[value]);
@@ -361,6 +388,7 @@ namespace SourceGit.ViewModels
                         Native.OS.SetShellOrTerminal(null);
 
                     OnPropertyChanged(nameof(ShellOrTerminalPath));
+                    OnPropertyChanged(nameof(ShellOrTerminalArgs));
                 }
             }
         }
@@ -378,27 +406,77 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public int ExternalMergeToolType
+        public string ShellOrTerminalArgs
         {
-            get => _externalMergeToolType;
+            get => Native.OS.ShellOrTerminalArgs;
             set
             {
-                var changed = SetProperty(ref _externalMergeToolType, value);
-                if (changed && !OperatingSystem.IsWindows() && value > 0 && value < Models.ExternalMerger.Supported.Count)
+                if (value != Native.OS.ShellOrTerminalArgs)
                 {
-                    var tool = Models.ExternalMerger.Supported[value];
-                    if (File.Exists(tool.Exec))
-                        ExternalMergeToolPath = tool.Exec;
-                    else
-                        ExternalMergeToolPath = string.Empty;
+                    Native.OS.ShellOrTerminalArgs = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int ExternalMergeToolType
+        {
+            get => Native.OS.ExternalMergerType;
+            set
+            {
+                if (Native.OS.ExternalMergerType != value)
+                {
+                    Native.OS.ExternalMergerType = value;
+                    OnPropertyChanged();
+
+                    if (!_isLoading)
+                    {
+                        Native.OS.AutoSelectExternalMergeToolExecFile();
+                        OnPropertyChanged(nameof(ExternalMergeToolPath));
+                        OnPropertyChanged(nameof(ExternalMergeToolDiffArgs));
+                        OnPropertyChanged(nameof(ExternalMergeToolMergeArgs));
+                    }
                 }
             }
         }
 
         public string ExternalMergeToolPath
         {
-            get => _externalMergeToolPath;
-            set => SetProperty(ref _externalMergeToolPath, value);
+            get => Native.OS.ExternalMergerExecFile;
+            set
+            {
+                if (!Native.OS.ExternalMergerExecFile.Equals(value, StringComparison.Ordinal))
+                {
+                    Native.OS.ExternalMergerExecFile = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ExternalMergeToolDiffArgs
+        {
+            get => Native.OS.ExternalDiffArgs;
+            set
+            {
+                if (!Native.OS.ExternalDiffArgs.Equals(value, StringComparison.Ordinal))
+                {
+                    Native.OS.ExternalDiffArgs = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ExternalMergeToolMergeArgs
+        {
+            get => Native.OS.ExternalMergeArgs;
+            set
+            {
+                if (!Native.OS.ExternalMergeArgs.Equals(value, StringComparison.Ordinal))
+                {
+                    Native.OS.ExternalMergeArgs = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public uint StatisticsSampleColor
@@ -597,7 +675,7 @@ namespace SourceGit.ViewModels
 
         private void PrepareShellOrTerminal()
         {
-            if (_shellOrTerminal >= 0)
+            if (_shellOrTerminalType >= 0)
                 return;
 
             for (int i = 0; i < Models.ShellOrTerminal.Supported.Count; i++)
@@ -605,9 +683,22 @@ namespace SourceGit.ViewModels
                 var shell = Models.ShellOrTerminal.Supported[i];
                 if (Native.OS.TestShellOrTerminal(shell))
                 {
-                    ShellOrTerminal = i;
+                    ShellOrTerminalType = i;
                     break;
                 }
+            }
+        }
+
+        private void PrepareExternalDiffMergeTool()
+        {
+            var mergerType = Native.OS.ExternalMergerType;
+            if (mergerType > 0 && mergerType < Models.ExternalMerger.Supported.Count)
+            {
+                var merger = Models.ExternalMerger.Supported[mergerType];
+                if (string.IsNullOrEmpty(Native.OS.ExternalDiffArgs))
+                    Native.OS.ExternalDiffArgs = merger.DiffCmd;
+                if (string.IsNullOrEmpty(Native.OS.ExternalMergeArgs))
+                    Native.OS.ExternalMergeArgs = merger.MergeCmd;
             }
         }
 
@@ -706,15 +797,17 @@ namespace SourceGit.ViewModels
         private string _themeOverrides = string.Empty;
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
-        private bool _onlyUseMonoFontInEditor = true;
         private double _defaultFontSize = 13;
         private double _editorFontSize = 13;
         private int _editorTabWidth = 4;
-        private LayoutInfo _layout = new LayoutInfo();
+        private double _zoom = 1.0;
+        private LayoutInfo _layout = new();
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
+        private bool _useAutoHideScrollBars = true;
+        private bool _useGitHubStyleAvatar = true;
         private bool _showAuthorTimeInGraph = false;
         private bool _showChildren = false;
 
@@ -731,8 +824,9 @@ namespace SourceGit.ViewModels
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
-        private bool _useBlockNavigationInDiffView = false;
         private int _lfsImageActiveIdx = 0;
+        private int _imageDiffActiveIdx = 0;
+        private bool _enableCompactFoldersInChangesTree = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
@@ -745,11 +839,7 @@ namespace SourceGit.ViewModels
         private Models.ChangeSortMode _stashChangeSortMode = Models.ChangeSortMode.Path;
 
         private string _gitDefaultCloneDir = string.Empty;
-
-        private int _shellOrTerminal = -1;
-        private int _externalMergeToolType = 0;
-        private string _externalMergeToolPath = string.Empty;
-
+        private int _shellOrTerminalType = -1;
         private uint _statisticsSampleColor = 0xFF00FF00;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -69,9 +70,9 @@ namespace SourceGit.ViewModels
 
         public bool Tracking
         {
-            get;
-            set;
-        } = true;
+            get => _tracking;
+            set => SetProperty(ref _tracking, value);
+        }
 
         public bool IsCheckSubmodulesVisible
         {
@@ -127,8 +128,10 @@ namespace SourceGit.ViewModels
             }
 
             // Find preferred remote if selected local branch has upstream.
-            if (!string.IsNullOrEmpty(_selectedLocalBranch?.Upstream))
+            if (!string.IsNullOrEmpty(_selectedLocalBranch?.Upstream) && !_selectedLocalBranch.IsUpstreamGone)
             {
+                _tracking = false;
+
                 foreach (var branch in repo.Branches)
                 {
                     if (!branch.IsLocal && _selectedLocalBranch.Upstream == branch.FullName)
@@ -137,6 +140,10 @@ namespace SourceGit.ViewModels
                         break;
                     }
                 }
+            }
+            else
+            {
+                _tracking = true;
             }
 
             // Set default remote to the first if it has not been set.
@@ -153,6 +160,27 @@ namespace SourceGit.ViewModels
             AutoSelectBranchByRemote();
         }
 
+        public void PushToNewBranch(string name)
+        {
+            var exist = _remoteBranches.Find(x => x.Name.Equals(name, StringComparison.Ordinal));
+            if (exist != null)
+            {
+                SelectedRemoteBranch = exist;
+                return;
+            }
+
+            var fake = new Models.Branch()
+            {
+                Name = name,
+                Remote = _selectedRemote.Name,
+            };
+            var collection = new List<Models.Branch>();
+            collection.AddRange(_remoteBranches);
+            collection.Add(fake);
+            RemoteBranches = collection;
+            SelectedRemoteBranch = fake;
+        }
+
         public override bool CanStartDirectly()
         {
             return !string.IsNullOrEmpty(_selectedRemoteBranch?.Head);
@@ -160,7 +188,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var remoteBranchName = _selectedRemoteBranch.Name;
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
@@ -175,11 +203,10 @@ namespace SourceGit.ViewModels
                 remoteBranchName,
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
-                _isSetTrackOptionVisible && Tracking,
+                _isSetTrackOptionVisible && _tracking,
                 ForcePush).Use(log).RunAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 
@@ -235,5 +262,6 @@ namespace SourceGit.ViewModels
         private List<Models.Branch> _remoteBranches = [];
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
+        private bool _tracking = true;
     }
 }

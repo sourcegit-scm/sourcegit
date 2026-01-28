@@ -26,12 +26,11 @@ namespace SourceGit.Models
                 {
                     try
                     {
-                        _regex = null;
                         _regex = new Regex(_regexString, RegexOptions.Multiline);
                     }
                     catch
                     {
-                        // Ignore errors.
+                        _regex = null;
                     }
                 }
 

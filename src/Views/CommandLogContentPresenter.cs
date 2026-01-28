@@ -14,7 +14,7 @@ using AvaloniaEdit.TextMate;
 
 namespace SourceGit.Views
 {
-    public class CommandLogContentPresenter : TextEditor
+    public class CommandLogContentPresenter : TextEditor, Models.ICommandLogReceiver
     {
         public class LineStyleTransformer : DocumentColorizingTransformer
         {
@@ -50,7 +50,9 @@ namespace SourceGit.Views
                         {
                             ChangeLinePart(line.Offset + idx, line.Offset + err.Length + 1, v =>
                             {
+                                var old = v.TextRunProperties.Typeface;
                                 v.TextRunProperties.SetForegroundBrush(Brushes.Red);
+                                v.TextRunProperties.SetTypeface(new Typeface(old.FontFamily, old.Style, FontWeight.Bold));
                             });
                         }
                     }
@@ -91,6 +93,14 @@ namespace SourceGit.Views
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
+            TextArea.TextView.Options.AllowScrollBelowDocument = false;
+        }
+
+        public void OnReceiveCommandLog(string line)
+        {
+            AppendText("\n");
+            AppendText(line);
+            ScrollToEnd();
         }
 
         protected override void OnLoaded(RoutedEventArgs e)
@@ -124,10 +134,13 @@ namespace SourceGit.Views
 
             if (change.Property == LogProperty)
             {
-                if (change.NewValue is ViewModels.CommandLog log)
+                if (change.OldValue is ViewModels.CommandLog oldLog)
+                    oldLog.Unsubscribe(this);
+
+                if (change.NewValue is ViewModels.CommandLog newLog)
                 {
-                    Text = log.Content;
-                    log.Register(OnLogLineReceived);
+                    Text = newLog.Content;
+                    newLog.Subscribe(this);
                 }
                 else
                 {
@@ -139,12 +152,6 @@ namespace SourceGit.Views
                 if (!string.IsNullOrEmpty(PureText))
                     Text = PureText;
             }
-        }
-
-        private void OnLogLineReceived(string newline)
-        {
-            AppendText("\n");
-            AppendText(newline);
         }
 
         private TextMate.Installation _textMate = null;

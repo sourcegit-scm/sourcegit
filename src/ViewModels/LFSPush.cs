@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Push LFS objects to remote ...";
 
             var log = _repo.CreateLog("LFS Push");
@@ -32,7 +32,6 @@ namespace SourceGit.ViewModels
                 .PushAsync(SelectedRemote.Name);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

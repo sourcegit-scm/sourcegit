@@ -7,9 +7,6 @@ namespace SourceGit.Converters
 {
     public static class ListConverters
     {
-        public static readonly FuncValueConverter<IList, string> Count =
-            new FuncValueConverter<IList, string>(v => v == null ? "0" : $"{v.Count}");
-
         public static readonly FuncValueConverter<IList, string> ToCount =
             new FuncValueConverter<IList, string>(v => v == null ? "(0)" : $"({v.Count})");
 

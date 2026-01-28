@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -70,6 +71,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableSignOffForCommit = value;
         }
 
+        public bool NoVerifyOnCommit
+        {
+            get => _repo.Settings.NoVerifyOnCommit;
+            set => _repo.Settings.NoVerifyOnCommit = value;
+        }
+
         public bool UseAmend
         {
             get => _useAmend;
@@ -88,9 +95,7 @@ namespace SourceGit.ViewModels
                             return;
                         }
 
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head)
-                            .GetResultAsync()
-                            .Result;
+                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, currentBranch.Head).GetResult();
                     }
                     else
                     {
@@ -98,7 +103,7 @@ namespace SourceGit.ViewModels
                         ResetAuthor = false;
                     }
 
-                    Staged = GetStagedChanges();
+                    Staged = GetStagedChanges(_cached);
                     VisibleStaged = GetVisibleChanges(_staged);
                     SelectedStaged = [];
                 }
@@ -248,23 +253,23 @@ namespace SourceGit.ViewModels
             _commitMessage = string.Empty;
         }
 
-        public void SetData(List<Models.Change> changes)
+        public void SetData(List<Models.Change> changes, CancellationToken cancellationToken)
         {
             if (!IsChanged(_cached, changes))
             {
                 // Just force refresh selected changes.
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
+                    if (cancellationToken.IsCancellationRequested)
+                        return;
 
+                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
                     UpdateDetail();
                     UpdateInProgressState();
                 });
 
                 return;
             }
-
-            _cached = changes;
 
             var lastSelectedUnstaged = new HashSet<string>();
             var lastSelectedStaged = new HashSet<string>();
@@ -298,7 +303,7 @@ namespace SourceGit.ViewModels
                     selectedUnstaged.Add(c);
             }
 
-            var staged = GetStagedChanges();
+            var staged = GetStagedChanges(changes);
 
             var visibleStaged = GetVisibleChanges(staged);
             var selectedStaged = new List<Models.Change>();
@@ -310,7 +315,11 @@ namespace SourceGit.ViewModels
 
             Dispatcher.UIThread.Invoke(() =>
             {
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
                 _isLoadingData = true;
+                _cached = changes;
                 HasUnsolvedConflicts = hasConflict;
                 VisibleUnstaged = visibleUnstaged;
                 VisibleStaged = visibleStaged;
@@ -325,56 +334,31 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void OpenWithDefaultEditor(Models.Change c)
-        {
-            var absPath = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
-            if (File.Exists(absPath))
-                Native.OS.OpenWithDefaultEditor(absPath);
-        }
-
-        public void StashAll(bool autoStart)
-        {
-            if (!_repo.CanCreatePopup())
-                return;
-
-            if (autoStart)
-                _repo.ShowAndStartPopup(new StashChanges(_repo, _cached, false));
-            else
-                _repo.ShowPopup(new StashChanges(_repo, _cached, false));
-        }
-
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
         {
-            var canStaged = GetCanStagedChanges(changes);
+            var canStaged = await GetCanStageChangesAsync(changes);
             var count = canStaged.Count;
             if (count == 0)
                 return;
 
             IsStaging = true;
             _selectedUnstaged = next != null ? [next] : [];
-            _repo.SetWatcherEnabled(false);
+
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Stage");
-            if (count == _unstaged.Count)
+            var pathSpecFile = Path.GetTempFileName();
+            await using (var writer = new StreamWriter(pathSpecFile))
             {
-                await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync();
+                foreach (var c in canStaged)
+                    await writer.WriteLineAsync(c.Path);
             }
-            else
-            {
-                var pathSpecFile = Path.GetTempFileName();
-                await using (var writer = new StreamWriter(pathSpecFile))
-                {
-                    foreach (var c in canStaged)
-                        await writer.WriteLineAsync(c.Path);
-                }
 
-                await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
-                File.Delete(pathSpecFile);
-            }
+            await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
+            File.Delete(pathSpecFile);
             log.Complete();
 
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             IsStaging = false;
         }
 
@@ -386,13 +370,14 @@ namespace SourceGit.ViewModels
 
             IsUnstaging = true;
             _selectedStaged = next != null ? [next] : [];
-            _repo.SetWatcherEnabled(false);
+
+            using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Unstage");
             if (_useAmend)
             {
                 log.AppendLine("$ git update-index --index-info ");
-                await new Commands.UnstageChangesForAmend(_repo.FullPath, changes).ExecAsync();
+                await new Commands.UpdateIndexInfo(_repo.FullPath, changes).ExecAsync();
             }
             else
             {
@@ -407,19 +392,18 @@ namespace SourceGit.ViewModels
                     }
                 }
 
-                await new Commands.Restore(_repo.FullPath, pathSpecFile, true).Use(log).ExecAsync();
+                await new Commands.Reset(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
                 File.Delete(pathSpecFile);
             }
             log.Complete();
 
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             IsUnstaging = false;
         }
 
         public async Task SaveChangesToPatchAsync(List<Models.Change> changes, bool isUnstaged, string saveTo)
         {
-            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, _selectedUnstaged, isUnstaged, saveTo);
+            var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, changes, isUnstaged, saveTo);
             if (succ)
                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
         }
@@ -437,7 +421,7 @@ namespace SourceGit.ViewModels
 
         public async Task UseTheirsAsync(List<Models.Change> changes)
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var files = new List<string>();
             var needStage = new List<string>();
@@ -479,12 +463,11 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
         }
 
         public async Task UseMineAsync(List<Models.Change> changes)
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var files = new List<string>();
             var needStage = new List<string>();
@@ -526,41 +509,31 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
         }
 
         public async Task<bool> UseExternalMergeToolAsync(Models.Change change)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var file = change?.Path;
-            return await new Commands.MergeTool(_repo.FullPath, toolType, toolPath, file).OpenAsync();
+            return await new Commands.MergeTool(_repo.FullPath, change?.Path).OpenAsync();
         }
 
         public void UseExternalDiffTool(Models.Change change, bool isUnstaged)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var opt = new Models.DiffOption(change, isUnstaged);
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, new Models.DiffOption(change, isUnstaged)).Open();
         }
 
         public async Task ContinueMergeAsync()
         {
             if (_inProgressContext != null)
             {
+                using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
-                _repo.SetWatcherEnabled(false);
 
                 var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
                 if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
                     await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                var succ = await _inProgressContext.ContinueAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
-                _repo.SetWatcherEnabled(true);
+                await _inProgressContext.ContinueAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -573,14 +546,11 @@ namespace SourceGit.ViewModels
         {
             if (_inProgressContext != null)
             {
+                using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
-                _repo.SetWatcherEnabled(false);
 
-                var succ = await _inProgressContext.SkipAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
-                _repo.SetWatcherEnabled(true);
+                await _inProgressContext.SkipAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -593,14 +563,11 @@ namespace SourceGit.ViewModels
         {
             if (_inProgressContext != null)
             {
+                using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
-                _repo.SetWatcherEnabled(false);
 
-                var succ = await _inProgressContext.AbortAsync();
-                if (succ)
-                    CommitMessage = string.Empty;
-
-                _repo.SetWatcherEnabled(true);
+                await _inProgressContext.AbortAsync();
+                CommitMessage = string.Empty;
                 IsCommitting = false;
             }
             else
@@ -614,19 +581,94 @@ namespace SourceGit.ViewModels
             CommitMessage = tmpl.Apply(_repo.CurrentBranch, _staged);
         }
 
-        public void Commit()
+        public async Task ClearCommitMessageHistoryAsync()
         {
-            DoCommit(false, false);
+            var sure = await App.AskConfirmAsync(App.Text("WorkingCopy.ClearCommitHistories.Confirm"));
+            if (sure)
+                _repo.Settings.CommitMessages.Clear();
         }
 
-        public void CommitWithAutoStage()
+        public async Task CommitAsync(bool autoStage, bool autoPush)
         {
-            DoCommit(true, false);
-        }
+            if (string.IsNullOrWhiteSpace(_commitMessage))
+                return;
 
-        public void CommitWithPush()
-        {
-            DoCommit(false, true);
+            if (!_repo.CanCreatePopup())
+            {
+                App.RaiseException(_repo.FullPath, "Repository has an unfinished job! Please wait!");
+                return;
+            }
+
+            if (autoStage && HasUnsolvedConflicts)
+            {
+                App.RaiseException(_repo.FullPath, "Repository has unsolved conflict(s). Auto-stage and commit is disabled!");
+                return;
+            }
+
+            if (_repo.CurrentBranch is { IsDetachedHead: true })
+            {
+                var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
+                var sure = await App.AskConfirmAsync(msg);
+                if (!sure)
+                    return;
+            }
+
+            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count)
+            {
+                var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
+                var sure = await App.AskConfirmAsync(msg);
+                if (!sure)
+                    return;
+            }
+
+            if (!_useAmend)
+            {
+                if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
+                {
+                    var rs = await App.AskConfirmEmptyCommitAsync(_cached.Count > 0);
+                    if (rs == Models.ConfirmEmptyCommitResult.Cancel)
+                        return;
+
+                    if (rs == Models.ConfirmEmptyCommitResult.StageAllAndCommit)
+                        autoStage = true;
+                }
+            }
+
+            using var lockWatcher = _repo.LockWatcher();
+            IsCommitting = true;
+            _repo.Settings.PushCommitMessage(_commitMessage);
+
+            if (autoStage && _unstaged.Count > 0)
+                await StageChangesAsync(_unstaged, null);
+
+            var log = _repo.CreateLog("Commit");
+            var succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
+                    .Use(log)
+                    .RunAsync()
+                    .ConfigureAwait(false);
+
+            log.Complete();
+
+            if (succ)
+            {
+                CommitMessage = string.Empty;
+                UseAmend = false;
+                if (autoPush && _repo.Remotes.Count > 0)
+                {
+                    Models.Branch pushBranch = null;
+                    if (_repo.CurrentBranch == null)
+                    {
+                        var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync();
+                        pushBranch = new Models.Branch() { Name = currentBranchName };
+                    }
+
+                    if (_repo.CanCreatePopup())
+                        await _repo.ShowAndStartPopupAsync(new Push(_repo, pushBranch));
+                }
+            }
+
+            _repo.MarkBranchesDirtyManually();
+            IsCommitting = false;
         }
 
         private List<Models.Change> GetVisibleChanges(List<Models.Change> changes)
@@ -645,7 +687,7 @@ namespace SourceGit.ViewModels
             return visible;
         }
 
-        private List<Models.Change> GetCanStagedChanges(List<Models.Change> changes)
+        private async Task<List<Models.Change>> GetCanStageChangesAsync(List<Models.Change> changes)
         {
             if (!HasUnsolvedConflicts)
                 return changes;
@@ -653,28 +695,35 @@ namespace SourceGit.ViewModels
             var outs = new List<Models.Change>();
             foreach (var c in changes)
             {
-                if (!c.IsConflicted)
-                    outs.Add(c);
+                if (c.IsConflicted)
+                {
+                    var isResolved = c.ConflictReason switch
+                    {
+                        Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified =>
+                            await new Commands.IsConflictResolved(_repo.FullPath, c).GetResultAsync(),
+                        _ => false,
+                    };
+
+                    if (!isResolved)
+                        continue;
+                }
+
+                outs.Add(c);
             }
 
             return outs;
         }
 
-        private List<Models.Change> GetStagedChanges()
+        private List<Models.Change> GetStagedChanges(List<Models.Change> cached)
         {
             if (_useAmend)
             {
-                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD")
-                    .GetResultAsync()
-                    .Result;
-
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^")
-                    .GetResultAsync()
-                    .Result;
+                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResult();
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^").GetResult();
             }
 
             var rs = new List<Models.Change>();
-            foreach (var c in _cached)
+            foreach (var c in cached)
             {
                 if (c.Index != Models.ChangeState.None)
                     rs.Add(c);
@@ -694,43 +743,45 @@ namespace SourceGit.ViewModels
 
         private void UpdateInProgressState()
         {
-            if (string.IsNullOrEmpty(_commitMessage))
-            {
-                var mergeMsgFile = Path.Combine(_repo.GitDir, "MERGE_MSG");
-                if (File.Exists(mergeMsgFile))
-                    CommitMessage = File.ReadAllText(mergeMsgFile);
-            }
+            var oldType = _inProgressContext != null ? _inProgressContext.GetType() : null;
 
             if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
-            {
                 InProgressContext = new CherryPickInProgress(_repo);
-            }
             else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
-            {
-                var rebasing = new RebaseInProgress(_repo);
-                InProgressContext = rebasing;
-
-                if (string.IsNullOrEmpty(_commitMessage))
-                {
-                    var rebaseMsgFile = Path.Combine(_repo.GitDir, "rebase-merge", "message");
-                    if (File.Exists(rebaseMsgFile))
-                        CommitMessage = File.ReadAllText(rebaseMsgFile);
-                    else if (rebasing.StoppedAt != null)
-                        CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResultAsync().Result;
-                }
-            }
+                InProgressContext = new RebaseInProgress(_repo);
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
-            {
                 InProgressContext = new RevertInProgress(_repo);
-            }
             else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
-            {
                 InProgressContext = new MergeInProgress(_repo);
-            }
             else
-            {
                 InProgressContext = null;
-            }
+
+            if (_inProgressContext != null && _inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
+                return;
+
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
+                return;
+
+            if (_inProgressContext is not RebaseInProgress { } rebasing)
+                return;
+
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
+                return;
+
+            CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
+        }
+
+        private bool LoadCommitMessageFromFile(string file)
+        {
+            if (!File.Exists(file))
+                return false;
+
+            var msg = File.ReadAllText(file).Trim();
+            if (string.IsNullOrEmpty(msg))
+                return false;
+
+            CommitMessage = msg;
+            return true;
         }
 
         private void SetDetail(Models.Change change, bool isUnstaged)
@@ -746,92 +797,6 @@ namespace SourceGit.ViewModels
                 DetailContext = new DiffContext(_repo.FullPath, new Models.DiffOption(change, isUnstaged), _detailContext as DiffContext);
         }
 
-        private void DoCommit(bool autoStage, bool autoPush, CommitCheckPassed checkPassed = CommitCheckPassed.None)
-        {
-            if (string.IsNullOrWhiteSpace(_commitMessage))
-                return;
-
-            if (!_repo.CanCreatePopup())
-            {
-                App.RaiseException(_repo.FullPath, "Repository has an unfinished job! Please wait!");
-                return;
-            }
-
-            if (autoStage && HasUnsolvedConflicts)
-            {
-                App.RaiseException(_repo.FullPath, "Repository has unsolved conflict(s). Auto-stage and commit is disabled!");
-                return;
-            }
-
-            if (_repo.CurrentBranch is { IsDetachedHead: true } && checkPassed < CommitCheckPassed.DetachedHead)
-            {
-                var msg = App.Text("WorkingCopy.ConfirmCommitWithDetachedHead");
-                _ = App.AskConfirmAsync(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.DetachedHead));
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(_filter) && _staged.Count > _visibleStaged.Count && checkPassed < CommitCheckPassed.Filter)
-            {
-                var msg = App.Text("WorkingCopy.ConfirmCommitWithFilter", _staged.Count, _visibleStaged.Count, _staged.Count - _visibleStaged.Count);
-                _ = App.AskConfirmAsync(msg, () => DoCommit(autoStage, autoPush, CommitCheckPassed.Filter));
-                return;
-            }
-
-            if (checkPassed < CommitCheckPassed.FileCount && !_useAmend)
-            {
-                if ((!autoStage && _staged.Count == 0) || (autoStage && _cached.Count == 0))
-                {
-                    _ = App.ShowDialog(new ConfirmEmptyCommit(_cached.Count > 0, stageAll => DoCommit(stageAll, autoPush, CommitCheckPassed.FileCount)));
-                    return;
-                }
-            }
-
-            IsCommitting = true;
-            _repo.Settings.PushCommitMessage(_commitMessage);
-            _repo.SetWatcherEnabled(false);
-
-            var signOff = _repo.Settings.EnableSignOffForCommit;
-            var log = _repo.CreateLog("Commit");
-            Task.Run(async () =>
-            {
-                var succ = true;
-                if (autoStage && _unstaged.Count > 0)
-                    succ = await new Commands.Add(_repo.FullPath, _repo.IncludeUntracked).Use(log).ExecAsync().ConfigureAwait(false);
-
-                if (succ)
-                    succ = await new Commands.Commit(_repo.FullPath, _commitMessage, signOff, _useAmend, _resetAuthor).Use(log).RunAsync().ConfigureAwait(false);
-
-                log.Complete();
-
-                Dispatcher.UIThread.Post(async () =>
-                {
-                    if (succ)
-                    {
-                        CommitMessage = string.Empty;
-                        UseAmend = false;
-
-                        if (autoPush && _repo.Remotes.Count > 0)
-                        {
-                            if (_repo.CurrentBranch == null)
-                            {
-                                var currentBranchName = await new Commands.QueryCurrentBranch(_repo.FullPath).GetResultAsync();
-                                var tmp = new Models.Branch() { Name = currentBranchName };
-                                _repo.ShowAndStartPopup(new Push(_repo, tmp));
-                            }
-                            else
-                            {
-                                _repo.ShowAndStartPopup(new Push(_repo, null));
-                            }
-                        }
-                    }
-
-                    _repo.MarkBranchesDirtyManually();
-                    _repo.SetWatcherEnabled(true);
-                    IsCommitting = false;
-                });
-            });
-        }
-
         private bool IsChanged(List<Models.Change> old, List<Models.Change> cur)
         {
             if (old.Count != cur.Count)
@@ -841,19 +806,11 @@ namespace SourceGit.ViewModels
             {
                 var o = old[idx];
                 var c = cur[idx];
-                if (o.Path != c.Path || o.Index != c.Index || o.WorkTree != c.WorkTree)
+                if (!o.Path.Equals(c.Path, StringComparison.Ordinal) || o.Index != c.Index || o.WorkTree != c.WorkTree)
                     return true;
             }
 
             return false;
-        }
-
-        private enum CommitCheckPassed
-        {
-            None = 0,
-            DetachedHead,
-            Filter,
-            FileCount,
         }
 
         private Repository _repo = null;

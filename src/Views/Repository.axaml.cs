@@ -1,105 +1,12 @@
 using System;
-using System.Globalization;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 
 namespace SourceGit.Views
 {
-    public class CounterPresenter : Control
-    {
-        public static readonly StyledProperty<int> CountProperty =
-            AvaloniaProperty.Register<CounterPresenter, int>(nameof(Count));
-
-        public int Count
-        {
-            get => GetValue(CountProperty);
-            set => SetValue(CountProperty, value);
-        }
-
-        public static readonly StyledProperty<FontFamily> FontFamilyProperty =
-            TextBlock.FontFamilyProperty.AddOwner<CounterPresenter>();
-
-        public FontFamily FontFamily
-        {
-            get => GetValue(FontFamilyProperty);
-            set => SetValue(FontFamilyProperty, value);
-        }
-
-        public static readonly StyledProperty<double> FontSizeProperty =
-           TextBlock.FontSizeProperty.AddOwner<CounterPresenter>();
-
-        public double FontSize
-        {
-            get => GetValue(FontSizeProperty);
-            set => SetValue(FontSizeProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> ForegroundProperty =
-            AvaloniaProperty.Register<CounterPresenter, IBrush>(nameof(Foreground), Brushes.White);
-
-        public IBrush Foreground
-        {
-            get => GetValue(ForegroundProperty);
-            set => SetValue(ForegroundProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> BackgroundProperty =
-            AvaloniaProperty.Register<CounterPresenter, IBrush>(nameof(Background), Brushes.White);
-
-        public IBrush Background
-        {
-            get => GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
-        static CounterPresenter()
-        {
-            AffectsMeasure<CounterPresenter>(
-                FontSizeProperty,
-                FontFamilyProperty,
-                ForegroundProperty,
-                CountProperty);
-        }
-
-        public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-
-            if (_label != null)
-            {
-                context.DrawRectangle(Background, null, new RoundedRect(new Rect(0, 0, _label.Width + 18, 18), new CornerRadius(9)));
-                context.DrawText(_label, new Point(9, 9 - _label.Height * 0.5));
-            }
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            if (Count > 0)
-            {
-                _label = new FormattedText(
-                    Count.ToString(),
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(FontFamily),
-                    FontSize,
-                    Foreground);
-            }
-            else
-            {
-                _label = null;
-            }
-
-            InvalidateVisual();
-            return _label != null ? new Size(_label.Width + 18, 18) : new Size(0, 0);
-        }
-
-        private FormattedText _label = null;
-    }
-
     public partial class Repository : UserControl
     {
         public Repository()
@@ -126,14 +33,12 @@ namespace SourceGit.Views
 
             if (e.Key == Key.Enter)
             {
-                if (!string.IsNullOrWhiteSpace(repo.SearchCommitFilter))
-                    repo.StartSearchCommits();
-
+                repo.SearchCommitContext.StartSearch();
                 e.Handled = true;
             }
             else if (e.Key == Key.Down)
             {
-                if (repo.MatchedFilesForSearching is { Count: > 0 })
+                if (repo.SearchCommitContext.Suggestions is { Count: > 0 })
                 {
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
@@ -143,14 +48,17 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                repo.ClearMatchedFilesForSearching();
+                repo.SearchCommitContext.ClearSuggestions();
                 e.Handled = true;
             }
         }
 
-        private void OnBranchTreeRowsChanged(object _, RoutedEventArgs e)
+        private void OnClearSearchCommitFilter(object _, RoutedEventArgs e)
         {
-            UpdateLeftSidebarLayout();
+            if (DataContext is not ViewModels.Repository repo)
+                return;
+
+            repo.SearchCommitContext.ClearFilter();
             e.Handled = true;
         }
 
@@ -166,22 +74,10 @@ namespace SourceGit.Views
             TagsList.UnselectAll();
         }
 
-        private void OnTagsRowsChanged(object _, RoutedEventArgs e)
-        {
-            UpdateLeftSidebarLayout();
-            e.Handled = true;
-        }
-
         private void OnTagsSelectionChanged(object _1, RoutedEventArgs _2)
         {
             LocalBranchTree.UnselectAll();
             RemoteBranchTree.UnselectAll();
-        }
-
-        private void OnSubmodulesRowsChanged(object _, RoutedEventArgs e)
-        {
-            UpdateLeftSidebarLayout();
-            e.Handled = true;
         }
 
         private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
@@ -189,6 +85,17 @@ namespace SourceGit.Views
             if (sender is ListBox { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
             {
                 var menu = new ContextMenu();
+
+                var switchTo = new MenuItem();
+                switchTo.Header = App.Text("Worktree.Open");
+                switchTo.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                switchTo.Click += (_, ev) =>
+                {
+                    repo.OpenWorktree(worktree);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(switchTo);
+                menu.Items.Add(new MenuItem() { Header = "-" });
 
                 if (worktree.IsLocked)
                 {
@@ -229,10 +136,10 @@ namespace SourceGit.Views
                 var copy = new MenuItem();
                 copy.Header = App.Text("Worktree.CopyPath");
                 copy.Icon = App.CreateMenuIcon("Icons.Copy");
-                copy.Click += async (_, e) =>
+                copy.Click += async (_, ev) =>
                 {
                     await App.CopyTextAsync(worktree.FullPath);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copy);
@@ -254,6 +161,12 @@ namespace SourceGit.Views
         {
             if (e.Property == ItemsControl.ItemsSourceProperty || e.Property == IsVisibleProperty)
                 UpdateLeftSidebarLayout();
+        }
+
+        private void OnLeftSidebarRowsChanged(object _, RoutedEventArgs e)
+        {
+            UpdateLeftSidebarLayout();
+            e.Handled = true;
         }
 
         private void OnLeftSidebarSizeChanged(object _, SizeChangedEventArgs e)
@@ -392,14 +305,14 @@ namespace SourceGit.Views
 
             if (e.Key == Key.Escape)
             {
-                repo.ClearMatchedFilesForSearching();
+                repo.SearchCommitContext.ClearSuggestions();
                 e.Handled = true;
             }
             else if (e.Key == Key.Enter && SearchSuggestionBox.SelectedItem is string content)
             {
-                repo.SearchCommitFilter = content;
+                repo.SearchCommitContext.Filter = content;
                 TxtSearchCommitsBox.CaretIndex = content.Length;
-                repo.StartSearchCommits();
+                repo.SearchCommitContext.StartSearch();
                 e.Handled = true;
             }
         }
@@ -412,9 +325,9 @@ namespace SourceGit.Views
             var content = (sender as StackPanel)?.DataContext as string;
             if (!string.IsNullOrEmpty(content))
             {
-                repo.SearchCommitFilter = content;
+                repo.SearchCommitContext.Filter = content;
                 TxtSearchCommitsBox.CaretIndex = content.Length;
-                repo.StartSearchCommits();
+                repo.SearchCommitContext.StartSearch();
             }
             e.Handled = true;
         }
@@ -459,10 +372,10 @@ namespace SourceGit.Views
                 reflog.Tag = "--reflog";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
                     reflog.Icon = App.CreateMenuIcon("Icons.Check");
-                reflog.Click += (_, e) =>
+                reflog.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.Reflog);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var firstParentOnly = new MenuItem();
@@ -470,10 +383,10 @@ namespace SourceGit.Views
                 firstParentOnly.Tag = "--first-parent";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
                     firstParentOnly.Icon = App.CreateMenuIcon("Icons.Check");
-                firstParentOnly.Click += (_, e) =>
+                firstParentOnly.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.FirstParentOnly);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var simplifyByDecoration = new MenuItem();
@@ -481,10 +394,10 @@ namespace SourceGit.Views
                 simplifyByDecoration.Tag = "--simplify-by-decoration";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
                     simplifyByDecoration.Icon = App.CreateMenuIcon("Icons.Check");
-                simplifyByDecoration.Click += (_, e) =>
+                simplifyByDecoration.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
-                    e.Handled = true;
+                    ev.Handled = true;
                 };
 
                 var order = new MenuItem();
@@ -514,6 +427,7 @@ namespace SourceGit.Views
                 };
 
                 var menu = new ContextMenu();
+                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
                 menu.Items.Add(layout);
                 menu.Items.Add(horizontal);
                 menu.Items.Add(vertical);
@@ -635,10 +549,18 @@ namespace SourceGit.Views
 
                 var menu = new ContextMenu();
                 menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
-                menu.Items.Add(byCreatorDate);
                 menu.Items.Add(byName);
+                menu.Items.Add(byCreatorDate);
                 menu.Open(button);
             }
+
+            e.Handled = true;
+        }
+
+        private async void OnPruneWorktrees(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                await repo.PruneWorktreesAsync();
 
             e.Handled = true;
         }
@@ -651,6 +573,14 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnResolveInProgress(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                repo.SelectedViewIndex = 1;
+
+            e.Handled = true;
+        }
+
         private async void OnAbortInProgress(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
@@ -659,10 +589,10 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRemoveSelectedHistoriesFilter(object sender, RoutedEventArgs e)
+        private void OnRemoveSelectedHistoryFilter(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.Filter filter })
-                repo.RemoveHistoriesFilter(filter);
+            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.HistoryFilter filter })
+                repo.RemoveHistoryFilter(filter);
 
             e.Handled = true;
         }

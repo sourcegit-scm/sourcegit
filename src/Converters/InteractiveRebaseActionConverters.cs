@@ -21,8 +21,5 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<Models.InteractiveRebaseAction, string> ToName =
             new FuncValueConverter<Models.InteractiveRebaseAction, string>(v => v.ToString());
-
-        public static readonly FuncValueConverter<Models.InteractiveRebaseAction, bool> CanEditMessage =
-            new FuncValueConverter<Models.InteractiveRebaseAction, bool>(v => v == Models.InteractiveRebaseAction.Reword || v == Models.InteractiveRebaseAction.Squash);
     }
 }

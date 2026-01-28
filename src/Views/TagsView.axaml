@@ -9,10 +9,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.TagsView">
   <UserControl.Styles>
-    <Style Selector="ListBoxItem">
-      <Setter Property="CornerRadius" Value="4"/>
-    </Style>
-
     <Style Selector="ListBoxItem:pointerover v|FilterModeSwitchButton">
       <Setter Property="IsNoneVisible" Value="True"/>
     </Style>
@@ -22,33 +18,22 @@
     <DataTemplate DataType="vm:TagCollectionAsTree">
       <ListBox Classes="repo_left_content_list"
                ItemsSource="{Binding Rows}"
-               SelectionMode="Single"
+               SelectionMode="Multiple"
+               Padding="0,0,2,0"
                KeyDown="OnKeyDown"
-               SelectionChanged="OnSelectionChanged">
-
-        <ListBox.DataTemplates>
-          <DataTemplate DataType="vm:TagTreeNodeToolTip">
-            <StackPanel Orientation="Vertical" Spacing="6">
-              <StackPanel Orientation="Horizontal">
-                <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}"/>
-                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Name}"/>
-                <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">
-                  <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Classes="primary" Margin="4,0" Foreground="White"/>
-                </Border>
-              </StackPanel>
-
-              <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-            </StackPanel>
-          </DataTemplate>
-        </ListBox.DataTemplates>
-
+               SelectionChanged="OnSelectionChanged"
+               ContextRequested="OnTagsContextMenuRequested">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem" x:DataType="vm:TagTreeNode">
+            <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
+          </Style>
+        </ListBox.Styles>
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:TagTreeNode">
             <Border Height="24"
                     Background="Transparent"
                     PointerPressed="OnItemPointerPressed"
                     DoubleTapped="OnItemDoubleTapped"
-                    ContextRequested="OnItemContextRequested"
                     ToolTip.Tip="{Binding ToolTip}"
                     ToolTip.Placement="Right">
               <Grid ColumnDefinitions="16,Auto,*,Auto"
@@ -63,20 +48,14 @@
 
                 <v:TagTreeNodeIcon Grid.Column="1" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-                <TextBlock Grid.Column="2"
-                           Classes="primary"
-                           Margin="8,0,0,0">
+                <TextBlock Grid.Column="2" Margin="8,0,0,0">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
                   <Run Text="{Binding TagsCount}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
 
-                <ContentControl Grid.Column="3" Content="{Binding Tag}">
-                  <ContentControl.DataTemplates>
-                    <DataTemplate DataType="m:Tag">
-                      <v:FilterModeSwitchButton Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
-                    </DataTemplate>
-                  </ContentControl.DataTemplates>
-                </ContentControl>
+                <Border Grid.Column="3" IsVisible="{Binding !IsFolder}">
+                  <v:FilterModeSwitchButton Margin="0,0,8,0" Mode="{Binding FilterMode}"/>
+                </Border>
               </Grid>
             </Border>
           </DataTemplate>
@@ -87,49 +66,102 @@
     <DataTemplate DataType="vm:TagCollectionAsList">
       <ListBox Classes="repo_left_content_list"
                Margin="8,0,0,0"
-               ItemsSource="{Binding Tags}"
-               SelectionMode="Single"
+               Padding="0,0,2,0"
+               ItemsSource="{Binding TagItems}"
+               SelectionMode="Multiple"
                KeyDown="OnKeyDown"
-               SelectionChanged="OnSelectionChanged">
+               SelectionChanged="OnSelectionChanged"
+               ContextRequested="OnTagsContextMenuRequested">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem" x:DataType="vm:TagListItem">
+            <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
+          </Style>
+        </ListBox.Styles>
         <ListBox.ItemTemplate>
-          <DataTemplate DataType="m:Tag">
+          <DataTemplate DataType="vm:TagListItem">
             <Border Height="24"
                     Background="Transparent"
                     PointerPressed="OnItemPointerPressed"
-                    ContextRequested="OnItemContextRequested"
+                    DoubleTapped="OnItemDoubleTapped"
+                    ToolTip.Tip="{Binding ToolTip}"
                     ToolTip.Placement="Right">
-              <ToolTip.Tip>
-                <StackPanel Orientation="Vertical" Spacing="6">
-                  <StackPanel Orientation="Horizontal">
-                    <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}"/>
-                    <TextBlock FontWeight="Bold" Margin="4,0,0,0" Text="{Binding Name}"/>
-                    <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">
-                      <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Classes="primary" Margin="4,0" Foreground="White"/>
-                    </Border>
-                  </StackPanel>
-
-                  <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-                </StackPanel>
-              </ToolTip.Tip>
-
               <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
                 <Path Grid.Column="0"
                       Margin="8,0,0,0"
                       Width="12" Height="12"
-                      Data="{StaticResource Icons.Tag}"/>
+                      Data="{StaticResource Icons.Tag}"
+                      IsVisible="{Binding Tag.IsAnnotated}"/>
+
+                <Path Grid.Column="0"
+                      Margin="8,0,0,0"
+                      Width="12" Height="12"
+                      Data="{StaticResource Icons.Tag}"
+                      Fill="Transparent"
+                      Stroke="{DynamicResource Brush.FG1}"
+                      StrokeThickness="1"
+                      IsVisible="{Binding !Tag.IsAnnotated}"/>
 
                 <TextBlock Grid.Column="1"
-                           Classes="primary"
-                           Text="{Binding Name}"
+                           Text="{Binding Tag.Name}"
                            Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis"/>
 
-                <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,12,0" Mode="{Binding FilterMode}"/>
+                <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,8,0" Mode="{Binding FilterMode}"/>
               </Grid>
             </Border>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
+    </DataTemplate>
+
+    <DataTemplate DataType="vm:TagToolTip">
+      <StackPanel Orientation="Vertical" Spacing="6">
+        <StackPanel Orientation="Horizontal">
+          <Path Width="12" Height="12"
+                Data="{StaticResource Icons.Tag}"
+                IsVisible="{Binding IsAnnotated}"/>
+          <Path Width="12" Height="12"
+                Data="{StaticResource Icons.Tag}"
+                Fill="Transparent"
+                Stroke="{DynamicResource Brush.FG1}"
+                StrokeThickness="1"
+                IsVisible="{Binding !IsAnnotated}"/>
+          <TextBlock FontWeight="Bold" Margin="6,0,0,0" Text="{Binding Name}"/>
+          <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">
+            <TextBlock Text="{DynamicResource Text.CreateTag.Type.Annotated}" Margin="4,0" Foreground="White"/>
+          </Border>
+        </StackPanel>
+
+        <Grid RowDefinitions="20,20" ColumnDefinitions="Auto,*" Margin="0,6" IsVisible="{Binding IsAnnotated}">
+          <TextBlock Grid.Row="0" Grid.Column="0"
+                     Classes="info_label"
+                     HorizontalAlignment="Left" VerticalAlignment="Center"
+                     Text="{DynamicResource Text.Tag.Tagger}"/>
+          <ContentControl Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" Content="{Binding Creator}">
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="m:User">
+                <StackPanel Orientation="Horizontal">
+                  <v:Avatar Width="16" Height="16" User="{Binding}"/>
+                  <TextBlock Margin="8,0,0,0">
+                    <Run Text="{Binding Name, Mode=OneWay}"/>
+                    <Run Text="{Binding Email, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+                  </TextBlock>
+                </StackPanel>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+
+          <TextBlock Grid.Row="1" Grid.Column="0"
+                     Classes="info_label"
+                     HorizontalAlignment="Left" VerticalAlignment="Center"
+                     Text="{DynamicResource Text.Tag.Time}"/>
+          <TextBlock Grid.Row="1" Grid.Column="1"
+                     Margin="8,0,0,0"
+                     Text="{Binding CreatorDateStr, Mode=OneWay}"/>
+        </Grid>
+
+        <TextBlock Text="{Binding Message}" IsVisible="{Binding Message, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+      </StackPanel>
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>

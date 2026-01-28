@@ -11,6 +11,7 @@ namespace SourceGit.Models
         public string Type { get; set; }
         public string Name { get; set; }
         public string Exec { get; set; }
+        public string Args { get; set; }
 
         public Bitmap Icon
         {
@@ -32,18 +33,18 @@ namespace SourceGit.Models
                     new ShellOrTerminal("git-bash", "Git Bash", "bash.exe"),
                     new ShellOrTerminal("pwsh", "PowerShell", "pwsh.exe|powershell.exe"),
                     new ShellOrTerminal("cmd", "Command Prompt", "cmd.exe"),
-                    new ShellOrTerminal("wt", "Windows Terminal", "wt.exe")
+                    new ShellOrTerminal("wt", "Windows Terminal", "wt.exe", "-d .")
                 };
             }
             else if (OperatingSystem.IsMacOS())
             {
                 Supported = new List<ShellOrTerminal>()
                 {
-                    new ShellOrTerminal("mac-terminal", "Terminal", ""),
-                    new ShellOrTerminal("iterm2", "iTerm", ""),
-                    new ShellOrTerminal("warp", "Warp", ""),
-                    new ShellOrTerminal("ghostty", "Ghostty", ""),
-                    new ShellOrTerminal("kitty", "kitty", "")
+                    new ShellOrTerminal("mac-terminal", "Terminal", "Terminal"),
+                    new ShellOrTerminal("iterm2", "iTerm", "iTerm"),
+                    new ShellOrTerminal("warp", "Warp", "Warp"),
+                    new ShellOrTerminal("ghostty", "Ghostty", "Ghostty"),
+                    new ShellOrTerminal("kitty", "kitty", "kitty")
                 };
             }
             else
@@ -57,19 +58,20 @@ namespace SourceGit.Models
                     new ShellOrTerminal("deepin-terminal", "Deepin Terminal", "deepin-terminal"),
                     new ShellOrTerminal("mate-terminal", "MATE Terminal", "mate-terminal"),
                     new ShellOrTerminal("foot", "Foot", "foot"),
-                    new ShellOrTerminal("wezterm", "WezTerm", "wezterm"),
-                    new ShellOrTerminal("ptyxis", "Ptyxis", "ptyxis"),
+                    new ShellOrTerminal("wezterm", "WezTerm", "wezterm", "start --cwd ."),
+                    new ShellOrTerminal("ptyxis", "Ptyxis", "ptyxis", "--new-window --working-directory=."),
                     new ShellOrTerminal("kitty", "kitty", "kitty"),
                     new ShellOrTerminal("custom", "Custom", ""),
                 };
             }
         }
 
-        public ShellOrTerminal(string type, string name, string exec)
+        public ShellOrTerminal(string type, string name, string exec, string args = null)
         {
             Type = type;
             Name = name;
             Exec = exec;
+            Args = args;
         }
     }
 }

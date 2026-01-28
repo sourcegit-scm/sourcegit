@@ -8,18 +8,30 @@
              x:Class="SourceGit.Views.CheckoutCommit"
              x:DataType="vm:CheckoutCommit">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Checkout.Commit}" />
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Detached}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Checkout.Commit}"/>
+    </StackPanel>
+
+    <Grid Margin="0,16,0,0" ColumnDefinitions="Auto,*">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto" MinHeight="32"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.Commit.Target}" />
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}" />
-        <TextBlock Grid.Column="1" Classes="primary" Foreground="DarkOrange" VerticalAlignment="Center" Margin="8,0" Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" />
+        <TextBlock Grid.Column="1" Foreground="DarkOrange" VerticalAlignment="Center" Margin="8,0" Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" />
         <TextBlock Grid.Column="2" Text="{Binding Commit.Subject}" TextTrimming="CharacterEllipsis"/>
       </Grid>
 
@@ -27,23 +39,16 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Checkout.LocalChanges}"/>
-      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal">
-        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+      <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+        <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReapply}"
                      GroupName="LocalChanges"
                      Margin="0,0,8,0"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
         <RadioButton Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"
                      GroupName="LocalChanges"/>
-      </StackPanel>
+      </WrapPanel>
 
-      <CheckBox Grid.Row="2" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Checkout.RecurseSubmodules}"
-                IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
-                IsVisible="{Binding IsRecurseSubmoduleVisible}"
-                ToolTip.Tip="--recurse-submodules"/>
-
-      <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+      <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
         <Path Grid.Column="0"
               Width="14" Height="14"
               Data="{StaticResource Icons.Error}"

@@ -9,6 +9,8 @@ namespace SourceGit.Models
         Commit,
         Branch,
         Tag,
+        Remote,
+        File,
     }
 
     public enum CustomActionControlType
@@ -18,6 +20,8 @@ namespace SourceGit.Models
         CheckBox,
         ComboBox,
     }
+
+    public record CustomActionTargetFile(string File, Commit Revision);
 
     public class CustomActionControl : ObservableObject
     {

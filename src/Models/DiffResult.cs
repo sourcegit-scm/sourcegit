@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-
-using Avalonia;
 using Avalonia.Media.Imaging;
 
 namespace SourceGit.Models
@@ -16,7 +14,7 @@ namespace SourceGit.Models
         Deleted,
     }
 
-    public class TextInlineRange(int p, int n)
+    public class TextRange(int p, int n)
     {
         public int Start { get; set; } = p;
         public int End { get; set; } = p + n - 1;
@@ -28,7 +26,7 @@ namespace SourceGit.Models
         public string Content { get; set; } = "";
         public int OldLineNumber { get; set; } = 0;
         public int NewLineNumber { get; set; } = 0;
-        public List<TextInlineRange> Highlights { get; set; } = new List<TextInlineRange>();
+        public List<TextRange> Highlights { get; set; } = new List<TextRange>();
         public bool NoNewLineEndOfFile { get; set; } = false;
 
         public string OldLine => OldLineNumber == 0 ? string.Empty : OldLineNumber.ToString();
@@ -49,25 +47,14 @@ namespace SourceGit.Models
         public int StartLine { get; set; } = 0;
         public int EndLine { get; set; } = 0;
         public bool HasChanges { get; set; } = false;
-        public bool HasLeftChanges { get; set; } = false;
         public int IgnoredAdds { get; set; } = 0;
         public int IgnoredDeletes { get; set; } = 0;
-
-        public bool IsInRange(int idx)
-        {
-            return idx >= StartLine - 1 && idx < EndLine;
-        }
     }
 
     public partial class TextDiff
     {
-        public string File { get; set; } = string.Empty;
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
-        public Vector ScrollOffset { get; set; } = Vector.Zero;
         public int MaxLineNumber = 0;
-
-        public string Repo { get; set; } = null;
-        public DiffOption Option { get; set; } = null;
 
         public TextDiffSelection MakeSelection(int startLine, int endLine, bool isCombined, bool isOldSide)
         {
@@ -79,15 +66,9 @@ namespace SourceGit.Models
             {
                 var line = Lines[i];
                 if (line.Type == TextDiffLineType.Added)
-                {
-                    rs.HasLeftChanges = true;
                     rs.IgnoredAdds++;
-                }
                 else if (line.Type == TextDiffLineType.Deleted)
-                {
-                    rs.HasLeftChanges = true;
                     rs.IgnoredDeletes++;
-                }
             }
 
             for (int i = startLine - 1; i < endLine; i++)
@@ -95,46 +76,17 @@ namespace SourceGit.Models
                 var line = Lines[i];
                 if (line.Type == TextDiffLineType.Added)
                 {
-                    if (isCombined)
+                    if (isCombined || !isOldSide)
                     {
                         rs.HasChanges = true;
                         break;
-                    }
-                    if (isOldSide)
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasChanges = true;
                     }
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
-                    if (isCombined)
+                    if (isCombined || isOldSide)
                     {
                         rs.HasChanges = true;
-                        break;
-                    }
-                    if (isOldSide)
-                    {
-                        rs.HasChanges = true;
-                    }
-                    else
-                    {
-                        rs.HasLeftChanges = true;
-                    }
-                }
-            }
-
-            if (!rs.HasLeftChanges)
-            {
-                for (int i = endLine; i < Lines.Count; i++)
-                {
-                    var line = Lines[i];
-                    if (line.Type == TextDiffLineType.Added || line.Type == TextDiffLineType.Deleted)
-                    {
-                        rs.HasLeftChanges = true;
                         break;
                     }
                 }
@@ -149,6 +101,7 @@ namespace SourceGit.Models
             var fileGuid = isTracked ? fileBlobGuid : "00000000";
 
             using var writer = new StreamWriter(output);
+            writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
             if (!revert && !isTracked)
                 writer.WriteLine("new file mode 100644");
@@ -169,7 +122,11 @@ namespace SourceGit.Models
                     var line = Lines[i];
                     if (line.Type != TextDiffLineType.Added)
                         continue;
-                    writer.WriteLine($"{(selection.IsInRange(i) ? "+" : " ")}{line.Content}");
+
+                    if (i >= selection.StartLine - 1 && i < selection.EndLine)
+                        writer.WriteLine($"+{line.Content}");
+                    else
+                        writer.WriteLine($" {line.Content}");
                 }
             }
             else
@@ -193,6 +150,7 @@ namespace SourceGit.Models
             var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
 
             using var writer = new StreamWriter(output);
+            writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
             writer.WriteLine($"--- a/{orgFile}");
@@ -260,16 +218,16 @@ namespace SourceGit.Models
                     else if (line.Type == TextDiffLineType.Added)
                     {
                         if (revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Deleted)
                     {
                         if (!revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Normal)
                     {
-                        writer.WriteLine($" {line.Content}");
+                        WriteLine(writer, ' ', line);
                     }
                 }
             }
@@ -285,15 +243,15 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Normal)
                 {
-                    writer.WriteLine($" {line.Content}");
+                    WriteLine(writer, ' ', line);
                 }
                 else if (line.Type == TextDiffLineType.Added)
                 {
-                    writer.WriteLine($"+{line.Content}");
+                    WriteLine(writer, '+', line);
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
-                    writer.WriteLine($"-{line.Content}");
+                    WriteLine(writer, '-', line);
                 }
             }
 
@@ -306,6 +264,7 @@ namespace SourceGit.Models
             var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
 
             using var writer = new StreamWriter(output);
+            writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
             writer.WriteLine($"--- a/{orgFile}");
@@ -382,16 +341,16 @@ namespace SourceGit.Models
                     else if (line.Type == TextDiffLineType.Added)
                     {
                         if (revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Deleted)
                     {
                         if (!revert)
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                     }
                     else if (line.Type == TextDiffLineType.Normal)
                     {
-                        writer.WriteLine($" {line.Content}");
+                        WriteLine(writer, ' ', line);
                     }
                 }
             }
@@ -407,7 +366,7 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Normal)
                 {
-                    writer.WriteLine($" {line.Content}");
+                    WriteLine(writer, ' ', line);
                 }
                 else if (line.Type == TextDiffLineType.Added)
                 {
@@ -415,7 +374,7 @@ namespace SourceGit.Models
                     {
                         if (revert)
                         {
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                         }
                         else
                         {
@@ -424,20 +383,20 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        writer.WriteLine($"+{line.Content}");
+                        WriteLine(writer, '+', line);
                     }
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
                     if (isOldSide)
                     {
-                        writer.WriteLine($"-{line.Content}");
+                        WriteLine(writer, '-', line);
                     }
                     else
                     {
                         if (!revert)
                         {
-                            writer.WriteLine($" {line.Content}");
+                            WriteLine(writer, ' ', line);
                         }
                         else
                         {
@@ -598,6 +557,14 @@ namespace SourceGit.Models
 
             writer.WriteLine($"@@ -{oldStart},{oldCount} +{newStart},{newCount} @@");
             return true;
+        }
+
+        private static void WriteLine(StreamWriter writer, char prefix, TextDiffLine line)
+        {
+            writer.WriteLine($"{prefix}{line.Content}");
+
+            if (line.NoNewLineEndOfFile)
+                writer.WriteLine("\\ No newline at end of file");
         }
 
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]

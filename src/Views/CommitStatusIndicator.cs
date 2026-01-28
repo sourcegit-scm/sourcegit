@@ -52,14 +52,13 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (DataContext is Models.Commit commit && CurrentBranch is not null)
+            if (DataContext is Models.Commit commit && CurrentBranch is { } b)
             {
                 var sha = commit.SHA;
-                var track = CurrentBranch.TrackStatus;
 
-                if (track.Ahead.Contains(sha))
+                if (b.Ahead.Contains(sha))
                     _status = Status.Ahead;
-                else if (track.Behind.Contains(sha))
+                else if (b.Behind.Contains(sha))
                     _status = Status.Behind;
                 else
                     _status = Status.Normal;

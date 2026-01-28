@@ -11,19 +11,17 @@ namespace SourceGit.Views
 
         private void StageAllThenCommit(object _1, RoutedEventArgs _2)
         {
-            (DataContext as ViewModels.ConfirmEmptyCommit)?.StageAllThenCommit();
-            Close();
+            Close(Models.ConfirmEmptyCommitResult.StageAllAndCommit);
         }
 
         private void Continue(object _1, RoutedEventArgs _2)
         {
-            (DataContext as ViewModels.ConfirmEmptyCommit)?.Continue();
-            Close();
+            Close(Models.ConfirmEmptyCommitResult.CreateEmptyCommit);
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
-            Close();
+            Close(Models.ConfirmEmptyCommitResult.Cancel);
         }
     }
 }

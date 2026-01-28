@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Popup : ObservableValidator
+    public class Popup : ObservableValidator, Models.ICommandLogReceiver
     {
         public bool InProgress
         {
@@ -27,6 +27,18 @@ namespace SourceGit.ViewModels
             return !HasErrors;
         }
 
+        public void OnReceiveCommandLog(string data)
+        {
+            var desc = data.Trim();
+            if (!string.IsNullOrEmpty(desc))
+                ProgressDescription = desc;
+        }
+
+        public void Cleanup()
+        {
+            _log?.Unsubscribe(this);
+        }
+
         public virtual bool CanStartDirectly()
         {
             return true;
@@ -39,17 +51,12 @@ namespace SourceGit.ViewModels
 
         protected void Use(CommandLog log)
         {
-            log.Register(SetDescription);
-        }
-
-        private void SetDescription(string data)
-        {
-            var desc = data.Trim();
-            if (!string.IsNullOrEmpty(desc))
-                ProgressDescription = desc;
+            _log = log;
+            _log.Subscribe(this);
         }
 
         private bool _inProgress = false;
         private string _progressDescription = string.Empty;
+        private CommandLog _log = null;
     }
 }

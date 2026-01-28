@@ -12,7 +12,7 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Blame}"
                     MinWidth="1280" MinHeight="720">
-  <Grid RowDefinitions="Auto,24,*">
+  <Grid RowDefinitions="Auto,32,*,36">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
@@ -37,8 +37,8 @@
     </Grid>
 
     <!-- File -->
-    <Border Grid.Row="1" Padding="8,0" >
-      <Grid ColumnDefinitions="Auto,*,Auto,Auto,400">
+    <Border Grid.Row="1" Height="32" VerticalAlignment="Center">
+      <Grid Margin="8,0,0,0" ColumnDefinitions="Auto,*">
         <Path Grid.Column="0"
               Width="14" Height="14"
               Data="{StaticResource Icons.File}"/>
@@ -46,52 +46,24 @@
         <TextBlock Grid.Column="1"
                    Margin="4,0,0,0"
                    VerticalAlignment="Center"
-                   Text="{Binding FilePath, Mode=OneWay}"/>
-
-        <Button Grid.Column="2"
-                Classes="icon_button"
-                IsEnabled="{Binding CanBack}"
-                Width="28"
-                Command="{Binding Back}">
-          <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleLeft}"/>
-        </Button>
-
-        <Button Grid.Column="3"
-                Classes="icon_button"
-                IsEnabled="{Binding CanForward}"
-                Width="28"
-                Command="{Binding Forward}">
-          <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleRight}"/>
-        </Button>
-
-        <Border Grid.Column="4" Background="#40000000" CornerRadius="3" Padding="4,0" Margin="0,2">
-          <Grid ColumnDefinitions="Auto,*">
-            <TextBlock Grid.Column="0"
-                       FontWeight="Bold"
-                       Margin="0,0,6,0"
-                       Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay}"/>
-
-            <TextBlock Grid.Column="1"
-                       Text="{Binding Revision.Subject}"
-                       TextTrimming="CharacterEllipsis"/>
-          </Grid>
-        </Border>
+                   Text="{Binding File, Mode=OneWay}"/>
       </Grid>
     </Border>
 
     <!-- Body -->
-    <Grid Grid.Row="2" Background="{DynamicResource Brush.Contents}">
+    <Grid Grid.Row="2">
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto"
                          Margin="4,0,4,4"
                          BorderBrush="{DynamicResource Brush.Border2}"
                          BorderThickness="1"
-                         Background="Transparent"
+                         Background="{DynamicResource Brush.Contents}"
                          Foreground="{DynamicResource Brush.FG1}"
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                          TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
+                         File="{Binding File, Mode=OneWay}"
                          BlameData="{Binding Data}"
                          IsVisible="{Binding IsBinary, Converter={x:Static BoolConverters.Not}}">
         <ToolTip.IsOpen>
@@ -107,11 +79,58 @@
                   HorizontalAlignment="Center" VerticalAlignment="Center"
                   IsVisible="{Binding IsBinary}">
         <Path Width="64" Height="64" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Error}"/>
-        <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.BlameTypeNotSupported}"/>
+        <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.Blame.TypeNotSupported}"/>
       </StackPanel>
 
       <!-- Loading -->
       <v:LoadingIcon Width="48" Height="48" IsVisible="{Binding Data, Converter={x:Static ObjectConverters.IsNull}}"/>
+    </Grid>
+
+    <!-- Option -->
+    <Grid Grid.Row="3" Height="32" ColumnDefinitions="*,Auto,Auto,520,Auto" VerticalAlignment="Top">
+      <CheckBox Grid.Column="0"
+                Margin="8,0,0,0"
+                Content="{DynamicResource Text.Blame.IgnoreWhitespace}"
+                IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
+                ToolTip.Tip="-w"/>
+
+      <Button Grid.Column="1"
+                Classes="icon_button"
+                IsEnabled="{Binding CanBack}"
+                Width="28"
+                Command="{Binding Back}">
+        <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleLeft}"/>
+      </Button>
+
+      <Button Grid.Column="2"
+              Classes="icon_button"
+              IsEnabled="{Binding CanForward}"
+              Width="28"
+              Command="{Binding Forward}">
+        <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleRight}"/>
+      </Button>
+
+      <Border Grid.Column="3" Padding="6,0" Margin="0,2" CornerRadius="4" Background="#20000000" BoxShadow="inset 0 0 3 3 #20000000">
+        <Grid ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Column="0"
+                     FontWeight="Bold"
+                     Margin="0,0,6,0"
+                     Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay}"/>
+
+          <TextBlock Grid.Column="1"
+                     Text="{Binding Revision.Subject}"
+                     TextTrimming="CharacterEllipsis"/>
+        </Grid>
+      </Border>
+
+      <Button Grid.Column="4"
+              Classes="icon_button"
+              IsEnabled="{Binding PrevRevision, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Width="28" Margin="4,0"
+              Command="{Binding GotoPrevRevision}"
+              ToolTip.Tip="{DynamicResource Text.Blame.BlameOnPreviousRevision}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.GotoParent}"/>
+      </Button>
     </Grid>
   </Grid>
 </v:ChromelessWindow>

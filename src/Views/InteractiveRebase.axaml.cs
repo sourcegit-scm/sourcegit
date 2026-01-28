@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -14,17 +16,19 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
-        /// <summary>
-        ///     Prevent ListBox handle the arrow keys.
-        /// </summary>
-        /// <param name="e"></param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (DataContext is not ViewModels.InteractiveRebase vm)
+            if (DataContext is not ViewModels.InteractiveRebase vm || SelectedItems == null)
                 return;
 
-            var item = vm.SelectedItem;
-            if (item == null)
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in SelectedItems)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
+            }
+
+            if (items.Count == 0)
             {
                 base.OnKeyDown(e);
                 return;
@@ -32,50 +36,133 @@ namespace SourceGit.Views
 
             if (e.Key == Key.P)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Pick);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Pick);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.E)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Edit);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Edit);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.R)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Reword);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Reword);
+                if (items.Count == 1)
+                    this.FindAncestorOfType<InteractiveRebase>()?.OpenCommitMessageEditor(items[0]);
+                else
+                    MoveSelection(NavigationDirection.Next);
+
                 e.Handled = true;
             }
             else if (e.Key == Key.S)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Squash);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Squash);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.F)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Fixup);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Fixup);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
             else if (e.Key == Key.D)
             {
-                vm.ChangeAction(item, Models.InteractiveRebaseAction.Drop);
+                vm.ChangeAction(items, Models.InteractiveRebaseAction.Drop);
+                MoveSelection(NavigationDirection.Next);
                 e.Handled = true;
             }
-            else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            else if (e.KeyModifiers.HasFlag(KeyModifiers.Control))
             {
-                if (e.Key == Key.Up)
-                {
-                    vm.MoveItemUp(item);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    vm.MoveItemDown(item);
-                    e.Handled = true;
-                }
+                if (e.Key == Key.Up || e.Key == Key.Down)
+                    return;
             }
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+    }
+
+    public class InteractiveRebaseIndicator : Control
+    {
+        public static readonly StyledProperty<IBrush> FillProperty =
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, IBrush>(nameof(Fill), Brushes.Transparent);
+
+        public IBrush Fill
+        {
+            get => GetValue(FillProperty);
+            set => SetValue(FillProperty, value);
+        }
+
+        public static readonly StyledProperty<Models.InteractiveRebasePendingType> PendingTypeProperty =
+            AvaloniaProperty.Register<InteractiveRebaseIndicator, Models.InteractiveRebasePendingType>(nameof(PendingType));
+
+        public Models.InteractiveRebasePendingType PendingType
+        {
+            get => GetValue(PendingTypeProperty);
+            set => SetValue(PendingTypeProperty, value);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            if (PendingType == Models.InteractiveRebasePendingType.None)
+                return;
+
+            var startW = 4;
+            var endW = Bounds.Width - 6;
+            var height = Bounds.Height;
+            var halfH = height * 0.5;
+            var fill = Fill;
+
+            if (PendingType == Models.InteractiveRebasePendingType.Last)
+            {
+                var center = new Point(startW, halfH);
+                context.DrawEllipse(fill, null, center, 4, 4);
+                context.DrawLine(new Pen(fill, 2), center, new Point(startW, height));
+            }
+            else if (PendingType == Models.InteractiveRebasePendingType.Ignore)
+            {
+                context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
+            }
+            else if (PendingType == Models.InteractiveRebasePendingType.Pending)
+            {
+                context.DrawEllipse(fill, null, new Point(startW, halfH), 4, 4);
+                context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
+            }
+            else
+            {
+                var geoPath = new StreamGeometry();
+                using (var ctx = geoPath.Open())
+                {
+                    ctx.BeginFigure(new Point(startW, 0), false);
+                    ctx.QuadraticBezierTo(new Point(startW, halfH), new Point(endW, halfH));
+                    ctx.EndFigure(false);
+                }
+                context.DrawGeometry(null, new Pen(fill, 2), geoPath);
+
+                var geoArrow = new StreamGeometry();
+                using (var ctx = geoPath.Open())
+                {
+                    ctx.BeginFigure(new Point(endW, halfH), true);
+                    ctx.LineTo(new Point(endW - 4, halfH + 2));
+                    ctx.LineTo(new Point(endW - 4, halfH - 2));
+                    ctx.EndFigure(true);
+                }
+                context.DrawGeometry(fill, null, geoArrow);
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == FillProperty ||
+                change.Property == PendingTypeProperty)
+                InvalidateVisual();
         }
     }
 
@@ -85,14 +172,24 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+            ItemListBox?.Focus();
         }
 
-        protected override void OnLoaded(RoutedEventArgs e)
+        public void OpenCommitMessageEditor(ViewModels.InteractiveRebaseItem item)
         {
-            base.OnLoaded(e);
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
 
-            var list = this.FindDescendantOfType<InteractiveRebaseListBox>();
-            list?.Focus();
+            var dialog = new CommitMessageEditor();
+            dialog.AsBuiltin(vm.ConventionalTypesOverride, item.FullMessage, msg =>
+            {
+                if (msg.Equals(item.FullMessage, StringComparison.Ordinal))
+                    return;
+
+                item.FullMessage = msg;
+                item.IsMessageUserEdited = true;
+            });
+            dialog.ShowDialog(this);
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
@@ -100,78 +197,196 @@ namespace SourceGit.Views
             Close();
         }
 
-        private void OnRowsSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!_firstSelectionChangedHandled &&
-                sender is InteractiveRebaseListBox list &&
-                list.SelectedItem is ViewModels.InteractiveRebaseItem item)
-            {
-                _firstSelectionChangedHandled = true;
-
-                if (item.Action == Models.InteractiveRebaseAction.Reword)
-                {
-                    var dialog = new CommitMessageEditor();
-                    dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
-                    dialog.ShowDialog(this);
-                }
-            }
-        }
-
-        private void OnSetupRowHeaderDragDrop(object sender, RoutedEventArgs e)
-        {
-            if (sender is Border border)
-            {
-                DragDrop.SetAllowDrop(border, true);
-                border.AddHandler(DragDrop.DragOverEvent, OnRowHeaderDragOver);
-            }
-        }
-
-        private void OnRowHeaderPointerPressed(object sender, PointerPressedEventArgs e)
-        {
-            if (sender is Border { DataContext: ViewModels.InteractiveRebaseItem item })
-            {
-                var data = new DataObject();
-                data.Set("InteractiveRebaseItem", item);
-                DragDrop.DoDragDrop(e, data, DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link);
-            }
-        }
-
-        private void OnRowHeaderDragOver(object sender, DragEventArgs e)
-        {
-            if (DataContext is ViewModels.InteractiveRebase vm &&
-                e.Data.Contains("InteractiveRebaseItem") &&
-                e.Data.Get("InteractiveRebaseItem") is ViewModels.InteractiveRebaseItem src &&
-                sender is Border { DataContext: ViewModels.InteractiveRebaseItem dst } border &&
-                src != dst)
-            {
-                e.DragEffects = DragDropEffects.Move | DragDropEffects.Copy | DragDropEffects.Link;
-
-                var p = e.GetPosition(border);
-                if (p.Y > border.Bounds.Height * 0.33 && p.Y < border.Bounds.Height * 0.67)
-                {
-                    var srcIdx = vm.Items.IndexOf(src);
-                    var dstIdx = vm.Items.IndexOf(dst);
-                    if (srcIdx < dstIdx)
-                    {
-                        for (var i = srcIdx; i < dstIdx; i++)
-                            vm.MoveItemDown(src);
-                    }
-                    else
-                    {
-                        for (var i = srcIdx; i > dstIdx; i--)
-                            vm.MoveItemUp(src);
-                    }
-                }
-
-                e.Handled = true;
-            }
-        }
-
-        private void OnButtonActionClicked(object sender, RoutedEventArgs e)
+        private void OnRowsSelectionChanged(object _, SelectionChangedEventArgs e)
         {
             if (DataContext is not ViewModels.InteractiveRebase vm)
                 return;
 
+            var isFirstTimeHere = !_firstSelectionChangedHandled;
+            if (isFirstTimeHere)
+                _firstSelectionChangedHandled = true;
+
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
+            }
+
+            vm.SelectCommits(items);
+
+            if (items.Count == 1 && isFirstTimeHere && items[0].Action == Models.InteractiveRebaseAction.Reword)
+                OpenCommitMessageEditor(items[0]);
+        }
+
+        private async void OnRowPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem item })
+                return;
+
+            var cmdKeyModifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift) || e.KeyModifiers.HasFlag(cmdKeyModifier))
+                return;
+
+            var builder = new StringBuilder();
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
+            if (selected.Count > 0 && !selected.Contains(item))
+            {
+                ItemListBox.SelectedItem = item;
+                builder.Append(item.Commit.SHA).Append(';');
+            }
+            else
+            {
+                foreach (var one in selected)
+                {
+                    if (one is ViewModels.InteractiveRebaseItem rebaseItem)
+                        builder.Append(rebaseItem.Commit.SHA).Append(';');
+                }
+            }
+
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(_dndItemFormat, builder.ToString()));
+            await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
+        }
+
+        private void OnRowDragOver(object sender, DragEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase)
+                return;
+
+            if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 0 } hashes)
+                return;
+
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst } control)
+                return;
+
+            if (hashes.IndexOf(dst.Commit.SHA, StringComparison.Ordinal) >= 0)
+                return;
+
+            var p = e.GetPosition(control);
+            var before = p.Y < control.Bounds.Height * 0.5;
+            dst.DropDirectionIndicator = before ? new Thickness(0, 2, 0, 0) : new Thickness(0, 0, 0, 2);
+            e.DragEffects = DragDropEffects.Move;
+            e.Handled = true;
+        }
+
+        private void OnRowDragLeave(object sender, DragEventArgs e)
+        {
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst })
+                return;
+
+            dst.DropDirectionIndicator = new Thickness(0);
+            e.Handled = true;
+        }
+
+        private void OnRowDrop(object sender, DragEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (e.DataTransfer.TryGetValue(_dndItemFormat) is not { Length: > 0 } hashes)
+                return;
+
+            if (sender is not Control { DataContext: ViewModels.InteractiveRebaseItem dst } control)
+                return;
+
+            if (hashes.IndexOf(dst.Commit.SHA, StringComparison.Ordinal) >= 0)
+                return;
+
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
+            if (selected.Count == 0)
+                return;
+
+            var p = e.GetPosition(control);
+            var before = p.Y < control.Bounds.Height * 0.5;
+            var idx = vm.Items.IndexOf(dst);
+
+            var commits = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                    commits.Add(irItem);
+            }
+
+            vm.Move(commits, before ? idx : idx + 1);
+            ItemListBox.SelectedItems = commits;
+
+            dst.DropDirectionIndicator = new Thickness(0);
+            e.DragEffects = DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedUp(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (ItemListBox.SelectedItems is not { Count: > 0 } selected)
+                return;
+
+            var hashes = new HashSet<string>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                {
+                    hashes.Add(irItem.Commit.SHA);
+                    items.Add(irItem);
+                }
+            }
+
+            var idx = 0;
+            for (int i = 0; i < vm.Items.Count; i++)
+            {
+                if (hashes.Contains(vm.Items[i].Commit.SHA))
+                {
+                    idx = Math.Max(0, i - 1);
+                    break;
+                }
+            }
+
+            vm.Move(items, idx);
+            ItemListBox.SelectedItems = items;
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedDown(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            if (ItemListBox.SelectedItems is not { Count: > 0 } selected)
+                return;
+
+            var hashes = new HashSet<string>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem irItem)
+                {
+                    hashes.Add(irItem.Commit.SHA);
+                    items.Add(irItem);
+                }
+            }
+
+            var idx = 0;
+            for (int i = vm.Items.Count - 1; i >= 0; i--)
+            {
+                if (hashes.Contains(vm.Items[i].Commit.SHA))
+                {
+                    idx = Math.Min(vm.Items.Count, i + 2);
+                    break;
+                }
+            }
+
+            vm.Move(items, idx);
+            ItemListBox.SelectedItems = items;
+            e.Handled = true;
+        }
+
+        private void OnShowActionsDropdownMenu(object sender, RoutedEventArgs e)
+        {
             if (sender is not Button { DataContext: ViewModels.InteractiveRebaseItem item } button)
                 return;
 
@@ -198,11 +413,7 @@ namespace SourceGit.Views
         private void OnOpenCommitMessageEditor(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: ViewModels.InteractiveRebaseItem item })
-            {
-                var dialog = new CommitMessageEditor();
-                dialog.AsBuiltin(item.FullMessage, msg => item.FullMessage = msg);
-                dialog.ShowDialog(this);
-            }
+                OpenCommitMessageEditor(item);
 
             e.Handled = true;
         }
@@ -250,17 +461,37 @@ namespace SourceGit.Views
             menuItem.Icon = new Ellipse() { Width = 14, Height = 14, Fill = iconBrush };
             menuItem.Header = header;
             menuItem.Tag = hotkey;
-            menuItem.Click += (_, e) =>
-            {
-                if (DataContext is ViewModels.InteractiveRebase vm)
-                    vm.ChangeAction(item, action);
-
-                e.Handled = true;
-            };
+            menuItem.Click += (_, _) => ChangeItemsAction(item, action);
 
             flyout.Items.Add(menuItem);
         }
 
-        private bool _firstSelectionChangedHandled = false;
+        private void ChangeItemsAction(ViewModels.InteractiveRebaseItem target, Models.InteractiveRebaseAction action)
+        {
+            if (DataContext is not ViewModels.InteractiveRebase vm)
+                return;
+
+            var selected = ItemListBox.SelectedItems ?? new List<object>();
+            var items = new List<ViewModels.InteractiveRebaseItem>();
+            foreach (var item in selected)
+            {
+                if (item is ViewModels.InteractiveRebaseItem rebaseItem)
+                    items.Add(rebaseItem);
+            }
+
+            if (!items.Contains(target))
+            {
+                items.Clear();
+                items.Add(target);
+            }
+
+            vm.ChangeAction(items, action);
+
+            if (items.Count == 1 && action == Models.InteractiveRebaseAction.Reword)
+                OpenCommitMessageEditor(items[0]);
+        }
+
+        private bool _firstSelectionChangedHandled;
+        private readonly DataFormat<string> _dndItemFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-ir-item");
     }
 }

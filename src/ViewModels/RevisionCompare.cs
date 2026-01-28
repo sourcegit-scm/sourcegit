@@ -8,11 +8,6 @@ namespace SourceGit.ViewModels
 {
     public class RevisionCompare : ObservableObject, IDisposable
     {
-        public string RepositoryPath
-        {
-            get => _repo;
-        }
-
         public bool IsLoading
         {
             get => _isLoading;
@@ -32,6 +27,12 @@ namespace SourceGit.ViewModels
         }
 
         public bool CanSaveAsPatch { get; }
+
+        public int TotalChanges
+        {
+            get => _totalChanges;
+            private set => SetProperty(ref _totalChanges, value);
+        }
 
         public List<Models.Change> VisibleChanges
         {
@@ -81,8 +82,7 @@ namespace SourceGit.ViewModels
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
             CanSaveAsPatch = startPoint != null && endPoint != null;
-
-            Task.Run(Refresh);
+            Refresh();
         }
 
         public void Dispose()
@@ -100,9 +100,7 @@ namespace SourceGit.ViewModels
         public void OpenChangeWithExternalDiffTool(Models.Change change)
         {
             var opt = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), change);
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            new Commands.DiffTool(_repo, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo, opt).Open();
         }
 
         public void NavigateTo(string commitSHA)
@@ -127,17 +125,19 @@ namespace SourceGit.ViewModels
             VisibleChanges = [];
             SelectedChanges = [];
             IsLoading = true;
-            Task.Run(Refresh);
+            Refresh();
         }
 
-        public void SaveAsPatch(string saveTo)
+        public string GetAbsPath(string path)
         {
-            Task.Run(async () =>
-            {
-                var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
-                if (succ)
-                    App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
-            });
+            return Native.OS.GetAbsPath(_repo, path);
+        }
+
+        public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
+        {
+            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes ?? _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
+            if (succ)
+                App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
         }
 
         public void ClearSearchFilter()
@@ -169,28 +169,34 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint)).ReadAsync().Result;
-
-            var visible = _changes;
-            if (!string.IsNullOrWhiteSpace(_searchFilter))
+            Task.Run(async () =>
             {
-                visible = [];
-                foreach (var c in _changes)
+                _changes = await new Commands.CompareRevisions(_repo, GetSHA(_startPoint), GetSHA(_endPoint))
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
+                var visible = _changes;
+                if (!string.IsNullOrWhiteSpace(_searchFilter))
                 {
-                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                        visible.Add(c);
+                    visible = [];
+                    foreach (var c in _changes)
+                    {
+                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                            visible.Add(c);
+                    }
                 }
-            }
 
-            Dispatcher.UIThread.Post(() =>
-            {
-                VisibleChanges = visible;
-                IsLoading = false;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    TotalChanges = _changes.Count;
+                    VisibleChanges = visible;
+                    IsLoading = false;
 
-                if (VisibleChanges.Count > 0)
-                    SelectedChanges = [VisibleChanges[0]];
-                else
-                    SelectedChanges = [];
+                    if (VisibleChanges.Count > 0)
+                        SelectedChanges = [VisibleChanges[0]];
+                    else
+                        SelectedChanges = [];
+                });
             });
         }
 
@@ -203,6 +209,7 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private object _startPoint = null;
         private object _endPoint = null;
+        private int _totalChanges = 0;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;

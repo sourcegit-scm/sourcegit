@@ -1,5 +1,4 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
@@ -23,20 +22,9 @@ namespace SourceGit.ViewModels
             _target = target;
 
             if (_target is Models.Branch b)
-                _mode = GetFilterMode(b.FullName);
+                _mode = _repo.HistoryFilterCollection.GetFilterMode(b.FullName);
             else if (_target is Models.Tag t)
-                _mode = GetFilterMode(t.Name);
-        }
-
-        private Models.FilterMode GetFilterMode(string pattern)
-        {
-            foreach (var filter in _repo.Settings.HistoriesFilters)
-            {
-                if (filter.Pattern.Equals(pattern, StringComparison.Ordinal))
-                    return filter.Mode;
-            }
-
-            return Models.FilterMode.None;
+                _mode = _repo.HistoryFilterCollection.GetFilterMode(t.Name);
         }
 
         private void SetFilterMode(Models.FilterMode mode)

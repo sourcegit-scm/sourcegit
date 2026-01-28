@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding custom LFS tracking pattern ...";
 
             var log = _repo.CreateLog("LFS Add Custom Pattern");
@@ -36,7 +36,6 @@ namespace SourceGit.ViewModels
                 .TrackAsync(_pattern, IsFilename);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

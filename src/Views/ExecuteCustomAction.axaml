@@ -10,9 +10,15 @@
              x:DataType="vm:ExecuteCustomAction"
              Loaded="OnLoaded">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{Binding CustomAction.Name}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Action}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{Binding CustomAction.Name}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" Height="32" ColumnDefinitions="150,*">
       <TextBlock Grid.Column="0"
@@ -39,7 +45,7 @@
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>
@@ -47,6 +53,13 @@
           <DataTemplate DataType="m:Tag">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+            </StackPanel>
+          </DataTemplate>
+
+          <DataTemplate x:DataType="m:Remote">
+            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Remote}"/>
               <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
             </StackPanel>
           </DataTemplate>

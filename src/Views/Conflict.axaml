@@ -17,7 +17,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
           <Border Height="16" VerticalAlignment="Center" Background="Red" CornerRadius="8">
-            <TextBlock Classes="primary" Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="8,0" FontSize="10"/>
+            <TextBlock Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="8,0" FontSize="10"/>
           </Border>
 
           <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding Description}"/>
@@ -42,11 +42,11 @@
                       <StackPanel MinWidth="400" Orientation="Vertical">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -59,7 +59,6 @@
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Commit}"/>
                 <v:CommitRefsPresenter Margin="8,0,0,0"
                                        Foreground="{DynamicResource Brush.FG1}"
-                                       FontFamily="{DynamicResource Fonts.Primary}"
                                        FontSize="12"
                                        VerticalAlignment="Center"
                                        UseGraphColor="False"/>
@@ -76,11 +75,11 @@
                       <StackPanel MinWidth="400" Orientation="Vertical">
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -125,16 +124,82 @@
               <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat"
-                  Margin="8,0,0,0"
-                  Click="OnOpenExternalMergeTool"
-                  IsVisible="{Binding CanUseExternalMergeTool}"
-                  HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
+          <SplitButton Height="28"
+                       Margin="8,0,0,0" Padding="8,0"
+                       Click="OnMerge"
+                       IsVisible="{Binding CanMerge, Mode=OneWay}">
+            <SplitButton.Styles>
+              <Style Selector="SplitButton">
+                <Setter Property="MinHeight" Value="24"/>
+                <Setter Property="Template">
+                  <ControlTemplate>
+                    <Grid ColumnDefinitions="*,1,Auto">
+                      <Button x:Name="PART_PrimaryButton"
+                              Grid.Column="0"
+                              Classes="flat primary"
+                              MinWidth="32"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Command="{TemplateBinding Command}"
+                              CommandParameter="{TemplateBinding CommandParameter}"
+                              CornerRadius="3,0,0,3"
+                              Padding="{TemplateBinding Padding}"
+                              Focusable="False"
+                              KeyboardNavigation.IsTabStop="False" />
+
+                      <Button x:Name="PART_SecondaryButton"
+                              Grid.Column="2"
+                              Classes="flat primary"
+                              Width="32"
+                              CornerRadius="0,3,3,0"
+                              Padding="0"
+                              Focusable="False"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              KeyboardNavigation.IsTabStop="False">
+                        <Path Height="12" Width="12"
+                              Margin="0,4,0,0"
+                              Fill="{DynamicResource AccentButtonForeground}"
+                              Data="{DynamicResource Icons.Down}"/>
+                      </Button>
+                    </Grid>
+                  </ControlTemplate>
+                </Setter>
+
+                <Style Selector="^:disabled /template/ Button">
+                  <Setter Property="BorderThickness" Value="1"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+                  <Setter Property="Background" Value="Transparent"/>
+                </Style>
+
+                <Style Selector="^:disabled AccessText">
+                  <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+                </Style>
+
+                <Style Selector="^:disabled Path">
+                  <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+                </Style>
+              </Style>
+            </SplitButton.Styles>
+            
+            <SplitButton.Flyout>
+              <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                <MenuItem Header="{DynamicResource Text.WorkingCopy.Conflicts.MergeExternal}"
+                          Click="OnMergeExternal">
+                  <MenuItem.Icon>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+              </MenuFlyout>
+            </SplitButton.Flyout>
+
             <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
-              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" VerticalAlignment="Center"/>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Conflict}" Fill="White"/>
+              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.Merge}" Foreground="White"/>
             </StackPanel>
-          </Button>
+          </SplitButton>
         </StackPanel>
       </StackPanel>
 

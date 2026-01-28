@@ -7,17 +7,22 @@ namespace SourceGit.Commands
 {
     public partial class Blame : Command
     {
-        [GeneratedRegex(@"^\^?([0-9a-f]+)\s+.*\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)")]
+        [GeneratedRegex(@"^\^?([0-9a-f]+)\s+(.*)\s+\((.*)\s+(\d+)\s+[\-\+]?\d+\s+\d+\) (.*)")]
         private static partial Regex REG_FORMAT();
 
-        public Blame(string repo, string file, string revision)
+        public Blame(string repo, string file, string revision, bool ignoreWhitespace)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"blame -t {revision} -- {file.Quoted()}";
             RaiseError = false;
 
-            _result.File = file;
+            var builder = new StringBuilder();
+            builder.Append("blame -f -t ");
+            if (ignoreWhitespace)
+                builder.Append("-w ");
+            builder.Append(revision).Append(" -- ").Append(file.Quoted());
+
+            Args = builder.ToString();
         }
 
         public async Task<Models.BlameData> ReadAsync()
@@ -61,19 +66,20 @@ namespace SourceGit.Commands
             if (!match.Success)
                 return;
 
-            _content.AppendLine(match.Groups[4].Value);
+            _content.AppendLine(match.Groups[5].Value);
 
             var commit = match.Groups[1].Value;
-            var author = match.Groups[2].Value;
-            var timestamp = int.Parse(match.Groups[3].Value);
-            var when = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString(_dateFormat);
+            var file = match.Groups[2].Value.Trim();
+            var author = match.Groups[3].Value;
+            var timestamp = ulong.Parse(match.Groups[4].Value);
 
             var info = new Models.BlameLineInfo()
             {
                 IsFirstInGroup = commit != _lastSHA,
                 CommitSHA = commit,
+                File = file,
                 Author = author,
-                Time = when,
+                Timestamp = timestamp,
             };
 
             _result.LineInfos.Add(info);
@@ -88,7 +94,6 @@ namespace SourceGit.Commands
 
         private readonly Models.BlameData _result = new Models.BlameData();
         private readonly StringBuilder _content = new StringBuilder();
-        private readonly string _dateFormat = Models.DateTimeFormat.Active.DateOnly;
         private string _lastSHA = string.Empty;
         private bool _needUnifyCommitSHA = false;
         private int _minSHALen = 64;

@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="using:SourceGit.Converters"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CommitMessageToolBox"
+             x:Name="ThisControl">
+  <Border Background="{DynamicResource Brush.Contents}"
+          BorderThickness="1"
+          BorderBrush="{DynamicResource Brush.Border2}"
+          CornerRadius="4">
+    <Grid RowDefinitions="*,1,24">
+      <v:CommitMessageTextEditor Grid.Row="0"
+                                 x:Name="Editor"
+                                 CommitMessage="{Binding #ThisControl.CommitMessage, Mode=TwoWay}"
+                                 Placeholder="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
+                                 SubjectLineBrush="{DynamicResource Brush.Border2}"
+                                 Foreground="{DynamicResource Brush.FG1}"
+                                 FontFamily="{DynamicResource Fonts.Default}"
+                                 FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
+                                 Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
+
+      <Rectangle Grid.Row="1"
+                 Height="1"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Center"
+                 IsHitTestVisible="False"
+                 Fill="{DynamicResource Brush.Border2}"/>
+
+      <Border Grid.Row="2"
+              Background="{DynamicResource Brush.Window}"
+              BorderThickness="0"
+              CornerRadius="0,0,4,4">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="0,4">
+          <Button Grid.Column="0"
+                  Classes="icon_button"
+                  Width="28"
+                  Margin="0,0,4,0" Padding="0"
+                  Click="OnOpenCommitMessagePicker"
+                  IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
+                  ToolTip.Tip="{DynamicResource Text.WorkingCopy.CommitMessageHelper}">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
+          </Button>
+
+          <Button Grid.Column="1"
+                  Classes="icon_button"
+                  Width="28"
+                  Margin="0,0,4,0" Padding="0"
+                  Click="OnOpenOpenAIHelper"
+                  IsVisible="{Binding #ThisControl.ShowAdvancedOptions}"
+                  ToolTip.Tip="{DynamicResource Text.AIAssistant.Tip}">
+            <Path Width="13" Height="13" Data="{StaticResource Icons.AIAssist}"/>
+          </Button>
+
+          <Button Grid.Column="2"
+                  Classes="icon_button"
+                  Width="28"
+                  Margin="0" Padding="0"
+                  Click="OnOpenConventionalCommitHelper"
+                  ToolTip.Tip="{DynamicResource Text.ConventionalCommit}">
+            <Path Width="13" Height="13" Margin="0,1,0,0" Data="{StaticResource Icons.CommitMessageGenerator}"/>
+          </Button>
+
+          <StackPanel Grid.Column="3"
+                      Margin="0,0,6,0"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Center"
+                      Orientation="Horizontal">
+            <TextBlock Classes="info_label" FontSize="13" HorizontalAlignment="Left" Text="{DynamicResource Text.CommitMessageTextBox.SubjectCount}"/>
+            <TextBlock Margin="8,0,0,0" FontSize="11" Text="{Binding #Editor.SubjectLength}" IsVisible="{Binding #Editor.SubjectLength, Converter={x:Static c:IntConverters.IsSubjectLengthGood}}" VerticalAlignment="Center"/>
+            <TextBlock Margin="8,0,0,0" FontSize="11" Foreground="DarkGoldenrod" Text="{Binding #Editor.SubjectLength}" IsVisible="{Binding #Editor.SubjectLength, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}" VerticalAlignment="Center"/>
+            <TextBlock FontSize="11" Text="/" VerticalAlignment="Center"/>
+            <TextBlock FontSize="11" Text="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength}" VerticalAlignment="Center"/>
+            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #Editor.SubjectLength, Converter={x:Static c:IntConverters.IsSubjectLengthBad}}"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+    </Grid>
+  </Border>
+</UserControl>

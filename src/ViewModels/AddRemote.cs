@@ -89,7 +89,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding remote ...";
 
             var log = _repo.CreateLog("Add Remote");
@@ -114,7 +114,6 @@ namespace SourceGit.ViewModels
 
             _repo.MarkFetched();
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

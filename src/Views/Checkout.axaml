@@ -7,15 +7,21 @@
              x:Class="SourceGit.Views.Checkout"
              x:DataType="vm:Checkout">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Checkout}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Margin="0,4,0,0"
+            Data="{StaticResource Icons.Check}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Checkout}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" ColumnDefinitions="140,*">
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
-        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -34,18 +40,11 @@
       <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
         <RadioButton GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReply}"
+                     Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReapply}"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
         <RadioButton GroupName="LocalChanges"
                      Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"/>
       </WrapPanel>
-
-      <CheckBox Grid.Row="2" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Checkout.RecurseSubmodules}"
-                IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
-                IsVisible="{Binding IsRecurseSubmoduleVisible}"
-                ToolTip.Tip="--recurse-submodules"/>
     </Grid>
   </StackPanel>
 </UserControl>

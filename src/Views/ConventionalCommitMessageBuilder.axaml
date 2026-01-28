@@ -47,8 +47,8 @@
       <ComboBox Grid.Row="0" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding Source={x:Static m:ConventionalCommitType.Supported}}"
-                SelectedItem="{Binding Type, Mode=TwoWay}"
+                ItemsSource="{Binding Types, Mode=OneWay}"
+                SelectedItem="{Binding SelectedType, Mode=TwoWay}"
                 Grid.IsSharedSizeScope="True">
         <ComboBox.SelectionBoxItemTemplate>
           <DataTemplate DataType="m:ConventionalCommitType">

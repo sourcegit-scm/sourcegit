@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace SourceGit.Models
 {
@@ -8,14 +9,17 @@ namespace SourceGit.Models
     {
         [GeneratedRegex(@"^https?://[^/]+/.+[^/\.]$")]
         private static partial Regex REG_HTTPS();
+
         [GeneratedRegex(@"^git://[^/]+/.+[^/\.]$")]
         private static partial Regex REG_GIT();
+
         [GeneratedRegex(@"^[\w\-]+@[\w\.\-]+(\:[0-9]+)?:([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH1();
+
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH2();
 
-        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\-/~%]+/[\w\-\.%]+)\.git$")]
+        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\.\-/~%]+/[\w\-\.%]+)\.git$")]
         private static partial Regex REG_TO_VISIT_URL_CAPTURE();
 
         private static readonly Regex[] URL_FORMATS = [
@@ -62,7 +66,6 @@ namespace SourceGit.Models
 
             if (URL.StartsWith("http", StringComparison.Ordinal))
             {
-                // Try to remove the user before host and `.git` extension.
                 var uri = new Uri(URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL);
                 if (uri.Port != 80 && uri.Port != 443)
                     url = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.LocalPath}";
@@ -75,7 +78,61 @@ namespace SourceGit.Models
             var match = REG_TO_VISIT_URL_CAPTURE().Match(URL);
             if (match.Success)
             {
-                url = $"https://{match.Groups[1].Value}/{match.Groups[2].Value}";
+                var host = match.Groups[1].Value;
+                var supportHTTPS = HTTPSValidator.IsSupported(host);
+                var scheme = supportHTTPS ? "https" : "http";
+                url = $"{scheme}://{host}/{match.Groups[2].Value}";
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryGetCreatePullRequestURL(out string url, string mergeBranch)
+        {
+            url = null;
+
+            if (!TryGetVisitURL(out var baseURL))
+                return false;
+
+            var uri = new Uri(baseURL);
+            var host = uri.Host;
+            var route = uri.AbsolutePath.TrimStart('/');
+            var encodedBranch = HttpUtility.UrlEncode(mergeBranch);
+
+            if (host.Contains("github.com", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/compare/{encodedBranch}?expand=1";
+                return true;
+            }
+
+            if (host.Contains("gitlab", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/-/merge_requests/new?merge_request%5Bsource_branch%5D={encodedBranch}";
+                return true;
+            }
+
+            if (host.Equals("gitee.com", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/pulls/new?source={encodedBranch}";
+                return true;
+            }
+
+            if (host.Equals("bitbucket.org", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/pull-requests/new?source={encodedBranch}";
+                return true;
+            }
+
+            if (host.Equals("gitea.org", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/compare/{encodedBranch}";
+                return true;
+            }
+
+            if (host.Contains("azure.com", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/pullrequestcreate?sourceRef={encodedBranch}";
                 return true;
             }
 

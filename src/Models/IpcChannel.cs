@@ -80,7 +80,7 @@ namespace SourceGit.Models
                     if (!_cancellationTokenSource.IsCancellationRequested)
                     {
                         var line = await reader.ReadToEndAsync(_cancellationTokenSource.Token);
-                        MessageReceived?.Invoke(line?.Trim());
+                        MessageReceived?.Invoke(line.Trim());
                     }
 
                     _server.Disconnect();

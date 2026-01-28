@@ -143,5 +143,45 @@ namespace SourceGit.Views
 
             e.Handled = true;
         }
+
+        private void OnUserContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is not Control { Tag: Models.User user } control)
+                return;
+
+            var copyName = new MenuItem();
+            copyName.Header = App.Text("CommitDetail.Info.CopyName");
+            copyName.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyName.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(user.Name);
+                ev.Handled = true;
+            };
+
+            var copyEmail = new MenuItem();
+            copyEmail.Header = App.Text("CommitDetail.Info.CopyEmail");
+            copyEmail.Icon = App.CreateMenuIcon("Icons.Email");
+            copyEmail.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(user.Email);
+                ev.Handled = true;
+            };
+
+            var copyUser = new MenuItem();
+            copyUser.Header = App.Text("CommitDetail.Info.CopyNameAndEmail");
+            copyUser.Icon = App.CreateMenuIcon("Icons.User");
+            copyUser.Click += async (_, ev) =>
+            {
+                await App.CopyTextAsync(user.ToString());
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(copyName);
+            menu.Items.Add(copyEmail);
+            menu.Items.Add(copyUser);
+            menu.Open(control);
+            e.Handled = true;
+        }
     }
 }

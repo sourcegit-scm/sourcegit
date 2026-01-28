@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Threading;
 
@@ -11,37 +12,30 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public record InteractiveRebasePrefill(string sha, Models.InteractiveRebaseAction action)
-    {
-        public string SHA { get; } = sha;
-        public Models.InteractiveRebaseAction Action { get; } = action;
-    }
+    public record InteractiveRebasePrefill(string SHA, Models.InteractiveRebaseAction Action);
 
     public class InteractiveRebaseItem : ObservableObject
     {
+        public int OriginalOrder
+        {
+            get;
+        }
+
         public Models.Commit Commit
         {
             get;
-            private set;
-        }
-
-        public bool CanSquashOrFixup
-        {
-            get => _canSquashOrFixup;
-            set
-            {
-                if (SetProperty(ref _canSquashOrFixup, value))
-                {
-                    if (_action == Models.InteractiveRebaseAction.Squash || _action == Models.InteractiveRebaseAction.Fixup)
-                        Action = Models.InteractiveRebaseAction.Pick;
-                }
-            }
         }
 
         public Models.InteractiveRebaseAction Action
         {
             get => _action;
             set => SetProperty(ref _action, value);
+        }
+
+        public Models.InteractiveRebasePendingType PendingType
+        {
+            get => _pendingType;
+            set => SetProperty(ref _pendingType, value);
         }
 
         public string Subject
@@ -64,17 +58,58 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public InteractiveRebaseItem(Models.Commit c, string message, bool canSquashOrFixup)
+        public string OriginalFullMessage
         {
+            get;
+            set;
+        }
+
+        public bool CanSquashOrFixup
+        {
+            get => _canSquashOrFixup;
+            set => SetProperty(ref _canSquashOrFixup, value);
+        }
+
+        public bool ShowEditMessageButton
+        {
+            get => _showEditMessageButton;
+            set => SetProperty(ref _showEditMessageButton, value);
+        }
+
+        public bool IsFullMessageUsed
+        {
+            get => _isFullMessageUsed;
+            set => SetProperty(ref _isFullMessageUsed, value);
+        }
+
+        public Thickness DropDirectionIndicator
+        {
+            get => _dropDirectionIndicator;
+            set => SetProperty(ref _dropDirectionIndicator, value);
+        }
+
+        public bool IsMessageUserEdited
+        {
+            get;
+            set;
+        } = false;
+
+        public InteractiveRebaseItem(int order, Models.Commit c, string message)
+        {
+            OriginalOrder = order;
             Commit = c;
             FullMessage = message;
-            CanSquashOrFixup = canSquashOrFixup;
+            OriginalFullMessage = message;
         }
 
         private Models.InteractiveRebaseAction _action = Models.InteractiveRebaseAction.Pick;
+        private Models.InteractiveRebasePendingType _pendingType = Models.InteractiveRebasePendingType.None;
         private string _subject;
         private string _fullMessage;
         private bool _canSquashOrFixup = true;
+        private bool _showEditMessageButton = false;
+        private bool _isFullMessageUsed = true;
+        private Thickness _dropDirectionIndicator = new Thickness(0);
     }
 
     public class InteractiveRebase : ObservableObject
@@ -88,7 +123,6 @@ namespace SourceGit.ViewModels
         public Models.Commit On
         {
             get;
-            private set;
         }
 
         public bool AutoStash
@@ -102,6 +136,11 @@ namespace SourceGit.ViewModels
             get => _repo.IssueTrackers;
         }
 
+        public string ConventionalTypesOverride
+        {
+            get => _repo.Settings.ConventionalTypesOverride;
+        }
+
         public bool IsLoading
         {
             get => _isLoading;
@@ -111,32 +150,27 @@ namespace SourceGit.ViewModels
         public AvaloniaList<InteractiveRebaseItem> Items
         {
             get;
-            private set;
         } = [];
 
-        public InteractiveRebaseItem SelectedItem
+        public InteractiveRebaseItem PreSelected
         {
-            get => _selectedItem;
-            set
-            {
-                if (SetProperty(ref _selectedItem, value))
-                    DetailContext.Commit = value?.Commit;
-            }
+            get => _preSelected;
+            private set => SetProperty(ref _preSelected, value);
         }
 
-        public CommitDetail DetailContext
+        public object Detail
         {
-            get;
-            private set;
+            get => _detail;
+            private set => SetProperty(ref _detail, value);
         }
 
         public InteractiveRebase(Repository repo, Models.Commit on, InteractiveRebasePrefill prefill = null)
         {
             _repo = repo;
+            _commitDetail = new CommitDetail(repo, null);
             Current = repo.CurrentBranch;
             On = on;
             IsLoading = true;
-            DetailContext = new CommitDetail(repo, false);
 
             Task.Run(async () =>
             {
@@ -148,10 +182,10 @@ namespace SourceGit.ViewModels
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
-                    list.Add(new InteractiveRebaseItem(c.Commit, c.Message, i < commits.Count - 1));
+                    list.Add(new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message));
                 }
 
-                InteractiveRebaseItem selected = list.Count > 0 ? list[0] : null;
+                var selected = list.Count > 0 ? list[0] : null;
                 if (prefill != null)
                 {
                     var item = list.Find(x => x.Commit.SHA.Equals(prefill.SHA, StringComparison.Ordinal));
@@ -165,68 +199,116 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     Items.AddRange(list);
-                    SelectedItem = selected;
+                    UpdateItems();
+                    PreSelected = selected;
                     IsLoading = false;
                 });
             });
         }
 
-        public void MoveItemUp(InteractiveRebaseItem item)
+        public void SelectCommits(List<InteractiveRebaseItem> items)
         {
-            var idx = Items.IndexOf(item);
-            if (idx > 0)
+            if (items.Count == 0)
             {
-                var prev = Items[idx - 1];
-                Items.RemoveAt(idx - 1);
-                Items.Insert(idx, prev);
-                SelectedItem = item;
-                UpdateItems();
+                Detail = null;
+            }
+            else if (items.Count == 1)
+            {
+                _commitDetail.Commit = items[0].Commit;
+                Detail = _commitDetail;
+            }
+            else
+            {
+                Detail = new Models.Count(items.Count);
             }
         }
 
-        public void MoveItemDown(InteractiveRebaseItem item)
+        public void ChangeAction(List<InteractiveRebaseItem> selected, Models.InteractiveRebaseAction action)
         {
-            var idx = Items.IndexOf(item);
-            if (idx < Items.Count - 1)
+            if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
             {
-                var next = Items[idx + 1];
-                Items.RemoveAt(idx + 1);
-                Items.Insert(idx, next);
-                SelectedItem = item;
-                UpdateItems();
+                foreach (var item in selected)
+                {
+                    if (item.CanSquashOrFixup)
+                        item.Action = action;
+                }
             }
+            else
+            {
+                foreach (var item in selected)
+                    item.Action = action;
+            }
+
+            UpdateItems();
         }
 
-        public void ChangeAction(InteractiveRebaseItem item, Models.InteractiveRebaseAction action)
+        public void Move(List<InteractiveRebaseItem> commits, int index)
         {
-            if (!item.CanSquashOrFixup)
+            var hashes = new HashSet<string>();
+            foreach (var c in commits)
+                hashes.Add(c.Commit.SHA);
+
+            var before = new List<InteractiveRebaseItem>();
+            var ordered = new List<InteractiveRebaseItem>();
+            var after = new List<InteractiveRebaseItem>();
+
+            for (int i = 0; i < index; i++)
             {
-                if (action == Models.InteractiveRebaseAction.Squash || action == Models.InteractiveRebaseAction.Fixup)
-                    return;
+                var item = Items[i];
+                if (!hashes.Contains(item.Commit.SHA))
+                    before.Add(item);
+                else
+                    ordered.Add(item);
             }
 
-            item.Action = action;
+            for (int i = index; i < Items.Count; i++)
+            {
+                var item = Items[i];
+                if (!hashes.Contains(item.Commit.SHA))
+                    after.Add(item);
+                else
+                    ordered.Add(item);
+            }
+
+            Items.Clear();
+            Items.AddRange(before);
+            Items.AddRange(ordered);
+            Items.AddRange(after);
             UpdateItems();
         }
 
         public async Task<bool> Start()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
             var saveFile = Path.Combine(_repo.GitDir, "sourcegit.interactive_rebase");
             var collection = new Models.InteractiveRebaseJobCollection();
             collection.OrigHead = _repo.CurrentBranch.Head;
             collection.Onto = On.SHA;
+
+            InteractiveRebaseItem pending = null;
             for (int i = Items.Count - 1; i >= 0; i--)
             {
                 var item = Items[i];
-                collection.Jobs.Add(new Models.InteractiveRebaseJob()
+                var job = new Models.InteractiveRebaseJob()
                 {
                     SHA = item.Commit.SHA,
                     Action = item.Action,
-                    Message = item.FullMessage,
-                });
+                };
+
+                if (pending != null && item.PendingType != Models.InteractiveRebasePendingType.Ignore)
+                    job.Message = pending.FullMessage;
+                else
+                    job.Message = item.FullMessage;
+
+                collection.Jobs.Add(job);
+
+                if (item.PendingType == Models.InteractiveRebasePendingType.Last)
+                    pending = null;
+                else if (item.PendingType == Models.InteractiveRebasePendingType.Target)
+                    pending = item;
             }
+
             await using (var stream = File.Create(saveFile))
             {
                 await JsonSerializer.SerializeAsync(stream, collection, JsonCodeGen.Default.InteractiveRebaseJobCollection);
@@ -238,7 +320,6 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 
@@ -258,13 +339,111 @@ namespace SourceGit.ViewModels
                 else
                 {
                     item.CanSquashOrFixup = false;
+                    if (item.Action == Models.InteractiveRebaseAction.Squash || item.Action == Models.InteractiveRebaseAction.Fixup)
+                        item.Action = Models.InteractiveRebaseAction.Pick;
+
                     hasValidParent = item.Action != Models.InteractiveRebaseAction.Drop;
+                }
+            }
+
+            var hasPending = false;
+            var pendingMessages = new List<string>();
+            for (var i = 0; i < Items.Count; i++)
+            {
+                var item = Items[i];
+
+                if (item.Action == Models.InteractiveRebaseAction.Drop)
+                {
+                    item.IsFullMessageUsed = false;
+                    item.ShowEditMessageButton = false;
+                    item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Ignore : Models.InteractiveRebasePendingType.None;
+                    item.FullMessage = item.OriginalFullMessage;
+                    item.IsMessageUserEdited = false;
+                    continue;
+                }
+
+                if (item.Action == Models.InteractiveRebaseAction.Fixup ||
+                    item.Action == Models.InteractiveRebaseAction.Squash)
+                {
+                    item.IsFullMessageUsed = false;
+                    item.ShowEditMessageButton = false;
+                    item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Pending : Models.InteractiveRebasePendingType.Last;
+                    item.FullMessage = item.OriginalFullMessage;
+                    item.IsMessageUserEdited = false;
+
+                    if (item.Action == Models.InteractiveRebaseAction.Squash)
+                        pendingMessages.Add(item.OriginalFullMessage);
+
+                    hasPending = true;
+                    continue;
+                }
+
+                if (item.Action == Models.InteractiveRebaseAction.Reword ||
+                    item.Action == Models.InteractiveRebaseAction.Edit)
+                {
+                    var oldPendingType = item.PendingType;
+                    item.IsFullMessageUsed = true;
+                    item.ShowEditMessageButton = true;
+                    item.PendingType = hasPending ? Models.InteractiveRebasePendingType.Target : Models.InteractiveRebasePendingType.None;
+
+                    if (hasPending)
+                    {
+                        if (!item.IsMessageUserEdited)
+                        {
+                            var builder = new StringBuilder();
+                            builder.Append(item.OriginalFullMessage);
+                            for (var j = pendingMessages.Count - 1; j >= 0; j--)
+                                builder.Append("\n").Append(pendingMessages[j]);
+
+                            item.FullMessage = builder.ToString();
+                        }
+
+                        hasPending = false;
+                        pendingMessages.Clear();
+                    }
+                    else if (oldPendingType == Models.InteractiveRebasePendingType.Target)
+                    {
+                        if (!item.IsMessageUserEdited)
+                            item.FullMessage = item.OriginalFullMessage;
+                    }
+
+                    continue;
+                }
+
+                if (item.Action == Models.InteractiveRebaseAction.Pick)
+                {
+                    item.IsFullMessageUsed = true;
+                    item.IsMessageUserEdited = false;
+
+                    if (hasPending)
+                    {
+                        var builder = new StringBuilder();
+                        builder.Append(item.OriginalFullMessage);
+                        for (var j = pendingMessages.Count - 1; j >= 0; j--)
+                            builder.Append("\n").Append(pendingMessages[j]);
+
+                        item.Action = Models.InteractiveRebaseAction.Reword;
+                        item.PendingType = Models.InteractiveRebasePendingType.Target;
+                        item.ShowEditMessageButton = true;
+                        item.FullMessage = builder.ToString();
+
+                        hasPending = false;
+                        pendingMessages.Clear();
+                    }
+                    else
+                    {
+                        item.PendingType = Models.InteractiveRebasePendingType.None;
+                        item.ShowEditMessageButton = false;
+                        item.FullMessage = item.OriginalFullMessage;
+                    }
                 }
             }
         }
 
         private Repository _repo = null;
         private bool _isLoading = false;
-        private InteractiveRebaseItem _selectedItem = null;
+        private InteractiveRebaseItem _preSelected = null;
+        private object _detail = null;
+        private CommitDetail _commitDetail = null;
     }
 }

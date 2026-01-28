@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -76,6 +77,15 @@ namespace SourceGit.Views
             set => SetValue(LinkForegroundProperty, value);
         }
 
+        public static readonly StyledProperty<bool> ShowStrikethroughProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, bool>(nameof(ShowStrikethrough), false);
+
+        public bool ShowStrikethrough
+        {
+            get => GetValue(ShowStrikethroughProperty);
+            set => SetValue(ShowStrikethroughProperty, value);
+        }
+
         public static readonly StyledProperty<string> SubjectProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(Subject));
 
@@ -115,10 +125,11 @@ namespace SourceGit.Views
             {
                 var height = Bounds.Height;
                 var width = Bounds.Width;
+                var maxX = 0.0;
                 foreach (var inline in _inlines)
                 {
                     if (inline.X > width)
-                        return;
+                        break;
 
                     if (inline.Element is { Type: Models.InlineElementType.Code })
                     {
@@ -126,12 +137,17 @@ namespace SourceGit.Views
                         var roundedRect = new RoundedRect(rect, new CornerRadius(4));
                         context.DrawRectangle(InlineCodeBackground, null, roundedRect);
                         context.DrawText(inline.Text, new Point(inline.X + 4, (height - inline.Text.Height) * 0.5));
+                        maxX = Math.Min(width, inline.X + inline.Text.WidthIncludingTrailingWhitespace + 8);
                     }
                     else
                     {
                         context.DrawText(inline.Text, new Point(inline.X, (height - inline.Text.Height) * 0.5));
+                        maxX = Math.Min(width, inline.X + inline.Text.WidthIncludingTrailingWhitespace);
                     }
                 }
+
+                if (ShowStrikethrough)
+                    context.DrawLine(new Pen(Foreground), new Point(0, height * 0.5), new Point(maxX, height * 0.5));
             }
         }
 
@@ -164,7 +180,8 @@ namespace SourceGit.Views
                 _needRebuildInlines = true;
                 InvalidateVisual();
             }
-            else if (change.Property == InlineCodeBackgroundProperty)
+            else if (change.Property == InlineCodeBackgroundProperty ||
+                change.Property == ShowStrikethroughProperty)
             {
                 InvalidateVisual();
             }
@@ -231,12 +248,18 @@ namespace SourceGit.Views
             foreach (var rule in rules)
                 rule.Matches(_elements, subject);
 
-            var keywordMatch = REG_KEYWORD_FORMAT1().Match(subject);
-            if (!keywordMatch.Success)
-                keywordMatch = REG_KEYWORD_FORMAT2().Match(subject);
-
-            if (keywordMatch.Success && _elements.Intersect(0, keywordMatch.Length) == null)
-                _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+            var keywordMatch = REG_KEYWORD_FORMAT().Match(subject);
+            if (keywordMatch.Success)
+            {
+                if (_elements.Intersect(0, keywordMatch.Length) == null)
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+            }
+            else
+            {
+                var colonIdx = subject.IndexOf(':', StringComparison.Ordinal);
+                if (colonIdx > 0 && colonIdx < 32 && colonIdx < subject.Length - 2 && char.IsWhiteSpace(subject[colonIdx + 1]) && _elements.Intersect(0, colonIdx + 1) == null)
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, colonIdx + 1, string.Empty));
+            }
 
             var codeMatches = REG_INLINECODE_FORMAT().Matches(subject);
             foreach (Match match in codeMatches)
@@ -353,11 +376,8 @@ namespace SourceGit.Views
         [GeneratedRegex(@"`.*?`")]
         private static partial Regex REG_INLINECODE_FORMAT();
 
-        [GeneratedRegex(@"^\[[\w\s]+\]")]
-        private static partial Regex REG_KEYWORD_FORMAT1();
-
-        [GeneratedRegex(@"^\S+([\<\(][\w\s_\-\*,]+[\>\)])?\!?\s?:\s")]
-        private static partial Regex REG_KEYWORD_FORMAT2();
+        [GeneratedRegex(@"^\[[^]]{1,48}?\]")]
+        private static partial Regex REG_KEYWORD_FORMAT();
 
         private class Inline
         {

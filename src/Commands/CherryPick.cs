@@ -1,4 +1,6 @@
-﻿namespace SourceGit.Commands
+﻿using System.Text;
+
+namespace SourceGit.Commands
 {
     public class CherryPick : Command
     {
@@ -7,14 +9,16 @@
             WorkingDirectory = repo;
             Context = repo;
 
-            Args = "cherry-pick ";
+            var builder = new StringBuilder(1024);
+            builder.Append("cherry-pick ");
             if (noCommit)
-                Args += "-n ";
+                builder.Append("-n ");
             if (appendSourceToMessage)
-                Args += "-x ";
+                builder.Append("-x ");
             if (!string.IsNullOrEmpty(extraParams))
-                Args += $"{extraParams} ";
-            Args += commits;
+                builder.Append(extraParams).Append(' ');
+
+            Args = builder.Append(commits).ToString();
         }
     }
 }

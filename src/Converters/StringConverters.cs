@@ -2,6 +2,7 @@
 using System.Globalization;
 
 using Avalonia.Data.Converters;
+using Avalonia.Input;
 using Avalonia.Styling;
 
 namespace SourceGit.Converters
@@ -86,6 +87,9 @@ namespace SourceGit.Converters
             new FuncValueConverter<string, bool>(v => v != null && v.Trim().Length > 0);
 
         public static readonly FuncValueConverter<string, string> ToFriendlyUpstream =
-            new FuncValueConverter<string, string>(v => v != null ? v.Substring(13) : string.Empty);
+            new FuncValueConverter<string, string>(v => v is { Length: > 13 } ? v.Substring(13) : string.Empty);
+
+        public static readonly FuncValueConverter<KeyGesture, string> FromKeyGesture =
+            new FuncValueConverter<KeyGesture, string>(v => v?.ToString("p", null) ?? string.Empty);
     }
 }

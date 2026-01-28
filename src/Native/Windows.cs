@@ -17,6 +17,7 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
+        [StructLayout(LayoutKind.Sequential)]
         internal struct RECT
         {
             public int left;
@@ -55,7 +56,7 @@ namespace SourceGit.Native
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 22000))
+            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
             {
                 Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
                 Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
@@ -66,18 +67,13 @@ namespace SourceGit.Native
         {
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
             window.ExtendClientAreaToDecorationsHint = true;
-            window.Classes.Add("fix_maximized_padding");
+            window.BorderThickness = new Thickness(1);
 
             Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
             {
-                // Custom WM_NCHITTEST
-                if (msg == 0x0084)
+                // Custom WM_NCHITTEST only used to limit the resize border to 4 * window.RenderScaling pixels.
+                if (msg == 0x0084 && window.WindowState == WindowState.Normal)
                 {
-                    handled = true;
-
-                    if (window.WindowState == WindowState.FullScreen || window.WindowState == WindowState.Maximized)
-                        return 1; // HTCLIENT
-
                     var p = IntPtrToPixelPoint(lParam);
                     GetWindowRect(hWnd, out var rcWindow);
 
@@ -94,18 +90,23 @@ namespace SourceGit.Native
                     else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
                         y = 2;
 
+                    // If it's in the client area, do not handle it here.
                     var zone = y * 3 + x;
+                    if (zone == 4)
+                        return IntPtr.Zero;
+
+                    // If it's in the resize border area, return the proper HT code.
+                    handled = true;
                     return zone switch
                     {
                         0 => 13, // HTTOPLEFT
                         1 => 12, // HTTOP
                         2 => 14, // HTTOPRIGHT
                         3 => 10, // HTLEFT
-                        4 => 1, // HTCLIENT
                         5 => 11, // HTRIGHT
                         6 => 16, // HTBOTTOMLEFT
                         7 => 15, // HTBOTTOM
-                        _ => 17,
+                        _ => 17, // HTBOTTOMRIGHT
                     };
                 }
 
@@ -143,7 +144,7 @@ namespace SourceGit.Native
                         break;
 
                     var binDir = Path.GetDirectoryName(OS.GitExecutable)!;
-                    var bash = Path.Combine(binDir, "bash.exe");
+                    var bash = Path.GetFullPath(Path.Combine(binDir, "..", "git-bash.exe"));
                     if (!File.Exists(bash))
                         break;
 
@@ -186,10 +187,10 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
-            finder.Cursor(FindCursor);
-            finder.Fleet(() => Path.Combine(localAppDataDir, @"Programs\Fleet\Fleet.exe"));
+            finder.Cursor(() => Path.Combine(localAppDataDir, @"Programs\Cursor\Cursor.exe"));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
+            finder.Zed(FindZed);
             FindVisualStudio(finder);
             return finder.Tools;
         }
@@ -201,22 +202,22 @@ namespace SourceGit.Native
             Process.Start(info);
         }
 
-        public void OpenTerminal(string workdir)
+        public void OpenTerminal(string workdir, string args)
         {
-            if (!File.Exists(OS.ShellOrTerminal))
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
+            var terminal = OS.ShellOrTerminal;
+
+            if (!File.Exists(terminal))
             {
                 App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
                 return;
             }
 
             var startInfo = new ProcessStartInfo();
-            startInfo.WorkingDirectory = workdir;
-            startInfo.FileName = OS.ShellOrTerminal;
-
-            // Directly launching `Windows Terminal` need to specify the `-d` parameter
-            if (OS.ShellOrTerminal.EndsWith("wt.exe", StringComparison.OrdinalIgnoreCase))
-                startInfo.Arguments = $"-d {workdir.Quoted()}";
-
+            startInfo.WorkingDirectory = cwd;
+            startInfo.FileName = terminal;
+            startInfo.Arguments = args;
             Process.Start(startInfo);
         }
 
@@ -389,7 +390,7 @@ namespace SourceGit.Native
 
             try
             {
-                using var proc = Process.Start(startInfo);
+                using var proc = Process.Start(startInfo)!;
                 var output = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
 
@@ -400,7 +401,7 @@ namespace SourceGit.Native
                     {
                         var exec = instance.ProductPath;
                         var icon = instance.IsPrerelease ? "vs-preview" : "vs";
-                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateCommandlineArgsForVisualStudio);
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateVSProjectLaunchOptions);
                     }
                 }
             }
@@ -410,16 +411,20 @@ namespace SourceGit.Native
             }
         }
 
-        private string FindCursor()
+        private string FindZed()
         {
-            var cursorPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Programs",
-                "Cursor",
-                "Cursor.exe");
+            var currentUser = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.CurrentUser,
+                    Microsoft.Win32.RegistryView.Registry64);
 
-            if (File.Exists(cursorPath))
-                return cursorPath;
+            // NOTE: this is the official Zed Preview reg data.
+            var preview = currentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{F70E4811-D0E2-4D88-AC99-D63752799F95}_is1");
+            if (preview != null)
+                return preview.GetValue("DisplayIcon") as string;
+
+            var findInPath = new StringBuilder("zed.exe", 512);
+            if (PathFindOnPath(findInPath, null))
+                return findInPath.ToString();
 
             return string.Empty;
         }
@@ -439,31 +444,31 @@ namespace SourceGit.Native
             }
         }
 
-        private string GenerateCommandlineArgsForVisualStudio(string repo)
+        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
-            var sln = FindVSSolutionFile(new DirectoryInfo(repo), 4);
-            return string.IsNullOrEmpty(sln) ? repo.Quoted() : sln.Quoted();
-        }
-
-        private string FindVSSolutionFile(DirectoryInfo dir, int leftDepth)
-        {
-            var files = dir.GetFiles();
-            foreach (var f in files)
+            if (Directory.Exists(path))
             {
-                if (f.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase) ||
-                    f.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase))
-                    return f.FullName;
-            }
+                void Search(List<Models.ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
+                {
+                    if (depth < 0)
+                        return;
 
-            if (leftDepth <= 0)
-                return null;
+                    foreach (var file in dir.GetFiles())
+                    {
+                        if (file.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                            file.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                            opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
+                    }
 
-            var subDirs = dir.GetDirectories();
-            foreach (var subDir in subDirs)
-            {
-                var first = FindVSSolutionFile(subDir, leftDepth - 1);
-                if (!string.IsNullOrEmpty(first))
-                    return first;
+                    foreach (var subDir in dir.GetDirectories())
+                        Search(opts, subDir, root, depth - 1);
+                }
+
+                var rootDir = new DirectoryInfo(path);
+                var options = new List<Models.ExternalTool.LaunchOption>();
+                Search(options, rootDir, rootDir.FullName, 4);
+                if (options.Count > 0)
+                    return options;
             }
 
             return null;

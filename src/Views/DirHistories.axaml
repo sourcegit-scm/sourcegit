@@ -38,7 +38,7 @@
     </Grid>
 
     <!-- Info -->
-    <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Background="{DynamicResource Brush.Popup}">
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Background="{DynamicResource Brush.Window}">
       <Path Grid.Column="0" Width="14" Height="14" Margin="8,0,6,0" Data="{StaticResource Icons.Folder.Open}"/>
       <TextBlock Grid.Column="1" Text="{Binding Title, Mode=OneWay}"/>
     </Grid>
@@ -85,9 +85,8 @@
               <Grid RowDefinitions="Auto,*">
                 <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,96">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                   <TextBlock Grid.Column="2"
-                             Classes="primary"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              Cursor="Hand"
                              Background="Transparent"
@@ -95,11 +94,11 @@
                              TextDecorations="Underline"
                              Margin="8,0,0,0"
                              PointerPressed="OnPressCommitSHA"/>
-                  <TextBlock Grid.Column="3" Classes="primary" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+                  <TextBlock Grid.Column="3" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
                 </Grid>
 
                 <Border Grid.Row="1" Background="Transparent" DataContextChanged="OnCommitSubjectDataContextChanged" PointerMoved="OnCommitSubjectPointerMoved">
-                  <TextBlock Classes="primary" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                  <TextBlock Text="{Binding Subject}" VerticalAlignment="Bottom"/>
                 </Border>
               </Grid>
             </Border>
@@ -121,7 +120,7 @@
                     BorderBrush="{DynamicResource Brush.Border0}"/>
 
       <!-- Commit Detail -->
-      <Border Grid.Column="2" Padding="0,4,4,8" IsVisible="{Binding !IsLoading}">
+      <Border Grid.Column="2" Padding="0,4" IsVisible="{Binding !IsLoading}">
         <ContentControl Content="{Binding Detail, Mode=OneWay}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:CommitDetail">

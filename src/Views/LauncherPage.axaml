@@ -11,7 +11,11 @@
              x:DataType="vm:LauncherPage">
   <Grid RowDefinitions="36,*">
     <!-- ToolBar -->
-    <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
+    <Border Grid.Row="0"
+            BorderBrush="{DynamicResource Brush.Border0}"
+            BorderThickness="0,0,0,1"
+            Background="{DynamicResource Brush.ToolBar}"
+            PointerPressed="OnToolBarPointerPressed">
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
@@ -61,14 +65,18 @@
                 CornerRadius="0,0,8,8"
                 ClipToBounds="True"
                 IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <ContentControl Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
+          <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
             <ContentControl.DataTemplates>
               <DataTemplate DataType="vm:Popup">
                 <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
                   <!-- Popup Widget -->
-                  <ContentPresenter Margin="8,16,8,8"
-                                    DataContextChanged="OnPopupDataContextChanged"
-                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
+                  <ContentControl Margin="8,16,8,8"
+                                  Content="{Binding}"
+                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                    <ContentControl.DataTemplates>
+                      <v:PopupDataTemplates/>
+                    </ContentControl.DataTemplates>
+                  </ContentControl>
 
                   <!-- Options -->
                   <StackPanel Margin="8,4,8,8"

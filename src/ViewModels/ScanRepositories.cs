@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -8,12 +7,23 @@ namespace SourceGit.ViewModels
 {
     public class ScanRepositories : Popup
     {
+        public bool UseCustomDir
+        {
+            get => _useCustomDir;
+            set => SetProperty(ref _useCustomDir, value);
+        }
+
+        public string CustomDir
+        {
+            get => _customDir;
+            set => SetProperty(ref _customDir, value);
+        }
+
         public List<Models.ScanDir> ScanDirs
         {
             get;
         }
 
-        [Required(ErrorMessage = "Scan directory is required!!!")]
         public Models.ScanDir Selected
         {
             get => _selected;
@@ -33,16 +43,43 @@ namespace SourceGit.ViewModels
 
             if (ScanDirs.Count > 0)
                 _selected = ScanDirs[0];
+            else
+                _useCustomDir = true;
 
             GetManagedRepositories(Preferences.Instance.RepositoryNodes, _managed);
         }
 
         public override async Task<bool> Sure()
         {
-            ProgressDescription = $"Scan repositories under '{_selected.Path}' ...";
+            string selectedDir;
+            if (_useCustomDir)
+            {
+                if (string.IsNullOrEmpty(_customDir))
+                {
+                    App.RaiseException(null, "Missing root directory to scan!");
+                    return false;
+                }
+
+                selectedDir = _customDir;
+            }
+            else
+            {
+                if (_selected == null || string.IsNullOrEmpty(_selected.Path))
+                {
+                    App.RaiseException(null, "Missing root directory to scan!");
+                    return false;
+                }
+
+                selectedDir = _selected.Path;
+            }
+
+            if (!Directory.Exists(selectedDir))
+                return true;
+
+            ProgressDescription = $"Scan repositories under '{selectedDir}' ...";
 
             var minDelay = Task.Delay(500);
-            var rootDir = new DirectoryInfo(_selected.Path);
+            var rootDir = new DirectoryInfo(selectedDir);
             var found = new List<string>();
 
             await GetUnmanagedRepositoriesAsync(rootDir, found, new EnumerationOptions()
@@ -60,13 +97,15 @@ namespace SourceGit.ViewModels
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                 if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
                 {
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    await node.UpdateStatusAsync(false, null);
                 }
                 else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
                 {
                     var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
                     var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
-                    Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
+                    await node.UpdateStatusAsync(false, null);
                 }
             }
 
@@ -105,7 +144,7 @@ namespace SourceGit.ViewModels
                 var gitDir = Path.Combine(subdir.FullName, ".git");
                 if (Directory.Exists(gitDir) || File.Exists(gitDir))
                 {
-                    var test = await new Commands.QueryRepositoryRootPath(subdir.FullName).GetResultAsync().ConfigureAwait(false);
+                    var test = await new Commands.QueryRepositoryRootPath(subdir.FullName).GetResultAsync();
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
                         var normalized = test.StdOut.Trim().Replace('\\', '/').TrimEnd('/');
@@ -116,7 +155,7 @@ namespace SourceGit.ViewModels
                     continue;
                 }
 
-                var isBare = await new Commands.IsBareRepository(subdir.FullName).GetResultAsync().ConfigureAwait(false);
+                var isBare = await new Commands.IsBareRepository(subdir.FullName).GetResultAsync();
                 if (isBare)
                 {
                     outs.Add(normalizedSelf);
@@ -162,6 +201,8 @@ namespace SourceGit.ViewModels
         }
 
         private HashSet<string> _managed = new();
+        private bool _useCustomDir = false;
+        private string _customDir = string.Empty;
         private Models.ScanDir _selected = null;
     }
 }

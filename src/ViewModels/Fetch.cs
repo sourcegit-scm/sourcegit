@@ -10,10 +10,19 @@ namespace SourceGit.ViewModels
             get => _repo.Remotes;
         }
 
+        public bool IsFetchAllRemoteVisible
+        {
+            get;
+        }
+
         public bool FetchAllRemotes
         {
             get => _fetchAllRemotes;
-            set => SetProperty(ref _fetchAllRemotes, value);
+            set
+            {
+                if (SetProperty(ref _fetchAllRemotes, value) && IsFetchAllRemoteVisible)
+                    _repo.Settings.FetchAllRemotes = value;
+            }
         }
 
         public Models.Remote SelectedRemote
@@ -37,7 +46,8 @@ namespace SourceGit.ViewModels
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
-            _fetchAllRemotes = preferredRemote == null;
+            IsFetchAllRemoteVisible = repo.Remotes.Count > 1 && preferredRemote == null;
+            _fetchAllRemotes = IsFetchAllRemoteVisible && _repo.Settings.FetchAllRemotes;
 
             if (preferredRemote != null)
             {
@@ -56,8 +66,9 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
 
+            var navigateToUpstreamHEAD = _repo.SelectedView is Histories { SelectedCommit: { IsCurrentHead: true } };
             var notags = _repo.Settings.FetchWithoutTags;
             var force = _repo.Settings.EnableForceOnFetch;
             var log = _repo.CreateLog("Fetch");
@@ -79,19 +90,21 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var upstream = _repo.CurrentBranch?.Upstream;
-            if (!string.IsNullOrEmpty(upstream))
+            if (navigateToUpstreamHEAD)
             {
-                var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
-                _repo.NavigateToCommit(upstreamHead, true);
+                var upstream = _repo.CurrentBranch?.Upstream;
+                if (!string.IsNullOrEmpty(upstream))
+                {
+                    var upstreamHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, upstream.Substring(13)).GetResultAsync();
+                    _repo.NavigateToCommit(upstreamHead, true);
+                }
             }
 
             _repo.MarkFetched();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 
         private readonly Repository _repo = null;
-        private bool _fetchAllRemotes;
+        private bool _fetchAllRemotes = false;
     }
 }

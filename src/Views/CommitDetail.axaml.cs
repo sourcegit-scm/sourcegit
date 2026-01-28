@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
 using Avalonia.Platform.Storage;
-using SourceGit.ViewModels;
 
 namespace SourceGit.Views
 {
@@ -15,9 +17,9 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public ContextMenu CreateChangeContextMenuByFolder(ChangeTreeNode node, List<Models.Change> changes)
+        public ContextMenu CreateChangeContextMenuByFolder(ViewModels.ChangeTreeNode node, List<Models.Change> changes)
         {
-            if (DataContext is not ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm)
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
 
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, node.FullPath);
@@ -42,7 +44,7 @@ namespace SourceGit.Views
 
             var patch = new MenuItem();
             patch.Header = App.Text("FileCM.SaveAsPatch");
-            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Icon = App.CreateMenuIcon("Icons.Save");
             patch.Click += async (_, e) =>
             {
                 var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -54,11 +56,18 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
@@ -96,10 +105,147 @@ namespace SourceGit.Views
             return menu;
         }
 
+        public ContextMenu CreateMultipleChangesContextMenu(List<Models.Change> changes)
+        {
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
+                return null;
+
+            var patch = new MenuItem();
+            patch.Header = App.Text("FileCM.SaveAsPatch");
+            patch.Icon = App.CreateMenuIcon("Icons.Save");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("FileCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                try
+                {
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync(changes, saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                }
+
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(patch);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (!repo.IsBare)
+            {
+                var resetToThisRevision = new MenuItem();
+                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Click += async (_, ev) =>
+                {
+                    await vm.ResetMultipleToThisRevisionAsync(changes);
+                    ev.Handled = true;
+                };
+
+                var resetToFirstParent = new MenuItem();
+                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToFirstParent.IsEnabled = commit.Parents.Count > 0;
+                resetToFirstParent.Click += async (_, ev) =>
+                {
+                    await vm.ResetMultipleToParentRevisionAsync(changes);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(resetToThisRevision);
+                menu.Items.Add(resetToFirstParent);
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyPath.Click += async (_, ev) =>
+            {
+                var builder = new StringBuilder();
+                foreach (var c in changes)
+                    builder.AppendLine(c.Path);
+
+                await App.CopyTextAsync(builder.ToString());
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+            copyFullPath.Click += async (_, e) =>
+            {
+                var builder = new StringBuilder();
+                foreach (var c in changes)
+                    builder.AppendLine(Native.OS.GetAbsPath(repo.FullPath, c.Path));
+
+                await App.CopyTextAsync(builder.ToString());
+                e.Handled = true;
+            };
+
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
+            return menu;
+        }
+
         public ContextMenu CreateChangeContextMenu(Models.Change change)
         {
-            if (DataContext is not ViewModels.CommitDetail { Repository: ViewModels.Repository repo, Commit: Models.Commit commit } vm)
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
                 return null;
+
+            var openWith = new MenuItem();
+            openWith.Header = App.Text("Open");
+            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.IsEnabled = change.Index != Models.ChangeState.Deleted;
+            if (openWith.IsEnabled)
+            {
+                var defaultEditor = new MenuItem();
+                defaultEditor.Header = App.Text("Open.SystemDefaultEditor");
+                defaultEditor.Click += async (_, ev) =>
+                {
+                    await vm.OpenRevisionFileAsync(change.Path, null);
+                    ev.Handled = true;
+                };
+
+                openWith.Items.Add(defaultEditor);
+
+                var tools = Native.OS.ExternalTools;
+                if (tools.Count > 0)
+                {
+                    openWith.Items.Add(new MenuItem() { Header = "-" });
+
+                    for (var i = 0; i < tools.Count; i++)
+                    {
+                        var tool = tools[i];
+                        var item = new MenuItem();
+                        item.Header = tool.Name;
+                        item.Icon = new Image { Width = 16, Height = 16, Source = tool.IconImage };
+                        item.Click += async (_, ev) =>
+                        {
+                            await vm.OpenRevisionFileAsync(change.Path, tool);
+                            ev.Handled = true;
+                        };
+
+                        openWith.Items.Add(item);
+                    }
+                }
+            }
 
             var openWithMerger = new MenuItem();
             openWithMerger.Header = App.Text("OpenInExternalMergeTool");
@@ -127,7 +273,7 @@ namespace SourceGit.Views
             history.Icon = App.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                App.ShowWindow(new ViewModels.FileHistories(repo, change.Path, commit.SHA));
+                App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path, commit.SHA));
                 ev.Handled = true;
             };
 
@@ -143,7 +289,7 @@ namespace SourceGit.Views
 
             var patch = new MenuItem();
             patch.Header = App.Text("FileCM.SaveAsPatch");
-            patch.Icon = App.CreateMenuIcon("Icons.Diff");
+            patch.Icon = App.CreateMenuIcon("Icons.Save");
             patch.Click += async (_, e) =>
             {
                 var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -155,17 +301,25 @@ namespace SourceGit.Views
                 options.DefaultExtension = ".patch";
                 options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
 
-                var storageFile = await storageProvider.SaveFilePickerAsync(options);
-                if (storageFile != null)
+                try
                 {
-                    var saveTo = storageFile.Path.LocalPath;
-                    await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
                 }
 
                 e.Handled = true;
             };
 
             var menu = new ContextMenu();
+            menu.Items.Add(openWith);
             menu.Items.Add(openWithMerger);
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
@@ -266,6 +420,33 @@ namespace SourceGit.Views
                 }
             }
 
+            var actions = repo.GetCustomActions(Models.CustomActionScope.File);
+            if (actions.Count > 0)
+            {
+                var target = new Models.CustomActionTargetFile(change.Path, vm.Commit);
+                var custom = new MenuItem();
+                custom.Header = App.Text("FileCM.CustomAction");
+                custom.Icon = App.CreateMenuIcon("Icons.Action");
+
+                foreach (var action in actions)
+                {
+                    var (dup, label) = action;
+                    var item = new MenuItem();
+                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Header = label;
+                    item.Click += async (_, e) =>
+                    {
+                        await repo.ExecCustomActionAsync(dup, target);
+                        e.Handled = true;
+                    };
+
+                    custom.Items.Add(item);
+                }
+
+                menu.Items.Add(custom);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
             copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -293,24 +474,30 @@ namespace SourceGit.Views
 
         private async void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail &&
-                sender is ListBox { SelectedItem: Models.Change change } &&
+            if (DataContext is not ViewModels.CommitDetail vm)
+                return;
+
+            if (sender is not ListBox { SelectedItem: Models.Change change })
+                return;
+
+            if (e.Key == Key.C &&
                 e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.Key == Key.C)
-                {
-                    var path = change.Path;
-                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                        path = detail.GetAbsPath(path);
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                else
+                    await App.CopyTextAsync(change.Path);
 
-                    await App.CopyTextAsync(path);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.D && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                {
-                    detail.OpenChangeInMergeTool(change);
-                    e.Handled = true;
-                }
+                e.Handled = true;
+                return;
+            }
+
+            if (e.Key == Key.D &&
+                e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+            {
+                vm.OpenChangeInMergeTool(change);
+                e.Handled = true;
             }
         }
 
@@ -318,7 +505,10 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
             {
-                detail.ActivePageIndex = 1;
+                var tabControl = this.FindLogicalDescendantOfType<TabControl>();
+                if (tabControl != null)
+                    tabControl.SelectedIndex = 1;
+
                 detail.SelectedChanges = new() { change };
             }
 
@@ -327,7 +517,7 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change } grid)
+            if (sender is Grid { DataContext: Models.Change change } grid)
                 CreateChangeContextMenu(change)?.Open(grid);
             e.Handled = true;
         }

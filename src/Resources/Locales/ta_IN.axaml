@@ -41,9 +41,8 @@
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">புதுப்பி</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">இருமம் கோப்பு ஆதரிக்கப்படவில்லை!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">குற்றச்சாட்டு</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">இந்த கோப்பில் குற்றம் சாட்ட ஆதரிக்கப்படவில்லை!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">இந்த கோப்பில் குற்றம் சாட்ட ஆதரிக்கப்படவில்லை!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ சரிபார்...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">கிளை பெயரை நகலெடு</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$ ஐ நீக்கு...</x:String>
@@ -59,8 +58,6 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">மறுதளம் ${0}$ இதன்மேல் ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">மறுபெயரிடு ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">கண்காணிப்பு கிளையை அமை...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">கிளை ஒப்பிடு</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">தவறான மேல்ஓடை!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">விடு</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">பெற்றோர் திருத்தத்திற்கு மீட்டமை</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">இந்த திருத்தத்திற்கு மீட்டமை</x:String>
@@ -75,7 +72,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">முன்னறிவிப்பு: ஒரு உறுதிமொழி சரிபார்பதன் மூலம், உங்கள் தலை பிரிக்கப்படும்</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">கிளை:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">கனி பறி</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">உறுதிமொழி செய்திக்கு மூலத்தைச் சேர்</x:String>
@@ -126,8 +123,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">குறிகள்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">பாகொவ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">உலாவியில் திற</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">விளக்கம்</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">உறுதிமொழி பொருளை உள்ளிடவும்</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">ஒப்பிடு</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">களஞ்சியம் உள்ளமை</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">உறுதிமொழி வளர்புரு</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">வார்ப்புரு உள்ளடக்கம்:</x:String>
@@ -187,10 +183,9 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">உருவாக்கப்பட்ட கிளையைப் சரிபார்</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">புதிய கிளை பெயர்:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">கிளை பெயரை உள்ளிடவும்.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">இடைவெளிகள் கோடுகளால் மாற்றப்படும்.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">உள்ளக கிளையை உருவாக்கு</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">குறிச்சொல்லை உருவாக்கு...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">இங்கு புதிய குறிச்சொல்:</x:String>
@@ -242,7 +237,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">இடமாற்று</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">தொடரியல் சிறப்பம்சமாக்கல்</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">வரி சொல் மடக்கு</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">தடுப்பு-வழிசெலுத்தலை இயக்கு</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">ஒன்றிணை கருவியில் திற</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">அனைத்து வரிகளையும் காட்டு</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">தெரியும் வரிகளின் எண்ணிக்கையைக் குறை</x:String>
@@ -402,7 +396,6 @@
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">அறிவிலி உள்ளமைக்கப்படவில்லை. [விருப்பத்தேர்வுகள்]க்குச் சென்று முதலில் அதை உள்ளமை. </x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">தரவு சேமிப்பக கோப்பகத்தைத் திற</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">ஒன்றிணை கருவியில் திற</x:String>
-  <x:String x:Key="Text.OpenWith" xml:space="preserve">இதனுடன் திற...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">விருப்பத்தேர்வு.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">புதிய பக்கத்தை உருவாக்கு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">புத்தகக்குறி</x:String>
@@ -438,7 +431,6 @@
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">இயல்புநிலை</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">திருத்தி</x:String>
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">ஒற்றைவெளி எழுத்துரு</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">ஒற்றைவெளி எழுத்துருவை உரை திருத்தியில் மட்டும் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">கருப்பொருள்</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">கருப்பொருள் மேலெழுதப்படுகிறது</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">தலைப்புப்பட்டியில் நிலையான தாவல் அகலத்தைப் பயன்படுத்து</x:String>
@@ -489,7 +481,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">இதனுள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">இழு (எடுத்து ஒன்றிணை)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">ஒன்றிணை என்பதற்குப் பதிலாக மறுதளத்தைப் பயன்படுத்து</x:String>
@@ -609,8 +601,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">மேல்ஓடை:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA ஐ நகலெடு</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">இதற்கு செல்</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">நொறுக்கு உறுதிமொழிகள்</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">இதில்:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">பாஓடு தனியார் திறவுகோல்:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">தனியார் பாஓடு திறவுகோல் கடை பாதை</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">தொடங்கு</x:String>
@@ -644,15 +634,12 @@
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">இந்த தொகுதியை சேமிப்பதற்கான தொடர்புடைய கோப்புறை.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">துணை தொகுதியை நீக்கு</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">சரி</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">குறிச்சொல் பெயரை நகலெடு</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">குறிச்சொல் செய்தியை நகலெடு</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">நீக்கு ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$ இதை ${1}$ இல் இணை...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">தள்ளு ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">துணைத்தொகுதிகளைப் புதுப்பி</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">அனைத்து துணைத்தொகுதிகள்</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">தேவைக்கேற்றப துவக்கு</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">சுழற்சி முறையில்</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">முகவரி:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">முன்னறிவிப்பு</x:String>
   <x:String x:Key="Text.Welcome" xml:space="preserve">வரவேற்பு பக்கம்</x:String>

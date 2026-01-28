@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -43,10 +44,14 @@ namespace SourceGit.ViewModels
             Name = name;
         }
 
-        public void Register(Action<string> handler)
+        public void Subscribe(Models.ICommandLogReceiver receiver)
         {
-            if (!IsComplete)
-                _onNewLineReceived += handler;
+            _receivers.Add(receiver);
+        }
+
+        public void Unsubscribe(Models.ICommandLogReceiver receiver)
+        {
+            _receivers.Remove(receiver);
         }
 
         public void AppendLine(string line = null)
@@ -59,7 +64,9 @@ namespace SourceGit.ViewModels
             {
                 var newline = line ?? string.Empty;
                 _builder.AppendLine(newline);
-                _onNewLineReceived?.Invoke(newline);
+
+                foreach (var receiver in _receivers)
+                    receiver.OnReceiveCommandLog(newline);
             }
         }
 
@@ -76,20 +83,14 @@ namespace SourceGit.ViewModels
 
             _content = _builder.ToString();
             _builder.Clear();
+            _receivers.Clear();
             _builder = null;
 
             OnPropertyChanged(nameof(IsComplete));
-
-            if (_onNewLineReceived != null)
-            {
-                var dumpHandlers = _onNewLineReceived.GetInvocationList();
-                foreach (var d in dumpHandlers)
-                    _onNewLineReceived -= (Action<string>)d;
-            }
         }
 
         private string _content = string.Empty;
         private StringBuilder _builder = new StringBuilder();
-        private event Action<string> _onNewLineReceived;
+        private List<Models.ICommandLogReceiver> _receivers = new List<Models.ICommandLogReceiver>();
     }
 }

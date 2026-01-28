@@ -39,7 +39,9 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
-                Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                await node.UpdateStatusAsync(false, null);
+
                 Welcome.Instance.Refresh();
             }
             return succ;

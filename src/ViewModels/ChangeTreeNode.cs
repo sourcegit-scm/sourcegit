@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -7,6 +7,7 @@ namespace SourceGit.ViewModels
     public class ChangeTreeNode : ObservableObject
     {
         public string FullPath { get; set; }
+        public string DisplayName { get; set; }
         public int Depth { get; private set; } = 0;
         public Models.Change Change { get; set; } = null;
         public List<ChangeTreeNode> Children { get; set; } = new List<ChangeTreeNode>();
@@ -32,22 +33,22 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public ChangeTreeNode(Models.Change c, int depth)
+        public ChangeTreeNode(Models.Change c)
         {
             FullPath = c.Path;
-            Depth = depth;
+            DisplayName = Path.GetFileName(c.Path);
             Change = c;
             IsExpanded = false;
         }
 
-        public ChangeTreeNode(string path, bool isExpanded, int depth)
+        public ChangeTreeNode(string path, bool isExpanded)
         {
             FullPath = path;
-            Depth = depth;
+            DisplayName = Path.GetFileName(path);
             IsExpanded = isExpanded;
         }
 
-        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, Models.ChangeSortMode sortMode = Models.ChangeSortMode.Path, bool isUnstagedContext = false)
+        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, Models.ChangeSortMode sortMode = Models.ChangeSortMode.Path, bool isUnstagedContext = false, bool compactFolders = false)
         {
             var nodes = new List<ChangeTreeNode>();
             var folders = new Dictionary<string, ChangeTreeNode>();
@@ -57,12 +58,11 @@ namespace SourceGit.ViewModels
                 var sepIdx = c.Path.IndexOf('/');
                 if (sepIdx == -1)
                 {
-                    nodes.Add(new ChangeTreeNode(c, 0));
+                    nodes.Add(new ChangeTreeNode(c));
                 }
                 else
                 {
                     ChangeTreeNode lastFolder = null;
-                    int depth = 0;
 
                     while (sepIdx != -1)
                     {
@@ -73,24 +73,29 @@ namespace SourceGit.ViewModels
                         }
                         else if (lastFolder == null)
                         {
-                            lastFolder = new ChangeTreeNode(folder, !folded.Contains(folder), depth);
+                            lastFolder = new ChangeTreeNode(folder, !folded.Contains(folder));
                             folders.Add(folder, lastFolder);
                             InsertFolder(nodes, lastFolder);
                         }
                         else
                         {
-                            var cur = new ChangeTreeNode(folder, !folded.Contains(folder), depth);
+                            var cur = new ChangeTreeNode(folder, !folded.Contains(folder));
                             folders.Add(folder, cur);
                             InsertFolder(lastFolder.Children, cur);
                             lastFolder = cur;
                         }
 
-                        depth++;
                         sepIdx = c.Path.IndexOf('/', sepIdx + 1);
                     }
 
-                    lastFolder?.Children.Add(new ChangeTreeNode(c, depth));
+                    lastFolder?.Children.Add(new ChangeTreeNode(c));
                 }
+            }
+
+            if (compactFolders)
+            {
+                foreach (var node in nodes)
+                    Compact(node);
             }
 
             Sort(nodes, sortMode, isUnstagedContext);
@@ -113,12 +118,37 @@ namespace SourceGit.ViewModels
             collection.Add(subFolder);
         }
 
-        private static void Sort(List<ChangeTreeNode> nodes, Models.ChangeSortMode sortMode, bool isUnstagedContext)
+        private static void Compact(ChangeTreeNode node)
+        {
+            var childrenCount = node.Children.Count;
+            if (childrenCount == 0)
+                return;
+
+            if (childrenCount > 1)
+            {
+                foreach (var c in node.Children)
+                    Compact(c);
+                return;
+            }
+
+            var child = node.Children[0];
+            if (child.Change != null)
+                return;
+
+            node.FullPath = $"{node.FullPath}/{child.DisplayName}";
+            node.DisplayName = $"{node.DisplayName} / {child.DisplayName}";
+            node.IsExpanded = child.IsExpanded;
+            node.Children = child.Children;
+            Compact(node);
+        }
+
+        private static void Sort(List<ChangeTreeNode> nodes, Models.ChangeSortMode sortMode, bool isUnstagedContext, int depth = 0)
         {
             foreach (var node in nodes)
             {
+                node.Depth = depth;
                 if (node.IsFolder)
-                    Sort(node.Children, sortMode, isUnstagedContext);
+                    Sort(node.Children, sortMode, isUnstagedContext, depth + 1);
             }
 
             if (sortMode == Models.ChangeSortMode.Status)
@@ -131,7 +161,7 @@ namespace SourceGit.ViewModels
 
                     // If both are folders, sort by path
                     if (l.IsFolder && r.IsFolder)
-                        return Models.NumericSort.Compare(l.FullPath, r.FullPath);
+                        return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
 
                     // For files, sort by status first
                     var leftPriority = Models.Change.GetStatusSortPriority(l.Change, isUnstagedContext);
@@ -143,8 +173,7 @@ namespace SourceGit.ViewModels
                         return statusComparison;
 
                     // If status priorities are equal, sort by path as secondary sort
-                    // Use the same sorting logic as the path-only sort for consistency
-                    return Models.NumericSort.Compare(l.FullPath, r.FullPath);
+                    return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
                 });
             }
             else
@@ -152,7 +181,7 @@ namespace SourceGit.ViewModels
                 nodes.Sort((l, r) =>
                 {
                     if (l.IsFolder == r.IsFolder)
-                        return Models.NumericSort.Compare(l.FullPath, r.FullPath);
+                        return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
                     return l.IsFolder ? -1 : 1;
                 });
             }

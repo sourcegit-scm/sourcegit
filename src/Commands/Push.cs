@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -10,18 +11,20 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = "push --progress --verbose ";
 
+            var builder = new StringBuilder(1024);
+            builder.Append("push --progress --verbose ");
             if (withTags)
-                Args += "--tags ";
+                builder.Append("--tags ");
             if (checkSubmodules)
-                Args += "--recurse-submodules=check ";
+                builder.Append("--recurse-submodules=check ");
             if (track)
-                Args += "-u ";
+                builder.Append("-u ");
             if (force)
-                Args += "--force-with-lease ";
+                builder.Append("--force-with-lease ");
 
-            Args += $"{remote} {local}:{remoteBranch}";
+            builder.Append(remote).Append(' ').Append(local).Append(':').Append(remoteBranch);
+            Args = builder.ToString();
         }
 
         public Push(string repo, string remote, string refname, bool isDelete)
@@ -30,12 +33,14 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = "push ";
 
+            var builder = new StringBuilder(512);
+            builder.Append("push ");
             if (isDelete)
-                Args += "--delete ";
+                builder.Append("--delete ");
+            builder.Append(remote).Append(' ').Append(refname);
 
-            Args += $"{remote} {refname}";
+            Args = builder.ToString();
         }
 
         public async Task<bool> RunAsync()

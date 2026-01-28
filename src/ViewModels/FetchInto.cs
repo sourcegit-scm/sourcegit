@@ -23,7 +23,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Fast-Forward ...";
 
             var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
@@ -35,9 +35,12 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).GetResultAsync();
-            _repo.NavigateToCommit(newHead, true);
-            _repo.SetWatcherEnabled(true);
+            if (_repo.SelectedViewIndex == 0)
+            {
+                var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).GetResultAsync();
+                _repo.NavigateToCommit(newHead, true);
+            }
+
             return true;
         }
 

@@ -23,7 +23,7 @@
               <StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center">
                 <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding !IsTag}"/>
                 <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding IsTag}"/>
-                <TextBlock Classes="primary" Text="{Binding Name}" Margin="2,0,0,0"/>
+                <TextBlock Text="{Binding Name}" Margin="2,0,0,0"/>
               </StackPanel>
             </Border>
           </DataTemplate>

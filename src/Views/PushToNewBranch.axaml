@@ -1,0 +1,69 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.PushToNewBranch"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.PushToNewBranch}"
+                    SizeToContent="WidthAndHeight"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="14" Height="14"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Edit}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.PushToNewBranch}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
+      <Border Margin="16,0">
+        <TextBlock Text="{DynamicResource Text.PushToNewBranch.Title}"/>
+      </Border>
+
+      <TextBox x:Name="TxtName"
+               MinWidth="300" Height="32"
+               Margin="16,8,16,0"
+               CornerRadius="3"
+               Focusable="True"
+               v:AutoFocusBehaviour.IsEnabled="True">
+        <TextBox.InnerLeftContent>
+          <Border Height="22" CornerRadius="10" Margin="4,0,0,0" Background="Green">
+            <TextBlock x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>
+          </Border>
+        </TextBox.InnerLeftContent>
+      </TextBox>
+
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
+        <Button Classes="flat primary"
+                Width="80"
+                Content="{DynamicResource Text.Sure}"
+                Click="OnSure"
+                HotKey="Enter"/>
+        <Button Classes="flat"
+                Width="80"
+                Margin="16,0,0,0"
+                Content="{DynamicResource Text.Cancel}"
+                Click="OnCancel"/>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</v:ChromelessWindow>

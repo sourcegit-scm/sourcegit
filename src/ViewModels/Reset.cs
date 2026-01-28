@@ -30,7 +30,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Reset current branch to {To.SHA} ...";
 
             var log = _repo.CreateLog($"Reset HEAD to '{To.SHA}'");
@@ -40,8 +40,9 @@ namespace SourceGit.ViewModels
                 .Use(log)
                 .ExecAsync();
 
+            await _repo.AutoUpdateSubmodulesAsync(log);
+
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

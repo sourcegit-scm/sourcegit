@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -16,8 +17,20 @@ namespace SourceGit.ViewModels
 
         public Models.MergeMode Mode
         {
-            get;
-            set;
+            get => _mode;
+            set
+            {
+                if (SetProperty(ref _mode, value))
+                    CanEditMessage = _mode == Models.MergeMode.Default ||
+                        _mode == Models.MergeMode.FastForward ||
+                        _mode == Models.MergeMode.NoFastForward;
+            }
+        }
+
+        public bool CanEditMessage
+        {
+            get => _canEditMessage;
+            set => SetProperty(ref _canEditMessage, value);
         }
 
         public bool Edit
@@ -58,28 +71,43 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             _repo.ClearCommitMessage();
             ProgressDescription = $"Merging '{_sourceName}' into '{Into}' ...";
 
             var log = _repo.CreateLog($"Merging '{_sourceName}' into '{Into}'");
             Use(log);
 
-            await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, Edit)
+            var succ = await new Commands.Merge(_repo.FullPath, _sourceName, Mode.Arg, _canEditMessage && Edit)
                 .Use(log)
                 .ExecAsync();
 
+            if (succ)
+            {
+                var squashMsgFile = Path.Combine(_repo.GitDir, "SQUASH_MSG");
+                if (Mode == Models.MergeMode.Squash && File.Exists(squashMsgFile))
+                {
+                    var msg = await File.ReadAllTextAsync(squashMsgFile);
+                    _repo.SetCommitMessage(msg);
+                }
+
+                await _repo.AutoUpdateSubmodulesAsync(log);
+            }
+
             log.Complete();
 
-            var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
-            _repo.NavigateToCommit(head, true);
-            _repo.SetWatcherEnabled(true);
+            if (succ && _repo.SelectedViewIndex == 0)
+            {
+                var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
+                _repo.NavigateToCommit(head, true);
+            }
+
             return true;
         }
 
         private Models.MergeMode AutoSelectMergeMode()
         {
-            var config = new Commands.Config(_repo.FullPath).GetAsync($"branch.{Into}.mergeoptions").Result;
+            var config = new Commands.Config(_repo.FullPath).Get($"branch.{Into}.mergeoptions");
             var mode = config switch
             {
                 "--ff-only" => Models.MergeMode.FastForward,
@@ -101,5 +129,7 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private readonly string _sourceName;
+        private Models.MergeMode _mode = Models.MergeMode.Default;
+        private bool _canEditMessage = true;
     }
 }

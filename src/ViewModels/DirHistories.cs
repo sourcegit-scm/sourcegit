@@ -38,7 +38,6 @@ namespace SourceGit.ViewModels
         public CommitDetail Detail
         {
             get => _detail;
-            private set => SetProperty(ref _detail, value);
         }
 
         public DirHistories(Repository repo, string dir, string revision = null)
@@ -49,7 +48,7 @@ namespace SourceGit.ViewModels
                 Title = dir;
 
             _repo = repo;
-            _detail = new CommitDetail(repo, false);
+            _detail = new CommitDetail(repo, null);
             _detail.SearchChangeFilter = dir;
 
             Task.Run(async () =>
@@ -87,7 +86,7 @@ namespace SourceGit.ViewModels
             if (_cachedCommitFullMessage.TryGetValue(sha, out var msg))
                 return msg;
 
-            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResultAsync().Result;
+            msg = new Commands.QueryCommitFullMessage(_repo.FullPath, sha).GetResult();
             _cachedCommitFullMessage[sha] = msg;
             return msg;
         }

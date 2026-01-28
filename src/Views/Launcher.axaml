@@ -19,21 +19,21 @@
     </Grid.RowDefinitions>
 
     <!-- Custom TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,*,Auto">
+    <Grid Grid.Row="0" ColumnDefinitions="Auto,32,32,*,Auto">
       <!-- Bottom border -->
-      <Border Grid.Column="0" Grid.ColumnSpan="4"
+      <Border Grid.Column="0" Grid.ColumnSpan="5"
               Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               DoubleTapped="MaximizeOrRestoreWindow"
               PointerPressed="BeginMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" Width="72" IsVisible="{Binding #ThisControl.HasLeftCaptionButton}"/>
+      <Border Grid.Column="0" Width="{Binding #ThisControl.LeftCaptionButtonWidth}" IsVisible="{Binding #ThisControl.HasLeftCaptionButton}"/>
 
       <!-- Menu (Windows/Linux) -->
-      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,2,3" IsVisible="{OnPlatform True, macOS=False}">
+      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,0,3" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
-          <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-8">
+          <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-6">
             <MenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" InputGesture="Ctrl+,">
               <MenuItem.Icon>
                 <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
@@ -72,11 +72,16 @@
       </Button>
 
       <!-- Workspace Dropdown Menu -->
-      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenWorkspaceMenu">
+      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenWorkspaceMenu" HotKey="{OnPlatform Ctrl+Alt+P, macOS=⌘+Alt+P}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{DynamicResource Text.Workspace}" FontWeight="Bold" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             <TextBlock Text="{Binding ActiveWorkspace.Name}"/>
+            <TextBlock Margin="16,0,0,0"
+                       Text="{OnPlatform Ctrl+Alt+P, macOS=⌘+Alt+P}"
+                       FontSize="11"
+                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                       VerticalAlignment="Center"/>
           </StackPanel>
         </ToolTip.Tip>
         <Path Width="14" Height="14"
@@ -84,11 +89,27 @@
               Fill="{Binding ActiveWorkspace.Brush}"/>
       </Button>
 
+      <!-- Pages Switcher Toggle Button -->
+      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenPagesCommandPalette" HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}">
+        <ToolTip.Tip>
+          <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{DynamicResource Text.Launcher.Pages}"
+                       VerticalAlignment="Center"/>
+            <TextBlock Margin="8,0,0,0"
+                       Text="{OnPlatform Ctrl+P, macOS=⌘+P}"
+                       FontSize="11"
+                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                       VerticalAlignment="Center"/>
+          </StackPanel>
+        </ToolTip.Tip>
+        <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Tabs}"/>
+      </Button>
+
       <!-- Pages Tabs -->
-      <v:LauncherTabBar Grid.Column="2" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="3" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
 
       <!-- Caption Buttons (Windows/Linux) -->
-      <Border Grid.Column="3" Margin="16,0,0,0" IsVisible="{Binding #ThisControl.HasRightCaptionButton}">
+      <Border Grid.Column="4" Margin="16,0,0,0" IsVisible="{Binding #ThisControl.HasRightCaptionButton}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
@@ -102,22 +123,16 @@
       </ContentControl.DataTemplates>
     </ContentControl>
 
-    <!-- Workspace/Pages Switcher -->
+    <!-- Command Palette -->
     <Border Grid.Row="0" Grid.RowSpan="2"
             Background="Transparent"
-            IsVisible="{Binding Switcher, Converter={x:Static ObjectConverters.IsNotNull}}"
-            PointerPressed="OnCancelSwitcher">
-      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
+            IsVisible="{Binding CommandPalette, Converter={x:Static ObjectConverters.IsNotNull}}"
+            PointerPressed="OnCloseCommandPalette">
+      <Border Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
         <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
-          <ContentControl Margin="16,10,16,12" Content="{Binding Switcher}">
+          <ContentControl Margin="16,10,16,12" Content="{Binding CommandPalette}">
             <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:WorkspaceSwitcher">
-                <v:WorkspaceSwitcher/>
-              </DataTemplate>
-
-              <DataTemplate DataType="vm:LauncherPageSwitcher">
-                <v:LauncherPageSwitcher/>
-              </DataTemplate>
+              <v:CommandPaletteDataTemplates/>
             </ContentControl.DataTemplates>
           </ContentControl>
         </Border>

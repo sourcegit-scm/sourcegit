@@ -14,6 +14,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
+using Avalonia.Input.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
@@ -105,7 +106,7 @@ namespace SourceGit
         #endregion
 
         #region Utility Functions
-        public static object CreateViewForViewModel(object data)
+        public static Control CreateViewForViewModel(object data)
         {
             var dataTypeName = data.GetType().FullName;
             if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
@@ -114,7 +115,7 @@ namespace SourceGit
             var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
             var viewType = Type.GetType(viewTypeName);
             if (viewType != null)
-                return Activator.CreateInstance(viewType);
+                return Activator.CreateInstance(viewType) as Control;
 
             return null;
         }
@@ -158,17 +159,29 @@ namespace SourceGit
             }
         }
 
-        public static async Task<bool> AskConfirmAsync(string message, Action onSure)
+        public static async Task<bool> AskConfirmAsync(string message, Models.ConfirmButtonType buttonType = Models.ConfirmButtonType.OkCancel)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
             {
                 var confirm = new Views.Confirm();
-                confirm.Message.Text = message;
-                confirm.OnSure = onSure;
+                confirm.SetData(message, buttonType);
                 return await confirm.ShowDialog<bool>(owner);
             }
 
             return false;
+        }
+
+        public static async Task<Models.ConfirmEmptyCommitResult> AskConfirmEmptyCommitAsync(bool hasLocalChanges)
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var confirm = new Views.ConfirmEmptyCommit();
+                confirm.TxtMessage.Text = Text(hasLocalChanges ? "ConfirmEmptyCommit.WithLocalChanges" : "ConfirmEmptyCommit.NoLocalChanges");
+                confirm.BtnStageAllAndCommit.IsVisible = hasLocalChanges;
+                return await confirm.ShowDialog<Models.ConfirmEmptyCommitResult>(owner);
+            }
+
+            return Models.ConfirmEmptyCommitResult.Cancel;
         }
 
         public static void RaiseException(string context, string message)
@@ -235,8 +248,6 @@ namespace SourceGit
                     else
                         Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
 
-                    Models.Commit.OpacityForNotMerged = overrides.OpacityForNotMergedCommits;
-
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._themeOverrides = resDic;
                 }
@@ -251,7 +262,7 @@ namespace SourceGit
             }
         }
 
-        public static void SetFonts(string defaultFont, string monospaceFont, bool onlyUseMonospaceFontInEditor)
+        public static void SetFonts(string defaultFont, string monospaceFont)
         {
             if (Current is not App app)
                 return;
@@ -274,7 +285,7 @@ namespace SourceGit
                 if (!string.IsNullOrEmpty(defaultFont))
                 {
                     monospaceFont = $"fonts:SourceGit#JetBrains Mono,{defaultFont}";
-                    resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
+                    resDic.Add("Fonts.Monospace", FontFamily.Parse(monospaceFont));
                 }
             }
             else
@@ -282,20 +293,7 @@ namespace SourceGit
                 if (!string.IsNullOrEmpty(defaultFont) && !monospaceFont.Contains(defaultFont, StringComparison.Ordinal))
                     monospaceFont = $"{monospaceFont},{defaultFont}";
 
-                resDic.Add("Fonts.Monospace", new FontFamily(monospaceFont));
-            }
-
-            if (onlyUseMonospaceFontInEditor)
-            {
-                if (string.IsNullOrEmpty(defaultFont))
-                    resDic.Add("Fonts.Primary", new FontFamily("fonts:Inter#Inter"));
-                else
-                    resDic.Add("Fonts.Primary", new FontFamily(defaultFont));
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(monospaceFont))
-                    resDic.Add("Fonts.Primary", new FontFamily(monospaceFont));
+                resDic.Add("Fonts.Monospace", FontFamily.Parse(monospaceFont));
             }
 
             if (resDic.Count > 0)
@@ -314,7 +312,7 @@ namespace SourceGit
         public static async Task<string> GetClipboardTextAsync()
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
-                return await clipboard.GetTextAsync();
+                return await clipboard.TryGetTextAsync();
             return null;
         }
 
@@ -372,7 +370,7 @@ namespace SourceGit
 
             SetLocale(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
-            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily, pref.OnlyUseMonoFontInEditor);
+            SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily);
         }
 
         public override void OnFrameworkInitializationCompleted()
@@ -388,6 +386,12 @@ namespace SourceGit
                     if (topLevel is not Window { IsActive: true })
                         e.Cancel = true;
                 });
+
+                if (TryLaunchAsFileHistoryViewer(desktop))
+                    return;
+
+                if (TryLaunchAsBlameViewer(desktop))
+                    return;
 
                 if (TryLaunchAsCoreEditor(desktop))
                     return;
@@ -515,6 +519,68 @@ namespace SourceGit
             return true;
         }
 
+        private bool TryLaunchAsFileHistoryViewer(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args is not { Length: > 1 } || !args[0].Equals("--file-history", StringComparison.Ordinal))
+                return false;
+
+            var file = Path.GetFullPath(args[1]);
+            var dir = Path.GetDirectoryName(file);
+
+            var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+            {
+                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var repo = test.StdOut.Trim();
+            var relFile = Path.GetRelativePath(repo, file);
+            var viewer = new Views.FileHistories()
+            {
+                DataContext = new ViewModels.FileHistories(repo, relFile)
+            };
+            desktop.MainWindow = viewer;
+            return true;
+        }
+
+        private bool TryLaunchAsBlameViewer(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            var args = desktop.Args;
+            if (args is not { Length: > 1 } || !args[0].Equals("--blame", StringComparison.Ordinal))
+                return false;
+
+            var file = Path.GetFullPath(args[1]);
+            var dir = Path.GetDirectoryName(file);
+
+            var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
+            if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
+            {
+                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var repo = test.StdOut.Trim();
+            var head = new Commands.QuerySingleCommit(repo, "HEAD").GetResult();
+            if (head == null)
+            {
+                Console.Out.WriteLine($"{repo} has no commits!");
+                desktop.Shutdown(-1);
+                return true;
+            }
+
+            var relFile = Path.GetRelativePath(repo, file);
+            var viewer = new Views.Blame()
+            {
+                DataContext = new ViewModels.Blame(repo, relFile, head)
+            };
+            desktop.MainWindow = viewer;
+            return true;
+        }
+
         private bool TryLaunchAsCoreEditor(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
@@ -578,7 +644,7 @@ namespace SourceGit
         {
             if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
-                var test = new Commands.QueryRepositoryRootPath(repo).GetResultAsync().Result;
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResult();
                 if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                 {
                     Dispatcher.UIThread.Invoke(() =>
@@ -609,10 +675,10 @@ namespace SourceGit
                 try
                 {
                     // Fetch latest release information.
-                    using var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
-                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
+                    using var client = new HttpClient();
+                    client.Timeout = TimeSpan.FromSeconds(5);
 
-                    // Parse JSON into Models.Version.
+                    var data = await client.GetStringAsync("https://sourcegit-scm.github.io/data/version.json");
                     var ver = JsonSerializer.Deserialize(data, JsonCodeGen.Default.Version);
                     if (ver == null)
                         return;
@@ -665,9 +731,8 @@ namespace SourceGit
                 if (string.IsNullOrEmpty(t))
                     continue;
 
-                // Collapse multiple spaces into single space
-                var prevChar = '\0';
                 var sb = new StringBuilder();
+                var prevChar = '\0';
 
                 foreach (var c in t)
                 {
@@ -678,14 +743,16 @@ namespace SourceGit
                 }
 
                 var name = sb.ToString();
-                if (name.Contains('#'))
+                try
                 {
-                    if (!name.Equals("fonts:Inter#Inter", StringComparison.Ordinal) &&
-                        !name.Equals("fonts:SourceGit#JetBrains Mono", StringComparison.Ordinal))
-                        continue;
+                    var fontFamily = FontFamily.Parse(name);
+                    if (fontFamily.FamilyTypefaces.Count > 0)
+                        trimmed.Add(name);
                 }
-
-                trimmed.Add(name);
+                catch
+                {
+                    // Ignore exceptions.
+                }
             }
 
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;

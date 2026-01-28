@@ -1,0 +1,115 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.OpenFileCommandPalette"
+             x:DataType="vm:OpenFileCommandPalette">
+  <Grid RowDefinitions="Auto,Auto">
+    <v:RepositoryCommandPaletteTextBox Grid.Row="0"
+                                       x:Name="FilterTextBox"
+                                       Height="24"
+                                       Margin="4,8,4,0"
+                                       BorderThickness="1"
+                                       CornerRadius="12"
+                                       Text="{Binding Filter, Mode=TwoWay}"
+                                       BorderBrush="{DynamicResource Brush.Border2}"
+                                       VerticalContentAlignment="Center">
+      <TextBox.InnerLeftContent>
+        <StackPanel Orientation="Horizontal">
+          <Path Width="14" Height="14"
+                Margin="6,0,0,0"
+                Fill="{DynamicResource Brush.FG2}"
+                Data="{StaticResource Icons.Search}"/>
+          <Border BorderThickness="0"
+                  Background="{DynamicResource Brush.Badge}"
+                  Height="18"
+                  CornerRadius="4"
+                  Margin="4,0,0,0" Padding="4,0">
+            <TextBlock Text="{DynamicResource Text.OpenFile}"
+                       Foreground="Black"
+                       FontWeight="Bold"/>
+          </Border>
+        </StackPanel>
+      </TextBox.InnerLeftContent>
+
+      <TextBox.InnerRightContent>
+        <Button Classes="icon_button"
+                Width="16"
+                Margin="0,0,6,0"
+                Command="{Binding ClearFilter}"
+                IsVisible="{Binding Filter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                HorizontalAlignment="Right">
+          <Path Width="14" Height="14"
+                Margin="0,1,0,0"
+                Fill="{DynamicResource Brush.FG1}"
+                Data="{StaticResource Icons.Clear}"/>
+        </Button>
+      </TextBox.InnerRightContent>
+    </v:RepositoryCommandPaletteTextBox>
+
+    <ListBox Grid.Row="1"
+             x:Name="FileListBox"
+             MaxHeight="250"
+             Margin="4,8,4,0"
+             BorderThickness="0"
+             SelectionMode="Single"
+             Background="Transparent"
+             Focusable="True"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             ItemsSource="{Binding VisibleFiles, Mode=OneWay}"
+             SelectedItem="{Binding SelectedFile, Mode=TwoWay}"
+             IsVisible="{Binding VisibleFiles, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+      <ListBox.Styles>
+        <Style Selector="ListBoxItem">
+          <Setter Property="Padding" Value="8,0"/>
+          <Setter Property="MinHeight" Value="26"/>
+          <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+
+        <Style Selector="ListBox">
+          <Setter Property="FocusAdorner">
+            <FocusAdornerTemplate>
+              <Grid/>
+            </FocusAdornerTemplate>
+          </Setter>
+        </Style>
+      </ListBox.Styles>
+
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel Orientation="Vertical"/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="x:String">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+            <Path Grid.Column="0"
+                  Width="12" Height="12"
+                  Data="{StaticResource Icons.File}"
+                  IsHitTestVisible="False"/>
+            <TextBlock Grid.Column="1"
+                       Margin="4,0,0,0"
+                       VerticalAlignment="Center"
+                       IsHitTestVisible="False">
+              <Run Text="{Binding Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
+              <Run Text=" "/>
+              <Run Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}, Mode=OneWay}" Foreground="{DynamicResource Brush.FG2}"/>
+            </TextBlock>
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <v:LoadingIcon Grid.Row="1"
+                   Width="48" Height="48"
+                   Margin="0,12,0,8"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   IsVisible="{Binding IsLoading}"/>
+  </Grid>
+</UserControl>

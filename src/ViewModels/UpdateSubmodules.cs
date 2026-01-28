@@ -39,12 +39,6 @@ namespace SourceGit.ViewModels
             set;
         } = true;
 
-        public bool EnableRecursive
-        {
-            get;
-            set;
-        } = true;
-
         public bool EnableRemote
         {
             get;
@@ -88,15 +82,15 @@ namespace SourceGit.ViewModels
                 return true;
 
             var log = _repo.CreateLog("Update Submodule");
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             Use(log);
 
             await new Commands.Submodule(_repo.FullPath)
                 .Use(log)
-                .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
+                .UpdateAsync(targets, EnableInit, EnableRemote);
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
+            _repo.MarkSubmodulesDirtyManually();
             return true;
         }
 

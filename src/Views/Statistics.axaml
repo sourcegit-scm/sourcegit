@@ -186,20 +186,21 @@
               <Grid Grid.Row="1" ColumnDefinitions="*,*">
                 <!-- Total Authors -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
                 </StackPanel>
 
                 <!-- Total Commits -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
                 </StackPanel>
               </Grid>
             </Grid>
 
             <!-- Graph -->
             <lvc:CartesianChart Grid.Column="1"
+                                Background="{DynamicResource Brush.Window}"
                                 Margin="0"
                                 Padding="0"
                                 Series="{Binding Series}"

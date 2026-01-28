@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -147,19 +147,41 @@
                    Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
-          <CheckBox Grid.Row="6" Grid.Column="1"
-                    Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
-                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
+          <TextBlock Grid.Row="6" Grid.Column="0"
+                     Text="{DynamicResource Text.Configure.Git.ConventionalTypesOverride}"
+                     HorizontalAlignment="Right"
+                     Margin="0,0,8,0"/>
+          <TextBox Grid.Row="6" Grid.Column="1"
+                   Height="28"
+                   CornerRadius="3"
+                   Text="{Binding ConventionalTypesOverride, Mode=TwoWay}">
+            <TextBox.InnerRightContent>
+              <Button Classes="icon_button" Width="30" Height="30" Click="SelectConventionalTypesFile">
+                <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+            </TextBox.InnerRightContent>
+          </TextBox>
 
           <CheckBox Grid.Row="7" Grid.Column="1"
-                    Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
-                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
+                    Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
+                    IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"
+                    ToolTip.Tip="commit.gpgsign=true"/>
 
           <CheckBox Grid.Row="8" Grid.Column="1"
-                    Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
-                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
+                    Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
+                    IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"
+                    ToolTip.Tip="tag.gpgsign=true"/>
 
-          <StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
+          <CheckBox Grid.Row="9" Grid.Column="1"
+                    Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
+                    IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"
+                    ToolTip.Tip="fetch.prune=true"/>
+
+          <CheckBox Grid.Row="10" Grid.Column="1"
+                    Content="{DynamicResource Text.Configure.Git.AskBeforeAutoUpdatingSubmodules}"
+                    IsChecked="{Binding AskBeforeAutoUpdatingSubmodules, Mode=TwoWay}"/>
+
+          <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
@@ -227,13 +249,9 @@
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                 </Button>
 
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-
                 <Button Classes="icon_button" Command="{Binding RemoveSelectedCommitTemplate}">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
-
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
               </StackPanel>
             </Grid>
           </Border>
@@ -257,12 +275,14 @@
                   <TextBlock Text="{DynamicResource Text.Configure.CommitMessageTemplate.Name}"/>
                   <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
-                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
-                  <v:CommitMessageTextBox Margin="0,4,0,0" Height="150" Text="{Binding Content, Mode=TwoWay}"/>
-                  <TextBlock Margin="0,2,0,0"
-                             Text="{DynamicResource Text.Configure.CommitMessageTemplate.BuiltinVars}"
-                             Foreground="{DynamicResource Brush.FG2}"
-                             TextWrapping="Wrap"/>
+                  <Grid ColumnDefinitions="*,Auto" Margin="0,12,0,0">
+                    <TextBlock Grid.Column="0" Text="{DynamicResource Text.Configure.CommitMessageTemplate.Content}"/>
+                    <Border Grid.Column="1" Width="14" Height="14" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Configure.CommitMessageTemplate.BuiltinVars}">
+                      <Path Data="{StaticResource Icons.Info}"/>
+                    </Border>
+                  </Grid>
+
+                  <v:CommitMessageToolBox Margin="0,4,0,0" Height="200" CommitMessage="{Binding Content, Mode=TwoWay}"/>
                 </StackPanel>
               </DataTemplate>
             </ContentControl.DataTemplates>
@@ -330,13 +350,10 @@
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                 </Button>
 
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
-
                 <Button Classes="icon_button" Click="OnRemoveIssueTracker">
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
                 </Button>
 
-                <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
               </StackPanel>
             </Grid>
           </Border>
@@ -371,11 +388,7 @@
                   <TextBox Grid.Row="5" Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding URLTemplate, Mode=TwoWay}"/>
                   <TextBlock Grid.Row="6" Margin="0,2,0,0" Text="{DynamicResource Text.Configure.IssueTracker.URLTemplate.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
 
-                  <CheckBox Grid.Row="7" Grid.Column="1"
-                            Margin="0,4,0,0"
-                            Content="{DynamicResource Text.Configure.IssueTracker.Share}"
-                            IsChecked="{Binding IsShared, Mode=TwoWay}"
-                            Click="OnIssueTrackerIsSharedChanged"/>
+                  <CheckBox Grid.Row="7" Margin="0,4,0,0" Content="{DynamicResource Text.Configure.IssueTracker.Share}" IsChecked="{Binding IsShared, Mode=TwoWay}"/>
                 </Grid>
               </DataTemplate>
             </ContentControl.DataTemplates>
@@ -388,7 +401,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.CustomAction}"/>
         </TabItem.Header>
 
-        <Grid ColumnDefinitions="200,*" MinHeight="380" Margin="0,8,0,16">
+        <Grid ColumnDefinitions="200,*" MinHeight="360" Margin="0,8,0,16">
           <Border Grid.Column="0"
                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                   Background="{DynamicResource Brush.Contents}">
@@ -480,7 +493,20 @@
                     <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Commit}"/>
                     <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Branch}"/>
                     <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Tag}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.Remote}"/>
+                    <ComboBoxItem Content="{DynamicResource Text.Configure.CustomAction.Scope.File}"/>
                   </ComboBox>
+
+                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>
+                  <Button Margin="0,4,0,0" Classes="flat" Height="28" Click="EditCustomActionControls">
+                    <StackPanel Orientation="Horizontal">
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Edit}" Fill="{DynamicResource Brush.FG1}"/>
+                      <TextBlock Margin="4,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Edit}"/>
+                      <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Controls.Count}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                      </Border>
+                    </StackPanel>
+                  </Button>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Executable}"/>
                   <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Executable, Mode=TwoWay}">
@@ -492,20 +518,13 @@
                   </TextBox>
 
                   <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.Arguments}"/>
-                  <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Arguments, Mode=TwoWay}"/>
-                  <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
-
-                  <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls}"/>
-                  <Button Margin="0,4,0,0" Classes="flat" Height="28" Click="EditCustomActionControls">
-                    <StackPanel Orientation="Horizontal">
-                      <Path Width="14" Height="14" Data="{StaticResource Icons.Edit}" Fill="{DynamicResource Brush.FG1}"/>
-                      <TextBlock Margin="4,0" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Edit}"/>
-                      <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                        <TextBlock Classes="primary" Text="{Binding Controls.Count}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                  <TextBox Margin="0,4,0,0" Height="28" CornerRadius="3" Text="{Binding Arguments, Mode=TwoWay}">
+                    <TextBox.InnerRightContent>
+                      <Border Width="28" Height="28" Background="Transparent" VerticalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}">
+                        <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}"/>
                       </Border>
-                    </StackPanel>
-                  </Button>
-                  <TextBlock Margin="0,2,0,0" TextWrapping="Wrap" Text="{DynamicResource Text.Configure.CustomAction.InputControls.Tip}" Foreground="{DynamicResource Brush.FG2}"/>
+                    </TextBox.InnerRightContent>
+                  </TextBox>
 
                   <CheckBox Margin="0,8,0,0" Content="{DynamicResource Text.Configure.CustomAction.WaitForExit}" IsChecked="{Binding WaitForExit, Mode=TwoWay}"/>
                 </StackPanel>

@@ -10,7 +10,7 @@
              x:Class="SourceGit.Views.SubmodulesView">
   <UserControl.DataTemplates>
     <DataTemplate DataType="vm:SubmoduleCollectionAsTree">
-      <ListBox Classes="repo_left_content_list" ItemsSource="{Binding Rows}" SelectionMode="Single">
+      <ListBox Classes="repo_left_content_list" Padding="0,0,2,0" ItemsSource="{Binding Rows}" SelectionMode="Single">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="CornerRadius" Value="4"/>
@@ -27,9 +27,9 @@
 
               <Grid RowDefinitions="24,24,24" ColumnDefinitions="Auto,Auto" Margin="0,8,0,0">
                 <TextBlock Grid.Row="0" Grid.Column="0"
-                               Classes="info_label"
-                               HorizontalAlignment="Left" VerticalAlignment="Center"
-                               Text="{DynamicResource Text.Submodule.Branch}"/>
+                           Classes="info_label"
+                           HorizontalAlignment="Left" VerticalAlignment="Center"
+                           Text="{DynamicResource Text.Submodule.Branch}"/>
                 <StackPanel Grid.Row="0" Grid.Column="1"
                             Orientation="Horizontal"
                             Margin="8,0,0,0">
@@ -119,7 +119,6 @@
                                          IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
                 <TextBlock Grid.Column="2"
-                           Classes="primary"
                            Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
@@ -128,7 +127,7 @@
 
                 <Path Grid.Column="3"
                       Width="8" Height="8"
-                      Margin="0,0,12,0"
+                      Margin="0,0,8,0"
                       Fill="Goldenrod"
                       Data="{StaticResource Icons.Modified}"
                       IsVisible="{Binding IsDirty}"/>
@@ -233,10 +232,10 @@
               </ToolTip.Tip>
               <Grid ColumnDefinitions="16,*,Auto" Margin="8,0,0,0" VerticalAlignment="Center">
                 <Path Grid.Column="0" Width="10" Height="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
-                <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" Classes="primary" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="1" Text="{Binding Path}" ClipToBounds="True" TextTrimming="CharacterEllipsis"/>
                 <Path Grid.Column="2"
                       Width="8" Height="8"
-                      Margin="8,0,12,0"
+                      Margin="8,0,8,0"
                       Fill="Goldenrod"
                       Data="{StaticResource Icons.Modified}"
                       IsVisible="{Binding IsDirty}"/>

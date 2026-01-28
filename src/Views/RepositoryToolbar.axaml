@@ -9,8 +9,8 @@
              x:DataType="vm:Repository">
   <Grid ColumnDefinitions="*,Auto,*">
     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
-      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Margin="0,2,0,0"/>
+      <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.OpenWith}"/>
       </Button>
 
       <Button Classes="icon_button" Width="32" Click="OpenGitLogs" ToolTip.Tip="{DynamicResource Text.Repository.ViewLogs}">
@@ -95,7 +95,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.LFS}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="StartBisect" ToolTip.Tip="{DynamicResource Text.Bisect}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="StartBisect" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Bisect}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Bisect}"/>
       </Button>
 
@@ -103,7 +103,7 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.Action}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Command="{Binding Cleanup}" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="Cleanup" ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
         <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Clean}"/>
       </Button>
     </StackPanel>
@@ -115,7 +115,7 @@
         <ContentControl.Content>
           <Binding Path="CurrentBranch">
             <Binding.TargetNullValue>
-              <TextBlock Classes="primary" Text="--"/>
+              <TextBlock Text="--"/>
             </Binding.TargetNullValue>
           </Binding>
         </ContentControl.Content>
@@ -123,7 +123,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
-              <TextBlock Classes="primary" Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
             </Border>
           </DataTemplate>
         </ContentControl.DataTemplates>

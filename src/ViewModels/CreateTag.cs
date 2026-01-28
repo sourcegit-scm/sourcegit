@@ -13,7 +13,7 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Tag name is required!")]
-        [RegularExpression(@"^(?!\.)(?!/)(?!.*\.$)(?!.*/$)(?!.*\.\.)[\w\-\./]+$", ErrorMessage = "Bad tag name format!")]
+        [RegularExpression(@"^(?!\.)(?!/)(?!.*\.$)(?!.*/$)(?!.*\.\.)[\w\-\+\./]+$", ErrorMessage = "Bad tag name format!")]
         [CustomValidation(typeof(CreateTag), nameof(ValidateTagName))]
         public string TagName
         {
@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
             _basedOn = branch.Head;
 
             BasedOn = branch;
-            SignTag = new Commands.Config(repo.FullPath).GetAsync("tag.gpgsign").Result.Equals("true", StringComparison.OrdinalIgnoreCase);
+            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public CreateTag(Repository repo, Models.Commit commit)
@@ -60,7 +60,7 @@ namespace SourceGit.ViewModels
             _basedOn = commit.SHA;
 
             BasedOn = commit;
-            SignTag = new Commands.Config(repo.FullPath).GetAsync("tag.gpgsign").Result.Equals("true", StringComparison.OrdinalIgnoreCase);
+            SignTag = new Commands.Config(repo.FullPath).Get("tag.gpgsign").Equals("true", StringComparison.OrdinalIgnoreCase);
         }
 
         public static ValidationResult ValidateTagName(string name, ValidationContext ctx)
@@ -76,7 +76,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Create tag...";
 
             var remotes = PushToRemotes ? _repo.Remotes : null;
@@ -99,7 +99,6 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

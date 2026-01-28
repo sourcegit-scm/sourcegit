@@ -46,7 +46,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Archiving ...";
 
             var log = _repo.CreateLog("Archive");
@@ -57,7 +57,6 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
 
             if (succ)
                 App.SendNotification(_repo.FullPath, $"Save archive to : {_saveFile}");

@@ -64,20 +64,24 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = _changes == null ? "Discard all local changes ..." : $"Discard total {_changes.Count} changes ...";
 
-            var log = _repo.CreateLog("Discard all");
+            var log = _repo.CreateLog("Discard Changes");
             Use(log);
 
             if (Mode is DiscardAllMode all)
+            {
                 await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeUntracked, all.IncludeIgnored, log);
+                _repo.ClearCommitMessage();
+            }
             else
+            {
                 await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
+            }
 
             log.Complete();
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.EditBranchDescription"
+             x:DataType="vm:EditBranchDescription">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Edit}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.EditBranchDescription}"/>
+    </StackPanel>
+
+    <StackPanel Margin="8,16,8,0" Orientation="Horizontal">
+      <TextBlock Text="{DynamicResource Text.EditBranchDescription.Target}"/>
+      <Path Margin="8,0" Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+      <TextBlock Text="{Binding Target.FriendlyName}"/>
+    </StackPanel>
+
+    <TextBox Height="120"
+             Margin="8,8,8,0" Padding="2,4"
+             CornerRadius="4"
+             VerticalContentAlignment="Top"
+             AcceptsReturn="True" AcceptsTab="False"
+             Text="{Binding Description, Mode=TwoWay}"
+             TextWrapping="Wrap"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
+  </StackPanel>
+</UserControl>

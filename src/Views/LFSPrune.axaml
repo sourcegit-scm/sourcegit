@@ -5,9 +5,16 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LFSPrune">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.GitLFS.Prune}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Clean}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.GitLFS.Prune}"/>
+    </StackPanel>
+    
     <TextBlock Text="{DynamicResource Text.GitLFS.Prune.Tips}"
                Margin="8,16,8,0"
                HorizontalAlignment="Center"

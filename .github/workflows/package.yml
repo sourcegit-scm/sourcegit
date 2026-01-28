@@ -22,11 +22,11 @@ jobs:
           name: sourcegit.${{ matrix.runtime }}
           path: build/SourceGit
       - name: Package
-        shell: bash
+        shell: pwsh
         env:
           VERSION: ${{ inputs.version }}
           RUNTIME: ${{ matrix.runtime }}
-        run: ./build/scripts/package.windows.sh
+        run: ./build/scripts/package.win.ps1
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:

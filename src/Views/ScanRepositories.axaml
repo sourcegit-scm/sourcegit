@@ -8,10 +8,17 @@
              x:Class="SourceGit.Views.ScanRepositories"
              x:DataType="vm:ScanRepositories">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.ScanRepositories}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32" ColumnDefinitions="120,*">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Scan}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.ScanRepositories}"/>
+    </StackPanel>
+    
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -20,7 +27,8 @@
                 Height="28" Padding="4,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding ScanDirs, Mode=OneWay}"
-                SelectedItem="{Binding Selected, Mode=TwoWay}">
+                SelectedItem="{Binding Selected, Mode=TwoWay}"
+                IsVisible="{Binding !UseCustomDir, Mode=OneWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ScanDir">
             <Grid ColumnDefinitions="20,*,Auto">
@@ -32,12 +40,27 @@
               <TextBlock Grid.Column="1" Margin="4,0" Text="{Binding Path}" VerticalAlignment="Center"/>
 
               <Border Grid.Column="2" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                <TextBlock Classes="primary" Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
+                <TextBlock Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
               </Border>
             </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>
+      <TextBox Grid.Row="0" Grid.Column="1"
+               Height="28"
+               CornerRadius="3"
+               Text="{Binding CustomDir, Mode=TwoWay}"
+               IsVisible="{Binding UseCustomDir, Mode=OneWay}">
+        <TextBox.InnerRightContent>
+          <Button Classes="icon_button" Width="30" Height="30" Click="OnSelectRootDir">
+            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+          </Button>
+        </TextBox.InnerRightContent>
+      </TextBox>
+
+      <CheckBox Grid.Row="1" Grid.Column="1"
+                Content="{DynamicResource Text.ScanRepositories.UseCustomDir}"
+                IsChecked="{Binding UseCustomDir, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

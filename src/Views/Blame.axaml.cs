@@ -223,7 +223,7 @@ namespace SourceGit.Views
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
-                                blame.NavigateToCommit(info.CommitSHA);
+                                blame.NavigateToCommit(info.File, info.CommitSHA);
 
                             e.Handled = true;
                             break;
@@ -254,6 +254,15 @@ namespace SourceGit.Views
             }
 
             private readonly BlameTextEditor _editor = null;
+        }
+
+        public static readonly StyledProperty<string> FileProperty =
+            AvaloniaProperty.Register<BlameTextEditor, string>(nameof(File));
+
+        public string File
+        {
+            get => GetValue(FileProperty);
+            set => SetValue(FileProperty, value);
         }
 
         public static readonly StyledProperty<Models.BlameData> BlameDataProperty =
@@ -288,9 +297,9 @@ namespace SourceGit.Views
 
             _textMate = Models.TextMateHelper.CreateForEditor(this);
 
-            TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
-            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
+            TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
@@ -350,23 +359,23 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
+            if (change.Property == FileProperty)
+            {
+                if (File is { Length: > 0 })
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, File);
+            }
             if (change.Property == BlameDataProperty)
             {
                 if (BlameData is { IsBinary: false } blame)
-                {
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, blame.File);
                     Text = blame.Content;
-                }
                 else
-                {
                     Text = string.Empty;
-                }
             }
             else if (change.Property == TabWidthProperty)
             {
                 Options.IndentationSize = TabWidth;
             }
-            else if (change.Property.Name == "ActualThemeVariant" && change.NewValue != null)
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             }

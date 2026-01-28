@@ -3,10 +3,8 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
-                    xmlns:vm="using:SourceGit.ViewModels"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.ConfirmEmptyCommit"
-                    x:DataType="vm:ConfirmEmptyCommit"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Warn}"
@@ -39,15 +37,15 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock Text="{Binding Message}" MaxWidth="520" TextWrapping="Wrap"/>
+      <TextBlock x:Name="TxtMessage" MaxWidth="520" TextWrapping="Wrap"/>
     </Border>
 
     <!-- Buttons -->
     <StackPanel Grid.Row="2" Margin="0,0,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
       <Button Classes="flat"
+              x:Name="BtnStageAllAndCommit"
               Height="30"
               Margin="4,0"
-              IsVisible="{Binding HasLocalChanges}"
               Click="StageAllThenCommit"
               Content="{DynamicResource Text.ConfirmEmptyCommit.StageAllThenCommit}"
               HorizontalContentAlignment="Center"

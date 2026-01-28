@@ -29,13 +29,13 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding Ignored File(s) ...";
 
             var file = StorageFile.GetFullPath(_repo.FullPath, _repo.GitDir);
             if (!File.Exists(file))
             {
-                await File.WriteAllLinesAsync(file, [_pattern]);
+                await File.WriteAllLinesAsync(file!, [_pattern]);
             }
             else
             {
@@ -47,7 +47,6 @@ namespace SourceGit.ViewModels
             }
 
             _repo.MarkWorkingCopyDirtyManually();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 

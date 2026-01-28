@@ -8,9 +8,16 @@
              x:Class="SourceGit.Views.Pull"
              x:DataType="vm:Pull">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Pull.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Pull}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Pull.Title}"/>
+    </StackPanel>
+    
     <Grid Margin="0,16,0,0" ColumnDefinitions="140,*">
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
@@ -18,7 +25,6 @@
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
         <RowDefinition Height="32"/>
-        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -51,6 +57,7 @@
                 ItemsSource="{Binding RemoteBranches}"
                 SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
                 IsTextSearchEnabled="True"
+                TextSearch.TextBinding="{Binding Name, DataType=m:Branch}"
                 IsEnabled="{Binding !HasSpecifiedRemoteBranch}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
@@ -60,12 +67,6 @@
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
-
-        <ComboBox.ItemContainerTheme>
-          <ControlTheme TargetType="ComboBoxItem" x:DataType="m:Branch" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-            <Setter Property="TextSearch.Text" Value="{Binding Name}"/>
-          </ControlTheme>
-        </ComboBox.ItemContainerTheme>
       </ComboBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
@@ -84,7 +85,7 @@
       <WrapPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
         <RadioButton GroupName="LocalChanges"
                      Margin="0,0,8,0"
-                     Content="{DynamicResource Text.Pull.LocalChanges.StashAndReply}"
+                     Content="{DynamicResource Text.Pull.LocalChanges.StashAndReapply}"
                      IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
         <RadioButton GroupName="LocalChanges"
                      Content="{DynamicResource Text.Pull.LocalChanges.Discard}"/>
@@ -94,13 +95,6 @@
                 Content="{DynamicResource Text.Pull.UseRebase}"
                 IsChecked="{Binding UseRebase, Mode=TwoWay}"
                 ToolTip.Tip="--rebase"/>
-
-      <CheckBox Grid.Row="5" Grid.Column="1"
-                Height="32"
-                Content="{DynamicResource Text.Pull.RecurseSubmodules}"
-                IsChecked="{Binding RecurseSubmodules, Mode=TwoWay}"
-                IsVisible="{Binding IsRecurseSubmoduleVisible}"
-                ToolTip.Tip="--recurse-submodules"/>
     </Grid>
   </StackPanel>
 </UserControl>

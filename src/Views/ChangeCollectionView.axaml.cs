@@ -33,7 +33,7 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
-        protected override async void OnKeyDown(KeyEventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
         {
             if (SelectedItems is [ViewModels.ChangeTreeNode node])
             {
@@ -41,36 +41,6 @@ namespace SourceGit.Views
                     e.KeyModifiers == KeyModifiers.None)
                 {
                     this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.C &&
-                    e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
-                {
-                    var path = node.FullPath;
-
-                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                    {
-                        do
-                        {
-                            var repoView = this.FindAncestorOfType<Repository>();
-                            if (repoView is { DataContext: ViewModels.Repository repo })
-                            {
-                                path = Native.OS.GetAbsPath(repo.FullPath, path);
-                                break;
-                            }
-
-                            var branchCompareView = this.FindAncestorOfType<BranchCompare>();
-                            if (branchCompareView is { DataContext: ViewModels.BranchCompare branchCompare })
-                            {
-                                path = branchCompare.GetAbsPath(path);
-                                break;
-                            }
-
-                            // NOTE: if there is another window uses ChangeCollectionView, add it here!
-                        } while (false);
-                    }
-
-                    await App.CopyTextAsync(path);
                     e.Handled = true;
                 }
             }
@@ -91,15 +61,6 @@ namespace SourceGit.Views
             set => SetValue(IsUnstagedChangeProperty, value);
         }
 
-        public static readonly StyledProperty<SelectionMode> SelectionModeProperty =
-            AvaloniaProperty.Register<ChangeCollectionView, SelectionMode>(nameof(SelectionMode));
-
-        public SelectionMode SelectionMode
-        {
-            get => GetValue(SelectionModeProperty);
-            set => SetValue(SelectionModeProperty, value);
-        }
-
         public static readonly StyledProperty<Models.ChangeViewMode> ViewModeProperty =
             AvaloniaProperty.Register<ChangeCollectionView, Models.ChangeViewMode>(nameof(ViewMode), Models.ChangeViewMode.Tree);
 
@@ -116,6 +77,15 @@ namespace SourceGit.Views
         {
             get => GetValue(SortModeProperty);
             set => SetValue(SortModeProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> EnableCompactFoldersProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(EnableCompactFolders));
+
+        public bool EnableCompactFolders
+        {
+            get => GetValue(EnableCompactFoldersProperty);
+            set => SetValue(EnableCompactFoldersProperty, value);
         }
 
         public static readonly StyledProperty<List<Models.Change>> ChangesProperty =
@@ -265,6 +235,9 @@ namespace SourceGit.Views
                 UpdateDataSource(false);
             else if (change.Property == SelectedChangesProperty)
                 UpdateSelection();
+
+            if (change.Property == EnableCompactFoldersProperty && ViewMode == Models.ChangeViewMode.Tree)
+                UpdateDataSource(true);
         }
 
         private void OnRowDataContextChanged(object sender, EventArgs e)
@@ -395,7 +368,7 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, SortMode, IsUnstagedChange);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, SortMode, IsUnstagedChange, EnableCompactFolders);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);

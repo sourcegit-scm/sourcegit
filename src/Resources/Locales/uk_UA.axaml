@@ -41,10 +41,8 @@
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Оновити</x:String>
   <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">БІНАРНИЙ ФАЙЛ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Автор рядка</x:String>
-  <x:String x:Key="Text.BlameTypeNotSupported" xml:space="preserve">ПОШУК АВТОРА РЯДКА ДЛЯ ЦЬОГО ФАЙЛУ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">ПОШУК АВТОРА РЯДКА ДЛЯ ЦЬОГО ФАЙЛУ НЕ ПІДТРИМУЄТЬСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Перейти на ${0}$...</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithCurrent" xml:space="preserve">Порівняти з ${0}$</x:String>
-  <x:String x:Key="Text.BranchCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Копіювати назву гілки</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>
@@ -60,8 +58,6 @@
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Перебазувати ${0}$ на ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Перейменувати ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Встановити відстежувану гілку...</x:String>
-  <x:String x:Key="Text.BranchCompare" xml:space="preserve">Порівняти гілки</x:String>
-  <x:String x:Key="Text.BranchUpstreamInvalid" xml:space="preserve">Недійсний upstream!</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">СКАСУВАТИ</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Скинути до батьківської ревізії</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Скинути до цієї ревізії</x:String>
@@ -76,7 +72,7 @@
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Попередження: Перехід на коміт призведе до стану "від'єднаний HEAD"</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Додати джерело до повідомлення коміту</x:String>
@@ -127,8 +123,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">ПОСИЛАННЯ (Refs)</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Відкрити в браузері</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.MessagePlaceholder" xml:space="preserve">Опис</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.SubjectPlaceholder" xml:space="preserve">Введіть тему коміту</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Порівняти</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Налаштування сховища</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ШАБЛОН КОМІТУ</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Зміст шаблону:</x:String>
@@ -192,10 +187,9 @@
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Перейти на створену гілку</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Назва нової гілки:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Введіть назву гілки.</x:String>
-  <x:String x:Key="Text.CreateBranch.Name.WarnSpace" xml:space="preserve">Пробіли будуть замінені на тире.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Створити локальну гілку</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Створити тег...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Новий тег для:</x:String>
@@ -247,7 +241,6 @@
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Поміняти місцями</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Підсвітка синтаксису</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слів</x:String>
-  <x:String x:Key="Text.Diff.UseBlockNavigation" xml:space="preserve">Увімкнути навігацію блоками</x:String>
   <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Відкрити в інструменті злиття</x:String>
   <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Показати всі рядки</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Зменшити кількість видимих рядків</x:String>
@@ -407,7 +400,6 @@
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git не налаштовано. Будь ласка, перейдіть до [Налаштування] та налаштуйте його.</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Відкрити теку зберігання даних</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Відкрити в інструменті злиття</x:String>
-  <x:String x:Key="Text.OpenWith" xml:space="preserve">Відкрити за допомогою...</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необов'язково.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Створити нову вкладку</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Закладка</x:String>
@@ -443,7 +435,6 @@
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">За замовчуванням</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Редактор</x:String>
   <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Моноширинний шрифт</x:String>
-  <x:String x:Key="Text.Preferences.Appearance.OnlyUseMonoFontInEditor" xml:space="preserve">Використовувати моноширинний шрифт лише в текстовому редакторі</x:String>
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Тема</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Перевизначення теми</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Використовувати фіксовану ширину вкладки в заголовку</x:String>
@@ -494,7 +485,7 @@
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReply" xml:space="preserve">Сховати та Застосувати</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Віддалене сховище:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Використовувати rebase замість merge</x:String>
@@ -614,8 +605,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Копіювати SHA</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Перейти до</x:String>
-  <x:String x:Key="Text.Squash" xml:space="preserve">Squash (Склеїти коміти)</x:String>
-  <x:String x:Key="Text.Squash.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Приватний ключ SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Шлях до сховища приватного ключа SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">ПОЧАТИ</x:String>
@@ -649,15 +638,12 @@
   <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Відносна тека для зберігання цього модуля.</x:String>
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Видалити підмодуль</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
-  <x:String x:Key="Text.TagCM.Copy" xml:space="preserve">Копіювати назву тегу</x:String>
-  <x:String x:Key="Text.TagCM.CopyMessage" xml:space="preserve">Копіювати повідомлення тегу</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Злиття ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Надіслати ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Оновити підмодулі</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Усі підмодулі</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Ініціалізувати за потреби</x:String>
-  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Рекурсивно</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Підмодуль:</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">Попередження</x:String>
@@ -689,7 +675,6 @@
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Індексувати всі зміни та закомітити</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">Ви проіндексували {0} файл(ів), але відображено лише {1} ({2} файлів відфільтровано). Продовжити?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ВИЯВЛЕНО КОНФЛІКТИ</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">ВІДКРИТИ ЗОВНІШНІЙ ІНСТРУМЕНТ ЗЛИТТЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ВІДКРИТИ ВСІ КОНФЛІКТИ В ЗОВНІШНЬОМУ ІНСТРУМЕНТІ ЗЛИТТЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛІКТИ ФАЙЛІВ ВИРІШЕНО</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">ВИКОРИСТАТИ МОЮ ВЕРСІЮ</x:String>

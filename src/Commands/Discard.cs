@@ -46,7 +46,7 @@ namespace SourceGit.Commands
                 await new Clean(repo, Models.CleanMode.OnlyIgnoredFiles).Use(log).ExecAsync().ConfigureAwait(false);
             }
 
-            await new Reset(repo, "HEAD", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
+            await new Reset(repo, "", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace SourceGit.Commands
             {
                 var pathSpecFile = Path.GetTempFileName();
                 await File.WriteAllLinesAsync(pathSpecFile, restores).ConfigureAwait(false);
-                await new Restore(repo, pathSpecFile, false).Use(log).ExecAsync().ConfigureAwait(false);
+                await new Restore(repo, pathSpecFile).Use(log).ExecAsync().ConfigureAwait(false);
                 File.Delete(pathSpecFile);
             }
         }

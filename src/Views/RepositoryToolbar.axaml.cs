@@ -16,7 +16,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OpenWithExternalTools(object sender, RoutedEventArgs e)
+        private void OpenWithExternalTools(object sender, RoutedEventArgs ev)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
             {
@@ -61,11 +61,41 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Header = App.Text("Repository.OpenIn", dupTool.Name);
                         item.Icon = new Image { Width = 16, Height = 16, Source = dupTool.IconImage };
-                        item.Click += (_, e) =>
+
+                        var options = dupTool.MakeLaunchOptions(fullpath);
+                        if (options is { Count: > 0 })
                         {
-                            dupTool.Open(fullpath);
-                            e.Handled = true;
-                        };
+                            var openAsFolder = new MenuItem();
+                            openAsFolder.Header = App.Text("Repository.OpenAsFolder");
+                            openAsFolder.Click += (_, e) =>
+                            {
+                                dupTool.Launch(fullpath.Quoted());
+                                e.Handled = true;
+                            };
+                            item.Items.Add(openAsFolder);
+                            item.Items.Add(new MenuItem() { Header = "-" });
+
+                            foreach (var opt in options)
+                            {
+                                var subItem = new MenuItem();
+                                subItem.Header = opt.Title;
+                                subItem.Click += (_, e) =>
+                                {
+                                    dupTool.Launch(opt.Args);
+                                    e.Handled = true;
+                                };
+
+                                item.Items.Add(subItem);
+                            }
+                        }
+                        else
+                        {
+                            item.Click += (_, e) =>
+                            {
+                                dupTool.Launch(fullpath.Quoted());
+                                e.Handled = true;
+                            };
+                        }
 
                         menu.Items.Add(item);
                     }
@@ -100,7 +130,7 @@ namespace SourceGit.Views
                 }
 
                 menu.Open(button);
-                e.Handled = true;
+                ev.Handled = true;
             }
         }
 
@@ -122,70 +152,70 @@ namespace SourceGit.Views
             }
         }
 
-        private void Fetch(object sender, TappedEventArgs e)
+        private async void Fetch(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.Fetch(e.KeyModifiers is KeyModifiers.Control);
+                await repo.FetchAsync(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }
 
-        private void FetchDirectlyByHotKey(object sender, RoutedEventArgs e)
+        private async void FetchDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.Fetch(true);
+                await repo.FetchAsync(true);
                 e.Handled = true;
             }
         }
 
-        private void Pull(object sender, TappedEventArgs e)
+        private async void Pull(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.Pull(e.KeyModifiers is KeyModifiers.Control);
+                await repo.PullAsync(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }
 
-        private void PullDirectlyByHotKey(object sender, RoutedEventArgs e)
+        private async void PullDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.Pull(true);
+                await repo.PullAsync(true);
                 e.Handled = true;
             }
         }
 
-        private void Push(object sender, TappedEventArgs e)
+        private async void Push(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.Push(e.KeyModifiers is KeyModifiers.Control);
+                await repo.PushAsync(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }
 
-        private void PushDirectlyByHotKey(object sender, RoutedEventArgs e)
+        private async void PushDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.Push(true);
+                await repo.PushAsync(true);
                 e.Handled = true;
             }
         }
 
-        private void StashAll(object _, TappedEventArgs e)
+        private async void StashAll(object _, TappedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                repo.StashAll(e.KeyModifiers is KeyModifiers.Control);
+                await repo.StashAllAsync(e.KeyModifiers is KeyModifiers.Control);
                 e.Handled = true;
             }
         }
 
-        private void OpenGitFlowMenu(object sender, RoutedEventArgs e)
+        private void OpenGitFlowMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
             {
@@ -248,10 +278,10 @@ namespace SourceGit.Views
                 menu.Open(control);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
-        private void OpenGitLFSMenu(object sender, RoutedEventArgs e)
+        private void OpenGitLFSMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
             {
@@ -277,12 +307,12 @@ namespace SourceGit.Views
                     fetch.Header = App.Text("GitLFS.Fetch");
                     fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
                     fetch.IsEnabled = repo.Remotes.Count > 0;
-                    fetch.Click += (_, e) =>
+                    fetch.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
                         {
                             if (repo.Remotes.Count == 1)
-                                repo.ShowAndStartPopup(new ViewModels.LFSFetch(repo));
+                                await repo.ShowAndStartPopupAsync(new ViewModels.LFSFetch(repo));
                             else
                                 repo.ShowPopup(new ViewModels.LFSFetch(repo));
                         }
@@ -295,12 +325,12 @@ namespace SourceGit.Views
                     pull.Header = App.Text("GitLFS.Pull");
                     pull.Icon = App.CreateMenuIcon("Icons.Pull");
                     pull.IsEnabled = repo.Remotes.Count > 0;
-                    pull.Click += (_, e) =>
+                    pull.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
                         {
                             if (repo.Remotes.Count == 1)
-                                repo.ShowAndStartPopup(new ViewModels.LFSPull(repo));
+                                await repo.ShowAndStartPopupAsync(new ViewModels.LFSPull(repo));
                             else
                                 repo.ShowPopup(new ViewModels.LFSPull(repo));
                         }
@@ -313,12 +343,12 @@ namespace SourceGit.Views
                     push.Header = App.Text("GitLFS.Push");
                     push.Icon = App.CreateMenuIcon("Icons.Push");
                     push.IsEnabled = repo.Remotes.Count > 0;
-                    push.Click += (_, e) =>
+                    push.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
                         {
                             if (repo.Remotes.Count == 1)
-                                repo.ShowAndStartPopup(new ViewModels.LFSPush(repo));
+                                await repo.ShowAndStartPopupAsync(new ViewModels.LFSPush(repo));
                             else
                                 repo.ShowPopup(new ViewModels.LFSPush(repo));
                         }
@@ -330,10 +360,10 @@ namespace SourceGit.Views
                     var prune = new MenuItem();
                     prune.Header = App.Text("GitLFS.Prune");
                     prune.Icon = App.CreateMenuIcon("Icons.Clean");
-                    prune.Click += (_, e) =>
+                    prune.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                            repo.ShowAndStartPopup(new ViewModels.LFSPrune(repo));
+                            await repo.ShowAndStartPopupAsync(new ViewModels.LFSPrune(repo));
 
                         e.Handled = true;
                     };
@@ -378,7 +408,7 @@ namespace SourceGit.Views
                     install.Icon = App.CreateMenuIcon("Icons.Init");
                     install.Click += async (_, e) =>
                     {
-                        await repo.InstallLFS();
+                        await repo.InstallLFSAsync();
                         e.Handled = true;
                     };
                     menu.Items.Add(install);
@@ -387,7 +417,7 @@ namespace SourceGit.Views
                 menu.Open(control);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
         private async void StartBisect(object sender, RoutedEventArgs e)
@@ -406,7 +436,16 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OpenCustomActionMenu(object sender, RoutedEventArgs e)
+        private async void Cleanup(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.CleanupAsync();
+                e.Handled = true;
+            }
+        }
+
+        private void OpenCustomActionMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
             {
@@ -422,9 +461,9 @@ namespace SourceGit.Views
                         var item = new MenuItem();
                         item.Icon = App.CreateMenuIcon("Icons.Action");
                         item.Header = label;
-                        item.Click += (_, e) =>
+                        item.Click += async (_, e) =>
                         {
-                            repo.ExecCustomAction(dup, null);
+                            await repo.ExecCustomActionAsync(dup, null);
                             e.Handled = true;
                         };
 
@@ -439,7 +478,7 @@ namespace SourceGit.Views
                 menu.Open(control);
             }
 
-            e.Handled = true;
+            ev.Handled = true;
         }
 
         private async void OpenGitLogs(object sender, RoutedEventArgs e)

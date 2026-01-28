@@ -1,70 +1,54 @@
+using System;
 using System.Collections.Generic;
-using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public enum BlockNavigationDirection
+    {
+        First = 0,
+        Prev,
+        Next,
+        Last
+    }
+
     public class BlockNavigation : ObservableObject
     {
-        public class Block
+        public record Block(int Start, int End)
         {
-            public int Start { get; set; } = 0;
-            public int End { get; set; } = 0;
-
-            public Block(int start, int end)
-            {
-                Start = start;
-                End = end;
-            }
-
-            public bool IsInRange(int line)
+            public bool Contains(int line)
             {
                 return line >= Start && line <= End;
             }
-        }
-
-        public AvaloniaList<Block> Blocks
-        {
-            get;
-        } = [];
-
-        public int Current
-        {
-            get => _current;
-            private set => SetProperty(ref _current, value);
         }
 
         public string Indicator
         {
             get
             {
-                if (Blocks.Count == 0)
+                if (_blocks.Count == 0)
                     return "-/-";
 
-                if (_current >= 0 && _current < Blocks.Count)
-                    return $"{_current + 1}/{Blocks.Count}";
+                if (_current >= 0 && _current < _blocks.Count)
+                    return $"{_current + 1}/{_blocks.Count}";
 
-                return $"-/{Blocks.Count}";
+                return $"-/{_blocks.Count}";
             }
         }
 
-        public BlockNavigation(object context)
+        public BlockNavigation(List<Models.TextDiffLine> lines, int cur)
         {
-            Blocks.Clear();
-            Current = -1;
-
-            var lines = new List<Models.TextDiffLine>();
-            if (context is Models.TextDiff combined)
-                lines = combined.Lines;
-            else if (context is TwoSideTextDiff twoSide)
-                lines = twoSide.Old;
+            _blocks.Clear();
 
             if (lines.Count == 0)
+            {
+                _current = -1;
                 return;
+            }
 
             var lineIdx = 0;
             var blockStartIdx = 0;
-            var isNewBlock = true;
+            var isReadingBlock = false;
             var blocks = new List<Block>();
 
             foreach (var line in lines)
@@ -72,73 +56,86 @@ namespace SourceGit.ViewModels
                 lineIdx++;
                 if (line.Type is Models.TextDiffLineType.Added or Models.TextDiffLineType.Deleted or Models.TextDiffLineType.None)
                 {
-                    if (isNewBlock)
+                    if (!isReadingBlock)
                     {
-                        isNewBlock = false;
+                        isReadingBlock = true;
                         blockStartIdx = lineIdx;
                     }
                 }
                 else
                 {
-                    if (!isNewBlock)
+                    if (isReadingBlock)
                     {
                         blocks.Add(new Block(blockStartIdx, lineIdx - 1));
-                        isNewBlock = true;
+                        isReadingBlock = false;
                     }
                 }
             }
 
-            if (!isNewBlock)
-                blocks.Add(new Block(blockStartIdx, lines.Count - 1));
+            if (isReadingBlock)
+                blocks.Add(new Block(blockStartIdx, lines.Count));
 
-            Blocks.AddRange(blocks);
+            _blocks.AddRange(blocks);
+            _current = Math.Min(_blocks.Count - 1, cur);
+        }
+
+        public int GetCurrentBlockIndex()
+        {
+            return _current;
         }
 
         public Block GetCurrentBlock()
         {
-            return (_current >= 0 && _current < Blocks.Count) ? Blocks[_current] : null;
+            if (_current >= 0 && _current < _blocks.Count)
+                return _blocks[_current];
+
+            return null;
         }
 
-        public Block GotoFirst()
+        public Block Goto(BlockNavigationDirection direction)
         {
-            if (Blocks.Count == 0)
+            if (_blocks.Count == 0)
                 return null;
 
-            Current = 0;
-            return Blocks[_current];
+            _current = direction switch
+            {
+                BlockNavigationDirection.First => 0,
+                BlockNavigationDirection.Prev => _current <= 0 ? 0 : _current - 1,
+                BlockNavigationDirection.Next => _current >= _blocks.Count - 1 ? _blocks.Count - 1 : _current + 1,
+                BlockNavigationDirection.Last => _blocks.Count - 1,
+                _ => _current
+            };
+
+            OnPropertyChanged(nameof(Indicator));
+            return _blocks[_current];
         }
 
-        public Block GotoPrev()
+        public void UpdateByCaretPosition(int caretLine)
         {
-            if (Blocks.Count == 0)
-                return null;
+            if (_current >= 0 && _current < _blocks.Count)
+            {
+                var block = _blocks[_current];
+                if (block.Contains(caretLine))
+                    return;
+            }
 
-            if (_current == -1)
-                Current = 0;
-            else if (_current > 0)
-                Current = _current - 1;
-            return Blocks[_current];
+            _current = -1;
+
+            for (var i = 0; i < _blocks.Count; i++)
+            {
+                var block = _blocks[i];
+                if (block.Start > caretLine)
+                    break;
+
+                _current = i;
+                if (block.End >= caretLine)
+                    break;
+            }
+
+            OnPropertyChanged(nameof(Indicator));
         }
 
-        public Block GotoNext()
-        {
-            if (Blocks.Count == 0)
-                return null;
-
-            if (_current < Blocks.Count - 1)
-                Current = _current + 1;
-            return Blocks[_current];
-        }
-
-        public Block GotoLast()
-        {
-            if (Blocks.Count == 0)
-                return null;
-
-            Current = Blocks.Count - 1;
-            return Blocks[_current];
-        }
-
-        private int _current = -1;
+        private int _current;
+        private readonly List<Block> _blocks = [];
     }
 }

@@ -12,14 +12,20 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}..HEAD";
+            Args = $"log --topo-order --cherry-pick --right-only --no-merges --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}...HEAD";
         }
 
         public async Task<List<Models.InteractiveCommit>> GetResultAsync()
         {
+            var commits = new List<Models.InteractiveCommit>();
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
-                return _commits;
+            {
+                App.RaiseException(Context, $"Failed to query commits for interactive-rebase. Reason: {rs.StdErr}");
+                return commits;
+            }
+
+            Models.InteractiveCommit current = null;
 
             var nextPartIdx = 0;
             var start = 0;
@@ -30,38 +36,38 @@ namespace SourceGit.Commands
                 switch (nextPartIdx)
                 {
                     case 0:
-                        _current = new Models.InteractiveCommit();
-                        _current.Commit.SHA = line;
-                        _commits.Add(_current);
+                        current = new Models.InteractiveCommit();
+                        current.Commit.SHA = line;
+                        commits.Add(current);
                         break;
                     case 1:
-                        ParseParent(line);
+                        current.Commit.ParseParents(line);
                         break;
                     case 2:
-                        _current.Commit.ParseDecorators(line);
+                        current.Commit.ParseDecorators(line);
                         break;
                     case 3:
-                        _current.Commit.Author = Models.User.FindOrAdd(line);
+                        current.Commit.Author = Models.User.FindOrAdd(line);
                         break;
                     case 4:
-                        _current.Commit.AuthorTime = ulong.Parse(line);
+                        current.Commit.AuthorTime = ulong.Parse(line);
                         break;
                     case 5:
-                        _current.Commit.Committer = Models.User.FindOrAdd(line);
+                        current.Commit.Committer = Models.User.FindOrAdd(line);
                         break;
                     case 6:
-                        _current.Commit.CommitterTime = ulong.Parse(line);
+                        current.Commit.CommitterTime = ulong.Parse(line);
                         break;
                     default:
                         var boundary = rs.StdOut.IndexOf(_boundary, end + 1, StringComparison.Ordinal);
                         if (boundary > end)
                         {
-                            _current.Message = rs.StdOut.Substring(start, boundary - start - 1);
+                            current.Message = rs.StdOut.Substring(start, boundary - start - 1);
                             end = boundary + _boundary.Length;
                         }
                         else
                         {
-                            _current.Message = rs.StdOut.Substring(start);
+                            current.Message = rs.StdOut.Substring(start);
                             end = rs.StdOut.Length - 2;
                         }
 
@@ -78,19 +84,9 @@ namespace SourceGit.Commands
                 end = rs.StdOut.IndexOf('\n', start);
             }
 
-            return _commits;
+            return commits;
         }
 
-        private void ParseParent(string data)
-        {
-            if (data.Length < 8)
-                return;
-
-            _current.Commit.Parents.AddRange(data.Split(' ', StringSplitOptions.RemoveEmptyEntries));
-        }
-
-        private List<Models.InteractiveCommit> _commits = [];
-        private Models.InteractiveCommit _current = null;
         private readonly string _boundary;
     }
 }

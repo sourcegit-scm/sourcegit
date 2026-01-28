@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.PushRevision"
              x:DataType="vm:PushRevision">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Push.Revision.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Push}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Push.Revision.Title}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="130,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
@@ -20,7 +26,6 @@
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
         <TextBlock Grid.Column="1"
-                   Classes="primary"
                    VerticalAlignment="Center"
                    Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                    Foreground="DarkOrange"

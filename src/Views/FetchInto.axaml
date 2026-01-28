@@ -7,9 +7,16 @@
              x:Class="SourceGit.Views.FetchInto"
              x:DataType="vm:FetchInto">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Fetch.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Fetch}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Fetch.Title}"/>
+    </StackPanel>
+    
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
       <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
       <TextBlock Text="{Binding Upstream.FriendlyName}" Margin="8,0,0,0"/>

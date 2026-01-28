@@ -15,9 +15,9 @@ namespace SourceGit.ViewModels
 
     public class CustomActionControlTextBox : ICustomActionControlParameter
     {
-        public string Label { get; set; } = string.Empty;
-        public string Placeholder { get; set; } = string.Empty;
-        public string Text { get; set; } = string.Empty;
+        public string Label { get; set; }
+        public string Placeholder { get; set; }
+        public string Text { get; set; }
 
         public CustomActionControlTextBox(string label, string placeholder, string defaultValue)
         {
@@ -31,9 +31,9 @@ namespace SourceGit.ViewModels
 
     public class CustomActionControlPathSelector : ObservableObject, ICustomActionControlParameter
     {
-        public string Label { get; set; } = string.Empty;
-        public string Placeholder { get; set; } = string.Empty;
-        public bool IsFolder { get; set; } = false;
+        public string Label { get; set; }
+        public string Placeholder { get; set; }
+        public bool IsFolder { get; set; }
 
         public string Path
         {
@@ -51,14 +51,14 @@ namespace SourceGit.ViewModels
 
         public string GetValue() => _path;
 
-        private string _path = string.Empty;
+        private string _path;
     }
 
     public class CustomActionControlCheckBox : ICustomActionControlParameter
     {
-        public string Label { get; set; } = string.Empty;
-        public string ToolTip { get; set; } = string.Empty;
-        public string CheckedValue { get; set; } = string.Empty;
+        public string Label { get; set; }
+        public string ToolTip { get; set; }
+        public string CheckedValue { get; set; }
         public bool IsChecked { get; set; }
 
         public CustomActionControlCheckBox(string label, string tooltip, string checkedValue, bool isChecked)
@@ -74,8 +74,8 @@ namespace SourceGit.ViewModels
 
     public class CustomActionControlComboBox : ObservableObject, ICustomActionControlParameter
     {
-        public string Label { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string Label { get; set; }
+        public string Description { get; set; }
         public List<string> Options { get; set; } = [];
 
         public string Value
@@ -119,41 +119,17 @@ namespace SourceGit.ViewModels
             get;
         } = [];
 
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action)
+        public ExecuteCustomAction(Repository repo, Models.CustomAction action, object scopeTarget)
         {
             _repo = repo;
             CustomAction = action;
-            Target = new Models.Null();
-            PrepareControlParameters();
-        }
-
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Branch branch)
-        {
-            _repo = repo;
-            CustomAction = action;
-            Target = branch;
-            PrepareControlParameters();
-        }
-
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Commit commit)
-        {
-            _repo = repo;
-            CustomAction = action;
-            Target = commit;
-            PrepareControlParameters();
-        }
-
-        public ExecuteCustomAction(Repository repo, Models.CustomAction action, Models.Tag tag)
-        {
-            _repo = repo;
-            CustomAction = action;
-            Target = tag;
+            Target = scopeTarget ?? new Models.Null();
             PrepareControlParameters();
         }
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Run custom action ...";
 
             var cmdline = PrepareStringByTarget(CustomAction.Arguments);
@@ -174,7 +150,6 @@ namespace SourceGit.ViewModels
                 _ = Task.Run(() => Run(cmdline));
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return true;
         }
 
@@ -206,9 +181,11 @@ namespace SourceGit.ViewModels
 
             return Target switch
             {
-                Models.Branch b => org.Replace("${BRANCH}", b.FriendlyName),
+                Models.Branch b => org.Replace("${BRANCH_FRIENDLY_NAME}", b.FriendlyName).Replace("${BRANCH}", b.Name).Replace("${REMOTE}", b.Remote),
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
                 Models.Tag t => org.Replace("${TAG}", t.Name),
+                Models.Remote r => org.Replace("${REMOTE}", r.Name),
+                Models.CustomActionTargetFile f => org.Replace("${FILE}", f.File).Replace("${SHA}", f.Revision?.SHA ?? string.Empty),
                 _ => org
             };
         }
@@ -250,8 +227,8 @@ namespace SourceGit.ViewModels
             start.StandardErrorEncoding = Encoding.UTF8;
             start.WorkingDirectory = _repo.FullPath;
 
-            using var proc = new Process() { StartInfo = start };
-            var builder = new StringBuilder();
+            using var proc = new Process();
+            proc.StartInfo = start;
 
             proc.OutputDataReceived += (_, e) =>
             {
@@ -259,6 +236,7 @@ namespace SourceGit.ViewModels
                     log?.AppendLine(e.Data);
             };
 
+            var builder = new StringBuilder();
             proc.ErrorDataReceived += (_, e) =>
             {
                 if (e.Data != null)

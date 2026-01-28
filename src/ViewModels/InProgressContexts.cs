@@ -5,45 +5,27 @@ namespace SourceGit.ViewModels
 {
     public abstract class InProgressContext
     {
-        protected InProgressContext(string repo, string cmd)
+        public async Task ContinueAsync()
         {
-            _repo = repo;
-            _cmd = cmd;
+            if (_continueCmd != null)
+                await _continueCmd.ExecAsync();
         }
 
-        public Task<bool> AbortAsync()
+        public async Task SkipAsync()
         {
-            return new Commands.Command()
-            {
-                WorkingDirectory = _repo,
-                Context = _repo,
-                Args = $"{_cmd} --abort",
-            }.ExecAsync();
+            if (_skipCmd != null)
+                await _skipCmd.ExecAsync();
         }
 
-        public virtual Task<bool> SkipAsync()
+        public async Task AbortAsync()
         {
-            return new Commands.Command()
-            {
-                WorkingDirectory = _repo,
-                Context = _repo,
-                Args = $"{_cmd} --skip",
-            }.ExecAsync();
+            if (_abortCmd != null)
+                await _abortCmd.ExecAsync();
         }
 
-        public virtual Task<bool> ContinueAsync()
-        {
-            return new Commands.Command()
-            {
-                WorkingDirectory = _repo,
-                Context = _repo,
-                Editor = Commands.Command.EditorType.None,
-                Args = $"{_cmd} --continue",
-            }.ExecAsync();
-        }
-
-        protected string _repo = string.Empty;
-        protected string _cmd = string.Empty;
+        protected Commands.Command _continueCmd = null;
+        protected Commands.Command _skipCmd = null;
+        protected Commands.Command _abortCmd = null;
     }
 
     public class CherryPickInProgress : InProgressContext
@@ -58,10 +40,31 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public CherryPickInProgress(Repository repo) : base(repo.FullPath, "cherry-pick")
+        public CherryPickInProgress(Repository repo)
         {
+            _continueCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "cherry-pick --continue",
+            };
+
+            _skipCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "cherry-pick --skip",
+            };
+
+            _abortCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "cherry-pick --abort",
+            };
+
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "CHERRY_PICK_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = headSHA };
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResult() ?? new Models.Commit() { SHA = headSHA };
             HeadName = Head.GetFriendlyName();
         }
     }
@@ -88,8 +91,30 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public RebaseInProgress(Repository repo) : base(repo.FullPath, "rebase")
+        public RebaseInProgress(Repository repo)
         {
+            _continueCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Editor = Commands.Command.EditorType.RebaseEditor,
+                Args = "rebase --continue",
+            };
+
+            _skipCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "rebase --skip",
+            };
+
+            _abortCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "rebase --abort",
+            };
+
             HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
             if (HeadName.StartsWith("refs/heads/"))
                 HeadName = HeadName.Substring(11);
@@ -99,25 +124,14 @@ namespace SourceGit.ViewModels
             var stoppedSHAPath = Path.Combine(repo.GitDir, "rebase-merge", "stopped-sha");
             var stoppedSHA = File.Exists(stoppedSHAPath)
                 ? File.ReadAllText(stoppedSHAPath).Trim()
-                : new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).GetResultAsync().Result;
+                : new Commands.QueryRevisionByRefName(repo.FullPath, HeadName).GetResult();
 
             if (!string.IsNullOrEmpty(stoppedSHA))
-                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = stoppedSHA };
+                StoppedAt = new Commands.QuerySingleCommit(repo.FullPath, stoppedSHA).GetResult() ?? new Models.Commit() { SHA = stoppedSHA };
 
             var ontoSHA = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "onto")).Trim();
-            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = ontoSHA };
+            Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).GetResult() ?? new Models.Commit() { SHA = ontoSHA };
             BaseName = Onto.GetFriendlyName();
-        }
-
-        public override Task<bool> ContinueAsync()
-        {
-            return new Commands.Command()
-            {
-                WorkingDirectory = _repo,
-                Context = _repo,
-                Editor = Commands.Command.EditorType.RebaseEditor,
-                Args = "rebase --continue",
-            }.ExecAsync();
         }
     }
 
@@ -128,10 +142,31 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public RevertInProgress(Repository repo) : base(repo.FullPath, "revert")
+        public RevertInProgress(Repository repo)
         {
+            _continueCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "revert --continue",
+            };
+
+            _skipCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "revert --skip",
+            };
+
+            _abortCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "revert --abort",
+            };
+
             var headSHA = File.ReadAllText(Path.Combine(repo.GitDir, "REVERT_HEAD")).Trim();
-            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = headSHA };
+            Head = new Commands.QuerySingleCommit(repo.FullPath, headSHA).GetResult() ?? new Models.Commit() { SHA = headSHA };
         }
     }
 
@@ -152,18 +187,27 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public MergeInProgress(Repository repo) : base(repo.FullPath, "merge")
+        public MergeInProgress(Repository repo)
         {
-            Current = new Commands.QueryCurrentBranch(repo.FullPath).GetResultAsync().Result;
+            _continueCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "merge --continue",
+            };
+
+            _abortCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "merge --abort",
+            };
+
+            Current = new Commands.QueryCurrentBranch(repo.FullPath).GetResult();
 
             var sourceSHA = File.ReadAllText(Path.Combine(repo.GitDir, "MERGE_HEAD")).Trim();
-            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).GetResultAsync().Result ?? new Models.Commit() { SHA = sourceSHA };
+            Source = new Commands.QuerySingleCommit(repo.FullPath, sourceSHA).GetResult() ?? new Models.Commit() { SHA = sourceSHA };
             SourceName = Source.GetFriendlyName();
-        }
-
-        public override Task<bool> SkipAsync()
-        {
-            return Task.FromResult(true);
         }
     }
 }

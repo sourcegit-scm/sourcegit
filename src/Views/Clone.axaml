@@ -8,7 +8,16 @@
              x:Class="SourceGit.Views.Clone"
              x:DataType="vm:Clone">
   <StackPanel Orientation="Vertical" Margin="8,0,0,0">
-    <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Clone}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Margin="0,4,0,0"
+            Data="{StaticResource Icons.Clone}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Clone}"/>
+    </StackPanel>
 
     <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,32,32,32,32" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0"

@@ -11,6 +11,11 @@ namespace SourceGit.Commands
             Args = "branch --show-current";
         }
 
+        public string GetResult()
+        {
+            return ReadToEnd().StdOut.Trim();
+        }
+
         public async Task<string> GetResultAsync()
         {
             var rs = await ReadToEndAsync().ConfigureAwait(false);

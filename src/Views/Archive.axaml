@@ -10,9 +10,16 @@
              x:Class="SourceGit.Views.Archive"
              x:DataType="vm:Archive">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.Archive.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Archive}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Archive.Title}"/>
+    </StackPanel>
+    
     <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -30,7 +37,7 @@
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
               <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>

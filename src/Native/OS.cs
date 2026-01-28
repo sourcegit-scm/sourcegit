@@ -21,7 +21,7 @@ namespace SourceGit.Native
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
 
-            void OpenTerminal(string workdir);
+            void OpenTerminal(string workdir, string args);
             void OpenInFileManager(string path, bool select);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
@@ -70,11 +70,41 @@ namespace SourceGit.Native
             set;
         } = string.Empty;
 
+        public static string ShellOrTerminalArgs
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public static List<Models.ExternalTool> ExternalTools
         {
             get;
             set;
         } = [];
+
+        public static int ExternalMergerType
+        {
+            get;
+            set;
+        } = 0;
+
+        public static string ExternalMergerExecFile
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public static string ExternalMergeArgs
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public static string ExternalDiffArgs
+        {
+            get;
+            set;
+        } = string.Empty;
 
         public static bool UseSystemWindowFrame
         {
@@ -98,7 +128,7 @@ namespace SourceGit.Native
             }
             else
             {
-                throw new Exception("Platform unsupported!!!");
+                throw new PlatformNotSupportedException();
             }
         }
 
@@ -112,11 +142,24 @@ namespace SourceGit.Native
             if (OperatingSystem.IsWindows())
             {
                 var execFile = Process.GetCurrentProcess().MainModule!.FileName;
-                var portableDir = Path.Combine(Path.GetDirectoryName(execFile), "data");
+                var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
                 if (Directory.Exists(portableDir))
                 {
                     DataDir = portableDir;
                     return;
+                }
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                var appImage = Environment.GetEnvironmentVariable("APPIMAGE");
+                if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))
+                {
+                    var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");
+                    if (Directory.Exists(portableDir))
+                    {
+                        DataDir = portableDir;
+                        return;
+                    }
                 }
             }
 
@@ -156,6 +199,43 @@ namespace SourceGit.Native
                 ShellOrTerminal = string.Empty;
             else
                 ShellOrTerminal = _backend.FindTerminal(shell);
+
+            ShellOrTerminalArgs = shell.Args;
+        }
+
+        public static Models.DiffMergeTool GetDiffMergeTool(bool onlyDiff)
+        {
+            if (ExternalMergerType < 0 || ExternalMergerType >= Models.ExternalMerger.Supported.Count)
+                return null;
+
+            if (ExternalMergerType != 0 && (string.IsNullOrEmpty(ExternalMergerExecFile) || !File.Exists(ExternalMergerExecFile)))
+                return null;
+
+            return new Models.DiffMergeTool(ExternalMergerExecFile, onlyDiff ? ExternalDiffArgs : ExternalMergeArgs);
+        }
+
+        public static void AutoSelectExternalMergeToolExecFile()
+        {
+            if (ExternalMergerType >= 0 && ExternalMergerType < Models.ExternalMerger.Supported.Count)
+            {
+                var merger = Models.ExternalMerger.Supported[ExternalMergerType];
+                var externalTool = ExternalTools.Find(x => x.Name.Equals(merger.Name, StringComparison.Ordinal));
+                if (externalTool != null)
+                    ExternalMergerExecFile = externalTool.ExecFile;
+                else if (!OperatingSystem.IsWindows() && File.Exists(merger.Finder))
+                    ExternalMergerExecFile = merger.Finder;
+                else
+                    ExternalMergerExecFile = string.Empty;
+
+                ExternalDiffArgs = merger.DiffCmd;
+                ExternalMergeArgs = merger.MergeCmd;
+            }
+            else
+            {
+                ExternalMergerExecFile = string.Empty;
+                ExternalDiffArgs = string.Empty;
+                ExternalMergeArgs = string.Empty;
+            }
         }
 
         public static void OpenInFileManager(string path, bool select = false)
@@ -173,7 +253,7 @@ namespace SourceGit.Native
             if (string.IsNullOrEmpty(ShellOrTerminal))
                 App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
             else
-                _backend.OpenTerminal(workdir);
+                _backend.OpenTerminal(workdir, ShellOrTerminalArgs);
         }
 
         public static void OpenWithDefaultEditor(string file)
@@ -188,6 +268,19 @@ namespace SourceGit.Native
                 return fullpath.Replace('/', '\\');
 
             return fullpath;
+        }
+
+        public static string GetRelativePathToHome(string path)
+        {
+            if (OperatingSystem.IsWindows())
+                return path;
+
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var prefixLen = home.EndsWith('/') ? home.Length - 1 : home.Length;
+            if (path.StartsWith(home, StringComparison.Ordinal))
+                return $"~{path.AsSpan(prefixLen)}";
+
+            return path;
         }
 
         private static void UpdateGitVersion()
@@ -211,7 +304,7 @@ namespace SourceGit.Native
 
             try
             {
-                using var proc = Process.Start(start);
+                using var proc = Process.Start(start)!;
                 var rs = proc.StandardOutput.ReadToEnd();
                 proc.WaitForExit();
                 if (proc.ExitCode == 0 && !string.IsNullOrWhiteSpace(rs))

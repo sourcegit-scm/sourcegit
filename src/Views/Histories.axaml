@@ -25,10 +25,12 @@
 
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <DataGrid x:Name="CommitListContainer"
-                Background="{DynamicResource Brush.Contents}"
+                Classes="static_scrollbar"
+                ScrollViewer.AllowAutoHide="False"
+                Background="{DynamicResource Brush.Window}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
-                SelectedItem="{Binding AutoSelectedCommit, Mode=OneWay}"
+                SelectedItem="{Binding SelectedCommit, Mode=OneWay}"
                 CanUserReorderColumns="False"
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False"
@@ -47,23 +49,33 @@
                 ContextRequested="OnCommitListContextRequested"
                 DoubleTapped="OnCommitListDoubleTapped"
                 KeyDown="OnCommitListKeyDown">
-        <DataGrid.Resources>
-          <SolidColorBrush x:Key="DataGridGridLinesBrush" Color="{DynamicResource Color.Border0}" />
-        </DataGrid.Resources>
-
         <DataGrid.Styles>
+          <Style Selector="DataGrid.static_scrollbar">
+            <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
+              <Setter Property="Grid.RowSpan" Value="1" />
+              <Setter Property="Grid.ColumnSpan" Value="2" />
+            </Style>
+            <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
+              <Setter Property="Grid.Column" Value="0" />
+            </Style>
+            <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
+              <Setter Property="Fill" Value="{DynamicResource Brush.Border0}"/>
+            </Style>
+            <Style Selector="^ /template/ ScrollBar">
+              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+            </Style>
+          </Style>
+          
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
-            <Setter Property="Background" Value="{DynamicResource Brush.Window}" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
             <Setter Property="Template">
               <ControlTemplate>
                 <Border x:Name="HeaderBorder"
                         Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                  <Grid ColumnDefinitions="*,Auto">
+                        BorderThickness="0"
+                        CornerRadius="0">
+                  <Grid ColumnDefinitions="*,4">
                     <ContentPresenter x:Name="PART_ContentPresenter"
                                       Grid.Column="0"
                                       Content="{TemplateBinding Content}"
@@ -71,8 +83,8 @@
 
                     <Rectangle Name="VerticalSeparator"
                                Grid.Column="1"
-                               Width="1.1"
-                               VerticalAlignment="Stretch"
+                               Width="1"
+                               HorizontalAlignment="Center" VerticalAlignment="Stretch"
                                Fill="{DynamicResource Brush.Border0}"
                                IsVisible="{TemplateBinding AreSeparatorsVisible}" />
                   </Grid>
@@ -95,6 +107,10 @@
               </ControlTemplate>
             </Setter>
           </Style>
+
+          <Style Selector="DataGridRowsPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+          </Style>
         </DataGrid.Styles>
 
         <DataGrid.Columns>
@@ -105,7 +121,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="{Binding Margin}" ClipToBounds="True" Background="Transparent">
+                <Border Padding="{Binding LeftMargin, Converter={x:Static c:DoubleConverters.ToLeftMargin}}" ClipToBounds="True" Background="Transparent">
                   <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
                     <v:CommitStatusIndicator Grid.Column="0"
                                              CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
@@ -122,7 +138,6 @@
                     <v:CommitRefsPresenter Grid.Column="2"
                                            Background="{DynamicResource Brush.Contents}"
                                            Foreground="{DynamicResource Brush.FG1}"
-                                           FontFamily="{DynamicResource Fonts.Primary}"
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                            FontSize="12"
                                            VerticalAlignment="Center">
@@ -135,15 +150,15 @@
                     </v:CommitRefsPresenter>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
-                                              FontFamily="{DynamicResource Fonts.Primary}"
+                                              FontFamily="{DynamicResource Fonts.Default}"
                                               CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                               InlineCodeBackground="{DynamicResource Brush.InlineCode}"
                                               Foreground="{DynamicResource Brush.FG1}"
                                               LinkForeground="{DynamicResource Brush.Link}"
                                               Subject="{Binding Subject}"
                                               IssueTrackers="{Binding $parent[v:Histories].IssueTrackers}"
-                                              FontWeight="{Binding FontWeight}"
-                                              Opacity="{Binding Opacity}"/>
+                                              FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                                              Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -169,15 +184,14 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             User="{Binding Author}"
-                            Opacity="{Binding Opacity}"
+                            Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                             IsHitTestVisible="False"/>
 
-                  <Border Grid.Column="1" Padding="8,0,4,0" ClipToBounds="True">
-                    <TextBlock Classes="primary"
-                               Text="{Binding Author.Name}"
-                               FontWeight="{Binding FontWeight}"
-                               HorizontalAlignment="Left"
-                               Opacity="{Binding Opacity}"/>
+                  <Border Grid.Column="1" Padding="8,0" ClipToBounds="True">
+                    <TextBlock Text="{Binding Author.Name}"
+                               FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                               Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                               HorizontalAlignment="Left"/>
                   </Border>
                 </Grid>
               </DataTemplate>
@@ -192,10 +206,9 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True">
-                  <TextBlock Classes="primary"
-                             Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                             FontWeight="{Binding FontWeight}"
-                             Opacity="{Binding Opacity}"/>
+                  <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -218,9 +231,8 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
-                  <v:CommitTimeTextBlock Classes="primary"
-                                         FontWeight="{Binding FontWeight}"
-                                         Opacity="{Binding Opacity}"
+                  <v:CommitTimeTextBlock FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                                         Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                                          UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
                                          ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
                                          DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat}"/>
@@ -239,6 +251,17 @@
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>
+
+      <Border Width="32" Height="32"
+              Margin="0,0,16,8"
+              CornerRadius="16"
+              Background="{DynamicResource Brush.Accent}"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Effect="drop-shadow(0 0 8 #80000000)"
+              PointerPressed="OnScrollToTopPointerPressed"
+              IsVisible="{Binding $parent[v:Histories].IsScrollToTopVisible}">
+        <Path Width="16" Height="16" Data="{StaticResource Icons.ScrollToTop}" Fill="White"/>
+      </Border>
 
       <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
     </Grid>

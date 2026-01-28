@@ -8,9 +8,15 @@
              x:Class="SourceGit.Views.LFSPush"
              x:DataType="vm:LFSPush">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.GitLFS.Push.Title}"/>
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Push}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.GitLFS.Push.Title}"/>
+    </StackPanel>
 
     <Grid Margin="0,16,0,0" RowDefinitions="32,Auto" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"

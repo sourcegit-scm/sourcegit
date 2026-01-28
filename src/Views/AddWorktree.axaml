@@ -3,14 +3,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddWorktree"
              x:DataType="vm:AddWorktree">
   <StackPanel Orientation="Vertical" Margin="8,0">
-    <TextBlock FontSize="18"
-               Classes="bold"
-               Text="{DynamicResource Text.AddWorktree}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,32" ColumnDefinitions="150,*">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Worktree.Add}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.AddWorktree}"/>
+    </StackPanel>
+    
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -80,6 +88,7 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
+                IsTextSearchEnabled="True"
                 SelectedItem="{Binding SelectedTrackingBranch, Mode=TwoWay}"
                 IsVisible="{Binding SetTrackingBranch, Mode=OneWay}">
         <ComboBox.ItemTemplate>
@@ -93,8 +102,10 @@
       </ComboBox>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
+                Height="32"
                 Content="{DynamicResource Text.AddWorktree.Tracking.Toggle}"
-                IsChecked="{Binding SetTrackingBranch, Mode=TwoWay}"/>
+                IsChecked="{Binding SetTrackingBranch, Mode=TwoWay}"
+                IsVisible="{Binding RemoteBranches, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
     </Grid>
   </StackPanel>
 </UserControl>

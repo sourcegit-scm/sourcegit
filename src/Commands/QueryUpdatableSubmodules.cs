@@ -7,14 +7,16 @@ namespace SourceGit.Commands
 {
     public partial class QueryUpdatableSubmodules : Command
     {
-        [GeneratedRegex(@"^([U\-\+ ])([0-9a-f]+)\s(.*?)(\s\(.*\))?$")]
+        [GeneratedRegex(@"^([\-\+])([0-9a-f]+)\s(.*?)(\s\(.*\))?$")]
         private static partial Regex REG_FORMAT_STATUS();
 
-        public QueryUpdatableSubmodules(string repo)
+        public QueryUpdatableSubmodules(string repo, bool includeUninited)
         {
             WorkingDirectory = repo;
             Context = repo;
             Args = "submodule status";
+
+            _includeUninited = includeUninited;
         }
 
         public async Task<List<string>> GetResultAsync()
@@ -30,12 +32,16 @@ namespace SourceGit.Commands
                 {
                     var stat = match.Groups[1].Value;
                     var path = match.Groups[3].Value;
-                    if (!stat.StartsWith(' '))
-                        submodules.Add(path);
+                    if (!_includeUninited && stat.StartsWith('-'))
+                        continue;
+
+                    submodules.Add(path);
                 }
             }
 
             return submodules;
         }
+
+        private bool _includeUninited = false;
     }
 }

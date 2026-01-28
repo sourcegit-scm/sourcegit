@@ -20,17 +20,6 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public bool IsRecurseSubmoduleVisible
-        {
-            get => _repo.Submodules.Count > 0;
-        }
-
-        public bool RecurseSubmodules
-        {
-            get => _repo.Settings.UpdateSubmodulesOnCheckoutBranch;
-            set => _repo.Settings.UpdateSubmodulesOnCheckoutBranch = value;
-        }
-
         public CheckoutAndFastForward(Repository repo, Models.Branch localBranch, Models.Branch remoteBranch)
         {
             _repo = repo;
@@ -40,7 +29,7 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Checkout and Fast-Forward '{LocalBranch.Name}' ...";
 
             var log = _repo.CreateLog($"Checkout and Fast-Forward '{LocalBranch.Name}' ...");
@@ -52,12 +41,9 @@ namespace SourceGit.ViewModels
                 if (refs.Count == 0)
                 {
                     var msg = App.Text("Checkout.WarnLostCommits");
-                    var shouldContinue = await App.AskConfirmAsync(msg, null);
+                    var shouldContinue = await App.AskConfirmAsync(msg);
                     if (!shouldContinue)
-                    {
-                        _repo.SetWatcherEnabled(true);
                         return true;
-                    }
                 }
             }
 
@@ -66,16 +52,15 @@ namespace SourceGit.ViewModels
 
             if (!DiscardLocalChanges)
             {
-                var changes = await new Commands.CountLocalChangesWithoutUntracked(_repo.FullPath).GetResultAsync();
+                var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                 if (changes > 0)
                 {
                     succ = await new Commands.Stash(_repo.FullPath)
                         .Use(log)
-                        .PushAsync("CHECKOUT_AND_FASTFORWARD_AUTO_STASH");
+                        .PushAsync("CHECKOUT_AND_FASTFORWARD_AUTO_STASH", false);
                     if (!succ)
                     {
                         log.Complete();
-                        _repo.SetWatcherEnabled(true);
                         return false;
                     }
 
@@ -89,14 +74,7 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
-                if (IsRecurseSubmoduleVisible && RecurseSubmodules)
-                {
-                    var submodules = await new Commands.QueryUpdatableSubmodules(_repo.FullPath).GetResultAsync();
-                    if (submodules.Count > 0)
-                        await new Commands.Submodule(_repo.FullPath)
-                            .Use(log)
-                            .UpdateAsync(submodules, true, true);
-                }
+                await _repo.AutoUpdateSubmodulesAsync(log);
 
                 if (needPopStash)
                     await new Commands.Stash(_repo.FullPath)
@@ -106,11 +84,10 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            if (_repo.HistoriesFilterMode == Models.FilterMode.Included)
-                _repo.SetBranchFilterMode(LocalBranch, Models.FilterMode.Included, true, false);
+            if (_repo.HistoryFilterMode == Models.FilterMode.Included)
+                _repo.SetBranchFilterMode(LocalBranch, Models.FilterMode.Included, false, false);
 
             _repo.MarkBranchesDirtyManually();
-            _repo.SetWatcherEnabled(true);
 
             ProgressDescription = "Waiting for branch updated...";
             await Task.Delay(400);

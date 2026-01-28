@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
@@ -30,26 +31,32 @@ namespace SourceGit.Commands
                         last = new Models.Worktree() { FullPath = line.Substring(9).Trim() };
                         last.RelativePath = Path.GetRelativePath(WorkingDirectory, last.FullPath);
                         worktrees.Add(last);
+                        continue;
                     }
-                    else if (line.StartsWith("bare", StringComparison.Ordinal))
+
+                    if (last == null)
+                        continue;
+
+                    if (line.StartsWith("bare", StringComparison.Ordinal))
                     {
-                        last!.IsBare = true;
+                        worktrees.Remove(last);
+                        last = null;
                     }
                     else if (line.StartsWith("HEAD ", StringComparison.Ordinal))
                     {
-                        last!.Head = line.Substring(5).Trim();
+                        last.Head = line.Substring(5).Trim();
                     }
                     else if (line.StartsWith("branch ", StringComparison.Ordinal))
                     {
-                        last!.Branch = line.Substring(7).Trim();
+                        last.Branch = line.Substring(7).Trim();
                     }
                     else if (line.StartsWith("detached", StringComparison.Ordinal))
                     {
-                        last!.IsDetached = true;
+                        last.IsDetached = true;
                     }
                     else if (line.StartsWith("locked", StringComparison.Ordinal))
                     {
-                        last!.IsLocked = true;
+                        last.IsLocked = true;
                     }
                 }
             }
@@ -59,26 +66,20 @@ namespace SourceGit.Commands
 
         public async Task<bool> AddAsync(string fullpath, string name, bool createNew, string tracking)
         {
-            Args = "worktree add ";
-
+            var builder = new StringBuilder(1024);
+            builder.Append("worktree add ");
             if (!string.IsNullOrEmpty(tracking))
-                Args += "--track ";
-
+                builder.Append("--track ");
             if (!string.IsNullOrEmpty(name))
-            {
-                if (createNew)
-                    Args += $"-b {name} ";
-                else
-                    Args += $"-B {name} ";
-            }
-
-            Args += $"{fullpath.Quoted()} ";
+                builder.Append(createNew ? "-b " : "-B ").Append(name).Append(' ');
+            builder.Append(fullpath.Quoted()).Append(' ');
 
             if (!string.IsNullOrEmpty(tracking))
-                Args += tracking;
+                builder.Append(tracking);
             else if (!string.IsNullOrEmpty(name) && !createNew)
-                Args += name;
+                builder.Append(name);
 
+            Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
         }
 

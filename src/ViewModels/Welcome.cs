@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -50,6 +51,23 @@ namespace SourceGit.ViewModels
             MakeTreeRows(rows, Preferences.Instance.RepositoryNodes);
             Rows.Clear();
             Rows.AddRange(rows);
+        }
+
+        public async Task UpdateStatusAsync(bool force, CancellationToken? token)
+        {
+            if (_isUpdatingStatus)
+                return;
+
+            _isUpdatingStatus = true;
+
+            // avoid collection was modified while enumerating.
+            var nodes = new List<RepositoryNode>();
+            nodes.AddRange(Preferences.Instance.RepositoryNodes);
+
+            foreach (var node in nodes)
+                await node.UpdateStatusAsync(force, token);
+
+            _isUpdatingStatus = false;
         }
 
         public void ToggleNodeIsExpanded(RepositoryNode node)
@@ -123,9 +141,11 @@ namespace SourceGit.ViewModels
                 activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
         }
 
-        public void AddRepository(string path, RepositoryNode parent, bool moveNode, bool open)
+        public async Task AddRepositoryAsync(string path, RepositoryNode parent, bool moveNode, bool open)
         {
             var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, moveNode);
+            await node.UpdateStatusAsync(false, null);
+
             if (open)
                 node.Open();
         }
@@ -174,6 +194,22 @@ namespace SourceGit.ViewModels
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new CreateGroup(null);
+        }
+
+        public RepositoryNode FindNodeById(string id, RepositoryNode root = null)
+        {
+            var collection = (root == null) ? Preferences.Instance.RepositoryNodes : root.SubNodes;
+            foreach (var node in collection)
+            {
+                if (node.Id.Equals(id, StringComparison.Ordinal))
+                    return node;
+
+                var sub = FindNodeById(id, node);
+                if (sub != null)
+                    return sub;
+            }
+
+            return null;
         }
 
         public RepositoryNode FindParentGroup(RepositoryNode node, RepositoryNode group = null)
@@ -254,5 +290,6 @@ namespace SourceGit.ViewModels
         }
 
         private string _searchFilter = string.Empty;
+        private bool _isUpdatingStatus = false;
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Windows.Input;
+
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace SourceGit
 {
@@ -52,6 +54,18 @@ namespace SourceGit
                 await CopyTextAsync(inlines.Text);
             else if (!string.IsNullOrEmpty(textBlock.Text))
                 await CopyTextAsync(textBlock.Text);
+        });
+
+        public static readonly Command HideAppCommand = new Command(_ =>
+        {
+            if (Current is App app && app.TryGetFeature(typeof(IActivatableLifetime)) is IActivatableLifetime lifetime)
+                lifetime.TryEnterBackground();
+        });
+
+        public static readonly Command ShowAppCommand = new Command(_ =>
+        {
+            if (Current is App app && app.TryGetFeature(typeof(IActivatableLifetime)) is IActivatableLifetime lifetime)
+                lifetime.TryLeaveBackground();
         });
     }
 }

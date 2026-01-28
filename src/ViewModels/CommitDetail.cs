@@ -5,11 +5,27 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Avalonia;
 using Avalonia.Threading;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public class CommitDetailSharedData
+    {
+        public int ActiveTabIndex
+        {
+            get;
+            set;
+        }
+
+        public CommitDetailSharedData()
+        {
+            ActiveTabIndex = Preferences.Instance.ShowChangesInCommitDetailByDefault ? 1 : 0;
+        }
+    }
+
     public partial class CommitDetail : ObservableObject, IDisposable
     {
         public Repository Repository
@@ -17,17 +33,18 @@ namespace SourceGit.ViewModels
             get => _repo;
         }
 
-        public int ActivePageIndex
+        public int ActiveTabIndex
         {
-            get => _rememberActivePageIndex ? _repo.CommitDetailActivePageIndex : _activePageIndex;
+            get => _sharedData.ActiveTabIndex;
             set
             {
-                if (_rememberActivePageIndex)
-                    _repo.CommitDetailActivePageIndex = value;
-                else
-                    _activePageIndex = value;
+                if (value != _sharedData.ActiveTabIndex)
+                {
+                    _sharedData.ActiveTabIndex = value;
 
-                OnPropertyChanged();
+                    if (value == 1 && DiffContext == null && _selectedChanges is { Count: 1 })
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _selectedChanges[0]));
+                }
             }
         }
 
@@ -36,6 +53,9 @@ namespace SourceGit.ViewModels
             get => _commit;
             set
             {
+                if (_commit != null && value != null && _commit.SHA.Equals(value.SHA, StringComparison.Ordinal))
+                    return;
+
                 if (SetProperty(ref _commit, value))
                     Refresh();
             }
@@ -84,7 +104,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedChanges, value))
                 {
-                    if (value is not { Count: 1 })
+                    if (ActiveTabIndex != 1 || value is not { Count: 1 })
                         DiffContext = null;
                     else
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, value[0]), _diffContext);
@@ -142,10 +162,16 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _canOpenRevisionFileWithDefaultEditor, value);
         }
 
-        public CommitDetail(Repository repo, bool rememberActivePageIndex)
+        public Vector ScrollOffset
+        {
+            get => _scrollOffset;
+            set => SetProperty(ref _scrollOffset, value);
+        }
+
+        public CommitDetail(Repository repo, CommitDetailSharedData sharedData)
         {
             _repo = repo;
-            _rememberActivePageIndex = rememberActivePageIndex;
+            _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 
@@ -207,10 +233,7 @@ namespace SourceGit.ViewModels
 
         public void OpenChangeInMergeTool(Models.Change c)
         {
-            var toolType = Preferences.Instance.ExternalMergeToolType;
-            var toolPath = Preferences.Instance.ExternalMergeToolPath;
-            var opt = new Models.DiffOption(_commit, c);
-            new Commands.DiffTool(_repo.FullPath, toolType, toolPath, opt).Open();
+            new Commands.DiffTool(_repo.FullPath, new Models.DiffOption(_commit, c)).Open();
         }
 
         public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
@@ -227,7 +250,7 @@ namespace SourceGit.ViewModels
         public async Task ResetToThisRevisionAsync(string path)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
-            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, $"{_commit.SHA}");
+            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, _commit.SHA);
             log.Complete();
         }
 
@@ -239,6 +262,41 @@ namespace SourceGit.ViewModels
                 await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
 
             await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+            log.Complete();
+        }
+
+        public async Task ResetMultipleToThisRevisionAsync(List<Models.Change> changes)
+        {
+            var files = new List<string>();
+            foreach (var c in changes)
+                files.Add(c.Path);
+
+            var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}'");
+            await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(files, _commit.SHA);
+            log.Complete();
+        }
+
+        public async Task ResetMultipleToParentRevisionAsync(List<Models.Change> changes)
+        {
+            var renamed = new List<string>();
+            var modified = new List<string>();
+
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Renamed)
+                    renamed.Add(c.OriginalPath);
+                else
+                    modified.Add(c.Path);
+            }
+
+            var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}~1'");
+
+            if (modified.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(modified, $"{_commit.SHA}~1");
+
+            if (renamed.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(renamed, $"{_commit.SHA}~1");
+
             log.Complete();
         }
 
@@ -271,7 +329,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task OpenRevisionFileWithDefaultEditorAsync(string file)
+        public async Task OpenRevisionFileAsync(string file, Models.ExternalTool tool)
         {
             var fullPath = Native.OS.GetAbsPath(_repo.FullPath, file);
             var fileName = Path.GetFileNameWithoutExtension(fullPath) ?? "";
@@ -282,7 +340,10 @@ namespace SourceGit.ViewModels
                 .RunAsync(_repo.FullPath, _commit.SHA, file, tmpFile)
                 .ConfigureAwait(false);
 
-            Native.OS.OpenWithDefaultEditor(tmpFile);
+            if (tool == null)
+                Native.OS.OpenWithDefaultEditor(tmpFile);
+            else
+                tool.Launch(tmpFile.Quoted());
         }
 
         public async Task SaveRevisionFileAsync(Models.Object file, string saveTo)
@@ -294,7 +355,7 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = null;
+            _changes = [];
             _requestingRevisionFiles = false;
             _revisionFiles = null;
 
@@ -305,6 +366,7 @@ namespace SourceGit.ViewModels
             Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
+            ScrollOffset = Vector.Zero;
 
             if (_commit == null)
                 return;
@@ -320,7 +382,7 @@ namespace SourceGit.ViewModels
                 var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA)
                     .GetResultAsync()
                     .ConfigureAwait(false);
-                var inlines = await ParseInlinesInMessageAsync(message);
+                var inlines = await ParseInlinesInMessageAsync(message).ConfigureAwait(false);
 
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Post(() =>
@@ -357,7 +419,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var parent = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : _commit.Parents[0];
+                var parent = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{_commit.SHA}^";
                 var cmd = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { CancellationToken = token };
                 var changes = await cmd.ReadAsync().ConfigureAwait(false);
                 var visible = changes;
@@ -423,15 +485,23 @@ namespace SourceGit.ViewModels
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
 
+            var inlineCodeMatches = REG_INLINECODE_FORMAT().Matches(message);
+            foreach (Match match in inlineCodeMatches)
+            {
+                var start = match.Index;
+                var len = match.Length;
+                if (inlines.Intersect(start, len) != null)
+                    continue;
+
+                inlines.Add(new Models.InlineElement(Models.InlineElementType.Code, start + 1, len - 2, string.Empty));
+            }
+
             inlines.Sort();
             return inlines;
         }
 
         private void RefreshVisibleChanges()
         {
-            if (_changes == null)
-                return;
-
             if (string.IsNullOrEmpty(_searchChangeFilter))
             {
                 VisibleChanges = _changes;
@@ -574,15 +644,17 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
         private static partial Regex REG_SHA_FORMAT();
 
+        [GeneratedRegex(@"`.*?`")]
+        private static partial Regex REG_INLINECODE_FORMAT();
+
         private Repository _repo = null;
-        private bool _rememberActivePageIndex = true;
-        private int _activePageIndex = 0;
+        private CommitDetailSharedData _sharedData = null;
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
         private List<string> _children = null;
-        private List<Models.Change> _changes = null;
-        private List<Models.Change> _visibleChanges = null;
+        private List<Models.Change> _changes = [];
+        private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
@@ -594,5 +666,6 @@ namespace SourceGit.ViewModels
         private string _revisionFileSearchFilter = string.Empty;
         private List<string> _revisionFileSearchSuggestion = null;
         private bool _canOpenRevisionFileWithDefaultEditor = false;
+        private Vector _scrollOffset = Vector.Zero;
     }
 }

@@ -31,7 +31,7 @@ namespace SourceGit.ViewModels
             if (string.Compare(_message, _oldMessage, StringComparison.Ordinal) == 0)
                 return true;
 
-            _repo.SetWatcherEnabled(false);
+            using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Editing HEAD message ...";
 
             var log = _repo.CreateLog("Reword HEAD");
@@ -39,6 +39,7 @@ namespace SourceGit.ViewModels
 
             var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
             var signOff = _repo.Settings.EnableSignOffForCommit;
+            var noVerify = _repo.Settings.NoVerifyOnCommit;
             var needAutoStash = false;
             var succ = false;
 
@@ -55,16 +56,15 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Stash(_repo.FullPath)
                     .Use(log)
-                    .PushAsync("REWORD_AUTO_STASH");
+                    .PushAsync("REWORD_AUTO_STASH", false);
                 if (!succ)
                 {
                     log.Complete();
-                    _repo.SetWatcherEnabled(true);
                     return false;
                 }
             }
 
-            succ = await new Commands.Commit(_repo.FullPath, _message, signOff, true, false)
+            succ = await new Commands.Commit(_repo.FullPath, _message, signOff, noVerify, true, false)
                 .Use(log)
                 .RunAsync();
 
@@ -74,7 +74,6 @@ namespace SourceGit.ViewModels
                     .PopAsync("stash@{0}");
 
             log.Complete();
-            _repo.SetWatcherEnabled(true);
             return succ;
         }
 

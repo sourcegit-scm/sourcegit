@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Avalonia.Collections;
-using Avalonia.Media;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -20,10 +21,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _data, value);
         }
 
-        public IBrush DirtyBrush
+        public Models.DirtyState DirtyState
         {
-            get => _dirtyBrush;
-            private set => SetProperty(ref _dirtyBrush, value);
+            get => _dirtyState;
+            private set => SetProperty(ref _dirtyState, value);
         }
 
         public Popup Popup
@@ -66,22 +67,18 @@ namespace SourceGit.ViewModels
 
         public void ChangeDirtyState(Models.DirtyState flag, bool remove)
         {
+            var state = _dirtyState;
             if (remove)
             {
-                if (_dirtyState.HasFlag(flag))
-                    _dirtyState -= flag;
+                if (state.HasFlag(flag))
+                    state -= flag;
             }
             else
             {
-                _dirtyState |= flag;
+                state |= flag;
             }
 
-            if (_dirtyState.HasFlag(Models.DirtyState.HasLocalChanges))
-                DirtyBrush = Brushes.Gray;
-            else if (_dirtyState.HasFlag(Models.DirtyState.HasPendingPullOrPush))
-                DirtyBrush = Brushes.RoyalBlue;
-            else
-                DirtyBrush = null;
+            DirtyState = state;
         }
 
         public bool CanCreatePopup()
@@ -89,15 +86,7 @@ namespace SourceGit.ViewModels
             return _popup is not { InProgress: true };
         }
 
-        public void StartPopup(Popup popup)
-        {
-            Popup = popup;
-
-            if (popup.CanStartDirectly())
-                ProcessPopup();
-        }
-
-        public async void ProcessPopup()
+        public async Task ProcessPopupAsync()
         {
             if (_popup is { InProgress: false } dump)
             {
@@ -110,7 +99,10 @@ namespace SourceGit.ViewModels
                 {
                     var finished = await dump.Sure();
                     if (finished)
+                    {
+                        dump.Cleanup();
                         Popup = null;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -123,16 +115,15 @@ namespace SourceGit.ViewModels
 
         public void CancelPopup()
         {
-            if (_popup == null)
+            if (_popup == null || _popup.InProgress)
                 return;
-            if (_popup.InProgress)
-                return;
+
+            _popup?.Cleanup();
             Popup = null;
         }
 
         private RepositoryNode _node = null;
         private object _data = null;
-        private IBrush _dirtyBrush = null;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;
         private Popup _popup = null;
     }
