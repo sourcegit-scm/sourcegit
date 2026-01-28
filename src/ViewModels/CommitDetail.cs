@@ -247,10 +247,20 @@ namespace SourceGit.ViewModels
                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
         }
 
-        public async Task ResetToThisRevisionAsync(string path)
+        public async Task ResetToThisRevisionAsync(Models.Change change)
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
-            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, _commit.SHA);
+
+            // If file is Deleted in this commit, it doesn't exist in this revision - remove it
+            if (change.Index == Models.ChangeState.Deleted)
+            {
+                await new Commands.Remove(_repo.FullPath).Use(log).File(change.Path).ExecAsync();
+            }
+            else
+            {
+                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, _commit.SHA);
+            }
+
             log.Complete();
         }
 
@@ -258,44 +268,94 @@ namespace SourceGit.ViewModels
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
 
-            if (change.Index == Models.ChangeState.Renamed)
-                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
+            // If file is Added in this commit, it doesn't exist in parent - remove it
+            if (change.Index == Models.ChangeState.Added)
+            {
+                await new Commands.Remove(_repo.FullPath).Use(log).File(change.Path).ExecAsync();
+            }
+            else
+            {
+                // Handle renamed files - restore original path from parent
+                if (change.Index == Models.ChangeState.Renamed)
+                    await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
 
-            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+            }
+
             log.Complete();
         }
 
         public async Task ResetMultipleToThisRevisionAsync(List<Models.Change> changes)
         {
-            var files = new List<string>();
+            var filesToCheckout = new List<string>();
+            var filesToRemove = new List<string>();
+
+            // Separate files: Deleted files don't exist in this revision, so remove them
             foreach (var c in changes)
-                files.Add(c.Path);
+            {
+                if (c.Index == Models.ChangeState.Deleted)
+                    filesToRemove.Add(c.Path);
+                else
+                    filesToCheckout.Add(c.Path);
+            }
 
             var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}'");
-            await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(files, _commit.SHA);
+
+            if (filesToCheckout.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(filesToCheckout, _commit.SHA);
+
+            if (filesToRemove.Count > 0)
+            {
+                var pathSpecFile = System.IO.Path.GetTempFileName();
+                await System.IO.File.WriteAllLinesAsync(pathSpecFile, filesToRemove);
+                await new Commands.Remove(_repo.FullPath).Use(log).Files(pathSpecFile).ExecAsync();
+                System.IO.File.Delete(pathSpecFile);
+            }
+
             log.Complete();
         }
 
         public async Task ResetMultipleToParentRevisionAsync(List<Models.Change> changes)
         {
             var renamed = new List<string>();
-            var modified = new List<string>();
+            var filesToCheckout = new List<string>();
+            var filesToRemove = new List<string>();
 
+            // Separate files by type
             foreach (var c in changes)
             {
-                if (c.Index == Models.ChangeState.Renamed)
+                if (c.Index == Models.ChangeState.Added)
+                {
+                    // Added files don't exist in parent - remove them
+                    filesToRemove.Add(c.Path);
+                }
+                else if (c.Index == Models.ChangeState.Renamed)
+                {
+                    // Renamed files - restore original path from parent
                     renamed.Add(c.OriginalPath);
+                }
                 else
-                    modified.Add(c.Path);
+                {
+                    // Other files - checkout from parent
+                    filesToCheckout.Add(c.Path);
+                }
             }
 
             var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}~1'");
 
-            if (modified.Count > 0)
-                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(modified, $"{_commit.SHA}~1");
+            if (filesToCheckout.Count > 0)
+                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(filesToCheckout, $"{_commit.SHA}~1");
 
             if (renamed.Count > 0)
                 await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(renamed, $"{_commit.SHA}~1");
+
+            if (filesToRemove.Count > 0)
+            {
+                var pathSpecFile = System.IO.Path.GetTempFileName();
+                await System.IO.File.WriteAllLinesAsync(pathSpecFile, filesToRemove);
+                await new Commands.Remove(_repo.FullPath).Use(log).Files(pathSpecFile).ExecAsync();
+                System.IO.File.Delete(pathSpecFile);
+            }
 
             log.Complete();
         }

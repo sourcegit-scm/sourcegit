@@ -335,7 +335,7 @@ namespace SourceGit.Views
                 resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += async (_, ev) =>
                 {
-                    await vm.ResetToThisRevisionAsync(change.Path);
+                    await vm.ResetToThisRevisionAsync(change);
                     ev.Handled = true;
                 };
 

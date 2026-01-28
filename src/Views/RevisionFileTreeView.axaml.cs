@@ -604,12 +604,14 @@ namespace SourceGit.Views
 
             if (!repo.IsBare)
             {
+                var change = vm.Changes.Find(x => x.Path == file.Path) ?? new Models.Change() { Index = Models.ChangeState.None, Path = file.Path };
+
                 var resetToThisRevision = new MenuItem();
                 resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
                 resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += async (_, ev) =>
                 {
-                    await vm.ResetToThisRevisionAsync(file.Path);
+                    await vm.ResetToThisRevisionAsync(change);
                     ev.Handled = true;
                 };
 

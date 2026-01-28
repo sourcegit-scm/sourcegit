@@ -106,6 +106,32 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(patch);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    if (vm.CanResetFiles)
+                    {
+                        var resetToSource = new MenuItem();
+                        resetToSource.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                        resetToSource.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToSource.Click += async (_, ev) =>
+                        {
+                            await vm.ResetToSourceRevisionAsync(change);
+                            ev.Handled = true;
+                        };
+
+                        var resetToTarget = new MenuItem();
+                        resetToTarget.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                        resetToTarget.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToTarget.Click += async (_, ev) =>
+                        {
+                            await vm.ResetToTargetRevisionAsync(change);
+                            ev.Handled = true;
+                        };
+
+                        menu.Items.Add(resetToSource);
+                        menu.Items.Add(resetToTarget);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                    }
+
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
                 }
@@ -141,6 +167,32 @@ namespace SourceGit.Views
 
                     menu.Items.Add(patch);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    if (vm.CanResetFiles)
+                    {
+                        var resetToSource = new MenuItem();
+                        resetToSource.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                        resetToSource.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToSource.Click += async (_, ev) =>
+                        {
+                            await vm.ResetMultipleToSourceRevisionAsync(selected);
+                            ev.Handled = true;
+                        };
+
+                        var resetToTarget = new MenuItem();
+                        resetToTarget.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                        resetToTarget.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToTarget.Click += async (_, ev) =>
+                        {
+                            await vm.ResetMultipleToTargetRevisionAsync(selected);
+                            ev.Handled = true;
+                        };
+
+                        menu.Items.Add(resetToSource);
+                        menu.Items.Add(resetToTarget);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                    }
+
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
                 }

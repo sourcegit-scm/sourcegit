@@ -28,6 +28,8 @@ namespace SourceGit.ViewModels
 
         public bool CanSaveAsPatch { get; }
 
+        public bool CanResetFiles => _repository != null && !_repository.IsBare;
+
         public int TotalChanges
         {
             get => _totalChanges;
@@ -77,8 +79,14 @@ namespace SourceGit.ViewModels
         }
 
         public RevisionCompare(string repo, Models.Commit startPoint, Models.Commit endPoint)
+            : this(repo, null, startPoint, endPoint)
+        {
+        }
+
+        public RevisionCompare(string repo, Repository repository, Models.Commit startPoint, Models.Commit endPoint)
         {
             _repo = repo;
+            _repository = repository;
             _startPoint = (object)startPoint ?? new Models.Null();
             _endPoint = (object)endPoint ?? new Models.Null();
             CanSaveAsPatch = startPoint != null && endPoint != null;
@@ -88,6 +96,7 @@ namespace SourceGit.ViewModels
         public void Dispose()
         {
             _repo = null;
+            _repository = null;
             _startPoint = null;
             _endPoint = null;
             _changes?.Clear();
@@ -138,6 +147,116 @@ namespace SourceGit.ViewModels
             var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes ?? _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
             if (succ)
                 App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
+        }
+
+        public async Task ResetToSourceRevisionAsync(Models.Change change)
+        {
+            var sourceSHA = GetSHA(_startPoint);
+            if (string.IsNullOrEmpty(sourceSHA))
+                return;
+
+            var log = _repository?.CreateLog($"Reset File to '{sourceSHA}'");
+
+            // If file is Added in diff, it doesn't exist in source - remove it
+            if (change.Index == Models.ChangeState.Added)
+            {
+                await new Commands.Remove(_repo).Use(log).File(change.Path).ExecAsync();
+            }
+            else
+            {
+                await new Commands.Checkout(_repo).Use(log).FileWithRevisionAsync(change.Path, sourceSHA);
+            }
+
+            log?.Complete();
+        }
+
+        public async Task ResetToTargetRevisionAsync(Models.Change change)
+        {
+            var targetSHA = GetSHA(_endPoint);
+            if (string.IsNullOrEmpty(targetSHA))
+                return;
+
+            var log = _repository?.CreateLog($"Reset File to '{targetSHA}'");
+
+            // If file is Deleted in diff, it doesn't exist in target - remove it
+            if (change.Index == Models.ChangeState.Deleted)
+            {
+                await new Commands.Remove(_repo).Use(log).File(change.Path).ExecAsync();
+            }
+            else
+            {
+                await new Commands.Checkout(_repo).Use(log).FileWithRevisionAsync(change.Path, targetSHA);
+            }
+
+            log?.Complete();
+        }
+
+        public async Task ResetMultipleToSourceRevisionAsync(List<Models.Change> changes)
+        {
+            var sourceSHA = GetSHA(_startPoint);
+            if (string.IsNullOrEmpty(sourceSHA))
+                return;
+
+            var filesToCheckout = new List<string>();
+            var filesToRemove = new List<string>();
+
+            // Separate files: Added files don't exist in source, so remove them
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Added)
+                    filesToRemove.Add(c.Path);
+                else
+                    filesToCheckout.Add(c.Path);
+            }
+
+            var log = _repository?.CreateLog($"Reset Files to '{sourceSHA}'");
+
+            if (filesToCheckout.Count > 0)
+                await new Commands.Checkout(_repo).Use(log).MultipleFilesWithRevisionAsync(filesToCheckout, sourceSHA);
+
+            if (filesToRemove.Count > 0)
+            {
+                var pathSpecFile = System.IO.Path.GetTempFileName();
+                await System.IO.File.WriteAllLinesAsync(pathSpecFile, filesToRemove);
+                await new Commands.Remove(_repo).Use(log).Files(pathSpecFile).ExecAsync();
+                System.IO.File.Delete(pathSpecFile);
+            }
+
+            log?.Complete();
+        }
+
+        public async Task ResetMultipleToTargetRevisionAsync(List<Models.Change> changes)
+        {
+            var targetSHA = GetSHA(_endPoint);
+            if (string.IsNullOrEmpty(targetSHA))
+                return;
+
+            var filesToCheckout = new List<string>();
+            var filesToRemove = new List<string>();
+
+            // Separate files: Deleted files don't exist in target, so remove them
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Deleted)
+                    filesToRemove.Add(c.Path);
+                else
+                    filesToCheckout.Add(c.Path);
+            }
+
+            var log = _repository?.CreateLog($"Reset Files to '{targetSHA}'");
+
+            if (filesToCheckout.Count > 0)
+                await new Commands.Checkout(_repo).Use(log).MultipleFilesWithRevisionAsync(filesToCheckout, targetSHA);
+
+            if (filesToRemove.Count > 0)
+            {
+                var pathSpecFile = System.IO.Path.GetTempFileName();
+                await System.IO.File.WriteAllLinesAsync(pathSpecFile, filesToRemove);
+                await new Commands.Remove(_repo).Use(log).Files(pathSpecFile).ExecAsync();
+                System.IO.File.Delete(pathSpecFile);
+            }
+
+            log?.Complete();
         }
 
         public void ClearSearchFilter()
@@ -206,6 +325,7 @@ namespace SourceGit.ViewModels
         }
 
         private string _repo;
+        private Repository _repository = null;
         private bool _isLoading = true;
         private object _startPoint = null;
         private object _endPoint = null;
