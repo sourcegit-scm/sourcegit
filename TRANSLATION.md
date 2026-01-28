@@ -51,51 +51,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-96.00%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.About.ReleaseDate
-- Text.Blame.IgnoreWhitespace
-- Text.BranchCM.CompareTwo
-- Text.BranchCM.CompareWith
-- Text.BranchCM.CompareWithHead
-- Text.ChangeCM.Merge
-- Text.ChangeCM.MergeExternal
-- Text.Checkout.WarnUpdatingSubmodules
-- Text.Compare.WithHead
-- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
-- Text.Hotkeys.Global.Zoom
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseMine.Tip
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.UseTheirs.Tip
-- Text.MergeConflictEditor.Undo
-- Text.No
-- Text.Repository.OpenAsFolder
-- Text.Repository.Resolve
-- Text.TagCM.CompareTwo
-- Text.TagCM.CompareWith
-- Text.TagCM.CompareWithHead
-- Text.WorkingCopy.Conflicts.Merge
-- Text.WorkingCopy.Conflicts.MergeExternal
-- Text.Yes
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-94.11%25-yellow)
 
