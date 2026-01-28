@@ -556,9 +556,7 @@
   <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Conflictos de Merge</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">¿Descartar cambios sin guardar?</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">USAR MÍOS</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseMine.Tip" xml:space="preserve">Resolver el conflicto actual usando Mi versión</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">USAR SUYOS</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseTheirs.Tip" xml:space="preserve">Resolver el conflicto actual usando Su versión</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">DESHACER</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (Multiple)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit todos los cambios</x:String>
