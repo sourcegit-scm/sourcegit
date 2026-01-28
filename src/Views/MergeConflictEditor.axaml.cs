@@ -12,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
@@ -105,6 +106,15 @@ namespace SourceGit.Views
             set => SetValue(SelectedChunkProperty, value);
         }
 
+        public static readonly StyledProperty<ViewModels.TextDiffDisplayRange> DisplayRangeProperty =
+            AvaloniaProperty.Register<MergeDiffPresenter, ViewModels.TextDiffDisplayRange>(nameof(DisplayRange));
+
+        public ViewModels.TextDiffDisplayRange DisplayRange
+        {
+            get => GetValue(DisplayRangeProperty);
+            set => SetValue(DisplayRangeProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
@@ -147,7 +157,10 @@ namespace SourceGit.Views
             TextArea.TextView.PointerEntered += OnTextViewPointerChanged;
             TextArea.TextView.PointerMoved += OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
+            TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
+
+            OnTextViewVisualLinesChanged(null, null);
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -156,6 +169,7 @@ namespace SourceGit.Views
             TextArea.TextView.PointerEntered -= OnTextViewPointerChanged;
             TextArea.TextView.PointerMoved -= OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged -= OnTextViewPointerWheelChanged;
+            TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             if (_textMate != null)
             {
@@ -251,6 +265,34 @@ namespace SourceGit.Views
 
             var y = e.GetPosition(view).Y + view.VerticalOffset;
             Dispatcher.UIThread.Post(() => UpdateSelectedChunkPosition(vm, y));
+        }
+
+        private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
+        {
+            if (!TextArea.TextView.VisualLinesValid)
+            {
+                SetCurrentValue(DisplayRangeProperty, null);
+                return;
+            }
+
+            var lines = DiffLines;
+            var start = int.MaxValue;
+            var count = 0;
+            foreach (var line in TextArea.TextView.VisualLines)
+            {
+                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                    continue;
+
+                var index = line.FirstDocumentLine.LineNumber - 1;
+                if (index >= lines.Count)
+                    continue;
+
+                count++;
+                if (start > index)
+                    start = index;
+            }
+
+            SetCurrentValue(DisplayRangeProperty, new ViewModels.TextDiffDisplayRange(start, start + count));
         }
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -525,6 +567,97 @@ namespace SourceGit.Views
         private readonly MergeDiffPresenter _presenter;
     }
 
+    public class MergeConflictMinimap : Control
+    {
+        public static readonly StyledProperty<ViewModels.TextDiffDisplayRange> DisplayRangeProperty =
+            AvaloniaProperty.Register<MergeConflictMinimap, ViewModels.TextDiffDisplayRange>(nameof(DisplayRange));
+
+        public ViewModels.TextDiffDisplayRange DisplayRange
+        {
+            get => GetValue(DisplayRangeProperty);
+            set => SetValue(DisplayRangeProperty, value);
+        }
+
+        public static readonly StyledProperty<int> UnsolvedCountProperty =
+            AvaloniaProperty.Register<MergeConflictMinimap, int>(nameof(UnsolvedCount));
+
+        public int UnsolvedCount
+        {
+            get => GetValue(UnsolvedCountProperty);
+            set => SetValue(UnsolvedCountProperty, value);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            context.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, Bounds.Width, Bounds.Height));
+
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            var total = vm.OursDiffLines.Count;
+            var unitHeight = Bounds.Height / (total * 1.0);
+            var conflicts = vm.ConflictRegions;
+            var blockBGs = new SolidColorBrush[] { new SolidColorBrush(Colors.Red, 0.6), new SolidColorBrush(Colors.Green, 0.6) };
+            foreach (var c in conflicts)
+            {
+                var topY = c.StartLineInOriginal * unitHeight;
+                var bottomY = (c.EndLineInOriginal + 1) * unitHeight;
+                var bg = blockBGs[c.IsResolved ? 1 : 0];
+                context.DrawRectangle(bg, null, new Rect(0, topY, Bounds.Width, bottomY - topY));
+            }
+
+            var range = DisplayRange;
+            if (range == null || range.End == 0)
+                return;
+
+            var startY = range.Start * unitHeight;
+            var endY = range.End * unitHeight;
+            var color = (Color)this.FindResource("SystemAccentColor");
+            var brush = new SolidColorBrush(color, 0.2);
+            var pen = new Pen(color.ToUInt32());
+            var rect = new Rect(0, startY, Bounds.Width, endY - startY);
+
+            context.DrawRectangle(brush, null, rect);
+            context.DrawLine(pen, rect.TopLeft, rect.TopRight);
+            context.DrawLine(pen, rect.BottomLeft, rect.BottomRight);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == DisplayRangeProperty ||
+                change.Property == UnsolvedCountProperty ||
+                change.Property.Name.Equals(nameof(ActualThemeVariant), StringComparison.Ordinal))
+                InvalidateVisual();
+        }
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+
+            if (DataContext is not ViewModels.MergeConflictEditor vm)
+                return;
+
+            var total = vm.OursDiffLines.Count;
+            var range = DisplayRange;
+            if (range == null || range.End == 0)
+                return;
+
+            var unitHeight = Bounds.Height / (total * 1.0);
+            var startY = range.Start * unitHeight;
+            var endY = range.End * unitHeight;
+            var pressedY = e.GetPosition(this).Y;
+            if (pressedY >= startY && pressedY <= endY)
+                return;
+
+            var line = Math.Max(1, Math.Min(total, (int)Math.Ceiling(pressedY / unitHeight)));
+            var editor = this.FindAncestorOfType<MergeConflictEditor>();
+            if (editor != null)
+                editor.OursPresenter.ScrollToLine(line);
+        }
+    }
+
     public partial class MergeConflictEditor : ChromelessWindow
     {
         public MergeConflictEditor()
@@ -547,7 +680,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            if (_forceClose || !vm.HasUnsavedChanges)
+            if (_forceClose || vm.UnsolvedCount < vm.ConflictRegions.Count)
             {
                 vm.PropertyChanged -= OnViewModelPropertyChanged;
                 return;
@@ -580,7 +713,7 @@ namespace SourceGit.Views
 
         private void OnGotoPrevConflict(object sender, RoutedEventArgs e)
         {
-            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnresolvedConflicts)
+            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.UnsolvedCount > 0)
             {
                 var view = OursPresenter.TextArea?.TextView;
                 var lines = vm.OursDiffLines;
@@ -623,7 +756,7 @@ namespace SourceGit.Views
 
         private void OnGotoNextConflict(object sender, RoutedEventArgs e)
         {
-            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.HasUnresolvedConflicts)
+            if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.UnsolvedCount > 0)
             {
                 var view = OursPresenter.TextArea?.TextView;
                 var lines = vm.OursDiffLines;

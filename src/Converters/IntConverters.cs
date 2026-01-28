@@ -33,5 +33,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<int, IBrush> ToBookmarkBrush =
             new FuncValueConverter<int, IBrush>(v => Models.Bookmarks.Get(v) ?? App.Current?.FindResource("Brush.FG1") as IBrush);
+
+        public static readonly FuncValueConverter<int, string> ToUnsolvedDesc =
+            new FuncValueConverter<int, string>(v => v == 0 ? App.Text("MergeConflictEditor.AllResolved") : App.Text("MergeConflictEditor.ConflictsRemaining", v));
     }
 }

@@ -46,14 +46,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _diffMaxLineNumber, value);
         }
 
-        public string StatusText
+        public int UnsolvedCount
         {
-            get
-            {
-                if (_unresolvedConflictCount > 0)
-                    return App.Text("MergeConflictEditor.ConflictsRemaining", _unresolvedConflictCount);
-                return App.Text("MergeConflictEditor.AllResolved");
-            }
+            get => _unsolvedCount;
+            private set => SetProperty(ref _unsolvedCount, value);
         }
 
         public Vector ScrollOffset
@@ -68,9 +64,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedChunk, value);
         }
 
-        public IReadOnlyList<Models.ConflictRegion> ConflictRegions => _conflictRegions;
-        public bool HasUnresolvedConflicts => _unresolvedConflictCount > 0;
-        public bool HasUnsavedChanges => _unresolvedConflictCount < _conflictRegions.Count;
+        public IReadOnlyList<Models.ConflictRegion> ConflictRegions
+        {
+            get => _conflictRegions;
+        }
 
         public MergeConflictEditor(Repository repo, string filePath)
         {
@@ -126,7 +123,7 @@ namespace SourceGit.ViewModels
             if (_conflictRegions.Count == 0)
                 return true;
 
-            if (_unresolvedConflictCount > 0)
+            if (_unsolvedCount > 0)
             {
                 Error = "Cannot save: there are still unresolved conflicts.";
                 return false;
@@ -460,23 +457,21 @@ namespace SourceGit.ViewModels
             SelectedChunk = null;
             ResultDiffLines = resultLines;
 
-            var unresolved = new List<int>();
+            var unsolved = new List<int>();
             for (var i = 0; i < _conflictRegions.Count; i++)
             {
                 var r = _conflictRegions[i];
                 if (!r.IsResolved)
-                    unresolved.Add(i);
+                    unsolved.Add(i);
             }
 
-            _unresolvedConflictCount = unresolved.Count;
-            OnPropertyChanged(nameof(StatusText));
-            OnPropertyChanged(nameof(HasUnresolvedConflicts));
+            UnsolvedCount = unsolved.Count;
         }
 
         private readonly Repository _repo;
         private readonly string _filePath;
         private string _originalContent = string.Empty;
-        private int _unresolvedConflictCount = 0;
+        private int _unsolvedCount = 0;
         private int _diffMaxLineNumber = 0;
         private List<Models.TextDiffLine> _oursDiffLines = [];
         private List<Models.TextDiffLine> _theirsDiffLines = [];
