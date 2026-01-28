@@ -552,9 +552,7 @@
   <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Merge Conflicts</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Discard unsaved changes?</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">USE MINE</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseMine.Tip" xml:space="preserve">Resolve current conflict using Mine version</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseTheirs.Tip" xml:space="preserve">Resolve current conflict using Theirs version</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">UNDO</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Merge (Multiple)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit all changes</x:String>
