@@ -1464,7 +1464,7 @@ namespace SourceGit.Views
 
         private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1496,12 +1496,13 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
             File.Delete(tmpFile);
 
+            vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } })
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } } vm)
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1526,12 +1527,13 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
             File.Delete(tmpFile);
 
+            vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1563,6 +1565,7 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
             File.Delete(tmpFile);
 
+            vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
         }
     }
