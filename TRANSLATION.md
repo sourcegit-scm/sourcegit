@@ -6,11 +6,25 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-%E2%88%9A-brightgreen)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.89%25-yellow)
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in de_DE.axaml</summary>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-94.31%25-yellow)
+- Text.ChangeCM.ResetFileTo
+
+</details>
+
+### ![es__ES](https://img.shields.io/badge/es__ES-99.89%25-yellow)
+
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.ChangeCM.ResetFileTo
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-94.21%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -23,6 +37,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.EditDescription
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
@@ -72,7 +87,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-92.20%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-92.11%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -89,6 +104,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.EditDescription
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitCM.Drop
 - Text.CommitMessageTextBox.Placeholder
@@ -154,7 +170,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-89.67%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-89.58%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -177,6 +193,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Worktree
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitCM.Drop
 - Text.CommitDetail.Info.CopyEmail
@@ -260,7 +277,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-72.29%25-red)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-72.21%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -302,6 +319,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Worktree
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -531,7 +549,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-92.52%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-92.42%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -548,6 +566,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.EditDescription
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.CommitMessageTextBox.Placeholder
 - Text.Compare.WithHead
@@ -610,7 +629,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-70.07%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-70.00%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -623,6 +642,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Worktree
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -902,7 +922,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.68%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-97.58%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -910,6 +930,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Blame.IgnoreWhitespace
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -932,7 +953,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-72.39%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-72.32%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -974,6 +995,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Worktree
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
@@ -1202,7 +1224,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-73.23%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-73.16%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1244,6 +1266,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.Worktree
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
+- Text.ChangeCM.ResetFileTo
 - Text.ChangeSubmoduleUrl
 - Text.ChangeSubmoduleUrl.Submodule
 - Text.ChangeSubmoduleUrl.URL
