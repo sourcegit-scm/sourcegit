@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -249,8 +248,49 @@ namespace SourceGit.ViewModels
 
         public async Task ResetToThisRevisionAsync(string path)
         {
+            var c = _changes?.Find(x => x.Path.Equals(path, StringComparison.Ordinal));
+            if (c != null)
+            {
+                await ResetToThisRevisionAsync(c);
+                return;
+            }
+
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
             await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(path, _commit.SHA);
+            log.Complete();
+        }
+
+        public async Task ResetToThisRevisionAsync(Models.Change change)
+        {
+            var log = _repo.CreateLog($"Reset File to '{_commit.SHA}'");
+
+            if (change.Index == Models.ChangeState.Deleted)
+            {
+                var fullpath = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
+                if (File.Exists(fullpath))
+                    await new Commands.Remove(_repo.FullPath, [change.Path])
+                        .Use(log)
+                        .ExecAsync();
+            }
+            else if (change.Index == Models.ChangeState.Renamed)
+            {
+                var old = Native.OS.GetAbsPath(_repo.FullPath, change.OriginalPath);
+                if (File.Exists(old))
+                    await new Commands.Remove(_repo.FullPath, [change.OriginalPath])
+                        .Use(log)
+                        .ExecAsync();
+
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .FileWithRevisionAsync(change.Path, _commit.SHA);
+            }
+            else
+            {
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .FileWithRevisionAsync(change.Path, _commit.SHA);
+            }
+
             log.Complete();
         }
 
@@ -258,44 +298,116 @@ namespace SourceGit.ViewModels
         {
             var log = _repo.CreateLog($"Reset File to '{_commit.SHA}~1'");
 
-            if (change.Index == Models.ChangeState.Renamed)
-                await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
+            if (change.Index == Models.ChangeState.Added)
+            {
+                var fullpath = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
+                if (File.Exists(fullpath))
+                    await new Commands.Remove(_repo.FullPath, [change.Path])
+                        .Use(log)
+                        .ExecAsync();
+            }
+            else if (change.Index == Models.ChangeState.Renamed)
+            {
+                var renamed = Native.OS.GetAbsPath(_repo.FullPath, change.Path);
+                if (File.Exists(renamed))
+                    await new Commands.Remove(_repo.FullPath, [change.Path])
+                        .Use(log)
+                        .ExecAsync();
 
-            await new Commands.Checkout(_repo.FullPath).Use(log).FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .FileWithRevisionAsync(change.OriginalPath, _commit.SHA);
+            }
+            else
+            {
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .FileWithRevisionAsync(change.Path, _commit.SHA);
+            }
+
             log.Complete();
         }
 
         public async Task ResetMultipleToThisRevisionAsync(List<Models.Change> changes)
         {
-            var files = new List<string>();
+            var checkouts = new List<string>();
+            var removes = new List<string>();
+
             foreach (var c in changes)
-                files.Add(c.Path);
+            {
+                if (c.Index == Models.ChangeState.Deleted)
+                {
+                    var fullpath = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
+                    if (File.Exists(fullpath))
+                        removes.Add(c.Path);
+                }
+                else if (c.Index == Models.ChangeState.Renamed)
+                {
+                    var old = Native.OS.GetAbsPath(_repo.FullPath, c.OriginalPath);
+                    if (File.Exists(old))
+                        removes.Add(c.OriginalPath);
+
+                    checkouts.Add(c.Path);
+                }
+                else
+                {
+                    checkouts.Add(c.Path);
+                }
+            }
 
             var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}'");
-            await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(files, _commit.SHA);
+
+            if (removes.Count > 0)
+                await new Commands.Remove(_repo.FullPath, removes)
+                    .Use(log)
+                    .ExecAsync();
+
+            if (checkouts.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(checkouts, _commit.SHA);
+
             log.Complete();
         }
 
         public async Task ResetMultipleToParentRevisionAsync(List<Models.Change> changes)
         {
-            var renamed = new List<string>();
-            var modified = new List<string>();
+            var checkouts = new List<string>();
+            var removes = new List<string>();
 
             foreach (var c in changes)
             {
-                if (c.Index == Models.ChangeState.Renamed)
-                    renamed.Add(c.OriginalPath);
+                if (c.Index == Models.ChangeState.Added)
+                {
+                    var fullpath = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
+                    if (File.Exists(fullpath))
+                        removes.Add(c.Path);
+                }
+                else if (c.Index == Models.ChangeState.Renamed)
+                {
+                    var renamed = Native.OS.GetAbsPath(_repo.FullPath, c.Path);
+                    if (File.Exists(renamed))
+                        removes.Add(c.Path);
+
+                    checkouts.Add(c.OriginalPath);
+                }
                 else
-                    modified.Add(c.Path);
+                {
+                    checkouts.Add(c.Path);
+                }
             }
 
             var log = _repo.CreateLog($"Reset Files to '{_commit.SHA}~1'");
 
-            if (modified.Count > 0)
-                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(modified, $"{_commit.SHA}~1");
+            if (removes.Count > 0)
+                await new Commands.Remove(_repo.FullPath, removes)
+                    .Use(log)
+                    .ExecAsync();
 
-            if (renamed.Count > 0)
-                await new Commands.Checkout(_repo.FullPath).Use(log).MultipleFilesWithRevisionAsync(renamed, $"{_commit.SHA}~1");
+            if (checkouts.Count > 0)
+                await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .MultipleFilesWithRevisionAsync(checkouts, $"{_commit.SHA}~1");
 
             log.Complete();
         }
