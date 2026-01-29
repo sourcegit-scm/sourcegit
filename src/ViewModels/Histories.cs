@@ -206,7 +206,7 @@ namespace SourceGit.ViewModels
 
                 var end = commits[0] as Models.Commit;
                 var start = commits[1] as Models.Commit;
-                DetailContext = new RevisionCompare(_repo.FullPath, start, end);
+                DetailContext = new RevisionCompare(_repo, start, end);
             }
             else
             {
@@ -403,7 +403,7 @@ namespace SourceGit.ViewModels
                 _repo.SearchCommitContext.Selected = null;
                 head = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
                 if (head != null)
-                    DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
+                    DetailContext = new RevisionCompare(_repo, commit, head);
 
                 return null;
             }
@@ -413,7 +413,7 @@ namespace SourceGit.ViewModels
 
         public void CompareWithWorktree(Models.Commit commit)
         {
-            DetailContext = new RevisionCompare(_repo.FullPath, commit, null);
+            DetailContext = new RevisionCompare(_repo, commit, null);
         }
 
         private Repository _repo = null;
