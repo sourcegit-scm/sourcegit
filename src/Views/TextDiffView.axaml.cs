@@ -731,7 +731,7 @@ namespace SourceGit.Views
                     start = index;
             }
 
-            ctx.DisplayRange = new ViewModels.TextDiffDisplayRange(start, start + count);
+            ctx.DisplayRange = new ViewModels.TextLineRange(start, start + count);
         }
 
         protected void TrySetChunk(ViewModels.TextDiffSelectedChunk chunk)
@@ -1280,10 +1280,10 @@ namespace SourceGit.Views
             set => SetValue(DeletedLineBrushProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.TextDiffDisplayRange> DisplayRangeProperty =
-            AvaloniaProperty.Register<TextDiffViewMinimap, ViewModels.TextDiffDisplayRange>(nameof(DisplayRange));
+        public static readonly StyledProperty<ViewModels.TextLineRange> DisplayRangeProperty =
+            AvaloniaProperty.Register<TextDiffViewMinimap, ViewModels.TextLineRange>(nameof(DisplayRange));
 
-        public ViewModels.TextDiffDisplayRange DisplayRange
+        public ViewModels.TextLineRange DisplayRange
         {
             get => GetValue(DisplayRangeProperty);
             set => SetValue(DisplayRangeProperty, value);

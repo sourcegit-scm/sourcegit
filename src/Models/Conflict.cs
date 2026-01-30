@@ -2,6 +2,13 @@ using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
+    public enum ConflictPanelType
+    {
+        Ours,
+        Theirs,
+        Result
+    }
+
     public enum ConflictResolution
     {
         None,
@@ -11,19 +18,13 @@ namespace SourceGit.Models
         UseBothTheirsFirst,
     }
 
-    public enum ConflictMarkerType
+    public enum ConflictLineType
     {
-        Start,      // <<<<<<<
-        Base,       // ||||||| (diff3 style)
-        Separator,  // =======
-        End,        // >>>>>>>
-    }
-
-    public enum ConflictPanelType
-    {
-        Mine,
+        None,
+        Common,
+        Marker,
+        Ours,
         Theirs,
-        Result
     }
 
     public enum ConflictLineState
@@ -37,6 +38,28 @@ namespace SourceGit.Models
         ResolvedBlockEnd,
     }
 
+    public class ConflictLine
+    {
+        public ConflictLineType Type { get; set; } = ConflictLineType.None;
+        public string Content { get; set; } = string.Empty;
+        public string LineNumber { get; set; } = string.Empty;
+
+        public ConflictLine()
+        {
+        }
+        public ConflictLine(ConflictLineType type, string content)
+        {
+            Type = type;
+            Content = content;
+        }
+        public ConflictLine(ConflictLineType type, string content, int lineNumber)
+        {
+            Type = type;
+            Content = content;
+            LineNumber = lineNumber.ToString();
+        }
+    }
+
     public record ConflictSelectedChunk(
         double Y,
         double Height,
@@ -44,14 +67,6 @@ namespace SourceGit.Models
         ConflictPanelType Panel,
         bool IsResolved
     );
-
-    public class ConflictMarkerInfo
-    {
-        public int LineNumber { get; set; }
-        public int StartOffset { get; set; }
-        public int EndOffset { get; set; }
-        public ConflictMarkerType Type { get; set; }
-    }
 
     public class ConflictRegion
     {
