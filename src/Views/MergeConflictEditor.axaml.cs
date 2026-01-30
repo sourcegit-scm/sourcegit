@@ -161,12 +161,14 @@ namespace SourceGit.Views
 
                     var lineIndex = index - 1;
                     var info = lines[lineIndex];
-                    var lineState = vm.GetLineState(lineIndex);
+                    if (info.Type == Models.ConflictLineType.Common)
+                        continue;
 
                     var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
                     var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
                     var rect = new Rect(0, startY, width, endY - startY);
 
+                    var lineState = vm.GetLineState(lineIndex);
                     if (lineState == Models.ConflictLineState.ConflictBlockStart)
                         drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
                     else if (lineState == Models.ConflictLineState.ConflictBlockEnd)
