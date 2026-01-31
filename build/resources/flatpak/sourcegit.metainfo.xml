@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>io.github.sourcegit_scm.sourcegit</id>
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+    <name>SourceGit</name>
+    <summary>Open-source and Free Git GUI Client</summary>
+    <description>
+        <p>Highlights</p>
+        <ul>
+            <li>Supports Windows/macOS/Linux</li>
+            <li>Opensource/Free</li>
+            <li>Fast</li>
+            <li>Deutsch/English/Español/Français/Italiano/Português/Русский/Українська/简体中文/繁體中文/日本語/தமிழ்
+                (Tamil)/한국어</li>
+            <li>Built-in light/dark themes</li>
+            <li>Customize theme</li>
+            <li>Visual commit graph</li>
+            <li>Supports SSH access with each remote</li>
+            <li>GIT commands with GUI</li>
+            <li>Clone/Fetch/Pull/Push...</li>
+            <li>Merge/Rebase/Reset/Revert/Cherry-pick...</li>
+            <li>Amend/Reword/Squash</li>
+            <li>Interactive rebase</li>
+            <li>Branches</li>
+            <li>Remotes</li>
+            <li>Tags</li>
+            <li>Stashes</li>
+            <li>Submodules</li>
+            <li>Worktrees</li>
+            <li>Archive</li>
+            <li>Diff</li>
+            <li>Save as patch/apply</li>
+            <li>File histories</li>
+            <li>Blame</li>
+            <li>Revision Diffs</li>
+            <li>Branch Diff</li>
+            <li>Image Diff - Side-By-Side/Swipe/Blend</li>
+            <li>Git command logs</li>
+            <li>Search commits</li>
+            <li>GitFlow</li>
+            <li>Git LFS</li>
+            <li>Bisect</li>
+            <li>Issue Link</li>
+            <li>Workspace</li>
+            <li>Custom Action</li>
+            <li>Using AI to generate commit message using commitollama</li>
+        </ul>
+    </description>
+    <url type="bugtracker">https://github.com/sourcegit-scm/sourcegit/issues</url>
+    <url type="help">https://github.com/sourcegit-scm/sourcegit/issues</url>
+    <url type="homepage">https://sourcegit-scm.github.io</url>
+    <url type="vcs-browser">https://github.com/sourcegit-scm/sourcegit</url>
+    <launchable type="desktop-id">io.github.sourcegit_scm.sourcegit.desktop</launchable>
+    <developer id="io.github">
+        <name>sourcegit-scm</name>
+    </developer>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://sourcegit-scm.github.io/images/theme_dark.png</image>
+            <caption>Dark Theme</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://sourcegit-scm.github.io/images/theme_light.png</image>
+            <caption>Light Theme</caption>
+        </screenshot>
+    </screenshots>
+    <content_rating type="oars-1.1" />
+    <releases>
+        <release version="2026.02" date="2026-01-26">
+            <url type="details">https://github.com/sourcegit-scm/sourcegit/releases/tag/v2026.02</url>
+        </release>
+    </releases>
+</component>
