@@ -55,6 +55,10 @@
     <developer id="io.github">
         <name>sourcegit-scm</name>
     </developer>
+    <branding>
+        <color type="primary" scheme_preference="light">#f15336</color>
+        <color type="primary" scheme_preference="dark">#f15336</color>
+    </branding>
     <screenshots>
         <screenshot type="default">
             <image>https://sourcegit-scm.github.io/images/theme_dark.png</image>
