@@ -130,7 +130,8 @@ namespace SourceGit.Models
                 return true;
             }
 
-            if (host.Contains("azure.com", StringComparison.Ordinal))
+            if (host.Contains("azure.com", StringComparison.Ordinal) ||
+                host.Contains("visualstudio.com", StringComparison.Ordinal))
             {
                 url = $"{baseURL}/pullrequestcreate?sourceRef={encodedBranch}";
                 return true;
