@@ -44,7 +44,7 @@ namespace SourceGit.Models
 
         public void Start()
         {
-            _storePath = Path.Combine(Native.OS.DataDir, "avatars");
+            _storePath = Path.Combine(Native.OS.CacheDir, "avatars");
             if (!Directory.Exists(_storePath))
                 Directory.CreateDirectory(_storePath);
 

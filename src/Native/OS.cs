@@ -33,6 +33,18 @@ namespace SourceGit.Native
             private set;
         } = string.Empty;
 
+        public static string CacheDir
+        {
+            get;
+            private set;
+        } = string.Empty;
+
+        public static string RuntimeDir
+        {
+            get;
+            private set;
+        } = string.Empty;
+
         public static string GitExecutable
         {
             get => _gitExecutable;
@@ -150,14 +162,41 @@ namespace SourceGit.Native
                 }
             }
 
-            var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            if (string.IsNullOrEmpty(osAppDataDir))
-                DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".sourcegit");
-            else
-                DataDir = Path.Combine(osAppDataDir, "SourceGit");
+            DataDir = Path.Combine(Xdg.Directories.BaseDirectory.ConfigHome, "SourceGit");
+            CacheDir = Path.Combine(Xdg.Directories.BaseDirectory.CacheHome, "SourceGit");
+            RuntimeDir = Path.Combine(Xdg.Directories.BaseDirectory.RuntimeDir, "SourceGit");
 
             if (!Directory.Exists(DataDir))
+            {
                 Directory.CreateDirectory(DataDir);
+            }
+
+            if (!Directory.Exists(CacheDir))
+            {
+                Directory.CreateDirectory(CacheDir);
+            }
+
+            if (!Directory.Exists(RuntimeDir))
+            {
+                Directory.CreateDirectory(RuntimeDir);
+            }
+
+            var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var oldDir = string.IsNullOrEmpty(osAppDataDir) ?
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".sourcegit") :
+                Path.Combine(osAppDataDir, "SourceGit");
+
+
+            if (Directory.Exists(oldDir) && oldDir != DataDir)
+            {
+                foreach (var file in Directory.GetFiles(oldDir))
+                {
+                    var fileName = Path.GetFileName(file);
+                    File.Move(file, Path.Combine(DataDir, fileName));
+                }
+
+                Directory.Delete(oldDir, true);
+            }
         }
 
         public static void SetupExternalTools()
