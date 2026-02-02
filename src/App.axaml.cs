@@ -83,8 +83,12 @@ namespace SourceGit
             if (ex == null)
                 return;
 
+            var crashDir = Path.Combine(Native.OS.DataDir, "crashes");
+            if (!Directory.Exists(crashDir))
+                Directory.CreateDirectory(crashDir);
+
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            var file = Path.Combine(crashDir, $"{time}.log");
             using var writer = new StreamWriter(file);
             writer.WriteLine($"Crash::: {ex.GetType().FullName}: {ex.Message}");
             writer.WriteLine();
@@ -94,7 +98,6 @@ namespace SourceGit
             writer.WriteLine($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
             writer.WriteLine($"Source: {ex.Source}");
             writer.WriteLine($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}");
-            writer.WriteLine($"User: {Environment.UserName}");
             writer.WriteLine($"App Start Time: {Process.GetCurrentProcess().StartTime}");
             writer.WriteLine($"Exception Time: {DateTime.Now}");
             writer.WriteLine($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB");
