@@ -70,13 +70,13 @@
 
 You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [GitHub Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
 
-This software creates a folder `$"{System.Environment.SpecialFolder.ApplicationData}/SourceGit"`, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
+This software creates a folder, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
 
-| OS      | PATH                                                |
-|---------|-----------------------------------------------------|
-| Windows | `%APPDATA%\SourceGit`                               |
-| Linux   | `${HOME}/.config/SourceGit` or `${HOME}/.sourcegit` |
-| macOS   | `${HOME}/Library/Application Support/SourceGit`     |
+| OS      | PATH                                            |
+|---------|-------------------------------------------------|
+| Windows | `%APPDATA%\SourceGit`                           |
+| Linux   | `${HOME}/.local/share/SourceGit`                |
+| macOS   | `${HOME}/Library/Application Support/SourceGit` |
 
 > [!TIP]
 > * You can open this data storage directory from the main menu `Open Data Storage Directory`.
