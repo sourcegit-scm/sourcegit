@@ -922,36 +922,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.58%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Blame.IgnoreWhitespace
-- Text.ChangeCM.Merge
-- Text.ChangeCM.MergeExternal
-- Text.ChangeCM.ResetFileTo
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.Undo
-- Text.Repository.Resolve
-- Text.WorkingCopy.Conflicts.Merge
-- Text.WorkingCopy.Conflicts.MergeExternal
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-72.32%25-red)
 
