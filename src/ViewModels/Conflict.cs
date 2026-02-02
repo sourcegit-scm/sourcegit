@@ -1,29 +1,8 @@
-﻿using System;
+﻿using System.IO;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class ConflictSourceBranch
-    {
-        public string Name { get; private set; }
-        public string Head { get; private set; }
-        public Models.Commit Revision { get; private set; }
-
-        public ConflictSourceBranch(string name, string head, Models.Commit revision)
-        {
-            Name = name;
-            Head = head;
-            Revision = revision;
-        }
-
-        public ConflictSourceBranch(Repository repo, Models.Branch branch)
-        {
-            Name = branch.Name;
-            Head = branch.Head;
-            Revision = new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResult() ?? new Models.Commit() { SHA = branch.Head };
-        }
-    }
-
     public class Conflict
     {
         public string Marker
@@ -60,52 +39,28 @@ namespace SourceGit.ViewModels
             private set;
         } = false;
 
-        public string FilePath
-        {
-            get => _change.Path;
-        }
-
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
             _repo = repo;
             _wc = wc;
             _change = change;
 
-            var isSubmodule = repo.Submodules.Find(x => x.Path.Equals(change.Path, StringComparison.Ordinal)) != null;
-            if (!isSubmodule && (_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified))
-            {
-                CanMerge = true;
+            CanMerge = _change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified;
+            if (CanMerge)
+                CanMerge = !Directory.Exists(Path.Combine(repo.FullPath, change.Path)); // Cannot merge directories (submodules)
+
+            if (CanMerge)
                 IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
-            }
 
-            switch (wc.InProgressContext)
+            var head = new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResult();
+            (Mine, Theirs) = wc.InProgressContext switch
             {
-                case CherryPickInProgress cherryPick:
-                    Theirs = cherryPick.Head;
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-                case RebaseInProgress rebase:
-                    var b = repo.Branches.Find(x => x.IsLocal && x.Name == rebase.HeadName);
-                    if (b != null)
-                        Theirs = new ConflictSourceBranch(b.Name, b.Head, rebase.StoppedAt);
-                    else
-                        Theirs = new ConflictSourceBranch(rebase.HeadName, rebase.StoppedAt?.SHA ?? "----------", rebase.StoppedAt);
-
-                    Mine = rebase.Onto;
-                    break;
-                case RevertInProgress revert:
-                    Theirs = revert.Head;
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-                case MergeInProgress merge:
-                    Theirs = merge.Source;
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-                default:
-                    Theirs = "Stash or Patch";
-                    Mine = new ConflictSourceBranch(repo, repo.CurrentBranch);
-                    break;
-            }
+                CherryPickInProgress cherryPick => (head, cherryPick.Head),
+                RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
+                RevertInProgress revert => (head, revert.Head),
+                MergeInProgress merge => (head, merge.Source),
+                _ => (head, (object)"Stash or Patch"),
+            };
         }
 
         public async Task UseTheirsAsync()
