@@ -53,6 +53,18 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        public bool EnableOFPADecoding
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableUnrealEngineSupport
+        {
+            get;
+            set;
+        } = false;
+
         public bool EnableForceOnFetch
         {
             get;

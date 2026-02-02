@@ -946,8 +946,8 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">ИСПОЛЬЗОВАТЬ МОИ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">ИСПОЛЬЗОВАТЬ ИХ</x:String>
-  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ВКЛЮЧИТЬ НЕОТСЛЕЖИВАЕМЫЕ ФАЙЛЫ</x:String>
-  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">НЕТ ПОСЛЕДНИХ ВХОДНЫХ СООБЩЕНИЙ</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">Показывать неотслеживаемые файлы</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">Нет недавних сообщений коммитов</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">НЕТ ШАБЛОНОВ РЕВИЗИИ</x:String>
   <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">Не проверять</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Сбросить автора</x:String>
@@ -969,4 +969,8 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Удалить</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Разблокировать</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">Да</x:String>
+  <x:String x:Key="Text.WorkingCopy.EnableOFPADecoding" xml:space="preserve">Unreal Engine: show OFPA actor names</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine" xml:space="preserve">Unreal Engine</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine.Support" xml:space="preserve">Enable Unreal Engine support</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine.Support.Tip" xml:space="preserve">Enables Unreal Engine-specific features such as OFPA file name decoding.</x:String>
 </ResourceDictionary>

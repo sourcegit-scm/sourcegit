@@ -9,6 +9,18 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject, IDisposable
     {
+        private const int MaxOFPASampleSize = 256 * 1024;
+
+        public IReadOnlyDictionary<string, string> DecodedPaths
+        {
+            get
+            {
+                if (_repo == null || !_repo.Settings.EnableUnrealEngineSupport || !_repo.Settings.EnableOFPADecoding)
+                    return null;
+                return _decodedPaths;
+            }
+        }
+
         public List<Models.Stash> Stashes
         {
             get => _stashes;
@@ -72,10 +84,17 @@ namespace SourceGit.ViewModels
                                     changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                             }
 
+                            Dictionary<string, string> decodedPaths = null;
+                            if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
+                                decodedPaths = await CalculateDecodedPathsAsync(value, changes, untracked).ConfigureAwait(false);
+
                             Dispatcher.UIThread.Post(() =>
                             {
                                 if (value.SHA.Equals(_selectedStash?.SHA ?? string.Empty, StringComparison.Ordinal))
                                 {
+                                    _decodedPaths = decodedPaths;
+                                    OnPropertyChanged(nameof(DecodedPaths));
+
                                     _untracked = untracked;
                                     Changes = changes;
                                 }
@@ -122,10 +141,15 @@ namespace SourceGit.ViewModels
         public StashesPage(Repository repo)
         {
             _repo = repo;
+            if (_repo != null)
+                _repo.PropertyChanged += OnRepositoryPropertyChanged;
         }
 
         public void Dispose()
         {
+            if (_repo != null)
+                _repo.PropertyChanged -= OnRepositoryPropertyChanged;
+
             _stashes?.Clear();
             _changes?.Clear();
             _selectedChanges?.Clear();
@@ -266,6 +290,92 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void OnRepositoryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Repository.EnableUnrealEngineSupport))
+            {
+                OnPropertyChanged(nameof(DecodedPaths));
+                if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding && _selectedStash != null)
+                    _currentDecodeTask = DecodeOFPAPathsAsync(_selectedStash, _changes, _untracked);
+            }
+        }
+
+        private async Task DecodeOFPAPathsAsync(Models.Stash stash, List<Models.Change> changes, List<Models.Change> untracked)
+        {
+            await _currentDecodeTask.ConfigureAwait(false);
+
+            if (_repo == null || stash == null ||
+                !_repo.Settings.EnableUnrealEngineSupport ||
+                !_repo.Settings.EnableOFPADecoding ||
+                changes == null || changes.Count == 0)
+                return;
+
+            _currentDecodeTask = Task.Run(async () =>
+            {
+                var results = await CalculateDecodedPathsAsync(stash, changes, untracked).ConfigureAwait(false);
+                if (results != null)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        _decodedPaths = results;
+                        OnPropertyChanged(nameof(DecodedPaths));
+                    });
+                }
+            });
+        }
+
+        private async Task<Dictionary<string, string>> CalculateDecodedPathsAsync(Models.Stash stash, List<Models.Change> changes, List<Models.Change> untracked)
+        {
+            if (_repo == null || stash == null || changes == null || changes.Count == 0)
+                return null;
+
+            var repositoryPath = _repo.FullPath;
+            var untrackedSet = new HashSet<Models.Change>(untracked);
+            var filesToDecode = new List<(string RelativePath, string Spec)>();
+
+            foreach (var change in changes)
+            {
+                if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
+                    continue;
+
+                string spec;
+                if (untrackedSet.Contains(change) && stash.Parents.Count == 3)
+                {
+                    spec = $"{stash.Parents[2]}:{change.Path}";
+                }
+                else
+                {
+                    if (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
+                        spec = $"{stash.Parents[0]}:{change.Path}";
+                    else
+                        spec = $"{stash.SHA}:{change.Path}";
+                }
+
+                filesToDecode.Add((change.Path, spec));
+            }
+
+            if (filesToDecode.Count == 0)
+                return null;
+
+            var batchRequests = new List<string>();
+            foreach (var entry in filesToDecode)
+                batchRequests.Add(entry.Spec);
+
+            var batchResults = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, batchRequests, MaxOFPASampleSize).ConfigureAwait(false);
+            var results = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var entry in filesToDecode)
+            {
+                if (batchResults.TryGetValue(entry.Spec, out var data))
+                {
+                    var decoded = Utilities.OFPAParser.DecodeFromData(data);
+                    if (decoded.HasValue)
+                        results[entry.RelativePath] = decoded.Value.LabelValue;
+                }
+            }
+
+            return results;
+        }
+
         private Repository _repo = null;
         private List<Models.Stash> _stashes = [];
         private List<Models.Stash> _visibleStashes = [];
@@ -275,5 +385,7 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _untracked = [];
         private List<Models.Change> _selectedChanges = [];
         private DiffContext _diffContext = null;
+        private Dictionary<string, string> _decodedPaths = null;
+        private Task _currentDecodeTask = Task.CompletedTask;
     }
 }

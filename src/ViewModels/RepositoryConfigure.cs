@@ -107,6 +107,19 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.EnableAutoFetch = value;
         }
 
+        public bool EnableUnrealEngineSupport
+        {
+            get => _repo.EnableUnrealEngineSupport;
+            set
+            {
+                if (_repo.EnableUnrealEngineSupport != value)
+                {
+                    _repo.EnableUnrealEngineSupport = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public int? AutoFetchInterval
         {
             get => _repo.Settings.AutoFetchInterval;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -55,6 +56,22 @@ namespace SourceGit.ViewModels
         public bool HasAllowedSignersFile
         {
             get => _hasAllowedSignersFile;
+        }
+
+        public bool EnableUnrealEngineSupport
+        {
+            get => (_settings ??= new Models.RepositorySettings()).EnableUnrealEngineSupport;
+            set
+            {
+                _settings ??= new Models.RepositorySettings();
+                if (_settings.EnableUnrealEngineSupport != value)
+                {
+                    _settings.EnableUnrealEngineSupport = value;
+                    if (value && !_settings.EnableOFPADecoding)
+                        _settings.EnableOFPADecoding = true;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public int SelectedViewIndex

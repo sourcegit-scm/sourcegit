@@ -969,4 +969,8 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
+  <x:String x:Key="Text.WorkingCopy.EnableOFPADecoding" xml:space="preserve">Unreal Engine: show OFPA actor names</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine" xml:space="preserve">Unreal Engine</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine.Support" xml:space="preserve">Enable Unreal Engine support</x:String>
+  <x:String x:Key="Text.Configure.UnrealEngine.Support.Tip" xml:space="preserve">Enables Unreal Engine-specific features such as OFPA file name decoding.</x:String>
 </ResourceDictionary>

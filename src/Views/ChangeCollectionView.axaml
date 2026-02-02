@@ -94,7 +94,14 @@
 
               <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
                 <TextBlock Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
-                <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"/>
+                <TextBlock>
+                  <TextBlock.Text>
+                    <MultiBinding Converter="{x:Static c:OFPAConverters.PathToDisplayName}" ConverterParameter="PureFileName">
+                      <Binding Path="Path"/>
+                      <Binding Path="#ThisControl.DecodedPaths"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
               </StackPanel>
 
               <TextBlock Grid.Column="2"
@@ -126,7 +133,14 @@
 
               <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
                 <TextBlock Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
-                <TextBlock Text="{Binding Path}"/>
+                <TextBlock>
+                  <TextBlock.Text>
+                    <MultiBinding Converter="{x:Static c:OFPAConverters.PathToDisplayName}">
+                      <Binding Path="Path"/>
+                      <Binding Path="#ThisControl.DecodedPaths"/>
+                    </MultiBinding>
+                  </TextBlock.Text>
+                </TextBlock>
               </StackPanel>
             </Grid>
           </DataTemplate>

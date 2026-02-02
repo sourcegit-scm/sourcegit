@@ -27,9 +27,21 @@ namespace SourceGit.ViewModels
 
     public partial class CommitDetail : ObservableObject, IDisposable
     {
+        private const int MaxOFPASampleSize = 256 * 1024;
+
         public Repository Repository
         {
             get => _repo;
+        }
+
+        public IReadOnlyDictionary<string, string> DecodedPaths
+        {
+            get
+            {
+                if (_repo == null || !_repo.Settings.EnableUnrealEngineSupport || !_repo.Settings.EnableOFPADecoding)
+                    return null;
+                return _decodedPaths;
+            }
         }
 
         public int ActiveTabIndex
@@ -172,10 +184,16 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
+
+            if (_repo != null)
+                _repo.PropertyChanged += OnRepositoryPropertyChanged;
         }
 
         public void Dispose()
         {
+            if (_repo != null)
+                _repo.PropertyChanged -= OnRepositoryPropertyChanged;
+
             _repo = null;
             _commit = null;
             _changes = null;
@@ -189,6 +207,7 @@ namespace SourceGit.ViewModels
             _requestingRevisionFiles = false;
             _revisionFiles = null;
             _revisionFileSearchSuggestion = null;
+            _decodedPaths = null;
         }
 
         public void NavigateTo(string commitSHA)
@@ -547,16 +566,26 @@ namespace SourceGit.ViewModels
 
                 if (!token.IsCancellationRequested)
                 {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        Changes = changes;
-                        VisibleChanges = visible;
+                    Dictionary<string, string> decodedPaths = null;
+                    if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
+                        decodedPaths = await CalculateDecodedPathsAsync(changes).ConfigureAwait(false);
 
-                        if (visible.Count == 0)
-                            SelectedChanges = null;
-                        else
-                            SelectedChanges = [VisibleChanges[0]];
-                    });
+                    if (!token.IsCancellationRequested)
+                    {
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            _decodedPaths = decodedPaths;
+                            OnPropertyChanged(nameof(DecodedPaths));
+
+                            Changes = changes;
+                            VisibleChanges = visible;
+
+                            if (visible.Count == 0)
+                                SelectedChanges = null;
+                            else
+                                SelectedChanges = [VisibleChanges[0]];
+                        });
+                    }
                 }
             }, token);
         }
@@ -759,6 +788,82 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"`.*?`")]
         private static partial Regex REG_INLINECODE_FORMAT();
 
+        private void OnRepositoryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Repository.EnableUnrealEngineSupport))
+            {
+                OnPropertyChanged(nameof(DecodedPaths));
+                if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
+                    _currentDecodeTask = DecodeOFPAPathsAsync(_changes);
+            }
+        }
+
+        private async Task DecodeOFPAPathsAsync(List<Models.Change> changes)
+        {
+            await _currentDecodeTask.ConfigureAwait(false);
+
+            if (_repo == null || _commit == null ||
+                !_repo.Settings.EnableUnrealEngineSupport ||
+                !_repo.Settings.EnableOFPADecoding ||
+                changes == null || changes.Count == 0)
+                return;
+
+            _currentDecodeTask = Task.Run(async () =>
+            {
+                var results = await CalculateDecodedPathsAsync(changes).ConfigureAwait(false);
+                if (results != null)
+                {
+                    await Dispatcher.UIThread.InvokeAsync(() =>
+                    {
+                        _decodedPaths = results;
+                        OnPropertyChanged(nameof(DecodedPaths));
+                    });
+                }
+            });
+        }
+
+        private async Task<Dictionary<string, string>> CalculateDecodedPathsAsync(List<Models.Change> changes)
+        {
+            if (_repo == null || _commit == null || changes == null || changes.Count == 0)
+                return null;
+
+            var repositoryPath = _repo.FullPath;
+            var parent = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{_commit.SHA}^";
+            var filesToDecode = new List<(string RelativePath, string Spec)>();
+
+            foreach (var change in changes)
+            {
+                if (Utilities.OFPAParser.IsOFPAFile(change.Path))
+                {
+                    var spec = (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
+                        ? $"{parent}:{change.Path}"
+                        : $"{_commit.SHA}:{change.Path}";
+                    filesToDecode.Add((change.Path, spec));
+                }
+            }
+
+            if (filesToDecode.Count == 0)
+                return null;
+
+            var batchRequests = new List<string>();
+            foreach (var entry in filesToDecode)
+                batchRequests.Add(entry.Spec);
+
+            var batchResults = await Commands.QueryFileContent.RunBatchAsync(repositoryPath, batchRequests, MaxOFPASampleSize).ConfigureAwait(false);
+            var results = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var entry in filesToDecode)
+            {
+                if (batchResults.TryGetValue(entry.Spec, out var data))
+                {
+                    var decoded = Utilities.OFPAParser.DecodeFromData(data);
+                    if (decoded.HasValue)
+                        results[entry.RelativePath] = decoded.Value.LabelValue;
+                }
+            }
+
+            return results;
+        }
+
         private Repository _repo = null;
         private CommitDetailSharedData _sharedData = null;
         private Models.Commit _commit = null;
@@ -779,5 +884,7 @@ namespace SourceGit.ViewModels
         private List<string> _revisionFileSearchSuggestion = null;
         private bool _canOpenRevisionFileWithDefaultEditor = false;
         private Vector _scrollOffset = Vector.Zero;
+        private Dictionary<string, string> _decodedPaths = null;
+        private Task _currentDecodeTask = Task.CompletedTask;
     }
 }

@@ -20,6 +20,16 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isLoading, value);
         }
 
+        public IReadOnlyDictionary<string, string> DecodedPaths
+        {
+            get
+            {
+                if (_repo == null || !_repo.Settings.EnableUnrealEngineSupport || !_repo.Settings.EnableOFPADecoding)
+                    return null;
+                return _decodedPaths;
+            }
+        }
+
         public bool ShowOnlyMyLocks
         {
             get => _showOnlyMyLocks;
@@ -45,9 +55,15 @@ namespace SourceGit.ViewModels
             {
                 _userName = await new Commands.Config(repo.FullPath).GetAsync("user.name").ConfigureAwait(false);
                 _cachedLocks = await new Commands.LFS(_repo.FullPath).GetLocksAsync(_remote).ConfigureAwait(false);
+                Dictionary<string, string> decodedPaths = null;
+                if (_repo.Settings.EnableUnrealEngineSupport && _repo.Settings.EnableOFPADecoding)
+                    // Precompute decoded names to avoid showing hashed paths in the UI.
+                    decodedPaths = CalculateDecodedPaths(_cachedLocks);
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    _decodedPaths = decodedPaths;
+                    OnPropertyChanged(nameof(DecodedPaths));
                     UpdateVisibleLocks();
                     IsLoading = false;
                     HasValidUserName = !string.IsNullOrEmpty(_userName);
@@ -121,6 +137,28 @@ namespace SourceGit.ViewModels
             VisibleLocks = visible;
         }
 
+        private Dictionary<string, string> CalculateDecodedPaths(List<Models.LFSLock> locks)
+        {
+            if (_repo == null || locks == null || locks.Count == 0)
+                return null;
+
+            var decodedPaths = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var lfsLock in locks)
+            {
+                var path = lfsLock.Path;
+                if (!Utilities.OFPAParser.IsOFPAFile(path))
+                    continue;
+
+                // Decode only local OFPA files; fall back to raw paths when missing.
+                var fullPath = Native.OS.GetAbsPath(_repo.FullPath, path);
+                var decoded = Utilities.OFPAParser.Decode(fullPath);
+                if (decoded.HasValue)
+                    decodedPaths[path] = decoded.Value.LabelValue;
+            }
+
+            return decodedPaths.Count > 0 ? decodedPaths : null;
+        }
+
         private Repository _repo;
         private string _remote;
         private bool _isLoading = true;
@@ -129,5 +167,6 @@ namespace SourceGit.ViewModels
         private bool _showOnlyMyLocks = false;
         private string _userName;
         private bool _hasValidUsername;
+        private Dictionary<string, string> _decodedPaths = null;
     }
 }

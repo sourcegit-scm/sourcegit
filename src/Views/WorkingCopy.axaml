@@ -60,7 +60,7 @@
       <Grid Grid.Row="1" RowDefinitions="28,*">
         <!-- Unstaged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-          <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto,Auto">
+          <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
             <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
             <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
               <Run Text="{DynamicResource Text.WorkingCopy.Unstaged}"/>
@@ -81,7 +81,15 @@
                           Width="26" Height="14"
                           ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
                           IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
-            <Button Grid.Column="6"
+            <ToggleButton Grid.Column="6"
+                          Classes="line_path"
+                          Width="26" Height="14"
+                          ToolTip.Tip="{DynamicResource Text.WorkingCopy.EnableOFPADecoding}"
+                          IsChecked="{Binding EnableOFPADecoding, Mode=TwoWay}"
+                          IsVisible="{Binding IsUnrealEngineSupportEnabled}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Unreal}"/>
+            </ToggleButton>
+            <Button Grid.Column="7"
                     Classes="icon_button"
                     Width="26" Height="14"
                     Padding="0"
@@ -90,7 +98,7 @@
                     Click="OnOpenExternalMergeToolAllConflicts">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
             </Button>
-            <Button Grid.Column="7"
+            <Button Grid.Column="8"
                     Classes="icon_button"
                     Width="26" Height="14"
                     Padding="0"
@@ -107,7 +115,7 @@
               </ToolTip.Tip>
               <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
             </Button>
-            <Button Grid.Column="8"
+            <Button Grid.Column="9"
                     Classes="icon_button"
                     Width="26" Height="14"
                     Padding="0"
@@ -115,7 +123,7 @@
                     Click="OnStageAllButtonClicked">
               <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
             </Button>
-            <v:ChangeViewModeSwitcher Grid.Column="9"
+            <v:ChangeViewModeSwitcher Grid.Column="10"
                                       Width="26" Height="14"
                                       Margin="0,1,0,0"
                                       ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
@@ -131,6 +139,7 @@
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleUnstaged}"
                                 SelectedChanges="{Binding SelectedUnstaged, Mode=TwoWay}"
+                                DecodedPaths="{Binding DecodedPaths}"
                                 ContextRequested="OnUnstagedContextRequested"
                                 ChangeDoubleTapped="OnUnstagedChangeDoubleTapped"
                                 KeyDown="OnUnstagedKeyDown"/>
@@ -185,6 +194,7 @@
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleStaged}"
                                 SelectedChanges="{Binding SelectedStaged, Mode=TwoWay}"
+                                DecodedPaths="{Binding DecodedPaths}"
                                 ContextRequested="OnStagedContextRequested"
                                 ChangeDoubleTapped="OnStagedChangeDoubleTapped"
                                 KeyDown="OnStagedKeyDown"/>
