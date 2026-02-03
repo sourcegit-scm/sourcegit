@@ -652,8 +652,8 @@
             <DataTemplate DataType="vm:CherryPickInProgress">
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick.Head}"/>
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.CherryPick.Head}"/>
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
                 </StackPanel>
 
@@ -664,8 +664,8 @@
             <DataTemplate DataType="vm:RebaseInProgress">
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}"
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}"
                              Text="{DynamicResource Text.InProgress.Rebase.StoppedAt}"
                              IsVisible="{Binding StoppedAt, Converter={x:Static ObjectConverters.IsNotNull}}" />
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange"
@@ -683,8 +683,8 @@
             <DataTemplate DataType="vm:RevertInProgress">
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert.Head}"/>
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Revert}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Revert.Head}"/>
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
                 </StackPanel>
 
@@ -694,10 +694,10 @@
 
             <DataTemplate DataType="vm:MergeInProgress">
               <StackPanel Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
-                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge.Operating}"/>
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Merge}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Merge.Operating}"/>
                 <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding SourceName}" ToolTip.Tip="{Binding Source}"/>
-                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="→"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="→"/>
                 <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Current}"/>
               </StackPanel>
             </DataTemplate>
@@ -730,14 +730,14 @@
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
                    Margin="8,0"
-                   Foreground="{DynamicResource Brush.ConflictForeground}"
+                   Foreground="{DynamicResource Brush.Conflict.Foreground}"
                    Text="{DynamicResource Text.Bisect.WaitingForRange}"
                    IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.WaitingForRange}}"/>
 
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
                    Margin="8,0"
-                   Foreground="{DynamicResource Brush.ConflictForeground}"
+                   Foreground="{DynamicResource Brush.Conflict.Foreground}"
                    Text="{DynamicResource Text.Bisect.Detecting}"
                    IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.Detecting}}"/>
 

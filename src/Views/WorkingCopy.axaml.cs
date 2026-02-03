@@ -343,7 +343,8 @@ namespace SourceGit.Views
                         mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
                         mergeBuiltin.Click += async (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, change.Path));
+                            var head = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
+                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, head, change.Path));
                             e.Handled = true;
                         };
 

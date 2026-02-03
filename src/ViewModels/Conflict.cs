@@ -52,14 +52,14 @@ namespace SourceGit.ViewModels
             if (CanMerge)
                 IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
 
-            var head = new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResult();
+            _head = new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResult();
             (Mine, Theirs) = wc.InProgressContext switch
             {
-                CherryPickInProgress cherryPick => (head, cherryPick.Head),
+                CherryPickInProgress cherryPick => (_head, cherryPick.Head),
                 RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
-                RevertInProgress revert => (head, revert.Head),
-                MergeInProgress merge => (head, merge.Source),
-                _ => (head, (object)"Stash or Patch"),
+                RevertInProgress revert => (_head, revert.Head),
+                MergeInProgress merge => (_head, merge.Source),
+                _ => (_head, (object)"Stash or Patch"),
             };
         }
 
@@ -76,7 +76,7 @@ namespace SourceGit.ViewModels
         public async Task MergeAsync()
         {
             if (CanMerge)
-                await App.ShowDialog(new MergeConflictEditor(_repo, _change.Path));
+                await App.ShowDialog(new MergeConflictEditor(_repo, _head, _change.Path));
         }
 
         public async Task MergeExternalAsync()
@@ -87,6 +87,7 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private WorkingCopy _wc = null;
+        private Models.Commit _head = null;
         private Models.Change _change = null;
     }
 }

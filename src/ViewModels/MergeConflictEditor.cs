@@ -16,34 +16,44 @@ namespace SourceGit.ViewModels
             get => _filePath;
         }
 
+        public object Mine
+        {
+            get;
+        }
+
+        public object Theirs
+        {
+            get;
+        }
+
         public string Error
         {
             get => _error;
             private set => SetProperty(ref _error, value);
         }
 
-        public List<Models.ConflictLine> OursDiffLines
+        public List<Models.ConflictLine> OursLines
         {
-            get => _oursDiffLines;
-            private set => SetProperty(ref _oursDiffLines, value);
+            get => _oursLines;
+            private set => SetProperty(ref _oursLines, value);
         }
 
-        public List<Models.ConflictLine> TheirsDiffLines
+        public List<Models.ConflictLine> TheirsLines
         {
-            get => _theirsDiffLines;
-            private set => SetProperty(ref _theirsDiffLines, value);
+            get => _theirsLines;
+            private set => SetProperty(ref _theirsLines, value);
         }
 
-        public List<Models.ConflictLine> ResultDiffLines
+        public List<Models.ConflictLine> ResultLines
         {
-            get => _resultDiffLines;
-            private set => SetProperty(ref _resultDiffLines, value);
+            get => _resultLines;
+            private set => SetProperty(ref _resultLines, value);
         }
 
-        public int DiffMaxLineNumber
+        public int MaxLineNumber
         {
-            get => _diffMaxLineNumber;
-            private set => SetProperty(ref _diffMaxLineNumber, value);
+            get => _maxLineNumber;
+            private set => SetProperty(ref _maxLineNumber, value);
         }
 
         public int UnsolvedCount
@@ -69,10 +79,19 @@ namespace SourceGit.ViewModels
             get => _conflictRegions;
         }
 
-        public MergeConflictEditor(Repository repo, string filePath)
+        public MergeConflictEditor(Repository repo, Models.Commit head, string filePath)
         {
             _repo = repo;
             _filePath = filePath;
+
+            (Mine, Theirs) = repo.InProgressContext switch
+            {
+                CherryPickInProgress cherryPick => (head, cherryPick.Head),
+                RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
+                RevertInProgress revert => (head, revert.Head),
+                MergeInProgress merge => (head, merge.Source),
+                _ => (head, (object)"Stash or Patch"),
+            };
 
             var workingCopyPath = Path.Combine(_repo.FullPath, _filePath);
             var workingCopyContent = string.Empty;
@@ -291,10 +310,9 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var maxLineNumber = Math.Max(oursLineNumber, theirsLineNumber);
-            DiffMaxLineNumber = maxLineNumber;
-            OursDiffLines = oursLines;
-            TheirsDiffLines = theirsLines;
+            MaxLineNumber = Math.Max(oursLineNumber, theirsLineNumber);
+            OursLines = oursLines;
+            TheirsLines = theirsLines;
         }
 
         private void RefreshDisplayData()
@@ -302,9 +320,9 @@ namespace SourceGit.ViewModels
             var resultLines = new List<Models.ConflictLine>();
             _lineStates.Clear();
 
-            if (_oursDiffLines == null || _oursDiffLines.Count == 0)
+            if (_oursLines == null || _oursLines.Count == 0)
             {
-                ResultDiffLines = resultLines;
+                ResultLines = resultLines;
                 return;
             }
 
@@ -312,7 +330,7 @@ namespace SourceGit.ViewModels
             int currentLine = 0;
             int conflictIdx = 0;
 
-            while (currentLine < _oursDiffLines.Count)
+            while (currentLine < _oursLines.Count)
             {
                 // Check if we're at a conflict region
                 Models.ConflictRegion currentRegion = null;
@@ -424,7 +442,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var oursLine = _oursDiffLines[currentLine];
+                    var oursLine = _oursLines[currentLine];
                     resultLines.Add(new(oursLine.Type, oursLine.Content, resultLineNumber));
                     _lineStates.Add(Models.ConflictLineState.Normal);
                     resultLineNumber++;
@@ -433,7 +451,7 @@ namespace SourceGit.ViewModels
             }
 
             SelectedChunk = null;
-            ResultDiffLines = resultLines;
+            ResultLines = resultLines;
 
             var unsolved = new List<int>();
             for (var i = 0; i < _conflictRegions.Count; i++)
@@ -450,10 +468,10 @@ namespace SourceGit.ViewModels
         private readonly string _filePath;
         private string _originalContent = string.Empty;
         private int _unsolvedCount = 0;
-        private int _diffMaxLineNumber = 0;
-        private List<Models.ConflictLine> _oursDiffLines = [];
-        private List<Models.ConflictLine> _theirsDiffLines = [];
-        private List<Models.ConflictLine> _resultDiffLines = [];
+        private int _maxLineNumber = 0;
+        private List<Models.ConflictLine> _oursLines = [];
+        private List<Models.ConflictLine> _theirsLines = [];
+        private List<Models.ConflictLine> _resultLines = [];
         private List<Models.ConflictRegion> _conflictRegions = [];
         private List<Models.ConflictLineState> _lineStates = [];
         private Vector _scrollOffset = Vector.Zero;

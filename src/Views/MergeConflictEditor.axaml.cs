@@ -347,6 +347,8 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             else if (change.Property == SelectedChunkProperty)
                 TextArea.TextView.InvalidateVisual();
+            else if (change.Property == MaxLineNumberProperty)
+                TextArea.LeftMargins[0].InvalidateMeasure();
         }
 
         private void UpdateContent()
@@ -562,7 +564,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            var total = vm.OursDiffLines.Count;
+            var total = vm.OursLines.Count;
             var unitHeight = Bounds.Height / (total * 1.0);
             var conflicts = vm.ConflictRegions;
             var blockBGs = new SolidColorBrush[] { new SolidColorBrush(Colors.Red, 0.6), new SolidColorBrush(Colors.Green, 0.6) };
@@ -607,7 +609,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            var total = vm.OursDiffLines.Count;
+            var total = vm.OursLines.Count;
             var range = DisplayRange;
             if (range == null || range.End == 0)
                 return;
@@ -684,7 +686,7 @@ namespace SourceGit.Views
             if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.UnsolvedCount > 0)
             {
                 var view = OursPresenter.TextArea?.TextView;
-                var lines = vm.OursDiffLines;
+                var lines = vm.OursLines;
                 var minY = double.MaxValue;
                 var minLineIdx = lines.Count;
                 if (view is { VisualLinesValid: true })
@@ -727,7 +729,7 @@ namespace SourceGit.Views
             if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.UnsolvedCount > 0)
             {
                 var view = OursPresenter.TextArea?.TextView;
-                var lines = vm.OursDiffLines;
+                var lines = vm.OursLines;
                 var maxY = 0.0;
                 var maxLineIdx = 0;
                 if (view is { VisualLinesValid: true })
