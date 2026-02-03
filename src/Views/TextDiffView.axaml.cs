@@ -841,15 +841,14 @@ namespace SourceGit.Views
                 // The first selected line (partial selection)
                 if (i == startIdx && startPosition.Column > 1)
                 {
-                    builder.Append(line.Content.AsSpan(startPosition.Column - 1));
-                    builder.Append(Environment.NewLine);
+                    builder.Append(line.Content.AsSpan(startPosition.Column - 1)).Append('\n');
                     continue;
                 }
 
                 // The selection range is larger than original source.
                 if (i == lines.Count - 1 && i < endIdx)
                 {
-                    builder.Append(line.Content);
+                    builder.Append(line.Content).Append('\n');
                     break;
                 }
 
@@ -865,7 +864,7 @@ namespace SourceGit.Views
                 }
 
                 // Other lines.
-                builder.AppendLine(line.Content);
+                builder.Append(line.Content).Append('\n');
             }
 
             await App.CopyTextAsync(builder.ToString());

@@ -116,21 +116,13 @@ namespace SourceGit.Native
         static OS()
         {
             if (OperatingSystem.IsWindows())
-            {
                 _backend = new Windows();
-            }
             else if (OperatingSystem.IsMacOS())
-            {
                 _backend = new MacOS();
-            }
             else if (OperatingSystem.IsLinux())
-            {
                 _backend = new Linux();
-            }
             else
-            {
                 throw new PlatformNotSupportedException();
-            }
         }
 
         public static void SetupDataDir()
@@ -167,11 +159,7 @@ namespace SourceGit.Native
 
         public static void SetShellOrTerminal(Models.ShellOrTerminal shell)
         {
-            if (shell == null)
-                ShellOrTerminal = string.Empty;
-            else
-                ShellOrTerminal = _backend.FindTerminal(shell);
-
+            ShellOrTerminal = shell != null ? _backend.FindTerminal(shell) : string.Empty;
             ShellOrTerminalArgs = shell.Args;
         }
 
