@@ -41,8 +41,8 @@ namespace SourceGit.ViewModels
 
         public bool PushToRemotes
         {
-            get => _repo.Settings.PushToRemoteWhenCreateTag;
-            set => _repo.Settings.PushToRemoteWhenCreateTag = value;
+            get => _repo.UIStates.PushToRemoteWhenCreateTag;
+            set => _repo.UIStates.PushToRemoteWhenCreateTag = value;
         }
 
         public CreateTag(Repository repo, Models.Branch branch)

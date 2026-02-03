@@ -67,14 +67,14 @@ namespace SourceGit.ViewModels
 
         public bool EnableSignOff
         {
-            get => _repo.Settings.EnableSignOffForCommit;
-            set => _repo.Settings.EnableSignOffForCommit = value;
+            get => _repo.UIStates.EnableSignOffForCommit;
+            set => _repo.UIStates.EnableSignOffForCommit = value;
         }
 
         public bool NoVerifyOnCommit
         {
-            get => _repo.Settings.NoVerifyOnCommit;
-            set => _repo.Settings.NoVerifyOnCommit = value;
+            get => _repo.UIStates.NoVerifyOnCommit;
+            set => _repo.UIStates.NoVerifyOnCommit = value;
         }
 
         public bool UseAmend
@@ -228,6 +228,9 @@ namespace SourceGit.ViewModels
 
         public void Dispose()
         {
+            if (_inProgressContext != null && !string.IsNullOrEmpty(_commitMessage))
+                File.WriteAllText(Path.Combine(_repo.GitDir, "MERGE_MSG"), _commitMessage);
+
             _repo = null;
             _inProgressContext = null;
 

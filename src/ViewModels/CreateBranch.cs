@@ -28,12 +28,12 @@ namespace SourceGit.ViewModels
 
         public bool CheckoutAfterCreated
         {
-            get => _repo.Settings.CheckoutBranchOnCreateBranch;
+            get => _repo.UIStates.CheckoutBranchOnCreateBranch;
             set
             {
-                if (_repo.Settings.CheckoutBranchOnCreateBranch != value)
+                if (_repo.UIStates.CheckoutBranchOnCreateBranch != value)
                 {
-                    _repo.Settings.CheckoutBranchOnCreateBranch = value;
+                    _repo.UIStates.CheckoutBranchOnCreateBranch = value;
                     OnPropertyChanged();
                 }
             }
@@ -185,7 +185,7 @@ namespace SourceGit.ViewModels
 
                 var folderEndIdx = fake.FullName.LastIndexOf('/');
                 if (folderEndIdx > 10)
-                    _repo.Settings.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
+                    _repo.UIStates.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
 
                 if (_repo.HistoryFilterMode == Models.FilterMode.Included)
                     _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, false, false);

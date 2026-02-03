@@ -792,7 +792,7 @@
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-            <Binding Path="HistoryFilterCollection.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            <Binding Path="UIStates.HistoryFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
           </MultiBinding>
         </Border.IsVisible>
 
@@ -810,7 +810,7 @@
                 Fill="{DynamicResource Brush.FG2}"
                 IsVisible="{Binding HistoryFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
 
-          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding HistoryFilterCollection.Filters}">
+          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding UIStates.HistoryFilters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" ItemHeight="22"/>

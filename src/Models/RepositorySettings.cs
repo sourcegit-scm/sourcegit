@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+
 using Avalonia.Collections;
 
 namespace SourceGit.Models
@@ -11,101 +14,41 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
-        public HistoryShowFlags HistoryShowFlags
+        public int PreferredMergeMode
         {
             get;
             set;
-        } = HistoryShowFlags.None;
+        } = 0;
 
-        public bool EnableTopoOrderInHistories
+        public string ConventionalTypesOverride
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public bool EnableAutoFetch
         {
             get;
             set;
         } = false;
 
-        public bool OnlyHighlightCurrentBranchInHistories
+        public int AutoFetchInterval
+        {
+            get;
+            set;
+        } = 10;
+
+        public bool AskBeforeAutoUpdatingSubmodules
         {
             get;
             set;
         } = false;
 
-        public BranchSortMode LocalBranchSortMode
+        public string PreferredOpenAIService
         {
             get;
             set;
-        } = BranchSortMode.Name;
-
-        public BranchSortMode RemoteBranchSortMode
-        {
-            get;
-            set;
-        } = BranchSortMode.Name;
-
-        public TagSortMode TagSortMode
-        {
-            get;
-            set;
-        } = TagSortMode.CreatorDate;
-
-        public bool IncludeUntrackedInLocalChanges
-        {
-            get;
-            set;
-        } = true;
-
-        public bool EnableForceOnFetch
-        {
-            get;
-            set;
-        } = false;
-
-        public bool FetchAllRemotes
-        {
-            get;
-            set;
-        } = false;
-
-        public bool FetchWithoutTags
-        {
-            get;
-            set;
-        } = false;
-
-        public bool PreferRebaseInsteadOfMerge
-        {
-            get;
-            set;
-        } = true;
-
-        public bool CheckSubmodulesOnPush
-        {
-            get;
-            set;
-        } = true;
-
-        public bool PushAllTags
-        {
-            get;
-            set;
-        } = false;
-
-        public bool PushToRemoteWhenCreateTag
-        {
-            get;
-            set;
-        } = true;
-
-        public bool PushToRemoteWhenDeleteTag
-        {
-            get;
-            set;
-        } = false;
-
-        public bool CheckoutBranchOnCreateBranch
-        {
-            get;
-            set;
-        } = true;
+        } = "---";
 
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
@@ -125,113 +68,58 @@ namespace SourceGit.Models
             set;
         } = [];
 
-        public bool EnableAutoFetch
+        public static RepositorySettings Get(string repo, string gitCommonDir)
         {
-            get;
-            set;
-        } = false;
+            var fileInfo = new FileInfo(Path.Combine(gitCommonDir, "sourcegit.settings"));
+            var fullpath = fileInfo.FullName;
+            if (_cache.TryGetValue(fullpath, out var setting))
+            {
+                setting._usedBy.Add(repo);
+                return setting;
+            }
 
-        public int AutoFetchInterval
-        {
-            get;
-            set;
-        } = 10;
+            if (!File.Exists(fullpath))
+            {
+                setting = new RepositorySettings();
+            }
+            else
+            {
+                try
+                {
+                    using var stream = File.OpenRead(fullpath);
+                    setting = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.RepositorySettings);
+                }
+                catch
+                {
+                    setting = new RepositorySettings();
+                }
+            }
 
-        public bool EnableSignOffForCommit
-        {
-            get;
-            set;
-        } = false;
+            setting._file = fullpath;
+            setting._usedBy.Add(repo);
+            _cache.Add(fullpath, setting);
+            return setting;
+        }
 
-        public bool NoVerifyOnCommit
+        public void TryUnload(string repo)
         {
-            get;
-            set;
-        } = false;
+            _usedBy.Remove(repo);
 
-        public bool IncludeUntrackedWhenStash
-        {
-            get;
-            set;
-        } = true;
+            if (_usedBy.Count == 0)
+            {
+                try
+                {
+                    using var stream = File.Create(_file);
+                    JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.RepositorySettings);
+                }
+                catch
+                {
+                    // Ignore save errors
+                }
 
-        public bool OnlyStagedWhenStash
-        {
-            get;
-            set;
-        } = false;
-
-        public bool AskBeforeAutoUpdatingSubmodules
-        {
-            get;
-            set;
-        } = false;
-
-        public int ChangesAfterStashing
-        {
-            get;
-            set;
-        } = 0;
-
-        public string PreferredOpenAIService
-        {
-            get;
-            set;
-        } = "---";
-
-        public bool IsLocalBranchesExpandedInSideBar
-        {
-            get;
-            set;
-        } = true;
-
-        public bool IsRemotesExpandedInSideBar
-        {
-            get;
-            set;
-        } = false;
-
-        public bool IsTagsExpandedInSideBar
-        {
-            get;
-            set;
-        } = false;
-
-        public bool IsSubmodulesExpandedInSideBar
-        {
-            get;
-            set;
-        } = false;
-
-        public bool IsWorktreeExpandedInSideBar
-        {
-            get;
-            set;
-        } = false;
-
-        public List<string> ExpandedBranchNodesInSideBar
-        {
-            get;
-            set;
-        } = [];
-
-        public int PreferredMergeMode
-        {
-            get;
-            set;
-        } = 0;
-
-        public string LastCommitMessage
-        {
-            get;
-            set;
-        } = string.Empty;
-
-        public string ConventionalTypesOverride
-        {
-            get;
-            set;
-        } = string.Empty;
+                _cache.Remove(_file);
+            }
+        }
 
         public void PushCommitMessage(string message)
         {
@@ -278,5 +166,9 @@ namespace SourceGit.Models
             if (idx < CustomActions.Count - 1)
                 CustomActions.Move(idx + 1, idx);
         }
+
+        private static Dictionary<string, RepositorySettings> _cache = new();
+        private string _file = string.Empty;
+        private HashSet<string> _usedBy = new();
     }
 }
