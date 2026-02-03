@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -17,8 +19,195 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+            ApplySidebarViewOrder();
+            SyncViewSwitcherSelection();
             UpdateLeftSidebarLayout();
+
+            if (DataContext is ViewModels.Repository repo)
+                repo.PropertyChanged += OnRepositoryPropertyChanged;
         }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+
+            if (DataContext is ViewModels.Repository repo)
+                repo.PropertyChanged -= OnRepositoryPropertyChanged;
+        }
+
+        private void OnRepositoryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModels.Repository.SelectedViewIndex))
+                SyncViewSwitcherSelection();
+        }
+
+        #region View Switcher Drag-Drop Reorder
+
+        private static readonly DataFormat<string> _dndViewSwitcherFormat =
+            DataFormat.CreateStringApplicationFormat("sourcegit-dnd-view-switcher");
+
+        private bool _pressedViewItem = false;
+        private bool _startDragViewItem = false;
+        private Point _pressedViewItemPosition;
+
+        private void ApplySidebarViewOrder()
+        {
+            var layout = ViewModels.Preferences.Instance.Layout;
+            var order = layout.SidebarViewOrder;
+            if (order == null || order.Count != 3)
+                return;
+
+            // Collect items by their Tag
+            var itemsByTag = new Dictionary<int, ListBoxItem>();
+            foreach (var obj in ViewSwitcher.Items)
+            {
+                if (obj is ListBoxItem item && item.Tag is string tagStr && int.TryParse(tagStr, out var tag))
+                    itemsByTag[tag] = item;
+            }
+
+            if (itemsByTag.Count != 3)
+                return;
+
+            // Reorder
+            ViewSwitcher.Items.Clear();
+            foreach (var tag in order)
+            {
+                if (itemsByTag.TryGetValue(tag, out var item))
+                    ViewSwitcher.Items.Add(item);
+            }
+        }
+
+        private void SyncViewSwitcherSelection()
+        {
+            if (DataContext is not ViewModels.Repository repo)
+                return;
+
+            // Find the ListBoxItem whose Tag matches the current SelectedViewIndex
+            foreach (var obj in ViewSwitcher.Items)
+            {
+                if (obj is ListBoxItem item && item.Tag is string tagStr &&
+                    int.TryParse(tagStr, out var tag) && tag == repo.SelectedViewIndex)
+                {
+                    _suppressSelectionChanged = true;
+                    ViewSwitcher.SelectedItem = item;
+                    _suppressSelectionChanged = false;
+                    break;
+                }
+            }
+        }
+
+        private bool _suppressSelectionChanged = false;
+
+        private void OnViewSwitcherSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_suppressSelectionChanged)
+                return;
+
+            if (DataContext is ViewModels.Repository repo &&
+                ViewSwitcher.SelectedItem is ListBoxItem item &&
+                item.Tag is string tagStr &&
+                int.TryParse(tagStr, out var viewIndex))
+            {
+                repo.SelectedViewIndex = viewIndex;
+            }
+        }
+
+        private static ListBoxItem FindParentListBoxItem(Control control)
+        {
+            var parent = control.Parent;
+            while (parent != null)
+            {
+                if (parent is ListBoxItem item)
+                    return item;
+                parent = (parent as Control)?.Parent;
+            }
+            return null;
+        }
+
+        private void OnViewSwitcherItemPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is Border border)
+            {
+                _pressedViewItem = true;
+                _startDragViewItem = false;
+                _pressedViewItemPosition = e.GetPosition(border);
+                e.Handled = true;
+            }
+        }
+
+        private void OnViewSwitcherItemPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedViewItem = false;
+            _startDragViewItem = false;
+        }
+
+        private async void OnViewSwitcherItemPointerMoved(object sender, PointerEventArgs e)
+        {
+            if (!_pressedViewItem || _startDragViewItem || sender is not Border border)
+                return;
+
+            var delta = e.GetPosition(border) - _pressedViewItemPosition;
+            var sizeSquared = delta.X * delta.X + delta.Y * delta.Y;
+            if (sizeSquared < 64)
+                return;
+
+            _startDragViewItem = true;
+
+            var listBoxItem = FindParentListBoxItem(border);
+            if (listBoxItem == null)
+                return;
+
+            var tag = listBoxItem.Tag as string ?? "";
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(_dndViewSwitcherFormat, tag));
+            await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
+        }
+
+        private void OnViewSwitcherItemDrop(object sender, DragEventArgs e)
+        {
+            if (e.DataTransfer.TryGetValue(_dndViewSwitcherFormat) is not { Length: > 0 } sourceTag)
+                return;
+
+            if (sender is not ListBoxItem targetItem || targetItem.Tag is not string targetTag)
+                return;
+
+            if (sourceTag == targetTag)
+                return;
+
+            // Find source and target indices in current Items list
+            var items = ViewSwitcher.Items.Cast<ListBoxItem>().ToList();
+            var sourceIdx = items.FindIndex(i => (i.Tag as string) == sourceTag);
+            var targetIdx = items.FindIndex(i => (i.Tag as string) == targetTag);
+
+            if (sourceIdx < 0 || targetIdx < 0)
+                return;
+
+            // Swap
+            var sourceItem = items[sourceIdx];
+            items.RemoveAt(sourceIdx);
+            items.Insert(targetIdx, sourceItem);
+
+            // Rebuild ListBox
+            _suppressSelectionChanged = true;
+            var selectedItem = ViewSwitcher.SelectedItem;
+            ViewSwitcher.Items.Clear();
+            foreach (var item in items)
+                ViewSwitcher.Items.Add(item);
+            ViewSwitcher.SelectedItem = selectedItem;
+            _suppressSelectionChanged = false;
+
+            // Persist order
+            var newOrder = items.Select(i => int.Parse(i.Tag as string ?? "0")).ToList();
+            var layout = ViewModels.Preferences.Instance.Layout;
+            layout.SidebarViewOrder = newOrder;
+            ViewModels.Preferences.Instance.Save();
+
+            _pressedViewItem = false;
+            _startDragViewItem = false;
+            e.Handled = true;
+        }
+
+        #endregion
 
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {

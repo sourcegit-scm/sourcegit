@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -76,6 +78,13 @@ namespace SourceGit.ViewModels
         private GridLength _stashesLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _commitDetailChangesLeftWidth = new GridLength(256, GridUnitType.Pixel);
         private GridLength _commitDetailFilesLeftWidth = new GridLength(256, GridUnitType.Pixel);
+        public List<int> SidebarViewOrder
+        {
+            get => _sidebarViewOrder;
+            set => SetProperty(ref _sidebarViewOrder, value);
+        }
+
         private DataGridLength _authorColumnWidth = new DataGridLength(120, DataGridLengthUnitType.Pixel, 120, 120);
+        private List<int> _sidebarViewOrder = new List<int> { 0, 1, 2 };
     }
 }
