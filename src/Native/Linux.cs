@@ -44,32 +44,23 @@ namespace SourceGit.Native
                     return portableDir;
             }
 
-            // Gets the `$XDG_DATA_HOME` dir.
+            // Runtime data dir: ~/.sourcegit
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var dataHome = Path.Combine(home, ".local", "share");
-            if (!Directory.Exists(dataHome))
-                Directory.CreateDirectory(dataHome);
+            var dataDir = Path.Combine(home, ".sourcegit");
+            if (Directory.Exists(dataDir))
+                return dataDir;
 
-            // Gets the data dir and migrate old data.
-            var dataDir = Path.Combine(dataHome, "SourceGit");
-            if (!Directory.Exists(dataDir))
+            // Migrate old data: ~/.config/SourceGit
+            var oldDataDir = Path.Combine(home, ".config", "SourceGit");
+            if (Directory.Exists(oldDataDir))
             {
-                var oldDataDir = Path.Combine(home, ".config", "SourceGit"); // Old data dir: $XDG_CONFIG_HOME/SourceGit
-                var oldFallbackDir = Path.Combine(home, ".sourcegit"); // Old fallback folder: $HOME/.sourcegit
-                var moveDir = Directory.Exists(oldDataDir)
-                    ? oldDataDir
-                    : (Directory.Exists(oldFallbackDir) ? oldFallbackDir : string.Empty);
-
-                if (!string.IsNullOrEmpty(moveDir))
+                try
                 {
-                    try
-                    {
-                        Directory.Move(moveDir, dataDir);
-                    }
-                    catch
-                    {
-                        // Ignore errors
-                    }
+                    Directory.Move(oldDataDir, dataDir);
+                }
+                catch
+                {
+                    // Ignore errors
                 }
             }
 
