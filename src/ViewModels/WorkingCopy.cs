@@ -264,8 +264,8 @@ namespace SourceGit.ViewModels
                         return;
 
                     HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
-                    UpdateDetail();
                     UpdateInProgressState();
+                    UpdateDetail();
                 });
 
                 return;
@@ -313,6 +313,12 @@ namespace SourceGit.ViewModels
                     selectedStaged.Add(c);
             }
 
+            if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && hasConflict)
+            {
+                var firstConflict = visibleUnstaged.Find(x => x.IsConflicted);
+                selectedUnstaged.Add(firstConflict);
+            }
+
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -329,8 +335,8 @@ namespace SourceGit.ViewModels
                 SelectedStaged = selectedStaged;
                 _isLoadingData = false;
 
-                UpdateDetail();
                 UpdateInProgressState();
+                UpdateDetail();
             });
         }
 

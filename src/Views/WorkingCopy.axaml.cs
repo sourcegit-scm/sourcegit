@@ -336,7 +336,7 @@ namespace SourceGit.Views
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
 
-                    if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
+                    if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified && !Directory.Exists(path))
                     {
                         var mergeBuiltin = new MenuItem();
                         mergeBuiltin.Header = App.Text("ChangeCM.Merge");
