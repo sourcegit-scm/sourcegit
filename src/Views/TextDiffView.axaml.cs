@@ -115,12 +115,6 @@ namespace SourceGit.Views
                 return new Size(test.Width, 0);
             }
 
-            protected override void OnDataContextChanged(EventArgs e)
-            {
-                base.OnDataContextChanged(e);
-                InvalidateMeasure();
-            }
-
             private readonly bool _usePresenter;
             private readonly bool _isOld;
         }
@@ -585,6 +579,13 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
+
+            foreach (var margin in TextArea.LeftMargins)
+            {
+                if (margin is LineNumberMargin)
+                    margin.InvalidateMeasure();
+            }
+
             AutoScrollToFirstChange();
         }
 
