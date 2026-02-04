@@ -15,13 +15,25 @@ namespace SourceGit.Models
             set;
         } = HistoryShowFlags.None;
 
-        public bool EnableTopoOrderInHistories
+        public bool IsAuthorColumnVisibleInHistory
+        {
+            get;
+            set;
+        } = true;
+
+        public bool IsSHAColumnVisibleInHistory
+        {
+            get;
+            set;
+        } = true;
+
+        public bool EnableTopoOrderInHistory
         {
             get;
             set;
         } = false;
 
-        public bool OnlyHighlightCurrentBranchInHistories
+        public bool OnlyHighlightCurrentBranchInHistory
         {
             get;
             set;
@@ -386,7 +398,7 @@ namespace SourceGit.Models
 
             var builder = new StringBuilder();
 
-            if (EnableTopoOrderInHistories)
+            if (EnableTopoOrderInHistory)
                 builder.Append("--topo-order ");
             else
                 builder.Append("--date-order ");

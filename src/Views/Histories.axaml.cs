@@ -216,11 +216,14 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItems: { } selected } dataGrid &&
-                e.Source is Control { DataContext: Models.Commit })
+            if (e.Source is Control { DataContext: Models.Commit })
             {
                 var repoView = this.FindAncestorOfType<Repository>();
                 if (repoView is not { DataContext: ViewModels.Repository repo })
+                    return;
+
+                var selected = CommitListContainer.SelectedItems;
+                if (selected is not { Count: > 0 })
                     return;
 
                 var commits = new List<Models.Commit>();
@@ -233,13 +236,53 @@ namespace SourceGit.Views
                 if (selected.Count > 1)
                 {
                     var menu = CreateContextMenuForMultipleCommits(repo, commits);
-                    menu.Open(dataGrid);
+                    menu.Open(CommitListContainer);
                 }
                 else if (selected.Count == 1)
                 {
                     var menu = CreateContextMenuForSingleCommit(repo, commits[0]);
-                    menu.Open(dataGrid);
+                    menu.Open(CommitListContainer);
                 }
+            }
+            else if (e.Source is Control elem)
+            {
+                var headersPresenter = CommitListContainer.FindDescendantOfType<DataGridColumnHeadersPresenter>();
+                if (!headersPresenter.IsVisualAncestorOf(elem))
+                    return;
+
+                if (DataContext is not ViewModels.Histories vm)
+                    return;
+
+                var columnsHeader = new MenuItem();
+                columnsHeader.Header = App.Text("Histories.ShowColumns");
+                columnsHeader.IsEnabled = false;
+
+                var authorColumn = new MenuItem();
+                authorColumn.Header = App.Text("Histories.Header.Author");
+                if (vm.IsAuthorColumnVisible)
+                    authorColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                authorColumn.Click += (_, ev) =>
+                {
+                    vm.IsAuthorColumnVisible = !vm.IsAuthorColumnVisible;
+                    ev.Handled = true;
+                };
+
+                var shaColumn = new MenuItem();
+                shaColumn.Header = App.Text("Histories.Header.SHA");
+                if (vm.IsSHAColumnVisible)
+                    shaColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                shaColumn.Click += (_, ev) =>
+                {
+                    vm.IsSHAColumnVisible = !vm.IsSHAColumnVisible;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(columnsHeader);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(authorColumn);
+                menu.Items.Add(shaColumn);
+                menu.Open(CommitListContainer);
             }
 
             e.Handled = true;

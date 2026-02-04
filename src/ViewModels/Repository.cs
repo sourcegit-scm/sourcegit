@@ -79,14 +79,14 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedView, value);
         }
 
-        public bool EnableTopoOrderInHistories
+        public bool EnableTopoOrderInHistory
         {
-            get => _uiStates.EnableTopoOrderInHistories;
+            get => _uiStates.EnableTopoOrderInHistory;
             set
             {
-                if (value != _uiStates.EnableTopoOrderInHistories)
+                if (value != _uiStates.EnableTopoOrderInHistory)
                 {
-                    _uiStates.EnableTopoOrderInHistories = value;
+                    _uiStates.EnableTopoOrderInHistory = value;
                     RefreshCommits();
                 }
             }
@@ -105,14 +105,14 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool OnlyHighlightCurrentBranchInHistories
+        public bool OnlyHighlightCurrentBranchInHistory
         {
-            get => _uiStates.OnlyHighlightCurrentBranchInHistories;
+            get => _uiStates.OnlyHighlightCurrentBranchInHistory;
             set
             {
-                if (value != _uiStates.OnlyHighlightCurrentBranchInHistories)
+                if (value != _uiStates.OnlyHighlightCurrentBranchInHistory)
                 {
-                    _uiStates.OnlyHighlightCurrentBranchInHistories = value;
+                    _uiStates.OnlyHighlightCurrentBranchInHistory = value;
                     OnPropertyChanged();
                 }
             }

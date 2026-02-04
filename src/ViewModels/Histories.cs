@@ -18,6 +18,32 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        public bool IsAuthorColumnVisible
+        {
+            get => _repo.UIStates.IsAuthorColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsAuthorColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsAuthorColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsSHAColumnVisible
+        {
+            get => _repo.UIStates.IsSHAColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsSHAColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsSHAColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public List<Models.Commit> Commits
         {
             get => _commits;
