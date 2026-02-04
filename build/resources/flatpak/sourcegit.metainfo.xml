@@ -70,9 +70,4 @@
         </screenshot>
     </screenshots>
     <content_rating type="oars-1.1" />
-    <releases>
-        <release version="2026.02" date="2026-01-26">
-            <url type="details">https://github.com/sourcegit-scm/sourcegit/releases/tag/v2026.02</url>
-        </release>
-    </releases>
 </component>
