@@ -474,9 +474,10 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">历史记录</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改时间</x:String>
+  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日期时间</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交时间</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交时间</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">显示列</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住 Ctrl 或 Shift 键选择多个提交</x:String>

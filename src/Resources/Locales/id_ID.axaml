@@ -440,7 +440,7 @@
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">WAKTU AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAFIK &amp; SUBJEK</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">WAKTU COMMIT</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">WAKTU COMMIT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">DIPILIH {0} COMMIT</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Tahan 'Ctrl' atau 'Shift' untuk memilih beberapa commit.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Tahan ⌘ atau ⇧ untuk memilih beberapa commit.</x:String>

@@ -214,12 +214,12 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="160" CanUserResize="False" IsReadOnly="True">
+          <DataGridTemplateColumn MinWidth="160" CanUserResize="False" IsReadOnly="True" IsVisible="{Binding IsDateTimeColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <Grid HorizontalAlignment="Center">
                 <TextBlock Classes="table_header"
                            Margin="6,0,0,0"
-                           Text="{DynamicResource Text.Histories.Header.Time}"
+                           Text="{DynamicResource Text.Histories.Header.CommitTime}"
                            IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
                 <TextBlock Classes="table_header"
                            Margin="6,0,0,0"

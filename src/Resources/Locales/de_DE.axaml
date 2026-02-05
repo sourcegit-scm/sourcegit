@@ -475,7 +475,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTOR-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">VERLAUF &amp; COMMIT-NACHRICHT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS AUSGEWÄHLT</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Halte ‚Strg‘ oder ‚Umschalt‘, um mehrere Commits auszuwählen.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Halte ⌘ oder ⇧, um mehrere Commits auszuwählen</x:String>

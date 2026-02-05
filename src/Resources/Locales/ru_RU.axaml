@@ -476,7 +476,7 @@
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">ВРЕМЯ РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ВРЕМЯ РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАННЫЕ {0} РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Удерживайте Ctrl или Shift, чтобы выбрать несколько ревизий.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Удерживайте ⌘ или ⇧, чтобы выбрать несколько ревизий.</x:String>

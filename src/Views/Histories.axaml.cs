@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
@@ -254,7 +255,7 @@ namespace SourceGit.Views
                     return;
 
                 var columnsHeader = new MenuItem();
-                columnsHeader.Header = App.Text("Histories.ShowColumns");
+                columnsHeader.Header = new TextBlock() { Text = App.Text("Histories.ShowColumns"), FontWeight = FontWeight.Bold };
                 columnsHeader.IsEnabled = false;
 
                 var authorColumn = new MenuItem();
@@ -277,11 +278,21 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
+                var timeColumn = new MenuItem();
+                timeColumn.Header = App.Text("Histories.Header.DateTime");
+                if (vm.IsDateTimeColumnVisible)
+                    timeColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                timeColumn.Click += (_, ev) =>
+                {
+                    vm.IsDateTimeColumnVisible = !vm.IsDateTimeColumnVisible;
+                    ev.Handled = true;
+                };
+
                 var menu = new ContextMenu();
                 menu.Items.Add(columnsHeader);
-                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(authorColumn);
                 menu.Items.Add(shaColumn);
+                menu.Items.Add(timeColumn);
                 menu.Open(CommitListContainer);
             }
 

@@ -27,6 +27,12 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        public bool IsDateTimeColumnVisibleInHistory
+        {
+            get;
+            set;
+        } = true;
+
         public bool EnableTopoOrderInHistory
         {
             get;

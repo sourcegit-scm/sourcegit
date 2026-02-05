@@ -44,6 +44,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsDateTimeColumnVisible
+        {
+            get => _repo.UIStates.IsDateTimeColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsDateTimeColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsDateTimeColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public List<Models.Commit> Commits
         {
             get => _commits;

@@ -330,7 +330,7 @@
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ஆசிரியர் நேரம்</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">வரைபடம் &amp; பொருள்</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">பாகொவ</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">உறுதிமொழி நேரம்</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">உறுதிமொழி நேரம்</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">தேர்ந்தெடுக்கப்பட்ட {0} உறுதிமொழிகள்</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">பல உறுதிமொழிகளைத் தேர்ந்தெடுக்க 'கட்டுப்பாடு' அல்லது 'உயர்த்து'ஐ அழுத்திப் பிடி.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">பல உறுதிமொழிகளைத் தேர்ந்தெடுக்க ⌘ அல்லது ⇧ ஐ அழுத்திப் பிடி.</x:String>
