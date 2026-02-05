@@ -988,10 +988,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
@@ -1008,7 +1008,7 @@ namespace SourceGit.Views
                     if (index > diff.Lines.Count)
                         break;
 
-                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom);
                     if (endY > y)
                     {
                         lineIdx = index - 1;
@@ -1033,10 +1033,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
@@ -1177,10 +1177,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 diff.GetCombinedRangeForSingleSide(ref startIdx, ref endIdx, IsOld);
@@ -1198,7 +1198,7 @@ namespace SourceGit.Views
                     if (index > lines.Count)
                         break;
 
-                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom);
                     if (endY > y)
                     {
                         lineIdx = index - 1;
@@ -1223,10 +1223,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 diff.GetCombinedRangeForBothSides(ref startIdx, ref endIdx, IsOld);
