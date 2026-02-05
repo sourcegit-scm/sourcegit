@@ -474,10 +474,10 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改時間</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交時間</x:String>
   <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日期時間</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路線圖與訊息標題</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交編號</x:String>
-  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交時間</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選取 {0} 項提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">顯示欄位</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住 Ctrl 或 Shift 鍵選擇多個提交</x:String>

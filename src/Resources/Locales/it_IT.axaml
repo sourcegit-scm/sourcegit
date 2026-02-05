@@ -425,9 +425,9 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">STORICO</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTORE</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ORA AUTORE</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ORA COMMIT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAFICO E OGGETTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ORA COMMIT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMIT SELEZIONATI</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Tieni premuto 'Ctrl' o 'Shift' per selezionare più commit.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Tieni premuto ⌘ o ⇧ per selezionare più commit.</x:String>

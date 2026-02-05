@@ -328,9 +328,9 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">履歴</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">著者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">著者時間</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">日時</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">グラフ &amp; コミットのタイトル</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">日時</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} コミットを選択しました</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">'Ctrl'キーまたは'Shift'キーを押すと、複数のコミットを選択できます。</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">⌘ または ⇧ キーを押して複数のコミットを選択します。</x:String>

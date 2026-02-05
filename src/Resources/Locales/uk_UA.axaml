@@ -332,9 +332,9 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">ІСТОРІЯ</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ЧАС АВТОРА</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ЧАС КОМІТУ</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ ТА ТЕМА</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ЧАС КОМІТУ</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВИБРАНО {0} КОМІТІВ</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Утримуйте 'Ctrl' або 'Shift' для вибору кількох комітів.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Утримуйте ⌘ або ⇧ для вибору кількох комітів.</x:String>

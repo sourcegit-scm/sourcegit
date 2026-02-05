@@ -458,9 +458,9 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">Historique</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTEUR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HEURE DE L'AUTEUR</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">HEURE DE COMMIT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPHE &amp; SUJET</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">HEURE DE COMMIT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SÉLECTIONNÉS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Maintenir 'Ctrl' ou 'Shift' enfoncée pour sélectionner plusieurs commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Maintenir ⌘ ou ⇧ enfoncée pour sélectionner plusieurs commits.</x:String>
