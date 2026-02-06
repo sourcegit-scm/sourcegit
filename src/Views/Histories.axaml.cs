@@ -608,6 +608,8 @@ namespace SourceGit.Views
             if (!repo.IsBare)
             {
                 var target = commit.GetFriendlyName();
+                if (target.Length > 32)
+                    target = commit.SHA.Substring(0, 10);
 
                 if (isHead)
                 {
