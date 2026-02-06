@@ -674,7 +674,7 @@ namespace SourceGit.ViewModels
                 });
 
                 var config = await new Commands.Config(FullPath).ReadAllAsync().ConfigureAwait(false);
-                _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedSignersFile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
+                _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedsignersfile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
 
                 if (config.TryGetValue("gitflow.branch.master", out var masterName))
                     GitFlow.Master = masterName;
