@@ -1779,10 +1779,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                if (_settings is not { EnableAutoFetch: true } || _uiStates == null)
-                    return;
-
-                if (!CanCreatePopup())
+                if (_settings is not { EnableAutoFetch: true } || !CanCreatePopup())
                 {
                     _lastFetchTime = DateTime.Now;
                     return;
