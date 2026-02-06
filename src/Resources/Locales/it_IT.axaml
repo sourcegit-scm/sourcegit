@@ -556,9 +556,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Conflitti di Merge</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Scartare le modifiche non salvate?</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">USA IL MIO</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseMine.Tip" xml:space="preserve">Risolvi il conflitto corrente usando la versione Il Mio</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">USA IL LORO</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseTheirs.Tip" xml:space="preserve">Risolvi il conflitto corrente usando la versione Il Loro</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">ANNULLA</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Unione (multipla)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit di tutte le modifiche</x:String>
@@ -886,12 +884,12 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">AUTORE TAG</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">DATA</x:String>
-  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Messaggio</x:String>
-  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Nome</x:String>
-  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Autore</x:String>
   <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Confronta 2 tag</x:String>
   <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Confronta con...</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Confronta con HEAD</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Messaggio</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Nome</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Autore</x:String>
   <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Copia Nome Tag</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Azione Personalizzata</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Elimina ${0}$...</x:String>

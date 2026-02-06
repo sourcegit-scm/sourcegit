@@ -178,112 +178,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-89.39%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-99.68%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
-- Text.About.ReleaseDate
-- Text.About.ReleaseNotes
-- Text.Blame.BlameOnPreviousRevision
-- Text.Blame.IgnoreWhitespace
-- Text.BranchCM.CompareTwo
-- Text.BranchCM.CompareWith
-- Text.BranchCM.CompareWithHead
-- Text.BranchCM.CreatePR
-- Text.BranchCM.CreatePRForUpstream
-- Text.BranchCM.EditDescription
-- Text.BranchCM.SwitchToWorktree
-- Text.BranchTree.Ahead
-- Text.BranchTree.AheadBehind
-- Text.BranchTree.Behind
-- Text.BranchTree.Status
-- Text.BranchTree.Worktree
-- Text.ChangeCM.Merge
-- Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
-- Text.Checkout.WarnUpdatingSubmodules
-- Text.CommitCM.Drop
-- Text.CommitDetail.Info.CopyEmail
-- Text.CommitDetail.Info.CopyName
-- Text.CommitDetail.Info.CopyNameAndEmail
-- Text.CommitMessageTextBox.Placeholder
-- Text.Compare.WithHead
-- Text.Configure.CommitMessageTemplate.BuiltinVars
-- Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
-- Text.Configure.Git.ConventionalTypesOverride
-- Text.ConfigureCustomActionControls.StringValue.Tip
-- Text.Diff.Image.Difference
-- Text.DirtyState.HasLocalChanges
-- Text.DirtyState.HasPendingPullOrPush
-- Text.DirtyState.UpToDate
-- Text.DropHead
-- Text.DropHead.Commit
-- Text.DropHead.NewHead
-- Text.EditBranchDescription
-- Text.EditBranchDescription.Target
-- Text.FileCM.CustomAction
-- Text.GitLFS.Locks.UnlockAllMyLocks
-- Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
-- Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
-- Text.Hotkeys.Global.Zoom
-- Text.Hotkeys.Repo.OpenCommandPalette
-- Text.Launcher.Commands
-- Text.Launcher.OpenRepository
-- Text.MergeConflictEditor.AcceptBoth.MineFirst
-- Text.MergeConflictEditor.AcceptBoth.TheirsFirst
-- Text.MergeConflictEditor.UseBoth
-- Text.MergeConflictEditor.AllResolved
-- Text.MergeConflictEditor.ConflictsRemaining
-- Text.MergeConflictEditor.Mine
-- Text.MergeConflictEditor.NextConflict
-- Text.MergeConflictEditor.PrevConflict
-- Text.MergeConflictEditor.Result
-- Text.MergeConflictEditor.SaveAndStage
-- Text.MergeConflictEditor.Theirs
-- Text.MergeConflictEditor.Title
-- Text.MergeConflictEditor.UnsavedChanges
-- Text.MergeConflictEditor.UseMine
-- Text.MergeConflictEditor.UseTheirs
-- Text.MergeConflictEditor.Undo
-- Text.No
-- Text.Open
-- Text.Open.SystemDefaultEditor
-- Text.OpenFile
-- Text.PageTabBar.Tab.MoveToWorkspace
-- Text.PageTabBar.Tab.Refresh
-- Text.Preferences.AI.ReadApiKeyFromEnv
-- Text.Preferences.Appearance.UseAutoHideScrollBars
-- Text.Preferences.DiffMerge.DiffArgs
-- Text.Preferences.DiffMerge.DiffArgs.Tip
-- Text.Preferences.DiffMerge.MergeArgs
-- Text.Preferences.DiffMerge.MergeArgs.Tip
-- Text.Preferences.General.EnableCompactFolders
-- Text.Preferences.General.ShowChangesPageByDefault
-- Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
-- Text.Preferences.General.UseGitHubStyleAvatar
-- Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
-- Text.PushToNewBranch
-- Text.PushToNewBranch.Title
-- Text.Repository.OpenAsFolder
-- Text.Repository.Resolve
-- Text.ScanRepositories.UseCustomDir
-- Text.SquashOrFixup.Squash
-- Text.SquashOrFixup.Fixup
-- Text.SquashOrFixup.Into
-- Text.TagCM.CompareTwo
-- Text.TagCM.CompareWith
-- Text.TagCM.CompareWithHead
-- Text.WorkingCopy.ClearCommitHistories
-- Text.WorkingCopy.ClearCommitHistories.Confirm
-- Text.WorkingCopy.Conflicts.Merge
-- Text.WorkingCopy.Conflicts.MergeExternal
-- Text.WorkingCopy.NoVerify
-- Text.Worktree.Open
-- Text.Yes
 
 </details>
 
