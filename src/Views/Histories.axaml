@@ -27,7 +27,7 @@
       <DataGrid x:Name="CommitListContainer"
                 Classes="static_scrollbar"
                 ScrollViewer.AllowAutoHide="False"
-                Background="{DynamicResource Brush.Window}"
+                Background="{DynamicResource Brush.DataGridHeaderBG}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
                 SelectedItem="{Binding SelectedCommit, Mode=OneWay}"
@@ -54,6 +54,7 @@
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
               <Setter Property="Grid.RowSpan" Value="1" />
               <Setter Property="Grid.ColumnSpan" Value="2" />
+              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             </Style>
             <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
               <Setter Property="Grid.Column" Value="0" />
@@ -68,7 +69,7 @@
           
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
-            <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
               <ControlTemplate>
                 <Border x:Name="HeaderBorder"
@@ -106,10 +107,6 @@
                 </Grid>
               </ControlTemplate>
             </Setter>
-          </Style>
-
-          <Style Selector="DataGridRowsPresenter">
-            <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
           </Style>
         </DataGrid.Styles>
 

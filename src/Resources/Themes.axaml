@@ -30,6 +30,7 @@
       <Color x:Key="Color.Link">#0000EE</Color>
       <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
       <Color x:Key="Color.InlineCodeFG">Black</Color>
+      <Color x:Key="Color.DataGridHeaderBG">#FFF0F5F9</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -61,6 +62,7 @@
       <Color x:Key="Color.Link">#4DAAFC</Color>
       <Color x:Key="Color.InlineCode">#FF383838</Color>
       <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
+      <Color x:Key="Color.DataGridHeaderBG">#FF2B2B2B</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -94,6 +96,7 @@
   <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
   <SolidColorBrush x:Key="Brush.InlineCode" Color="{DynamicResource Color.InlineCode}"/>
   <SolidColorBrush x:Key="Brush.InlineCodeFG" Color="{DynamicResource Color.InlineCodeFG}"/>
+  <SolidColorBrush x:Key="Brush.DataGridHeaderBG" Color="{DynamicResource Color.DataGridHeaderBG}"/>
 
   <FontFamily x:Key="Fonts.Default">fonts:Inter#Inter</FontFamily>
   <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono</FontFamily>
