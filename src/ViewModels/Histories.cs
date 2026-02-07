@@ -254,6 +254,13 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public async Task<Models.Commit> GetCommitAsync(string sha)
+        {
+            return await new Commands.QuerySingleCommit(_repo.FullPath, sha)
+                .GetResultAsync()
+                .ConfigureAwait(false);
+        }
+
         public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)
         {
             if (decorator == null)

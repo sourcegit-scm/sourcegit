@@ -24,6 +24,12 @@
     </v:HistoriesLayout.ColumnDefinitions>
 
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+      <!-- DataGrid hardcodes all the arrow keys, so we need a fake button to intercept this shortcut key -->
+      <Button Width="0" Height="0"
+              Click="OnGotoParent"
+              HotKey="Alt+Down"
+              IsVisible="False"/>
+      
       <DataGrid x:Name="CommitListContainer"
                 Classes="static_scrollbar"
                 ScrollViewer.AllowAutoHide="False"

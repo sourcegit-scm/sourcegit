@@ -159,6 +159,42 @@ namespace SourceGit.Views
                 dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
         }
 
+        private async void OnGotoParent(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            if (!CommitListContainer.IsKeyboardFocusWithin)
+                return;
+
+            if (CommitListContainer.SelectedItems is not { Count: 1 } selected)
+                return;
+
+            if (selected[0] is not Models.Commit { Parents.Count: > 0 } commit)
+                return;
+
+            e.Handled = true;
+
+            if (commit.Parents.Count == 1)
+            {
+                vm.NavigateTo(commit.Parents[0]);
+                return;
+            }
+
+            var parents = new List<Models.Commit>();
+            foreach (var sha in commit.Parents)
+            {
+                var c = await vm.GetCommitAsync(sha);
+                if (c != null)
+                    parents.Add(c);
+            }
+
+            if (parents.Count == 1)
+                vm.NavigateTo(parents[0].SHA);
+            else if (parents.Count > 1)
+                await App.ShowDialog(new ViewModels.GotoParentSelector(vm, parents));
+        }
+
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
             if (!IsLoaded)
@@ -513,7 +549,7 @@ namespace SourceGit.Views
                 var messages = new List<string>();
                 foreach (var c in selected)
                 {
-                    var message = await vm.GetCommitFullMessageAsync(c);
+                    var message = await vm!.GetCommitFullMessageAsync(c);
                     messages.Add(message);
                 }
 

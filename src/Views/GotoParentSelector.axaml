@@ -1,0 +1,103 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:c="using:SourceGit.Converters"
+                    mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="230"
+                    x:Class="SourceGit.Views.GotoParentSelector"
+                    x:DataType="vm:GotoParentSelector"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.GotoParentSelector}"
+                    Width="600" SizeToContent="Height"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="14" Height="14"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.GotoParent}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.GotoParentSelector}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+    
+    <ListBox Grid.Row="1"
+             Focusable="True"
+             Margin="8" Padding="4"
+             ItemsSource="{Binding Parents}"
+             SelectionMode="AlwaysSelected"
+             BorderThickness="0"
+             Background="Transparent"
+             Grid.IsSharedSizeScope="True"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+             Loaded="OnListLoaded"
+             KeyDown="OnListKeyDown">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="CornerRadius" Value="4"/>
+          </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Vertical" Spacing="2"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="m:Commit">
+            <Grid Background="Transparent" Tapped="OnListItemTapped">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="CommitSHAColumn"/>
+                <ColumnDefinition Width="Auto" SharedSizeGroup="CommitTimeColumn"/>
+              </Grid.ColumnDefinitions>
+              
+              <v:Avatar Grid.Column="0"
+                        Width="16" Height="16"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        IsHitTestVisible="False"
+                        User="{Binding Author}"/>
+              
+              <Border Grid.Column="1" Margin="2,0,0,0" ClipToBounds="True">
+                <TextBlock Text="{Binding Subject}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+              </Border>
+              
+              <TextBlock Grid.Column="2"
+                         Margin="4,0,0,0"
+                         Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                         Foreground="DarkOrange"
+                         VerticalAlignment="Center"/>
+              
+              <TextBlock Grid.Column="3"
+                         Margin="4,0"
+                         Text="{Binding CommitterTimeShortStr}"
+                         HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+  </Grid>
+</v:ChromelessWindow>
