@@ -81,7 +81,7 @@ namespace SourceGit.Models
 
             if (!File.Exists(fullpath))
             {
-                setting = new RepositorySettings();
+                setting = new();
             }
             else
             {
@@ -92,12 +92,18 @@ namespace SourceGit.Models
                 }
                 catch
                 {
-                    setting = new RepositorySettings();
+                    setting = new();
                 }
             }
 
+            // Serialize setting again to make sure there are no unnecessary whitespaces.
+            Task.Run(() =>
+            {
+                var formatted = JsonSerializer.Serialize(setting, JsonCodeGen.Default.RepositorySettings);
+                setting._orgHash = HashContent(formatted);
+            });
+
             setting._file = fullpath;
-            setting._orgHash = HashContent(JsonSerializer.Serialize(setting, JsonCodeGen.Default.RepositorySettings));
             _cache.Add(fullpath, setting);
             return setting;
         }
@@ -106,8 +112,8 @@ namespace SourceGit.Models
         {
             try
             {
-                string content = JsonSerializer.Serialize(this, JsonCodeGen.Default.RepositorySettings);
-                string hash = HashContent(content);
+                var content = JsonSerializer.Serialize(this, JsonCodeGen.Default.RepositorySettings);
+                var hash = HashContent(content);
                 if (!hash.Equals(_orgHash, StringComparison.Ordinal))
                 {
                     await File.WriteAllTextAsync(_file, content);
