@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 
@@ -68,15 +72,12 @@ namespace SourceGit.Models
             set;
         } = [];
 
-        public static RepositorySettings Get(string repo, string gitCommonDir)
+        public static RepositorySettings Get(string gitCommonDir)
         {
             var fileInfo = new FileInfo(Path.Combine(gitCommonDir, "sourcegit.settings"));
             var fullpath = fileInfo.FullName;
             if (_cache.TryGetValue(fullpath, out var setting))
-            {
-                setting._usedBy.Add(repo);
                 return setting;
-            }
 
             if (!File.Exists(fullpath))
             {
@@ -96,28 +97,26 @@ namespace SourceGit.Models
             }
 
             setting._file = fullpath;
-            setting._usedBy.Add(repo);
+            setting._orgHash = HashContent(JsonSerializer.Serialize(setting, JsonCodeGen.Default.RepositorySettings));
             _cache.Add(fullpath, setting);
             return setting;
         }
 
-        public void TryUnload(string repo)
+        public async Task SaveAsync()
         {
-            _usedBy.Remove(repo);
-
-            if (_usedBy.Count == 0)
+            try
             {
-                try
+                string content = JsonSerializer.Serialize(this, JsonCodeGen.Default.RepositorySettings);
+                string hash = HashContent(content);
+                if (!hash.Equals(_orgHash, StringComparison.Ordinal))
                 {
-                    using var stream = File.Create(_file);
-                    JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.RepositorySettings);
+                    await File.WriteAllTextAsync(_file, content);
+                    _orgHash = hash;
                 }
-                catch
-                {
-                    // Ignore save errors
-                }
-
-                _cache.Remove(_file);
+            }
+            catch
+            {
+                // Ignore save errors
             }
         }
 
@@ -167,8 +166,17 @@ namespace SourceGit.Models
                 CustomActions.Move(idx + 1, idx);
         }
 
+        private static string HashContent(string source)
+        {
+            var hash = MD5.HashData(Encoding.Default.GetBytes(source));
+            var builder = new StringBuilder(hash.Length * 2);
+            foreach (var c in hash)
+                builder.Append(c.ToString("x2"));
+            return builder.ToString();
+        }
+
         private static Dictionary<string, RepositorySettings> _cache = new();
         private string _file = string.Empty;
-        private HashSet<string> _usedBy = new();
+        private string _orgHash = string.Empty;
     }
 }

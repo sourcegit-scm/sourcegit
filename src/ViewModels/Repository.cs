@@ -426,10 +426,10 @@ namespace SourceGit.ViewModels
             GitDir = gitDir.Replace('\\', '/').TrimEnd('/');
 
             var commonDirFile = Path.Combine(GitDir, "commondir");
-            _isWorktree = GitDir.IndexOf("/worktrees/", StringComparison.Ordinal) > 0 &&
+            var isWorktree = GitDir.IndexOf("/worktrees/", StringComparison.Ordinal) > 0 &&
                           File.Exists(commonDirFile);
 
-            if (_isWorktree)
+            if (isWorktree)
             {
                 var commonDir = File.ReadAllText(commonDirFile).Trim();
                 if (!Path.IsPathRooted(commonDir))
@@ -445,7 +445,7 @@ namespace SourceGit.ViewModels
 
         public void Open()
         {
-            _settings = Models.RepositorySettings.Get(FullPath, _gitCommonDir);
+            _settings = Models.RepositorySettings.Get(_gitCommonDir);
             _uiStates = Models.RepositoryUIStates.Load(GitDir);
 
             try
@@ -484,7 +484,6 @@ namespace SourceGit.ViewModels
             SelectedView = null; // Do NOT modify. Used to remove exists widgets for GC.Collect
             Logs.Clear();
 
-            _settings.TryUnload(FullPath);
             _uiStates.Unload(_workingCopy.CommitMessage);
 
             if (_cancellationRefreshBranches is { IsCancellationRequested: false })
@@ -1775,6 +1774,9 @@ namespace SourceGit.ViewModels
 
         private async Task AutoFetchOnUIThread()
         {
+            if (_uiStates == null)
+                return;
+
             CommandLog log = null;
 
             try
@@ -1829,7 +1831,6 @@ namespace SourceGit.ViewModels
             log?.Complete();
         }
 
-        private readonly bool _isWorktree = false;
         private readonly string _gitCommonDir = null;
         private Models.RepositorySettings _settings = null;
         private Models.RepositoryUIStates _uiStates = null;
