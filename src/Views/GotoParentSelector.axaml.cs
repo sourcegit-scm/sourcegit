@@ -12,9 +12,10 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        private void OnListLoaded(object sender, RoutedEventArgs e)
+        protected override void OnLoaded(RoutedEventArgs e)
         {
-            (sender as ListBox)?.Focus();
+            base.OnLoaded(e);
+            ParentList.Focus();
         }
 
         private void OnListKeyDown(object sender, KeyEventArgs e)
@@ -22,14 +23,10 @@ namespace SourceGit.Views
             if (e is not { Key: Key.Enter, KeyModifiers: KeyModifiers.None })
                 return;
 
-            if (DataContext is not ViewModels.GotoParentSelector vm)
-                return;
-
             if (sender is not ListBox { SelectedItem: Models.Commit commit })
                 return;
 
-            vm.Sure(commit);
-            Close();
+            Close(commit);
             e.Handled = true;
         }
 
@@ -38,10 +35,7 @@ namespace SourceGit.Views
             if (sender is not Control { DataContext: Models.Commit commit })
                 return;
 
-            if (DataContext is ViewModels.GotoParentSelector vm)
-                vm.Sure(commit);
-
-            Close();
+            Close(commit);
             e.Handled = true;
         }
     }

@@ -4,11 +4,9 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:m="using:SourceGit.Models"
                     xmlns:v="using:SourceGit.Views"
-                    xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="230"
                     x:Class="SourceGit.Views.GotoParentSelector"
-                    x:DataType="vm:GotoParentSelector"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.GotoParentSelector}"
@@ -39,16 +37,15 @@
     </Grid>
     
     <ListBox Grid.Row="1"
+             x:Name="ParentList"
              Focusable="True"
              Margin="8" Padding="4"
-             ItemsSource="{Binding Parents}"
              SelectionMode="AlwaysSelected"
              BorderThickness="0"
              Background="Transparent"
              Grid.IsSharedSizeScope="True"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
              ScrollViewer.VerticalScrollBarVisibility="Disabled"
-             Loaded="OnListLoaded"
              KeyDown="OnListKeyDown">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">

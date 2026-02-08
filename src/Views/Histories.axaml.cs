@@ -173,11 +173,10 @@ namespace SourceGit.Views
             if (selected[0] is not Models.Commit { Parents.Count: > 0 } commit)
                 return;
 
-            e.Handled = true;
-
             if (commit.Parents.Count == 1)
             {
                 vm.NavigateTo(commit.Parents[0]);
+                e.Handled = true;
                 return;
             }
 
@@ -190,9 +189,20 @@ namespace SourceGit.Views
             }
 
             if (parents.Count == 1)
+            {
                 vm.NavigateTo(parents[0].SHA);
-            else if (parents.Count > 1)
-                await App.ShowDialog(new ViewModels.GotoParentSelector(vm, parents));
+            }
+            else if (parents.Count > 1 && TopLevel.GetTopLevel(this) is Window owner)
+            {
+                var dialog = new GotoParentSelector();
+                dialog.ParentList.ItemsSource = parents;
+
+                var c = await dialog.ShowDialog<Models.Commit>(owner);
+                if (c != null)
+                    vm.NavigateTo(c.SHA);
+            }
+
+            e.Handled = true;
         }
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
