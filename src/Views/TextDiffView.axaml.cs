@@ -115,12 +115,6 @@ namespace SourceGit.Views
                 return new Size(test.Width, 0);
             }
 
-            protected override void OnDataContextChanged(EventArgs e)
-            {
-                base.OnDataContextChanged(e);
-                InvalidateMeasure();
-            }
-
             private readonly bool _usePresenter;
             private readonly bool _isOld;
         }
@@ -585,6 +579,13 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
+
+            foreach (var margin in TextArea.LeftMargins)
+            {
+                if (margin is LineNumberMargin)
+                    margin.InvalidateMeasure();
+            }
+
             AutoScrollToFirstChange();
         }
 
@@ -731,7 +732,7 @@ namespace SourceGit.Views
                     start = index;
             }
 
-            ctx.DisplayRange = new ViewModels.TextDiffDisplayRange(start, start + count);
+            ctx.DisplayRange = new ViewModels.TextLineRange(start, start + count);
         }
 
         protected void TrySetChunk(ViewModels.TextDiffSelectedChunk chunk)
@@ -841,15 +842,14 @@ namespace SourceGit.Views
                 // The first selected line (partial selection)
                 if (i == startIdx && startPosition.Column > 1)
                 {
-                    builder.Append(line.Content.AsSpan(startPosition.Column - 1));
-                    builder.Append(Environment.NewLine);
+                    builder.Append(line.Content.AsSpan(startPosition.Column - 1)).Append('\n');
                     continue;
                 }
 
                 // The selection range is larger than original source.
                 if (i == lines.Count - 1 && i < endIdx)
                 {
-                    builder.Append(line.Content);
+                    builder.Append(line.Content).Append('\n');
                     break;
                 }
 
@@ -865,7 +865,7 @@ namespace SourceGit.Views
                 }
 
                 // Other lines.
-                builder.AppendLine(line.Content);
+                builder.Append(line.Content).Append('\n');
             }
 
             await App.CopyTextAsync(builder.ToString());
@@ -988,10 +988,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
@@ -1008,7 +1008,7 @@ namespace SourceGit.Views
                     if (index > diff.Lines.Count)
                         break;
 
-                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom);
                     if (endY > y)
                     {
                         lineIdx = index - 1;
@@ -1033,10 +1033,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 TrySetChunk(new(rectStartY, rectEndY - rectStartY, startIdx, endIdx, true, false));
@@ -1177,10 +1177,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 diff.GetCombinedRangeForSingleSide(ref startIdx, ref endIdx, IsOld);
@@ -1198,7 +1198,7 @@ namespace SourceGit.Views
                     if (index > lines.Count)
                         break;
 
-                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.TextBottom);
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom);
                     if (endY > y)
                     {
                         lineIdx = index - 1;
@@ -1223,10 +1223,10 @@ namespace SourceGit.Views
                 var endLine = view.GetVisualLine(endIdx + 1);
 
                 var rectStartY = startLine != null ?
-                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset :
+                    startLine.GetTextLineVisualYPosition(startLine.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset :
                     0;
                 var rectEndY = endLine != null ?
-                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.TextBottom) - view.VerticalOffset :
+                    endLine.GetTextLineVisualYPosition(endLine.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset :
                     view.Bounds.Height;
 
                 diff.GetCombinedRangeForBothSides(ref startIdx, ref endIdx, IsOld);
@@ -1280,10 +1280,10 @@ namespace SourceGit.Views
             set => SetValue(DeletedLineBrushProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.TextDiffDisplayRange> DisplayRangeProperty =
-            AvaloniaProperty.Register<TextDiffViewMinimap, ViewModels.TextDiffDisplayRange>(nameof(DisplayRange));
+        public static readonly StyledProperty<ViewModels.TextLineRange> DisplayRangeProperty =
+            AvaloniaProperty.Register<TextDiffViewMinimap, ViewModels.TextLineRange>(nameof(DisplayRange));
 
-        public ViewModels.TextDiffDisplayRange DisplayRange
+        public ViewModels.TextLineRange DisplayRange
         {
             get => GetValue(DisplayRangeProperty);
             set => SetValue(DisplayRangeProperty, value);
@@ -1464,7 +1464,7 @@ namespace SourceGit.Views
 
         private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1496,12 +1496,13 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
             File.Delete(tmpFile);
 
+            vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } })
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } } vm)
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1526,12 +1527,13 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
             File.Delete(tmpFile);
 
+            vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } })
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
                 return;
 
             var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
@@ -1563,6 +1565,7 @@ namespace SourceGit.Views
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
             File.Delete(tmpFile);
 
+            vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
         }
     }

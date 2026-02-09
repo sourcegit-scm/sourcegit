@@ -114,6 +114,18 @@ namespace SourceGit.Native
             });
         }
 
+        public string GetDataDir()
+        {
+            var execFile = Process.GetCurrentProcess().MainModule!.FileName;
+            var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
+            if (Directory.Exists(portableDir))
+                return portableDir;
+
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit");
+        }
+
         public string FindGitExecutable()
         {
             var reg = Microsoft.Win32.RegistryKey.OpenBaseKey(

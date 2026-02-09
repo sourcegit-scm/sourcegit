@@ -1,0 +1,332 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
+                    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+                    x:Class="SourceGit.Views.MergeConflictEditor"
+                    x:DataType="vm:MergeConflictEditor"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.MergeConflictEditor.Title}"
+                    MinWidth="1024" MinHeight="600">
+  <Grid RowDefinitions="Auto,32,*,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="12" Height="12"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Conflict}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.MergeConflictEditor.Title}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Toolbar -->
+    <Border Grid.Row="1" Padding="8,0" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <!-- File Path -->
+        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.File}"/>
+          <TextBlock Margin="8" Text="{Binding FilePath}" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Navigation and Actions -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
+          <!-- Navigation -->
+          <Button Classes="icon_button"
+                  Width="24"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
+                  Click="OnGotoPrevConflict"
+                  HotKey="{OnPlatform Ctrl+Up, macOS=⌘+Up}"
+                  IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
+            <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+          </Button>
+          <Button Classes="icon_button"
+                  Width="24"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
+                  Click="OnGotoNextConflict"
+                  HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"
+                  IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
+            <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+          </Button>
+          
+          <!-- Info Bar -->
+          <TextBlock Text="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.ToUnsolvedDesc}, Mode=OneWay}"
+                     VerticalAlignment="Center"/>
+          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,6"/>
+
+          <!-- Save -->
+          <Button Classes="icon_button"
+                  Margin="0" Padding="0"
+                  Click="OnSaveAndStage"
+                  HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}"
+                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.SaveAndStage}">
+            <Path Width="16" Height="16" Data="{StaticResource Icons.Save}"/>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <!-- Main Content -->
+    <Grid Grid.Row="2" RowDefinitions="*,*" ColumnDefinitions="*,20">
+      <!-- Mine and Theirs Panels (Side-by-Side) -->
+      <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="*,*" Margin="4,4,4,2">
+        <!-- Mine (Ours) Panel -->
+        <Border Grid.Column="0" Margin="0,0,2,0">
+          <Grid RowDefinitions="26,*">
+            <Border Grid.Row="0" Padding="8,0" Background="{DynamicResource Brush.Popup}" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource Brush.Border2}">
+              <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Grid.Column="0"
+                           Text="{DynamicResource Text.MergeConflictEditor.Mine}"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+                <ContentControl Grid.Column="1" Margin="8,0,0,0" Content="{Binding Mine, Mode=OneWay}">
+                  <ContentControl.DataTemplates>
+                    <DataTemplate DataType="m:Commit">
+                      <StackPanel Orientation="Horizontal">
+                        <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               UseGraphColor="False"/>
+                        <TextBlock Margin="4,0,0,0"
+                                   Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                   Foreground="DarkOrange"
+                                   TextDecorations="Underline"
+                                   Cursor="Hand"/>
+                        <TextBlock Margin="4,0,0,0" Text="{Binding Subject}"/>
+                      </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="x:String">
+                      <StackPanel Orientation="Horizontal">
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
+                        <TextBlock Margin="4,0,0,0" Text="{Binding}"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ContentControl.DataTemplates>
+                </ContentControl>
+              </Grid>
+            </Border>
+            <Grid Grid.Row="1" Background="{DynamicResource Brush.Contents}">
+              <v:MergeConflictTextPresenter x:Name="OursPresenter"
+                                            PanelType="Ours"
+                                            Lines="{Binding OursLines, Mode=OneWay}"
+                                            MaxLineNumber="{Binding MaxLineNumber}"
+                                            FileName="{Binding FilePath}"
+                                            SelectedChunk="{Binding SelectedChunk}"
+                                            FontFamily="{DynamicResource Fonts.Monospace}"
+                                            TheirsContentBackground="{DynamicResource Brush.Conflict.TheirsBG}"
+                                            OursContentBackground="{DynamicResource Brush.Conflict.MineBG}"
+                                            BorderThickness="1"
+                                            BorderBrush="{DynamicResource Brush.Border2}"/>
+              <Border x:Name="MinePopup"
+                      IsVisible="False"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Background="{DynamicResource Brush.ToolBar}"
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      BorderThickness="1"
+                      CornerRadius="4"
+                      Padding="4,2"
+                      BoxShadow="0 2 8 0 #40000000">
+                <Button Classes="flat primary"
+                        Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseOurs}"/>
+              </Border>
+            </Grid>
+          </Grid>
+        </Border>
+
+        <!-- Theirs Panel -->
+        <Border Grid.Column="1" Margin="2,0,0,0">
+          <Grid RowDefinitions="26,*">
+            <Border Grid.Row="0" Padding="8,0" Background="{DynamicResource Brush.Popup}" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource Brush.Border2}">
+              <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Grid.Column="0"
+                           Text="{DynamicResource Text.MergeConflictEditor.Theirs}"
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+                <ContentControl Grid.Column="1" Margin="8,0,0,0" Content="{Binding Theirs, Mode=OneWay}">
+                  <ContentControl.DataTemplates>
+                    <DataTemplate DataType="m:Commit">
+                      <StackPanel Orientation="Horizontal">
+                        <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               UseGraphColor="False"/>
+                        <TextBlock Margin="4,0,0,0"
+                                   Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                   Foreground="DarkOrange"
+                                   TextDecorations="Underline"
+                                   Cursor="Hand"/>
+                        <TextBlock Margin="4,0,0,0" Text="{Binding Subject}"/>
+                      </StackPanel>
+                    </DataTemplate>
+                    <DataTemplate DataType="x:String">
+                      <StackPanel Orientation="Horizontal">
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
+                        <TextBlock Margin="4,0,0,0" Text="{Binding}"/>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ContentControl.DataTemplates>
+                </ContentControl>
+              </Grid>
+            </Border>
+            <Grid Grid.Row="1" Background="{DynamicResource Brush.Contents}">
+              <v:MergeConflictTextPresenter x:Name="TheirsPresenter"
+                                            PanelType="Theirs"
+                                            Lines="{Binding TheirsLines, Mode=OneWay}"
+                                            MaxLineNumber="{Binding MaxLineNumber}"
+                                            FileName="{Binding FilePath}"
+                                            SelectedChunk="{Binding SelectedChunk}"
+                                            FontFamily="{DynamicResource Fonts.Monospace}"
+                                            TheirsContentBackground="{DynamicResource Brush.Conflict.TheirsBG}"
+                                            OursContentBackground="{DynamicResource Brush.Conflict.MineBG}"
+                                            BorderThickness="1"
+                                            BorderBrush="{DynamicResource Brush.Border2}"/>
+              <Border x:Name="TheirsPopup"
+                      IsVisible="False"
+                      VerticalAlignment="Top"
+                      HorizontalAlignment="Right"
+                      Background="{DynamicResource Brush.ToolBar}"
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      BorderThickness="1"
+                      CornerRadius="4"
+                      Padding="4,2"
+                      BoxShadow="0 2 8 0 #40000000">
+                <Button Classes="flat primary"
+                        Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseTheirs}"/>
+              </Border>
+            </Grid>
+          </Grid>
+        </Border>
+      </Grid>
+
+      <!-- Result Panel -->
+      <Border Grid.Row="1" Grid.Column="0" Margin="4,2,4,4">
+        <Grid RowDefinitions="26,*">
+          <Border Grid.Row="0" Padding="8,0" Background="{DynamicResource Brush.Popup}" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource Brush.Border2}">
+            <TextBlock Text="{DynamicResource Text.MergeConflictEditor.Result}" FontWeight="Bold" VerticalAlignment="Center"/>
+          </Border>
+          <Grid Grid.Row="1" Background="{DynamicResource Brush.Contents}">
+            <v:MergeConflictTextPresenter x:Name="ResultPresenter"
+                                          PanelType="Result"
+                                          Lines="{Binding ResultLines, Mode=OneWay}"
+                                          MaxLineNumber="{Binding MaxLineNumber}"
+                                          FileName="{Binding FilePath}"
+                                          SelectedChunk="{Binding SelectedChunk}"
+                                          FontFamily="{DynamicResource Fonts.Monospace}"
+                                          TheirsContentBackground="{DynamicResource Brush.Conflict.TheirsBG}"
+                                          OursContentBackground="{DynamicResource Brush.Conflict.MineBG}"
+                                          BorderThickness="1"
+                                          BorderBrush="{DynamicResource Brush.Border2}"/>
+            <Border x:Name="ResultPopup"
+                    IsVisible="False"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Background="{DynamicResource Brush.ToolBar}"
+                    BorderBrush="{DynamicResource Brush.Border2}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="4,2"
+                    BoxShadow="0 2 8 0 #40000000">
+              <StackPanel Orientation="Horizontal" Spacing="4">
+                <Button Classes="flat primary"
+                        Content="{DynamicResource Text.MergeConflictEditor.UseMine}"
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseOurs}"/>
+                <Button Classes="flat primary"
+                        Content="{DynamicResource Text.MergeConflictEditor.UseTheirs}"
+                        Command="{Binding Resolve}"
+                        CommandParameter="{x:Static m:ConflictResolution.UseTheirs}"/>
+                <Button Classes="flat primary">
+                  <StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock Text="{DynamicResource Text.MergeConflictEditor.UseBoth}" Foreground="White"/>
+                    <Path Width="12" Height="12" Margin="4,4,0,0" Data="{StaticResource Icons.Down}" Fill="White"/>
+                  </StackPanel>
+                  <Button.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                      <MenuItem Command="{Binding Resolve}" CommandParameter="{x:Static m:ConflictResolution.UseBothMineFirst}">
+                        <MenuItem.Header>
+                          <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.MineFirst}"/>
+                        </MenuItem.Header>
+                      </MenuItem>
+                      <MenuItem Command="{Binding Resolve}" CommandParameter="{x:Static m:ConflictResolution.UseBothTheirsFirst}">
+                        <MenuItem.Header>
+                          <TextBlock Text="{DynamicResource Text.MergeConflictEditor.AcceptBoth.TheirsFirst}"/>
+                        </MenuItem.Header>
+                      </MenuItem>
+                    </MenuFlyout>
+                  </Button.Flyout>
+                </Button>
+              </StackPanel>
+            </Border>
+            <Border x:Name="ResultUndoPopup"
+                    IsVisible="False"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Background="{DynamicResource Brush.ToolBar}"
+                    BorderBrush="{DynamicResource Brush.Border2}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Padding="4,2"
+                    BoxShadow="0 2 8 0 #40000000">
+              <Button Classes="flat"
+                      Content="{DynamicResource Text.MergeConflictEditor.Undo}"
+                      Command="{Binding Resolve}"
+                      CommandParameter="{x:Static m:ConflictResolution.None}"/>
+            </Border>
+          </Grid>
+        </Grid>
+      </Border>
+
+      <!-- Minimap -->
+      <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+              Margin="0,4,4,4"
+              BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+        <v:MergeConflictMinimap DisplayRange="{Binding #ResultPresenter.DisplayRange, Mode=OneWay}"
+                                UnsolvedCount="{Binding UnsolvedCount, Mode=OneWay}"/>
+      </Border>
+    </Grid>
+
+    <!-- Error -->
+    <Border Grid.Row="2"
+            Background="{DynamicResource Brush.Popup}"
+            Padding="16"
+            CornerRadius="6"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Effect="drop-shadow(0 0 12 #60000000)"
+            IsVisible="{Binding Error, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+      <StackPanel Orientation="Vertical">
+        <Path Width="32" Height="32" Fill="Orange" Data="{StaticResource Icons.Error}"/>
+        <TextBlock Text="{Binding Error, Mode=OneWay}"
+                   MaxWidth="500"
+                   Margin="0,16"
+                   TextWrapping="Wrap"/>
+        <Button Classes="flat primary"
+                MinWidth="80"
+                Margin="0"
+                HorizontalAlignment="Center"
+                Content="{DynamicResource Text.Sure}"
+                Command="{Binding ClearErrorMessage}"
+                HotKey="Escape"/>
+      </StackPanel>
+    </Border>
+  </Grid>
+</v:ChromelessWindow>

@@ -22,9 +22,9 @@ namespace SourceGit.ViewModels
             _target = target;
 
             if (_target is Models.Branch b)
-                _mode = _repo.HistoryFilterCollection.GetFilterMode(b.FullName);
+                _mode = _repo.UIStates.GetHistoryFilterMode(b.FullName);
             else if (_target is Models.Tag t)
-                _mode = _repo.HistoryFilterCollection.GetFilterMode(t.Name);
+                _mode = _repo.UIStates.GetHistoryFilterMode(t.Name);
         }
 
         private void SetFilterMode(Models.FilterMode mode)

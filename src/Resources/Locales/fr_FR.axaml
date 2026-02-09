@@ -458,9 +458,9 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">Historique</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTEUR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HEURE DE L'AUTEUR</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">HEURE DE COMMIT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPHE &amp; SUJET</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">HEURE DE COMMIT</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SÉLECTIONNÉS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Maintenir 'Ctrl' ou 'Shift' enfoncée pour sélectionner plusieurs commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Maintenir ⌘ ou ⇧ enfoncée pour sélectionner plusieurs commits.</x:String>
@@ -888,7 +888,6 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Vous êtes en train de créer un commit sur un HEAD détaché. Voulez-vous continuer ?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Vous avez indexé {0} fichier(s) mais seulement {1} fichier(s) sont affichés ({2} fichiers sont filtrés). Voulez-vous continuer ?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLITS DÉTECTÉS</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">OUVRIR L'OUTIL DE FUSION EXTERNE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">OUVRIR TOUS LES CONFLITS DANS L'OUTIL DE FUSION EXTERNE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LES CONFLITS DE FICHIER SONT RÉSOLUS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">UTILISER LES MIENS</x:String>

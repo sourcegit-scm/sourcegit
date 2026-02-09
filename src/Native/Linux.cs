@@ -33,6 +33,40 @@ namespace SourceGit.Native
             }
         }
 
+        public string GetDataDir()
+        {
+            // AppImage supports portable mode
+            var appImage = Environment.GetEnvironmentVariable("APPIMAGE");
+            if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))
+            {
+                var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");
+                if (Directory.Exists(portableDir))
+                    return portableDir;
+            }
+
+            // Runtime data dir: ~/.sourcegit
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var dataDir = Path.Combine(home, ".sourcegit");
+            if (Directory.Exists(dataDir))
+                return dataDir;
+
+            // Migrate old data: ~/.config/SourceGit
+            var oldDataDir = Path.Combine(home, ".config", "SourceGit");
+            if (Directory.Exists(oldDataDir))
+            {
+                try
+                {
+                    Directory.Move(oldDataDir, dataDir);
+                }
+                catch
+                {
+                    // Ignore errors
+                }
+            }
+
+            return dataDir;
+        }
+
         public string FindGitExecutable()
         {
             return FindExecutable("git");

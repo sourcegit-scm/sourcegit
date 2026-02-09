@@ -24,10 +24,16 @@
     </v:HistoriesLayout.ColumnDefinitions>
 
     <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+      <!-- DataGrid hardcodes all the arrow keys, so we need a fake button to intercept this shortcut key -->
+      <Button Width="0" Height="0"
+              Click="OnGotoParent"
+              HotKey="Alt+Down"
+              IsVisible="False"/>
+      
       <DataGrid x:Name="CommitListContainer"
                 Classes="static_scrollbar"
                 ScrollViewer.AllowAutoHide="False"
-                Background="{DynamicResource Brush.Window}"
+                Background="{DynamicResource Brush.DataGridHeaderBG}"
                 SelectionMode="Extended"
                 ItemsSource="{Binding Commits, Mode=OneWay}"
                 SelectedItem="{Binding SelectedCommit, Mode=OneWay}"
@@ -54,6 +60,7 @@
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
               <Setter Property="Grid.RowSpan" Value="1" />
               <Setter Property="Grid.ColumnSpan" Value="2" />
+              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             </Style>
             <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
               <Setter Property="Grid.Column" Value="0" />
@@ -68,7 +75,7 @@
           
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
-            <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
               <ControlTemplate>
                 <Border x:Name="HeaderBorder"
@@ -106,10 +113,6 @@
                 </Grid>
               </ControlTemplate>
             </Setter>
-          </Style>
-
-          <Style Selector="DataGridRowsPresenter">
-            <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
           </Style>
         </DataGrid.Styles>
 
@@ -165,7 +168,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="80" CanUserResize="True" IsReadOnly="True">
+          <DataGridTemplateColumn MinWidth="80" CanUserResize="True" IsReadOnly="True" IsVisible="{Binding IsAuthorColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Width>
               <Binding Source="{x:Static vm:Preferences.Instance}"
                        Path="Layout.AuthorColumnWidth"
@@ -198,7 +201,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="100" CanUserResize="False" IsReadOnly="True">
+          <DataGridTemplateColumn MinWidth="100" CanUserResize="False" IsReadOnly="True" IsVisible="{Binding IsSHAColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -214,12 +217,12 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="160" CanUserResize="False" IsReadOnly="True">
+          <DataGridTemplateColumn MinWidth="160" CanUserResize="False" IsReadOnly="True" IsVisible="{Binding IsDateTimeColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <Grid HorizontalAlignment="Center">
                 <TextBlock Classes="table_header"
                            Margin="6,0,0,0"
-                           Text="{DynamicResource Text.Histories.Header.Time}"
+                           Text="{DynamicResource Text.Histories.Header.CommitTime}"
                            IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
                 <TextBlock Classes="table_header"
                            Margin="6,0,0,0"

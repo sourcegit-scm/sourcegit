@@ -407,22 +407,22 @@ namespace SourceGit.Views
                 var dateOrder = new MenuItem();
                 dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
                 dateOrder.Tag = "--date-order";
-                if (!repo.EnableTopoOrderInHistories)
+                if (!repo.EnableTopoOrderInHistory)
                     dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 dateOrder.Click += (_, ev) =>
                 {
-                    repo.EnableTopoOrderInHistories = false;
+                    repo.EnableTopoOrderInHistory = false;
                     ev.Handled = true;
                 };
 
                 var topoOrder = new MenuItem();
                 topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
                 topoOrder.Tag = "--topo-order";
-                if (repo.EnableTopoOrderInHistories)
+                if (repo.EnableTopoOrderInHistory)
                     topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 topoOrder.Click += (_, ev) =>
                 {
-                    repo.EnableTopoOrderInHistories = true;
+                    repo.EnableTopoOrderInHistory = true;
                     ev.Handled = true;
                 };
 

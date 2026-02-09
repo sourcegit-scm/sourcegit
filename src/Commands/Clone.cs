@@ -16,7 +16,7 @@ namespace SourceGit.Commands
                 builder.Append(extraArgs).Append(' ');
             builder.Append(url).Append(' ');
             if (!string.IsNullOrEmpty(localName))
-                builder.Append(localName);
+                builder.Append(localName.Quoted());
 
             Args = builder.ToString();
         }

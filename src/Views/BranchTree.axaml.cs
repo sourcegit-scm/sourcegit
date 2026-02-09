@@ -528,7 +528,7 @@ namespace SourceGit.Views
                     compare.Icon = App.CreateMenuIcon("Icons.Compare");
                     compare.Click += (_, ev) =>
                     {
-                        App.ShowWindow(new ViewModels.Compare(repo.FullPath, branches[0], branches[1]));
+                        App.ShowWindow(new ViewModels.Compare(repo, branches[0], branches[1]));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);
@@ -826,7 +826,7 @@ namespace SourceGit.Views
                 compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithCurrent.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, branch, current));
+                    App.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
 
                 var compareWith = new MenuItem();
@@ -1123,7 +1123,7 @@ namespace SourceGit.Views
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, branch, current));
+                    App.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
 
                 var compareWith = new MenuItem();

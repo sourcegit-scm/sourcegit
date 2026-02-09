@@ -440,9 +440,9 @@
   <x:String x:Key="Text.Histories" xml:space="preserve">히스토리</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">작성자</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">작성 시간</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">커밋 시간</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">그래프 &amp; 제목</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">커밋 시간</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0}개 커밋 선택됨</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">'Ctrl' 또는 'Shift' 키를 누른 채로 여러 커밋을 선택하세요.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">⌘ 또는 ⇧ 키를 누른 채로 여러 커밋을 선택하세요.</x:String>
@@ -861,7 +861,6 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">분리된(detached) HEAD에 커밋을 생성하고 있습니다. 계속하시겠습니까?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">{0}개의 파일을 스테이징했지만 {1}개의 파일만 표시됩니다 ({2}개의 파일은 필터링됨). 계속하시겠습니까?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">충돌 감지됨</x:String>
-  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeTool" xml:space="preserve">외부 병합 도구 열기</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">모든 충돌을 외부 병합 도구에서 열기</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">파일 충돌 해결됨</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">내 것 사용</x:String>

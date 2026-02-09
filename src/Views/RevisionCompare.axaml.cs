@@ -83,6 +83,26 @@ namespace SourceGit.Views
                         menu.Items.Add(explore);
                     }
 
+                    var resetToLeft = new MenuItem();
+                    resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.LeftSideDesc);
+                    resetToLeft.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToLeft.IsEnabled = vm.CanResetToLeft;
+                    resetToLeft.Click += async (_, ev) =>
+                    {
+                        await vm.ResetToLeftAsync(change);
+                        ev.Handled = true;
+                    };
+
+                    var resetToRight = new MenuItem();
+                    resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.RightSideDesc);
+                    resetToRight.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToRight.IsEnabled = vm.CanResetToRight;
+                    resetToRight.Click += async (_, ev) =>
+                    {
+                        await vm.ResetToRightAsync(change);
+                        ev.Handled = true;
+                    };
+
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
                     copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -106,11 +126,34 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(patch);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(resetToLeft);
+                    menu.Items.Add(resetToRight);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
                 }
                 else
                 {
+                    var resetToLeft = new MenuItem();
+                    resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.LeftSideDesc);
+                    resetToLeft.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToLeft.IsEnabled = vm.CanResetToLeft;
+                    resetToLeft.Click += async (_, ev) =>
+                    {
+                        await vm.ResetMultipleToLeftAsync(selected);
+                        ev.Handled = true;
+                    };
+
+                    var resetToRight = new MenuItem();
+                    resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.RightSideDesc);
+                    resetToRight.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToRight.IsEnabled = vm.CanResetToRight;
+                    resetToRight.Click += async (_, ev) =>
+                    {
+                        await vm.ResetMultipleToRightAsync(selected);
+                        ev.Handled = true;
+                    };
+
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
                     copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -140,6 +183,9 @@ namespace SourceGit.Views
                     };
 
                     menu.Items.Add(patch);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(resetToLeft);
+                    menu.Items.Add(resetToRight);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
