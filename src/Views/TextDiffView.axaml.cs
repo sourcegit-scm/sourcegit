@@ -216,8 +216,7 @@ namespace SourceGit.Views
                     return;
 
                 var changeBlock = _presenter.BlockNavigation.GetCurrentBlock();
-                var changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
-                var changeBlockFG = new Pen(Brushes.Gray);
+                var changeBlockBorder = new Pen(_presenter.BlockBorderHighlightBrush);
 
                 var lines = _presenter.GetLines();
                 var width = textView.Bounds.Width;
@@ -279,14 +278,14 @@ namespace SourceGit.Views
                         }
                     }
 
-                    if (changeBlock != null && changeBlock.Contains(index))
-                    {
-                        drawingContext.DrawRectangle(changeBlockBG, null, new Rect(0, startY, width, endY - startY));
-                        if (index == changeBlock.Start)
-                            drawingContext.DrawLine(changeBlockFG, new Point(0, startY), new Point(width, startY));
-                        if (index == changeBlock.End)
-                            drawingContext.DrawLine(changeBlockFG, new Point(0, endY), new Point(width, endY));
-                    }
+                    if (changeBlock == null)
+                        continue;
+
+                    if (index == changeBlock.Start)
+                        drawingContext.DrawLine(changeBlockBorder, new Point(0, startY), new Point(width, startY));
+
+                    if (index == changeBlock.End)
+                        drawingContext.DrawLine(changeBlockBorder, new Point(0, endY), new Point(width, endY));
                 }
             }
 
@@ -404,6 +403,15 @@ namespace SourceGit.Views
         {
             get => GetValue(IndicatorForegroundProperty);
             set => SetValue(IndicatorForegroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> BlockBorderHighlightBrushProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(BlockBorderHighlightBrush), Brushes.Gray);
+
+        public IBrush BlockBorderHighlightBrush
+        {
+            get => GetValue(BlockBorderHighlightBrushProperty);
+            set => SetValue(BlockBorderHighlightBrushProperty, value);
         }
 
         public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
