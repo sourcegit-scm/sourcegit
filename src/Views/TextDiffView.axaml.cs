@@ -1450,7 +1450,7 @@ namespace SourceGit.Views
             {
                 if (SelectedChunk is { } chunk)
                 {
-                    var top = chunk.Y + (chunk.Height >= 36 ? 8 : 2);
+                    var top = chunk.Y + 4;
                     var right = (chunk.Combined || !chunk.IsOldSide) ? 26 : (Bounds.Width * 0.5f) + 26;
                     Popup.Margin = new Thickness(0, top, right, 0);
                     Popup.IsVisible = true;
