@@ -1317,10 +1317,7 @@ namespace SourceGit.ViewModels
 
             if (branch.IsLocal)
             {
-                if (_localChangesCount > 0 || _submodules.Count > 0)
-                    ShowPopup(new Checkout(this, branch.Name));
-                else
-                    await ShowAndStartPopupAsync(new Checkout(this, branch.Name));
+                await ShowAndStartPopupAsync(new Checkout(this, branch.Name));
             }
             else
             {
