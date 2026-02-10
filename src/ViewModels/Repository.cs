@@ -186,12 +186,12 @@ namespace SourceGit.ViewModels
 
         public bool ShowTagsAsTree
         {
-            get => Preferences.Instance.ShowTagsAsTree;
+            get => _uiStates.ShowTagsAsTree;
             set
             {
-                if (value != Preferences.Instance.ShowTagsAsTree)
+                if (value != _uiStates.ShowTagsAsTree)
                 {
-                    Preferences.Instance.ShowTagsAsTree = value;
+                    _uiStates.ShowTagsAsTree = value;
                     VisibleTags = BuildVisibleTags();
                     OnPropertyChanged();
                 }
@@ -212,12 +212,12 @@ namespace SourceGit.ViewModels
 
         public bool ShowSubmodulesAsTree
         {
-            get => Preferences.Instance.ShowSubmodulesAsTree;
+            get => _uiStates.ShowSubmodulesAsTree;
             set
             {
-                if (value != Preferences.Instance.ShowSubmodulesAsTree)
+                if (value != _uiStates.ShowSubmodulesAsTree)
                 {
-                    Preferences.Instance.ShowSubmodulesAsTree = value;
+                    _uiStates.ShowSubmodulesAsTree = value;
                     VisibleSubmodules = BuildVisibleSubmodules();
                     OnPropertyChanged();
                 }
@@ -1642,7 +1642,7 @@ namespace SourceGit.ViewModels
             var filterMap = _uiStates.GetHistoryFiltersMap();
             UpdateTagFilterMode(filterMap);
 
-            if (Preferences.Instance.ShowTagsAsTree)
+            if (_uiStates.ShowTagsAsTree)
             {
                 var tree = TagCollectionAsTree.Build(visible, _visibleTags as TagCollectionAsTree);
                 foreach (var node in tree.Tree)
@@ -1674,7 +1674,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (Preferences.Instance.ShowSubmodulesAsTree)
+            if (_uiStates.ShowSubmodulesAsTree)
                 return SubmoduleCollectionAsTree.Build(visible, _visibleSubmodules as SubmoduleCollectionAsTree);
             else
                 return new SubmoduleCollectionAsList() { Submodules = visible };
