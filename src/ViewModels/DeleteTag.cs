@@ -12,8 +12,8 @@ namespace SourceGit.ViewModels
 
         public bool PushToRemotes
         {
-            get => _repo.Settings.PushToRemoteWhenDeleteTag;
-            set => _repo.Settings.PushToRemoteWhenDeleteTag = value;
+            get => _repo.UIStates.PushToRemoteWhenDeleteTag;
+            set => _repo.UIStates.PushToRemoteWhenDeleteTag = value;
         }
 
         public DeleteTag(Repository repo, Models.Tag tag)
@@ -44,7 +44,7 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
-            _repo.HistoryFilterCollection.RemoveFilter(Target.Name, Models.FilterType.Tag);
+            _repo.UIStates.RemoveHistoryFilter(Target.Name, Models.FilterType.Tag);
             _repo.MarkTagsDirtyManually();
             return succ;
         }

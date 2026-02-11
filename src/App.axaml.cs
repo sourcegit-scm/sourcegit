@@ -83,8 +83,12 @@ namespace SourceGit
             if (ex == null)
                 return;
 
+            var crashDir = Path.Combine(Native.OS.DataDir, "crashes");
+            if (!Directory.Exists(crashDir))
+                Directory.CreateDirectory(crashDir);
+
             var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(Native.OS.DataDir, $"crash_{time}.log");
+            var file = Path.Combine(crashDir, $"{time}.log");
             using var writer = new StreamWriter(file);
             writer.WriteLine($"Crash::: {ex.GetType().FullName}: {ex.Message}");
             writer.WriteLine();
@@ -94,7 +98,6 @@ namespace SourceGit
             writer.WriteLine($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
             writer.WriteLine($"Source: {ex.Source}");
             writer.WriteLine($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}");
-            writer.WriteLine($"User: {Environment.UserName}");
             writer.WriteLine($"App Start Time: {Process.GetCurrentProcess().StartTime}");
             writer.WriteLine($"Exception Time: {DateTime.Now}");
             writer.WriteLine($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB");
@@ -145,18 +148,52 @@ namespace SourceGit
 
         public static void ShowWindow(object data)
         {
-            if (data is Views.ChromelessWindow window)
+            if (data is not Views.ChromelessWindow window)
             {
-                window.Show();
-                return;
+                window = CreateViewForViewModel(data) as Views.ChromelessWindow;
+                if (window == null)
+                    return;
+
+                window.DataContext = data;
             }
 
-            window = CreateViewForViewModel(data) as Views.ChromelessWindow;
-            if (window != null)
+            do
             {
-                window.DataContext = data;
-                window.Show();
-            }
+                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { Windows: { Count: > 0 } windows })
+                {
+                    // Try to find the actived window (fall back to `MainWindow`)
+                    Window actived = windows[0];
+                    if (!actived.IsActive)
+                    {
+                        for (var i = 1; i < windows.Count; i++)
+                        {
+                            var test = windows[i];
+                            if (test.IsActive)
+                            {
+                                actived = test;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Get the screen where current window locates.
+                    var screen = actived.Screens.ScreenFromWindow(actived) ?? actived.Screens.Primary;
+                    if (screen == null)
+                        break;
+
+                    // Calculate the startup position (Center Screen Mode) of target window
+                    var rect = new PixelRect(PixelSize.FromSize(window.ClientSize, actived.DesktopScaling));
+                    var centeredRect = screen.WorkingArea.CenterRect(rect);
+                    if (actived.Screens.ScreenFromPoint(centeredRect.Position) == null)
+                        break;
+
+                    // Use the startup position
+                    window.WindowStartupLocation = WindowStartupLocation.Manual;
+                    window.Position = centeredRect.Position;
+                }
+            } while (false);
+
+            window.Show();
         }
 
         public static async Task<bool> AskConfirmAsync(string message, Models.ConfirmButtonType buttonType = Models.ConfirmButtonType.OkCancel)

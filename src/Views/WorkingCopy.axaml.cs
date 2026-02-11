@@ -271,7 +271,7 @@ namespace SourceGit.Views
                     diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                     diffWithMerger.Click += (_, ev) =>
                     {
-                        vm.UseExternalDiffTool(change, false);
+                        vm.UseExternalDiffTool(change, true);
                         ev.Handled = true;
                     };
 
@@ -336,14 +336,15 @@ namespace SourceGit.Views
                     menu.Items.Add(useTheirs);
                     menu.Items.Add(useMine);
 
-                    if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
+                    if (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified && !Directory.Exists(path))
                     {
                         var mergeBuiltin = new MenuItem();
                         mergeBuiltin.Header = App.Text("ChangeCM.Merge");
                         mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
                         mergeBuiltin.Click += async (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, change.Path));
+                            var head = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
+                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, head, change.Path));
                             e.Handled = true;
                         };
 

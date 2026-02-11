@@ -23,10 +23,183 @@ using AvaloniaEdit.Utils;
 
 namespace SourceGit.Views
 {
-    public class MergeDiffPresenter : TextEditor
+    public class MergeConflictTextPresenter : TextEditor
     {
+        public class LineNumberMargin : AbstractMargin
+        {
+            public LineNumberMargin(MergeConflictTextPresenter presenter)
+            {
+                _presenter = presenter;
+                Margin = new Thickness(8, 0);
+                ClipToBounds = true;
+            }
+
+            public override void Render(DrawingContext context)
+            {
+                var lines = _presenter.Lines;
+                if (lines == null)
+                    return;
+
+                var view = TextView;
+                if (view is not { VisualLinesValid: true })
+                    return;
+
+                var typeface = view.CreateTypeface();
+                foreach (var line in view.VisualLines)
+                {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+
+                    var index = line.FirstDocumentLine.LineNumber;
+                    if (index > lines.Count)
+                        break;
+
+                    var lineNumber = lines[index - 1].LineNumber;
+                    if (string.IsNullOrEmpty(lineNumber))
+                        continue;
+
+                    var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
+                    var txt = new FormattedText(
+                        lineNumber,
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        _presenter.FontSize,
+                        _presenter.Foreground);
+                    context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - (txt.Height * 0.5)));
+                }
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                var maxLine = _presenter.MaxLineNumber;
+                if (maxLine == 0)
+                    return new Size(32, 0);
+
+                var typeface = TextView.CreateTypeface();
+                var test = new FormattedText(
+                    $"{maxLine}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    _presenter.FontSize,
+                    Brushes.White);
+                return new Size(test.Width, 0);
+            }
+
+            private readonly MergeConflictTextPresenter _presenter;
+        }
+
+        public class VerticalSeparatorMargin : AbstractMargin
+        {
+            public override void Render(DrawingContext context)
+            {
+                var pen = new Pen(Brushes.DarkGray);
+                context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
+            }
+
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                return new Size(1, 0);
+            }
+        }
+
+        public class ConflictMarkerTransformer : DocumentColorizingTransformer
+        {
+            public ConflictMarkerTransformer(MergeConflictTextPresenter presenter)
+            {
+                _presenter = presenter;
+            }
+
+            protected override void ColorizeLine(DocumentLine line)
+            {
+                var lines = _presenter.Lines;
+                if (lines == null || line.LineNumber > lines.Count)
+                    return;
+
+                var info = lines[line.LineNumber - 1];
+                if (info.Type == Models.ConflictLineType.Marker)
+                {
+                    ChangeLinePart(line.Offset, line.EndOffset, element =>
+                    {
+                        element.TextRunProperties.SetTypeface(new Typeface(_presenter.FontFamily, FontStyle.Italic, FontWeight.Normal));
+                        element.TextRunProperties.SetForegroundBrush(Brushes.Gray);
+                    });
+                }
+            }
+
+            private readonly MergeConflictTextPresenter _presenter;
+        }
+
+        public class LineBackgroundRenderer : IBackgroundRenderer
+        {
+            public KnownLayer Layer => KnownLayer.Background;
+
+            public LineBackgroundRenderer(MergeConflictTextPresenter presenter)
+            {
+                _presenter = presenter;
+            }
+
+            public void Draw(TextView textView, DrawingContext drawingContext)
+            {
+                var lines = _presenter.Lines;
+                if (lines == null || _presenter.Document == null || !textView.VisualLinesValid)
+                    return;
+
+                if (_presenter.DataContext is not ViewModels.MergeConflictEditor vm)
+                    return;
+
+                var width = textView.Bounds.Width;
+                foreach (var line in textView.VisualLines)
+                {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+
+                    var index = line.FirstDocumentLine.LineNumber;
+                    if (index > lines.Count)
+                        break;
+
+                    var lineIndex = index - 1;
+                    var info = lines[lineIndex];
+                    if (info.Type == Models.ConflictLineType.Common)
+                        continue;
+
+                    var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
+                    var rect = new Rect(0, startY, width, endY - startY);
+
+                    var lineState = vm.GetLineState(lineIndex);
+                    if (lineState == Models.ConflictLineState.ConflictBlockStart)
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
+                    else if (lineState == Models.ConflictLineState.ConflictBlockEnd)
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
+                    else if (lineState == Models.ConflictLineState.ResolvedBlockStart)
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
+                    else if (lineState == Models.ConflictLineState.ResolvedBlockEnd)
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
+
+                    if (lineState >= Models.ConflictLineState.ResolvedBlockStart)
+                        drawingContext.DrawRectangle(new SolidColorBrush(Colors.Green, 0.1), null, rect);
+                    else if (lineState >= Models.ConflictLineState.ConflictBlockStart)
+                        drawingContext.DrawRectangle(new SolidColorBrush(Colors.Red, 0.1), null, rect);
+
+                    var bg = info.Type switch
+                    {
+                        Models.ConflictLineType.Ours => _presenter.OursContentBackground,
+                        Models.ConflictLineType.Theirs => _presenter.TheirsContentBackground,
+                        _ => null,
+                    };
+
+                    if (bg != null)
+                        drawingContext.DrawRectangle(bg, null, rect);
+                }
+            }
+
+            private readonly MergeConflictTextPresenter _presenter;
+        }
+
         public static readonly StyledProperty<string> FileNameProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, string>(nameof(FileName), string.Empty);
+            AvaloniaProperty.Register<MergeConflictTextPresenter, string>(nameof(FileName), string.Empty);
 
         public string FileName
         {
@@ -35,7 +208,7 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<Models.ConflictPanelType> PanelTypeProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, Models.ConflictPanelType>(nameof(PanelType));
+            AvaloniaProperty.Register<MergeConflictTextPresenter, Models.ConflictPanelType>(nameof(PanelType));
 
         public Models.ConflictPanelType PanelType
         {
@@ -43,17 +216,17 @@ namespace SourceGit.Views
             set => SetValue(PanelTypeProperty, value);
         }
 
-        public static readonly StyledProperty<List<Models.TextDiffLine>> DiffLinesProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, List<Models.TextDiffLine>>(nameof(DiffLines));
+        public static readonly StyledProperty<List<Models.ConflictLine>> LinesProperty =
+            AvaloniaProperty.Register<MergeConflictTextPresenter, List<Models.ConflictLine>>(nameof(Lines));
 
-        public List<Models.TextDiffLine> DiffLines
+        public List<Models.ConflictLine> Lines
         {
-            get => GetValue(DiffLinesProperty);
-            set => SetValue(DiffLinesProperty, value);
+            get => GetValue(LinesProperty);
+            set => SetValue(LinesProperty, value);
         }
 
         public static readonly StyledProperty<int> MaxLineNumberProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, int>(nameof(MaxLineNumber));
+            AvaloniaProperty.Register<MergeConflictTextPresenter, int>(nameof(MaxLineNumber));
 
         public int MaxLineNumber
         {
@@ -61,44 +234,26 @@ namespace SourceGit.Views
             set => SetValue(MaxLineNumberProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> EmptyContentBackgroundProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(EmptyContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)));
+        public static readonly StyledProperty<IBrush> OursContentBackgroundProperty =
+            AvaloniaProperty.Register<MergeConflictTextPresenter, IBrush>(nameof(OursContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
 
-        public IBrush EmptyContentBackground
+        public IBrush OursContentBackground
         {
-            get => GetValue(EmptyContentBackgroundProperty);
-            set => SetValue(EmptyContentBackgroundProperty, value);
+            get => GetValue(OursContentBackgroundProperty);
+            set => SetValue(OursContentBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> AddedContentBackgroundProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(AddedContentBackground), new SolidColorBrush(Color.FromArgb(60, 0, 255, 0)));
+        public static readonly StyledProperty<IBrush> TheirsContentBackgroundProperty =
+            AvaloniaProperty.Register<MergeConflictTextPresenter, IBrush>(nameof(TheirsContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
 
-        public IBrush AddedContentBackground
+        public IBrush TheirsContentBackground
         {
-            get => GetValue(AddedContentBackgroundProperty);
-            set => SetValue(AddedContentBackgroundProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> DeletedContentBackgroundProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(DeletedContentBackground), new SolidColorBrush(Color.FromArgb(60, 255, 0, 0)));
-
-        public IBrush DeletedContentBackground
-        {
-            get => GetValue(DeletedContentBackgroundProperty);
-            set => SetValue(DeletedContentBackgroundProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> IndicatorBackgroundProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, IBrush>(nameof(IndicatorBackground), new SolidColorBrush(Color.FromArgb(100, 100, 100, 100)));
-
-        public IBrush IndicatorBackground
-        {
-            get => GetValue(IndicatorBackgroundProperty);
-            set => SetValue(IndicatorBackgroundProperty, value);
+            get => GetValue(TheirsContentBackgroundProperty);
+            set => SetValue(TheirsContentBackgroundProperty, value);
         }
 
         public static readonly StyledProperty<Models.ConflictSelectedChunk> SelectedChunkProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, Models.ConflictSelectedChunk>(nameof(SelectedChunk));
+            AvaloniaProperty.Register<MergeConflictTextPresenter, Models.ConflictSelectedChunk>(nameof(SelectedChunk));
 
         public Models.ConflictSelectedChunk SelectedChunk
         {
@@ -106,10 +261,10 @@ namespace SourceGit.Views
             set => SetValue(SelectedChunkProperty, value);
         }
 
-        public static readonly StyledProperty<ViewModels.TextDiffDisplayRange> DisplayRangeProperty =
-            AvaloniaProperty.Register<MergeDiffPresenter, ViewModels.TextDiffDisplayRange>(nameof(DisplayRange));
+        public static readonly StyledProperty<ViewModels.TextLineRange> DisplayRangeProperty =
+            AvaloniaProperty.Register<MergeConflictTextPresenter, ViewModels.TextLineRange>(nameof(DisplayRange));
 
-        public ViewModels.TextDiffDisplayRange DisplayRange
+        public ViewModels.TextLineRange DisplayRange
         {
             get => GetValue(DisplayRangeProperty);
             set => SetValue(DisplayRangeProperty, value);
@@ -117,7 +272,7 @@ namespace SourceGit.Views
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
-        public MergeDiffPresenter() : base(new TextArea(), new TextDocument())
+        public MergeConflictTextPresenter() : base(new TextArea(), new TextDocument())
         {
             IsReadOnly = true;
             ShowLineNumbers = false;
@@ -128,9 +283,9 @@ namespace SourceGit.Views
             Options.AllowScrollBelowDocument = false;
 
             TextArea.TextView.Margin = new Thickness(4, 0);
-            TextArea.LeftMargins.Add(new MergeDiffLineNumberMargin(this));
-            TextArea.LeftMargins.Add(new MergeDiffVerticalSeparatorMargin());
-            TextArea.TextView.BackgroundRenderers.Add(new MergeDiffLineBackgroundRenderer(this));
+            TextArea.LeftMargins.Add(new LineNumberMargin(this));
+            TextArea.LeftMargins.Add(new VerticalSeparatorMargin());
+            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -158,7 +313,7 @@ namespace SourceGit.Views
             TextArea.TextView.PointerMoved += OnTextViewPointerChanged;
             TextArea.TextView.PointerWheelChanged += OnTextViewPointerWheelChanged;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
-            TextArea.TextView.LineTransformers.Add(new MergeDiffIndicatorTransformer(this));
+            TextArea.TextView.LineTransformers.Add(new ConflictMarkerTransformer(this));
 
             OnTextViewVisualLinesChanged(null, null);
         }
@@ -184,7 +339,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == DiffLinesProperty)
+            if (change.Property == LinesProperty)
                 UpdateContent();
             else if (change.Property == FileNameProperty)
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
@@ -192,11 +347,13 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             else if (change.Property == SelectedChunkProperty)
                 TextArea.TextView.InvalidateVisual();
+            else if (change.Property == MaxLineNumberProperty)
+                TextArea.LeftMargins[0].InvalidateMeasure();
         }
 
         private void UpdateContent()
         {
-            var lines = DiffLines;
+            var lines = Lines;
             if (lines == null || lines.Count == 0)
             {
                 Text = string.Empty;
@@ -278,7 +435,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            var lines = DiffLines;
+            var lines = Lines;
             var start = int.MaxValue;
             var count = 0;
             foreach (var line in TextArea.TextView.VisualLines)
@@ -295,7 +452,7 @@ namespace SourceGit.Views
                     start = index;
             }
 
-            SetCurrentValue(DisplayRangeProperty, new ViewModels.TextDiffDisplayRange(start, start + count));
+            SetCurrentValue(DisplayRangeProperty, new ViewModels.TextLineRange(start, start + count));
         }
 
         private void OnTextViewScrollChanged(object sender, ScrollChangedEventArgs e)
@@ -317,7 +474,7 @@ namespace SourceGit.Views
 
         private void UpdateSelectedChunkPosition(ViewModels.MergeConflictEditor vm, double y)
         {
-            var lines = DiffLines;
+            var lines = Lines;
             var panel = PanelType;
             var view = TextArea.TextView;
             var lineIdx = -1;
@@ -380,202 +537,12 @@ namespace SourceGit.Views
         private ScrollViewer _scrollViewer;
     }
 
-    public class MergeDiffLineNumberMargin : AbstractMargin
-    {
-        public MergeDiffLineNumberMargin(MergeDiffPresenter presenter)
-        {
-            _presenter = presenter;
-            Margin = new Thickness(8, 0);
-            ClipToBounds = true;
-        }
-
-        public override void Render(DrawingContext context)
-        {
-            var lines = _presenter.DiffLines;
-            if (lines == null)
-                return;
-
-            var view = TextView;
-            if (view is not { VisualLinesValid: true })
-                return;
-
-            var panel = _presenter.PanelType;
-            var typeface = view.CreateTypeface();
-
-            foreach (var line in view.VisualLines)
-            {
-                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
-                    continue;
-
-                var index = line.FirstDocumentLine.LineNumber;
-                if (index > lines.Count)
-                    break;
-
-                var info = lines[index - 1];
-
-                string lineNumber = panel switch
-                {
-                    Models.ConflictPanelType.Mine => info.OldLine,
-                    _ => info.NewLine,
-                };
-
-                if (string.IsNullOrEmpty(lineNumber))
-                    continue;
-
-                var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
-                var txt = new FormattedText(
-                    lineNumber,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    _presenter.FontSize,
-                    _presenter.Foreground);
-                context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - (txt.Height * 0.5)));
-            }
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            var maxLine = _presenter.MaxLineNumber;
-            if (maxLine == 0)
-                return new Size(32, 0);
-
-            var typeface = TextView.CreateTypeface();
-            var test = new FormattedText(
-                $"{maxLine}",
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                typeface,
-                _presenter.FontSize,
-                Brushes.White);
-            return new Size(test.Width, 0);
-        }
-
-        private readonly MergeDiffPresenter _presenter;
-    }
-
-    public class MergeDiffVerticalSeparatorMargin : AbstractMargin
-    {
-        public override void Render(DrawingContext context)
-        {
-            var pen = new Pen(Brushes.DarkGray);
-            context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            return new Size(1, 0);
-        }
-    }
-
-    public class MergeDiffIndicatorTransformer : DocumentColorizingTransformer
-    {
-        public MergeDiffIndicatorTransformer(MergeDiffPresenter presenter)
-        {
-            _presenter = presenter;
-        }
-
-        protected override void ColorizeLine(DocumentLine line)
-        {
-            var lines = _presenter.DiffLines;
-            if (lines == null || line.LineNumber > lines.Count)
-                return;
-
-            var info = lines[line.LineNumber - 1];
-            if (info.Type == Models.TextDiffLineType.Indicator)
-            {
-                // Make indicator lines (conflict markers) italic and gray
-                ChangeLinePart(line.Offset, line.EndOffset, element =>
-                {
-                    element.TextRunProperties.SetTypeface(new Typeface(
-                        _presenter.FontFamily,
-                        FontStyle.Italic,
-                        FontWeight.Normal));
-                    element.TextRunProperties.SetForegroundBrush(Brushes.Gray);
-                });
-            }
-        }
-
-        private readonly MergeDiffPresenter _presenter;
-    }
-
-    public class MergeDiffLineBackgroundRenderer : IBackgroundRenderer
-    {
-        public KnownLayer Layer => KnownLayer.Background;
-
-        public MergeDiffLineBackgroundRenderer(MergeDiffPresenter presenter)
-        {
-            _presenter = presenter;
-        }
-
-        public void Draw(TextView textView, DrawingContext drawingContext)
-        {
-            var lines = _presenter.DiffLines;
-            if (lines == null || _presenter.Document == null || !textView.VisualLinesValid)
-                return;
-
-            if (_presenter.DataContext is not ViewModels.MergeConflictEditor vm)
-                return;
-
-            var width = textView.Bounds.Width;
-            foreach (var line in textView.VisualLines)
-            {
-                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
-                    continue;
-
-                var index = line.FirstDocumentLine.LineNumber;
-                if (index > lines.Count)
-                    break;
-
-                var lineIndex = index - 1;
-                var info = lines[lineIndex];
-                var lineState = vm.GetLineState(lineIndex);
-
-                var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
-                var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
-                var rect = new Rect(0, startY, width, endY - startY);
-
-                if (lineState == Models.ConflictLineState.ConflictBlockStart)
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
-                else if (lineState == Models.ConflictLineState.ConflictBlockEnd)
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
-                else if (lineState == Models.ConflictLineState.ResolvedBlockStart)
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
-                else if (lineState == Models.ConflictLineState.ResolvedBlockEnd)
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
-
-                if (lineState >= Models.ConflictLineState.ResolvedBlockStart)
-                    drawingContext.DrawRectangle(new SolidColorBrush(Colors.Green, 0.1), null, rect);
-                else if (lineState >= Models.ConflictLineState.ConflictBlockStart)
-                    drawingContext.DrawRectangle(new SolidColorBrush(Colors.Red, 0.1), null, rect);
-
-                var bg = GetBrushByLineType(info.Type);
-                if (bg != null)
-                    drawingContext.DrawRectangle(bg, null, rect);
-            }
-        }
-
-        private IBrush GetBrushByLineType(Models.TextDiffLineType type)
-        {
-            return type switch
-            {
-                Models.TextDiffLineType.None => _presenter.EmptyContentBackground,
-                Models.TextDiffLineType.Added => _presenter.AddedContentBackground,
-                Models.TextDiffLineType.Deleted => _presenter.DeletedContentBackground,
-                Models.TextDiffLineType.Indicator => _presenter.IndicatorBackground,
-                _ => null,
-            };
-        }
-
-        private readonly MergeDiffPresenter _presenter;
-    }
-
     public class MergeConflictMinimap : Control
     {
-        public static readonly StyledProperty<ViewModels.TextDiffDisplayRange> DisplayRangeProperty =
-            AvaloniaProperty.Register<MergeConflictMinimap, ViewModels.TextDiffDisplayRange>(nameof(DisplayRange));
+        public static readonly StyledProperty<ViewModels.TextLineRange> DisplayRangeProperty =
+            AvaloniaProperty.Register<MergeConflictMinimap, ViewModels.TextLineRange>(nameof(DisplayRange));
 
-        public ViewModels.TextDiffDisplayRange DisplayRange
+        public ViewModels.TextLineRange DisplayRange
         {
             get => GetValue(DisplayRangeProperty);
             set => SetValue(DisplayRangeProperty, value);
@@ -597,7 +564,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            var total = vm.OursDiffLines.Count;
+            var total = vm.OursLines.Count;
             var unitHeight = Bounds.Height / (total * 1.0);
             var conflicts = vm.ConflictRegions;
             var blockBGs = new SolidColorBrush[] { new SolidColorBrush(Colors.Red, 0.6), new SolidColorBrush(Colors.Green, 0.6) };
@@ -642,7 +609,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            var total = vm.OursDiffLines.Count;
+            var total = vm.OursLines.Count;
             var range = DisplayRange;
             if (range == null || range.End == 0)
                 return;
@@ -719,7 +686,7 @@ namespace SourceGit.Views
             if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.UnsolvedCount > 0)
             {
                 var view = OursPresenter.TextArea?.TextView;
-                var lines = vm.OursDiffLines;
+                var lines = vm.OursLines;
                 var minY = double.MaxValue;
                 var minLineIdx = lines.Count;
                 if (view is { VisualLinesValid: true })
@@ -762,7 +729,7 @@ namespace SourceGit.Views
             if (IsLoaded && DataContext is ViewModels.MergeConflictEditor vm && vm.UnsolvedCount > 0)
             {
                 var view = OursPresenter.TextArea?.TextView;
-                var lines = vm.OursDiffLines;
+                var lines = vm.OursLines;
                 var maxY = 0.0;
                 var maxLineIdx = 0;
                 if (view is { VisualLinesValid: true })
@@ -829,9 +796,9 @@ namespace SourceGit.Views
                 return;
 
             // Get the presenter for bounds checking
-            MergeDiffPresenter presenter = chunk.Panel switch
+            MergeConflictTextPresenter presenter = chunk.Panel switch
             {
-                Models.ConflictPanelType.Mine => OursPresenter,
+                Models.ConflictPanelType.Ours => OursPresenter,
                 Models.ConflictPanelType.Theirs => TheirsPresenter,
                 Models.ConflictPanelType.Result => ResultPresenter,
                 _ => null
@@ -840,7 +807,7 @@ namespace SourceGit.Views
             // Show the appropriate popup based on panel type and resolved state
             Border popup = chunk.Panel switch
             {
-                Models.ConflictPanelType.Mine => MinePopup,
+                Models.ConflictPanelType.Ours => MinePopup,
                 Models.ConflictPanelType.Theirs => TheirsPopup,
                 Models.ConflictPanelType.Result => chunk.IsResolved ? ResultUndoPopup : ResultPopup,
                 _ => null

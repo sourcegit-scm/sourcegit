@@ -60,19 +60,18 @@ namespace SourceGit.Views
         {
             base.OnClosed(e);
 
+            _onSave?.Invoke(Editor.CommitMessage);
+
             if (_shouldExitApp)
-                App.Quit(_exitCode);
+                App.Quit(0);
         }
 
-        private void SaveAndClose(object _1, RoutedEventArgs _2)
+        private void OnCloseByHotKey(object sender, RoutedEventArgs e)
         {
-            _onSave?.Invoke(Editor.CommitMessage);
-            _exitCode = 0;
             Close();
         }
 
         private Action<string> _onSave = null;
         private bool _shouldExitApp = true;
-        private int _exitCode = -1;
     }
 }

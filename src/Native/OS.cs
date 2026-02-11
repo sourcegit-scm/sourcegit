@@ -17,6 +17,7 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
             void SetupWindow(Window window);
 
+            string GetDataDir();
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
@@ -115,62 +116,25 @@ namespace SourceGit.Native
         static OS()
         {
             if (OperatingSystem.IsWindows())
-            {
                 _backend = new Windows();
-            }
             else if (OperatingSystem.IsMacOS())
-            {
                 _backend = new MacOS();
-            }
             else if (OperatingSystem.IsLinux())
-            {
                 _backend = new Linux();
-            }
             else
-            {
                 throw new PlatformNotSupportedException();
-            }
+        }
+
+        public static void SetupDataDir()
+        {
+            DataDir = _backend.GetDataDir();
+            if (!Directory.Exists(DataDir))
+                Directory.CreateDirectory(DataDir);
         }
 
         public static void SetupApp(AppBuilder builder)
         {
             _backend.SetupApp(builder);
-        }
-
-        public static void SetupDataDir()
-        {
-            if (OperatingSystem.IsWindows())
-            {
-                var execFile = Process.GetCurrentProcess().MainModule!.FileName;
-                var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
-                if (Directory.Exists(portableDir))
-                {
-                    DataDir = portableDir;
-                    return;
-                }
-            }
-            else if (OperatingSystem.IsLinux())
-            {
-                var appImage = Environment.GetEnvironmentVariable("APPIMAGE");
-                if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))
-                {
-                    var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");
-                    if (Directory.Exists(portableDir))
-                    {
-                        DataDir = portableDir;
-                        return;
-                    }
-                }
-            }
-
-            var osAppDataDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            if (string.IsNullOrEmpty(osAppDataDir))
-                DataDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".sourcegit");
-            else
-                DataDir = Path.Combine(osAppDataDir, "SourceGit");
-
-            if (!Directory.Exists(DataDir))
-                Directory.CreateDirectory(DataDir);
         }
 
         public static void SetupExternalTools()
@@ -195,11 +159,7 @@ namespace SourceGit.Native
 
         public static void SetShellOrTerminal(Models.ShellOrTerminal shell)
         {
-            if (shell == null)
-                ShellOrTerminal = string.Empty;
-            else
-                ShellOrTerminal = _backend.FindTerminal(shell);
-
+            ShellOrTerminal = shell != null ? _backend.FindTerminal(shell) : string.Empty;
             ShellOrTerminalArgs = shell.Args;
         }
 

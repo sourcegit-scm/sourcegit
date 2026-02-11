@@ -99,6 +99,7 @@
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">生成提交信息</x:String>
   <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">解决冲突（内部工具）</x:String>
   <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">解决冲突（外部工具）</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">重置文件到 ${0}$</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">切换变更显示模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">文件名+路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路径列表模式</x:String>
@@ -470,13 +471,16 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">远程 ：</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">跟踪名为'{0}'的文件</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">跟踪所有 *{0} 文件</x:String>
+  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">选择前往的父提交</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">历史记录</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改时间</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交时间</x:String>
+  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日期时间</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">提交时间</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">显示列</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住 Ctrl 或 Shift 键选择多个提交</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">可以按住 ⌘ 或 ⇧ 键选择多个提交</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">小提示:</x:String>
@@ -497,6 +501,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自动暂存全部变更并提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">拉取 (fetch) 远程变更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切换左边栏为分支/标签等显示模式（默认）</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">前往选中提交的父提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">打开快捷命令面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切换左边栏为提交搜索模式</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉回 (pull) 远程变更</x:String>
@@ -814,9 +819,11 @@
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">扫描其他自定义路径</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">检测更新...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">检测到软件有版本更新: </x:String>
+  <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">当前版本 ：</x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">获取最新版本信息失败！</x:String>
   <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">下    载</x:String>
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">忽略此版本</x:String>
+  <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">新版发布时间 ：</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">软件更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">当前已是最新版本。</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">修改子模块追踪分支</x:String>

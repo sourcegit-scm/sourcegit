@@ -105,7 +105,7 @@
                                 Classes="line_path"
                                 Width="26" Height="26"
                                 Background="Transparent"
-                                IsChecked="{Binding OnlyHighlightCurrentBranchInHistories, Mode=TwoWay}"
+                                IsChecked="{Binding OnlyHighlightCurrentBranchInHistory, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
                   </ToggleButton>
@@ -652,8 +652,8 @@
             <DataTemplate DataType="vm:CherryPickInProgress">
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.CherryPick.Head}"/>
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.CherryPick}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.CherryPick.Head}"/>
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
                 </StackPanel>
 
@@ -664,8 +664,8 @@
             <DataTemplate DataType="vm:RebaseInProgress">
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}"
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Rebase}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}"
                              Text="{DynamicResource Text.InProgress.Rebase.StoppedAt}"
                              IsVisible="{Binding StoppedAt, Converter={x:Static ObjectConverters.IsNotNull}}" />
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange"
@@ -683,8 +683,8 @@
             <DataTemplate DataType="vm:RevertInProgress">
               <Grid ColumnDefinitions="*,Auto">
                 <StackPanel Grid.Column="0" Orientation="Horizontal">
-                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert}"/>
-                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Revert.Head}"/>
+                  <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Revert}"/>
+                  <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Revert.Head}"/>
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
                 </StackPanel>
 
@@ -694,10 +694,10 @@
 
             <DataTemplate DataType="vm:MergeInProgress">
               <StackPanel Orientation="Horizontal">
-                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge}"/>
-                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="{DynamicResource Text.InProgress.Merge.Operating}"/>
+                <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Merge}"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Merge.Operating}"/>
                 <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding SourceName}" ToolTip.Tip="{Binding Source}"/>
-                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.ConflictForeground}" Text="→"/>
+                <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="→"/>
                 <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Current}"/>
               </StackPanel>
             </DataTemplate>
@@ -730,14 +730,14 @@
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
                    Margin="8,0"
-                   Foreground="{DynamicResource Brush.ConflictForeground}"
+                   Foreground="{DynamicResource Brush.Conflict.Foreground}"
                    Text="{DynamicResource Text.Bisect.WaitingForRange}"
                    IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.WaitingForRange}}"/>
 
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
                    Margin="8,0"
-                   Foreground="{DynamicResource Brush.ConflictForeground}"
+                   Foreground="{DynamicResource Brush.Conflict.Foreground}"
                    Text="{DynamicResource Text.Bisect.Detecting}"
                    IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.Detecting}}"/>
 
@@ -792,7 +792,7 @@
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-            <Binding Path="HistoryFilterCollection.Filters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
+            <Binding Path="UIStates.HistoryFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
           </MultiBinding>
         </Border.IsVisible>
 
@@ -810,7 +810,7 @@
                 Fill="{DynamicResource Brush.FG2}"
                 IsVisible="{Binding HistoryFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
 
-          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding HistoryFilterCollection.Filters}">
+          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding UIStates.HistoryFilters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" ItemHeight="22"/>
@@ -851,7 +851,7 @@
             <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}"
                          Bisect="{Binding Bisect}"
                          IssueTrackers="{Binding $parent[v:Repository].((vm:Repository)DataContext).IssueTrackers}"
-                         OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistories}"
+                         OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistory}"
                          NavigationId="{Binding NavigationId}"/>
           </DataTemplate>
 

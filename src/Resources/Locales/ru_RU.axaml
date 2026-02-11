@@ -58,6 +58,7 @@
   <x:String x:Key="Text.Bisect.WaitingForRange">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace">Игнорировать изменения пробелов</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">РАССЛЕДОВАНИЕ В ЭТОМ ФАЙЛЕ НЕ ПОДДЕРЖИВАЕТСЯ!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Переключиться на ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Сравнить две выбранные ветки</x:String>
@@ -96,6 +97,9 @@
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Сбросить родительскую ревизию</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Сбросить эту ревизию</x:String>
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Произвести сообщение о ревизии</x:String>
+  <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">Слить (встроенный)</x:String>
+  <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">Слить (внешний)</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">Сбросить файл(ы) в ${0}$</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ИЗМЕНИТЬ РЕЖИМ ОТОБРАЖЕНИЯ</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Показывать в виде списка файлов и каталогов</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Показывать в виде списка путей</x:String>
@@ -399,15 +403,15 @@
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Не отслеживать</x:String>
   <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Отклонить...</x:String>
-  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Отклонить {0} файлов...</x:String>
+  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Отклонить файлы ({0})...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Взять версию ${0}$</x:String>
   <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Сохранить как файл заплатки...</x:String>
   <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Сформировать</x:String>
-  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Сформированные {0} файлы</x:String>
+  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Сформировать файлы ({0})</x:String>
   <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Отложить...</x:String>
-  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Отложить {0} файлов...</x:String>
+  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Отложить файлы ({0})...</x:String>
   <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Расформировать</x:String>
-  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Несформированные {0} файлы</x:String>
+  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Расформировать файлы ({0})</x:String>
   <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Использовать мой (checkout --ours)</x:String>
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Использовать их (checkout --theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">История файлов</x:String>
@@ -466,14 +470,17 @@
   <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Выложить объекты LFS</x:String>
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Отслеживать файлы с именем «{0}»</x:String>
-  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все *{0} файлов</x:String>
+  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все файлы (*{0})</x:String>
+  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">Выбрать родительский</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Истории</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ВРЕМЯ РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">ДАТА И ВРЕМЯ</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
-  <x:String x:Key="Text.Histories.Header.Time" xml:space="preserve">ВРЕМЯ РЕВИЗИИ</x:String>
-  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАННЫЕ {0} РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАНО РЕВИЗИЙ: {0}</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">ПОКАЗЫВАТЬ КОЛОНКИ</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Удерживайте Ctrl или Shift, чтобы выбрать несколько ревизий.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Удерживайте ⌘ или ⇧, чтобы выбрать несколько ревизий.</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ПОДСКАЗКИ:</x:String>
@@ -494,6 +501,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Сформировать все изменения и зафиксировать</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Извлечь (fetch), запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по умолчанию)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Перейти к родительскому выбранной ревизии</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Открыть палитру команд</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска ревизий</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Загрузить (pull), запускается сразу</x:String>
@@ -539,6 +547,22 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Источник:</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">Сначала мои, а потом их</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">Сначала их, а потом мои</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">ИСПОЛЬЗОВАТЬ ОБА</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">Все конфликты разрешены</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">Осталось конфликтов: {0}</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Следующий конфликт</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">Предыдущий конфликт</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">РЕЗУЛЬТАТ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">СОХРАНИТЬ И СФОРМИРОВАТЬ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">ИХ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Конфликты при слиянии</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Отменить несохранённые изменения?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">ИСПОЛЬЗОВАТЬ МОИ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">ИСПОЛЬЗОВАТЬ ИХ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">Отменить</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Влить несколько веток</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Зафиксировать все изменения</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Стратегия:</x:String>
@@ -741,6 +765,7 @@
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Открыть в расширенном инструменте</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">ВНЕШНИЕ РЕПОЗИТОРИИ</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ДОБАВИТЬ ВНЕШНИЙ РЕПОЗИТОРИЙ</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">РАЗРЕШИТЬ</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Поиск ревизии</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Автор</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Ревизор</x:String>
@@ -919,6 +944,8 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Вы создаёте ревизию на отсоединённой ГОЛОВЕ. Вы хотите продолжить?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Вы сформировали {0} файл(ов), но отображается только {1} файл(ов) ({2} файл(ов) отфильтровано). Вы хотите продолжить?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ОБНАРУЖЕНЫ КОНФЛИКТЫ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">СЛИТЬ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.MergeExternal" xml:space="preserve">Слить с помощью внешнего инструмента</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ОТКРЫТЬ ВСЕ КОНФЛИКТЫ ВО ВНЕШНЕМ ИНСТРУМЕНТЕ СЛИЯНИЯ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">КОНФЛИКТЫ ФАЙЛОВ РАЗРЕШЕНЫ</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">ИСПОЛЬЗОВАТЬ МОИ</x:String>

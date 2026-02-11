@@ -50,7 +50,7 @@
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
                 <StackPanel Orientation="Horizontal">
                   <Path Width="12" Height="12" Margin="4,2,0,0" Data="{StaticResource Icons.Check}" Fill="White" IsVisible="{Binding BaseHead.IsCurrentHead, Mode=OneWay}"/>
-                  <TextBlock Text="{Binding BaseName}" Margin="4,0" Foreground="#FFDDDDDD"/>        
+                  <TextBlock Text="{Binding BaseName}" Margin="4,0" Foreground="#FFF2F2F2"/>        
                 </StackPanel>
               </Border>
               <TextBlock Grid.Column="3" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
@@ -77,7 +77,7 @@
               <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
                 <StackPanel Orientation="Horizontal">
                   <Path Width="12" Height="12" Margin="4,2,0,0" Data="{StaticResource Icons.Check}" Fill="White" IsVisible="{Binding ToHead.IsCurrentHead, Mode=OneWay}"/>
-                  <TextBlock Text="{Binding ToName}" Margin="4,0" Foreground="#FFDDDDDD"/>
+                  <TextBlock Text="{Binding ToName}" Margin="4,0" Foreground="#FFF2F2F2"/>
                 </StackPanel>
               </Border>
               <TextBlock Grid.Column="3" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>

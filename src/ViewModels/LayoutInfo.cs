@@ -68,7 +68,7 @@ namespace SourceGit.ViewModels
         public DataGridLength AuthorColumnWidth
         {
             get => _authorColumnWidth;
-            set => SetProperty(ref _authorColumnWidth, value);
+            set => SetProperty(ref _authorColumnWidth, new DataGridLength(value.Value, DataGridLengthUnitType.Pixel, 0, value.DisplayValue));
         }
 
         private GridLength _repositorySidebarWidth = new GridLength(250, GridUnitType.Pixel);
@@ -76,6 +76,6 @@ namespace SourceGit.ViewModels
         private GridLength _stashesLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _commitDetailChangesLeftWidth = new GridLength(256, GridUnitType.Pixel);
         private GridLength _commitDetailFilesLeftWidth = new GridLength(256, GridUnitType.Pixel);
-        private DataGridLength _authorColumnWidth = new DataGridLength(120, DataGridLengthUnitType.Pixel, 120, 120);
+        private DataGridLength _authorColumnWidth = new DataGridLength(120, DataGridLengthUnitType.Pixel, 0, 120);
     }
 }

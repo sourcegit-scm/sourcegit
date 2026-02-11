@@ -79,7 +79,7 @@ namespace SourceGit.Views
             {
                 Width = 12,
                 Height = 12,
-                HorizontalAlignment = HorizontalAlignment.Left,
+                HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = margin,
                 Data = geo,
@@ -262,7 +262,7 @@ namespace SourceGit.Views
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, tag, repo.CurrentBranch));
+                    App.ShowWindow(new ViewModels.Compare(repo, tag, repo.CurrentBranch));
                 };
 
                 var compareWith = new MenuItem();
@@ -380,7 +380,7 @@ namespace SourceGit.Views
                         if (based.CreatorDate > to.CreatorDate)
                             (based, to) = (to, based);
 
-                        App.ShowWindow(new ViewModels.Compare(repo.FullPath, based, to));
+                        App.ShowWindow(new ViewModels.Compare(repo, based, to));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);

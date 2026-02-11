@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
         public void Launch()
         {
             if (_compareTo != null)
-                App.ShowWindow(new Compare(_repo.FullPath, _basedOn, _compareTo));
+                App.ShowWindow(new Compare(_repo, _basedOn, _compareTo));
             _launcher?.CancelCommandPalette();
         }
 

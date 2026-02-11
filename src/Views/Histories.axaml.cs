@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
@@ -158,6 +159,52 @@ namespace SourceGit.Views
                 dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
         }
 
+        private async void OnGotoParent(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            if (!CommitListContainer.IsKeyboardFocusWithin)
+                return;
+
+            if (CommitListContainer.SelectedItems is not { Count: 1 } selected)
+                return;
+
+            if (selected[0] is not Models.Commit { Parents.Count: > 0 } commit)
+                return;
+
+            if (commit.Parents.Count == 1)
+            {
+                vm.NavigateTo(commit.Parents[0]);
+                e.Handled = true;
+                return;
+            }
+
+            var parents = new List<Models.Commit>();
+            foreach (var sha in commit.Parents)
+            {
+                var c = await vm.GetCommitAsync(sha);
+                if (c != null)
+                    parents.Add(c);
+            }
+
+            if (parents.Count == 1)
+            {
+                vm.NavigateTo(parents[0].SHA);
+            }
+            else if (parents.Count > 1 && TopLevel.GetTopLevel(this) is Window owner)
+            {
+                var dialog = new GotoParentSelector();
+                dialog.ParentList.ItemsSource = parents;
+
+                var c = await dialog.ShowDialog<Models.Commit>(owner);
+                if (c != null)
+                    vm.NavigateTo(c.SHA);
+            }
+
+            e.Handled = true;
+        }
+
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
             if (!IsLoaded)
@@ -216,11 +263,14 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is DataGrid { SelectedItems: { } selected } dataGrid &&
-                e.Source is Control { DataContext: Models.Commit })
+            if (e.Source is Control { DataContext: Models.Commit })
             {
                 var repoView = this.FindAncestorOfType<Repository>();
                 if (repoView is not { DataContext: ViewModels.Repository repo })
+                    return;
+
+                var selected = CommitListContainer.SelectedItems;
+                if (selected is not { Count: > 0 })
                     return;
 
                 var commits = new List<Models.Commit>();
@@ -233,13 +283,63 @@ namespace SourceGit.Views
                 if (selected.Count > 1)
                 {
                     var menu = CreateContextMenuForMultipleCommits(repo, commits);
-                    menu.Open(dataGrid);
+                    menu.Open(CommitListContainer);
                 }
                 else if (selected.Count == 1)
                 {
                     var menu = CreateContextMenuForSingleCommit(repo, commits[0]);
-                    menu.Open(dataGrid);
+                    menu.Open(CommitListContainer);
                 }
+            }
+            else if (e.Source is Control elem)
+            {
+                var headersPresenter = CommitListContainer.FindDescendantOfType<DataGridColumnHeadersPresenter>();
+                if (!headersPresenter.IsVisualAncestorOf(elem))
+                    return;
+
+                if (DataContext is not ViewModels.Histories vm)
+                    return;
+
+                var columnsHeader = new MenuItem();
+                columnsHeader.Header = new TextBlock() { Text = App.Text("Histories.ShowColumns"), FontWeight = FontWeight.Bold };
+                columnsHeader.IsEnabled = false;
+
+                var authorColumn = new MenuItem();
+                authorColumn.Header = App.Text("Histories.Header.Author");
+                if (vm.IsAuthorColumnVisible)
+                    authorColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                authorColumn.Click += (_, ev) =>
+                {
+                    vm.IsAuthorColumnVisible = !vm.IsAuthorColumnVisible;
+                    ev.Handled = true;
+                };
+
+                var shaColumn = new MenuItem();
+                shaColumn.Header = App.Text("Histories.Header.SHA");
+                if (vm.IsSHAColumnVisible)
+                    shaColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                shaColumn.Click += (_, ev) =>
+                {
+                    vm.IsSHAColumnVisible = !vm.IsSHAColumnVisible;
+                    ev.Handled = true;
+                };
+
+                var timeColumn = new MenuItem();
+                timeColumn.Header = App.Text("Histories.Header.DateTime");
+                if (vm.IsDateTimeColumnVisible)
+                    timeColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                timeColumn.Click += (_, ev) =>
+                {
+                    vm.IsDateTimeColumnVisible = !vm.IsDateTimeColumnVisible;
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(columnsHeader);
+                menu.Items.Add(authorColumn);
+                menu.Items.Add(shaColumn);
+                menu.Items.Add(timeColumn);
+                menu.Open(CommitListContainer);
             }
 
             e.Handled = true;
@@ -459,7 +559,7 @@ namespace SourceGit.Views
                 var messages = new List<string>();
                 foreach (var c in selected)
                 {
-                    var message = await vm.GetCommitFullMessageAsync(c);
+                    var message = await vm!.GetCommitFullMessageAsync(c);
                     messages.Add(message);
                 }
 
@@ -554,6 +654,8 @@ namespace SourceGit.Views
             if (!repo.IsBare)
             {
                 var target = commit.GetFriendlyName();
+                if (target.Length > 32)
+                    target = commit.SHA.Substring(0, 10);
 
                 if (isHead)
                 {

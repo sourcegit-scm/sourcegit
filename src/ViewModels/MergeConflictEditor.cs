@@ -16,34 +16,44 @@ namespace SourceGit.ViewModels
             get => _filePath;
         }
 
+        public object Mine
+        {
+            get;
+        }
+
+        public object Theirs
+        {
+            get;
+        }
+
         public string Error
         {
             get => _error;
             private set => SetProperty(ref _error, value);
         }
 
-        public List<Models.TextDiffLine> OursDiffLines
+        public List<Models.ConflictLine> OursLines
         {
-            get => _oursDiffLines;
-            private set => SetProperty(ref _oursDiffLines, value);
+            get => _oursLines;
+            private set => SetProperty(ref _oursLines, value);
         }
 
-        public List<Models.TextDiffLine> TheirsDiffLines
+        public List<Models.ConflictLine> TheirsLines
         {
-            get => _theirsDiffLines;
-            private set => SetProperty(ref _theirsDiffLines, value);
+            get => _theirsLines;
+            private set => SetProperty(ref _theirsLines, value);
         }
 
-        public List<Models.TextDiffLine> ResultDiffLines
+        public List<Models.ConflictLine> ResultLines
         {
-            get => _resultDiffLines;
-            private set => SetProperty(ref _resultDiffLines, value);
+            get => _resultLines;
+            private set => SetProperty(ref _resultLines, value);
         }
 
-        public int DiffMaxLineNumber
+        public int MaxLineNumber
         {
-            get => _diffMaxLineNumber;
-            private set => SetProperty(ref _diffMaxLineNumber, value);
+            get => _maxLineNumber;
+            private set => SetProperty(ref _maxLineNumber, value);
         }
 
         public int UnsolvedCount
@@ -69,10 +79,19 @@ namespace SourceGit.ViewModels
             get => _conflictRegions;
         }
 
-        public MergeConflictEditor(Repository repo, string filePath)
+        public MergeConflictEditor(Repository repo, Models.Commit head, string filePath)
         {
             _repo = repo;
             _filePath = filePath;
+
+            (Mine, Theirs) = repo.InProgressContext switch
+            {
+                CherryPickInProgress cherryPick => (head, cherryPick.Head),
+                RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
+                RevertInProgress revert => (head, revert.Head),
+                MergeInProgress merge => (head, merge.Source),
+                _ => (head, (object)"Stash or Patch"),
+            };
 
             var workingCopyPath = Path.Combine(_repo.FullPath, _filePath);
             var workingCopyContent = string.Empty;
@@ -207,8 +226,8 @@ namespace SourceGit.ViewModels
                 return;
 
             var lines = content.Split('\n', StringSplitOptions.None);
-            var oursLines = new List<Models.TextDiffLine>();
-            var theirsLines = new List<Models.TextDiffLine>();
+            var oursLines = new List<Models.ConflictLine>();
+            var theirsLines = new List<Models.ConflictLine>();
             int oursLineNumber = 1;
             int theirsLineNumber = 1;
             int i = 0;
@@ -225,8 +244,8 @@ namespace SourceGit.ViewModels
                         StartMarker = line,
                     };
 
-                    oursLines.Add(new Models.TextDiffLine());
-                    theirsLines.Add(new Models.TextDiffLine());
+                    oursLines.Add(new());
+                    theirsLines.Add(new());
                     i++;
 
                     // Collect ours content
@@ -234,7 +253,10 @@ namespace SourceGit.ViewModels
                            !lines[i].StartsWith("|||||||", StringComparison.Ordinal) &&
                            !lines[i].StartsWith("=======", StringComparison.Ordinal))
                     {
-                        region.OursContent.Add(lines[i]);
+                        line = lines[i];
+                        region.OursContent.Add(line);
+                        oursLines.Add(new(Models.ConflictLineType.Ours, line, oursLineNumber++));
+                        theirsLines.Add(new());
                         i++;
                     }
 
@@ -249,8 +271,8 @@ namespace SourceGit.ViewModels
                     // Capture separator marker
                     if (i < lines.Length && lines[i].StartsWith("=======", StringComparison.Ordinal))
                     {
-                        oursLines.Add(new Models.TextDiffLine());
-                        theirsLines.Add(new Models.TextDiffLine());
+                        oursLines.Add(new());
+                        theirsLines.Add(new());
                         region.SeparatorMarker = lines[i];
                         i++;
                     }
@@ -258,27 +280,18 @@ namespace SourceGit.ViewModels
                     // Collect theirs content
                     while (i < lines.Length && !lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
-                        region.TheirsContent.Add(lines[i]);
+                        line = lines[i];
+                        region.TheirsContent.Add(line);
+                        oursLines.Add(new());
+                        theirsLines.Add(new(Models.ConflictLineType.Theirs, line, theirsLineNumber++));
                         i++;
-                    }
-
-                    foreach (var mine in region.OursContent)
-                    {
-                        oursLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, mine, oursLineNumber++, 0));
-                        theirsLines.Add(new Models.TextDiffLine());
-                    }
-
-                    foreach (var theirs in region.TheirsContent)
-                    {
-                        oursLines.Add(new Models.TextDiffLine());
-                        theirsLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, theirs, 0, theirsLineNumber++));
                     }
 
                     // Capture end marker (e.g., ">>>>>>> feature-branch")
                     if (i < lines.Length && lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
-                        oursLines.Add(new Models.TextDiffLine());
-                        theirsLines.Add(new Models.TextDiffLine());
+                        oursLines.Add(new());
+                        theirsLines.Add(new());
 
                         region.EndMarker = lines[i];
                         region.EndLineInOriginal = i;
@@ -289,28 +302,27 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    oursLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line, oursLineNumber, oursLineNumber));
-                    theirsLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, line, theirsLineNumber, theirsLineNumber));
+                    oursLines.Add(new(Models.ConflictLineType.Common, line, oursLineNumber));
+                    theirsLines.Add(new(Models.ConflictLineType.Common, line, theirsLineNumber));
                     i++;
                     oursLineNumber++;
                     theirsLineNumber++;
                 }
             }
 
-            var maxLineNumber = Math.Max(oursLineNumber, theirsLineNumber);
-            DiffMaxLineNumber = maxLineNumber;
-            OursDiffLines = oursLines;
-            TheirsDiffLines = theirsLines;
+            MaxLineNumber = Math.Max(oursLineNumber, theirsLineNumber);
+            OursLines = oursLines;
+            TheirsLines = theirsLines;
         }
 
         private void RefreshDisplayData()
         {
-            var resultLines = new List<Models.TextDiffLine>();
+            var resultLines = new List<Models.ConflictLine>();
             _lineStates.Clear();
 
-            if (_oursDiffLines == null || _oursDiffLines.Count == 0)
+            if (_oursLines == null || _oursLines.Count == 0)
             {
-                ResultDiffLines = resultLines;
+                ResultLines = resultLines;
                 return;
             }
 
@@ -318,7 +330,7 @@ namespace SourceGit.ViewModels
             int currentLine = 0;
             int conflictIdx = 0;
 
-            while (currentLine < _oursDiffLines.Count)
+            while (currentLine < _oursLines.Count)
             {
                 // Check if we're at a conflict region
                 Models.ConflictRegion currentRegion = null;
@@ -343,14 +355,14 @@ namespace SourceGit.ViewModels
                             int mineCount = currentRegion.OursContent.Count;
                             for (int i = 0; i < mineCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, currentRegion.OursContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new(Models.ConflictLineType.Ours, currentRegion.OursContent[i], resultLineNumber));
                                 resultLineNumber++;
                             }
 
                             int theirsCount = currentRegion.TheirsContent.Count;
                             for (int i = 0; i < theirsCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, currentRegion.TheirsContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new(Models.ConflictLineType.Theirs, currentRegion.TheirsContent[i], resultLineNumber));
                                 resultLineNumber++;
                             }
                         }
@@ -359,14 +371,14 @@ namespace SourceGit.ViewModels
                             int theirsCount = currentRegion.TheirsContent.Count;
                             for (int i = 0; i < theirsCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, currentRegion.TheirsContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new(Models.ConflictLineType.Theirs, currentRegion.TheirsContent[i], resultLineNumber));
                                 resultLineNumber++;
                             }
 
                             int mineCount = currentRegion.OursContent.Count;
                             for (int i = 0; i < mineCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, currentRegion.OursContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new(Models.ConflictLineType.Ours, currentRegion.OursContent[i], resultLineNumber));
                                 resultLineNumber++;
                             }
                         }
@@ -375,7 +387,7 @@ namespace SourceGit.ViewModels
                             int mineCount = currentRegion.OursContent.Count;
                             for (int i = 0; i < mineCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, currentRegion.OursContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new(Models.ConflictLineType.Ours, currentRegion.OursContent[i], resultLineNumber));
                                 resultLineNumber++;
                             }
                         }
@@ -384,7 +396,7 @@ namespace SourceGit.ViewModels
                             int theirsCount = currentRegion.TheirsContent.Count;
                             for (int i = 0; i < theirsCount; i++)
                             {
-                                resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, currentRegion.TheirsContent[i], resultLineNumber, resultLineNumber));
+                                resultLines.Add(new(Models.ConflictLineType.Theirs, currentRegion.TheirsContent[i], resultLineNumber));
                                 resultLineNumber++;
                             }
                         }
@@ -393,7 +405,7 @@ namespace SourceGit.ViewModels
                         int added = resultLines.Count - oldLineCount;
                         int padding = regionLines - added;
                         for (int p = 0; p < padding; p++)
-                            resultLines.Add(new Models.TextDiffLine());
+                            resultLines.Add(new());
 
                         int blockSize = resultLines.Count - oldLineCount - 2;
                         _lineStates.Add(Models.ConflictLineState.ResolvedBlockStart);
@@ -403,31 +415,25 @@ namespace SourceGit.ViewModels
                     }
                     else
                     {
-                        // Unresolved - show conflict markers with content, aligned with Mine/Theirs
-                        // First line: start marker (use real marker from file)
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.StartMarker, 0, 0));
+                        resultLines.Add(new(Models.ConflictLineType.Marker, currentRegion.StartMarker));
                         _lineStates.Add(Models.ConflictLineState.ConflictBlockStart);
 
-                        // Mine content lines (matches the deleted lines in Ours panel)
                         foreach (var line in currentRegion.OursContent)
                         {
-                            resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line, 0, resultLineNumber++));
+                            resultLines.Add(new(Models.ConflictLineType.Ours, line, resultLineNumber++));
                             _lineStates.Add(Models.ConflictLineState.ConflictBlock);
                         }
 
-                        // Separator marker between Mine and Theirs
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.SeparatorMarker, 0, 0));
+                        resultLines.Add(new(Models.ConflictLineType.Marker, currentRegion.SeparatorMarker));
                         _lineStates.Add(Models.ConflictLineState.ConflictBlock);
 
-                        // Theirs content lines (matches the added lines in Theirs panel)
                         foreach (var line in currentRegion.TheirsContent)
                         {
-                            resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Added, line, 0, resultLineNumber++));
+                            resultLines.Add(new(Models.ConflictLineType.Theirs, line, resultLineNumber++));
                             _lineStates.Add(Models.ConflictLineState.ConflictBlock);
                         }
 
-                        // End marker (use real marker from file)
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Indicator, currentRegion.EndMarker, 0, 0));
+                        resultLines.Add(new(Models.ConflictLineType.Marker, currentRegion.EndMarker));
                         _lineStates.Add(Models.ConflictLineState.ConflictBlockEnd);
                     }
 
@@ -436,26 +442,16 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    // Normal line - copy from ours panel
-                    var oursLine = _oursDiffLines[currentLine];
-                    if (oursLine.Type == Models.TextDiffLineType.Normal)
-                    {
-                        resultLines.Add(new Models.TextDiffLine(Models.TextDiffLineType.Normal, oursLine.Content, resultLineNumber, resultLineNumber));
-                        resultLineNumber++;
-                    }
-                    else
-                    {
-                        // Empty placeholder line (shouldn't happen outside conflicts, but handle it)
-                        resultLines.Add(new Models.TextDiffLine());
-                    }
-
+                    var oursLine = _oursLines[currentLine];
+                    resultLines.Add(new(oursLine.Type, oursLine.Content, resultLineNumber));
                     _lineStates.Add(Models.ConflictLineState.Normal);
+                    resultLineNumber++;
                     currentLine++;
                 }
             }
 
             SelectedChunk = null;
-            ResultDiffLines = resultLines;
+            ResultLines = resultLines;
 
             var unsolved = new List<int>();
             for (var i = 0; i < _conflictRegions.Count; i++)
@@ -472,10 +468,10 @@ namespace SourceGit.ViewModels
         private readonly string _filePath;
         private string _originalContent = string.Empty;
         private int _unsolvedCount = 0;
-        private int _diffMaxLineNumber = 0;
-        private List<Models.TextDiffLine> _oursDiffLines = [];
-        private List<Models.TextDiffLine> _theirsDiffLines = [];
-        private List<Models.TextDiffLine> _resultDiffLines = [];
+        private int _maxLineNumber = 0;
+        private List<Models.ConflictLine> _oursLines = [];
+        private List<Models.ConflictLine> _theirsLines = [];
+        private List<Models.ConflictLine> _resultLines = [];
         private List<Models.ConflictRegion> _conflictRegions = [];
         private List<Models.ConflictLineState> _lineStates = [];
         private Vector _scrollOffset = Vector.Zero;
