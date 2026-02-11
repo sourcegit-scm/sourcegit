@@ -166,17 +166,17 @@ namespace SourceGit.Models
 
         public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", platformFinder, GenerateVSCodeLaunchOptions);
         }
 
         public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder, GenerateVSCodeLaunchOptions);
         }
 
         public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("VSCodium", "codium", platformFinder);
+            TryAdd("VSCodium", "codium", platformFinder, GenerateVSCodeLaunchOptions);
         }
 
         public void SublimeText(Func<string> platformFinder)
@@ -221,6 +221,32 @@ namespace SourceGit.Models
                     // Ignore exceptions.
                 }
             }
+        }
+
+        private List<ExternalTool.LaunchOption> GenerateVSCodeLaunchOptions(string path)
+        {
+            if (!Directory.Exists(path))
+                return null;
+
+            void Search(List<ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
+            {
+                if (depth < 0)
+                    return;
+
+                foreach (var file in dir.GetFiles())
+                {
+                    if (file.Name.EndsWith(".code-workspace", StringComparison.OrdinalIgnoreCase))
+                        opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
+                }
+
+                foreach (var subDir in dir.GetDirectories())
+                    Search(opts, subDir, root, depth - 1);
+            }
+
+            var rootDir = new DirectoryInfo(path);
+            var options = new List<ExternalTool.LaunchOption>();
+            Search(options, rootDir, rootDir.FullName, 4);
+            return options;
         }
 
         private ExternalToolCustomization _customization = null;
