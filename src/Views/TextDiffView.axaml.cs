@@ -35,7 +35,7 @@ namespace SourceGit.Views
                 if (presenter != null)
                 {
                     var pen = new Pen(presenter.LineBrush);
-                    context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
+                    context.DrawLine(pen, new Point(0.5, 0), new Point(0.5, Bounds.Height));
                 }
             }
 
@@ -96,23 +96,6 @@ namespace SourceGit.Views
                         context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - (txt.Height * 0.5)));
                     }
                 }
-            }
-
-            protected override Size MeasureOverride(Size availableSize)
-            {
-                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
-                if (presenter is not { DataContext: ViewModels.TextDiffContext ctx })
-                    return new Size(32, 0);
-
-                var typeface = TextView.CreateTypeface();
-                var test = new FormattedText(
-                    $"{ctx.Data.MaxLineNumber}",
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    presenter.FontSize,
-                    Brushes.White);
-                return new Size(test.Width, 0);
             }
 
             private readonly bool _usePresenter;
@@ -588,10 +571,26 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
 
-            foreach (var margin in TextArea.LeftMargins)
+            if (DataContext is ViewModels.TextDiffContext ctx)
             {
-                if (margin is LineNumberMargin)
-                    margin.InvalidateMeasure();
+                var typeface = new Typeface(FontFamily);
+                var test = new FormattedText(
+                    $"{ctx.Data.MaxLineNumber}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    FontSize,
+                    Brushes.White);
+
+                var width = test.WidthIncludingTrailingWhitespace;
+                foreach (var margin in TextArea.LeftMargins)
+                {
+                    if (margin is LineNumberMargin lineNumberMargin)
+                        margin.Width = width;
+                }
+
+                var dock = TextArea.FindDescendantOfType<DockPanel>();
+                dock?.InvalidateArrange();
             }
 
             AutoScrollToFirstChange();
