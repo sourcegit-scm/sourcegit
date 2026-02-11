@@ -225,27 +225,16 @@ namespace SourceGit.Models
 
         private List<ExternalTool.LaunchOption> GenerateVSCodeLaunchOptions(string path)
         {
-            if (!Directory.Exists(path))
+            var root = new DirectoryInfo(path);
+            if (!root.Exists)
                 return null;
 
-            void Search(List<ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
-            {
-                if (depth < 0)
-                    return;
-
-                foreach (var file in dir.GetFiles())
-                {
-                    if (file.Name.EndsWith(".code-workspace", StringComparison.OrdinalIgnoreCase))
-                        opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
-                }
-
-                foreach (var subDir in dir.GetDirectories())
-                    Search(opts, subDir, root, depth - 1);
-            }
-
-            var rootDir = new DirectoryInfo(path);
             var options = new List<ExternalTool.LaunchOption>();
-            Search(options, rootDir, rootDir.FullName, 4);
+            root.WalkFiles(f =>
+            {
+                if (f.EndsWith(".code-workspace", StringComparison.OrdinalIgnoreCase))
+                    options.Add(new(root.GetRelativePath(f), f.Quoted()));
+            });
             return options;
         }
 
