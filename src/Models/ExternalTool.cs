@@ -234,7 +234,7 @@ namespace SourceGit.Models
             {
                 if (f.EndsWith(".code-workspace", StringComparison.OrdinalIgnoreCase))
                     options.Add(new(root.GetRelativePath(f), f.Quoted()));
-            });
+            }, 2);
             return options;
         }
 
