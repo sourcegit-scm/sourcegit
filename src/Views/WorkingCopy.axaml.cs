@@ -271,7 +271,7 @@ namespace SourceGit.Views
                     diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                     diffWithMerger.Click += (_, ev) =>
                     {
-                        vm.UseExternalDiffTool(change, false);
+                        vm.UseExternalDiffTool(change, true);
                         ev.Handled = true;
                     };
 
