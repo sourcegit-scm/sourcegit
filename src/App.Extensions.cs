@@ -29,13 +29,32 @@ namespace SourceGit
     {
         public static void WalkFiles(this DirectoryInfo dir, Action<string> onFile, int maxDepth = 4)
         {
-            foreach (var file in dir.GetFiles())
-                onFile(file.FullName);
-
-            if (maxDepth > 0)
+            try
             {
-                foreach (var subDir in dir.GetDirectories())
-                    WalkFiles(subDir, onFile, maxDepth - 1);
+                var options = new EnumerationOptions()
+                {
+                    IgnoreInaccessible = true,
+                    RecurseSubdirectories = false,
+                };
+
+                foreach (var file in dir.GetFiles("*", options))
+                    onFile(file.FullName);
+
+                if (maxDepth > 0)
+                {
+                    foreach (var subDir in dir.GetDirectories("*", options))
+                    {
+                        if (subDir.Name.StartsWith(".", StringComparison.Ordinal) ||
+                            subDir.Name.Equals("node_modules", StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        WalkFiles(subDir, onFile, maxDepth - 1);
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore exceptions.
             }
         }
 
