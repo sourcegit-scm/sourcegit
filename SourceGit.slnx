@@ -51,6 +51,11 @@
 		<File Path="build/README.md"/>
 	</Folder>
 
+	<Folder Name="/depends/">
+		<Project Path="depends/AvaloniaEdit/src/AvaloniaEdit/AvaloniaEdit.csproj" />
+		<Project Path="depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
+	</Folder>
+
 	<Folder Name="/src/">
 		<Project Path="src/SourceGit.csproj" />
 	</Folder>
