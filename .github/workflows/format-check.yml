@@ -21,4 +21,4 @@ jobs:
           dotnet-version: 10.0.x
 
       - name: Run formatting check
-        run: dotnet format --verify-no-changes
+        run: dotnet format --verify-no-changes src/SourceGit.csproj
