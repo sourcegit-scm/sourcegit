@@ -1766,7 +1766,14 @@ namespace SourceGit.ViewModels
 
         private void AutoFetchByTimer(object sender)
         {
-            Dispatcher.UIThread.Invoke(AutoFetchOnUIThread);
+            try
+            {
+                Dispatcher.UIThread.Invoke(AutoFetchOnUIThread);
+            }
+            catch
+            {
+                // Ignore exception.
+            }
         }
 
         private async Task AutoFetchOnUIThread()
