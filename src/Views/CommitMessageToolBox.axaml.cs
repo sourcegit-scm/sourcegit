@@ -104,8 +104,10 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ClipToBounds = true;
 
             TextArea.TextView.Margin = new Thickness(4, 2);
+            TextArea.TextView.ClipToBounds = false;
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
             TextArea.TextView.Options.AllowScrollBelowDocument = false;
