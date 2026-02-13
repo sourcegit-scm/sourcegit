@@ -309,7 +309,7 @@ namespace SourceGit.Views
                 if (_completionWnd == null)
                 {
                     _completionWnd = new CompletionWindow(TextArea);
-                    _completionWnd.Closed += (_, __) => _completionWnd = null;
+                    _completionWnd.Closed += (_, _) => _completionWnd = null;
                     _completionWnd.Show();
                 }
 
@@ -373,8 +373,7 @@ namespace SourceGit.Views
 
         private void OnCaretPositionChanged(object sender, EventArgs e)
         {
-            var line = TextArea.Document.GetLineByOffset(CaretOffset);
-            var col = line != null ? (CaretOffset - line.Offset + 1) : 1;
+            var col = TextArea.Caret.Column;
             SetCurrentValue(ColumnProperty, col);
         }
 
