@@ -387,7 +387,18 @@ namespace SourceGit
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow?.Close();
+                // IMPORTANT (especially on macOS):
+                // App shutdown must go through a single path only.
+                //
+                // The launcher runs with `ShutdownMode.OnMainWindowClose`, so calling
+                // `MainWindow.Close()` already starts the application shutdown sequence.
+                // If we then also call `desktop.Shutdown(...)`, we re-enter teardown
+                // from a second path while native resources (AppKit/Avalonia dispatcher)
+                // are already being finalized.
+                //
+                // In practice this has caused terminate/exit-time crashes on macOS
+                // (SIGABRT around NSApplication terminate + dispatcher cleanup).
+                // Therefore, `Quit()` must call only `desktop.Shutdown(exitCode)`.
                 desktop.Shutdown(exitCode);
             }
             else
