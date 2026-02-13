@@ -40,6 +40,8 @@ jobs:
           sudo apt-get install -y curl wget git unzip zip libicu66 tzdata clang
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:

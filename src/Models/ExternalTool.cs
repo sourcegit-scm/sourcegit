@@ -166,17 +166,17 @@ namespace SourceGit.Models
 
         public void VSCode(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code", "vscode", platformFinder);
+            TryAdd("Visual Studio Code", "vscode", platformFinder, GenerateVSCodeLaunchOptions);
         }
 
         public void VSCodeInsiders(Func<string> platformFinder)
         {
-            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder);
+            TryAdd("Visual Studio Code - Insiders", "vscode_insiders", platformFinder, GenerateVSCodeLaunchOptions);
         }
 
         public void VSCodium(Func<string> platformFinder)
         {
-            TryAdd("VSCodium", "codium", platformFinder);
+            TryAdd("VSCodium", "codium", platformFinder, GenerateVSCodeLaunchOptions);
         }
 
         public void SublimeText(Func<string> platformFinder)
@@ -221,6 +221,21 @@ namespace SourceGit.Models
                     // Ignore exceptions.
                 }
             }
+        }
+
+        private List<ExternalTool.LaunchOption> GenerateVSCodeLaunchOptions(string path)
+        {
+            var root = new DirectoryInfo(path);
+            if (!root.Exists)
+                return null;
+
+            var options = new List<ExternalTool.LaunchOption>();
+            root.WalkFiles(f =>
+            {
+                if (f.EndsWith(".code-workspace", StringComparison.OrdinalIgnoreCase))
+                    options.Add(new(root.GetRelativePath(f), f.Quoted()));
+            }, 2);
+            return options;
         }
 
         private ExternalToolCustomization _customization = null;

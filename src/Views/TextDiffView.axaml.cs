@@ -35,7 +35,7 @@ namespace SourceGit.Views
                 if (presenter != null)
                 {
                     var pen = new Pen(presenter.LineBrush);
-                    context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
+                    context.DrawLine(pen, new Point(0.5, 0), new Point(0.5, Bounds.Height));
                 }
             }
 
@@ -96,23 +96,6 @@ namespace SourceGit.Views
                         context.DrawText(txt, new Point(Bounds.Width - txt.Width, y - (txt.Height * 0.5)));
                     }
                 }
-            }
-
-            protected override Size MeasureOverride(Size availableSize)
-            {
-                var presenter = this.FindAncestorOfType<ThemedTextDiffPresenter>();
-                if (presenter is not { DataContext: ViewModels.TextDiffContext ctx })
-                    return new Size(32, 0);
-
-                var typeface = TextView.CreateTypeface();
-                var test = new FormattedText(
-                    $"{ctx.Data.MaxLineNumber}",
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    presenter.FontSize,
-                    Brushes.White);
-                return new Size(test.Width, 0);
             }
 
             private readonly bool _usePresenter;
@@ -216,8 +199,7 @@ namespace SourceGit.Views
                     return;
 
                 var changeBlock = _presenter.BlockNavigation.GetCurrentBlock();
-                var changeBlockBG = new SolidColorBrush(Colors.Gray, 0.25);
-                var changeBlockFG = new Pen(Brushes.Gray);
+                var changeBlockBorder = new Pen(_presenter.BlockBorderHighlightBrush);
 
                 var lines = _presenter.GetLines();
                 var width = textView.Bounds.Width;
@@ -279,14 +261,14 @@ namespace SourceGit.Views
                         }
                     }
 
-                    if (changeBlock != null && changeBlock.Contains(index))
-                    {
-                        drawingContext.DrawRectangle(changeBlockBG, null, new Rect(0, startY, width, endY - startY));
-                        if (index == changeBlock.Start)
-                            drawingContext.DrawLine(changeBlockFG, new Point(0, startY), new Point(width, startY));
-                        if (index == changeBlock.End)
-                            drawingContext.DrawLine(changeBlockFG, new Point(0, endY), new Point(width, endY));
-                    }
+                    if (changeBlock == null)
+                        continue;
+
+                    if (index == changeBlock.Start)
+                        drawingContext.DrawLine(changeBlockBorder, new Point(0, startY), new Point(width, startY));
+
+                    if (index == changeBlock.End)
+                        drawingContext.DrawLine(changeBlockBorder, new Point(0, endY), new Point(width, endY));
                 }
             }
 
@@ -404,6 +386,15 @@ namespace SourceGit.Views
         {
             get => GetValue(IndicatorForegroundProperty);
             set => SetValue(IndicatorForegroundProperty, value);
+        }
+
+        public static readonly StyledProperty<IBrush> BlockBorderHighlightBrushProperty =
+            AvaloniaProperty.Register<ThemedTextDiffPresenter, IBrush>(nameof(BlockBorderHighlightBrush), Brushes.Gray);
+
+        public IBrush BlockBorderHighlightBrush
+        {
+            get => GetValue(BlockBorderHighlightBrushProperty);
+            set => SetValue(BlockBorderHighlightBrushProperty, value);
         }
 
         public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
@@ -580,10 +571,26 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
 
-            foreach (var margin in TextArea.LeftMargins)
+            if (DataContext is ViewModels.TextDiffContext ctx)
             {
-                if (margin is LineNumberMargin)
-                    margin.InvalidateMeasure();
+                var typeface = new Typeface(FontFamily);
+                var test = new FormattedText(
+                    $"{ctx.Data.MaxLineNumber}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    FontSize,
+                    Brushes.White);
+
+                var width = test.WidthIncludingTrailingWhitespace;
+                foreach (var margin in TextArea.LeftMargins)
+                {
+                    if (margin is LineNumberMargin lineNumberMargin)
+                        margin.Width = width;
+                }
+
+                var dock = TextArea.FindDescendantOfType<DockPanel>();
+                dock?.InvalidateArrange();
             }
 
             AutoScrollToFirstChange();
@@ -1442,7 +1449,7 @@ namespace SourceGit.Views
             {
                 if (SelectedChunk is { } chunk)
                 {
-                    var top = chunk.Y + (chunk.Height >= 36 ? 8 : 2);
+                    var top = chunk.Y + 4;
                     var right = (chunk.Combined || !chunk.IsOldSide) ? 26 : (Bounds.Width * 0.5f) + 26;
                     Popup.Margin = new Thickness(0, top, right, 0);
                     Popup.IsVisible = true;

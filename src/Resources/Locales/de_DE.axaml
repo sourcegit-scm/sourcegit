@@ -99,6 +99,7 @@
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generiere Commit-Nachricht</x:String>
   <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">Merge (integriert)</x:String>
   <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">Merge (extern)</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">Datei(en) auf ${0}$ zurücksetzen</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ANZEIGEMODUS ÄNDERN</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Zeige als Datei- und Ordnerliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Zeige als Pfadliste</x:String>
@@ -470,13 +471,16 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Verfolge alle ‚{0}‘ Dateien</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Verfolge alle *{0} Dateien</x:String>
+  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">Vorgänger auswählen</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">VERLAUF</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTOR-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
+  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">VERLAUF &amp; COMMIT-NACHRICHT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS AUSGEWÄHLT</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SPALTEN ANZEIGEN</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Halte ‚Strg‘ oder ‚Umschalt‘, um mehrere Commits auszuwählen.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Halte ⌘ oder ⇧, um mehrere Commits auszuwählen</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">TIPPS:</x:String>
@@ -497,6 +501,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard-Modus (Standard)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Springe zum Vorgänger des ausgewählten Commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Befehlspalette öffnen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit-Suchmodus</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, wird direkt ausgeführt</x:String>
@@ -814,9 +819,11 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Anderes benutzerdefiniertes Verzeichnis durchsuchen</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Suche nach Aktualisierungen…</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Eine neue Version dieses Programms ist verfügbar: </x:String>
+  <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Derzeitige Version: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Suche nach Aktualisierungen fehlgeschlagen!</x:String>
   <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Herunterladen</x:String>
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Diese Version überspringen</x:String>
+  <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">Veröffentlichungsdatum neue Version: </x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software-Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Momentan sind keine Aktualisierungen verfügbar.</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Branch des Submoduls setzen</x:String>
@@ -920,7 +927,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Öffne Terminal</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Standard Klon-Ordner erneut nach Repositorys durchsuchen</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Suche Repositorys…</x:String>
-  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Änderungen</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignoriere alle *{0} Dateien</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignoriere *{0} Dateien im selben Ordner</x:String>

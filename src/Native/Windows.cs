@@ -458,32 +458,18 @@ namespace SourceGit.Native
 
         private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
-            if (Directory.Exists(path))
+            var root = new DirectoryInfo(path);
+            if (!root.Exists)
+                return null;
+
+            var options = new List<Models.ExternalTool.LaunchOption>();
+            root.WalkFiles(f =>
             {
-                void Search(List<Models.ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
-                {
-                    if (depth < 0)
-                        return;
-
-                    foreach (var file in dir.GetFiles())
-                    {
-                        if (file.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
-                            file.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
-                            opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
-                    }
-
-                    foreach (var subDir in dir.GetDirectories())
-                        Search(opts, subDir, root, depth - 1);
-                }
-
-                var rootDir = new DirectoryInfo(path);
-                var options = new List<Models.ExternalTool.LaunchOption>();
-                Search(options, rootDir, rootDir.FullName, 4);
-                if (options.Count > 0)
-                    return options;
-            }
-
-            return null;
+                if (f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                    options.Add(new(root.GetRelativePath(f), f.Quoted()));
+            });
+            return options;
         }
     }
 }

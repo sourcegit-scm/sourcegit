@@ -44,11 +44,16 @@
 		<File Path="build/scripts/localization-check.js"/>
 		<File Path="build/scripts/package.linux.sh"/>
 		<File Path="build/scripts/package.osx-app.sh"/>
-		<File Path="build/scripts/package.windows.sh"/>
+		<File Path="build/scripts/package.win.ps1"/>
 	</Folder>
 
 	<Folder Name="/build/">
 		<File Path="build/README.md"/>
+	</Folder>
+
+	<Folder Name="/depends/">
+		<Project Path="depends/AvaloniaEdit/src/AvaloniaEdit/AvaloniaEdit.csproj" />
+		<Project Path="depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
 	</Folder>
 
 	<Folder Name="/src/">

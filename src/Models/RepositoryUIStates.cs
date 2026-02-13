@@ -57,11 +57,23 @@ namespace SourceGit.Models
             set;
         } = BranchSortMode.Name;
 
+        public bool ShowTagsAsTree
+        {
+            get;
+            set;
+        } = false;
+
         public TagSortMode TagSortMode
         {
             get;
             set;
         } = TagSortMode.CreatorDate;
+
+        public bool ShowSubmodulesAsTree
+        {
+            get;
+            set;
+        } = false;
 
         public bool IncludeUntrackedInLocalChanges
         {

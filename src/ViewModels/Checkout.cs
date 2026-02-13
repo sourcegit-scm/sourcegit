@@ -22,6 +22,11 @@ namespace SourceGit.ViewModels
             DiscardLocalChanges = false;
         }
 
+        public override bool CanStartDirectly()
+        {
+            return _repo.LocalChangesCount == 0;
+        }
+
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();

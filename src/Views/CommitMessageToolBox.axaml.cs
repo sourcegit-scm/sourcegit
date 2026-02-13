@@ -78,12 +78,30 @@ namespace SourceGit.Views
         }
 
         public static readonly StyledProperty<int> SubjectLengthProperty =
-            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength), 0);
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength));
 
         public int SubjectLength
         {
             get => GetValue(SubjectLengthProperty);
             set => SetValue(SubjectLengthProperty, value);
+        }
+
+        public static readonly StyledProperty<int> SubjectGuideLengthProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectGuideLength));
+
+        public int SubjectGuideLength
+        {
+            get => GetValue(SubjectGuideLengthProperty);
+            set => SetValue(SubjectGuideLengthProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> IsSubjectWarningIconVisibleProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, bool>(nameof(IsSubjectWarningIconVisible));
+
+        public bool IsSubjectWarningIconVisible
+        {
+            get => GetValue(IsSubjectWarningIconVisibleProperty);
+            set => SetValue(IsSubjectWarningIconVisibleProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> SubjectLineBrushProperty =
@@ -104,8 +122,10 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ClipToBounds = true;
 
             TextArea.TextView.Margin = new Thickness(4, 2);
+            TextArea.TextView.ClipToBounds = false;
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
             TextArea.TextView.Options.AllowScrollBelowDocument = false;
@@ -228,6 +248,11 @@ namespace SourceGit.Views
                 if (string.IsNullOrWhiteSpace(CommitMessage))
                     InvalidateVisual();
             }
+            else if (change.Property == SubjectLengthProperty ||
+                     change.Property == SubjectGuideLengthProperty)
+            {
+                SetCurrentValue(IsSubjectWarningIconVisibleProperty, SubjectLength > SubjectGuideLength);
+            }
         }
 
         protected override void OnTextChanged(EventArgs e)
@@ -272,7 +297,7 @@ namespace SourceGit.Views
                 if (_completionWnd == null)
                 {
                     _completionWnd = new CompletionWindow(TextArea);
-                    _completionWnd.Closed += (_, ev) => _completionWnd = null;
+                    _completionWnd.Closed += (_, __) => _completionWnd = null;
                     _completionWnd.Show();
                 }
 
@@ -296,7 +321,7 @@ namespace SourceGit.Views
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.IsEnabled = hasSelected;
-            copy.Click += (o, ev) =>
+            copy.Click += (_, ev) =>
             {
                 Copy();
                 ev.Handled = true;
@@ -306,7 +331,7 @@ namespace SourceGit.Views
             cut.Header = App.Text("Cut");
             cut.Icon = App.CreateMenuIcon("Icons.Cut");
             cut.IsEnabled = hasSelected;
-            cut.Click += (o, ev) =>
+            cut.Click += (_, ev) =>
             {
                 Cut();
                 ev.Handled = true;
@@ -315,7 +340,7 @@ namespace SourceGit.Views
             var paste = new MenuItem();
             paste.Header = App.Text("Paste");
             paste.Icon = App.CreateMenuIcon("Icons.Paste");
-            paste.Click += (o, ev) =>
+            paste.Click += (_, ev) =>
             {
                 Paste();
                 ev.Handled = true;
@@ -493,7 +518,7 @@ namespace SourceGit.Views
 
                 button.IsEnabled = false;
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu.Closed += (o, ev) => button.IsEnabled = true;
+                menu.Closed += (_, _) => button.IsEnabled = true;
                 menu.Open(button);
             }
 
@@ -542,7 +567,7 @@ namespace SourceGit.Views
 
                 button.IsEnabled = false;
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu.Closed += (o, ev) => button.IsEnabled = true;
+                menu.Closed += (_, _) => button.IsEnabled = true;
                 menu.Open(button);
             }
 

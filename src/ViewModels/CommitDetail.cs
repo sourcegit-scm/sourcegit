@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -316,13 +316,13 @@ namespace SourceGit.ViewModels
 
                 await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .FileWithRevisionAsync(change.OriginalPath, _commit.SHA);
+                    .FileWithRevisionAsync(change.OriginalPath, $"{_commit.SHA}~1");
             }
             else
             {
                 await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .FileWithRevisionAsync(change.Path, _commit.SHA);
+                    .FileWithRevisionAsync(change.Path, $"{_commit.SHA}~1");
             }
 
             log.Complete();
