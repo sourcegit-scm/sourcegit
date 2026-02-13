@@ -35,7 +35,7 @@
               Background="{DynamicResource Brush.Window}"
               BorderThickness="0"
               CornerRadius="0,0,4,4">
-        <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="0,4">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,*" >
           <Button Grid.Column="0"
                   Classes="icon_button"
                   Width="28"
@@ -67,9 +67,28 @@
 
           <StackPanel Grid.Column="3"
                       Margin="0,0,6,0"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Center"
+                      HorizontalAlignment="Right" VerticalAlignment="Stretch"
                       Orientation="Horizontal">
+            <Rectangle Width="1"
+                       Margin="8,0"
+                       Fill="{DynamicResource Brush.Border2}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Stretch"/>
+
+            <TextBlock Classes="info_label"
+                       FontSize="13"
+                       HorizontalAlignment="Left"
+                       Text="{DynamicResource Text.CommitMessageTextBox.Column}"/>
+            <TextBlock Margin="8,0,0,0"
+                       FontSize="11"
+                       Text="{Binding #Editor.Column, Mode=OneWay}"/>
+            
+            <Rectangle Width="1"
+                       Margin="8,0"
+                       Fill="{DynamicResource Brush.Border2}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Stretch"/>
+            
             <TextBlock Classes="info_label"
                        FontSize="13"
                        HorizontalAlignment="Left"

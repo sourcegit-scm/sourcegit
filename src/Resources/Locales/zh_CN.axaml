@@ -190,6 +190,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">签名者 ：</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">浏览器中查看</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">列</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">请输入提交的信息。注意：主题与具体描述中间需要空白行分隔！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比较</x:String>
