@@ -136,6 +136,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var w = Bounds.Width;
+            var pixelHeight = PixelSnapHelpers.GetPixelSize(this).Height;
             var pen = new Pen(SubjectLineBrush) { DashStyle = DashStyle.Dash };
 
             if (SubjectLength == 0)
@@ -153,7 +154,7 @@ namespace SourceGit.Views
 
                     context.DrawText(formatted, new Point(4, 2));
 
-                    var y = 6 + formatted.Height;
+                    var y = PixelSnapHelpers.PixelAlign(6 + formatted.Height, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
                 }
 
@@ -183,6 +184,7 @@ namespace SourceGit.Views
                 if (line.FirstDocumentLine.LineNumber == _subjectEndLine)
                 {
                     var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
+                    y = PixelSnapHelpers.PixelAlign(y, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
                     return;
                 }

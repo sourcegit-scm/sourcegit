@@ -245,7 +245,7 @@ namespace SourceGit.Views
             public override void Render(DrawingContext context)
             {
                 var pen = new Pen(_editor.BorderBrush);
-                context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
+                context.DrawLine(pen, new Point(0.5, 0), new Point(0.5, Bounds.Height));
             }
 
             protected override Size MeasureOverride(Size availableSize)
