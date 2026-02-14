@@ -74,6 +74,7 @@
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Avanzamento Veloce a ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Recupera ${0}$ in ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Completa ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.InteractiveRebase.Manually" xml:space="preserve">Ribasare interattivamente ${0}$ su ${1}$</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Unisci ${0}$ in ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Unisci i {0} branch selezionati in quello corrente</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Scarica ${0}$</x:String>

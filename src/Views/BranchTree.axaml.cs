@@ -797,9 +797,21 @@ namespace SourceGit.Views
                             repo.ShowPopup(new ViewModels.Rebase(repo, current, branch));
                         e.Handled = true;
                     };
+                    
+                    var interactiveRebase = new MenuItem();
+                    interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, branch.Name);
+                    interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                    interactiveRebase.Click += async (_, e) =>
+                    {
+                        var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
+                        await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                        e.Handled = true;
+                    };
 
                     menu.Items.Add(merge);
                     menu.Items.Add(rebase);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(interactiveRebase);
                 }
 
                 if (hasNoWorktree)
@@ -1117,6 +1129,16 @@ namespace SourceGit.Views
                         repo.ShowPopup(new ViewModels.Rebase(repo, current, branch));
                     e.Handled = true;
                 };
+                
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, name);
+                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.Click += async (_, e) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
+                    await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                    e.Handled = true;
+                };
 
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
@@ -1139,6 +1161,8 @@ namespace SourceGit.Views
                 menu.Items.Add(pull);
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(interactiveRebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithHead);
                 menu.Items.Add(compareWith);
