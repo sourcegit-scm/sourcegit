@@ -99,6 +99,7 @@
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Generar mensaje de commit</x:String>
   <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">Merge (Incorporado)</x:String>
   <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">Merge (Externa)</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">Resetear Archivo(s) a ${0}$</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">CAMBIAR MODO DE VISUALIZACIÓN</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Mostrar como Lista de Archivos y Directorios</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Mostrar como Lista de Rutas</x:String>
@@ -189,14 +190,15 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Firmante:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Abrir en Navegador</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">COL</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Ingresa el mensaje de commit. ¡Por favor usa una línea en blanco para separar el título y la descripción!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">ASUNTO</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Comparar</x:String>
   <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">Comparar con HEAD</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Configurar Repositorio</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">PLANTILLA DE COMMIT</x:String>
-  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Parámetros incorporados: 
-  
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Parámetros incorporados:
+
   ${branch_name} Nombre de la rama local actual.
   ${files_num} Número de archivos modificados
   ${files} Rutas de archivos modificados
@@ -207,8 +209,8 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nombre de la Plantilla:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ACCIÓN PERSONALIZADA</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Argumentos:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Parámetros incorporados: 
-  
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Parámetros incorporados:
+
   ${REPO} Ruta del repositorio
   ${REMOTE} Remoto seleccionado o Remoto de la rama seleccionada
   ${BRANCH} Rama seleccionada, sin la parte ${REMOTE} para ramas remotas
@@ -470,13 +472,16 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Seguir archivos llamados '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Seguir todos los archivos *{0}</x:String>
+  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">Seleccionar Padre</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Historias</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HORA DEL AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">FECHA DE COMMIT</x:String>
+  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">FECHA HORA</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO &amp; ASUNTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SELECCIONADOS</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">MOSTRAR COLUMNAS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Mantén 'Ctrl' o 'Shift' para seleccionar múltiples commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Mantén ⌘ o ⇧ para seleccionar múltiples commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">CONSEJOS:</x:String>
@@ -497,6 +502,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage todos los cambios y commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modo Dashboard (Por Defecto)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Ir al padre del commit seleccionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Abrir paleta de comandos</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Modo de búsqueda de commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, empieza directamente</x:String>
@@ -814,9 +820,11 @@
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Escanear otro directorio personalizado</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Buscar Actualizaciones...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Nueva versión de este software disponible: </x:String>
+  <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Versión Actual: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">¡Error al buscar actualizaciones!</x:String>
   <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Descargar</x:String>
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Omitir Esta Versión</x:String>
+  <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">Fecha de Release de la Nueva Versión: </x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Actualización de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Actualmente no hay actualizaciones disponibles.</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Establecer Rama del Submódulo</x:String>
