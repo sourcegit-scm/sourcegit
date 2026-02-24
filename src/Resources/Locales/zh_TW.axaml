@@ -116,7 +116,7 @@
   <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您目前的分離的 HEAD 包含與任何分支/標籤無關的提交! 您要繼續嗎?</x:String>
-  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模組需要更新:{0}您想立即更新它們嗎？</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模組需要更新: {0}，您要立即更新嗎?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">簽出分支並快轉</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支: </x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
@@ -190,7 +190,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">列</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">欄</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息，標題與詳細描述之間請使用單行空白區隔。</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
@@ -234,7 +234,7 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">電子郵件</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">電子郵件地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git 設定</x:String>
-  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">在自動更新子模組之前詢問用戶</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">在自動更新子模組之前先詢問</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">自訂約定式提交類型</x:String>
@@ -548,22 +548,22 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目標分支:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合併來源:</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">先應用 MINE，再應用 THEIRS</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">先應用 THEIRS，再應用 MINE</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">應用兩側</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">先套用我方版本 (ours)，再套用對方版本 (theirs)</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">先套用對方版本 (theirs)，再套用我方版本 (ours)</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">套用兩者</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">所有衝突已經解決</x:String>
   <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} 個衝突尚未解決</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">我方版本 (ours)</x:String>
   <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">下一個衝突</x:String>
   <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">上一個衝突</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">合併结果</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">保存並暫存</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">THEIRS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">合併結果</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">儲存並暫存</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">對方版本 (theirs)</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">解決衝突</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">放棄所有更改?</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">僅應用 MINE</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">僅應用 THEIRS</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">撤銷更改</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">捨棄未儲存的變更?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">僅套用我方版本 (ours)</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">僅套用對方版本 (theirs)</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">復原變更</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">合併 (多個來源)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">提交變更</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">合併策略:</x:String>
@@ -574,7 +574,7 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">調整存放庫分組</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">請選擇目標分組:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">名稱:</x:String>
-  <x:String x:Key="Text.No" xml:space="preserve">不，謝謝</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">否</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">尚未設定 Git。請開啟 [偏好設定] 以設定 Git 路徑。</x:String>
   <x:String x:Key="Text.Open" xml:space="preserve">開啟</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系統預設編輯器</x:String>
@@ -626,9 +626,9 @@
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">對比/合併工具</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">對比命令參數</x:String>
-  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">可用參數：$LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">可用參數: $LOCAL, $REMOTE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">合併命令參數</x:String>
-  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">可用參數：$BASE, $LOCAL, $REMOTE, $MERGED</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">可用參數: $BASE, $LOCAL, $REMOTE, $MERGED</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">安裝路徑</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">填寫可執行檔案所在路徑</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">工具</x:String>
@@ -761,7 +761,7 @@
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新增分支</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">清除所有通知</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">路線圖中僅對目前分支上色</x:String>
-  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">此存放庫（資料夾）</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">此存放庫 (資料夾)</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">在 {0} 中開啟</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具開啟</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">遠端列表</x:String>
@@ -975,5 +975,5 @@
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">開啟工作區</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作區</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除鎖定工作區</x:String>
-  <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">是</x:String>
 </ResourceDictionary>
