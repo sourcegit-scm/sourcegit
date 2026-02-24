@@ -120,7 +120,8 @@ namespace SourceGit.Views
             var typeface = new Typeface(FontFamily);
             var test = new FormattedText("fgl|", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, FontSize, Brushes.White);
             var h = Math.Max(18, test.Height);
-            return new Size(availableSize.Width, h);
+            var w = double.IsInfinity(availableSize.Width) ? 0 : availableSize.Width;
+            return new Size(w, h);
         }
 
         [GeneratedRegex(@"^On ([^\s]+)\: ")]
