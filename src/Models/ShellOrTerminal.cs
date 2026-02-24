@@ -60,6 +60,7 @@ namespace SourceGit.Models
                     new ShellOrTerminal("foot", "Foot", "foot"),
                     new ShellOrTerminal("wezterm", "WezTerm", "wezterm", "start --cwd ."),
                     new ShellOrTerminal("ptyxis", "Ptyxis", "ptyxis", "--new-window --working-directory=."),
+                    new ShellOrTerminal("ghostty", "Ghostty", "ghostty"),
                     new ShellOrTerminal("kitty", "kitty", "kitty"),
                     new ShellOrTerminal("custom", "Custom", ""),
                 };
