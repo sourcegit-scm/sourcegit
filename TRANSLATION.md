@@ -6,18 +6,28 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.90%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.69%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.CommitMessageTextBox.Column
+- Text.GotoRevisionSelector
+- Text.Hotkeys.Repo.GoToChild
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.79%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-93.52%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.GotoRevisionSelector
+- Text.Hotkeys.Repo.GoToChild
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-93.42%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -39,11 +49,12 @@ This document shows the translation status of each locale file in the repository
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
@@ -87,7 +98,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-91.43%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-91.34%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -122,11 +133,12 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
@@ -177,23 +189,24 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-99.16%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-99.06%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
 - Text.ChangeCM.ResetFileTo
 - Text.CommitMessageTextBox.Column
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-71.68%25-red)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-71.61%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -329,12 +342,13 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -472,7 +486,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-91.75%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-91.65%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -502,11 +516,12 @@ This document shows the translation status of each locale file in the repository
 - Text.FileCM.CustomAction
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Launcher.Commands
@@ -559,7 +574,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-69.49%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-69.42%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -683,13 +698,14 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.Clone
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -859,9 +875,17 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.79%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-71.79%25-red)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.GotoRevisionSelector
+- Text.Hotkeys.Repo.GoToChild
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-71.71%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -997,12 +1021,13 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
@@ -1139,7 +1164,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-72.62%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-72.55%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1271,12 +1296,13 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
-- Text.GotoParentSelector
+- Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
