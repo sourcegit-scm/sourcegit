@@ -27,7 +27,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-93.42%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-93.43%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -98,7 +98,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-91.34%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-91.35%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -206,7 +206,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-71.61%25-red)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-71.53%25-red)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -487,7 +487,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-91.65%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-91.66%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -575,7 +575,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-69.42%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-69.34%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -887,7 +887,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-71.71%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-71.64%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1167,7 +1167,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-72.55%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-72.47%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
