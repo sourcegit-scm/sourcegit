@@ -797,10 +797,11 @@ namespace SourceGit.Views
                             repo.ShowPopup(new ViewModels.Rebase(repo, current, branch));
                         e.Handled = true;
                     };
-                    
+
                     var interactiveRebase = new MenuItem();
                     interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, branch.Name);
                     interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                    interactiveRebase.IsEnabled = !current.Head.Equals(branch.Head, StringComparison.Ordinal);
                     interactiveRebase.Click += async (_, e) =>
                     {
                         var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
@@ -1129,10 +1130,11 @@ namespace SourceGit.Views
                         repo.ShowPopup(new ViewModels.Rebase(repo, current, branch));
                     e.Handled = true;
                 };
-                
+
                 var interactiveRebase = new MenuItem();
                 interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, name);
                 interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.IsEnabled = !current.Head.Equals(branch.Head, StringComparison.Ordinal);
                 interactiveRebase.Click += async (_, e) =>
                 {
                     var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
