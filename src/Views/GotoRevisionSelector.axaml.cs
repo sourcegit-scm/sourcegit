@@ -4,9 +4,9 @@ using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public partial class GotoParentSelector : ChromelessWindow
+    public partial class GotoRevisionSelector : ChromelessWindow
     {
-        public GotoParentSelector()
+        public GotoRevisionSelector()
         {
             CloseOnESC = true;
             InitializeComponent();
@@ -15,7 +15,7 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
-            ParentList.Focus();
+            RevisionList.Focus();
         }
 
         private void OnListKeyDown(object sender, KeyEventArgs e)

@@ -471,7 +471,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Verfolge alle ‚{0}‘ Dateien</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Verfolge alle *{0} Dateien</x:String>
-  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">Vorgänger auswählen</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">VERLAUF</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTOR-ZEITPUNKT</x:String>

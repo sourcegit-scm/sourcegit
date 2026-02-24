@@ -194,8 +194,53 @@ namespace SourceGit.Views
             }
             else if (parents.Count > 1 && TopLevel.GetTopLevel(this) is Window owner)
             {
-                var dialog = new GotoParentSelector();
-                dialog.ParentList.ItemsSource = parents;
+                var dialog = new GotoRevisionSelector();
+                dialog.RevisionList.ItemsSource = parents;
+
+                var c = await dialog.ShowDialog<Models.Commit>(owner);
+                if (c != null)
+                    vm.NavigateTo(c.SHA);
+            }
+
+            e.Handled = true;
+        }
+
+        private async void OnGotoChild(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            if (!CommitListContainer.IsKeyboardFocusWithin)
+                return;
+
+            if (CommitListContainer.SelectedItems is not { Count: 1 } selected)
+                return;
+
+            if (selected[0] is not Models.Commit { Parents.Count: > 0 } commit)
+                return;
+
+            var children = new List<Models.Commit>();
+            var sha = commit.SHA;
+            foreach (var c in vm.Commits)
+            {
+                foreach (var p in c.Parents)
+                {
+                    if (sha.StartsWith(p, StringComparison.Ordinal))
+                        children.Add(c);
+                }
+
+                if (sha.Equals(c.SHA, StringComparison.Ordinal))
+                    break;
+            }
+
+            if (children.Count == 1)
+            {
+                vm.NavigateTo(children[0].SHA);
+            }
+            else if (children.Count > 1 && TopLevel.GetTopLevel(this) is Window owner)
+            {
+                var dialog = new GotoRevisionSelector();
+                dialog.RevisionList.ItemsSource = children;
 
                 var c = await dialog.ShowDialog<Models.Commit>(owner);
                 if (c != null)

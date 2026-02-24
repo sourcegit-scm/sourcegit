@@ -472,7 +472,6 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Отслеживать файлы с именем «{0}»</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все файлы (*{0})</x:String>
-  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">Выбрать родительский</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Истории</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>

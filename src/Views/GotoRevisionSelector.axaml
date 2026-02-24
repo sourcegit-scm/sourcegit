@@ -6,10 +6,10 @@
                     xmlns:v="using:SourceGit.Views"
                     xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="230"
-                    x:Class="SourceGit.Views.GotoParentSelector"
+                    x:Class="SourceGit.Views.GotoRevisionSelector"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="{DynamicResource Text.GotoParentSelector}"
+                    Title="{DynamicResource Text.GotoRevisionSelector}"
                     Width="600" SizeToContent="Height"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
@@ -27,7 +27,7 @@
             IsVisible="{OnPlatform True, macOS=False}"/>
 
       <TextBlock Classes="bold"
-                 Text="{DynamicResource Text.GotoParentSelector}"
+                 Text="{DynamicResource Text.GotoRevisionSelector}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
 
@@ -37,7 +37,7 @@
     </Grid>
     
     <ListBox Grid.Row="1"
-             x:Name="ParentList"
+             x:Name="RevisionList"
              Focusable="True"
              Margin="8" Padding="4"
              SelectionMode="AlwaysSelected"

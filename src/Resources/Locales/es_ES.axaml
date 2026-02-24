@@ -472,7 +472,6 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Seguir archivos llamados '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Seguir todos los archivos *{0}</x:String>
-  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">Seleccionar Padre</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Historias</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HORA DEL AUTOR</x:String>

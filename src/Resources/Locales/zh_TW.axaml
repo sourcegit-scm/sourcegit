@@ -472,7 +472,7 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">追蹤名稱為「{0}」的檔案</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">追蹤所有 *{0} 檔案</x:String>
-  <x:String x:Key="Text.GotoParentSelector" xml:space="preserve">選取要前往的父提交</x:String>
+  <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">選取要前往的提交</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改時間</x:String>
@@ -502,6 +502,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">前往所選提交的子提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">前往所選提交的父提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">開啟命令面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
