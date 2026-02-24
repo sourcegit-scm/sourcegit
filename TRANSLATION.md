@@ -235,6 +235,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
+- Text.BranchCM.InteractiveRebase.Manually
 - Text.BranchCM.ResetToSelectedCommit
 - Text.BranchCM.SwitchToWorktree
 - Text.BranchTree.Ahead
@@ -580,6 +581,7 @@ This document shows the translation status of each locale file in the repository
 <summary>Missing keys in pt_BR.axaml</summary>
 
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.InteractiveRebase.Manually
 - Text.BranchTree.AheadBehind
 - Text.BranchTree.Behind
 - Text.BranchTree.Tracking
@@ -914,6 +916,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
+- Text.BranchCM.InteractiveRebase.Manually
 - Text.BranchCM.ResetToSelectedCommit
 - Text.BranchCM.SwitchToWorktree
 - Text.BranchTree.Ahead
@@ -1193,6 +1196,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
+- Text.BranchCM.InteractiveRebase.Manually
 - Text.BranchCM.ResetToSelectedCommit
 - Text.BranchCM.SwitchToWorktree
 - Text.BranchTree.Ahead

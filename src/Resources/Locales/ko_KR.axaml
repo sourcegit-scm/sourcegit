@@ -61,6 +61,7 @@
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">${0}$(으)로 Fast-Forward</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$에서 ${1}$(으)로 Fetch...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - ${0}$ 완료</x:String>
+  <x:String x:Key="Text.BranchCM.InteractiveRebase.Manually" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 대화형 리베이스</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">${0}$을(를) ${1}$(으)로 병합...</x:String>
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">선택한 {0}개의 브랜치를 현재 브랜치로 병합</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">${0}$ Pull</x:String>
