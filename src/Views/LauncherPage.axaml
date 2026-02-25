@@ -57,7 +57,7 @@
               PointerPressed="OnMaskClicked"
               IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-      <Grid RowDefinitions="Auto,Auto,*" Width="512" HorizontalAlignment="Center">
+      <Grid RowDefinitions="Auto,Auto,*" Width="560" HorizontalAlignment="Center">
         <!-- Popup -->
         <Border Grid.Row="0"
                 Margin="6,0"
