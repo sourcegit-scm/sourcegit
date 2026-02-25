@@ -154,10 +154,12 @@
                       </Grid>
 
                       <v:CommandLogContentPresenter Grid.Row="1"
-                                                    Margin="8"
-                                                    Padding="2"
+                                                    Margin="8" Padding="2"
                                                     MaxHeight="200"
-                                                    PureText="{Binding Message}"/>
+                                                    PureText="{Binding Message}"
+                                                    WordWrap="True"
+                                                    HorizontalScrollBarVisibility="Disabled"
+                                                    VerticalScrollBarVisibility="Auto"/>
                     </Grid>
                   </Border>
                 </Border>

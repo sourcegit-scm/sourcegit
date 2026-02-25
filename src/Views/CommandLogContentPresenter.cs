@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using Avalonia;
-using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 
@@ -87,8 +86,6 @@ namespace SourceGit.Views
             IsReadOnly = true;
             ShowLineNumbers = false;
             WordWrap = false;
-            HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-            VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
 
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.Options.EnableHyperlinks = false;

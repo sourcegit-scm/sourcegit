@@ -125,7 +125,9 @@
               BorderThickness="1"
               Background="{DynamicResource Brush.Contents}">
         <v:CommandLogContentPresenter Log="{Binding SelectedLog}"
-                                      FontFamily="{DynamicResource Fonts.Monospace}"/>
+                                      FontFamily="{DynamicResource Fonts.Monospace}"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Auto"/>
       </Border>
     </Grid>
 
