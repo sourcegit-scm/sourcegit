@@ -37,10 +37,12 @@
 
     <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8">
       <v:CommitMessageToolBox x:Name="Editor" Height="400"/>
-      <Button Width="0" Height="0"
-              Margin="0" Padding="0"
-              Click="OnCloseByHotKey"
-              HotKey="Escape"/>
+      <Button Classes="flat primary"
+              Width="80"
+              Margin="0,8,0,4"
+              Content="{DynamicResource Text.Sure}"
+              Click="SaveAndClose"
+              HorizontalAlignment="Center"/>
     </StackPanel>
   </Grid>
 </v:ChromelessWindow>
