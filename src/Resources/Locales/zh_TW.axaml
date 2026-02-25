@@ -855,6 +855,7 @@
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">已選取的檔案中的變更均會被擱置!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">擱置本機變更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">套用 (apply)</x:String>
+  <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">套用 (apply) 所選變更</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">複製描述訊息</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">刪除 (drop)</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>

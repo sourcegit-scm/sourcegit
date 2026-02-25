@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Threading;
@@ -196,22 +197,7 @@ namespace SourceGit.ViewModels
             new Commands.DiffTool(_repo.FullPath, opt).Open();
         }
 
-        public async Task CheckoutSingleFileAsync(Models.Change change)
-        {
-            var revision = _selectedStash.SHA;
-            if (_untracked.Contains(change) && _selectedStash.Parents.Count == 3)
-                revision = _selectedStash.Parents[2];
-            else if (change.Index == Models.ChangeState.Added && _selectedStash.Parents.Count > 1)
-                revision = _selectedStash.Parents[1];
-
-            var log = _repo.CreateLog($"Reset File to '{_selectedStash.Name}'");
-            await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .FileWithRevisionAsync(change.Path, revision);
-            log.Complete();
-        }
-
-        public async Task CheckoutMultipleFileAsync(List<Models.Change> changes)
+        public async Task CheckoutFilesAsync(List<Models.Change> changes)
         {
             var untracked = new List<string>();
             var added = new List<string>();
@@ -245,6 +231,34 @@ namespace SourceGit.ViewModels
                     .MultipleFilesWithRevisionAsync(modified, _selectedStash.SHA);
 
             log.Complete();
+        }
+
+        public async Task ApplySelectedChanges(List<Models.Change> changes)
+        {
+            if (_selectedStash == null)
+                return;
+
+            var opts = new List<Models.DiffOption>();
+            foreach (var c in changes)
+            {
+                if (_untracked.Contains(c) && _selectedStash.Parents.Count == 3)
+                    opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
+                else
+                    opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
+            }
+
+            var saveTo = Path.GetTempFileName();
+            var succ = await Commands.SaveChangesAsPatch.ProcessStashChangesAsync(_repo.FullPath, opts, saveTo);
+            if (!succ)
+                return;
+
+            var log = _repo.CreateLog($"Apply changes from '{_selectedStash.Name}'");
+            await new Commands.Apply(_repo.FullPath, saveTo, true, string.Empty, string.Empty)
+                .Use(log)
+                .ExecAsync();
+
+            log.Complete();
+            File.Delete(saveTo);
         }
 
         private void RefreshVisible()

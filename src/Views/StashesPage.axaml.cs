@@ -134,6 +134,8 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.StashesPage { SelectedChanges: { Count: > 0 } selected } vm &&
                 sender is ChangeCollectionView view)
             {
+                var menu = new ContextMenu();
+
                 if (selected.Count == 1)
                 {
                     var change = selected[0];
@@ -159,91 +161,79 @@ namespace SourceGit.Views
                         ev.Handled = true;
                     };
 
-                    var resetToThisRevision = new MenuItem();
-                    resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-                    resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-                    resetToThisRevision.Click += async (_, ev) =>
-                    {
-                        await vm.CheckoutSingleFileAsync(change);
-                        ev.Handled = true;
-                    };
-
-                    var copyPath = new MenuItem();
-                    copyPath.Header = App.Text("CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
-                    copyPath.Click += async (_, ev) =>
-                    {
-                        await App.CopyTextAsync(change.Path);
-                        ev.Handled = true;
-                    };
-
-                    var copyFullPath = new MenuItem();
-                    copyFullPath.Header = App.Text("CopyFullPath");
-                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
-                    copyFullPath.Click += async (_, ev) =>
-                    {
-                        await App.CopyTextAsync(fullPath);
-                        ev.Handled = true;
-                    };
-
-                    var menu = new ContextMenu();
                     menu.Items.Add(openWithMerger);
                     menu.Items.Add(explore);
                     menu.Items.Add(new MenuItem { Header = "-" });
-                    menu.Items.Add(resetToThisRevision);
-                    menu.Items.Add(new MenuItem { Header = "-" });
-                    menu.Items.Add(copyPath);
-                    menu.Items.Add(copyFullPath);
-                    menu.Open(view);
                 }
-                else
-                {
-                    var resetToThisRevision = new MenuItem();
-                    resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-                    resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
-                    resetToThisRevision.Click += async (_, ev) =>
-                    {
-                        await vm.CheckoutMultipleFileAsync(selected);
-                        ev.Handled = true;
-                    };
 
-                    var copyPath = new MenuItem();
-                    copyPath.Header = App.Text("CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
-                    copyPath.Click += async (_, ev) =>
+                var applyChanges = new MenuItem();
+                applyChanges.Header = App.Text("StashCM.ApplyFileChanges");
+                applyChanges.Icon = App.CreateMenuIcon("Icons.Diff");
+                applyChanges.Click += async (_, ev) =>
+                {
+                    await vm.ApplySelectedChanges(selected);
+                    ev.Handled = true;
+                };
+
+                var checkoutFiles = new MenuItem();
+                checkoutFiles.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                checkoutFiles.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                checkoutFiles.Click += async (_, ev) =>
+                {
+                    await vm.CheckoutFilesAsync(selected);
+                    ev.Handled = true;
+                };
+
+                var copyPath = new MenuItem();
+                copyPath.Header = App.Text("CopyPath");
+                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+                copyPath.Click += async (_, ev) =>
+                {
+                    if (selected.Count == 1)
+                    {
+                        await App.CopyTextAsync(selected[0].Path);
+                    }
+                    else
                     {
                         var builder = new StringBuilder();
                         foreach (var c in selected)
                             builder.AppendLine(c.Path);
 
                         await App.CopyTextAsync(builder.ToString());
-                        ev.Handled = true;
-                    };
+                    }
 
-                    var copyFullPath = new MenuItem();
-                    copyFullPath.Header = App.Text("CopyFullPath");
-                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
-                    copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
-                    copyFullPath.Click += async (_, ev) =>
+                    ev.Handled = true;
+                };
+
+                var copyFullPath = new MenuItem();
+                copyFullPath.Header = App.Text("CopyFullPath");
+                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+                copyFullPath.Click += async (_, ev) =>
+                {
+                    if (selected.Count == 1)
+                    {
+                        await App.CopyTextAsync(vm.GetAbsPath(selected[0].Path));
+                    }
+                    else
                     {
                         var builder = new StringBuilder();
                         foreach (var c in selected)
                             builder.AppendLine(vm.GetAbsPath(c.Path));
 
                         await App.CopyTextAsync(builder.ToString());
-                        ev.Handled = true;
-                    };
+                    }
 
-                    var menu = new ContextMenu();
-                    menu.Items.Add(resetToThisRevision);
-                    menu.Items.Add(new MenuItem { Header = "-" });
-                    menu.Items.Add(copyPath);
-                    menu.Items.Add(copyFullPath);
-                    menu.Open(view);
-                }
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(applyChanges);
+                menu.Items.Add(checkoutFiles);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(copyPath);
+                menu.Items.Add(copyFullPath);
+                menu.Open(view);
             }
 
             e.Handled = true;
