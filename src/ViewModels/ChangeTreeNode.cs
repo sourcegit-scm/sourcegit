@@ -48,7 +48,7 @@ namespace SourceGit.ViewModels
             IsExpanded = isExpanded;
         }
 
-        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, bool compactFolders)
+        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, Models.ChangeSortMode sortMode = Models.ChangeSortMode.Path, bool isUnstagedContext = false, bool compactFolders = false)
         {
             var nodes = new List<ChangeTreeNode>();
             var folders = new Dictionary<string, ChangeTreeNode>();
@@ -98,7 +98,7 @@ namespace SourceGit.ViewModels
                     Compact(node);
             }
 
-            SortAndSetDepth(nodes, 0);
+            Sort(nodes, sortMode, isUnstagedContext);
 
             folders.Clear();
             return nodes;
@@ -142,21 +142,49 @@ namespace SourceGit.ViewModels
             Compact(node);
         }
 
-        private static void SortAndSetDepth(List<ChangeTreeNode> nodes, int depth)
+        private static void Sort(List<ChangeTreeNode> nodes, Models.ChangeSortMode sortMode, bool isUnstagedContext, int depth = 0)
         {
             foreach (var node in nodes)
             {
                 node.Depth = depth;
                 if (node.IsFolder)
-                    SortAndSetDepth(node.Children, depth + 1);
+                    Sort(node.Children, sortMode, isUnstagedContext, depth + 1);
             }
 
-            nodes.Sort((l, r) =>
+            if (sortMode == Models.ChangeSortMode.Status)
             {
-                if (l.IsFolder == r.IsFolder)
+                nodes.Sort((l, r) =>
+                {
+                    // Sort folders first
+                    if (l.IsFolder != r.IsFolder)
+                        return l.IsFolder ? -1 : 1;
+
+                    // If both are folders, sort by path
+                    if (l.IsFolder && r.IsFolder)
+                        return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
+
+                    // For files, sort by status first
+                    var leftPriority = Models.Change.GetStatusSortPriority(l.Change, isUnstagedContext);
+                    var rightPriority = Models.Change.GetStatusSortPriority(r.Change, isUnstagedContext);
+                    
+                    // First sort by status priority
+                    var statusComparison = leftPriority.CompareTo(rightPriority);
+                    if (statusComparison != 0)
+                        return statusComparison;
+
+                    // If status priorities are equal, sort by path as secondary sort
                     return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
-                return l.IsFolder ? -1 : 1;
-            });
+                });
+            }
+            else
+            {
+                nodes.Sort((l, r) =>
+                {
+                    if (l.IsFolder == r.IsFolder)
+                        return Models.NumericSort.Compare(l.DisplayName, r.DisplayName);
+                    return l.IsFolder ? -1 : 1;
+                });
+            }
         }
 
         private bool _isExpanded = true;

@@ -105,6 +105,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">文件名+路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">全路径列表模式</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">文件目录树形结构模式</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">按路径排序</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">按状态排序</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">修改子模块远程地址</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">远程地址 ：</x:String>

@@ -105,6 +105,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Показывать в виде списка файлов и каталогов</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Показывать в виде списка путей</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Показывать в виде дерева файловой системы</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">Сортировать по пути</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">Сортировать по статусу</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Изменить URL-адрес подмодуля</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Подмодуль:</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL-адрес:</x:String>

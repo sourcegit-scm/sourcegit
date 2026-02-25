@@ -118,7 +118,8 @@
             <v:ChangeViewModeSwitcher Grid.Column="9"
                                       Width="26" Height="14"
                                       Margin="0,1,0,0"
-                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
+                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"
+                                      SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeSortMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
 
@@ -128,6 +129,7 @@
                                 IsUnstagedChange="True"
                                 Background="{DynamicResource Brush.Contents}"
                                 ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode}"
+                                SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeSortMode}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleUnstaged}"
                                 SelectedChanges="{Binding SelectedUnstaged, Mode=TwoWay}"
@@ -172,7 +174,8 @@
             <v:ChangeViewModeSwitcher Grid.Column="6"
                                       Width="26" Height="14"
                                       Margin="0,1,0,0"
-                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
+                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"
+                                      SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeSortMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
 
@@ -182,6 +185,7 @@
                                 IsUnstagedChange="False"
                                 Background="{DynamicResource Brush.Contents}"
                                 ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode}"
+                                SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeSortMode}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleStaged}"
                                 SelectedChanges="{Binding SelectedStaged, Mode=TwoWay}"

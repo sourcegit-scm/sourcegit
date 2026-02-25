@@ -121,13 +121,15 @@
                                     Width="14" Height="14"
                                     Margin="0,0,8,0"
                                     HorizontalAlignment="Right"
-                                    ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=TwoWay}"/>
+                                    ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=TwoWay}"
+                                    SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeSortMode, Mode=TwoWay}"/>
         </Grid>
       </Border>
 
       <!-- View Changes -->
       <Border Grid.Row="4" Background="{DynamicResource Brush.Contents}">
         <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=OneWay}"
+                                SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeSortMode, Mode=OneWay}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding Changes}"
                                 SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"

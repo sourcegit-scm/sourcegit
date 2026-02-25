@@ -306,6 +306,30 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _stashChangeViewMode, value);
         }
 
+        public Models.ChangeSortMode UnstagedChangeSortMode
+        {
+            get => _unstagedChangeSortMode;
+            set => SetProperty(ref _unstagedChangeSortMode, value);
+        }
+
+        public Models.ChangeSortMode StagedChangeSortMode
+        {
+            get => _stagedChangeSortMode;
+            set => SetProperty(ref _stagedChangeSortMode, value);
+        }
+
+        public Models.ChangeSortMode CommitChangeSortMode
+        {
+            get => _commitChangeSortMode;
+            set => SetProperty(ref _commitChangeSortMode, value);
+        }
+
+        public Models.ChangeSortMode StashChangeSortMode
+        {
+            get => _stashChangeSortMode;
+            set => SetProperty(ref _stashChangeSortMode, value);
+        }
+
         public string GitInstallPath
         {
             get => Native.OS.GitExecutable;
@@ -796,6 +820,11 @@ namespace SourceGit.ViewModels
         private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
+
+        private Models.ChangeSortMode _unstagedChangeSortMode = Models.ChangeSortMode.Path;
+        private Models.ChangeSortMode _stagedChangeSortMode = Models.ChangeSortMode.Path;
+        private Models.ChangeSortMode _commitChangeSortMode = Models.ChangeSortMode.Path;
+        private Models.ChangeSortMode _stashChangeSortMode = Models.ChangeSortMode.Path;
 
         private string _gitDefaultCloneDir = string.Empty;
         private int _shellOrTerminalType = -1;
