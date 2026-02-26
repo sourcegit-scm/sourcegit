@@ -256,6 +256,54 @@ namespace SourceGit.Views
             private readonly BlameTextEditor _editor = null;
         }
 
+        public class LineBackgroundRenderer : IBackgroundRenderer
+        {
+            public KnownLayer Layer => KnownLayer.Background;
+
+            public LineBackgroundRenderer(BlameTextEditor owner)
+            {
+                _owner = owner;
+            }
+
+            public void Draw(TextView textView, DrawingContext drawingContext)
+            {
+                if (!textView.VisualLinesValid)
+                    return;
+
+                var w = textView.Bounds.Width;
+                if (double.IsNaN(w) || double.IsInfinity(w) || w <= 0)
+                    return;
+
+                var highlight = _owner._highlight;
+                if (string.IsNullOrEmpty(highlight))
+                    return;
+
+                var color = (Color)_owner.FindResource("SystemAccentColor")!;
+                var brush = new SolidColorBrush(color, 0.2);
+                var lines = _owner.BlameData.LineInfos;
+
+                foreach (var line in textView.VisualLines)
+                {
+                    if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
+                        continue;
+
+                    var lineNumber = line.FirstDocumentLine.LineNumber;
+                    if (lineNumber > lines.Count)
+                        break;
+
+                    var info = lines[lineNumber - 1];
+                    if (!info.CommitSHA.Equals(highlight, StringComparison.Ordinal))
+                        continue;
+
+                    var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - textView.VerticalOffset;
+                    var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
+                    drawingContext.FillRectangle(brush, new Rect(0, startY, w, endY - startY));
+                }
+            }
+
+            private readonly BlameTextEditor _owner;
+        }
+
         public static readonly StyledProperty<string> FileProperty =
             AvaloniaProperty.Register<BlameTextEditor, string>(nameof(File));
 
@@ -302,41 +350,10 @@ namespace SourceGit.Views
             TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.Caret.PositionChanged += OnTextAreaCaretPositionChanged;
+            TextArea.TextView.BackgroundRenderers.Add(new LineBackgroundRenderer(this));
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.Margin = new Thickness(4, 0);
-        }
-
-        public override void Render(DrawingContext context)
-        {
-            base.Render(context);
-
-            if (string.IsNullOrEmpty(_highlight))
-                return;
-
-            var view = TextArea.TextView;
-            if (view is not { VisualLinesValid: true })
-                return;
-
-            var color = (Color)this.FindResource("SystemAccentColor")!;
-            var brush = new SolidColorBrush(color, 0.4);
-            foreach (var line in view.VisualLines)
-            {
-                if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
-                    continue;
-
-                var lineNumber = line.FirstDocumentLine.LineNumber;
-                if (lineNumber > BlameData.LineInfos.Count)
-                    break;
-
-                var info = BlameData.LineInfos[lineNumber - 1];
-                if (info.CommitSHA != _highlight)
-                    continue;
-
-                var startY = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
-                var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset;
-                context.FillRectangle(brush, new Rect(0, startY, Bounds.Width, endY - startY));
-            }
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -391,7 +408,6 @@ namespace SourceGit.Views
                 return;
 
             _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;
-            InvalidateVisual();
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -426,8 +442,6 @@ namespace SourceGit.Views
                     break;
                 }
             }
-
-            InvalidateVisual();
         }
 
         private TextMate.Installation _textMate = null;
