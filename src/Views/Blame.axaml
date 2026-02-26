@@ -110,7 +110,7 @@
         <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleRight}"/>
       </Button>
 
-      <Border Grid.Column="3" Padding="6,0" Margin="0,2" CornerRadius="4" Background="#20000000" BoxShadow="inset 0 0 3 3 #20000000">
+      <Border Grid.Column="3" Padding="6,0" Margin="0,2" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Background="#20000000">
         <Grid ColumnDefinitions="Auto,*">
           <TextBlock Grid.Column="0"
                      FontWeight="Bold"
