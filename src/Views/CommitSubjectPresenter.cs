@@ -248,11 +248,11 @@ namespace SourceGit.Views
             foreach (var rule in rules)
                 rule.Matches(_elements, subject);
 
-            var keywordMatch = REG_KEYWORD_FORMAT().Match(subject);
-            if (keywordMatch.Success)
+            if (subject.StartsWith('['))
             {
-                if (_elements.Intersect(0, keywordMatch.Length) == null)
-                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, keywordMatch.Length, string.Empty));
+                var bracketIdx = subject.IndexOf(']');
+                if (bracketIdx > 1 && bracketIdx < 50 && _elements.Intersect(0, bracketIdx + 1) == null)
+                    _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, bracketIdx + 1, string.Empty));
             }
             else
             {
@@ -386,9 +386,6 @@ namespace SourceGit.Views
         [GeneratedRegex(@"`.*?`")]
         private static partial Regex REG_INLINECODE_FORMAT();
 
-        [GeneratedRegex(@"^\[[^]]{1,48}?\]")]
-        private static partial Regex REG_KEYWORD_FORMAT();
-
         private class Inline
         {
             public double X { get; set; } = 0;
@@ -404,8 +401,8 @@ namespace SourceGit.Views
         }
 
         private Models.InlineElementCollector _elements = new();
-        private List<Inline> _inlines = [];
         private Models.InlineElement _lastHover = null;
+        private List<Inline> _inlines = [];
         private bool _needRebuildInlines = false;
     }
 }
