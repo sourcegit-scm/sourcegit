@@ -257,14 +257,14 @@ namespace SourceGit.Views
             else
             {
                 var colonIdx = subject.IndexOf(": ", StringComparison.Ordinal);
-                if (colonIdx > 0 && colonIdx < 32 && colonIdx < subject.Length - 3 && _elements.Intersect(0, colonIdx) == null)
+                if (colonIdx > 0 && colonIdx < 32 && colonIdx < subject.Length - 3 && subject.IndexOf('"', 0, colonIdx) == -1 && _elements.Intersect(0, colonIdx) == null)
                 {
                     _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, colonIdx + 1, string.Empty));
                 }
                 else
                 {
                     var hyphenIdx = subject.IndexOf(" - ", StringComparison.Ordinal);
-                    if (hyphenIdx > 0 && hyphenIdx < 32 && hyphenIdx < subject.Length - 4 && _elements.Intersect(0, hyphenIdx) == null)
+                    if (hyphenIdx > 0 && hyphenIdx < 32 && hyphenIdx < subject.Length - 4 && subject.IndexOf('"', 0, hyphenIdx) == -1 && _elements.Intersect(0, hyphenIdx) == null)
                     {
                         _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, hyphenIdx, string.Empty));
                     }
