@@ -177,32 +177,30 @@ namespace SourceGit.Native
             Process.Start(startInfo);
         }
 
-        public void OpenInFileManager(string path, bool select)
+        public void OpenInFileManager(string path)
         {
-            string fullpath;
             if (File.Exists(path))
             {
-                fullpath = new FileInfo(path).FullName;
-                select = true;
-            }
-            else
-            {
-                fullpath = new DirectoryInfo(path!).FullName;
-                fullpath += Path.DirectorySeparatorChar;
+                var pidl = ILCreateFromPathW(new FileInfo(path).FullName);
+
+                try
+                {
+                    SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+                }
+                finally
+                {
+                    ILFree(pidl);
+                }
+
+                return;
             }
 
-            if (select)
+            var dir = new DirectoryInfo(path).FullName + Path.DirectorySeparatorChar;
+            Process.Start(new ProcessStartInfo(dir)
             {
-                OpenFolderAndSelectFile(fullpath);
-            }
-            else
-            {
-                Process.Start(new ProcessStartInfo(fullpath)
-                {
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                });
-            }
+                UseShellExecute = true,
+                CreateNoWindow = true,
+            });
         }
 
         public void OpenWithDefaultEditor(string file)
@@ -213,6 +211,7 @@ namespace SourceGit.Native
             Process.Start(start);
         }
 
+        #region HELPER_METHODS
         private void FixWindowFrameOnWin10(Window w)
         {
             // Schedule the DWM frame extension to run in the next render frame
@@ -228,11 +227,22 @@ namespace SourceGit.Native
             }, DispatcherPriority.Render);
         }
 
-        private PixelPoint IntPtrToPixelPoint(IntPtr param)
+        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
-            var v = IntPtr.Size == 4 ? param.ToInt32() : (int)(param.ToInt64() & 0xFFFFFFFF);
-            return new PixelPoint((short)(v & 0xffff), (short)(v >> 16));
+            var root = new DirectoryInfo(path);
+            if (!root.Exists)
+                return null;
+
+            var options = new List<Models.ExternalTool.LaunchOption>();
+            root.WalkFiles(f =>
+            {
+                if (f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                    options.Add(new(root.GetRelativePath(f), f.Quoted()));
+            });
+            return options;
         }
+        #endregion
 
         #region EXTERNAL_EDITOR_FINDER
         private string FindVSCode()
@@ -385,35 +395,5 @@ namespace SourceGit.Native
             return string.Empty;
         }
         #endregion
-
-        private void OpenFolderAndSelectFile(string folderPath)
-        {
-            var pidl = ILCreateFromPathW(folderPath);
-
-            try
-            {
-                SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
-            }
-            finally
-            {
-                ILFree(pidl);
-            }
-        }
-
-        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
-        {
-            var root = new DirectoryInfo(path);
-            if (!root.Exists)
-                return null;
-
-            var options = new List<Models.ExternalTool.LaunchOption>();
-            root.WalkFiles(f =>
-            {
-                if (f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
-                    f.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
-                    options.Add(new(root.GetRelativePath(f), f.Quoted()));
-            });
-            return options;
-        }
     }
 }

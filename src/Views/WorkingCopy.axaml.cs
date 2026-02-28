@@ -285,7 +285,7 @@ namespace SourceGit.Views
                 explore.Click += (_, e) =>
                 {
                     var target = hasSelectedFolder ? Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder) : path;
-                    Native.OS.OpenInFileManager(target, true);
+                    Native.OS.OpenInFileManager(target);
                     e.Handled = true;
                 };
                 menu.Items.Add(explore);
@@ -764,7 +764,7 @@ namespace SourceGit.Views
                     explore.IsEnabled = Directory.Exists(dir);
                     explore.Click += (_, e) =>
                     {
-                        Native.OS.OpenInFileManager(dir, true);
+                        Native.OS.OpenInFileManager(dir);
                         e.Handled = true;
                     };
                     menu.Items.Add(explore);
@@ -960,7 +960,7 @@ namespace SourceGit.Views
                 explore.Click += (_, e) =>
                 {
                     var target = hasSelectedFolder ? Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder) : path;
-                    Native.OS.OpenInFileManager(target, true);
+                    Native.OS.OpenInFileManager(target);
                     e.Handled = true;
                 };
 
@@ -1173,7 +1173,7 @@ namespace SourceGit.Views
                     explore.Icon = App.CreateMenuIcon("Icons.Explore");
                     explore.Click += (_, e) =>
                     {
-                        Native.OS.OpenInFileManager(dir, true);
+                        Native.OS.OpenInFileManager(dir);
                         e.Handled = true;
                     };
 

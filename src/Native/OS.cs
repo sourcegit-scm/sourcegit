@@ -23,7 +23,7 @@ namespace SourceGit.Native
             List<Models.ExternalTool> FindExternalTools();
 
             void OpenTerminal(string workdir, string args);
-            void OpenInFileManager(string path, bool select);
+            void OpenInFileManager(string path);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
         }
@@ -198,9 +198,9 @@ namespace SourceGit.Native
             }
         }
 
-        public static void OpenInFileManager(string path, bool select = false)
+        public static void OpenInFileManager(string path)
         {
-            _backend.OpenInFileManager(path, select);
+            _backend.OpenInFileManager(path);
         }
 
         public static void OpenBrowser(string url)
