@@ -18,15 +18,6 @@ namespace SourceGit.Native
     internal class Windows : OS.IBackend
     {
         [StructLayout(LayoutKind.Sequential)]
-        internal struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
         internal struct MARGINS
         {
             public int cxLeftWidth;
@@ -50,9 +41,6 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
-
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
@@ -68,50 +56,6 @@ namespace SourceGit.Native
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
             window.ExtendClientAreaToDecorationsHint = true;
             window.BorderThickness = new Thickness(1);
-
-            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
-            {
-                // Custom WM_NCHITTEST only used to limit the resize border to 4 * window.RenderScaling pixels.
-                if (msg == 0x0084 && window.WindowState == WindowState.Normal)
-                {
-                    var p = IntPtrToPixelPoint(lParam);
-                    GetWindowRect(hWnd, out var rcWindow);
-
-                    var borderThickness = (int)(4 * window.RenderScaling);
-                    int y = 1;
-                    int x = 1;
-                    if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThickness)
-                        x = 0;
-                    else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThickness)
-                        x = 2;
-
-                    if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThickness)
-                        y = 0;
-                    else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
-                        y = 2;
-
-                    // If it's in the client area, do not handle it here.
-                    var zone = y * 3 + x;
-                    if (zone == 4)
-                        return IntPtr.Zero;
-
-                    // If it's in the resize border area, return the proper HT code.
-                    handled = true;
-                    return zone switch
-                    {
-                        0 => 13, // HTTOPLEFT
-                        1 => 12, // HTTOP
-                        2 => 14, // HTTOPRIGHT
-                        3 => 10, // HTLEFT
-                        5 => 11, // HTRIGHT
-                        6 => 16, // HTBOTTOMLEFT
-                        7 => 15, // HTBOTTOM
-                        _ => 17, // HTBOTTOMRIGHT
-                    };
-                }
-
-                return IntPtr.Zero;
-            });
         }
 
         public string GetDataDir()
