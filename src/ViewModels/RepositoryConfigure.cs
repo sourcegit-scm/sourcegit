@@ -272,6 +272,11 @@ namespace SourceGit.ViewModels
             SelectedCustomAction = null;
         }
 
+        public void DuplicateSelectedCustomAction()
+        {
+            SelectedCustomAction = _repo.Settings.DuplicateCustomAction(_selectedCustomAction);
+        }
+
         public void MoveSelectedCustomActionUp()
         {
             if (_selectedCustomAction != null)
