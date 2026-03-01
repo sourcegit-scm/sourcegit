@@ -196,6 +196,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipo de mudança:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copiar todo o texto</x:String>
+  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Copiar nome do arquivo</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copiar Caminho</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Criar Branch...</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Baseado Em:</x:String>
