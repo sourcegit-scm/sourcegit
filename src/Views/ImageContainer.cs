@@ -90,7 +90,7 @@ namespace SourceGit.Views
                 return new Size(scale * imageSize.Width, scale * imageSize.Height);
             }
 
-            return availableSize;
+            return new Size(0, 0);
         }
     }
 
@@ -206,7 +206,7 @@ namespace SourceGit.Views
             var right = NewImage;
 
             if (left == null)
-                return right == null ? availableSize : GetDesiredSize(right.Size, availableSize);
+                return right == null ? new Size(0, 0) : GetDesiredSize(right.Size, availableSize);
 
             if (right == null)
                 return GetDesiredSize(left.Size, availableSize);
@@ -324,7 +324,7 @@ namespace SourceGit.Views
             var right = NewImage;
 
             if (left == null)
-                return right == null ? availableSize : GetDesiredSize(right.Size, availableSize);
+                return right == null ? new Size(0, 0) : GetDesiredSize(right.Size, availableSize);
 
             if (right == null)
                 return GetDesiredSize(left.Size, availableSize);
@@ -439,7 +439,7 @@ namespace SourceGit.Views
             var right = NewImage;
 
             if (left == null)
-                return right == null ? availableSize : GetDesiredSize(right.Size, availableSize);
+                return right == null ? new Size(0, 0) : GetDesiredSize(right.Size, availableSize);
 
             if (right == null)
                 return GetDesiredSize(left.Size, availableSize);

@@ -29,6 +29,10 @@
               Click="OnGotoParent"
               HotKey="Alt+Down"
               IsVisible="False"/>
+      <Button Width="0" Height="0"
+              Click="OnGotoChild"
+              HotKey="Alt+Up"
+              IsVisible="False"/>
       
       <DataGrid x:Name="CommitListContainer"
                 Classes="static_scrollbar"

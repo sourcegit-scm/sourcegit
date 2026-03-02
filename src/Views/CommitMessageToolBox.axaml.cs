@@ -77,6 +77,15 @@ namespace SourceGit.Views
             set => SetValue(PlaceholderProperty, value);
         }
 
+        public static readonly StyledProperty<int> ColumnProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(Column), 1);
+
+        public int Column
+        {
+            get => GetValue(ColumnProperty);
+            set => SetValue(ColumnProperty, value);
+        }
+
         public static readonly StyledProperty<int> SubjectLengthProperty =
             AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength));
 
@@ -128,7 +137,6 @@ namespace SourceGit.Views
             TextArea.TextView.ClipToBounds = false;
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
-            TextArea.TextView.Options.AllowScrollBelowDocument = false;
         }
 
         public override void Render(DrawingContext context)
@@ -136,6 +144,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var w = Bounds.Width;
+            var pixelHeight = PixelSnapHelpers.GetPixelSize(this).Height;
             var pen = new Pen(SubjectLineBrush) { DashStyle = DashStyle.Dash };
 
             if (SubjectLength == 0)
@@ -153,7 +162,7 @@ namespace SourceGit.Views
 
                     context.DrawText(formatted, new Point(4, 2));
 
-                    var y = 6 + formatted.Height;
+                    var y = PixelSnapHelpers.PixelAlign(6 + formatted.Height, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
                 }
 
@@ -183,6 +192,7 @@ namespace SourceGit.Views
                 if (line.FirstDocumentLine.LineNumber == _subjectEndLine)
                 {
                     var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
+                    y = PixelSnapHelpers.PixelAlign(y, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
                     return;
                 }
@@ -195,12 +205,14 @@ namespace SourceGit.Views
 
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.Caret.PositionChanged += OnCaretPositionChanged;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
+            TextArea.Caret.PositionChanged -= OnCaretPositionChanged;
 
             base.OnUnloaded(e);
         }
@@ -297,7 +309,7 @@ namespace SourceGit.Views
                 if (_completionWnd == null)
                 {
                     _completionWnd = new CompletionWindow(TextArea);
-                    _completionWnd.Closed += (_, __) => _completionWnd = null;
+                    _completionWnd.Closed += (_, _) => _completionWnd = null;
                     _completionWnd.Show();
                 }
 
@@ -357,6 +369,12 @@ namespace SourceGit.Views
         private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
         {
             InvalidateVisual();
+        }
+
+        private void OnCaretPositionChanged(object sender, EventArgs e)
+        {
+            var col = TextArea.Caret.Column;
+            SetCurrentValue(ColumnProperty, col);
         }
 
         private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "on-behalf-of: @", "BREAKING CHANGE: ", "Refs: "];

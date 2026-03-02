@@ -29,7 +29,7 @@ namespace SourceGit.Views
             explore.IsEnabled = Directory.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(fullPath, true);
+                Native.OS.OpenInFileManager(fullPath);
                 ev.Handled = true;
             };
 
@@ -264,7 +264,7 @@ namespace SourceGit.Views
             explore.IsEnabled = File.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(fullPath, true);
+                Native.OS.OpenInFileManager(fullPath);
                 ev.Handled = true;
             };
 

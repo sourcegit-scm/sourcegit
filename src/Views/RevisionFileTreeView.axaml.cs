@@ -446,7 +446,7 @@ namespace SourceGit.Views
             explore.IsEnabled = Directory.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(fullPath, true);
+                Native.OS.OpenInFileManager(fullPath);
                 ev.Handled = true;
             };
 
@@ -567,10 +567,10 @@ namespace SourceGit.Views
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
             explore.Icon = App.CreateMenuIcon("Icons.Explore");
-            explore.IsEnabled = File.Exists(fullPath);
+            explore.IsEnabled = File.Exists(fullPath) || Directory.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(fullPath, file.Type == Models.ObjectType.Blob);
+                Native.OS.OpenInFileManager(fullPath);
                 ev.Handled = true;
             };
 

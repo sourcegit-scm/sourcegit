@@ -29,8 +29,15 @@ namespace SourceGit.ViewModels
 
         public bool Annotated
         {
-            get => _annotated;
-            set => SetProperty(ref _annotated, value);
+            get => _repo.UIStates.CreateAnnotatedTag;
+            set
+            {
+                if (_repo.UIStates.CreateAnnotatedTag != value)
+                {
+                    _repo.UIStates.CreateAnnotatedTag = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool SignTag
@@ -83,9 +90,11 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Create Tag");
             Use(log);
 
-            var cmd = new Commands.Tag(_repo.FullPath, _tagName).Use(log);
-            var succ = false;
-            if (_annotated)
+            var cmd = new Commands.Tag(_repo.FullPath, _tagName)
+                .Use(log);
+
+            bool succ;
+            if (_repo.UIStates.CreateAnnotatedTag)
                 succ = await cmd.AddAsync(_basedOn, Message, SignTag);
             else
                 succ = await cmd.AddAsync(_basedOn);
@@ -104,7 +113,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private string _tagName = string.Empty;
-        private bool _annotated = true;
         private readonly string _basedOn;
     }
 }

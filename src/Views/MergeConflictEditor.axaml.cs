@@ -95,7 +95,7 @@ namespace SourceGit.Views
             public override void Render(DrawingContext context)
             {
                 var pen = new Pen(Brushes.DarkGray);
-                context.DrawLine(pen, new Point(0, 0), new Point(0, Bounds.Height));
+                context.DrawLine(pen, new Point(0.5, 0), new Point(0.5, Bounds.Height));
             }
 
             protected override Size MeasureOverride(Size availableSize)
@@ -150,6 +150,7 @@ namespace SourceGit.Views
                     return;
 
                 var width = textView.Bounds.Width;
+                var pixelHeight = PixelSnapHelpers.GetPixelSize(_presenter).Height;
                 foreach (var line in textView.VisualLines)
                 {
                     if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
@@ -168,15 +169,18 @@ namespace SourceGit.Views
                     var endY = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - textView.VerticalOffset;
                     var rect = new Rect(0, startY, width, endY - startY);
 
+                    var alignedTop = PixelSnapHelpers.PixelAlign(startY, pixelHeight);
+                    var alignedBottom = PixelSnapHelpers.PixelAlign(endY, pixelHeight);
+
                     var lineState = vm.GetLineState(lineIndex);
                     if (lineState == Models.ConflictLineState.ConflictBlockStart)
-                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, alignedTop), new Point(width, alignedTop));
                     else if (lineState == Models.ConflictLineState.ConflictBlockEnd)
-                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red, 0.6)), new Point(0, alignedBottom), new Point(width, alignedBottom));
                     else if (lineState == Models.ConflictLineState.ResolvedBlockStart)
-                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, startY + 0.5), new Point(width, startY + 0.5));
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, alignedTop), new Point(width, alignedTop));
                     else if (lineState == Models.ConflictLineState.ResolvedBlockEnd)
-                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, endY - 0.5), new Point(width, endY - 0.5));
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green, 0.6)), new Point(0, alignedBottom), new Point(width, alignedBottom));
 
                     if (lineState >= Models.ConflictLineState.ResolvedBlockStart)
                         drawingContext.DrawRectangle(new SolidColorBrush(Colors.Green, 0.1), null, rect);

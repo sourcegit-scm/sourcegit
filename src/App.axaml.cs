@@ -387,6 +387,7 @@ namespace SourceGit
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 desktop.MainWindow?.Close();
                 desktop.Shutdown(exitCode);
             }
@@ -748,10 +749,17 @@ namespace SourceGit
 
         private void ShowSelfUpdateResult(object data)
         {
-            Dispatcher.UIThread.Post(async () =>
+            try
             {
-                await ShowDialog(new ViewModels.SelfUpdate { Data = data });
-            });
+                Dispatcher.UIThread.Invoke(async () =>
+                {
+                    await ShowDialog(new ViewModels.SelfUpdate { Data = data });
+                });
+            }
+            catch
+            {
+                // Ignore exceptions.
+            }
         }
 
         private string FixFontFamilyName(string input)

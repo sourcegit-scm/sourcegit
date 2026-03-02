@@ -106,7 +106,7 @@ namespace SourceGit.Native
             Process.Start(browser, url.Quoted());
         }
 
-        public void OpenInFileManager(string path, bool select)
+        public void OpenInFileManager(string path)
         {
             if (Directory.Exists(path))
             {

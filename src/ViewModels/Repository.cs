@@ -432,10 +432,12 @@ namespace SourceGit.ViewModels
             if (isWorktree)
             {
                 var commonDir = File.ReadAllText(commonDirFile).Trim();
-                if (!Path.IsPathRooted(commonDir))
+                if (Path.IsPathRooted(commonDir))
+                    commonDir = new DirectoryInfo(commonDir).FullName;
+                else
                     commonDir = new DirectoryInfo(Path.Combine(GitDir, commonDir)).FullName;
 
-                _gitCommonDir = commonDir;
+                _gitCommonDir = commonDir.Replace('\\', '/').TrimEnd('/');
             }
             else
             {

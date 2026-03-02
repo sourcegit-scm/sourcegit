@@ -76,7 +76,7 @@ namespace SourceGit.Views
                         explore.IsEnabled = File.Exists(full);
                         explore.Click += (_, ev) =>
                         {
-                            Native.OS.OpenInFileManager(full, true);
+                            Native.OS.OpenInFileManager(full);
                             ev.Handled = true;
                         };
                         menu.Items.Add(explore);

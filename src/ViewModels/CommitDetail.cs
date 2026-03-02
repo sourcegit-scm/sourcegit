@@ -467,7 +467,6 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
-            _changes = [];
             _requestingRevisionFiles = false;
             _revisionFiles = null;
 
@@ -481,7 +480,12 @@ namespace SourceGit.ViewModels
             ScrollOffset = Vector.Zero;
 
             if (_commit == null)
+            {
+                Changes = [];
+                VisibleChanges = [];
+                SelectedChanges = null;
                 return;
+            }
 
             if (_cancellationSource is { IsCancellationRequested: false })
                 _cancellationSource.Cancel();

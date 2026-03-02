@@ -203,6 +203,7 @@ namespace SourceGit.Views
 
                 var lines = _presenter.GetLines();
                 var width = textView.Bounds.Width;
+                var pixelHeight = PixelSnapHelpers.GetPixelSize(textView).Height;
                 foreach (var line in textView.VisualLines)
                 {
                     if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
@@ -265,10 +266,16 @@ namespace SourceGit.Views
                         continue;
 
                     if (index == changeBlock.Start)
-                        drawingContext.DrawLine(changeBlockBorder, new Point(0, startY), new Point(width, startY));
+                    {
+                        var alignedY = PixelSnapHelpers.PixelAlign(startY, pixelHeight);
+                        drawingContext.DrawLine(changeBlockBorder, new Point(0, alignedY), new Point(width, alignedY));
+                    }
 
                     if (index == changeBlock.End)
-                        drawingContext.DrawLine(changeBlockBorder, new Point(0, endY), new Point(width, endY));
+                    {
+                        var alignedY = PixelSnapHelpers.PixelAlign(endY, pixelHeight);
+                        drawingContext.DrawLine(changeBlockBorder, new Point(0, alignedY), new Point(width, alignedY));
+                    }
                 }
             }
 
@@ -488,10 +495,11 @@ namespace SourceGit.Views
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
             var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+            var aligned = PixelSnapHelpers.PixelAlign(rect, PixelSnapHelpers.GetPixelSize(this));
 
-            context.DrawRectangle(brush, null, rect);
-            context.DrawLine(pen, rect.TopLeft, rect.TopRight);
-            context.DrawLine(pen, rect.BottomLeft, rect.BottomRight);
+            context.DrawRectangle(brush, null, aligned);
+            context.DrawLine(pen, aligned.TopLeft, aligned.TopRight);
+            context.DrawLine(pen, aligned.BottomLeft, aligned.BottomRight);
         }
 
         protected override void OnLoaded(RoutedEventArgs e)

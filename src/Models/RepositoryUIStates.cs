@@ -117,6 +117,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool CreateAnnotatedTag
+        {
+            get;
+            set;
+        } = true;
+
         public bool PushToRemoteWhenCreateTag
         {
             get;
@@ -218,7 +224,7 @@ namespace SourceGit.Models
             var fileInfo = new FileInfo(Path.Combine(gitDir, "sourcegit.uistates"));
             var fullpath = fileInfo.FullName;
 
-            RepositoryUIStates states = null;
+            RepositoryUIStates states;
             if (!File.Exists(fullpath))
             {
                 states = new RepositoryUIStates();
