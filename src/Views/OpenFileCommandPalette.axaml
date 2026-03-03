@@ -88,7 +88,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="x:String">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped" ToolTip.Tip="{Binding}">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Data="{StaticResource Icons.File}"
