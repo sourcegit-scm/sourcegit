@@ -265,13 +265,14 @@
                     <TextBlock Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
 
-                  <Border Margin="0,8,0,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <Border Margin="0,8"
+                          BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                          Background="{DynamicResource Brush.Window}"
+                          IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding Old}">
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
-                          <Border Margin="0,0,0,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Background="{DynamicResource Brush.Window}">
-                            <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
-                          </Border>
+                          <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
                     </ContentControl>
@@ -290,7 +291,10 @@
                     <TextBlock Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10" Foreground="White"/>
                   </Border>
 
-                  <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <Border Margin="0,8"
+                          BorderThickness="1" BorderBrush="Green"
+                          Background="{DynamicResource Brush.Window}"
+                          IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <ContentControl Content="{Binding New}">
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
