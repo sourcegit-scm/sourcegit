@@ -102,7 +102,7 @@
 
       <!-- File Tree -->
       <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-        <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA}"/>
+        <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA}" SearchRequested="OnToggleSearch"/>
       </Border>
     </Grid>
 

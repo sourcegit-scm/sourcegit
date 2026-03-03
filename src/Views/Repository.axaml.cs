@@ -20,6 +20,12 @@ namespace SourceGit.Views
             UpdateLeftSidebarLayout();
         }
 
+        private void OnToggleFilter(object _, RoutedEventArgs e)
+        {
+            FilterBox.Focus();
+            e.Handled = true;
+        }
+
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true })

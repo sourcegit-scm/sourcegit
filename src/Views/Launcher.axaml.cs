@@ -235,7 +235,7 @@ namespace SourceGit.Views
                             repo.SelectedViewIndex = 2;
                             e.Handled = true;
                             return;
-                        case Key.F:
+                        case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
                             repo.IsSearchingCommits = true;
                             e.Handled = true;
                             return;

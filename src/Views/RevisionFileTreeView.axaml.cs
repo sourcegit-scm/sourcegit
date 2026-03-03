@@ -113,6 +113,14 @@ namespace SourceGit.Views
 
         protected override async void OnKeyDown(KeyEventArgs e)
         {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                var panel = this.FindAncestorOfType<RevisionFileTreeView>();
+                panel.RaiseEvent(new RoutedEventArgs(RevisionFileTreeView.SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
+
             if (SelectedItem is ViewModels.RevisionFileTreeNode node)
             {
                 if (node.IsFolder &&
@@ -188,6 +196,15 @@ namespace SourceGit.Views
         }
 
         public AvaloniaList<ViewModels.RevisionFileTreeNode> Rows { get; } = [];
+
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
+        }
 
         public RevisionFileTreeView()
         {

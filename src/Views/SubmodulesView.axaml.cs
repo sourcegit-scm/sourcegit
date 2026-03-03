@@ -97,6 +97,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(RowsChangedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
+        }
+
         public int Rows
         {
             get;
@@ -314,6 +323,16 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
+        }
+
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

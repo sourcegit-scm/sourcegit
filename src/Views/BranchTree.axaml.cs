@@ -303,6 +303,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(RowsChangedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
+        }
+
         public BranchTree()
         {
             InitializeComponent();
@@ -566,6 +575,13 @@ namespace SourceGit.Views
 
         private void OnTreeKeyDown(object _, KeyEventArgs e)
         {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
+
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
 

@@ -103,6 +103,7 @@
           <!-- Search & Display Mode -->
           <Grid Grid.Row="0" ColumnDefinitions="*,18">
             <TextBox Grid.Column="0"
+                     x:Name="ChangeSearchBox"
                      Height="26"
                      BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                      Background="Transparent"
