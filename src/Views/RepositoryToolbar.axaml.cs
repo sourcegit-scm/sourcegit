@@ -197,11 +197,11 @@ namespace SourceGit.Views
             }
         }
 
-        private async void PushDirectlyByHotKey(object sender, RoutedEventArgs e)
+        private async void PushByHotKey(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await repo.PushAsync(true);
+                await repo.PushAsync(false);
                 e.Handled = true;
             }
         }
