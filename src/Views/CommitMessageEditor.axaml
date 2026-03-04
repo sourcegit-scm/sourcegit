@@ -37,12 +37,20 @@
 
     <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8">
       <v:CommitMessageToolBox x:Name="Editor" Height="400"/>
-      <Button Classes="flat primary"
-              Width="80"
-              Margin="0,8,0,4"
-              Content="{DynamicResource Text.Sure}"
-              Click="SaveAndClose"
-              HorizontalAlignment="Center"/>
+
+      <StackPanel Margin="0,8,0,4" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+        <Button Classes="flat primary"
+                Width="80"
+                Content="{DynamicResource Text.Sure}"
+                Click="SaveAndClose"
+                HorizontalAlignment="Center"/>
+        <Button Classes="flat"
+                Width="80"
+                Content="{DynamicResource Text.Cancel}"
+                Click="CancelAndClose"
+                HotKey="Escape"
+                HorizontalAlignment="Center"/>
+      </StackPanel>
     </StackPanel>
   </Grid>
 </v:ChromelessWindow>
