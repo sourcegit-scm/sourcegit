@@ -157,7 +157,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:RepositoryNode">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped" ToolTip.Tip="{Binding Id, Mode=OneWay}">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
