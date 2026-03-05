@@ -82,6 +82,56 @@ namespace SourceGit.ViewModels
                 _launcher.OpenCommandPalette(sub);
             }));
 
+            _cmds.Add(new($"{App.Text("Repository.NewBranch")}...", "Branch.Add", () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                repo.CreateNewBranch();
+            }));
+
+            _cmds.Add(new($"{App.Text("CreateTag.Title")}...", "Tag.Add", () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                repo.CreateNewTag();
+            }));
+
+            _cmds.Add(new($"{App.Text("Fetch.Title")}...", "Fetch", async () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                await repo.FetchAsync(false);
+            }));
+
+            _cmds.Add(new($"{App.Text("Pull.Title")}...", "Pull", async () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                await repo.PullAsync(false);
+            }));
+
+            _cmds.Add(new($"{App.Text("Push.Title")}...", "Push", async () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                await repo.PushAsync(false);
+            }));
+
+            _cmds.Add(new($"{App.Text("Stash.Title")}...", "Stashes.Add", async () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                await repo.StashAllAsync(false);
+            }));
+
+            _cmds.Add(new($"{App.Text("Apply.Title")}...", "Diff", () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                repo.ApplyPatch();
+            }));
+
+            _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
             _visibleCmds = _cmds;
             _selectedCmd = _cmds[0];
         }

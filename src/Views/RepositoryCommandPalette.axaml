@@ -50,7 +50,7 @@
 
     <ListBox Grid.Row="2"
              x:Name="CmdListBox"
-             MaxHeight="250"
+             MaxHeight="400"
              Margin="4,0"
              BorderThickness="0"
              SelectionMode="Single"
