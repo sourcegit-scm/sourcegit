@@ -279,10 +279,10 @@ namespace SourceGit.Views
             _isEditing = false;
 
             var caretOffset = CaretOffset;
-            var start = caretOffset;
-            for (; start > 0; start--)
+            var lineStart = caretOffset;
+            for (; lineStart > 0; lineStart--)
             {
-                var ch = Text[start - 1];
+                var ch = Text[lineStart - 1];
                 if (ch == '\n')
                     break;
 
@@ -290,18 +290,18 @@ namespace SourceGit.Views
                     return;
             }
 
-            if (caretOffset < start + 2)
+            if (lineStart == 0 || caretOffset < lineStart + 2)
             {
                 _completionWnd?.Close();
                 return;
             }
 
-            var word = Text.Substring(start, caretOffset - start);
+            var word = Text.Substring(lineStart, caretOffset - lineStart);
             var matches = new List<CommitMessageCodeCompletionData>();
-            foreach (var keyword in _keywords)
+            foreach (var t in _trailers)
             {
-                if (keyword.StartsWith(word, StringComparison.OrdinalIgnoreCase) && keyword.Length != word.Length)
-                    matches.Add(new(keyword));
+                if (t.StartsWith(word, StringComparison.OrdinalIgnoreCase) && t.Length != word.Length)
+                    matches.Add(new(t));
             }
 
             if (matches.Count > 0)
@@ -315,7 +315,7 @@ namespace SourceGit.Views
 
                 _completionWnd.CompletionList.CompletionData.Clear();
                 _completionWnd.CompletionList.CompletionData.AddRange(matches);
-                _completionWnd.StartOffset = start;
+                _completionWnd.StartOffset = lineStart;
                 _completionWnd.EndOffset = caretOffset;
             }
             else
@@ -377,7 +377,22 @@ namespace SourceGit.Views
             SetCurrentValue(ColumnProperty, col);
         }
 
-        private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "on-behalf-of: @", "BREAKING CHANGE: ", "Refs: "];
+        private readonly List<string> _trailers =
+        [
+            "Acked-by: ",
+            "BREAKING CHANGE: ",
+            "Co-authored-by: ",
+            "Fixes: ",
+            "Helped-by: ",
+            "Issue: ",
+            "on-behalf-of: @",
+            "Reference-to: ",
+            "Refs: ",
+            "Reviewed-by: ",
+            "See-also: ",
+            "Signed-off-by: ",
+        ];
+
         private bool _isEditing = false;
         private int _subjectEndLine = 0;
         private CompletionWindow _completionWnd = null;
