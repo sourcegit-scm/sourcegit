@@ -24,7 +24,7 @@ namespace SourceGit.Views
                 }
             }
 
-            Data = this.FindResource("Icon.Command") as StreamGeometry;
+            Data = this.FindResource("Icons.Command") as StreamGeometry;
         }
     }
 }

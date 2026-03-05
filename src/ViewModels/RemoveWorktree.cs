@@ -4,7 +4,7 @@ namespace SourceGit.ViewModels
 {
     public class RemoveWorktree : Popup
     {
-        public Models.Worktree Target
+        public Worktree Target
         {
             get;
         }
@@ -15,7 +15,7 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public RemoveWorktree(Repository repo, Models.Worktree target)
+        public RemoveWorktree(Repository repo, Worktree target)
         {
             _repo = repo;
             Target = target;

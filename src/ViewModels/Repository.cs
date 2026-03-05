@@ -172,7 +172,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _remoteBranchTrees, value);
         }
 
-        public List<Models.Worktree> Worktrees
+        public List<Worktree> Worktrees
         {
             get => _worktrees;
             private set => SetProperty(ref _worktrees, value);
@@ -1076,23 +1076,7 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var worktrees = await new Commands.Worktree(FullPath).ReadAllAsync().ConfigureAwait(false);
-                if (worktrees.Count == 0)
-                {
-                    Dispatcher.UIThread.Invoke(() => Worktrees = worktrees);
-                    return;
-                }
-
-                var cleaned = new List<Models.Worktree>();
-                foreach (var worktree in worktrees)
-                {
-                    if (worktree.FullPath.Equals(FullPath, StringComparison.Ordinal) ||
-                        worktree.FullPath.Equals(GitDir, StringComparison.Ordinal))
-                        continue;
-
-                    cleaned.Add(worktree);
-                }
-
-                Dispatcher.UIThread.Invoke(() => Worktrees = cleaned);
+                Dispatcher.UIThread.Invoke(() => Worktrees = Worktree.Build(FullPath, worktrees));
             });
         }
 
@@ -1303,7 +1287,7 @@ namespace SourceGit.ViewModels
         {
             if (branch.IsLocal)
             {
-                var worktree = _worktrees.Find(x => x.Branch.Equals(branch.FullName, StringComparison.Ordinal));
+                var worktree = _worktrees.Find(x => x.IsAttachedTo(branch));
                 if (worktree != null)
                 {
                     OpenWorktree(worktree);
@@ -1470,8 +1454,11 @@ namespace SourceGit.ViewModels
                 await ShowAndStartPopupAsync(new PruneWorktrees(this));
         }
 
-        public void OpenWorktree(Models.Worktree worktree)
+        public void OpenWorktree(Worktree worktree)
         {
+            if (worktree.IsCurrent)
+                return;
+
             var node = Preferences.Instance.FindNode(worktree.FullPath) ??
                 new RepositoryNode
                 {
@@ -1484,7 +1471,7 @@ namespace SourceGit.ViewModels
             App.GetLauncher().OpenRepositoryInTab(node, null);
         }
 
-        public async Task LockWorktreeAsync(Models.Worktree worktree)
+        public async Task LockWorktreeAsync(Worktree worktree)
         {
             using var lockWatcher = _watcher?.Lock();
             var log = CreateLog("Lock Worktree");
@@ -1494,7 +1481,7 @@ namespace SourceGit.ViewModels
             log.Complete();
         }
 
-        public async Task UnlockWorktreeAsync(Models.Worktree worktree)
+        public async Task UnlockWorktreeAsync(Worktree worktree)
         {
             using var lockWatcher = _watcher?.Lock();
             var log = CreateLog("Unlock Worktree");
@@ -1864,7 +1851,7 @@ namespace SourceGit.ViewModels
         private Models.Branch _currentBranch = null;
         private List<BranchTreeNode> _localBranchTrees = [];
         private List<BranchTreeNode> _remoteBranchTrees = [];
-        private List<Models.Worktree> _worktrees = [];
+        private List<Worktree> _worktrees = [];
         private List<Models.Tag> _tags = [];
         private object _visibleTags = null;
         private List<Models.Submodule> _submodules = [];

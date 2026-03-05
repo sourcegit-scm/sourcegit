@@ -973,9 +973,12 @@
   <x:String x:Key="Text.Workspace" xml:space="preserve">工作区：</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">配置工作区...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">連結分支</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">复制工作树路径</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">最新提交</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">锁定工作树</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">打开工作树</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">位置</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
