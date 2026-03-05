@@ -90,12 +90,18 @@
             <Border Grid.Column="1" Margin="8,0,0,0" IsHitTestVisible="False">
               <TextBlock VerticalAlignment="Center" Text="{Binding Label, Mode=OneWay}"/>
             </Border>
-            <TextBlock Grid.Column="2"
-                       Margin="8,0,0,0"
-                       VerticalAlignment="Center"
-                       FontSize="12"
-                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                       Text="{Binding Keyword, Mode=OneWay}"/>
+            <Border Grid.Column="2"
+                    Height="18"
+                    Margin="8,0,0,0" Padding="6,0"
+                    CornerRadius="9"
+                    Background="{DynamicResource Brush.Popup}"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                    IsHitTestVisible="False">
+              <TextBlock VerticalAlignment="Center"
+                         FontSize="12"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         Text="{Binding Keyword, Mode=OneWay}"/>
+            </Border>
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
