@@ -85,13 +85,17 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:RepositoryCommandPaletteCmd">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,*,Auto" Background="Transparent" Tapped="OnItemTapped">
             <v:RepositoryCommandPaletteIcon Grid.Column="0"  Width="12" Height="12" IsHitTestVisible="False"/>
-            <TextBlock Grid.Column="1"
+            <Border Grid.Column="1" Margin="8,0,0,0" IsHitTestVisible="False">
+              <TextBlock VerticalAlignment="Center" Text="{Binding Label, Mode=OneWay}"/>
+            </Border>
+            <TextBlock Grid.Column="2"
                        Margin="8,0,0,0"
                        VerticalAlignment="Center"
-                       IsHitTestVisible="False"
-                       Text="{Binding Label, Mode=OneWay}"/>
+                       FontSize="12"
+                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                       Text="{Binding Keyword, Mode=OneWay}"/>
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
