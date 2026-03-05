@@ -5,13 +5,14 @@ namespace SourceGit.ViewModels
 {
     public class RepositoryCommandPaletteCmd
     {
-        public string Key { get; set; }
+        public string Label { get; set; }
+        public string Icon { get; set; }
         public Action Action { get; set; }
-        public string Label => $"{App.Text(Key)}...";
 
-        public RepositoryCommandPaletteCmd(string key, Action action)
+        public RepositoryCommandPaletteCmd(string label, string icon, Action action)
         {
-            Key = key;
+            Label = label;
+            Icon = icon;
             Action = action;
         }
     }
@@ -45,37 +46,37 @@ namespace SourceGit.ViewModels
             _launcher = launcher;
             _repo = repo;
 
-            _cmds.Add(new("Blame", () =>
+            _cmds.Add(new($"{App.Text("Blame")}...", "Blame", () =>
             {
                 var sub = new BlameCommandPalette(_launcher, _repo.FullPath);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("Checkout", () =>
+            _cmds.Add(new($"{App.Text("Checkout")}...", "Check", () =>
             {
                 var sub = new CheckoutCommandPalette(_launcher, _repo);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("Compare.WithHead", () =>
+            _cmds.Add(new($"{App.Text("Compare.WithHead")}...", "Compare", () =>
             {
                 var sub = new CompareCommandPalette(_launcher, _repo, _repo.CurrentBranch);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("FileHistory", () =>
+            _cmds.Add(new($"{App.Text("FileHistory")}...", "Histories", () =>
             {
                 var sub = new FileHistoryCommandPalette(_launcher, _repo.FullPath);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("Merge", () =>
+            _cmds.Add(new($"{App.Text("Merge")}...", "Merge", () =>
             {
                 var sub = new MergeCommandPalette(_launcher, _repo);
                 _launcher.OpenCommandPalette(sub);
             }));
 
-            _cmds.Add(new("OpenFile", () =>
+            _cmds.Add(new($"{App.Text("OpenFile")}...", "OpenWith", () =>
             {
                 var sub = new OpenFileCommandPalette(_launcher, _repo.FullPath);
                 _launcher.OpenCommandPalette(sub);
@@ -120,8 +121,7 @@ namespace SourceGit.ViewModels
 
                 foreach (var cmd in _cmds)
                 {
-                    if (cmd.Key.Contains(_filter, StringComparison.OrdinalIgnoreCase) ||
-                        cmd.Label.Contains(_filter, StringComparison.OrdinalIgnoreCase))
+                    if (cmd.Label.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                         visible.Add(cmd);
                 }
 
