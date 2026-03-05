@@ -57,10 +57,5 @@ namespace SourceGit
                 // Ignore exceptions.
             }
         }
-
-        public static string GetRelativePath(this DirectoryInfo dir, string fullpath)
-        {
-            return fullpath.Substring(dir.FullName.Length).TrimStart(Path.DirectorySeparatorChar);
-        }
     }
 }

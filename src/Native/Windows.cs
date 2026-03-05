@@ -234,11 +234,15 @@ namespace SourceGit.Native
                 return null;
 
             var options = new List<Models.ExternalTool.LaunchOption>();
+            var prefixLen = root.FullName.Length;
             root.WalkFiles(f =>
             {
                 if (f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
                     f.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
-                    options.Add(new(root.GetRelativePath(f), f.Quoted()));
+                {
+                    var display = f.Substring(prefixLen).TrimStart(Path.DirectorySeparatorChar);
+                    options.Add(new(display, f.Quoted()));
+                }
             });
             return options;
         }
