@@ -473,6 +473,7 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Внешнее хранилище:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Отслеживать файлы с именем «{0}»</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Отслеживать все файлы (*{0})</x:String>
+  <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Выбрать ревизию</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Истории</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
@@ -502,7 +503,8 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Сформировать все изменения и зафиксировать</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Извлечь (fetch), запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по умолчанию)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Перейти к родительскому выбранной ревизии</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">К дочернему выбранной ревизии</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">К родительскому выбранной ревизии</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Открыть палитру команд</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска ревизий</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Загрузить (pull), запускается сразу</x:String>
@@ -853,6 +855,7 @@
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Сформированные так и несформированные изменения выбранных файлов будут сохранены!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Отложить локальные изменения</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Принять</x:String>
+  <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">Применить изменения</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Копировать сообщение</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Отбросить</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Сохранить как заплатку...</x:String>
@@ -970,9 +973,12 @@
   <x:String x:Key="Text.Workspace" xml:space="preserve">РАБОЧЕЕ ПРОСТРАНСТВО: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Настройка рабочего пространства...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">РАБОЧИЙ КАТАЛОГ</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">ВЕТКА</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Копировать путь</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">ГОЛОВА</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Заблокировать</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Открыть</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">ПУТЬ</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Удалить</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Разблокировать</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">Да</x:String>
