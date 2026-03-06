@@ -1,8 +1,8 @@
 ﻿using System;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -14,9 +14,8 @@ namespace SourceGit.Views
         {
             if (e.Key == Key.Back && string.IsNullOrEmpty(Text))
             {
-                var launcherView = this.FindAncestorOfType<Launcher>(false);
-                if (launcherView is { DataContext: ViewModels.Launcher launcher } &&
-                    launcher.ActivePage is { Data: ViewModels.Repository repo })
+                var launcher = App.GetLauncher();
+                if (launcher is { ActivePage: { Data: ViewModels.Repository repo } })
                 {
                     launcher.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                     e.Handled = true;
