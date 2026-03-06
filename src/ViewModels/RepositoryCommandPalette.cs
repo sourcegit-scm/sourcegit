@@ -98,7 +98,7 @@ namespace SourceGit.ViewModels
                 repo.CreateNewTag();
             }));
 
-            _cmds.Add(new($"{App.Text("Fetch.Title")}...", "fetch", "Fetch", async () =>
+            _cmds.Add(new($"{App.Text("Fetch")}...", "fetch", "Fetch", async () =>
             {
                 var repo = _repo;
                 _launcher.CancelCommandPalette();
@@ -112,7 +112,7 @@ namespace SourceGit.ViewModels
                 await repo.PullAsync(false);
             }));
 
-            _cmds.Add(new($"{App.Text("Push.Title")}...", "push", "Push", async () =>
+            _cmds.Add(new($"{App.Text("Push")}...", "push", "Push", async () =>
             {
                 var repo = _repo;
                 _launcher.CancelCommandPalette();
@@ -131,6 +131,13 @@ namespace SourceGit.ViewModels
                 var repo = _repo;
                 _launcher.CancelCommandPalette();
                 repo.ApplyPatch();
+            }));
+
+            _cmds.Add(new($"{App.Text("Configure")}...", "configure", "Settings", async () =>
+            {
+                var repo = _repo;
+                _launcher.CancelCommandPalette();
+                await App.ShowDialog(new RepositoryConfigure(repo));
             }));
 
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
