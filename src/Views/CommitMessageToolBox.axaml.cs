@@ -385,6 +385,7 @@ namespace SourceGit.Views
             "Fixes: ",
             "Helped-by: ",
             "Issue: ",
+            "Milestone: ",
             "on-behalf-of: @",
             "Reference-to: ",
             "Refs: ",
