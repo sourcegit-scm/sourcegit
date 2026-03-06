@@ -140,6 +140,12 @@ namespace SourceGit.ViewModels
                 await App.ShowDialog(new RepositoryConfigure(repo));
             }));
 
+            _cmds.Add(new($"{App.Text("Repository.CustomActions")}...", "custom actions", "Action", async () =>
+            {
+                var sub = new ExecuteCustomActionCommandPalette(_launcher, _repo);
+                _launcher.OpenCommandPalette(sub);
+            }));
+
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
             _visibleCmds = _cmds;
             _selectedCmd = _cmds[0];
