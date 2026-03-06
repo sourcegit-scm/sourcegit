@@ -18,7 +18,7 @@ namespace SourceGit.Views
                 if (launcherView is { DataContext: ViewModels.Launcher launcher } &&
                     launcher.ActivePage is { Data: ViewModels.Repository repo })
                 {
-                    launcher.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(launcher, repo));
+                    launcher.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                     e.Handled = true;
                     return;
                 }

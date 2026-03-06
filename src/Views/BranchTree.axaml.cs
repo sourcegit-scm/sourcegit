@@ -738,9 +738,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWith);
@@ -863,9 +861,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithCurrent);
@@ -1171,9 +1167,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
 
                 menu.Items.Add(pull);

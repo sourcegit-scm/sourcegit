@@ -347,23 +347,6 @@ namespace SourceGit.ViewModels
                 ActivePage = page;
         }
 
-        public void OpenCommandPalette(ICommandPalette commandPalette)
-        {
-            var old = _commandPalette;
-            CommandPalette = commandPalette;
-            old?.Dispose();
-        }
-
-        public void CancelCommandPalette()
-        {
-            if (_commandPalette != null)
-            {
-                _commandPalette?.Dispose();
-                CommandPalette = null;
-                GC.Collect();
-            }
-        }
-
         public void DispatchNotification(string pageId, string message, bool isError)
         {
             if (!Dispatcher.UIThread.CheckAccess())
@@ -453,7 +436,7 @@ namespace SourceGit.ViewModels
                 builder.Append(" - ").Append(_activeWorkspace.Name);
 
             Title = builder.ToString();
-            CancelCommandPalette();
+            CommandPalette = null;
         }
 
         private Workspace _activeWorkspace;

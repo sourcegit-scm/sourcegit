@@ -28,20 +28,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public CheckoutCommandPalette(Launcher launcher, Repository repo)
+        public CheckoutCommandPalette(Repository repo)
         {
-            _launcher = launcher;
             _repo = repo;
             UpdateBranches();
-        }
-
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _repo = null;
-            _branches.Clear();
-            _selectedBranch = null;
-            _filter = null;
         }
 
         public void ClearFilter()
@@ -51,13 +41,11 @@ namespace SourceGit.ViewModels
 
         public async Task ExecAsync()
         {
-            _launcher.CommandPalette = null;
+            _branches.Clear();
+            Close();
 
             if (_selectedBranch != null)
                 await _repo.CheckoutBranchAsync(_selectedBranch);
-
-            Dispose();
-            GC.Collect();
         }
 
         private void UpdateBranches()
@@ -94,7 +82,6 @@ namespace SourceGit.ViewModels
             SelectedBranch = autoSelected;
         }
 
-        private Launcher _launcher;
         private Repository _repo;
         private List<Models.Branch> _branches = [];
         private Models.Branch _selectedBranch = null;

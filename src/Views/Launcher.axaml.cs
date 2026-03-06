@@ -244,7 +244,7 @@ namespace SourceGit.Views
                             e.Handled = true;
                             return;
                         case Key.P when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            vm.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(vm, repo));
+                            vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                             e.Handled = true;
                             return;
                     }
@@ -266,7 +266,7 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 if (vm.CommandPalette != null)
-                    vm.CancelCommandPalette();
+                    vm.CommandPalette = null;
                 else
                     vm.ActivePage.CancelPopup();
 
@@ -372,15 +372,15 @@ namespace SourceGit.Views
 
         private void OnOpenPagesCommandPalette(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Launcher launcher)
-                launcher.OpenCommandPalette(new ViewModels.LauncherPagesCommandPalette(launcher));
+            if (DataContext is ViewModels.Launcher vm)
+                vm.CommandPalette = new ViewModels.LauncherPagesCommandPalette(vm);
             e.Handled = true;
         }
 
         private void OnCloseCommandPalette(object sender, PointerPressedEventArgs e)
         {
-            if (e.Source == sender && DataContext is ViewModels.Launcher launcher)
-                launcher.CancelCommandPalette();
+            if (e.Source == sender && DataContext is ViewModels.Launcher vm)
+                vm.CommandPalette = null;
             e.Handled = true;
         }
 

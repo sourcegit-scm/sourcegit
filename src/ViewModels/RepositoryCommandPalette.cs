@@ -8,14 +8,25 @@ namespace SourceGit.ViewModels
         public string Label { get; set; }
         public string Keyword { get; set; }
         public string Icon { get; set; }
+        public bool CloseBeforeExec { get; set; }
         public Action Action { get; set; }
 
-        public RepositoryCommandPaletteCmd(string label, string keyword, string icon, Action action)
+        public RepositoryCommandPaletteCmd(string labelKey, string keyword, string icon, Action action)
         {
-            Label = label;
+            Label = $"{App.Text(labelKey)}...";
             Keyword = keyword;
             Icon = icon;
+            CloseBeforeExec = true;
             Action = action;
+        }
+
+        public RepositoryCommandPaletteCmd(string labelKey, string keyword, string icon, ICommandPalette child)
+        {
+            Label = $"{App.Text(labelKey)}...";
+            Keyword = keyword;
+            Icon = icon;
+            CloseBeforeExec = false;
+            Action = () => child.Open();
         }
     }
 
@@ -43,122 +54,30 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public RepositoryCommandPalette(Launcher launcher, Repository repo)
+        public RepositoryCommandPalette(Repository repo)
         {
-            _launcher = launcher;
-            _repo = repo;
+            // Sub-CommandPalettes
+            _cmds.Add(new("Blame", "blame", "Blame", new BlameCommandPalette(repo.FullPath)));
+            _cmds.Add(new("Checkout", "checkout", "Check", new CheckoutCommandPalette(repo)));
+            _cmds.Add(new("Compare.WithHead", "compare", "Compare", new CompareCommandPalette(repo, null)));
+            _cmds.Add(new("FileHistory", "history", "Histories", new FileHistoryCommandPalette(repo.FullPath)));
+            _cmds.Add(new("Merge", "merge", "Merge", new MergeCommandPalette(repo)));
+            _cmds.Add(new("OpenFile", "open", "OpenWith", new OpenFileCommandPalette(repo.FullPath)));
+            _cmds.Add(new("Repository.CustomActions", "custom actions", "Action", new ExecuteCustomActionCommandPalette(repo)));
 
-            _cmds.Add(new($"{App.Text("Blame")}...", "blame", "Blame", () =>
-            {
-                var sub = new BlameCommandPalette(_launcher, _repo.FullPath);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new($"{App.Text("Checkout")}...", "checkout", "Check", () =>
-            {
-                var sub = new CheckoutCommandPalette(_launcher, _repo);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new($"{App.Text("Compare.WithHead")}...", "compare", "Compare", () =>
-            {
-                var sub = new CompareCommandPalette(_launcher, _repo, _repo.CurrentBranch);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new($"{App.Text("FileHistory")}...", "history", "Histories", () =>
-            {
-                var sub = new FileHistoryCommandPalette(_launcher, _repo.FullPath);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new($"{App.Text("Merge")}...", "merge", "Merge", () =>
-            {
-                var sub = new MergeCommandPalette(_launcher, _repo);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new($"{App.Text("OpenFile")}...", "open", "OpenWith", () =>
-            {
-                var sub = new OpenFileCommandPalette(_launcher, _repo.FullPath);
-                _launcher.OpenCommandPalette(sub);
-            }));
-
-            _cmds.Add(new($"{App.Text("Repository.NewBranch")}...", "create branch", "Branch.Add", () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                repo.CreateNewBranch();
-            }));
-
-            _cmds.Add(new($"{App.Text("CreateTag.Title")}...", "create tag", "Tag.Add", () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                repo.CreateNewTag();
-            }));
-
-            _cmds.Add(new($"{App.Text("Fetch")}...", "fetch", "Fetch", async () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                await repo.FetchAsync(false);
-            }));
-
-            _cmds.Add(new($"{App.Text("Pull.Title")}...", "pull", "Pull", async () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                await repo.PullAsync(false);
-            }));
-
-            _cmds.Add(new($"{App.Text("Push")}...", "push", "Push", async () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                await repo.PushAsync(false);
-            }));
-
-            _cmds.Add(new($"{App.Text("Stash.Title")}...", "stash", "Stashes.Add", async () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                await repo.StashAllAsync(false);
-            }));
-
-            _cmds.Add(new($"{App.Text("Apply.Title")}...", "apply", "Diff", () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                repo.ApplyPatch();
-            }));
-
-            _cmds.Add(new($"{App.Text("Configure")}...", "configure", "Settings", async () =>
-            {
-                var repo = _repo;
-                _launcher.CancelCommandPalette();
-                await App.ShowDialog(new RepositoryConfigure(repo));
-            }));
-
-            _cmds.Add(new($"{App.Text("Repository.CustomActions")}...", "custom actions", "Action", async () =>
-            {
-                var sub = new ExecuteCustomActionCommandPalette(_launcher, _repo);
-                _launcher.OpenCommandPalette(sub);
-            }));
+            // Raw-Actions
+            _cmds.Add(new("Repository.NewBranch", "create branch", "Branch.Add", () => repo.CreateNewBranch()));
+            _cmds.Add(new("CreateTag.Title", "create tag", "Tag.Add", () => repo.CreateNewTag()));
+            _cmds.Add(new("Fetch", "fetch", "Fetch", async () => await repo.FetchAsync(false)));
+            _cmds.Add(new("Pull.Title", "pull", "Pull", async () => await repo.PullAsync(false)));
+            _cmds.Add(new("Push", "push", "Push", async () => await repo.PushAsync(false)));
+            _cmds.Add(new("Stash.Title", "stash", "Stashes.Add", async () => await repo.StashAllAsync(false)));
+            _cmds.Add(new("Apply.Title", "apply", "Diff", () => repo.ApplyPatch()));
+            _cmds.Add(new("Configure", "configure", "Settings", async () => await App.ShowDialog(new RepositoryConfigure(repo))));
 
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
             _visibleCmds = _cmds;
             _selectedCmd = _cmds[0];
-        }
-
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _repo = null;
-            _cmds.Clear();
-            _visibleCmds.Clear();
-            _selectedCmd = null;
-            _filter = null;
         }
 
         public void ClearFilter()
@@ -168,10 +87,16 @@ namespace SourceGit.ViewModels
 
         public void Exec()
         {
+            _cmds.Clear();
+            _visibleCmds.Clear();
+
             if (_selectedCmd != null)
+            {
+                if (_selectedCmd.CloseBeforeExec)
+                    Close();
+
                 _selectedCmd.Action?.Invoke();
-            else
-                _launcher?.CancelCommandPalette();
+            }
         }
 
         private void UpdateVisible()
@@ -200,8 +125,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Launcher _launcher = null;
-        private Repository _repo = null;
         private List<RepositoryCommandPaletteCmd> _cmds = [];
         private List<RepositoryCommandPaletteCmd> _visibleCmds = [];
         private RepositoryCommandPaletteCmd _selectedCmd = null;

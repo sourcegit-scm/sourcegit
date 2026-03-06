@@ -279,9 +279,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, tag));
+                    new ViewModels.CompareCommandPalette(repo, tag).Open();
                 };
 
                 var archive = new MenuItem();

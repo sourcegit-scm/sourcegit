@@ -35,9 +35,8 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedFile, value);
         }
 
-        public BlameCommandPalette(Launcher launcher, string repo)
+        public BlameCommandPalette(string repo)
         {
-            _launcher = launcher;
             _repo = repo;
             _isLoading = true;
 
@@ -61,17 +60,6 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _repo = null;
-            _head = null;
-            _repoFiles.Clear();
-            _filter = null;
-            _visibleFiles.Clear();
-            _selectedFile = null;
-        }
-
         public void ClearFilter()
         {
             Filter = string.Empty;
@@ -79,9 +67,12 @@ namespace SourceGit.ViewModels
 
         public void Launch()
         {
+            _repoFiles.Clear();
+            _visibleFiles.Clear();
+            Close();
+
             if (!string.IsNullOrEmpty(_selectedFile))
                 App.ShowWindow(new Blame(_repo, _selectedFile, _head));
-            _launcher.CancelCommandPalette();
         }
 
         private void UpdateVisible()
@@ -117,7 +108,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Launcher _launcher = null;
         private string _repo = null;
         private bool _isLoading = false;
         private Models.Commit _head = null;

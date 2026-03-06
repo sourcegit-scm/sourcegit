@@ -41,9 +41,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public ExecuteCustomActionCommandPalette(Launcher launcher, Repository repo)
+        public ExecuteCustomActionCommandPalette(Repository repo)
         {
-            _launcher = launcher;
             _repo = repo;
 
             var actions = repo.GetCustomActions(Models.CustomActionScope.Repository);
@@ -65,16 +64,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _repo = null;
-            _actions.Clear();
-            _visibleActions.Clear();
-            _selected = null;
-            _filter = null;
-        }
-
         public void ClearFilter()
         {
             Filter = string.Empty;
@@ -82,13 +71,12 @@ namespace SourceGit.ViewModels
 
         public async Task ExecAsync()
         {
-            _launcher.CommandPalette = null;
+            _actions.Clear();
+            _visibleActions.Clear();
+            Close();
 
             if (_selected != null)
                 await _repo.ExecCustomActionAsync(_selected.Action, null);
-
-            Dispose();
-            GC.Collect();
         }
 
         private void UpdateVisibleActions()
@@ -117,7 +105,6 @@ namespace SourceGit.ViewModels
             Selected = autoSelected;
         }
 
-        private Launcher _launcher;
         private Repository _repo;
         private List<ExecuteCustomActionCommandPaletteCmd> _actions = [];
         private List<ExecuteCustomActionCommandPaletteCmd> _visibleActions = [];

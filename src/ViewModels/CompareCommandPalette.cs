@@ -32,22 +32,11 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public CompareCommandPalette(Launcher launcher, Repository repo, object basedOn)
+        public CompareCommandPalette(Repository repo, object basedOn)
         {
-            _launcher = launcher;
             _repo = repo;
             _basedOn = basedOn ?? repo.CurrentBranch;
             UpdateRefs();
-        }
-
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _repo = null;
-            _basedOn = null;
-            _compareTo = null;
-            _refs.Clear();
-            _filter = null;
         }
 
         public void ClearFilter()
@@ -57,9 +46,11 @@ namespace SourceGit.ViewModels
 
         public void Launch()
         {
+            _refs.Clear();
+            Close();
+
             if (_compareTo != null)
                 App.ShowWindow(new Compare(_repo, _basedOn, _compareTo));
-            _launcher?.CancelCommandPalette();
         }
 
         private void UpdateRefs()
@@ -114,7 +105,6 @@ namespace SourceGit.ViewModels
             CompareTo = autoSelected;
         }
 
-        private Launcher _launcher;
         private Repository _repo;
         private object _basedOn = null;
         private object _compareTo = null;
