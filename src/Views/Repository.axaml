@@ -70,11 +70,7 @@
                   <Setter Property="Height" Value="28"/>
                   <Setter Property="Margin" Value="0"/>
                   <Setter Property="Padding" Value="0"/>
-                  <Setter Property="BorderThickness" Value="0,0,0,1"/>
                   <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-                </Style>
-                <Style Selector="ListBoxItem:nth-last-child(1)">
-                  <Setter Property="BorderThickness" Value="0"/>
                 </Style>
                 <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
                   <Setter Property="Background" Value="Transparent"/>
@@ -96,7 +92,7 @@
                 </ItemsPanelTemplate>
               </ListBox.ItemsPanel>
 
-              <ListBoxItem>
+              <ListBoxItem BorderThickness="0">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
@@ -127,7 +123,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem IsVisible="{Binding !IsBare}">
+              <ListBoxItem BorderThickness="0,1,0,0" IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
@@ -159,7 +155,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem IsVisible="{Binding !IsBare}">
+              <ListBoxItem BorderThickness="0,1,0,0" IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
