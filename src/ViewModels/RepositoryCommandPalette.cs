@@ -141,6 +141,23 @@ namespace SourceGit.ViewModels
             }));
 
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
+
+            // repository custom actions (defined in preferences or repo settings)
+            foreach (var (action, ctxLabel) in _repo.GetCustomActions(Models.CustomActionScope.Repository))
+            {
+                // construct a human readable label; global actions are marked
+                var label = ctxLabel.Name;
+                if (ctxLabel.IsGlobal)
+                    label += " (GLOBAL)";
+
+                // keywords include action name and a generic 'custom' term to make filtering easier
+                _cmds.Add(new(label, action.Name + " custom", "Settings", async () =>
+                {
+                    var repo = _repo;
+                    _launcher.CancelCommandPalette();
+                    await repo.ExecCustomActionAsync(action, null);
+                }));
+            }
             _visibleCmds = _cmds;
             _selectedCmd = _cmds[0];
         }
