@@ -1076,7 +1076,8 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var worktrees = await new Commands.Worktree(FullPath).ReadAllAsync().ConfigureAwait(false);
-                Dispatcher.UIThread.Invoke(() => Worktrees = Worktree.Build(FullPath, worktrees));
+                var cleaned = Worktree.Build(FullPath, worktrees);
+                Dispatcher.UIThread.Invoke(() => Worktrees = cleaned);
             });
         }
 
