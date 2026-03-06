@@ -8,33 +8,24 @@ namespace SourceGit.Converters
     public static class IntConverters
     {
         public static readonly FuncValueConverter<int, bool> IsGreaterThanZero =
-            new FuncValueConverter<int, bool>(v => v > 0);
+            new(v => v > 0);
 
         public static readonly FuncValueConverter<int, bool> IsGreaterThanFour =
-            new FuncValueConverter<int, bool>(v => v > 4);
+            new(v => v > 4);
 
         public static readonly FuncValueConverter<int, bool> IsZero =
-            new FuncValueConverter<int, bool>(v => v == 0);
-
-        public static readonly FuncValueConverter<int, bool> IsOne =
-            new FuncValueConverter<int, bool>(v => v == 1);
+            new(v => v == 0);
 
         public static readonly FuncValueConverter<int, bool> IsNotOne =
-            new FuncValueConverter<int, bool>(v => v != 1);
-
-        public static readonly FuncValueConverter<int, bool> IsSubjectLengthBad =
-            new FuncValueConverter<int, bool>(v => v > ViewModels.Preferences.Instance.SubjectGuideLength);
-
-        public static readonly FuncValueConverter<int, bool> IsSubjectLengthGood =
-            new FuncValueConverter<int, bool>(v => v <= ViewModels.Preferences.Instance.SubjectGuideLength);
+            new(v => v != 1);
 
         public static readonly FuncValueConverter<int, Thickness> ToTreeMargin =
-            new FuncValueConverter<int, Thickness>(v => new Thickness(v * 16, 0, 0, 0));
+            new(v => new Thickness(v * 16, 0, 0, 0));
 
         public static readonly FuncValueConverter<int, IBrush> ToBookmarkBrush =
-            new FuncValueConverter<int, IBrush>(v => Models.Bookmarks.Get(v) ?? App.Current?.FindResource("Brush.FG1") as IBrush);
+            new(v => Models.Bookmarks.Get(v) ?? Application.Current?.FindResource("Brush.FG1") as IBrush);
 
         public static readonly FuncValueConverter<int, string> ToUnsolvedDesc =
-            new FuncValueConverter<int, string>(v => v == 0 ? App.Text("MergeConflictEditor.AllResolved") : App.Text("MergeConflictEditor.ConflictsRemaining", v));
+            new(v => v == 0 ? App.Text("MergeConflictEditor.AllResolved") : App.Text("MergeConflictEditor.ConflictsRemaining", v));
     }
 }

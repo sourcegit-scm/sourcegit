@@ -20,6 +20,12 @@ namespace SourceGit.Views
             UpdateLeftSidebarLayout();
         }
 
+        private void OnToggleFilter(object _, RoutedEventArgs e)
+        {
+            FilterBox.Focus();
+            e.Handled = true;
+        }
+
         private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true })
@@ -82,7 +88,7 @@ namespace SourceGit.Views
 
         private void OnWorktreeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (sender is ListBox { SelectedItem: Models.Worktree worktree } grid && DataContext is ViewModels.Repository repo)
+            if (sender is Control { DataContext: ViewModels.Worktree worktree } ctrl && DataContext is ViewModels.Repository repo)
             {
                 var menu = new ContextMenu();
 
@@ -114,6 +120,7 @@ namespace SourceGit.Views
                     var loc = new MenuItem();
                     loc.Header = App.Text("Worktree.Lock");
                     loc.Icon = App.CreateMenuIcon("Icons.Lock");
+                    loc.IsEnabled = !worktree.IsMain;
                     loc.Click += async (_, ev) =>
                     {
                         await repo.LockWorktreeAsync(worktree);
@@ -125,6 +132,7 @@ namespace SourceGit.Views
                 var remove = new MenuItem();
                 remove.Header = App.Text("Worktree.Remove");
                 remove.Icon = App.CreateMenuIcon("Icons.Clear");
+                remove.IsEnabled = !worktree.IsCurrent && !worktree.IsMain;
                 remove.Click += (_, ev) =>
                 {
                     if (repo.CanCreatePopup())
@@ -143,15 +151,15 @@ namespace SourceGit.Views
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(copy);
-                menu.Open(grid);
+                menu.Open(ctrl);
             }
 
             e.Handled = true;
         }
 
-        private void OnDoubleTappedWorktree(object sender, TappedEventArgs e)
+        private void OnWorktreeDoubleTapped(object sender, TappedEventArgs e)
         {
-            if (sender is ListBox { SelectedItem: Models.Worktree worktree } && DataContext is ViewModels.Repository repo)
+            if (sender is Control { DataContext: ViewModels.Worktree worktree } && DataContext is ViewModels.Repository repo)
                 repo.OpenWorktree(worktree);
 
             e.Handled = true;
@@ -407,22 +415,22 @@ namespace SourceGit.Views
                 var dateOrder = new MenuItem();
                 dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
                 dateOrder.Tag = "--date-order";
-                if (!repo.EnableTopoOrderInHistories)
+                if (!repo.EnableTopoOrderInHistory)
                     dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 dateOrder.Click += (_, ev) =>
                 {
-                    repo.EnableTopoOrderInHistories = false;
+                    repo.EnableTopoOrderInHistory = false;
                     ev.Handled = true;
                 };
 
                 var topoOrder = new MenuItem();
                 topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
                 topoOrder.Tag = "--topo-order";
-                if (repo.EnableTopoOrderInHistories)
+                if (repo.EnableTopoOrderInHistory)
                     topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
                 topoOrder.Click += (_, ev) =>
                 {
-                    repo.EnableTopoOrderInHistories = true;
+                    repo.EnableTopoOrderInHistory = true;
                     ev.Handled = true;
                 };
 

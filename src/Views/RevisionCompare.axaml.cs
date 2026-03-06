@@ -77,11 +77,31 @@ namespace SourceGit.Views
                         explore.IsEnabled = File.Exists(changeFullPath);
                         explore.Click += (_, ev) =>
                         {
-                            Native.OS.OpenInFileManager(changeFullPath, true);
+                            Native.OS.OpenInFileManager(changeFullPath);
                             ev.Handled = true;
                         };
                         menu.Items.Add(explore);
                     }
+
+                    var resetToLeft = new MenuItem();
+                    resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.LeftSideDesc);
+                    resetToLeft.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToLeft.IsEnabled = vm.CanResetToLeft;
+                    resetToLeft.Click += async (_, ev) =>
+                    {
+                        await vm.ResetToLeftAsync(change);
+                        ev.Handled = true;
+                    };
+
+                    var resetToRight = new MenuItem();
+                    resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.RightSideDesc);
+                    resetToRight.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToRight.IsEnabled = vm.CanResetToRight;
+                    resetToRight.Click += async (_, ev) =>
+                    {
+                        await vm.ResetToRightAsync(change);
+                        ev.Handled = true;
+                    };
 
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
@@ -106,11 +126,34 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(patch);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(resetToLeft);
+                    menu.Items.Add(resetToRight);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
                 }
                 else
                 {
+                    var resetToLeft = new MenuItem();
+                    resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.LeftSideDesc);
+                    resetToLeft.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToLeft.IsEnabled = vm.CanResetToLeft;
+                    resetToLeft.Click += async (_, ev) =>
+                    {
+                        await vm.ResetMultipleToLeftAsync(selected);
+                        ev.Handled = true;
+                    };
+
+                    var resetToRight = new MenuItem();
+                    resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.RightSideDesc);
+                    resetToRight.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                    resetToRight.IsEnabled = vm.CanResetToRight;
+                    resetToRight.Click += async (_, ev) =>
+                    {
+                        await vm.ResetMultipleToRightAsync(selected);
+                        ev.Handled = true;
+                    };
+
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
                     copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
@@ -140,6 +183,9 @@ namespace SourceGit.Views
                     };
 
                     menu.Items.Add(patch);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(resetToLeft);
+                    menu.Items.Add(resetToRight);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(copyPath);
                     menu.Items.Add(copyFullPath);
@@ -195,7 +241,8 @@ namespace SourceGit.Views
             if (sender is not ChangeCollectionView { SelectedChanges: { Count: > 0 } selectedChanges })
                 return;
 
-            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
+            var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.Key == Key.C && e.KeyModifiers.HasFlag(cmdKey))
             {
                 var builder = new StringBuilder();
                 var copyAbsPath = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
@@ -210,6 +257,11 @@ namespace SourceGit.Views
                 }
 
                 await App.CopyTextAsync(builder.ToString());
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F && e.KeyModifiers == cmdKey)
+            {
+                RevisionCompareChangeSearchBox.Focus();
                 e.Handled = true;
             }
         }

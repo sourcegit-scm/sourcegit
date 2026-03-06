@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _fetchAllRemotes, value) && IsFetchAllRemoteVisible)
-                    _repo.Settings.FetchAllRemotes = value;
+                    _repo.UIStates.FetchAllRemotes = value;
             }
         }
 
@@ -33,21 +33,21 @@ namespace SourceGit.ViewModels
 
         public bool NoTags
         {
-            get => _repo.Settings.FetchWithoutTags;
-            set => _repo.Settings.FetchWithoutTags = value;
+            get => _repo.UIStates.FetchWithoutTags;
+            set => _repo.UIStates.FetchWithoutTags = value;
         }
 
         public bool Force
         {
-            get => _repo.Settings.EnableForceOnFetch;
-            set => _repo.Settings.EnableForceOnFetch = value;
+            get => _repo.UIStates.EnableForceOnFetch;
+            set => _repo.UIStates.EnableForceOnFetch = value;
         }
 
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
         {
             _repo = repo;
             IsFetchAllRemoteVisible = repo.Remotes.Count > 1 && preferredRemote == null;
-            _fetchAllRemotes = IsFetchAllRemoteVisible && _repo.Settings.FetchAllRemotes;
+            _fetchAllRemotes = IsFetchAllRemoteVisible && _repo.UIStates.FetchAllRemotes;
 
             if (preferredRemote != null)
             {
@@ -69,8 +69,8 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
 
             var navigateToUpstreamHEAD = _repo.SelectedView is Histories { SelectedCommit: { IsCurrentHead: true } };
-            var notags = _repo.Settings.FetchWithoutTags;
-            var force = _repo.Settings.EnableForceOnFetch;
+            var notags = _repo.UIStates.FetchWithoutTags;
+            var force = _repo.UIStates.EnableForceOnFetch;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 

@@ -5,8 +5,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public record TextDiffDisplayRange(int Start, int End);
-
     public record TextDiffSelectedChunk(double Y, double Height, int StartIdx, int EndIdx, bool Combined, bool IsOldSide)
     {
         public static bool IsChanged(TextDiffSelectedChunk oldValue, TextDiffSelectedChunk newValue)
@@ -43,7 +41,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _blockNavigation, value);
         }
 
-        public TextDiffDisplayRange DisplayRange
+        public TextLineRange DisplayRange
         {
             get => _displayRange;
             set => SetProperty(ref _displayRange, value);
@@ -161,7 +159,7 @@ namespace SourceGit.ViewModels
         protected Vector _scrollOffset = Vector.Zero;
         protected BlockNavigation _blockNavigation = null;
 
-        private TextDiffDisplayRange _displayRange = null;
+        private TextLineRange _displayRange = null;
         private TextDiffSelectedChunk _selectedChunk = null;
     }
 

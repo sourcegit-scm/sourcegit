@@ -1,4 +1,6 @@
-﻿using Avalonia.Data.Converters;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Data.Converters;
 using Avalonia.Media;
 
 namespace SourceGit.Converters
@@ -6,9 +8,12 @@ namespace SourceGit.Converters
     public static class BoolConverters
     {
         public static readonly FuncValueConverter<bool, FontWeight> IsBoldToFontWeight =
-            new FuncValueConverter<bool, FontWeight>(x => x ? FontWeight.Bold : FontWeight.Regular);
+            new(x => x ? FontWeight.Bold : FontWeight.Regular);
 
         public static readonly FuncValueConverter<bool, double> IsMergedToOpacity =
-            new FuncValueConverter<bool, double>(x => x ? 1 : 0.65);
+            new(x => x ? 1 : 0.65);
+
+        public static readonly FuncValueConverter<bool, IBrush> IsWarningToBrush =
+            new(x => x ? Brushes.DarkGoldenrod : Application.Current?.FindResource("Brush.FG1") as IBrush);
     }
 }

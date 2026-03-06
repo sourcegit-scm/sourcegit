@@ -5,22 +5,28 @@ namespace SourceGit.ViewModels
 {
     public abstract class InProgressContext
     {
-        public async Task ContinueAsync()
+        public string Name
+        {
+            get;
+            protected set;
+        }
+
+        public async Task ContinueAsync(CommandLog log)
         {
             if (_continueCmd != null)
-                await _continueCmd.ExecAsync();
+                await _continueCmd.Use(log).ExecAsync();
         }
 
-        public async Task SkipAsync()
+        public async Task SkipAsync(CommandLog log)
         {
             if (_skipCmd != null)
-                await _skipCmd.ExecAsync();
+                await _skipCmd.Use(log).ExecAsync();
         }
 
-        public async Task AbortAsync()
+        public async Task AbortAsync(CommandLog log)
         {
             if (_abortCmd != null)
-                await _abortCmd.ExecAsync();
+                await _abortCmd.Use(log).ExecAsync();
         }
 
         protected Commands.Command _continueCmd = null;
@@ -42,6 +48,8 @@ namespace SourceGit.ViewModels
 
         public CherryPickInProgress(Repository repo)
         {
+            Name = "Cherry-Pick";
+
             _continueCmd = new Commands.Command
             {
                 WorkingDirectory = repo.FullPath,
@@ -93,6 +101,8 @@ namespace SourceGit.ViewModels
 
         public RebaseInProgress(Repository repo)
         {
+            Name = "Rebase";
+
             _continueCmd = new Commands.Command
             {
                 WorkingDirectory = repo.FullPath,
@@ -144,6 +154,8 @@ namespace SourceGit.ViewModels
 
         public RevertInProgress(Repository repo)
         {
+            Name = "Revert";
+
             _continueCmd = new Commands.Command
             {
                 WorkingDirectory = repo.FullPath,
@@ -189,6 +201,8 @@ namespace SourceGit.ViewModels
 
         public MergeInProgress(Repository repo)
         {
+            Name = "Merge";
+
             _continueCmd = new Commands.Command
             {
                 WorkingDirectory = repo.FullPath,

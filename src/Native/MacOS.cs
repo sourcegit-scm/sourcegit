@@ -44,6 +44,13 @@ namespace SourceGit.Native
             window.ExtendClientAreaToDecorationsHint = true;
         }
 
+        public string GetDataDir()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit");
+        }
+
         public string FindGitExecutable()
         {
             var gitPathVariants = new List<string>() {
@@ -84,7 +91,7 @@ namespace SourceGit.Native
             Process.Start("open", url);
         }
 
-        public void OpenInFileManager(string path, bool select)
+        public void OpenInFileManager(string path)
         {
             if (Directory.Exists(path))
                 Process.Start("open", path.Quoted());

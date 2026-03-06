@@ -32,6 +32,7 @@ if [[ ! -f "appimagetool" ]]; then
 fi
 
 rm -f SourceGit/*.dbg
+rm -f SourceGit/*.pdb
 
 mkdir -p SourceGit.AppDir/opt
 mkdir -p SourceGit.AppDir/usr/share/metainfo

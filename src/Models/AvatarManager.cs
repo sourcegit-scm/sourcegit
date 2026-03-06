@@ -49,8 +49,6 @@ namespace SourceGit.Models
                 Directory.CreateDirectory(_storePath);
 
             LoadDefaultAvatar("noreply@github.com", "github.png");
-            LoadDefaultAvatar("action@github.com", "github.png");
-            LoadDefaultAvatar("github-actions[bot]@users.noreply.github.com", "github.png");
             LoadDefaultAvatar("unrealbot@epicgames.com", "unreal.png");
 
             Task.Run(async () =>
@@ -76,9 +74,15 @@ namespace SourceGit.Models
 
                     var md5 = GetEmailHash(email);
                     var matchGitHubUser = REG_GITHUB_USER_EMAIL().Match(email);
-                    var url = matchGitHubUser.Success ?
-                        $"https://avatars.githubusercontent.com/{matchGitHubUser.Groups[2].Value}" :
-                        $"https://www.gravatar.com/avatar/{md5}?d=404";
+                    var url = $"https://www.gravatar.com/avatar/{md5}?d=404";
+                    if (matchGitHubUser.Success)
+                    {
+                        var githubUser = matchGitHubUser.Groups[2].Value;
+                        if (githubUser.EndsWith("[bot]", StringComparison.OrdinalIgnoreCase))
+                            githubUser = githubUser.Substring(0, githubUser.Length - 5);
+
+                        url = $"https://avatars.githubusercontent.com/{githubUser}";
+                    }
 
                     var localFile = Path.Combine(_storePath, md5);
                     Bitmap img = null;

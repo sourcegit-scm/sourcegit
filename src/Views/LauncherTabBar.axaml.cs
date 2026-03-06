@@ -316,13 +316,16 @@ namespace SourceGit.Views
                             icon.Fill = brush;
 
                         var dupIdx = i;
-                        var setter = new MenuItem();
-                        setter.Header = icon;
-                        setter.Click += (_, ev) =>
-                        {
-                            page.Node.Bookmark = dupIdx;
-                            ev.Handled = true;
-                        };
+                        var setter = new MenuItem() { Header = icon };
+                        if (i == page.Node.Bookmark)
+                            setter.Icon = App.CreateMenuIcon("Icons.Check");
+                        else
+                            setter.Click += (_, ev) =>
+                            {
+                                page.Node.Bookmark = dupIdx;
+                                ev.Handled = true;
+                            };
+
                         bookmark.Items.Add(setter);
                     }
                     menu.Items.Add(bookmark);

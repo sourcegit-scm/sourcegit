@@ -29,7 +29,7 @@ namespace SourceGit.Views
             explore.IsEnabled = Directory.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(fullPath, true);
+                Native.OS.OpenInFileManager(fullPath);
                 ev.Handled = true;
             };
 
@@ -264,7 +264,7 @@ namespace SourceGit.Views
             explore.IsEnabled = File.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
-                Native.OS.OpenInFileManager(fullPath, true);
+                Native.OS.OpenInFileManager(fullPath);
                 ev.Handled = true;
             };
 
@@ -335,7 +335,7 @@ namespace SourceGit.Views
                 resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += async (_, ev) =>
                 {
-                    await vm.ResetToThisRevisionAsync(change.Path);
+                    await vm.ResetToThisRevisionAsync(change);
                     ev.Handled = true;
                 };
 

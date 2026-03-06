@@ -18,6 +18,45 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        public bool IsAuthorColumnVisible
+        {
+            get => _repo.UIStates.IsAuthorColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsAuthorColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsAuthorColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsSHAColumnVisible
+        {
+            get => _repo.UIStates.IsSHAColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsSHAColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsSHAColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsDateTimeColumnVisible
+        {
+            get => _repo.UIStates.IsDateTimeColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsDateTimeColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsDateTimeColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public List<Models.Commit> Commits
         {
             get => _commits;
@@ -206,13 +245,20 @@ namespace SourceGit.ViewModels
 
                 var end = commits[0] as Models.Commit;
                 var start = commits[1] as Models.Commit;
-                DetailContext = new RevisionCompare(_repo.FullPath, start, end);
+                DetailContext = new RevisionCompare(_repo, start, end);
             }
             else
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(commits.Count);
             }
+        }
+
+        public async Task<Models.Commit> GetCommitAsync(string sha)
+        {
+            return await new Commands.QuerySingleCommit(_repo.FullPath, sha)
+                .GetResultAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)
@@ -403,7 +449,7 @@ namespace SourceGit.ViewModels
                 _repo.SearchCommitContext.Selected = null;
                 head = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
                 if (head != null)
-                    DetailContext = new RevisionCompare(_repo.FullPath, commit, head);
+                    DetailContext = new RevisionCompare(_repo, commit, head);
 
                 return null;
             }
@@ -413,7 +459,7 @@ namespace SourceGit.ViewModels
 
         public void CompareWithWorktree(Models.Commit commit)
         {
-            DetailContext = new RevisionCompare(_repo.FullPath, commit, null);
+            DetailContext = new RevisionCompare(_repo, commit, null);
         }
 
         private Repository _repo = null;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
@@ -53,7 +54,11 @@ namespace SourceGit.Commands
                 {
                     var parts = line.Split('=', 2);
                     if (parts.Length == 2)
-                        rs[parts[0]] = parts[1];
+                    {
+                        var key = parts[0].ToLower(CultureInfo.CurrentCulture); // Always use lower case for key
+                        var value = parts[1];
+                        rs[key] = value;
+                    }
                 }
             }
 

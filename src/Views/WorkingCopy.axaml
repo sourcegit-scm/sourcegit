@@ -26,7 +26,8 @@
 
       <!-- Search Filter -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <TextBox Height="24"
+        <TextBox x:Name="LocalChangesSearchBox"
+                 Height="24"
                  Margin="4,0"
                  BorderThickness="1"
                  CornerRadius="12"

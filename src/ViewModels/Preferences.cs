@@ -197,23 +197,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _ignoreUpdateTag, value);
         }
 
-        public bool ShowTagsAsTree
-        {
-            get;
-            set;
-        } = false;
-
         public bool ShowTagsInGraph
         {
             get => _showTagsInGraph;
             set => SetProperty(ref _showTagsInGraph, value);
         }
-
-        public bool ShowSubmodulesAsTree
-        {
-            get;
-            set;
-        } = false;
 
         public bool UseTwoColumnsLayoutInHistories
         {

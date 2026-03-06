@@ -77,13 +77,40 @@ namespace SourceGit.Views
             set => SetValue(PlaceholderProperty, value);
         }
 
+        public static readonly StyledProperty<int> ColumnProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(Column), 1);
+
+        public int Column
+        {
+            get => GetValue(ColumnProperty);
+            set => SetValue(ColumnProperty, value);
+        }
+
         public static readonly StyledProperty<int> SubjectLengthProperty =
-            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength), 0);
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectLength));
 
         public int SubjectLength
         {
             get => GetValue(SubjectLengthProperty);
             set => SetValue(SubjectLengthProperty, value);
+        }
+
+        public static readonly StyledProperty<int> SubjectGuideLengthProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, int>(nameof(SubjectGuideLength));
+
+        public int SubjectGuideLength
+        {
+            get => GetValue(SubjectGuideLengthProperty);
+            set => SetValue(SubjectGuideLengthProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> IsSubjectWarningIconVisibleProperty =
+            AvaloniaProperty.Register<CommitMessageTextEditor, bool>(nameof(IsSubjectWarningIconVisible));
+
+        public bool IsSubjectWarningIconVisible
+        {
+            get => GetValue(IsSubjectWarningIconVisibleProperty);
+            set => SetValue(IsSubjectWarningIconVisibleProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> SubjectLineBrushProperty =
@@ -104,11 +131,12 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            ClipToBounds = true;
 
             TextArea.TextView.Margin = new Thickness(4, 2);
+            TextArea.TextView.ClipToBounds = false;
             TextArea.TextView.Options.EnableHyperlinks = false;
             TextArea.TextView.Options.EnableEmailHyperlinks = false;
-            TextArea.TextView.Options.AllowScrollBelowDocument = false;
         }
 
         public override void Render(DrawingContext context)
@@ -116,6 +144,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var w = Bounds.Width;
+            var pixelHeight = PixelSnapHelpers.GetPixelSize(this).Height;
             var pen = new Pen(SubjectLineBrush) { DashStyle = DashStyle.Dash };
 
             if (SubjectLength == 0)
@@ -133,7 +162,7 @@ namespace SourceGit.Views
 
                     context.DrawText(formatted, new Point(4, 2));
 
-                    var y = 6 + formatted.Height;
+                    var y = PixelSnapHelpers.PixelAlign(6 + formatted.Height, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
                 }
 
@@ -163,6 +192,7 @@ namespace SourceGit.Views
                 if (line.FirstDocumentLine.LineNumber == _subjectEndLine)
                 {
                     var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
+                    y = PixelSnapHelpers.PixelAlign(y, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
                     return;
                 }
@@ -175,12 +205,14 @@ namespace SourceGit.Views
 
             TextArea.TextView.VisualLinesChanged += OnTextViewVisualLinesChanged;
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
+            TextArea.Caret.PositionChanged += OnCaretPositionChanged;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
+            TextArea.Caret.PositionChanged -= OnCaretPositionChanged;
 
             base.OnUnloaded(e);
         }
@@ -228,6 +260,11 @@ namespace SourceGit.Views
                 if (string.IsNullOrWhiteSpace(CommitMessage))
                     InvalidateVisual();
             }
+            else if (change.Property == SubjectLengthProperty ||
+                     change.Property == SubjectGuideLengthProperty)
+            {
+                SetCurrentValue(IsSubjectWarningIconVisibleProperty, SubjectLength > SubjectGuideLength);
+            }
         }
 
         protected override void OnTextChanged(EventArgs e)
@@ -242,10 +279,10 @@ namespace SourceGit.Views
             _isEditing = false;
 
             var caretOffset = CaretOffset;
-            var start = caretOffset;
-            for (; start > 0; start--)
+            var lineStart = caretOffset;
+            for (; lineStart > 0; lineStart--)
             {
-                var ch = Text[start - 1];
+                var ch = Text[lineStart - 1];
                 if (ch == '\n')
                     break;
 
@@ -253,18 +290,18 @@ namespace SourceGit.Views
                     return;
             }
 
-            if (caretOffset < start + 2)
+            if (lineStart == 0 || caretOffset < lineStart + 2)
             {
                 _completionWnd?.Close();
                 return;
             }
 
-            var word = Text.Substring(start, caretOffset - start);
+            var word = Text.Substring(lineStart, caretOffset - lineStart);
             var matches = new List<CommitMessageCodeCompletionData>();
-            foreach (var keyword in _keywords)
+            foreach (var t in _trailers)
             {
-                if (keyword.StartsWith(word, StringComparison.OrdinalIgnoreCase) && keyword.Length != word.Length)
-                    matches.Add(new(keyword));
+                if (t.StartsWith(word, StringComparison.OrdinalIgnoreCase) && t.Length != word.Length)
+                    matches.Add(new(t));
             }
 
             if (matches.Count > 0)
@@ -272,13 +309,13 @@ namespace SourceGit.Views
                 if (_completionWnd == null)
                 {
                     _completionWnd = new CompletionWindow(TextArea);
-                    _completionWnd.Closed += (_, ev) => _completionWnd = null;
+                    _completionWnd.Closed += (_, _) => _completionWnd = null;
                     _completionWnd.Show();
                 }
 
                 _completionWnd.CompletionList.CompletionData.Clear();
                 _completionWnd.CompletionList.CompletionData.AddRange(matches);
-                _completionWnd.StartOffset = start;
+                _completionWnd.StartOffset = lineStart;
                 _completionWnd.EndOffset = caretOffset;
             }
             else
@@ -296,7 +333,7 @@ namespace SourceGit.Views
             copy.Header = App.Text("Copy");
             copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.IsEnabled = hasSelected;
-            copy.Click += (o, ev) =>
+            copy.Click += (_, ev) =>
             {
                 Copy();
                 ev.Handled = true;
@@ -306,7 +343,7 @@ namespace SourceGit.Views
             cut.Header = App.Text("Cut");
             cut.Icon = App.CreateMenuIcon("Icons.Cut");
             cut.IsEnabled = hasSelected;
-            cut.Click += (o, ev) =>
+            cut.Click += (_, ev) =>
             {
                 Cut();
                 ev.Handled = true;
@@ -315,7 +352,7 @@ namespace SourceGit.Views
             var paste = new MenuItem();
             paste.Header = App.Text("Paste");
             paste.Icon = App.CreateMenuIcon("Icons.Paste");
-            paste.Click += (o, ev) =>
+            paste.Click += (_, ev) =>
             {
                 Paste();
                 ev.Handled = true;
@@ -334,7 +371,29 @@ namespace SourceGit.Views
             InvalidateVisual();
         }
 
-        private readonly List<string> _keywords = ["Acked-by: ", "Co-authored-by: ", "Reviewed-by: ", "Signed-off-by: ", "on-behalf-of: @", "BREAKING CHANGE: ", "Refs: "];
+        private void OnCaretPositionChanged(object sender, EventArgs e)
+        {
+            var col = TextArea.Caret.Column;
+            SetCurrentValue(ColumnProperty, col);
+        }
+
+        private readonly List<string> _trailers =
+        [
+            "Acked-by: ",
+            "BREAKING CHANGE: ",
+            "Co-authored-by: ",
+            "Fixes: ",
+            "Helped-by: ",
+            "Issue: ",
+            "Milestone: ",
+            "on-behalf-of: @",
+            "Reference-to: ",
+            "Refs: ",
+            "Reviewed-by: ",
+            "See-also: ",
+            "Signed-off-by: ",
+        ];
+
         private bool _isEditing = false;
         private int _subjectEndLine = 0;
         private CompletionWindow _completionWnd = null;
@@ -493,7 +552,7 @@ namespace SourceGit.Views
 
                 button.IsEnabled = false;
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu.Closed += (o, ev) => button.IsEnabled = true;
+                menu.Closed += (_, _) => button.IsEnabled = true;
                 menu.Open(button);
             }
 
@@ -542,7 +601,7 @@ namespace SourceGit.Views
 
                 button.IsEnabled = false;
                 menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu.Closed += (o, ev) => button.IsEnabled = true;
+                menu.Closed += (_, _) => button.IsEnabled = true;
                 menu.Open(button);
             }
 

@@ -79,7 +79,7 @@ namespace SourceGit.Views
             {
                 Width = 12,
                 Height = 12,
-                HorizontalAlignment = HorizontalAlignment.Left,
+                HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = margin,
                 Data = geo,
@@ -114,6 +114,15 @@ namespace SourceGit.Views
         {
             add { AddHandler(RowsChangedEvent, value); }
             remove { RemoveHandler(RowsChangedEvent, value); }
+        }
+
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
         }
 
         public int Rows
@@ -262,7 +271,7 @@ namespace SourceGit.Views
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, tag, repo.CurrentBranch));
+                    App.ShowWindow(new ViewModels.Compare(repo, tag, repo.CurrentBranch));
                 };
 
                 var compareWith = new MenuItem();
@@ -270,9 +279,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, tag));
+                    new ViewModels.CompareCommandPalette(repo, tag).Open();
                 };
 
                 var archive = new MenuItem();
@@ -380,7 +387,7 @@ namespace SourceGit.Views
                         if (based.CreatorDate > to.CreatorDate)
                             (based, to) = (to, based);
 
-                        App.ShowWindow(new ViewModels.Compare(repo.FullPath, based, to));
+                        App.ShowWindow(new ViewModels.Compare(repo, based, to));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);
@@ -429,6 +436,13 @@ namespace SourceGit.Views
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
+
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
 

@@ -110,6 +110,29 @@ namespace SourceGit.ViewModels
             return _blocks[_current];
         }
 
+        public void UpdateByChunk(TextDiffSelectedChunk chunk)
+        {
+            _current = -1;
+
+            var chunkStart = chunk.StartIdx + 1;
+            var chunkEnd = chunk.EndIdx + 1;
+
+            for (var i = 0; i < _blocks.Count; i++)
+            {
+                var block = _blocks[i];
+                if (chunkStart > block.End)
+                    continue;
+
+                if (chunkEnd < block.Start)
+                {
+                    _current = i - 1;
+                    break;
+                }
+
+                _current = i;
+            }
+        }
+
         public void UpdateByCaretPosition(int caretLine)
         {
             if (_current >= 0 && _current < _blocks.Count)

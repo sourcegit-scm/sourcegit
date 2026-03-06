@@ -20,7 +20,7 @@
                  Text="{DynamicResource Text.CreateBranch.Title}"/>
     </StackPanel>
     
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,Auto,Auto">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" MinWidth="140"/>
         <ColumnDefinition Width="*"/>

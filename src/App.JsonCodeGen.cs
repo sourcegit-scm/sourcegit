@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -8,6 +9,21 @@ using Avalonia.Media;
 
 namespace SourceGit
 {
+    public class DateTimeConverter : JsonConverter<DateTime>
+    {
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            return DateTime.ParseExact(reader.GetString(), FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToLocalTime();
+        }
+
+        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToUniversalTime().ToString(FORMAT));
+        }
+
+        private const string FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
+    }
+
     public class ColorConverter : JsonConverter<Color>
     {
         public override Color Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -54,18 +70,19 @@ namespace SourceGit
         IgnoreReadOnlyFields = true,
         IgnoreReadOnlyProperties = true,
         Converters = [
+            typeof(DateTimeConverter),
             typeof(ColorConverter),
             typeof(GridLengthConverter),
             typeof(DataGridLengthConverter),
         ]
     )]
     [JsonSerializable(typeof(Models.ExternalToolCustomization))]
-    [JsonSerializable(typeof(Models.HistoryFilterCollection))]
     [JsonSerializable(typeof(Models.InteractiveRebaseJobCollection))]
     [JsonSerializable(typeof(Models.JetBrainsState))]
     [JsonSerializable(typeof(Models.ThemeOverrides))]
     [JsonSerializable(typeof(Models.Version))]
     [JsonSerializable(typeof(Models.RepositorySettings))]
+    [JsonSerializable(typeof(Models.RepositoryUIStates))]
     [JsonSerializable(typeof(List<Models.ConventionalCommitType>))]
     [JsonSerializable(typeof(List<Models.LFSLock>))]
     [JsonSerializable(typeof(List<Models.VisualStudioInstance>))]

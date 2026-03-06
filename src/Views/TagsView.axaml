@@ -36,9 +36,7 @@
                     DoubleTapped="OnItemDoubleTapped"
                     ToolTip.Tip="{Binding ToolTip}"
                     ToolTip.Placement="Right">
-              <Grid ColumnDefinitions="16,Auto,*,Auto"
-                    Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                    VerticalAlignment="Center">
+              <Grid ColumnDefinitions="16,16,*,Auto" Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}">
                 <v:TagTreeNodeToggleButton Grid.Column="0"
                                            Classes="tree_expander"
                                            Focusable="False"
@@ -48,13 +46,13 @@
 
                 <v:TagTreeNodeIcon Grid.Column="1" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-                <TextBlock Grid.Column="2" Margin="8,0,0,0">
+                <TextBlock Grid.Column="2" Margin="4,0,0,0">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
                   <Run Text="{Binding TagsCount}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
 
-                <Border Grid.Column="3" IsVisible="{Binding !IsFolder}">
-                  <v:FilterModeSwitchButton Margin="0,0,8,0" Mode="{Binding FilterMode}"/>
+                <Border Grid.Column="3" Margin="4,0,8,0" IsVisible="{Binding !IsFolder}">
+                  <v:FilterModeSwitchButton Mode="{Binding FilterMode}"/>
                 </Border>
               </Grid>
             </Border>
@@ -65,7 +63,6 @@
 
     <DataTemplate DataType="vm:TagCollectionAsList">
       <ListBox Classes="repo_left_content_list"
-               Margin="8,0,0,0"
                Padding="0,0,2,0"
                ItemsSource="{Binding TagItems}"
                SelectionMode="Multiple"
@@ -85,15 +82,13 @@
                     DoubleTapped="OnItemDoubleTapped"
                     ToolTip.Tip="{Binding ToolTip}"
                     ToolTip.Placement="Right">
-              <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
-                <Path Grid.Column="0"
-                      Margin="8,0,0,0"
+              <Grid ColumnDefinitions="16,16,*,Auto">
+                <Path Grid.Column="1"
                       Width="12" Height="12"
                       Data="{StaticResource Icons.Tag}"
                       IsVisible="{Binding Tag.IsAnnotated}"/>
 
-                <Path Grid.Column="0"
-                      Margin="8,0,0,0"
+                <Path Grid.Column="1"
                       Width="12" Height="12"
                       Data="{StaticResource Icons.Tag}"
                       Fill="Transparent"
@@ -101,12 +96,12 @@
                       StrokeThickness="1"
                       IsVisible="{Binding !Tag.IsAnnotated}"/>
 
-                <TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="2"
+                           Margin="4,0,0,0"
                            Text="{Binding Tag.Name}"
-                           Margin="8,0,0,0"
                            TextTrimming="CharacterEllipsis"/>
 
-                <v:FilterModeSwitchButton Grid.Column="2" Margin="0,0,8,0" Mode="{Binding FilterMode}"/>
+                <v:FilterModeSwitchButton Grid.Column="3" Margin="4,0,8,0" Mode="{Binding FilterMode}"/>
               </Grid>
             </Border>
           </DataTemplate>

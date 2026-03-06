@@ -27,20 +27,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedBranch, value);
         }
 
-        public MergeCommandPalette(Launcher launcher, Repository repo)
+        public MergeCommandPalette(Repository repo)
         {
-            _launcher = launcher;
             _repo = repo;
             UpdateBranches();
-        }
-
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _repo = null;
-            _branches.Clear();
-            _filter = null;
-            _selectedBranch = null;
         }
 
         public void ClearFilter()
@@ -50,10 +40,11 @@ namespace SourceGit.ViewModels
 
         public void Launch()
         {
+            _branches.Clear();
+            Close();
+
             if (_repo.CanCreatePopup() && _selectedBranch != null)
                 _repo.ShowPopup(new Merge(_repo, _selectedBranch, _repo.CurrentBranch.Name, false));
-
-            _launcher?.CancelCommandPalette();
         }
 
         private void UpdateBranches()
@@ -90,7 +81,6 @@ namespace SourceGit.ViewModels
             SelectedBranch = autoSelected;
         }
 
-        private Launcher _launcher = null;
         private Repository _repo = null;
         private List<Models.Branch> _branches = new List<Models.Branch>();
         private string _filter = string.Empty;

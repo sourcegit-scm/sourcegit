@@ -28,6 +28,10 @@ node_modules/
 package.json
 package-lock.json
 
+
+# Flatpak
+!build/resources/flatpak
+
 build/resources/
 build/SourceGit/
 build/SourceGit.app/

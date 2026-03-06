@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,7 +28,6 @@ namespace SourceGit.Commands
                     if (line.StartsWith("worktree ", StringComparison.Ordinal))
                     {
                         last = new Models.Worktree() { FullPath = line.Substring(9).Trim() };
-                        last.RelativePath = Path.GetRelativePath(WorkingDirectory, last.FullPath);
                         worktrees.Add(last);
                         continue;
                     }
@@ -39,8 +37,7 @@ namespace SourceGit.Commands
 
                     if (line.StartsWith("bare", StringComparison.Ordinal))
                     {
-                        worktrees.Remove(last);
-                        last = null;
+                        last.IsBare = true;
                     }
                     else if (line.StartsWith("HEAD ", StringComparison.Ordinal))
                     {

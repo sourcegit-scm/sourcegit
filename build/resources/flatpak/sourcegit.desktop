@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SourceGit
+Comment=Open-source & Free Git GUI Client
+Exec=sourcegit.sh
+Icon=io.github.sourcegit_scm.sourcegit
+Terminal=false
+Type=Application
+Categories=Development
+MimeType=inode/directory;

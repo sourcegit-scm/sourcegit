@@ -67,14 +67,14 @@ namespace SourceGit.ViewModels
 
         public bool EnableSignOff
         {
-            get => _repo.Settings.EnableSignOffForCommit;
-            set => _repo.Settings.EnableSignOffForCommit = value;
+            get => _repo.UIStates.EnableSignOffForCommit;
+            set => _repo.UIStates.EnableSignOffForCommit = value;
         }
 
         public bool NoVerifyOnCommit
         {
-            get => _repo.Settings.NoVerifyOnCommit;
-            set => _repo.Settings.NoVerifyOnCommit = value;
+            get => _repo.UIStates.NoVerifyOnCommit;
+            set => _repo.UIStates.NoVerifyOnCommit = value;
         }
 
         public bool UseAmend
@@ -228,6 +228,9 @@ namespace SourceGit.ViewModels
 
         public void Dispose()
         {
+            if (_inProgressContext != null && !string.IsNullOrEmpty(_commitMessage))
+                File.WriteAllText(Path.Combine(_repo.GitDir, "MERGE_MSG"), _commitMessage);
+
             _repo = null;
             _inProgressContext = null;
 
@@ -264,8 +267,8 @@ namespace SourceGit.ViewModels
                         return;
 
                     HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
-                    UpdateDetail();
                     UpdateInProgressState();
+                    UpdateDetail();
                 });
 
                 return;
@@ -313,6 +316,12 @@ namespace SourceGit.ViewModels
                     selectedStaged.Add(c);
             }
 
+            if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && hasConflict)
+            {
+                var firstConflict = visibleUnstaged.Find(x => x.IsConflicted);
+                selectedUnstaged.Add(firstConflict);
+            }
+
             Dispatcher.UIThread.Invoke(() =>
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -329,8 +338,8 @@ namespace SourceGit.ViewModels
                 SelectedStaged = selectedStaged;
                 _isLoadingData = false;
 
-                UpdateDetail();
                 UpdateInProgressState();
+                UpdateDetail();
             });
         }
 
@@ -532,7 +541,10 @@ namespace SourceGit.ViewModels
                 if (File.Exists(mergeMsgFile) && !string.IsNullOrWhiteSpace(_commitMessage))
                     await File.WriteAllTextAsync(mergeMsgFile, _commitMessage);
 
-                await _inProgressContext.ContinueAsync();
+                var log = _repo.CreateLog($"Continue {_inProgressContext.Name}");
+                await _inProgressContext.ContinueAsync(log);
+                log.Complete();
+
                 CommitMessage = string.Empty;
                 IsCommitting = false;
             }
@@ -549,7 +561,10 @@ namespace SourceGit.ViewModels
                 using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
 
-                await _inProgressContext.SkipAsync();
+                var log = _repo.CreateLog($"Skip {_inProgressContext.Name}");
+                await _inProgressContext.SkipAsync(log);
+                log.Complete();
+
                 CommitMessage = string.Empty;
                 IsCommitting = false;
             }
@@ -566,7 +581,10 @@ namespace SourceGit.ViewModels
                 using var lockWatcher = _repo.LockWatcher();
                 IsCommitting = true;
 
-                await _inProgressContext.AbortAsync();
+                var log = _repo.CreateLog($"Abort {_inProgressContext.Name}");
+                await _inProgressContext.AbortAsync(log);
+                log.Complete();
+
                 CommitMessage = string.Empty;
                 IsCommitting = false;
             }

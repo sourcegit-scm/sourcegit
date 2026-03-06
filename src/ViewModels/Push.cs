@@ -87,8 +87,8 @@ namespace SourceGit.ViewModels
 
         public bool PushAllTags
         {
-            get => _repo.Settings.PushAllTags;
-            set => _repo.Settings.PushAllTags = value;
+            get => _repo.UIStates.PushAllTags;
+            set => _repo.UIStates.PushAllTags = value;
         }
 
         public bool ForcePush

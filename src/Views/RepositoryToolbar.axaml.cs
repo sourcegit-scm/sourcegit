@@ -65,16 +65,6 @@ namespace SourceGit.Views
                         var options = dupTool.MakeLaunchOptions(fullpath);
                         if (options is { Count: > 0 })
                         {
-                            var openAsFolder = new MenuItem();
-                            openAsFolder.Header = App.Text("Repository.OpenAsFolder");
-                            openAsFolder.Click += (_, e) =>
-                            {
-                                dupTool.Launch(fullpath.Quoted());
-                                e.Handled = true;
-                            };
-                            item.Items.Add(openAsFolder);
-                            item.Items.Add(new MenuItem() { Header = "-" });
-
                             foreach (var opt in options)
                             {
                                 var subItem = new MenuItem();
@@ -87,6 +77,16 @@ namespace SourceGit.Views
 
                                 item.Items.Add(subItem);
                             }
+
+                            var openAsFolder = new MenuItem();
+                            openAsFolder.Header = App.Text("Repository.OpenAsFolder");
+                            openAsFolder.Click += (_, e) =>
+                            {
+                                dupTool.Launch(fullpath.Quoted());
+                                e.Handled = true;
+                            };
+                            item.Items.Add(new MenuItem() { Header = "-" });
+                            item.Items.Add(openAsFolder);
                         }
                         else
                         {

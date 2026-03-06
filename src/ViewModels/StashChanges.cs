@@ -20,18 +20,18 @@ namespace SourceGit.ViewModels
 
         public bool IncludeUntracked
         {
-            get => _repo.Settings.IncludeUntrackedWhenStash;
-            set => _repo.Settings.IncludeUntrackedWhenStash = value;
+            get => _repo.UIStates.IncludeUntrackedWhenStash;
+            set => _repo.UIStates.IncludeUntrackedWhenStash = value;
         }
 
         public bool OnlyStaged
         {
-            get => _repo.Settings.OnlyStagedWhenStash;
+            get => _repo.UIStates.OnlyStagedWhenStash;
             set
             {
-                if (_repo.Settings.OnlyStagedWhenStash != value)
+                if (_repo.UIStates.OnlyStagedWhenStash != value)
                 {
-                    _repo.Settings.OnlyStagedWhenStash = value;
+                    _repo.UIStates.OnlyStagedWhenStash = value;
                     OnPropertyChanged();
                 }
             }
@@ -39,8 +39,8 @@ namespace SourceGit.ViewModels
 
         public int ChangesAfterStashing
         {
-            get => _repo.Settings.ChangesAfterStashing;
-            set => _repo.Settings.ChangesAfterStashing = value;
+            get => _repo.UIStates.ChangesAfterStashing;
+            set => _repo.UIStates.ChangesAfterStashing = value;
         }
 
         public StashChanges(Repository repo, List<Models.Change> selectedChanges)

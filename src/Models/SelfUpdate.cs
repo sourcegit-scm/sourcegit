@@ -12,24 +12,28 @@ namespace SourceGit.Models
         [JsonPropertyName("tag_name")]
         public string TagName { get; set; }
 
+        [JsonPropertyName("published_at")]
+        public DateTime PublishedAt { get; set; }
+
         [JsonPropertyName("body")]
         public string Body { get; set; }
 
-        public bool IsNewVersion
+        [JsonIgnore]
+        public System.Version CurrentVersion { get; }
+
+        [JsonIgnore]
+        public string CurrentVersionStr => $"v{CurrentVersion.Major}.{CurrentVersion.Minor:D2}";
+
+        [JsonIgnore]
+        public bool IsNewVersion => CurrentVersion.CompareTo(new System.Version(TagName.Substring(1))) < 0;
+
+        [JsonIgnore]
+        public string ReleaseDateStr => PublishedAt.ToString(DateTimeFormat.Active.DateOnly);
+
+        public Version()
         {
-            get
-            {
-                try
-                {
-                    System.Version version = new System.Version(TagName.Substring(1));
-                    System.Version current = Assembly.GetExecutingAssembly().GetName().Version!;
-                    return current.CompareTo(version) < 0;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
+            var assembly = Assembly.GetExecutingAssembly().GetName();
+            CurrentVersion = assembly.Version ?? new System.Version();
         }
     }
 

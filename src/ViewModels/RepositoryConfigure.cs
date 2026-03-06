@@ -295,6 +295,7 @@ namespace SourceGit.ViewModels
             await SetIfChangedAsync("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
 
             await ApplyIssueTrackerChangesAsync();
+            await _repo.Settings.SaveAsync();
         }
 
         private async Task SetIfChangedAsync(string key, string value, string defValue)
@@ -359,8 +360,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private readonly Repository _repo = null;
-        private readonly Dictionary<string, string> _cached = null;
+        private readonly Repository _repo;
+        private readonly Dictionary<string, string> _cached;
         private string _httpProxy;
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTracker _selectedIssueTracker = null;

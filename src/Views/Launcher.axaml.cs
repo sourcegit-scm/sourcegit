@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
@@ -60,6 +61,17 @@ namespace SourceGit.Views
 
             InitializeComponent();
             PositionChanged += OnPositionChanged;
+
+            if (OperatingSystem.IsWindows() && OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
+            {
+                Background = Brushes.Transparent;
+                TransparencyLevelHint = [WindowTransparencyLevel.Mica];
+                TitleBarBG.Background = Brushes.Transparent;
+            }
+            else
+            {
+                TitleBarBG.Bind(BackgroundProperty, new DynamicResourceExtension("Brush.TitleBar"));
+            }
 
             var layout = ViewModels.Preferences.Instance.Layout;
             Width = layout.LauncherWidth;
@@ -223,7 +235,7 @@ namespace SourceGit.Views
                             repo.SelectedViewIndex = 2;
                             e.Handled = true;
                             return;
-                        case Key.F:
+                        case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
                             repo.IsSearchingCommits = true;
                             e.Handled = true;
                             return;
@@ -232,7 +244,7 @@ namespace SourceGit.Views
                             e.Handled = true;
                             return;
                         case Key.P when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            vm.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(vm, repo));
+                            vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                             e.Handled = true;
                             return;
                     }
@@ -254,7 +266,7 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 if (vm.CommandPalette != null)
-                    vm.CancelCommandPalette();
+                    vm.CommandPalette = null;
                 else
                     vm.ActivePage.CancelPopup();
 
@@ -360,15 +372,15 @@ namespace SourceGit.Views
 
         private void OnOpenPagesCommandPalette(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Launcher launcher)
-                launcher.OpenCommandPalette(new ViewModels.LauncherPagesCommandPalette(launcher));
+            if (DataContext is ViewModels.Launcher vm)
+                vm.CommandPalette = new ViewModels.LauncherPagesCommandPalette(vm);
             e.Handled = true;
         }
 
         private void OnCloseCommandPalette(object sender, PointerPressedEventArgs e)
         {
-            if (e.Source == sender && DataContext is ViewModels.Launcher launcher)
-                launcher.CancelCommandPalette();
+            if (e.Source == sender && DataContext is ViewModels.Launcher vm)
+                vm.CommandPalette = null;
             e.Handled = true;
         }
 

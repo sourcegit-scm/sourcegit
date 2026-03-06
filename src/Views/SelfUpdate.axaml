@@ -51,15 +51,25 @@
                 </Border>
               </StackPanel>
 
+              <TextBlock Margin="0,8,0,0">
+                <Run Text="{DynamicResource Text.SelfUpdate.CurrentVersion}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+                <Run Text="{Binding CurrentVersionStr, Mode=OneWay}"/>
+              </TextBlock>
+
+              <TextBlock Margin="0,2,0,0">
+                <Run Text="{DynamicResource Text.SelfUpdate.ReleaseDate}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+                <Run Text="{Binding ReleaseDateStr, Mode=OneWay}"/>
+              </TextBlock>
+
               <Border Width="500" MaxHeight="400"
-                      Margin="0,8"
+                      Margin="0,8,0,0"
                       Background="{DynamicResource Brush.Contents}"
                       BorderThickness="1"
                       BorderBrush="{DynamicResource Brush.Border2}">
                 <v:UpdateInfoView/>
               </Border>
 
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+              <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Classes="flat primary"
                         Height="30"
                         Click="GotoDownload"

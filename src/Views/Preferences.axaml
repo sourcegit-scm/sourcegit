@@ -102,7 +102,7 @@
               <Slider Grid.Column="0"
                       Minimum="50" Maximum="200"
                       TickPlacement="BottomRight" TickFrequency="10"
-                      IsSnapToTickEnabled="True"
+                      IsSnapToTickEnabled="False"
                       VerticalAlignment="Center"
                       Foreground="{DynamicResource Brush.Border1}"
                       Value="{Binding SubjectGuideLength, Mode=TwoWay}"/>

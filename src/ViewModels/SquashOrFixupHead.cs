@@ -40,8 +40,8 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var changes = await new Commands.QueryLocalChanges(_repo.FullPath, false).GetResultAsync();
-            var signOff = _repo.Settings.EnableSignOffForCommit;
-            var noVerify = _repo.Settings.NoVerifyOnCommit;
+            var signOff = _repo.UIStates.EnableSignOffForCommit;
+            var noVerify = _repo.UIStates.NoVerifyOnCommit;
             var needAutoStash = false;
             var succ = false;
 

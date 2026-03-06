@@ -18,15 +18,6 @@ namespace SourceGit.Native
     internal class Windows : OS.IBackend
     {
         [StructLayout(LayoutKind.Sequential)]
-        internal struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
         internal struct MARGINS
         {
             public int cxLeftWidth;
@@ -50,9 +41,6 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
-        [DllImport("user32.dll")]
-        private static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
-
         public void SetupApp(AppBuilder builder)
         {
             // Fix drop shadow issue on Windows 10
@@ -68,50 +56,18 @@ namespace SourceGit.Native
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
             window.ExtendClientAreaToDecorationsHint = true;
             window.BorderThickness = new Thickness(1);
+        }
 
-            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint msg, IntPtr _, IntPtr lParam, ref bool handled) =>
-            {
-                // Custom WM_NCHITTEST only used to limit the resize border to 4 * window.RenderScaling pixels.
-                if (msg == 0x0084 && window.WindowState == WindowState.Normal)
-                {
-                    var p = IntPtrToPixelPoint(lParam);
-                    GetWindowRect(hWnd, out var rcWindow);
+        public string GetDataDir()
+        {
+            var execFile = Process.GetCurrentProcess().MainModule!.FileName;
+            var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
+            if (Directory.Exists(portableDir))
+                return portableDir;
 
-                    var borderThickness = (int)(4 * window.RenderScaling);
-                    int y = 1;
-                    int x = 1;
-                    if (p.X >= rcWindow.left && p.X < rcWindow.left + borderThickness)
-                        x = 0;
-                    else if (p.X < rcWindow.right && p.X >= rcWindow.right - borderThickness)
-                        x = 2;
-
-                    if (p.Y >= rcWindow.top && p.Y < rcWindow.top + borderThickness)
-                        y = 0;
-                    else if (p.Y < rcWindow.bottom && p.Y >= rcWindow.bottom - borderThickness)
-                        y = 2;
-
-                    // If it's in the client area, do not handle it here.
-                    var zone = y * 3 + x;
-                    if (zone == 4)
-                        return IntPtr.Zero;
-
-                    // If it's in the resize border area, return the proper HT code.
-                    handled = true;
-                    return zone switch
-                    {
-                        0 => 13, // HTTOPLEFT
-                        1 => 12, // HTTOP
-                        2 => 14, // HTTOPRIGHT
-                        3 => 10, // HTLEFT
-                        5 => 11, // HTRIGHT
-                        6 => 16, // HTBOTTOMLEFT
-                        7 => 15, // HTBOTTOM
-                        _ => 17, // HTBOTTOMRIGHT
-                    };
-                }
-
-                return IntPtr.Zero;
-            });
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit");
         }
 
         public string FindGitExecutable()
@@ -221,32 +177,30 @@ namespace SourceGit.Native
             Process.Start(startInfo);
         }
 
-        public void OpenInFileManager(string path, bool select)
+        public void OpenInFileManager(string path)
         {
-            string fullpath;
             if (File.Exists(path))
             {
-                fullpath = new FileInfo(path).FullName;
-                select = true;
-            }
-            else
-            {
-                fullpath = new DirectoryInfo(path!).FullName;
-                fullpath += Path.DirectorySeparatorChar;
+                var pidl = ILCreateFromPathW(new FileInfo(path).FullName);
+
+                try
+                {
+                    SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+                }
+                finally
+                {
+                    ILFree(pidl);
+                }
+
+                return;
             }
 
-            if (select)
+            var dir = new DirectoryInfo(path).FullName + Path.DirectorySeparatorChar;
+            Process.Start(new ProcessStartInfo(dir)
             {
-                OpenFolderAndSelectFile(fullpath);
-            }
-            else
-            {
-                Process.Start(new ProcessStartInfo(fullpath)
-                {
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                });
-            }
+                UseShellExecute = true,
+                CreateNoWindow = true,
+            });
         }
 
         public void OpenWithDefaultEditor(string file)
@@ -257,6 +211,7 @@ namespace SourceGit.Native
             Process.Start(start);
         }
 
+        #region HELPER_METHODS
         private void FixWindowFrameOnWin10(Window w)
         {
             // Schedule the DWM frame extension to run in the next render frame
@@ -272,11 +227,26 @@ namespace SourceGit.Native
             }, DispatcherPriority.Render);
         }
 
-        private PixelPoint IntPtrToPixelPoint(IntPtr param)
+        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
-            var v = IntPtr.Size == 4 ? param.ToInt32() : (int)(param.ToInt64() & 0xFFFFFFFF);
-            return new PixelPoint((short)(v & 0xffff), (short)(v >> 16));
+            var root = new DirectoryInfo(path);
+            if (!root.Exists)
+                return null;
+
+            var options = new List<Models.ExternalTool.LaunchOption>();
+            var prefixLen = root.FullName.Length;
+            root.WalkFiles(f =>
+            {
+                if (f.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
+                    f.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
+                {
+                    var display = f.Substring(prefixLen).TrimStart(Path.DirectorySeparatorChar);
+                    options.Add(new(display, f.Quoted()));
+                }
+            });
+            return options;
         }
+        #endregion
 
         #region EXTERNAL_EDITOR_FINDER
         private string FindVSCode()
@@ -429,49 +399,5 @@ namespace SourceGit.Native
             return string.Empty;
         }
         #endregion
-
-        private void OpenFolderAndSelectFile(string folderPath)
-        {
-            var pidl = ILCreateFromPathW(folderPath);
-
-            try
-            {
-                SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
-            }
-            finally
-            {
-                ILFree(pidl);
-            }
-        }
-
-        private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                void Search(List<Models.ExternalTool.LaunchOption> opts, DirectoryInfo dir, string root, int depth)
-                {
-                    if (depth < 0)
-                        return;
-
-                    foreach (var file in dir.GetFiles())
-                    {
-                        if (file.Name.EndsWith(".sln", StringComparison.OrdinalIgnoreCase) ||
-                            file.Name.EndsWith(".slnx", StringComparison.OrdinalIgnoreCase))
-                            opts.Add(new(Path.GetRelativePath(root, file.FullName), file.FullName.Quoted()));
-                    }
-
-                    foreach (var subDir in dir.GetDirectories())
-                        Search(opts, subDir, root, depth - 1);
-                }
-
-                var rootDir = new DirectoryInfo(path);
-                var options = new List<Models.ExternalTool.LaunchOption>();
-                Search(options, rootDir, rootDir.FullName, 4);
-                if (options.Count > 0)
-                    return options;
-            }
-
-            return null;
-        }
     }
 }

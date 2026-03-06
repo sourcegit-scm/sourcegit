@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,6 +13,11 @@ namespace SourceGit.ViewModels
         {
             get => _isLoading;
             private set => SetProperty(ref _isLoading, value);
+        }
+
+        public bool CanResetFiles
+        {
+            get => _canResetFiles;
         }
 
         public string BaseName
@@ -81,9 +87,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _diffContext, value);
         }
 
-        public Compare(string repo, object based, object to)
+        public Compare(Repository repo, object based, object to)
         {
-            _repo = repo;
+            _repo = repo.FullPath;
+            _canResetFiles = !repo.IsBare;
             _based = GetSHA(based);
             _to = GetSHA(to);
             _baseName = GetName(based);
@@ -132,6 +139,121 @@ namespace SourceGit.ViewModels
         public void OpenInExternalDiffTool(Models.Change change)
         {
             new Commands.DiffTool(_repo, new Models.DiffOption(_based, _to, change)).Open();
+        }
+
+        public async Task ResetToLeftAsync(Models.Change change)
+        {
+            if (!_canResetFiles)
+                return;
+
+            if (change.Index == Models.ChangeState.Added)
+            {
+                var fullpath = Native.OS.GetAbsPath(_repo, change.Path);
+                if (File.Exists(fullpath))
+                    await new Commands.Remove(_repo, [change.Path]).ExecAsync();
+            }
+            else if (change.Index == Models.ChangeState.Renamed)
+            {
+                var renamed = Native.OS.GetAbsPath(_repo, change.Path);
+                if (File.Exists(renamed))
+                    await new Commands.Remove(_repo, [change.Path]).ExecAsync();
+
+                await new Commands.Checkout(_repo).FileWithRevisionAsync(change.OriginalPath, _baseHead.SHA);
+            }
+            else
+            {
+                await new Commands.Checkout(_repo).FileWithRevisionAsync(change.Path, _baseHead.SHA);
+            }
+        }
+
+        public async Task ResetToRightAsync(Models.Change change)
+        {
+            if (change.Index == Models.ChangeState.Deleted)
+            {
+                var fullpath = Native.OS.GetAbsPath(_repo, change.Path);
+                if (File.Exists(fullpath))
+                    await new Commands.Remove(_repo, [change.Path]).ExecAsync();
+            }
+            else if (change.Index == Models.ChangeState.Renamed)
+            {
+                var old = Native.OS.GetAbsPath(_repo, change.OriginalPath);
+                if (File.Exists(old))
+                    await new Commands.Remove(_repo, [change.OriginalPath]).ExecAsync();
+
+                await new Commands.Checkout(_repo).FileWithRevisionAsync(change.Path, ToHead.SHA);
+            }
+            else
+            {
+                await new Commands.Checkout(_repo).FileWithRevisionAsync(change.Path, ToHead.SHA);
+            }
+        }
+
+        public async Task ResetMultipleToLeftAsync(List<Models.Change> changes)
+        {
+            var checkouts = new List<string>();
+            var removes = new List<string>();
+
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Added)
+                {
+                    var fullpath = Native.OS.GetAbsPath(_repo, c.Path);
+                    if (File.Exists(fullpath))
+                        removes.Add(c.Path);
+                }
+                else if (c.Index == Models.ChangeState.Renamed)
+                {
+                    var old = Native.OS.GetAbsPath(_repo, c.Path);
+                    if (File.Exists(old))
+                        removes.Add(c.Path);
+
+                    checkouts.Add(c.OriginalPath);
+                }
+                else
+                {
+                    checkouts.Add(c.Path);
+                }
+            }
+
+            if (removes.Count > 0)
+                await new Commands.Remove(_repo, removes).ExecAsync();
+
+            if (checkouts.Count > 0)
+                await new Commands.Checkout(_repo).MultipleFilesWithRevisionAsync(checkouts, _baseHead.SHA);
+        }
+
+        public async Task ResetMultipleToRightAsync(List<Models.Change> changes)
+        {
+            var checkouts = new List<string>();
+            var removes = new List<string>();
+
+            foreach (var c in changes)
+            {
+                if (c.Index == Models.ChangeState.Deleted)
+                {
+                    var fullpath = Native.OS.GetAbsPath(_repo, c.Path);
+                    if (File.Exists(fullpath))
+                        removes.Add(c.Path);
+                }
+                else if (c.Index == Models.ChangeState.Renamed)
+                {
+                    var renamed = Native.OS.GetAbsPath(_repo, c.OriginalPath);
+                    if (File.Exists(renamed))
+                        removes.Add(c.OriginalPath);
+
+                    checkouts.Add(c.Path);
+                }
+                else
+                {
+                    checkouts.Add(c.Path);
+                }
+            }
+
+            if (removes.Count > 0)
+                await new Commands.Remove(_repo, removes).ExecAsync();
+
+            if (checkouts.Count > 0)
+                await new Commands.Checkout(_repo).MultipleFilesWithRevisionAsync(checkouts, _toHead.SHA);
         }
 
         public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
@@ -241,6 +363,7 @@ namespace SourceGit.ViewModels
 
         private string _repo;
         private bool _isLoading = true;
+        private bool _canResetFiles = false;
         private string _based = string.Empty;
         private string _to = string.Empty;
         private string _baseName = string.Empty;

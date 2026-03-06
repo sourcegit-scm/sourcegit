@@ -303,6 +303,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(RowsChangedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
+        }
+
         public BranchTree()
         {
             InitializeComponent();
@@ -528,7 +537,7 @@ namespace SourceGit.Views
                     compare.Icon = App.CreateMenuIcon("Icons.Compare");
                     compare.Click += (_, ev) =>
                     {
-                        App.ShowWindow(new ViewModels.Compare(repo.FullPath, branches[0], branches[1]));
+                        App.ShowWindow(new ViewModels.Compare(repo, branches[0], branches[1]));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);
@@ -566,6 +575,13 @@ namespace SourceGit.Views
 
         private void OnTreeKeyDown(object _, KeyEventArgs e)
         {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
+
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
 
@@ -722,9 +738,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWith);
@@ -798,8 +812,21 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
 
+                    var interactiveRebase = new MenuItem();
+                    interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, branch.Name);
+                    interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                    interactiveRebase.IsEnabled = !current.Head.Equals(branch.Head, StringComparison.Ordinal);
+                    interactiveRebase.Click += async (_, e) =>
+                    {
+                        var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
+                        await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                        e.Handled = true;
+                    };
+
                     menu.Items.Add(merge);
                     menu.Items.Add(rebase);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(interactiveRebase);
                 }
 
                 if (hasNoWorktree)
@@ -826,7 +853,7 @@ namespace SourceGit.Views
                 compareWithCurrent.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithCurrent.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, branch, current));
+                    App.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
 
                 var compareWith = new MenuItem();
@@ -834,9 +861,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithCurrent);
@@ -1118,12 +1143,23 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
 
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, name);
+                interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.IsEnabled = !current.Head.Equals(branch.Head, StringComparison.Ordinal);
+                interactiveRebase.Click += async (_, e) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
+                    await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                    e.Handled = true;
+                };
+
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("BranchCM.CompareWithHead");
                 compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo.FullPath, branch, current));
+                    App.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
 
                 var compareWith = new MenuItem();
@@ -1131,14 +1167,14 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
 
                 menu.Items.Add(pull);
                 menu.Items.Add(merge);
                 menu.Items.Add(rebase);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(interactiveRebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithHead);
                 menu.Items.Add(compareWith);
