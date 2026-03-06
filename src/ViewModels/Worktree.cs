@@ -10,10 +10,10 @@ namespace SourceGit.ViewModels
         public Models.Worktree Backend { get; private set; }
         public bool IsMain { get; private set; }
         public bool IsCurrent { get; private set; }
+        public bool IsLast { get; private set; }
         public string DisplayPath { get; private set; }
         public string Name { get; private set; }
         public string Branch { get; private set; }
-        public int Depth { get; private set; }
 
         public bool IsLocked
         {
@@ -24,15 +24,15 @@ namespace SourceGit.ViewModels
         public string FullPath => Backend.FullPath;
         public string Head => Backend.Head;
 
-        public Worktree(DirectoryInfo repo, Models.Worktree wt, bool isMain)
+        public Worktree(DirectoryInfo repo, Models.Worktree wt, bool isMain, bool isLast)
         {
             Backend = wt;
             IsMain = isMain;
             IsCurrent = IsCurrentWorktree(repo, wt);
+            IsLast = isLast;
             DisplayPath = IsCurrent ? string.Empty : Path.GetRelativePath(repo.FullName, wt.FullPath);
             Name = GenerateName();
             Branch = GenerateBranchName();
-            Depth = isMain ? 0 : 1;
             IsLocked = wt.IsLocked;
         }
 
@@ -43,9 +43,9 @@ namespace SourceGit.ViewModels
 
             var repoDir = new DirectoryInfo(repo);
             var nodes = new List<Worktree>();
-            nodes.Add(new(repoDir, worktrees[0], true));
+            nodes.Add(new(repoDir, worktrees[0], true, false));
             for (int i = 1; i < worktrees.Count; i++)
-                nodes.Add(new(repoDir, worktrees[i], false));
+                nodes.Add(new(repoDir, worktrees[i], false, i == worktrees.Count - 1));
 
             return nodes;
         }

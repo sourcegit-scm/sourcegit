@@ -412,7 +412,7 @@
                    Height="0"
                    Margin="12,0,4,0"
                    Classes="repo_left_content_list"
-                   ItemsSource="{Binding Worktrees}"
+                   ItemsSource="{Binding Worktrees, Mode=OneWay}"
                    SelectionMode="Single"
                    PropertyChanged="OnWorktreeListPropertyChanged"
                    IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
@@ -473,13 +473,12 @@
                       </Grid>
                     </StackPanel>
                   </ToolTip.Tip>
-                  <Grid ColumnDefinitions="Auto,*,22"
-                        Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                        VerticalAlignment="Center">
-                    <v:WorktreeIcon Grid.Column="0"
+                  <Grid ColumnDefinitions="Auto,Auto,*,22" VerticalAlignment="Center">
+                    <v:WorktreeDepthIcon Grid.Column="0" Brush="{DynamicResource Brush.Border1}"/>
+                    <v:WorktreeIcon Grid.Column="1"
                                     Width="10" Height="10"
                                     Margin="8,0,0,0"/>
-                    <TextBlock Grid.Column="1"
+                    <TextBlock Grid.Column="2"
                                Margin="8,0,0,0"
                                Foreground="{DynamicResource Brush.FG2}"
                                TextTrimming="CharacterEllipsis">
@@ -488,7 +487,7 @@
                            Foreground="{DynamicResource Brush.FG1}"/>
                       <Run Text="{Binding DisplayPath, Mode=OneWay}"/>
                     </TextBlock>
-                    <Path Grid.Column="2"
+                    <Path Grid.Column="3"
                           Width="10" Height="10"
                           Margin="4,0,0,0"
                           Data="{StaticResource Icons.Lock}"
