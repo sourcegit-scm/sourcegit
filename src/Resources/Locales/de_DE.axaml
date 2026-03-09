@@ -858,6 +858,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch wurde erfolgreich gespeichert!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Durchsuche Repositorys</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Stammverzeichnis:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Zielgruppe:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Anderes benutzerdefiniertes Verzeichnis durchsuchen</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Suche nach Aktualisierungen…</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Eine neue Version dieses Programms ist verfügbar: </x:String>
