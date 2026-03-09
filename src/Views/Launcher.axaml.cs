@@ -189,6 +189,13 @@ namespace SourceGit.Views
                 }
             }
 
+            if (vm.CommandPalette != null)
+            {
+                if (e.Key == Key.Escape)
+                    vm.CommandPalette = null;
+                return;
+            }
+
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
                 if (e.Key == Key.W)
@@ -392,23 +399,6 @@ namespace SourceGit.Views
         {
             if (e.Source == sender && DataContext is ViewModels.Launcher vm)
                 vm.CommandPalette = null;
-            e.Handled = true;
-        }
-
-        private void OnCommandPaletteKeyDown(object sender, KeyEventArgs e)
-        {
-            if (DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
-            {
-                if (e.Key == Key.Escape)
-                    vm.CommandPalette = null;
-
-                e.Route = RoutingStrategies.Direct;
-                e.Handled = true;
-            }
-        }
-
-        private void OnCommandPaletteKeyUp(object sender, KeyEventArgs e)
-        {
             e.Handled = true;
         }
 
