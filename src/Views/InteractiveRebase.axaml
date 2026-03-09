@@ -207,7 +207,8 @@
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       Background="Transparent"
                       BorderThickness="0,1,0,0"
-                      BorderBrush="{DynamicResource Brush.Border2}"/>
+                      BorderBrush="{DynamicResource Brush.Border2}"
+                      Focusable="False"/>
 
         <ContentControl Grid.Row="2">
           <ContentControl.Content>

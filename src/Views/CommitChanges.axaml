@@ -68,7 +68,8 @@
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="Transparent"/>
+                  Background="Transparent"
+                  Focusable="False"/>
 
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">

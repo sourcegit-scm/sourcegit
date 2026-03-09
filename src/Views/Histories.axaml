@@ -277,7 +277,8 @@
                   MinWidth="1" MinHeight="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="{DynamicResource Brush.Window}"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <Grid IsVisible="{Binding DetailContext, Converter={x:Static ObjectConverters.IsNull}}">

@@ -141,7 +141,8 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
                   BorderThickness="1,0,0,0"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <!-- Right -->
     <Grid Grid.Column="2" Margin="0,4,4,4">

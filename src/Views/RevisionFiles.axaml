@@ -109,7 +109,8 @@
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="Transparent"/>
+                  Background="Transparent"
+                  Focusable="False"/>
 
     <!-- Right: File Content Viewer -->
     <Grid Grid.Column="2">

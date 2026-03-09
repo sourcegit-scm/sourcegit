@@ -53,8 +53,7 @@
                                 VerticalAlignment="Center"
                                 CornerRadius="2"
                                 Text="{Binding TagName, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"
-                                v:AutoFocusBehaviour.IsEnabled="True"/>
+                                Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

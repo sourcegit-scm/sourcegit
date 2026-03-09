@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddSubmodule"
              x:DataType="vm:AddSubmodule">
@@ -28,8 +27,7 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Watermark="{DynamicResource Text.RepositoryURL}"
-               Text="{Binding Url, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               Text="{Binding Url, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

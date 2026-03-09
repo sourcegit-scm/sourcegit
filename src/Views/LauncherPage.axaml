@@ -86,7 +86,8 @@
                               IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
                     <Button Width="0" Height="0"
                             Click="OnPopupSureByHotKey"
-                            HotKey="Enter"/>
+                            HotKey="Enter"
+                            Focusable="False"/>
                     <Button Classes="flat primary"
                             Width="100" Height="28"
                             Padding="0"

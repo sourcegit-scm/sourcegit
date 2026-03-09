@@ -117,7 +117,8 @@
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="Transparent"
                     BorderThickness="1,0,0,0"
-                    BorderBrush="{DynamicResource Brush.Border0}"/>
+                    BorderBrush="{DynamicResource Brush.Border0}"
+                    Focusable="False"/>
 
       <!-- Commit Detail -->
       <Border Grid.Column="2" Padding="0,4" IsVisible="{Binding !IsLoading}">

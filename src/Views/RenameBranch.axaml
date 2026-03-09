@@ -37,8 +37,7 @@
                                 VerticalAlignment="Center"
                                 CornerRadius="2"
                                 Text="{Binding Name, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"
-                                v:AutoFocusBehaviour.IsEnabled="True"/>
+                                Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"/>
     </Grid>
   </StackPanel>
 </UserControl>

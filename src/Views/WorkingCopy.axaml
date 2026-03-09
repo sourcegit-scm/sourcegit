@@ -141,7 +141,8 @@
       <GridSplitter Grid.Row="2"
                     MinHeight="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                    Background="{DynamicResource Brush.Border0}"/>
+                    Background="{DynamicResource Brush.Border0}"
+                    Focusable="False"/>
 
       <!-- Staged -->
       <Grid Grid.Row="3" RowDefinitions="28,*">
@@ -197,7 +198,8 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
                   BorderThickness="1,0,0,0"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <!-- Right -->
     <Grid Grid.Column="2" Margin="0,4,4,4">
@@ -237,7 +239,8 @@
       <!-- Splitter -->
       <GridSplitter Grid.Row="1" MinHeight="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                    Background="Transparent"/>
+                    Background="Transparent"
+                    Focusable="False"/>
 
       <!-- Commit Message -->
       <v:CommitMessageToolBox Grid.Row="2" ShowAdvancedOptions="True" CommitMessage="{Binding CommitMessage, Mode=TwoWay}"/>

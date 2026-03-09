@@ -7,8 +7,7 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.ExecuteCustomAction"
-             x:DataType="vm:ExecuteCustomAction"
-             Loaded="OnLoaded">
+             x:DataType="vm:ExecuteCustomAction">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <StackPanel Orientation="Horizontal">
       <Path Width="16" Height="16"

@@ -182,6 +182,14 @@
     <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
+  <Style Selector="AdornerLayer">
+    <Setter Property="DefaultFocusAdorner">
+      <FocusAdornerTemplate>
+        <Rectangle Margin="0" Stroke="{DynamicResource Brush.FG1}" StrokeDashArray="1,2" StrokeThickness="1"/>
+      </FocusAdornerTemplate>
+    </Setter>
+  </Style>
+
   <Style Selector="ToolTip">
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Popup}"/>
@@ -1067,6 +1075,12 @@
   </Style>
 
   <Style Selector="CheckBox">
+    <Setter Property="FocusAdorner">
+      <FocusAdornerTemplate>
+        <Border/>
+      </FocusAdornerTemplate>
+    </Setter>
+    
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="Template">
       <ControlTemplate>
@@ -1085,7 +1099,14 @@
         </Grid>
       </ControlTemplate>
     </Setter>
-
+    
+    <Style Selector="^:focus-visible /template/ Border#Border">
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
+    <Style Selector="^:focus-visible /template/ Path#Icon">
+      <Setter Property="Fill" Value="White"/>
+    </Style>
     <Style Selector="^:pointerover /template/ Border#Border">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     </Style>
@@ -1095,6 +1116,12 @@
   </Style>
 
   <Style Selector="RadioButton">
+    <Setter Property="FocusAdorner">
+      <FocusAdornerTemplate>
+        <Border/>
+      </FocusAdornerTemplate>
+    </Setter>
+    
     <Setter Property="Template">
       <ControlTemplate>
         <Grid ColumnDefinitions="16,*" Background="Transparent">
@@ -1136,9 +1163,26 @@
     <Style Selector="^:checked /template/ Ellipse#Dot">
       <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
     </Style>
+    <Style Selector="^:focus-visible /template/ Ellipse#Border">
+      <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
+    <Style Selector="^:focus-visible /template/ Ellipse#Dot">
+      <Setter Property="Stroke" Value="White"/>
+      <Setter Property="Fill" Value="White"/>
+    </Style>
+    <Style Selector="^:focus-visible:checked /template/ Ellipse#Dot">
+      <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
   </Style>
 
   <Style Selector="RadioButton.switch_button">
+    <Setter Property="FocusAdorner">
+      <FocusAdornerTemplate>
+        <Rectangle Margin="0" Stroke="{DynamicResource Brush.FG1}" StrokeDashArray="1,2" StrokeThickness="1"/>
+      </FocusAdornerTemplate>
+    </Setter>
+
     <Setter Property="Height" Value="24"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Background" Value="Transparent"/>

@@ -118,7 +118,8 @@
                     MinWidth="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="Transparent"
-                    BorderThickness="0"/>
+                    BorderThickness="0"
+                    Focusable="False"/>
 
       <Border Grid.Column="2"
               BorderBrush="{DynamicResource Brush.Border2}"

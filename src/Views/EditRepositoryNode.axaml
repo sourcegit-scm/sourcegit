@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.EditRepositoryNode"
              x:DataType="vm:EditRepositoryNode">
@@ -32,7 +31,7 @@
     </Grid>
     <Grid Height="28" Margin="8,4,0,0" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Name}"/>
-      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Name, Mode=TwoWay}" v:AutoFocusBehaviour.IsEnabled="True"/>
+      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Name, Mode=TwoWay}"/>
     </Grid>
     <Grid Height="28" Margin="8,4,0,0" ColumnDefinitions="120,*" IsVisible="{Binding IsRepository}">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Bookmark}"/>
