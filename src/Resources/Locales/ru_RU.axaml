@@ -904,6 +904,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Заплатка успешно сохранена!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Обнаружение репозиториев</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Корневой каталог:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Целевая группа:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Сканировать другой пользовательский каталог</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Проверить обновления...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Доступна новая версия программного обеспечения: </x:String>

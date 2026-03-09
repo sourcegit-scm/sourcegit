@@ -763,6 +763,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">La patch è stata salvata con successo!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Scansiona Repository</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Cartella Principale:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Gruppo di destinazione:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Scansiona un'altra cartella personalizzata</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Controlla Aggiornamenti...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">È disponibile una nuova versione del software:</x:String>

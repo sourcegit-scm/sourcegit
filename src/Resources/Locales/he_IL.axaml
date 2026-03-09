@@ -818,6 +818,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">ה־Patch נשמר בהצלחה!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">סרוק מאגרים</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">תיקיית שורש:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">קבוצת יעד:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">סרוק תיקייה מותאמת אישית אחרת</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">בדוק עדכונים...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">גרסה חדשה של התוכנה זמינה: </x:String>
