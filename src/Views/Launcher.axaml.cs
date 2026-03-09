@@ -131,6 +131,11 @@ namespace SourceGit.Views
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
             }
+            else if (change.Property == IsActiveProperty)
+            {
+                if (!IsActive && DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
+                    vm.CommandPalette = null;
+            }
         }
 
         protected override void OnSizeChanged(SizeChangedEventArgs e)
@@ -203,6 +208,13 @@ namespace SourceGit.Views
                     return;
                 }
 
+                if (e.Key == Key.T)
+                {
+                    vm.AddNewTab();
+                    e.Handled = true;
+                    return;
+                }
+
                 if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
                     (!OperatingSystem.IsMacOS() && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
@@ -265,11 +277,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (vm.CommandPalette != null)
-                    vm.CommandPalette = null;
-                else
-                    vm.ActivePage.CancelPopup();
-
+                vm.ActivePage.CancelPopup();
                 e.Handled = true;
                 return;
             }
@@ -317,6 +325,9 @@ namespace SourceGit.Views
         {
             if (sender is Button btn && DataContext is ViewModels.Launcher launcher)
             {
+                if (launcher.CommandPalette != null)
+                    launcher.CommandPalette = null;
+
                 var pref = ViewModels.Preferences.Instance;
                 var menu = new ContextMenu();
                 menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
@@ -381,6 +392,23 @@ namespace SourceGit.Views
         {
             if (e.Source == sender && DataContext is ViewModels.Launcher vm)
                 vm.CommandPalette = null;
+            e.Handled = true;
+        }
+
+        private void OnCommandPaletteKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
+            {
+                if (e.Key == Key.Escape)
+                    vm.CommandPalette = null;
+
+                e.Route = RoutingStrategies.Direct;
+                e.Handled = true;
+            }
+        }
+
+        private void OnCommandPaletteKeyUp(object sender, KeyEventArgs e)
+        {
             e.Handled = true;
         }
 

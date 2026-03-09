@@ -163,6 +163,9 @@ namespace SourceGit.Views
 
         private async void FetchDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.Repository repo)
             {
                 await repo.FetchAsync(true);
@@ -181,6 +184,9 @@ namespace SourceGit.Views
 
         private async void PullDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.Repository repo)
             {
                 await repo.PullAsync(true);
@@ -199,6 +205,9 @@ namespace SourceGit.Views
 
         private async void PushDirectlyByHotKey(object sender, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.Repository repo)
             {
                 await repo.PushAsync(true);
