@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,6 +10,8 @@ namespace SourceGit.ViewModels
 {
     public class StashesPage : ObservableObject, IDisposable
     {
+        public IReadOnlyDictionary<string, string> DecodedPaths => _ofpaContext.DecodedPaths;
+
         public List<Models.Stash> Stashes
         {
             get => _stashes;
@@ -49,6 +51,7 @@ namespace SourceGit.ViewModels
                 {
                     if (value == null)
                     {
+                        _ofpaContext.Clear();
                         Changes = null;
                         _untracked.Clear();
                     }
@@ -81,6 +84,11 @@ namespace SourceGit.ViewModels
                                     Changes = changes;
                                 }
                             });
+
+                            if (_repo.EnableOFPADecoding)
+                                ScheduleOFPARefresh(value, changes, untracked);
+                            else
+                                _ofpaContext.Clear();
                         });
                     }
                 }
@@ -123,6 +131,16 @@ namespace SourceGit.ViewModels
         public StashesPage(Repository repo)
         {
             _repo = repo;
+            _ofpaContext = new Utilities.OFPADecodingContext(repo, () =>
+            {
+                if (_selectedStash != null && _changes is { Count: > 0 })
+                    ScheduleOFPARefresh(_selectedStash, _changes, _untracked);
+            });
+            _ofpaContext.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(Utilities.OFPADecodingContext.DecodedPaths))
+                    OnPropertyChanged(nameof(DecodedPaths));
+            };
         }
 
         public void Dispose()
@@ -135,6 +153,7 @@ namespace SourceGit.ViewModels
             _repo = null;
             _selectedStash = null;
             _diffContext = null;
+            _ofpaContext.Dispose();
         }
 
         public void ClearSearchFilter()
@@ -280,6 +299,43 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private void ScheduleOFPARefresh(Models.Stash stash, List<Models.Change> changes, List<Models.Change> untracked)
+        {
+            var repoPath = _repo.FullPath;
+
+            _ofpaContext.ScheduleRefresh(async () =>
+            {
+                var untrackedSet = new HashSet<Models.Change>(untracked);
+                var specs = new List<Utilities.OFPANameLookup.RevisionObjectSpec>();
+
+                foreach (var change in changes)
+                {
+                    if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
+                        continue;
+
+                    string spec;
+                    if (untrackedSet.Contains(change) && stash.Parents.Count == 3)
+                    {
+                        spec = $"{stash.Parents[2]}:{change.Path}";
+                    }
+                    else
+                    {
+                        if (change.WorkTree == Models.ChangeState.Deleted || change.Index == Models.ChangeState.Deleted)
+                            spec = $"{stash.Parents[0]}:{change.Path}";
+                        else
+                            spec = $"{stash.SHA}:{change.Path}";
+                    }
+
+                    specs.Add(new Utilities.OFPANameLookup.RevisionObjectSpec(change.Path, spec));
+                }
+
+                if (specs.Count == 0)
+                    return new Dictionary<string, string>();
+
+                return await Utilities.OFPANameLookup.LookupRevisionObjectsAsync(repoPath, specs).ConfigureAwait(false);
+            });
+        }
+
         private Repository _repo = null;
         private List<Models.Stash> _stashes = [];
         private List<Models.Stash> _visibleStashes = [];
@@ -289,5 +345,6 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _untracked = [];
         private List<Models.Change> _selectedChanges = [];
         private DiffContext _diffContext = null;
+        private readonly Utilities.OFPADecodingContext _ofpaContext;
     }
 }

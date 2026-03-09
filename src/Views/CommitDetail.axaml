@@ -66,7 +66,14 @@
                                       HorizontalAlignment="Left"
                                       Margin="16,0,0,0"
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis">
+                    <TextBlock.Text>
+                      <MultiBinding Converter="{x:Static c:OFPAConverters.PathToDisplayName}">
+                        <Binding Path="Path"/>
+                        <Binding Path="$parent[UserControl].((vm:CommitDetail)DataContext).DecodedPaths"/>
+                      </MultiBinding>
+                    </TextBlock.Text>
+                  </TextBlock>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>

@@ -67,4 +67,8 @@
     <TrimmerRootAssembly Include="SourceGit" />
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="SourceGit.Tests" />
+  </ItemGroup>
 </Project>

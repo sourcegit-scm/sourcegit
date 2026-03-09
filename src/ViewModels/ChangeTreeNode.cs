@@ -33,10 +33,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isExpanded, value);
         }
 
-        public ChangeTreeNode(Models.Change c)
+        public ChangeTreeNode(Models.Change c, string decodedName = null)
         {
             FullPath = c.Path;
-            DisplayName = Path.GetFileName(c.Path);
+            DisplayName = decodedName ?? Path.GetFileName(c.Path);
             Change = c;
             IsExpanded = false;
         }
@@ -50,15 +50,23 @@ namespace SourceGit.ViewModels
 
         public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, bool compactFolders)
         {
+            return Build(changes, folded, compactFolders, null);
+        }
+
+        public static List<ChangeTreeNode> Build(IList<Models.Change> changes, HashSet<string> folded, bool compactFolders, IReadOnlyDictionary<string, string> decodedPaths)
+        {
             var nodes = new List<ChangeTreeNode>();
             var folders = new Dictionary<string, ChangeTreeNode>();
 
             foreach (var c in changes)
             {
                 var sepIdx = c.Path.IndexOf('/');
+                string decodedName = null;
+                decodedPaths?.TryGetValue(c.Path, out decodedName);
+
                 if (sepIdx == -1)
                 {
-                    nodes.Add(new ChangeTreeNode(c));
+                    nodes.Add(new ChangeTreeNode(c, decodedName));
                 }
                 else
                 {
@@ -88,7 +96,7 @@ namespace SourceGit.ViewModels
                         sepIdx = c.Path.IndexOf('/', sepIdx + 1);
                     }
 
-                    lastFolder?.Children.Add(new ChangeTreeNode(c));
+                    lastFolder?.Children.Add(new ChangeTreeNode(c, decodedName));
                 }
             }
 

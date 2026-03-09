@@ -130,6 +130,7 @@
         <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=OneWay}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding Changes}"
+                                DecodedPaths="{Binding DecodedPaths}"
                                 SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
                                 ContextRequested="OnChangeContextRequested"
                                 KeyDown="OnChangeCollectionViewKeyDown"/>

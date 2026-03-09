@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -200,6 +200,11 @@
                        Margin="5,0,0,0"
                        Text="{DynamicResource Text.Configure.Git.AutoFetchIntervalSuffix}" />
           </StackPanel>
+
+          <CheckBox Grid.Row="12" Grid.Column="1"
+                    Content="{DynamicResource Text.Configure.OFPA.Enable}"
+                    IsChecked="{Binding EnableOFPADecoding, Mode=TwoWay}"
+                    ToolTip.Tip="{DynamicResource Text.Configure.OFPA.Enable.Tip}"/>
         </Grid>
       </TabItem>
 

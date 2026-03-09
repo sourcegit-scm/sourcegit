@@ -978,4 +978,6 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
+  <x:String x:Key="Text.Configure.OFPA.Enable" xml:space="preserve">Decode Unreal Engine OFPA file names</x:String>
+  <x:String x:Key="Text.Configure.OFPA.Enable.Tip" xml:space="preserve">Show human-readable actor names instead of hash-based file names in __ExternalActors__ and __ExternalObjects__ folders. If decoding fails, raw paths remain unchanged.</x:String>
 </ResourceDictionary>
