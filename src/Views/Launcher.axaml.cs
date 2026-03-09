@@ -189,14 +189,28 @@ namespace SourceGit.Views
                 }
             }
 
+            var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+
             if (vm.CommandPalette != null)
             {
                 if (e.Key == Key.Escape)
+                {
                     vm.CommandPalette = null;
+                    e.Handled = true;
+                }
+                else if (vm.ActivePage.Data is ViewModels.Repository repo
+                    && vm.CommandPalette is ViewModels.LauncherPagesCommandPalette
+                    && e.Key == Key.P
+                    && e.KeyModifiers == (cmdKey | KeyModifiers.Shift))
+                {
+                    vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
+                    e.Handled = true;
+                }
+
                 return;
             }
 
-            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            if (e.KeyModifiers.HasFlag(cmdKey))
             {
                 if (e.Key == Key.W)
                 {
