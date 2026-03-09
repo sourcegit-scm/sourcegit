@@ -1099,20 +1099,23 @@
         </Grid>
       </ControlTemplate>
     </Setter>
-    
-    <Style Selector="^:focus-visible /template/ Border#Border">
-      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
-      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
-    </Style>
-    <Style Selector="^:focus-visible /template/ Path#Icon">
-      <Setter Property="Fill" Value="White"/>
-    </Style>
     <Style Selector="^:pointerover /template/ Border#Border">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     </Style>
     <Style Selector="^:checked /template/ Path#Icon">
       <Setter Property="IsVisible" Value="True"/>
     </Style>
+    <Style Selector="^:focus-visible /template/ Border#Border">
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+    <Style Selector="^:focus-visible:checked /template/ Border#Border">
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
+      <Setter Property="Background" Value="{DynamicResource Brush.Accent}"/>
+    </Style>
+    <Style Selector="^:focus-visible:checked /template/ Path#Icon">
+      <Setter Property="Fill" Value="White"/>
+    </Style> 
   </Style>
 
   <Style Selector="RadioButton">
