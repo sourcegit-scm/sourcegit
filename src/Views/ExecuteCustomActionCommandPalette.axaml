@@ -112,7 +112,7 @@
       </ListBox.ItemTemplate>
     </ListBox>
 
-    <Path Grid.Row="1"
+    <Path Grid.Row="2"
           Width="64" Height="64"
           Margin="0,16,0,0"
           HorizontalAlignment="Center"
