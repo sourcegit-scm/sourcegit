@@ -227,17 +227,10 @@
 
     <Setter Property="Template">
       <ControlTemplate>
-        <Grid>
-          <Border Background="{DynamicResource Brush.Popup}" BorderThickness="0" Margin="4" CornerRadius="{TemplateBinding CornerRadius}">
-            <Border.Effect>
-              <DropShadowEffect OffsetX="0" OffsetY="0" BlurRadius="4" Color="Black" Opacity=".6"/>
-            </Border.Effect>
-          </Border>
-
+        <Border Margin="4" CornerRadius="{TemplateBinding CornerRadius}" Effect="drop-shadow(0 0 4 #A0000000)">
           <Border Name="LayoutRoot"
-                  Margin="4"
                   Padding="12"
-                  Background="Transparent"
+                  Background="{DynamicResource Brush.Popup}"
                   BorderThickness="0"
                   CornerRadius="{TemplateBinding CornerRadius}">
             <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
@@ -252,7 +245,7 @@
                                 VerticalContentAlignment="Stretch" />
             </ScrollViewer>
           </Border>
-        </Grid>
+        </Border>
       </ControlTemplate>
     </Setter>
   </Style>
