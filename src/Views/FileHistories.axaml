@@ -205,7 +205,7 @@
                         <TextBlock Grid.Column="3" Text="{Binding AuthorTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                       </Grid>
 
-                      <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
+                      <TextBlock Grid.Row="1" Margin="0,6,0,0" Text="{Binding Subject}" TextTrimming="CharacterEllipsis" VerticalAlignment="Bottom"/>
                     </Grid>
                   </DataTemplate>
                 </Grid.DataTemplates>
