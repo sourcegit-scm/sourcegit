@@ -74,7 +74,7 @@ namespace SourceGit.ViewModels
         {
             if (_isDiffMode)
             {
-                SetViewContentAsDiff();
+                ViewContent = new DiffContext(_repo, new(_revision), _viewContent as DiffContext);
                 return;
             }
 
@@ -150,11 +150,6 @@ namespace SourceGit.ViewModels
             }
 
             return new FileHistoriesRevisionFile(_file);
-        }
-
-        private void SetViewContentAsDiff()
-        {
-            ViewContent = new DiffContext(_repo, new Models.DiffOption(_revision), _viewContent as DiffContext);
         }
 
         private string _repo = null;
