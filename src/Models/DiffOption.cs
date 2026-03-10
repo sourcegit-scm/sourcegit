@@ -86,10 +86,20 @@ namespace SourceGit.Models
         /// <param name="ver"></param>
         public DiffOption(FileVersion ver)
         {
-            _revisions.Add(ver.HasParent ? $"{ver.SHA}^" : Commit.EmptyTreeSHA1);
-            _revisions.Add(ver.SHA);
-            _path = ver.Path;
-            _orgPath = ver.Change.OriginalPath;
+            if (string.IsNullOrEmpty(ver.Change.OriginalPath))
+            {
+                _revisions.Add(ver.HasParent ? $"{ver.SHA}^" : Commit.EmptyTreeSHA1);
+                _revisions.Add(ver.SHA);
+                _path = ver.Path;
+            }
+            else
+            {
+                _revisions.Add($"{ver.SHA}^:{ver.Change.OriginalPath.Quoted()}");
+                _revisions.Add($"{ver.SHA}:{ver.Path.Quoted()}");
+                _path = ver.Path;
+                _orgPath = ver.Change.OriginalPath;
+                _ignorePaths = true;
+            }
         }
 
         /// <summary>

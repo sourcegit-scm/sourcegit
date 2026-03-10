@@ -8,9 +8,9 @@ namespace SourceGit.Commands
 {
     public partial class QueryFileHistory : Command
     {
-        [GeneratedRegex(@"^([MADC])\s+(.+)$")]
+        [GeneratedRegex(@"^([MAD])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
-        [GeneratedRegex(@"^R[0-9]{0,4}\s+(.+)$")]
+        [GeneratedRegex(@"^([CR])[0-9]{0,4}\s+(.+)$")]
         private static partial Regex REG_RENAME_FORMAT();
 
         public QueryFileHistory(string repo, string path, string head)
@@ -20,7 +20,7 @@ namespace SourceGit.Commands
             RaiseError = false;
 
             var builder = new StringBuilder();
-            builder.Append("log --follow --no-show-signature --date-order -n 10000 --decorate=no --format=\"@%H%x00%P%x00%aN±%aE%x00%at%x00%s\" --name-status ");
+            builder.Append("log --no-show-signature --date-order -n 10000 --decorate=no --format=\"@%H%x00%P%x00%aN±%aE%x00%at%x00%s\" --follow --name-status ");
             if (!string.IsNullOrEmpty(head))
                 builder.Append(head).Append(" ");
             builder.Append("-- ").Append(path.Quoted());
@@ -64,8 +64,9 @@ namespace SourceGit.Commands
                         match = REG_RENAME_FORMAT().Match(line);
                         if (match.Success)
                         {
-                            last.Change.Path = match.Groups[1].Value;
-                            last.Change.Set(Models.ChangeState.Renamed);
+                            var type = match.Groups[1].Value;
+                            last.Change.Path = match.Groups[2].Value;
+                            last.Change.Set(type == "R" ? Models.ChangeState.Renamed : Models.ChangeState.Copied);
                         }
 
                         continue;
@@ -84,9 +85,6 @@ namespace SourceGit.Commands
                             break;
                         case 'D':
                             last.Change.Set(Models.ChangeState.Deleted);
-                            break;
-                        case 'C':
-                            last.Change.Set(Models.ChangeState.Copied);
                             break;
                     }
                 }

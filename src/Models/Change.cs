@@ -60,7 +60,7 @@
             Index = index;
             WorkTree = workTree;
 
-            if (index == ChangeState.Renamed || workTree == ChangeState.Renamed)
+            if (index == ChangeState.Renamed || index == ChangeState.Copied || workTree == ChangeState.Renamed)
             {
                 var parts = Path.Split('\t', 2);
                 if (parts.Length < 2)
