@@ -59,8 +59,8 @@
                BorderThickness="1"
                Margin="8,4,4,8"
                BorderBrush="{DynamicResource Brush.Border2}"
-               ItemsSource="{Binding Commits}"
-               SelectedItems="{Binding SelectedCommits, Mode=TwoWay}"
+               ItemsSource="{Binding Revisions}"
+               SelectedItems="{Binding SelectedRevisions, Mode=TwoWay}"
                SelectionMode="Multiple"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -79,7 +79,7 @@
         </ListBox.ItemsPanel>
 
         <ListBox.ItemTemplate>
-          <DataTemplate DataType="m:Commit">
+          <DataTemplate DataType="m:FileVersion">
             <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1" Padding="4">
               <Grid RowDefinitions="Auto,*">
                 <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,96">
@@ -196,16 +196,13 @@
             <Grid RowDefinitions="Auto,*">
               <Grid Grid.Row="0" Margin="4,6" ColumnDefinitions="*,32,*,Auto">
                 <Grid.DataTemplates>
-                  <DataTemplate DataType="m:Commit">
+                  <DataTemplate DataType="m:FileVersion">
                     <Grid RowDefinitions="Auto,*">
-                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-                        <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
+                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
+                        <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                        <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
-                          <TextBlock Text="HEAD" Margin="4,0" Foreground="#FFDDDDDD"/>
-                        </Border>
-                        <TextBlock Grid.Column="3" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
-                        <TextBlock Grid.Column="4" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                        <TextBlock Grid.Column="2" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
+                        <TextBlock Grid.Column="3" Text="{Binding AuthorTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
                       </Grid>
 
                       <TextBlock Grid.Row="1" Text="{Binding Subject}" VerticalAlignment="Bottom"/>
