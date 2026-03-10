@@ -53,8 +53,7 @@
                    Height="28"
                    CornerRadius="3"
                    Watermark="{DynamicResource Text.Configure.User.Placeholder}"
-                   Text="{Binding UserName, Mode=TwoWay}"
-                   v:AutoFocusBehaviour.IsEnabled="True"/>
+                   Text="{Binding UserName, Mode=TwoWay}"/>
 
           <TextBlock Grid.Row="1" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"

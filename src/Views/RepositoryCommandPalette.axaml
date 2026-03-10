@@ -17,8 +17,7 @@
              CornerRadius="12"
              Text="{Binding Filter, Mode=TwoWay}"
              BorderBrush="{DynamicResource Brush.Border2}"
-             VerticalContentAlignment="Center"
-             v:AutoFocusBehaviour.IsEnabled="True">
+             VerticalContentAlignment="Center">
       <TextBox.InnerLeftContent>
         <Path Width="14" Height="14"
               Margin="6,0,0,0"

@@ -1,4 +1,6 @@
 using System;
+
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -8,6 +10,12 @@ namespace SourceGit.Views
         public Askpass()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            TxtPassphrase.Focus(NavigationMethod.Directional);
         }
 
         private void CloseWindow(object _1, RoutedEventArgs _2)
