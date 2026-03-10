@@ -134,6 +134,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CLOSE</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">Branches</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">Branches &amp; Tags</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">Repository Custom Actions</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">Revision Files</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick Commit</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>

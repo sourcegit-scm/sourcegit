@@ -138,6 +138,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">分支列表</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">分支 &amp; 标签</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">自定义操作列表</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">文件列表</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">挑选(cherry-pick)...</x:String>

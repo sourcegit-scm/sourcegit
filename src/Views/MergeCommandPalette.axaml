@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.MergeCommandPalette"
              x:DataType="vm:MergeCommandPalette">
-  <Grid RowDefinitions="Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto,Auto">
     <v:RepositoryCommandPaletteTextBox Grid.Row="0"
                                        x:Name="FilterTextBox"
                                        Height="24"
@@ -52,10 +52,16 @@
       </TextBox.InnerRightContent>
     </v:RepositoryCommandPaletteTextBox>
 
-    <ListBox Grid.Row="1"
+    <TextBlock Grid.Row="1"
+               Margin="6,12,0,0"
+               Text="{DynamicResource Text.CommandPalette.Branches}"
+               FontWeight="Bold"
+               Foreground="{DynamicResource Brush.FG2}"/>
+
+    <ListBox Grid.Row="2"
              x:Name="BranchListBox"
-             MaxHeight="250"
-             Margin="4,8,4,0"
+             MaxHeight="360"
+             Margin="4,8"
              BorderThickness="0"
              SelectionMode="Single"
              Background="Transparent"
