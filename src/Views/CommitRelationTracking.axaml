@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
-             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitRelationTracking">
   <Grid RowDefinitions="Auto,Auto,Auto">
@@ -30,7 +29,5 @@
         </ItemsControl.ItemTemplate>
       </ItemsControl>
     </ScrollViewer>
-
-    <v:LoadingIcon x:Name="LoadingIcon" Grid.Row="2" HorizontalAlignment="Center" Margin="0,8" Width="14" Height="14" IsVisible="False"/>
   </Grid>
 </UserControl>

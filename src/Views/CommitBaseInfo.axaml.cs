@@ -106,12 +106,16 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Button button)
             {
+                var containsIn = await detail.GetRefsContainsThisCommitAsync();
+                if (containsIn is not { Count: > 0 } || !button.IsEffectivelyVisible)
+                    return;
+
                 var tracking = new CommitRelationTracking();
+                tracking.SetData(containsIn);
+
                 var flyout = new Flyout();
                 flyout.Content = tracking;
                 flyout.ShowAt(button);
-
-                await tracking.SetDataAsync(detail);
             }
 
             e.Handled = true;
