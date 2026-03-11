@@ -284,8 +284,9 @@
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">启动时恢复打开的仓库</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">确认继续</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)？</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自动暂存并提交</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)或是自动暂存所有变更并提交？</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">暂存所有变更并提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">仅暂存所选变更并提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)或是自动暂存变更并提交？</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">系统提示</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">程序需要重新启动，以便修改生效！</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">规范化提交信息生成</x:String>

@@ -284,8 +284,9 @@
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">啟動時還原上次開啟的存放庫</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">確認繼續</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty)?</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自動暫存並提交</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty) 或者自動暫存全部變更並提交?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">暫存全部變更並提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">僅暫存所選變更并提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">未包含任何檔案變更! 您是否仍要提交 (--allow-empty) 或者自動暫存變更並提交?</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">系統提示</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">您需要重新啟動此應用程式才能套用變更!</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">產生約定式提交訊息</x:String>
