@@ -13,7 +13,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"reset HEAD --pathspec-from-file={pathspec.Quoted()}";
+            Args = $"reset --pathspec-from-file={pathspec.Quoted()}";
         }
     }
 }
