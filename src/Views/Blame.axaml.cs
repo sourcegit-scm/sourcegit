@@ -79,7 +79,7 @@ namespace SourceGit.Views
                         var authorTop = y - author.Height * 0.5;
                         context.DrawText(author, new Point(x, authorTop));
 
-                        var timeStr = Models.DateTimeFormat.Format(info.Timestamp);
+                        var timeStr = Models.DateTimeFormat.Format(info.Timestamp, true);
                         var time = new FormattedText(
                             timeStr,
                             CultureInfo.CurrentCulture,
@@ -131,7 +131,7 @@ namespace SourceGit.Views
                             _editor.Foreground);
                         x += author.Width + 8;
 
-                        var timeStr = Models.DateTimeFormat.Format(info.Timestamp);
+                        var timeStr = Models.DateTimeFormat.Format(info.Timestamp, true);
                         var time = new FormattedText(
                             timeStr,
                             CultureInfo.CurrentCulture,
