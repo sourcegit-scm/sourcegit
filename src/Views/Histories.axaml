@@ -157,6 +157,7 @@
                     </v:CommitRefsPresenter>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
+                                              Height="26"
                                               FontFamily="{DynamicResource Fonts.Default}"
                                               CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                               InlineCodeBackground="{DynamicResource Brush.InlineCode}"
