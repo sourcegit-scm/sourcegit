@@ -19,6 +19,15 @@ namespace SourceGit.Views
             set => SetValue(ShowAsDateTimeProperty, value);
         }
 
+        public static readonly StyledProperty<bool> Use24HoursProperty =
+            AvaloniaProperty.Register<CommitTimeTextBlock, bool>(nameof(Use24Hours), true);
+
+        public bool Use24Hours
+        {
+            get => GetValue(Use24HoursProperty);
+            set => SetValue(Use24HoursProperty, value);
+        }
+
         public static readonly StyledProperty<int> DateTimeFormatProperty =
             AvaloniaProperty.Register<CommitTimeTextBlock, int>(nameof(DateTimeFormat));
 
@@ -62,7 +71,7 @@ namespace SourceGit.Views
                     HorizontalAlignment = HorizontalAlignment.Center;
                 }
             }
-            else if (change.Property == DateTimeFormatProperty)
+            else if (change.Property == DateTimeFormatProperty || change.Property == Use24HoursProperty)
             {
                 if (ShowAsDateTime)
                     SetCurrentValue(TextProperty, GetDisplayText());

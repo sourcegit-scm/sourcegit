@@ -155,6 +155,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool Use24Hours
+        {
+            get => Models.DateTimeFormat.Use24Hours;
+            set
+            {
+                if (value != Models.DateTimeFormat.Use24Hours)
+                {
+                    Models.DateTimeFormat.Use24Hours = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool UseFixedTabWidth
         {
             get => _useFixedTabWidth;

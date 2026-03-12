@@ -63,21 +63,29 @@
                        Text="{DynamicResource Text.Preferences.General.DateFormat}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="1" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding Source={x:Static m:DateTimeFormat.Supported}}"
-                      SelectedIndex="{Binding DateTimeFormat, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type m:DateTimeFormat}">
-                  <Grid ColumnDefinitions="*,8,*">
-                    <TextBlock Grid.Column="0" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding Example}"/>
-                    <TextBlock Grid.Column="2" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding DateTime}" Foreground="{DynamicResource Brush.FG2}"/>
-                  </Grid>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto">
+              <ComboBox Grid.Column="0"
+                        MinHeight="28"
+                        Padding="8,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding Source={x:Static m:DateTimeFormat.Supported}}"
+                        SelectedIndex="{Binding DateTimeFormat, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="{x:Type m:DateTimeFormat}">
+                    <Grid ColumnDefinitions="*,8,*">
+                      <TextBlock Grid.Column="0" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding Example}"/>
+                      <TextBlock Grid.Column="2" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding DateOnly}" Foreground="{DynamicResource Brush.FG2}"/>
+                    </Grid>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+
+              <CheckBox Grid.Column="1"
+                        Height="32"
+                        Margin="8,0,0,0"
+                        Content="{DynamicResource Text.Preferences.General.Use24Hours}"
+                        IsChecked="{Binding Use24Hours, Mode=TwoWay}"/>
+            </Grid>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.DefaultCloneDir}"

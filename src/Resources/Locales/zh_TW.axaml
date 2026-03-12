@@ -653,6 +653,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交詳細資訊中顯示後續提交</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在路線圖中顯示標籤</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">提交標題字數偵測</x:String>
+  <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24小時制</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">產生 GitHub 風格的預設頭貼</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">Git 設定</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自動換行轉換</x:String>
