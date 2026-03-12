@@ -21,7 +21,9 @@ namespace SourceGit.ViewModels
             _pageId = pageId;
             _targetPath = path;
             _parentNode = parent;
-            Reason = string.IsNullOrEmpty(reason) ? "Invalid repository detected!" : reason;
+
+            Reason = string.IsNullOrEmpty(reason) ? "unknown error" : reason;
+            Reason = Reason.Trim();
         }
 
         public override async Task<bool> Sure()
