@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SourceGit.Models
+﻿namespace SourceGit.Models
 {
     public class FileVersion
     {
@@ -10,9 +8,7 @@ namespace SourceGit.Models
         public ulong AuthorTime { get; set; } = 0;
         public string Subject { get; set; } = string.Empty;
         public Change Change { get; set; } = new();
-
         public string Path => Change.Path;
-        public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
-        public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
+        public string OriginalPath => Change.OriginalPath;
     }
 }

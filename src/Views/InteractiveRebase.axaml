@@ -191,9 +191,9 @@
 
                 <!-- Commit Time -->
                 <Border Grid.Column="7">
-                  <TextBlock Margin="16,0,8,0"
-                             Text="{Binding Commit.CommitterTimeStr}"
-                             Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                  <v:DateTimePresenter Margin="16,0,8,0"
+                                       Timestamp="{Binding Commit.CommitterTime}"
+                                       Opacity="{Binding IsFullMessageUsed, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                 </Border>
               </Grid>
             </DataTemplate>

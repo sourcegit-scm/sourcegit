@@ -25,10 +25,10 @@
                   <Run Text="{Binding Author.Email, Mode=OneWay}"/>
                 </TextBlock>
               </Border>
-              <TextBlock Text="{Binding AuthorTimeStr}"
-                         Margin="2,0,0,0"
-                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                         Foreground="{DynamicResource Brush.FG2}"/>
+              <v:DateTimePresenter Margin="2,0,0,0"
+                                   Timestamp="{Binding AuthorTime}"
+                                   FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                                   Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
 
@@ -43,10 +43,10 @@
                   <Run Text="{Binding Committer.Email, Mode=OneWay}"/>
                 </TextBlock>
               </Border>
-              <TextBlock Text="{Binding CommitterTimeStr}"
-                         Margin="2,0,0,0"
-                         FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                         Foreground="{DynamicResource Brush.FG2}"/>
+              <v:DateTimePresenter Margin="2,0,0,0"
+                                   Timestamp="{Binding CommitterTime}"
+                                   FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                                   Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
         </UniformGrid>
@@ -127,7 +127,10 @@
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                           <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <v:DateTimePresenter Grid.Column="2"
+                                               Margin="8,0,0,0"
+                                               Timestamp="{Binding CommitterTime}"
+                                               Foreground="{DynamicResource Brush.FG2}"/>
                         </Grid>
 
                         <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
@@ -171,7 +174,10 @@
                         <Grid ColumnDefinitions="Auto,*,Auto">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                           <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <v:DateTimePresenter Grid.Column="2"
+                                               Margin="8,0,0,0"
+                                               Timestamp="{Binding CommitterTime}"
+                                               Foreground="{DynamicResource Brush.FG2}"/>
                         </Grid>
 
                         <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
@@ -213,7 +219,10 @@
                   <Grid ColumnDefinitions="Auto,*,Auto">
                     <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                     <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                    <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                    <v:DateTimePresenter Grid.Column="2"
+                                         Margin="8,0,0,0"
+                                         Timestamp="{Binding CommitterTime}"
+                                         Foreground="{DynamicResource Brush.FG2}"/>
                   </Grid>
 
                   <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>

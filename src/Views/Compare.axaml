@@ -53,8 +53,16 @@
                   <TextBlock Text="{Binding BaseName}" Margin="4,0" Foreground="#FFF2F2F2"/>        
                 </StackPanel>
               </Border>
-              <TextBlock Grid.Column="3" Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
-              <TextBlock Grid.Column="4" Text="{Binding BaseHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="3"
+                         Text="{Binding BaseHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                         Foreground="DarkOrange" Margin="8,0,0,0"
+                         TextDecorations="Underline"
+                         Cursor="Hand"
+                         PointerPressed="OnPressedSHA"/>
+              <v:DateTimePresenter Grid.Column="4"
+                                   Margin="8,0,0,0"
+                                   Timestamp="{Binding BaseHead.CommitterTime}"
+                                   Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Text="{Binding BaseHead.Subject}" VerticalAlignment="Bottom"/>
@@ -81,7 +89,10 @@
                 </StackPanel>
               </Border>
               <TextBlock Grid.Column="3" Text="{Binding ToHead.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA"/>
-              <TextBlock Grid.Column="4" Text="{Binding ToHead.CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+              <v:DateTimePresenter Grid.Column="4"
+                                   Margin="8,0,0,0"
+                                   Timestamp="{Binding ToHead.CommitterTime}"
+                                   Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
 
             <TextBlock Grid.Row="1" Text="{Binding ToHead.Subject}" VerticalAlignment="Bottom"/>

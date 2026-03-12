@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
@@ -10,24 +9,6 @@ namespace SourceGit.Models
         public List<string> Parents { get; set; } = [];
         public ulong Time { get; set; } = 0;
         public string Message { get; set; } = "";
-
-        public string Subject
-        {
-            get
-            {
-                return Message.Split('\n', 2)[0].Trim();
-            }
-        }
-
-        public string TimeStr
-        {
-            get
-            {
-                return DateTime.UnixEpoch
-                    .AddSeconds(Time)
-                    .ToLocalTime()
-                    .ToString(DateTimeFormat.Active.DateTime);
-            }
-        }
+        public string Subject => Message.Split('\n', 2)[0].Trim();
     }
 }

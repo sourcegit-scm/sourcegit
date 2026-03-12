@@ -130,10 +130,13 @@ namespace SourceGit.Views
             if (DataContext is not Models.Commit commit)
                 return string.Empty;
 
-            if (ShowAsDateTime)
-                return UseAuthorTime ? commit.AuthorTimeStr : commit.CommitterTimeStr;
-
             var timestamp = UseAuthorTime ? commit.AuthorTime : commit.CommitterTime;
+            if (ShowAsDateTime)
+            {
+                var format = Models.DateTimeFormat.Active.DateTime;
+                return DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString(format);
+            }
+
             var now = DateTime.Now;
             var localTime = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
             var span = now - localTime;
