@@ -132,10 +132,7 @@ namespace SourceGit.Views
 
             var timestamp = UseAuthorTime ? commit.AuthorTime : commit.CommitterTime;
             if (ShowAsDateTime)
-            {
-                var format = Models.DateTimeFormat.Active.DateTime;
-                return DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().ToString(format);
-            }
+                return Models.DateTimeFormat.Format(timestamp);
 
             var now = DateTime.Now;
             var localTime = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();

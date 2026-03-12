@@ -72,9 +72,7 @@ namespace SourceGit.Views
                 change.Property == DateTimeFormatProperty ||
                 change.Property == TimestampProperty)
             {
-                var active = Models.DateTimeFormat.Active;
-                var format = ShowDateOnly ? active.DateOnly : active.DateTime;
-                var text = DateTime.UnixEpoch.AddSeconds(Timestamp).ToLocalTime().ToString(format);
+                var text = Models.DateTimeFormat.Format(Timestamp, ShowDateOnly);
                 SetCurrentValue(TextProperty, text);
             }
         }

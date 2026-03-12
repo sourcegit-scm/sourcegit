@@ -5,38 +5,20 @@ namespace SourceGit.Models
 {
     public class DateTimeFormat
     {
-        public string DateOnly
+        public static readonly List<DateTimeFormat> Supported = new List<DateTimeFormat>
         {
-            get;
-            set;
-        }
-
-        public string DateTime
-        {
-            get
-            {
-                if (_use24Hours != Use24Hours || string.IsNullOrEmpty(_dateTime))
-                {
-                    _use24Hours = Use24Hours;
-                    _dateTime = _use24Hours ? $"{DateOnly} HH:mm:ss" : $"{DateOnly} hh:mm:ss tt";
-                }
-
-                return _dateTime;
-            }
-        }
-
-        public string Example
-        {
-            get
-            {
-                return new DateTime(2025, 1, 31, 8, 0, 0, DateTimeKind.Local).ToString(DateOnly);
-            }
-        }
-
-        public DateTimeFormat(string date)
-        {
-            DateOnly = date;
-        }
+            new("yyyy/MM/dd"),
+            new("yyyy.MM.dd"),
+            new("yyyy-MM-dd"),
+            new("MM/dd/yyyy"),
+            new("MM.dd.yyyy"),
+            new("MM-dd-yyyy"),
+            new("dd/MM/yyyy"),
+            new("dd.MM.yyyy"),
+            new("dd-MM-yyyy"),
+            new("MMM d yyyy"),
+            new("d MMM yyyy"),
+        };
 
         public static int ActiveIndex
         {
@@ -50,27 +32,35 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public static DateTimeFormat Active
+        public string DateFormat
         {
-            get => Supported[ActiveIndex];
+            get;
         }
 
-        public static readonly List<DateTimeFormat> Supported = new List<DateTimeFormat>
+        public string Example
         {
-            new DateTimeFormat("yyyy/MM/dd"),
-            new DateTimeFormat("yyyy.MM.dd"),
-            new DateTimeFormat("yyyy-MM-dd"),
-            new DateTimeFormat("MM/dd/yyyy"),
-            new DateTimeFormat("MM.dd.yyyy"),
-            new DateTimeFormat("MM-dd-yyyy"),
-            new DateTimeFormat("dd/MM/yyyy"),
-            new DateTimeFormat("dd.MM.yyyy"),
-            new DateTimeFormat("dd-MM-yyyy"),
-            new DateTimeFormat("MMM d yyyy"),
-            new DateTimeFormat("d MMM yyyy"),
-        };
+            get => DateTime.Now.ToString(DateFormat);
+        }
 
-        private bool _use24Hours = true;
-        private string _dateTime = null;
+        public DateTimeFormat(string date)
+        {
+            DateFormat = date;
+        }
+
+        public static string Format(ulong timestamp, bool dateOnly = false)
+        {
+            var localTime = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
+            return Format(localTime, dateOnly);
+        }
+
+        public static string Format(DateTime localTime, bool dateOnly = false)
+        {
+            var actived = Supported[ActiveIndex];
+            if (dateOnly)
+                return localTime.ToString(actived.DateFormat);
+
+            var format = Use24Hours ? $"{actived.DateFormat} HH:mm:ss" : $"{actived.DateFormat} hh:mm:ss tt";
+            return localTime.ToString(format);
+        }
     }
 }
