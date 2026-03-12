@@ -568,6 +568,7 @@ namespace SourceGit.Views
                 if (vm.Staged == null || vm.Staged.Count == 0)
                 {
                     App.RaiseException(repo.FullPath, "No files added to commit!");
+                    e.Handled = true;
                     return;
                 }
 
@@ -575,12 +576,14 @@ namespace SourceGit.Views
                 if (services.Count == 0)
                 {
                     App.RaiseException(repo.FullPath, "Bad configuration for OpenAI");
+                    e.Handled = true;
                     return;
                 }
 
                 if (services.Count == 1)
                 {
                     await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], vm.Staged));
+                    e.Handled = true;
                     return;
                 }
 

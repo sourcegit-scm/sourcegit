@@ -179,6 +179,7 @@ namespace SourceGit.Views
                 if (e is { KeyModifiers: KeyModifiers.None, Key: Key.F1 })
                 {
                     await App.ShowDialog(new Hotkeys());
+                    e.Handled = true;
                     return;
                 }
 
