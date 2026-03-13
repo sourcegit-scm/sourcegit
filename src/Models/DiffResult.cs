@@ -95,53 +95,45 @@ namespace SourceGit.Models
             return rs;
         }
 
-        public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
+        public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, string output)
         {
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
             var fileGuid = isTracked ? fileBlobGuid : "00000000";
 
+            // Collect selected added lines first to check if there's anything to write
+            var selectedAddedLines = new List<TextDiffLine>();
+            for (int i = 0; i < Lines.Count; i++)
+            {
+                var line = Lines[i];
+                if (line.Type != TextDiffLineType.Added)
+                    continue;
+
+                var lineIndex = i + 1; // 1-based line number
+                if (lineIndex >= selection.StartLine && lineIndex <= selection.EndLine)
+                    selectedAddedLines.Add(line);
+            }
+
+            if (selectedAddedLines.Count == 0)
+                return;
+
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
-            if (!revert && !isTracked)
+            if (!isTracked)
                 writer.WriteLine("new file mode 100644");
-            writer.WriteLine($"index 00000000...{fileGuid}");
-            writer.WriteLine($"--- {(revert || isTracked ? $"a/{change.Path}" : "/dev/null")}");
+            writer.WriteLine($"index 0000000..{fileGuid}");
+            writer.WriteLine($"--- {(isTracked ? $"a/{change.Path}" : "/dev/null")}");
             writer.WriteLine($"+++ b/{change.Path}");
 
-            var additions = selection.EndLine - selection.StartLine;
-            if (selection.StartLine != 1)
-                additions++;
-
-            if (revert)
+            writer.WriteLine($"@@ -0,0 +1,{selectedAddedLines.Count} @@");
+            foreach (var line in selectedAddedLines)
             {
-                var totalLines = Lines.Count - 1;
-                writer.WriteLine($"@@ -0,{totalLines - additions} +0,{totalLines} @@");
-                for (int i = 1; i <= totalLines; i++)
-                {
-                    var line = Lines[i];
-                    if (line.Type != TextDiffLineType.Added)
-                        continue;
-
-                    if (i >= selection.StartLine - 1 && i < selection.EndLine)
-                        writer.WriteLine($"+{line.Content}");
-                    else
-                        writer.WriteLine($" {line.Content}");
-                }
-            }
-            else
-            {
-                writer.WriteLine($"@@ -0,0 +0,{additions} @@");
-                for (int i = selection.StartLine - 1; i < selection.EndLine; i++)
-                {
-                    var line = Lines[i];
-                    if (line.Type != TextDiffLineType.Added)
-                        continue;
-                    writer.WriteLine($"+{line.Content}");
-                }
+                writer.WriteLine($"+{line.Content}");
             }
 
-            writer.WriteLine("\\ No newline at end of file");
+            if (selectedAddedLines[^1].NoNewLineEndOfFile)
+                writer.WriteLine("\\ No newline at end of file");
+
             writer.Flush();
         }
 
@@ -152,7 +144,7 @@ namespace SourceGit.Models
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
-            writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
+            writer.WriteLine($"index 0000000..{fileTreeGuid} 100644");
             writer.WriteLine($"--- a/{orgFile}");
             writer.WriteLine($"+++ b/{change.Path}");
 
@@ -255,7 +247,9 @@ namespace SourceGit.Models
                 }
             }
 
-            writer.WriteLine($" {tail}");
+            if (tail != null)
+                writer.WriteLine($" {tail}");
+
             writer.Flush();
         }
 
@@ -266,7 +260,7 @@ namespace SourceGit.Models
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
-            writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
+            writer.WriteLine($"index 0000000..{fileTreeGuid} 100644");
             writer.WriteLine($"--- a/{orgFile}");
             writer.WriteLine($"+++ b/{change.Path}");
 
@@ -406,7 +400,9 @@ namespace SourceGit.Models
                 }
             }
 
-            writer.WriteLine($" {tail}");
+            if (tail != null)
+                writer.WriteLine($" {tail}");
+
             writer.Flush();
         }
 
