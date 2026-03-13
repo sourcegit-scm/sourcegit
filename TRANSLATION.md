@@ -29,25 +29,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.56%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.90%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.CommandPalette.Branches
-- Text.CommandPalette.BranchesAndTags
-- Text.CommandPalette.RepositoryActions
-- Text.CommandPalette.RevisionFiles
-- Text.ConfirmEmptyCommit.StageSelectedThenCommit
-- Text.GotoRevisionSelector
-- Text.Hotkeys.Repo.GoToChild
-- Text.Init.CommandTip
-- Text.Init.ErrorMessageTip
 - Text.Preferences.General.Use24Hours
-- Text.StashCM.ApplyFileChanges
-- Text.Worktree.Branch
-- Text.Worktree.Head
-- Text.Worktree.Path
 
 </details>
 
