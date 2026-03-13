@@ -524,6 +524,9 @@
     <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     <Setter Property="Opacity" Value=".56"/>
   </Style>
+  <Style Selector="TextBlock.dropped">
+    <Setter Property="TextDecorations" Value="Strikethrough"/>
+  </Style>
 
   <Style Selector="Run.issue_link">
     <Setter Property="Foreground" Value="{DynamicResource Brush.Link}"/>
