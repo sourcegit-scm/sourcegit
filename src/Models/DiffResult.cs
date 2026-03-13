@@ -254,7 +254,8 @@ namespace SourceGit.Models
                 }
             }
 
-            writer.WriteLine($" {tail}");
+            if (!string.IsNullOrEmpty(tail))
+                writer.WriteLine($" {tail}");
             writer.Flush();
         }
 
@@ -405,7 +406,8 @@ namespace SourceGit.Models
                 }
             }
 
-            writer.WriteLine($" {tail}");
+            if (!string.IsNullOrEmpty(tail))
+                writer.WriteLine($" {tail}");
             writer.Flush();
         }
 
