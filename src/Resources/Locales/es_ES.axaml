@@ -138,6 +138,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL del Repositorio:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">CERRAR</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">Ramas</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">Ramas &amp; Etiquetas</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">Acciones Personalizadas del Repositorio</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">Archivos de Revisión</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick Este Commit</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
@@ -281,6 +285,7 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">CONTINUAR</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">HACER STAGE A TODO &amp; COMMIT</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">STAGE LO SELECCIONADO &amp; COMMIT</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">¡Commit vacío detectado! ¿Quieres continuar (--allow-empty) o hacer stage a todo y después commit?</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Reinicio Requerido</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">Necesita reiniciar esta aplicación para aplicar los cambios.</x:String>
@@ -473,6 +478,7 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Seguir archivos llamados '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Seguir todos los archivos *{0}</x:String>
+  <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Seleccionar Commit</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">Historias</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HORA DEL AUTOR</x:String>
@@ -502,6 +508,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage todos los cambios y commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modo Dashboard (Por Defecto)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Ir al hijo del commit seleccionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Ir al padre del commit seleccionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Abrir paleta de comandos</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Modo de búsqueda de commits</x:String>
@@ -521,6 +528,8 @@
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">Inicializar Repositorio</x:String>
+  <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">¿Quieres correr el comando `git init` en esta ruta?</x:String>
+  <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">Falló la apertura del repositorio. Razón:  </x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Ruta:</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick en progreso.</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Procesando commit</x:String>
@@ -853,6 +862,7 @@
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">¡Tanto los cambios staged como los no staged de los archivos seleccionados serán stashed!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Cambios Locales</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplicar</x:String>
+  <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">Aplicar Cambios</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Copiar Mensaje</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Eliminar</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
@@ -970,9 +980,12 @@
   <x:String x:Key="Text.Workspace" xml:space="preserve">ESPACIO DE TRABAJO: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configura Espacios de Trabajo...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">RAMA</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Copiar Ruta</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">HEAD</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Bloquear</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Abrir</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">RUTA</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Eliminar</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Desbloquear</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">SÍ</x:String>
