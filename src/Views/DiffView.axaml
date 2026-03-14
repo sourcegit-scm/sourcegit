@@ -67,7 +67,29 @@
             <ContentControl Content="{Binding Content, Mode=OneWay}" IsVisible="{Binding IsTextDiff}">
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="vm:TextDiffContext">
-                  <TextBlock Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
+                  <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                    <TextBlock Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
+                    <Border Height="16"
+                            Background="{DynamicResource Brush.Diff.AddedBG}"
+                            CornerRadius="8"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding AddedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                      <TextBlock FontSize="10"
+                                 Margin="8,0"
+                                 Foreground="{DynamicResource Brush.FG1}"
+                                 Text="{Binding AddedLines, StringFormat=+{0}}"/>
+                    </Border>
+                    <Border Height="16"
+                            Background="{DynamicResource Brush.Diff.DeletedBG}"
+                            CornerRadius="8"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding DeletedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                      <TextBlock FontSize="10"
+                                 Margin="8,0"
+                                 Foreground="{DynamicResource Brush.FG1}"
+                                 Text="{Binding DeletedLines, StringFormat=-{0}}"/>
+                    </Border>
+                  </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>

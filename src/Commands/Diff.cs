@@ -194,6 +194,7 @@ namespace SourceGit.Commands
                         return;
                     }
 
+                    _result.TextDiff.DeletedLines++;
                     _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0);
                     _deleted.Add(_last);
                     _oldLine++;
@@ -207,6 +208,7 @@ namespace SourceGit.Commands
                         return;
                     }
 
+                    _result.TextDiff.AddedLines++;
                     _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine);
                     _added.Add(_last);
                     _newLine++;
