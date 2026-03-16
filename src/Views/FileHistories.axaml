@@ -59,9 +59,10 @@
                BorderThickness="1"
                Margin="8,4,4,8"
                BorderBrush="{DynamicResource Brush.Border2}"
-               ItemsSource="{Binding Revisions}"
-               SelectedItems="{Binding SelectedRevisions, Mode=TwoWay}"
+               ItemsSource="{Binding Revisions, Mode=OneWay}"
                SelectionMode="Multiple"
+               SelectionChanged="OnRevisionsSelectionChanged"
+               PropertyChanged="OnRevisionsPropertyChanged"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>
