@@ -62,7 +62,7 @@ namespace SourceGit.Views
             InitializeComponent();
             PositionChanged += OnPositionChanged;
 
-            if (OperatingSystem.IsWindows() && OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
+            if (Native.OS.UseMicaOnWindows11)
             {
                 Background = Brushes.Transparent;
                 TransparencyLevelHint = [WindowTransparencyLevel.Mica];

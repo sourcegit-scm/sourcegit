@@ -286,6 +286,8 @@ namespace SourceGit
                     else
                         Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
 
+                    Native.OS.UseMicaOnWindows11 = overrides.UseMicaOnWindows11;
+
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._themeOverrides = resDic;
                 }
