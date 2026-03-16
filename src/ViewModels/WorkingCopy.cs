@@ -739,7 +739,7 @@ namespace SourceGit.ViewModels
             if (_useAmend)
             {
                 var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResult();
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{head.SHA}^").GetResult();
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.FirstParentToCompare).GetResult();
             }
 
             var rs = new List<Models.Change>();

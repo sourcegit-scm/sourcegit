@@ -15,8 +15,6 @@ namespace SourceGit.Models
 
     public class Commit
     {
-        public const string EmptyTreeSHA1 = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-
         public string SHA { get; set; } = string.Empty;
         public User Author { get; set; } = User.Invalid;
         public ulong AuthorTime { get; set; } = 0;
@@ -33,6 +31,7 @@ namespace SourceGit.Models
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
         public bool HasDecorators => Decorators.Count > 0;
+        public string FirstParentToCompare => Parents.Count > 0 ? $"{SHA}^" : EmptyTreeHash.Guess(SHA);
 
         public string GetFriendlyName()
         {

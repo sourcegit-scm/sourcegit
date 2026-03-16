@@ -806,7 +806,7 @@ namespace SourceGit
             return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
         }
 
-        [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,40})(\s+.*)?$")]
+        [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,64})(\s+.*)?$")]
         private static partial Regex REG_REBASE_TODO();
 
         private Models.IpcChannel _ipcChannel = null;

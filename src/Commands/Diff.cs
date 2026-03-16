@@ -12,7 +12,7 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
         private static partial Regex REG_INDICATOR();
 
-        [GeneratedRegex(@"^index\s([0-9a-f]{6,40})\.\.([0-9a-f]{6,40})(\s[1-9]{6})?")]
+        [GeneratedRegex(@"^index\s([0-9a-f]{6,64})\.\.([0-9a-f]{6,64})(\s[1-9]{6})?")]
         private static partial Regex REG_HASH_CHANGE();
 
         private const string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";

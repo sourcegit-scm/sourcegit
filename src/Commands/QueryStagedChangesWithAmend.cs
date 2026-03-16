@@ -6,9 +6,9 @@ namespace SourceGit.Commands
 {
     public partial class QueryStagedChangesWithAmend : Command
     {
-        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} ([ADMT])\d{0,6}\t(.*)$")]
+        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{4,64}) [0-9a-f]{4,64} ([ADMT])\d{0,6}\t(.*)$")]
         private static partial Regex REG_FORMAT1();
-        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} ([RC])\d{0,6}\t(.*\t.*)$")]
+        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{4,64}) [0-9a-f]{4,64} ([RC])\d{0,6}\t(.*\t.*)$")]
         private static partial Regex REG_FORMAT2();
 
         public QueryStagedChangesWithAmend(string repo, string parent)
