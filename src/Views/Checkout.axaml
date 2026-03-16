@@ -30,7 +30,7 @@
                  Text="{DynamicResource Text.Checkout.Target}"/>
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
         <Path Width="14" Height="14" Margin="4,0" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Text="{Binding Branch}"/>
+        <TextBlock Text="{Binding BranchName}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"

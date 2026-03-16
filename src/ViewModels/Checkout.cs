@@ -4,9 +4,9 @@ namespace SourceGit.ViewModels
 {
     public class Checkout : Popup
     {
-        public string Branch
+        public string BranchName
         {
-            get;
+            get => _branch.Name;
         }
 
         public bool DiscardLocalChanges
@@ -15,10 +15,10 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public Checkout(Repository repo, string branch)
+        public Checkout(Repository repo, Models.Branch branch)
         {
             _repo = repo;
-            Branch = branch;
+            _branch = branch;
             DiscardLocalChanges = false;
         }
 
@@ -30,9 +30,10 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
-            ProgressDescription = $"Checkout '{Branch}' ...";
+            var branchName = BranchName;
+            ProgressDescription = $"Checkout '{branchName}' ...";
 
-            var log = _repo.CreateLog($"Checkout '{Branch}'");
+            var log = _repo.CreateLog($"Checkout '{branchName}'");
             Use(log);
 
             if (_repo.CurrentBranch is { IsDetachedHead: true })
@@ -70,7 +71,7 @@ namespace SourceGit.ViewModels
 
             succ = await new Commands.Checkout(_repo.FullPath)
                 .Use(log)
-                .BranchAsync(Branch, DiscardLocalChanges);
+                .BranchAsync(branchName, DiscardLocalChanges);
 
             if (succ)
             {
@@ -80,21 +81,19 @@ namespace SourceGit.ViewModels
                     await new Commands.Stash(_repo.FullPath)
                         .Use(log)
                         .PopAsync("stash@{0}");
+
+                _repo.FastRefreshBranchesAfterCheckout(_branch);
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
             }
 
             log.Complete();
-
-            var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
-            if (b != null && _repo.HistoryFilterMode == Models.FilterMode.Included)
-                _repo.SetBranchFilterMode(b, Models.FilterMode.Included, false, false);
-
-            _repo.MarkBranchesDirtyManually();
-
-            ProgressDescription = "Waiting for branch updated...";
-            await Task.Delay(400);
             return succ;
         }
 
         private readonly Repository _repo = null;
+        private readonly Models.Branch _branch = null;
     }
 }

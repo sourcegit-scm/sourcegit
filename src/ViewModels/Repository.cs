@@ -788,6 +788,42 @@ namespace SourceGit.ViewModels
             return _watcher?.Lock();
         }
 
+        public void FastRefreshBranchesAfterCheckout(Models.Branch checkouted)
+        {
+            _watcher?.MarkBranchUpdated();
+            _watcher?.MarkWorkingCopyUpdated();
+
+            if (_currentBranch.IsDetachedHead)
+            {
+                _branches.Remove(_currentBranch);
+            }
+            else
+            {
+                _currentBranch.IsCurrent = false;
+                _currentBranch.WorktreePath = null;
+            }
+
+            checkouted.IsCurrent = true;
+            checkouted.WorktreePath = FullPath;
+            if (_historyFilterMode == Models.FilterMode.Included)
+                SetBranchFilterMode(checkouted, Models.FilterMode.Included, false, false);
+
+            List<Models.Branch> locals = [];
+            foreach (var b in _branches)
+            {
+                if (b.IsLocal)
+                    locals.Add(b);
+            }
+
+            var builder = BuildBranchTree(locals, []);
+            LocalBranchTrees = builder.Locals;
+            CurrentBranch = checkouted;
+
+            RefreshCommits();
+            RefreshWorkingCopyChanges();
+            RefreshWorktrees();
+        }
+
         public void MarkBranchesDirtyManually()
         {
             _watcher?.MarkBranchUpdated();
@@ -1304,7 +1340,7 @@ namespace SourceGit.ViewModels
 
             if (branch.IsLocal)
             {
-                await ShowAndStartPopupAsync(new Checkout(this, branch.Name));
+                await ShowAndStartPopupAsync(new Checkout(this, branch));
             }
             else
             {
