@@ -28,8 +28,6 @@ namespace SourceGit.ViewModels
     {
         public Models.DiffOption Option => _option;
         public Models.TextDiff Data => _data;
-        public int AddedLines => _data?.AddedLines ?? 0;
-        public int DeletedLines => _data?.DeletedLines ?? 0;
 
         public Vector ScrollOffset
         {
