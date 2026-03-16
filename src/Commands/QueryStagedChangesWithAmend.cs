@@ -6,9 +6,9 @@ namespace SourceGit.Commands
 {
     public partial class QueryStagedChangesWithAmend : Command
     {
-        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} ([ACDMT])\d{0,6}\t(.*)$")]
+        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} ([ADMT])\d{0,6}\t(.*)$")]
         private static partial Regex REG_FORMAT1();
-        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} R\d{0,6}\t(.*\t.*)$")]
+        [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{40}) [0-9a-f]{40} ([RC])\d{0,6}\t(.*\t.*)$")]
         private static partial Regex REG_FORMAT2();
 
         public QueryStagedChangesWithAmend(string repo, string parent)
@@ -34,7 +34,7 @@ namespace SourceGit.Commands
                 {
                     var change = new Models.Change()
                     {
-                        Path = match.Groups[3].Value,
+                        Path = match.Groups[4].Value,
                         DataForAmend = new Models.ChangeDataForAmend()
                         {
                             FileMode = match.Groups[1].Value,
@@ -42,7 +42,8 @@ namespace SourceGit.Commands
                             ParentSHA = _parent,
                         },
                     };
-                    change.Set(Models.ChangeState.Renamed);
+                    var type = match.Groups[3].Value;
+                    change.Set(type == "R" ? Models.ChangeState.Renamed : Models.ChangeState.Copied);
                     changes.Add(change);
                     continue;
                 }
@@ -66,9 +67,6 @@ namespace SourceGit.Commands
                     {
                         case "A":
                             change.Set(Models.ChangeState.Added);
-                            break;
-                        case "C":
-                            change.Set(Models.ChangeState.Copied);
                             break;
                         case "D":
                             change.Set(Models.ChangeState.Deleted);

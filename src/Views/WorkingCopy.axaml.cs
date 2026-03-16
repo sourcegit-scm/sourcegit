@@ -94,6 +94,8 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
+                var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+
                 if (e.Key is Key.Space or Key.Enter)
                 {
                     var next = UnstagedChangesView.GetNextChangeWithoutSelection();
@@ -106,9 +108,7 @@ namespace SourceGit.Views
                     vm.Discard(vm.SelectedUnstaged);
                     e.Handled = true;
                 }
-                else if (e.Key is Key.O &&
-                    e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
-                    vm.SelectedUnstaged is { Count: 1 })
+                else if (e.Key is Key.O && e.KeyModifiers == cmdKey && vm.SelectedUnstaged is { Count: 1 })
                 {
                     var change = vm.SelectedUnstaged[0];
                     var fullpath = Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path);
@@ -116,9 +116,7 @@ namespace SourceGit.Views
                         Native.OS.OpenWithDefaultEditor(fullpath);
                     e.Handled = true;
                 }
-                else if (e.Key is Key.C &&
-                         e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
-                         vm.SelectedUnstaged is { Count: 1 })
+                else if (e.Key is Key.C && e.KeyModifiers.HasFlag(cmdKey) && vm.SelectedUnstaged is { Count: 1 })
                 {
                     var change = vm.SelectedUnstaged[0];
                     if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
@@ -126,6 +124,11 @@ namespace SourceGit.Views
                     else
                         await App.CopyTextAsync(change.Path);
 
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.F && e.KeyModifiers == cmdKey)
+                {
+                    LocalChangesSearchBox.Focus();
                     e.Handled = true;
                 }
             }
@@ -135,6 +138,8 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.WorkingCopy vm)
             {
+                var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+
                 if (e.Key is Key.Space or Key.Enter)
                 {
                     var next = StagedChangesView.GetNextChangeWithoutSelection();
@@ -142,9 +147,7 @@ namespace SourceGit.Views
                     StagedChangesView.TakeFocus();
                     e.Handled = true;
                 }
-                else if (e.Key is Key.O &&
-                    e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
-                    vm.SelectedStaged is { Count: 1 })
+                else if (e.Key is Key.O && e.KeyModifiers == cmdKey && vm.SelectedStaged is { Count: 1 })
                 {
                     var change = vm.SelectedStaged[0];
                     var fullpath = Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path);
@@ -152,9 +155,7 @@ namespace SourceGit.Views
                         Native.OS.OpenWithDefaultEditor(fullpath);
                     e.Handled = true;
                 }
-                else if (e.Key is Key.C &&
-                         e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
-                         vm.SelectedStaged is { Count: 1 })
+                else if (e.Key is Key.C && e.KeyModifiers.HasFlag(cmdKey) && vm.SelectedStaged is { Count: 1 })
                 {
                     var change = vm.SelectedStaged[0];
                     if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
@@ -162,6 +163,11 @@ namespace SourceGit.Views
                     else
                         await App.CopyTextAsync(change.Path);
 
+                    e.Handled = true;
+                }
+                else if (e.Key is Key.F && e.KeyModifiers == cmdKey)
+                {
+                    LocalChangesSearchBox.Focus();
                     e.Handled = true;
                 }
             }
@@ -225,6 +231,9 @@ namespace SourceGit.Views
 
         private async void OnCommit(object _, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.CommitAsync(false, false);
 
@@ -233,6 +242,9 @@ namespace SourceGit.Views
 
         private async void OnCommitWithAutoStage(object _, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.CommitAsync(true, false);
 
@@ -241,6 +253,9 @@ namespace SourceGit.Views
 
         private async void OnCommitWithPush(object _, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.CommitAsync(false, true);
 

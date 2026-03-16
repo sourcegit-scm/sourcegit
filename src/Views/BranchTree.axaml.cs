@@ -303,6 +303,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(RowsChangedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
+        }
+
         public BranchTree()
         {
             InitializeComponent();
@@ -566,6 +575,13 @@ namespace SourceGit.Views
 
         private void OnTreeKeyDown(object _, KeyEventArgs e)
         {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
+
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
 
@@ -722,9 +738,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWith);
@@ -847,9 +861,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWithCurrent);
@@ -1155,9 +1167,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, branch));
+                    new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
 
                 menu.Items.Add(pull);

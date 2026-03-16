@@ -1,8 +1,8 @@
 ﻿using System;
-using Avalonia;
+
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.VisualTree;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -10,27 +10,26 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(TextBox);
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            Focus(NavigationMethod.Directional);
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             if (e.Key == Key.Back && string.IsNullOrEmpty(Text))
             {
-                var launcherView = this.FindAncestorOfType<Launcher>(false);
-                if (launcherView is { DataContext: ViewModels.Launcher launcher } &&
-                    launcher.ActivePage is { Data: ViewModels.Repository repo })
+                var launcher = App.GetLauncher();
+                if (launcher is { ActivePage: { Data: ViewModels.Repository repo } })
                 {
-                    launcher.OpenCommandPalette(new ViewModels.RepositoryCommandPalette(launcher, repo));
+                    launcher.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                     e.Handled = true;
                     return;
                 }
             }
 
             base.OnKeyDown(e);
-        }
-
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnAttachedToVisualTree(e);
-            Focus();
         }
     }
 }

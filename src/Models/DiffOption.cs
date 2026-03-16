@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGit.Models
@@ -80,6 +81,63 @@ namespace SourceGit.Models
         }
 
         /// <summary>
+        ///     Used to diff in `FileHistory`
+        /// </summary>
+        /// <param name="ver"></param>
+        public DiffOption(FileVersion ver)
+        {
+            if (string.IsNullOrEmpty(ver.OriginalPath))
+            {
+                _revisions.Add(ver.HasParent ? $"{ver.SHA}^" : Commit.EmptyTreeSHA1);
+                _revisions.Add(ver.SHA);
+                _path = ver.Path;
+            }
+            else
+            {
+                _revisions.Add($"{ver.SHA}^:{ver.OriginalPath.Quoted()}");
+                _revisions.Add($"{ver.SHA}:{ver.Path.Quoted()}");
+                _path = ver.Path;
+                _orgPath = ver.Change.OriginalPath;
+                _ignorePaths = true;
+            }
+        }
+
+        /// <summary>
+        ///     Used to diff two revisions in `FileHistory`
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public DiffOption(FileVersion start, FileVersion end)
+        {
+            if (start.Change.Index == ChangeState.Deleted)
+            {
+                _revisions.Add(Commit.EmptyTreeSHA1);
+                _revisions.Add(end.SHA);
+                _path = end.Path;
+            }
+            else if (end.Change.Index == ChangeState.Deleted)
+            {
+                _revisions.Add(start.SHA);
+                _revisions.Add(Commit.EmptyTreeSHA1);
+                _path = start.Path;
+            }
+            else if (!end.Path.Equals(start.Path, StringComparison.Ordinal))
+            {
+                _revisions.Add($"{start.SHA}:{start.Path.Quoted()}");
+                _revisions.Add($"{end.SHA}:{end.Path.Quoted()}");
+                _path = end.Path;
+                _orgPath = start.Path;
+                _ignorePaths = true;
+            }
+            else
+            {
+                _revisions.Add(start.SHA);
+                _revisions.Add(end.SHA);
+                _path = start.Path;
+            }
+        }
+
+        /// <summary>
         ///     Used to show differences between two revisions.
         /// </summary>
         /// <param name="baseRevision"></param>
@@ -104,6 +162,9 @@ namespace SourceGit.Models
             foreach (var r in _revisions)
                 builder.Append($"{r} ");
 
+            if (_ignorePaths)
+                return builder.ToString();
+
             builder.Append("-- ");
             if (!string.IsNullOrEmpty(_orgPath))
                 builder.Append($"{_orgPath.Quoted()} ");
@@ -118,5 +179,6 @@ namespace SourceGit.Models
         private readonly string _orgPath = string.Empty;
         private readonly string _extra = string.Empty;
         private readonly List<string> _revisions = [];
+        private readonly bool _ignorePaths = false;
     }
 }

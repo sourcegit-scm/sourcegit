@@ -1562,7 +1562,7 @@ namespace SourceGit.Views
             using var lockWatcher = repo.LockWatcher();
 
             var tmpFile = Path.GetTempFileName();
-            if (change.Index == Models.ChangeState.Added)
+            if (change.WorkTree == Models.ChangeState.Untracked)
             {
                 diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
             }

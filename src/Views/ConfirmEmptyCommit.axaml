@@ -37,11 +37,20 @@
 
     <!-- Body -->
     <Border Grid.Row="1" Margin="16">
-      <TextBlock x:Name="TxtMessage" MaxWidth="520" TextWrapping="Wrap"/>
+      <TextBlock x:Name="TxtMessage" TextWrapping="NoWrap"/>
     </Border>
 
     <!-- Buttons -->
-    <StackPanel Grid.Row="2" Margin="0,0,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
+    <StackPanel Grid.Row="2" Margin="32,0,32,16" Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button Classes="flat"
+              x:Name="BtnStageSelectedAndCommit"
+              Height="30"
+              Margin="4,0"
+              Click="StageSelectedThenCommit"
+              Content="{DynamicResource Text.ConfirmEmptyCommit.StageSelectedThenCommit}"
+              HorizontalContentAlignment="Center"
+              VerticalContentAlignment="Center"/>
+      
       <Button Classes="flat"
               x:Name="BtnStageAllAndCommit"
               Height="30"

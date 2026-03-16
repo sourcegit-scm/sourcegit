@@ -60,17 +60,6 @@ namespace SourceGit.ViewModels
             UpdateVisible();
         }
 
-        public override void Cleanup()
-        {
-            _launcher = null;
-            _opened.Clear();
-            _visiblePages.Clear();
-            _visibleRepos.Clear();
-            _searchFilter = null;
-            _selectedPage = null;
-            _selectedRepo = null;
-        }
-
         public void ClearFilter()
         {
             SearchFilter = string.Empty;
@@ -78,12 +67,15 @@ namespace SourceGit.ViewModels
 
         public void OpenOrSwitchTo()
         {
+            _opened.Clear();
+            _visiblePages.Clear();
+            _visibleRepos.Clear();
+            Close();
+
             if (_selectedPage != null)
                 _launcher.ActivePage = _selectedPage;
             else if (_selectedRepo != null)
                 _launcher.OpenRepositoryInTab(_selectedRepo, null);
-
-            _launcher?.CancelCommandPalette();
         }
 
         private void UpdateVisible()

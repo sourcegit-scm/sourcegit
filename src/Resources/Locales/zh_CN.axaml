@@ -138,6 +138,10 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">关闭</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">提交信息编辑器</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">分支列表</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">分支 &amp; 标签</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">自定义操作列表</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">文件列表</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">检出此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">挑选(cherry-pick)此提交</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">挑选(cherry-pick)...</x:String>
@@ -280,8 +284,9 @@
   <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">启动时恢复打开的仓库</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">确认继续</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)？</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">自动暂存并提交</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)或是自动暂存所有变更并提交？</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">暂存所有变更并提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">仅暂存所选变更并提交</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">提交未包含变更文件！是否继续(--allow-empty)或是自动暂存变更并提交？</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">系统提示</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">程序需要重新启动，以便修改生效！</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">规范化提交信息生成</x:String>
@@ -523,6 +528,8 @@
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暂存</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">移出暂存区</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">初始化新仓库</x:String>
+  <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">是否在该路径下执行 `git init` 命令（初始化仓库）？</x:String>
+  <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">打开本地仓库失败，原因：</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">路径 ：</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">挑选（Cherry-Pick）操作进行中。</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">正在处理提交</x:String>
@@ -646,6 +653,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交详情页中显示子提交列表</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在提交路线图中显示标签</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
+  <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24小时制</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">生成GitHub风格的默认头像</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
@@ -973,9 +981,12 @@
   <x:String x:Key="Text.Workspace" xml:space="preserve">工作区：</x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">配置工作区...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本地工作树</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">連結分支</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">复制工作树路径</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">最新提交</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">锁定工作树</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">打开工作树</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">位置</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>

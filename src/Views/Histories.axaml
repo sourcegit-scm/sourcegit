@@ -157,6 +157,7 @@
                     </v:CommitRefsPresenter>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
+                                              Height="26"
                                               FontFamily="{DynamicResource Fonts.Default}"
                                               CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                               InlineCodeBackground="{DynamicResource Brush.InlineCode}"
@@ -241,8 +242,9 @@
                   <v:CommitTimeTextBlock FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
                                          UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
-                                         ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories}"
-                                         DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat}"/>
+                                         ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories, Mode=OneWay}"
+                                         DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat, Mode=OneWay}"
+                                         Use24Hours="{Binding Source={x:Static vm:Preferences.Instance}, Path=Use24Hours, Mode=OneWay}"/>
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -277,7 +279,8 @@
                   MinWidth="1" MinHeight="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="{DynamicResource Brush.Window}"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <Grid IsVisible="{Binding DetailContext, Converter={x:Static ObjectConverters.IsNull}}">

@@ -30,11 +30,6 @@ namespace SourceGit.Models
         public int Color { get; set; } = 0;
         public double LeftMargin { get; set; } = 0;
 
-        public string AuthorTimeStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
-        public string CommitterTimeStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
-        public string AuthorTimeShortStr => DateTime.UnixEpoch.AddSeconds(AuthorTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
-        public string CommitterTimeShortStr => DateTime.UnixEpoch.AddSeconds(CommitterTime).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
-
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
         public bool HasDecorators => Decorators.Count > 0;

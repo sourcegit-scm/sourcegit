@@ -42,7 +42,7 @@
             <TextBlock>
               <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
               <Run Text=" "/>
-              <Run Text="{OnPlatform Ctrl+F, macOS=⌘+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </TextBlock>
           </ToolTip.Tip>
           <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
@@ -70,11 +70,7 @@
                   <Setter Property="Height" Value="28"/>
                   <Setter Property="Margin" Value="0"/>
                   <Setter Property="Padding" Value="0"/>
-                  <Setter Property="BorderThickness" Value="0,0,0,1"/>
                   <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
-                </Style>
-                <Style Selector="ListBoxItem:nth-last-child(1)">
-                  <Setter Property="BorderThickness" Value="0"/>
                 </Style>
                 <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
                   <Setter Property="Background" Value="Transparent"/>
@@ -96,7 +92,7 @@
                 </ItemsPanelTemplate>
               </ListBox.ItemsPanel>
 
-              <ListBoxItem>
+              <ListBoxItem BorderThickness="0">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
@@ -127,7 +123,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem IsVisible="{Binding !IsBare}">
+              <ListBoxItem BorderThickness="0,1,0,0" IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
@@ -159,7 +155,7 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem IsVisible="{Binding !IsBare}">
+              <ListBoxItem BorderThickness="0,1,0,0" IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
@@ -191,6 +187,7 @@
 
         <!-- Filter Branches/Tags/Submodules -->
         <TextBox Grid.Row="1"
+                 x:Name="FilterBox"
                  Height="26"
                  Margin="8,6,4,0"
                  BorderThickness="1"
@@ -253,7 +250,8 @@
                         Nodes="{Binding LocalBranchTrees}"
                         IsVisible="{Binding IsLocalBranchGroupExpanded}"
                         SelectionChanged="OnLocalBranchTreeSelectionChanged"
-                        RowsChanged="OnLeftSidebarRowsChanged"/>
+                        RowsChanged="OnLeftSidebarRowsChanged"
+                        SearchRequested="OnToggleFilter"/>
 
           <!-- Remotes -->
           <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
@@ -286,7 +284,8 @@
                         Nodes="{Binding RemoteBranchTrees}"
                         IsVisible="{Binding IsRemoteGroupExpanded}"
                         SelectionChanged="OnRemoteBranchTreeSelectionChanged"
-                        RowsChanged="OnLeftSidebarRowsChanged"/>
+                        RowsChanged="OnLeftSidebarRowsChanged"
+                        SearchRequested="OnToggleFilter"/>
 
           <!-- Tags -->
           <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
@@ -331,7 +330,8 @@
                       Focusable="False"
                       IsVisible="{Binding IsTagGroupExpanded, Mode=OneWay}"
                       SelectionChanged="OnTagsSelectionChanged"
-                      RowsChanged="OnLeftSidebarRowsChanged"/>
+                      RowsChanged="OnLeftSidebarRowsChanged"
+                      SearchRequested="OnToggleFilter"/>
 
           <!-- Submodules -->
           <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
@@ -373,7 +373,8 @@
                             Content="{Binding VisibleSubmodules}"
                             RowsChanged="OnLeftSidebarRowsChanged"
                             Focusable="False"
-                            IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}"/>
+                            IsVisible="{Binding IsSubmoduleGroupExpanded, Mode=OneWay}"
+                            SearchRequested="OnToggleFilter"/>
 
           <!-- Worktrees -->
           <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
@@ -407,10 +408,8 @@
                    Height="0"
                    Margin="12,0,4,0"
                    Classes="repo_left_content_list"
-                   ItemsSource="{Binding Worktrees}"
+                   ItemsSource="{Binding Worktrees, Mode=OneWay}"
                    SelectionMode="Single"
-                   ContextRequested="OnWorktreeContextRequested"
-                   DoubleTapped="OnDoubleTappedWorktree"
                    PropertyChanged="OnWorktreeListPropertyChanged"
                    IsVisible="{Binding IsWorktreeGroupExpanded, Mode=OneWay}">
             <ListBox.Styles>
@@ -418,16 +417,80 @@
                 <Setter Property="CornerRadius" Value="4"/>
               </Style>
             </ListBox.Styles>
-            <ListBox.ItemTemplate>
-              <DataTemplate DataType="m:Worktree">
-                <Grid ColumnDefinitions="Auto,*,22" Background="Transparent">
-                  <Path Grid.Column="0" Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
-                  <TextBlock Grid.Column="1" Margin="8,0,0,0" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis">
-                    <Run Text="{Binding Name}" Foreground="{DynamicResource Brush.FG1}"/>
-                    <Run Text="{Binding RelativePath}"/>
-                  </TextBlock>
-                  <Path Grid.Column="2" Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
-                </Grid>
+            <ListBox.ItemTemplate>              
+              <DataTemplate DataType="vm:Worktree">
+                <Border Height="24"
+                        Background="Transparent"
+                        DoubleTapped="OnWorktreeDoubleTapped"
+                        ContextRequested="OnWorktreeContextRequested"
+                        ToolTip.Placement="Right">
+                  <ToolTip.Tip>
+                    <StackPanel Orientation="Vertical">
+                      <StackPanel Orientation="Horizontal">
+                        <v:WorktreeIcon Grid.Column="0" Width="12" Height="12"/>
+                        <TextBlock FontWeight="Bold" Margin="8,0,0,0" Text="{Binding Name, Mode=OneWay}"/>
+                      </StackPanel>
+
+                      <Grid RowDefinitions="24,24,24" ColumnDefinitions="Auto,16,Auto,Auto" Margin="0,8,0,0">
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Classes="info_label"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Text="{DynamicResource Text.Worktree.Branch}"/>
+                        <Path Grid.Row="0" Grid.Column="2"
+                              Width="14" Height="14"
+                              Margin="2,0,0,0"
+                              Data="{StaticResource Icons.Branch}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3"
+                                   Margin="6,0,0,0"
+                                   Text="{Binding Branch, Mode=OneWay}"/>
+                        
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Classes="info_label"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Text="{DynamicResource Text.Worktree.Path}"/>
+                        <Path Grid.Row="1" Grid.Column="2"
+                              Width="14" Height="14"
+                              Margin="2,0,0,0"
+                              Data="{StaticResource Icons.Folder.Open}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="3"
+                                   Margin="6,0,0,0"
+                                   Text="{Binding FullPath, Mode=OneWay}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Classes="info_label"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   Text="{DynamicResource Text.Worktree.Head}"/>
+                        <Path Grid.Row="2" Grid.Column="2"
+                              Width="14" Height="14"
+                              Data="{StaticResource Icons.Commit}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="3"
+                                   Margin="6,0,0,0"
+                                   Text="{Binding Head, Mode=OneWay, Converter={x:Static c:StringConverters.ToShortSHA}}"/>
+                      </Grid>
+                    </StackPanel>
+                  </ToolTip.Tip>
+                  <Grid ColumnDefinitions="Auto,Auto,*,22" VerticalAlignment="Center">
+                    <v:WorktreeDepthIcon Grid.Column="0" Brush="{DynamicResource Brush.Border1}"/>
+                    <v:WorktreeIcon Grid.Column="1"
+                                    Width="10" Height="10"
+                                    Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="2"
+                               Margin="8,0,0,0"
+                               Foreground="{DynamicResource Brush.FG2}"
+                               TextTrimming="CharacterEllipsis">
+                      <Run Text="{Binding Name, Mode=OneWay}"
+                           FontWeight="{Binding IsCurrent, Mode=OneWay, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                           Foreground="{DynamicResource Brush.FG1}"/>
+                      <Run Text="{Binding DisplayPath, Mode=OneWay}"/>
+                    </TextBlock>
+                    <Path Grid.Column="3"
+                          Width="10" Height="10"
+                          Margin="4,0,0,0"
+                          Data="{StaticResource Icons.Lock}"
+                          Fill="{DynamicResource Brush.FG2}"
+                          IsVisible="{Binding IsLocked, Mode=OneWay}"/>
+                  </Grid>
+                </Border>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
@@ -593,12 +656,12 @@
                   <Path Grid.Column="0" Width="14" Height="14" Margin="0,2,2,0" Data="{StaticResource Icons.Check}" Fill="Green" IsVisible="{Binding IsMerged, Mode=OneWay}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Subject}" Margin="2,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                 </Grid>
-                <TextBlock Grid.Column="2"
-                           Margin="4,0"
-                           Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding CommitterTimeShortStr}"
-                           HorizontalAlignment="Right" VerticalAlignment="Center"
-                           TextTrimming="CharacterEllipsis"/>
+                <v:DateTimePresenter Grid.Column="2"
+                                     Margin="4,0"
+                                     ShowDateOnly="True"
+                                     Timestamp="{Binding CommitterTime}"
+                                     Foreground="{DynamicResource Brush.FG2}"
+                                     HorizontalAlignment="Right" VerticalAlignment="Center"/>
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
@@ -630,7 +693,8 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
                   BorderThickness="0,0,1,0"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
@@ -642,7 +706,10 @@
                 <Grid ColumnDefinitions="Auto,*,Auto">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                  <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <v:DateTimePresenter Grid.Column="2"
+                                       Margin="8,0,0,0"
+                                       Timestamp="{Binding CommitterTime}"
+                                       Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
 
                 <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>

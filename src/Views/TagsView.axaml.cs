@@ -116,6 +116,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(RowsChangedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
+            RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SearchRequested), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> SearchRequested
+        {
+            add { AddHandler(SearchRequestedEvent, value); }
+            remove { RemoveHandler(SearchRequestedEvent, value); }
+        }
+
         public int Rows
         {
             get;
@@ -270,9 +279,7 @@ namespace SourceGit.Views
                 compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
-                    var launcher = App.GetLauncher();
-                    if (launcher != null)
-                        launcher.OpenCommandPalette(new ViewModels.CompareCommandPalette(launcher, repo, tag));
+                    new ViewModels.CompareCommandPalette(repo, tag).Open();
                 };
 
                 var archive = new MenuItem();
@@ -429,6 +436,13 @@ namespace SourceGit.Views
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
+                e.Handled = true;
+                return;
+            }
+
             if (e.Key is not (Key.Delete or Key.Back))
                 return;
 

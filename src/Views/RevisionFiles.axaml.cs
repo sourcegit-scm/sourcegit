@@ -11,6 +11,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnToggleSearch(object _, RoutedEventArgs e)
+        {
+            TxtSearchRevisionFiles.Focus();
+            e.Handled = true;
+        }
+
         private async void OnSearchBoxKeyDown(object _, KeyEventArgs e)
         {
             if (DataContext is not ViewModels.CommitDetail vm)

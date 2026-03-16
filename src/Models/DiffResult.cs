@@ -124,9 +124,9 @@ namespace SourceGit.Models
                         continue;
 
                     if (i >= selection.StartLine - 1 && i < selection.EndLine)
-                        writer.WriteLine($"+{line.Content}");
+                        WriteLine(writer, '+', line);
                     else
-                        writer.WriteLine($" {line.Content}");
+                        WriteLine(writer, ' ', line);
                 }
             }
             else
@@ -137,11 +137,10 @@ namespace SourceGit.Models
                     var line = Lines[i];
                     if (line.Type != TextDiffLineType.Added)
                         continue;
-                    writer.WriteLine($"+{line.Content}");
+                    WriteLine(writer, '+', line);
                 }
             }
 
-            writer.WriteLine("\\ No newline at end of file");
             writer.Flush();
         }
 
@@ -255,7 +254,8 @@ namespace SourceGit.Models
                 }
             }
 
-            writer.WriteLine($" {tail}");
+            if (!string.IsNullOrEmpty(tail))
+                writer.WriteLine($" {tail}");
             writer.Flush();
         }
 
@@ -406,7 +406,8 @@ namespace SourceGit.Models
                 }
             }
 
-            writer.WriteLine($" {tail}");
+            if (!string.IsNullOrEmpty(tail))
+                writer.WriteLine($" {tail}");
             writer.Flush();
         }
 

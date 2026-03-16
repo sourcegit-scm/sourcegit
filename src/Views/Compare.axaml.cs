@@ -218,7 +218,8 @@ namespace SourceGit.Views
             if (sender is not ChangeCollectionView { SelectedChanges: { Count: > 0 } selectedChanges })
                 return;
 
-            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
+            var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.Key == Key.C && e.KeyModifiers.HasFlag(cmdKey))
             {
                 var builder = new StringBuilder();
                 var copyAbsPath = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
@@ -233,6 +234,11 @@ namespace SourceGit.Views
                 }
 
                 await App.CopyTextAsync(builder.ToString());
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F && e.KeyModifiers == cmdKey)
+            {
+                ChangeSearchBox.Focus();
                 e.Handled = true;
             }
         }

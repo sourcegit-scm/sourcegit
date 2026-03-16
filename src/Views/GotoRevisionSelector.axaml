@@ -87,11 +87,11 @@
                          Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                          Foreground="DarkOrange"
                          VerticalAlignment="Center"/>
-              
-              <TextBlock Grid.Column="3"
-                         Margin="4,0"
-                         Text="{Binding CommitterTimeShortStr}"
-                         HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+              <v:DateTimePresenter Grid.Column="3"
+                                   Margin="4,0"
+                                   Timestamp="{Binding CommitterTime}"
+                                   HorizontalAlignment="Right" VerticalAlignment="Center"/>
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>

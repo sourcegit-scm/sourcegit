@@ -93,7 +93,10 @@
               <Grid RowDefinitions="Auto,*" >
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
                   <TextBlock Grid.Column="0" Text="{Binding Name}" Foreground="DarkOrange"/>
-                  <TextBlock Grid.Column="1" Text="{Binding TimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <v:DateTimePresenter Grid.Column="1"
+                                       Margin="8,0,0,0"
+                                       Timestamp="{Binding Time}"
+                                       Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
 
                 <v:StashSubjectPresenter Grid.Row="1"
@@ -141,7 +144,8 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
                   BorderThickness="1,0,0,0"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <!-- Right -->
     <Grid Grid.Column="2" Margin="0,4,4,4">

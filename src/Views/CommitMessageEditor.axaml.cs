@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -15,7 +16,6 @@ namespace SourceGit.Views
 
         public CommitMessageEditor()
         {
-            CloseOnESC = true;
             InitializeComponent();
         }
 
@@ -67,12 +67,17 @@ namespace SourceGit.Views
         private void SaveAndClose(object _1, RoutedEventArgs _2)
         {
             _onSave?.Invoke(Editor.CommitMessage);
-            _exitCode = 0;
+            Close();
+        }
+
+        private void CancelAndClose(object _1, RoutedEventArgs _2)
+        {
+            _exitCode = -1;
             Close();
         }
 
         private Action<string> _onSave = null;
         private bool _shouldExitApp = true;
-        private int _exitCode = -1;
+        private int _exitCode = 0;
     }
 }

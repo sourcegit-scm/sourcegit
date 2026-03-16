@@ -17,8 +17,7 @@
              CornerRadius="12"
              Text="{Binding Filter, Mode=TwoWay}"
              BorderBrush="{DynamicResource Brush.Border2}"
-             VerticalContentAlignment="Center"
-             v:AutoFocusBehaviour.IsEnabled="True">
+             VerticalContentAlignment="Center">
       <TextBox.InnerLeftContent>
         <Path Width="14" Height="14"
               Margin="6,0,0,0"
@@ -50,7 +49,7 @@
 
     <ListBox Grid.Row="2"
              x:Name="CmdListBox"
-             MaxHeight="250"
+             MaxHeight="420"
              Margin="4,0"
              BorderThickness="0"
              SelectionMode="Single"
@@ -85,16 +84,23 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:RepositoryCommandPaletteCmd">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
-            <Path Grid.Column="0"
-                  Width="12" Height="12"
-                  Data="{StaticResource Icons.Command}"
-                  IsHitTestVisible="False"/>
-            <TextBlock Grid.Column="1"
-                       Margin="6,0,0,0"
-                       VerticalAlignment="Center"
-                       IsHitTestVisible="False"
-                       Text="{Binding Label, Mode=OneWay}"/>
+          <Grid ColumnDefinitions="Auto,*,Auto" Background="Transparent" Tapped="OnItemTapped">
+            <v:RepositoryCommandPaletteIcon Grid.Column="0"  Width="12" Height="12" IsHitTestVisible="False"/>
+            <Border Grid.Column="1" Margin="8,0,0,0" IsHitTestVisible="False">
+              <TextBlock VerticalAlignment="Center" Text="{Binding Label, Mode=OneWay}"/>
+            </Border>
+            <Border Grid.Column="2"
+                    Height="18"
+                    Margin="8,0,0,0" Padding="6,0"
+                    CornerRadius="9"
+                    Background="{DynamicResource Brush.Popup}"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                    IsHitTestVisible="False">
+              <TextBlock VerticalAlignment="Center"
+                         FontSize="12"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         Text="{Binding Keyword, Mode=OneWay}"/>
+            </Border>
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>

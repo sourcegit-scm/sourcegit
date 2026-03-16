@@ -102,14 +102,15 @@
 
       <!-- File Tree -->
       <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-        <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA}"/>
+        <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA}" SearchRequested="OnToggleSearch"/>
       </Border>
     </Grid>
 
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="Transparent"/>
+                  Background="Transparent"
+                  Focusable="False"/>
 
     <!-- Right: File Content Viewer -->
     <Grid Grid.Column="2">

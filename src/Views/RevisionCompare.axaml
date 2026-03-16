@@ -25,7 +25,10 @@
             <TextBlock Text="HEAD" Margin="4,0" Foreground="#FFF2F2F2"/>
           </Border>
           <TextBlock Grid.Column="3" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA" />
-          <TextBlock Grid.Column="4" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+          <v:DateTimePresenter Grid.Column="4"
+                               Margin="8,0,0,0"
+                               Timestamp="{Binding CommitterTime}"
+                               Foreground="{DynamicResource Brush.FG2}"/>
         </Grid>
 
         <TextBlock Grid.Row="1" Text="{Binding Subject}" Margin="0,6,0,0"/>
@@ -69,6 +72,7 @@
         <!-- Search & Display Mode -->
         <Grid Grid.Row="0" ColumnDefinitions="*,18">
           <TextBox Grid.Column="0"
+                   x:Name="RevisionCompareChangeSearchBox"
                    Height="26"
                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                    Background="Transparent"
@@ -124,7 +128,8 @@
       <GridSplitter Grid.Column="1"
                     MinWidth="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                    Background="Transparent"/>
+                    Background="Transparent"
+                    Focusable="False"/>
 
       <Grid Grid.Column="2">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">

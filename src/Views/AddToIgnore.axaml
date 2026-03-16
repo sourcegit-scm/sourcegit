@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddToIgnore"
              x:DataType="vm:AddToIgnore">
@@ -27,8 +26,7 @@
       <TextBox Grid.Row="0" Grid.Column="1"
                Height="28"
                CornerRadius="3"
-               Text="{Binding Pattern, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True">
+               Text="{Binding Pattern, Mode=TwoWay}">
         <TextBox.InnerLeftContent>
           <Path Width="12" Height="12" Margin="6,0,2,0" Data="{StaticResource Icons.Pattern}" Fill="{DynamicResource Brush.FG2}"/>
         </TextBox.InnerLeftContent>

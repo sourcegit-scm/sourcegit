@@ -29,8 +29,7 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Watermark="{DynamicResource Text.Remote.Name.Placeholder}"
-               Text="{Binding Name, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               Text="{Binding Name, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

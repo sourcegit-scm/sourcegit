@@ -51,10 +51,9 @@
                Text="{Binding Message, Mode=TwoWay}"
                Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
                AcceptsReturn="True"
-               AcceptsTab="True"
+               AcceptsTab="False"
                VerticalContentAlignment="Top"
                Padding="4"
-               v:AutoFocusBehaviour.IsEnabled="True"
                Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"

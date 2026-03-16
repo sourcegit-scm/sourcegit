@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -36,10 +35,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistoriesSingleRevision(string repo, string file, Models.Commit revision, bool prevIsDiffMode)
+        public FileHistoriesSingleRevision(string repo, Models.FileVersion revision, bool prevIsDiffMode)
         {
             _repo = repo;
-            _file = file;
+            _file = revision.Path;
             _revision = revision;
             _isDiffMode = prevIsDiffMode;
             _viewContent = null;
@@ -75,7 +74,7 @@ namespace SourceGit.ViewModels
         {
             if (_isDiffMode)
             {
-                SetViewContentAsDiff();
+                ViewContent = new DiffContext(_repo, new(_revision), _viewContent as DiffContext);
                 return;
             }
 
@@ -153,28 +152,22 @@ namespace SourceGit.ViewModels
             return new FileHistoriesRevisionFile(_file);
         }
 
-        private void SetViewContentAsDiff()
-        {
-            var option = new Models.DiffOption(_revision, _file);
-            ViewContent = new DiffContext(_repo, option, _viewContent as DiffContext);
-        }
-
         private string _repo = null;
         private string _file = null;
-        private Models.Commit _revision = null;
+        private Models.FileVersion _revision = null;
         private bool _isDiffMode = false;
         private object _viewContent = null;
     }
 
     public class FileHistoriesCompareRevisions : ObservableObject
     {
-        public Models.Commit StartPoint
+        public Models.FileVersion StartPoint
         {
             get => _startPoint;
             set => SetProperty(ref _startPoint, value);
         }
 
-        public Models.Commit EndPoint
+        public Models.FileVersion EndPoint
         {
             get => _endPoint;
             set => SetProperty(ref _endPoint, value);
@@ -186,19 +179,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistoriesCompareRevisions(string repo, string file, Models.Commit start, Models.Commit end)
+        public FileHistoriesCompareRevisions(string repo, Models.FileVersion start, Models.FileVersion end)
         {
             _repo = repo;
-            _file = file;
             _startPoint = start;
             _endPoint = end;
-            RefreshViewContent();
+            _viewContent = new(_repo, new(start, end));
         }
 
         public void Swap()
         {
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
-            RefreshViewContent();
+            ViewContent = new(_repo, new(_startPoint, _endPoint), _viewContent);
         }
 
         public async Task<bool> SaveAsPatch(string saveTo)
@@ -208,27 +200,9 @@ namespace SourceGit.ViewModels
                 .ConfigureAwait(false);
         }
 
-        private void RefreshViewContent()
-        {
-            Task.Run(async () =>
-            {
-                _changes = await new Commands.CompareRevisions(_repo, _startPoint.SHA, _endPoint.SHA, _file).ReadAsync().ConfigureAwait(false);
-                if (_changes.Count == 0)
-                {
-                    Dispatcher.UIThread.Post(() => ViewContent = null);
-                }
-                else
-                {
-                    var option = new Models.DiffOption(_startPoint.SHA, _endPoint.SHA, _changes[0]);
-                    Dispatcher.UIThread.Post(() => ViewContent = new DiffContext(_repo, option, _viewContent));
-                }
-            });
-        }
-
         private string _repo = null;
-        private string _file = null;
-        private Models.Commit _startPoint = null;
-        private Models.Commit _endPoint = null;
+        private Models.FileVersion _startPoint = null;
+        private Models.FileVersion _endPoint = null;
         private List<Models.Change> _changes = [];
         private DiffContext _viewContent = null;
     }
@@ -246,13 +220,13 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isLoading, value);
         }
 
-        public List<Models.Commit> Commits
+        public List<Models.FileVersion> Revisions
         {
-            get => _commits;
-            set => SetProperty(ref _commits, value);
+            get => _revisions;
+            set => SetProperty(ref _revisions, value);
         }
 
-        public AvaloniaList<Models.Commit> SelectedCommits
+        public AvaloniaList<Models.FileVersion> SelectedRevisions
         {
             get;
             set;
@@ -275,41 +249,34 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var argsBuilder = new StringBuilder();
-                argsBuilder
-                    .Append("--date-order -n 10000 ")
-                    .Append(commit ?? string.Empty)
-                    .Append(" -- ")
-                    .Append(file.Quoted());
-
-                var commits = await new Commands.QueryCommits(_repo, argsBuilder.ToString(), false)
+                var revisions = await new Commands.QueryFileHistory(_repo, file, commit)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
                 Dispatcher.UIThread.Post(() =>
                 {
                     IsLoading = false;
-                    Commits = commits;
-                    if (Commits.Count > 0)
-                        SelectedCommits.Add(Commits[0]);
+                    Revisions = revisions;
+                    if (revisions.Count > 0)
+                        SelectedRevisions.Add(revisions[0]);
                 });
             });
 
-            SelectedCommits.CollectionChanged += (_, _) =>
+            SelectedRevisions.CollectionChanged += (_, _) =>
             {
                 if (_viewContent is FileHistoriesSingleRevision singleRevision)
                     _prevIsDiffMode = singleRevision.IsDiffMode;
 
-                ViewContent = SelectedCommits.Count switch
+                ViewContent = SelectedRevisions.Count switch
                 {
-                    1 => new FileHistoriesSingleRevision(_repo, file, SelectedCommits[0], _prevIsDiffMode),
-                    2 => new FileHistoriesCompareRevisions(_repo, file, SelectedCommits[0], SelectedCommits[1]),
-                    _ => SelectedCommits.Count,
+                    1 => new FileHistoriesSingleRevision(_repo, SelectedRevisions[0], _prevIsDiffMode),
+                    2 => new FileHistoriesCompareRevisions(_repo, SelectedRevisions[0], SelectedRevisions[1]),
+                    _ => SelectedRevisions.Count,
                 };
             };
         }
 
-        public void NavigateToCommit(Models.Commit commit)
+        public void NavigateToCommit(Models.FileVersion revision)
         {
             var launcher = App.GetLauncher();
             if (launcher != null)
@@ -318,16 +285,16 @@ namespace SourceGit.ViewModels
                 {
                     if (page.Data is Repository repo && repo.FullPath.Equals(_repo, StringComparison.Ordinal))
                     {
-                        repo.NavigateToCommit(commit.SHA);
+                        repo.NavigateToCommit(revision.SHA);
                         break;
                     }
                 }
             }
         }
 
-        public string GetCommitFullMessage(Models.Commit commit)
+        public string GetCommitFullMessage(Models.FileVersion revision)
         {
-            var sha = commit.SHA;
+            var sha = revision.SHA;
             if (_fullCommitMessages.TryGetValue(sha, out var msg))
                 return msg;
 
@@ -339,7 +306,7 @@ namespace SourceGit.ViewModels
         private readonly string _repo = null;
         private bool _isLoading = true;
         private bool _prevIsDiffMode = true;
-        private List<Models.Commit> _commits = null;
+        private List<Models.FileVersion> _revisions = null;
         private Dictionary<string, string> _fullCommitMessages = new();
         private object _viewContent = null;
     }

@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.BlameCommandPalette"
              x:DataType="vm:BlameCommandPalette">
-  <Grid RowDefinitions="Auto,Auto">
+  <Grid RowDefinitions="Auto,Auto,Auto">
     <v:RepositoryCommandPaletteTextBox Grid.Row="0"
                                        x:Name="FilterTextBox"
                                        Height="24"
@@ -50,11 +50,17 @@
         </Button>
       </TextBox.InnerRightContent>
     </v:RepositoryCommandPaletteTextBox>
+
+    <TextBlock Grid.Row="1"
+               Margin="6,12,0,0"
+               Text="{DynamicResource Text.CommandPalette.RevisionFiles}"
+               FontWeight="Bold"
+               Foreground="{DynamicResource Brush.FG2}"/>
     
-    <ListBox Grid.Row="1"
+    <ListBox Grid.Row="2"
              x:Name="FileListBox"
-             MaxHeight="250"
-             Margin="4,8,4,0"
+             MaxHeight="360"
+             Margin="4,8"
              BorderThickness="0"
              SelectionMode="Single"
              Background="Transparent"
@@ -88,7 +94,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="x:String">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped" ToolTip.Tip="{Binding}">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Data="{StaticResource Icons.File}"

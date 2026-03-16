@@ -13,7 +13,7 @@ namespace SourceGit.ViewModels
         public string Name { get; private set; }
         public bool IsAnnotated { get; private set; }
         public Models.User Creator { get; private set; }
-        public string CreatorDateStr { get; private set; }
+        public ulong CreatorDate { get; private set; }
         public string Message { get; private set; }
 
         public TagToolTip(Models.Tag t)
@@ -21,7 +21,7 @@ namespace SourceGit.ViewModels
             Name = t.Name;
             IsAnnotated = t.IsAnnotated;
             Creator = t.Creator;
-            CreatorDateStr = t.CreatorDateStr;
+            CreatorDate = t.CreatorDate;
             Message = t.Message;
         }
     }

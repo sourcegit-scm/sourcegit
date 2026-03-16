@@ -94,7 +94,12 @@
                              TextDecorations="Underline"
                              Margin="8,0,0,0"
                              PointerPressed="OnPressCommitSHA"/>
-                  <TextBlock Grid.Column="3" Text="{Binding AuthorTimeShortStr}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+                  <v:DateTimePresenter Grid.Column="3"
+                                       Margin="8,0,0,0"
+                                       ShowDateOnly="True"
+                                       Timestamp="{Binding AuthorTime}"
+                                       Foreground="{DynamicResource Brush.FG2}"
+                                       HorizontalAlignment="Right"/>
                 </Grid>
 
                 <Border Grid.Row="1" Background="Transparent" DataContextChanged="OnCommitSubjectDataContextChanged" PointerMoved="OnCommitSubjectPointerMoved">
@@ -117,7 +122,8 @@
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="Transparent"
                     BorderThickness="1,0,0,0"
-                    BorderBrush="{DynamicResource Brush.Border0}"/>
+                    BorderBrush="{DynamicResource Brush.Border0}"
+                    Focusable="False"/>
 
       <!-- Commit Detail -->
       <Border Grid.Column="2" Padding="0,4" IsVisible="{Binding !IsLoading}">

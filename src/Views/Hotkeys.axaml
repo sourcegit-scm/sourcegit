@@ -87,7 +87,7 @@
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.GoHome}" />
 
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}"/>
           <TextBlock Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.OpenSearchCommits}" />
 
           <TextBlock Grid.Row="2" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+1, macOS=⌘+1}"/>

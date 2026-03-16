@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherPagesCommandPalette"
@@ -17,8 +16,7 @@
              CornerRadius="12"
              Text="{Binding SearchFilter, Mode=TwoWay}"
              BorderBrush="{DynamicResource Brush.Border2}"
-             VerticalContentAlignment="Center"
-             v:AutoFocusBehaviour.IsEnabled="True">
+             VerticalContentAlignment="Center">
       <TextBox.InnerLeftContent>
         <Path Width="14" Height="14"
               Margin="6,0,0,0"
@@ -157,7 +155,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:RepositoryNode">
-          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped" ToolTip.Tip="{Binding Id, Mode=OneWay}">
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"

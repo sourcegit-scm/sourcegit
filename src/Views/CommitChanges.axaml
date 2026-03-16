@@ -18,6 +18,7 @@
       <!-- Search & Display Mode -->
       <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
         <TextBox Grid.Column="0"
+                 x:Name="CommitChangeSearchBox"
                  Height="26"
                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                  Background="Transparent"
@@ -67,7 +68,8 @@
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="Transparent"/>
+                  Background="Transparent"
+                  Focusable="False"/>
 
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">

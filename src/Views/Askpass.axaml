@@ -46,8 +46,7 @@
                Focusable="True"
                PasswordChar="*"
                RevealPassword="{Binding #ToggleShowPassword.IsChecked, Mode=OneWay}"
-               HorizontalAlignment="Stretch"
-               v:AutoFocusBehaviour.IsEnabled="True">
+               HorizontalAlignment="Stretch">
         <TextBox.InnerRightContent>
           <ToggleButton Grid.Column="6"
                         x:Name="ToggleShowPassword"
