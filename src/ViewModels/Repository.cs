@@ -1332,12 +1332,23 @@ namespace SourceGit.ViewModels
                 changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
                 _workingCopy.SetData(changes, token);
 
+                var hasModified = false;
+                foreach (var c in changes)
+                {
+                    if (c.Index == Models.ChangeState.Added || c.WorkTree == Models.ChangeState.Untracked)
+                        continue;
+
+                    hasModified = true;
+                    break;
+                }
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (token.IsCancellationRequested)
                         return;
 
                     LocalChangesCount = changes.Count;
+                    _canCheckoutDirectly = !hasModified;
                     OnPropertyChanged(nameof(InProgressContext));
                     GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasLocalChanges, changes.Count == 0);
                 });
@@ -1411,7 +1422,10 @@ namespace SourceGit.ViewModels
 
             if (branch.IsLocal)
             {
-                await ShowAndStartPopupAsync(new Checkout(this, branch));
+                if (_canCheckoutDirectly)
+                    await ShowAndStartPopupAsync(new Checkout(this, branch));
+                else
+                    ShowPopup(new Checkout(this, branch));
             }
             else
             {
@@ -1965,6 +1979,7 @@ namespace SourceGit.ViewModels
         private List<Models.Submodule> _submodules = [];
         private object _visibleSubmodules = null;
         private string _navigateToCommitDelayed = string.Empty;
+        private bool _canCheckoutDirectly = false;
 
         private bool _isAutoFetching = false;
         private Timer _autoFetchTimer = null;
