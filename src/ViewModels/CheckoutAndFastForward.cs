@@ -85,7 +85,7 @@ namespace SourceGit.ViewModels
                 LocalBranch.Head = RemoteBranch.Head;
                 LocalBranch.CommitterDate = RemoteBranch.CommitterDate;
 
-                _repo.FastRefreshBranchesAfterCheckout(LocalBranch);
+                _repo.RefreshAfterCheckoutBranch(LocalBranch);
             }
             else
             {

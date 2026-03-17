@@ -58,6 +58,8 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _baseOnRevision = branch.Head;
+            _committerDate = branch.CommitterDate;
+            _head = branch.Head;
 
             if (!branch.IsLocal)
                 Name = branch.Name;
@@ -70,6 +72,8 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _baseOnRevision = commit.SHA;
+            _committerDate = commit.CommitterTime;
+            _head = commit.SHA;
 
             BasedOn = commit;
             DiscardLocalChanges = false;
@@ -79,6 +83,8 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _baseOnRevision = tag.SHA;
+            _committerDate = tag.CreatorDate;
+            _head = tag.SHA;
 
             BasedOn = tag;
             DiscardLocalChanges = false;
@@ -125,6 +131,15 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            Models.Branch created = new()
+            {
+                Name = _name,
+                FullName = $"refs/heads/{_name}",
+                CommitterDate = _committerDate,
+                Head = _head,
+                IsLocal = true,
+            };
+
             bool succ;
             if (CheckoutAfterCreated && !_repo.IsBare)
             {
@@ -168,43 +183,33 @@ namespace SourceGit.ViewModels
                     .CreateAsync(_baseOnRevision, _allowOverwrite);
             }
 
-            if (succ && BasedOn is Models.Branch { IsLocal: false } basedOn && _name.Equals(basedOn.Name, StringComparison.Ordinal))
+            if (succ)
             {
-                await new Commands.Branch(_repo.FullPath, _name)
+                if (BasedOn is Models.Branch { IsLocal: false } basedOn && _name.Equals(basedOn.Name, StringComparison.Ordinal))
+                {
+                    await new Commands.Branch(_repo.FullPath, _name)
                         .Use(log)
                         .SetUpstreamAsync(basedOn);
+
+                    created.Upstream = basedOn.FullName;
+                }
+
+                _repo.RefreshAfterCreateBranch(created, CheckoutAfterCreated);
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
             }
 
             log.Complete();
-
-            if (succ && CheckoutAfterCreated)
-            {
-                var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
-                if (BasedOn is Models.Branch { IsLocal: false } based)
-                    fake.Upstream = based.FullName;
-
-                var folderEndIdx = fake.FullName.LastIndexOf('/');
-                if (folderEndIdx > 10)
-                    _repo.UIStates.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
-
-                if (_repo.HistoryFilterMode == Models.FilterMode.Included)
-                    _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, false, false);
-            }
-
-            _repo.MarkBranchesDirtyManually();
-
-            if (CheckoutAfterCreated)
-            {
-                ProgressDescription = "Waiting for branch updated...";
-                await Task.Delay(400);
-            }
-
             return true;
         }
 
         private readonly Repository _repo = null;
-        private string _name = null;
         private readonly string _baseOnRevision = null;
+        private readonly ulong _committerDate = 0;
+        private readonly string _head = string.Empty;
+        private string _name = null;
         private bool _allowOverwrite = false;
     }
 }

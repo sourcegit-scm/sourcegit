@@ -788,7 +788,54 @@ namespace SourceGit.ViewModels
             return _watcher?.Lock();
         }
 
-        public void FastRefreshBranchesAfterCheckout(Models.Branch checkouted)
+        public void RefreshAfterCreateBranch(Models.Branch created, bool checkout)
+        {
+            _watcher?.MarkBranchUpdated();
+            _watcher?.MarkWorkingCopyUpdated();
+
+            _branches.Add(created);
+
+            if (checkout)
+            {
+                if (_currentBranch.IsDetachedHead)
+                {
+                    _branches.Remove(_currentBranch);
+                }
+                else
+                {
+                    _currentBranch.IsCurrent = false;
+                    _currentBranch.WorktreePath = null;
+                }
+
+                created.IsCurrent = true;
+                created.WorktreePath = FullPath;
+
+                var folderEndIdx = created.FullName.LastIndexOf('/');
+                if (folderEndIdx > 10)
+                    _uiStates.ExpandedBranchNodesInSideBar.Add(created.FullName.Substring(0, folderEndIdx));
+
+                if (_historyFilterMode == Models.FilterMode.Included)
+                    SetBranchFilterMode(created, Models.FilterMode.Included, false, false);
+
+                CurrentBranch = created;
+            }
+
+            List<Models.Branch> locals = [];
+            foreach (var b in _branches)
+            {
+                if (b.IsLocal)
+                    locals.Add(b);
+            }
+
+            var builder = BuildBranchTree(locals, []);
+            LocalBranchTrees = builder.Locals;
+
+            RefreshCommits();
+            RefreshWorkingCopyChanges();
+            RefreshWorktrees();
+        }
+
+        public void RefreshAfterCheckoutBranch(Models.Branch checkouted)
         {
             _watcher?.MarkBranchUpdated();
             _watcher?.MarkWorkingCopyUpdated();
@@ -824,7 +871,7 @@ namespace SourceGit.ViewModels
             RefreshWorktrees();
         }
 
-        public void FastRefreshBranchesAfterRenaming(Models.Branch b, string newName)
+        public void RefreshAfterRenameBranch(Models.Branch b, string newName)
         {
             _watcher?.MarkBranchUpdated();
 

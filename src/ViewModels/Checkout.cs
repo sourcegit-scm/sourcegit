@@ -82,7 +82,7 @@ namespace SourceGit.ViewModels
                         .Use(log)
                         .PopAsync("stash@{0}");
 
-                _repo.FastRefreshBranchesAfterCheckout(_branch);
+                _repo.RefreshAfterCheckoutBranch(_branch);
             }
             else
             {

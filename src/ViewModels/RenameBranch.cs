@@ -60,7 +60,7 @@ namespace SourceGit.ViewModels
                 .RenameAsync(_name);
 
             if (succ)
-                _repo.FastRefreshBranchesAfterRenaming(Target, _name);
+                _repo.RefreshAfterRenameBranch(Target, _name);
 
             log.Complete();
             return succ;
