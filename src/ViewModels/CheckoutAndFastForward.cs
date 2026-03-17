@@ -80,17 +80,19 @@ namespace SourceGit.ViewModels
                     await new Commands.Stash(_repo.FullPath)
                         .Use(log)
                         .PopAsync("stash@{0}");
+
+                LocalBranch.Behind.Clear();
+                LocalBranch.Head = RemoteBranch.Head;
+                LocalBranch.CommitterDate = RemoteBranch.CommitterDate;
+
+                _repo.FastRefreshBranchesAfterCheckout(LocalBranch);
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
             }
 
             log.Complete();
-
-            if (_repo.HistoryFilterMode == Models.FilterMode.Included)
-                _repo.SetBranchFilterMode(LocalBranch, Models.FilterMode.Included, false, false);
-
-            _repo.MarkBranchesDirtyManually();
-
-            ProgressDescription = "Waiting for branch updated...";
-            await Task.Delay(400);
             return succ;
         }
 
