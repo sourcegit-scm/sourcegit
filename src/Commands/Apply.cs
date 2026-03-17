@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class Apply : Command
     {
-        public Apply(string repo, string file, bool ignoreWhitespace, string whitespaceMode, string extra)
+        public Apply(string repo, string file, bool ignoreWhitespace, string whitespaceMode, bool threeWayMerge, string extra)
         {
             WorkingDirectory = repo;
             Context = repo;
@@ -16,6 +16,9 @@ namespace SourceGit.Commands
                 builder.Append("--ignore-whitespace ");
             else
                 builder.Append("--whitespace=").Append(whitespaceMode).Append(' ');
+
+            if (threeWayMerge)
+                builder.Append("--3way ");
 
             if (!string.IsNullOrEmpty(extra))
                 builder.Append(extra).Append(' ');
