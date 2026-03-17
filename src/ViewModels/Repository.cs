@@ -824,6 +824,30 @@ namespace SourceGit.ViewModels
             RefreshWorktrees();
         }
 
+        public void FastRefreshBranchesAfterRenaming(Models.Branch b, string newName)
+        {
+            _watcher?.MarkBranchUpdated();
+
+            var newFullName = $"refs/heads/{newName}";
+            _uiStates.RenameBranchFilter(b.FullName, newFullName);
+
+            b.Name = newName;
+            b.FullName = newFullName;
+
+            List<Models.Branch> locals = [];
+            foreach (var branch in _branches)
+            {
+                if (branch.IsLocal)
+                    locals.Add(branch);
+            }
+
+            var builder = BuildBranchTree(locals, []);
+            LocalBranchTrees = builder.Locals;
+
+            RefreshCommits();
+            RefreshWorktrees();
+        }
+
         public void MarkBranchesDirtyManually()
         {
             _watcher?.MarkBranchUpdated();

@@ -887,37 +887,45 @@ namespace SourceGit.Views
                 }
             }
 
-            var rename = new MenuItem();
-            rename.Header = App.Text("BranchCM.Rename", branch.Name);
-            rename.Icon = App.CreateMenuIcon("Icons.Rename");
-            rename.Click += (_, e) =>
+            if (!branch.IsDetachedHead)
             {
-                if (repo.CanCreatePopup())
-                    repo.ShowPopup(new ViewModels.RenameBranch(repo, branch));
-                e.Handled = true;
-            };
+                var editDescription = new MenuItem();
+                editDescription.Header = App.Text("BranchCM.EditDescription", branch.Name);
+                editDescription.Icon = App.CreateMenuIcon("Icons.Edit");
+                editDescription.Click += async (_, e) =>
+                {
+                    var desc = await new Commands.Config(repo.FullPath).GetAsync($"branch.{branch.Name}.description");
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.EditBranchDescription(repo, branch, desc));
+                    e.Handled = true;
+                };
 
-            var editDescription = new MenuItem();
-            editDescription.Header = App.Text("BranchCM.EditDescription", branch.Name);
-            editDescription.Icon = App.CreateMenuIcon("Icons.Edit");
-            editDescription.Click += async (_, e) =>
-            {
-                var desc = await new Commands.Config(repo.FullPath).GetAsync($"branch.{branch.Name}.description");
-                if (repo.CanCreatePopup())
-                    repo.ShowPopup(new ViewModels.EditBranchDescription(repo, branch, desc));
-                e.Handled = true;
-            };
+                var rename = new MenuItem();
+                rename.Header = App.Text("BranchCM.Rename", branch.Name);
+                rename.Icon = App.CreateMenuIcon("Icons.Rename");
+                rename.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.RenameBranch(repo, branch));
+                    e.Handled = true;
+                };
 
-            var delete = new MenuItem();
-            delete.Header = App.Text("BranchCM.Delete", branch.Name);
-            delete.Icon = App.CreateMenuIcon("Icons.Clear");
-            delete.IsEnabled = !branch.IsCurrent;
-            delete.Click += (_, e) =>
-            {
-                if (repo.CanCreatePopup())
-                    repo.ShowPopup(new ViewModels.DeleteBranch(repo, branch));
-                e.Handled = true;
-            };
+                var delete = new MenuItem();
+                delete.Header = App.Text("BranchCM.Delete", branch.Name);
+                delete.Icon = App.CreateMenuIcon("Icons.Clear");
+                delete.IsEnabled = !branch.IsCurrent;
+                delete.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.DeleteBranch(repo, branch));
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(editDescription);
+                menu.Items.Add(rename);
+                menu.Items.Add(delete);
+            }
 
             var createBranch = new MenuItem();
             createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
@@ -939,10 +947,6 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
-            menu.Items.Add(new MenuItem() { Header = "-" });
-            menu.Items.Add(editDescription);
-            menu.Items.Add(rename);
-            menu.Items.Add(delete);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
