@@ -45,11 +45,10 @@ namespace SourceGit.Views
                 if (url.StartsWith("https://", StringComparison.Ordinal) && Uri.TryCreate(url, UriKind.Absolute, out var uri))
                 {
                     var host = uri.Host;
-                    var serverName = uri.Port == 443 ? host : $"{host}:{uri.Port}";
                     var route = uri.AbsolutePath.TrimStart('/');
 
                     _protocols.Add(url);
-                    _protocols.Add($"git@{serverName}:{route}");
+                    _protocols.Add($"git@{host}:{route}");
 
                     SetCurrentValue(ActiveProtocolProperty, "HTTPS");
                     SetCurrentValue(IsVisibleProperty, true);
