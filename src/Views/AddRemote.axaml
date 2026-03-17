@@ -29,7 +29,14 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Watermark="{DynamicResource Text.Remote.Name.Placeholder}"
-               Text="{Binding Name, Mode=TwoWay}"/>
+               Text="{Binding Name, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Remote}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+      </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -40,7 +47,18 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Watermark="{DynamicResource Text.Remote.URL.Placeholder}"
-               Text="{Binding Url, Mode=TwoWay}"/>
+               Text="{Binding Url, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Link}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+
+        <TextBox.InnerRightContent>
+          <v:RemoteProtocolSwitcher Url="{Binding Url, Mode=TwoWay}"/>
+        </TextBox.InnerRightContent>
+      </TextBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -54,6 +72,12 @@
                  CornerRadius="3"
                  Watermark="{DynamicResource Text.SSHKey.Placeholder}"
                  Text="{Binding SSHKey, Mode=TwoWay}">
+          <TextBox.InnerLeftContent>
+            <Path Width="12" Height="12"
+                  Margin="4,0,2,0"
+                  Data="{StaticResource Icons.Password}"
+                  Fill="{DynamicResource Brush.FG1}"/>
+          </TextBox.InnerLeftContent>
           <TextBox.InnerRightContent>
             <Button Classes="icon_button" Width="30" Height="30" Click="SelectSSHKey">
               <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>

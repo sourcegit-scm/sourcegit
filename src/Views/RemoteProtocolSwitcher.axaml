@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.RemoteProtocolSwitcher"
+             x:Name="ThisControl">
+  <Button Classes="icon_button" Click="OnOpenDropdownMenu">
+    <StackPanel Orientation="Horizontal">
+      <TextBlock FontSize="12"
+                 Text="{Binding #ThisControl.ActiveProtocol, Mode=OneWay}"
+                 Foreground="{DynamicResource Brush.Link}"/>
+      <Path Width="10" Height="10"
+            Margin="4,0,0,0"
+            VerticalAlignment="Center"
+            Data="M0 0M1939 486L2029 576L1024 1581L19 576L109 486L1024 1401L1939 486Z"
+            Fill="{DynamicResource Brush.Link}"/>
+    </StackPanel>
+  </Button>
+</UserControl>
