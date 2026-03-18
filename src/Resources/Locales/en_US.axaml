@@ -27,6 +27,7 @@
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch File:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select .patch file to apply</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignore whitespace changes</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Apply Patch</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Apply Stash</x:String>
