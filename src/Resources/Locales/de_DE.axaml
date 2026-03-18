@@ -105,6 +105,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Zeige als Datei- und Ordnerliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Zeige als Pfadliste</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Zeige als Dateisystem-Baumstruktur</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">Nach Pfad sortieren</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">Nach Status sortieren</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Ändere URL des Submoduls</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Submodul:</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL:</x:String>
