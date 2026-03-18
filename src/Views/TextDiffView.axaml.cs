@@ -1508,7 +1508,7 @@ namespace SourceGit.Views
                 diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
             }
 
-            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", false, "--cache --index").ExecAsync();
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
             File.Delete(tmpFile);
 
             vm.BlockNavigation.UpdateByChunk(chunk);
@@ -1539,7 +1539,7 @@ namespace SourceGit.Views
             else
                 diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
-            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", false, "--cache --index --reverse").ExecAsync();
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
             File.Delete(tmpFile);
 
             vm.BlockNavigation.UpdateByChunk(chunk);
@@ -1577,7 +1577,7 @@ namespace SourceGit.Views
                 diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
             }
 
-            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", false, "--reverse").ExecAsync();
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
             File.Delete(tmpFile);
 
             vm.BlockNavigation.UpdateByChunk(chunk);

@@ -28,8 +28,8 @@ namespace SourceGit.ViewModels
 
         public bool ThreeWayMerge
         {
-            get => _threeWayMerge;
-            set => SetProperty(ref _threeWayMerge, value);
+            get;
+            set;
         }
 
         public Apply(Repository repo)
@@ -55,7 +55,8 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Apply Patch");
             Use(log);
 
-            var succ = await new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, _threeWayMerge, null)
+            var extra = ThreeWayMerge ? "--3way" : string.Empty;
+            var succ = await new Commands.Apply(_repo.FullPath, _patchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, extra)
                 .Use(log)
                 .ExecAsync();
 
@@ -66,6 +67,5 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private string _patchFile = string.Empty;
         private bool _ignoreWhiteSpace = true;
-        private bool _threeWayMerge = false;
     }
 }
