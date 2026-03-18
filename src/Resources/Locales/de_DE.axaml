@@ -292,6 +292,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Typ der Änderung:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Kopieren</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Gesamten Text kopieren</x:String>
+  <x:String x:Key="Text.CopyFileName" xml:space="preserve">Dateinamen kopieren</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Ganzen Pfad kopieren</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Pfad kopieren</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Branch erstellen…</x:String>

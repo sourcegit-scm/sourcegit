@@ -293,6 +293,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">変更の種類:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">すべてのテキストをコピー</x:String>
+  <x:String x:Key="Text.CopyFileName" xml:space="preserve">ファイル名をコピーする</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">絶対パスをコピー</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">パスをコピー</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">ブランチを作成...</x:String>
