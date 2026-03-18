@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddSubmodule"
              x:DataType="vm:AddSubmodule">
@@ -27,7 +28,18 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Watermark="{DynamicResource Text.RepositoryURL}"
-               Text="{Binding Url, Mode=TwoWay}"/>
+               Text="{Binding Url, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Link}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+
+        <TextBox.InnerRightContent>
+          <v:RemoteProtocolSwitcher Url="{Binding Url, Mode=TwoWay}"/>
+        </TextBox.InnerRightContent>
+      </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -38,7 +50,14 @@
                VerticalAlignment="Center"
                CornerRadius="2"
                Watermark="{DynamicResource Text.Submodule.RelativePath.Placeholder}"
-               Text="{Binding RelativePath, Mode=TwoWay}"/>
+               Text="{Binding RelativePath, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Folder.Open}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+      </TextBox>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.Submodule.FetchNested}"
