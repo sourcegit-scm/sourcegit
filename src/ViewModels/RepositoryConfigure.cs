@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -105,6 +105,19 @@ namespace SourceGit.ViewModels
         {
             get => _repo.Settings.EnableAutoFetch;
             set => _repo.Settings.EnableAutoFetch = value;
+        }
+
+        public bool EnableOFPADecoding
+        {
+            get => _repo.EnableOFPADecoding;
+            set
+            {
+                if (_repo.EnableOFPADecoding != value)
+                {
+                    _repo.EnableOFPADecoding = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public int? AutoFetchInterval

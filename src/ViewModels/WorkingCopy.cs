@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -11,6 +11,8 @@ namespace SourceGit.ViewModels
 {
     public class WorkingCopy : ObservableObject, IDisposable
     {
+        public IReadOnlyDictionary<string, string> DecodedPaths => _ofpaContext.DecodedPaths;
+
         public Repository Repository
         {
             get => _repo;
@@ -224,6 +226,16 @@ namespace SourceGit.ViewModels
         public WorkingCopy(Repository repo)
         {
             _repo = repo;
+            _ofpaContext = new Utilities.OFPADecodingContext(repo, () =>
+            {
+                if (_cached is { Count: > 0 })
+                    ScheduleOFPARefresh(_cached);
+            });
+            _ofpaContext.PropertyChanged += (o, e) =>
+            {
+                if (e.PropertyName == nameof(Utilities.OFPADecodingContext.DecodedPaths))
+                    OnPropertyChanged(nameof(DecodedPaths));
+            };
         }
 
         public void Dispose()
@@ -252,6 +264,7 @@ namespace SourceGit.ViewModels
             _staged.Clear();
             OnPropertyChanged(nameof(Staged));
 
+            _ofpaContext.Dispose();
             _detailContext = null;
             _commitMessage = string.Empty;
         }
@@ -270,6 +283,9 @@ namespace SourceGit.ViewModels
                     UpdateInProgressState();
                     UpdateDetail();
                 });
+
+                if (_repo.EnableOFPADecoding)
+                    ScheduleOFPARefresh(_cached);
 
                 return;
             }
@@ -341,6 +357,11 @@ namespace SourceGit.ViewModels
                 UpdateInProgressState();
                 UpdateDetail();
             });
+
+            if (_repo.EnableOFPADecoding)
+                ScheduleOFPARefresh(changes);
+            else
+                _ofpaContext.Clear();
         }
 
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
@@ -833,6 +854,108 @@ namespace SourceGit.ViewModels
             return false;
         }
 
+        private void ScheduleOFPARefresh(List<Models.Change> changes)
+        {
+            var repositoryPath = _repo.FullPath;
+
+            _ofpaContext.ScheduleRefresh(async () =>
+            {
+                var scanResult = await Task.Run(() => ScanOFPAChanges(repositoryPath, changes)).ConfigureAwait(false);
+                var results = scanResult.Candidates.Count > 0
+                    ? await Utilities.OFPANameLookup.LookupWorkingTreeAsync(repositoryPath, scanResult.Candidates).ConfigureAwait(false)
+                    : new Dictionary<string, string>(StringComparer.Ordinal);
+                
+                var nextDecodedPaths = new Dictionary<string, string>(StringComparer.Ordinal);
+                var nextDecodedPathStats = new Dictionary<string, (long Length, DateTime LastWriteUtc)>(StringComparer.Ordinal);
+
+                // Re-use current cached stats to avoid re-calculating identical hashes.
+                var cachedPaths = _ofpaContext.DecodedPaths ?? new Dictionary<string, string>();
+
+                foreach (var path in scanResult.ActivePaths)
+                {
+                    if (results.TryGetValue(path, out var decoded))
+                    {
+                        nextDecodedPaths[path] = decoded;
+                        if (scanResult.CandidateStats.TryGetValue(path, out var stats))
+                            nextDecodedPathStats[path] = stats;
+                    }
+                    else if (!scanResult.CandidatePaths.Contains(path) && cachedPaths.TryGetValue(path, out var cached))
+                    {
+                        nextDecodedPaths[path] = cached;
+                        if (_decodedPathStats.TryGetValue(path, out var stats))
+                            nextDecodedPathStats[path] = stats;
+                    }
+                }
+
+                _decodedPathStats = nextDecodedPathStats;
+                return nextDecodedPaths;
+            });
+        }
+
+        private sealed class OFPAScanResult
+        {
+            public HashSet<string> ActivePaths { get; } = new(StringComparer.Ordinal);
+            public HashSet<string> CandidatePaths { get; } = new(StringComparer.Ordinal);
+            public List<Utilities.OFPANameLookup.WorkingTreeCandidate> Candidates { get; } = new();
+            public Dictionary<string, (long Length, DateTime LastWriteUtc)> CandidateStats { get; } = new(StringComparer.Ordinal);
+        }
+
+        private OFPAScanResult ScanOFPAChanges(string repositoryPath, List<Models.Change> changes)
+        {
+            var result = new OFPAScanResult();
+
+            foreach (var change in changes)
+            {
+                if (!Utilities.OFPAParser.IsOFPAFile(change.Path))
+                    continue;
+
+                result.ActivePaths.Add(change.Path);
+
+                bool isDeleted = change.WorkTree == Models.ChangeState.Deleted ||
+                                 (change.Index == Models.ChangeState.Deleted && change.WorkTree == Models.ChangeState.None);
+
+                if (!isDeleted)
+                {
+                    var fullPath = Path.Combine(repositoryPath, change.Path);
+                    if (File.Exists(fullPath))
+                    {
+                        try
+                        {
+                            var info = new FileInfo(fullPath);
+                            if (_ofpaContext.DecodedPaths?.ContainsKey(change.Path) == true &&
+                                _decodedPathStats.TryGetValue(change.Path, out var stats) &&
+                                stats.Length == info.Length &&
+                                stats.LastWriteUtc == info.LastWriteTimeUtc)
+                            {
+                                continue;
+                            }
+
+                            result.CandidatePaths.Add(change.Path);
+                            result.Candidates.Add(new Utilities.OFPANameLookup.WorkingTreeCandidate(change.Path, fullPath, $":{change.Path}", $"HEAD:{change.Path}"));
+                            result.CandidateStats[change.Path] = (info.Length, info.LastWriteTimeUtc);
+                            continue;
+                        }
+                        catch (Exception)
+                        {
+                            isDeleted = true;
+                        }
+                    }
+                    else
+                    {
+                        isDeleted = true;
+                    }
+                }
+
+                if (isDeleted)
+                {
+                    result.CandidatePaths.Add(change.Path);
+                    result.Candidates.Add(new Utilities.OFPANameLookup.WorkingTreeCandidate(change.Path, string.Empty, $":{change.Path}", $"HEAD:{change.Path}"));
+                }
+            }
+
+            return result;
+        }
+
         private Repository _repo = null;
         private bool _isLoadingData = false;
         private bool _isStaging = false;
@@ -854,5 +977,8 @@ namespace SourceGit.ViewModels
 
         private bool _hasUnsolvedConflicts = false;
         private InProgressContext _inProgressContext = null;
+
+        private readonly Utilities.OFPADecodingContext _ofpaContext;
+        private Dictionary<string, (long Length, DateTime LastWriteUtc)> _decodedPathStats = new(StringComparer.Ordinal);
     }
 }

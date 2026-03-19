@@ -54,6 +54,12 @@ namespace SourceGit.Models
             set;
         } = "---";
 
+        public bool EnableOFPADecoding
+        {
+            get;
+            set;
+        } = false;
+
         public AvaloniaList<CommitTemplate> CommitTemplates
         {
             get;

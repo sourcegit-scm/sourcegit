@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -54,6 +54,20 @@ namespace SourceGit.ViewModels
         public bool HasAllowedSignersFile
         {
             get => _hasAllowedSignersFile;
+        }
+
+        public bool EnableOFPADecoding
+        {
+            get => (_settings ??= new Models.RepositorySettings()).EnableOFPADecoding;
+            set
+            {
+                _settings ??= new Models.RepositorySettings();
+                if (_settings.EnableOFPADecoding != value)
+                {
+                    _settings.EnableOFPADecoding = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public int SelectedViewIndex
