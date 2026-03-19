@@ -26,7 +26,7 @@
       <TextBox Grid.Row="0" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Remote.Name.Placeholder}"
                Text="{Binding Name, Mode=TwoWay}">
         <TextBox.InnerLeftContent>
@@ -44,7 +44,7 @@
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Remote.URL.Placeholder}"
                Text="{Binding Url, Mode=TwoWay}">
         <TextBox.InnerLeftContent>

@@ -25,7 +25,7 @@
       <TextBox Grid.Row="0" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Text="{Binding Master, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
@@ -35,7 +35,7 @@
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Text="{Binding Develop, Mode=TwoWay}"/>
 
       <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
@@ -50,7 +50,7 @@
       <TextBox Grid.Row="3" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Text="{Binding FeaturePrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
@@ -60,7 +60,7 @@
       <TextBox Grid.Row="4" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Text="{Binding ReleasePrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="5" Grid.Column="0"
@@ -70,7 +70,7 @@
       <TextBox Grid.Row="5" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Text="{Binding HotfixPrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="6" Grid.Column="0"
@@ -80,7 +80,7 @@
       <TextBox Grid.Row="6" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding TagPrefix, Mode=TwoWay}"/>
     </Grid>

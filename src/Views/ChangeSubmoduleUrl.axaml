@@ -35,7 +35,7 @@
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.RepositoryURL}"
                Text="{Binding Url, Mode=TwoWay}">
         <TextBox.InnerLeftContent>
