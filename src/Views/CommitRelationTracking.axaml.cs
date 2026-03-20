@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using Avalonia.Controls;
 
 namespace SourceGit.Views
@@ -10,12 +10,9 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public async Task SetDataAsync(ViewModels.CommitDetail detail)
+        public void SetData(List<Models.Decorator> data)
         {
-            LoadingIcon.IsVisible = true;
-            var containsIn = await detail.GetRefsContainsThisCommitAsync();
-            Container.ItemsSource = containsIn;
-            LoadingIcon.IsVisible = false;
+            Container.ItemsSource = data;
         }
     }
 }
