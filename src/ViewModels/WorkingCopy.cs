@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
-
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -40,6 +37,12 @@ namespace SourceGit.ViewModels
             get => _hasUnsolvedConflicts;
             set => SetProperty(ref _hasUnsolvedConflicts, value);
         }
+
+        public bool CanSwitchBranchDirectly
+        {
+            get;
+            set;
+        } = false;
 
         public InProgressContext InProgressContext
         {
@@ -256,64 +259,67 @@ namespace SourceGit.ViewModels
             _commitMessage = string.Empty;
         }
 
-        public void SetData(List<Models.Change> changes, CancellationToken cancellationToken)
+        public void SetData(List<Models.Change> changes)
         {
             if (!IsChanged(_cached, changes))
             {
-                // Just force refresh selected changes.
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    if (cancellationToken.IsCancellationRequested)
-                        return;
-
-                    HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
-                    UpdateInProgressState();
-                    UpdateDetail();
-                });
-
+                HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
+                UpdateInProgressState();
+                UpdateDetail();
                 return;
             }
 
             var lastSelectedUnstaged = new HashSet<string>();
-            var lastSelectedStaged = new HashSet<string>();
             if (_selectedUnstaged is { Count: > 0 })
             {
                 foreach (var c in _selectedUnstaged)
                     lastSelectedUnstaged.Add(c.Path);
             }
-            else if (_selectedStaged is { Count: > 0 })
-            {
-                foreach (var c in _selectedStaged)
-                    lastSelectedStaged.Add(c.Path);
-            }
 
             var unstaged = new List<Models.Change>();
+            var visibleUnstaged = new List<Models.Change>();
+            var selectedUnstaged = new List<Models.Change>();
+            var noFilter = string.IsNullOrEmpty(_filter);
             var hasConflict = false;
+            var canSwitchDirectly = true;
             foreach (var c in changes)
             {
                 if (c.WorkTree != Models.ChangeState.None)
                 {
                     unstaged.Add(c);
                     hasConflict |= c.IsConflicted;
-                }
-            }
 
-            var visibleUnstaged = GetVisibleChanges(unstaged);
-            var selectedUnstaged = new List<Models.Change>();
-            foreach (var c in visibleUnstaged)
-            {
-                if (lastSelectedUnstaged.Contains(c.Path))
-                    selectedUnstaged.Add(c);
+                    if (noFilter || c.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
+                    {
+                        visibleUnstaged.Add(c);
+                        if (lastSelectedUnstaged.Contains(c.Path))
+                            selectedUnstaged.Add(c);
+                    }
+                }
+
+                if (!canSwitchDirectly)
+                    continue;
+
+                if (c.WorkTree == Models.ChangeState.Untracked || c.Index == Models.ChangeState.Added)
+                    continue;
+
+                canSwitchDirectly = false;
             }
 
             var staged = GetStagedChanges(changes);
-
             var visibleStaged = GetVisibleChanges(staged);
             var selectedStaged = new List<Models.Change>();
-            foreach (var c in visibleStaged)
+            if (_selectedStaged is { Count: > 0 })
             {
-                if (lastSelectedStaged.Contains(c.Path))
-                    selectedStaged.Add(c);
+                var set = new HashSet<string>();
+                foreach (var c in _selectedStaged)
+                    set.Add(c.Path);
+
+                foreach (var c in visibleStaged)
+                {
+                    if (set.Contains(c.Path))
+                        selectedStaged.Add(c);
+                }
             }
 
             if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && hasConflict)
@@ -322,25 +328,20 @@ namespace SourceGit.ViewModels
                 selectedUnstaged.Add(firstConflict);
             }
 
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                if (cancellationToken.IsCancellationRequested)
-                    return;
+            _isLoadingData = true;
+            _cached = changes;
+            HasUnsolvedConflicts = hasConflict;
+            CanSwitchBranchDirectly = canSwitchDirectly;
+            VisibleUnstaged = visibleUnstaged;
+            VisibleStaged = visibleStaged;
+            Unstaged = unstaged;
+            Staged = staged;
+            SelectedUnstaged = selectedUnstaged;
+            SelectedStaged = selectedStaged;
+            _isLoadingData = false;
 
-                _isLoadingData = true;
-                _cached = changes;
-                HasUnsolvedConflicts = hasConflict;
-                VisibleUnstaged = visibleUnstaged;
-                VisibleStaged = visibleStaged;
-                Unstaged = unstaged;
-                Staged = staged;
-                SelectedUnstaged = selectedUnstaged;
-                SelectedStaged = selectedStaged;
-                _isLoadingData = false;
-
-                UpdateInProgressState();
-                UpdateDetail();
-            });
+            UpdateInProgressState();
+            UpdateDetail();
         }
 
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
@@ -671,8 +672,11 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
+                // Do not use property `UseAmend` but manually trigger property changed to avoid refreshing staged changes here.
+                _useAmend = false;
+                OnPropertyChanged(nameof(UseAmend));
+
                 CommitMessage = string.Empty;
-                UseAmend = false;
                 if (autoPush && _repo.Remotes.Count > 0)
                 {
                     Models.Branch pushBranch = null;
