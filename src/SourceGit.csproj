@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))"/>
+    <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,12 +55,12 @@
     <PackageReference Include="Avalonia.Diagnostics" Version="11.3.12" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Azure.AI.OpenAI" Version="2.8.0-beta.1" />
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc6.1" />
-    <PackageReference Include="OpenAI" Version="2.8.0" />
+    <PackageReference Include="OpenAI" Version="2.9.1" />
     <PackageReference Include="Pfim" Version="0.11.4" />
 
-    <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj"/>
+    <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
   </ItemGroup>
 
   <ItemGroup>
