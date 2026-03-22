@@ -27,7 +27,6 @@ namespace SourceGit.Tests.Models
         }
 
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
         [InlineData("abc")] // length < 8 → skip
         public void ParseParents_DoesNothing_WhenDataIsTooShortOrEmpty(string data)

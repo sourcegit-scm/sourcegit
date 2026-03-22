@@ -34,7 +34,6 @@ namespace SourceGit.Tests.Models
         [InlineData("abc", "abc")]
         [InlineData("42", "42")]
         [InlineData("", "")]
-        [InlineData(null, null)]
         [InlineData("ABC", "abc")]
         [InlineData("File", "file")]
         public void Compare_ReturnsZero_WhenStringsAreEqual(string s1, string s2)

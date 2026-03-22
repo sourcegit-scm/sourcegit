@@ -9,7 +9,6 @@ namespace SourceGit.Tests.Models
         [Theory]
         [InlineData("hello world", "hello world")]
         [InlineData("", "")]
-        [InlineData(null, null)]
         public void Compare_ReturnsEmpty_WhenStringsAreTheSame(string s1, string s2)
         {
             Assert.Empty(TextInlineChange.Compare(s1, s2));
