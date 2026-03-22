@@ -702,23 +702,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.97%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Apply.3Way
-- Text.CommandPalette.Branches
-- Text.CommandPalette.BranchesAndTags
-- Text.CommandPalette.RepositoryActions
-- Text.CommandPalette.RevisionFiles
-- Text.ConfirmEmptyCommit.StageSelectedThenCommit
-- Text.Hotkeys.Repo.CreateBranch
-- Text.Init.CommandTip
-- Text.Init.ErrorMessageTip
-- Text.Preferences.General.Use24Hours
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-70.61%25-red)
 
