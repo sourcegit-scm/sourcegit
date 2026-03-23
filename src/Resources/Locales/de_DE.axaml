@@ -487,6 +487,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Klone neues Repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Aktuelle Registerkarte schließen</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Zur nächsten Registerkarte wechseln</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Zur vorherigen Registerkarte wechseln</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Neue Registerkarte erstellen</x:String>
@@ -583,6 +584,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Neue Registerkarte erstellen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Lesezeichen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Registerkarte schließen</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Andere Registerkarten schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Registerkarten zur Rechten schließen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Kopiere Repository-Pfad</x:String>

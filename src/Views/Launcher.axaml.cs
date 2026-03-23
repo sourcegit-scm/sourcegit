@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -226,6 +226,13 @@ namespace SourceGit.Views
                         vm.AddNewTab();
 
                     ViewModels.Welcome.Instance.Clone();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.T && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                {
+                    vm.ReopenLastClosedTab();
                     e.Handled = true;
                     return;
                 }

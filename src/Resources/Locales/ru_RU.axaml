@@ -495,6 +495,7 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ГЛОБАЛЬНЫЕ</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Клонировать репозиторий</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Закрыть текущую вкладку</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Перейти на следующую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Перейти на предыдущую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Создать новую вкладку</x:String>
@@ -595,6 +596,7 @@
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Создать новую вкладку</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Закладка</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Закрыть вкладку</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Закрыть другие вкладки</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Закрыть вкладки справа</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Копировать путь репозитория</x:String>

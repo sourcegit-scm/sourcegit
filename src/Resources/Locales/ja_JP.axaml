@@ -488,6 +488,7 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">総合</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">新しいリポジトリをクローン</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">現在のタブを閉じる</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">次のタブに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">前のタブに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新しいタブを作成</x:String>
@@ -585,6 +586,7 @@
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新しいタブを作成</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">ブックマーク</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">タブを閉じる</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">他のタブを閉じる</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">右側のタブを閉じる</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">リポジトリへのパスをコピー</x:String>

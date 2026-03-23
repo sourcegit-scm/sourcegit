@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -215,6 +216,8 @@ namespace SourceGit.ViewModels
                 var last = Pages[0];
                 if (last.Data is Repository repo)
                 {
+                    _closedTabHistory.Push(last.Node);
+
                     _activeWorkspace.Repositories.Clear();
                     _activeWorkspace.ActiveIdx = 0;
 
@@ -239,6 +242,11 @@ namespace SourceGit.ViewModels
 
             page ??= _activePage;
 
+            if (page.Data is Repository)
+            {
+                _closedTabHistory.Push(page.Node);
+            }
+
             var removeIdx = Pages.IndexOf(page);
             var activeIdx = Pages.IndexOf(_activePage);
             if (removeIdx == activeIdx)
@@ -247,6 +255,14 @@ namespace SourceGit.ViewModels
             CloseRepositoryInTab(page);
             Pages.RemoveAt(removeIdx);
             GC.Collect();
+        }
+
+        public void ReopenLastClosedTab()
+        {
+            if (_closedTabHistory.TryPop(out var node))
+            {
+                OpenRepositoryInTab(node, null);
+            }
         }
 
         public void CloseOtherTabs()
@@ -444,5 +460,6 @@ namespace SourceGit.ViewModels
         private bool _ignoreIndexChange;
         private string _title = string.Empty;
         private ICommandPalette _commandPalette;
+        private readonly Stack<RepositoryNode> _closedTabHistory = new();
     }
 }

@@ -448,6 +448,7 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clone repositori baru</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Tutup tab saat ini</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Ke tab berikutnya</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Ke tab sebelumnya</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Buat tab baru</x:String>
@@ -518,6 +519,7 @@
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Buat Tab Baru</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Tutup Tab</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Tutup Tab Lain</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Tutup Tab di Kanan</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Salin Jalur Repositori</x:String>

@@ -337,6 +337,7 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">உலகளாவிய</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">புதிய களஞ்சியத்தை நகலி செய்</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">தற்போதைய பக்கத்தை மூடு</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">அடுத்த பக்கத்திற்குச் செல்</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">முந்தைய பக்கத்திற்குச் செல்</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">புதிய பக்கத்தை உருவாக்கு</x:String>
@@ -398,6 +399,7 @@
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">புதிய பக்கத்தை உருவாக்கு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">புத்தகக்குறி</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">மூடு தாவல்</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">பிற தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">வலதுபுறத்தில் உள்ள தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">களஞ்சிய பாதை நகலெடு</x:String>
