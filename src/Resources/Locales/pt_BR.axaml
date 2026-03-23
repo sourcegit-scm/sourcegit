@@ -220,6 +220,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">leve</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Pressione Ctrl para iniciar diretamente</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Recortar</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Descartar</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Nada</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Excluir Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Você está prestes a excluir uma branch remota!!!</x:String>

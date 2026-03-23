@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Checkout"
              x:DataType="vm:Checkout">
@@ -33,18 +34,15 @@
         <TextBlock Text="{Binding BranchName}"/>
       </StackPanel>
 
-      <TextBlock Grid.Row="1" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Checkout.LocalChanges}"/>
-      <WrapPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <RadioButton GroupName="LocalChanges"
-                     Margin="0,0,8,0"
-                     Content="{DynamicResource Text.Checkout.LocalChanges.StashAndReapply}"
-                     IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
-        <RadioButton GroupName="LocalChanges"
-                     Content="{DynamicResource Text.Checkout.LocalChanges.Discard}"/>
-      </WrapPanel>
+      <Border Grid.Row="1" Grid.Column="0"
+              Height="32"
+              VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                   Margin="0,0,8,0"
+                   Text="{DynamicResource Text.Checkout.LocalChanges}"/>
+      </Border>
+      <v:DealWithLocalChangesMethod Grid.Row="1" Grid.Column="1"
+                                    Method="{Binding DealWithLocalChanges, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

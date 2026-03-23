@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Pull"
              x:DataType="vm:Pull">
@@ -78,18 +79,15 @@
         <TextBlock Text="{Binding Current.Name}"/>
       </StackPanel>
 
-      <TextBlock Grid.Row="3" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Pull.LocalChanges}"/>
-      <WrapPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-        <RadioButton GroupName="LocalChanges"
-                     Margin="0,0,8,0"
-                     Content="{DynamicResource Text.Pull.LocalChanges.StashAndReapply}"
-                     IsChecked="{Binding !DiscardLocalChanges, Mode=TwoWay}"/>
-        <RadioButton GroupName="LocalChanges"
-                     Content="{DynamicResource Text.Pull.LocalChanges.Discard}"/>
-      </WrapPanel>
+      <Border Grid.Row="3" Grid.Column="0"
+              Height="32"
+              VerticalAlignment="Top">
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
+                   Margin="0,0,8,0"
+                   Text="{DynamicResource Text.Pull.LocalChanges}"/>
+      </Border>
+      <v:DealWithLocalChangesMethod Grid.Row="3" Grid.Column="1"
+                                    Method="{Binding DealWithLocalChanges, Mode=TwoWay}"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.Pull.UseRebase}"

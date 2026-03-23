@@ -205,6 +205,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">легкий</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Утримуйте Ctrl для запуску без діалогу</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Вирізати</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Скасувати</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Сховати та Застосувати</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Видалити гілку</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Ви збираєтеся видалити віддалену гілку!!!</x:String>

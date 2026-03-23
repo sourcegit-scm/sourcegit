@@ -325,6 +325,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住 Ctrl 鍵將直接以預設參數執行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">取消初始化子模組</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">強制取消，即使包含本機變更</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模組: </x:String>

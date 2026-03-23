@@ -325,6 +325,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">轻量标签</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住Ctrl键点击将以默认参数运行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">不做处理</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">取消初始化子模块</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">强制取消，即使包含本地变更</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模块 ：</x:String>

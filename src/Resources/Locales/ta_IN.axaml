@@ -201,6 +201,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">குறைந்தஎடை</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">நேரடியாகத் தொடங்க  கட்டுப்பாட்டை அழுத்திப் பிடி</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">வெட்டு</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">கிளையை நீக்கு</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">கிளை:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">நீங்கள் ஒரு தொலை கிளையை நீக்கப் போகிறீர்கள்!!!</x:String>

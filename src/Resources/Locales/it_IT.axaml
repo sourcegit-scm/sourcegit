@@ -317,6 +317,9 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">leggero</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Tieni premuto Ctrl per avviare direttamente</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Taglia</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Scarta</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Non fare nulla</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Stash e Ripristina</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Deinizializza Sottomodulo</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Forza deinizializzazione anche se contiene modifiche locali.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Sottomodulo:</x:String>

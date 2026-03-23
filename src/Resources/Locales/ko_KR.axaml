@@ -289,6 +289,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">경량 태그</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Ctrl을 누른 채 클릭하면 바로 시작합니다</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">잘라내기</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">폐기</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">서브모듈 초기화 해제</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">로컬 변경 사항이 있어도 강제로 초기화 해제합니다.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">서브모듈:</x:String>

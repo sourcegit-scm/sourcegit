@@ -319,6 +319,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">軽量</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Ctrl キーを押しながらで直接実行できます</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">切り取り</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">破棄</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">サブモジュールの初期化を解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">ローカルの変更の有無に関わらず、強制的に解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">サブモジュール:</x:String>

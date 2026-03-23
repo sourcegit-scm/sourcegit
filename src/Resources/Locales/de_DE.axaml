@@ -318,6 +318,9 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Ohne Anmerkung</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Halte ‚Strg‘ gedrückt, um direkt auszuführen</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Ausschneiden</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Nichts tun</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Deinitialisiere Submodul</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Erzwinge Deinitialisierung, selbst wenn lokale Änderungen enthalten sind.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submodul:</x:String>

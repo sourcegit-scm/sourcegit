@@ -9,7 +9,7 @@ namespace SourceGit.ViewModels
             get => _branch.Name;
         }
 
-        public bool DiscardLocalChanges
+        public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;
             set;
@@ -19,7 +19,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _branch = branch;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
         }
 
         public override async Task<bool> Sure()
@@ -46,7 +46,13 @@ namespace SourceGit.ViewModels
             var succ = false;
             var needPopStash = false;
 
-            if (!DiscardLocalChanges)
+            if (DealWithLocalChanges == Models.DealWithLocalChanges.DoNothing)
+            {
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(branchName, false);
+            }
+            else if (DealWithLocalChanges == Models.DealWithLocalChanges.StashAndReapply)
             {
                 var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                 if (changes > 0)
@@ -57,16 +63,23 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
+                        _repo.MarkWorkingCopyDirtyManually();
                         return false;
                     }
 
                     needPopStash = true;
                 }
-            }
 
-            succ = await new Commands.Checkout(_repo.FullPath)
-                .Use(log)
-                .BranchAsync(branchName, DiscardLocalChanges);
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(branchName, false);
+            }
+            else
+            {
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(branchName, true);
+            }
 
             if (succ)
             {

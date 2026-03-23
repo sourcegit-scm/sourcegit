@@ -20,7 +20,12 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public bool DiscardLocalChanges
+        public bool HasLocalChanges
+        {
+            get => _repo.LocalChangesCount > 0;
+        }
+
+        public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;
             set;
@@ -35,6 +40,7 @@ namespace SourceGit.ViewModels
                 {
                     _repo.UIStates.CheckoutBranchOnCreateBranch = value;
                     OnPropertyChanged();
+                    UpdateOverrideTip();
                 }
             }
         }
@@ -42,6 +48,12 @@ namespace SourceGit.ViewModels
         public bool IsBareRepository
         {
             get => _repo.IsBare;
+        }
+
+        public string OverrideTip
+        {
+            get => _overrideTip;
+            private set => SetProperty(ref _overrideTip, value);
         }
 
         public bool AllowOverwrite
@@ -65,7 +77,8 @@ namespace SourceGit.ViewModels
                 Name = branch.Name;
 
             BasedOn = branch;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+            UpdateOverrideTip();
         }
 
         public CreateBranch(Repository repo, Models.Commit commit)
@@ -76,7 +89,8 @@ namespace SourceGit.ViewModels
             _head = commit.SHA;
 
             BasedOn = commit;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+            UpdateOverrideTip();
         }
 
         public CreateBranch(Repository repo, Models.Tag tag)
@@ -87,7 +101,8 @@ namespace SourceGit.ViewModels
             _head = tag.SHA;
 
             BasedOn = tag;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+            UpdateOverrideTip();
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -144,7 +159,13 @@ namespace SourceGit.ViewModels
             if (CheckoutAfterCreated && !_repo.IsBare)
             {
                 var needPopStash = false;
-                if (!DiscardLocalChanges)
+                if (DealWithLocalChanges == Models.DealWithLocalChanges.DoNothing)
+                {
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(_name, _baseOnRevision, false, _allowOverwrite);
+                }
+                else if (DealWithLocalChanges == Models.DealWithLocalChanges.StashAndReapply)
                 {
                     var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                     if (changes > 0)
@@ -155,16 +176,23 @@ namespace SourceGit.ViewModels
                         if (!succ)
                         {
                             log.Complete();
+                            _repo.MarkWorkingCopyDirtyManually();
                             return false;
                         }
 
                         needPopStash = true;
                     }
-                }
 
-                succ = await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .BranchAsync(_name, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(_name, _baseOnRevision, false, _allowOverwrite);
+                }
+                else
+                {
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(_name, _baseOnRevision, true, _allowOverwrite);
+                }
 
                 if (succ)
                 {
@@ -205,11 +233,17 @@ namespace SourceGit.ViewModels
             return true;
         }
 
+        private void UpdateOverrideTip()
+        {
+            OverrideTip = CheckoutAfterCreated ? "-B in `git checkout`" : "-f in `git branch`";
+        }
+
         private readonly Repository _repo = null;
         private readonly string _baseOnRevision = null;
         private readonly ulong _committerDate = 0;
         private readonly string _head = string.Empty;
         private string _name = null;
+        private string _overrideTip = "-B";
         private bool _allowOverwrite = false;
     }
 }

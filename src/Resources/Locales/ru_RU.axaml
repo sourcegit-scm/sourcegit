@@ -325,6 +325,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Простой</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Удерживайте Ctrl, чтобы сразу начать</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Вырезать</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Отложить и примненить повторно</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Удалить подмодуль</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Принудительно удалить даже если содержит локальные изменения.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Подмодуль:</x:String>

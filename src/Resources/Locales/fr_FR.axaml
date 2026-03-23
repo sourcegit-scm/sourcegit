@@ -305,6 +305,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">léger</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Maintenir Ctrl pour commencer directement</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Couper</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Annuler</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Ne rien faire</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Désinitialiser le sous-module</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Forcer la désinitialisation même s'il contient des modifications locales.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Sous-module :</x:String>
