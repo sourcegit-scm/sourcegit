@@ -19,12 +19,16 @@
                  Text="{DynamicResource Text.Checkout.Commit}"/>
     </StackPanel>
 
-    <Grid Margin="0,16,0,0" ColumnDefinitions="Auto,*">
+    <Grid Margin="0,16,0,0">
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
         <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" MinWidth="140"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
       
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
