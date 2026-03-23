@@ -38,6 +38,11 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedBranch, value, true);
         }
 
+        public bool HasLocalChanges
+        {
+            get => _repo.LocalChangesCount > 0;
+        }
+
         public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;

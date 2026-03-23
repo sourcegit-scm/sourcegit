@@ -19,12 +19,7 @@
                  Text="{DynamicResource Text.Checkout.Commit}"/>
     </StackPanel>
 
-    <Grid Margin="0,16,0,0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="32"/>
-        <RowDefinition Height="Auto" MinHeight="32"/>
-        <RowDefinition Height="Auto"/>
-      </Grid.RowDefinitions>
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" MinWidth="140"/>
         <ColumnDefinition Width="*"/>
@@ -42,13 +37,15 @@
 
       <Border Grid.Row="1" Grid.Column="0"
               Height="32"
-              VerticalAlignment="Top">
+              VerticalAlignment="Top"
+              IsVisible="{Binding HasLocalChanges, Mode=OneWay}">
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
                    Margin="0,0,8,0"
                    Text="{DynamicResource Text.Checkout.LocalChanges}"/>
       </Border>
       <v:DealWithLocalChangesMethod Grid.Row="1" Grid.Column="1"
-                                    Method="{Binding DealWithLocalChanges, Mode=TwoWay}"/>
+                                    Method="{Binding DealWithLocalChanges, Mode=TwoWay}"
+                                    IsVisible="{Binding HasLocalChanges, Mode=OneWay}"/>
 
       <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
         <Path Grid.Column="0"

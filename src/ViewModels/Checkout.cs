@@ -9,6 +9,11 @@ namespace SourceGit.ViewModels
             get => _branch.Name;
         }
 
+        public bool HasLocalChanges
+        {
+            get => _repo.LocalChangesCount > 0;
+        }
+
         public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;
