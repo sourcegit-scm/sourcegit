@@ -122,16 +122,16 @@
 
           <TextBlock Grid.Row="11" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+Shift+Up, macOS=⌘+⇧+Up}"/>
           <TextBlock Grid.Row="11" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Push}" />
-          
+
           <TextBlock Grid.Row="12" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+Shift+P, macOS=⌘+⇧+P}"/>
           <TextBlock Grid.Row="12" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.OpenCommandPalette}" />
-          
+
           <TextBlock Grid.Row="13" Grid.Column="0" Classes="bold" Text="{OnPlatform Alt+Down, macOS=⌥+Down}"/>
           <TextBlock Grid.Row="13" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.GoToParent}" />
-          
+
           <TextBlock Grid.Row="14" Grid.Column="0" Classes="bold" Text="{OnPlatform Alt+Up, macOS=⌥+Up}"/>
           <TextBlock Grid.Row="14" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.GoToChild}" />
-          
+
           <TextBlock Grid.Row="15" Grid.Column="0" Classes="bold" Text="F5"/>
           <TextBlock Grid.Row="15" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
         </Grid>
