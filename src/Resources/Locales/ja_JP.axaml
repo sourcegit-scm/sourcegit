@@ -113,8 +113,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">コミット:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">警告: コミットをチェックアウトすると、HEAD が切断されます</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">現在の HEAD には、どのブランチやタグにも繋がっていないコミットが含まれています！それでも続行しますか？</x:String>
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">これらのサブモジュールを更新する必要があります:{0}更新しますか？</x:String>
@@ -299,8 +297,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">派生元:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">作成したブランチにチェックアウト</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新しいブランチ名:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">ブランチの名前を入力</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">ローカルブランチを作成</x:String>
@@ -685,8 +681,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">リモートブランチ:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">プル先:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージではなくリベースを使用</x:String>

@@ -112,8 +112,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Avviso: Effettuando un checkout del commit, la tua HEAD sarà separata</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stasha e Ripristina</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Il tuo HEAD attuale contiene commit non connessi ad alcun branch/tag! Sicuro di voler continuare?</x:String>
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">I seguenti sottomoduli devono essere aggiornati:{0}Vuoi aggiornarli?</x:String>
@@ -297,8 +295,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basato Su:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout del Branch Creato</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stasha e Ripristina</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nome Nuovo Branch:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Inserisci il nome del branch.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Crea Branch Locale</x:String>
@@ -679,8 +675,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">In:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Modifiche Locali:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Scarta</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stasha e Riapplica</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Scarica (Recupera e Unisci)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Riallineare anziché unire</x:String>

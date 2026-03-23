@@ -113,8 +113,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warnung: Durch Auschecken eines Commits wird dein HEAD losgelöst (detached)!</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Dein aktueller HEAD enthält Commit(s) ohne Verbindung zu einem Branch / Tag. Möchtest du trotzdem fortfahren?</x:String>
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Die folgenden Submodule müssen aktualisiert werden:{0}Möchtest du sie aktualisieren?</x:String>
@@ -298,8 +296,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basierend auf:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Erstellten Branch auschecken</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Neuer Branch-Name:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Einen Branch-Namen eingeben</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Lokalen Branch erstellen</x:String>
@@ -683,8 +679,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Remote-Branch:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Lokaler Branch:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Lokale Änderungen:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Verwerfen</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stashen &amp; wieder anwenden</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Rebase anstatt Merge verwenden</x:String>
