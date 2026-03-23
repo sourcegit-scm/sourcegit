@@ -108,7 +108,7 @@
   <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warning: By doing a commit checkout, your Head will be detached</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Warning: By doing a commit checkout, HEAD will be detached</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Local Changes:</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Your current HEAD contains commit(s) not connected to any branches/tags! Do you want to continue?</x:String>
