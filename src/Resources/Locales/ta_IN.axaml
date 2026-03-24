@@ -415,13 +415,10 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">நேற்று</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">செநு</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">வேறுபாடு உடனடியாக பகுப்பாய்வு செய்</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">பநிஇ திறவுகோல்</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">பொருள் உடனடியாக உருவாக்கு</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">சேவையகம்</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">ஓடையை இயக்கு</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">தோற்றம்</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">இயல்புநிலை எழுத்துரு</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">திருத்தி தாவல் அகலம்</x:String>

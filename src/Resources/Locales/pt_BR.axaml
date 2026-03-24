@@ -418,9 +418,7 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ontem</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferências</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">INTELIGÊNCIA ARTIFICIAL</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Prompt para Analisar Diff</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Chave da API</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Prompt para Gerar Título</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>

@@ -598,14 +598,11 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ieri</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferenze</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analizza il Prompt Differenza</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Chiave API</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Genera Prompt Oggetto</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modello</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Il valore inserito è il nome per caricare la chiave API da ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Abilita streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ASPETTO</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Font Predefinito</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Larghezza della Tab Editor</x:String>

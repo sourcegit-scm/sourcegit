@@ -604,14 +604,11 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨日</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">差分分析プロンプト</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API キー</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">タイトル生成プロンプト</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">この値を環境変数の名前とし、そこから API キーを読み込む</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">ストリーミングを有効化</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外観</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">既定のフォント</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">エディターのタブ幅</x:String>

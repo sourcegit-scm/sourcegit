@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.25%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-98.24%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -42,7 +42,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-92.06%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-92.04%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -127,7 +127,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-89.90%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-89.87%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -233,7 +233,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-97.63%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-97.62%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -264,7 +264,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-98.56%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-98.55%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -286,7 +286,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-90.21%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-90.18%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -575,7 +575,6 @@ This document shows the translation status of each locale file in the repository
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
 - Text.Preferences.AI.ReadApiKeyFromEnv
-- Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
@@ -707,7 +706,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-70.41%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-70.32%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1002,7 +1001,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-71.24%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-71.15%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>

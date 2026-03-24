@@ -561,14 +561,11 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Hier</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyser Diff Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clé d'API</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Générer le sujet de Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modèle</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">La valeur saisie est le nom pour charger la clé API depuis l'ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Serveur</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Activer le streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Largeur de tab dans l'éditeur</x:String>
