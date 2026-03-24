@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
@@ -61,15 +60,7 @@ namespace SourceGit.ViewModels
         public List<Models.Commit> Commits
         {
             get => _commits;
-            set
-            {
-                var lastSelected = SelectedCommit;
-                if (SetProperty(ref _commits, value))
-                {
-                    if (value.Count > 0 && lastSelected != null)
-                        SelectedCommit = value.Find(x => x.SHA.Equals(lastSelected.SHA, StringComparison.Ordinal));
-                }
-            }
+            set => SetProperty(ref _commits, value);
         }
 
         public Models.CommitGraph Graph
@@ -82,6 +73,12 @@ namespace SourceGit.ViewModels
         {
             get => _selectedCommit;
             set => SetProperty(ref _selectedCommit, value);
+        }
+
+        public Models.Commit LastSelectedCommit
+        {
+            get => _lastSelectedCommit;
+            set => SetProperty(ref _lastSelectedCommit, value);
         }
 
         public List<Models.Commit> LastSelectedCommits
@@ -144,6 +141,8 @@ namespace SourceGit.ViewModels
             _repo = null;
             _graph = null;
             _selectedCommit = null;
+            _lastSelectedCommits = null;
+            _lastSelectedCommit = null;
             _detailContext?.Dispose();
             _detailContext = null;
         }
@@ -216,7 +215,14 @@ namespace SourceGit.ViewModels
             });
         }
 
-        public void Select(IList commits)
+        /// <summary>
+        ///
+        /// notes: if multi selects, `AutoSelectedCommit` which `Binding Mode=OneWay` will not be updated,
+        /// so that we could not get the lastSelectedCommit automatically
+        ///
+        /// </summary>
+        /// <param name="commits"></param>
+        public void Select(IList commits, object selectedCommit)
         {
             if (_ignoreSelectionChange)
                 return;
@@ -225,13 +231,21 @@ namespace SourceGit.ViewModels
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = null;
+                return;
             }
             else if (commits.Count == 1)
             {
                 var commit = (commits[0] as Models.Commit)!;
                 if (_repo.SearchCommitContext.Selected == null || !_repo.SearchCommitContext.Selected.SHA.Equals(commit.SHA, StringComparison.Ordinal))
-                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA.Equals(commit.SHA, StringComparison.Ordinal));
+                {
+                    var results = _repo.SearchCommitContext.Results;
+                    if (results != null)
+                    {
+                        _repo.SearchCommitContext.Selected = results.Find(x => x.SHA.Equals(commit.SHA, StringComparison.Ordinal));
+                    }
+                }
 
+                // MarkLastSelectedCommitsAsSelected();
                 SelectedCommit = commit;
                 NavigationId = _navigationId + 1;
 
@@ -260,12 +274,48 @@ namespace SourceGit.ViewModels
                 DetailContext = new Models.Count(commits.Count);
             }
 
-            _repo.SelectedCommits = commits.Cast<Models.Commit>().ToList();
+            LastSelectedCommit = selectedCommit as Models.Commit;
+
+            var lastSelected = new List<Models.Commit>();
+            foreach (var obj in commits)
+            {
+                if (obj is Models.Commit c)
+                    lastSelected.Add(c);
+            }
+            LastSelectedCommits = lastSelected;
         }
 
-        public void MarkCommitsAsSelected(IList<Models.Commit> commits)
+        public void MarkLastSelectedCommitsAsSelected(IList<Models.Commit> commits)
         {
-            LastSelectedCommits = _commits.Where(x => commits.Any(y => y.SHA == x.SHA)).ToList();
+            if (commits == null || commits.Count == 0)
+            {
+                LastSelectedCommits = [];
+                NavigationId = _navigationId + 1;
+                return;
+            }
+
+            var selectedSHAs = new HashSet<string>();
+            foreach (var c in commits)
+                selectedSHAs.Add(c.SHA);
+
+            var availableCommits = new List<Models.Commit>();
+            foreach (var c in Commits)
+            {
+                if (selectedSHAs.Contains(c.SHA))
+                    availableCommits.Add(c);
+            }
+
+            // if LastSelectedCommits is not empty, find the AutoSelectedCommit or get last one
+            if (availableCommits.Count > 0 && LastSelectedCommit != null)
+            {
+                // List.Find is not LINQ, it's a method of List<T>
+                SelectedCommit = availableCommits.Find(x => x.SHA == LastSelectedCommit.SHA)
+                                  ?? availableCommits[0];
+            }
+
+            // set selectItem above(1item), now select others too
+            LastSelectedCommits = availableCommits;
+            NavigationId = _navigationId + 1;
         }
 
         public async Task<Models.Commit> GetCommitAsync(string sha)
@@ -481,6 +531,7 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private List<Models.Commit> _lastSelectedCommits = [];
+        private Models.Commit _lastSelectedCommit = null;
         private Models.CommitGraph _graph = null;
         private Models.Commit _selectedCommit = null;
         private Models.Bisect _bisect = null;

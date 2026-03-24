@@ -322,7 +322,7 @@ namespace SourceGit.Views
         private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories)
-                histories.Select(CommitListContainer.SelectedItems);
+                histories.Select(CommitListContainer.SelectedItems, CommitListContainer.SelectedItem);
 
             e.Handled = true;
         }

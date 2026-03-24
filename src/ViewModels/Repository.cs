@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Avalonia.Collections;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -1255,7 +1254,7 @@ namespace SourceGit.ViewModels
 
                         BisectState = _histories.UpdateBisectInfo();
 
-                        _histories.MarkCommitsAsSelected(oldSelectedCommits);
+                        _histories.MarkLastSelectedCommitsAsSelected(_histories.LastSelectedCommits);
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
                             NavigateToCommit(_navigateToCommitDelayed);
