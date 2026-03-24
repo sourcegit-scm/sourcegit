@@ -33,6 +33,7 @@ namespace SourceGit.AI
             userMessageBuilder
                 .AppendLine("Generate a commit message (follow the rule of conventional commit message) for given git repository.")
                 .AppendLine("- Read all given changed files before generating. Do not skip any one file.")
+                .AppendLine(string.IsNullOrEmpty(_ai.AdditionalPrompt) ? string.Empty : _ai.AdditionalPrompt)
                 .Append("Reposiory path: ").AppendLine(repo.Quoted())
                 .AppendLine("Changed files: ")
                 .Append(changeList);
