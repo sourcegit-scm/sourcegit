@@ -1,0 +1,92 @@
+﻿using System;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using OpenAI.Chat;
+
+namespace SourceGit.AI
+{
+    public static class ChatTools
+    {
+        public static readonly ChatTool Tool_GetDetailChangesInFile = ChatTool.CreateFunctionTool(
+            nameof(GetDetailChangesInFile),
+            "Get the detailed changes in the specified file in the specified repository.",
+            BinaryData.FromBytes(Encoding.UTF8.GetBytes("""
+            {
+                "type": "object",
+                "properties": {
+                    "repo": {
+                        "type": "string",
+                        "description": "The path to the repository."
+                    },
+                    "file": {
+                        "type": "string",
+                        "description": "The path to the file."
+                    },
+                    "originalFile": {
+                        "type": "string",
+                        "description": "The path to the original file when it has been renamed."
+                    }
+                 },
+                 "required": ["repo", "file"]
+            }
+            """)), false);
+
+        public static async Task<ToolChatMessage> Process(ChatToolCall call, Action<string> output)
+        {
+            using var doc = JsonDocument.Parse(call.FunctionArguments);
+
+            switch (call.FunctionName)
+            {
+                case nameof(GetDetailChangesInFile):
+                    {
+                        var hasRepo = doc.RootElement.TryGetProperty("repo", out var repoPath);
+                        var hasFile = doc.RootElement.TryGetProperty("file", out var filePath);
+                        var hasOriginalFile = doc.RootElement.TryGetProperty("originalFile", out var originalFilePath);
+                        if (!hasRepo)
+                            throw new ArgumentException("repo", "The repo argument is required");
+                        if (!hasFile)
+                            throw new ArgumentException("file", "The file argument is required");
+
+                        output?.Invoke($"Read changes in file: {filePath.GetString()}");
+
+                        var toolResult = await ChatTools.GetDetailChangesInFile(
+                            repoPath.GetString(),
+                            filePath.GetString(),
+                            hasOriginalFile ? originalFilePath.GetString() : string.Empty);
+                        return new ToolChatMessage(call.Id, toolResult);
+                    }
+                default:
+                    throw new NotSupportedException($"The tool {call.FunctionName} is not supported");
+            }
+        }
+
+        private static async Task<string> GetDetailChangesInFile(string repo, string file, string originalFile)
+        {
+            var rs = await new GetDiffContentCommand(repo, file, originalFile).ReadAsync();
+            return rs.IsSuccess ? rs.StdOut : string.Empty;
+        }
+
+        private class GetDiffContentCommand : Commands.Command
+        {
+            public GetDiffContentCommand(string repo, string file, string originalFile)
+            {
+                WorkingDirectory = repo;
+                Context = repo;
+
+                var builder = new StringBuilder();
+                builder.Append("diff --no-color --no-ext-diff --diff-algorithm=minimal --cached -- ");
+                if (!string.IsNullOrEmpty(originalFile) && !file.Equals(originalFile, StringComparison.Ordinal))
+                    builder.Append(originalFile.Quoted()).Append(' ');
+                builder.Append(file.Quoted());
+
+                Args = builder.ToString();
+            }
+
+            public async Task<Result> ReadAsync()
+            {
+                return await ReadToEndAsync().ConfigureAwait(false);
+            }
+        }
+    }
+}

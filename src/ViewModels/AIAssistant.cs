@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,12 +24,16 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _text, value);
         }
 
-        public AIAssistant(Repository repo, Models.OpenAIService service, List<Models.Change> changes)
+        public AIAssistant(string repo, Models.AIProvider provider, List<Models.Change> changes)
         {
             _repo = repo;
-            _service = service;
-            _changes = changes;
+            _provider = provider;
             _cancel = new CancellationTokenSource();
+
+            var builder = new StringBuilder();
+            foreach (var c in changes)
+                SerializeChange(c, builder);
+            _changeList = builder.ToString();
 
             Gen();
         }
@@ -40,14 +46,30 @@ namespace SourceGit.ViewModels
             Gen();
         }
 
-        public void Apply()
-        {
-            _repo.SetCommitMessage(Text);
-        }
-
         public void Cancel()
         {
             _cancel?.Cancel();
+        }
+
+        private void SerializeChange(Models.Change c, StringBuilder builder)
+        {
+            var status = c.Index switch
+            {
+                Models.ChangeState.Added => "A",
+                Models.ChangeState.Modified => "M",
+                Models.ChangeState.Deleted => "D",
+                Models.ChangeState.TypeChanged => "T",
+                Models.ChangeState.Renamed => "R",
+                Models.ChangeState.Copied => "C",
+                _ => " ",
+            };
+
+            builder.Append(status).Append('\t');
+
+            if (c.Index == Models.ChangeState.Renamed || c.Index == Models.ChangeState.Copied)
+                builder.Append(c.OriginalPath).Append(" -> ").Append(c.Path).AppendLine();
+            else
+                builder.Append(c.Path).AppendLine();
         }
 
         private void Gen()
@@ -58,18 +80,31 @@ namespace SourceGit.ViewModels
             _cancel = new CancellationTokenSource();
             Task.Run(async () =>
             {
-                await new Commands.GenerateCommitMessage(_service, _repo.FullPath, _changes, _cancel.Token, message =>
+                var server = new AI.Service(_provider);
+                var builder = new StringBuilder();
+                builder.AppendLine("Asking AI to generate commit message...").AppendLine();
+                Dispatcher.UIThread.Post(() => Text = builder.ToString());
+
+                try
                 {
-                    Dispatcher.UIThread.Post(() => Text = message);
-                }).ExecAsync().ConfigureAwait(false);
+                    await server.GenerateCommitMessage(_repo, _changeList, message =>
+                    {
+                        builder.AppendLine(message);
+                        Dispatcher.UIThread.Post(() => Text = builder.ToString());
+                    }, _cancel.Token).ConfigureAwait(false);
+                }
+                catch (Exception e)
+                {
+                    App.RaiseException(_repo, e.Message);
+                }
 
                 Dispatcher.UIThread.Post(() => IsGenerating = false);
             }, _cancel.Token);
         }
 
-        private readonly Repository _repo = null;
-        private Models.OpenAIService _service = null;
-        private List<Models.Change> _changes = null;
+        private readonly string _repo = null;
+        private readonly Models.AIProvider _provider = null;
+        private readonly string _changeList = null;
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;
         private string _text = string.Empty;

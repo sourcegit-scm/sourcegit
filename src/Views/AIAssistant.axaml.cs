@@ -9,12 +9,29 @@ using Avalonia.Media;
 using AvaloniaEdit;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Editing;
+using AvaloniaEdit.Rendering;
 using AvaloniaEdit.TextMate;
 
 namespace SourceGit.Views
 {
     public class AIResponseView : TextEditor
     {
+        public class LineStyleTransformer : DocumentColorizingTransformer
+        {
+            protected override void ColorizeLine(DocumentLine line)
+            {
+                var content = CurrentContext.Document.GetText(line);
+                if (content.StartsWith("Read changes in file: ", StringComparison.Ordinal))
+                {
+                    ChangeLinePart(line.Offset + 22, line.EndOffset, v =>
+                    {
+                        v.TextRunProperties.SetForegroundBrush(Brushes.DeepSkyBlue);
+                        v.TextRunProperties.SetTextDecorations(TextDecorations.Underline);
+                    });
+                }
+            }
+        }
+
         public static readonly StyledProperty<string> ContentProperty =
             AvaloniaProperty.Register<AIResponseView, string>(nameof(Content), string.Empty);
 
@@ -49,6 +66,7 @@ namespace SourceGit.Views
             {
                 _textMate = Models.TextMateHelper.CreateForEditor(this);
                 Models.TextMateHelper.SetGrammarByFileName(_textMate, "README.md");
+                TextArea.TextView.LineTransformers.Add(new LineStyleTransformer());
             }
         }
 
@@ -121,12 +139,6 @@ namespace SourceGit.Views
         {
             base.OnClosing(e);
             (DataContext as ViewModels.AIAssistant)?.Cancel();
-        }
-
-        private void OnApply(object sender, RoutedEventArgs e)
-        {
-            (DataContext as ViewModels.AIAssistant)?.Apply();
-            Close();
         }
     }
 }

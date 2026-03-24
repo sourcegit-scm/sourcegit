@@ -480,7 +480,7 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
-        public AvaloniaList<Models.OpenAIService> OpenAIServices
+        public AvaloniaList<Models.AIProvider> OpenAIServices
         {
             get;
             set;

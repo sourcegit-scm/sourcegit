@@ -1599,7 +1599,7 @@ namespace SourceGit.ViewModels
             log.Complete();
         }
 
-        public List<Models.OpenAIService> GetPreferredOpenAIServices()
+        public List<Models.AIProvider> GetPreferredOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
@@ -1609,7 +1609,7 @@ namespace SourceGit.ViewModels
                 return [services[0]];
 
             var preferred = _settings.PreferredOpenAIService;
-            var all = new List<Models.OpenAIService>();
+            var all = new List<Models.AIProvider>();
             foreach (var service in services)
             {
                 if (service.Name.Equals(preferred, StringComparison.Ordinal))
