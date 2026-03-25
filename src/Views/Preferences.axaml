@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:s="using:SourceGit"
+                    xmlns:ai="using:SourceGit.AI"
                     xmlns:m="using:SourceGit.Models"
                     xmlns:c="using:SourceGit.Converters"
                     xmlns:vm="using:SourceGit.ViewModels"
@@ -822,7 +823,7 @@
                   </ListBox.ItemsPanel>
 
                   <ListBox.ItemTemplate>
-                    <DataTemplate DataType="m:AIProvider">
+                    <DataTemplate DataType="ai:Service">
                       <Grid ColumnDefinitions="Auto,*">
                         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.AIAssist}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
@@ -859,7 +860,7 @@
               </ContentControl.Content>
 
               <ContentControl.DataTemplates>
-                <DataTemplate DataType="m:AIProvider">
+                <DataTemplate DataType="ai:Service">
                   <StackPanel Orientation="Vertical" MaxWidth="680">
                     <TextBlock Text="{DynamicResource Text.Preferences.AI.Name}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>

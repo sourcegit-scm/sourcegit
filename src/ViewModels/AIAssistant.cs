@@ -24,10 +24,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _text, value);
         }
 
-        public AIAssistant(string repo, Models.AIProvider provider, List<Models.Change> changes)
+        public AIAssistant(string repo, AI.Service service, List<Models.Change> changes)
         {
             _repo = repo;
-            _provider = provider;
+            _service = service;
             _cancel = new CancellationTokenSource();
 
             var builder = new StringBuilder();
@@ -80,14 +80,14 @@ namespace SourceGit.ViewModels
             _cancel = new CancellationTokenSource();
             Task.Run(async () =>
             {
-                var server = new AI.Service(_provider);
+                var agent = new AI.Agent(_service);
                 var builder = new StringBuilder();
                 builder.AppendLine("Asking AI to generate commit message...").AppendLine();
                 Dispatcher.UIThread.Post(() => Text = builder.ToString());
 
                 try
                 {
-                    await server.GenerateCommitMessage(_repo, _changeList, message =>
+                    await agent.GenerateCommitMessage(_repo, _changeList, message =>
                     {
                         builder.AppendLine(message);
                         Dispatcher.UIThread.Post(() => Text = builder.ToString());
@@ -103,7 +103,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly string _repo = null;
-        private readonly Models.AIProvider _provider = null;
+        private readonly AI.Service _service = null;
         private readonly string _changeList = null;
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;

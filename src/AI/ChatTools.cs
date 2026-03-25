@@ -25,7 +25,7 @@ namespace SourceGit.AI
                     },
                     "originalFile": {
                         "type": "string",
-                        "description": "The path to the original file when it has been renamed."
+                        "description": "The path to the original file when it has been renamed (marked as 'R' or 'C')."
                     }
                  },
                  "required": ["repo", "file"]
