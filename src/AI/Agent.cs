@@ -24,7 +24,7 @@ namespace SourceGit.AI
                 : new OpenAIClient(_service.Credential, new() { Endpoint = endPoint });
 
             var chatClient = client.GetChatClient(_service.Model);
-            var options = new ChatCompletionOptions() { Tools = { ChatTools.Tool_GetDetailChangesInFile } };
+            var options = new ChatCompletionOptions() { Tools = { ChatTools.GetDetailChangesInFile } };
 
             var userMessageBuilder = new StringBuilder();
             userMessageBuilder

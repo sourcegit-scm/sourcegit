@@ -8,8 +8,8 @@ namespace SourceGit.AI
 {
     public static class ChatTools
     {
-        public static readonly ChatTool Tool_GetDetailChangesInFile = ChatTool.CreateFunctionTool(
-            nameof(GetDetailChangesInFile),
+        public static readonly ChatTool GetDetailChangesInFile = ChatTool.CreateFunctionTool(
+            "GetDetailChangesInFile",
             "Get the detailed changes in the specified file in the specified repository.",
             BinaryData.FromBytes(Encoding.UTF8.GetBytes("""
             {
@@ -36,7 +36,7 @@ namespace SourceGit.AI
         {
             using var doc = JsonDocument.Parse(call.FunctionArguments);
 
-            if (call.FunctionName.Equals(Tool_GetDetailChangesInFile.FunctionName))
+            if (call.FunctionName.Equals(GetDetailChangesInFile.FunctionName))
             {
                 var hasRepo = doc.RootElement.TryGetProperty("repo", out var repoPath);
                 var hasFile = doc.RootElement.TryGetProperty("file", out var filePath);
@@ -48,20 +48,13 @@ namespace SourceGit.AI
 
                 output?.Invoke($"Read changes in file: {filePath.GetString()}");
 
-                var toolResult = await ChatTools.GetDetailChangesInFile(
-                    repoPath.GetString(),
-                    filePath.GetString(),
-                    hasOriginalFile ? originalFilePath.GetString() : string.Empty);
-                return new ToolChatMessage(call.Id, toolResult);
+                var orgFilePath = hasOriginalFile ? originalFilePath.GetString() : string.Empty;
+                var rs = await new Commands.GetFileChangeForAI(repoPath.GetString(), filePath.GetString(), orgFilePath).ReadAsync();
+                var message = rs.IsSuccess ? rs.StdOut : string.Empty;
+                return new ToolChatMessage(call.Id, message);
             }
 
             throw new NotSupportedException($"The tool {call.FunctionName} is not supported");
-        }
-
-        private static async Task<string> GetDetailChangesInFile(string repo, string file, string originalFile)
-        {
-            var rs = await new Commands.GetFileChangeForAI(repo, file, originalFile).ReadAsync();
-            return rs.IsSuccess ? rs.StdOut : string.Empty;
         }
     }
 }
