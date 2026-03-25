@@ -57,11 +57,16 @@ namespace SourceGit.ViewModels
             }
             catch (OperationCanceledException)
             {
-                // Do nothing
+                // Do nothing and leave `IsGenerating` to current (may already changed), so that the UI can update accordingly.
+                return;
             }
             catch (Exception e)
             {
-                App.RaiseException(_repo, e.Message);
+                builder
+                    .AppendLine()
+                    .AppendLine("[ERROR]")
+                    .Append(e.Message);
+                Text = builder.ToString();
             }
 
             IsGenerating = false;
