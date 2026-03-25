@@ -741,10 +741,7 @@ namespace SourceGit.ViewModels
         private List<Models.Change> GetStagedChanges(List<Models.Change> cached)
         {
             if (_useAmend)
-            {
-                var head = new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResult();
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath, head.FirstParentToCompare).GetResult();
-            }
+                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath).GetResult();
 
             var rs = new List<Models.Change>();
             foreach (var c in cached)

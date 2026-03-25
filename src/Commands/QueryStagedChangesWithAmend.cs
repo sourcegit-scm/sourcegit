@@ -11,17 +11,26 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^:[\d]{6} ([\d]{6}) ([0-9a-f]{4,64}) [0-9a-f]{4,64} ([RC])\d{0,6}\t(.*\t.*)$")]
         private static partial Regex REG_FORMAT2();
 
-        public QueryStagedChangesWithAmend(string repo, string parent)
+        public QueryStagedChangesWithAmend(string repo)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff-index --cached -M {parent}";
-            _parent = parent;
         }
 
         public List<Models.Change> GetResult()
         {
+            Args = "show --no-show-signature --format=\"%H %P\" -s HEAD";
             var rs = ReadToEnd();
+            if (!rs.IsSuccess)
+                return [];
+
+            var shas = rs.StdOut.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (shas.Length == 0)
+                return [];
+
+            var parent = shas.Length > 1 ? shas[1] : Models.EmptyTreeHash.Guess(shas[0]);
+            Args = $"diff-index --cached -M {parent}";
+            rs = ReadToEnd();
             if (!rs.IsSuccess)
                 return [];
 
@@ -39,7 +48,7 @@ namespace SourceGit.Commands
                         {
                             FileMode = match.Groups[1].Value,
                             ObjectHash = match.Groups[2].Value,
-                            ParentSHA = _parent,
+                            ParentSHA = parent,
                         },
                     };
                     var type = match.Groups[3].Value;
@@ -58,7 +67,7 @@ namespace SourceGit.Commands
                         {
                             FileMode = match.Groups[1].Value,
                             ObjectHash = match.Groups[2].Value,
-                            ParentSHA = _parent,
+                            ParentSHA = parent,
                         },
                     };
 
@@ -84,7 +93,5 @@ namespace SourceGit.Commands
 
             return changes;
         }
-
-        private readonly string _parent;
     }
 }
