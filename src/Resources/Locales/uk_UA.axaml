@@ -19,7 +19,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Асистент</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕГЕНЕРУВАТИ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Використати AI для генерації повідомлення коміту</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">ЗАСТОСУВАТИ ЯК ПОВІДОМЛЕННЯ КОМІТУ</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Застосувати</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Файл патчу:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Виберіть файл .patch для застосування</x:String>

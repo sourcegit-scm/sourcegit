@@ -24,7 +24,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistente AI</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RIGENERA</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare il messaggio di commit</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLICA COME MESSAGGIO DI COMMIT</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Nascondi SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostra Tutto</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Applica</x:String>

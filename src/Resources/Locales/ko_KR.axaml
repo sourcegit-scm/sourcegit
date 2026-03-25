@@ -20,7 +20,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI 어시스턴트</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">재생성</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI를 사용하여 커밋 메시지 생성</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">커밋 메시지로 적용</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit 숨기기</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">모두 보기</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">패치</x:String>

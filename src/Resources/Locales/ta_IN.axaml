@@ -19,7 +19,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">செநு உதவியாளர்</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">மறு-உருவாக்கு</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">உறுதிமொழி செய்தியை உருவாக்க செநுவைப் பயன்படுத்து</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">உறுதிமொழி செய்தி என இடு</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">ஒட்டு</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">ஒட்டு கோப்பு:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">.ஒட்டு இடுவதற்கு கோப்பைத் தேர்ந்தெடு</x:String>

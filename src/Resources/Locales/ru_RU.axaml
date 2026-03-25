@@ -24,7 +24,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Помощник OpenAI</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕСОЗДАТЬ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Использовать OpenAI для создания сообщения о ревизии</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">ПРИМЕНИТЬ КАК СООБЩЕНИЕ РЕВИЗИИ</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Скрыть SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Показать все</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Исправить </x:String>
