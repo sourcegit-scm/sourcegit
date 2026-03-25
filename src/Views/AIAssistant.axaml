@@ -56,7 +56,7 @@
                 Padding="12,0"
                 Content="{DynamicResource Text.AIAssistant.Regen}"
                 IsEnabled="{Binding !IsGenerating}"
-                Command="{Binding Regen}"/>
+                Click="OnRegenClicked"/>
       </StackPanel>
     </Border>
   </Grid>

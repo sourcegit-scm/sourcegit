@@ -1,5 +1,4 @@
 using System;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -134,10 +133,26 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override async void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+
+            if (DataContext is ViewModels.AIAssistant vm)
+                await vm.GenAsync();
+        }
+
         protected override void OnClosing(WindowClosingEventArgs e)
         {
             base.OnClosing(e);
             (DataContext as ViewModels.AIAssistant)?.Cancel();
+        }
+
+        private async void OnRegenClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.AIAssistant vm)
+                await vm.GenAsync();
+
+            e.Handled = true;
         }
     }
 }

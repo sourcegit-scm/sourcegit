@@ -16,7 +16,7 @@ namespace SourceGit.AI
             _service = service;
         }
 
-        public async Task GenerateCommitMessage(string repo, string changeList, Action<string> onUpdate, CancellationToken cancellation)
+        public async Task GenerateCommitMessageAsync(string repo, string changeList, Action<string> onUpdate, CancellationToken cancellation)
         {
             var endPoint = new Uri(_service.Server);
             var client = _service.Server.Contains("openai.azure.com/", StringComparison.Ordinal)
