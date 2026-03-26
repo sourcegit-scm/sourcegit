@@ -929,7 +929,7 @@ namespace SourceGit.Views
                 {
                     ai.Click += async (_, e) =>
                     {
-                        await App.ShowDialog(new ViewModels.AIAssistant(repo.FullPath, services[0], selectedStaged));
+                        await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], selectedStaged));
                         e.Handled = true;
                     };
                 }
@@ -943,7 +943,7 @@ namespace SourceGit.Views
                         item.Header = service.Name;
                         item.Click += async (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.AIAssistant(repo.FullPath, dup, selectedStaged));
+                            await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, selectedStaged));
                             e.Handled = true;
                         };
 

@@ -24,6 +24,7 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI助手</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用AI助手生成提交信息</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用所选</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">隐藏 SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">显示所有窗口</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">应用补丁(apply)</x:String>

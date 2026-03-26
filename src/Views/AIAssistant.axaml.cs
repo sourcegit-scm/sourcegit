@@ -93,29 +93,31 @@ namespace SourceGit.Views
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
+            if (DataContext is not ViewModels.AIAssistant vm)
+                return;
+
             var selected = SelectedText;
             if (string.IsNullOrEmpty(selected))
                 return;
 
+            var apply = new MenuItem() { Header = App.Text("AIAssistant.Use") };
+            apply.Icon = App.CreateMenuIcon("Icons.Check");
+            apply.Click += (_, ev) =>
+            {
+                vm.Use(selected);
+                ev.Handled = true;
+            };
+
             var copy = new MenuItem() { Header = App.Text("Copy") };
+            copy.Icon = App.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, ev) =>
             {
                 await App.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 
-            if (this.FindResource("Icons.Copy") is Geometry geo)
-            {
-                copy.Icon = new Avalonia.Controls.Shapes.Path()
-                {
-                    Width = 10,
-                    Height = 10,
-                    Stretch = Stretch.Uniform,
-                    Data = geo,
-                };
-            }
-
             var menu = new ContextMenu();
+            menu.Items.Add(apply);
             menu.Items.Add(copy);
             menu.Open(TextArea.TextView);
 

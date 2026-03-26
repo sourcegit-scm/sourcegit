@@ -588,7 +588,7 @@ namespace SourceGit.Views
 
                 if (services.Count == 1)
                 {
-                    await App.ShowDialog(new ViewModels.AIAssistant(repo.FullPath, services[0], vm.Staged));
+                    await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], vm.Staged));
                     e.Handled = true;
                     return;
                 }
@@ -601,7 +601,7 @@ namespace SourceGit.Views
                     item.Header = service.Name;
                     item.Click += async (_, ev) =>
                     {
-                        await App.ShowDialog(new ViewModels.AIAssistant(repo.FullPath, dup, vm.Staged));
+                        await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, vm.Staged));
                         ev.Handled = true;
                     };
 

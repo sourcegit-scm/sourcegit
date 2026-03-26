@@ -22,7 +22,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _text, value);
         }
 
-        public AIAssistant(string repo, AI.Service service, List<Models.Change> changes)
+        public AIAssistant(Repository repo, AI.Service service, List<Models.Change> changes)
         {
             _repo = repo;
             _service = service;
@@ -49,7 +49,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                await agent.GenerateCommitMessageAsync(_repo, _changeList, message =>
+                await agent.GenerateCommitMessageAsync(_repo.FullPath, _changeList, message =>
                 {
                     builder.AppendLine(message);
                     Dispatcher.UIThread.Post(() => Text = builder.ToString());
@@ -70,6 +70,11 @@ namespace SourceGit.ViewModels
             }
 
             IsGenerating = false;
+        }
+
+        public void Use(string text)
+        {
+            _repo.SetCommitMessage(text);
         }
 
         public void Cancel()
@@ -98,7 +103,7 @@ namespace SourceGit.ViewModels
                 builder.Append(c.Path).AppendLine();
         }
 
-        private readonly string _repo = null;
+        private readonly Repository _repo = null;
         private readonly AI.Service _service = null;
         private readonly string _changeList = null;
         private CancellationTokenSource _cancel = null;
