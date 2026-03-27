@@ -29,11 +29,11 @@ namespace SourceGit.AI
             var userMessageBuilder = new StringBuilder();
             userMessageBuilder
                 .AppendLine("Generate a commit message (follow the rule of conventional commit message) for given git repository.")
-                .AppendLine("- Read all given changed files before generating. Do not skip any one file.")
+                .AppendLine("- Read all given changed files before generating. Only binary files (such as images, audios ...) can be skipped.")
                 .AppendLine("- Output the conventional commit message (with detail changes in list) directly. Do not explain your output nor introduce your answer.")
                 .AppendLine(string.IsNullOrEmpty(_service.AdditionalPrompt) ? string.Empty : _service.AdditionalPrompt)
                 .Append("Reposiory path: ").AppendLine(repo.Quoted())
-                .AppendLine("Changed files: ")
+                .AppendLine("Changed files ('A' means added, 'M' means modified, 'D' means deleted, 'T' means type changed, 'R' means renamed, 'C' means copied): ")
                 .Append(changeList);
 
             var messages = new List<ChatMessage>() { new UserChatMessage(userMessageBuilder.ToString()) };
