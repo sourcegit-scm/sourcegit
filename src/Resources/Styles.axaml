@@ -1443,6 +1443,11 @@
   </Style>
 
   <Style Selector="aee|TextArea">
+    <Setter Property="FocusAdorner">
+      <FocusAdornerTemplate>
+        <Border/>
+      </FocusAdornerTemplate>
+    </Setter>
     <Setter Property="SelectionBorder">
       <Setter.Value>
         <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
