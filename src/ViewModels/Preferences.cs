@@ -621,6 +621,9 @@ namespace SourceGit.ViewModels
             if (_isLoading || _isReadonly)
                 return;
 
+            if (App.ParsedArgs != null && App.ParsedArgs.NoSaveWorkspace)
+                return;
+
             var file = Path.Combine(Native.OS.DataDir, "preference.json");
             using var stream = File.Create(file);
             JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.Preferences);
