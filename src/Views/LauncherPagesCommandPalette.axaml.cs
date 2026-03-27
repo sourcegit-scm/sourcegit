@@ -80,6 +80,10 @@ namespace SourceGit.Views
                         RepoListBox.Focus(NavigationMethod.Directional);
                         vm.SelectedRepo = vm.VisibleRepos[0];
                     }
+                    else if (e.Key == Key.Tab)
+                    {
+                        FilterTextBox.Focus(NavigationMethod.Directional);
+                    }
 
                     e.Handled = true;
                     return;
