@@ -24,6 +24,7 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Помощник OpenAI</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕСОЗДАТЬ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Использовать OpenAI для создания сообщения о ревизии</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Использовать</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Скрыть SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Показать все</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Исправить </x:String>
@@ -613,6 +614,7 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчера</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Параметры</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
+  <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Дополнительная подсказка (Для перечисления ваших требований используйте `-`)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Ключ API</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Имя:</x:String>
