@@ -6,13 +6,16 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.94%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.53%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.AIAssistant.Use
 - Text.Apply.3Way
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -28,22 +31,27 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.General.Use24Hours
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.90%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.49%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.Discard.IncludeModified
+- Text.StashCM.Branch
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.74%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-91.37%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -60,6 +68,9 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -119,6 +130,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
@@ -131,7 +143,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-89.58%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-89.21%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -152,6 +164,9 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -228,6 +243,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
@@ -240,7 +256,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-97.32%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-96.92%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -248,6 +264,9 @@ This document shows the translation status of each locale file in the repository
 - Text.AIAssistant.Use
 - Text.Apply.3Way
 - Text.ChangeCM.ResetFileTo
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -268,19 +287,23 @@ This document shows the translation status of each locale file in the repository
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-98.25%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-97.84%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
 - Text.AIAssistant.Use
 - Text.Apply.3Way
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -293,13 +316,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Init.ErrorMessageTip
 - Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.General.Use24Hours
+- Text.StashCM.Branch
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-89.89%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-89.52%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -320,6 +344,9 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -392,6 +419,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.Submodule.Status.Unmerged
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
@@ -405,7 +433,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-68.01%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-67.73%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -429,6 +457,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.Clone.RecurseSubmodules
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
@@ -669,6 +700,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Into
 - Text.Stash.Mode
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.StashCM.CopyMessage
 - Text.StashCM.SaveAsPatch
 - Text.Submodule.Branch
@@ -723,16 +755,20 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.90%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.49%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.Discard.IncludeModified
+- Text.StashCM.Branch
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-70.07%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-69.78%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -785,6 +821,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -979,6 +1018,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Into
 - Text.Stash.Mode
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
 - Text.Submodule.CopyBranch
@@ -1030,7 +1070,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-70.90%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-70.61%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1083,6 +1123,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
 - Text.CommandPalette.Branches
 - Text.CommandPalette.BranchesAndTags
 - Text.CommandPalette.RepositoryActions
@@ -1273,6 +1316,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Into
 - Text.Stash.Mode
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
 - Text.Submodule.CopyBranch
