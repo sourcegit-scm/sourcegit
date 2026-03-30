@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-98.04%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.94%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -19,6 +19,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommandPalette.RevisionFiles
 - Text.CommitMessageTextBox.Column
 - Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.Discard.IncludeModified
 - Text.GotoRevisionSelector
 - Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
@@ -33,9 +34,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.90%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.84%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Discard.IncludeModified
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-91.74%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -61,6 +69,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Compare.WithHead
 - Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.Discard.IncludeModified
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
@@ -122,7 +131,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-89.67%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-89.58%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -157,6 +166,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfirmEmptyCommit.StageSelectedThenCommit
 - Text.DealWithLocalChanges.DoNothing
+- Text.Discard.IncludeModified
 - Text.DropHead
 - Text.DropHead.Commit
 - Text.DropHead.NewHead
@@ -230,7 +240,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-97.42%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-97.32%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -244,6 +254,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommandPalette.RevisionFiles
 - Text.CommitMessageTextBox.Column
 - Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.Discard.IncludeModified
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
@@ -263,7 +274,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-98.35%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-98.25%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -276,6 +287,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommandPalette.RevisionFiles
 - Text.ConfirmEmptyCommit.StageSelectedThenCommit
 - Text.DealWithLocalChanges.DoNothing
+- Text.Discard.IncludeModified
 - Text.Hotkeys.Repo.CreateBranch
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
@@ -287,7 +299,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-89.98%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-89.89%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -320,6 +332,7 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfirmEmptyCommit.StageSelectedThenCommit
 - Text.DealWithLocalChanges.DoNothing
+- Text.Discard.IncludeModified
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
@@ -392,7 +405,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-68.08%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-68.01%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -509,6 +522,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
 - Text.DirtyState.UpToDate
+- Text.Discard.IncludeModified
 - Text.Discard.IncludeUntracked
 - Text.DropHead
 - Text.DropHead.Commit
@@ -709,9 +723,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.90%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-70.14%25-red)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Discard.IncludeModified
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-70.07%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -843,6 +864,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
 - Text.DirtyState.UpToDate
+- Text.Discard.IncludeModified
 - Text.Discard.IncludeUntracked
 - Text.DropHead
 - Text.DropHead.Commit
@@ -1008,7 +1030,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-70.97%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-70.90%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1136,6 +1158,7 @@ This document shows the translation status of each locale file in the repository
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
 - Text.DirtyState.UpToDate
+- Text.Discard.IncludeModified
 - Text.Discard.IncludeUntracked
 - Text.DropHead
 - Text.DropHead.Commit
