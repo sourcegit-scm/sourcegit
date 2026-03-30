@@ -153,6 +153,12 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new ApplyStash(_repo, stash));
         }
 
+        public void CheckoutBranch(Models.Stash stash)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new CheckoutBranchFromStash(_repo, stash));
+        }
+
         public void Drop(Models.Stash stash)
         {
             if (_repo.CanCreatePopup())

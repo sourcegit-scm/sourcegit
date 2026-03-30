@@ -119,6 +119,9 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模組需要更新: {0}，您要立即更新嗎?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">簽出分支並快轉</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支: </x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">從所選擱置簽出分支</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">新分支:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">所選擱置:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">揀選提交</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交資訊中追加來源資訊</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交列表:</x:String>
@@ -862,6 +865,7 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">擱置本機變更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">套用 (apply)</x:String>
   <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">套用 (apply) 所選變更</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">簽出分支</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">複製描述訊息</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">刪除 (drop)</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
