@@ -95,10 +95,10 @@ namespace SourceGit.Views
             set;
         } = false;
 
-        public static readonly StyledProperty<Models.OpenAIService> SelectedOpenAIServiceProperty =
-            AvaloniaProperty.Register<Preferences, Models.OpenAIService>(nameof(SelectedOpenAIService));
+        public static readonly StyledProperty<AI.Service> SelectedOpenAIServiceProperty =
+            AvaloniaProperty.Register<Preferences, AI.Service>(nameof(SelectedOpenAIService));
 
-        public Models.OpenAIService SelectedOpenAIService
+        public AI.Service SelectedOpenAIService
         {
             get => GetValue(SelectedOpenAIServiceProperty);
             set => SetValue(SelectedOpenAIServiceProperty, value);
@@ -397,7 +397,7 @@ namespace SourceGit.Views
 
         private void OnAddOpenAIService(object sender, RoutedEventArgs e)
         {
-            var service = new Models.OpenAIService() { Name = "Unnamed Service" };
+            var service = new AI.Service() { Name = "Unnamed Service" };
             ViewModels.Preferences.Instance.OpenAIServices.Add(service);
             SelectedOpenAIService = service;
 

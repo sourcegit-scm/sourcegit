@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Clone"
              x:DataType="vm:Clone">
@@ -26,7 +27,18 @@
       <TextBox Grid.Row="0" Grid.Column="1"
                Height="28"
                CornerRadius="3"
-               Text="{Binding Remote, Mode=TwoWay}"/>
+               Text="{Binding Remote, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Link}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+        
+        <TextBox.InnerRightContent>
+          <v:RemoteProtocolSwitcher Url="{Binding Remote, Mode=TwoWay}"/>
+        </TextBox.InnerRightContent>
+      </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right"
@@ -40,6 +52,13 @@
                Watermark="{DynamicResource Text.SSHKey.Placeholder}"
                Text="{Binding SSHKey, Mode=TwoWay}"
                IsVisible="{Binding UseSSH}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Password}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+        
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="28" Height="28" Click="SelectSSHKey">
             <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>

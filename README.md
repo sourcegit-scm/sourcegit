@@ -58,7 +58,7 @@
 * Workspace
 * Custom Action
 * Create PR on GitHub/Gitlab/Gitea/Gitee/Bitbucket...
-* Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
+* Using AI to generate commit message
 * Built-in conventional commit message helper.
 
 > [!WARNING]

@@ -18,7 +18,7 @@
                  Text="{DynamicResource Text.Apply.Title}"/>
     </StackPanel>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -77,6 +77,11 @@
                 Content="{DynamicResource Text.Apply.IgnoreWS}"
                 IsChecked="{Binding IgnoreWhiteSpace, Mode=TwoWay}"
                 ToolTip.Tip="--ignore-whitespace"/>
+
+      <CheckBox Grid.Row="3" Grid.Column="1"
+                Content="{DynamicResource Text.Apply.3Way}"
+                IsChecked="{Binding ThreeWayMerge, Mode=TwoWay}"
+                ToolTip.Tip="--3way"/>
     </Grid>
   </StackPanel>
 </UserControl>

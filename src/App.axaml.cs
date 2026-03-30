@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -286,6 +285,8 @@ namespace SourceGit
                     else
                         Models.CommitGraph.SetDefaultPens(overrides.GraphPenThickness);
 
+                    Native.OS.UseMicaOnWindows11 = overrides.UseMicaOnWindows11;
+
                     app.Resources.MergedDictionaries.Add(resDic);
                     app._themeOverrides = resDic;
                 }
@@ -494,23 +495,7 @@ namespace SourceGit
 
             using var stream = File.OpenRead(jobsFile);
             var collection = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.InteractiveRebaseJobCollection);
-            using var writer = new StreamWriter(file);
-            foreach (var job in collection.Jobs)
-            {
-                var code = job.Action switch
-                {
-                    Models.InteractiveRebaseAction.Pick => 'p',
-                    Models.InteractiveRebaseAction.Edit => 'e',
-                    Models.InteractiveRebaseAction.Reword => 'r',
-                    Models.InteractiveRebaseAction.Squash => 's',
-                    Models.InteractiveRebaseAction.Fixup => 'f',
-                    _ => 'd'
-                };
-                writer.WriteLine($"{code} {job.SHA}");
-            }
-
-            writer.Flush();
-
+            collection.WriteTodoList(file);
             exitCode = 0;
             return true;
         }
@@ -541,27 +526,8 @@ namespace SourceGit
             var onto = File.ReadAllText(ontoFile).Trim();
             using var stream = File.OpenRead(jobsFile);
             var collection = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.InteractiveRebaseJobCollection);
-            if (!collection.Onto.Equals(onto) || !collection.OrigHead.Equals(origHead))
-                return true;
-
-            var done = File.ReadAllText(doneFile).Trim().Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            if (done.Length == 0)
-                return true;
-
-            var current = done[^1].Trim();
-            var match = REG_REBASE_TODO().Match(current);
-            if (!match.Success)
-                return true;
-
-            var sha = match.Groups[1].Value;
-            foreach (var job in collection.Jobs)
-            {
-                if (job.SHA.StartsWith(sha))
-                {
-                    File.WriteAllText(file, job.Message);
-                    break;
-                }
-            }
+            if (collection.Onto.StartsWith(onto, StringComparison.OrdinalIgnoreCase) && collection.OrigHead.StartsWith(origHead, StringComparison.OrdinalIgnoreCase))
+                collection.WriteCommitMessage(doneFile, file);
 
             return true;
         }
@@ -853,10 +819,10 @@ namespace SourceGit
         [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,40})(\s+.*)?$")]
         private static partial Regex REG_REBASE_TODO();
 
-        private Models.IpcChannel _ipcChannel;
-        private ResourceDictionary _activeLocale;
-        private ResourceDictionary _themeOverrides;
-        private ResourceDictionary _fontsOverrides;
-        private ViewModels.Launcher _launcher;
+        private Models.IpcChannel _ipcChannel = null;
+        private ViewModels.Launcher _launcher = null;
+        private ResourceDictionary _activeLocale = null;
+        private ResourceDictionary _themeOverrides = null;
+        private ResourceDictionary _fontsOverrides = null;
     }
 }

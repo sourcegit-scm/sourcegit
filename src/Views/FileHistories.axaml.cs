@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -12,6 +14,34 @@ namespace SourceGit.Views
         public FileHistories()
         {
             InitializeComponent();
+        }
+
+        private void OnRevisionsPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == ListBox.ItemsSourceProperty &&
+                sender is ListBox { Items: { Count: > 0 } } listBox)
+                listBox.SelectedIndex = 0;
+        }
+
+        private void OnRevisionsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox listBox && DataContext is ViewModels.FileHistories vm)
+            {
+                if (listBox.SelectedItems is { } selected)
+                {
+                    var revs = new List<Models.FileVersion>();
+                    foreach (var item in listBox.SelectedItems)
+                    {
+                        if (item is Models.FileVersion ver)
+                            revs.Add(ver);
+                    }
+                    vm.SelectedRevisions = revs;
+                }
+                else
+                {
+                    vm.SelectedRevisions = [];
+                }
+            }
         }
 
         private void OnPressCommitSHA(object sender, PointerPressedEventArgs e)

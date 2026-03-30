@@ -806,6 +806,113 @@ namespace SourceGit.ViewModels
             return _watcher?.Lock();
         }
 
+        public void RefreshAfterCreateBranch(Models.Branch created, bool checkout)
+        {
+            _watcher?.MarkBranchUpdated();
+            _watcher?.MarkWorkingCopyUpdated();
+
+            _branches.Add(created);
+
+            if (checkout)
+            {
+                if (_currentBranch.IsDetachedHead)
+                {
+                    _branches.Remove(_currentBranch);
+                }
+                else
+                {
+                    _currentBranch.IsCurrent = false;
+                    _currentBranch.WorktreePath = null;
+                }
+
+                created.IsCurrent = true;
+                created.WorktreePath = FullPath;
+
+                var folderEndIdx = created.FullName.LastIndexOf('/');
+                if (folderEndIdx > 10)
+                    _uiStates.ExpandedBranchNodesInSideBar.Add(created.FullName.Substring(0, folderEndIdx));
+
+                if (_historyFilterMode == Models.FilterMode.Included)
+                    SetBranchFilterMode(created, Models.FilterMode.Included, false, false);
+
+                CurrentBranch = created;
+            }
+
+            List<Models.Branch> locals = [];
+            foreach (var b in _branches)
+            {
+                if (b.IsLocal)
+                    locals.Add(b);
+            }
+
+            var builder = BuildBranchTree(locals, []);
+            LocalBranchTrees = builder.Locals;
+
+            RefreshCommits();
+            RefreshWorkingCopyChanges();
+            RefreshWorktrees();
+        }
+
+        public void RefreshAfterCheckoutBranch(Models.Branch checkouted)
+        {
+            _watcher?.MarkBranchUpdated();
+            _watcher?.MarkWorkingCopyUpdated();
+
+            if (_currentBranch.IsDetachedHead)
+            {
+                _branches.Remove(_currentBranch);
+            }
+            else
+            {
+                _currentBranch.IsCurrent = false;
+                _currentBranch.WorktreePath = null;
+            }
+
+            checkouted.IsCurrent = true;
+            checkouted.WorktreePath = FullPath;
+            if (_historyFilterMode == Models.FilterMode.Included)
+                SetBranchFilterMode(checkouted, Models.FilterMode.Included, false, false);
+
+            List<Models.Branch> locals = [];
+            foreach (var b in _branches)
+            {
+                if (b.IsLocal)
+                    locals.Add(b);
+            }
+
+            var builder = BuildBranchTree(locals, []);
+            LocalBranchTrees = builder.Locals;
+            CurrentBranch = checkouted;
+
+            RefreshCommits();
+            RefreshWorkingCopyChanges();
+            RefreshWorktrees();
+        }
+
+        public void RefreshAfterRenameBranch(Models.Branch b, string newName)
+        {
+            _watcher?.MarkBranchUpdated();
+
+            var newFullName = $"refs/heads/{newName}";
+            _uiStates.RenameBranchFilter(b.FullName, newFullName);
+
+            b.Name = newName;
+            b.FullName = newFullName;
+
+            List<Models.Branch> locals = [];
+            foreach (var branch in _branches)
+            {
+                if (branch.IsLocal)
+                    locals.Add(branch);
+            }
+
+            var builder = BuildBranchTree(locals, []);
+            LocalBranchTrees = builder.Locals;
+
+            RefreshCommits();
+            RefreshWorktrees();
+        }
+
         public void MarkBranchesDirtyManually()
         {
             _watcher?.MarkBranchUpdated();
@@ -1237,17 +1344,14 @@ namespace SourceGit.ViewModels
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
-                if (_workingCopy == null || token.IsCancellationRequested)
-                    return;
-
                 changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
-                _workingCopy.SetData(changes, token);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (token.IsCancellationRequested)
                         return;
 
+                    _workingCopy.SetData(changes);
                     LocalChangesCount = changes.Count;
                     OnPropertyChanged(nameof(InProgressContext));
                     GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasLocalChanges, changes.Count == 0);
@@ -1322,7 +1426,10 @@ namespace SourceGit.ViewModels
 
             if (branch.IsLocal)
             {
-                await ShowAndStartPopupAsync(new Checkout(this, branch.Name));
+                if (_workingCopy is { CanSwitchBranchDirectly: true })
+                    await ShowAndStartPopupAsync(new Checkout(this, branch));
+                else
+                    ShowPopup(new Checkout(this, branch));
             }
             else
             {
@@ -1510,7 +1617,7 @@ namespace SourceGit.ViewModels
             log.Complete();
         }
 
-        public List<Models.OpenAIService> GetPreferredOpenAIServices()
+        public List<AI.Service> GetPreferredOpenAIServices()
         {
             var services = Preferences.Instance.OpenAIServices;
             if (services == null || services.Count == 0)
@@ -1520,7 +1627,7 @@ namespace SourceGit.ViewModels
                 return [services[0]];
 
             var preferred = _settings.PreferredOpenAIService;
-            var all = new List<Models.OpenAIService>();
+            var all = new List<AI.Service>();
             foreach (var service in services)
             {
                 if (service.Name.Equals(preferred, StringComparison.Ordinal))

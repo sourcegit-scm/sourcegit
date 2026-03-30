@@ -127,7 +127,7 @@ namespace SourceGit.Views
         [GeneratedRegex(@"^On ([^\s]+)\: ")]
         private static partial Regex REG_KEYWORD_ON();
 
-        [GeneratedRegex(@"^WIP on ([^\s]+)\: ([a-f0-9]{6,40}) ")]
+        [GeneratedRegex(@"^WIP on ([^\s]+)\: ([a-f0-9]{6,64}) ")]
         private static partial Regex REG_KEYWORD_WIP();
     }
 }

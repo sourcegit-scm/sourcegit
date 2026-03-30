@@ -51,7 +51,7 @@
       <v:BranchOrTagNameTextBox Grid.Row="1" Grid.Column="1"
                                 Height="26"
                                 VerticalAlignment="Center"
-                                CornerRadius="2"
+                                CornerRadius="3"
                                 Text="{Binding TagName, Mode=TwoWay}"
                                 Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"/>
 
@@ -76,7 +76,7 @@
                Height="64"
                AcceptsReturn="True" AcceptsTab="False"
                VerticalAlignment="Center" VerticalContentAlignment="Top"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.CreateTag.Message.Placeholder}"
                Text="{Binding Message, Mode=TwoWay}"
                IsVisible="{Binding Annotated}"

@@ -53,17 +53,10 @@
                        IsVisible="{Binding IsGenerating}"/>
         <Button Classes="flat"
                 Height="28"
-                Margin="0,0,8,0"
-                Padding="12,0"
-                Content="{DynamicResource Text.AIAssistant.Use}"
-                IsEnabled="{Binding !IsGenerating}"
-                Click="OnApply"/>
-        <Button Classes="flat"
-                Height="28"
                 Padding="12,0"
                 Content="{DynamicResource Text.AIAssistant.Regen}"
                 IsEnabled="{Binding !IsGenerating}"
-                Command="{Binding Regen}"/>
+                Click="OnRegenClicked"/>
       </StackPanel>
     </Border>
   </Grid>

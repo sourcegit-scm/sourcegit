@@ -20,7 +20,12 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public bool DiscardLocalChanges
+        public bool HasLocalChanges
+        {
+            get => _repo.LocalChangesCount > 0;
+        }
+
+        public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;
             set;
@@ -35,6 +40,7 @@ namespace SourceGit.ViewModels
                 {
                     _repo.UIStates.CheckoutBranchOnCreateBranch = value;
                     OnPropertyChanged();
+                    UpdateOverrideTip();
                 }
             }
         }
@@ -42,6 +48,12 @@ namespace SourceGit.ViewModels
         public bool IsBareRepository
         {
             get => _repo.IsBare;
+        }
+
+        public string OverrideTip
+        {
+            get => _overrideTip;
+            private set => SetProperty(ref _overrideTip, value);
         }
 
         public bool AllowOverwrite
@@ -58,30 +70,39 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _baseOnRevision = branch.Head;
+            _committerDate = branch.CommitterDate;
+            _head = branch.Head;
 
             if (!branch.IsLocal)
                 Name = branch.Name;
 
             BasedOn = branch;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+            UpdateOverrideTip();
         }
 
         public CreateBranch(Repository repo, Models.Commit commit)
         {
             _repo = repo;
             _baseOnRevision = commit.SHA;
+            _committerDate = commit.CommitterTime;
+            _head = commit.SHA;
 
             BasedOn = commit;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+            UpdateOverrideTip();
         }
 
         public CreateBranch(Repository repo, Models.Tag tag)
         {
             _repo = repo;
             _baseOnRevision = tag.SHA;
+            _committerDate = tag.CreatorDate;
+            _head = tag.SHA;
 
             BasedOn = tag;
-            DiscardLocalChanges = false;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+            UpdateOverrideTip();
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -125,11 +146,26 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            Models.Branch created = new()
+            {
+                Name = _name,
+                FullName = $"refs/heads/{_name}",
+                CommitterDate = _committerDate,
+                Head = _head,
+                IsLocal = true,
+            };
+
             bool succ;
             if (CheckoutAfterCreated && !_repo.IsBare)
             {
                 var needPopStash = false;
-                if (!DiscardLocalChanges)
+                if (DealWithLocalChanges == Models.DealWithLocalChanges.DoNothing)
+                {
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(_name, _baseOnRevision, false, _allowOverwrite);
+                }
+                else if (DealWithLocalChanges == Models.DealWithLocalChanges.StashAndReapply)
                 {
                     var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                     if (changes > 0)
@@ -140,16 +176,23 @@ namespace SourceGit.ViewModels
                         if (!succ)
                         {
                             log.Complete();
+                            _repo.MarkWorkingCopyDirtyManually();
                             return false;
                         }
 
                         needPopStash = true;
                     }
-                }
 
-                succ = await new Commands.Checkout(_repo.FullPath)
-                    .Use(log)
-                    .BranchAsync(_name, _baseOnRevision, DiscardLocalChanges, _allowOverwrite);
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(_name, _baseOnRevision, false, _allowOverwrite);
+                }
+                else
+                {
+                    succ = await new Commands.Checkout(_repo.FullPath)
+                        .Use(log)
+                        .BranchAsync(_name, _baseOnRevision, true, _allowOverwrite);
+                }
 
                 if (succ)
                 {
@@ -168,43 +211,39 @@ namespace SourceGit.ViewModels
                     .CreateAsync(_baseOnRevision, _allowOverwrite);
             }
 
-            if (succ && BasedOn is Models.Branch { IsLocal: false } basedOn && _name.Equals(basedOn.Name, StringComparison.Ordinal))
+            if (succ)
             {
-                await new Commands.Branch(_repo.FullPath, _name)
+                if (BasedOn is Models.Branch { IsLocal: false } basedOn && _name.Equals(basedOn.Name, StringComparison.Ordinal))
+                {
+                    await new Commands.Branch(_repo.FullPath, _name)
                         .Use(log)
                         .SetUpstreamAsync(basedOn);
+
+                    created.Upstream = basedOn.FullName;
+                }
+
+                _repo.RefreshAfterCreateBranch(created, CheckoutAfterCreated);
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
             }
 
             log.Complete();
-
-            if (succ && CheckoutAfterCreated)
-            {
-                var fake = new Models.Branch() { IsLocal = true, FullName = $"refs/heads/{_name}" };
-                if (BasedOn is Models.Branch { IsLocal: false } based)
-                    fake.Upstream = based.FullName;
-
-                var folderEndIdx = fake.FullName.LastIndexOf('/');
-                if (folderEndIdx > 10)
-                    _repo.UIStates.ExpandedBranchNodesInSideBar.Add(fake.FullName.Substring(0, folderEndIdx));
-
-                if (_repo.HistoryFilterMode == Models.FilterMode.Included)
-                    _repo.SetBranchFilterMode(fake, Models.FilterMode.Included, false, false);
-            }
-
-            _repo.MarkBranchesDirtyManually();
-
-            if (CheckoutAfterCreated)
-            {
-                ProgressDescription = "Waiting for branch updated...";
-                await Task.Delay(400);
-            }
-
             return true;
         }
 
+        private void UpdateOverrideTip()
+        {
+            OverrideTip = CheckoutAfterCreated ? "-B in `git checkout`" : "-f in `git branch`";
+        }
+
         private readonly Repository _repo = null;
-        private string _name = null;
         private readonly string _baseOnRevision = null;
+        private readonly ulong _committerDate = 0;
+        private readonly string _head = string.Empty;
+        private string _name = null;
+        private string _overrideTip = "-B";
         private bool _allowOverwrite = false;
     }
 }

@@ -17,7 +17,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Output version string
         id: version
         run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
