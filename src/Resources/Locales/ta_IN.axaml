@@ -19,7 +19,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">செநு உதவியாளர்</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">மறு-உருவாக்கு</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">உறுதிமொழி செய்தியை உருவாக்க செநுவைப் பயன்படுத்து</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">உறுதிமொழி செய்தி என இடு</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">ஒட்டு</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">ஒட்டு கோப்பு:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">.ஒட்டு இடுவதற்கு கோப்பைத் தேர்ந்தெடு</x:String>
@@ -71,8 +70,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">உறுதிமொழி:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">முன்னறிவிப்பு: ஒரு உறுதிமொழி சரிபார்பதன் மூலம், உங்கள் தலை பிரிக்கப்படும்</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">கிளை:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">கனி பறி</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">உறுதிமொழி செய்திக்கு மூலத்தைச் சேர்</x:String>
@@ -182,8 +179,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">இதன் அடிப்படையில்:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">உருவாக்கப்பட்ட கிளையைப் சரிபார்</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">புதிய கிளை பெயர்:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">கிளை பெயரை உள்ளிடவும்.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">உள்ளக கிளையை உருவாக்கு</x:String>
@@ -201,6 +196,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">குறைந்தஎடை</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">நேரடியாகத் தொடங்க  கட்டுப்பாட்டை அழுத்திப் பிடி</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">வெட்டு</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">கிளையை நீக்கு</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">கிளை:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">நீங்கள் ஒரு தொலை கிளையை நீக்கப் போகிறீர்கள்!!!</x:String>
@@ -417,13 +414,10 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">நேற்று</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">செநு</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">வேறுபாடு உடனடியாக பகுப்பாய்வு செய்</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">பநிஇ திறவுகோல்</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">பொருள் உடனடியாக உருவாக்கு</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">சேவையகம்</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">ஓடையை இயக்கு</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">தோற்றம்</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">இயல்புநிலை எழுத்துரு</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">திருத்தி தாவல் அகலம்</x:String>
@@ -480,8 +474,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">தொலை கிளை:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">இதனுள்:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">உள்ளக மாற்றங்கள்:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">நிராகரி</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">பதுக்கிவை &amp; மீண்டும் இடு</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">இழு (எடுத்து ஒன்றிணை)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">ஒன்றிணை என்பதற்குப் பதிலாக மறுதளத்தைப் பயன்படுத்து</x:String>

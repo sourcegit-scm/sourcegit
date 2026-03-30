@@ -35,7 +35,7 @@
       <TextBox Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.GitFlow.StartPlaceholder}"
                Text="{Binding Name, Mode=TwoWay}"/>
     </Grid>

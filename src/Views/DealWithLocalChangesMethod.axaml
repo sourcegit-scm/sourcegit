@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.DealWithLocalChangesMethod"
+             x:Name="ThisControl">
+  <StackPanel Orientation="Vertical" Margin="0,4,0,2">        
+    <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.DoNothing}"
+                 x:Name="RadioDoNothing"
+                 Height="24"
+                 Click="OnRadioButtonClicked"
+                 Tag="{Binding Source={x:Static m:DealWithLocalChanges.DoNothing}}"/>
+    <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.StashAndReapply}"
+                 x:Name="RadioStashAndReapply"
+                 Height="24"
+                 Click="OnRadioButtonClicked"
+                 Tag="{Binding Source={x:Static m:DealWithLocalChanges.StashAndReapply}}"/>
+    <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.Discard}"
+                 x:Name="RadioDiscard"
+                 Height="24"
+                 Click="OnRadioButtonClicked"
+                 Tag="{Binding Source={x:Static m:DealWithLocalChanges.Discard}}"/>
+  </StackPanel>
+</UserControl>

@@ -4,35 +4,36 @@ namespace SourceGit.ViewModels
 {
     public class Checkout : Popup
     {
-        public string Branch
+        public string BranchName
         {
-            get;
+            get => _branch.Name;
         }
 
-        public bool DiscardLocalChanges
+        public bool HasLocalChanges
+        {
+            get => _repo.LocalChangesCount > 0;
+        }
+
+        public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;
             set;
         }
 
-        public Checkout(Repository repo, string branch)
+        public Checkout(Repository repo, Models.Branch branch)
         {
             _repo = repo;
-            Branch = branch;
-            DiscardLocalChanges = false;
-        }
-
-        public override bool CanStartDirectly()
-        {
-            return _repo.LocalChangesCount == 0;
+            _branch = branch;
+            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
         }
 
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
-            ProgressDescription = $"Checkout '{Branch}' ...";
+            var branchName = BranchName;
+            ProgressDescription = $"Checkout '{branchName}' ...";
 
-            var log = _repo.CreateLog($"Checkout '{Branch}'");
+            var log = _repo.CreateLog($"Checkout '{branchName}'");
             Use(log);
 
             if (_repo.CurrentBranch is { IsDetachedHead: true })
@@ -50,7 +51,13 @@ namespace SourceGit.ViewModels
             var succ = false;
             var needPopStash = false;
 
-            if (!DiscardLocalChanges)
+            if (DealWithLocalChanges == Models.DealWithLocalChanges.DoNothing)
+            {
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(branchName, false);
+            }
+            else if (DealWithLocalChanges == Models.DealWithLocalChanges.StashAndReapply)
             {
                 var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                 if (changes > 0)
@@ -61,16 +68,23 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
+                        _repo.MarkWorkingCopyDirtyManually();
                         return false;
                     }
 
                     needPopStash = true;
                 }
-            }
 
-            succ = await new Commands.Checkout(_repo.FullPath)
-                .Use(log)
-                .BranchAsync(Branch, DiscardLocalChanges);
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(branchName, false);
+            }
+            else
+            {
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .BranchAsync(branchName, true);
+            }
 
             if (succ)
             {
@@ -80,21 +94,19 @@ namespace SourceGit.ViewModels
                     await new Commands.Stash(_repo.FullPath)
                         .Use(log)
                         .PopAsync("stash@{0}");
+
+                _repo.RefreshAfterCheckoutBranch(_branch);
+            }
+            else
+            {
+                _repo.MarkWorkingCopyDirtyManually();
             }
 
             log.Complete();
-
-            var b = _repo.Branches.Find(x => x.IsLocal && x.Name == Branch);
-            if (b != null && _repo.HistoryFilterMode == Models.FilterMode.Included)
-                _repo.SetBranchFilterMode(b, Models.FilterMode.Included, false, false);
-
-            _repo.MarkBranchesDirtyManually();
-
-            ProgressDescription = "Waiting for branch updated...";
-            await Task.Delay(400);
             return succ;
         }
 
         private readonly Repository _repo = null;
+        private readonly Models.Branch _branch = null;
     }
 }

@@ -60,17 +60,9 @@ namespace SourceGit.ViewModels
                 .RenameAsync(_name);
 
             if (succ)
-                _repo.UIStates.RenameBranchFilter(Target.FullName, _name);
+                _repo.RefreshAfterRenameBranch(Target, _name);
 
             log.Complete();
-            _repo.MarkBranchesDirtyManually();
-
-            if (isCurrent)
-            {
-                ProgressDescription = "Waiting for branch updated...";
-                await Task.Delay(400);
-            }
-
             return succ;
         }
 

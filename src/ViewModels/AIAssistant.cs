@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -22,27 +22,59 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _text, value);
         }
 
-        public AIAssistant(Repository repo, Models.OpenAIService service, List<Models.Change> changes)
+        public AIAssistant(Repository repo, AI.Service service, List<Models.Change> changes)
         {
             _repo = repo;
             _service = service;
-            _changes = changes;
             _cancel = new CancellationTokenSource();
 
-            Gen();
+            var builder = new StringBuilder();
+            foreach (var c in changes)
+                SerializeChange(c, builder);
+            _changeList = builder.ToString();
         }
 
-        public void Regen()
+        public async Task GenAsync()
         {
             if (_cancel is { IsCancellationRequested: false })
                 _cancel.Cancel();
+            _cancel = new CancellationTokenSource();
 
-            Gen();
+            var agent = new AI.Agent(_service);
+            var builder = new StringBuilder();
+            builder.AppendLine("Asking AI to generate commit message...").AppendLine();
+
+            Text = builder.ToString();
+            IsGenerating = true;
+
+            try
+            {
+                await agent.GenerateCommitMessageAsync(_repo.FullPath, _changeList, message =>
+                {
+                    builder.AppendLine(message);
+                    Dispatcher.UIThread.Post(() => Text = builder.ToString());
+                }, _cancel.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Do nothing and leave `IsGenerating` to current (may already changed), so that the UI can update accordingly.
+                return;
+            }
+            catch (Exception e)
+            {
+                builder
+                    .AppendLine()
+                    .AppendLine("[ERROR]")
+                    .Append(e.Message);
+                Text = builder.ToString();
+            }
+
+            IsGenerating = false;
         }
 
-        public void Apply()
+        public void Use(string text)
         {
-            _repo.SetCommitMessage(Text);
+            _repo.SetCommitMessage(text);
         }
 
         public void Cancel()
@@ -50,26 +82,30 @@ namespace SourceGit.ViewModels
             _cancel?.Cancel();
         }
 
-        private void Gen()
+        private void SerializeChange(Models.Change c, StringBuilder builder)
         {
-            Text = string.Empty;
-            IsGenerating = true;
-
-            _cancel = new CancellationTokenSource();
-            Task.Run(async () =>
+            var status = c.Index switch
             {
-                await new Commands.GenerateCommitMessage(_service, _repo.FullPath, _changes, _cancel.Token, message =>
-                {
-                    Dispatcher.UIThread.Post(() => Text = message);
-                }).ExecAsync().ConfigureAwait(false);
+                Models.ChangeState.Added => "A",
+                Models.ChangeState.Modified => "M",
+                Models.ChangeState.Deleted => "D",
+                Models.ChangeState.TypeChanged => "T",
+                Models.ChangeState.Renamed => "R",
+                Models.ChangeState.Copied => "C",
+                _ => " ",
+            };
 
-                Dispatcher.UIThread.Post(() => IsGenerating = false);
-            }, _cancel.Token);
+            builder.Append(status).Append('\t');
+
+            if (c.Index == Models.ChangeState.Renamed || c.Index == Models.ChangeState.Copied)
+                builder.Append(c.OriginalPath).Append(" -> ").Append(c.Path).AppendLine();
+            else
+                builder.Append(c.Path).AppendLine();
         }
 
         private readonly Repository _repo = null;
-        private Models.OpenAIService _service = null;
-        private List<Models.Change> _changes = null;
+        private readonly AI.Service _service = null;
+        private readonly string _changeList = null;
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;
         private string _text = string.Empty;

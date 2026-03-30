@@ -55,6 +55,8 @@ namespace SourceGit.Models
     {
         public List<TextDiffLine> Lines { get; set; } = new List<TextDiffLine>();
         public int MaxLineNumber = 0;
+        public int AddedLines { get; set; } = 0;
+        public int DeletedLines { get; set; } = 0;
 
         public TextDiffSelection MakeSelection(int startLine, int endLine, bool isCombined, bool isOldSide)
         {

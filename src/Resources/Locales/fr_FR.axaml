@@ -23,7 +23,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistant IA</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GÉNÉRER</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utiliser l'IA pour générer un message de commit</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APPLIQUER COMME MESSAGE DE COMMIT</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Masquer SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tout Afficher</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Appliquer</x:String>
@@ -104,8 +103,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit :</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Avertissement: une récupération vers un commit aboutiera vers un HEAD détaché</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Annuler</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branche :</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Votre HEAD actuel contient un ou plusieurs commits non connectés à une branche/tag ! Voulez-vous continuer ?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Récupérer &amp; Fast-Forward</x:String>
@@ -285,8 +282,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basé sur :</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Récupérer la branche créée</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nom de la nouvelle branche :</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Entrez le nom de la branche.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Créer une branche locale</x:String>
@@ -305,6 +300,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">léger</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Maintenir Ctrl pour commencer directement</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Couper</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Annuler</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Ne rien faire</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Mettre en stash et réappliquer</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Désinitialiser le sous-module</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Forcer la désinitialisation même s'il contient des modifications locales.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Sous-module :</x:String>
@@ -562,14 +560,11 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Hier</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyser Diff Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clé d'API</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Générer le sujet de Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modèle</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">La valeur saisie est le nom pour charger la clé API depuis l'ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Serveur</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">Activer le streaming</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPARENCE</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Police par défaut</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Largeur de tab dans l'éditeur</x:String>
@@ -633,8 +628,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branche distante :</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Dans :</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Changements locaux :</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Rejeter</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Réappliquer</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Dépôt distant :</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Utiliser rebase au lieu de merge</x:String>

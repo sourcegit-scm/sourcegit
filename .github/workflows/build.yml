@@ -39,11 +39,11 @@ jobs:
           apt-get install -y sudo
           sudo apt-get install -y curl wget git unzip zip libicu66 tzdata clang
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
       - name: Configure arm64 packages
@@ -75,7 +75,7 @@ jobs:
           rm -r publish/*
           mv "sourcegit.${{ matrix.runtime }}.tar" publish
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sourcegit.${{ matrix.runtime }}
           path: publish/*

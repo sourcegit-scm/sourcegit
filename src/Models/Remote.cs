@@ -64,14 +64,9 @@ namespace SourceGit.Models
         {
             url = null;
 
-            if (URL.StartsWith("http", StringComparison.Ordinal))
+            if (URL.StartsWith("http://", StringComparison.Ordinal) || URL.StartsWith("https://", StringComparison.Ordinal))
             {
-                var uri = new Uri(URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL);
-                if (uri.Port != 80 && uri.Port != 443)
-                    url = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.LocalPath}";
-                else
-                    url = $"{uri.Scheme}://{uri.Host}{uri.LocalPath}";
-
+                url = URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL;
                 return true;
             }
 
@@ -97,7 +92,6 @@ namespace SourceGit.Models
 
             var uri = new Uri(baseURL);
             var host = uri.Host;
-            var route = uri.AbsolutePath.TrimStart('/');
             var encodedBranch = HttpUtility.UrlEncode(mergeBranch);
 
             if (host.Contains("github.com", StringComparison.Ordinal))

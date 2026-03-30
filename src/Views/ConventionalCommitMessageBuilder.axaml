@@ -87,7 +87,7 @@
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding Scope, Mode=TwoWay}"/>
 
@@ -98,7 +98,7 @@
       <TextBox Grid.Row="2" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Text="{Binding Description, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="3" Grid.Column="0"
@@ -114,7 +114,7 @@
                ScrollViewer.VerticalScrollBarVisibility="Auto"
                VerticalAlignment="Center"
                VerticalContentAlignment="Top"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding Detail, Mode=TwoWay}"/>
 
@@ -131,7 +131,7 @@
                ScrollViewer.VerticalScrollBarVisibility="Auto"
                VerticalAlignment="Center"
                VerticalContentAlignment="Top"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding BreakingChanges, Mode=TwoWay}"/>
 
@@ -142,7 +142,7 @@
       <TextBox Grid.Row="5" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding ClosedIssue, Mode=TwoWay}"/>
     </Grid>

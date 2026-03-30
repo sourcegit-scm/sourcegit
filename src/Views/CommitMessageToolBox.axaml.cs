@@ -161,9 +161,6 @@ namespace SourceGit.Views
                         Brushes.Gray);
 
                     context.DrawText(formatted, new Point(4, 2));
-
-                    var y = PixelSnapHelpers.PixelAlign(6 + formatted.Height, pixelHeight);
-                    context.DrawLine(pen, new Point(0, y), new Point(w, y));
                 }
 
                 return;
@@ -194,6 +191,15 @@ namespace SourceGit.Views
                     var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
                     y = PixelSnapHelpers.PixelAlign(y, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
+
+                    var subjectEndTip = new FormattedText(
+                        "SUBJECT END",
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle.Italic),
+                        10,
+                        Brushes.Gray);
+                    context.DrawText(subjectEndTip, new Point(w - subjectEndTip.WidthIncludingTrailingWhitespace - 6, y + 1));
                     return;
                 }
             }

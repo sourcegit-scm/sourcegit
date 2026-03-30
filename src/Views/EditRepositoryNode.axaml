@@ -24,10 +24,26 @@
                  IsVisible="{Binding IsRepository}"/>
     </StackPanel>
 
-    <Grid Height="28" Margin="8,16,0,0" ColumnDefinitions="120,*" >
-      <TextBlock Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Target}"/>
-      <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Name, Mode=OneTime}" IsVisible="{Binding !IsRepository}"/>
-      <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Id, Mode=TwoWay}" IsVisible="{Binding IsRepository}"/>
+    <Grid Height="28" Margin="8,16,0,0" ColumnDefinitions="120,Auto,*" >
+      <TextBlock Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.EditRepositoryNode.Target}"/>
+      
+      <Path Grid.Column="1"
+            Width="12" Height="12"
+            Margin="0,1,0,0"
+            Data="{StaticResource Icons.Folder.Open}"
+            IsVisible="{Binding !IsRepository, Mode=OneWay}"/>
+      <Path Grid.Column="1"
+            Width="12" Height="12"
+            Data="{StaticResource Icons.Repositories}"
+            IsVisible="{Binding IsRepository, Mode=OneWay}"/>
+      
+      <TextBlock Grid.Column="2"
+                 Margin="6,0,0,0"
+                 VerticalAlignment="Center"
+                 Text="{Binding Target, Mode=OneWay}"/>
     </Grid>
     <Grid Height="28" Margin="8,4,0,0" ColumnDefinitions="120,*">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Name}"/>

@@ -1443,6 +1443,11 @@
   </Style>
 
   <Style Selector="aee|TextArea">
+    <Setter Property="FocusAdorner">
+      <FocusAdornerTemplate>
+        <Border/>
+      </FocusAdornerTemplate>
+    </Setter>
     <Setter Property="SelectionBorder">
       <Setter.Value>
         <Pen Brush="{DynamicResource SystemAccentColor}" Thickness="1" />
@@ -1472,7 +1477,7 @@
                        Name="PART_searchTextBox"
                        Width="265" Height="28"
                        Margin="0,0,0,0"
-                       CornerRadius="2"
+                       CornerRadius="3"
                        Text="{Binding SearchPattern, RelativeSource={RelativeSource TemplatedParent}}">
                 <TextBox.InnerRightContent>
                   <StackPanel Orientation="Horizontal">

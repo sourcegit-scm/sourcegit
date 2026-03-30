@@ -60,8 +60,7 @@ namespace SourceGit.Models
         /// <param name="change"></param>
         public DiffOption(Commit commit, Change change)
         {
-            var baseRevision = commit.Parents.Count == 0 ? Commit.EmptyTreeSHA1 : $"{commit.SHA}^";
-            _revisions.Add(baseRevision);
+            _revisions.Add(commit.FirstParentToCompare);
             _revisions.Add(commit.SHA);
             _path = change.Path;
             _orgPath = change.OriginalPath;
@@ -74,8 +73,7 @@ namespace SourceGit.Models
         /// <param name="file"></param>
         public DiffOption(Commit commit, string file)
         {
-            var baseRevision = commit.Parents.Count == 0 ? Commit.EmptyTreeSHA1 : $"{commit.SHA}^";
-            _revisions.Add(baseRevision);
+            _revisions.Add(commit.FirstParentToCompare);
             _revisions.Add(commit.SHA);
             _path = file;
         }
@@ -88,7 +86,7 @@ namespace SourceGit.Models
         {
             if (string.IsNullOrEmpty(ver.OriginalPath))
             {
-                _revisions.Add(ver.HasParent ? $"{ver.SHA}^" : Commit.EmptyTreeSHA1);
+                _revisions.Add(ver.HasParent ? $"{ver.SHA}^" : EmptyTreeHash.Guess(ver.SHA));
                 _revisions.Add(ver.SHA);
                 _path = ver.Path;
             }
@@ -111,14 +109,14 @@ namespace SourceGit.Models
         {
             if (start.Change.Index == ChangeState.Deleted)
             {
-                _revisions.Add(Commit.EmptyTreeSHA1);
+                _revisions.Add(EmptyTreeHash.Guess(end.SHA));
                 _revisions.Add(end.SHA);
                 _path = end.Path;
             }
             else if (end.Change.Index == ChangeState.Deleted)
             {
                 _revisions.Add(start.SHA);
-                _revisions.Add(Commit.EmptyTreeSHA1);
+                _revisions.Add(EmptyTreeHash.Guess(start.SHA));
                 _path = start.Path;
             }
             else if (!end.Path.Equals(start.Path, StringComparison.Ordinal))

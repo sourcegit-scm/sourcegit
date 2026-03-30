@@ -240,8 +240,13 @@ namespace SourceGit.ViewModels
             if (_commit == null)
                 return;
 
-            var baseRevision = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : _commit.Parents[0];
-            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo.FullPath, changes, baseRevision, _commit.SHA, saveTo);
+            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(
+                _repo.FullPath,
+                changes,
+                _commit.FirstParentToCompare,
+                _commit.SHA,
+                saveTo);
+
             if (succ)
                 App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
         }
@@ -535,8 +540,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var parent = _commit.Parents.Count == 0 ? Models.Commit.EmptyTreeSHA1 : $"{_commit.SHA}^";
-                var cmd = new Commands.CompareRevisions(_repo.FullPath, parent, _commit.SHA) { CancellationToken = token };
+                var cmd = new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA) { CancellationToken = token };
                 var changes = await cmd.ReadAsync().ConfigureAwait(false);
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
@@ -757,7 +761,7 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
         private static partial Regex REG_URL_FORMAT();
 
-        [GeneratedRegex(@"\b([0-9a-fA-F]{6,40})\b")]
+        [GeneratedRegex(@"\b([0-9a-fA-F]{6,64})\b")]
         private static partial Regex REG_SHA_FORMAT();
 
         [GeneratedRegex(@"`.*?`")]

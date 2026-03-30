@@ -24,10 +24,11 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI助手</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用AI助手生成提交信息</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用本次生成</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用所选</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">隐藏 SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">显示所有窗口</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">应用补丁(apply)</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">尝试三路合并</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">补丁文件 ：</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">选择补丁文件</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号</x:String>
@@ -113,8 +114,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">提交 ：</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">注意：执行该操作后，当前HEAD会变为游离(detached)状态!</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">您当前游离的HEAD包含未被任何分支及标签引用的提交！是否继续？</x:String>
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模块需要更新：{0}是否立即更新？</x:String>
@@ -304,8 +303,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">新分支基于 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">完成后切换到新分支</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新分支名 ：</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">填写分支名称。</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">创建本地分支</x:String>
@@ -324,6 +321,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">轻量标签</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住Ctrl键点击将以默认参数运行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">不做处理</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">取消初始化子模块</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">强制取消，即使包含本地变更</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模块 ：</x:String>
@@ -506,6 +506,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">提交暂存区更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">提交暂存区更改并推送</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自动暂存全部变更并提交</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">新建分支</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">拉取 (fetch) 远程变更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切换左边栏为分支/标签等显示模式（默认）</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">前往选中提交的子提交</x:String>
@@ -613,14 +614,12 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">偏好设置</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Analyze Diff Prompt</x:String>
+  <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">附加提示词 (请使用 `-` 列出您的要求)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API密钥</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Generate Subject Prompt</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">启用流式输出</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">编辑器制表符宽度</x:String>
@@ -691,8 +690,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">拉取分支 ：</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">本地分支 ：</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">未提交更改 ：</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">远程 ：</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">拉回（拉取并合并）</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">使用变基方式合并分支</x:String>

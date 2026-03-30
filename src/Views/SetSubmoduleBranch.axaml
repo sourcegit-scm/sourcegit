@@ -43,7 +43,7 @@
       <TextBox Grid.Row="2" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.SetSubmoduleBranch.New.Tip}"
                Text="{Binding ChangeTo, Mode=TwoWay}"/>
     </Grid>

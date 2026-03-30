@@ -63,7 +63,7 @@ namespace SourceGit.ViewModels
                             var untracked = new List<Models.Change>();
                             if (value.Parents.Count == 3)
                             {
-                                untracked = await new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, value.Parents[2])
+                                untracked = await new Commands.CompareRevisions(_repo.FullPath, value.UntrackedParent, value.Parents[2])
                                     .ReadAsync()
                                     .ConfigureAwait(false);
 
@@ -107,7 +107,7 @@ namespace SourceGit.ViewModels
                     if (value is not { Count: 1 })
                         DiffContext = null;
                     else if (_untracked.Contains(value[0]))
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], value[0]), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.UntrackedParent, _selectedStash.Parents[2], value[0]), _diffContext);
                     else
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value[0]), _diffContext);
                 }
@@ -167,16 +167,16 @@ namespace SourceGit.ViewModels
                 .ConfigureAwait(false);
 
             foreach (var c in changes)
-                opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
+                opts.Add(new Models.DiffOption(stash.Parents[0], stash.SHA, c));
 
             if (stash.Parents.Count == 3)
             {
-                var untracked = await new Commands.CompareRevisions(_repo.FullPath, Models.Commit.EmptyTreeSHA1, stash.Parents[2])
+                var untracked = await new Commands.CompareRevisions(_repo.FullPath, stash.UntrackedParent, stash.Parents[2])
                     .ReadAsync()
                     .ConfigureAwait(false);
 
                 foreach (var c in untracked)
-                    opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
+                    opts.Add(new Models.DiffOption(stash.UntrackedParent, stash.Parents[2], c));
 
                 changes.AddRange(untracked);
             }
@@ -190,7 +190,7 @@ namespace SourceGit.ViewModels
         {
             Models.DiffOption opt;
             if (_untracked.Contains(change))
-                opt = new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], change);
+                opt = new Models.DiffOption(_selectedStash.UntrackedParent, _selectedStash.Parents[2], change);
             else
                 opt = new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, change);
 
@@ -242,7 +242,7 @@ namespace SourceGit.ViewModels
             foreach (var c in changes)
             {
                 if (_untracked.Contains(c) && _selectedStash.Parents.Count == 3)
-                    opts.Add(new Models.DiffOption(Models.Commit.EmptyTreeSHA1, _selectedStash.Parents[2], c));
+                    opts.Add(new Models.DiffOption(_selectedStash.UntrackedParent, _selectedStash.Parents[2], c));
                 else
                     opts.Add(new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, c));
             }

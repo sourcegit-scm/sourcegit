@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-
-using Avalonia.Collections;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -17,15 +14,27 @@ namespace SourceGit.ViewModels
         public bool CanOpenWithDefaultEditor { get; set; } = canOpenWithDefaultEditor;
     }
 
+    public class FileHistoriesSingleRevisionViewMode
+    {
+        public bool IsDiff
+        {
+            get;
+            set;
+        } = true;
+    }
+
     public class FileHistoriesSingleRevision : ObservableObject
     {
         public bool IsDiffMode
         {
-            get => _isDiffMode;
+            get => _viewMode.IsDiff;
             set
             {
-                if (SetProperty(ref _isDiffMode, value))
+                if (_viewMode.IsDiff != value)
+                {
+                    _viewMode.IsDiff = value;
                     RefreshViewContent();
+                }
             }
         }
 
@@ -35,14 +44,21 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _viewContent, value);
         }
 
-        public FileHistoriesSingleRevision(string repo, Models.FileVersion revision, bool prevIsDiffMode)
+        public FileHistoriesSingleRevision(string repo, Models.FileVersion revision, FileHistoriesSingleRevisionViewMode viewMode)
         {
             _repo = repo;
             _file = revision.Path;
             _revision = revision;
-            _isDiffMode = prevIsDiffMode;
+            _viewMode = viewMode;
             _viewContent = null;
 
+            RefreshViewContent();
+        }
+
+        public void SetRevision(Models.FileVersion revision)
+        {
+            _file = revision.Path;
+            _revision = revision;
             RefreshViewContent();
         }
 
@@ -72,7 +88,7 @@ namespace SourceGit.ViewModels
 
         private void RefreshViewContent()
         {
-            if (_isDiffMode)
+            if (_viewMode.IsDiff)
             {
                 ViewContent = new DiffContext(_repo, new(_revision), _viewContent as DiffContext);
                 return;
@@ -155,7 +171,7 @@ namespace SourceGit.ViewModels
         private string _repo = null;
         private string _file = null;
         private Models.FileVersion _revision = null;
-        private bool _isDiffMode = false;
+        private FileHistoriesSingleRevisionViewMode _viewMode = null;
         private object _viewContent = null;
     }
 
@@ -226,11 +242,15 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _revisions, value);
         }
 
-        public AvaloniaList<Models.FileVersion> SelectedRevisions
+        public List<Models.FileVersion> SelectedRevisions
         {
-            get;
-            set;
-        } = [];
+            get => _selectedRevisions;
+            set
+            {
+                if (SetProperty(ref _selectedRevisions, value))
+                    RefreshViewContent();
+            }
+        }
 
         public object ViewContent
         {
@@ -257,23 +277,8 @@ namespace SourceGit.ViewModels
                 {
                     IsLoading = false;
                     Revisions = revisions;
-                    if (revisions.Count > 0)
-                        SelectedRevisions.Add(revisions[0]);
                 });
             });
-
-            SelectedRevisions.CollectionChanged += (_, _) =>
-            {
-                if (_viewContent is FileHistoriesSingleRevision singleRevision)
-                    _prevIsDiffMode = singleRevision.IsDiffMode;
-
-                ViewContent = SelectedRevisions.Count switch
-                {
-                    1 => new FileHistoriesSingleRevision(_repo, SelectedRevisions[0], _prevIsDiffMode),
-                    2 => new FileHistoriesCompareRevisions(_repo, SelectedRevisions[0], SelectedRevisions[1]),
-                    _ => SelectedRevisions.Count,
-                };
-            };
         }
 
         public void NavigateToCommit(Models.FileVersion revision)
@@ -303,10 +308,35 @@ namespace SourceGit.ViewModels
             return msg;
         }
 
+        private void RefreshViewContent()
+        {
+            var count = _selectedRevisions?.Count ?? 0;
+            if (count == 0)
+            {
+                ViewContent = null;
+            }
+            else if (count == 1)
+            {
+                if (_viewContent is FileHistoriesSingleRevision single)
+                    single.SetRevision(_selectedRevisions[0]);
+                else
+                    ViewContent = new FileHistoriesSingleRevision(_repo, _selectedRevisions[0], _viewMode);
+            }
+            else if (count == 2)
+            {
+                ViewContent = new FileHistoriesCompareRevisions(_repo, _selectedRevisions[0], _selectedRevisions[1]);
+            }
+            else
+            {
+                ViewContent = _selectedRevisions.Count;
+            }
+        }
+
         private readonly string _repo = null;
         private bool _isLoading = true;
-        private bool _prevIsDiffMode = true;
+        private FileHistoriesSingleRevisionViewMode _viewMode = new();
         private List<Models.FileVersion> _revisions = null;
+        private List<Models.FileVersion> _selectedRevisions = [];
         private Dictionary<string, string> _fullCommitMessages = new();
         private object _viewContent = null;
     }

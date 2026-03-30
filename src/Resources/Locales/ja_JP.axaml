@@ -24,7 +24,6 @@
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI アシスタント</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">再生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">コミットメッセージとして適用</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">パッチ</x:String>
@@ -113,8 +112,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">コミット:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">警告: コミットをチェックアウトすると、HEAD が切断されます</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">現在の HEAD には、どのブランチやタグにも繋がっていないコミットが含まれています！それでも続行しますか？</x:String>
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">これらのサブモジュールを更新する必要があります:{0}更新しますか？</x:String>
@@ -299,8 +296,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">派生元:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">作成したブランチにチェックアウト</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">新しいブランチ名:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">ブランチの名前を入力</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">ローカルブランチを作成</x:String>
@@ -319,6 +314,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">軽量</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Ctrl キーを押しながらで直接実行できます</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">切り取り</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">破棄</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">サブモジュールの初期化を解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">ローカルの変更の有無に関わらず、強制的に解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">サブモジュール:</x:String>
@@ -606,14 +603,11 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨日</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">差分分析プロンプト</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API キー</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">タイトル生成プロンプト</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">この値を環境変数の名前とし、そこから API キーを読み込む</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">ストリーミングを有効化</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外観</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">既定のフォント</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">エディターのタブ幅</x:String>
@@ -683,8 +677,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">リモートブランチ:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">プル先:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">ローカルの変更:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">破棄</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">プル (フェッチ &amp; マージ)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">マージではなくリベースを使用</x:String>
