@@ -4,6 +4,6 @@
     {
         OnlyUntrackedFiles = 0,
         OnlyIgnoredFiles,
-        All,
+        UntrackedAndIgnoredFiles,
     }
 }

@@ -10,7 +10,7 @@ namespace SourceGit.Commands
         /// <summary>
         ///     Discard all local changes (unstaged & staged)
         /// </summary>
-        public static async Task AllAsync(string repo, bool includeUntracked, bool includeIgnored, Models.ICommandLog log)
+        public static async Task AllAsync(string repo, bool includeModified, bool includeUntracked, bool includeIgnored, Models.ICommandLog log)
         {
             if (includeUntracked)
             {
@@ -37,7 +37,7 @@ namespace SourceGit.Commands
                 }
 
                 if (includeIgnored)
-                    await new Clean(repo, Models.CleanMode.All).Use(log).ExecAsync().ConfigureAwait(false);
+                    await new Clean(repo, Models.CleanMode.UntrackedAndIgnoredFiles).Use(log).ExecAsync().ConfigureAwait(false);
                 else
                     await new Clean(repo, Models.CleanMode.OnlyUntrackedFiles).Use(log).ExecAsync().ConfigureAwait(false);
             }
@@ -46,7 +46,8 @@ namespace SourceGit.Commands
                 await new Clean(repo, Models.CleanMode.OnlyIgnoredFiles).Use(log).ExecAsync().ConfigureAwait(false);
             }
 
-            await new Reset(repo, "", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
+            if (includeModified)
+                await new Reset(repo, "", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
         }
 
         /// <summary>
