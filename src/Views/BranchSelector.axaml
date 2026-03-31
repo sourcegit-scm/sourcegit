@@ -38,9 +38,7 @@
                               Content="{TemplateBinding SelectedBranch, Mode=OneWay}">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Branch">
-                    <Grid>
-                      <TextBlock Text="{Binding FriendlyName, Mode=OneWay}"/>
-                    </Grid>
+                    <TextBlock Text="{Binding FriendlyName, Mode=OneWay}" VerticalAlignment="Center"/>
                   </DataTemplate>
                 </ContentControl.DataTemplates>
               </ContentControl>
