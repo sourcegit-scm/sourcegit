@@ -65,7 +65,7 @@
                    InheritsTransform="True">
               <Border Background="{DynamicResource Brush.Contents}"
                       BorderThickness="1"
-                      BorderBrush="{DynamicResource Brush.Border1}"
+                      BorderBrush="{DynamicResource Brush.Accent}"
                       CornerRadius="4"
                       Padding="4"
                       HorizontalAlignment="Stretch">
