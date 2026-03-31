@@ -6,6 +6,7 @@ using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -271,6 +272,19 @@ namespace SourceGit.Views
             {
                 SetCurrentValue(IsSubjectWarningIconVisibleProperty, SubjectLength > SubjectGuideLength);
             }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            // Supports Ctrl+Insert for copy. (Doubao uses Ctrl+Insert to detect selection)
+            if (e.Key == Key.Insert && e.KeyModifiers == KeyModifiers.Control)
+            {
+                Copy();
+                e.Handled = true;
+                return;
+            }
+
+            base.OnKeyDown(e);
         }
 
         protected override void OnTextChanged(EventArgs e)
