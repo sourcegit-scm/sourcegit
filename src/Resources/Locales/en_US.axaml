@@ -18,6 +18,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Create New Branch</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existing Branch</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Assistant</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">MODEL</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERATE</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Use</x:String>
@@ -616,7 +617,6 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Additional Prompt (Use `-` to list your requirements)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Name</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Entered value is the name to load API key from ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>

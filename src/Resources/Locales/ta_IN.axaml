@@ -415,7 +415,7 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">செநு</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">பநிஇ திறவுகோல்</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">மாதிரி</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">சேவையகம்</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">தோற்றம்</x:String>

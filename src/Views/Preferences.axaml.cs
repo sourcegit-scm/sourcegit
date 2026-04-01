@@ -205,7 +205,9 @@ namespace SourceGit.Views
                     await new Commands.Config(null).SetAsync($"gpg.{GPGFormat.Value}.program", GPGExecutableFile);
             }
 
-            ViewModels.Preferences.Instance.Save();
+            var preferences = ViewModels.Preferences.Instance;
+            await preferences.UpdateAvailableAIModelsAsync();
+            preferences.Save();
         }
 
         private async void SelectThemeOverrideFile(object _, RoutedEventArgs e)

@@ -620,7 +620,7 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">附加提示词 (请使用 `-` 列出您的要求)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API密钥</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>

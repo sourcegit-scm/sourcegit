@@ -616,7 +616,7 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt adicional (Usa `-` para listar tus requerimientos)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clave API</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nombre</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">El valor ingresado es el nombre de la clave API a cargar desde ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>

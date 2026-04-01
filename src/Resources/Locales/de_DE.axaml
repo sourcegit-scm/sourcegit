@@ -602,7 +602,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Einstellungen</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API-Schlüssel</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modell</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modell</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Name</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Der eingegebene Wert ist der Name der Umgebungsvariable, aus der der API-Schlüssel gelesen wird</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>

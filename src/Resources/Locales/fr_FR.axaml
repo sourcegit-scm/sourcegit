@@ -561,7 +561,7 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clé d'API</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modèle</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modèle</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">La valeur saisie est le nom pour charger la clé API depuis l'ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Serveur</x:String>

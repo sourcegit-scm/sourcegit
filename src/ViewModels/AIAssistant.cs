@@ -10,6 +10,17 @@ namespace SourceGit.ViewModels
 {
     public class AIAssistant : ObservableObject
     {
+        public List<string> AvailableModels
+        {
+            get => _service.AvailableModels;
+        }
+
+        public string CurrentModel
+        {
+            get => _service.Model;
+            set => _service.Model = value;
+        }
+
         public bool IsGenerating
         {
             get => _isGenerating;

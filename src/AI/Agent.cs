@@ -17,6 +17,9 @@ namespace SourceGit.AI
         public async Task GenerateCommitMessageAsync(string repo, string changeList, Action<string> onUpdate, CancellationToken cancellation)
         {
             var chatClient = _service.GetChatClient();
+            if (chatClient == null)
+                throw new Exception("Failed to fetch available models from this service. Please check your configuration and try again.");
+
             var options = new ChatCompletionOptions() { Tools = { ChatTools.GetDetailChangesInFile } };
 
             var userMessageBuilder = new StringBuilder();

@@ -535,7 +535,7 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferensi</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Model</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nama</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Nilai yang dimasukkan adalah nama untuk memuat API key dari ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>

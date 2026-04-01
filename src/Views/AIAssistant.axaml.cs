@@ -149,6 +149,13 @@ namespace SourceGit.Views
             (DataContext as ViewModels.AIAssistant)?.Cancel();
         }
 
+        private async void OnModelChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is ViewModels.AIAssistant vm && IsLoaded)
+                await vm.GenAsync();
+            e.Handled = true;
+        }
+
         private async void OnRegenClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.AIAssistant vm)
