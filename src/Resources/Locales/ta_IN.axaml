@@ -17,6 +17,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">புதிய கிளையை உருவாக்கு</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">ஏற்கனவே உள்ள கிளை</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">செநு உதவியாளர்</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">மறு-உருவாக்கு</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">உறுதிமொழி செய்தியை உருவாக்க செநுவைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">ஒட்டு</x:String>
@@ -415,7 +416,6 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">விருப்பத்தேர்வுகள்</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">செநு</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">பநிஇ திறவுகோல்</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">பெயர்</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">சேவையகம்</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">தோற்றம்</x:String>

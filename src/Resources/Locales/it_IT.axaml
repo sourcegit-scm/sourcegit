@@ -22,6 +22,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Crea nuovo branch</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch esistente</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistente AI</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modello</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RIGENERA</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare il messaggio di commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Nascondi SourceGit</x:String>
@@ -598,7 +599,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferenze</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Chiave API</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modello</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Il valore inserito è il nome per caricare la chiave API da ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>

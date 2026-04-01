@@ -22,6 +22,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">新しいブランチを作成</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">既存のブランチ</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI アシスタント</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">再生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
@@ -604,7 +605,6 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API キー</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">この値を環境変数の名前とし、そこから API キーを読み込む</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>

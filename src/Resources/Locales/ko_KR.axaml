@@ -18,6 +18,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">새 브랜치 생성</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">기존 브랜치</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI 어시스턴트</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">재생성</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI를 사용하여 커밋 메시지 생성</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit 숨기기</x:String>
@@ -537,7 +538,6 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">환경설정</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API 키</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">이름</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">입력된 값은 환경변수(ENV)에서 API 키를 불러올 이름입니다</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">서버</x:String>

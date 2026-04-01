@@ -22,6 +22,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Создать новую ветку</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Ветку из списка</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Помощник OpenAI</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕСОЗДАТЬ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Использовать OpenAI для создания сообщения о ревизии</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Использовать</x:String>
@@ -616,7 +617,6 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">ОТКРЫТЬ ИИ</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Дополнительная подсказка (Для перечисления ваших требований используйте `-`)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Ключ API</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Введённое значение — это имя для загрузки API-ключа из ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Сервер</x:String>

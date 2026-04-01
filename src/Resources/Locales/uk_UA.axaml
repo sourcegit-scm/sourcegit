@@ -17,6 +17,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Створити нову гілку</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Наявна гілка</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Асистент</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕГЕНЕРУВАТИ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Використати AI для генерації повідомлення коміту</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Застосувати</x:String>
@@ -419,7 +420,6 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">Налаштування</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Ключ API</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Назва</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ВИГЛЯД</x:String>

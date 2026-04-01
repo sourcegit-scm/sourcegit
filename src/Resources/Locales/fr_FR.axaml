@@ -21,6 +21,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Créer une nouvelle branche</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branche existante</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistant IA</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modèle</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GÉNÉRER</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utiliser l'IA pour générer un message de commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Masquer SourceGit</x:String>
@@ -561,7 +562,6 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clé d'API</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modèle</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">La valeur saisie est le nom pour charger la clé API depuis l'ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Serveur</x:String>

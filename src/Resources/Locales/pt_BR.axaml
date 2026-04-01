@@ -22,6 +22,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Criar Novo Branch</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch Existente</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assietente IA</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">Gerar novamente</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder SourceGit</x:String>
@@ -418,7 +419,6 @@
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferências</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">INTELIGÊNCIA ARTIFICIAL</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Chave da API</x:String>
-  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APARÊNCIA</x:String>
