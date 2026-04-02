@@ -158,6 +158,30 @@ namespace SourceGit.Views
                 listBox?.Focus();
                 e.Handled = true;
             }
+            else if (e.Key == Key.Up)
+            {
+                var listBox = _popup?.Child?.FindDescendantOfType<ListBox>();
+                if (listBox != null)
+                {
+                    if (listBox.SelectedIndex > 0)
+                        listBox.SelectedIndex--;
+                    listBox.Focus();
+                }
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                var listBox = _popup?.Child?.FindDescendantOfType<ListBox>();
+                if (listBox != null)
+                {
+                    if (listBox.SelectedIndex < listBox.Items.Count - 1)
+                        listBox.SelectedIndex++;
+                    listBox.Focus();
+                }
+
+                e.Handled = true;
+            }
         }
 
         private void OnClearSearchFilter(object sender, RoutedEventArgs e)
@@ -171,6 +195,17 @@ namespace SourceGit.Views
             if (e.Key == Key.Enter)
             {
                 IsDropDownOpened = false;
+                e.Handled = true;
+            }
+            else if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            {
+                var searchBox = _popup?.Child?.FindDescendantOfType<TextBox>();
+                if (searchBox != null)
+                {
+                    searchBox.CaretIndex = SearchFilter?.Length ?? 0;
+                    searchBox.Focus();
+                }
+
                 e.Handled = true;
             }
         }
