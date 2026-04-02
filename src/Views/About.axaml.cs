@@ -22,7 +22,7 @@ namespace SourceGit.Views
             {
                 if (attr.Key.Equals("BuildDate", StringComparison.OrdinalIgnoreCase) && DateTime.TryParse(attr.Value, out var date))
                 {
-                    TxtReleaseDate.Text = App.Text("About.ReleaseDate", date.ToLocalTime().ToString("MMM d yyyy"));
+                    TxtReleaseDate.Text = App.Text("About.ReleaseDate", Models.DateTimeFormat.Format(date, true));
                     break;
                 }
             }
