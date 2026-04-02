@@ -66,7 +66,13 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _commits, value))
                 {
                     if (value.Count > 0 && lastSelected != null)
-                        SelectedCommit = value.Find(x => x.SHA == lastSelected.SHA);
+                    {
+                        var selected = value.Find(x => x.SHA == lastSelected.SHA);
+                        if (selected == null && lastSelected.IsCurrentHead)
+                            selected = value.Find(x => x.IsCurrentHead);
+
+                        SelectedCommit = selected;
+                    }
                 }
             }
         }
