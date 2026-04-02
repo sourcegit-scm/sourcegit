@@ -66,7 +66,12 @@ namespace SourceGit.Models
 
             if (URL.StartsWith("http://", StringComparison.Ordinal) || URL.StartsWith("https://", StringComparison.Ordinal))
             {
-                url = URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL;
+                var trimmed = URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL;
+                var uri = new Uri(trimmed);
+                if (uri.Port != 80 && uri.Port != 443)
+                    url = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.AbsolutePath}";
+                else
+                    url = $"{uri.Scheme}://{uri.Host}{uri.AbsolutePath}";
                 return true;
             }
 
