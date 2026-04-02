@@ -57,12 +57,7 @@ namespace SourceGit.AI
 
         public async Task<List<string>> FetchAvailableModelsAsync()
         {
-            var credential = new ApiKeyCredential(ReadApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
-            var client = Server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(new Uri(Server), credential)
-                : new OpenAIClient(credential, new() { Endpoint = new Uri(Server) });
-
-            var allModels = client.GetOpenAIModelClient().GetModels();
+            var allModels = GetOpenAIClient().GetOpenAIModelClient().GetModels();
             AvailableModels = new List<string>();
             foreach (var model in allModels.Value)
                 AvailableModels.Add(model.Id);
@@ -82,15 +77,15 @@ namespace SourceGit.AI
 
         public ChatClient GetChatClient()
         {
-            if (string.IsNullOrEmpty(Model))
-                return null;
+            return !string.IsNullOrEmpty(Model) ? GetOpenAIClient().GetChatClient(Model) : null;
+        }
 
+        private OpenAIClient GetOpenAIClient()
+        {
             var credential = new ApiKeyCredential(ReadApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
-            var client = Server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(new Uri(Server), credential)
-                : new OpenAIClient(credential, new() { Endpoint = new Uri(Server) });
-
-            return client.GetChatClient(Model);
+            return Server.Contains("openai.azure.com/", StringComparison.Ordinal)
+                ? new AzureOpenAIClient(new Uri(Server), credential, new AzureOpenAIClientOptions() { UserAgentApplicationId = string.Empty })
+                : new OpenAIClient(credential, new() { Endpoint = new Uri(Server), UserAgentApplicationId = string.Empty });
         }
 
         private string _name = string.Empty;
