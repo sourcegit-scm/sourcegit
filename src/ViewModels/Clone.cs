@@ -127,7 +127,7 @@ namespace SourceGit.ViewModels
 
             if (!Directory.Exists(path))
             {
-                App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
+                Models.Notification.Send(_pageId, $"Folder '{path}' can NOT be found", true);
                 return false;
             }
 

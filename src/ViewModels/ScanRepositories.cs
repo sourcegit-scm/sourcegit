@@ -57,7 +57,7 @@ namespace SourceGit.ViewModels
             {
                 if (string.IsNullOrEmpty(_customDir))
                 {
-                    App.RaiseException(null, "Missing root directory to scan!");
+                    Models.Notification.Send(null, "Missing root directory to scan!", true);
                     return false;
                 }
 
@@ -67,7 +67,7 @@ namespace SourceGit.ViewModels
             {
                 if (_selected == null || string.IsNullOrEmpty(_selected.Path))
                 {
-                    App.RaiseException(null, "Missing root directory to scan!");
+                    Models.Notification.Send(null, "Missing root directory to scan!", true);
                     return false;
                 }
 

@@ -275,7 +275,7 @@ namespace SourceGit.Views
                     init.Click += (_, e) =>
                     {
                         if (repo.CurrentBranch == null)
-                            App.RaiseException(repo.FullPath, "Git flow init failed: No branch found!!!");
+                            repo.SendNotification("Git flow init failed: No branch found!!!", true);
                         else if (repo.CanCreatePopup())
                             repo.ShowPopup(new ViewModels.InitGitFlow(repo));
 
@@ -435,9 +435,9 @@ namespace SourceGit.Views
                 repo.CanCreatePopup())
             {
                 if (repo.LocalChangesCount > 0)
-                    App.RaiseException(repo.FullPath, "You have un-committed local changes. Please discard or stash them first.");
+                    repo.SendNotification("You have un-committed local changes. Please discard or stash them first.", true);
                 else if (repo.IsBisectCommandRunning || repo.BisectState != Models.BisectState.None)
-                    App.RaiseException(repo.FullPath, "Bisect is running! Please abort it before starting a new one.");
+                    repo.SendNotification("Bisect is running! Please abort it before starting a new one.", true);
                 else
                     await repo.ExecBisectCommandAsync("start");
             }

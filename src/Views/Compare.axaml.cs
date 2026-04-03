@@ -42,12 +42,14 @@ namespace SourceGit.Views
                         if (storageFile != null)
                         {
                             var saveTo = storageFile.Path.LocalPath;
-                            await vm.SaveChangesAsPatchAsync(selected, saveTo);
+                            var succ = await vm.SaveChangesAsPatchAsync(selected, saveTo);
+                            if (succ)
+                                await new Alert().ShowAsync(this, "Save patch successfully.", false);
                         }
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(null, $"Failed to save as patch: {exception.Message}");
+                        await new Alert().ShowAsync(this, $"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;

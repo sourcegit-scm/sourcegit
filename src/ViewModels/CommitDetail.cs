@@ -248,7 +248,7 @@ namespace SourceGit.ViewModels
                 saveTo);
 
             if (succ)
-                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
         public async Task ResetToThisRevisionAsync(string path)

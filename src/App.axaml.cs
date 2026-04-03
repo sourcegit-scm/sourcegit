@@ -221,18 +221,6 @@ namespace SourceGit
             return Models.ConfirmEmptyCommitResult.Cancel;
         }
 
-        public static void RaiseException(string context, string message)
-        {
-            if (Current is App { _launcher: not null } app)
-                app._launcher.DispatchNotification(context, message, true);
-        }
-
-        public static void SendNotification(string context, string message)
-        {
-            if (Current is App { _launcher: not null } app)
-                app._launcher.DispatchNotification(context, message, false);
-        }
-
         public static void SetLocale(string localeKey)
         {
             if (Current is not App app ||

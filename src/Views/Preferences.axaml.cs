@@ -226,7 +226,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select theme: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select theme override file: {ex.Message}", true);
             }
 
             e.Handled = true;
@@ -252,7 +252,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select git executable: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select git executable: {ex.Message}", true);
             }
 
             e.Handled = true;
@@ -273,7 +273,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select default clone directory: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select default clone directory: {ex.Message}", true);
             }
 
             e.Handled = true;
@@ -301,7 +301,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select gpg program: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select gpg program: {ex.Message}", true);
             }
 
             e.Handled = true;
@@ -332,7 +332,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select shell/terminal: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select shell/terminal: {ex.Message}", true);
             }
 
             e.Handled = true;
@@ -363,7 +363,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select merge tool: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select merge tool: {ex.Message}", true);
             }
 
             e.Handled = true;
@@ -441,7 +441,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select program for custom action: {ex.Message}");
+                await new Alert().ShowAsync(this, $"Failed to select executable for custom action: {ex.Message}", true);
             }
 
             e.Handled = true;

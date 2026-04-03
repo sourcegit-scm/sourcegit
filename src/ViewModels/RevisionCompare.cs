@@ -306,7 +306,7 @@ namespace SourceGit.ViewModels
         {
             var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo.FullPath, changes ?? _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
             if (succ)
-                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
         public void ClearSearchFilter()

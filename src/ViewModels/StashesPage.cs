@@ -189,7 +189,7 @@ namespace SourceGit.ViewModels
 
             var succ = await Commands.SaveChangesAsPatch.ProcessStashChangesAsync(_repo.FullPath, opts, saveTo);
             if (succ)
-                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
         public void OpenChangeWithExternalDiffTool(Models.Change change)

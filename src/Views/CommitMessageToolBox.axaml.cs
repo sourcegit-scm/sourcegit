@@ -573,7 +573,7 @@ namespace SourceGit.Views
 
                 if (vm.Staged == null || vm.Staged.Count == 0)
                 {
-                    App.RaiseException(repo.FullPath, "No files added to commit!");
+                    repo.SendNotification("No files added to commit!", true);
                     e.Handled = true;
                     return;
                 }
@@ -581,7 +581,7 @@ namespace SourceGit.Views
                 var services = repo.GetPreferredOpenAIServices();
                 if (services.Count == 0)
                 {
-                    App.RaiseException(repo.FullPath, "Bad configuration for OpenAI");
+                    repo.SendNotification("Bad configuration for OpenAI", true);
                     e.Handled = true;
                     return;
                 }

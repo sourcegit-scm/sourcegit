@@ -103,7 +103,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                App.RaiseException(Context, $"Failed to query commits. Reason: {e.Message}");
+                RaiseException($"Failed to query commits. Reason: {e.Message}");
             }
 
             return commits;

@@ -429,7 +429,7 @@ namespace SourceGit.ViewModels
 
             var on = await new Commands.QuerySingleCommit(_repo.FullPath, start).GetResultAsync();
             if (on == null)
-                App.RaiseException(_repo.FullPath, $"Can not squash current commit into parent!");
+                _repo.SendNotification($"Can not squash current commit into parent!", true);
             else
                 await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
         }

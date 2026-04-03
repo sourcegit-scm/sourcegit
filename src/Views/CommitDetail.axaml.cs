@@ -67,7 +67,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;
@@ -135,7 +135,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;
@@ -312,7 +312,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;

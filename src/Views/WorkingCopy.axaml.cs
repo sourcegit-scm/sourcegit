@@ -433,7 +433,7 @@ namespace SourceGit.Views
                         }
                         catch (Exception exception)
                         {
-                            App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                            repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                         }
 
                         e.Handled = true;
@@ -721,7 +721,7 @@ namespace SourceGit.Views
                 {
                     if (hasNonConflicts)
                     {
-                        App.RaiseException(repo.FullPath, "Selection contains both conflict and non-conflict changes!");
+                        repo.SendNotification("Selection contains both conflict and non-conflict changes!", true);
                         return null;
                     }
 
@@ -839,7 +839,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;
@@ -1022,7 +1022,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;
@@ -1239,7 +1239,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;

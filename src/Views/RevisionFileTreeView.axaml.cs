@@ -171,7 +171,7 @@ namespace SourceGit.Views
                         }
                         catch (Exception ex)
                         {
-                            App.RaiseException(detail.Repository.FullPath, $"Failed to save file: {ex.Message}");
+                            detail.Repository.SendNotification($"Failed to save file: {ex.Message}", true);
                         }
 
                         e.Handled = true;
@@ -575,7 +575,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception e)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save file: {e.Message}");
+                    repo.SendNotification($"Failed to save file: {e.Message}", true);
                 }
 
                 ev.Handled = true;
