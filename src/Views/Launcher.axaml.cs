@@ -373,7 +373,7 @@ namespace SourceGit.Views
                 {
                     var workspace = pref.Workspaces[i];
 
-                    var icon = App.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
+                    var icon = this.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
                     icon.Fill = workspace.Brush;
 
                     var item = new MenuItem();

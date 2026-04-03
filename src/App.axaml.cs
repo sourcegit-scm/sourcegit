@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
-using Avalonia.Input.Platform;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
@@ -32,7 +28,7 @@ namespace SourceGit
 
             AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
-                LogException(e.ExceptionObject as Exception);
+                Native.OS.LogException(e.ExceptionObject as Exception);
             };
 
             TaskScheduler.UnobservedTaskException += (_, e) =>
@@ -51,7 +47,7 @@ namespace SourceGit
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                Native.OS.LogException(ex);
             }
         }
 
@@ -76,52 +72,9 @@ namespace SourceGit
             Native.OS.SetupApp(builder);
             return builder;
         }
-
-        public static void LogException(Exception ex)
-        {
-            if (ex == null)
-                return;
-
-            var crashDir = Path.Combine(Native.OS.DataDir, "crashes");
-            if (!Directory.Exists(crashDir))
-                Directory.CreateDirectory(crashDir);
-
-            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            var file = Path.Combine(crashDir, $"{time}.log");
-            using var writer = new StreamWriter(file);
-            writer.WriteLine($"Crash::: {ex.GetType().FullName}: {ex.Message}");
-            writer.WriteLine();
-            writer.WriteLine("----------------------------");
-            writer.WriteLine($"Version: {Assembly.GetExecutingAssembly().GetName().Version}");
-            writer.WriteLine($"OS: {Environment.OSVersion}");
-            writer.WriteLine($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
-            writer.WriteLine($"Source: {ex.Source}");
-            writer.WriteLine($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}");
-            writer.WriteLine($"App Start Time: {Process.GetCurrentProcess().StartTime}");
-            writer.WriteLine($"Exception Time: {DateTime.Now}");
-            writer.WriteLine($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB");
-            writer.WriteLine("----------------------------");
-            writer.WriteLine();
-            writer.WriteLine(ex);
-            writer.Flush();
-        }
         #endregion
 
         #region Utility Functions
-        public static Control CreateViewForViewModel(object data)
-        {
-            var dataTypeName = data.GetType().FullName;
-            if (string.IsNullOrEmpty(dataTypeName) || !dataTypeName.Contains(".ViewModels.", StringComparison.Ordinal))
-                return null;
-
-            var viewTypeName = dataTypeName.Replace(".ViewModels.", ".Views.");
-            var viewType = Type.GetType(viewTypeName);
-            if (viewType != null)
-                return Activator.CreateInstance(viewType) as Control;
-
-            return null;
-        }
-
         public static Task ShowDialog(object data, Window owner = null)
         {
             if (owner == null)
@@ -135,7 +88,7 @@ namespace SourceGit
             if (data is Views.ChromelessWindow window)
                 return window.ShowDialog(owner);
 
-            window = CreateViewForViewModel(data) as Views.ChromelessWindow;
+            window = Views.ControlExtensions.CreateFromViewModels(data) as Views.ChromelessWindow;
             if (window != null)
             {
                 window.DataContext = data;
@@ -149,7 +102,7 @@ namespace SourceGit
         {
             if (data is not Views.ChromelessWindow window)
             {
-                window = CreateViewForViewModel(data) as Views.ChromelessWindow;
+                window = Views.ControlExtensions.CreateFromViewModels(data) as Views.ChromelessWindow;
                 if (window == null)
                     return;
 
@@ -330,19 +283,6 @@ namespace SourceGit
             }
         }
 
-        public static async Task CopyTextAsync(string data)
-        {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
-                await clipboard.SetTextAsync(data ?? "");
-        }
-
-        public static async Task<string> GetClipboardTextAsync()
-        {
-            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
-                return await clipboard.TryGetTextAsync();
-            return null;
-        }
-
         public static string Text(string key, params object[] args)
         {
             var fmt = Current?.FindResource($"Text.{key}") as string;
@@ -353,19 +293,6 @@ namespace SourceGit
                 return fmt;
 
             return string.Format(fmt, args);
-        }
-
-        public static Avalonia.Controls.Shapes.Path CreateMenuIcon(string key)
-        {
-            var icon = new Avalonia.Controls.Shapes.Path();
-            icon.Width = 12;
-            icon.Height = 12;
-            icon.Stretch = Stretch.Uniform;
-
-            if (Current?.FindResource(key) is StreamGeometry geo)
-                icon.Data = geo;
-
-            return icon;
         }
 
         public static ViewModels.Launcher GetLauncher()
@@ -427,32 +354,12 @@ namespace SourceGit
                 if (TryLaunchAsAskpass(desktop))
                     return;
 
-                _ipcChannel = new Models.IpcChannel();
-                if (!_ipcChannel.IsFirstInstance)
-                {
-                    var arg = desktop.Args is { Length: > 0 } ? desktop.Args[0].Trim() : string.Empty;
-                    if (!string.IsNullOrEmpty(arg))
-                    {
-                        if (arg.StartsWith('"') && arg.EndsWith('"'))
-                            arg = arg.Substring(1, arg.Length - 2).Trim();
-
-                        if (arg.Length > 0 && !Path.IsPathFullyQualified(arg))
-                            arg = Path.GetFullPath(arg);
-                    }
-
-                    _ipcChannel.SendToFirstInstance(arg);
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    _ipcChannel.MessageReceived += TryOpenRepository;
-                    desktop.Exit += (_, _) => _ipcChannel.Dispose();
-                    TryLaunchAsNormal(desktop);
-                }
+                TryLaunchAsNormal(desktop);
             }
         }
         #endregion
 
+        #region Launch Ways
         private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
@@ -613,6 +520,24 @@ namespace SourceGit
 
         private void TryLaunchAsNormal(IClassicDesktopStyleApplicationLifetime desktop)
         {
+            _ipcChannel = new Models.IpcChannel();
+            if (!_ipcChannel.IsFirstInstance)
+            {
+                var arg = desktop.Args is { Length: > 0 } ? desktop.Args[0].Trim() : string.Empty;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    if (arg.StartsWith('"') && arg.EndsWith('"'))
+                        arg = arg.Substring(1, arg.Length - 2).Trim();
+
+                    if (arg.Length > 0 && !Path.IsPathFullyQualified(arg))
+                        arg = Path.GetFullPath(arg);
+                }
+
+                _ipcChannel.SendToFirstInstance(arg);
+                Environment.Exit(0);
+                return;
+            }
+
             Native.OS.SetupExternalTools();
             Models.AvatarManager.Instance.Start();
 
@@ -627,40 +552,26 @@ namespace SourceGit
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
+            _ipcChannel.MessageReceived += repo =>
+            {
+                Dispatcher.UIThread.Invoke(() =>
+                {
+                    _launcher.TryOpenRepositoryFromPath(repo);
+                    if (desktop.MainWindow is Views.Launcher main)
+                        main.BringToTop();
+                });
+            };
+
+            desktop.Exit += (_, _) => _ipcChannel.Dispose();
+
 #if !DISABLE_UPDATE_DETECTION
             if (pref.ShouldCheck4UpdateOnStartup())
                 Check4Update();
 #endif
         }
+        #endregion
 
-        private void TryOpenRepository(string repo)
-        {
-            if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
-            {
-                var test = new Commands.QueryRepositoryRootPath(repo).GetResult();
-                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
-                {
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        var node = ViewModels.Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
-                        ViewModels.Welcome.Instance.Refresh();
-                        _launcher?.OpenRepositoryInTab(node, null);
-
-                        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: Views.Launcher wnd })
-                            wnd.BringToTop();
-                    });
-
-                    return;
-                }
-            }
-
-            Dispatcher.UIThread.Invoke(() =>
-            {
-                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: Views.Launcher launcher })
-                    launcher.BringToTop();
-            });
-        }
-
+        #region Check for Updates
         private void Check4Update(bool manually = false)
         {
             Task.Run(async () =>
@@ -716,6 +627,7 @@ namespace SourceGit
                 // Ignore exceptions.
             }
         }
+        #endregion
 
         private string FixFontFamilyName(string input)
         {

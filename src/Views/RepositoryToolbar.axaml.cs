@@ -30,7 +30,7 @@ namespace SourceGit.Views
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("Repository.Explore");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                explore.Icon = this.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
                     Native.OS.OpenInFileManager(fullpath);
@@ -39,7 +39,7 @@ namespace SourceGit.Views
 
                 var terminal = new MenuItem();
                 terminal.Header = App.Text("Repository.Terminal");
-                terminal.Icon = App.CreateMenuIcon("Icons.Terminal");
+                terminal.Icon = this.CreateMenuIcon("Icons.Terminal");
                 terminal.Click += (_, e) =>
                 {
                     Native.OS.OpenTerminal(fullpath);
@@ -118,7 +118,7 @@ namespace SourceGit.Views
 
                         var item = new MenuItem();
                         item.Header = App.Text("Repository.Visit", name);
-                        item.Icon = App.CreateMenuIcon("Icons.Remotes");
+                        item.Icon = this.CreateMenuIcon("Icons.Remotes");
                         item.Click += (_, e) =>
                         {
                             Native.OS.OpenBrowser(dupUrl);
@@ -235,7 +235,7 @@ namespace SourceGit.Views
                 {
                     var startFeature = new MenuItem();
                     startFeature.Header = App.Text("GitFlow.StartFeature");
-                    startFeature.Icon = App.CreateMenuIcon("Icons.GitFlow.Feature");
+                    startFeature.Icon = this.CreateMenuIcon("Icons.GitFlow.Feature");
                     startFeature.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -245,7 +245,7 @@ namespace SourceGit.Views
 
                     var startRelease = new MenuItem();
                     startRelease.Header = App.Text("GitFlow.StartRelease");
-                    startRelease.Icon = App.CreateMenuIcon("Icons.GitFlow.Release");
+                    startRelease.Icon = this.CreateMenuIcon("Icons.GitFlow.Release");
                     startRelease.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -255,7 +255,7 @@ namespace SourceGit.Views
 
                     var startHotfix = new MenuItem();
                     startHotfix.Header = App.Text("GitFlow.StartHotfix");
-                    startHotfix.Icon = App.CreateMenuIcon("Icons.GitFlow.Hotfix");
+                    startHotfix.Icon = this.CreateMenuIcon("Icons.GitFlow.Hotfix");
                     startHotfix.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -271,7 +271,7 @@ namespace SourceGit.Views
                 {
                     var init = new MenuItem();
                     init.Header = App.Text("GitFlow.Init");
-                    init.Icon = App.CreateMenuIcon("Icons.Init");
+                    init.Icon = this.CreateMenuIcon("Icons.Init");
                     init.Click += (_, e) =>
                     {
                         if (repo.CurrentBranch == null)
@@ -301,7 +301,7 @@ namespace SourceGit.Views
                 {
                     var addPattern = new MenuItem();
                     addPattern.Header = App.Text("GitLFS.AddTrackPattern");
-                    addPattern.Icon = App.CreateMenuIcon("Icons.File.Add");
+                    addPattern.Icon = this.CreateMenuIcon("Icons.File.Add");
                     addPattern.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -314,7 +314,7 @@ namespace SourceGit.Views
 
                     var fetch = new MenuItem();
                     fetch.Header = App.Text("GitLFS.Fetch");
-                    fetch.Icon = App.CreateMenuIcon("Icons.Fetch");
+                    fetch.Icon = this.CreateMenuIcon("Icons.Fetch");
                     fetch.IsEnabled = repo.Remotes.Count > 0;
                     fetch.Click += async (_, e) =>
                     {
@@ -332,7 +332,7 @@ namespace SourceGit.Views
 
                     var pull = new MenuItem();
                     pull.Header = App.Text("GitLFS.Pull");
-                    pull.Icon = App.CreateMenuIcon("Icons.Pull");
+                    pull.Icon = this.CreateMenuIcon("Icons.Pull");
                     pull.IsEnabled = repo.Remotes.Count > 0;
                     pull.Click += async (_, e) =>
                     {
@@ -350,7 +350,7 @@ namespace SourceGit.Views
 
                     var push = new MenuItem();
                     push.Header = App.Text("GitLFS.Push");
-                    push.Icon = App.CreateMenuIcon("Icons.Push");
+                    push.Icon = this.CreateMenuIcon("Icons.Push");
                     push.IsEnabled = repo.Remotes.Count > 0;
                     push.Click += async (_, e) =>
                     {
@@ -368,7 +368,7 @@ namespace SourceGit.Views
 
                     var prune = new MenuItem();
                     prune.Header = App.Text("GitLFS.Prune");
-                    prune.Icon = App.CreateMenuIcon("Icons.Clean");
+                    prune.Icon = this.CreateMenuIcon("Icons.Clean");
                     prune.Click += async (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -381,7 +381,7 @@ namespace SourceGit.Views
 
                     var locks = new MenuItem();
                     locks.Header = App.Text("GitLFS.Locks");
-                    locks.Icon = App.CreateMenuIcon("Icons.Lock");
+                    locks.Icon = this.CreateMenuIcon("Icons.Lock");
                     locks.IsEnabled = repo.Remotes.Count > 0;
                     if (repo.Remotes.Count == 1)
                     {
@@ -414,7 +414,7 @@ namespace SourceGit.Views
                 {
                     var install = new MenuItem();
                     install.Header = App.Text("GitLFS.Install");
-                    install.Icon = App.CreateMenuIcon("Icons.Init");
+                    install.Icon = this.CreateMenuIcon("Icons.Init");
                     install.Click += async (_, e) =>
                     {
                         await repo.InstallLFSAsync();
@@ -468,7 +468,7 @@ namespace SourceGit.Views
                     {
                         var (dup, label) = action;
                         var item = new MenuItem();
-                        item.Icon = App.CreateMenuIcon("Icons.Action");
+                        item.Icon = this.CreateMenuIcon("Icons.Action");
                         item.Header = label;
                         item.Click += async (_, e) =>
                         {

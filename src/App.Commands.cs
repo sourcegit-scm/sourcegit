@@ -1,7 +1,5 @@
 using System;
 using System.Windows.Input;
-
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
 namespace SourceGit
@@ -45,16 +43,6 @@ namespace SourceGit
         public static readonly Command OpenAboutCommand = new Command(async _ => await ShowDialog(new Views.About()));
         public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
         public static readonly Command QuitCommand = new Command(_ => Quit(0));
-        public static readonly Command CopyTextBlockCommand = new Command(async p =>
-        {
-            if (p is not TextBlock textBlock)
-                return;
-
-            if (textBlock.Inlines is { Count: > 0 } inlines)
-                await CopyTextAsync(inlines.Text);
-            else if (!string.IsNullOrEmpty(textBlock.Text))
-                await CopyTextAsync(textBlock.Text);
-        });
 
         public static readonly Command HideAppCommand = new Command(_ =>
         {

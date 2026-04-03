@@ -105,7 +105,7 @@ namespace SourceGit.Views
                 {
                     var openAll = new MenuItem();
                     openAll.Header = App.Text("Welcome.OpenAllInNode");
-                    openAll.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                    openAll.Icon = this.CreateMenuIcon("Icons.Folder.Open");
                     openAll.Click += (_, e) =>
                     {
                         node.Open();
@@ -120,7 +120,7 @@ namespace SourceGit.Views
                 {
                     var open = new MenuItem();
                     open.Header = App.Text("Welcome.OpenOrInit");
-                    open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                    open.Icon = this.CreateMenuIcon("Icons.Folder.Open");
                     open.Click += (_, e) =>
                     {
                         node.Open();
@@ -129,7 +129,7 @@ namespace SourceGit.Views
 
                     var explore = new MenuItem();
                     explore.Header = App.Text("Repository.Explore");
-                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
                     explore.Click += (_, e) =>
                     {
                         node.OpenInFileManager();
@@ -138,7 +138,7 @@ namespace SourceGit.Views
 
                     var terminal = new MenuItem();
                     terminal.Header = App.Text("Repository.Terminal");
-                    terminal.Icon = App.CreateMenuIcon("Icons.Terminal");
+                    terminal.Icon = this.CreateMenuIcon("Icons.Terminal");
                     terminal.Click += (_, e) =>
                     {
                         node.OpenTerminal();
@@ -155,7 +155,7 @@ namespace SourceGit.Views
                 {
                     var addSubFolder = new MenuItem();
                     addSubFolder.Header = App.Text("Welcome.AddSubFolder");
-                    addSubFolder.Icon = App.CreateMenuIcon("Icons.Folder.Add");
+                    addSubFolder.Icon = this.CreateMenuIcon("Icons.Folder.Add");
                     addSubFolder.Click += (_, e) =>
                     {
                         node.AddSubFolder();
@@ -166,7 +166,7 @@ namespace SourceGit.Views
 
                 var edit = new MenuItem();
                 edit.Header = App.Text("Welcome.Edit");
-                edit.Icon = App.CreateMenuIcon("Icons.Edit");
+                edit.Icon = this.CreateMenuIcon("Icons.Edit");
                 edit.Click += (_, e) =>
                 {
                     node.Edit();
@@ -175,7 +175,7 @@ namespace SourceGit.Views
 
                 var move = new MenuItem();
                 move.Header = App.Text("Welcome.Move");
-                move.Icon = App.CreateMenuIcon("Icons.MoveTo");
+                move.Icon = this.CreateMenuIcon("Icons.MoveTo");
                 move.Click += (_, e) =>
                 {
                     node.Move();
@@ -184,7 +184,7 @@ namespace SourceGit.Views
 
                 var delete = new MenuItem();
                 delete.Header = App.Text("Welcome.Delete");
-                delete.Icon = App.CreateMenuIcon("Icons.Clear");
+                delete.Icon = this.CreateMenuIcon("Icons.Clear");
                 delete.Click += (_, e) =>
                 {
                     node.Delete();

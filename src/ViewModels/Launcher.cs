@@ -73,6 +73,9 @@ namespace SourceGit.ViewModels
 
             _ignoreIndexChange = false;
 
+            if (TryOpenRepositoryFromPath(startupRepo))
+                return;
+
             if (!string.IsNullOrEmpty(startupRepo))
             {
                 var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResult();
@@ -95,6 +98,23 @@ namespace SourceGit.ViewModels
 
             ActivePage = Pages[0];
             PostActivePageChanged();
+        }
+
+        public bool TryOpenRepositoryFromPath(string repo)
+        {
+            if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
+            {
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResult();
+                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
+                {
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
+                    Welcome.Instance.Refresh();
+                    OpenRepositoryInTab(node, null);
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void Quit()

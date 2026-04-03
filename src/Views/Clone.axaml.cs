@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Controls;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
@@ -10,6 +11,29 @@ namespace SourceGit.Views
         public Clone()
         {
             InitializeComponent();
+        }
+
+        protected override async void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (DataContext is not ViewModels.Clone vm)
+                return;
+
+            var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+            if (clipboard != null)
+            {
+                try
+                {
+                    var text = await clipboard.TryGetTextAsync();
+                    if (Models.Remote.IsValidURL(text))
+                        vm.Remote = text;
+                }
+                catch
+                {
+                    // Ignore exceptions here.
+                }
+            }
         }
 
         private async void SelectParentFolder(object _, RoutedEventArgs e)

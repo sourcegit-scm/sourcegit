@@ -647,7 +647,7 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, ev) =>
             {
                 await CopyWithoutIndicatorsAsync();
@@ -823,7 +823,7 @@ namespace SourceGit.Views
             var selection = TextArea.Selection;
             if (selection.IsEmpty)
             {
-                await App.CopyTextAsync(string.Empty);
+                await this.CopyTextAsync(string.Empty);
                 return;
             }
 
@@ -841,9 +841,9 @@ namespace SourceGit.Views
             if (startIdx == endIdx)
             {
                 if (lines[startIdx].Type is Models.TextDiffLineType.Indicator or Models.TextDiffLineType.None)
-                    await App.CopyTextAsync(string.Empty);
+                    await this.CopyTextAsync(string.Empty);
                 else
-                    await App.CopyTextAsync(SelectedText);
+                    await this.CopyTextAsync(SelectedText);
                 return;
             }
 
@@ -883,7 +883,7 @@ namespace SourceGit.Views
                 builder.Append(line.Content).Append('\n');
             }
 
-            await App.CopyTextAsync(builder.ToString());
+            await this.CopyTextAsync(builder.ToString());
         }
 
         private bool _execSizeChanged;

@@ -63,7 +63,7 @@ namespace SourceGit.Views
         private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Commit commit })
-                await App.CopyTextAsync(commit.SHA);
+                await this.CopyTextAsync(commit.SHA);
 
             e.Handled = true;
         }
@@ -151,28 +151,28 @@ namespace SourceGit.Views
 
             var copyName = new MenuItem();
             copyName.Header = App.Text("CommitDetail.Info.CopyName");
-            copyName.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyName.Icon = this.CreateMenuIcon("Icons.Copy");
             copyName.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(user.Name);
+                await this.CopyTextAsync(user.Name);
                 ev.Handled = true;
             };
 
             var copyEmail = new MenuItem();
             copyEmail.Header = App.Text("CommitDetail.Info.CopyEmail");
-            copyEmail.Icon = App.CreateMenuIcon("Icons.Email");
+            copyEmail.Icon = this.CreateMenuIcon("Icons.Email");
             copyEmail.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(user.Email);
+                await this.CopyTextAsync(user.Email);
                 ev.Handled = true;
             };
 
             var copyUser = new MenuItem();
             copyUser.Header = App.Text("CommitDetail.Info.CopyNameAndEmail");
-            copyUser.Icon = App.CreateMenuIcon("Icons.User");
+            copyUser.Icon = this.CreateMenuIcon("Icons.User");
             copyUser.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(user.ToString());
+                await this.CopyTextAsync(user.ToString());
                 ev.Handled = true;
             };
 
@@ -181,6 +181,13 @@ namespace SourceGit.Views
             menu.Items.Add(copyEmail);
             menu.Items.Add(copyUser);
             menu.Open(control);
+            e.Handled = true;
+        }
+
+        private async void OnCopyAllCommitMessage(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail detail)
+                await this.CopyTextAsync(detail.FullMessage.Message);
             e.Handled = true;
         }
     }
