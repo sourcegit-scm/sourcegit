@@ -66,7 +66,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _commits, value))
                 {
                     if (value.Count > 0 && lastSelected != null)
-                        SelectedCommit = value.Find(x => x.SHA == lastSelected.SHA);
+                        SelectedCommit = value.Find(x => x.SHA.Equals(lastSelected.SHA, StringComparison.Ordinal));
                 }
             }
         }
@@ -222,8 +222,8 @@ namespace SourceGit.ViewModels
             else if (commits.Count == 1)
             {
                 var commit = (commits[0] as Models.Commit)!;
-                if (_repo.SearchCommitContext.Selected == null || _repo.SearchCommitContext.Selected.SHA != commit.SHA)
-                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA == commit.SHA);
+                if (_repo.SearchCommitContext.Selected == null || !_repo.SearchCommitContext.Selected.SHA.Equals(commit.SHA, StringComparison.Ordinal))
+                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA.Equals(commit.SHA, StringComparison.Ordinal));
 
                 SelectedCommit = commit;
                 NavigationId = _navigationId + 1;
@@ -366,7 +366,7 @@ namespace SourceGit.ViewModels
                     var parents = new List<Models.Commit>();
                     foreach (var sha in commit.Parents)
                     {
-                        var parent = _commits.Find(x => x.SHA == sha);
+                        var parent = _commits.Find(x => x.SHA.Equals(sha, StringComparison.Ordinal));
                         if (parent == null)
                             parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
 
