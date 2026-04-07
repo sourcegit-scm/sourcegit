@@ -120,6 +120,9 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Los siguientes submódulos necesitan ser actualizados:{0} ¿Quieres actualizarlos?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward a:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Checkout a la Rama desde el Stash</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Nueva Rama:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Stash:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Añadir fuente al mensaje de commit</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
@@ -387,6 +390,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Todos los cambios locales en la copia de trabajo.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Cambios:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Incluir archivos ignorados</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">Incluir archivos modificados/eliminados</x:String>
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} cambios serán descartados</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">¡No puedes deshacer esta acción!</x:String>
@@ -861,6 +865,7 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Cambios Locales</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplicar</x:String>
   <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">Aplicar Cambios</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">Checkout a Nueva Rama</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Copiar Mensaje</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Eliminar</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>
