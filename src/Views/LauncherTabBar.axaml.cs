@@ -304,6 +304,16 @@ namespace SourceGit.Views
                     menu.Items.Add(copyPath);
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
+                    var edit = new MenuItem();
+                    edit.Header = App.Text("PageTabBar.Tab.Edit");
+                    edit.Icon = this.CreateMenuIcon("Icons.Edit");
+                    edit.Click += (_, e) =>
+                    {
+                        page.Node.Edit();
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(edit);
+
                     var bookmark = new MenuItem();
                     bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
                     bookmark.Icon = this.CreateMenuIcon("Icons.Bookmark");

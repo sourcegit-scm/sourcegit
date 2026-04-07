@@ -523,6 +523,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">다른 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">오른쪽 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">저장소 경로 복사</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">편집</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">저장소</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">붙여넣기</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}일 전</x:String>
