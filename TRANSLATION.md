@@ -755,18 +755,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.49%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.CheckoutBranchFromStash
-- Text.CheckoutBranchFromStash.Branch
-- Text.CheckoutBranchFromStash.Stash
-- Text.Discard.IncludeModified
-- Text.StashCM.Branch
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-69.78%25-red)
 
