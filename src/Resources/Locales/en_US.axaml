@@ -496,6 +496,7 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clone new repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Close current tab</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new tab</x:String>
@@ -596,6 +597,7 @@
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Close Tab</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Close Other Tabs</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Close Tabs to the Right</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copy Repository Path</x:String>

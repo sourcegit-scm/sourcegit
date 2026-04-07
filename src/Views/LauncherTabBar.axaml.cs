@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -393,6 +393,20 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
                 menu.Items.Add(closeRight);
+
+                menu.Items.Add(new MenuItem { Header = "-" });
+                var reopen = new MenuItem
+                {
+                    Header = App.Text("PageTabBar.Tab.ReopenClosed"),
+                    Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+T" : "Ctrl+Shift+T"
+                };
+                reopen.Click += (_, ev) =>
+                {
+                    vm.ReopenLastClosedTab();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(reopen);
+
                 menu.Open(border);
             }
 

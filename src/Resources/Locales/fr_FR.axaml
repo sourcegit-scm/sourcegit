@@ -469,6 +469,7 @@
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Cloner un nouveau dépôt</x:String>
   <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Fermer la page en cours</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ReopenClosedTab" xml:space="preserve">Reopen closed tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Aller à la page suivante</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Aller à la page précédente</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Créer une nouvelle page</x:String>
@@ -544,6 +545,7 @@
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Créer un nouvel onglet</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Bookmark</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Fermer l'onglet</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.ReopenClosed" xml:space="preserve">Reopen Closed Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Fermer les autres onglets</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Fermer les onglets à droite</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copier le chemin vers le dépôt</x:String>
