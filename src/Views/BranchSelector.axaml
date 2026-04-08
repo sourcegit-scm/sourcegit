@@ -107,8 +107,7 @@
                            BorderThickness="0"
                            Background="Transparent"
                            ItemsSource="{TemplateBinding VisibleBranches, Mode=OneWay}"
-                           SelectedItem="{TemplateBinding SelectedBranch, Mode=TwoWay}"
-                           KeyDown="OnDropDownListKeyDown">
+                           SelectedItem="{TemplateBinding SelectedBranch, Mode=TwoWay}">
                     <ListBox.ItemsPanel>
                       <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical"/>

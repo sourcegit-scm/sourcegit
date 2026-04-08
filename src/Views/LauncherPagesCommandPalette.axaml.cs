@@ -14,7 +14,10 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+
             FilterTextBox.Focus(NavigationMethod.Directional);
+            PageListBox.AddHandler(ListBox.KeyDownEvent, OnListBoxKeyDown, handledEventsToo: true);
+            RepoListBox.AddHandler(ListBox.KeyDownEvent, OnListBoxKeyDown, handledEventsToo: true);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -95,6 +98,15 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
+            }
+        }
+
+        private void OnListBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && DataContext is ViewModels.LauncherPagesCommandPalette vm)
+            {
+                vm.OpenOrSwitchTo();
+                e.Handled = true;
             }
         }
 

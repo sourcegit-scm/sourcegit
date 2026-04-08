@@ -50,7 +50,7 @@
                x:Name="TxtSshKey"
                Height="28"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.SSHKey.Placeholder}"
+               PlaceholderText="{DynamicResource Text.SSHKey.Placeholder}"
                Text="{Binding SSHKey, Mode=TwoWay}"
                IsVisible="{Binding UseSSH}">
         <TextBox.InnerLeftContent>
@@ -90,7 +90,7 @@
       <TextBox Grid.Row="3" Grid.Column="1"
                Height="28"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Clone.LocalName.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Clone.LocalName.Placeholder}"
                Text="{Binding Local, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
@@ -100,7 +100,7 @@
       <TextBox Grid.Row="4" Grid.Column="1"
                Height="28"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
                Text="{Binding ExtraArgs, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="5" Grid.Column="0"

@@ -8,6 +8,7 @@ namespace SourceGit.Views
         public ExecuteCustomActionCommandPalette()
         {
             InitializeComponent();
+            ActionListBox.AddHandler(ListBox.KeyDownEvent, OnActionListBoxKeyDown, handledEventsToo: true);
         }
 
         protected override async void OnKeyDown(KeyEventArgs e)
@@ -48,6 +49,15 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
+            }
+        }
+
+        private async void OnActionListBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && DataContext is ViewModels.ExecuteCustomActionCommandPalette vm)
+            {
+                await vm.ExecAsync();
+                e.Handled = true;
             }
         }
 

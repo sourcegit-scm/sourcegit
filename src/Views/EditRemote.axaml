@@ -27,7 +27,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Remote.Name.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Remote.Name.Placeholder}"
                Text="{Binding Name, Mode=TwoWay}">
         <TextBox.InnerLeftContent>
           <Path Width="12" Height="12"
@@ -45,7 +45,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Remote.URL.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Remote.URL.Placeholder}"
                Text="{Binding Url, Mode=TwoWay}">
         <TextBox.InnerLeftContent>
           <Path Width="12" Height="12"
@@ -69,7 +69,7 @@
                  Height="26"
                  VerticalAlignment="Center"
                  CornerRadius="3"
-                 Watermark="{DynamicResource Text.SSHKey.Placeholder}"
+                 PlaceholderText="{DynamicResource Text.SSHKey.Placeholder}"
                  Text="{Binding SSHKey, Mode=TwoWay}">
           <TextBox.InnerLeftContent>
             <Path Width="12" Height="12"

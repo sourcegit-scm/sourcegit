@@ -19,45 +19,39 @@
     </Style.Resources>
     
     <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
-    <Setter Property="SystemDecorations" Value="Full"/>
+    <Setter Property="WindowDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
 
     <Setter Property="Template">
       <ControlTemplate>
-        <Border BorderThickness="{TemplateBinding BorderThickness}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                Background="{TemplateBinding Background}"
-                CornerRadius="{TemplateBinding CornerRadius}"
-                ClipToBounds="True">
-          <Border Margin="{TemplateBinding Padding}">
-            <VisualLayerManager>
-              <LayoutTransformControl>
-                <LayoutTransformControl.LayoutTransform>
-                  <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
-                                  ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
-                </LayoutTransformControl.LayoutTransform>
-                
-                <Border>
-                  <ContentPresenter Name="PART_ContentPresenter"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                </Border>
-              </LayoutTransformControl>
-            </VisualLayerManager>
-          </Border>
-        </Border>
-      </ControlTemplate>
+        <Panel>
+          <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+          <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+          <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+          <VisualLayerManager Name="PART_VisualLayerManager">
+            <LayoutTransformControl>
+              <LayoutTransformControl.LayoutTransform>
+                <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+              </LayoutTransformControl.LayoutTransform>
+
+              <ContentPresenter Name="PART_ContentPresenter"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </LayoutTransformControl>
+          </VisualLayerManager>
+        </Panel>
+      </ControlTemplate>        
     </Setter>
   </Style>
 
   <Style Selector="Window.custom_window_frame">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="SystemDecorations" Value="None"/>
+    <Setter Property="WindowDecorations" Value="None"/>
     <Setter Property="Padding" Value="12"/>
     <Setter Property="CornerRadius" Value="8"/>
 
@@ -129,28 +123,25 @@
                   Tag="{x:Static WindowEdge.SouthEast}"/>
 
           <Grid Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #A0000000)">
-            <Border x:Name="PART_ContentRoot"
-                    Background="{DynamicResource Brush.Window}"
-                    BorderBrush="{DynamicResource Brush.WindowBorder}"
-                    BorderThickness="1"
-                    CornerRadius="{TemplateBinding CornerRadius}">
-              <VisualLayerManager>
+            <Panel>
+              <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
+              <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
+              <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+              <VisualLayerManager Name="PART_VisualLayerManager">
                 <LayoutTransformControl>
                   <LayoutTransformControl.LayoutTransform>
                     <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
                                     ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
                   </LayoutTransformControl.LayoutTransform>
-                  
-                  <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
-                    <ContentPresenter Name="PART_ContentPresenter"
-                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                      Content="{TemplateBinding Content}"
-                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                  </Border>
+
+                  <ContentPresenter Name="PART_ContentPresenter"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                                    Content="{TemplateBinding Content}"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 </LayoutTransformControl>
               </VisualLayerManager>
-            </Border>
+            </Panel>
           </Grid>
         </Grid>
       </ControlTemplate>
@@ -1442,7 +1433,7 @@
                 Padding="10">
           <Grid RowDefinitions="Auto,Auto">
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
+              <TextBox PlaceholderText="{x:Static ae:SR.SearchLabel}"
                        Name="PART_searchTextBox"
                        Width="265" Height="28"
                        Margin="0,0,0,0"

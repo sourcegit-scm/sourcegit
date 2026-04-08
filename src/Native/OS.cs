@@ -108,12 +108,6 @@ namespace SourceGit.Native
             set;
         } = string.Empty;
 
-        public static bool UseMicaOnWindows11
-        {
-            get => OperatingSystem.IsWindows() && OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000) && _enableMicaOnWindows11;
-            set => _enableMicaOnWindows11 = value;
-        }
-
         public static bool UseSystemWindowFrame
         {
             get => OperatingSystem.IsLinux() && _enableSystemWindowFrame;
@@ -330,6 +324,5 @@ namespace SourceGit.Native
         private static IBackend _backend = null;
         private static string _gitExecutable = string.Empty;
         private static bool _enableSystemWindowFrame = false;
-        private static bool _enableMicaOnWindows11 = true;
     }
 }

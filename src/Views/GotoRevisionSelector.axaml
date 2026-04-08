@@ -45,8 +45,7 @@
              Background="Transparent"
              Grid.IsSharedSizeScope="True"
              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-             KeyDown="OnListKeyDown">
+             ScrollViewer.VerticalScrollBarVisibility="Disabled">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="Margin" Value="0"/>

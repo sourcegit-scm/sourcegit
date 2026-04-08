@@ -136,7 +136,12 @@ namespace SourceGit.Views
         private void OnPopupOpened(object sender, EventArgs e)
         {
             var listBox = _popup?.Child?.FindDescendantOfType<ListBox>();
-            listBox?.Focus();
+            if (listBox != null)
+            {
+                listBox.RemoveHandler(ListBox.KeyDownEvent, OnDropDownListKeyDown);
+                listBox.AddHandler(ListBox.KeyDownEvent, OnDropDownListKeyDown, handledEventsToo: true);
+                listBox.Focus();
+            }
         }
 
         private void OnPopupClosed(object sender, EventArgs e)

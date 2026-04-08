@@ -14,7 +14,9 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+
             FilterTextBox.Focus(NavigationMethod.Directional);
+            CmdListBox.AddHandler(ListBox.KeyDownEvent, OnCmdListBoxKeyDown, handledEventsToo: true);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -55,6 +57,15 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
+            }
+        }
+
+        private void OnCmdListBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && DataContext is ViewModels.RepositoryCommandPalette vm)
+            {
+                vm.Exec();
+                e.Handled = true;
             }
         }
 

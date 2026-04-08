@@ -115,13 +115,8 @@ namespace SourceGit.Views
             if (_inlines.Count == 0)
                 return;
 
-            var ro = new RenderOptions()
-            {
-                TextRenderingMode = TextRenderingMode.SubpixelAntialias,
-                EdgeMode = EdgeMode.Antialias
-            };
-
-            using (context.PushRenderOptions(ro))
+            using (context.PushRenderOptions(new() { EdgeMode = EdgeMode.Antialias }))
+            using (context.PushTextOptions(new() { TextRenderingMode = TextRenderingMode.Antialias }))
             {
                 var height = Bounds.Height;
                 var width = Bounds.Width;

@@ -85,7 +85,7 @@
                      Height="28"
                      VerticalAlignment="Center"
                      CornerRadius="3"
-                     Watermark="{Binding Placeholder, Mode=OneWay}"
+                     PlaceholderText="{Binding Placeholder, Mode=OneWay}"
                      Text="{Binding Text, Mode=TwoWay}"/>
           </Grid>
         </DataTemplate>
@@ -108,7 +108,7 @@
             <TextBox Grid.Column="1"
                      Height="28"
                      CornerRadius="3"
-                     Watermark="{Binding Placeholder, Mode=OneWay}"
+                     PlaceholderText="{Binding Placeholder, Mode=OneWay}"
                      Text="{Binding Path, Mode=TwoWay}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectPath">

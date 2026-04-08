@@ -37,7 +37,7 @@
                                 VerticalAlignment="Center"
                                 CornerRadius="3"
                                 Text="{Binding Name, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"/>
+                                PlaceholderText="{DynamicResource Text.RenameBranch.Name.Placeholder}"/>
     </Grid>
   </StackPanel>
 </UserControl>

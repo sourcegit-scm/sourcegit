@@ -8,6 +8,7 @@ namespace SourceGit.Views
         public MergeCommandPalette()
         {
             InitializeComponent();
+            BranchListBox.AddHandler(ListBox.KeyDownEvent, OnBranchListBoxKeyDown, handledEventsToo: true);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -48,6 +49,15 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
+            }
+        }
+
+        private void OnBranchListBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && DataContext is ViewModels.MergeCommandPalette vm)
+            {
+                vm.Launch();
+                e.Handled = true;
             }
         }
 

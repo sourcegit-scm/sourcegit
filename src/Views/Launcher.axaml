@@ -22,7 +22,7 @@
     <Grid Grid.Row="0" ColumnDefinitions="Auto,32,32,*,Auto">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="5"
-              x:Name="TitleBarBG"
+              Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               DoubleTapped="MaximizeOrRestoreWindow"
               PointerPressed="BeginMoveWindow"/>

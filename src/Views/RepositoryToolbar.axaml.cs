@@ -26,7 +26,7 @@ namespace SourceGit.Views
 
                 RenderOptions.SetBitmapInterpolationMode(menu, BitmapInterpolationMode.HighQuality);
                 RenderOptions.SetEdgeMode(menu, EdgeMode.Antialias);
-                RenderOptions.SetTextRenderingMode(menu, TextRenderingMode.Antialias);
+                TextOptions.SetTextOptions(menu, new TextOptions() { TextRenderingMode = TextRenderingMode.Antialias });
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("Repository.Explore");

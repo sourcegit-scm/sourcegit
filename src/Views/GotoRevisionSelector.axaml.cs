@@ -15,10 +15,12 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+
+            RevisionList.AddHandler(ListBox.KeyDownEvent, OnRevisionListKeyDown, handledEventsToo: true);
             RevisionList.Focus();
         }
 
-        private void OnListKeyDown(object sender, KeyEventArgs e)
+        private void OnRevisionListKeyDown(object sender, KeyEventArgs e)
         {
             if (e is not { Key: Key.Enter, KeyModifiers: KeyModifiers.None })
                 return;

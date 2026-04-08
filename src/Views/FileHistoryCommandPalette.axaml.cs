@@ -8,6 +8,7 @@ namespace SourceGit.Views
         public FileHistoryCommandPalette()
         {
             InitializeComponent();
+            FileListBox.AddHandler(ListBox.KeyDownEvent, OnFileListBoxKeyDown, handledEventsToo: true);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -48,6 +49,15 @@ namespace SourceGit.Views
                     e.Handled = true;
                     return;
                 }
+            }
+        }
+
+        private void OnFileListBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && DataContext is ViewModels.FileHistoryCommandPalette vm)
+            {
+                this.ShowWindow(vm.Launch());
+                e.Handled = true;
             }
         }
 

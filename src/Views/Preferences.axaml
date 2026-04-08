@@ -350,7 +350,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultUser, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.Git.User.Placeholder}"/>
+                     PlaceholderText="{DynamicResource Text.Preferences.Git.User.Placeholder}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.Email}"
@@ -360,7 +360,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultEmail, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.Git.Email.Placeholder}"/>
+                     PlaceholderText="{DynamicResource Text.Preferences.Git.Email.Placeholder}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.CRLF}"
@@ -463,7 +463,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.GPGExecutableFile, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.GPG.Path.Placeholder}"
+                     PlaceholderText="{DynamicResource Text.Preferences.GPG.Path.Placeholder}"
                      IsVisible="{Binding #ThisControl.GPGFormat.NeedFindProgram}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectGPGExecutable">
@@ -480,7 +480,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.GPGUserKey, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"/>
+                     PlaceholderText="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"/>
 
             <CheckBox Grid.Row="3" Grid.Column="1"
                       Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
@@ -615,7 +615,7 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
-                       Watermark="{DynamicResource Text.Preferences.DiffMerge.Path.Placeholder}"
+                       PlaceholderText="{DynamicResource Text.Preferences.DiffMerge.Path.Placeholder}"
                        IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                 <TextBox.InnerRightContent>
                   <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">

@@ -44,9 +44,6 @@ namespace SourceGit.Views
                     e.Handled = true;
                 }
             }
-
-            if (!e.Handled && e.Key != Key.Space && e.Key != Key.Enter)
-                base.OnKeyDown(e);
         }
     }
 

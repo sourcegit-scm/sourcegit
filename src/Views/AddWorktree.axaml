@@ -29,7 +29,7 @@
                Height="28"
                CornerRadius="3"
                Text="{Binding Path, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.AddWorktree.Location.Placeholder}">
+               PlaceholderText="{DynamicResource Text.AddWorktree.Location.Placeholder}">
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="28" Height="28" Margin="4,0,0,0" Click="SelectLocation">
             <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
@@ -58,7 +58,7 @@
                Height="28"
                CornerRadius="3"
                Text="{Binding SelectedBranch, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
+               PlaceholderText="{DynamicResource Text.AddWorktree.Name.Placeholder}"
                IsEnabled="{Binding CreateNewBranch, Mode=OneWay}"
                IsVisible="{Binding CreateNewBranch, Mode=OneWay}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"

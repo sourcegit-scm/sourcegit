@@ -9,26 +9,12 @@ using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Platform;
-using Avalonia.Threading;
 
 namespace SourceGit.Native
 {
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct MARGINS
-        {
-            public int cxLeftWidth;
-            public int cxRightWidth;
-            public int cyTopHeight;
-            public int cyBottomHeight;
-        }
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
-
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
 
@@ -43,19 +29,13 @@ namespace SourceGit.Native
 
         public void SetupApp(AppBuilder builder)
         {
-            // Fix drop shadow issue on Windows 10
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
-            {
-                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
-                Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
-            }
+            // Do nothing for now.
         }
 
         public void SetupWindow(Window window)
         {
-            window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+            window.WindowDecorations = WindowDecorations.BorderOnly;
             window.ExtendClientAreaToDecorationsHint = true;
-            window.BorderThickness = new Thickness(1);
         }
 
         public string GetDataDir()
@@ -212,21 +192,6 @@ namespace SourceGit.Native
         }
 
         #region HELPER_METHODS
-        private void FixWindowFrameOnWin10(Window w)
-        {
-            // Schedule the DWM frame extension to run in the next render frame
-            // to ensure proper timing with the window initialization sequence
-            Dispatcher.UIThread.Post(() =>
-            {
-                var platformHandle = w.TryGetPlatformHandle();
-                if (platformHandle == null)
-                    return;
-
-                var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-                DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
-            }, DispatcherPriority.Render);
-        }
-
         private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
             var root = new DirectoryInfo(path);
