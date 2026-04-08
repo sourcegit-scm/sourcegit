@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 
 namespace SourceGit.Models
 {
@@ -24,6 +25,13 @@ namespace SourceGit.Models
             DeletedLeft,
             AddedRight,
             AddedLeft,
+        }
+
+        private enum CharCategory : byte
+        {
+            Other,       // default: whitespace, control, punctuation, symbols, etc.
+            Letter,      // Ll/Lu/Lt/Lm + digit: ASCII and euro letters (latin, greek, cyrillic, etc.)
+            OtherLetter, // Lo: CJK, hiragana, katakana, hangul, Thai, Arabic, etc.
         }
 
         private class EditResult
@@ -100,22 +108,25 @@ namespace SourceGit.Models
             var start = 0;
             var size = text.Length;
             var chunks = new List<Chunk>();
-            var delims = new HashSet<char>(" \t+-*/=!,:;.'\"/?|&#@%`<>()[]{}\\".ToCharArray());
+            if (size == 0)
+                return chunks;
 
-            for (int i = 0; i < size; i++)
+            var prev = GetCategory(text[0]);
+
+            for (var i = 1; i < size; i++)
             {
                 var ch = text[i];
-                if (delims.Contains(ch))
+                var category = GetCategory(ch);
+                if (prev != category || category == CharCategory.Other)
                 {
-                    if (start != i)
-                        AddChunk(chunks, hashes, text.Substring(start, i - start), start);
-                    AddChunk(chunks, hashes, text.Substring(i, 1), i);
-                    start = i + 1;
+                    AddChunk(chunks, hashes, text[start..i], start);
+                    start = i;
                 }
+                prev = category;
             }
 
             if (start < size)
-                AddChunk(chunks, hashes, text.Substring(start), start);
+                AddChunk(chunks, hashes, text[start..], start);
             return chunks;
         }
 
@@ -302,5 +313,33 @@ namespace SourceGit.Models
             }
             chunks.Add(new Chunk(hash, start, data.Length));
         }
+
+        private static CharCategory[] BuildCategoryCache()
+        {
+            // Pre-compute category for all char values.
+            // All entries default to Other (0).
+            var cache = new CharCategory[65536];
+            for (int i = 0; i < 65536; i++)
+            {
+                var ch = (char)i;
+                // Unicode Lo: CJK, hiragana, katakana, hangul, Thai, Arabic, Hebrew, etc.
+                // → group consecutive chars into one chunk (no space delimiter in these languages)
+                if (char.GetUnicodeCategory(ch) == UnicodeCategory.OtherLetter)
+                    cache[i] = CharCategory.OtherLetter;
+
+                // Unicode Ll/Lu/Lt/Lm + digit: latin, greek, cyrillic and their diacritic variants
+                // → group consecutive chars into one chunk (words in space-delimited languages)
+                else if (char.IsLetterOrDigit(ch))
+                    cache[i] = CharCategory.Letter;
+
+                // everything else (whitespace, control, punctuation, symbols) → Other (default)
+            }
+
+            return cache;
+        }
+
+        private static CharCategory GetCategory(char ch) => s_charCategoryCache[ch];
+
+        private static readonly CharCategory[] s_charCategoryCache = BuildCategoryCache();
     }
 }
