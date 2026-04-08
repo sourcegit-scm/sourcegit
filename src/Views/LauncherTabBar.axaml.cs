@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -298,7 +299,8 @@ namespace SourceGit.Views
                     copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyPath.Click += async (_, ev) =>
                     {
-                        await this.CopyTextAsync(repo.FullPath);
+                        var dir = new DirectoryInfo(repo.FullPath);
+                        await this.CopyTextAsync(dir.FullName);
                         ev.Handled = true;
                     };
                     menu.Items.Add(copyPath);
