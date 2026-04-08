@@ -1,6 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:s="using:SourceGit"
         xmlns:vm="using:SourceGit.ViewModels"
         xmlns:v="using:SourceGit.Views"
         xmlns:c="using:SourceGit.Converters"
