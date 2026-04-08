@@ -400,7 +400,6 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Відкрити в інструменті злиття</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необов'язково.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Створити нову вкладку</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Закладка</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Закрити вкладку</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Закрити інші вкладки</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Закрити вкладки праворуч</x:String>

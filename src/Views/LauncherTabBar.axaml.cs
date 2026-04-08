@@ -314,32 +314,6 @@ namespace SourceGit.Views
                     };
                     menu.Items.Add(edit);
 
-                    var bookmark = new MenuItem();
-                    bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
-                    bookmark.Icon = this.CreateMenuIcon("Icons.Bookmark");
-
-                    for (int i = 0; i < Models.Bookmarks.Brushes.Length; i++)
-                    {
-                        var brush = Models.Bookmarks.Brushes[i];
-                        var icon = this.CreateMenuIcon("Icons.Bookmark");
-                        if (brush != null)
-                            icon.Fill = brush;
-
-                        var dupIdx = i;
-                        var setter = new MenuItem() { Header = icon };
-                        if (i == page.Node.Bookmark)
-                            setter.Icon = this.CreateMenuIcon("Icons.Check");
-                        else
-                            setter.Click += (_, ev) =>
-                            {
-                                page.Node.Bookmark = dupIdx;
-                                ev.Handled = true;
-                            };
-
-                        bookmark.Items.Add(setter);
-                    }
-                    menu.Items.Add(bookmark);
-
                     var workspaces = ViewModels.Preferences.Instance.Workspaces;
                     if (workspaces.Count > 1)
                     {

@@ -598,7 +598,6 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">使用外部对比工具查看</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">设置书签</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">关闭其他标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">关闭右侧标签页</x:String>
