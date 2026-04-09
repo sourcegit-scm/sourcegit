@@ -491,6 +491,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">次のタブに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">前のタブに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新しいタブを作成</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenOrInit" xml:space="preserve">リポジトリを開く</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">設定ダイアログを開く</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">ワークスペースのドロップダウンメニューを表示</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">アクティブなタブを切り替え</x:String>
