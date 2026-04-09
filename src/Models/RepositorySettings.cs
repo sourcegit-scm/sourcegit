@@ -30,18 +30,6 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
-        public bool EnableAutoFetch
-        {
-            get;
-            set;
-        } = false;
-
-        public int AutoFetchInterval
-        {
-            get;
-            set;
-        } = 10;
-
         public bool AskBeforeAutoUpdatingSubmodules
         {
             get;

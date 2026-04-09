@@ -1887,7 +1887,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                if (_settings is not { EnableAutoFetch: true } || !CanCreatePopup())
+                if (Preferences.Instance.EnableAutoFetch || !CanCreatePopup())
                 {
                     _lastFetchTime = DateTime.Now;
                     return;
@@ -1898,7 +1898,7 @@ namespace SourceGit.ViewModels
                     return;
 
                 var now = DateTime.Now;
-                var desire = _lastFetchTime.AddMinutes(_settings.AutoFetchInterval);
+                var desire = _lastFetchTime.AddMinutes(Preferences.Instance.AutoFetchInterval);
                 if (desire > now)
                     return;
 
