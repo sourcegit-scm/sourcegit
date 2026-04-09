@@ -665,18 +665,15 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Commit");
             var succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
                     .Use(log)
-                    .RunAsync()
-                    .ConfigureAwait(false);
+                    .RunAsync();
 
             log.Complete();
 
             if (succ)
             {
-                // Do not use property `UseAmend` but manually trigger property changed to avoid refreshing staged changes here.
-                _useAmend = false;
-                OnPropertyChanged(nameof(UseAmend));
-
+                UseAmend = false;
                 CommitMessage = string.Empty;
+
                 if (autoPush && _repo.Remotes.Count > 0)
                 {
                     Models.Branch pushBranch = null;
