@@ -84,8 +84,8 @@ namespace SourceGit.AI
         {
             var credential = new ApiKeyCredential(ReadApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
             return Server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(new Uri(Server), credential, new AzureOpenAIClientOptions() { UserAgentApplicationId = string.Empty })
-                : new OpenAIClient(credential, new() { Endpoint = new Uri(Server), UserAgentApplicationId = string.Empty });
+                ? new AzureOpenAIClient(new Uri(Server), credential)
+                : new OpenAIClient(credential, new() { Endpoint = new Uri(Server) });
         }
 
         private string _name = string.Empty;
