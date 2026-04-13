@@ -85,9 +85,9 @@ namespace SourceGit.ViewModels
             _pageId = pageId;
 
             Groups = new List<RepositoryNode>();
+            Groups.Add(new RepositoryNode { Name = "No Group (Uncategorized)", Id = string.Empty });
+            SelectedGroup = Groups[0];
             CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
-            if (Groups.Count > 0)
-                SelectedGroup = Groups[0];
 
             Bookmarks = new List<int>();
             for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
@@ -166,7 +166,8 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, _selectedGroup, true);
+            var parent = _selectedGroup is { Id: not "" } ? _selectedGroup : null;
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, true);
             node.Bookmark = _bookmark;
             await node.UpdateStatusAsync(false, null);
 

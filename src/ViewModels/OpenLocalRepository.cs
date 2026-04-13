@@ -41,12 +41,11 @@ namespace SourceGit.ViewModels
         public OpenLocalRepository(string pageId, RepositoryNode group)
         {
             _pageId = pageId;
-            _group = group;
 
             Groups = new List<RepositoryNode>();
+            Groups.Add(new RepositoryNode { Name = "No Group (Uncategorized)", Id = string.Empty });
+            Group = group ?? Groups[0];
             CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
-            if (Groups.Count > 0 && _group == null)
-                Group = Groups[0];
 
             Bookmarks = new List<int>();
             for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
@@ -63,6 +62,7 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             var isBare = await new Commands.IsBareRepository(_repoPath).GetResultAsync();
+            var parent = _group is { Id: not "" } ? _group : null;
             var repoRoot = _repoPath;
             if (!isBare)
             {
@@ -78,7 +78,7 @@ namespace SourceGit.ViewModels
                     {
                         if (page.Node.Id.Equals(_pageId, StringComparison.Ordinal))
                         {
-                            page.Popup = new Init(page.Node.Id, _repoPath, _group, test.StdErr);
+                            page.Popup = new Init(page.Node.Id, _repoPath, parent, test.StdErr);
                             break;
                         }
                     }
@@ -87,7 +87,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repoRoot, _group, true);
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repoRoot, parent, true);
             node.Bookmark = _bookmark;
             await node.UpdateStatusAsync(false, null);
             Welcome.Instance.Refresh();
