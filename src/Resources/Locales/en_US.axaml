@@ -130,6 +130,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Extra Parameters:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Additional arguments to clone repository. Optional.</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">Bookmark:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">Group:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Local Name:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Repository name. Optional.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Parent Folder:</x:String>

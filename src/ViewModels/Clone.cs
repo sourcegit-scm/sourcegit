@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -45,6 +46,28 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _local, value);
         }
 
+        public List<RepositoryNode> Groups
+        {
+            get;
+        }
+
+        public RepositoryNode SelectedGroup
+        {
+            get => _selectedGroup;
+            set => SetProperty(ref _selectedGroup, value);
+        }
+
+        public List<int> Bookmarks
+        {
+            get;
+        }
+
+        public int Bookmark
+        {
+            get => _bookmark;
+            set => SetProperty(ref _bookmark, value);
+        }
+
         public string ExtraArgs
         {
             get => _extraArgs;
@@ -60,6 +83,15 @@ namespace SourceGit.ViewModels
         public Clone(string pageId)
         {
             _pageId = pageId;
+
+            Groups = new List<RepositoryNode>();
+            CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
+            if (Groups.Count > 0)
+                SelectedGroup = Groups[0];
+
+            Bookmarks = new List<int>();
+            for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
+                Bookmarks.Add(i);
 
             var activeWorkspace = Preferences.Instance.GetActiveWorkspace();
             _parentFolder = activeWorkspace?.DefaultCloneDir;
@@ -134,7 +166,8 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, _selectedGroup, true);
+            node.Bookmark = _bookmark;
             await node.UpdateStatusAsync(false, null);
 
             var launcher = App.GetLauncher();
@@ -153,6 +186,18 @@ namespace SourceGit.ViewModels
             return true;
         }
 
+        private void CollectGroups(List<RepositoryNode> outs, List<RepositoryNode> collections)
+        {
+            foreach (var node in collections)
+            {
+                if (!node.IsRepository)
+                {
+                    outs.Add(node);
+                    CollectGroups(outs, node.SubNodes);
+                }
+            }
+        }
+
         private string _pageId = string.Empty;
         private string _remote = string.Empty;
         private bool _useSSH = false;
@@ -160,5 +205,7 @@ namespace SourceGit.ViewModels
         private string _parentFolder = string.Empty;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
+        private RepositoryNode _selectedGroup = null;
+        private int _bookmark = 0;
     }
 }

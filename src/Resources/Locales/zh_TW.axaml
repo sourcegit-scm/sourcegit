@@ -134,6 +134,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">複製 (clone) 遠端存放庫</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">額外參數:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">其他複製參數，選填。</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">書籤:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">群組:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">本機存放庫名稱:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">本機存放庫目錄的名稱，選填。</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">上層目錄:</x:String>
