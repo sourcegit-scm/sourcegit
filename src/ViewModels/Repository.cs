@@ -1887,7 +1887,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                if (Preferences.Instance.EnableAutoFetch || !CanCreatePopup())
+                if (!Preferences.Instance.EnableAutoFetch || !CanCreatePopup())
                 {
                     _lastFetchTime = DateTime.Now;
                     return;
