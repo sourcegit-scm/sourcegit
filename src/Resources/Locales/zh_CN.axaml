@@ -598,6 +598,10 @@
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">浏览应用数据目录</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">打开文件</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">使用外部对比工具查看</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">打开本地仓库</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">书签 ：</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">分组 ：</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">仓库位置 ：</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页</x:String>

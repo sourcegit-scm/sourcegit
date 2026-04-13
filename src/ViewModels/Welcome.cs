@@ -128,19 +128,6 @@ namespace SourceGit.ViewModels
             return rs.StdOut.Trim();
         }
 
-        public void InitRepository(string path, RepositoryNode parent, string reason)
-        {
-            if (!Preferences.Instance.IsGitConfigured())
-            {
-                Models.Notification.Send(null, App.Text("NotConfigured"), true);
-                return;
-            }
-
-            var activePage = App.GetLauncher().ActivePage;
-            if (activePage != null && activePage.CanCreatePopup())
-                activePage.Popup = new Init(activePage.Node.Id, path, parent, reason);
-        }
-
         public async Task AddRepositoryAsync(string path, RepositoryNode parent, bool moveNode, bool open)
         {
             var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, moveNode);
@@ -161,6 +148,19 @@ namespace SourceGit.ViewModels
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new Clone(activePage.Node.Id);
+        }
+
+        public void OpenLocalRepository()
+        {
+            if (!Preferences.Instance.IsGitConfigured())
+            {
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
+                return;
+            }
+
+            var activePage = App.GetLauncher().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new OpenLocalRepository(activePage.Node.Id, null);
         }
 
         public void OpenTerminal()
