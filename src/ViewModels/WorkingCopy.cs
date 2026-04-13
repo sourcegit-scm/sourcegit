@@ -92,7 +92,7 @@ namespace SourceGit.ViewModels
                         var currentBranch = _repo.CurrentBranch;
                         if (currentBranch == null)
                         {
-                            App.RaiseException(_repo.FullPath, "No commits to amend!!!");
+                            _repo.SendNotification("No commits to amend!!!", true);
                             _useAmend = false;
                             OnPropertyChanged();
                             return;
@@ -415,7 +415,7 @@ namespace SourceGit.ViewModels
         {
             var succ = await Commands.SaveChangesAsPatch.ProcessLocalChangesAsync(_repo.FullPath, changes, isUnstaged, saveTo);
             if (succ)
-                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
         public void Discard(List<Models.Change> changes)
@@ -614,13 +614,13 @@ namespace SourceGit.ViewModels
 
             if (!_repo.CanCreatePopup())
             {
-                App.RaiseException(_repo.FullPath, "Repository has an unfinished job! Please wait!");
+                _repo.SendNotification("Repository has an unfinished job! Please wait!", true);
                 return;
             }
 
             if (autoStage && HasUnsolvedConflicts)
             {
-                App.RaiseException(_repo.FullPath, "Repository has unsolved conflict(s). Auto-stage and commit is disabled!");
+                _repo.SendNotification("Repository has unsolved conflict(s). Auto-stage and commit is disabled!", true);
                 return;
             }
 
@@ -665,18 +665,15 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Commit");
             var succ = await new Commands.Commit(_repo.FullPath, _commitMessage, EnableSignOff, NoVerifyOnCommit, _useAmend, _resetAuthor)
                     .Use(log)
-                    .RunAsync()
-                    .ConfigureAwait(false);
+                    .RunAsync();
 
             log.Complete();
 
             if (succ)
             {
-                // Do not use property `UseAmend` but manually trigger property changed to avoid refreshing staged changes here.
-                _useAmend = false;
-                OnPropertyChanged(nameof(UseAmend));
-
+                UseAmend = false;
                 CommitMessage = string.Empty;
+
                 if (autoPush && _repo.Remotes.Count > 0)
                 {
                     Models.Branch pushBranch = null;

@@ -42,7 +42,7 @@ namespace SourceGit.Commands
                     start.Args = $"flow hotfix start {name}";
                     break;
                 default:
-                    App.RaiseException(repo, "Bad git-flow branch type!!!");
+                    Models.Notification.Send(repo, "Bad git-flow branch type!!!", true);
                     return false;
             }
 
@@ -66,7 +66,7 @@ namespace SourceGit.Commands
                     builder.Append("hotfix");
                     break;
                 default:
-                    App.RaiseException(repo, "Bad git-flow branch type!!!");
+                    Models.Notification.Send(repo, "Bad git-flow branch type!!!", true);
                     return false;
             }
 

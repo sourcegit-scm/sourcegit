@@ -30,14 +30,14 @@
           <DataTemplate DataType="m:Null">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Repositories}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="8,0,0,0" IsTabStop="False"/>
+              <TextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="8,0,0,0" IsTabStop="False"/>
             </StackPanel>
           </DataTemplate>
 
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0" IsTabStop="False"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0" IsTabStop="False"/>
             </StackPanel>
           </DataTemplate>
 

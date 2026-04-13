@@ -22,6 +22,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Crear Nueva Rama</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Rama Existente</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Asistente OpenAI</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERAR</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Usar</x:String>
@@ -119,6 +120,9 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Los siguientes submódulos necesitan ser actualizados:{0} ¿Quieres actualizarlos?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward a:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Checkout a la Rama desde el Stash</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Nueva Rama:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Stash:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Añadir fuente al mensaje de commit</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
@@ -386,6 +390,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">Todos los cambios locales en la copia de trabajo.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Cambios:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Incluir archivos ignorados</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">Incluir archivos modificados/eliminados</x:String>
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} cambios serán descartados</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">¡No puedes deshacer esta acción!</x:String>
@@ -593,11 +598,11 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Crear Nueva Página</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Marcador</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Cerrar Pestaña</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Cerrar Otras Pestañas</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Cerrar Pestañas a la Derecha</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copiar Ruta del Repositorio</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Editar</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Mover al Espacio de trabajo</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Actualizar</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositorios</x:String>
@@ -616,7 +621,6 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt adicional (Usa `-` para listar tus requerimientos)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clave API</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nombre</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">El valor ingresado es el nombre de la clave API a cargar desde ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>
@@ -861,6 +865,7 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash Cambios Locales</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplicar</x:String>
   <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">Aplicar Cambios</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">Checkout a Nueva Rama</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Copiar Mensaje</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Eliminar</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Guardar como Parche...</x:String>

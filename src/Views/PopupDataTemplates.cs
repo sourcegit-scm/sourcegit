@@ -14,7 +14,7 @@ namespace SourceGit.Views
 
         public Control Build(object param)
         {
-            var control = App.CreateViewForViewModel(param);
+            var control = ControlExtensions.CreateFromViewModels(param);
 
             control.Loaded += (o, e) =>
             {

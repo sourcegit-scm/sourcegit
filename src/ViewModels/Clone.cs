@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
@@ -66,20 +65,6 @@ namespace SourceGit.ViewModels
             _parentFolder = activeWorkspace?.DefaultCloneDir;
             if (string.IsNullOrEmpty(ParentFolder))
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var text = await App.GetClipboardTextAsync();
-                    if (Models.Remote.IsValidURL(text))
-                        Dispatcher.UIThread.Post(() => Remote = text);
-                }
-                catch
-                {
-                    // Ignore
-                }
-            });
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
@@ -127,7 +112,7 @@ namespace SourceGit.ViewModels
 
             if (!Directory.Exists(path))
             {
-                App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
+                Models.Notification.Send(_pageId, $"Folder '{path}' can NOT be found", true);
                 return false;
             }
 

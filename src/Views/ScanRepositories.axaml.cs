@@ -35,7 +35,7 @@ namespace SourceGit.Views
             }
             catch (Exception ex)
             {
-                App.RaiseException(string.Empty, $"Failed to select root scanning directory: {ex.Message}");
+                Models.Notification.Send(null, $"Failed to select root scanning directory: {ex.Message}", true);
             }
 
             e.Handled = true;

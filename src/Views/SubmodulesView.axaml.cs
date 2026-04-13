@@ -183,7 +183,7 @@ namespace SourceGit.Views
                 {
                     var open = new MenuItem();
                     open.Header = App.Text("Submodule.Open");
-                    open.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                    open.Icon = this.CreateMenuIcon("Icons.Folder.Open");
                     open.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
                     open.Click += (_, ev) =>
                     {
@@ -193,7 +193,7 @@ namespace SourceGit.Views
 
                     var update = new MenuItem();
                     update.Header = App.Text("Submodule.Update");
-                    update.Icon = App.CreateMenuIcon("Icons.Loading");
+                    update.Icon = this.CreateMenuIcon("Icons.Loading");
                     update.Click += (_, ev) =>
                     {
                         if (repo.CanCreatePopup())
@@ -203,7 +203,7 @@ namespace SourceGit.Views
 
                     var move = new MenuItem();
                     move.Header = App.Text("Submodule.Move");
-                    move.Icon = App.CreateMenuIcon("Icons.MoveTo");
+                    move.Icon = this.CreateMenuIcon("Icons.MoveTo");
                     move.Click += (_, ev) =>
                     {
                         if (repo.CanCreatePopup())
@@ -213,7 +213,7 @@ namespace SourceGit.Views
 
                     var setURL = new MenuItem();
                     setURL.Header = App.Text("Submodule.SetURL");
-                    setURL.Icon = App.CreateMenuIcon("Icons.Edit");
+                    setURL.Icon = this.CreateMenuIcon("Icons.Edit");
                     setURL.Click += (_, ev) =>
                     {
                         if (repo.CanCreatePopup())
@@ -223,7 +223,7 @@ namespace SourceGit.Views
 
                     var setBranch = new MenuItem();
                     setBranch.Header = App.Text("Submodule.SetBranch");
-                    setBranch.Icon = App.CreateMenuIcon("Icons.Track");
+                    setBranch.Icon = this.CreateMenuIcon("Icons.Track");
                     setBranch.Click += (_, ev) =>
                     {
                         if (repo.CanCreatePopup())
@@ -233,7 +233,7 @@ namespace SourceGit.Views
 
                     var deinit = new MenuItem();
                     deinit.Header = App.Text("Submodule.Deinit");
-                    deinit.Icon = App.CreateMenuIcon("Icons.Undo");
+                    deinit.Icon = this.CreateMenuIcon("Icons.Undo");
                     deinit.IsEnabled = submodule.Status != Models.SubmoduleStatus.NotInited;
                     deinit.Click += (_, ev) =>
                     {
@@ -244,7 +244,7 @@ namespace SourceGit.Views
 
                     var rm = new MenuItem();
                     rm.Header = App.Text("Submodule.Remove");
-                    rm.Icon = App.CreateMenuIcon("Icons.Clear");
+                    rm.Icon = this.CreateMenuIcon("Icons.Clear");
                     rm.Click += (_, ev) =>
                     {
                         if (repo.CanCreatePopup())
@@ -254,7 +254,7 @@ namespace SourceGit.Views
 
                     var histories = new MenuItem();
                     histories.Header = App.Text("Submodule.Histories");
-                    histories.Icon = App.CreateMenuIcon("Icons.Histories");
+                    histories.Icon = this.CreateMenuIcon("Icons.Histories");
                     histories.Click += (_, ev) =>
                     {
                         App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, submodule.Path));
@@ -263,43 +263,43 @@ namespace SourceGit.Views
 
                     var copySHA = new MenuItem();
                     copySHA.Header = App.Text("CommitDetail.Info.SHA");
-                    copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
+                    copySHA.Icon = this.CreateMenuIcon("Icons.Hash");
                     copySHA.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(submodule.SHA);
+                        await this.CopyTextAsync(submodule.SHA);
                         ev.Handled = true;
                     };
 
                     var copyBranch = new MenuItem();
                     copyBranch.Header = App.Text("Submodule.CopyBranch");
-                    copyBranch.Icon = App.CreateMenuIcon("Icons.Branch");
+                    copyBranch.Icon = this.CreateMenuIcon("Icons.Branch");
                     copyBranch.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(submodule.Branch);
+                        await this.CopyTextAsync(submodule.Branch);
                         ev.Handled = true;
                     };
 
                     var copyRelativePath = new MenuItem();
                     copyRelativePath.Header = App.Text("Submodule.CopyPath");
-                    copyRelativePath.Icon = App.CreateMenuIcon("Icons.Folder");
+                    copyRelativePath.Icon = this.CreateMenuIcon("Icons.Folder");
                     copyRelativePath.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(submodule.Path);
+                        await this.CopyTextAsync(submodule.Path);
                         ev.Handled = true;
                     };
 
                     var copyURL = new MenuItem();
                     copyURL.Header = App.Text("Submodule.URL");
-                    copyURL.Icon = App.CreateMenuIcon("Icons.Link");
+                    copyURL.Icon = this.CreateMenuIcon("Icons.Link");
                     copyURL.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(submodule.URL);
+                        await this.CopyTextAsync(submodule.URL);
                         ev.Handled = true;
                     };
 
                     var copy = new MenuItem();
                     copy.Header = App.Text("Copy");
-                    copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copy.Icon = this.CreateMenuIcon("Icons.Copy");
                     copy.Items.Add(copySHA);
                     copy.Items.Add(copyBranch);
                     copy.Items.Add(copyRelativePath);

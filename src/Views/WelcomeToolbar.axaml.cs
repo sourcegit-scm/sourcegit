@@ -59,7 +59,7 @@ namespace SourceGit.Views
             }
             catch (Exception exception)
             {
-                App.RaiseException(string.Empty, $"Failed to open repository: {exception.Message}");
+                Models.Notification.Send(null, $"Failed to open repository: {exception.Message}", true);
             }
 
             e.Handled = true;

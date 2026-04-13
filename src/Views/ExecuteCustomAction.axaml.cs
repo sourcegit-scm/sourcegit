@@ -39,7 +39,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(string.Empty, $"Failed to select parent folder: {exception.Message}");
+                    Models.Notification.Send(null, $"Failed to select parent folder: {exception.Message}", true);
                 }
             }
             else

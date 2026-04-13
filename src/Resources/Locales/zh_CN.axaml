@@ -22,6 +22,7 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">创建新分支</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">已有分支</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI助手</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用AI助手生成提交信息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用所选</x:String>
@@ -119,6 +120,9 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模块需要更新：{0}是否立即更新？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">检出分支并快进</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">从所选贮藏检出分支</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">新分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">所选贮藏 ：</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">挑选提交</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">提交信息中追加来源信息</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">提交列表 ：</x:String>
@@ -386,6 +390,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">所有本仓库未提交的修改。</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">变更 ：</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">包括所有已忽略的文件</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">包括已修改或删除的文件</x:String>
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包括未跟踪的文件</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">总计{0}项选中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支持回退，请确认后继续！！！</x:String>
@@ -593,11 +598,11 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">使用外部对比工具查看</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">选填。</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新建空白页</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">设置书签</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">关闭标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">关闭其他标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">关闭右侧标签页</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">复制仓库路径</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">编辑</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">移至工作区</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">刷新</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">新标签页</x:String>
@@ -616,7 +621,6 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">附加提示词 (请使用 `-` 列出您的要求)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API密钥</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
@@ -861,6 +865,7 @@
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">贮藏本地变更</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">应用(apply)</x:String>
   <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">应用(apply)选中变更</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">检出新分支</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">复制描述信息</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">删除(drop)</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">另存为补丁...</x:String>

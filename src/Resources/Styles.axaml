@@ -1,6 +1,5 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:s="using:SourceGit"
         xmlns:vm="using:SourceGit.ViewModels"
         xmlns:v="using:SourceGit.Views"
         xmlns:c="using:SourceGit.Converters"
@@ -538,36 +537,6 @@
   <Style Selector="Run.inline_code">
     <Setter Property="FontFamily" Value="{DynamicResource Fonts.Monospace}"/>
     <Setter Property="Foreground" Value="{DynamicResource Brush.InlineCodeFG}"/>
-  </Style>
-
-  <Style Selector="SelectableTextBlock">
-    <Setter Property="HorizontalAlignment" Value="Left"/>
-    <Setter Property="VerticalAlignment" Value="Center"/>
-    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-  </Style>
-  <Style Selector="SelectableTextBlock[IsEnabled=True]">
-    <Setter Property="ContextFlyout">
-      <Setter.Value>
-        <MenuFlyout Placement="Bottom">
-          <MenuItem Header="{DynamicResource Text.Copy}"
-                    Command="{Binding $parent[SelectableTextBlock].Copy}"
-                    IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}"
-                    InputGesture="{x:Static TextBox.CopyGesture}">
-            <MenuItem.Icon>
-              <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
-            </MenuItem.Icon>
-          </MenuItem>
-
-          <MenuItem Header="{DynamicResource Text.CopyAllText}"
-                    Command="{x:Static s:App.CopyTextBlockCommand}"
-                    CommandParameter="{Binding $parent[SelectableTextBlock]}">
-            <MenuItem.Icon>
-              <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
-            </MenuItem.Icon>
-          </MenuItem>
-        </MenuFlyout>
-      </Setter.Value>
-    </Setter>
   </Style>
 
   <Style Selector="TextBox">

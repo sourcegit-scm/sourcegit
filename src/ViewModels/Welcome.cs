@@ -104,7 +104,7 @@ namespace SourceGit.ViewModels
         {
             if (!Preferences.Instance.IsGitConfigured())
             {
-                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
                 return null;
             }
 
@@ -132,7 +132,7 @@ namespace SourceGit.ViewModels
         {
             if (!Preferences.Instance.IsGitConfigured())
             {
-                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
                 return;
             }
 
@@ -154,7 +154,7 @@ namespace SourceGit.ViewModels
         {
             if (!Preferences.Instance.IsGitConfigured())
             {
-                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
                 return;
             }
 
@@ -166,7 +166,7 @@ namespace SourceGit.ViewModels
         public void OpenTerminal()
         {
             if (!Preferences.Instance.IsGitConfigured())
-                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
             else
                 Native.OS.OpenTerminal(null);
         }
@@ -175,7 +175,7 @@ namespace SourceGit.ViewModels
         {
             if (!Preferences.Instance.IsGitConfigured())
             {
-                App.RaiseException(string.Empty, App.Text("NotConfigured"));
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
                 return;
             }
 

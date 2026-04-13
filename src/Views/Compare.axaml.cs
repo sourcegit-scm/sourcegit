@@ -24,7 +24,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Save");
+                patch.Icon = this.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = this.StorageProvider;
@@ -42,12 +42,14 @@ namespace SourceGit.Views
                         if (storageFile != null)
                         {
                             var saveTo = storageFile.Path.LocalPath;
-                            await vm.SaveChangesAsPatchAsync(selected, saveTo);
+                            var succ = await vm.SaveChangesAsPatchAsync(selected, saveTo);
+                            if (succ)
+                                await new Alert().ShowAsync(this, "Save patch successfully.", false);
                         }
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(null, $"Failed to save as patch: {exception.Message}");
+                        await new Alert().ShowAsync(this, $"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;
@@ -58,7 +60,7 @@ namespace SourceGit.Views
                     var change = selected[0];
                     var openWithMerger = new MenuItem();
                     openWithMerger.Header = App.Text("OpenInExternalMergeTool");
-                    openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                    openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
                     openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                     openWithMerger.Click += (_, ev) =>
                     {
@@ -72,7 +74,7 @@ namespace SourceGit.Views
                         var full = vm.GetAbsPath(change.Path);
                         var explore = new MenuItem();
                         explore.Header = App.Text("RevealFile");
-                        explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                        explore.Icon = this.CreateMenuIcon("Icons.Explore");
                         explore.IsEnabled = File.Exists(full);
                         explore.Click += (_, ev) =>
                         {
@@ -89,7 +91,7 @@ namespace SourceGit.Views
                     {
                         var resetToLeft = new MenuItem();
                         resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.BaseName);
-                        resetToLeft.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToLeft.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToLeft.Click += async (_, ev) =>
                         {
                             await vm.ResetToLeftAsync(change);
@@ -98,7 +100,7 @@ namespace SourceGit.Views
 
                         var resetToRight = new MenuItem();
                         resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.ToName);
-                        resetToRight.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToRight.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToRight.Click += async (_, ev) =>
                         {
                             await vm.ResetToRightAsync(change);
@@ -112,21 +114,21 @@ namespace SourceGit.Views
 
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copyPath.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(change.Path);
+                        await this.CopyTextAsync(change.Path);
                         ev.Handled = true;
                     };
 
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyFullPath");
-                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(vm.GetAbsPath(change.Path));
+                        await this.CopyTextAsync(vm.GetAbsPath(change.Path));
                         ev.Handled = true;
                     };
 
@@ -142,7 +144,7 @@ namespace SourceGit.Views
                     {
                         var resetToLeft = new MenuItem();
                         resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.BaseName);
-                        resetToLeft.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToLeft.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToLeft.Click += async (_, ev) =>
                         {
                             await vm.ResetMultipleToLeftAsync(selected);
@@ -151,7 +153,7 @@ namespace SourceGit.Views
 
                         var resetToRight = new MenuItem();
                         resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.ToName);
-                        resetToRight.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                        resetToRight.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToRight.Click += async (_, ev) =>
                         {
                             await vm.ResetMultipleToRightAsync(selected);
@@ -165,7 +167,7 @@ namespace SourceGit.Views
 
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copyPath.Click += async (_, ev) =>
                     {
@@ -173,13 +175,13 @@ namespace SourceGit.Views
                         foreach (var c in selected)
                             builder.AppendLine(c.Path);
 
-                        await App.CopyTextAsync(builder.ToString());
+                        await this.CopyTextAsync(builder.ToString());
                         ev.Handled = true;
                     };
 
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyFullPath");
-                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, ev) =>
                     {
@@ -187,7 +189,7 @@ namespace SourceGit.Views
                         foreach (var c in selected)
                             builder.AppendLine(vm.GetAbsPath(c.Path));
 
-                        await App.CopyTextAsync(builder.ToString());
+                        await this.CopyTextAsync(builder.ToString());
                         ev.Handled = true;
                     };
 
@@ -233,7 +235,7 @@ namespace SourceGit.Views
                         builder.AppendLine(copyAbsPath ? vm.GetAbsPath(c.Path) : c.Path);
                 }
 
-                await App.CopyTextAsync(builder.ToString());
+                await this.CopyTextAsync(builder.ToString());
                 e.Handled = true;
             }
             else if (e.Key == Key.F && e.KeyModifiers == cmdKey)

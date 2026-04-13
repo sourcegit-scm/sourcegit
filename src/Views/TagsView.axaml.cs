@@ -236,7 +236,7 @@ namespace SourceGit.Views
                 var tag = selected[0];
 
                 var createBranch = new MenuItem();
-                createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
+                createBranch.Icon = this.CreateMenuIcon("Icons.Branch.Add");
                 createBranch.Header = App.Text("CreateBranch");
                 createBranch.Click += (_, ev) =>
                 {
@@ -247,7 +247,7 @@ namespace SourceGit.Views
 
                 var pushTag = new MenuItem();
                 pushTag.Header = App.Text("TagCM.Push", tag.Name);
-                pushTag.Icon = App.CreateMenuIcon("Icons.Push");
+                pushTag.Icon = this.CreateMenuIcon("Icons.Push");
                 pushTag.IsEnabled = repo.Remotes.Count > 0;
                 pushTag.Click += (_, ev) =>
                 {
@@ -258,7 +258,7 @@ namespace SourceGit.Views
 
                 var deleteTag = new MenuItem();
                 deleteTag.Header = App.Text("TagCM.Delete", tag.Name);
-                deleteTag.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteTag.Icon = this.CreateMenuIcon("Icons.Clear");
                 deleteTag.Click += (_, ev) =>
                 {
                     if (repo.CanCreatePopup())
@@ -268,7 +268,7 @@ namespace SourceGit.Views
 
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("TagCM.CompareWithHead");
-                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Icon = this.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
                     App.ShowWindow(new ViewModels.Compare(repo, tag, repo.CurrentBranch));
@@ -276,14 +276,14 @@ namespace SourceGit.Views
 
                 var compareWith = new MenuItem();
                 compareWith.Header = App.Text("TagCM.CompareWith");
-                compareWith.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWith.Icon = this.CreateMenuIcon("Icons.Compare");
                 compareWith.Click += (_, _) =>
                 {
                     new ViewModels.CompareCommandPalette(repo, tag).Open();
                 };
 
                 var archive = new MenuItem();
-                archive.Icon = App.CreateMenuIcon("Icons.Archive");
+                archive.Icon = this.CreateMenuIcon("Icons.Archive");
                 archive.Header = App.Text("Archive");
                 archive.Click += (_, ev) =>
                 {
@@ -309,13 +309,13 @@ namespace SourceGit.Views
                 {
                     var custom = new MenuItem();
                     custom.Header = App.Text("TagCM.CustomAction");
-                    custom.Icon = App.CreateMenuIcon("Icons.Action");
+                    custom.Icon = this.CreateMenuIcon("Icons.Action");
 
                     foreach (var action in actions)
                     {
                         var (dup, label) = action;
                         var item = new MenuItem();
-                        item.Icon = App.CreateMenuIcon("Icons.Action");
+                        item.Icon = this.CreateMenuIcon("Icons.Action");
                         item.Header = label;
                         item.Click += async (_, ev) =>
                         {
@@ -332,24 +332,24 @@ namespace SourceGit.Views
 
                 var copy = new MenuItem();
                 copy.Header = App.Text("Copy");
-                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Icon = this.CreateMenuIcon("Icons.Copy");
 
                 var copyName = new MenuItem();
                 copyName.Header = App.Text("TagCM.Copy.Name");
-                copyName.Icon = App.CreateMenuIcon("Icons.Tag");
+                copyName.Icon = this.CreateMenuIcon("Icons.Tag");
                 copyName.Click += async (_, ev) =>
                 {
-                    await App.CopyTextAsync(tag.Name);
+                    await this.CopyTextAsync(tag.Name);
                     ev.Handled = true;
                 };
 
                 var copyMessage = new MenuItem();
                 copyMessage.Header = App.Text("TagCM.Copy.Message");
-                copyMessage.Icon = App.CreateMenuIcon("Icons.Info");
+                copyMessage.Icon = this.CreateMenuIcon("Icons.Info");
                 copyMessage.IsEnabled = !string.IsNullOrEmpty(tag.Message);
                 copyMessage.Click += async (_, ev) =>
                 {
-                    await App.CopyTextAsync(tag.Message);
+                    await this.CopyTextAsync(tag.Message);
                     ev.Handled = true;
                 };
 
@@ -360,10 +360,10 @@ namespace SourceGit.Views
                 {
                     var copyCreator = new MenuItem();
                     copyCreator.Header = App.Text("TagCM.Copy.Tagger");
-                    copyCreator.Icon = App.CreateMenuIcon("Icons.User");
+                    copyCreator.Icon = this.CreateMenuIcon("Icons.User");
                     copyCreator.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(tag.Creator.ToString());
+                        await this.CopyTextAsync(tag.Creator.ToString());
                         ev.Handled = true;
                     };
                     copy.Items.Add(copyCreator);
@@ -380,7 +380,7 @@ namespace SourceGit.Views
                 {
                     var compare = new MenuItem();
                     compare.Header = App.Text("TagCM.CompareTwo");
-                    compare.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compare.Icon = this.CreateMenuIcon("Icons.Compare");
                     compare.Click += (_, ev) =>
                     {
                         var (based, to) = (selected[0], selected[1]);
@@ -395,7 +395,7 @@ namespace SourceGit.Views
 
                 var deleteMultiple = new MenuItem();
                 deleteMultiple.Header = App.Text("TagCM.DeleteMultiple", selected.Count);
-                deleteMultiple.Icon = App.CreateMenuIcon("Icons.Clear");
+                deleteMultiple.Icon = this.CreateMenuIcon("Icons.Clear");
                 deleteMultiple.Click += (_, ev) =>
                 {
                     if (repo.CanCreatePopup())

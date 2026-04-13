@@ -32,7 +32,7 @@ namespace SourceGit.AI
             }
             """)), false);
 
-        public static async Task<ToolChatMessage> Process(ChatToolCall call, Action<string> output)
+        public static async Task<ToolChatMessage> ProcessAsync(ChatToolCall call, Action<string> output)
         {
             using var doc = JsonDocument.Parse(call.FunctionArguments);
 

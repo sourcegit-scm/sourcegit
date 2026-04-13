@@ -46,18 +46,33 @@
                       Content="{Binding Text}"/>
 
     <!-- Options -->
-    <Border Grid.Row="2" Margin="0,0,0,8">
-      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <v:LoadingIcon Width="14" Height="14"
-                       Margin="0,0,8,0"
-                       IsVisible="{Binding IsGenerating}"/>
-        <Button Classes="flat"
+    <Grid Grid.Row="2" Margin="8,0,8,8" ColumnDefinitions="Auto,*,18,Auto">
+      <TextBlock Grid.Column="0"
+                 Classes="group_header_label"
+                 Text="{DynamicResource Text.AIAssistant.Model}"/>
+      
+      <ComboBox Grid.Column="1"
                 Height="28"
-                Padding="12,0"
-                Content="{DynamicResource Text.AIAssistant.Regen}"
-                IsEnabled="{Binding !IsGenerating}"
-                Click="OnRegenClicked"/>
-      </StackPanel>
-    </Border>
+                Margin="6,0" Padding="4,0"
+                BorderThickness="0"
+                Background="Transparent"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding AvailableModels, Mode=OneWay}"
+                SelectedItem="{Binding CurrentModel, Mode=TwoWay}"
+                SelectionChanged="OnModelChanged"/>
+      
+      <v:LoadingIcon Grid.Column="2"
+                     Width="14" Height="14"
+                     Margin="0,0,8,0"
+                     IsVisible="{Binding IsGenerating}"/>
+      
+      <Button Grid.Column="3"
+              Classes="flat"
+              Height="28"
+              Padding="12,0"
+              Content="{DynamicResource Text.AIAssistant.Regen}"
+              IsEnabled="{Binding !IsGenerating}"
+              Click="OnRegenClicked"/>
+    </Grid>
   </Grid>
 </v:ChromelessWindow>

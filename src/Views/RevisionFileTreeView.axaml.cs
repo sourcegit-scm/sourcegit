@@ -142,7 +142,7 @@ namespace SourceGit.Views
                         if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
                             path = detail.GetAbsPath(path);
 
-                        await App.CopyTextAsync(path);
+                        await this.CopyTextAsync(path);
                         e.Handled = true;
                     }
                 }
@@ -171,7 +171,7 @@ namespace SourceGit.Views
                         }
                         catch (Exception ex)
                         {
-                            App.RaiseException(detail.Repository.FullPath, $"Failed to save file: {ex.Message}");
+                            detail.Repository.SendNotification($"Failed to save file: {ex.Message}", true);
                         }
 
                         e.Handled = true;
@@ -459,7 +459,7 @@ namespace SourceGit.Views
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, path);
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
-            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.Icon = this.CreateMenuIcon("Icons.Explore");
             explore.IsEnabled = Directory.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
@@ -469,7 +469,7 @@ namespace SourceGit.Views
 
             var history = new MenuItem();
             history.Header = App.Text("DirHistories");
-            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Icon = this.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
                 App.ShowWindow(new ViewModels.DirHistories(repo, path, commit.SHA));
@@ -478,21 +478,21 @@ namespace SourceGit.Views
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
             copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyPath.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(path);
+                await this.CopyTextAsync(path);
                 ev.Handled = true;
             };
 
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
-            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
             copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
             copyFullPath.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(fullPath);
+                await this.CopyTextAsync(fullPath);
                 e.Handled = true;
             };
 
@@ -513,7 +513,7 @@ namespace SourceGit.Views
 
             var openWith = new MenuItem();
             openWith.Header = App.Text("Open");
-            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.Icon = this.CreateMenuIcon("Icons.OpenWith");
             openWith.IsEnabled = file.Type == Models.ObjectType.Blob;
             if (openWith.IsEnabled)
             {
@@ -552,7 +552,7 @@ namespace SourceGit.Views
 
             var saveAs = new MenuItem();
             saveAs.Header = App.Text("SaveAs");
-            saveAs.Icon = App.CreateMenuIcon("Icons.Save");
+            saveAs.Icon = this.CreateMenuIcon("Icons.Save");
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
             saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+S" : "Ctrl+Shift+S";
             saveAs.Click += async (_, ev) =>
@@ -575,7 +575,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception e)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save file: {e.Message}");
+                    repo.SendNotification($"Failed to save file: {e.Message}", true);
                 }
 
                 ev.Handled = true;
@@ -583,7 +583,7 @@ namespace SourceGit.Views
 
             var explore = new MenuItem();
             explore.Header = App.Text("RevealFile");
-            explore.Icon = App.CreateMenuIcon("Icons.Explore");
+            explore.Icon = this.CreateMenuIcon("Icons.Explore");
             explore.IsEnabled = File.Exists(fullPath) || Directory.Exists(fullPath);
             explore.Click += (_, ev) =>
             {
@@ -598,7 +598,7 @@ namespace SourceGit.Views
 
             var history = new MenuItem();
             history.Header = App.Text("FileHistory");
-            history.Icon = App.CreateMenuIcon("Icons.Histories");
+            history.Icon = this.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
                 App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, file.Path, commit.SHA));
@@ -607,7 +607,7 @@ namespace SourceGit.Views
 
             var blame = new MenuItem();
             blame.Header = App.Text("Blame");
-            blame.Icon = App.CreateMenuIcon("Icons.Blame");
+            blame.Icon = this.CreateMenuIcon("Icons.Blame");
             blame.IsEnabled = file.Type == Models.ObjectType.Blob;
             blame.Click += (_, ev) =>
             {
@@ -623,7 +623,7 @@ namespace SourceGit.Views
             {
                 var resetToThisRevision = new MenuItem();
                 resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
-                resetToThisRevision.Icon = App.CreateMenuIcon("Icons.File.Checkout");
+                resetToThisRevision.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += async (_, ev) =>
                 {
                     await vm.ResetToThisRevisionAsync(file.Path);
@@ -637,11 +637,11 @@ namespace SourceGit.Views
                 {
                     var lfs = new MenuItem();
                     lfs.Header = App.Text("GitLFS");
-                    lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+                    lfs.Icon = this.CreateMenuIcon("Icons.LFS");
 
                     var lfsLock = new MenuItem();
                     lfsLock.Header = App.Text("GitLFS.Locks.Lock");
-                    lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+                    lfsLock.Icon = this.CreateMenuIcon("Icons.Lock");
                     if (repo.Remotes.Count == 1)
                     {
                         lfsLock.Click += async (_, e) =>
@@ -669,7 +669,7 @@ namespace SourceGit.Views
 
                     var lfsUnlock = new MenuItem();
                     lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
-                    lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                    lfsUnlock.Icon = this.CreateMenuIcon("Icons.Unlock");
                     if (repo.Remotes.Count == 1)
                     {
                         lfsUnlock.Click += async (_, e) =>
@@ -706,13 +706,13 @@ namespace SourceGit.Views
                 var target = new Models.CustomActionTargetFile(file.Path, vm.Commit);
                 var custom = new MenuItem();
                 custom.Header = App.Text("FileCM.CustomAction");
-                custom.Icon = App.CreateMenuIcon("Icons.Action");
+                custom.Icon = this.CreateMenuIcon("Icons.Action");
 
                 foreach (var action in actions)
                 {
                     var (dup, label) = action;
                     var item = new MenuItem();
-                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Icon = this.CreateMenuIcon("Icons.Action");
                     item.Header = label;
                     item.Click += async (_, e) =>
                     {
@@ -729,21 +729,21 @@ namespace SourceGit.Views
 
             var copyPath = new MenuItem();
             copyPath.Header = App.Text("CopyPath");
-            copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
             copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyPath.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(file.Path);
+                await this.CopyTextAsync(file.Path);
                 ev.Handled = true;
             };
 
             var copyFullPath = new MenuItem();
             copyFullPath.Header = App.Text("CopyFullPath");
-            copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
             copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
             copyFullPath.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(fullPath);
+                await this.CopyTextAsync(fullPath);
                 e.Handled = true;
             };
 
