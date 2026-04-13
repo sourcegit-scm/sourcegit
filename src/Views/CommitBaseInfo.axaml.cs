@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -55,9 +56,35 @@ namespace SourceGit.Views
             set => SetValue(ChildrenProperty, value);
         }
 
+        public static readonly StyledProperty<bool> IsSHACopiedProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsSHACopied));
+
+        public bool IsSHACopied
+        {
+            get => GetValue(IsSHACopiedProperty);
+            set => SetValue(IsSHACopiedProperty, value);
+        }
+
         public CommitBaseInfo()
         {
             InitializeComponent();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ContentProperty)
+            {
+                _iconResetTimer?.Dispose();
+                SetCurrentValue(IsSHACopiedProperty, false);
+            }
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            _iconResetTimer?.Dispose();
         }
 
         private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
@@ -65,6 +92,15 @@ namespace SourceGit.Views
             if (sender is Button { DataContext: Models.Commit commit })
                 await this.CopyTextAsync(commit.SHA);
 
+            _iconResetTimer = DispatcherTimer.RunOnce(() =>
+            {
+                if (IsSHACopied)
+                    IsSHACopied = false;
+
+                _iconResetTimer = null;
+            }, TimeSpan.FromSeconds(3));
+
+            IsSHACopied = true;
             e.Handled = true;
         }
 
@@ -190,5 +226,7 @@ namespace SourceGit.Views
                 await this.CopyTextAsync(detail.FullMessage.Message);
             e.Handled = true;
         }
+
+        private IDisposable _iconResetTimer;
     }
 }
