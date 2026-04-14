@@ -45,24 +45,23 @@ namespace SourceGit.Commands
                 using var proc = new Process();
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
-
-                var text = await proc.StandardOutput.ReadToEndAsync().ConfigureAwait(false);
-
+                using var ms = new System.IO.MemoryStream();
+                await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
+                var bytes = ms.ToArray();
                 var start = 0;
-                var end = text.IndexOf('\n', start);
-                while (end > 0)
+                while (start < bytes.Length)
                 {
-                    var line = text[start..end];
-                    ParseLine(line);
-
-                    start = end + 1;
-                    end = text.IndexOf('\n', start);
+                    var end = Array.IndexOf(bytes, (byte)'\n', start);
+                    if (end < 0)
+                        end = bytes.Length;
+                    var next = end + 1;
+                    if (start <= end - 1 && bytes[end - 1] == '\r')
+                        end--;
+                    if (!_result.IsBinary)
+                        ParseLine(bytes[start..end]);
+                    start = next;
                 }
-
-                if (start < text.Length)
-                    ParseLine(text[start..]);
-
-                await proc.WaitForExitAsync().ConfigureAwait(false);
+                await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
             }
             catch
             {
@@ -82,10 +81,9 @@ namespace SourceGit.Commands
             return _result;
         }
 
-        private void ParseLine(string line)
+        private void ParseLine(byte[] lineBytes)
         {
-            if (_result.IsBinary)
-                return;
+            var line = Encoding.UTF8.GetString(lineBytes);
 
             if (line.StartsWith("old mode ", StringComparison.Ordinal))
             {
@@ -168,7 +166,7 @@ namespace SourceGit.Commands
 
                     _oldLine = int.Parse(match.Groups[1].Value);
                     _newLine = int.Parse(match.Groups[2].Value);
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, lineBytes, 0, 0);
                     _result.TextDiff.Lines.Add(_last);
                 }
             }
@@ -177,7 +175,7 @@ namespace SourceGit.Commands
                 if (line.Length == 0)
                 {
                     ProcessInlineHighlights();
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", _oldLine, _newLine);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, Array.Empty<byte>(), _oldLine, _newLine);
                     _result.TextDiff.Lines.Add(_last);
                     _oldLine++;
                     _newLine++;
@@ -195,7 +193,7 @@ namespace SourceGit.Commands
                     }
 
                     _result.TextDiff.DeletedLines++;
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), _oldLine, 0);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, lineBytes[1..], _oldLine, 0);
                     _deleted.Add(_last);
                     _oldLine++;
                 }
@@ -209,7 +207,7 @@ namespace SourceGit.Commands
                     }
 
                     _result.TextDiff.AddedLines++;
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), 0, _newLine);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, lineBytes[1..], 0, _newLine);
                     _added.Add(_last);
                     _newLine++;
                 }
@@ -221,7 +219,7 @@ namespace SourceGit.Commands
                     {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);
-                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, 0, 0);
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, lineBytes, 0, 0);
                         _result.TextDiff.Lines.Add(_last);
                     }
                     else
@@ -233,7 +231,7 @@ namespace SourceGit.Commands
                             return;
                         }
 
-                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), _oldLine, _newLine);
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, lineBytes[1..], _oldLine, _newLine);
                         _result.TextDiff.Lines.Add(_last);
                         _oldLine++;
                         _newLine++;
