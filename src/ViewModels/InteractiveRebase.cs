@@ -172,38 +172,54 @@ namespace SourceGit.ViewModels
                     .ConfigureAwait(false);
 
                 var list = new List<InteractiveRebaseItem>();
-                var fixups = new List<InteractiveRebaseItem>();
+                var needReorder = new Dictionary<string, InteractiveRebaseItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
                     var item = new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message);
-                    if (c.Commit.Subject.StartsWith("fixup! ", StringComparison.Ordinal) && item.OriginalOrder > 1)
-                    {
-                        fixups.Add(item);
-                        continue;
-                    }
+                    var subject = c.Commit.Subject;
 
-                    var reordered = new List<InteractiveRebaseItem>();
-                    foreach (var f in fixups)
+                    if (item.OriginalOrder > 1)
                     {
-                        if (c.Commit.Subject.StartsWith(f.Commit.Subject.Substring(7), StringComparison.Ordinal))
+                        if (subject.StartsWith("fixup! ", StringComparison.Ordinal))
                         {
-                            f.Action = Models.InteractiveRebaseAction.Fixup;
-                            reordered.Add(f);
-                            list.Add(f);
+                            item.Action = Models.InteractiveRebaseAction.Fixup;
+                            needReorder.Add(subject.Substring(7), item);
+                            continue;
+                        }
+
+                        if (subject.StartsWith("squash! ", StringComparison.Ordinal))
+                        {
+                            item.Action = Models.InteractiveRebaseAction.Squash;
+                            needReorder.Add(subject.Substring(8), item);
+                            continue;
                         }
                     }
-                    fixups.RemoveAll(x => reordered.Contains(x));
+
+                    var reordered = new List<string>();
+                    foreach (var (k, v) in needReorder)
+                    {
+                        if (subject.StartsWith(k, StringComparison.Ordinal))
+                        {
+                            list.Add(v);
+                            reordered.Add(k);
+                        }
+                    }
+
+                    foreach (var k in reordered)
+                        needReorder.Remove(k);
+
                     list.Add(item);
                 }
 
-                foreach (var f in fixups)
+                foreach (var (_, v) in needReorder)
                 {
                     for (var i = 0; i < list.Count; i++)
                     {
-                        if (f.OriginalOrder > list[i].OriginalOrder)
+                        if (v.OriginalOrder > list[i].OriginalOrder)
                         {
-                            list.Insert(i, f);
+                            v.Action = Models.InteractiveRebaseAction.Pick; // For safety, reset to pick if the target commit is not found
+                            list.Insert(i, v);
                             break;
                         }
                     }
@@ -394,7 +410,18 @@ namespace SourceGit.ViewModels
                     item.IsMessageUserEdited = false;
 
                     if (item.Action == Models.InteractiveRebaseAction.Squash)
-                        pendingMessages.Add(item.OriginalFullMessage);
+                    {
+                        if (item.OriginalFullMessage.StartsWith("squash! ", StringComparison.Ordinal))
+                        {
+                            var firstLineEnd = item.OriginalFullMessage.IndexOf('\n');
+                            if (firstLineEnd > 0)
+                                pendingMessages.Add(item.OriginalFullMessage.Substring(firstLineEnd + 1));
+                        }
+                        else
+                        {
+                            pendingMessages.Add(item.OriginalFullMessage);
+                        }
+                    }
 
                     hasPending = true;
                     continue;
