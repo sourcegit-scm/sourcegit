@@ -172,10 +172,41 @@ namespace SourceGit.ViewModels
                     .ConfigureAwait(false);
 
                 var list = new List<InteractiveRebaseItem>();
+                var fixups = new List<InteractiveRebaseItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
-                    list.Add(new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message));
+                    var item = new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message);
+                    if (c.Commit.Subject.StartsWith("fixup! ", StringComparison.Ordinal) && item.OriginalOrder > 1)
+                    {
+                        fixups.Add(item);
+                        continue;
+                    }
+
+                    var reordered = new List<InteractiveRebaseItem>();
+                    foreach (var f in fixups)
+                    {
+                        if (c.Commit.Subject.StartsWith(f.Commit.Subject.Substring(7), StringComparison.Ordinal))
+                        {
+                            f.Action = Models.InteractiveRebaseAction.Fixup;
+                            reordered.Add(f);
+                            list.Add(f);
+                        }
+                    }
+                    fixups.RemoveAll(x => reordered.Contains(x));
+                    list.Add(item);
+                }
+
+                foreach (var f in fixups)
+                {
+                    for (var i = 0; i < list.Count; i++)
+                    {
+                        if (f.OriginalOrder > list[i].OriginalOrder)
+                        {
+                            list.Insert(i, f);
+                            break;
+                        }
+                    }
                 }
 
                 var selected = list.Count > 0 ? list[0] : null;
