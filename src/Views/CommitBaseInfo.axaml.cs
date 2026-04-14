@@ -98,7 +98,7 @@ namespace SourceGit.Views
                     IsSHACopied = false;
 
                 _iconResetTimer = null;
-            }, TimeSpan.FromSeconds(3));
+            }, TimeSpan.FromSeconds(2));
 
             IsSHACopied = true;
             e.Handled = true;
