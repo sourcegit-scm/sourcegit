@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace SourceGit.ViewModels
 {
     public record InteractiveRebasePrefill(string SHA, Models.InteractiveRebaseAction Action);
+    public record InteractiveRebaseReorderItem(string Key, InteractiveRebaseItem Item);
 
     public class InteractiveRebaseItem : ObservableObject
     {
@@ -172,7 +173,7 @@ namespace SourceGit.ViewModels
                     .ConfigureAwait(false);
 
                 var list = new List<InteractiveRebaseItem>();
-                var needReorder = new Dictionary<string, InteractiveRebaseItem>();
+                var needReorder = new List<InteractiveRebaseReorderItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
@@ -184,25 +185,25 @@ namespace SourceGit.ViewModels
                         if (subject.StartsWith("fixup! ", StringComparison.Ordinal))
                         {
                             item.Action = Models.InteractiveRebaseAction.Fixup;
-                            needReorder.Add(subject.Substring(7), item);
+                            needReorder.Add(new(subject.Substring(7), item));
                             continue;
                         }
 
                         if (subject.StartsWith("squash! ", StringComparison.Ordinal))
                         {
                             item.Action = Models.InteractiveRebaseAction.Squash;
-                            needReorder.Add(subject.Substring(8), item);
+                            needReorder.Add(new(subject.Substring(8), item));
                             continue;
                         }
                     }
 
-                    var reordered = new List<string>();
-                    foreach (var (k, v) in needReorder)
+                    var reordered = new List<InteractiveRebaseReorderItem>();
+                    foreach (var o in needReorder)
                     {
-                        if (subject.StartsWith(k, StringComparison.Ordinal))
+                        if (subject.StartsWith(o.Key, StringComparison.Ordinal))
                         {
-                            list.Add(v);
-                            reordered.Add(k);
+                            list.Add(o.Item);
+                            reordered.Add(o);
                         }
                     }
 
@@ -212,14 +213,14 @@ namespace SourceGit.ViewModels
                     list.Add(item);
                 }
 
-                foreach (var (_, v) in needReorder)
+                foreach (var v in needReorder)
                 {
                     for (var i = 0; i < list.Count; i++)
                     {
-                        if (v.OriginalOrder > list[i].OriginalOrder)
+                        if (v.Item.OriginalOrder > list[i].OriginalOrder)
                         {
-                            v.Action = Models.InteractiveRebaseAction.Pick; // For safety, reset to pick if the target commit is not found
-                            list.Insert(i, v);
+                            v.Item.Action = Models.InteractiveRebaseAction.Pick; // For safety, reset to pick if the target commit is not found
+                            list.Insert(i, v.Item);
                             break;
                         }
                     }
