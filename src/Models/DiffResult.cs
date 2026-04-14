@@ -34,12 +34,10 @@ namespace SourceGit.Models
         public string NewLine => NewLineNumber == 0 ? string.Empty : NewLineNumber.ToString();
 
         public TextDiffLine() { }
-        public TextDiffLine(TextDiffLineType type, byte[] rawContent, int oldLine, int newLine)
+        public TextDiffLine(TextDiffLineType type, string line, byte[] rawContent, int oldLine, int newLine)
         {
-            if (rawContent == null)
-                throw new System.ArgumentNullException(nameof(rawContent));
             Type = type;
-            Content = System.Text.Encoding.UTF8.GetString(rawContent);
+            Content = line;
             RawContent = rawContent;
             OldLineNumber = oldLine;
             NewLineNumber = newLine;
@@ -568,10 +566,11 @@ namespace SourceGit.Models
 
         private static void WriteLine(StreamWriter writer, char prefix, TextDiffLine line)
         {
-            writer.Write($"{prefix}");
             writer.Flush();
-            writer.BaseStream.Write(line.RawContent); // write original bytes
-            writer.WriteLine();
+
+            writer.BaseStream.WriteByte((byte)prefix);
+            writer.BaseStream.Write(line.RawContent);
+            writer.BaseStream.WriteByte((byte)'\n');
 
             if (line.NoNewLineEndOfFile)
                 writer.WriteLine("\\ No newline at end of file");

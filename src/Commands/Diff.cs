@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -45,22 +46,28 @@ namespace SourceGit.Commands
                 using var proc = new Process();
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
-                using var ms = new System.IO.MemoryStream();
+
+                using var ms = new MemoryStream();
                 await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
+
                 var bytes = ms.ToArray();
                 var start = 0;
                 while (start < bytes.Length)
                 {
                     var end = Array.IndexOf(bytes, (byte)'\n', start);
                     if (end < 0)
-                        end = bytes.Length;
-                    var next = end + 1;
-                    if (start <= end - 1 && bytes[end - 1] == '\r')
-                        end--;
-                    if (!_result.IsBinary)
-                        ParseLine(bytes[start..end]);
-                    start = next;
+                    {
+                        ParseLine(bytes[start..]);
+                        break;
+                    }
+
+                    ParseLine(bytes[start..end]);
+                    if (_result.IsBinary)
+                        break;
+
+                    start = end + 1;
                 }
+
                 await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
             }
             catch
@@ -84,62 +91,11 @@ namespace SourceGit.Commands
         private void ParseLine(byte[] lineBytes)
         {
             var line = Encoding.UTF8.GetString(lineBytes);
-
-            if (line.StartsWith("old mode ", StringComparison.Ordinal))
-            {
-                _result.OldMode = line.Substring(9);
+            if (ParseFileModeChange(line))
                 return;
-            }
 
-            if (line.StartsWith("new mode ", StringComparison.Ordinal))
-            {
-                _result.NewMode = line.Substring(9);
+            if (ParseLFSChange(line))
                 return;
-            }
-
-            if (line.StartsWith("deleted file mode ", StringComparison.Ordinal))
-            {
-                _result.OldMode = line.Substring(18);
-                return;
-            }
-
-            if (line.StartsWith("new file mode ", StringComparison.Ordinal))
-            {
-                _result.NewMode = line.Substring(14);
-                return;
-            }
-
-            if (_result.IsLFS)
-            {
-                var ch = line[0];
-                if (ch == '-')
-                {
-                    if (line.StartsWith("-oid sha256:", StringComparison.Ordinal))
-                    {
-                        _result.LFSDiff.Old.Oid = line.Substring(12);
-                    }
-                    else if (line.StartsWith("-size ", StringComparison.Ordinal))
-                    {
-                        _result.LFSDiff.Old.Size = long.Parse(line.AsSpan(6));
-                    }
-                }
-                else if (ch == '+')
-                {
-                    if (line.StartsWith("+oid sha256:", StringComparison.Ordinal))
-                    {
-                        _result.LFSDiff.New.Oid = line.Substring(12);
-                    }
-                    else if (line.StartsWith("+size ", StringComparison.Ordinal))
-                    {
-                        _result.LFSDiff.New.Size = long.Parse(line.AsSpan(6));
-                    }
-                }
-                else if (line.StartsWith(" size ", StringComparison.Ordinal))
-                {
-                    _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.AsSpan(6));
-                }
-                return;
-            }
 
             if (_result.TextDiff.Lines.Count == 0)
             {
@@ -166,7 +122,7 @@ namespace SourceGit.Commands
 
                     _oldLine = int.Parse(match.Groups[1].Value);
                     _newLine = int.Parse(match.Groups[2].Value);
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, lineBytes, 0, 0);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, lineBytes, 0, 0);
                     _result.TextDiff.Lines.Add(_last);
                 }
             }
@@ -175,7 +131,7 @@ namespace SourceGit.Commands
                 if (line.Length == 0)
                 {
                     ProcessInlineHighlights();
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, Array.Empty<byte>(), _oldLine, _newLine);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", [], _oldLine, _newLine);
                     _result.TextDiff.Lines.Add(_last);
                     _oldLine++;
                     _newLine++;
@@ -185,29 +141,15 @@ namespace SourceGit.Commands
                 var ch = line[0];
                 if (ch == '-')
                 {
-                    if (_oldLine == 1 && _newLine == 0 && line.StartsWith(PREFIX_LFS_DEL, StringComparison.Ordinal))
-                    {
-                        _result.IsLFS = true;
-                        _result.LFSDiff = new Models.LFSDiff();
-                        return;
-                    }
-
                     _result.TextDiff.DeletedLines++;
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, lineBytes[1..], _oldLine, 0);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), lineBytes[1..], _oldLine, 0);
                     _deleted.Add(_last);
                     _oldLine++;
                 }
                 else if (ch == '+')
                 {
-                    if (_oldLine == 0 && _newLine == 1 && line.StartsWith(PREFIX_LFS_NEW, StringComparison.Ordinal))
-                    {
-                        _result.IsLFS = true;
-                        _result.LFSDiff = new Models.LFSDiff();
-                        return;
-                    }
-
                     _result.TextDiff.AddedLines++;
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, lineBytes[1..], 0, _newLine);
+                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), lineBytes[1..], 0, _newLine);
                     _added.Add(_last);
                     _newLine++;
                 }
@@ -219,19 +161,12 @@ namespace SourceGit.Commands
                     {
                         _oldLine = int.Parse(match.Groups[1].Value);
                         _newLine = int.Parse(match.Groups[2].Value);
-                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, lineBytes, 0, 0);
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, lineBytes, 0, 0);
                         _result.TextDiff.Lines.Add(_last);
                     }
                     else
                     {
-                        if (_oldLine == 1 && _newLine == 1 && line.StartsWith(PREFIX_LFS_MODIFY, StringComparison.Ordinal))
-                        {
-                            _result.IsLFS = true;
-                            _result.LFSDiff = new Models.LFSDiff();
-                            return;
-                        }
-
-                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, lineBytes[1..], _oldLine, _newLine);
+                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), lineBytes[1..], _oldLine, _newLine);
                         _result.TextDiff.Lines.Add(_last);
                         _oldLine++;
                         _newLine++;
@@ -242,6 +177,70 @@ namespace SourceGit.Commands
                     _last.NoNewLineEndOfFile = true;
                 }
             }
+        }
+
+        private bool ParseFileModeChange(string line)
+        {
+            if (line.StartsWith("old mode ", StringComparison.Ordinal))
+            {
+                _result.OldMode = line.Substring(9);
+                return true;
+            }
+
+            if (line.StartsWith("new mode ", StringComparison.Ordinal))
+            {
+                _result.NewMode = line.Substring(9);
+                return true;
+            }
+
+            if (line.StartsWith("deleted file mode ", StringComparison.Ordinal))
+            {
+                _result.OldMode = line.Substring(18);
+                return true;
+            }
+
+            if (line.StartsWith("new file mode ", StringComparison.Ordinal))
+            {
+                _result.NewMode = line.Substring(14);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ParseLFSChange(string line)
+        {
+            if (_result.IsLFS)
+            {
+                if (line.StartsWith("-oid sha256:", StringComparison.Ordinal))
+                    _result.LFSDiff.Old.Oid = line.Substring(12);
+                else if (line.StartsWith("-size ", StringComparison.Ordinal))
+                    _result.LFSDiff.Old.Size = long.Parse(line.AsSpan(6));
+                else if (line.StartsWith("+oid sha256:", StringComparison.Ordinal))
+                    _result.LFSDiff.New.Oid = line.Substring(12);
+                else if (line.StartsWith("+size ", StringComparison.Ordinal))
+                    _result.LFSDiff.New.Size = long.Parse(line.AsSpan(6));
+                else if (line.StartsWith(" size ", StringComparison.Ordinal))
+                    _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.AsSpan(6));
+
+                return true;
+            }
+
+            if (_result.TextDiff.Lines.Count != 1)
+                return false;
+
+            var isLFS = (_oldLine == 1 && _newLine == 1 && line.StartsWith(PREFIX_LFS_MODIFY, StringComparison.Ordinal)) ||
+                (_oldLine == 1 && _newLine == 0 && line.StartsWith(PREFIX_LFS_DEL, StringComparison.Ordinal)) ||
+                (_oldLine == 0 && _newLine == 1 && line.StartsWith(PREFIX_LFS_NEW, StringComparison.Ordinal));
+
+            if (isLFS)
+            {
+                _result.IsLFS = true;
+                _result.LFSDiff = new Models.LFSDiff();
+                return true;
+            }
+
+            return false;
         }
 
         private void ProcessInlineHighlights()
