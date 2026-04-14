@@ -909,6 +909,8 @@
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未解决冲突</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">仓库</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">子模块变更详情</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">查看变更详情</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">确    定</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">创建者</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">创建时间</x:String>

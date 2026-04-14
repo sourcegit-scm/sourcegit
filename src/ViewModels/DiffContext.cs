@@ -190,7 +190,10 @@ namespace SourceGit.ViewModels
                         }
 
                         if (isSubmodule)
+                        {
+                            submoduleDiff.FullPath = submoduleRoot;
                             rs = submoduleDiff;
+                        }
                     }
 
                     if (!isSubmodule)

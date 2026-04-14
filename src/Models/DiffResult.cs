@@ -608,8 +608,11 @@ namespace SourceGit.Models
 
     public class SubmoduleDiff
     {
+        public string FullPath { get; set; } = string.Empty;
         public RevisionSubmodule Old { get; set; } = null;
         public RevisionSubmodule New { get; set; } = null;
+
+        public bool CanOpenDetails => File.Exists(Path.Combine(FullPath, ".git")) && Old != null && New != null;
     }
 
     public class DiffResult

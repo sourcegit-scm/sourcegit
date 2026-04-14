@@ -326,6 +326,13 @@
                       </ContentControl.DataTemplates>
                     </ContentControl>
                   </Border>
+                  
+                  <Button Classes="flat"
+                          Margin="0,8"
+                          HorizontalAlignment="Center"
+                          Content="{DynamicResource Text.SubmoduleRevisionCompare.OpenDetails}"
+                          Click="OnOpenSubmoduleRevisionCompare"
+                          IsEnabled="{Binding CanOpenDetails, Mode=OneWay}"/>
                 </StackPanel>
               </ScrollViewer>
             </Grid>
