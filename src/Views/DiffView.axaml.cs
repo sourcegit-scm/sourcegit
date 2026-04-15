@@ -45,15 +45,10 @@ namespace SourceGit.Views
 
         private void OnOpenSubmoduleRevisionCompare(object sender, RoutedEventArgs e)
         {
-            var owner = TopLevel.GetTopLevel(this) as Window;
-            if (owner == null)
-                return;
-
             if (sender is Button { DataContext: Models.SubmoduleDiff diff } && diff.CanOpenDetails)
             {
                 var vm = new ViewModels.SubmoduleRevisionCompare(diff);
-                var dailog = new SubmoduleRevisionCompare() { DataContext = vm };
-                dailog.Show(owner);
+                App.ShowWindow(vm);
             }
         }
     }
