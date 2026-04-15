@@ -34,7 +34,7 @@ namespace SourceGit.Views
         {
             var repoView = this.FindAncestorOfType<Repository>();
             if (repoView is { DataContext: ViewModels.Repository repo })
-                await App.ShowDialog(new ViewModels.AssumeUnchangedManager(repo));
+                await this.ShowDialogAsync(new ViewModels.AssumeUnchangedManager(repo));
 
             e.Handled = true;
         }
@@ -360,7 +360,7 @@ namespace SourceGit.Views
                         mergeBuiltin.Click += async (_, e) =>
                         {
                             var head = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, head, change.Path));
+                            await this.ShowDialogAsync(new ViewModels.MergeConflictEditor(repo, head, change.Path));
                             e.Handled = true;
                         };
 
@@ -648,7 +648,7 @@ namespace SourceGit.Views
                     history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -662,7 +662,7 @@ namespace SourceGit.Views
                     history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
+                        this.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
                         e.Handled = true;
                     };
 
@@ -672,7 +672,7 @@ namespace SourceGit.Views
                     blame.Click += async (_, ev) =>
                     {
                         var commit = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                        App.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
+                        this.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
                         ev.Handled = true;
                     };
 
@@ -872,7 +872,7 @@ namespace SourceGit.Views
                     history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -1119,7 +1119,7 @@ namespace SourceGit.Views
                     history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -1133,7 +1133,7 @@ namespace SourceGit.Views
                     history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
+                        this.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
                         e.Handled = true;
                     };
 
@@ -1143,7 +1143,7 @@ namespace SourceGit.Views
                     blame.Click += async (_, e) =>
                     {
                         var commit = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                        App.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
+                        this.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
                         e.Handled = true;
                     };
 
@@ -1263,7 +1263,7 @@ namespace SourceGit.Views
                     history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 

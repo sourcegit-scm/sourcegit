@@ -40,7 +40,10 @@ namespace SourceGit.Views
         private async void OnMerge(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Conflict vm)
-                await vm.MergeAsync();
+            {
+                var request = vm.CreateOpenMergeEditorRequest();
+                await this.ShowDialogAsync(request);
+            }
 
             e.Handled = true;
         }

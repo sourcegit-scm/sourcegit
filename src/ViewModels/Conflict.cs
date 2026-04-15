@@ -73,10 +73,9 @@ namespace SourceGit.ViewModels
             await _wc.UseMineAsync([_change]);
         }
 
-        public async Task MergeAsync()
+        public MergeConflictEditor CreateOpenMergeEditorRequest()
         {
-            if (CanMerge)
-                await App.ShowDialog(new MergeConflictEditor(_repo, _head, _change.Path));
+            return CanMerge ? new MergeConflictEditor(_repo, _head, _change.Path) : null;
         }
 
         public async Task MergeExternalAsync()

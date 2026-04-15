@@ -172,14 +172,14 @@ namespace SourceGit.Views
             {
                 if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
                 {
-                    await App.ShowDialog(new Preferences());
+                    await this.ShowDialogAsync(new Preferences());
                     e.Handled = true;
                     return;
                 }
 
                 if (e is { KeyModifiers: KeyModifiers.None, Key: Key.F1 })
                 {
-                    await App.ShowDialog(new Hotkeys());
+                    await this.ShowDialogAsync(new Hotkeys());
                     e.Handled = true;
                     return;
                 }
@@ -404,7 +404,7 @@ namespace SourceGit.Views
                 configure.Header = App.Text("Workspace.Configure");
                 configure.Click += async (_, ev) =>
                 {
-                    await App.ShowDialog(new ViewModels.ConfigureWorkspace());
+                    await this.ShowDialogAsync(new ViewModels.ConfigureWorkspace());
                     ev.Handled = true;
                 };
                 menu.Items.Add(configure);

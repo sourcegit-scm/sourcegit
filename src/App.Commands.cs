@@ -37,12 +37,47 @@ namespace SourceGit
             }
         }
 
-        public static readonly Command OpenPreferencesCommand = new Command(async _ => await ShowDialog(new Views.Preferences()));
-        public static readonly Command OpenHotkeysCommand = new Command(async _ => await ShowDialog(new Views.Hotkeys()));
-        public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
-        public static readonly Command OpenAboutCommand = new Command(async _ => await ShowDialog(new Views.About()));
-        public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
-        public static readonly Command QuitCommand = new Command(_ => Quit(0));
+        public static readonly Command OpenPreferencesCommand = new Command(async _ =>
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var dialog = new Views.Preferences();
+                await dialog.ShowDialog(owner);
+            }
+        });
+
+        public static readonly Command OpenHotkeysCommand = new Command(async _ =>
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var dialog = new Views.Hotkeys();
+                await dialog.ShowDialog(owner);
+            }
+        });
+
+        public static readonly Command OpenAppDataDirCommand = new Command(_ =>
+        {
+            Native.OS.OpenInFileManager(Native.OS.DataDir);
+        });
+
+        public static readonly Command OpenAboutCommand = new Command(async _ =>
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var dialog = new Views.About();
+                await dialog.ShowDialog(owner);
+            }
+        });
+
+        public static readonly Command CheckForUpdateCommand = new Command(_ =>
+        {
+            (Current as App)?.Check4Update(true);
+        });
+
+        public static readonly Command QuitCommand = new Command(_ =>
+        {
+            Quit(0);
+        });
 
         public static readonly Command HideAppCommand = new Command(_ =>
         {

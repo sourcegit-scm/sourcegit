@@ -65,14 +65,12 @@ namespace SourceGit.ViewModels
             Filter = string.Empty;
         }
 
-        public void Launch()
+        public Blame Launch()
         {
             _repoFiles.Clear();
             _visibleFiles.Clear();
             Close();
-
-            if (!string.IsNullOrEmpty(_selectedFile))
-                App.ShowWindow(new Blame(_repo, _selectedFile, _head));
+            return !string.IsNullOrEmpty(_selectedFile) ? new Blame(_repo, _selectedFile, _head) : null;
         }
 
         private void UpdateVisible()

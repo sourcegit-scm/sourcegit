@@ -60,14 +60,12 @@ namespace SourceGit.ViewModels
             Filter = string.Empty;
         }
 
-        public void Launch()
+        public FileHistories Launch()
         {
             _repoFiles.Clear();
             _visibleFiles.Clear();
             Close();
-
-            if (!string.IsNullOrEmpty(_selectedFile))
-                App.ShowWindow(new FileHistories(_repo, _selectedFile));
+            return !string.IsNullOrEmpty(_selectedFile) ? new FileHistories(_repo, _selectedFile) : null;
         }
 
         private void UpdateVisible()

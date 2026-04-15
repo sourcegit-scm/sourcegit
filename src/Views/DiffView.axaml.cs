@@ -48,7 +48,7 @@ namespace SourceGit.Views
             if (sender is Button { DataContext: Models.SubmoduleDiff diff } && diff.CanOpenDetails)
             {
                 var vm = new ViewModels.SubmoduleRevisionCompare(diff);
-                App.ShowWindow(vm);
+                this.ShowWindow(vm);
             }
         }
     }

@@ -386,7 +386,7 @@ namespace SourceGit.Views
             if (sender is CheckBox box)
             {
                 ViewModels.Preferences.Instance.UseSystemWindowFrame = box.IsChecked == true;
-                await App.ShowDialog(new ConfirmRestart());
+                await this.ShowDialogAsync(new ConfirmRestart());
             }
 
             e.Handled = true;
@@ -486,12 +486,7 @@ namespace SourceGit.Views
             if (sender is not Button { DataContext: Models.CustomAction act })
                 return;
 
-            var dialog = new ConfigureCustomActionControls()
-            {
-                DataContext = new ViewModels.ConfigureCustomActionControls(act.Controls)
-            };
-
-            await dialog.ShowDialog(this);
+            await this.ShowDialogAsync(new ViewModels.ConfigureCustomActionControls(act.Controls));
             e.Handled = true;
         }
 
