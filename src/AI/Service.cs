@@ -2,7 +2,6 @@
 using System.ClientModel;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
@@ -55,7 +54,7 @@ namespace SourceGit.AI
             set;
         } = string.Empty;
 
-        public async Task<List<string>> FetchAvailableModelsAsync()
+        public void FetchAvailableModels()
         {
             var allModels = GetOpenAIClient().GetOpenAIModelClient().GetModels();
             AvailableModels = new List<string>();
@@ -71,8 +70,6 @@ namespace SourceGit.AI
             {
                 Model = null;
             }
-
-            return AvailableModels;
         }
 
         public ChatClient GetChatClient()

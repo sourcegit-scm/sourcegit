@@ -206,7 +206,7 @@ namespace SourceGit.Views
             }
 
             var preferences = ViewModels.Preferences.Instance;
-            await preferences.UpdateAvailableAIModelsAsync();
+            preferences.UpdateAvailableAIModels();
             preferences.Save();
         }
 

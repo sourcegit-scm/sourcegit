@@ -106,7 +106,7 @@ namespace SourceGit.Views
                 Activate();
         }
 
-        protected override async void OnOpened(EventArgs e)
+        protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
 
@@ -114,8 +114,6 @@ namespace SourceGit.Views
             var state = preferences.Layout.LauncherWindowState;
             if (state == WindowState.Maximized || state == WindowState.FullScreen)
                 WindowState = WindowState.Maximized;
-
-            await preferences.UpdateAvailableAIModelsAsync();
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
