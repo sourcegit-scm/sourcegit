@@ -291,6 +291,16 @@ namespace SourceGit.ViewModels
 
         private async Task<Models.RevisionSubmodule> QuerySubmoduleRevisionAsync(string repo, string sha)
         {
+            if (!File.Exists(Path.Combine(repo, ".git")))
+                return new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = sha } };
+
+            var uncommittedChangesCount = 0;
+            if (sha.EndsWith("-dirty", StringComparison.Ordinal))
+            {
+                sha = sha.Substring(0, sha.Length - 6);
+                uncommittedChangesCount = await new Commands.CountLocalChanges(repo, true).GetResultAsync().ConfigureAwait(false);
+            }
+
             var commit = await new Commands.QuerySingleCommit(repo, sha).GetResultAsync().ConfigureAwait(false);
             if (commit == null)
                 return new Models.RevisionSubmodule() { Commit = new Models.Commit() { SHA = sha } };
@@ -299,7 +309,8 @@ namespace SourceGit.ViewModels
             return new Models.RevisionSubmodule()
             {
                 Commit = commit,
-                FullMessage = new Models.CommitFullMessage { Message = body }
+                FullMessage = new Models.CommitFullMessage { Message = body },
+                UncommittedChanges = uncommittedChangesCount
             };
         }
 

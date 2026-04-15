@@ -376,6 +376,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模組</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">已刪除</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} 項未提交變更</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交換比對雙方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">語法上色</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自動換行</x:String>

@@ -39,5 +39,6 @@ namespace SourceGit.Models
     {
         public Commit Commit { get; set; } = null;
         public CommitFullMessage FullMessage { get; set; } = null;
+        public int UncommittedChanges { get; set; } = 0;
     }
 }

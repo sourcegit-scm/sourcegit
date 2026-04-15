@@ -376,6 +376,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">子模块</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">删除</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新增</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} 项未提交变更</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">交换比对双方</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">语法高亮</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">自动换行</x:String>

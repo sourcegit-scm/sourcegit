@@ -372,6 +372,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">DELETED</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} Uncommitted Changes</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Swap</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Line Word Wrap</x:String>
