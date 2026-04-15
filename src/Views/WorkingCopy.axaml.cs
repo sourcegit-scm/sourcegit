@@ -541,7 +541,7 @@ namespace SourceGit.Views
                         hasExtra = true;
                     }
 
-                    if (repo.IsLFSEnabled())
+                    if (File.Exists(path) && repo.IsLFSEnabled())
                     {
                         var lfs = new MenuItem();
                         lfs.Header = App.Text("GitLFS");
@@ -1038,7 +1038,7 @@ namespace SourceGit.Views
                 menu.Items.Add(patch);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                if (repo.IsLFSEnabled())
+                if (File.Exists(path) && repo.IsLFSEnabled())
                 {
                     var lfs = new MenuItem();
                     lfs.Header = App.Text("GitLFS");
