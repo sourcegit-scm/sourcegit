@@ -425,7 +425,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW – Hotfix fertigstellen</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW – Release fertigstellen</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Ziel:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Push zu Remote(s) nach Abschluss</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash beim Merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix-Präfix:</x:String>

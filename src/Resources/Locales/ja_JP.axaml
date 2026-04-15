@@ -425,7 +425,6 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">フロー - 緊急のバグ修正を完了</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">フロー - リリース作業を完了</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">対象:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">コミットの完了後、リモートにプッシュ</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">スカッシュしてマージ</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">緊急のバグ修正:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">緊急のバグ修正用のプレフィックス:</x:String>

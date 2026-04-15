@@ -437,7 +437,6 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Finalizar Hotfix</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Finalizar Release</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Destino:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Push al/los remoto(s) después de Finalizar</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash durante el merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Prefijo de Hotfix:</x:String>

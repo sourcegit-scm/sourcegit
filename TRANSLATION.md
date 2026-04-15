@@ -66,7 +66,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-90.44%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-90.43%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -168,7 +168,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-88.30%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-88.29%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -339,7 +339,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-96.85%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-96.84%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -378,7 +378,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-88.61%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-88.59%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -498,7 +498,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-67.04%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-67.11%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -633,7 +633,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Fetch.Force
 - Text.FileCM.CustomAction
 - Text.FileCM.ResolveUsing
-- Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
@@ -848,7 +847,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-69.07%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-69.14%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -996,7 +995,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.FileCM.CustomAction
-- Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
@@ -1160,7 +1158,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-69.89%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-69.96%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1304,7 +1302,6 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.FileCM.CustomAction
-- Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
