@@ -21,12 +21,6 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
-        public bool AutoPush
-        {
-            get;
-            set;
-        } = false;
-
         public bool KeepBranch
         {
             get;
@@ -50,7 +44,7 @@ namespace SourceGit.ViewModels
 
             var prefix = _repo.GitFlow.GetPrefix(Type);
             var name = Branch.Name.StartsWith(prefix) ? Branch.Name.Substring(prefix.Length) : Branch.Name;
-            var succ = await Commands.GitFlow.FinishAsync(_repo.FullPath, Type, name, Squash, AutoPush, KeepBranch, log);
+            var succ = await Commands.GitFlow.FinishAsync(_repo.FullPath, Type, name, Squash, KeepBranch, log);
 
             log.Complete();
             return succ;
