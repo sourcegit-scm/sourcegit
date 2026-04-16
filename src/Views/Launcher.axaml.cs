@@ -338,10 +338,17 @@ namespace SourceGit.Views
             base.OnClosing(e);
 
             if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
-            {
+                launcher.CloseAll();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            if (!Design.IsDesignMode)
                 ViewModels.Preferences.Instance.Save();
-                launcher.Quit();
-            }
+
+            App.Quit(0);
         }
 
         private void OnPositionChanged(object sender, PixelPointEventArgs e)

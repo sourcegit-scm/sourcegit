@@ -230,15 +230,9 @@ namespace SourceGit
         public static void Quit(int exitCode)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-                desktop.MainWindow?.Close();
                 desktop.Shutdown(exitCode);
-            }
             else
-            {
                 Environment.Exit(exitCode);
-            }
         }
         #endregion
 
@@ -478,7 +472,12 @@ namespace SourceGit
 
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
-            desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            desktop.Exit += (_, _) =>
+            {
+                _ipcChannel?.Dispose();
+                _ipcChannel = null;
+            };
 
             _ipcChannel.MessageReceived += repo =>
             {
@@ -489,8 +488,6 @@ namespace SourceGit
                         main.BringToTop();
                 });
             };
-
-            desktop.Exit += (_, _) => _ipcChannel.Dispose();
 
 #if !DISABLE_UPDATE_DETECTION
             if (pref.ShouldCheck4UpdateOnStartup())
