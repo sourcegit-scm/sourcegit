@@ -57,18 +57,21 @@ namespace SourceGit.ViewModels
             ActiveWorkspace = pref.GetActiveWorkspace();
 
             var repos = ActiveWorkspace.Repositories.ToArray();
-            foreach (var repo in repos)
+            if (!App.ParsedArgs.IgnoreWorkspace)
             {
-                var node = pref.FindNode(repo) ??
-                    new RepositoryNode
-                    {
-                        Id = repo,
-                        Name = Path.GetFileName(repo),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
+                foreach (var repo in repos)
+                {
+                    var node = pref.FindNode(repo) ??
+                        new RepositoryNode
+                        {
+                            Id = repo,
+                            Name = Path.GetFileName(repo),
+                            Bookmark = 0,
+                            IsRepository = true,
+                        };
 
-                OpenRepositoryInTab(node, null);
+                    OpenRepositoryInTab(node, null);
+                }
             }
 
             _ignoreIndexChange = false;
