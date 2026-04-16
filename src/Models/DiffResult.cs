@@ -99,19 +99,19 @@ namespace SourceGit.Models
             return rs;
         }
 
-        public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
+        public void GenerateNewPatchFromSelection(string file, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
             var fileGuid = isTracked ? fileBlobGuid : "00000000";
 
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
-            writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
+            writer.WriteLine($"diff --git a/{file} b/{file}");
             if (!revert && !isTracked)
                 writer.WriteLine("new file mode 100644");
             writer.WriteLine($"index 00000000...{fileGuid}");
-            writer.WriteLine($"--- {(revert || isTracked ? $"a/{change.Path}" : "/dev/null")}");
-            writer.WriteLine($"+++ b/{change.Path}");
+            writer.WriteLine($"--- {(revert || isTracked ? $"a/{file}" : "/dev/null")}");
+            writer.WriteLine($"+++ b/{file}");
 
             var additions = selection.EndLine - selection.StartLine;
             if (selection.StartLine != 1)
@@ -148,16 +148,14 @@ namespace SourceGit.Models
             writer.Flush();
         }
 
-        public void GeneratePatchFromSelection(Change change, string fileTreeGuid, TextDiffSelection selection, bool revert, string output)
+        public void GeneratePatchFromSelection(string file, string fileTreeGuid, TextDiffSelection selection, bool revert, string output)
         {
-            var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
-
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
-            writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
+            writer.WriteLine($"diff --git a/{file} b/{file}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
-            writer.WriteLine($"--- a/{orgFile}");
-            writer.WriteLine($"+++ b/{change.Path}");
+            writer.WriteLine($"--- a/{file}");
+            writer.WriteLine($"+++ b/{file}");
 
             // If last line of selection is a change. Find one more line.
             TextDiffLine tail = null;
@@ -263,16 +261,14 @@ namespace SourceGit.Models
             writer.Flush();
         }
 
-        public void GeneratePatchFromSelectionSingleSide(Change change, string fileTreeGuid, TextDiffSelection selection, bool revert, bool isOldSide, string output)
+        public void GeneratePatchFromSelectionSingleSide(string file, string fileTreeGuid, TextDiffSelection selection, bool revert, bool isOldSide, string output)
         {
-            var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
-
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
-            writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
+            writer.WriteLine($"diff --git a/{file} b/{file}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
-            writer.WriteLine($"--- a/{orgFile}");
-            writer.WriteLine($"+++ b/{change.Path}");
+            writer.WriteLine($"--- a/{file}");
+            writer.WriteLine($"+++ b/{file}");
 
             // If last line of selection is a change. Find one more line.
             TextDiffLine tail = null;

@@ -1495,17 +1495,17 @@ namespace SourceGit.Views
             var tmpFile = Path.GetTempFileName();
             if (change.WorkTree == Models.ChangeState.Untracked)
             {
-                diff.GenerateNewPatchFromSelection(change, null, selection, false, tmpFile);
+                diff.GenerateNewPatchFromSelection(change.Path, null, selection, false, tmpFile);
             }
             else if (chunk.Combined)
             {
                 var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelection(change, treeGuid, selection, false, tmpFile);
+                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, false, tmpFile);
             }
             else
             {
                 var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
+                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
             }
 
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
@@ -1533,11 +1533,11 @@ namespace SourceGit.Views
             var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
             var tmpFile = Path.GetTempFileName();
             if (change.Index == Models.ChangeState.Added)
-                diff.GenerateNewPatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                diff.GenerateNewPatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
             else if (chunk.Combined)
-                diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
             else
-                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
+                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
 
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
             File.Delete(tmpFile);
@@ -1564,17 +1564,17 @@ namespace SourceGit.Views
             var tmpFile = Path.GetTempFileName();
             if (change.WorkTree == Models.ChangeState.Untracked)
             {
-                diff.GenerateNewPatchFromSelection(change, null, selection, true, tmpFile);
+                diff.GenerateNewPatchFromSelection(change.Path, null, selection, true, tmpFile);
             }
             else if (chunk.Combined)
             {
                 var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelection(change, treeGuid, selection, true, tmpFile);
+                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
             }
             else
             {
                 var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelectionSingleSide(change, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
+                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
             }
 
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
