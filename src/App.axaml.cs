@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -180,8 +178,8 @@ namespace SourceGit
                 app._fontsOverrides = null;
             }
 
-            defaultFont = app.FixFontFamilyName(defaultFont);
-            monospaceFont = app.FixFontFamilyName(monospaceFont);
+            defaultFont = StringExtensions.FormatFontNames(defaultFont);
+            monospaceFont = StringExtensions.FormatFontNames(monospaceFont);
 
             var resDic = new ResourceDictionary();
             if (!string.IsNullOrEmpty(defaultFont))
@@ -569,47 +567,6 @@ namespace SourceGit
             }
         }
         #endregion
-
-        private string FixFontFamilyName(string input)
-        {
-            if (string.IsNullOrEmpty(input))
-                return string.Empty;
-
-            var parts = input.Split(',');
-            var trimmed = new List<string>();
-
-            foreach (var part in parts)
-            {
-                var t = part.Trim();
-                if (string.IsNullOrEmpty(t))
-                    continue;
-
-                var sb = new StringBuilder();
-                var prevChar = '\0';
-
-                foreach (var c in t)
-                {
-                    if (c == ' ' && prevChar == ' ')
-                        continue;
-                    sb.Append(c);
-                    prevChar = c;
-                }
-
-                var name = sb.ToString();
-                try
-                {
-                    var fontFamily = FontFamily.Parse(name);
-                    if (fontFamily.FamilyTypefaces.Count > 0)
-                        trimmed.Add(name);
-                }
-                catch
-                {
-                    // Ignore exceptions.
-                }
-            }
-
-            return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
-        }
 
         private Models.IpcChannel _ipcChannel = null;
         private ViewModels.Launcher _launcher = null;
