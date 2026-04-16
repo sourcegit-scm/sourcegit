@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 
@@ -153,6 +154,35 @@ namespace SourceGit.Native
             _backend.SetupWindow(window);
         }
 
+        public static void LogException(Exception ex)
+        {
+            if (ex == null)
+                return;
+
+            var crashDir = Path.Combine(DataDir, "crashes");
+            if (!Directory.Exists(crashDir))
+                Directory.CreateDirectory(crashDir);
+
+            var time = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var file = Path.Combine(crashDir, $"{time}.log");
+            using var writer = new StreamWriter(file);
+            writer.WriteLine($"Crash::: {ex.GetType().FullName}: {ex.Message}");
+            writer.WriteLine();
+            writer.WriteLine("----------------------------");
+            writer.WriteLine($"Version: {Assembly.GetExecutingAssembly().GetName().Version}");
+            writer.WriteLine($"OS: {Environment.OSVersion}");
+            writer.WriteLine($"Framework: {AppDomain.CurrentDomain.SetupInformation.TargetFrameworkName}");
+            writer.WriteLine($"Source: {ex.Source}");
+            writer.WriteLine($"Thread Name: {Thread.CurrentThread.Name ?? "Unnamed"}");
+            writer.WriteLine($"App Start Time: {Process.GetCurrentProcess().StartTime}");
+            writer.WriteLine($"Exception Time: {DateTime.Now}");
+            writer.WriteLine($"Memory Usage: {Process.GetCurrentProcess().PrivateMemorySize64 / 1024 / 1024} MB");
+            writer.WriteLine("----------------------------");
+            writer.WriteLine();
+            writer.WriteLine(ex);
+            writer.Flush();
+        }
+
         public static string FindGitExecutable()
         {
             return _backend.FindGitExecutable();
@@ -217,7 +247,7 @@ namespace SourceGit.Native
         public static void OpenTerminal(string workdir)
         {
             if (string.IsNullOrEmpty(ShellOrTerminal))
-                App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
+                Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
             else
                 _backend.OpenTerminal(workdir, ShellOrTerminalArgs);
         }

@@ -27,7 +27,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                App.RaiseException(repo, $"Failed to query file content: {e}");
+                Models.Notification.Send(repo, $"Failed to query file content: {e}", true);
             }
 
             stream.Position = 0;
@@ -58,7 +58,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                App.RaiseException(repo, $"Failed to query file content: {e}");
+                Models.Notification.Send(repo, $"Failed to query file content: {e}", true);
             }
 
             stream.Position = 0;

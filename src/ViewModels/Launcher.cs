@@ -47,6 +47,7 @@ namespace SourceGit.ViewModels
 
         public Launcher(string startupRepo)
         {
+            Models.Notification.Raised += DispatchNotification;
             _ignoreIndexChange = true;
 
             Pages = new AvaloniaList<LauncherPage>();
@@ -75,6 +76,9 @@ namespace SourceGit.ViewModels
 
             _ignoreIndexChange = false;
 
+            if (TryOpenRepositoryFromPath(startupRepo))
+                return;
+
             if (!string.IsNullOrEmpty(startupRepo))
             {
                 var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResult();
@@ -99,6 +103,23 @@ namespace SourceGit.ViewModels
             PostActivePageChanged();
         }
 
+        public bool TryOpenRepositoryFromPath(string repo)
+        {
+            if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
+            {
+                var test = new Commands.QueryRepositoryRootPath(repo).GetResult();
+                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
+                {
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
+                    Welcome.Instance.Refresh();
+                    OpenRepositoryInTab(node, null);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void Quit()
         {
             _ignoreIndexChange = true;
@@ -113,15 +134,6 @@ namespace SourceGit.ViewModels
         {
             if (to == null || to.IsActive)
                 return;
-
-            foreach (var one in Pages)
-            {
-                if (!one.CanCreatePopup() || one.Data is Repository { IsAutoFetching: true })
-                {
-                    App.RaiseException(null, "You have unfinished task(s) in opened pages. Please wait!!!");
-                    return;
-                }
-            }
 
             _ignoreIndexChange = true;
 
@@ -300,9 +312,14 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (!Path.Exists(node.Id))
+            if (!Directory.Exists(node.Id))
             {
-                App.RaiseException(node.Id, "Repository does NOT exist any more. Please remove it.");
+                ActivePage.Notifications.Add(new Models.Notification
+                {
+                    Group = node.Id,
+                    Message = "Repository does NOT exist any more. Please remove it.",
+                    IsError = true,
+                });
                 return;
             }
 
@@ -310,7 +327,12 @@ namespace SourceGit.ViewModels
             var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
             if (string.IsNullOrEmpty(gitDir))
             {
-                App.RaiseException(node.Id, "Given path is not a valid git repository!");
+                ActivePage.Notifications.Add(new Models.Notification
+                {
+                    Group = node.Id,
+                    Message = "Given path is not a valid git repository!",
+                    IsError = true,
+                });
                 return;
             }
 
@@ -350,24 +372,24 @@ namespace SourceGit.ViewModels
                 ActivePage = page;
         }
 
-        public void DispatchNotification(string pageId, string message, bool isError)
+        private void DispatchNotification(Models.Notification notification)
         {
             if (!Dispatcher.UIThread.CheckAccess())
             {
-                Dispatcher.UIThread.Invoke(() => DispatchNotification(pageId, message, isError));
+                Dispatcher.UIThread.Invoke(() => DispatchNotification(notification));
                 return;
             }
 
-            var notification = new Models.Notification()
+            if (string.IsNullOrEmpty(notification.Group))
             {
-                IsError = isError,
-                Message = message,
-            };
+                _activePage?.Notifications.Add(notification);
+                return;
+            }
 
             foreach (var page in Pages)
             {
                 var id = page.Node.Id.Replace('\\', '/').TrimEnd('/');
-                if (id == pageId)
+                if (id.Equals(notification.Group, StringComparison.OrdinalIgnoreCase))
                 {
                     page.Notifications.Add(notification);
                     return;

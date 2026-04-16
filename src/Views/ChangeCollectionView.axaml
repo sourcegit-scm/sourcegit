@@ -37,38 +37,43 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:ChangeTreeNode">
-            <Grid ColumnDefinitions="16,16,Auto,*"
-                  Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                  Background="Transparent"
-                  DoubleTapped="OnRowDoubleTapped"
-                  DataContextChanged="OnRowDataContextChanged">
-              <v:ChangeTreeNodeToggleButton Grid.Column="0"
-                                            Classes="tree_expander"
-                                            Focusable="False"
-                                            HorizontalAlignment="Center"
-                                            IsChecked="{Binding IsExpanded, Mode=OneWay}"
-                                            IsVisible="{Binding IsFolder}"/>
-
-              <ToggleButton Grid.Column="1"
-                            Classes="folder"
+            <StackPanel Orientation="Horizontal"
+                        Height="24"
+                        Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                        Background="Transparent"
+                        DoubleTapped="OnRowDoubleTapped"
+                        DataContextChanged="OnRowDataContextChanged">
+              <Border Width="16">
+                <v:ChangeTreeNodeToggleButton Classes="tree_expander"
+                                              Focusable="False"
+                                              HorizontalAlignment="Center"
+                                              IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                              IsVisible="{Binding IsFolder}"/>
+              </Border>
+              
+              <ToggleButton Classes="folder"
                             Focusable="False"
                             Width="14" Height="14"
-                            Margin="0,1,0,0"
+                            Margin="1,1,1,0"
                             Foreground="Goldenrod"
                             IsChecked="{Binding IsExpanded}"
                             IsVisible="{Binding IsFolder}"/>
 
-              <v:ChangeStatusIcon Grid.Column="1"
-                                  Width="14" Height="14"
+              <v:ChangeStatusIcon Width="14" Height="14"
+                                  Margin="1,0"
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding Change}"
                                   IsVisible="{Binding !IsFolder}"/>
 
-              <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="4,0,0,0">
-                <TextBlock Text="{Binding ConflictMarker, Mode=OneWay}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding ShowConflictMarker}"/>
-                <TextBlock Text="{Binding DisplayName, Mode=OneWay}"/>
-              </StackPanel>
-            </Grid>
+              <TextBlock Text="{Binding ConflictMarker, Mode=OneWay}"
+                         Foreground="DarkOrange"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         IsVisible="{Binding ShowConflictMarker}"/>
+              
+              <TextBlock Text="{Binding DisplayName, Mode=OneWay}"
+                         Margin="4,0,0,0"/>
+            </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </v:ChangeCollectionContainer>
@@ -82,25 +87,28 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
-            <Grid ColumnDefinitions="Auto,Auto,Auto,*"
-                  Background="Transparent"
-                  DoubleTapped="OnRowDoubleTapped"
-                  DataContextChanged="OnRowDataContextChanged">
-              <v:ChangeStatusIcon Grid.Column="0"
-                                  Width="14" Height="14"
+            <StackPanel Orientation="Horizontal"
+                        Height="24"
+                        Background="Transparent"
+                        DoubleTapped="OnRowDoubleTapped"
+                        DataContextChanged="OnRowDataContextChanged">
+              <v:ChangeStatusIcon Width="14" Height="14"
                                   Margin="4,0,0,0"
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
-              <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
-                <TextBlock Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
-                <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"/>
-              </StackPanel>
+              <TextBlock Text="{Binding ConflictMarker}"
+                         Foreground="DarkOrange"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0" IsVisible="{Binding IsConflicted}"/>
+              
+              <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"
+                         Margin="4,0,0,0"/>
 
-              <TextBlock Grid.Column="2"
-                         Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}"
-                         Foreground="{DynamicResource Brush.FG2}"/>
-            </Grid>
+              <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureDirectoryName}}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         Margin="4,0,0,0"/>
+            </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </v:ChangeCollectionContainer>
@@ -114,21 +122,25 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
-            <Grid ColumnDefinitions="Auto,Auto,*"
-                  Background="Transparent"
-                  DoubleTapped="OnRowDoubleTapped"
-                  DataContextChanged="OnRowDataContextChanged">
-              <v:ChangeStatusIcon Grid.Column="0"
-                                  Width="14" Height="14"
+            <StackPanel Orientation="Horizontal"
+                        Height="24"
+                        Background="Transparent"
+                        DoubleTapped="OnRowDoubleTapped"
+                        DataContextChanged="OnRowDataContextChanged">
+              <v:ChangeStatusIcon Width="14" Height="14"
                                   Margin="4,0,0,0"
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
-              <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="4,0">
-                <TextBlock Text="{Binding ConflictMarker}" Foreground="DarkOrange" FontWeight="Bold" Margin="0,0,4,0" IsVisible="{Binding IsConflicted}"/>
-                <TextBlock Text="{Binding Path}"/>
-              </StackPanel>
-            </Grid>
+              <TextBlock Text="{Binding ConflictMarker}"
+                         Foreground="DarkOrange"
+                         FontWeight="Bold"
+                         Margin="4,0,0,0"
+                         IsVisible="{Binding IsConflicted}"/>
+              
+              <TextBlock Margin="4,0,0,0"
+                         Text="{Binding Path}"/>
+            </StackPanel>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </v:ChangeCollectionContainer>

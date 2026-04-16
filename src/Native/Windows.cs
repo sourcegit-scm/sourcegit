@@ -166,7 +166,7 @@ namespace SourceGit.Native
 
             if (!File.Exists(terminal))
             {
-                App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
+                Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
                 return;
             }
 

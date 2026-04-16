@@ -153,6 +153,12 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new ApplyStash(_repo, stash));
         }
 
+        public void CheckoutBranch(Models.Stash stash)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new CheckoutBranchFromStash(_repo, stash));
+        }
+
         public void Drop(Models.Stash stash)
         {
             if (_repo.CanCreatePopup())
@@ -183,7 +189,7 @@ namespace SourceGit.ViewModels
 
             var succ = await Commands.SaveChangesAsPatch.ProcessStashChangesAsync(_repo.FullPath, opts, saveTo);
             if (succ)
-                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
         public void OpenChangeWithExternalDiffTool(Models.Change change)

@@ -101,7 +101,7 @@ namespace SourceGit.Views
                 return;
 
             var apply = new MenuItem() { Header = App.Text("AIAssistant.Use") };
-            apply.Icon = App.CreateMenuIcon("Icons.Check");
+            apply.Icon = this.CreateMenuIcon("Icons.Check");
             apply.Click += (_, ev) =>
             {
                 vm.Use(selected);
@@ -109,10 +109,10 @@ namespace SourceGit.Views
             };
 
             var copy = new MenuItem() { Header = App.Text("Copy") };
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(selected);
+                await this.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 
@@ -147,6 +147,13 @@ namespace SourceGit.Views
         {
             base.OnClosing(e);
             (DataContext as ViewModels.AIAssistant)?.Cancel();
+        }
+
+        private async void OnModelChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is ViewModels.AIAssistant vm && IsLoaded)
+                await vm.GenAsync();
+            e.Handled = true;
         }
 
         private async void OnRegenClicked(object sender, RoutedEventArgs e)

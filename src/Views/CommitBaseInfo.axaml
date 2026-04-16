@@ -203,6 +203,7 @@
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
           <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
                                     Margin="12,4,0,0"
+                                    Foreground="{DynamicResource Brush.FG1}"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
                                     TextWrapping="Wrap">
@@ -212,6 +213,26 @@
                 <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
               </MultiBinding>
             </ToolTip.IsOpen>
+
+            <v:CommitMessagePresenter.ContextFlyout>
+              <MenuFlyout Placement="Bottom">
+                <MenuItem Header="{DynamicResource Text.Copy}"
+                          Command="{Binding $parent[SelectableTextBlock].Copy}"
+                          IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}"
+                          InputGesture="{x:Static TextBox.CopyGesture}">
+                  <MenuItem.Icon>
+                    <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="{DynamicResource Text.CopyAllText}"
+                          Click="OnCopyAllCommitMessage">
+                  <MenuItem.Icon>
+                    <Path Width="11" Height="11" Data="{StaticResource Icons.Copy}" VerticalAlignment="Center"/>
+                  </MenuItem.Icon>
+                </MenuItem>
+              </MenuFlyout>
+            </v:CommitMessagePresenter.ContextFlyout>
 
             <v:CommitMessagePresenter.DataTemplates>
               <DataTemplate DataType="m:Commit">

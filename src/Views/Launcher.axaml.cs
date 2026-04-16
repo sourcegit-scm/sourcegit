@@ -106,13 +106,16 @@ namespace SourceGit.Views
                 Activate();
         }
 
-        protected override void OnOpened(EventArgs e)
+        protected override async void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
 
-            var state = ViewModels.Preferences.Instance.Layout.LauncherWindowState;
+            var preferences = ViewModels.Preferences.Instance;
+            var state = preferences.Layout.LauncherWindowState;
             if (state == WindowState.Maximized || state == WindowState.FullScreen)
                 WindowState = WindowState.Maximized;
+
+            await preferences.UpdateAvailableAIModelsAsync();
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -370,7 +373,7 @@ namespace SourceGit.Views
                 {
                     var workspace = pref.Workspaces[i];
 
-                    var icon = App.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
+                    var icon = this.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
                     icon.Fill = workspace.Brush;
 
                     var item = new MenuItem();

@@ -60,15 +60,9 @@ namespace SourceGit.Views
             if (sender is Button { DataContext: ViewModels.FileHistoriesSingleRevision single })
             {
                 await single.ResetToSelectedRevisionAsync();
-                NotifyDonePanel.IsVisible = true;
+                await new Alert().ShowAsync(this, "Reset to selected revision successfully.", false);
             }
 
-            e.Handled = true;
-        }
-
-        private void OnCloseNotifyPanel(object _, PointerPressedEventArgs e)
-        {
-            NotifyDonePanel.IsVisible = false;
             e.Handled = true;
         }
 
@@ -84,14 +78,16 @@ namespace SourceGit.Views
                 try
                 {
                     var storageFile = await StorageProvider.SaveFilePickerAsync(options);
-                    if (storageFile != null)
-                        await compare.SaveAsPatch(storageFile.Path.LocalPath);
+                    if (storageFile == null)
+                        return;
 
-                    NotifyDonePanel.IsVisible = true;
+                    var succ = await compare.SaveAsPatch(storageFile.Path.LocalPath);
+                    if (succ)
+                        await new Alert().ShowAsync(this, "Saved as patch successfully.", false);
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(string.Empty, $"Failed to save as patch: {exception.Message}");
+                    await new Alert().ShowAsync(this, $"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;

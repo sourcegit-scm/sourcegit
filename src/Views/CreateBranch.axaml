@@ -35,7 +35,7 @@
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
               <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+              <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
             </StackPanel>
           </DataTemplate>
 

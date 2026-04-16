@@ -71,7 +71,7 @@ namespace SourceGit.Views
         private async void OnCopyNotification(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Notification notice })
-                await App.CopyTextAsync(notice.Message);
+                await this.CopyTextAsync(notice.Message);
 
             e.Handled = true;
         }

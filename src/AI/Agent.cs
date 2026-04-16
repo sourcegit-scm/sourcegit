@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure.AI.OpenAI;
-using OpenAI;
 using OpenAI.Chat;
 
 namespace SourceGit.AI
@@ -18,12 +16,10 @@ namespace SourceGit.AI
 
         public async Task GenerateCommitMessageAsync(string repo, string changeList, Action<string> onUpdate, CancellationToken cancellation)
         {
-            var endPoint = new Uri(_service.Server);
-            var client = _service.Server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(endPoint, _service.Credential)
-                : new OpenAIClient(_service.Credential, new() { Endpoint = endPoint });
+            var chatClient = _service.GetChatClient();
+            if (chatClient == null)
+                throw new Exception("Failed to fetch available models from this service. Please check your configuration and try again.");
 
-            var chatClient = client.GetChatClient(_service.Model);
             var options = new ChatCompletionOptions() { Tools = { ChatTools.GetDetailChangesInFile } };
 
             var userMessageBuilder = new StringBuilder();
@@ -31,8 +27,8 @@ namespace SourceGit.AI
                 .AppendLine("Generate a commit message (follow the rule of conventional commit message) for given git repository.")
                 .AppendLine("- Read all given changed files before generating. Only binary files (such as images, audios ...) can be skipped.")
                 .AppendLine("- Output the conventional commit message (with detail changes in list) directly. Do not explain your output nor introduce your answer.")
-                .AppendLine(string.IsNullOrEmpty(_service.AdditionalPrompt) ? string.Empty : _service.AdditionalPrompt)
-                .Append("Reposiory path: ").AppendLine(repo.Quoted())
+                .AppendLine(_service.AdditionalPrompt)
+                .Append("Repository path: ").AppendLine(repo.Quoted())
                 .AppendLine("Changed files ('A' means added, 'M' means modified, 'D' means deleted, 'T' means type changed, 'R' means renamed, 'C' means copied): ")
                 .Append(changeList);
 
@@ -65,7 +61,7 @@ namespace SourceGit.AI
 
                             foreach (var call in completion.ToolCalls)
                             {
-                                var result = await ChatTools.Process(call, onUpdate);
+                                var result = await ChatTools.ProcessAsync(call, onUpdate);
                                 messages.Add(result);
                             }
 
@@ -73,7 +69,7 @@ namespace SourceGit.AI
                             break;
                         }
                     case ChatFinishReason.ContentFilter:
-                        throw new Exception("Ommitted content due to a content filter flag");
+                        throw new Exception("Omitted content due to a content filter flag");
                     default:
                         break;
                 }

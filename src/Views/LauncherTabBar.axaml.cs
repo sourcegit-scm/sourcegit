@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -284,7 +285,7 @@ namespace SourceGit.Views
                 {
                     var refresh = new MenuItem();
                     refresh.Header = App.Text("PageTabBar.Tab.Refresh");
-                    refresh.Icon = App.CreateMenuIcon("Icons.Loading");
+                    refresh.Icon = this.CreateMenuIcon("Icons.Loading");
                     refresh.Tag = "F5";
                     refresh.Click += (_, ev) =>
                     {
@@ -295,53 +296,38 @@ namespace SourceGit.Views
 
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("PageTabBar.Tab.CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyPath.Click += async (_, ev) =>
                     {
-                        await page.CopyPathAsync();
+                        var dir = new DirectoryInfo(repo.FullPath);
+                        await this.CopyTextAsync(dir.FullName);
                         ev.Handled = true;
                     };
                     menu.Items.Add(copyPath);
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
-                    var bookmark = new MenuItem();
-                    bookmark.Header = App.Text("PageTabBar.Tab.Bookmark");
-                    bookmark.Icon = App.CreateMenuIcon("Icons.Bookmark");
-
-                    for (int i = 0; i < Models.Bookmarks.Brushes.Length; i++)
+                    var edit = new MenuItem();
+                    edit.Header = App.Text("PageTabBar.Tab.Edit");
+                    edit.Icon = this.CreateMenuIcon("Icons.Edit");
+                    edit.Click += (_, e) =>
                     {
-                        var brush = Models.Bookmarks.Brushes[i];
-                        var icon = App.CreateMenuIcon("Icons.Bookmark");
-                        if (brush != null)
-                            icon.Fill = brush;
-
-                        var dupIdx = i;
-                        var setter = new MenuItem() { Header = icon };
-                        if (i == page.Node.Bookmark)
-                            setter.Icon = App.CreateMenuIcon("Icons.Check");
-                        else
-                            setter.Click += (_, ev) =>
-                            {
-                                page.Node.Bookmark = dupIdx;
-                                ev.Handled = true;
-                            };
-
-                        bookmark.Items.Add(setter);
-                    }
-                    menu.Items.Add(bookmark);
+                        page.Node.Edit();
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(edit);
 
                     var workspaces = ViewModels.Preferences.Instance.Workspaces;
                     if (workspaces.Count > 1)
                     {
                         var moveTo = new MenuItem();
                         moveTo.Header = App.Text("PageTabBar.Tab.MoveToWorkspace");
-                        moveTo.Icon = App.CreateMenuIcon("Icons.MoveTo");
+                        moveTo.Icon = this.CreateMenuIcon("Icons.MoveTo");
 
                         foreach (var ws in workspaces)
                         {
                             var dupWs = ws;
                             var isCurrent = dupWs == vm.ActiveWorkspace;
-                            var icon = App.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            var icon = this.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
                             icon.Fill = dupWs.Brush;
 
                             var target = new MenuItem();

@@ -337,7 +337,7 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.IsEnabled = hasSelected;
             copy.Click += (_, ev) =>
             {
@@ -347,7 +347,7 @@ namespace SourceGit.Views
 
             var cut = new MenuItem();
             cut.Header = App.Text("Cut");
-            cut.Icon = App.CreateMenuIcon("Icons.Cut");
+            cut.Icon = this.CreateMenuIcon("Icons.Cut");
             cut.IsEnabled = hasSelected;
             cut.Click += (_, ev) =>
             {
@@ -357,7 +357,7 @@ namespace SourceGit.Views
 
             var paste = new MenuItem();
             paste.Header = App.Text("Paste");
-            paste.Icon = App.CreateMenuIcon("Icons.Paste");
+            paste.Icon = this.CreateMenuIcon("Icons.Paste");
             paste.Click += (_, ev) =>
             {
                 Paste();
@@ -447,7 +447,7 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem()
                     {
                         Header = App.Text("WorkingCopy.NoCommitTemplates"),
-                        Icon = App.CreateMenuIcon("Icons.Code"),
+                        Icon = this.CreateMenuIcon("Icons.Code"),
                         IsEnabled = false
                     });
                 }
@@ -455,7 +455,7 @@ namespace SourceGit.Views
                 {
                     for (int i = 0; i < templateCount; i++)
                     {
-                        var icon = App.CreateMenuIcon("Icons.Code");
+                        var icon = this.CreateMenuIcon("Icons.Code");
                         icon.Fill = foreground;
 
                         var template = repo.Settings.CommitTemplates[i];
@@ -484,7 +484,7 @@ namespace SourceGit.Views
                                 friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
                         }
 
-                        var icon = App.CreateMenuIcon("Icons.Code");
+                        var icon = this.CreateMenuIcon("Icons.Code");
                         icon.Fill = foreground;
 
                         var gitTemplateItem = new MenuItem();
@@ -508,7 +508,7 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem()
                     {
                         Header = App.Text("WorkingCopy.NoCommitHistories"),
-                        Icon = App.CreateMenuIcon("Icons.Histories"),
+                        Icon = this.CreateMenuIcon("Icons.Histories"),
                         IsEnabled = false
                     });
                 }
@@ -524,7 +524,7 @@ namespace SourceGit.Views
                             TextTrimming = TextTrimming.CharacterEllipsis
                         };
 
-                        var icon = App.CreateMenuIcon("Icons.Histories");
+                        var icon = this.CreateMenuIcon("Icons.Histories");
                         icon.Fill = foreground;
 
                         var item = new MenuItem();
@@ -541,7 +541,7 @@ namespace SourceGit.Views
 
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
-                    var clearIcon = App.CreateMenuIcon("Icons.Clear");
+                    var clearIcon = this.CreateMenuIcon("Icons.Clear");
                     clearIcon.Fill = foreground;
 
                     var clearHistoryItem = new MenuItem();
@@ -573,7 +573,7 @@ namespace SourceGit.Views
 
                 if (vm.Staged == null || vm.Staged.Count == 0)
                 {
-                    App.RaiseException(repo.FullPath, "No files added to commit!");
+                    repo.SendNotification("No files added to commit!", true);
                     e.Handled = true;
                     return;
                 }
@@ -581,7 +581,7 @@ namespace SourceGit.Views
                 var services = repo.GetPreferredOpenAIServices();
                 if (services.Count == 0)
                 {
-                    App.RaiseException(repo.FullPath, "Bad configuration for OpenAI");
+                    repo.SendNotification("Bad configuration for OpenAI", true);
                     e.Handled = true;
                     return;
                 }

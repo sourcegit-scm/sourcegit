@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -252,6 +253,18 @@ namespace SourceGit.ViewModels
                 }
             }
         }
+
+        public bool EnableAutoFetch
+        {
+            get;
+            set;
+        } = false;
+
+        public int AutoFetchInterval
+        {
+            get;
+            set;
+        } = 10;
 
         public bool IgnoreWhitespaceChangesInDiff
         {
@@ -614,6 +627,21 @@ namespace SourceGit.ViewModels
         public void AutoRemoveInvalidNode()
         {
             RemoveInvalidRepositoriesRecursive(RepositoryNodes);
+        }
+
+        public async Task UpdateAvailableAIModelsAsync()
+        {
+            foreach (var service in OpenAIServices)
+            {
+                try
+                {
+                    await service.FetchAvailableModelsAsync();
+                }
+                catch
+                {
+                    // Ignore errors.
+                }
+            }
         }
 
         public void Save()
