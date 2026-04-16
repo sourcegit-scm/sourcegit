@@ -473,6 +473,17 @@ namespace SourceGit
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            // Fix macOS crash when quiting from Dock
+            if (OperatingSystem.IsMacOS())
+            {
+                desktop.ShutdownRequested += (_, e) =>
+                {
+                    e.Cancel = true;
+                    Dispatcher.UIThread.Post(() => Quit(0));
+                };
+            }
+
             desktop.Exit += (_, _) =>
             {
                 _ipcChannel?.Dispose();
