@@ -18,15 +18,22 @@ namespace SourceGit.ViewModels
         public string Label { get; set; }
         public string Placeholder { get; set; }
         public string Text { get; set; }
+        public string Formatter { get; set; }
 
-        public CustomActionControlTextBox(string label, string placeholder, string defaultValue)
+        public CustomActionControlTextBox(string label, string placeholder, string defaultValue, string formatter)
         {
             Label = label + ":";
             Placeholder = placeholder;
             Text = defaultValue;
+            Formatter = formatter;
         }
 
-        public string GetValue() => Text;
+        public string GetValue()
+        {
+            if (string.IsNullOrEmpty(Text))
+                return string.Empty;
+            return string.IsNullOrEmpty(Formatter) ? Text : Formatter.Replace("${VALUE}", Text);
+        }
     }
 
     public class CustomActionControlPathSelector : ObservableObject, ICustomActionControlParameter
@@ -187,7 +194,7 @@ namespace SourceGit.ViewModels
                 switch (ctl.Type)
                 {
                     case Models.CustomActionControlType.TextBox:
-                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
+                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue), ctl.StringFormatter));
                         break;
                     case Models.CustomActionControlType.PathSelector:
                         ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));

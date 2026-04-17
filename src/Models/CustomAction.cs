@@ -51,6 +51,12 @@ namespace SourceGit.Models
             set => SetProperty(ref _stringValue, value);
         }
 
+        public string StringFormatter
+        {
+            get => _stringFormatter;
+            set => SetProperty(ref _stringFormatter, value);
+        }
+
         public bool BoolValue
         {
             get => _boolValue;
@@ -61,6 +67,7 @@ namespace SourceGit.Models
         private string _label = string.Empty;
         private string _description = string.Empty;
         private string _stringValue = string.Empty;
+        private string _stringFormatter = string.Empty;
         private bool _boolValue = false;
     }
 

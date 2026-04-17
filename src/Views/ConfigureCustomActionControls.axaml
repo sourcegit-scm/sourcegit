@@ -196,6 +196,22 @@
                 </TextBlock.IsVisible>
               </TextBlock>
 
+              <!-- String Formatter -->
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.StringFormatter}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.TextBox}}"/>
+              <TextBox Margin="0,4,0,0"
+                       CornerRadius="3"
+                       Height="28"
+                       Text="{Binding StringFormatter, Mode=TwoWay}"
+                       IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.TextBox}}"/>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.StringFormatter.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.TextBox}}"/>
+
               <!-- BoolValue is needed by CheckBox/PathSelector -->
               <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*">
                 <Grid.IsVisible>
