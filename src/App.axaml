@@ -45,7 +45,8 @@
       <NativeMenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.App.Hide}" Command="{x:Static s:App.HideAppCommand}" Gesture="⌘+H"/>
-      <NativeMenuItem Header="{DynamicResource Text.App.ShowAll}" Command="{x:Static s:App.ShowAppCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.App.HideOthers}" Command="{x:Static s:App.HideOtherApplicationsCommand}" Gesture="⌘+Alt+H"/>
+      <NativeMenuItem Header="{DynamicResource Text.App.ShowAll}" Command="{x:Static s:App.ShowAllApplicationsCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Quit}" Command="{x:Static s:App.QuitCommand}" Gesture="⌘+Q"/>
     </NativeMenu>

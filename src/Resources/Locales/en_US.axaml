@@ -23,6 +23,7 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Use</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Hide SourceGit</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Hide Others</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Show All</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>

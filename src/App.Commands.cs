@@ -81,14 +81,17 @@ namespace SourceGit
 
         public static readonly Command HideAppCommand = new Command(_ =>
         {
-            if (Current is App app && app.TryGetFeature(typeof(IActivatableLifetime)) is IActivatableLifetime lifetime)
-                lifetime.TryEnterBackground();
+            Native.OS.HideSelf();
         });
 
-        public static readonly Command ShowAppCommand = new Command(_ =>
+        public static readonly Command HideOtherApplicationsCommand = new Command(_ =>
         {
-            if (Current is App app && app.TryGetFeature(typeof(IActivatableLifetime)) is IActivatableLifetime lifetime)
-                lifetime.TryLeaveBackground();
+            Native.OS.HideOtherApplications();
+        });
+
+        public static readonly Command ShowAllApplicationsCommand = new Command(_ =>
+        {
+            Native.OS.ShowAllApplications();
         });
     }
 }

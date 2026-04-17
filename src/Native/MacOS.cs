@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 using Avalonia;
@@ -13,6 +14,18 @@ namespace SourceGit.Native
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
     {
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_getClass")]
+        public static extern IntPtr objc_getClass(string name);
+
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "sel_registerName")]
+        public static extern IntPtr sel_registerName(string name);
+
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        public static extern IntPtr objc_msgSend(IntPtr receiver, IntPtr selector);
+
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        public static extern IntPtr objc_msgSendWithArg(IntPtr receiver, IntPtr selector, IntPtr arg);
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new MacOSPlatformOptions()
@@ -42,6 +55,39 @@ namespace SourceGit.Native
         {
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome;
             window.ExtendClientAreaToDecorationsHint = true;
+        }
+
+        public void HideSelf()
+        {
+            IntPtr nsApplicationClass = objc_getClass("NSApplication");
+            IntPtr nsSharedApplicationSelector = sel_registerName("sharedApplication");
+            IntPtr nsApp = objc_msgSend(nsApplicationClass, nsSharedApplicationSelector);
+            IntPtr nsMethodSelector = sel_registerName("hide:");
+            IntPtr nsDelegateSelector = sel_registerName("delegate");
+            IntPtr nsDelegate = objc_msgSend(nsApp, nsDelegateSelector);
+            objc_msgSendWithArg(nsApp, nsMethodSelector, nsDelegate);
+        }
+
+        public void HideOtherApplications()
+        {
+            IntPtr nsApplicationClass = objc_getClass("NSApplication");
+            IntPtr nsSharedApplicationSelector = sel_registerName("sharedApplication");
+            IntPtr nsApp = objc_msgSend(nsApplicationClass, nsSharedApplicationSelector);
+            IntPtr nsMethodSelector = sel_registerName("hideOtherApplications:");
+            IntPtr nsDelegateSelector = sel_registerName("delegate");
+            IntPtr nsDelegate = objc_msgSend(nsApp, nsDelegateSelector);
+            objc_msgSendWithArg(nsApp, nsMethodSelector, nsDelegate);
+        }
+
+        public void ShowAllApplications()
+        {
+            IntPtr nsApplicationClass = objc_getClass("NSApplication");
+            IntPtr nsSharedApplicationSelector = sel_registerName("sharedApplication");
+            IntPtr nsApp = objc_msgSend(nsApplicationClass, nsSharedApplicationSelector);
+            IntPtr nsMethodSelector = sel_registerName("unhideAllApplications:");
+            IntPtr nsDelegateSelector = sel_registerName("delegate");
+            IntPtr nsDelegate = objc_msgSend(nsApp, nsDelegateSelector);
+            objc_msgSendWithArg(nsApp, nsMethodSelector, nsDelegate);
         }
 
         public string GetDataDir()

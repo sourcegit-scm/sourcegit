@@ -18,6 +18,10 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
             void SetupWindow(Window window);
 
+            void HideSelf();
+            void HideOtherApplications();
+            void ShowAllApplications();
+
             string GetDataDir();
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
@@ -152,6 +156,21 @@ namespace SourceGit.Native
         public static void SetupForWindow(Window window)
         {
             _backend.SetupWindow(window);
+        }
+
+        public static void HideSelf()
+        {
+            _backend.HideSelf();
+        }
+
+        public static void HideOtherApplications()
+        {
+            _backend.HideOtherApplications();
+        }
+
+        public static void ShowAllApplications()
+        {
+            _backend.ShowAllApplications();
         }
 
         public static void LogException(Exception ex)

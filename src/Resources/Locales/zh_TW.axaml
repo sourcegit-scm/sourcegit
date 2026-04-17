@@ -27,7 +27,8 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">套用選取</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">隱藏 SourceGit</x:String>
-  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">顯示所有</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">隱藏其他</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">顯示全部</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">套用修補檔 (apply patch)</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">嘗試三向合併</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">修補檔:</x:String>
