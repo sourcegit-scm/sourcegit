@@ -77,12 +77,7 @@ namespace SourceGit.ViewModels
         public string Label { get; set; }
         public string Description { get; set; }
         public List<string> Options { get; set; } = [];
-
-        public string Value
-        {
-            get => _value;
-            set => SetProperty(ref _value, value);
-        }
+        public string Value { get; set; }
 
         public CustomActionControlComboBox(string label, string description, string options)
         {
@@ -93,13 +88,45 @@ namespace SourceGit.ViewModels
             if (parts.Length > 0)
             {
                 Options.AddRange(parts);
-                _value = parts[0];
+                Value = parts[0];
             }
         }
 
-        public string GetValue() => _value;
+        public string GetValue() => Value;
+    }
 
-        private string _value = string.Empty;
+    public class CustomActionControlBranchSelector : ObservableObject, ICustomActionControlParameter
+    {
+        public string Label { get; set; }
+        public string Description { get; set; }
+        public List<Models.Branch> Branches { get; set; } = [];
+        public Models.Branch SelectedBranch { get; set; }
+
+        public CustomActionControlBranchSelector(string label, string description, Repository repo, bool isLocal, bool useFriendlyName)
+        {
+            Label = label;
+            Description = description;
+            _useFriendlyName = useFriendlyName;
+
+            foreach (var b in repo.Branches)
+            {
+                if (b.IsLocal == isLocal && !b.IsDetachedHead)
+                    Branches.Add(b);
+            }
+
+            if (Branches.Count > 0)
+                SelectedBranch = Branches[0];
+        }
+
+        public string GetValue()
+        {
+            if (SelectedBranch == null)
+                return string.Empty;
+
+            return _useFriendlyName ? SelectedBranch.FriendlyName : SelectedBranch.Name;
+        }
+
+        private bool _useFriendlyName = false;
     }
 
     public class ExecuteCustomAction : Popup
@@ -170,6 +197,12 @@ namespace SourceGit.ViewModels
                         break;
                     case Models.CustomActionControlType.ComboBox:
                         ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
+                        break;
+                    case Models.CustomActionControlType.LocalBranchSelector:
+                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, true, false));
+                        break;
+                    case Models.CustomActionControlType.RemoteBranchSelector:
+                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, false, ctl.BoolValue));
                         break;
                 }
             }

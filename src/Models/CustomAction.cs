@@ -19,6 +19,8 @@ namespace SourceGit.Models
         PathSelector,
         CheckBox,
         ComboBox,
+        LocalBranchSelector,
+        RemoteBranchSelector,
     }
 
     public record CustomActionTargetFile(string File, Commit Revision);

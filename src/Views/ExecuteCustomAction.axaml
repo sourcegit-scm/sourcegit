@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.ExecuteCustomAction"
@@ -130,6 +131,28 @@
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Options}"
                       SelectedItem="{Binding Value, Mode=TwoWay}"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="1"
+                       Classes="small"
+                       Margin="0,2"
+                       TextWrapping="Wrap"
+                       Text="{Binding Description}"
+                       Foreground="{DynamicResource Brush.FG2}"
+                       IsVisible="{Binding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+          </Grid>
+        </DataTemplate>
+      
+        <DataTemplate DataType="vm:CustomActionControlBranchSelector">
+          <Grid RowDefinitions="32,Auto" ColumnDefinitions="150,*">
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="{Binding Label}"
+                       HorizontalAlignment="Right" VerticalAlignment="Center"
+                       Margin="0,0,8,0"/>
+            <v:BranchSelector Grid.Row="0" Grid.Column="1"
+                              Height="28" Padding="8,0"
+                              VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                              Branches="{Binding Branches, Mode=OneWay}"
+                              SelectedBranch="{Binding SelectedBranch, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="1"
                        Classes="small"
