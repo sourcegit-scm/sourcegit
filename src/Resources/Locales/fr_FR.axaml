@@ -96,6 +96,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Afficher comme liste de dossiers/fichiers</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Afficher comme liste de chemins</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Afficher comme arborescence</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">Trier par chemin</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">Trier par statut</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Changer l'URL du sous-module</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Sous-module :</x:String>
   <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL :</x:String>

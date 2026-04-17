@@ -95,6 +95,8 @@
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Exibir como Lista de Arquivos e Diretórios</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Exibir como Lista de Caminhos</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Exibir como Árvore de Sistema de Arquivos</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">Ordenar por caminho</x:String>
+  <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">Ordenar por status</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
   <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
