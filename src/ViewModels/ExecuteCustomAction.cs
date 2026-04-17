@@ -158,7 +158,31 @@ namespace SourceGit.ViewModels
             _repo = repo;
             CustomAction = action;
             Target = scopeTarget ?? new Models.Null();
-            PrepareControlParameters();
+
+            foreach (var ctl in CustomAction.Controls)
+            {
+                switch (ctl.Type)
+                {
+                    case Models.CustomActionControlType.TextBox:
+                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue), ctl.StringFormatter));
+                        break;
+                    case Models.CustomActionControlType.PathSelector:
+                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
+                        break;
+                    case Models.CustomActionControlType.CheckBox:
+                        ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
+                        break;
+                    case Models.CustomActionControlType.ComboBox:
+                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
+                        break;
+                    case Models.CustomActionControlType.LocalBranchSelector:
+                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, true, false));
+                        break;
+                    case Models.CustomActionControlType.RemoteBranchSelector:
+                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, false, ctl.BoolValue));
+                        break;
+                }
+            }
         }
 
         public override async Task<bool> Sure()
@@ -185,34 +209,6 @@ namespace SourceGit.ViewModels
 
             log.Complete();
             return true;
-        }
-
-        private void PrepareControlParameters()
-        {
-            foreach (var ctl in CustomAction.Controls)
-            {
-                switch (ctl.Type)
-                {
-                    case Models.CustomActionControlType.TextBox:
-                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue), ctl.StringFormatter));
-                        break;
-                    case Models.CustomActionControlType.PathSelector:
-                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                    case Models.CustomActionControlType.CheckBox:
-                        ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
-                        break;
-                    case Models.CustomActionControlType.ComboBox:
-                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                    case Models.CustomActionControlType.LocalBranchSelector:
-                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, true, false));
-                        break;
-                    case Models.CustomActionControlType.RemoteBranchSelector:
-                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, false, ctl.BoolValue));
-                        break;
-                }
-            }
         }
 
         private string PrepareStringByTarget(string org)
