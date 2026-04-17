@@ -155,7 +155,10 @@ namespace SourceGit.Views
                         }
 
                         if (indicator != null)
-                            context.DrawText(indicator, new Point(0, y - (indicator.Height * 0.5)));
+                        {
+                            var x = (Bounds.Width - indicator.Width) * 0.5;
+                            context.DrawText(indicator, new Point(x, y - (indicator.Height * 0.5)));
+                        }
                     }
                 }
             }
@@ -167,14 +170,21 @@ namespace SourceGit.Views
                     return new Size(0, 0);
 
                 var typeface = TextView.CreateTypeface();
-                var test = new FormattedText(
+                var minus = new FormattedText(
                     "-",
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
                     presenter.FontSize,
                     Brushes.White);
-                return new Size(test.Width, 0);
+                var plus = new FormattedText(
+                    "+",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    presenter.FontSize,
+                    Brushes.White);
+                return new Size(Math.Max(minus.Width, plus.Width), 0);
             }
 
             protected override void OnDataContextChanged(EventArgs e)
