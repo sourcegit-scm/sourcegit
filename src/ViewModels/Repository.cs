@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Avalonia.Collections;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -280,6 +279,12 @@ namespace SourceGit.ViewModels
         public SearchCommitContext SearchCommitContext
         {
             get => _searchCommitContext;
+        }
+
+        public List<Models.Commit> SelectedCommits
+        {
+            get => _selectCommits;
+            set => SetProperty(ref _selectCommits, value);
         }
 
         public bool IsLocalBranchGroupExpanded
@@ -1219,6 +1224,7 @@ namespace SourceGit.ViewModels
         {
             if (_cancellationRefreshCommits is { IsCancellationRequested: false })
                 _cancellationRefreshCommits.Cancel();
+            var oldSelectedCommits = _selectCommits.ToList();
 
             _cancellationRefreshCommits = new CancellationTokenSource();
             var token = _cancellationRefreshCommits.Token;
@@ -1247,6 +1253,8 @@ namespace SourceGit.ViewModels
                         _histories.Graph = graph;
 
                         BisectState = _histories.UpdateBisectInfo();
+
+                        _histories.MarkLastSelectedCommitsAsSelected(_histories.LastSelectedCommits);
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
                             NavigateToCommit(_navigateToCommitDelayed);
@@ -1957,6 +1965,7 @@ namespace SourceGit.ViewModels
 
         private bool _isSearchingCommits = false;
         private SearchCommitContext _searchCommitContext = null;
+        private List<Models.Commit> _selectCommits = new List<Models.Commit>();
 
         private string _filter = string.Empty;
         private List<Models.Remote> _remotes = [];
