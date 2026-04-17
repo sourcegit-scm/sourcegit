@@ -98,6 +98,23 @@ namespace SourceGit.Views
                 }
             }
 
+            protected override Size MeasureOverride(Size availableSize)
+            {
+                if (DataContext is not ViewModels.TextDiffContext ctx)
+                    return new Size(0, 0);
+
+                var typeface = new Typeface(TextArea.FontFamily);
+                var test = new FormattedText(
+                    $"{ctx.Data.MaxLineNumber}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    TextArea.FontSize,
+                    Brushes.White);
+
+                return new Size(test.Width, 0);
+            }
+
             private readonly bool _usePresenter;
             private readonly bool _isOld;
         }
@@ -578,29 +595,6 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
-
-            if (DataContext is ViewModels.TextDiffContext ctx)
-            {
-                var typeface = new Typeface(FontFamily);
-                var test = new FormattedText(
-                    $"{ctx.Data.MaxLineNumber}",
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    FontSize,
-                    Brushes.White);
-
-                var width = test.WidthIncludingTrailingWhitespace;
-                foreach (var margin in TextArea.LeftMargins)
-                {
-                    if (margin is LineNumberMargin lineNumberMargin)
-                        margin.Width = width;
-                }
-
-                var dock = TextArea.FindDescendantOfType<DockPanel>();
-                dock?.InvalidateArrange();
-            }
-
             AutoScrollToFirstChange();
         }
 
@@ -720,6 +714,9 @@ namespace SourceGit.Views
         {
             if (DataContext is not ViewModels.TextDiffContext ctx)
                 return;
+
+            foreach (var margin in TextArea.LeftMargins)
+                margin.InvalidateMeasure();
 
             if (ctx.IsSideBySide() && !IsOld)
                 return;
