@@ -266,6 +266,11 @@
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy used by this repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
+  <x:String x:Key="Text.Configure.UserProfile" xml:space="preserve">USER PROFILE</x:String>
+  <x:String x:Key="Text.Configure.UserProfile.ProfileName" xml:space="preserve">User Profile</x:String>
+  <x:String x:Key="Text.Configure.UserProfile.UserName" xml:space="preserve">User Name</x:String>
+  <x:String x:Key="Text.Configure.UserProfile.Email" xml:space="preserve">Email Address</x:String>
+  <x:String x:Key="Text.Configure.UserProfile.Key" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Edit Custom Action Controls</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Checked Value:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">When checked, this value will be used in command-line arguments</x:String>

@@ -113,6 +113,15 @@ namespace SourceGit.Views
             set => SetValue(SelectedCustomActionProperty, value);
         }
 
+        public static readonly StyledProperty<Models.UserProfile> SelectedUserProfileProperty =
+            AvaloniaProperty.Register<Preferences, Models.UserProfile>(nameof(SelectedUserProfile));
+
+        public Models.UserProfile SelectedUserProfile
+        {
+            get => GetValue(SelectedUserProfileProperty);
+            set => SetValue(SelectedUserProfileProperty, value);
+        }
+
         public Preferences()
         {
             var pref = ViewModels.Preferences.Instance;
@@ -492,6 +501,49 @@ namespace SourceGit.Views
             };
 
             await dialog.ShowDialog(this);
+            e.Handled = true;
+        }
+
+        private void OnAddUserProfile(object sender, RoutedEventArgs e)
+        {
+            var action = new Models.UserProfile() { ProfileName = "New Profile" };
+            ViewModels.Preferences.Instance.UserProfiles.Add(action);
+            SelectedUserProfile = action;
+
+            e.Handled = true;
+        }
+
+        private void OnRemoveSelectedUserProfile(object sender, RoutedEventArgs e)
+        {
+            if (SelectedUserProfile == null)
+                return;
+
+            ViewModels.Preferences.Instance.UserProfiles.Remove(SelectedUserProfile);
+            SelectedUserProfile = null;
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedUserProfileUp(object sender, RoutedEventArgs e)
+        {
+            if (SelectedUserProfile == null)
+                return;
+
+            var idx = ViewModels.Preferences.Instance.UserProfiles.IndexOf(SelectedUserProfile);
+            if (idx > 0)
+                ViewModels.Preferences.Instance.UserProfiles.Move(idx - 1, idx);
+
+            e.Handled = true;
+        }
+
+        private void OnMoveSelectedUserProfileDown(object sender, RoutedEventArgs e)
+        {
+            if (SelectedUserProfile == null)
+                return;
+
+            var idx = ViewModels.Preferences.Instance.UserProfiles.IndexOf(SelectedUserProfile);
+            if (idx < ViewModels.Preferences.Instance.UserProfiles.Count - 1)
+                ViewModels.Preferences.Instance.UserProfiles.Move(idx + 1, idx);
+
             e.Handled = true;
         }
 
