@@ -27,6 +27,7 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Usar</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Ocultar SourceGit</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Ocultar Otros</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todo</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Aplicar Parche</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Merge a 3 vías (3-Way)</x:String>
@@ -134,6 +135,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">Clonar Repositorio Remoto</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Parámetros Adicionales:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Argumentos adicionales para clonar el repositorio. Opcional.</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">Marcador:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">Grupo:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Nombre Local:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nombre del repositorio. Opcional.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Carpeta Padre:</x:String>
@@ -279,8 +282,11 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Etiqueta:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Opciones:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Usar '|' como delimitador para las opciones</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">Formateador de Cadenas de texto:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">Opcional. Utilizado para formatear la cadena de salida. Ignorado cuando la entrada está vacía. Por favor utiliza `${VALUE}` para representar la cadena de entrada.</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">La variables incorporadas ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, y ${TAG} permanecen disponibles aquí</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Tipo:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">Utilizar Nombre Amigable:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Espacios de Trabajo</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nombre</x:String>
@@ -374,6 +380,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMÓDULO</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">BORRADO</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NUEVO</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} Cambios Sin confirmar</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Intercambiar</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Resaltado de Sintaxis</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Ajuste de Línea</x:String>
@@ -502,6 +509,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Ir a la siguiente página</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Ir a la página anterior</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Crear nueva página</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">Abrir repositorio local</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Abrir diálogo de preferencias</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Mostrar menú desplegable del espacio de trabajo</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Cambiar página activa</x:String>
@@ -595,6 +603,10 @@
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Abrir Directorio de Datos de la App</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">Abrir Archivo</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Abrir Repositorio Local</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">Marcador:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">Grupo:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">Carpeta:</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Crear Nueva Página</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Cerrar Pestaña</x:String>
@@ -901,6 +913,8 @@
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">unmerged</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Actualizar</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">Cambiar Detalles del Submódulo</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">ABRIR DETALLES</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">ETIQUETADOR</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">HORA</x:String>
