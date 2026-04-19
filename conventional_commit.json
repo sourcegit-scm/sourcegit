@@ -1,0 +1,7 @@
+[
+  {
+    "Name": "Linux Package's Desktop Entry Exec Argument Missing Fixes",
+    "Type": "Fix",
+    "Description": "Adding an missing argument of linux package's desktop entry"
+  }
+]
