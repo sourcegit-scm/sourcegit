@@ -18,6 +18,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public string ProfileName
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public int PreferredMergeMode
         {
             get;

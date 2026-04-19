@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
+using SourceGit.Views;
 
 namespace SourceGit.ViewModels
 {
@@ -26,6 +30,11 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public List<string> UserProfileNames
+        {
+            get;
+        }
+
         public string DefaultRemote
         {
             get => _repo.Settings.DefaultRemote;
@@ -35,6 +44,25 @@ namespace SourceGit.ViewModels
                 {
                     _repo.Settings.DefaultRemote = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        public string ProfileName
+        {
+            set
+            {
+                foreach(var profile in _profiles)
+                {
+                    if (profile.ProfileName == value)
+                    {
+                        UserName = profile.UserName;
+                        UserEmail = profile.Email;
+                        GPGUserSigningKey = profile.Key;
+                        OnPropertyChanged(nameof(UserName));
+                        OnPropertyChanged(nameof(UserEmail));
+                        OnPropertyChanged(nameof(GPGUserSigningKey));
+                    }  
                 }
             }
         }
@@ -153,6 +181,15 @@ namespace SourceGit.ViewModels
             Remotes = new List<string>();
             foreach (var remote in _repo.Remotes)
                 Remotes.Add(remote.Name);
+
+            UserProfileNames = new List<string>();
+            _profiles = new List<UserProfile>();
+            foreach (var profile in Preferences.Instance.UserProfiles)
+            {
+                UserProfileNames.Add(profile.ProfileName);
+                _profiles.Add(profile);
+            } 
+                
 
             AvailableOpenAIServices = new List<string>() { "---" };
             foreach (var service in Preferences.Instance.OpenAIServices)
@@ -346,5 +383,10 @@ namespace SourceGit.ViewModels
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTracker _selectedIssueTracker = null;
         private Models.CustomAction _selectedCustomAction = null;
+
+        public List<UserProfile> _profiles
+        {
+            get;
+        }
     }
 }

@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -52,6 +52,7 @@
           <TextBox Grid.Row="0" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
+                   IsReadOnly="true"
                    Watermark="{DynamicResource Text.Configure.User.Placeholder}"
                    Text="{Binding UserName, Mode=TwoWay}"/>
 
@@ -62,6 +63,7 @@
           <TextBox Grid.Row="1" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
+                   IsReadOnly="true"
                    Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
                    Text="{Binding UserEmail, Mode=TwoWay}"/>
 
@@ -143,6 +145,7 @@
           <TextBox Grid.Row="5" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
+                   IsReadOnly="true"
                    Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
@@ -179,6 +182,25 @@
           <CheckBox Grid.Row="10" Grid.Column="1"
                     Content="{DynamicResource Text.Configure.Git.AskBeforeAutoUpdatingSubmodules}"
                     IsChecked="{Binding AskBeforeAutoUpdatingSubmodules, Mode=TwoWay}"/>
+          
+          <TextBlock Grid.Row="11" Grid.Column="0"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Margin="0,0,8,0"
+                     Text="{DynamicResource Text.Configure.Git.UserProfile}"/>
+          <ComboBox Grid.Row="11" Grid.Column="1"
+                    Height="28" Padding="8,0"
+                    VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding UserProfileNames}"
+                    SelectedItem="{Binding ProfileName, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+                  <Path Margin="0,2,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.User}"/>
+                  <TextBlock Text="{Binding}"/>
+                </StackPanel>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
         </Grid>
       </TabItem>
 
