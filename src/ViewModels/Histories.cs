@@ -143,6 +143,12 @@ namespace SourceGit.ViewModels
 
         public Models.BisectState UpdateBisectInfo()
         {
+            if (_repo == null)
+            {
+                Bisect = null;
+                return Models.BisectState.None;
+            }
+
             var test = Path.Combine(_repo.GitDir, "BISECT_START");
             if (!File.Exists(test))
             {
@@ -182,6 +188,9 @@ namespace SourceGit.ViewModels
                 return;
             }
 
+            if (_repo == null)
+                return;
+
             Task.Run(async () =>
             {
                 var c = await new Commands.QuerySingleCommit(_repo.FullPath, commitSHA)
@@ -190,6 +199,9 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (_repo == null)
+                        return;
+
                     _ignoreSelectionChange = true;
                     SelectedCommit = null;
 
@@ -263,7 +275,7 @@ namespace SourceGit.ViewModels
 
         public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)
         {
-            if (decorator == null)
+            if (decorator == null || _repo == null)
                 return false;
 
             if (decorator.Type == Models.DecoratorType.CurrentBranchHead ||
@@ -310,7 +322,7 @@ namespace SourceGit.ViewModels
 
         public async Task CheckoutBranchByCommitAsync(Models.Commit commit)
         {
-            if (commit.IsCurrentHead)
+            if (commit.IsCurrentHead || _repo == null)
                 return;
 
             Models.Branch firstRemoteBranch = null;
@@ -355,61 +367,64 @@ namespace SourceGit.ViewModels
 
         public async Task CherryPickAsync(Models.Commit commit)
         {
-            if (_repo.CanCreatePopup())
+            if (_repo == null || !_repo.CanCreatePopup())
+                return;
+
+            if (commit.Parents.Count <= 1)
             {
-                if (commit.Parents.Count <= 1)
+                _repo.ShowPopup(new CherryPick(_repo, [commit]));
+            }
+            else
+            {
+                var parents = new List<Models.Commit>();
+                foreach (var sha in commit.Parents)
                 {
-                    _repo.ShowPopup(new CherryPick(_repo, [commit]));
-                }
-                else
-                {
-                    var parents = new List<Models.Commit>();
-                    foreach (var sha in commit.Parents)
-                    {
-                        var parent = _commits.Find(x => x.SHA.Equals(sha, StringComparison.Ordinal));
-                        if (parent == null)
-                            parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
+                    var parent = _commits.Find(x => x.SHA.Equals(sha, StringComparison.Ordinal));
+                    if (parent == null)
+                        parent = await new Commands.QuerySingleCommit(_repo.FullPath, sha).GetResultAsync();
 
-                        if (parent != null)
-                            parents.Add(parent);
-                    }
-
-                    _repo.ShowPopup(new CherryPick(_repo, commit, parents));
+                    if (parent != null)
+                        parents.Add(parent);
                 }
+
+                _repo.ShowPopup(new CherryPick(_repo, commit, parents));
             }
         }
 
         public async Task RewordHeadAsync(Models.Commit head)
         {
-            if (_repo.CanCreatePopup())
-            {
-                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                _repo.ShowPopup(new Reword(_repo, head, message));
-            }
+            if (_repo == null || !_repo.CanCreatePopup())
+                return;
+
+            var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+            _repo.ShowPopup(new Reword(_repo, head, message));
         }
 
         public async Task SquashOrFixupHeadAsync(Models.Commit head, bool fixup)
         {
-            if (head.Parents.Count == 1)
+            if (_repo == null || head.Parents.Count != 1)
+                return;
+
+            var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
+            if (parent == null)
+                return;
+
+            string message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
+            if (!fixup)
             {
-                var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
-                if (parent == null)
-                    return;
-
-                string message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
-                if (!fixup)
-                {
-                    var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                    message = $"{message}\n\n{headMessage}";
-                }
-
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new SquashOrFixupHead(_repo, parent, message, fixup));
+                var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
+                message = $"{message}\n\n{headMessage}";
             }
+
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new SquashOrFixupHead(_repo, parent, message, fixup));
         }
 
         public async Task DropHeadAsync(Models.Commit head)
         {
+            if (_repo == null)
+                return;
+
             var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
             if (parent == null)
                 parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
@@ -420,6 +435,9 @@ namespace SourceGit.ViewModels
 
         public async Task<string> GetCommitFullMessageAsync(Models.Commit commit)
         {
+            if (_repo == null)
+                return string.Empty;
+
             return await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA)
                 .GetResultAsync()
                 .ConfigureAwait(false);
@@ -427,6 +445,9 @@ namespace SourceGit.ViewModels
 
         public async Task<Models.Commit> CompareWithHeadAsync(Models.Commit commit)
         {
+            if (_repo == null)
+                return null;
+
             var head = _commits.Find(x => x.IsCurrentHead);
             if (head == null)
             {
@@ -443,7 +464,8 @@ namespace SourceGit.ViewModels
 
         public void CompareWithWorktree(Models.Commit commit)
         {
-            DetailContext = new RevisionCompare(_repo, commit, null);
+            if (_repo != null)
+                DetailContext = new RevisionCompare(_repo, commit, null);
         }
 
         private Repository _repo = null;
