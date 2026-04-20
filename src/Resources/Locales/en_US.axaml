@@ -268,7 +268,7 @@
   <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">User name for this repository</x:String>
   <x:String x:Key="Text.Configure.UserProfile" xml:space="preserve">USER PROFILE</x:String>
-  <x:String x:Key="Text.Configure.UserProfile.ProfileName" xml:space="preserve">User Profile</x:String>
+  <x:String x:Key="Text.Configure.UserProfile.ProfileName" xml:space="preserve">Profile Name</x:String>
   <x:String x:Key="Text.Configure.UserProfile.UserName" xml:space="preserve">User Name</x:String>
   <x:String x:Key="Text.Configure.UserProfile.Email" xml:space="preserve">Email Address</x:String>
   <x:String x:Key="Text.Configure.UserProfile.Key" xml:space="preserve">User Signing Key</x:String>

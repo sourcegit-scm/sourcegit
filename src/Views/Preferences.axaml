@@ -524,13 +524,13 @@
                     <TextBlock Text="{DynamicResource Text.Configure.UserProfile.ProfileName}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ProfileName, Mode=TwoWay}"/>
 
-                    <TextBlock Text="{DynamicResource Text.Configure.UserProfile.UserName}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.UserProfile.UserName}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding UserName, Mode=TwoWay}"/>
 
-                    <TextBlock Text="{DynamicResource Text.Configure.UserProfile.Email}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.UserProfile.Email}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Email, Mode=TwoWay}"/>
 
-                    <TextBlock Text="{DynamicResource Text.Configure.UserProfile.Key}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Configure.UserProfile.Key}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Key, Mode=TwoWay}"/>
 
                   </StackPanel>
