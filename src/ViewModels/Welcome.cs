@@ -171,6 +171,19 @@ namespace SourceGit.ViewModels
                 Native.OS.OpenTerminal(null);
         }
 
+        public void InitGit()
+        {
+            if (!Preferences.Instance.IsGitConfigured())
+            {
+                Models.Notification.Send(null, App.Text("NotConfigured"), true);
+                return;
+            }
+
+            var activePage = App.GetLauncher().ActivePage;
+            if (activePage != null && activePage.CanCreatePopup())
+                activePage.Popup = new InitGit(activePage.Node.Id);
+        }
+
         public void ScanDefaultCloneDir()
         {
             if (!Preferences.Instance.IsGitConfigured())
