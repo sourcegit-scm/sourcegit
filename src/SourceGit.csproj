@@ -59,6 +59,7 @@
     <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0" />
     <PackageReference Include="OpenAI" Version="2.10.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
 
     <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
   </ItemGroup>
