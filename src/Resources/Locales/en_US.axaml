@@ -548,7 +548,7 @@
   <x:String x:Key="Text.InitGit.InitialBranch.Placeholder" xml:space="preserve">main</x:String>
   <x:String x:Key="Text.InitGit.ParentFolder" xml:space="preserve">Parent Folder</x:String>
   <x:String x:Key="Text.InitGit.ProjectName" xml:space="preserve">Project Name</x:String>
-  <x:String x:Key="Text.InitGit.ProjectName.Placeholder" xml:space="preserve">my_git_project</x:String>
+  <x:String x:Key="Text.InitGit.ProjectName.Placeholder" xml:space="preserve">new_git_project</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick in progress.</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Processing commit</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Merge in progress.</x:String>

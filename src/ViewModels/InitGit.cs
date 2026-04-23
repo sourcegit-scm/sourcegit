@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SourceGit.ViewModels
 {
@@ -18,7 +19,7 @@ namespace SourceGit.ViewModels
 
         public string ProjectName
         {
-            get => _projectName;
+            get => null;
             set => SetProperty(ref _projectName, value);
         }
 
@@ -46,7 +47,7 @@ namespace SourceGit.ViewModels
 
         public string InitialBranch
         {
-            get => _initialBranch;
+            get => null;
             set => SetProperty(ref _initialBranch, value);
         }
 
@@ -75,13 +76,6 @@ namespace SourceGit.ViewModels
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
         }
 
-        public static ValidationResult ValidateRemote(string remote, ValidationContext _)
-        {
-            if (!Models.Remote.IsValidURL(remote))
-                return new ValidationResult("Invalid remote repository URL format");
-            return ValidationResult.Success;
-        }
-
         public static ValidationResult ValidateParentFolder(string folder, ValidationContext _)
         {
             if (!Directory.Exists(folder))
@@ -91,12 +85,12 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
-            ProgressDescription = "Clone ...";
+            ProgressDescription = "Init ...";
 
-            var log = new CommandLog("Clone");
+            var log = new CommandLog("Init");
             Use(log);
 
-            var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _projectName, _useSSH ? _sshKey : "", _initialBranch)
+            var succ = await new Commands.InitGit(_pageId, _parentFolder, _projectName, _initialBranch, BareRepo)
                 .Use(log)
                 .ExecAsync();
             if (!succ)
@@ -109,35 +103,13 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                var name = Path.GetFileName(_remote)!;
-                if (name.EndsWith(".git", StringComparison.Ordinal))
-                    name = name.Substring(0, name.Length - 4);
-                else if (name.EndsWith(".bundle", StringComparison.Ordinal))
-                    name = name.Substring(0, name.Length - 7);
-
-                path = Path.GetFullPath(Path.Combine(path, name));
+                path = Path.GetFullPath(Path.Combine(path, "new_git_project"));
             }
 
             if (!Directory.Exists(path))
             {
                 Models.Notification.Send(_pageId, $"Folder '{path}' can NOT be found", true);
                 return false;
-            }
-
-            if (_useSSH && !string.IsNullOrEmpty(_sshKey))
-            {
-                await new Commands.Config(path)
-                    .Use(log)
-                    .SetAsync("remote.origin.sshkey", _sshKey);
-            }
-
-            if (BareRepo)
-            {
-                var submodules = await new Commands.QueryUpdatableSubmodules(path, true).GetResultAsync();
-                if (submodules.Count > 0)
-                    await new Commands.Submodule(path)
-                        .Use(log)
-                        .UpdateAsync(submodules, true);
             }
 
             log.Complete();
@@ -176,12 +148,9 @@ namespace SourceGit.ViewModels
         }
 
         private string _pageId = string.Empty;
-        private string _remote = string.Empty;
-        private bool _useSSH = false;
-        private string _sshKey = string.Empty;
         private string _parentFolder = string.Empty;
-        private string _projectName = string.Empty;
-        private string _initialBranch = string.Empty;
+        private string _projectName = App.Text("InitGit.ProjectName.Placeholder");
+        private string _initialBranch = App.Text("InitGit.InitialBranch.Placeholder");
         private RepositoryNode _selectedGroup = null;
         private int _bookmark = 0;
     }
