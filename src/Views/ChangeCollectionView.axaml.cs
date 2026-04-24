@@ -8,6 +8,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -84,6 +85,8 @@ namespace SourceGit.Views
             ScrollIntoView(target);
             if (ContainerFromItem(target) is Control container)
                 container.Focus();
+            else
+                Dispatcher.UIThread.Post(() => (ContainerFromItem(target) as Control)?.Focus(), DispatcherPriority.Loaded);
         }
 
         private static ViewModels.ChangeTreeNode FindParentRow(IList<ViewModels.ChangeTreeNode> rows, ViewModels.ChangeTreeNode node)

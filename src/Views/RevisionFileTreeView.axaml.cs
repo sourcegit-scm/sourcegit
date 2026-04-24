@@ -12,6 +12,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -217,6 +218,8 @@ namespace SourceGit.Views
             ScrollIntoView(target);
             if (ContainerFromItem(target) is Control container)
                 container.Focus();
+            else
+                Dispatcher.UIThread.Post(() => (ContainerFromItem(target) as Control)?.Focus(), DispatcherPriority.Loaded);
         }
 
         private static ViewModels.RevisionFileTreeNode FindParentRow(IList<ViewModels.RevisionFileTreeNode> rows, ViewModels.RevisionFileTreeNode node)
