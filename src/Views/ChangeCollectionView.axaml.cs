@@ -35,18 +35,74 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItems is [ViewModels.ChangeTreeNode node])
+            if (e.KeyModifiers == KeyModifiers.None &&
+                (e.Key == Key.Left || e.Key == Key.Right) &&
+                SelectedItems is [ViewModels.ChangeTreeNode node] &&
+                this.FindAncestorOfType<ChangeCollectionView>() is { Content: ViewModels.ChangeCollectionAsTree tree } view)
             {
-                if (((e.Key == Key.Left && node.IsExpanded) || (e.Key == Key.Right && !node.IsExpanded)) &&
-                    e.KeyModifiers == KeyModifiers.None)
+                if (e.Key == Key.Left)
                 {
-                    this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
+                    if (node.IsFolder && node.IsExpanded)
+                    {
+                        view.ToggleNodeIsExpanded(node);
+                    }
+                    else
+                    {
+                        var parent = FindParentRow(tree.Rows, node);
+                        if (parent != null)
+                            MoveSelectionTo(parent);
+                    }
                 }
+                else
+                {
+                    if (node.IsFolder && !node.IsExpanded)
+                    {
+                        view.ToggleNodeIsExpanded(node);
+                    }
+                    else if (node.IsFolder)
+                    {
+                        var idx = tree.Rows.IndexOf(node);
+                        if (idx >= 0 && idx + 1 < tree.Rows.Count)
+                        {
+                            var child = tree.Rows[idx + 1];
+                            if (child.Depth == node.Depth + 1)
+                                MoveSelectionTo(child);
+                        }
+                    }
+                }
+
+                e.Handled = true;
             }
 
             if (!e.Handled && e.Key != Key.Space && e.Key != Key.Enter)
                 base.OnKeyDown(e);
+        }
+
+        private void MoveSelectionTo(ViewModels.ChangeTreeNode target)
+        {
+            SelectedItem = target;
+            ScrollIntoView(target);
+            if (ContainerFromItem(target) is Control container)
+                container.Focus();
+        }
+
+        private static ViewModels.ChangeTreeNode FindParentRow(IList<ViewModels.ChangeTreeNode> rows, ViewModels.ChangeTreeNode node)
+        {
+            if (node.Depth == 0)
+                return null;
+
+            var idx = rows.IndexOf(node);
+            if (idx <= 0)
+                return null;
+
+            var parentDepth = node.Depth - 1;
+            for (int i = idx - 1; i >= 0; i--)
+            {
+                if (rows[i].Depth == parentDepth)
+                    return rows[i];
+            }
+
+            return null;
         }
     }
 
