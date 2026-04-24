@@ -126,17 +126,17 @@ namespace SourceGit.Views
             {
                 if (e.KeyModifiers == KeyModifiers.None &&
                     (e.Key == Key.Left || e.Key == Key.Right) &&
-                    this.FindAncestorOfType<RevisionFileTreeView>() is { } tree)
+                    this.FindAncestorOfType<RevisionFileTreeView>() is { } view)
                 {
                     if (e.Key == Key.Left)
                     {
                         if (node.IsFolder && node.IsExpanded)
                         {
-                            await tree.ToggleNodeIsExpandedAsync(node);
+                            await view.ToggleNodeIsExpandedAsync(node);
                         }
                         else
                         {
-                            var parent = FindParentRow(tree.Rows, node);
+                            var parent = FindParentRow(view.Rows, node);
                             if (parent != null)
                                 MoveSelectionTo(parent);
                         }
@@ -145,14 +145,14 @@ namespace SourceGit.Views
                     {
                         if (node.IsFolder && !node.IsExpanded)
                         {
-                            await tree.ToggleNodeIsExpandedAsync(node);
+                            await view.ToggleNodeIsExpandedAsync(node);
                         }
                         else if (node.IsFolder)
                         {
-                            var idx = tree.Rows.IndexOf(node);
-                            if (idx >= 0 && idx + 1 < tree.Rows.Count)
+                            var idx = view.Rows.IndexOf(node);
+                            if (idx >= 0 && idx + 1 < view.Rows.Count)
                             {
-                                var child = tree.Rows[idx + 1];
+                                var child = view.Rows[idx + 1];
                                 if (child.Depth == node.Depth + 1)
                                     MoveSelectionTo(child);
                             }
