@@ -123,13 +123,41 @@ namespace SourceGit.Views
 
             if (SelectedItem is ViewModels.RevisionFileTreeNode node)
             {
-                if (node.IsFolder &&
-                    e.KeyModifiers == KeyModifiers.None &&
-                    (node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                if (e.KeyModifiers == KeyModifiers.None &&
+                    (e.Key == Key.Left || e.Key == Key.Right) &&
+                    this.FindAncestorOfType<RevisionFileTreeView>() is { } tree)
                 {
-                    var tree = this.FindAncestorOfType<RevisionFileTreeView>();
-                    if (tree != null)
-                        await tree.ToggleNodeIsExpandedAsync(node);
+                    if (e.Key == Key.Left)
+                    {
+                        if (node.IsFolder && node.IsExpanded)
+                        {
+                            await tree.ToggleNodeIsExpandedAsync(node);
+                        }
+                        else
+                        {
+                            var parent = FindParentRow(tree.Rows, node);
+                            if (parent != null)
+                                MoveSelectionTo(parent);
+                        }
+                    }
+                    else
+                    {
+                        if (node.IsFolder && !node.IsExpanded)
+                        {
+                            await tree.ToggleNodeIsExpandedAsync(node);
+                        }
+                        else if (node.IsFolder)
+                        {
+                            var idx = tree.Rows.IndexOf(node);
+                            if (idx >= 0 && idx + 1 < tree.Rows.Count)
+                            {
+                                var child = tree.Rows[idx + 1];
+                                if (child.Depth == node.Depth + 1)
+                                    MoveSelectionTo(child);
+                            }
+                        }
+                    }
+
                     e.Handled = true;
                 }
                 else if (e.Key == Key.C &&
@@ -181,6 +209,33 @@ namespace SourceGit.Views
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private void MoveSelectionTo(ViewModels.RevisionFileTreeNode target)
+        {
+            SelectedItem = target;
+            ScrollIntoView(target);
+            if (ContainerFromItem(target) is Control container)
+                container.Focus();
+        }
+
+        private static ViewModels.RevisionFileTreeNode FindParentRow(IList<ViewModels.RevisionFileTreeNode> rows, ViewModels.RevisionFileTreeNode node)
+        {
+            if (node.Depth == 0)
+                return null;
+
+            var idx = rows.IndexOf(node);
+            if (idx <= 0)
+                return null;
+
+            var parentDepth = node.Depth - 1;
+            for (int i = idx - 1; i >= 0; i--)
+            {
+                if (rows[i].Depth == parentDepth)
+                    return rows[i];
+            }
+
+            return null;
         }
     }
 
