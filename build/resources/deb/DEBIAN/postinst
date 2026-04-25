@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -e
+
+# summary of how this script can be called:
+#        * <new-postinst> `configure'
+#        * <old-postinst> `abort-upgrade' <new-version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour'
+#          <package> <new-version>
+#        * <postinst> `abort-remove'
+#        * <new-postinst> `abort-deconfigure' `in-favour'
+#          <failed-config-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/
+
+case "$1" in
+    configure)
+        # Update desktop database
+        update-desktop-database /usr/share/applications 2>/dev/null || true
+        # Update icon cache for hicolor theme only
+        gtk-update-icon-cache -f /usr/share/icons/hicolor 2>/dev/null || true
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
