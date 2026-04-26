@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace SourceGit.Models
 {
@@ -39,7 +40,17 @@ namespace SourceGit.Models
 
         public string Example
         {
-            get => DateTime.Now.ToString(DateFormat);
+            get => DateTime.Now.ToString(DateFormat, _culture);
+        }
+
+        private static readonly CultureInfo _culture = CreateCulture();
+
+        private static CultureInfo CreateCulture()
+        {
+            var culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.DateTimeFormat.DateSeparator = "/";
+            culture.DateTimeFormat.TimeSeparator = ":";
+            return culture;
         }
 
         public DateTimeFormat(string date)
@@ -57,10 +68,10 @@ namespace SourceGit.Models
         {
             var actived = Supported[ActiveIndex];
             if (dateOnly)
-                return localTime.ToString(actived.DateFormat);
+                return localTime.ToString(actived.DateFormat, _culture);
 
             var format = Use24Hours ? $"{actived.DateFormat} HH:mm:ss" : $"{actived.DateFormat} hh:mm:ss tt";
-            return localTime.ToString(format);
+            return localTime.ToString(format, _culture);
         }
     }
 }
