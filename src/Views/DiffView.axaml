@@ -321,11 +321,26 @@
                     <ContentControl Content="{Binding New}">
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
-                          <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                          <StackPanel Orientation="Vertical">
+                            <TextBlock Margin="0,8,0,4"
+                                       HorizontalAlignment="Center"
+                                       Foreground="OrangeRed"
+                                       FontFamily="{DynamicResource Fonts.Monospace}"
+                                       Text="{Binding UncommittedChanges, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Diff.Submodule.UncommittedChanges'}"
+                                       IsVisible="{Binding UncommittedChanges, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
+                            <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                          </StackPanel>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
                     </ContentControl>
                   </Border>
+                  
+                  <Button Classes="flat"
+                          Margin="0,8"
+                          HorizontalAlignment="Center"
+                          Content="{DynamicResource Text.SubmoduleRevisionCompare.OpenDetails}"
+                          Click="OnOpenSubmoduleRevisionCompare"
+                          IsEnabled="{Binding CanOpenDetails, Mode=OneWay}"/>
                 </StackPanel>
               </ScrollViewer>
             </Grid>

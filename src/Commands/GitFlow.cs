@@ -49,7 +49,7 @@ namespace SourceGit.Commands
             return await start.Use(log).ExecAsync().ConfigureAwait(false);
         }
 
-        public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
+        public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool keepBranch, Models.ICommandLog log)
         {
             var builder = new StringBuilder();
             builder.Append("flow ");
@@ -73,8 +73,6 @@ namespace SourceGit.Commands
             builder.Append(" finish ");
             if (squash)
                 builder.Append("--squash ");
-            if (push)
-                builder.Append("--push ");
             if (keepBranch)
                 builder.Append("-k ");
             builder.Append(name);

@@ -392,7 +392,6 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Hotfix 완료</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Release 완료</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">대상:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">완료 후 원격(들)에 푸시</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">병합 시 스쿼시</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">핫픽스:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix 접두사:</x:String>

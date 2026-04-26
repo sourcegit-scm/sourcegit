@@ -424,7 +424,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Completa Hotfix</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Completa Rilascio</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Invia al remote dopo aver finito</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Esegui squash durante il merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Prefisso Hotfix:</x:String>

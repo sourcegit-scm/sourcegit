@@ -13,6 +13,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace SourceGit.ViewModels
 {
     public record InteractiveRebasePrefill(string SHA, Models.InteractiveRebaseAction Action);
+    public record InteractiveRebaseReorderItem(string Key, InteractiveRebaseItem Item);
 
     public class InteractiveRebaseItem : ObservableObject
     {
@@ -172,10 +173,57 @@ namespace SourceGit.ViewModels
                     .ConfigureAwait(false);
 
                 var list = new List<InteractiveRebaseItem>();
+                var needReorder = new List<InteractiveRebaseReorderItem>();
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
-                    list.Add(new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message));
+                    var item = new InteractiveRebaseItem(commits.Count - i, c.Commit, c.Message);
+                    var subject = c.Commit.Subject;
+
+                    if (item.OriginalOrder > 1)
+                    {
+                        if (subject.StartsWith("fixup! ", StringComparison.Ordinal))
+                        {
+                            item.Action = Models.InteractiveRebaseAction.Fixup;
+                            needReorder.Add(new(subject.Substring(7), item));
+                            continue;
+                        }
+
+                        if (subject.StartsWith("squash! ", StringComparison.Ordinal))
+                        {
+                            item.Action = Models.InteractiveRebaseAction.Squash;
+                            needReorder.Add(new(subject.Substring(8), item));
+                            continue;
+                        }
+                    }
+
+                    var reordered = new List<InteractiveRebaseReorderItem>();
+                    foreach (var o in needReorder)
+                    {
+                        if (subject.StartsWith(o.Key, StringComparison.Ordinal))
+                        {
+                            list.Add(o.Item);
+                            reordered.Add(o);
+                        }
+                    }
+
+                    foreach (var k in reordered)
+                        needReorder.Remove(k);
+
+                    list.Add(item);
+                }
+
+                foreach (var v in needReorder)
+                {
+                    for (var i = 0; i < list.Count; i++)
+                    {
+                        if (v.Item.OriginalOrder > list[i].OriginalOrder)
+                        {
+                            v.Item.Action = Models.InteractiveRebaseAction.Pick; // For safety, reset to pick if the target commit is not found
+                            list.Insert(i, v.Item);
+                            break;
+                        }
+                    }
                 }
 
                 var selected = list.Count > 0 ? list[0] : null;
@@ -363,7 +411,18 @@ namespace SourceGit.ViewModels
                     item.IsMessageUserEdited = false;
 
                     if (item.Action == Models.InteractiveRebaseAction.Squash)
-                        pendingMessages.Add(item.OriginalFullMessage);
+                    {
+                        if (item.OriginalFullMessage.StartsWith("squash! ", StringComparison.Ordinal))
+                        {
+                            var firstLineEnd = item.OriginalFullMessage.IndexOf('\n');
+                            if (firstLineEnd > 0)
+                                pendingMessages.Add(item.OriginalFullMessage.Substring(firstLineEnd + 1));
+                        }
+                        else
+                        {
+                            pendingMessages.Add(item.OriginalFullMessage);
+                        }
+                    }
 
                     hasPending = true;
                     continue;

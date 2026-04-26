@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -75,79 +73,6 @@ namespace SourceGit
         #endregion
 
         #region Utility Functions
-        public static Task ShowDialog(object data, Window owner = null)
-        {
-            if (owner == null)
-            {
-                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } mainWindow })
-                    owner = mainWindow;
-                else
-                    return null;
-            }
-
-            if (data is Views.ChromelessWindow window)
-                return window.ShowDialog(owner);
-
-            window = Views.ControlExtensions.CreateFromViewModels(data) as Views.ChromelessWindow;
-            if (window != null)
-            {
-                window.DataContext = data;
-                return window.ShowDialog(owner);
-            }
-
-            return null;
-        }
-
-        public static void ShowWindow(object data)
-        {
-            if (data is not Views.ChromelessWindow window)
-            {
-                window = Views.ControlExtensions.CreateFromViewModels(data) as Views.ChromelessWindow;
-                if (window == null)
-                    return;
-
-                window.DataContext = data;
-            }
-
-            do
-            {
-                if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { Windows: { Count: > 0 } windows })
-                {
-                    // Try to find the actived window (fall back to `MainWindow`)
-                    Window actived = windows[0];
-                    if (!actived.IsActive)
-                    {
-                        for (var i = 1; i < windows.Count; i++)
-                        {
-                            var test = windows[i];
-                            if (test.IsActive)
-                            {
-                                actived = test;
-                                break;
-                            }
-                        }
-                    }
-
-                    // Get the screen where current window locates.
-                    var screen = actived.Screens.ScreenFromWindow(actived) ?? actived.Screens.Primary;
-                    if (screen == null)
-                        break;
-
-                    // Calculate the startup position (Center Screen Mode) of target window
-                    var rect = new PixelRect(PixelSize.FromSize(window.ClientSize, actived.DesktopScaling));
-                    var centeredRect = screen.WorkingArea.CenterRect(rect);
-                    if (actived.Screens.ScreenFromPoint(centeredRect.Position) == null)
-                        break;
-
-                    // Use the startup position
-                    window.WindowStartupLocation = WindowStartupLocation.Manual;
-                    window.Position = centeredRect.Position;
-                }
-            } while (false);
-
-            window.Show();
-        }
-
         public static async Task<bool> AskConfirmAsync(string message, Models.ConfirmButtonType buttonType = Models.ConfirmButtonType.OkCancel)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
@@ -253,8 +178,8 @@ namespace SourceGit
                 app._fontsOverrides = null;
             }
 
-            defaultFont = app.FixFontFamilyName(defaultFont);
-            monospaceFont = app.FixFontFamilyName(monospaceFont);
+            defaultFont = StringExtensions.FormatFontNames(defaultFont);
+            monospaceFont = StringExtensions.FormatFontNames(monospaceFont);
 
             var resDic = new ResourceDictionary();
             if (!string.IsNullOrEmpty(defaultFont))
@@ -303,15 +228,9 @@ namespace SourceGit
         public static void Quit(int exitCode)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-                desktop.MainWindow?.Close();
                 desktop.Shutdown(exitCode);
-            }
             else
-            {
                 Environment.Exit(exitCode);
-            }
         }
         #endregion
 
@@ -547,10 +466,27 @@ namespace SourceGit
 
             var pref = ViewModels.Preferences.Instance;
             pref.SetCanModify();
+            pref.UpdateAvailableAIModels();
 
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };
-            desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
+            // Fix macOS crash when quiting from Dock
+            if (OperatingSystem.IsMacOS())
+            {
+                desktop.ShutdownRequested += (_, e) =>
+                {
+                    e.Cancel = true;
+                    Dispatcher.UIThread.Post(() => Quit(0));
+                };
+            }
+
+            desktop.Exit += (_, _) =>
+            {
+                _ipcChannel?.Dispose();
+                _ipcChannel = null;
+            };
 
             _ipcChannel.MessageReceived += repo =>
             {
@@ -561,8 +497,6 @@ namespace SourceGit
                         main.BringToTop();
                 });
             };
-
-            desktop.Exit += (_, _) => _ipcChannel.Dispose();
 
 #if !DISABLE_UPDATE_DETECTION
             if (pref.ShouldCheck4UpdateOnStartup())
@@ -619,7 +553,12 @@ namespace SourceGit
             {
                 Dispatcher.UIThread.Invoke(async () =>
                 {
-                    await ShowDialog(new ViewModels.SelfUpdate { Data = data });
+                    if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+                    {
+                        var ctx = new ViewModels.SelfUpdate { Data = data };
+                        var dialog = new Views.SelfUpdate() { DataContext = ctx };
+                        await dialog.ShowDialog(owner);
+                    }
                 });
             }
             catch
@@ -628,47 +567,6 @@ namespace SourceGit
             }
         }
         #endregion
-
-        private string FixFontFamilyName(string input)
-        {
-            if (string.IsNullOrEmpty(input))
-                return string.Empty;
-
-            var parts = input.Split(',');
-            var trimmed = new List<string>();
-
-            foreach (var part in parts)
-            {
-                var t = part.Trim();
-                if (string.IsNullOrEmpty(t))
-                    continue;
-
-                var sb = new StringBuilder();
-                var prevChar = '\0';
-
-                foreach (var c in t)
-                {
-                    if (c == ' ' && prevChar == ' ')
-                        continue;
-                    sb.Append(c);
-                    prevChar = c;
-                }
-
-                var name = sb.ToString();
-                try
-                {
-                    var fontFamily = FontFamily.Parse(name);
-                    if (fontFamily.FamilyTypefaces.Count > 0)
-                        trimmed.Add(name);
-                }
-                catch
-                {
-                    // Ignore exceptions.
-                }
-            }
-
-            return trimmed.Count > 0 ? string.Join(',', trimmed) : string.Empty;
-        }
 
         private Models.IpcChannel _ipcChannel = null;
         private ViewModels.Launcher _launcher = null;

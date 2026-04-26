@@ -58,7 +58,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selectedRemoteBranch, value, true))
-                    IsSetTrackOptionVisible = value != null && _selectedLocalBranch.Upstream != value.FullName;
+                    IsSetTrackOptionVisible = value != null && (value.Head == null || _selectedLocalBranch.Upstream != value.FullName);
             }
         }
 

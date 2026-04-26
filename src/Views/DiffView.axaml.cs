@@ -42,5 +42,14 @@ namespace SourceGit.Views
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.Last);
             e.Handled = true;
         }
+
+        private void OnOpenSubmoduleRevisionCompare(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: Models.SubmoduleDiff diff } && diff.CanOpenDetails)
+            {
+                var vm = new ViewModels.SubmoduleRevisionCompare(diff);
+                this.ShowWindow(vm);
+            }
+        }
     }
 }

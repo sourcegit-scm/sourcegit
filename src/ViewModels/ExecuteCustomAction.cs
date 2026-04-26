@@ -18,15 +18,22 @@ namespace SourceGit.ViewModels
         public string Label { get; set; }
         public string Placeholder { get; set; }
         public string Text { get; set; }
+        public string Formatter { get; set; }
 
-        public CustomActionControlTextBox(string label, string placeholder, string defaultValue)
+        public CustomActionControlTextBox(string label, string placeholder, string defaultValue, string formatter)
         {
             Label = label + ":";
             Placeholder = placeholder;
             Text = defaultValue;
+            Formatter = formatter;
         }
 
-        public string GetValue() => Text;
+        public string GetValue()
+        {
+            if (string.IsNullOrEmpty(Text))
+                return string.Empty;
+            return string.IsNullOrEmpty(Formatter) ? Text : Formatter.Replace("${VALUE}", Text);
+        }
     }
 
     public class CustomActionControlPathSelector : ObservableObject, ICustomActionControlParameter
@@ -77,12 +84,7 @@ namespace SourceGit.ViewModels
         public string Label { get; set; }
         public string Description { get; set; }
         public List<string> Options { get; set; } = [];
-
-        public string Value
-        {
-            get => _value;
-            set => SetProperty(ref _value, value);
-        }
+        public string Value { get; set; }
 
         public CustomActionControlComboBox(string label, string description, string options)
         {
@@ -93,13 +95,45 @@ namespace SourceGit.ViewModels
             if (parts.Length > 0)
             {
                 Options.AddRange(parts);
-                _value = parts[0];
+                Value = parts[0];
             }
         }
 
-        public string GetValue() => _value;
+        public string GetValue() => Value;
+    }
 
-        private string _value = string.Empty;
+    public class CustomActionControlBranchSelector : ObservableObject, ICustomActionControlParameter
+    {
+        public string Label { get; set; }
+        public string Description { get; set; }
+        public List<Models.Branch> Branches { get; set; } = [];
+        public Models.Branch SelectedBranch { get; set; }
+
+        public CustomActionControlBranchSelector(string label, string description, Repository repo, bool isLocal, bool useFriendlyName)
+        {
+            Label = label;
+            Description = description;
+            _useFriendlyName = useFriendlyName;
+
+            foreach (var b in repo.Branches)
+            {
+                if (b.IsLocal == isLocal && !b.IsDetachedHead)
+                    Branches.Add(b);
+            }
+
+            if (Branches.Count > 0)
+                SelectedBranch = Branches[0];
+        }
+
+        public string GetValue()
+        {
+            if (SelectedBranch == null)
+                return string.Empty;
+
+            return _useFriendlyName ? SelectedBranch.FriendlyName : SelectedBranch.Name;
+        }
+
+        private bool _useFriendlyName = false;
     }
 
     public class ExecuteCustomAction : Popup
@@ -124,7 +158,31 @@ namespace SourceGit.ViewModels
             _repo = repo;
             CustomAction = action;
             Target = scopeTarget ?? new Models.Null();
-            PrepareControlParameters();
+
+            foreach (var ctl in CustomAction.Controls)
+            {
+                switch (ctl.Type)
+                {
+                    case Models.CustomActionControlType.TextBox:
+                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue), ctl.StringFormatter));
+                        break;
+                    case Models.CustomActionControlType.PathSelector:
+                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
+                        break;
+                    case Models.CustomActionControlType.CheckBox:
+                        ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
+                        break;
+                    case Models.CustomActionControlType.ComboBox:
+                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
+                        break;
+                    case Models.CustomActionControlType.LocalBranchSelector:
+                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, true, false));
+                        break;
+                    case Models.CustomActionControlType.RemoteBranchSelector:
+                        ControlParameters.Add(new CustomActionControlBranchSelector(ctl.Label, ctl.Description, _repo, false, ctl.BoolValue));
+                        break;
+                }
+            }
         }
 
         public override async Task<bool> Sure()
@@ -153,31 +211,10 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        private void PrepareControlParameters()
-        {
-            foreach (var ctl in CustomAction.Controls)
-            {
-                switch (ctl.Type)
-                {
-                    case Models.CustomActionControlType.TextBox:
-                        ControlParameters.Add(new CustomActionControlTextBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                    case Models.CustomActionControlType.PathSelector:
-                        ControlParameters.Add(new CustomActionControlPathSelector(ctl.Label, ctl.Description, ctl.BoolValue, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                    case Models.CustomActionControlType.CheckBox:
-                        ControlParameters.Add(new CustomActionControlCheckBox(ctl.Label, ctl.Description, ctl.StringValue, ctl.BoolValue));
-                        break;
-                    case Models.CustomActionControlType.ComboBox:
-                        ControlParameters.Add(new CustomActionControlComboBox(ctl.Label, ctl.Description, PrepareStringByTarget(ctl.StringValue)));
-                        break;
-                }
-            }
-        }
-
         private string PrepareStringByTarget(string org)
         {
-            org = org.Replace("${REPO}", GetWorkdir());
+            var repoPath = OperatingSystem.IsWindows() ? _repo.FullPath.Replace("/", "\\") : _repo.FullPath;
+            org = org.Replace("${REPO}", repoPath);
 
             return Target switch
             {
@@ -186,13 +223,8 @@ namespace SourceGit.ViewModels
                 Models.Tag t => org.Replace("${TAG}", t.Name),
                 Models.Remote r => org.Replace("${REMOTE}", r.Name),
                 Models.CustomActionTargetFile f => org.Replace("${FILE}", f.File).Replace("${SHA}", f.Revision?.SHA ?? string.Empty),
-                _ => org
+                _ => org.Replace("${BRANCH}", _repo.CurrentBranch?.Name ?? "HEAD")
             };
-        }
-
-        private string GetWorkdir()
-        {
-            return OperatingSystem.IsWindows() ? _repo.FullPath.Replace("/", "\\") : _repo.FullPath;
         }
 
         private void Run(string args)

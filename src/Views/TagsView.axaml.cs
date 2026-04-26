@@ -271,7 +271,7 @@ namespace SourceGit.Views
                 compareWithHead.Icon = this.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo, tag, repo.CurrentBranch));
+                    this.ShowWindow(new ViewModels.Compare(repo, tag, repo.CurrentBranch));
                 };
 
                 var compareWith = new MenuItem();
@@ -387,7 +387,7 @@ namespace SourceGit.Views
                         if (based.CreatorDate > to.CreatorDate)
                             (based, to) = (to, based);
 
-                        App.ShowWindow(new ViewModels.Compare(repo, based, to));
+                        this.ShowWindow(new ViewModels.Compare(repo, based, to));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);

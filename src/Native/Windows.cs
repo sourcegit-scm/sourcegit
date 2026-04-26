@@ -58,6 +58,21 @@ namespace SourceGit.Native
             window.BorderThickness = new Thickness(1);
         }
 
+        public void HideSelf()
+        {
+            // Do Nothing. Never used.
+        }
+
+        public void HideOtherApplications()
+        {
+            // Do Nothing. Never used.
+        }
+
+        public void ShowAllApplications()
+        {
+            // Do Nothing. Never used.
+        }
+
         public string GetDataDir()
         {
             var execFile = Process.GetCurrentProcess().MainModule!.FileName;

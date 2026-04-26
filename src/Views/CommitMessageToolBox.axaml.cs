@@ -565,7 +565,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Button button && ShowAdvancedOptions)
             {
@@ -588,7 +588,7 @@ namespace SourceGit.Views
 
                 if (services.Count == 1)
                 {
-                    await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], vm.Staged));
+                    DoOpenAIAssistant(repo, services[0], vm.Staged);
                     e.Handled = true;
                     return;
                 }
@@ -599,9 +599,9 @@ namespace SourceGit.Views
                     var dup = service;
                     var item = new MenuItem();
                     item.Header = service.Name;
-                    item.Click += async (_, ev) =>
+                    item.Click += (_, ev) =>
                     {
-                        await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, vm.Staged));
+                        DoOpenAIAssistant(repo, dup, vm.Staged);
                         ev.Handled = true;
                     };
 
@@ -636,6 +636,17 @@ namespace SourceGit.Views
             builder.Show(owner);
 
             e.Handled = true;
+        }
+
+        private void DoOpenAIAssistant(ViewModels.Repository repo, AI.Service service, List<Models.Change> changes)
+        {
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner == null)
+                return;
+
+            var assistant = new ViewModels.AIAssistant(repo, service, changes);
+            var view = new AIAssistant() { DataContext = assistant };
+            view.Show(owner);
         }
     }
 }

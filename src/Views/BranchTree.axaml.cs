@@ -537,7 +537,7 @@ namespace SourceGit.Views
                     compare.Icon = this.CreateMenuIcon("Icons.Compare");
                     compare.Click += (_, ev) =>
                     {
-                        App.ShowWindow(new ViewModels.Compare(repo, branches[0], branches[1]));
+                        this.ShowWindow(new ViewModels.Compare(repo, branches[0], branches[1]));
                         ev.Handled = true;
                     };
                     menu.Items.Add(compare);
@@ -819,7 +819,7 @@ namespace SourceGit.Views
                     interactiveRebase.Click += async (_, e) =>
                     {
                         var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
-                        await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                        await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
                         e.Handled = true;
                     };
 
@@ -853,7 +853,7 @@ namespace SourceGit.Views
                 compareWithCurrent.Icon = this.CreateMenuIcon("Icons.Compare");
                 compareWithCurrent.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo, branch, current));
+                    this.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
 
                 var compareWith = new MenuItem();
@@ -1154,7 +1154,7 @@ namespace SourceGit.Views
                 interactiveRebase.Click += async (_, e) =>
                 {
                     var commit = await new Commands.QuerySingleCommit(repo.FullPath, branch.Head).GetResultAsync();
-                    await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                    await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
                     e.Handled = true;
                 };
 
@@ -1163,7 +1163,7 @@ namespace SourceGit.Views
                 compareWithHead.Icon = this.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += (_, _) =>
                 {
-                    App.ShowWindow(new ViewModels.Compare(repo, branch, current));
+                    this.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
 
                 var compareWith = new MenuItem();

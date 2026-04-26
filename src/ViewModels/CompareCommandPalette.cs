@@ -44,13 +44,11 @@ namespace SourceGit.ViewModels
             Filter = string.Empty;
         }
 
-        public void Launch()
+        public Compare Launch()
         {
             _refs.Clear();
             Close();
-
-            if (_compareTo != null)
-                App.ShowWindow(new Compare(_repo, _basedOn, _compareTo));
+            return _compareTo != null ? new Compare(_repo, _basedOn, _compareTo) : null;
         }
 
         private void UpdateRefs()

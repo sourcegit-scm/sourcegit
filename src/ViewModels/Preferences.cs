@@ -629,19 +629,22 @@ namespace SourceGit.ViewModels
             RemoveInvalidRepositoriesRecursive(RepositoryNodes);
         }
 
-        public async Task UpdateAvailableAIModelsAsync()
+        public void UpdateAvailableAIModels()
         {
-            foreach (var service in OpenAIServices)
+            Task.Run(() =>
             {
-                try
+                foreach (var service in OpenAIServices)
                 {
-                    await service.FetchAvailableModelsAsync();
+                    try
+                    {
+                        service.FetchAvailableModels();
+                    }
+                    catch
+                    {
+                        // Ignore errors.
+                    }
                 }
-                catch
-                {
-                    // Ignore errors.
-                }
-            }
+            });
         }
 
         public void Save()
