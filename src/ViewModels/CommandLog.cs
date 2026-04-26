@@ -62,6 +62,9 @@ namespace SourceGit.ViewModels
             }
             else
             {
+                if (IsComplete || _builder == null)
+                    return;
+
                 var newline = line ?? string.Empty;
                 _builder.AppendLine(newline);
 
