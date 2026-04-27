@@ -53,6 +53,8 @@ namespace SourceGit.ViewModels
         {
             _node = node;
             _data = repo;
+            
+            Notifications.CollectionChanged += Notifications_CollectionChanged;
         }
 
         ~LauncherPage()
