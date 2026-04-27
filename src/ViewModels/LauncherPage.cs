@@ -132,14 +132,15 @@ namespace SourceGit.ViewModels
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                _clearNotificationsCancellationToken?.Cancel();
-                _clearNotificationsCancellationToken = new CancellationTokenSource();
                 ClearNotificationsAutomatically();
             }
         }
 
         private async void ClearNotificationsAutomatically()
         {
+            _clearNotificationsCancellationToken?.Cancel();
+            _clearNotificationsCancellationToken = new CancellationTokenSource();
+
             try
             {
                 await Task.Delay(TimeSpan.FromSeconds(5), _clearNotificationsCancellationToken.Token);
