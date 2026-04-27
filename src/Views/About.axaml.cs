@@ -23,7 +23,10 @@ namespace SourceGit.Views
                 if (attr.Key.Equals("BuildDate", StringComparison.OrdinalIgnoreCase) && DateTime.TryParse(attr.Value, out var date))
                 {
                     TxtReleaseDate.Text = App.Text("About.ReleaseDate", Models.DateTimeFormat.Format(date, true));
-                    break;
+                }
+                else if (attr.Key.Equals("GitCommitHash", StringComparison.OrdinalIgnoreCase))
+                {
+                    TxtGitHash.Text = $"Build: {attr.Value}";
                 }
             }
 

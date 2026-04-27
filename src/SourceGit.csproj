@@ -32,6 +32,22 @@
     <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
   </PropertyGroup>
 
+  <Target Name="SetGitCommitHash" BeforeTargets="BeforeBuild"
+          Condition="Exists('$(MSBuildProjectDirectory)\..\.git')">
+    <Exec Command="git -C &quot;$(MSBuildProjectDirectory)&quot; describe --always --dirty=-dirty --abbrev=8 --match='___nonexistent___'"
+          ConsoleToMSBuild="true" StandardOutputImportance="low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitHash" />
+    </Exec>
+    <WriteLinesToFile
+      File="$(IntermediateOutputPath)GitCommitHash.g.cs"
+      Lines="[assembly: System.Reflection.AssemblyMetadata(&quot;GitCommitHash&quot;, &quot;$(GitCommitHash)&quot;)]"
+      Overwrite="true"
+      Condition="'$(GitCommitHash)' != ''" />
+    <ItemGroup Condition="'$(GitCommitHash)' != ''">
+      <Compile Include="$(IntermediateOutputPath)GitCommitHash.g.cs" />
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
     <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))" />
   </ItemGroup>

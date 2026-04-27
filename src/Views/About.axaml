@@ -71,6 +71,7 @@
         </StackPanel>
 
         <TextBlock x:Name="TxtReleaseDate" Margin="0,28,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+        <TextBlock x:Name="TxtGitHash" Margin="0,2,0,0" Foreground="{DynamicResource Brush.FG2}"/>
         <TextBlock x:Name="TxtCopyright" Margin="0,2,0,0" Foreground="{DynamicResource Brush.FG2}"/>
       </StackPanel>
     </StackPanel>
