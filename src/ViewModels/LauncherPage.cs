@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Specialized;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -44,12 +46,18 @@ namespace SourceGit.ViewModels
 
             // New welcome page will clear the search filter before.
             Welcome.Instance.ClearSearchFilter();
+            Notifications.CollectionChanged += Notifications_CollectionChanged;
         }
 
         public LauncherPage(RepositoryNode node, Repository repo)
         {
             _node = node;
             _data = repo;
+        }
+
+        ~LauncherPage()
+        {
+            Notifications.CollectionChanged -= Notifications_CollectionChanged;
         }
 
         public void ClearNotifications()
@@ -118,5 +126,33 @@ namespace SourceGit.ViewModels
         private object _data = null;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;
         private Popup _popup = null;
+        private CancellationTokenSource _clearNotificationsCancellationToken;
+
+        private void Notifications_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                _clearNotificationsCancellationToken?.Cancel();
+                _clearNotificationsCancellationToken = new CancellationTokenSource();
+                ClearNotificationsAutomatically();
+            }
+        }
+
+        private async void ClearNotificationsAutomatically()
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5), _clearNotificationsCancellationToken.Token);
+
+                if (!_clearNotificationsCancellationToken.Token.IsCancellationRequested)
+                {
+                    Notifications.Clear();
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                // Ignore the exception if the task was canceled
+            }
+        }
     }
 }
