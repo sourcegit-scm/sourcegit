@@ -4,16 +4,16 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:vm="using:SourceGit.ViewModels"
-                    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120"
+                    mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="400"
                     x:Class="SourceGit.Views.AIAssistant"
                     x:DataType="vm:AIAssistant"
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.AIAssistant}"
-                    Width="520" SizeToContent="Height"
-                    CanResize="False"
+                    Width="520" Height="400"
+                    CanResize="True"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,Auto,Auto">
+  <Grid RowDefinitions="Auto,*,Auto">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
@@ -39,7 +39,6 @@
     <!-- AI response -->
     <v:AIResponseView Grid.Row="1"
                       Margin="8"
-                      Height="320"
                       BorderThickness="1"
                       BorderBrush="{DynamicResource Brush.Border2}"
                       Background="{DynamicResource Brush.Contents}"

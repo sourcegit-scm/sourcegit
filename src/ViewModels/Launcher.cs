@@ -120,7 +120,7 @@ namespace SourceGit.ViewModels
             return false;
         }
 
-        public void Quit()
+        public void CloseAll()
         {
             _ignoreIndexChange = true;
 

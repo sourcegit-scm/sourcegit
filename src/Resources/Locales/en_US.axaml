@@ -23,6 +23,7 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Use AI to generate commit message</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Use</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Hide SourceGit</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Hide Others</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Show All</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
@@ -130,6 +131,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">Clone Remote Repository</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Extra Parameters:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Additional arguments to clone repository. Optional.</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">Bookmark:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">Group:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Local Name:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Repository name. Optional.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Parent Folder:</x:String>
@@ -275,8 +278,11 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Label:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Options:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Use '|' as delimiter for options</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">String Formatter:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">Optional. Used to format output string. Ignored when input is empty. Please use `${VALUE}` to represent the input string.</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">The built-in variables ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, and ${TAG} remain available here</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Type:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">Use Friendly Name:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Workspaces</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Name</x:String>
@@ -370,6 +376,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMODULE</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">DELETED</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NEW</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} Uncommitted Changes</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Swap</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Syntax Highlighting</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Line Word Wrap</x:String>
@@ -433,7 +440,6 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Finish Hotfix</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Finish Release</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Target:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">Push to remote(s) after performing finish</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash during merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix Prefix:</x:String>
@@ -499,6 +505,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Go to next tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Go to previous tab</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Create new tab</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">Open local repository</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Open Preferences dialog</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Show workspace dropdown menu</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Switch active tab</x:String>
@@ -592,6 +599,10 @@
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Open Data Storage Directory</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">Open File</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Open in External Merge Tool</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Open Local Repository</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">Bookmark:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">Group:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">Folder:</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Optional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Create New Tab</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Close Tab</x:String>
@@ -898,6 +909,8 @@
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">unmerged</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Update</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">Submodule Change Details</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">OPEN DETAILS</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">TAGGER</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">TIME</x:String>

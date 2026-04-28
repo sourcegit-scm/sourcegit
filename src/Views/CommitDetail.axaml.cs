@@ -38,7 +38,7 @@ namespace SourceGit.Views
             history.Icon = this.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                App.ShowWindow(new ViewModels.DirHistories(repo, node.FullPath, commit.SHA));
+                this.ShowWindow(new ViewModels.DirHistories(repo, node.FullPath, commit.SHA));
                 ev.Handled = true;
             };
 
@@ -273,7 +273,7 @@ namespace SourceGit.Views
             history.Icon = this.CreateMenuIcon("Icons.Histories");
             history.Click += (_, ev) =>
             {
-                App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path, commit.SHA));
+                this.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path, commit.SHA));
                 ev.Handled = true;
             };
 
@@ -283,7 +283,7 @@ namespace SourceGit.Views
             blame.IsEnabled = change.Index != Models.ChangeState.Deleted;
             blame.Click += (_, ev) =>
             {
-                App.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
+                this.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
                 ev.Handled = true;
             };
 

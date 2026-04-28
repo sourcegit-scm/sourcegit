@@ -105,13 +105,9 @@ namespace SourceGit.Views
 
             _refreshTimer = DispatcherTimer.Run(() =>
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    var text = GetDisplayText();
-                    if (!text.Equals(Text, StringComparison.Ordinal))
-                        Text = text;
-                });
-
+                var text = GetDisplayText();
+                if (!text.Equals(Text, StringComparison.Ordinal))
+                    Text = text;
                 return true;
             }, TimeSpan.FromSeconds(10));
         }

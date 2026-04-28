@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Clone"
              x:DataType="vm:Clone">
@@ -19,7 +20,7 @@
                  Text="{DynamicResource Text.Clone}"/>
     </StackPanel>
 
-    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,32,32,32,32" ColumnDefinitions="Auto,*">
+    <Grid Margin="8,16,0,0" RowDefinitions="32,Auto,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"
                  Margin="0,0,8,0"
@@ -102,7 +103,44 @@
                Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
                Text="{Binding ExtraArgs, Mode=TwoWay}"/>
 
-      <CheckBox Grid.Row="5" Grid.Column="1"
+      <TextBlock Grid.Row="5" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Clone.Group}"/>
+      <ComboBox Grid.Row="5" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                ItemsSource="{Binding Groups}"
+                SelectedItem="{Binding SelectedGroup, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="vm:RepositoryNode">
+            <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+      <TextBlock Grid.Row="6" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Clone.Bookmark}"/>
+      <ComboBox Grid.Row="6" Grid.Column="1"
+                Height="28" Padding="8,0"
+                VerticalAlignment="Center"
+                ItemsSource="{Binding Bookmarks}"
+                SelectedItem="{Binding Bookmark, Mode=TwoWay}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <Grid Height="20">
+              <Path Width="12" Height="12"
+                    Fill="{Binding Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Data="{StaticResource Icons.Bookmark}"/>
+            </Grid>
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+      <CheckBox Grid.Row="7" Grid.Column="1"
                 Content="{DynamicResource Text.Clone.RecurseSubmodules}"
                 IsChecked="{Binding InitAndUpdateSubmodules, Mode=TwoWay}"
                 ToolTip.Tip="--recurse-submodules"/>

@@ -418,22 +418,6 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new DropHead(_repo, head, parent));
         }
 
-        public async Task InteractiveRebaseAsync(Models.Commit commit, Models.InteractiveRebaseAction act)
-        {
-            var prefill = new InteractiveRebasePrefill(commit.SHA, act);
-            var start = act switch
-            {
-                Models.InteractiveRebaseAction.Squash or Models.InteractiveRebaseAction.Fixup => $"{commit.SHA}~~",
-                _ => $"{commit.SHA}~",
-            };
-
-            var on = await new Commands.QuerySingleCommit(_repo.FullPath, start).GetResultAsync();
-            if (on == null)
-                _repo.SendNotification($"Can not squash current commit into parent!", true);
-            else
-                await App.ShowDialog(new InteractiveRebase(_repo, on, prefill));
-        }
-
         public async Task<string> GetCommitFullMessageAsync(Models.Commit commit)
         {
             return await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA)

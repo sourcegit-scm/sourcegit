@@ -23,6 +23,7 @@ namespace SourceGit.Models
     public class TextDiffLine
     {
         public TextDiffLineType Type { get; set; } = TextDiffLineType.None;
+        public byte[] RawContent { get; set; } = [];
         public string Content { get; set; } = "";
         public int OldLineNumber { get; set; } = 0;
         public int NewLineNumber { get; set; } = 0;
@@ -33,10 +34,11 @@ namespace SourceGit.Models
         public string NewLine => NewLineNumber == 0 ? string.Empty : NewLineNumber.ToString();
 
         public TextDiffLine() { }
-        public TextDiffLine(TextDiffLineType type, string content, int oldLine, int newLine)
+        public TextDiffLine(TextDiffLineType type, string line, byte[] rawContent, int oldLine, int newLine)
         {
             Type = type;
-            Content = content;
+            Content = line;
+            RawContent = rawContent;
             OldLineNumber = oldLine;
             NewLineNumber = newLine;
         }
@@ -97,19 +99,19 @@ namespace SourceGit.Models
             return rs;
         }
 
-        public void GenerateNewPatchFromSelection(Change change, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
+        public void GenerateNewPatchFromSelection(string file, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
             var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
             var fileGuid = isTracked ? fileBlobGuid : "00000000";
 
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
-            writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
+            writer.WriteLine($"diff --git a/{file} b/{file}");
             if (!revert && !isTracked)
                 writer.WriteLine("new file mode 100644");
             writer.WriteLine($"index 00000000...{fileGuid}");
-            writer.WriteLine($"--- {(revert || isTracked ? $"a/{change.Path}" : "/dev/null")}");
-            writer.WriteLine($"+++ b/{change.Path}");
+            writer.WriteLine($"--- {(revert || isTracked ? $"a/{file}" : "/dev/null")}");
+            writer.WriteLine($"+++ b/{file}");
 
             var additions = selection.EndLine - selection.StartLine;
             if (selection.StartLine != 1)
@@ -146,19 +148,17 @@ namespace SourceGit.Models
             writer.Flush();
         }
 
-        public void GeneratePatchFromSelection(Change change, string fileTreeGuid, TextDiffSelection selection, bool revert, string output)
+        public void GeneratePatchFromSelection(string file, string fileTreeGuid, TextDiffSelection selection, bool revert, string output)
         {
-            var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
-
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
-            writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
+            writer.WriteLine($"diff --git a/{file} b/{file}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
-            writer.WriteLine($"--- a/{orgFile}");
-            writer.WriteLine($"+++ b/{change.Path}");
+            writer.WriteLine($"--- a/{file}");
+            writer.WriteLine($"+++ b/{file}");
 
             // If last line of selection is a change. Find one more line.
-            string tail = null;
+            TextDiffLine tail = null;
             if (selection.EndLine < Lines.Count)
             {
                 var lastLine = Lines[selection.EndLine - 1];
@@ -173,7 +173,7 @@ namespace SourceGit.Models
                             (revert && line.Type == TextDiffLineType.Added) ||
                             (!revert && line.Type == TextDiffLineType.Deleted))
                         {
-                            tail = line.Content;
+                            tail = line;
                             break;
                         }
                     }
@@ -256,24 +256,22 @@ namespace SourceGit.Models
                 }
             }
 
-            if (!string.IsNullOrEmpty(tail))
-                writer.WriteLine($" {tail}");
+            if (tail != null)
+                WriteLine(writer, ' ', tail);
             writer.Flush();
         }
 
-        public void GeneratePatchFromSelectionSingleSide(Change change, string fileTreeGuid, TextDiffSelection selection, bool revert, bool isOldSide, string output)
+        public void GeneratePatchFromSelectionSingleSide(string file, string fileTreeGuid, TextDiffSelection selection, bool revert, bool isOldSide, string output)
         {
-            var orgFile = !string.IsNullOrEmpty(change.OriginalPath) ? change.OriginalPath : change.Path;
-
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
-            writer.WriteLine($"diff --git a/{change.Path} b/{change.Path}");
+            writer.WriteLine($"diff --git a/{file} b/{file}");
             writer.WriteLine($"index 00000000...{fileTreeGuid} 100644");
-            writer.WriteLine($"--- a/{orgFile}");
-            writer.WriteLine($"+++ b/{change.Path}");
+            writer.WriteLine($"--- a/{file}");
+            writer.WriteLine($"+++ b/{file}");
 
             // If last line of selection is a change. Find one more line.
-            string tail = null;
+            TextDiffLine tail = null;
             if (selection.EndLine < Lines.Count)
             {
                 var lastLine = Lines[selection.EndLine - 1];
@@ -288,7 +286,7 @@ namespace SourceGit.Models
                         {
                             if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Added)
                             {
-                                tail = line.Content;
+                                tail = line;
                                 break;
                             }
                         }
@@ -296,7 +294,7 @@ namespace SourceGit.Models
                         {
                             if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Deleted)
                             {
-                                tail = line.Content;
+                                tail = line;
                                 break;
                             }
                         }
@@ -408,8 +406,8 @@ namespace SourceGit.Models
                 }
             }
 
-            if (!string.IsNullOrEmpty(tail))
-                writer.WriteLine($" {tail}");
+            if (tail != null)
+                WriteLine(writer, ' ', tail);
             writer.Flush();
         }
 
@@ -564,7 +562,11 @@ namespace SourceGit.Models
 
         private static void WriteLine(StreamWriter writer, char prefix, TextDiffLine line)
         {
-            writer.WriteLine($"{prefix}{line.Content}");
+            writer.Flush();
+
+            writer.BaseStream.WriteByte((byte)prefix);
+            writer.BaseStream.Write(line.RawContent);
+            writer.BaseStream.WriteByte((byte)'\n');
 
             if (line.NoNewLineEndOfFile)
                 writer.WriteLine("\\ No newline at end of file");
@@ -602,8 +604,13 @@ namespace SourceGit.Models
 
     public class SubmoduleDiff
     {
+        public string FullPath { get; set; } = string.Empty;
         public RevisionSubmodule Old { get; set; } = null;
         public RevisionSubmodule New { get; set; } = null;
+
+        public bool CanOpenDetails => File.Exists(Path.Combine(FullPath, ".git")) &&
+            Old != null && Old.Commit.Author != User.Invalid &&
+            New != null && New.Commit.Author != User.Invalid;
     }
 
     public class DiffResult

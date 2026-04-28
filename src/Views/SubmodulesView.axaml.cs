@@ -257,7 +257,7 @@ namespace SourceGit.Views
                     histories.Icon = this.CreateMenuIcon("Icons.Histories");
                     histories.Click += (_, ev) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, submodule.Path));
+                        this.ShowWindow(new ViewModels.FileHistories(repo.FullPath, submodule.Path));
                         ev.Handled = true;
                     };
 

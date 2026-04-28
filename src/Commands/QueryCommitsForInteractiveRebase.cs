@@ -12,7 +12,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --topo-order --cherry-pick --right-only --no-merges --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%B%n{_boundary}\" {on}...HEAD";
+            Args = $"log --topo-order --cherry-pick --right-only --no-merges --no-show-signature --decorate=full --format=\"%H%n%P%n%D%n%aN±%aE%n%at%n%cN±%cE%n%ct%n%s%n%B%n{_boundary}\" {on}...HEAD";
         }
 
         public async Task<List<Models.InteractiveCommit>> GetResultAsync()
@@ -57,6 +57,9 @@ namespace SourceGit.Commands
                         break;
                     case 6:
                         current.Commit.CommitterTime = ulong.Parse(line);
+                        break;
+                    case 7:
+                        current.Commit.Subject = line;
                         break;
                     default:
                         var boundary = rs.StdOut.IndexOf(_boundary, end + 1, StringComparison.Ordinal);
