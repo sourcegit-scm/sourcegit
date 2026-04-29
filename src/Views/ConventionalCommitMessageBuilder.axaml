@@ -88,7 +88,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Optional}"
+               PlaceholderText="{DynamicResource Text.Optional}"
                Text="{Binding Scope, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
@@ -115,7 +115,7 @@
                VerticalAlignment="Center"
                VerticalContentAlignment="Top"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Optional}"
+               PlaceholderText="{DynamicResource Text.Optional}"
                Text="{Binding Detail, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
@@ -132,7 +132,7 @@
                VerticalAlignment="Center"
                VerticalContentAlignment="Top"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Optional}"
+               PlaceholderText="{DynamicResource Text.Optional}"
                Text="{Binding BreakingChanges, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="5" Grid.Column="0"
@@ -143,7 +143,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Optional}"
+               PlaceholderText="{DynamicResource Text.Optional}"
                Text="{Binding ClosedIssue, Mode=TwoWay}"/>
     </Grid>
 

@@ -300,7 +300,7 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, CompiledBinding.Create<ViewModels.MergeConflictEditor, Vector>(vm => vm.ScrollOffset));
             }
         }
 

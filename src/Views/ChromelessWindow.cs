@@ -84,25 +84,6 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == WindowStateProperty && OperatingSystem.IsWindows())
-            {
-                if (WindowState == WindowState.Maximized)
-                {
-                    BorderThickness = new Thickness(0);
-                    Padding = new Thickness(8, 6, 8, 8);
-                }
-                else
-                {
-                    BorderThickness = new Thickness(1);
-                    Padding = new Thickness(0);
-                }
-            }
-        }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);

@@ -176,7 +176,7 @@
                  BorderThickness="1"
                  CornerRadius="4"
                  BorderBrush="{DynamicResource Brush.Border2}"
-                 Watermark="{DynamicResource Text.Repository.Filter}"
+                 PlaceholderText="{DynamicResource Text.Repository.Filter}"
                  Text="{Binding Filter, Mode=TwoWay}"
                  VerticalContentAlignment="Center">
           <TextBox.InnerLeftContent>
@@ -501,7 +501,7 @@
                    BorderBrush="{DynamicResource Brush.Border2}"
                    Background="{DynamicResource Brush.Contents}"
                    CornerRadius="12"
-                   Watermark="{DynamicResource Text.Repository.Search}"
+                   PlaceholderText="{DynamicResource Text.Repository.Search}"
                    Text="{Binding SearchCommitContext.Filter, Mode=TwoWay}"
                    VerticalContentAlignment="Center"
                    KeyDown="OnSearchKeyDown">

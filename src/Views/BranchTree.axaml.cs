@@ -249,7 +249,7 @@ namespace SourceGit.Views
                 if (DataContext is not Models.Branch branch)
                     break;
 
-                if (e.Root is not PopupRoot { Parent: Popup { Parent: Border owner } })
+                if (e.RootVisual is not PopupRoot { Parent: Popup { Parent: Border owner } })
                     break;
 
                 var tree = owner.FindAncestorOfType<BranchTree>();

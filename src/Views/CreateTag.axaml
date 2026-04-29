@@ -53,7 +53,7 @@
                                 VerticalAlignment="Center"
                                 CornerRadius="3"
                                 Text="{Binding TagName, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.CreateTag.Name.Placeholder}"/>
+                                PlaceholderText="{DynamicResource Text.CreateTag.Name.Placeholder}"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -77,7 +77,7 @@
                AcceptsReturn="True" AcceptsTab="False"
                VerticalAlignment="Center" VerticalContentAlignment="Top"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.CreateTag.Message.Placeholder}"
+               PlaceholderText="{DynamicResource Text.CreateTag.Message.Placeholder}"
                Text="{Binding Message, Mode=TwoWay}"
                IsVisible="{Binding Annotated}"
                Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>

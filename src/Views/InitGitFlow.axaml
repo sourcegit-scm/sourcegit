@@ -81,7 +81,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Optional}"
+               PlaceholderText="{DynamicResource Text.Optional}"
                Text="{Binding TagPrefix, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>

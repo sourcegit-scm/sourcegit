@@ -65,7 +65,7 @@
                                 VerticalAlignment="Center"
                                 CornerRadius="3"
                                 Text="{Binding Name, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.CreateBranch.Name.Placeholder}"/>
+                                PlaceholderText="{DynamicResource Text.CreateBranch.Name.Placeholder}"/>
 
       <Border Grid.Row="2" Grid.Column="0"
               Height="32"

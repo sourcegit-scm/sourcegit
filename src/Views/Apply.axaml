@@ -31,12 +31,12 @@
                      Margin="18,0,0,0"/>
       </StackPanel>
       
-      <TextBox Grid.Row="1"  Grid.Column="1"
+      <TextBox Grid.Row="1" Grid.Column="1"
                x:Name="TxtPatchFile"
                Height="28"
                Margin="0,0,0,6"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Apply.File.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Apply.File.Placeholder}"
                IsEnabled="{Binding !FromClipboard, Mode=OneWay}"
                IsVisible="{Binding !FromClipboard, Mode=OneWay}"
                Text="{Binding PatchFile, Mode=TwoWay}">

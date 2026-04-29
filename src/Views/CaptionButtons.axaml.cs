@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -23,7 +22,7 @@ namespace SourceGit.Views
 
         private void MinimizeWindow(object _, RoutedEventArgs e)
         {
-            var window = this.FindAncestorOfType<Window>();
+            var window = TopLevel.GetTopLevel(this) as Window;
             if (window != null)
                 window.WindowState = WindowState.Minimized;
 
@@ -32,7 +31,7 @@ namespace SourceGit.Views
 
         private void MaximizeOrRestoreWindow(object _, RoutedEventArgs e)
         {
-            var window = this.FindAncestorOfType<Window>();
+            var window = TopLevel.GetTopLevel(this) as Window;
             if (window != null)
                 window.WindowState = window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
 
@@ -41,7 +40,7 @@ namespace SourceGit.Views
 
         private void CloseWindow(object _, RoutedEventArgs e)
         {
-            var window = this.FindAncestorOfType<Window>();
+            var window = TopLevel.GetTopLevel(this) as Window;
             window?.Close();
 
             e.Handled = true;

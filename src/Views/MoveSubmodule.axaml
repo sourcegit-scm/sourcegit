@@ -35,7 +35,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Submodule.RelativePath.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Submodule.RelativePath.Placeholder}"
                Text="{Binding MoveTo, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>

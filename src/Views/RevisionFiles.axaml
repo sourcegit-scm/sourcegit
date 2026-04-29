@@ -25,7 +25,7 @@
                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                  Background="Transparent"
                  CornerRadius="4"
-                 Watermark="{DynamicResource Text.CommitDetail.Files.Search}"
+                 PlaceholderText="{DynamicResource Text.CommitDetail.Files.Search}"
                  Text="{Binding RevisionFileSearchFilter, Mode=TwoWay}"
                  KeyDown="OnSearchBoxKeyDown"
                  TextChanged="OnSearchBoxTextChanged">

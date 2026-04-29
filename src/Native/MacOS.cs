@@ -7,7 +7,6 @@ using System.Runtime.Versioning;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Platform;
 
 namespace SourceGit.Native
 {
@@ -53,8 +52,8 @@ namespace SourceGit.Native
 
         public void SetupWindow(Window window)
         {
-            window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.SystemChrome;
             window.ExtendClientAreaToDecorationsHint = true;
+            window.WindowDecorations = WindowDecorations.Full;
         }
 
         public void HideSelf()
