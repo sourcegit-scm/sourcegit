@@ -733,6 +733,21 @@ namespace SourceGit.Views
 
                 menu.Items.Add(push);
 
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var defaultBase = ResolveDefaultBaseBranch(repo);
+                if (defaultBase != null && !defaultBase.FullName.Equals(branch.FullName, StringComparison.Ordinal))
+                {
+                    var compareWithDefault = new MenuItem();
+                    compareWithDefault.Header = App.Text("BranchCM.CompareWithDefault", defaultBase.FriendlyName);
+                    compareWithDefault.Icon = this.CreateMenuIcon("Icons.Compare");
+                    compareWithDefault.Click += (_, _) =>
+                    {
+                        this.ShowWindow(new ViewModels.Compare(repo, defaultBase, branch));
+                    };
+                    menu.Items.Add(compareWithDefault);
+                }
+
                 var compareWith = new MenuItem();
                 compareWith.Header = App.Text("BranchCM.CompareWith");
                 compareWith.Icon = this.CreateMenuIcon("Icons.Compare");
@@ -740,7 +755,6 @@ namespace SourceGit.Views
                 {
                     new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
-                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWith);
             }
             else
@@ -1350,6 +1364,57 @@ namespace SourceGit.Views
 
             menu.Items.Add(custom);
             menu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        // Resolves the repository's "default" branch (the equivalent of GitHub's default branch).
+        // Remote priority: Settings.DefaultRemote -> current branch's upstream remote -> first remote.
+        // Prefers the remote-tracking ref (e.g. origin/master) over a same-named local branch so
+        // the comparison is against the actual remote default. Returns null if the remote HEAD is
+        // unset or no remote exists.
+        private Models.Branch ResolveDefaultBaseBranch(ViewModels.Repository repo)
+        {
+            if (repo.Remotes.Count == 0)
+                return null;
+
+            // Prefer an explicitly-configured default remote ("upstream" in fork workflows),
+            // then fall back to the current branch's upstream remote, then the first remote.
+            string remoteName = null;
+            if (!string.IsNullOrEmpty(repo.Settings?.DefaultRemote))
+                remoteName = repo.Settings.DefaultRemote;
+
+            if (string.IsNullOrEmpty(remoteName))
+            {
+                var current = repo.CurrentBranch;
+                const int prefixLen = 13; // "refs/remotes/"
+                if (current != null && !string.IsNullOrEmpty(current.Upstream) && current.Upstream.Length > prefixLen)
+                {
+                    var sepIdx = current.Upstream.IndexOf('/', prefixLen);
+                    if (sepIdx > prefixLen)
+                        remoteName = current.Upstream.Substring(prefixLen, sepIdx - prefixLen);
+                }
+            }
+
+            if (string.IsNullOrEmpty(remoteName))
+                remoteName = repo.Remotes[0].Name;
+
+            var fullRef = new Commands.QueryDefaultBranch(repo.FullPath, remoteName).GetResult();
+            if (string.IsNullOrEmpty(fullRef))
+                return null;
+
+            // QueryDefaultBranch returns e.g. "origin/master". Prefer the remote-tracking ref
+            // (authoritative for "what is the default base on the remote?"), fall back to a
+            // local branch with the same short name only if the remote-tracking ref is absent.
+            var remoteTrackingRef = $"refs/remotes/{fullRef}";
+            var remoteMatch = repo.Branches.Find(b => !b.IsLocal && b.FullName.Equals(remoteTrackingRef, System.StringComparison.Ordinal));
+            if (remoteMatch != null)
+                return remoteMatch;
+
+            var slash = fullRef.IndexOf('/');
+            if (slash <= 0 || slash >= fullRef.Length - 1)
+                return null;
+
+            var shortName = fullRef.Substring(slash + 1);
+            return repo.Branches.Find(b => b.IsLocal && b.Name.Equals(shortName, System.StringComparison.Ordinal));
         }
 
         private bool _disableSelectionChangingEvent = false;
