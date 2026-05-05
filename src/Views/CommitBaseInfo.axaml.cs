@@ -87,6 +87,14 @@ namespace SourceGit.Views
             _iconResetTimer?.Dispose();
         }
 
+        private async void OnCopyRefName(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: Models.Decorator decorator })
+                await this.CopyTextAsync(decorator.Name);
+
+            e.Handled = true;
+        }
+
         private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Commit commit })

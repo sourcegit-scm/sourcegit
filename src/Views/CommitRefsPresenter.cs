@@ -83,6 +83,15 @@ namespace SourceGit.Views
             set => SetValue(ShowTagsProperty, value);
         }
 
+        public static readonly StyledProperty<Models.Decorator> DecoratorProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, Models.Decorator>(nameof(Decorator));
+
+        public Models.Decorator Decorator
+        {
+            get => GetValue(DecoratorProperty);
+            set => SetValue(DecoratorProperty, value);
+        }
+
         static CommitRefsPresenter()
         {
             AffectsMeasure<CommitRefsPresenter>(
@@ -91,7 +100,8 @@ namespace SourceGit.Views
                 ForegroundProperty,
                 UseGraphColorProperty,
                 BackgroundProperty,
-                ShowTagsProperty);
+                ShowTagsProperty,
+                DecoratorProperty);
         }
 
         public Models.Decorator DecoratorAt(Point point)
@@ -174,16 +184,21 @@ namespace SourceGit.Views
         {
             _items.Clear();
 
-            if (DataContext is not Models.Commit commit)
+            var commit = DataContext as Models.Commit;
+            IList<Models.Decorator> refs;
+            if (Decorator != null)
+                refs = new[] { Decorator };
+            else if (commit != null)
+                refs = commit.Decorators;
+            else
                 return new Size(0, 0);
 
-            var refs = commit.Decorators;
             if (refs is { Count: > 0 })
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
-                var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
+                var normalBG = UseGraphColor && commit != null ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
                 var labelSize = FontSize;
                 var requiredHeight = 16.0;
                 var x = 0.0;

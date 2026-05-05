@@ -194,13 +194,34 @@
 
           <!-- REFS -->
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
-          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
-            <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
-                                   FontSize="12"
-                                   AllowWrap="True"
-                                   Margin="0,4,0,0"
-                                   UseGraphColor="False"/>
-          </Border>
+          <ItemsControl Grid.Row="3" Grid.Column="1" Margin="12,4,0,0" ItemsSource="{Binding Decorators}" IsVisible="{Binding HasDecorators}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="m:Decorator">
+                <StackPanel Orientation="Horizontal" Margin="0,0,16,4" VerticalAlignment="Center">
+                  <v:CommitRefsPresenter Decorator="{Binding}"
+                                         Foreground="{DynamicResource Brush.FG1}"
+                                         FontSize="12"
+                                         UseGraphColor="False"
+                                         VerticalAlignment="Center"/>
+                  <Button Classes="icon_button"
+                          Width="14" Height="14"
+                          Padding="0"
+                          Margin="2,0,0,0"
+                          Cursor="Hand"
+                          Click="OnCopyRefName"
+                          ToolTip.Tip="{DynamicResource Text.Copy}">
+                    <Path Width="10" Height="10" Data="{StaticResource Icons.Copy}" Fill="{DynamicResource Brush.FG2}"/>
+                  </Button>
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
 
           <!-- Messages -->
           <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
