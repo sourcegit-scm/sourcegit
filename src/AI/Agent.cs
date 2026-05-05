@@ -21,10 +21,13 @@ namespace SourceGit.AI
                 throw new Exception("Failed to fetch available models from this service. Please check your configuration and try again.");
 
             var options = new ChatCompletionOptions() { Tools = { ChatTools.GetDetailChangesInFile } };
+            if (_service.IsAnthropicCompatible)
+            {
 #pragma warning disable SCME0001
-            options.Patch.Set("$.thinking"u8, Encoding.UTF8.GetBytes("""{"type": "disabled"}"""));
-            options.Patch.Set("$.enable_thinking"u8, false);
+                options.Patch.Set("$.thinking"u8, Encoding.UTF8.GetBytes("""{"type": "disabled"}"""));
+                options.Patch.Set("$.enable_thinking"u8, false);
 #pragma warning restore SCME0001
+            }
 
             var userMessageBuilder = new StringBuilder();
             userMessageBuilder

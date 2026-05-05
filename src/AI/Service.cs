@@ -42,6 +42,12 @@ namespace SourceGit.AI
         } = string.Empty;
 
         [JsonIgnore]
+        public bool IsAnthropicCompatible
+        {
+            get => Server.Contains("anthropic", StringComparison.OrdinalIgnoreCase);
+        }
+
+        [JsonIgnore]
         public List<string> AvailableModels
         {
             get;
