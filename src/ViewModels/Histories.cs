@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
+using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Histories : ObservableObject, IDisposable
+    public class Histories : ObservableObject
     {
         public bool IsLoading
         {
@@ -62,12 +62,8 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                var lastSelected = SelectedCommit;
                 if (SetProperty(ref _commits, value))
-                {
-                    if (value.Count > 0 && lastSelected != null)
-                        SelectedCommit = value.Find(x => x.SHA.Equals(lastSelected.SHA, StringComparison.Ordinal));
-                }
+                    PostCommitsChanged();
             }
         }
 
@@ -77,19 +73,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _graph, value);
         }
 
-        public Models.Commit SelectedCommit
+        public List<Models.Commit> SelectedCommits
         {
-            get => _selectedCommit;
-            set => SetProperty(ref _selectedCommit, value);
+            get => _selectedCommits;
+            set
+            {
+                if (SetProperty(ref _selectedCommits, value))
+                    PostSelectedCommitsChanged();
+            }
         }
 
-        public long NavigationId
-        {
-            get => _navigationId;
-            private set => SetProperty(ref _navigationId, value);
-        }
-
-        public IDisposable DetailContext
+        public object DetailContext
         {
             get => _detailContext;
             set => SetProperty(ref _detailContext, value);
@@ -99,6 +93,29 @@ namespace SourceGit.ViewModels
         {
             get => _bisect;
             private set => SetProperty(ref _bisect, value);
+        }
+
+        public Models.Branch CurrentBranch
+        {
+            get => _repo.CurrentBranch;
+        }
+
+        public bool HighlightCurrentBranchOnly
+        {
+            get => _repo.UIStates.OnlyHighlightCurrentBranchInHistory;
+            set
+            {
+                if (_repo.UIStates.OnlyHighlightCurrentBranchInHistory != value)
+                {
+                    _repo.UIStates.OnlyHighlightCurrentBranchInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public AvaloniaList<Models.IssueTracker> IssueTrackers
+        {
+            get => _repo.IssueTrackers;
         }
 
         public GridLength LeftArea
@@ -131,14 +148,9 @@ namespace SourceGit.ViewModels
             _commitDetailSharedData = new CommitDetailSharedData();
         }
 
-        public void Dispose()
+        public void NotifyCurrentBranchChanged()
         {
-            Commits = [];
-            _repo = null;
-            _graph = null;
-            _selectedCommit = null;
-            _detailContext?.Dispose();
-            _detailContext = null;
+            OnPropertyChanged(nameof(CurrentBranch));
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -177,8 +189,7 @@ namespace SourceGit.ViewModels
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
             if (commit != null)
             {
-                SelectedCommit = commit;
-                NavigationId = _navigationId + 1;
+                SelectedCommits = [commit];
                 return;
             }
 
@@ -191,7 +202,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     _ignoreSelectionChange = true;
-                    SelectedCommit = null;
+                    SelectedCommits = [];
 
                     if (_detailContext is CommitDetail detail)
                     {
@@ -207,51 +218,6 @@ namespace SourceGit.ViewModels
                     _ignoreSelectionChange = false;
                 });
             });
-        }
-
-        public void Select(IList commits)
-        {
-            if (_ignoreSelectionChange)
-                return;
-
-            if (commits.Count == 0)
-            {
-                _repo.SearchCommitContext.Selected = null;
-                DetailContext = null;
-            }
-            else if (commits.Count == 1)
-            {
-                var commit = (commits[0] as Models.Commit)!;
-                if (_repo.SearchCommitContext.Selected == null || !_repo.SearchCommitContext.Selected.SHA.Equals(commit.SHA, StringComparison.Ordinal))
-                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA.Equals(commit.SHA, StringComparison.Ordinal));
-
-                SelectedCommit = commit;
-                NavigationId = _navigationId + 1;
-
-                if (_detailContext is CommitDetail detail)
-                {
-                    detail.Commit = commit;
-                }
-                else
-                {
-                    var commitDetail = new CommitDetail(_repo, _commitDetailSharedData);
-                    commitDetail.Commit = commit;
-                    DetailContext = commitDetail;
-                }
-            }
-            else if (commits.Count == 2)
-            {
-                _repo.SearchCommitContext.Selected = null;
-
-                var end = commits[0] as Models.Commit;
-                var start = commits[1] as Models.Commit;
-                DetailContext = new RevisionCompare(_repo, start, end);
-            }
-            else
-            {
-                _repo.SearchCommitContext.Selected = null;
-                DetailContext = new Models.Count(commits.Count);
-            }
         }
 
         public async Task<Models.Commit> GetCommitAsync(string sha)
@@ -446,15 +412,81 @@ namespace SourceGit.ViewModels
             DetailContext = new RevisionCompare(_repo, commit, null);
         }
 
+        private void PostCommitsChanged()
+        {
+            if (_selectedCommits.Count == 0)
+                return;
+
+            if (_commits.Count == 0 || _selectedCommits.Count > 2)
+            {
+                SelectedCommits = [];
+                return;
+            }
+
+            var set = new HashSet<string>();
+            foreach (var c in _selectedCommits)
+                set.Add(c.SHA);
+
+            var selected = new List<Models.Commit>();
+            foreach (var c in _commits)
+            {
+                if (set.Contains(c.SHA))
+                {
+                    selected.Add(c);
+                    set.Remove(c.SHA);
+                    if (set.Count == 0)
+                        break;
+                }
+            }
+
+            SelectedCommits = selected;
+        }
+
+        private void PostSelectedCommitsChanged()
+        {
+            if (_ignoreSelectionChange)
+                return;
+
+            if (_selectedCommits.Count == 0)
+            {
+                _repo.SearchCommitContext.Selected = null;
+                DetailContext = null;
+            }
+            else if (_selectedCommits.Count == 1)
+            {
+                var c = _selectedCommits[0];
+                if (_repo.SearchCommitContext.Selected == null || !_repo.SearchCommitContext.Selected.SHA.Equals(c.SHA, StringComparison.Ordinal))
+                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA.Equals(c.SHA, StringComparison.Ordinal));
+
+                if (_detailContext is CommitDetail detail)
+                    detail.Commit = c;
+                else
+                    DetailContext = new CommitDetail(_repo, _commitDetailSharedData) { Commit = c };
+            }
+            else if (_selectedCommits.Count == 2)
+            {
+                _repo.SearchCommitContext.Selected = null;
+
+                if (_detailContext is RevisionCompare compare)
+                    compare.SetTargets(_selectedCommits[1], _selectedCommits[0]);
+                else
+                    DetailContext = new RevisionCompare(_repo, _selectedCommits[1], _selectedCommits[0]);
+            }
+            else
+            {
+                _repo.SearchCommitContext.Selected = null;
+                DetailContext = new Models.Count(_selectedCommits.Count);
+            }
+        }
+
         private Repository _repo = null;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;
-        private Models.Commit _selectedCommit = null;
+        private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
-        private long _navigationId = 0;
-        private IDisposable _detailContext = null;
+        private object _detailContext = null;
         private bool _ignoreSelectionChange = false;
 
         private GridLength _leftArea = new GridLength(1, GridUnitType.Star);

@@ -29,7 +29,7 @@ namespace SourceGit.Views
         }
     }
 
-    public class ChangeCollectionContainer : ListBox
+    public class ChangeCollectionContainer : ListBoxEx
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
@@ -45,7 +45,7 @@ namespace SourceGit.Views
                 }
             }
 
-            if (!e.Handled && e.Key != Key.Space && e.Key != Key.Enter)
+            if (!e.Handled)
                 base.OnKeyDown(e);
         }
     }

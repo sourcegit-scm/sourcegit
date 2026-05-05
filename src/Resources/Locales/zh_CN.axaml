@@ -4,6 +4,7 @@
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">关于软件</x:String>
+  <x:String x:Key="Text.About.GitSourceRevision" xml:space="preserve">基于代码版本: </x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">关于本软件</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">发布日期：{0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">浏览版本更新说明</x:String>
@@ -25,7 +26,7 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用AI助手生成提交信息</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用所选</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">应用</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">隐藏 SourceGit</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">隐藏其他</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">显示全部</x:String>
@@ -740,6 +741,7 @@
   <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">删除 ...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">编辑 ...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">启用自动拉取</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">在浏览器中打开</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理远程已删除分支</x:String>

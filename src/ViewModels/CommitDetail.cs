@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
         }
     }
 
-    public partial class CommitDetail : ObservableObject, IDisposable
+    public partial class CommitDetail : ObservableObject
     {
         public Repository Repository
         {
@@ -172,23 +172,6 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
-        }
-
-        public void Dispose()
-        {
-            _repo = null;
-            _commit = null;
-            _changes = null;
-            _visibleChanges = null;
-            _selectedChanges = null;
-            _signInfo = null;
-            _searchChangeFilter = null;
-            _diffContext = null;
-            _viewRevisionFileContent = null;
-            _cancellationSource = null;
-            _requestingRevisionFiles = false;
-            _revisionFiles = null;
-            _revisionFileSearchSuggestion = null;
         }
 
         public void NavigateTo(string commitSHA)

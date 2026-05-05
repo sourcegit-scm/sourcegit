@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class SearchCommitContext : ObservableObject, IDisposable
+    public class SearchCommitContext : ObservableObject
     {
         public int Method
         {
@@ -73,14 +73,6 @@ namespace SourceGit.ViewModels
         public SearchCommitContext(Repository repo)
         {
             _repo = repo;
-        }
-
-        public void Dispose()
-        {
-            _repo = null;
-            _suggestions?.Clear();
-            _results?.Clear();
-            _worktreeFiles?.Clear();
         }
 
         public void ClearFilter()

@@ -22,7 +22,7 @@ namespace SourceGit.Views
         }
     }
 
-    public class RepositoryListBox : ListBox
+    public class RepositoryListBox : ListBoxEx
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 

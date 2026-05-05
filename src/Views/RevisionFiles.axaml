@@ -54,13 +54,13 @@
 
           <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
             <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
-              <ListBox x:Name="SearchSuggestionBox"
-                       Background="Transparent"
-                       SelectionMode="Single"
-                       ItemsSource="{Binding RevisionFileSearchSuggestion}"
-                       MaxHeight="400"
-                       Focusable="True"
-                       KeyDown="OnSearchSuggestionBoxKeyDown">
+              <v:ListBoxEx x:Name="SearchSuggestionBox"
+                           Background="Transparent"
+                           SelectionMode="Single"
+                           ItemsSource="{Binding RevisionFileSearchSuggestion}"
+                           MaxHeight="400"
+                           Focusable="True"
+                           KeyDown="OnSearchSuggestionBoxKeyDown">
                 <ListBox.Styles>
                   <Style Selector="ListBoxItem">
                     <Setter Property="Padding" Value="0"/>
@@ -94,7 +94,7 @@
                     </StackPanel>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
-              </ListBox>
+              </v:ListBoxEx>
             </Border>
           </Border>
         </Popup>

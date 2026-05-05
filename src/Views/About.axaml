@@ -8,12 +8,12 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.About}"
-                    Width="520" Height="230"
+                    SizeToContent="WidthAndHeight"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,*">
+  <StackPanel Orientation="Vertical">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+    <Grid Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
@@ -34,16 +34,16 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <Grid Grid.Row="1" Height="200" ColumnDefinitions="Auto,*">
-      <Image Grid.Column="0"
-             Width="200" Height="200"
+    <!-- Content -->
+    <StackPanel Orientation="Horizontal">
+      <Image Width="200" Height="200"
              Margin="8,0"
              Source="/App.ico"
              HorizontalAlignment="Center"
              VerticalAlignment="Center"/>
 
-      <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto,Auto,Auto" VerticalAlignment="Center">
-        <StackPanel Grid.Row="0" Height="40" Orientation="Horizontal">
+      <StackPanel Orientation="Vertical" Margin="4,18,24,18">
+        <StackPanel Height="40" Orientation="Horizontal">
           <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
           <Border Margin="12,0,0,0" Height="20"
                   CornerRadius="10"
@@ -56,11 +56,11 @@
           </Border>
         </StackPanel>
 
-        <Border Grid.Row="1" Margin="0,4,0,0">
+        <Border Margin="0,4,0,0">
           <TextBlock Text="{DynamicResource Text.About.SubTitle}" FontSize="16" TextWrapping="Wrap"/>
         </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,8,0,0">
+        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
           <Button Width="18" Height="18" Classes="icon_button" Click="OnVisitWebsite" ToolTip.Tip="https://sourcegit-scm.github.io/">
             <Path Width="16" Height="16" Data="{StaticResource Icons.Remotes}"/>
           </Button>
@@ -70,9 +70,15 @@
           </Button>
         </StackPanel>
 
-        <TextBlock Grid.Row="3" x:Name="TxtReleaseDate" Margin="0,28,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-        <TextBlock Grid.Row="4" x:Name="TxtCopyright" Margin="0,2,0,0" Foreground="{DynamicResource Brush.FG2}"/>
-      </Grid>
-    </Grid>
-  </Grid>
+        <TextBlock x:Name="TxtReleaseDate" Margin="0,28,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+        
+        <StackPanel x:Name="PnlGitSourceRevision" Orientation="Horizontal" Margin="0,2,0,0" IsVisible="False">
+          <TextBlock Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.About.GitSourceRevision}"/>
+          <SelectableTextBlock x:Name="TxtGitSourceRevision" Margin="4,0,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+        </StackPanel>
+
+        <TextBlock x:Name="TxtCopyright" Margin="0,2,0,0" Foreground="{DynamicResource Brush.FG2}"/>
+      </StackPanel>
+    </StackPanel>
+  </StackPanel>
 </v:ChromelessWindow>

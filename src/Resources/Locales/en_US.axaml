@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:String x:Key="Text.About" xml:space="preserve">About</x:String>
+  <x:String x:Key="Text.About.GitSourceRevision" xml:space="preserve">Source Revision:</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Release Date: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Release Notes</x:String>
@@ -736,6 +737,7 @@
   <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Delete...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Edit...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">Enable Auto-Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>

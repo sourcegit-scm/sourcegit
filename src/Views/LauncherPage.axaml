@@ -31,7 +31,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1">
-      <ContentControl Content="{Binding Data}">
+      <ContentControl Content="{Binding Data}">        
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
             <v:Welcome/>

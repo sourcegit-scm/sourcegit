@@ -70,19 +70,19 @@
                FontWeight="Bold"
                Foreground="{DynamicResource Brush.FG2}"/>
 
-    <ListBox Grid.Row="2"
-             x:Name="RefsListBox"
-             MaxHeight="360"
-             Margin="4,8"
-             BorderThickness="0"
-             SelectionMode="Single"
-             Background="Transparent"
-             Focusable="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding Refs, Mode=OneWay}"
-             SelectedItem="{Binding CompareTo, Mode=TwoWay}"
-             IsVisible="{Binding Refs, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+    <v:ListBoxEx Grid.Row="2"
+                 x:Name="RefsListBox"
+                 MaxHeight="360"
+                 Margin="4,8"
+                 BorderThickness="0"
+                 SelectionMode="Single"
+                 Background="Transparent"
+                 Focusable="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding Refs, Mode=OneWay}"
+                 SelectedItem="{Binding CompareTo, Mode=TwoWay}"
+                 IsVisible="{Binding Refs, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -134,6 +134,6 @@
           </Grid>
         </DataTemplate>
       </ListBox.DataTemplates>
-    </ListBox>
+    </v:ListBoxEx>
   </Grid>
 </UserControl>

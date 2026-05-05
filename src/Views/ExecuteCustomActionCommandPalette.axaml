@@ -57,19 +57,19 @@
                FontWeight="Bold"
                Foreground="{DynamicResource Brush.FG2}"/>
 
-    <ListBox Grid.Row="2"
-             x:Name="ActionListBox"
-             MaxHeight="360"
-             Margin="4,8"
-             BorderThickness="0"
-             SelectionMode="Single"
-             Background="Transparent"
-             Focusable="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding VisibleActions, Mode=OneWay}"
-             SelectedItem="{Binding Selected, Mode=TwoWay}"
-             IsVisible="{Binding VisibleActions, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+    <v:ListBoxEx Grid.Row="2"
+                 x:Name="ActionListBox"
+                 MaxHeight="360"
+                 Margin="4,8"
+                 BorderThickness="0"
+                 SelectionMode="Single"
+                 Background="Transparent"
+                 Focusable="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding VisibleActions, Mode=OneWay}"
+                 SelectedItem="{Binding Selected, Mode=TwoWay}"
+                 IsVisible="{Binding VisibleActions, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -110,7 +110,7 @@
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
-    </ListBox>
+    </v:ListBoxEx>
 
     <Path Grid.Row="2"
           Width="64" Height="64"

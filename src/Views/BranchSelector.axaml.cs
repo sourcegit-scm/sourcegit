@@ -182,6 +182,11 @@ namespace SourceGit.Views
 
                 e.Handled = true;
             }
+            else if (e.Key == Key.Enter)
+            {
+                IsDropDownOpened = false;
+                e.Handled = true;
+            }
         }
 
         private void OnClearSearchFilter(object sender, RoutedEventArgs e)

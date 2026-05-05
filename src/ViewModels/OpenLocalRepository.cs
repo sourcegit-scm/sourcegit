@@ -78,7 +78,7 @@ namespace SourceGit.ViewModels
                     {
                         if (page.Node.Id.Equals(_pageId, StringComparison.Ordinal))
                         {
-                            page.Popup = new Init(page.Node.Id, _repoPath, parent, test.StdErr);
+                            page.Popup = new Init(page.Node.Id, _repoPath, parent, _bookmark, test.StdErr);
                             break;
                         }
                     }

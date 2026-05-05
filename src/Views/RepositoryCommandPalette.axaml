@@ -47,19 +47,19 @@
                Foreground="{DynamicResource Brush.FG2}"
                IsVisible="{Binding VisibleCmds, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
 
-    <ListBox Grid.Row="2"
-             x:Name="CmdListBox"
-             MaxHeight="420"
-             Margin="4,0"
-             BorderThickness="0"
-             SelectionMode="Single"
-             Background="Transparent"
-             Focusable="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding VisibleCmds, Mode=OneWay}"
-             SelectedItem="{Binding SelectedCmd, Mode=TwoWay}"
-             IsVisible="{Binding VisibleCmds, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+    <v:ListBoxEx Grid.Row="2"
+                 x:Name="CmdListBox"
+                 MaxHeight="420"
+                 Margin="4,0"
+                 BorderThickness="0"
+                 SelectionMode="Single"
+                 Background="Transparent"
+                 Focusable="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding VisibleCmds, Mode=OneWay}"
+                 SelectedItem="{Binding SelectedCmd, Mode=TwoWay}"
+                 IsVisible="{Binding VisibleCmds, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -104,6 +104,6 @@
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
-    </ListBox>
+    </v:ListBoxEx>
   </Grid>
 </UserControl>

@@ -153,6 +153,15 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.AIAssistant vm && IsLoaded)
                 await vm.GenAsync();
+
+            e.Handled = true;
+        }
+
+        private void OnUseClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.AIAssistant vm && !string.IsNullOrEmpty(vm.Response))
+                vm.Use(vm.Response);
+
             e.Handled = true;
         }
 

@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherPagesCommandPalette"
@@ -46,19 +47,19 @@
                Foreground="{DynamicResource Brush.FG2}"
                IsVisible="{Binding VisiblePages, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
 
-    <ListBox Grid.Row="2"
-             x:Name="PageListBox"
-             MaxHeight="250"
-             Margin="4,0"
-             BorderThickness="0"
-             SelectionMode="Single"
-             Background="Transparent"
-             Focusable="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding VisiblePages, Mode=OneWay}"
-             SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
-             IsVisible="{Binding VisiblePages, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+    <v:ListBoxEx Grid.Row="2"
+                 x:Name="PageListBox"
+                 MaxHeight="250"
+                 Margin="4,0"
+                 BorderThickness="0"
+                 SelectionMode="Single"
+                 Background="Transparent"
+                 Focusable="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding VisiblePages, Mode=OneWay}"
+                 SelectedItem="{Binding SelectedPage, Mode=TwoWay}"
+                 IsVisible="{Binding VisiblePages, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -109,7 +110,7 @@
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
-    </ListBox>
+    </v:ListBoxEx>
 
     <TextBlock Grid.Row="3"
                Margin="6,8,0,4"
@@ -118,19 +119,19 @@
                Foreground="{DynamicResource Brush.FG2}"
                IsVisible="{Binding VisibleRepos, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
 
-    <ListBox Grid.Row="4"
-             x:Name="RepoListBox"
-             MaxHeight="300"
-             Margin="4,0"
-             BorderThickness="0"
-             SelectionMode="Single"
-             Background="Transparent"
-             Focusable="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ItemsSource="{Binding VisibleRepos, Mode=OneWay}"
-             SelectedItem="{Binding SelectedRepo, Mode=TwoWay}"
-             IsVisible="{Binding VisibleRepos, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+    <v:ListBoxEx Grid.Row="4"
+                 x:Name="RepoListBox"
+                 MaxHeight="300"
+                 Margin="4,0"
+                 BorderThickness="0"
+                 SelectionMode="Single"
+                 Background="Transparent"
+                 Focusable="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding VisibleRepos, Mode=OneWay}"
+                 SelectedItem="{Binding SelectedRepo, Mode=TwoWay}"
+                 IsVisible="{Binding VisibleRepos, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Padding" Value="8,0"/>
@@ -171,6 +172,6 @@
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
-    </ListBox>
+    </v:ListBoxEx>
   </Grid>
 </UserControl>

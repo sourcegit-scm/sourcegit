@@ -174,6 +174,9 @@ namespace SourceGit.ViewModels
 
                 var list = new List<InteractiveRebaseItem>();
                 var needReorder = new List<InteractiveRebaseReorderItem>();
+                var needReorderKeySet = new HashSet<string>();
+
+                // First-pass to find out the commits that need to be reordered and leave the reset in original order.
                 for (var i = 0; i < commits.Count; i++)
                 {
                     var c = commits[i];
@@ -185,45 +188,70 @@ namespace SourceGit.ViewModels
                         if (subject.StartsWith("fixup! ", StringComparison.Ordinal))
                         {
                             item.Action = Models.InteractiveRebaseAction.Fixup;
-                            needReorder.Add(new(subject.Substring(7), item));
+
+                            var targetSubject = subject.Substring(7).Trim();
+                            needReorder.Add(new(targetSubject, item));
+                            needReorderKeySet.Add(targetSubject);
                             continue;
                         }
 
                         if (subject.StartsWith("squash! ", StringComparison.Ordinal))
                         {
                             item.Action = Models.InteractiveRebaseAction.Squash;
-                            needReorder.Add(new(subject.Substring(8), item));
+
+                            var targetSubject = subject.Substring(8).Trim();
+                            needReorder.Add(new(targetSubject, item));
+                            needReorderKeySet.Add(targetSubject);
                             continue;
                         }
                     }
 
-                    var reordered = new List<InteractiveRebaseReorderItem>();
-                    foreach (var o in needReorder)
-                    {
-                        if (subject.StartsWith(o.Key, StringComparison.Ordinal))
-                        {
-                            list.Add(o.Item);
-                            reordered.Add(o);
-                        }
-                    }
-
-                    foreach (var k in reordered)
-                        needReorder.Remove(k);
-
                     list.Add(item);
                 }
 
-                foreach (var v in needReorder)
+                // Second-pass to find the place for reordered commits and insert them.
+                for (var i = list.Count - 1; i >= 0; i--)
                 {
-                    for (var i = 0; i < list.Count; i++)
+                    var subject = list[i].Commit.Subject.Trim();
+                    if (!needReorderKeySet.Contains(subject))
+                        continue;
+
+                    for (var j = needReorder.Count - 1; j >= 0; j--)
                     {
-                        if (v.Item.OriginalOrder > list[i].OriginalOrder)
+                        var test = needReorder[j];
+                        if (subject.Equals(test.Key, StringComparison.Ordinal))
                         {
-                            v.Item.Action = Models.InteractiveRebaseAction.Pick; // For safety, reset to pick if the target commit is not found
-                            list.Insert(i, v.Item);
-                            break;
+                            list.Insert(i, test.Item);
+                            needReorder.RemoveAt(j);
                         }
                     }
+
+                    needReorderKeySet.Remove(subject);
+                    if (needReorderKeySet.Count == 0)
+                        break;
+                }
+
+                // Last-pass to insert the remaining commits that are marked as fixup!/squash! but their target commit is not found.
+                foreach (var v in needReorder)
+                {
+                    // For safety, reset to pick if the target commit is not found
+                    v.Item.Action = Models.InteractiveRebaseAction.Pick;
+
+                    // Find out the first picked (exclude reordered) commit that should be picked after this commit
+                    var insertPos = 0;
+                    for (var i = 0; i < list.Count; i++)
+                    {
+                        var item = list[i];
+                        if (item.Action == Models.InteractiveRebaseAction.Pick)
+                        {
+                            if (v.Item.OriginalOrder < item.OriginalOrder)
+                                insertPos = i + 1;
+                            else
+                                break;
+                        }
+                    }
+
+                    list.Insert(insertPos, v.Item);
                 }
 
                 var selected = list.Count > 0 ? list[0] : null;
@@ -465,15 +493,24 @@ namespace SourceGit.ViewModels
 
                     if (hasPending)
                     {
-                        var builder = new StringBuilder();
-                        builder.Append(item.OriginalFullMessage);
-                        for (var j = pendingMessages.Count - 1; j >= 0; j--)
-                            builder.Append("\n").Append(pendingMessages[j]);
+                        if (pendingMessages.Count > 0)
+                        {
+                            var builder = new StringBuilder();
+                            builder.Append(item.OriginalFullMessage);
+                            for (var j = pendingMessages.Count - 1; j >= 0; j--)
+                                builder.Append("\n").Append(pendingMessages[j]);
 
-                        item.Action = Models.InteractiveRebaseAction.Reword;
-                        item.PendingType = Models.InteractiveRebasePendingType.Target;
-                        item.ShowEditMessageButton = true;
-                        item.FullMessage = builder.ToString();
+                            item.Action = Models.InteractiveRebaseAction.Reword;
+                            item.PendingType = Models.InteractiveRebasePendingType.Target;
+                            item.ShowEditMessageButton = true;
+                            item.FullMessage = builder.ToString();
+                        }
+                        else
+                        {
+                            item.PendingType = Models.InteractiveRebasePendingType.Target;
+                            item.ShowEditMessageButton = false;
+                            item.FullMessage = item.OriginalFullMessage;
+                        }
 
                         hasPending = false;
                         pendingMessages.Clear();

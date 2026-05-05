@@ -101,7 +101,7 @@
                                 Classes="line_path"
                                 Width="26" Height="26"
                                 Background="Transparent"
-                                IsChecked="{Binding OnlyHighlightCurrentBranchInHistory, Mode=TwoWay}"
+                                IsChecked="{Binding HighlightCurrentBranchOnlyInHistory, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
                   </ToggleButton>
@@ -552,13 +552,13 @@
 
             <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
               <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
-                <ListBox x:Name="SearchSuggestionBox"
-                         Background="Transparent"
-                         SelectionMode="Single"
-                         ItemsSource="{Binding SearchCommitContext.Suggestions}"
-                         MaxHeight="400"
-                         Focusable="True"
-                         KeyDown="OnSearchSuggestionBoxKeyDown">
+                <v:ListBoxEx x:Name="SearchSuggestionBox"
+                             Background="Transparent"
+                             SelectionMode="Single"
+                             ItemsSource="{Binding SearchCommitContext.Suggestions}"
+                             MaxHeight="400"
+                             Focusable="True"
+                             KeyDown="OnSearchSuggestionBoxKeyDown">
                   <ListBox.Styles>
                     <Style Selector="ListBoxItem">
                       <Setter Property="Padding" Value="0"/>
@@ -592,7 +592,7 @@
                       </StackPanel>
                     </DataTemplate>
                   </ListBox.ItemTemplate>
-                </ListBox>
+                </v:ListBoxEx>
               </Border>
             </Border>
           </Popup>
@@ -919,25 +919,34 @@
         </Grid>
       </Border>
 
-      <ContentControl Grid.Row="3" Content="{Binding SelectedView}">
-        <ContentControl.DataTemplates>
-          <DataTemplate DataType="vm:Histories">
-            <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}"
-                         Bisect="{Binding Bisect}"
-                         IssueTrackers="{Binding $parent[v:Repository].((vm:Repository)DataContext).IssueTrackers}"
-                         OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistory}"
-                         NavigationId="{Binding NavigationId}"/>
-          </DataTemplate>
+      <Grid Grid.Row="3">
+        <ContentControl Content="{Binding Histories, Mode=OneWay}" IsVisible="{Binding IsHistoriesVisible, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:Histories">
+              <v:Histories CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
+                           Bisect="{Binding Bisect, Mode=OneWay}"
+                           IssueTrackers="{Binding IssueTrackers, Mode=OneWay}"
+                           OnlyHighlightCurrentBranch="{Binding HighlightCurrentBranchOnly, Mode=OneWay}"/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
 
-          <DataTemplate DataType="vm:WorkingCopy">
-            <v:WorkingCopy/>
-          </DataTemplate>
+        <ContentControl Content="{Binding WorkingCopy, Mode=OneWay}" IsVisible="{Binding IsWorkingCopyVisible, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:WorkingCopy">
+              <v:WorkingCopy/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
 
-          <DataTemplate DataType="vm:StashesPage">
-            <v:StashesPage/>
-          </DataTemplate>
-        </ContentControl.DataTemplates>
-      </ContentControl>
+        <ContentControl Content="{Binding StashesPage, Mode=OneWay}" IsVisible="{Binding IsStashesVisible, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:StashesPage">
+              <v:StashesPage/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
     </Grid>
 
     <!-- Right (Auto-Fetch) -->

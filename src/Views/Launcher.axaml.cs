@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
@@ -61,17 +60,6 @@ namespace SourceGit.Views
 
             InitializeComponent();
             PositionChanged += OnPositionChanged;
-
-            if (Native.OS.UseMicaOnWindows11)
-            {
-                Background = Brushes.Transparent;
-                TransparencyLevelHint = [WindowTransparencyLevel.Mica];
-                TitleBarBG.Background = Brushes.Transparent;
-            }
-            else
-            {
-                TitleBarBG.Bind(BackgroundProperty, new DynamicResourceExtension("Brush.TitleBar"));
-            }
 
             var layout = ViewModels.Preferences.Instance.Layout;
             Width = layout.LauncherWidth;

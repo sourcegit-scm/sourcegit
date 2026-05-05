@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class WorkingCopy : ObservableObject, IDisposable
+    public class WorkingCopy : ObservableObject
     {
         public Repository Repository
         {
@@ -227,36 +227,6 @@ namespace SourceGit.ViewModels
         public WorkingCopy(Repository repo)
         {
             _repo = repo;
-        }
-
-        public void Dispose()
-        {
-            if (_inProgressContext != null && !string.IsNullOrEmpty(_commitMessage))
-                File.WriteAllText(Path.Combine(_repo.GitDir, "MERGE_MSG"), _commitMessage);
-
-            _repo = null;
-            _inProgressContext = null;
-
-            _selectedUnstaged.Clear();
-            OnPropertyChanged(nameof(SelectedUnstaged));
-
-            _selectedStaged.Clear();
-            OnPropertyChanged(nameof(SelectedStaged));
-
-            _visibleUnstaged.Clear();
-            OnPropertyChanged(nameof(VisibleUnstaged));
-
-            _visibleStaged.Clear();
-            OnPropertyChanged(nameof(VisibleStaged));
-
-            _unstaged.Clear();
-            OnPropertyChanged(nameof(Unstaged));
-
-            _staged.Clear();
-            OnPropertyChanged(nameof(Staged));
-
-            _detailContext = null;
-            _commitMessage = string.Empty;
         }
 
         public void SetData(List<Models.Change> changes)

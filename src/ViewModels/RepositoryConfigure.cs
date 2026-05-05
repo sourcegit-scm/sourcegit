@@ -266,6 +266,8 @@ namespace SourceGit.ViewModels
 
         public async Task SaveAsync()
         {
+            _repo.Settings.Save();
+
             await SetIfChangedAsync("user.name", UserName, "");
             await SetIfChangedAsync("user.email", UserEmail, "");
             await SetIfChangedAsync("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
@@ -275,7 +277,6 @@ namespace SourceGit.ViewModels
             await SetIfChangedAsync("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
 
             await ApplyIssueTrackerChangesAsync();
-            await _repo.Settings.SaveAsync();
         }
 
         private async Task SetIfChangedAsync(string key, string value, string defValue)

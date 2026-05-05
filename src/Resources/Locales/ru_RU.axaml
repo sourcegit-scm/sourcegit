@@ -27,6 +27,7 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Использовать OpenAI для создания сообщения о ревизии</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Использовать</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Скрыть SourceGit</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Скрыть остальные</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Показать все</x:String>
   <x:String x:Key="Text.Apply" xml:space="preserve">Исправить </x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Трехстороннее слияние</x:String>
@@ -134,6 +135,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">Клонировать внешний репозиторий</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Параметры:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Аргументы git clone (необязательно)</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">Закладка:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">Группа:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Локальное имя:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Имя репозитория (необязательно)</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Родительский каталог:</x:String>
@@ -279,8 +282,11 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Опции:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Используйте разделитель «|» для опций</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">Строка форматирования:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">Не обязательно. Использовать для форматирования выходной строки. Игнорировать пустые входные данные. Пожалуйста, используйте «${VALUE}» для представления входной строки.</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Встроенные переменные ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, и ${TAG} останутся здесь доступными</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Тип:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">Используйте понятное имя:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Рабочие пространства</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Цвет</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Имя</x:String>
@@ -374,6 +380,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">ПОДМОДУЛЬ</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">УДАЛЁН</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">НОВЫЙ</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} Незафиксированных изменний</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Подсветка синтаксиса </x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слов в строке</x:String>
@@ -502,6 +509,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Перейти на следующую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Перейти на предыдущую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Создать новую вкладку</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">Открыть локальный репозиторий</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Открыть диалоговое окно настроек</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Показать рабочее пространство в выпадющем меню</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Переключиться на вкладку</x:String>
@@ -595,6 +603,10 @@
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Открыть каталог данных программы</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">Открыть файл</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Открыть в инструменте слияния</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Открыть локальный репозиторий</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">Закладка:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">Группа:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">Каталог:</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Необязательно.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Создать новую вкладку</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Закрыть вкладку</x:String>
@@ -728,6 +740,7 @@
   <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Пользовательские действия</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Удалить...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Редактировать...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">Включить автоизвлечение</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Извлечь</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Открыть в браузере</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Удалить</x:String>
@@ -901,6 +914,8 @@
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">не слита</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Обновить</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL-адрес</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">Подробности изменения подмодуля</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">ОТКРЫТЬ ПОДРОБНОСТИ</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">РАЗМЕТЧИК</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">ВРЕМЯ</x:String>

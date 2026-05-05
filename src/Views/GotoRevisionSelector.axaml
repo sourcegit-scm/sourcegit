@@ -36,17 +36,17 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
     
-    <ListBox Grid.Row="1"
-             x:Name="RevisionList"
-             Focusable="True"
-             Margin="8" Padding="4"
-             SelectionMode="AlwaysSelected"
-             BorderThickness="0"
-             Background="Transparent"
-             Grid.IsSharedSizeScope="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-             KeyDown="OnListKeyDown">
+    <v:ListBoxEx Grid.Row="1"
+                 x:Name="RevisionList"
+                 Focusable="True"
+                 Margin="8" Padding="4"
+                 SelectionMode="AlwaysSelected"
+                 BorderThickness="0"
+                 Background="Transparent"
+                 Grid.IsSharedSizeScope="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 KeyDown="OnRevisionListKeyDown">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="Margin" Value="0"/>
@@ -64,7 +64,7 @@
 
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Commit">
-            <Grid Background="Transparent" Tapped="OnListItemTapped">
+            <Grid Background="Transparent" Tapped="OnRevisionListItemTapped">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="*"/>
@@ -95,6 +95,6 @@
             </Grid>
           </DataTemplate>
         </ListBox.ItemTemplate>
-      </ListBox>
+      </v:ListBoxEx>
   </Grid>
 </v:ChromelessWindow>

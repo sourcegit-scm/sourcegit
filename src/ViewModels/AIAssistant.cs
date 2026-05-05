@@ -33,6 +33,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _text, value);
         }
 
+        public string Response
+        {
+            get => _response;
+            private set => SetProperty(ref _response, value);
+        }
+
         public AIAssistant(Repository repo, AI.Service service, List<Models.Change> changes)
         {
             _repo = repo;
@@ -55,7 +61,11 @@ namespace SourceGit.ViewModels
             var builder = new StringBuilder();
             builder.AppendLine("Asking AI to generate commit message...").AppendLine();
 
+            var responseBuilder = new StringBuilder();
+            var foundResponse = false;
+
             Text = builder.ToString();
+            Response = string.Empty;
             IsGenerating = true;
 
             try
@@ -63,8 +73,23 @@ namespace SourceGit.ViewModels
                 await agent.GenerateCommitMessageAsync(_repo.FullPath, _changeList, message =>
                 {
                     builder.AppendLine(message);
+
+                    if (foundResponse)
+                    {
+                        if (message.Equals("# Token Usage", StringComparison.Ordinal))
+                            foundResponse = false;
+                        else
+                            responseBuilder.AppendLine(message);
+                    }
+                    else if (message.Equals("# Assistant", StringComparison.Ordinal))
+                    {
+                        foundResponse = true;
+                    }
+
                     Dispatcher.UIThread.Post(() => Text = builder.ToString());
                 }, _cancel.Token);
+
+                Response = responseBuilder.ToString().Trim();
             }
             catch (OperationCanceledException)
             {
@@ -77,7 +102,9 @@ namespace SourceGit.ViewModels
                     .AppendLine()
                     .AppendLine("[ERROR]")
                     .Append(e.Message);
+
                 Text = builder.ToString();
+                Response = string.Empty;
             }
 
             IsGenerating = false;
@@ -120,5 +147,6 @@ namespace SourceGit.ViewModels
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;
         private string _text = string.Empty;
+        private string _response = string.Empty;
     }
 }

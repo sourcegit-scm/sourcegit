@@ -27,6 +27,18 @@ namespace SourceGit.Views
                 }
             }
 
+            var informationVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (informationVersion != null)
+            {
+                var infoVer = informationVersion.InformationalVersion;
+                var idx = infoVer.IndexOf('+');
+                if (idx > 0 && infoVer.Length > idx + 11)
+                {
+                    TxtGitSourceRevision.Text = infoVer.Substring(idx + 1, 10);
+                    PnlGitSourceRevision.IsVisible = true;
+                }
+            }
+
             var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
             if (copyright != null)
                 TxtCopyright.Text = copyright.Copyright;

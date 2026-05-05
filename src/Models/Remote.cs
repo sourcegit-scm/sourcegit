@@ -31,6 +31,7 @@ namespace SourceGit.Models
 
         public string Name { get; set; }
         public string URL { get; set; }
+        public bool DisableAutoFetch { get; set; }
 
         public static bool IsSSH(string url)
         {

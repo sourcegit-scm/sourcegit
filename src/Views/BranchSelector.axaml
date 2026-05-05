@@ -100,15 +100,15 @@
                     </TextBox.InnerRightContent>
                   </TextBox>
 
-                  <ListBox Grid.Row="1"
-                           Focusable="True"
-                           Margin="0,4"
-                           MaxHeight="360"
-                           BorderThickness="0"
-                           Background="Transparent"
-                           ItemsSource="{TemplateBinding VisibleBranches, Mode=OneWay}"
-                           SelectedItem="{TemplateBinding SelectedBranch, Mode=TwoWay}"
-                           KeyDown="OnDropDownListKeyDown">
+                  <v:ListBoxEx Grid.Row="1"
+                               Focusable="True"
+                               Margin="0,4"
+                               MaxHeight="360"
+                               BorderThickness="0"
+                               Background="Transparent"
+                               ItemsSource="{TemplateBinding VisibleBranches, Mode=OneWay}"
+                               SelectedItem="{TemplateBinding SelectedBranch, Mode=TwoWay}"
+                               KeyDown="OnDropDownListKeyDown">
                     <ListBox.ItemsPanel>
                       <ItemsPanelTemplate>
                         <VirtualizingStackPanel Orientation="Vertical"/>
@@ -130,7 +130,7 @@
                         </StackPanel>
                       </DataTemplate>
                     </ListBox.ItemTemplate>
-                  </ListBox>
+                  </v:ListBoxEx>
                 </Grid>
               </Border>
             </Popup>
