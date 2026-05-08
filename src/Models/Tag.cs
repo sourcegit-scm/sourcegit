@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SourceGit.Models
+﻿namespace SourceGit.Models
 {
     public enum TagSortMode
     {
@@ -16,10 +14,5 @@ namespace SourceGit.Models
         public User Creator { get; set; } = null;
         public ulong CreatorDate { get; set; } = 0;
         public string Message { get; set; } = string.Empty;
-
-        public string CreatorDateStr
-        {
-            get => DateTime.UnixEpoch.AddSeconds(CreatorDate).ToLocalTime().ToString(DateTimeFormat.Active.DateTime);
-        }
     }
 }

@@ -161,9 +161,6 @@ namespace SourceGit.Views
                         Brushes.Gray);
 
                     context.DrawText(formatted, new Point(4, 2));
-
-                    var y = PixelSnapHelpers.PixelAlign(6 + formatted.Height, pixelHeight);
-                    context.DrawLine(pen, new Point(0, y), new Point(w, y));
                 }
 
                 return;
@@ -194,6 +191,15 @@ namespace SourceGit.Views
                     var y = line.GetTextLineVisualYPosition(line.TextLines[^1], VisualYPosition.LineBottom) - view.VerticalOffset + 4;
                     y = PixelSnapHelpers.PixelAlign(y, pixelHeight);
                     context.DrawLine(pen, new Point(0, y), new Point(w, y));
+
+                    var subjectEndTip = new FormattedText(
+                        "SUBJECT END",
+                        CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        new Typeface(FontFamily, FontStyle.Italic),
+                        10,
+                        Brushes.Gray);
+                    context.DrawText(subjectEndTip, new Point(w - subjectEndTip.WidthIncludingTrailingWhitespace - 6, y + 1));
                     return;
                 }
             }
@@ -331,7 +337,7 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.IsEnabled = hasSelected;
             copy.Click += (_, ev) =>
             {
@@ -341,7 +347,7 @@ namespace SourceGit.Views
 
             var cut = new MenuItem();
             cut.Header = App.Text("Cut");
-            cut.Icon = App.CreateMenuIcon("Icons.Cut");
+            cut.Icon = this.CreateMenuIcon("Icons.Cut");
             cut.IsEnabled = hasSelected;
             cut.Click += (_, ev) =>
             {
@@ -351,7 +357,7 @@ namespace SourceGit.Views
 
             var paste = new MenuItem();
             paste.Header = App.Text("Paste");
-            paste.Icon = App.CreateMenuIcon("Icons.Paste");
+            paste.Icon = this.CreateMenuIcon("Icons.Paste");
             paste.Click += (_, ev) =>
             {
                 Paste();
@@ -441,7 +447,7 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem()
                     {
                         Header = App.Text("WorkingCopy.NoCommitTemplates"),
-                        Icon = App.CreateMenuIcon("Icons.Code"),
+                        Icon = this.CreateMenuIcon("Icons.Code"),
                         IsEnabled = false
                     });
                 }
@@ -449,7 +455,7 @@ namespace SourceGit.Views
                 {
                     for (int i = 0; i < templateCount; i++)
                     {
-                        var icon = App.CreateMenuIcon("Icons.Code");
+                        var icon = this.CreateMenuIcon("Icons.Code");
                         icon.Fill = foreground;
 
                         var template = repo.Settings.CommitTemplates[i];
@@ -478,7 +484,7 @@ namespace SourceGit.Views
                                 friendlyName = $"~{gitTemplate.AsSpan(prefixLen)}";
                         }
 
-                        var icon = App.CreateMenuIcon("Icons.Code");
+                        var icon = this.CreateMenuIcon("Icons.Code");
                         icon.Fill = foreground;
 
                         var gitTemplateItem = new MenuItem();
@@ -502,7 +508,7 @@ namespace SourceGit.Views
                     menu.Items.Add(new MenuItem()
                     {
                         Header = App.Text("WorkingCopy.NoCommitHistories"),
-                        Icon = App.CreateMenuIcon("Icons.Histories"),
+                        Icon = this.CreateMenuIcon("Icons.Histories"),
                         IsEnabled = false
                     });
                 }
@@ -518,7 +524,7 @@ namespace SourceGit.Views
                             TextTrimming = TextTrimming.CharacterEllipsis
                         };
 
-                        var icon = App.CreateMenuIcon("Icons.Histories");
+                        var icon = this.CreateMenuIcon("Icons.Histories");
                         icon.Fill = foreground;
 
                         var item = new MenuItem();
@@ -535,7 +541,7 @@ namespace SourceGit.Views
 
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
-                    var clearIcon = App.CreateMenuIcon("Icons.Clear");
+                    var clearIcon = this.CreateMenuIcon("Icons.Clear");
                     clearIcon.Fill = foreground;
 
                     var clearHistoryItem = new MenuItem();
@@ -559,7 +565,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Button button && ShowAdvancedOptions)
             {
@@ -567,20 +573,23 @@ namespace SourceGit.Views
 
                 if (vm.Staged == null || vm.Staged.Count == 0)
                 {
-                    App.RaiseException(repo.FullPath, "No files added to commit!");
+                    repo.SendNotification("No files added to commit!", true);
+                    e.Handled = true;
                     return;
                 }
 
                 var services = repo.GetPreferredOpenAIServices();
                 if (services.Count == 0)
                 {
-                    App.RaiseException(repo.FullPath, "Bad configuration for OpenAI");
+                    repo.SendNotification("Bad configuration for OpenAI", true);
+                    e.Handled = true;
                     return;
                 }
 
                 if (services.Count == 1)
                 {
-                    await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], vm.Staged));
+                    DoOpenAIAssistant(repo, services[0], vm.Staged);
+                    e.Handled = true;
                     return;
                 }
 
@@ -590,9 +599,9 @@ namespace SourceGit.Views
                     var dup = service;
                     var item = new MenuItem();
                     item.Header = service.Name;
-                    item.Click += async (_, ev) =>
+                    item.Click += (_, ev) =>
                     {
-                        await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, vm.Staged));
+                        DoOpenAIAssistant(repo, dup, vm.Staged);
                         ev.Handled = true;
                     };
 
@@ -627,6 +636,17 @@ namespace SourceGit.Views
             builder.Show(owner);
 
             e.Handled = true;
+        }
+
+        private void DoOpenAIAssistant(ViewModels.Repository repo, AI.Service service, List<Models.Change> changes)
+        {
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner == null)
+                return;
+
+            var assistant = new ViewModels.AIAssistant(repo, service, changes);
+            var view = new AIAssistant() { DataContext = assistant };
+            view.Show(owner);
         }
     }
 }

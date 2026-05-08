@@ -63,7 +63,10 @@ namespace SourceGit.ViewModels
             else
             {
                 var newline = line ?? string.Empty;
-                _builder.AppendLine(newline);
+                if (_builder != null)
+                    _builder.AppendLine(newline);
+                else
+                    _content = $"{_content}{newline}\n";
 
                 foreach (var receiver in _receivers)
                     receiver.OnReceiveCommandLog(newline);

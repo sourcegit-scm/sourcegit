@@ -29,24 +29,69 @@ namespace SourceGit.Views
         }
     }
 
-    public class ChangeCollectionContainer : ListBox
+    public class ChangeCollectionContainer : ListBoxEx
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItems is [ViewModels.ChangeTreeNode node])
+            if (SelectedItems is [ViewModels.ChangeTreeNode node] && e.KeyModifiers == KeyModifiers.None)
             {
-                if (((e.Key == Key.Left && node.IsExpanded) || (e.Key == Key.Right && !node.IsExpanded)) &&
-                    e.KeyModifiers == KeyModifiers.None)
+                if (e.Key == Key.Left)
                 {
-                    this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
+                    if (node.IsExpanded && node.IsFolder)
+                    {
+                        this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
+                        e.Handled = true;
+                    }
+                    else if (FindParent(node) is { } parent)
+                    {
+                        Select(parent);
+                        e.Handled = true;
+                    }
+                }
+                else if (e.Key == Key.Right && node.IsFolder)
+                {
+                    if (!node.IsExpanded)
+                    {
+                        this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
+                        e.Handled = true;
+                    }
+                    else if (node.Children.Count > 0)
+                    {
+                        Select(node.Children[0]);
+                        e.Handled = true;
+                    }
                 }
             }
 
-            if (!e.Handled && e.Key != Key.Space && e.Key != Key.Enter)
+            if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private void Select(object item)
+        {
+            SelectedItem = item;
+            ScrollIntoView(item);
+            ContainerFromItem(item)?.Focus();
+        }
+
+        private ViewModels.ChangeTreeNode FindParent(ViewModels.ChangeTreeNode item)
+        {
+            if (item.Depth == 0)
+                return null;
+
+            var idx = Items.IndexOf(item);
+            if (idx < 1)
+                return null;
+
+            for (var i = idx - 1; i >= 0; i--)
+            {
+                if (Items[i] is ViewModels.ChangeTreeNode node && node.Depth < item.Depth)
+                    return node;
+            }
+
+            return null;
         }
     }
 
@@ -242,17 +287,17 @@ namespace SourceGit.Views
 
         private void OnRowDataContextChanged(object sender, EventArgs e)
         {
-            if (sender is not Control control)
+            if (sender is not Control { DataContext: { } ctx } control)
                 return;
 
-            if (control.DataContext is ViewModels.ChangeTreeNode node)
+            if (ctx is ViewModels.ChangeTreeNode node)
             {
                 if (node.Change is { } c)
                     UpdateRowTips(control, c);
                 else
                     ToolTip.SetTip(control, node.FullPath);
             }
-            else if (control.DataContext is Models.Change change)
+            else if (ctx is Models.Change change)
             {
                 UpdateRowTips(control, change);
             }
@@ -264,8 +309,10 @@ namespace SourceGit.Views
 
         private void OnRowDoubleTapped(object sender, TappedEventArgs e)
         {
-            var grid = sender as Grid;
-            if (grid?.DataContext is ViewModels.ChangeTreeNode node)
+            if (sender is not Control { DataContext: { } ctx })
+                return;
+
+            if (ctx is ViewModels.ChangeTreeNode node)
             {
                 if (node.IsFolder)
                 {
@@ -280,7 +327,7 @@ namespace SourceGit.Views
                     RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
                 }
             }
-            else if (grid?.DataContext is Models.Change)
+            else if (ctx is Models.Change)
             {
                 RaiseEvent(new RoutedEventArgs(ChangeDoubleTappedEvent));
             }

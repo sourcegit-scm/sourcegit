@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -14,12 +16,40 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnRevisionsPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == ListBox.ItemsSourceProperty &&
+                sender is ListBox { Items: { Count: > 0 } } listBox)
+                listBox.SelectedIndex = 0;
+        }
+
+        private void OnRevisionsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox listBox && DataContext is ViewModels.FileHistories vm)
+            {
+                if (listBox.SelectedItems is { } selected)
+                {
+                    var revs = new List<Models.FileVersion>();
+                    foreach (var item in listBox.SelectedItems)
+                    {
+                        if (item is Models.FileVersion ver)
+                            revs.Add(ver);
+                    }
+                    vm.SelectedRevisions = revs;
+                }
+                else
+                {
+                    vm.SelectedRevisions = [];
+                }
+            }
+        }
+
         private void OnPressCommitSHA(object sender, PointerPressedEventArgs e)
         {
-            if (sender is TextBlock { DataContext: Models.Commit commit } &&
+            if (sender is TextBlock { DataContext: Models.FileVersion ver } &&
                 DataContext is ViewModels.FileHistories vm)
             {
-                vm.NavigateToCommit(commit);
+                vm.NavigateToCommit(ver);
             }
 
             e.Handled = true;
@@ -30,15 +60,9 @@ namespace SourceGit.Views
             if (sender is Button { DataContext: ViewModels.FileHistoriesSingleRevision single })
             {
                 await single.ResetToSelectedRevisionAsync();
-                NotifyDonePanel.IsVisible = true;
+                await new Alert().ShowAsync(this, "Reset to selected revision successfully.", false);
             }
 
-            e.Handled = true;
-        }
-
-        private void OnCloseNotifyPanel(object _, PointerPressedEventArgs e)
-        {
-            NotifyDonePanel.IsVisible = false;
             e.Handled = true;
         }
 
@@ -54,14 +78,16 @@ namespace SourceGit.Views
                 try
                 {
                     var storageFile = await StorageProvider.SaveFilePickerAsync(options);
-                    if (storageFile != null)
-                        await compare.SaveAsPatch(storageFile.Path.LocalPath);
+                    if (storageFile == null)
+                        return;
 
-                    NotifyDonePanel.IsVisible = true;
+                    var succ = await compare.SaveAsPatch(storageFile.Path.LocalPath);
+                    if (succ)
+                        await new Alert().ShowAsync(this, "Saved as patch successfully.", false);
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(string.Empty, $"Failed to save as patch: {exception.Message}");
+                    await new Alert().ShowAsync(this, $"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;
@@ -76,12 +102,12 @@ namespace SourceGit.Views
 
         private void OnCommitSubjectPointerMoved(object sender, PointerEventArgs e)
         {
-            if (sender is Border { DataContext: Models.Commit commit } border &&
+            if (sender is Border { DataContext: Models.FileVersion ver } border &&
                 DataContext is ViewModels.FileHistories vm)
             {
                 var tooltip = ToolTip.GetTip(border);
                 if (tooltip == null)
-                    ToolTip.SetTip(border, vm.GetCommitFullMessage(commit));
+                    ToolTip.SetTip(border, vm.GetCommitFullMessage(ver));
             }
         }
 

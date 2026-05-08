@@ -15,9 +15,9 @@ jobs:
         runtime: [win-x64, win-arm64]
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sourcegit.${{ matrix.runtime }}
           path: build/SourceGit
@@ -28,12 +28,12 @@ jobs:
           RUNTIME: ${{ matrix.runtime }}
         run: ./build/scripts/package.win.ps1
       - name: Upload package artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package.${{ matrix.runtime }}
           path: build/sourcegit_*.zip
       - name: Delete temp artifacts
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
           name: sourcegit.${{ matrix.runtime }}
   osx-app:
@@ -44,9 +44,9 @@ jobs:
         runtime: [osx-x64, osx-arm64]
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sourcegit.${{ matrix.runtime }}
           path: build
@@ -59,12 +59,12 @@ jobs:
           tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
           ./build/scripts/package.osx-app.sh
       - name: Upload package artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package.${{ matrix.runtime }}
           path: build/sourcegit_*.zip
       - name: Delete temp artifacts
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
           name: sourcegit.${{ matrix.runtime }}
   linux:
@@ -76,7 +76,7 @@ jobs:
         runtime: [linux-x64, linux-arm64]
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Download package dependencies
         run: |
           export DEBIAN_FRONTEND=noninteractive
@@ -84,7 +84,7 @@ jobs:
           apt-get update
           apt-get install -y curl wget git dpkg-dev fakeroot tzdata zip unzip desktop-file-utils rpm libfuse2 file build-essential binutils
       - name: Download build
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: sourcegit.${{ matrix.runtime }}
           path: build
@@ -98,7 +98,7 @@ jobs:
           tar -xf "build/sourcegit.${{ matrix.runtime }}.tar" -C build/SourceGit
           ./build/scripts/package.linux.sh
       - name: Upload package artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: package.${{ matrix.runtime }}
           path: |
@@ -106,6 +106,6 @@ jobs:
             build/sourcegit_*.deb
             build/sourcegit-*.rpm
       - name: Delete temp artifacts
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
           name: sourcegit.${{ matrix.runtime }}

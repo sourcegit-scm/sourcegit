@@ -1,14 +1,20 @@
 ﻿using System;
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
     public class RepositoryCommandPaletteTextBox : TextBox
     {
         protected override Type StyleKeyOverride => typeof(TextBox);
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            Focus(NavigationMethod.Directional);
+        }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -24,12 +30,6 @@ namespace SourceGit.Views
             }
 
             base.OnKeyDown(e);
-        }
-
-        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-        {
-            base.OnAttachedToVisualTree(e);
-            Focus();
         }
     }
 }

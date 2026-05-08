@@ -134,7 +134,7 @@ namespace SourceGit.Views
                         {
                             var open = new MenuItem();
                             open.Header = App.Text("SHALinkCM.NavigateTo");
-                            open.Icon = App.CreateMenuIcon("Icons.Commit");
+                            open.Icon = this.CreateMenuIcon("Icons.Commit");
                             open.Click += (_, ev) =>
                             {
                                 detail.NavigateTo(link);
@@ -143,10 +143,10 @@ namespace SourceGit.Views
 
                             var copy = new MenuItem();
                             copy.Header = App.Text("SHALinkCM.CopySHA");
-                            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                            copy.Icon = this.CreateMenuIcon("Icons.Copy");
                             copy.Click += async (_, ev) =>
                             {
-                                await App.CopyTextAsync(link);
+                                await this.CopyTextAsync(link);
                                 ev.Handled = true;
                             };
 
@@ -167,7 +167,7 @@ namespace SourceGit.Views
                     {
                         var open = new MenuItem();
                         open.Header = App.Text("IssueLinkCM.OpenInBrowser");
-                        open.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                        open.Icon = this.CreateMenuIcon("Icons.OpenWith");
                         open.Click += (_, ev) =>
                         {
                             Native.OS.OpenBrowser(link);
@@ -176,10 +176,10 @@ namespace SourceGit.Views
 
                         var copy = new MenuItem();
                         copy.Header = App.Text("IssueLinkCM.CopyLink");
-                        copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                        copy.Icon = this.CreateMenuIcon("Icons.Copy");
                         copy.Click += async (_, ev) =>
                         {
-                            await App.CopyTextAsync(link);
+                            await this.CopyTextAsync(link);
                             ev.Handled = true;
                         };
 
@@ -268,7 +268,7 @@ namespace SourceGit.Views
                     {
                         var currentParent = this.FindAncestorOfType<CommitBaseInfo>();
                         if (currentParent is { DataContext: ViewModels.CommitDetail currentDetail } &&
-                            currentDetail.Commit.SHA == lastDetailCommit)
+                            currentDetail.Commit.SHA.Equals(lastDetailCommit, StringComparison.Ordinal))
                         {
                             _inlineCommits.TryAdd(sha, c);
                             if (_lastHover == link && c != null)

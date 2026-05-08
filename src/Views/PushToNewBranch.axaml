@@ -43,8 +43,7 @@
                MinWidth="300" Height="32"
                Margin="16,8,16,0"
                CornerRadius="3"
-               Focusable="True"
-               v:AutoFocusBehaviour.IsEnabled="True">
+               Focusable="True">
         <TextBox.InnerLeftContent>
           <Border Height="22" CornerRadius="10" Margin="4,0,0,0" Background="Green">
             <TextBlock x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>

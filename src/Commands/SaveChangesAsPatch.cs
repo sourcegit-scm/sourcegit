@@ -69,7 +69,7 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                App.RaiseException(repo, "Save change to patch failed: " + e.Message);
+                Models.Notification.Send(repo, "Save change to patch failed: " + e.Message, true);
                 return false;
             }
         }

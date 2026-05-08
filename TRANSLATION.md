@@ -6,64 +6,120 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.27%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-95.75%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.About.GitSourceRevision
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
+- Text.BranchCM.CompareWithUpstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitMessageTextBox.Column
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
+- Text.ConfigureCustomActionControls.UseFriendlyName
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.Diff.Submodule.UncommittedChanges
+- Text.Discard.IncludeModified
 - Text.GotoRevisionSelector
+- Text.Hotkeys.Global.OpenLocalRepository
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
+- Text.Preferences.AI.AdditionalPrompt
+- Text.Preferences.General.Use24Hours
+- Text.Preferences.Git.UseStashAndReapplyByDefault
+- Text.RemoteCM.EnableAutoFetch
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.38%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.60%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.GotoRevisionSelector
-- Text.Hotkeys.Repo.GoToChild
-- Text.StashCM.ApplyFileChanges
-- Text.Worktree.Branch
-- Text.Worktree.Head
-- Text.Worktree.Path
+- Text.About.GitSourceRevision
+- Text.BranchCM.CompareWithUpstream
+- Text.Preferences.Git.UseStashAndReapplyByDefault
+- Text.RemoteCM.EnableAutoFetch
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-93.04%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-89.78%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
+- Text.About.GitSourceRevision
 - Text.About.ReleaseDate
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
 - Text.Blame.IgnoreWhitespace
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.BranchCM.CompareWithUpstream
 - Text.BranchCM.EditDescription
 - Text.ChangeCM.Merge
 - Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitMessageTextBox.Column
 - Text.CommitMessageTextBox.Placeholder
-- Text.Compare.WithHead
 - Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
+- Text.ConfigureCustomActionControls.UseFriendlyName
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.Diff.Submodule.UncommittedChanges
+- Text.Discard.IncludeModified
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Global.OpenLocalRepository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
 - Text.MergeConflictEditor.AcceptBoth.TheirsFirst
 - Text.MergeConflictEditor.UseBoth
@@ -82,14 +138,22 @@ This document shows the translation status of each locale file in the repository
 - Text.MergeConflictEditor.Undo
 - Text.No
 - Text.OpenFile
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
+- Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.DiffMerge.DiffArgs
 - Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
 - Text.Preferences.DiffMerge.MergeArgs.Tip
+- Text.Preferences.General.Use24Hours
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
+- Text.RemoteCM.EnableAutoFetch
 - Text.Repository.OpenAsFolder
 - Text.Repository.Resolve
 - Text.SelfUpdate.CurrentVersion
@@ -98,6 +162,9 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
@@ -110,18 +177,23 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-90.97%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-87.65%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
+- Text.About.GitSourceRevision
 - Text.About.ReleaseDate
 - Text.About.ReleaseNotes
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
 - Text.Blame.BlameOnPreviousRevision
 - Text.Blame.IgnoreWhitespace
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.BranchCM.CompareWithUpstream
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -129,14 +201,29 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitCM.Drop
 - Text.CommitMessageTextBox.Column
 - Text.CommitMessageTextBox.Placeholder
-- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
 - Text.ConfigureCustomActionControls.StringValue.Tip
+- Text.ConfigureCustomActionControls.UseFriendlyName
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.DealWithLocalChanges.DoNothing
+- Text.Diff.Submodule.UncommittedChanges
+- Text.Discard.IncludeModified
 - Text.DropHead
 - Text.DropHead.Commit
 - Text.DropHead.NewHead
@@ -148,11 +235,15 @@ This document shows the translation status of each locale file in the repository
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Global.OpenLocalRepository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
@@ -175,16 +266,24 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
+- Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.DiffMerge.DiffArgs
 - Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
 - Text.Preferences.DiffMerge.MergeArgs.Tip
+- Text.Preferences.General.Use24Hours
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
+- Text.RemoteCM.EnableAutoFetch
 - Text.Repository.OpenAsFolder
 - Text.Repository.Resolve
 - Text.SelfUpdate.CurrentVersion
@@ -193,6 +292,9 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
@@ -205,50 +307,126 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-98.65%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-95.14%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
 
+- Text.About.GitSourceRevision
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
+- Text.BranchCM.CompareWithUpstream
 - Text.ChangeCM.ResetFileTo
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitMessageTextBox.Column
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
+- Text.ConfigureCustomActionControls.UseFriendlyName
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.Diff.Submodule.UncommittedChanges
+- Text.Discard.IncludeModified
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Global.OpenLocalRepository
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
+- Text.Preferences.AI.AdditionalPrompt
+- Text.Preferences.General.Use24Hours
+- Text.Preferences.Git.UseStashAndReapplyByDefault
+- Text.RemoteCM.EnableAutoFetch
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-99.69%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-96.05%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.About.GitSourceRevision
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
+- Text.BranchCM.CompareWithUpstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
+- Text.ConfigureCustomActionControls.UseFriendlyName
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.DealWithLocalChanges.DoNothing
+- Text.Diff.Submodule.UncommittedChanges
+- Text.Discard.IncludeModified
+- Text.Hotkeys.Global.OpenLocalRepository
+- Text.Hotkeys.Repo.CreateBranch
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
+- Text.Preferences.AI.AdditionalPrompt
+- Text.Preferences.General.Use24Hours
+- Text.Preferences.Git.UseStashAndReapplyByDefault
+- Text.RemoteCM.EnableAutoFetch
+- Text.StashCM.Branch
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-91.28%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-87.96%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
 
+- Text.About.GitSourceRevision
 - Text.About.ReleaseDate
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
 - Text.Blame.BlameOnPreviousRevision
 - Text.Blame.IgnoreWhitespace
 - Text.Blame.TypeNotSupported
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.BranchCM.CompareWithUpstream
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -256,12 +434,27 @@ This document shows the translation status of each locale file in the repository
 - Text.ChangeCM.MergeExternal
 - Text.ChangeCM.ResetFileTo
 - Text.Checkout.WarnUpdatingSubmodules
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitMessageTextBox.Column
 - Text.CommitMessageTextBox.Placeholder
-- Text.Compare.WithHead
 - Text.Configure.Git.AskBeforeAutoUpdatingSubmodules
 - Text.Configure.Git.ConventionalTypesOverride
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
 - Text.ConfigureCustomActionControls.StringValue.Tip
+- Text.ConfigureCustomActionControls.UseFriendlyName
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
+- Text.DealWithLocalChanges.DoNothing
+- Text.Diff.Submodule.UncommittedChanges
+- Text.Discard.IncludeModified
 - Text.EditBranchDescription
 - Text.EditBranchDescription.Target
 - Text.FileCM.CustomAction
@@ -270,11 +463,15 @@ This document shows the translation status of each locale file in the repository
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Global.OpenLocalRepository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
 - Text.MergeConflictEditor.AcceptBoth.MineFirst
@@ -297,17 +494,25 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
+- Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.Appearance.UseFixedTabWidth
 - Text.Preferences.DiffMerge.DiffArgs
 - Text.Preferences.DiffMerge.DiffArgs.Tip
 - Text.Preferences.DiffMerge.MergeArgs
 - Text.Preferences.DiffMerge.MergeArgs.Tip
+- Text.Preferences.General.Use24Hours
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
+- Text.RemoteCM.EnableAutoFetch
 - Text.Repository.OpenAsFolder
 - Text.Repository.Resolve
 - Text.SelfUpdate.CurrentVersion
@@ -316,7 +521,10 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Fixup
 - Text.SquashOrFixup.Into
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.Submodule.Status.Unmerged
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.TagCM.CompareTwo
 - Text.TagCM.CompareWith
 - Text.TagCM.CompareWithHead
@@ -329,12 +537,17 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-69.06%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-66.60%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
 
+- Text.About.GitSourceRevision
+- Text.AIAssistant.Use
+- Text.App.HideOthers
+- Text.Apply.3Way
 - Text.Blame.BlameOnPreviousRevision
+- Text.BranchCM.CompareWithUpstream
 - Text.BranchCM.InteractiveRebase.Manually
 - Text.BranchTree.AheadBehind
 - Text.BranchTree.Behind
@@ -351,7 +564,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
 - Text.Clone.RecurseSubmodules
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
@@ -381,7 +603,6 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitMessageTextBox.Column
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -407,11 +628,15 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
+- Text.ConfigureCustomActionControls.UseFriendlyName
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
@@ -435,10 +660,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.New
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
+- Text.Diff.Submodule.UncommittedChanges
 - Text.DirHistories
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
 - Text.DirtyState.UpToDate
+- Text.Discard.IncludeModified
 - Text.Discard.IncludeUntracked
 - Text.DropHead
 - Text.DropHead.Commit
@@ -450,7 +677,6 @@ This document shows the translation status of each locale file in the repository
 - Text.Fetch.Force
 - Text.FileCM.CustomAction
 - Text.FileCM.ResolveUsing
-- Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
@@ -458,13 +684,17 @@ This document shows the translation status of each locale file in the repository
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
 - Text.Hotkeys.Global.Clone
+- Text.Hotkeys.Global.OpenLocalRepository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -503,10 +733,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
+- Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.AI.ReadApiKeyFromEnv
-- Text.Preferences.AI.Streaming
 - Text.Preferences.Appearance.EditorTabWidth
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
@@ -519,10 +753,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
 - Text.Preferences.General.ShowChildren
 - Text.Preferences.General.ShowTagsInGraph
+- Text.Preferences.General.Use24Hours
 - Text.Preferences.General.UseGitHubStyleAvatar
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.SSLVerify
 - Text.Preferences.Git.UseLibsecret
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
 - Text.Push.New
@@ -531,6 +767,7 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.RemoteCM.CustomAction
+- Text.RemoteCM.EnableAutoFetch
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
@@ -581,6 +818,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Into
 - Text.Stash.Mode
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.StashCM.CopyMessage
 - Text.StashCM.SaveAsPatch
 - Text.Submodule.Branch
@@ -597,6 +835,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.Tag.Tagger
 - Text.Tag.Time
 - Text.TagCM.CompareTwo
@@ -635,32 +875,33 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.38%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.70%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
-- Text.GotoRevisionSelector
-- Text.Hotkeys.Repo.GoToChild
-- Text.StashCM.ApplyFileChanges
-- Text.Worktree.Branch
-- Text.Worktree.Head
-- Text.Worktree.Path
+- Text.About.GitSourceRevision
+- Text.BranchCM.CompareWithUpstream
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-71.34%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-68.62%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
 
+- Text.About.GitSourceRevision
 - Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
 - Text.AddToIgnore.Storage
+- Text.AIAssistant.Use
 - Text.App.Hide
+- Text.App.HideOthers
 - Text.App.ShowAll
+- Text.Apply.3Way
 - Text.Askpass.Passphrase
 - Text.Avatar.Load
 - Text.Bisect
@@ -675,6 +916,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.BranchCM.CompareWithUpstream
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -700,6 +942,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
@@ -725,7 +976,6 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitMessageTextBox.Column
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -747,15 +997,20 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
+- Text.ConfigureCustomActionControls.UseFriendlyName
 - Text.ConfirmEmptyCommit.Continue
 - Text.ConfirmEmptyCommit.NoLocalChanges
 - Text.ConfirmEmptyCommit.StageAllThenCommit
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
 - Text.ConfirmEmptyCommit.WithLocalChanges
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
 - Text.CreateBranch.OverwriteExisting
+- Text.DealWithLocalChanges.DoNothing
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -769,10 +1024,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.New
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
+- Text.Diff.Submodule.UncommittedChanges
 - Text.DirHistories
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
 - Text.DirtyState.UpToDate
+- Text.Discard.IncludeModified
 - Text.Discard.IncludeUntracked
 - Text.DropHead
 - Text.DropHead.Commit
@@ -782,20 +1039,23 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.FileCM.CustomAction
-- Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Global.OpenLocalRepository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
 - Text.InteractiveRebase.ReorderTip
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -825,8 +1085,13 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
+- Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
@@ -836,9 +1101,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
+- Text.Preferences.General.Use24Hours
 - Text.Preferences.General.UseGitHubStyleAvatar
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
 - Text.Push.New
@@ -847,6 +1114,7 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.RemoteCM.CustomAction
+- Text.RemoteCM.EnableAutoFetch
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
@@ -882,6 +1150,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Into
 - Text.Stash.Mode
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
 - Text.Submodule.CopyBranch
@@ -897,6 +1166,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.Tag.Tagger
 - Text.Tag.Time
 - Text.TagCM.CompareTwo
@@ -933,18 +1204,22 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-72.17%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-69.43%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
 
+- Text.About.GitSourceRevision
 - Text.About.ReleaseDate
 - Text.About.ReleaseNotes
 - Text.AddToIgnore
 - Text.AddToIgnore.Pattern
 - Text.AddToIgnore.Storage
+- Text.AIAssistant.Use
 - Text.App.Hide
+- Text.App.HideOthers
 - Text.App.ShowAll
+- Text.Apply.3Way
 - Text.Askpass.Passphrase
 - Text.Avatar.Load
 - Text.Bisect
@@ -959,6 +1234,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.CompareTwo
 - Text.BranchCM.CompareWith
 - Text.BranchCM.CompareWithHead
+- Text.BranchCM.CompareWithUpstream
 - Text.BranchCM.CreatePR
 - Text.BranchCM.CreatePRForUpstream
 - Text.BranchCM.EditDescription
@@ -984,6 +1260,15 @@ This document shows the translation status of each locale file in the repository
 - Text.Checkout.WarnUpdatingSubmodules
 - Text.Checkout.WithFastForward
 - Text.Checkout.WithFastForward.Upstream
+- Text.CheckoutBranchFromStash
+- Text.CheckoutBranchFromStash.Branch
+- Text.CheckoutBranchFromStash.Stash
+- Text.Clone.Bookmark
+- Text.Clone.Group
+- Text.CommandPalette.Branches
+- Text.CommandPalette.BranchesAndTags
+- Text.CommandPalette.RepositoryActions
+- Text.CommandPalette.RevisionFiles
 - Text.CommitCM.CopyAuthor
 - Text.CommitCM.CopyCommitMessage
 - Text.CommitCM.CopyCommitter
@@ -1009,7 +1294,6 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitMessageTextBox.Column
 - Text.CommitMessageTextBox.Placeholder
 - Text.CommitMessageTextBox.SubjectCount
-- Text.Compare.WithHead
 - Text.Configure.CommitMessageTemplate.BuiltinVars
 - Text.Configure.CustomAction.Arguments.Tip
 - Text.Configure.CustomAction.InputControls
@@ -1030,12 +1314,17 @@ This document shows the translation status of each locale file in the repository
 - Text.ConfigureCustomActionControls.Label
 - Text.ConfigureCustomActionControls.Options
 - Text.ConfigureCustomActionControls.Options.Tip
+- Text.ConfigureCustomActionControls.StringFormatter
+- Text.ConfigureCustomActionControls.StringFormatter.Tip
 - Text.ConfigureCustomActionControls.StringValue.Tip
 - Text.ConfigureCustomActionControls.Type
+- Text.ConfigureCustomActionControls.UseFriendlyName
 - Text.ConfigureWorkspace.Name
+- Text.ConfirmEmptyCommit.StageSelectedThenCommit
 - Text.ConfirmRestart.Title
 - Text.ConfirmRestart.Message
 - Text.CreateBranch.OverwriteExisting
+- Text.DealWithLocalChanges.DoNothing
 - Text.DeinitSubmodule
 - Text.DeinitSubmodule.Force
 - Text.DeinitSubmodule.Path
@@ -1049,10 +1338,12 @@ This document shows the translation status of each locale file in the repository
 - Text.Diff.New
 - Text.Diff.Old
 - Text.Diff.Submodule.Deleted
+- Text.Diff.Submodule.UncommittedChanges
 - Text.DirHistories
 - Text.DirtyState.HasLocalChanges
 - Text.DirtyState.HasPendingPullOrPush
 - Text.DirtyState.UpToDate
+- Text.Discard.IncludeModified
 - Text.Discard.IncludeUntracked
 - Text.DropHead
 - Text.DropHead.Commit
@@ -1062,20 +1353,23 @@ This document shows the translation status of each locale file in the repository
 - Text.ExecuteCustomAction.Target
 - Text.ExecuteCustomAction.Repository
 - Text.FileCM.CustomAction
-- Text.GitFlow.FinishWithPush
 - Text.GitFlow.FinishWithSquash
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.GotoRevisionSelector
 - Text.Histories.Header.DateTime
 - Text.Histories.ShowColumns
+- Text.Hotkeys.Global.OpenLocalRepository
 - Text.Hotkeys.Global.ShowWorkspaceDropdownMenu
 - Text.Hotkeys.Global.SwitchTab
 - Text.Hotkeys.Global.Zoom
+- Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
 - Text.Hotkeys.TextEditor.OpenExternalMergeTool
+- Text.Init.CommandTip
+- Text.Init.ErrorMessageTip
 - Text.InteractiveRebase.ReorderTip
 - Text.Launcher.Commands
 - Text.Launcher.OpenRepository
@@ -1105,8 +1399,13 @@ This document shows the translation status of each locale file in the repository
 - Text.Open
 - Text.Open.SystemDefaultEditor
 - Text.OpenFile
+- Text.OpenLocalRepository
+- Text.OpenLocalRepository.Bookmark
+- Text.OpenLocalRepository.Group
+- Text.OpenLocalRepository.Path
 - Text.PageTabBar.Tab.MoveToWorkspace
 - Text.PageTabBar.Tab.Refresh
+- Text.Preferences.AI.AdditionalPrompt
 - Text.Preferences.AI.ReadApiKeyFromEnv
 - Text.Preferences.Appearance.UseAutoHideScrollBars
 - Text.Preferences.DiffMerge.DiffArgs
@@ -1116,9 +1415,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.EnableCompactFolders
 - Text.Preferences.General.ShowChangesPageByDefault
 - Text.Preferences.General.ShowChangesTabInCommitDetailByDefault
+- Text.Preferences.General.Use24Hours
 - Text.Preferences.General.UseGitHubStyleAvatar
 - Text.Preferences.Git.IgnoreCRAtEOLInDiff
 - Text.Preferences.Git.UseLibsecret
+- Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
 - Text.Preferences.Shell.Args.Tip
 - Text.Push.New
@@ -1127,6 +1428,7 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.RemoteCM.CustomAction
+- Text.RemoteCM.EnableAutoFetch
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
@@ -1162,6 +1464,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SquashOrFixup.Into
 - Text.Stash.Mode
 - Text.StashCM.ApplyFileChanges
+- Text.StashCM.Branch
 - Text.StashCM.CopyMessage
 - Text.Submodule.Branch
 - Text.Submodule.CopyBranch
@@ -1177,6 +1480,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Submodule.Status.Unmerged
 - Text.Submodule.Update
 - Text.Submodule.URL
+- Text.SubmoduleRevisionCompare
+- Text.SubmoduleRevisionCompare.OpenDetails
 - Text.Tag.Tagger
 - Text.Tag.Time
 - Text.TagCM.CompareTwo

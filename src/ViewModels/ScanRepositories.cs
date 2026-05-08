@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -56,7 +57,7 @@ namespace SourceGit.ViewModels
             {
                 if (string.IsNullOrEmpty(_customDir))
                 {
-                    App.RaiseException(null, "Missing root directory to scan!");
+                    Models.Notification.Send(null, "Missing root directory to scan!", true);
                     return false;
                 }
 
@@ -66,7 +67,7 @@ namespace SourceGit.ViewModels
             {
                 if (_selected == null || string.IsNullOrEmpty(_selected.Path))
                 {
-                    App.RaiseException(null, "Missing root directory to scan!");
+                    Models.Notification.Send(null, "Missing root directory to scan!", true);
                     return false;
                 }
 
@@ -95,12 +96,12 @@ namespace SourceGit.ViewModels
             foreach (var f in found)
             {
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
-                if (parent.Equals(normalizedRoot, StringComparison.Ordinal))
+                if (parent.Equals(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
                     await node.UpdateStatusAsync(false, null);
                 }
-                else if (parent.StartsWith(normalizedRoot, StringComparison.Ordinal))
+                else if (parent.StartsWith(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {
                     var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
                     var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
@@ -120,7 +121,7 @@ namespace SourceGit.ViewModels
             foreach (var node in group)
             {
                 if (node.IsRepository)
-                    repos.Add(node.Id);
+                    repos.Add(OperatingSystem.IsLinux() ? node.Id : node.Id.ToLower(CultureInfo.CurrentCulture));
                 else
                     GetManagedRepositories(node.SubNodes, repos);
             }
@@ -138,7 +139,7 @@ namespace SourceGit.ViewModels
                 ProgressDescription = $"Scanning {subdir.FullName}...";
 
                 var normalizedSelf = subdir.FullName.Replace('\\', '/').TrimEnd('/');
-                if (_managed.Contains(normalizedSelf))
+                if (IsManaged(normalizedSelf))
                     continue;
 
                 var gitDir = Path.Combine(subdir.FullName, ".git");
@@ -148,7 +149,7 @@ namespace SourceGit.ViewModels
                     if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
                     {
                         var normalized = test.StdOut.Trim().Replace('\\', '/').TrimEnd('/');
-                        if (!_managed.Contains(normalized))
+                        if (!IsManaged(normalized))
                             outs.Add(normalized);
                     }
 
@@ -198,6 +199,14 @@ namespace SourceGit.ViewModels
 
             Preferences.Instance.SortNodes(collection);
             return added;
+        }
+
+        private bool IsManaged(string path)
+        {
+            if (OperatingSystem.IsLinux())
+                return _managed.Contains(path);
+
+            return _managed.Contains(path.ToLower(CultureInfo.CurrentCulture));
         }
 
         private HashSet<string> _managed = new();

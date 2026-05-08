@@ -28,7 +28,7 @@ namespace SourceGit.Models
         public bool IsNewVersion => CurrentVersion.CompareTo(new System.Version(TagName.Substring(1))) < 0;
 
         [JsonIgnore]
-        public string ReleaseDateStr => PublishedAt.ToString(DateTimeFormat.Active.DateOnly);
+        public string ReleaseDateStr => DateTimeFormat.Format(PublishedAt, true);
 
         public Version()
         {

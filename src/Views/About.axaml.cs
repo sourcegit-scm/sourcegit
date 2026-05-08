@@ -22,8 +22,20 @@ namespace SourceGit.Views
             {
                 if (attr.Key.Equals("BuildDate", StringComparison.OrdinalIgnoreCase) && DateTime.TryParse(attr.Value, out var date))
                 {
-                    TxtReleaseDate.Text = App.Text("About.ReleaseDate", date.ToLocalTime().ToString("MMM d yyyy"));
+                    TxtReleaseDate.Text = App.Text("About.ReleaseDate", Models.DateTimeFormat.Format(date, true));
                     break;
+                }
+            }
+
+            var informationVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (informationVersion != null)
+            {
+                var infoVer = informationVersion.InformationalVersion;
+                var idx = infoVer.IndexOf('+');
+                if (idx > 0 && infoVer.Length > idx + 11)
+                {
+                    TxtGitSourceRevision.Text = infoVer.Substring(idx + 1, 10);
+                    PnlGitSourceRevision.IsVisible = true;
                 }
             }
 

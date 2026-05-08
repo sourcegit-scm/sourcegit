@@ -31,6 +31,7 @@ namespace SourceGit.Models
 
         public string Name { get; set; }
         public string URL { get; set; }
+        public bool DisableAutoFetch { get; set; }
 
         public static bool IsSSH(string url)
         {
@@ -64,14 +65,14 @@ namespace SourceGit.Models
         {
             url = null;
 
-            if (URL.StartsWith("http", StringComparison.Ordinal))
+            if (URL.StartsWith("http://", StringComparison.Ordinal) || URL.StartsWith("https://", StringComparison.Ordinal))
             {
-                var uri = new Uri(URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL);
+                var trimmed = URL.EndsWith(".git", StringComparison.Ordinal) ? URL.Substring(0, URL.Length - 4) : URL;
+                var uri = new Uri(trimmed);
                 if (uri.Port != 80 && uri.Port != 443)
-                    url = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.LocalPath}";
+                    url = $"{uri.Scheme}://{uri.Host}:{uri.Port}{uri.AbsolutePath}";
                 else
-                    url = $"{uri.Scheme}://{uri.Host}{uri.LocalPath}";
-
+                    url = $"{uri.Scheme}://{uri.Host}{uri.AbsolutePath}";
                 return true;
             }
 
@@ -97,7 +98,6 @@ namespace SourceGit.Models
 
             var uri = new Uri(baseURL);
             var host = uri.Host;
-            var route = uri.AbsolutePath.TrimStart('/');
             var encodedBranch = HttpUtility.UrlEncode(mergeBranch);
 
             if (host.Contains("github.com", StringComparison.Ordinal))

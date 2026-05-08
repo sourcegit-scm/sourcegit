@@ -71,8 +71,8 @@
         <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Apply}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Diff}"/>
+      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Apply.Title}">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.ApplyPatch}"/>
       </Button>
 
       <Rectangle Width="1" Height="16"
@@ -80,11 +80,7 @@
                  VerticalAlignment="Center"
                  Fill="{DynamicResource Brush.Border2}"/>
 
-      <Button Classes="icon_button" Width="32" Margin="18,0,0,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}"/>
-      </Button>
-
-      <Button Classes="icon_button" Width="32" Margin="12,0,0,0" Click="OpenGitFlowMenu" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.GitFlow}">
+      <Button Classes="icon_button" Width="32" Margin="18,0,0,0" Click="OpenGitFlowMenu" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.GitFlow}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.GitFlow}"/>
       </Button>
 

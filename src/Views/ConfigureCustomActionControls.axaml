@@ -129,9 +129,11 @@
               <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.Type}"/>
               <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Type, Mode=TwoWay}">
                 <ComboBoxItem Content="TextBox"/>
-                <ComboBoxItem Content="PathSelector"/>
+                <ComboBoxItem Content="Path Selector"/>
                 <ComboBoxItem Content="CheckBox"/>
                 <ComboBoxItem Content="ComboBox"/>
+                <ComboBoxItem Content="Local Branch Selector"/>
+                <ComboBoxItem Content="Remote Branch Selector"/>
               </ComboBox>
 
               <!-- Description -->
@@ -160,7 +162,14 @@
               <TextBox Margin="0,4,0,0"
                        CornerRadius="3"
                        Height="28"
-                       Text="{Binding StringValue, Mode=TwoWay}"/>
+                       Text="{Binding StringValue, Mode=TwoWay}">
+                <TextBox.IsVisible>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.NotEqual}" ConverterParameter="{x:Static m:CustomActionControlType.LocalBranchSelector}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.NotEqual}" ConverterParameter="{x:Static m:CustomActionControlType.RemoteBranchSelector}"/>
+                  </MultiBinding>
+                </TextBox.IsVisible>
+              </TextBox>
               <TextBlock Margin="0,2,0,0"
                          Classes="small"
                          TextWrapping="Wrap"
@@ -187,12 +196,29 @@
                 </TextBlock.IsVisible>
               </TextBlock>
 
+              <!-- String Formatter -->
+              <TextBlock Margin="0,12,0,0"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.StringFormatter}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.TextBox}}"/>
+              <TextBox Margin="0,4,0,0"
+                       CornerRadius="3"
+                       Height="28"
+                       Text="{Binding StringFormatter, Mode=TwoWay}"
+                       IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.TextBox}}"/>
+              <TextBlock Margin="0,2,0,0"
+                         Classes="small"
+                         TextWrapping="Wrap"
+                         Text="{DynamicResource Text.ConfigureCustomActionControls.StringFormatter.Tip}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.TextBox}}"/>
+
               <!-- BoolValue is needed by CheckBox/PathSelector -->
               <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*">
                 <Grid.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.Or}">
                     <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.CheckBox}"/>
                     <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.PathSelector}"/>
+                    <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.RemoteBranchSelector}"/>
                   </MultiBinding>
                 </Grid.IsVisible>
                 <TextBlock Grid.Column="0"
@@ -201,6 +227,9 @@
                 <TextBlock Grid.Column="0"
                            Text="{DynamicResource Text.ConfigureCustomActionControls.IsFolder}"
                            IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.PathSelector}}"/>
+                <TextBlock Grid.Column="0"
+                           Text="{DynamicResource Text.ConfigureCustomActionControls.UseFriendlyName}"
+                           IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.RemoteBranchSelector}}"/>
                 <CheckBox Grid.Column="1"
                           Margin="8,0,0,0"
                           Height="28"

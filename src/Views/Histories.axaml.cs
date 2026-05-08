@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -76,6 +78,175 @@ namespace SourceGit.Views
         }
     }
 
+    public class HistoriesCommitList : DataGrid
+    {
+        public static readonly StyledProperty<int> TotalCommitsProperty =
+            AvaloniaProperty.Register<HistoriesCommitList, int>(nameof(TotalCommits), 0);
+
+        public int TotalCommits
+        {
+            get => GetValue(TotalCommitsProperty);
+            set => SetValue(TotalCommitsProperty, value);
+        }
+
+        public static readonly StyledProperty<List<Models.Commit>> SelectedCommitsProperty =
+            AvaloniaProperty.Register<HistoriesCommitList, List<Models.Commit>>(nameof(SelectedCommits), []);
+
+        public List<Models.Commit> SelectedCommits
+        {
+            get => GetValue(SelectedCommitsProperty);
+            set => SetValue(SelectedCommitsProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(DataGrid);
+
+        public HistoriesCommitList()
+        {
+            SelectionMode = DataGridSelectionMode.Extended;
+            CanUserReorderColumns = false;
+            CanUserResizeColumns = true;
+            CanUserSortColumns = false;
+            AutoGenerateColumns = false;
+            IsReadOnly = true;
+            HeadersVisibility = DataGridHeadersVisibility.Column;
+            ClipboardCopyMode = DataGridClipboardCopyMode.None;
+            Focusable = false;
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            ApplySelection();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == SelectedCommitsProperty && IsLoaded && !_ignoreSelectionChanged)
+            {
+                if (change.OldValue is List<Models.Commit> { Count: 1 } old &&
+                    change.NewValue is List<Models.Commit> { Count: 1 } cur &&
+                    old[0] == cur[0])
+                    ScrollIntoView(old[0], null);
+                else
+                    ApplySelection();
+            }
+        }
+
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+
+            if (ItemsSource is not IList<Models.Commit> items)
+                return;
+
+            var commits = new List<Models.Commit>();
+            foreach (var o in SelectedItems)
+            {
+                if (o is Models.Commit c)
+                    commits.Add(c);
+            }
+
+            if (e.AddedItems.Count == 1)
+            {
+                ScrollIntoView(e.AddedItems[0], null);
+            }
+            else if (e.AddedItems.Count > 1 && e.AddedItems[0] is Models.Commit first)
+            {
+                var firstIndex = items.IndexOf(first);
+                if (firstIndex > 0)
+                {
+                    var prev = items[firstIndex - 1];
+                    if (commits.Contains(prev))
+                        ScrollIntoView(e.AddedItems[^1], null);
+                    else
+                        ScrollIntoView(first, null);
+                }
+            }
+
+            if (!_ignoreSelectionChanged)
+            {
+                _ignoreSelectionChanged = true;
+
+                var old = SelectedCommits;
+                if (old.Count != commits.Count)
+                {
+                    SetCurrentValue(SelectedCommitsProperty, commits);
+                }
+                else if (commits.Count > 0)
+                {
+                    var set = new HashSet<string>();
+                    foreach (var c in old)
+                        set.Add(c.SHA);
+
+                    var equals = true;
+                    foreach (var c in commits)
+                    {
+                        if (!set.Contains(c.SHA))
+                        {
+                            equals = false;
+                            break;
+                        }
+                    }
+
+                    if (!equals)
+                        SetCurrentValue(SelectedCommitsProperty, commits);
+                }
+
+                _ignoreSelectionChanged = false;
+            }
+        }
+
+        private void ApplySelection()
+        {
+            _ignoreSelectionChanged = true;
+
+            if (SelectedCommits == null || SelectedCommits.Count == 0)
+            {
+                SelectedItems.Clear();
+            }
+            else if (SelectedCommits.Count == TotalCommits)
+            {
+                SelectAll();
+            }
+            else
+            {
+                IncrNoSelectionChangeCount();
+                SelectedItems.Clear();
+                foreach (var c in SelectedCommits)
+                    SelectedItems.Add(c);
+                DecrNoSelectionChangeCount();
+            }
+
+            _ignoreSelectionChanged = false;
+        }
+
+        private void IncrNoSelectionChangeCount()
+        {
+            var property = typeof(DataGrid).GetProperty("NoSelectionChangeCount", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (property != null)
+            {
+                var old = (int)property.GetValue(this);
+                property.SetValue(this, old + 1);
+            }
+        }
+
+        private void DecrNoSelectionChangeCount()
+        {
+            var property = typeof(DataGrid).GetProperty("NoSelectionChangeCount", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (property != null)
+            {
+                var old = (int)property.GetValue(this);
+                property.SetValue(this, old - 1);
+            }
+        }
+
+        private bool _ignoreSelectionChanged = false;
+    }
+
     public partial class Histories : UserControl
     {
         public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
@@ -114,15 +285,6 @@ namespace SourceGit.Views
             set => SetValue(OnlyHighlightCurrentBranchProperty, value);
         }
 
-        public static readonly StyledProperty<long> NavigationIdProperty =
-            AvaloniaProperty.Register<Histories, long>(nameof(NavigationId));
-
-        public long NavigationId
-        {
-            get => GetValue(NavigationIdProperty);
-            set => SetValue(NavigationIdProperty, value);
-        }
-
         public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
             AvaloniaProperty.Register<Histories, bool>(nameof(IsScrollToTopVisible));
 
@@ -135,28 +297,6 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == NavigationIdProperty)
-            {
-                if (CommitListContainer is { SelectedItems.Count: 1, IsLoaded: true } dataGrid)
-                    dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
-            }
-        }
-
-        private void OnCommitListLoaded(object sender, RoutedEventArgs e)
-        {
-            var dataGrid = CommitListContainer;
-            var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
-            if (rowsPresenter is { Children: { Count: > 0 } rows })
-                CommitGraph.Layout = new(0, dataGrid.Columns[0].ActualWidth - 4, rows[0].Bounds.Height);
-
-            if (dataGrid.SelectedItems.Count == 1)
-                dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
         }
 
         private async void OnGotoParent(object sender, RoutedEventArgs e)
@@ -298,14 +438,6 @@ namespace SourceGit.Views
                 CommitListContainer.ScrollIntoView(histories.Commits[0], null);
         }
 
-        private void OnCommitListSelectionChanged(object _, SelectionChangedEventArgs e)
-        {
-            if (DataContext is ViewModels.Histories histories)
-                histories.Select(CommitListContainer.SelectedItems);
-
-            e.Handled = true;
-        }
-
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (e.Source is Control { DataContext: Models.Commit })
@@ -352,7 +484,7 @@ namespace SourceGit.Views
                 var authorColumn = new MenuItem();
                 authorColumn.Header = App.Text("Histories.Header.Author");
                 if (vm.IsAuthorColumnVisible)
-                    authorColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                    authorColumn.Icon = this.CreateMenuIcon("Icons.Check");
                 authorColumn.Click += (_, ev) =>
                 {
                     vm.IsAuthorColumnVisible = !vm.IsAuthorColumnVisible;
@@ -362,7 +494,7 @@ namespace SourceGit.Views
                 var shaColumn = new MenuItem();
                 shaColumn.Header = App.Text("Histories.Header.SHA");
                 if (vm.IsSHAColumnVisible)
-                    shaColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                    shaColumn.Icon = this.CreateMenuIcon("Icons.Check");
                 shaColumn.Click += (_, ev) =>
                 {
                     vm.IsSHAColumnVisible = !vm.IsSHAColumnVisible;
@@ -372,7 +504,7 @@ namespace SourceGit.Views
                 var timeColumn = new MenuItem();
                 timeColumn.Header = App.Text("Histories.Header.DateTime");
                 if (vm.IsDateTimeColumnVisible)
-                    timeColumn.Icon = App.CreateMenuIcon("Icons.Check");
+                    timeColumn.Icon = this.CreateMenuIcon("Icons.Check");
                 timeColumn.Click += (_, ev) =>
                 {
                     vm.IsDateTimeColumnVisible = !vm.IsDateTimeColumnVisible;
@@ -406,7 +538,7 @@ namespace SourceGit.Views
                             builder.Append(commit.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(commit.Subject);
                     }
 
-                    await App.CopyTextAsync(builder.ToString());
+                    await this.CopyTextAsync(builder.ToString());
                     e.Handled = true;
                     return;
                 }
@@ -489,7 +621,7 @@ namespace SourceGit.Views
                 {
                     var cherryPick = new MenuItem();
                     cherryPick.Header = App.Text("CommitCM.CherryPickMultiple");
-                    cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
+                    cherryPick.Icon = this.CreateMenuIcon("Icons.CherryPick");
                     cherryPick.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -503,7 +635,7 @@ namespace SourceGit.Views
                 {
                     var merge = new MenuItem();
                     merge.Header = App.Text("CommitCM.MergeMultiple");
-                    merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                    merge.Icon = this.CreateMenuIcon("Icons.Merge");
                     merge.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -518,7 +650,7 @@ namespace SourceGit.Views
             }
 
             var saveToPatch = new MenuItem();
-            saveToPatch.Icon = App.CreateMenuIcon("Icons.Save");
+            saveToPatch.Icon = this.CreateMenuIcon("Icons.Save");
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) =>
             {
@@ -543,12 +675,12 @@ namespace SourceGit.Views
                         }
 
                         if (succ)
-                            App.SendNotification(repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                            repo.SendNotification(App.Text("SaveAsPatchSuccess"));
                     }
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;
@@ -565,39 +697,39 @@ namespace SourceGit.Views
                 foreach (var c in selected)
                     builder.Append(c.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(c.Subject);
 
-                await App.CopyTextAsync(builder.ToString());
+                await this.CopyTextAsync(builder.ToString());
                 e.Handled = true;
             };
 
             var copyShas = new MenuItem();
             copyShas.Header = App.Text("CommitCM.CopySHA");
-            copyShas.Icon = App.CreateMenuIcon("Icons.Hash");
+            copyShas.Icon = this.CreateMenuIcon("Icons.Hash");
             copyShas.Click += async (_, e) =>
             {
                 var builder = new StringBuilder();
                 foreach (var c in selected)
                     builder.AppendLine(c.SHA);
 
-                await App.CopyTextAsync(builder.ToString());
+                await this.CopyTextAsync(builder.ToString());
                 e.Handled = true;
             };
 
             var copySubjects = new MenuItem();
             copySubjects.Header = App.Text("CommitCM.CopySubject");
-            copySubjects.Icon = App.CreateMenuIcon("Icons.Subject");
+            copySubjects.Icon = this.CreateMenuIcon("Icons.Subject");
             copySubjects.Click += async (_, e) =>
             {
                 var builder = new StringBuilder();
                 foreach (var c in selected)
                     builder.AppendLine(c.Subject);
 
-                await App.CopyTextAsync(builder.ToString());
+                await this.CopyTextAsync(builder.ToString());
                 e.Handled = true;
             };
 
             var copyMessage = new MenuItem();
             copyMessage.Header = App.Text("CommitCM.CopyCommitMessage");
-            copyMessage.Icon = App.CreateMenuIcon("Icons.Message");
+            copyMessage.Icon = this.CreateMenuIcon("Icons.Message");
             copyMessage.Click += async (_, e) =>
             {
                 var vm = DataContext as ViewModels.Histories;
@@ -608,13 +740,13 @@ namespace SourceGit.Views
                     messages.Add(message);
                 }
 
-                await App.CopyTextAsync(string.Join("\n-----\n", messages));
+                await this.CopyTextAsync(string.Join("\n-----\n", messages));
                 e.Handled = true;
             };
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Items.Add(copyInfos);
             copy.Items.Add(new MenuItem() { Header = "-" });
             copy.Items.Add(copyShas);
@@ -672,7 +804,7 @@ namespace SourceGit.Views
             }
 
             var createBranch = new MenuItem();
-            createBranch.Icon = App.CreateMenuIcon("Icons.Branch.Add");
+            createBranch.Icon = this.CreateMenuIcon("Icons.Branch.Add");
             createBranch.Header = App.Text("CreateBranch");
             createBranch.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+B" : "Ctrl+Shift+B";
             createBranch.Click += (_, e) =>
@@ -684,7 +816,7 @@ namespace SourceGit.Views
             menu.Items.Add(createBranch);
 
             var createTag = new MenuItem();
-            createTag.Icon = App.CreateMenuIcon("Icons.Tag.Add");
+            createTag.Icon = this.CreateMenuIcon("Icons.Tag.Add");
             createTag.Header = App.Text("CreateTag");
             createTag.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+T" : "Ctrl+Shift+T";
             createTag.Click += (_, e) =>
@@ -706,7 +838,7 @@ namespace SourceGit.Views
                 {
                     var reword = new MenuItem();
                     reword.Header = App.Text("CommitCM.Reword");
-                    reword.Icon = App.CreateMenuIcon("Icons.Edit");
+                    reword.Icon = this.CreateMenuIcon("Icons.Edit");
                     reword.Click += async (_, e) =>
                     {
                         await vm.RewordHeadAsync(commit);
@@ -716,7 +848,7 @@ namespace SourceGit.Views
 
                     var squash = new MenuItem();
                     squash.Header = App.Text("CommitCM.Squash");
-                    squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                    squash.Icon = this.CreateMenuIcon("Icons.SquashIntoParent");
                     squash.IsEnabled = commit.Parents.Count == 1;
                     squash.Click += async (_, e) =>
                     {
@@ -727,7 +859,7 @@ namespace SourceGit.Views
 
                     var fixup = new MenuItem();
                     fixup.Header = App.Text("CommitCM.Fixup");
-                    fixup.Icon = App.CreateMenuIcon("Icons.Fix");
+                    fixup.Icon = this.CreateMenuIcon("Icons.Fix");
                     fixup.IsEnabled = commit.Parents.Count == 1;
                     fixup.Click += async (_, e) =>
                     {
@@ -740,7 +872,7 @@ namespace SourceGit.Views
                 {
                     var reset = new MenuItem();
                     reset.Header = App.Text("CommitCM.Reset", current.Name, target);
-                    reset.Icon = App.CreateMenuIcon("Icons.Reset");
+                    reset.Icon = this.CreateMenuIcon("Icons.Reset");
                     reset.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -754,7 +886,7 @@ namespace SourceGit.Views
                 {
                     var rebase = new MenuItem();
                     rebase.Header = App.Text("CommitCM.Rebase", current.Name, target);
-                    rebase.Icon = App.CreateMenuIcon("Icons.Rebase");
+                    rebase.Icon = this.CreateMenuIcon("Icons.Rebase");
                     rebase.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -767,7 +899,7 @@ namespace SourceGit.Views
                     {
                         var merge = new MenuItem();
                         merge.Header = App.Text("CommitCM.Merge", current.Name);
-                        merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                        merge.Icon = this.CreateMenuIcon("Icons.Merge");
                         merge.Click += (_, e) =>
                         {
                             if (repo.CanCreatePopup())
@@ -780,7 +912,7 @@ namespace SourceGit.Views
 
                     var cherryPick = new MenuItem();
                     cherryPick.Header = App.Text("CommitCM.CherryPick");
-                    cherryPick.Icon = App.CreateMenuIcon("Icons.CherryPick");
+                    cherryPick.Icon = this.CreateMenuIcon("Icons.CherryPick");
                     cherryPick.Click += async (_, e) =>
                     {
                         await vm.CherryPickAsync(commit);
@@ -791,7 +923,7 @@ namespace SourceGit.Views
 
                 var revert = new MenuItem();
                 revert.Header = App.Text("CommitCM.Revert");
-                revert.Icon = App.CreateMenuIcon("Icons.Undo");
+                revert.Icon = this.CreateMenuIcon("Icons.Undo");
                 revert.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -804,7 +936,7 @@ namespace SourceGit.Views
                 {
                     var dropHead = new MenuItem();
                     dropHead.Header = App.Text("CommitCM.Drop");
-                    dropHead.Icon = App.CreateMenuIcon("Icons.Clear");
+                    dropHead.Icon = this.CreateMenuIcon("Icons.Clear");
                     dropHead.Click += async (_, e) =>
                     {
                         await vm.DropHeadAsync(commit);
@@ -816,7 +948,7 @@ namespace SourceGit.Views
                 {
                     var checkoutCommit = new MenuItem();
                     checkoutCommit.Header = App.Text("CommitCM.Checkout");
-                    checkoutCommit.Icon = App.CreateMenuIcon("Icons.Detached");
+                    checkoutCommit.Icon = this.CreateMenuIcon("Icons.Detached");
                     checkoutCommit.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -829,61 +961,61 @@ namespace SourceGit.Views
                     {
                         var manually = new MenuItem();
                         manually.Header = App.Text("CommitCM.InteractiveRebase.Manually", current.Name, target);
-                        manually.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                        manually.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
                         manually.Click += async (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                            await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
                             e.Handled = true;
                         };
 
                         var reword = new MenuItem();
                         reword.Header = App.Text("CommitCM.InteractiveRebase.Reword");
-                        reword.Icon = App.CreateMenuIcon("Icons.Rename");
+                        reword.Icon = this.CreateMenuIcon("Icons.Rename");
                         reword.Click += async (_, e) =>
                         {
-                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Reword);
+                            await InteractiveRebaseWithPrefillActionAsync(repo, commit, Models.InteractiveRebaseAction.Reword);
                             e.Handled = true;
                         };
 
                         var edit = new MenuItem();
                         edit.Header = App.Text("CommitCM.InteractiveRebase.Edit");
-                        edit.Icon = App.CreateMenuIcon("Icons.Edit");
+                        edit.Icon = this.CreateMenuIcon("Icons.Edit");
                         edit.Click += async (_, e) =>
                         {
-                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Edit);
+                            await InteractiveRebaseWithPrefillActionAsync(repo, commit, Models.InteractiveRebaseAction.Edit);
                             e.Handled = true;
                         };
 
                         var squash = new MenuItem();
                         squash.Header = App.Text("CommitCM.InteractiveRebase.Squash");
-                        squash.Icon = App.CreateMenuIcon("Icons.SquashIntoParent");
+                        squash.Icon = this.CreateMenuIcon("Icons.SquashIntoParent");
                         squash.Click += async (_, e) =>
                         {
-                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Squash);
+                            await InteractiveRebaseWithPrefillActionAsync(repo, commit, Models.InteractiveRebaseAction.Squash);
                             e.Handled = true;
                         };
 
                         var fixup = new MenuItem();
                         fixup.Header = App.Text("CommitCM.InteractiveRebase.Fixup");
-                        fixup.Icon = App.CreateMenuIcon("Icons.Fix");
+                        fixup.Icon = this.CreateMenuIcon("Icons.Fix");
                         fixup.Click += async (_, e) =>
                         {
-                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Fixup);
+                            await InteractiveRebaseWithPrefillActionAsync(repo, commit, Models.InteractiveRebaseAction.Fixup);
                             e.Handled = true;
                         };
 
                         var drop = new MenuItem();
                         drop.Header = App.Text("CommitCM.InteractiveRebase.Drop");
-                        drop.Icon = App.CreateMenuIcon("Icons.Clear");
+                        drop.Icon = this.CreateMenuIcon("Icons.Clear");
                         drop.Click += async (_, e) =>
                         {
-                            await vm.InteractiveRebaseAsync(commit, Models.InteractiveRebaseAction.Drop);
+                            await InteractiveRebaseWithPrefillActionAsync(repo, commit, Models.InteractiveRebaseAction.Drop);
                             e.Handled = true;
                         };
 
                         var interactiveRebase = new MenuItem();
                         interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase");
-                        interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                        interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
                         interactiveRebase.Items.Add(manually);
                         interactiveRebase.Items.Add(new MenuItem() { Header = "-" });
                         interactiveRebase.Items.Add(reword);
@@ -899,10 +1031,10 @@ namespace SourceGit.Views
                     {
                         var interactiveRebase = new MenuItem();
                         interactiveRebase.Header = App.Text("CommitCM.InteractiveRebase.Manually", current.Name, target);
-                        interactiveRebase.Icon = App.CreateMenuIcon("Icons.InteractiveRebase");
+                        interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
                         interactiveRebase.Click += async (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.InteractiveRebase(repo, commit));
+                            await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
                             e.Handled = true;
                         };
 
@@ -921,7 +1053,7 @@ namespace SourceGit.Views
                     var upstream = repo.Branches.Find(x => x.FullName.Equals(current.Upstream, StringComparison.Ordinal));
                     var pushRevision = new MenuItem();
                     pushRevision.Header = App.Text("CommitCM.PushRevision", commit.SHA.Substring(0, 10), upstream.FriendlyName);
-                    pushRevision.Icon = App.CreateMenuIcon("Icons.Push");
+                    pushRevision.Icon = this.CreateMenuIcon("Icons.Push");
                     pushRevision.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -934,7 +1066,7 @@ namespace SourceGit.Views
 
                 var compareWithHead = new MenuItem();
                 compareWithHead.Header = App.Text("CommitCM.CompareWithHead");
-                compareWithHead.Icon = App.CreateMenuIcon("Icons.Compare");
+                compareWithHead.Icon = this.CreateMenuIcon("Icons.Compare");
                 compareWithHead.Click += async (_, e) =>
                 {
                     var head = await vm.CompareWithHeadAsync(commit);
@@ -949,7 +1081,7 @@ namespace SourceGit.Views
                 {
                     var compareWithWorktree = new MenuItem();
                     compareWithWorktree.Header = App.Text("CommitCM.CompareWithWorktree");
-                    compareWithWorktree.Icon = App.CreateMenuIcon("Icons.Compare");
+                    compareWithWorktree.Icon = this.CreateMenuIcon("Icons.Compare");
                     compareWithWorktree.Click += (_, e) =>
                     {
                         vm.CompareWithWorktree(commit);
@@ -962,7 +1094,7 @@ namespace SourceGit.Views
             }
 
             var saveToPatch = new MenuItem();
-            saveToPatch.Icon = App.CreateMenuIcon("Icons.Save");
+            saveToPatch.Icon = this.CreateMenuIcon("Icons.Save");
             saveToPatch.Header = App.Text("CommitCM.SaveAsPatch");
             saveToPatch.Click += async (_, e) =>
             {
@@ -983,7 +1115,7 @@ namespace SourceGit.Views
                 }
                 catch (Exception exception)
                 {
-                    App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                    repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                 }
 
                 e.Handled = true;
@@ -991,7 +1123,7 @@ namespace SourceGit.Views
             menu.Items.Add(saveToPatch);
 
             var archive = new MenuItem();
-            archive.Icon = App.CreateMenuIcon("Icons.Archive");
+            archive.Icon = this.CreateMenuIcon("Icons.Archive");
             archive.Header = App.Text("Archive");
             archive.Click += (_, e) =>
             {
@@ -1007,13 +1139,13 @@ namespace SourceGit.Views
             {
                 var custom = new MenuItem();
                 custom.Header = App.Text("CommitCM.CustomAction");
-                custom.Icon = App.CreateMenuIcon("Icons.Action");
+                custom.Icon = this.CreateMenuIcon("Icons.Action");
 
                 foreach (var action in actions)
                 {
                     var (dup, label) = action;
                     var item = new MenuItem();
-                    item.Icon = App.CreateMenuIcon("Icons.Action");
+                    item.Icon = this.CreateMenuIcon("Icons.Action");
                     item.Header = label;
                     item.Click += async (_, e) =>
                     {
@@ -1033,59 +1165,59 @@ namespace SourceGit.Views
             copyInfo.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
             copyInfo.Click += async (_, e) =>
             {
-                await App.CopyTextAsync($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
+                await this.CopyTextAsync($"{commit.SHA.AsSpan(0, 10)} - {commit.Subject}");
                 e.Handled = true;
             };
 
             var copySHA = new MenuItem();
             copySHA.Header = App.Text("CommitCM.CopySHA");
-            copySHA.Icon = App.CreateMenuIcon("Icons.Hash");
+            copySHA.Icon = this.CreateMenuIcon("Icons.Hash");
             copySHA.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(commit.SHA);
+                await this.CopyTextAsync(commit.SHA);
                 e.Handled = true;
             };
 
             var copySubject = new MenuItem();
             copySubject.Header = App.Text("CommitCM.CopySubject");
-            copySubject.Icon = App.CreateMenuIcon("Icons.Subject");
+            copySubject.Icon = this.CreateMenuIcon("Icons.Subject");
             copySubject.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(commit.Subject);
+                await this.CopyTextAsync(commit.Subject);
                 e.Handled = true;
             };
 
             var copyMessage = new MenuItem();
             copyMessage.Header = App.Text("CommitCM.CopyCommitMessage");
-            copyMessage.Icon = App.CreateMenuIcon("Icons.Message");
+            copyMessage.Icon = this.CreateMenuIcon("Icons.Message");
             copyMessage.Click += async (_, e) =>
             {
                 var message = await vm.GetCommitFullMessageAsync(commit);
-                await App.CopyTextAsync(message);
+                await this.CopyTextAsync(message);
                 e.Handled = true;
             };
 
             var copyAuthor = new MenuItem();
             copyAuthor.Header = App.Text("CommitCM.CopyAuthor");
-            copyAuthor.Icon = App.CreateMenuIcon("Icons.User");
+            copyAuthor.Icon = this.CreateMenuIcon("Icons.User");
             copyAuthor.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(commit.Author.ToString());
+                await this.CopyTextAsync(commit.Author.ToString());
                 e.Handled = true;
             };
 
             var copyCommitter = new MenuItem();
             copyCommitter.Header = App.Text("CommitCM.CopyCommitter");
-            copyCommitter.Icon = App.CreateMenuIcon("Icons.User");
+            copyCommitter.Icon = this.CreateMenuIcon("Icons.User");
             copyCommitter.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(commit.Committer.ToString());
+                await this.CopyTextAsync(commit.Committer.ToString());
                 e.Handled = true;
             };
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Items.Add(copyInfo);
             copy.Items.Add(new MenuItem() { Header = "-" });
             copy.Items.Add(copySHA);
@@ -1101,7 +1233,7 @@ namespace SourceGit.Views
         private void FillCurrentBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch current)
         {
             var submenu = new MenuItem();
-            submenu.Icon = App.CreateMenuIcon("Icons.Branch");
+            submenu.Icon = this.CreateMenuIcon("Icons.Branch");
             submenu.Header = current.Name;
 
             var visibility = new MenuItem();
@@ -1116,7 +1248,7 @@ namespace SourceGit.Views
 
                 var fastForward = new MenuItem();
                 fastForward.Header = App.Text("BranchCM.FastForward", upstream);
-                fastForward.Icon = App.CreateMenuIcon("Icons.FastForward");
+                fastForward.Icon = this.CreateMenuIcon("Icons.FastForward");
                 fastForward.IsEnabled = current.Ahead.Count == 0 && current.Behind.Count > 0;
                 fastForward.Click += async (_, e) =>
                 {
@@ -1133,7 +1265,7 @@ namespace SourceGit.Views
 
                 var pull = new MenuItem();
                 pull.Header = App.Text("BranchCM.Pull", upstream);
-                pull.Icon = App.CreateMenuIcon("Icons.Pull");
+                pull.Icon = this.CreateMenuIcon("Icons.Pull");
                 pull.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -1145,7 +1277,7 @@ namespace SourceGit.Views
 
             var push = new MenuItem();
             push.Header = App.Text("BranchCM.Push", current.Name);
-            push.Icon = App.CreateMenuIcon("Icons.Push");
+            push.Icon = this.CreateMenuIcon("Icons.Push");
             push.IsEnabled = repo.Remotes.Count > 0;
             push.Click += (_, e) =>
             {
@@ -1157,7 +1289,7 @@ namespace SourceGit.Views
 
             var rename = new MenuItem();
             rename.Header = App.Text("BranchCM.Rename", current.Name);
-            rename.Icon = App.CreateMenuIcon("Icons.Rename");
+            rename.Icon = this.CreateMenuIcon("Icons.Rename");
             rename.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
@@ -1174,7 +1306,7 @@ namespace SourceGit.Views
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", current.Name);
-                    finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
+                    finish.Icon = this.CreateMenuIcon("Icons.GitFlow");
                     finish.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -1188,10 +1320,10 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(current.Name);
+                await this.CopyTextAsync(current.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
@@ -1202,7 +1334,7 @@ namespace SourceGit.Views
         private void FillOtherLocalBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current, bool merged)
         {
             var submenu = new MenuItem();
-            submenu.Icon = App.CreateMenuIcon("Icons.Branch");
+            submenu.Icon = this.CreateMenuIcon("Icons.Branch");
             submenu.Header = branch.Name;
 
             var visibility = new MenuItem();
@@ -1215,7 +1347,7 @@ namespace SourceGit.Views
             {
                 var checkout = new MenuItem();
                 checkout.Header = App.Text("BranchCM.Checkout", branch.Name);
-                checkout.Icon = App.CreateMenuIcon("Icons.Check");
+                checkout.Icon = this.CreateMenuIcon("Icons.Check");
                 checkout.Click += async (_, e) =>
                 {
                     await repo.CheckoutBranchAsync(branch);
@@ -1225,7 +1357,7 @@ namespace SourceGit.Views
 
                 var merge = new MenuItem();
                 merge.Header = App.Text("BranchCM.Merge", branch.Name, current.Name);
-                merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                merge.Icon = this.CreateMenuIcon("Icons.Merge");
                 merge.IsEnabled = !merged;
                 merge.Click += (_, e) =>
                 {
@@ -1238,7 +1370,7 @@ namespace SourceGit.Views
 
             var rename = new MenuItem();
             rename.Header = App.Text("BranchCM.Rename", branch.Name);
-            rename.Icon = App.CreateMenuIcon("Icons.Rename");
+            rename.Icon = this.CreateMenuIcon("Icons.Rename");
             rename.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
@@ -1249,7 +1381,7 @@ namespace SourceGit.Views
 
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", branch.Name);
-            delete.Icon = App.CreateMenuIcon("Icons.Clear");
+            delete.Icon = this.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
@@ -1266,7 +1398,7 @@ namespace SourceGit.Views
                 {
                     var finish = new MenuItem();
                     finish.Header = App.Text("BranchCM.Finish", branch.Name);
-                    finish.Icon = App.CreateMenuIcon("Icons.GitFlow");
+                    finish.Icon = this.CreateMenuIcon("Icons.GitFlow");
                     finish.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -1280,10 +1412,10 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(branch.Name);
+                await this.CopyTextAsync(branch.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
@@ -1296,7 +1428,7 @@ namespace SourceGit.Views
             var name = branch.FriendlyName;
 
             var submenu = new MenuItem();
-            submenu.Icon = App.CreateMenuIcon("Icons.Branch");
+            submenu.Icon = this.CreateMenuIcon("Icons.Branch");
             submenu.Header = name;
 
             var visibility = new MenuItem();
@@ -1307,7 +1439,7 @@ namespace SourceGit.Views
 
             var checkout = new MenuItem();
             checkout.Header = App.Text("BranchCM.Checkout", name);
-            checkout.Icon = App.CreateMenuIcon("Icons.Check");
+            checkout.Icon = this.CreateMenuIcon("Icons.Check");
             checkout.Click += async (_, e) =>
             {
                 await repo.CheckoutBranchAsync(branch);
@@ -1317,7 +1449,7 @@ namespace SourceGit.Views
 
             var merge = new MenuItem();
             merge.Header = App.Text("BranchCM.Merge", name, current.Name);
-            merge.Icon = App.CreateMenuIcon("Icons.Merge");
+            merge.Icon = this.CreateMenuIcon("Icons.Merge");
             merge.IsEnabled = !merged;
             merge.Click += (_, e) =>
             {
@@ -1330,7 +1462,7 @@ namespace SourceGit.Views
 
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", name);
-            delete.Icon = App.CreateMenuIcon("Icons.Clear");
+            delete.Icon = this.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
@@ -1342,10 +1474,10 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(name);
+                await this.CopyTextAsync(name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
@@ -1357,7 +1489,7 @@ namespace SourceGit.Views
         {
             var submenu = new MenuItem();
             submenu.Header = tag.Name;
-            submenu.Icon = App.CreateMenuIcon("Icons.Tag");
+            submenu.Icon = this.CreateMenuIcon("Icons.Tag");
             submenu.MinWidth = 200;
 
             var visibility = new MenuItem();
@@ -1368,7 +1500,7 @@ namespace SourceGit.Views
 
             var push = new MenuItem();
             push.Header = App.Text("TagCM.Push", tag.Name);
-            push.Icon = App.CreateMenuIcon("Icons.Push");
+            push.Icon = this.CreateMenuIcon("Icons.Push");
             push.IsEnabled = repo.Remotes.Count > 0;
             push.Click += (_, e) =>
             {
@@ -1382,7 +1514,7 @@ namespace SourceGit.Views
             {
                 var merge = new MenuItem();
                 merge.Header = App.Text("TagCM.Merge", tag.Name, current.Name);
-                merge.Icon = App.CreateMenuIcon("Icons.Merge");
+                merge.Icon = this.CreateMenuIcon("Icons.Merge");
                 merge.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -1394,7 +1526,7 @@ namespace SourceGit.Views
 
             var delete = new MenuItem();
             delete.Header = App.Text("TagCM.Delete", tag.Name);
-            delete.Icon = App.CreateMenuIcon("Icons.Clear");
+            delete.Icon = this.CreateMenuIcon("Icons.Clear");
             delete.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
@@ -1406,15 +1538,31 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("TagCM.CopyName");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, e) =>
             {
-                await App.CopyTextAsync(tag.Name);
+                await this.CopyTextAsync(tag.Name);
                 e.Handled = true;
             };
             submenu.Items.Add(copy);
 
             menu.Items.Add(submenu);
+        }
+
+        private async Task InteractiveRebaseWithPrefillActionAsync(ViewModels.Repository repo, Models.Commit target, Models.InteractiveRebaseAction action)
+        {
+            var prefill = new ViewModels.InteractiveRebasePrefill(target.SHA, action);
+            var start = action switch
+            {
+                Models.InteractiveRebaseAction.Squash or Models.InteractiveRebaseAction.Fixup => $"{target.SHA}~~",
+                _ => $"{target.SHA}~",
+            };
+
+            var on = await new Commands.QuerySingleCommit(repo.FullPath, start).GetResultAsync();
+            if (on == null)
+                repo.SendNotification($"Commit '{start}' is not a valid revision for `git rebase -i`!", true);
+            else
+                await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, on, prefill));
         }
 
         private double _lastGraphStartY = 0;

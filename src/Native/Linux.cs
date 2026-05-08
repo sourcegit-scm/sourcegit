@@ -33,6 +33,21 @@ namespace SourceGit.Native
             }
         }
 
+        public void HideSelf()
+        {
+            // Do Nothing. Never used.
+        }
+
+        public void HideOtherApplications()
+        {
+            // Do Nothing. Never used.
+        }
+
+        public void ShowAllApplications()
+        {
+            // Do Nothing. Never used.
+        }
+
         public string GetDataDir()
         {
             // AppImage supports portable mode
@@ -136,7 +151,7 @@ namespace SourceGit.Native
             }
             catch (Exception e)
             {
-                App.RaiseException(workdir, $"Failed to start '{OS.ShellOrTerminal}'. Reason: {e.Message}");
+                Models.Notification.Send(workdir, $"Failed to start '{OS.ShellOrTerminal}'. Reason: {e.Message}", true);
             }
         }
 
@@ -148,7 +163,7 @@ namespace SourceGit.Native
                 proc.WaitForExit();
 
                 if (proc.ExitCode != 0)
-                    App.RaiseException("", $"Failed to open: {file}");
+                    Models.Notification.Send("", $"Failed to open: {file}", true);
 
                 proc.Close();
             }

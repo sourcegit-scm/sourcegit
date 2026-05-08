@@ -7,7 +7,7 @@ The project uses the following third-party libraries or assets
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.3.12
+- **Version**: 11.3.13
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
 
@@ -22,7 +22,7 @@ The project uses the following third-party libraries or assets
 ### LiveChartsCore.SkiaSharpView.Avalonia
 
 - **Source**: https://github.com/beto-rodriguez/LiveCharts2
-- **Version**: 2.0.0-rc6.1
+- **Version**: 2.0.0
 - **License**: MIT License
 - **License Link**: https://github.com/beto-rodriguez/LiveCharts2/blob/master/LICENSE
 
@@ -36,14 +36,14 @@ The project uses the following third-party libraries or assets
 ### OpenAI .NET SDK
 
 - **Source**: https://github.com/openai/openai-dotnet
-- **Version**: 2.8.0
+- **Version**: 2.10.0
 - **License**: MIT License
 - **License Link**: https://github.com/openai/openai-dotnet/blob/main/LICENSE
 
 ### Azure.AI.OpenAI
 
 - **Source**: https://github.com/Azure/azure-sdk-for-net
-- **Version**: 2.8.0-beta.1
+- **Version**: 2.9.0-beta.1
 - **License**: MIT License
 - **License Link**: https://github.com/Azure/azure-sdk-for-net/blob/main/LICENSE.txt
 

@@ -1,7 +1,5 @@
 using System;
 using System.Windows.Input;
-
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
 namespace SourceGit
@@ -39,33 +37,61 @@ namespace SourceGit
             }
         }
 
-        public static readonly Command OpenPreferencesCommand = new Command(async _ => await ShowDialog(new Views.Preferences()));
-        public static readonly Command OpenHotkeysCommand = new Command(async _ => await ShowDialog(new Views.Hotkeys()));
-        public static readonly Command OpenAppDataDirCommand = new Command(_ => Native.OS.OpenInFileManager(Native.OS.DataDir));
-        public static readonly Command OpenAboutCommand = new Command(async _ => await ShowDialog(new Views.About()));
-        public static readonly Command CheckForUpdateCommand = new Command(_ => (Current as App)?.Check4Update(true));
-        public static readonly Command QuitCommand = new Command(_ => Quit(0));
-        public static readonly Command CopyTextBlockCommand = new Command(async p =>
+        public static readonly Command OpenPreferencesCommand = new Command(async _ =>
         {
-            if (p is not TextBlock textBlock)
-                return;
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var dialog = new Views.Preferences();
+                await dialog.ShowDialog(owner);
+            }
+        });
 
-            if (textBlock.Inlines is { Count: > 0 } inlines)
-                await CopyTextAsync(inlines.Text);
-            else if (!string.IsNullOrEmpty(textBlock.Text))
-                await CopyTextAsync(textBlock.Text);
+        public static readonly Command OpenHotkeysCommand = new Command(async _ =>
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var dialog = new Views.Hotkeys();
+                await dialog.ShowDialog(owner);
+            }
+        });
+
+        public static readonly Command OpenAppDataDirCommand = new Command(_ =>
+        {
+            Native.OS.OpenInFileManager(Native.OS.DataDir);
+        });
+
+        public static readonly Command OpenAboutCommand = new Command(async _ =>
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var dialog = new Views.About();
+                await dialog.ShowDialog(owner);
+            }
+        });
+
+        public static readonly Command CheckForUpdateCommand = new Command(_ =>
+        {
+            (Current as App)?.Check4Update(true);
+        });
+
+        public static readonly Command QuitCommand = new Command(_ =>
+        {
+            Quit(0);
         });
 
         public static readonly Command HideAppCommand = new Command(_ =>
         {
-            if (Current is App app && app.TryGetFeature(typeof(IActivatableLifetime)) is IActivatableLifetime lifetime)
-                lifetime.TryEnterBackground();
+            Native.OS.HideSelf();
         });
 
-        public static readonly Command ShowAppCommand = new Command(_ =>
+        public static readonly Command HideOtherApplicationsCommand = new Command(_ =>
         {
-            if (Current is App app && app.TryGetFeature(typeof(IActivatableLifetime)) is IActivatableLifetime lifetime)
-                lifetime.TryLeaveBackground();
+            Native.OS.HideOtherApplications();
+        });
+
+        public static readonly Command ShowAllApplicationsCommand = new Command(_ =>
+        {
+            Native.OS.ShowAllApplications();
         });
     }
 }

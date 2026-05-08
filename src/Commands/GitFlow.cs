@@ -42,14 +42,14 @@ namespace SourceGit.Commands
                     start.Args = $"flow hotfix start {name}";
                     break;
                 default:
-                    App.RaiseException(repo, "Bad git-flow branch type!!!");
+                    Models.Notification.Send(repo, "Bad git-flow branch type!!!", true);
                     return false;
             }
 
             return await start.Use(log).ExecAsync().ConfigureAwait(false);
         }
 
-        public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool push, bool keepBranch, Models.ICommandLog log)
+        public static async Task<bool> FinishAsync(string repo, Models.GitFlowBranchType type, string name, bool squash, bool keepBranch, Models.ICommandLog log)
         {
             var builder = new StringBuilder();
             builder.Append("flow ");
@@ -66,15 +66,13 @@ namespace SourceGit.Commands
                     builder.Append("hotfix");
                     break;
                 default:
-                    App.RaiseException(repo, "Bad git-flow branch type!!!");
+                    Models.Notification.Send(repo, "Bad git-flow branch type!!!", true);
                     return false;
             }
 
             builder.Append(" finish ");
             if (squash)
                 builder.Append("--squash ");
-            if (push)
-                builder.Append("--push ");
             if (keepBranch)
                 builder.Append("-k ");
             builder.Append(name);

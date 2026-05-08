@@ -22,12 +22,11 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Criar Novo Branch</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch Existente</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assietente IA</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">Gerar novamente</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">APLICAR COMO MENSAGEM DE COMMMIT</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todos</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Arquivo de Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selecione o arquivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
@@ -102,8 +101,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Aviso: Ao fazer o checkout de um commit, seu Head ficará desanexado</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Adicionar origem à mensagem de commit</x:String>
@@ -203,8 +200,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Baseado Em:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checar o branch criado</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nome do Novo Branch:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Insira o nome do branch.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Criar Branch Local</x:String>
@@ -222,6 +217,9 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">leve</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Pressione Ctrl para iniciar diretamente</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Recortar</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Descartar</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Nada</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; Reaplicar</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Excluir Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Você está prestes a excluir uma branch remota!!!</x:String>
@@ -402,11 +400,11 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir na Ferramenta de Mesclagem</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Criar Nova Página</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">Adicionar aos Favoritos</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Fechar Aba</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Fechar Outras Abas</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Fechar Abas à Direita</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copiar Caminho do Repositório</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Editar</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositórios</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Colar</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} dias atrás</x:String>
@@ -421,10 +419,7 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ontem</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferências</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">INTELIGÊNCIA ARTIFICIAL</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Prompt para Analisar Diff</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Chave da API</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">Prompt para Gerar Título</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nome</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APARÊNCIA</x:String>
@@ -478,8 +473,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branch Remoto:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">Descartar</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">Guardar &amp; Reaplicar</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Puxar (Buscar &amp; Mesclar)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Usar rebase em vez de merge</x:String>

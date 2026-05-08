@@ -70,7 +70,7 @@ namespace SourceGit.Commands
             catch (Exception e)
             {
                 if (RaiseError)
-                    App.RaiseException(Context, e.Message);
+                    RaiseException(e.Message);
 
                 Log?.AppendLine(string.Empty);
                 return false;
@@ -101,7 +101,7 @@ namespace SourceGit.Commands
                 {
                     var errMsg = string.Join("\n", errs).Trim();
                     if (!string.IsNullOrEmpty(errMsg))
-                        App.RaiseException(Context, errMsg);
+                        RaiseException(errMsg);
                 }
 
                 return false;
@@ -217,6 +217,11 @@ namespace SourceGit.Commands
                 start.WorkingDirectory = WorkingDirectory;
 
             return start;
+        }
+
+        protected void RaiseException(string error)
+        {
+            Models.Notification.Send(Context, error, true);
         }
 
         private void HandleOutput(string line, List<string> errs)

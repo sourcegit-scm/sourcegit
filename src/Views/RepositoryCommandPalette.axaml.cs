@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -8,6 +9,12 @@ namespace SourceGit.Views
         public RepositoryCommandPalette()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            FilterTextBox.Focus(NavigationMethod.Directional);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

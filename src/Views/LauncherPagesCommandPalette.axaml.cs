@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -8,6 +9,12 @@ namespace SourceGit.Views
         public LauncherPagesCommandPalette()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            FilterTextBox.Focus(NavigationMethod.Directional);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -72,6 +79,10 @@ namespace SourceGit.Views
                     {
                         RepoListBox.Focus(NavigationMethod.Directional);
                         vm.SelectedRepo = vm.VisibleRepos[0];
+                    }
+                    else if (e.Key == Key.Tab)
+                    {
+                        FilterTextBox.Focus(NavigationMethod.Directional);
                     }
 
                     e.Handled = true;

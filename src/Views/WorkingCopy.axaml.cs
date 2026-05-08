@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Avalonia.Controls;
@@ -33,7 +34,7 @@ namespace SourceGit.Views
         {
             var repoView = this.FindAncestorOfType<Repository>();
             if (repoView is { DataContext: ViewModels.Repository repo })
-                await App.ShowDialog(new ViewModels.AssumeUnchangedManager(repo));
+                await this.ShowDialogAsync(new ViewModels.AssumeUnchangedManager(repo));
 
             e.Handled = true;
         }
@@ -120,9 +121,9 @@ namespace SourceGit.Views
                 {
                     var change = vm.SelectedUnstaged[0];
                     if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                        await App.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
+                        await this.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
                     else
-                        await App.CopyTextAsync(change.Path);
+                        await this.CopyTextAsync(change.Path);
 
                     e.Handled = true;
                 }
@@ -159,9 +160,9 @@ namespace SourceGit.Views
                 {
                     var change = vm.SelectedStaged[0];
                     if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                        await App.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
+                        await this.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
                     else
-                        await App.CopyTextAsync(change.Path);
+                        await this.CopyTextAsync(change.Path);
 
                     e.Handled = true;
                 }
@@ -231,6 +232,9 @@ namespace SourceGit.Views
 
         private async void OnCommit(object _, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.CommitAsync(false, false);
 
@@ -239,6 +243,9 @@ namespace SourceGit.Views
 
         private async void OnCommitWithAutoStage(object _, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.CommitAsync(true, false);
 
@@ -247,6 +254,9 @@ namespace SourceGit.Views
 
         private async void OnCommitWithPush(object _, RoutedEventArgs e)
         {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
             if (DataContext is ViewModels.WorkingCopy vm)
                 await vm.CommitAsync(false, true);
 
@@ -273,7 +283,7 @@ namespace SourceGit.Views
 
                     var diffWithMerger = new MenuItem();
                     diffWithMerger.Header = App.Text("OpenInExternalMergeTool");
-                    diffWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                    diffWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
                     diffWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                     diffWithMerger.Click += (_, ev) =>
                     {
@@ -286,7 +296,7 @@ namespace SourceGit.Views
 
                 var explore = new MenuItem();
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                explore.Icon = this.CreateMenuIcon("Icons.Explore");
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Click += (_, e) =>
                 {
@@ -300,7 +310,7 @@ namespace SourceGit.Views
                 if (change.IsConflicted)
                 {
                     var useTheirs = new MenuItem();
-                    useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
+                    useTheirs.Icon = this.CreateMenuIcon("Icons.Incoming");
                     useTheirs.Click += async (_, e) =>
                     {
                         await vm.UseTheirsAsync(selectedUnstaged);
@@ -308,7 +318,7 @@ namespace SourceGit.Views
                     };
 
                     var useMine = new MenuItem();
-                    useMine.Icon = App.CreateMenuIcon("Icons.Local");
+                    useMine.Icon = this.CreateMenuIcon("Icons.Local");
                     useMine.Click += async (_, e) =>
                     {
                         await vm.UseMineAsync(selectedUnstaged);
@@ -346,17 +356,17 @@ namespace SourceGit.Views
                     {
                         var mergeBuiltin = new MenuItem();
                         mergeBuiltin.Header = App.Text("ChangeCM.Merge");
-                        mergeBuiltin.Icon = App.CreateMenuIcon("Icons.Conflict");
+                        mergeBuiltin.Icon = this.CreateMenuIcon("Icons.Conflict");
                         mergeBuiltin.Click += async (_, e) =>
                         {
                             var head = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                            await App.ShowDialog(new ViewModels.MergeConflictEditor(repo, head, change.Path));
+                            await this.ShowDialogAsync(new ViewModels.MergeConflictEditor(repo, head, change.Path));
                             e.Handled = true;
                         };
 
                         var mergeExternal = new MenuItem();
                         mergeExternal.Header = App.Text("ChangeCM.MergeExternal");
-                        mergeExternal.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                        mergeExternal.Icon = this.CreateMenuIcon("Icons.OpenWith");
                         mergeExternal.Click += async (_, e) =>
                         {
                             await vm.UseExternalMergeToolAsync(change);
@@ -373,7 +383,7 @@ namespace SourceGit.Views
                 {
                     var stage = new MenuItem();
                     stage.Header = App.Text("FileCM.Stage");
-                    stage.Icon = App.CreateMenuIcon("Icons.File.Add");
+                    stage.Icon = this.CreateMenuIcon("Icons.File.Add");
                     stage.Tag = "Enter/Space";
                     stage.Click += async (_, e) =>
                     {
@@ -383,7 +393,7 @@ namespace SourceGit.Views
 
                     var discard = new MenuItem();
                     discard.Header = App.Text("FileCM.Discard");
-                    discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                    discard.Icon = this.CreateMenuIcon("Icons.Undo");
                     discard.Tag = "Back/Delete";
                     discard.Click += (_, e) =>
                     {
@@ -393,7 +403,7 @@ namespace SourceGit.Views
 
                     var stash = new MenuItem();
                     stash.Header = App.Text("FileCM.Stash");
-                    stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
+                    stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                     stash.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
@@ -404,7 +414,7 @@ namespace SourceGit.Views
 
                     var patch = new MenuItem();
                     patch.Header = App.Text("FileCM.SaveAsPatch");
-                    patch.Icon = App.CreateMenuIcon("Icons.Save");
+                    patch.Icon = this.CreateMenuIcon("Icons.Save");
                     patch.Click += async (_, e) =>
                     {
                         var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -424,7 +434,7 @@ namespace SourceGit.Views
                         }
                         catch (Exception exception)
                         {
-                            App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                            repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                         }
 
                         e.Handled = true;
@@ -432,7 +442,7 @@ namespace SourceGit.Views
 
                     var assumeUnchanged = new MenuItem();
                     assumeUnchanged.Header = App.Text("FileCM.AssumeUnchanged");
-                    assumeUnchanged.Icon = App.CreateMenuIcon("Icons.File.Ignore");
+                    assumeUnchanged.Icon = this.CreateMenuIcon("Icons.File.Ignore");
                     assumeUnchanged.IsVisible = change.WorkTree != Models.ChangeState.Untracked;
                     assumeUnchanged.Click += async (_, e) =>
                     {
@@ -455,7 +465,7 @@ namespace SourceGit.Views
                     {
                         var addToIgnore = new MenuItem();
                         addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
-                        addToIgnore.Icon = App.CreateMenuIcon("Icons.GitIgnore");
+                        addToIgnore.Icon = this.CreateMenuIcon("Icons.GitIgnore");
 
                         if (hasSelectedFolder)
                         {
@@ -515,7 +525,7 @@ namespace SourceGit.Views
                     {
                         var addToIgnore = new MenuItem();
                         addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
-                        addToIgnore.Icon = App.CreateMenuIcon("Icons.GitIgnore");
+                        addToIgnore.Icon = this.CreateMenuIcon("Icons.GitIgnore");
 
                         var ignoreFolder = new MenuItem();
                         ignoreFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.InFolder");
@@ -531,11 +541,11 @@ namespace SourceGit.Views
                         hasExtra = true;
                     }
 
-                    if (repo.IsLFSEnabled())
+                    if (File.Exists(path) && repo.IsLFSEnabled())
                     {
                         var lfs = new MenuItem();
                         lfs.Header = App.Text("GitLFS");
-                        lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+                        lfs.Icon = this.CreateMenuIcon("Icons.LFS");
 
                         var isLFSFiltered = new Commands.IsLFSFiltered(repo.FullPath, change.Path).GetResult();
                         if (!isLFSFiltered)
@@ -567,7 +577,7 @@ namespace SourceGit.Views
 
                         var lfsLock = new MenuItem();
                         lfsLock.Header = App.Text("GitLFS.Locks.Lock");
-                        lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+                        lfsLock.Icon = this.CreateMenuIcon("Icons.Lock");
                         lfsLock.IsEnabled = repo.Remotes.Count > 0;
                         if (repo.Remotes.Count == 1)
                         {
@@ -596,7 +606,7 @@ namespace SourceGit.Views
 
                         var lfsUnlock = new MenuItem();
                         lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
-                        lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                        lfsUnlock.Icon = this.CreateMenuIcon("Icons.Unlock");
                         lfsUnlock.IsEnabled = repo.Remotes.Count > 0;
                         if (repo.Remotes.Count == 1)
                         {
@@ -635,10 +645,10 @@ namespace SourceGit.Views
                 {
                     var history = new MenuItem();
                     history.Header = App.Text("DirHistories");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -649,20 +659,20 @@ namespace SourceGit.Views
                 {
                     var history = new MenuItem();
                     history.Header = App.Text("FileHistory");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
+                        this.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
                         e.Handled = true;
                     };
 
                     var blame = new MenuItem();
                     blame.Header = App.Text("Blame") + " (HEAD-only)";
-                    blame.Icon = App.CreateMenuIcon("Icons.Blame");
+                    blame.Icon = this.CreateMenuIcon("Icons.Blame");
                     blame.Click += async (_, ev) =>
                     {
                         var commit = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                        App.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
+                        this.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
                         ev.Handled = true;
                     };
 
@@ -675,21 +685,21 @@ namespace SourceGit.Views
 
                 var copy = new MenuItem();
                 copy.Header = App.Text("CopyPath");
-                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Icon = this.CreateMenuIcon("Icons.Copy");
                 copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                 copy.Click += async (_, e) =>
                 {
-                    await App.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
+                    await this.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
                     e.Handled = true;
                 };
 
                 var copyFullPath = new MenuItem();
                 copyFullPath.Header = App.Text("CopyFullPath");
-                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                 copyFullPath.Click += async (_, e) =>
                 {
-                    await App.CopyTextAsync(hasSelectedFolder ? Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder) : path);
+                    await this.CopyTextAsync(hasSelectedFolder ? Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder) : path);
                     e.Handled = true;
                 };
 
@@ -712,12 +722,12 @@ namespace SourceGit.Views
                 {
                     if (hasNonConflicts)
                     {
-                        App.RaiseException(repo.FullPath, "Selection contains both conflict and non-conflict changes!");
+                        repo.SendNotification("Selection contains both conflict and non-conflict changes!", true);
                         return null;
                     }
 
                     var useTheirs = new MenuItem();
-                    useTheirs.Icon = App.CreateMenuIcon("Icons.Incoming");
+                    useTheirs.Icon = this.CreateMenuIcon("Icons.Incoming");
                     useTheirs.Click += async (_, e) =>
                     {
                         await vm.UseTheirsAsync(selectedUnstaged);
@@ -725,7 +735,7 @@ namespace SourceGit.Views
                     };
 
                     var useMine = new MenuItem();
-                    useMine.Icon = App.CreateMenuIcon("Icons.Local");
+                    useMine.Icon = this.CreateMenuIcon("Icons.Local");
                     useMine.Click += async (_, e) =>
                     {
                         await vm.UseMineAsync(selectedUnstaged);
@@ -766,7 +776,7 @@ namespace SourceGit.Views
                     var dir = Path.Combine(repo.FullPath, selectedSingleFolder);
                     var explore = new MenuItem();
                     explore.Header = App.Text("RevealFile");
-                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
                     explore.IsEnabled = Directory.Exists(dir);
                     explore.Click += (_, e) =>
                     {
@@ -779,7 +789,7 @@ namespace SourceGit.Views
 
                 var stage = new MenuItem();
                 stage.Header = App.Text("FileCM.StageMulti", selectedUnstaged.Count);
-                stage.Icon = App.CreateMenuIcon("Icons.File.Add");
+                stage.Icon = this.CreateMenuIcon("Icons.File.Add");
                 stage.Tag = "Enter/Space";
                 stage.Click += async (_, e) =>
                 {
@@ -789,7 +799,7 @@ namespace SourceGit.Views
 
                 var discard = new MenuItem();
                 discard.Header = App.Text("FileCM.DiscardMulti", selectedUnstaged.Count);
-                discard.Icon = App.CreateMenuIcon("Icons.Undo");
+                discard.Icon = this.CreateMenuIcon("Icons.Undo");
                 discard.Tag = "Back/Delete";
                 discard.Click += (_, e) =>
                 {
@@ -799,7 +809,7 @@ namespace SourceGit.Views
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", selectedUnstaged.Count);
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
+                stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -810,7 +820,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Save");
+                patch.Icon = this.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -830,7 +840,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;
@@ -854,35 +864,35 @@ namespace SourceGit.Views
 
                     var addToIgnore = new MenuItem();
                     addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
-                    addToIgnore.Icon = App.CreateMenuIcon("Icons.GitIgnore");
+                    addToIgnore.Icon = this.CreateMenuIcon("Icons.GitIgnore");
                     addToIgnore.Items.Add(ignoreFolder);
 
                     var history = new MenuItem();
                     history.Header = App.Text("DirHistories");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
                     var copy = new MenuItem();
                     copy.Header = App.Text("CopyPath");
-                    copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copy.Icon = this.CreateMenuIcon("Icons.Copy");
                     copy.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copy.Click += async (_, e) =>
                     {
-                        await App.CopyTextAsync(selectedSingleFolder);
+                        await this.CopyTextAsync(selectedSingleFolder);
                         e.Handled = true;
                     };
 
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyPath");
-                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, e) =>
                     {
-                        await App.CopyTextAsync(Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder));
+                        await this.CopyTextAsync(Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -913,14 +923,14 @@ namespace SourceGit.Views
             if (services.Count > 0)
             {
                 ai = new MenuItem();
-                ai.Icon = App.CreateMenuIcon("Icons.AIAssist");
+                ai.Icon = this.CreateMenuIcon("Icons.AIAssist");
                 ai.Header = App.Text("ChangeCM.GenerateCommitMessage");
 
                 if (services.Count == 1)
                 {
-                    ai.Click += async (_, e) =>
+                    ai.Click += (_, e) =>
                     {
-                        await App.ShowDialog(new ViewModels.AIAssistant(repo, services[0], selectedStaged));
+                        DoOpenAIAssistant(repo, services[0], selectedStaged);
                         e.Handled = true;
                     };
                 }
@@ -932,9 +942,9 @@ namespace SourceGit.Views
 
                         var item = new MenuItem();
                         item.Header = service.Name;
-                        item.Click += async (_, e) =>
+                        item.Click += (_, e) =>
                         {
-                            await App.ShowDialog(new ViewModels.AIAssistant(repo, dup, selectedStaged));
+                            DoOpenAIAssistant(repo, dup, selectedStaged);
                             e.Handled = true;
                         };
 
@@ -951,7 +961,7 @@ namespace SourceGit.Views
 
                 var openWithMerger = new MenuItem();
                 openWithMerger.Header = App.Text("OpenInExternalMergeTool");
-                openWithMerger.Icon = App.CreateMenuIcon("Icons.OpenWith");
+                openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
                 openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
                 openWithMerger.Click += (_, ev) =>
                 {
@@ -962,7 +972,7 @@ namespace SourceGit.Views
                 var explore = new MenuItem();
                 explore.IsEnabled = File.Exists(path) || Directory.Exists(path);
                 explore.Header = App.Text("RevealFile");
-                explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                explore.Icon = this.CreateMenuIcon("Icons.Explore");
                 explore.Click += (_, e) =>
                 {
                     var target = hasSelectedFolder ? Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder) : path;
@@ -972,7 +982,7 @@ namespace SourceGit.Views
 
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.Unstage");
-                unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
+                unstage.Icon = this.CreateMenuIcon("Icons.File.Remove");
                 unstage.Tag = "Enter/Space";
                 unstage.Click += async (_, e) =>
                 {
@@ -982,7 +992,7 @@ namespace SourceGit.Views
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
+                stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -993,7 +1003,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Save");
+                patch.Icon = this.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -1013,7 +1023,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;
@@ -1028,15 +1038,15 @@ namespace SourceGit.Views
                 menu.Items.Add(patch);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
-                if (repo.IsLFSEnabled())
+                if (File.Exists(path) && repo.IsLFSEnabled())
                 {
                     var lfs = new MenuItem();
                     lfs.Header = App.Text("GitLFS");
-                    lfs.Icon = App.CreateMenuIcon("Icons.LFS");
+                    lfs.Icon = this.CreateMenuIcon("Icons.LFS");
 
                     var lfsLock = new MenuItem();
                     lfsLock.Header = App.Text("GitLFS.Locks.Lock");
-                    lfsLock.Icon = App.CreateMenuIcon("Icons.Lock");
+                    lfsLock.Icon = this.CreateMenuIcon("Icons.Lock");
                     lfsLock.IsEnabled = repo.Remotes.Count > 0;
                     if (repo.Remotes.Count == 1)
                     {
@@ -1065,7 +1075,7 @@ namespace SourceGit.Views
 
                     var lfsUnlock = new MenuItem();
                     lfsUnlock.Header = App.Text("GitLFS.Locks.Unlock");
-                    lfsUnlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                    lfsUnlock.Icon = this.CreateMenuIcon("Icons.Unlock");
                     lfsUnlock.IsEnabled = repo.Remotes.Count > 0;
                     if (repo.Remotes.Count == 1)
                     {
@@ -1106,10 +1116,10 @@ namespace SourceGit.Views
                 {
                     var history = new MenuItem();
                     history.Header = App.Text("DirHistories");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -1120,20 +1130,20 @@ namespace SourceGit.Views
                 {
                     var history = new MenuItem();
                     history.Header = App.Text("FileHistory");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
+                        this.ShowWindow(new ViewModels.FileHistories(repo.FullPath, change.Path));
                         e.Handled = true;
                     };
 
                     var blame = new MenuItem();
                     blame.Header = App.Text("Blame") + " (HEAD-only)";
-                    blame.Icon = App.CreateMenuIcon("Icons.Blame");
+                    blame.Icon = this.CreateMenuIcon("Icons.Blame");
                     blame.Click += async (_, e) =>
                     {
                         var commit = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                        App.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
+                        this.ShowWindow(new ViewModels.Blame(repo.FullPath, change.Path, commit));
                         e.Handled = true;
                     };
 
@@ -1146,22 +1156,22 @@ namespace SourceGit.Views
 
                 var copyPath = new MenuItem();
                 copyPath.Header = App.Text("CopyPath");
-                copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                 copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                 copyPath.Click += async (_, e) =>
                 {
-                    await App.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
+                    await this.CopyTextAsync(hasSelectedFolder ? selectedSingleFolder : change.Path);
                     e.Handled = true;
                 };
 
                 var copyFullPath = new MenuItem();
                 copyFullPath.Header = App.Text("CopyFullPath");
-                copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
                 copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                 copyFullPath.Click += async (_, e) =>
                 {
                     var target = hasSelectedFolder ? Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder) : path;
-                    await App.CopyTextAsync(target);
+                    await this.CopyTextAsync(target);
                     e.Handled = true;
                 };
 
@@ -1176,7 +1186,7 @@ namespace SourceGit.Views
                     var explore = new MenuItem();
                     explore.IsEnabled = Directory.Exists(dir);
                     explore.Header = App.Text("RevealFile");
-                    explore.Icon = App.CreateMenuIcon("Icons.Explore");
+                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
                     explore.Click += (_, e) =>
                     {
                         Native.OS.OpenInFileManager(dir);
@@ -1189,7 +1199,7 @@ namespace SourceGit.Views
 
                 var unstage = new MenuItem();
                 unstage.Header = App.Text("FileCM.UnstageMulti", selectedStaged.Count);
-                unstage.Icon = App.CreateMenuIcon("Icons.File.Remove");
+                unstage.Icon = this.CreateMenuIcon("Icons.File.Remove");
                 unstage.Tag = "Enter/Space";
                 unstage.Click += async (_, e) =>
                 {
@@ -1199,7 +1209,7 @@ namespace SourceGit.Views
 
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", selectedStaged.Count);
-                stash.Icon = App.CreateMenuIcon("Icons.Stashes.Add");
+                stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -1210,7 +1220,7 @@ namespace SourceGit.Views
 
                 var patch = new MenuItem();
                 patch.Header = App.Text("FileCM.SaveAsPatch");
-                patch.Icon = App.CreateMenuIcon("Icons.Save");
+                patch.Icon = this.CreateMenuIcon("Icons.Save");
                 patch.Click += async (_, e) =>
                 {
                     var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
@@ -1230,7 +1240,7 @@ namespace SourceGit.Views
                     }
                     catch (Exception exception)
                     {
-                        App.RaiseException(repo.FullPath, $"Failed to save as patch: {exception.Message}");
+                        repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
                     }
 
                     e.Handled = true;
@@ -1250,30 +1260,30 @@ namespace SourceGit.Views
                 {
                     var history = new MenuItem();
                     history.Header = App.Text("DirHistories");
-                    history.Icon = App.CreateMenuIcon("Icons.Histories");
+                    history.Icon = this.CreateMenuIcon("Icons.Histories");
                     history.Click += (_, e) =>
                     {
-                        App.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
+                        this.ShowWindow(new ViewModels.DirHistories(repo, selectedSingleFolder));
                         e.Handled = true;
                     };
 
                     var copyPath = new MenuItem();
                     copyPath.Header = App.Text("CopyPath");
-                    copyPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copyPath.Click += async (_, e) =>
                     {
-                        await App.CopyTextAsync(selectedSingleFolder);
+                        await this.CopyTextAsync(selectedSingleFolder);
                         e.Handled = true;
                     };
 
                     var copyFullPath = new MenuItem();
                     copyFullPath.Header = App.Text("CopyFullPath");
-                    copyFullPath.Icon = App.CreateMenuIcon("Icons.Copy");
+                    copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, e) =>
                     {
-                        await App.CopyTextAsync(Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder));
+                        await this.CopyTextAsync(Native.OS.GetAbsPath(repo.FullPath, selectedSingleFolder));
                         e.Handled = true;
                     };
 
@@ -1292,7 +1302,7 @@ namespace SourceGit.Views
         {
             var openWith = new MenuItem();
             openWith.Header = App.Text("Open");
-            openWith.Icon = App.CreateMenuIcon("Icons.OpenWith");
+            openWith.Icon = this.CreateMenuIcon("Icons.OpenWith");
             openWith.IsEnabled = File.Exists(fullpath);
             if (openWith.IsEnabled)
             {
@@ -1340,13 +1350,13 @@ namespace SourceGit.Views
             var target = new Models.CustomActionTargetFile(path, null);
             var custom = new MenuItem();
             custom.Header = App.Text("FileCM.CustomAction");
-            custom.Icon = App.CreateMenuIcon("Icons.Action");
+            custom.Icon = this.CreateMenuIcon("Icons.Action");
 
             foreach (var action in actions)
             {
                 var (dup, label) = action;
                 var item = new MenuItem();
-                item.Icon = App.CreateMenuIcon("Icons.Action");
+                item.Icon = this.CreateMenuIcon("Icons.Action");
                 item.Header = label;
                 item.Click += async (_, e) =>
                 {
@@ -1359,6 +1369,17 @@ namespace SourceGit.Views
 
             menu.Items.Add(custom);
             menu.Items.Add(new MenuItem() { Header = "-" });
+        }
+
+        private void DoOpenAIAssistant(ViewModels.Repository repo, AI.Service serivce, List<Models.Change> changes)
+        {
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner == null)
+                return;
+
+            var assistant = new ViewModels.AIAssistant(repo, serivce, changes);
+            var view = new AIAssistant() { DataContext = assistant };
+            view.Show(owner);
         }
     }
 }

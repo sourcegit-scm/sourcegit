@@ -6,11 +6,8 @@ namespace SourceGit.Commands
 {
     public partial class QueryRepositoryStatus : Command
     {
-        [GeneratedRegex(@"ahead\s(\d+)")]
-        private static partial Regex REG_AHEAD();
-
-        [GeneratedRegex(@"behind\s(\d+)")]
-        private static partial Regex REG_BEHIND();
+        [GeneratedRegex(@"\+(\d+) \-(\d+)")]
+        private static partial Regex REG_BRANCH_AB();
 
         public QueryRepositoryStatus(string repo)
         {
@@ -20,23 +17,27 @@ namespace SourceGit.Commands
 
         public async Task<Models.RepositoryStatus> GetResultAsync()
         {
-            Args = "branch -l -v --format=\"%(refname:short)%00%(HEAD)%00%(upstream:track,nobracket)\"";
+            Args = "status --porcelain=v2 -b";
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return null;
 
             var status = new Models.RepositoryStatus();
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                var parts = line.Split('\0');
-                if (parts.Length != 3 || !parts[1].Equals("*", StringComparison.Ordinal))
-                    continue;
+            var count = lines.Length;
+            if (count < 2)
+                return null;
 
-                status.CurrentBranch = parts[0];
-                if (!string.IsNullOrEmpty(parts[2]))
-                    ParseTrackStatus(status, parts[2]);
-            }
+            var sha1 = lines[0].Substring(13).Trim(); // Remove "# branch.oid " prefix
+            var head = lines[1].Substring(14).Trim(); // Remove "# branch.head " prefix
+
+            if (head.Equals("(detached)", StringComparison.Ordinal))
+                status.CurrentBranch = sha1.Length > 10 ? $"({sha1.Substring(0, 10)})" : "-";
+            else
+                status.CurrentBranch = head;
+
+            if (count == 4 && lines[3].StartsWith("# branch.ab ", StringComparison.Ordinal))
+                ParseTrackStatus(status, lines[3].Substring(12).Trim());
 
             status.LocalChanges = await new CountLocalChanges(WorkingDirectory, true) { RaiseError = false }
                 .GetResultAsync()
@@ -47,13 +48,12 @@ namespace SourceGit.Commands
 
         private void ParseTrackStatus(Models.RepositoryStatus status, string input)
         {
-            var aheadMatch = REG_AHEAD().Match(input);
-            if (aheadMatch.Success)
-                status.Ahead = int.Parse(aheadMatch.Groups[1].Value);
-
-            var behindMatch = REG_BEHIND().Match(input);
-            if (behindMatch.Success)
-                status.Behind = int.Parse(behindMatch.Groups[1].Value);
+            var match = REG_BRANCH_AB().Match(input);
+            if (match.Success)
+            {
+                status.Ahead = int.Parse(match.Groups[1].Value);
+                status.Behind = int.Parse(match.Groups[2].Value);
+            }
         }
     }
 }

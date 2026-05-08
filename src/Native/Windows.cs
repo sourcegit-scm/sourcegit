@@ -58,6 +58,21 @@ namespace SourceGit.Native
             window.BorderThickness = new Thickness(1);
         }
 
+        public void HideSelf()
+        {
+            // Do Nothing. Never used.
+        }
+
+        public void HideOtherApplications()
+        {
+            // Do Nothing. Never used.
+        }
+
+        public void ShowAllApplications()
+        {
+            // Do Nothing. Never used.
+        }
+
         public string GetDataDir()
         {
             var execFile = Process.GetCurrentProcess().MainModule!.FileName;
@@ -166,7 +181,7 @@ namespace SourceGit.Native
 
             if (!File.Exists(terminal))
             {
-                App.RaiseException(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.");
+                Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
                 return;
             }
 

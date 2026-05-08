@@ -74,13 +74,13 @@ namespace SourceGit.Commands
                 var rs = proc.ExitCode == 0;
 
                 if (!rs)
-                    App.RaiseException(_repo, err);
+                    Models.Notification.Send(_repo, err, true);
 
                 return rs;
             }
             catch (Exception e)
             {
-                App.RaiseException(_repo, "Failed to update index: " + e.Message);
+                Models.Notification.Send(_repo, "Failed to update index: " + e.Message, true);
                 return false;
             }
         }

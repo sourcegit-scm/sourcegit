@@ -7,9 +7,9 @@ namespace SourceGit.Commands
 {
     public partial class CompareRevisions : Command
     {
-        [GeneratedRegex(@"^([MADC])\s+(.+)$")]
+        [GeneratedRegex(@"^([MAD])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
-        [GeneratedRegex(@"^R[0-9]{0,4}\s+(.+)$")]
+        [GeneratedRegex(@"^([CR])[0-9]{0,4}\s+(.+)$")]
         private static partial Regex REG_RENAME_FORMAT();
 
         public CompareRevisions(string repo, string start, string end)
@@ -47,8 +47,9 @@ namespace SourceGit.Commands
                         match = REG_RENAME_FORMAT().Match(line);
                         if (match.Success)
                         {
-                            var renamed = new Models.Change() { Path = match.Groups[1].Value };
-                            renamed.Set(Models.ChangeState.Renamed);
+                            var type = match.Groups[1].Value;
+                            var renamed = new Models.Change() { Path = match.Groups[2].Value };
+                            renamed.Set(type == "R" ? Models.ChangeState.Renamed : Models.ChangeState.Copied);
                             changes.Add(renamed);
                         }
 
@@ -70,10 +71,6 @@ namespace SourceGit.Commands
                             break;
                         case 'D':
                             change.Set(Models.ChangeState.Deleted);
-                            changes.Add(change);
-                            break;
-                        case 'C':
-                            change.Set(Models.ChangeState.Copied);
                             changes.Add(change);
                             break;
                     }

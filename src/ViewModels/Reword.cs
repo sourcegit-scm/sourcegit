@@ -68,10 +68,19 @@ namespace SourceGit.ViewModels
                 .Use(log)
                 .RunAsync();
 
-            if (succ && needAutoStash)
-                await new Commands.Stash(_repo.FullPath)
-                    .Use(log)
-                    .PopAsync("stash@{0}");
+            if (succ)
+            {
+                if (needAutoStash)
+                    await new Commands.Stash(_repo.FullPath)
+                        .Use(log)
+                        .PopAsync("stash@{0}");
+
+                if (_repo.SelectedViewIndex == 0)
+                {
+                    var head = await new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResultAsync();
+                    _repo.NavigateToCommit(head, true);
+                }
+            }
 
             log.Complete();
             return succ;

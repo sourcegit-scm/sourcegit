@@ -21,7 +21,7 @@
     <ContentControl Margin="0,16,0,8" Content="{Binding Mode}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="vm:DiscardAllMode">
-          <Grid RowDefinitions="32,32,32,Auto" ColumnDefinitions="120,*">
+          <Grid RowDefinitions="32,32,32,32,Auto" ColumnDefinitions="120,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Margin="0,0,8,0"
                        HorizontalAlignment="Right"
@@ -30,14 +30,18 @@
                        Text="{DynamicResource Text.Discard.All}"/>
 
             <CheckBox Grid.Row="1" Grid.Column="1"
+                      Content="{DynamicResource Text.Discard.IncludeModified}"
+                      IsChecked="{Binding IncludeModified, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="2" Grid.Column="1"
                       Content="{DynamicResource Text.Discard.IncludeUntracked}"
                       IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="2" Grid.Column="1"
+            <CheckBox Grid.Row="3" Grid.Column="1"
                       Content="{DynamicResource Text.Discard.IncludeIgnored}"
                       IsChecked="{Binding IncludeIgnored, Mode=TwoWay}"/>
 
-            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+            <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
               <Path Grid.Column="0"
                     Width="14" Height="14"
                     Data="{StaticResource Icons.Error}"

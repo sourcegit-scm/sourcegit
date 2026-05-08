@@ -16,10 +16,11 @@
                  Classes="bold"
                  Text="{DynamicResource Text.Init}"/>
     </StackPanel>
-    
+
     <Grid Margin="0,16,8,0" ColumnDefinitions="100,*">
       <Grid.RowDefinitions>
         <RowDefinition Height="32"/>
+        <RowDefinition Height="Auto" MinHeight="32"/>
         <RowDefinition Height="Auto" MinHeight="32"/>
       </Grid.RowDefinitions>
 
@@ -29,9 +30,17 @@
                  Margin="0,0,8,0"/>
       <TextBlock Grid.Row="0" Grid.Column="1"
                  Text="{Binding TargetPath}"/>
+
       <TextBlock Grid.Row="1" Grid.Column="1"
                  Foreground="{DynamicResource Brush.FG2}"
-                 Text="{Binding Reason}"
+                 TextWrapping="Wrap">
+        <Run Text="{DynamicResource Text.Init.ErrorMessageTip}"/>
+        <Run Text="{Binding Reason, Mode=OneWay}" />
+      </TextBlock>
+
+      <TextBlock Grid.Row="2" Grid.Column="1"
+                 Margin="0,8,0,0"
+                 Text="{DynamicResource Text.Init.CommandTip}"
                  TextWrapping="Wrap"/>
     </Grid>
   </StackPanel>

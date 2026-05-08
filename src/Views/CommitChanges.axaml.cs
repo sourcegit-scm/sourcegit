@@ -62,7 +62,7 @@ namespace SourceGit.Views
                         builder.AppendLine(copyAbsPath ? vm.GetAbsPath(c.Path) : c.Path);
                 }
 
-                await App.CopyTextAsync(builder.ToString());
+                await this.CopyTextAsync(builder.ToString());
                 e.Handled = true;
             }
             else if (e.Key == Key.F && e.KeyModifiers == cmdKey)

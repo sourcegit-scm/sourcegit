@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
-using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
@@ -46,6 +46,28 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _local, value);
         }
 
+        public List<RepositoryNode> Groups
+        {
+            get;
+        }
+
+        public RepositoryNode SelectedGroup
+        {
+            get => _selectedGroup;
+            set => SetProperty(ref _selectedGroup, value);
+        }
+
+        public List<int> Bookmarks
+        {
+            get;
+        }
+
+        public int Bookmark
+        {
+            get => _bookmark;
+            set => SetProperty(ref _bookmark, value);
+        }
+
         public string ExtraArgs
         {
             get => _extraArgs;
@@ -62,24 +84,19 @@ namespace SourceGit.ViewModels
         {
             _pageId = pageId;
 
+            Groups = new List<RepositoryNode>();
+            Groups.Add(new RepositoryNode { Name = "No Group (Uncategorized)", Id = string.Empty });
+            SelectedGroup = Groups[0];
+            CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
+
+            Bookmarks = new List<int>();
+            for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
+                Bookmarks.Add(i);
+
             var activeWorkspace = Preferences.Instance.GetActiveWorkspace();
             _parentFolder = activeWorkspace?.DefaultCloneDir;
             if (string.IsNullOrEmpty(ParentFolder))
                 _parentFolder = Preferences.Instance.GitDefaultCloneDir;
-
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var text = await App.GetClipboardTextAsync();
-                    if (Models.Remote.IsValidURL(text))
-                        Dispatcher.UIThread.Post(() => Remote = text);
-                }
-                catch
-                {
-                    // Ignore
-                }
-            });
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
@@ -127,7 +144,7 @@ namespace SourceGit.ViewModels
 
             if (!Directory.Exists(path))
             {
-                App.RaiseException(_pageId, $"Folder '{path}' can NOT be found");
+                Models.Notification.Send(_pageId, $"Folder '{path}' can NOT be found", true);
                 return false;
             }
 
@@ -149,7 +166,9 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, null, true);
+            var parent = _selectedGroup is { Id: not "" } ? _selectedGroup : null;
+            var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, true);
+            node.Bookmark = _bookmark;
             await node.UpdateStatusAsync(false, null);
 
             var launcher = App.GetLauncher();
@@ -168,6 +187,18 @@ namespace SourceGit.ViewModels
             return true;
         }
 
+        private void CollectGroups(List<RepositoryNode> outs, List<RepositoryNode> collections)
+        {
+            foreach (var node in collections)
+            {
+                if (!node.IsRepository)
+                {
+                    outs.Add(node);
+                    CollectGroups(outs, node.SubNodes);
+                }
+            }
+        }
+
         private string _pageId = string.Empty;
         private string _remote = string.Empty;
         private bool _useSSH = false;
@@ -175,5 +206,7 @@ namespace SourceGit.ViewModels
         private string _parentFolder = string.Empty;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
+        private RepositoryNode _selectedGroup = null;
+        private int _bookmark = 0;
     }
 }

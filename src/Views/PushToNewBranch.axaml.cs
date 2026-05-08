@@ -1,3 +1,4 @@
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -8,6 +9,12 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            TxtName.Focus(NavigationMethod.Directional);
         }
 
         public void SetRemote(string remote)

@@ -35,10 +35,9 @@
       <v:BranchOrTagNameTextBox Grid.Row="1" Grid.Column="1"
                                 Height="26"
                                 VerticalAlignment="Center"
-                                CornerRadius="2"
+                                CornerRadius="3"
                                 Text="{Binding Name, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"
-                                v:AutoFocusBehaviour.IsEnabled="True"/>
+                                Watermark="{DynamicResource Text.RenameBranch.Name.Placeholder}"/>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -155,6 +156,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool Use24Hours
+        {
+            get => Models.DateTimeFormat.Use24Hours;
+            set
+            {
+                if (value != Models.DateTimeFormat.Use24Hours)
+                {
+                    Models.DateTimeFormat.Use24Hours = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool UseFixedTabWidth
         {
             get => _useFixedTabWidth;
@@ -239,6 +253,24 @@ namespace SourceGit.ViewModels
                 }
             }
         }
+
+        public bool UseStashAndReapplyByDefault
+        {
+            get;
+            set;
+        } = false;
+
+        public bool EnableAutoFetch
+        {
+            get;
+            set;
+        } = false;
+
+        public int AutoFetchInterval
+        {
+            get;
+            set;
+        } = 10;
 
         public bool IgnoreWhitespaceChangesInDiff
         {
@@ -491,7 +523,7 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
-        public AvaloniaList<Models.OpenAIService> OpenAIServices
+        public AvaloniaList<AI.Service> OpenAIServices
         {
             get;
             set;
@@ -627,14 +659,35 @@ namespace SourceGit.ViewModels
             RemoveInvalidRepositoriesRecursive(RepositoryNodes);
         }
 
+        public void UpdateAvailableAIModels()
+        {
+            Task.Run(() =>
+            {
+                foreach (var service in OpenAIServices)
+                {
+                    try
+                    {
+                        service.FetchAvailableModels();
+                    }
+                    catch
+                    {
+                        // Ignore errors.
+                    }
+                }
+            });
+        }
+
         public void Save()
         {
             if (_isLoading || _isReadonly)
                 return;
 
-            var file = Path.Combine(Native.OS.DataDir, "preference.json");
-            using var stream = File.Create(file);
-            JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.Preferences);
+            var tmpfile = Path.Combine(Native.OS.DataDir, "preference_tmp.json");
+            var content = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
+            File.WriteAllText(tmpfile, content);
+
+            var finalFile = Path.Combine(Native.OS.DataDir, "preference.json");
+            File.Move(tmpfile, finalFile, true);
         }
 
         private static Preferences Load()

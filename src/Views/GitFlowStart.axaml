@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.GitFlowStart"
              x:DataType="vm:GitFlowStart">
@@ -36,10 +35,9 @@
       <TextBox Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.GitFlow.StartPlaceholder}"
-               Text="{Binding Name, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               Text="{Binding Name, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

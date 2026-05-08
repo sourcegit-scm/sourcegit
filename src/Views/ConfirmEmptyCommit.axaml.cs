@@ -9,6 +9,11 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void StageSelectedThenCommit(object _1, RoutedEventArgs _2)
+        {
+            Close(Models.ConfirmEmptyCommitResult.StageSelectedAndCommit);
+        }
+
         private void StageAllThenCommit(object _1, RoutedEventArgs _2)
         {
             Close(Models.ConfirmEmptyCommitResult.StageAllAndCommit);

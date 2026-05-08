@@ -8,7 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class RevisionCompare : ObservableObject, IDisposable
+    public class RevisionCompare : ObservableObject
     {
         public bool IsLoading
         {
@@ -109,16 +109,21 @@ namespace SourceGit.ViewModels
             Refresh();
         }
 
-        public void Dispose()
+        public void SetTargets(Models.Commit l, Models.Commit r)
         {
-            _repo = null;
-            _startPoint = null;
-            _endPoint = null;
-            _changes?.Clear();
-            _visibleChanges?.Clear();
-            _selectedChanges?.Clear();
-            _searchFilter = null;
-            _diffContext = null;
+            var hashes = new HashSet<string>();
+            hashes.Add(l.SHA);
+            hashes.Add(r.SHA);
+
+            if (_startPoint is Models.Commit s &&
+                _endPoint is Models.Commit e &&
+                hashes.Contains(s.SHA) &&
+                hashes.Contains(e.SHA))
+                return;
+
+            _startPoint = l;
+            _endPoint = r;
+            Refresh();
         }
 
         public void OpenChangeWithExternalDiffTool(Models.Change change)
@@ -306,7 +311,7 @@ namespace SourceGit.ViewModels
         {
             var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo.FullPath, changes ?? _changes, GetSHA(_startPoint), GetSHA(_endPoint), saveTo);
             if (succ)
-                App.SendNotification(_repo.FullPath, App.Text("SaveAsPatchSuccess"));
+                _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
         public void ClearSearchFilter()

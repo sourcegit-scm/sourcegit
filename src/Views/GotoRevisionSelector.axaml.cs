@@ -18,7 +18,7 @@ namespace SourceGit.Views
             RevisionList.Focus();
         }
 
-        private void OnListKeyDown(object sender, KeyEventArgs e)
+        private void OnRevisionListKeyDown(object sender, KeyEventArgs e)
         {
             if (e is not { Key: Key.Enter, KeyModifiers: KeyModifiers.None })
                 return;
@@ -30,7 +30,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnListItemTapped(object sender, TappedEventArgs e)
+        private void OnRevisionListItemTapped(object sender, TappedEventArgs e)
         {
             if (sender is not Control { DataContext: Models.Commit commit })
                 return;

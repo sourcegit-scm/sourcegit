@@ -30,18 +30,6 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
-        public bool EnableAutoFetch
-        {
-            get;
-            set;
-        } = false;
-
-        public int AutoFetchInterval
-        {
-            get;
-            set;
-        } = 10;
-
         public bool AskBeforeAutoUpdatingSubmodules
         {
             get;
@@ -108,7 +96,7 @@ namespace SourceGit.Models
             return setting;
         }
 
-        public async Task SaveAsync()
+        public void Save()
         {
             try
             {
@@ -116,7 +104,9 @@ namespace SourceGit.Models
                 var hash = HashContent(content);
                 if (!hash.Equals(_orgHash, StringComparison.Ordinal))
                 {
-                    await File.WriteAllTextAsync(_file, content);
+                    var tmpfile = $"{_file}.tmp";
+                    File.WriteAllText(tmpfile, content);
+                    File.Move(tmpfile, _file, true);
                     _orgHash = hash;
                 }
             }

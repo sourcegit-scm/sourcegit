@@ -16,12 +16,15 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public Init(string pageId, string path, RepositoryNode parent, string reason)
+        public Init(string pageId, string path, RepositoryNode parent, int bookmark, string reason)
         {
             _pageId = pageId;
             _targetPath = path;
             _parentNode = parent;
-            Reason = string.IsNullOrEmpty(reason) ? "Invalid repository detected!" : reason;
+            _bookmark = bookmark;
+
+            Reason = string.IsNullOrEmpty(reason) ? "unknown error" : reason;
+            Reason = Reason.Trim();
         }
 
         public override async Task<bool> Sure()
@@ -40,6 +43,7 @@ namespace SourceGit.ViewModels
             if (succ)
             {
                 var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(_targetPath, _parentNode, true);
+                node.Bookmark = _bookmark;
                 await node.UpdateStatusAsync(false, null);
 
                 Welcome.Instance.Refresh();
@@ -50,5 +54,6 @@ namespace SourceGit.ViewModels
         private readonly string _pageId = null;
         private string _targetPath = null;
         private readonly RepositoryNode _parentNode = null;
+        private readonly int _bookmark = 0;
     }
 }

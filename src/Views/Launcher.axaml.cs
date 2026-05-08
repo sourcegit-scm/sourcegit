@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.VisualTree;
@@ -62,17 +61,6 @@ namespace SourceGit.Views
             InitializeComponent();
             PositionChanged += OnPositionChanged;
 
-            if (OperatingSystem.IsWindows() && OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
-            {
-                Background = Brushes.Transparent;
-                TransparencyLevelHint = [WindowTransparencyLevel.Mica];
-                TitleBarBG.Background = Brushes.Transparent;
-            }
-            else
-            {
-                TitleBarBG.Bind(BackgroundProperty, new DynamicResourceExtension("Brush.TitleBar"));
-            }
-
             var layout = ViewModels.Preferences.Instance.Layout;
             Width = layout.LauncherWidth;
             Height = layout.LauncherHeight;
@@ -110,7 +98,8 @@ namespace SourceGit.Views
         {
             base.OnOpened(e);
 
-            var state = ViewModels.Preferences.Instance.Layout.LauncherWindowState;
+            var preferences = ViewModels.Preferences.Instance;
+            var state = preferences.Layout.LauncherWindowState;
             if (state == WindowState.Maximized || state == WindowState.FullScreen)
                 WindowState = WindowState.Maximized;
         }
@@ -130,6 +119,11 @@ namespace SourceGit.Views
                     CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
+            }
+            else if (change.Property == IsActiveProperty)
+            {
+                if (!IsActive && DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
+                    vm.CommandPalette = null;
             }
         }
 
@@ -166,14 +160,15 @@ namespace SourceGit.Views
             {
                 if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
                 {
-                    await App.ShowDialog(new Preferences());
+                    await this.ShowDialogAsync(new Preferences());
                     e.Handled = true;
                     return;
                 }
 
                 if (e is { KeyModifiers: KeyModifiers.None, Key: Key.F1 })
                 {
-                    await App.ShowDialog(new Hotkeys());
+                    await this.ShowDialogAsync(new Hotkeys());
+                    e.Handled = true;
                     return;
                 }
 
@@ -184,7 +179,28 @@ namespace SourceGit.Views
                 }
             }
 
-            if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
+            var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+
+            if (vm.CommandPalette != null)
+            {
+                if (e.Key == Key.Escape)
+                {
+                    vm.CommandPalette = null;
+                    e.Handled = true;
+                }
+                else if (vm.ActivePage.Data is ViewModels.Repository repo
+                    && vm.CommandPalette is ViewModels.LauncherPagesCommandPalette
+                    && e.Key == Key.P
+                    && e.KeyModifiers == (cmdKey | KeyModifiers.Shift))
+                {
+                    vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
+                    e.Handled = true;
+                }
+
+                return;
+            }
+
+            if (e.KeyModifiers.HasFlag(cmdKey))
             {
                 if (e.Key == Key.W)
                 {
@@ -199,6 +215,23 @@ namespace SourceGit.Views
                         vm.AddNewTab();
 
                     ViewModels.Welcome.Instance.Clone();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.O && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                {
+                    if (vm.ActivePage.Data is not ViewModels.Welcome)
+                        vm.AddNewTab();
+
+                    ViewModels.Welcome.Instance.OpenLocalRepository();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.T)
+                {
+                    vm.AddNewTab();
                     e.Handled = true;
                     return;
                 }
@@ -265,11 +298,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Escape)
             {
-                if (vm.CommandPalette != null)
-                    vm.CommandPalette = null;
-                else
-                    vm.ActivePage.CancelPopup();
-
+                vm.ActivePage.CancelPopup();
                 e.Handled = true;
                 return;
             }
@@ -297,10 +326,17 @@ namespace SourceGit.Views
             base.OnClosing(e);
 
             if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
-            {
+                launcher.CloseAll();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            if (!Design.IsDesignMode)
                 ViewModels.Preferences.Instance.Save();
-                launcher.Quit();
-            }
+
+            App.Quit(0);
         }
 
         private void OnPositionChanged(object sender, PixelPointEventArgs e)
@@ -317,6 +353,9 @@ namespace SourceGit.Views
         {
             if (sender is Button btn && DataContext is ViewModels.Launcher launcher)
             {
+                if (launcher.CommandPalette != null)
+                    launcher.CommandPalette = null;
+
                 var pref = ViewModels.Preferences.Instance;
                 var menu = new ContextMenu();
                 menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
@@ -337,7 +376,7 @@ namespace SourceGit.Views
                 {
                     var workspace = pref.Workspaces[i];
 
-                    var icon = App.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
+                    var icon = this.CreateMenuIcon(workspace.IsActive ? "Icons.Check" : "Icons.Workspace");
                     icon.Fill = workspace.Brush;
 
                     var item = new MenuItem();
@@ -360,7 +399,7 @@ namespace SourceGit.Views
                 configure.Header = App.Text("Workspace.Configure");
                 configure.Click += async (_, ev) =>
                 {
-                    await App.ShowDialog(new ViewModels.ConfigureWorkspace());
+                    await this.ShowDialogAsync(new ViewModels.ConfigureWorkspace());
                     ev.Handled = true;
                 };
                 menu.Items.Add(configure);

@@ -351,8 +351,6 @@ namespace SourceGit.Views
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             else if (change.Property == SelectedChunkProperty)
                 TextArea.TextView.InvalidateVisual();
-            else if (change.Property == MaxLineNumberProperty)
-                TextArea.LeftMargins[0].InvalidateMeasure();
         }
 
         private void UpdateContent()
@@ -391,10 +389,10 @@ namespace SourceGit.Views
 
             var copy = new MenuItem();
             copy.Header = App.Text("Copy");
-            copy.Icon = App.CreateMenuIcon("Icons.Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
             copy.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(selected);
+                await this.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 
@@ -438,6 +436,9 @@ namespace SourceGit.Views
                 SetCurrentValue(DisplayRangeProperty, null);
                 return;
             }
+
+            foreach (var margin in TextArea.LeftMargins)
+                margin.InvalidateMeasure();
 
             var lines = Lines;
             var start = int.MaxValue;

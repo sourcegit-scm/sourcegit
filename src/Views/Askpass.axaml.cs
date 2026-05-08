@@ -1,4 +1,8 @@
 using System;
+using System.Security.Cryptography;
+using System.Text;
+
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -10,6 +14,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            TxtPassphrase.Focus(NavigationMethod.Directional);
+        }
+
         private void CloseWindow(object _1, RoutedEventArgs _2)
         {
             Console.Out.WriteLine("No passphrase entered.");
@@ -19,7 +29,19 @@ namespace SourceGit.Views
         private void EnterPassword(object _1, RoutedEventArgs _2)
         {
             var passphrase = TxtPassphrase.Text ?? string.Empty;
-            Console.Out.WriteLine(passphrase);
+            byte[] passBytes = Encoding.UTF8.GetBytes(passphrase);
+            try
+            {
+                var outStream = Console.OpenStandardOutput();
+                outStream.Write(passBytes, 0, passBytes.Length);
+                outStream.WriteByte((byte)'\n');
+                outStream.Flush();
+            }
+            finally
+            {
+                CryptographicOperations.ZeroMemory(passBytes);
+                TxtPassphrase.Text = string.Empty;
+            }
             App.Quit(0);
         }
     }

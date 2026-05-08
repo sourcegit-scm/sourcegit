@@ -9,7 +9,12 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public bool DiscardLocalChanges
+        public bool HasLocalChanges
+        {
+            get => _repo.LocalChangesCount > 0;
+        }
+
+        public Models.DealWithLocalChanges DealWithLocalChanges
         {
             get;
             set;
@@ -19,7 +24,10 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Commit = commit;
-            DiscardLocalChanges = false;
+
+            DealWithLocalChanges = Preferences.Instance.UseStashAndReapplyByDefault ?
+                Models.DealWithLocalChanges.StashAndReapply :
+                Models.DealWithLocalChanges.DoNothing;
         }
 
         public override async Task<bool> Sure()
@@ -45,7 +53,13 @@ namespace SourceGit.ViewModels
             var succ = false;
             var needPop = false;
 
-            if (!DiscardLocalChanges)
+            if (DealWithLocalChanges == Models.DealWithLocalChanges.DoNothing)
+            {
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .CommitAsync(Commit.SHA, false);
+            }
+            else if (DealWithLocalChanges == Models.DealWithLocalChanges.StashAndReapply)
             {
                 var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
                 if (changes > 0)
@@ -56,16 +70,23 @@ namespace SourceGit.ViewModels
                     if (!succ)
                     {
                         log.Complete();
+                        _repo.MarkWorkingCopyDirtyManually();
                         return false;
                     }
 
                     needPop = true;
                 }
-            }
 
-            succ = await new Commands.Checkout(_repo.FullPath)
-                .Use(log)
-                .CommitAsync(Commit.SHA, DiscardLocalChanges);
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .CommitAsync(Commit.SHA, false);
+            }
+            else
+            {
+                succ = await new Commands.Checkout(_repo.FullPath)
+                    .Use(log)
+                    .CommitAsync(Commit.SHA, true);
+            }
 
             if (succ)
             {

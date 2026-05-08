@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Push"
              x:DataType="vm:Push">
@@ -65,30 +66,12 @@
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Push.To}"/>
       <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="*,Auto">
-        <ComboBox Grid.Column="0"
-                  Height="28" Padding="8,0"
-                  VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                  ItemsSource="{Binding RemoteBranches}"
-                  IsTextSearchEnabled="True"
-                  TextSearch.TextBinding="{Binding Name, DataType=m:Branch}"
-                  SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}">
-          <ComboBox.ItemTemplate>
-            <DataTemplate x:DataType="{x:Type m:Branch}">
-              <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-                <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-                <Border Height="14"
-                        CornerRadius="7"
-                        Margin="4,0,0,0" Padding="6,0"
-                        VerticalAlignment="Center"
-                        Background="Green"
-                        IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
-                  <TextBlock Text="{DynamicResource Text.Push.New}" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
-                </Border>
-              </StackPanel>
-            </DataTemplate>
-          </ComboBox.ItemTemplate>
-        </ComboBox>
+        <v:BranchSelector Grid.Column="0"
+                          Height="28" Padding="8,0"
+                          VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                          Branches="{Binding RemoteBranches, Mode=OneWay}"
+                          SelectedBranch="{Binding SelectedRemoteBranch, Mode=TwoWay}"
+                          UsePureName="True"/>
 
         <Button Grid.Column="1"
                 Classes="icon_button"

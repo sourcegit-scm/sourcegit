@@ -24,6 +24,19 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return outs;
 
+            var config = await new Config(WorkingDirectory).ReadAllAsync().ConfigureAwait(false);
+            var disableAutoFetchRemotes = new HashSet<string>();
+            foreach (var (k, v) in config)
+            {
+                if (k.StartsWith("remote.", StringComparison.Ordinal) &&
+                    k.EndsWith(".disableautofetch", StringComparison.Ordinal) &&
+                    v.Equals("true", StringComparison.OrdinalIgnoreCase))
+                {
+                    var remoteName = k.Substring(7, k.Length - 24).Trim('"');
+                    disableAutoFetchRemotes.Add(remoteName);
+                }
+            }
+
             var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in lines)
             {
@@ -35,6 +48,7 @@ namespace SourceGit.Commands
                 {
                     Name = match.Groups[1].Value,
                     URL = match.Groups[2].Value,
+                    DisableAutoFetch = disableAutoFetchRemotes.Contains(match.Groups[1].Value)
                 };
 
                 if (outs.Find(x => x.Name == remote.Name) != null)

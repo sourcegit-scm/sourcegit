@@ -5,6 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              x:Class="SourceGit.Views.SetUpstream"
              x:DataType="vm:SetUpstream">
   <StackPanel Orientation="Vertical" Margin="8,0">
@@ -32,23 +33,12 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.SetUpstream.Upstream}"/>
-      <ComboBox Grid.Row="1" Grid.Column="1"
-                Height="28" Padding="8,0"
-                VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding RemoteBranches}"
-                SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}"
-                IsTextSearchEnabled="True"
-                TextSearch.TextBinding="{Binding Name, DataType=m:Branch}"
-                IsEnabled="{Binding !Unset, Mode=OneWay}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type m:Branch}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding FriendlyName}"/>
-            </StackPanel>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
+      <v:BranchSelector Grid.Row="1" Grid.Column="1"
+                        Height="28"
+                        VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                        Branches="{Binding RemoteBranches}"
+                        SelectedBranch="{Binding SelectedRemoteBranch, Mode=TwoWay}"
+                        IsEnabled="{Binding !Unset, Mode=OneWay}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.SetUpstream.Unset}"

@@ -246,13 +246,14 @@ namespace SourceGit.Models
             return states;
         }
 
-        public void Unload(string lastCommitMessage)
+        public void Save()
         {
             try
             {
-                LastCommitMessage = lastCommitMessage;
-                using var stream = File.Create(_file);
-                JsonSerializer.Serialize(stream, this, JsonCodeGen.Default.RepositoryUIStates);
+                var content = JsonSerializer.Serialize(this, JsonCodeGen.Default.RepositoryUIStates);
+                var tmpfile = $"{_file}.tmp";
+                File.WriteAllText(tmpfile, content);
+                File.Move(tmpfile, _file, true);
             }
             catch
             {

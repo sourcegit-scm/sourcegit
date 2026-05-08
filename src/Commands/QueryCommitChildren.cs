@@ -24,7 +24,7 @@ namespace SourceGit.Commands
                 foreach (var line in lines)
                 {
                     if (line.Contains(_commit))
-                        outs.Add(line.Substring(0, 40));
+                        outs.Add(line.Substring(0, _commit.Length));
                 }
             }
 

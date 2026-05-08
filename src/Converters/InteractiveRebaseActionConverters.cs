@@ -6,7 +6,7 @@ namespace SourceGit.Converters
     public static class InteractiveRebaseActionConverters
     {
         public static readonly FuncValueConverter<Models.InteractiveRebaseAction, IBrush> ToIconBrush =
-            new FuncValueConverter<Models.InteractiveRebaseAction, IBrush>(v =>
+            new(v =>
             {
                 return v switch
                 {
@@ -20,6 +20,12 @@ namespace SourceGit.Converters
             });
 
         public static readonly FuncValueConverter<Models.InteractiveRebaseAction, string> ToName =
-            new FuncValueConverter<Models.InteractiveRebaseAction, string>(v => v.ToString());
+            new(v => v.ToString());
+
+        public static readonly FuncValueConverter<Models.InteractiveRebaseAction, bool> IsDrop =
+            new(v => v == Models.InteractiveRebaseAction.Drop);
+
+        public static readonly FuncValueConverter<Models.InteractiveRebaseAction, double> ToOpacity =
+            new(v => v > Models.InteractiveRebaseAction.Reword ? 0.65 : 1.0);
     }
 }

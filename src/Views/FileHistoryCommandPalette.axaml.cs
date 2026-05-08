@@ -19,7 +19,7 @@ namespace SourceGit.Views
 
             if (e.Key == Key.Enter)
             {
-                vm.Launch();
+                this.ShowWindow(vm.Launch());
                 e.Handled = true;
             }
             else if (e.Key == Key.Up)
@@ -55,7 +55,7 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.FileHistoryCommandPalette vm)
             {
-                vm.Launch();
+                this.ShowWindow(vm.Launch());
                 e.Handled = true;
             }
         }

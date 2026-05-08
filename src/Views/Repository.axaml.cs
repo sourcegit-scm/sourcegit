@@ -94,7 +94,7 @@ namespace SourceGit.Views
 
                 var switchTo = new MenuItem();
                 switchTo.Header = App.Text("Worktree.Open");
-                switchTo.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+                switchTo.Icon = this.CreateMenuIcon("Icons.Folder.Open");
                 switchTo.Click += (_, ev) =>
                 {
                     repo.OpenWorktree(worktree);
@@ -107,7 +107,7 @@ namespace SourceGit.Views
                 {
                     var unlock = new MenuItem();
                     unlock.Header = App.Text("Worktree.Unlock");
-                    unlock.Icon = App.CreateMenuIcon("Icons.Unlock");
+                    unlock.Icon = this.CreateMenuIcon("Icons.Unlock");
                     unlock.Click += async (_, ev) =>
                     {
                         await repo.UnlockWorktreeAsync(worktree);
@@ -119,7 +119,7 @@ namespace SourceGit.Views
                 {
                     var loc = new MenuItem();
                     loc.Header = App.Text("Worktree.Lock");
-                    loc.Icon = App.CreateMenuIcon("Icons.Lock");
+                    loc.Icon = this.CreateMenuIcon("Icons.Lock");
                     loc.IsEnabled = !worktree.IsMain;
                     loc.Click += async (_, ev) =>
                     {
@@ -131,7 +131,7 @@ namespace SourceGit.Views
 
                 var remove = new MenuItem();
                 remove.Header = App.Text("Worktree.Remove");
-                remove.Icon = App.CreateMenuIcon("Icons.Clear");
+                remove.Icon = this.CreateMenuIcon("Icons.Clear");
                 remove.IsEnabled = !worktree.IsCurrent && !worktree.IsMain;
                 remove.Click += (_, ev) =>
                 {
@@ -143,10 +143,10 @@ namespace SourceGit.Views
 
                 var copy = new MenuItem();
                 copy.Header = App.Text("Worktree.CopyPath");
-                copy.Icon = App.CreateMenuIcon("Icons.Copy");
+                copy.Icon = this.CreateMenuIcon("Icons.Copy");
                 copy.Click += async (_, ev) =>
                 {
-                    await App.CopyTextAsync(worktree.FullPath);
+                    await this.CopyTextAsync(worktree.FullPath);
                     ev.Handled = true;
                 };
                 menu.Items.Add(new MenuItem() { Header = "-" });
@@ -354,7 +354,7 @@ namespace SourceGit.Views
                 var horizontal = new MenuItem();
                 horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
                 if (isHorizontal)
-                    horizontal.Icon = App.CreateMenuIcon("Icons.Check");
+                    horizontal.Icon = this.CreateMenuIcon("Icons.Check");
                 horizontal.Click += (_, ev) =>
                 {
                     pref.UseTwoColumnsLayoutInHistories = true;
@@ -364,7 +364,7 @@ namespace SourceGit.Views
                 var vertical = new MenuItem();
                 vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
                 if (!isHorizontal)
-                    vertical.Icon = App.CreateMenuIcon("Icons.Check");
+                    vertical.Icon = this.CreateMenuIcon("Icons.Check");
                 vertical.Click += (_, ev) =>
                 {
                     pref.UseTwoColumnsLayoutInHistories = false;
@@ -379,7 +379,7 @@ namespace SourceGit.Views
                 reflog.Header = App.Text("Repository.ShowLostCommits");
                 reflog.Tag = "--reflog";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
-                    reflog.Icon = App.CreateMenuIcon("Icons.Check");
+                    reflog.Icon = this.CreateMenuIcon("Icons.Check");
                 reflog.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.Reflog);
@@ -390,7 +390,7 @@ namespace SourceGit.Views
                 firstParentOnly.Header = App.Text("Repository.ShowFirstParentOnly");
                 firstParentOnly.Tag = "--first-parent";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
-                    firstParentOnly.Icon = App.CreateMenuIcon("Icons.Check");
+                    firstParentOnly.Icon = this.CreateMenuIcon("Icons.Check");
                 firstParentOnly.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.FirstParentOnly);
@@ -401,7 +401,7 @@ namespace SourceGit.Views
                 simplifyByDecoration.Header = App.Text("Repository.ShowDecoratedCommitsOnly");
                 simplifyByDecoration.Tag = "--simplify-by-decoration";
                 if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
-                    simplifyByDecoration.Icon = App.CreateMenuIcon("Icons.Check");
+                    simplifyByDecoration.Icon = this.CreateMenuIcon("Icons.Check");
                 simplifyByDecoration.Click += (_, ev) =>
                 {
                     repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
@@ -416,7 +416,7 @@ namespace SourceGit.Views
                 dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
                 dateOrder.Tag = "--date-order";
                 if (!repo.EnableTopoOrderInHistory)
-                    dateOrder.Icon = App.CreateMenuIcon("Icons.Check");
+                    dateOrder.Icon = this.CreateMenuIcon("Icons.Check");
                 dateOrder.Click += (_, ev) =>
                 {
                     repo.EnableTopoOrderInHistory = false;
@@ -427,7 +427,7 @@ namespace SourceGit.Views
                 topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
                 topoOrder.Tag = "--topo-order";
                 if (repo.EnableTopoOrderInHistory)
-                    topoOrder.Icon = App.CreateMenuIcon("Icons.Check");
+                    topoOrder.Icon = this.CreateMenuIcon("Icons.Check");
                 topoOrder.Click += (_, ev) =>
                 {
                     repo.EnableTopoOrderInHistory = true;
@@ -462,7 +462,7 @@ namespace SourceGit.Views
                 var byNameAsc = new MenuItem();
                 byNameAsc.Header = App.Text("Repository.BranchSort.ByName");
                 if (isSortByName)
-                    byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
+                    byNameAsc.Icon = this.CreateMenuIcon("Icons.Check");
                 byNameAsc.Click += (_, ev) =>
                 {
                     if (!isSortByName)
@@ -473,7 +473,7 @@ namespace SourceGit.Views
                 var byCommitterDate = new MenuItem();
                 byCommitterDate.Header = App.Text("Repository.BranchSort.ByCommitterDate");
                 if (!isSortByName)
-                    byCommitterDate.Icon = App.CreateMenuIcon("Icons.Check");
+                    byCommitterDate.Icon = this.CreateMenuIcon("Icons.Check");
                 byCommitterDate.Click += (_, ev) =>
                 {
                     if (isSortByName)
@@ -499,7 +499,7 @@ namespace SourceGit.Views
                 var byNameAsc = new MenuItem();
                 byNameAsc.Header = App.Text("Repository.BranchSort.ByName");
                 if (isSortByName)
-                    byNameAsc.Icon = App.CreateMenuIcon("Icons.Check");
+                    byNameAsc.Icon = this.CreateMenuIcon("Icons.Check");
                 byNameAsc.Click += (_, ev) =>
                 {
                     if (!isSortByName)
@@ -510,7 +510,7 @@ namespace SourceGit.Views
                 var byCommitterDate = new MenuItem();
                 byCommitterDate.Header = App.Text("Repository.BranchSort.ByCommitterDate");
                 if (!isSortByName)
-                    byCommitterDate.Icon = App.CreateMenuIcon("Icons.Check");
+                    byCommitterDate.Icon = this.CreateMenuIcon("Icons.Check");
                 byCommitterDate.Click += (_, ev) =>
                 {
                     if (isSortByName)
@@ -536,7 +536,7 @@ namespace SourceGit.Views
                 var byCreatorDate = new MenuItem();
                 byCreatorDate.Header = App.Text("Repository.Tags.OrderByCreatorDate");
                 if (!isSortByName)
-                    byCreatorDate.Icon = App.CreateMenuIcon("Icons.Check");
+                    byCreatorDate.Icon = this.CreateMenuIcon("Icons.Check");
                 byCreatorDate.Click += (_, ev) =>
                 {
                     if (isSortByName)
@@ -547,7 +547,7 @@ namespace SourceGit.Views
                 var byName = new MenuItem();
                 byName.Header = App.Text("Repository.Tags.OrderByName");
                 if (isSortByName)
-                    byName.Icon = App.CreateMenuIcon("Icons.Check");
+                    byName.Icon = this.CreateMenuIcon("Icons.Check");
                 byName.Click += (_, ev) =>
                 {
                     if (!isSortByName)

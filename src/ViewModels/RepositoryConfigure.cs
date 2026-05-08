@@ -101,26 +101,6 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.AskBeforeAutoUpdatingSubmodules = value;
         }
 
-        public bool EnableAutoFetch
-        {
-            get => _repo.Settings.EnableAutoFetch;
-            set => _repo.Settings.EnableAutoFetch = value;
-        }
-
-        public int? AutoFetchInterval
-        {
-            get => _repo.Settings.AutoFetchInterval;
-            set
-            {
-                if (value is null || value < 1)
-                    return;
-
-                var interval = (int)value;
-                if (_repo.Settings.AutoFetchInterval != interval)
-                    _repo.Settings.AutoFetchInterval = interval;
-            }
-        }
-
         public AvaloniaList<Models.CommitTemplate> CommitTemplates
         {
             get => _repo.Settings.CommitTemplates;
@@ -286,6 +266,8 @@ namespace SourceGit.ViewModels
 
         public async Task SaveAsync()
         {
+            _repo.Settings.Save();
+
             await SetIfChangedAsync("user.name", UserName, "");
             await SetIfChangedAsync("user.email", UserEmail, "");
             await SetIfChangedAsync("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
@@ -295,7 +277,6 @@ namespace SourceGit.ViewModels
             await SetIfChangedAsync("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
 
             await ApplyIssueTrackerChangesAsync();
-            await _repo.Settings.SaveAsync();
         }
 
         private async Task SetIfChangedAsync(string key, string value, string defValue)

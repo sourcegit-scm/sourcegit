@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
@@ -10,7 +9,6 @@ namespace SourceGit.Models
         public string File { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public ulong Timestamp { get; set; } = 0;
-        public string Time => DateTime.UnixEpoch.AddSeconds(Timestamp).ToLocalTime().ToString(DateTimeFormat.Active.DateOnly);
     }
 
     public class BlameData

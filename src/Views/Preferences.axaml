@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:s="using:SourceGit"
+                    xmlns:ai="using:SourceGit.AI"
                     xmlns:m="using:SourceGit.Models"
                     xmlns:c="using:SourceGit.Converters"
                     xmlns:vm="using:SourceGit.ViewModels"
@@ -63,21 +64,29 @@
                        Text="{DynamicResource Text.Preferences.General.DateFormat}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="1" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding Source={x:Static m:DateTimeFormat.Supported}}"
-                      SelectedIndex="{Binding DateTimeFormat, Mode=TwoWay}">
-              <ComboBox.ItemTemplate>
-                <DataTemplate x:DataType="{x:Type m:DateTimeFormat}">
-                  <Grid ColumnDefinitions="*,8,*">
-                    <TextBlock Grid.Column="0" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding Example}"/>
-                    <TextBlock Grid.Column="2" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding DateTime}" Foreground="{DynamicResource Brush.FG2}"/>
-                  </Grid>
-                </DataTemplate>
-              </ComboBox.ItemTemplate>
-            </ComboBox>
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto">
+              <ComboBox Grid.Column="0"
+                        MinHeight="28"
+                        Padding="8,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding Source={x:Static m:DateTimeFormat.Supported}}"
+                        SelectedIndex="{Binding DateTimeFormat, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="{x:Type m:DateTimeFormat}">
+                    <Grid ColumnDefinitions="*,8,*">
+                      <TextBlock Grid.Column="0" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding Example}"/>
+                      <TextBlock Grid.Column="2" FontFamily="{DynamicResource Fonts.Monospace}" Text="{Binding DateFormat}" Foreground="{DynamicResource Brush.FG2}"/>
+                    </Grid>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+
+              <CheckBox Grid.Column="1"
+                        Height="32"
+                        Margin="8,0,0,0"
+                        Content="{DynamicResource Text.Preferences.General.Use24Hours}"
+                        IsChecked="{Binding Use24Hours, Mode=TwoWay}"/>
+            </Grid>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.DefaultCloneDir}"
@@ -300,7 +309,7 @@
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Git}"/>
           </TabItem.Header>
 
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto,32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.Path}"
                        HorizontalAlignment="Right"
@@ -396,6 +405,31 @@
                       Content="{DynamicResource Text.Preferences.Git.UseLibsecret}"
                       IsChecked="{Binding UseLibsecretInsteadOfGCM, Mode=TwoWay}"
                       IsVisible="{OnPlatform False, Linux=True}"/>
+
+            <CheckBox Grid.Row="9" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Git.UseStashAndReapplyByDefault}"
+                      IsChecked="{Binding UseStashAndReapplyByDefault, Mode=TwoWay}"/>
+
+            <StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
+              <CheckBox x:Name="AutoFetchCheckBox"
+                        Content="{DynamicResource Text.Configure.Git.AutoFetch}"
+                        IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
+
+              <NumericUpDown Minimum="1" Maximum="60" Increment="1"
+                             Height="26" Width="110"
+                             Margin="8,0,0,0" Padding="4"
+                             BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                             CornerRadius="3"
+                             ParsingNumberStyle="Integer"
+                             FormatString="0"
+                             Value="{Binding AutoFetchInterval, Mode=TwoWay, FallbackValue=10}"
+                             IsEnabled="{Binding #AutoFetchCheckBox.IsChecked}"/>
+
+              <TextBlock VerticalAlignment="Center"
+                         Margin="5,0,0,0"
+                         Text="{DynamicResource Text.Configure.Git.AutoFetchIntervalSuffix}" />
+            </StackPanel>
           </Grid>
         </TabItem>
 
@@ -814,7 +848,7 @@
                   </ListBox.ItemsPanel>
 
                   <ListBox.ItemTemplate>
-                    <DataTemplate DataType="m:OpenAIService">
+                    <DataTemplate DataType="ai:Service">
                       <Grid ColumnDefinitions="Auto,*">
                         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.AIAssist}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="8,0" TextTrimming="CharacterEllipsis"/>
@@ -851,7 +885,7 @@
               </ContentControl.Content>
 
               <ContentControl.DataTemplates>
-                <DataTemplate DataType="m:OpenAIService">
+                <DataTemplate DataType="ai:Service">
                   <StackPanel Orientation="Vertical" MaxWidth="680">
                     <TextBlock Text="{DynamicResource Text.Preferences.AI.Name}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
@@ -859,36 +893,20 @@
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Server}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Server, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Model, Mode=TwoWay}"/>
-
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
                     <CheckBox Margin="0,4,0,0"
                               Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
                               IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AnalyzeDiffPrompt}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AdditionalPrompt}"/>
                     <TextBox Height="120"
                              Margin="0,4,0,0"
                              CornerRadius="3"
                              VerticalContentAlignment="Top"
-                             Text="{Binding AnalyzeDiffPrompt, Mode=TwoWay}"
+                             Text="{Binding AdditionalPrompt, Mode=TwoWay}"
                              AcceptsReturn="true"
                              TextWrapping="Wrap"/>
-
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.GenerateSubjectPrompt}"/>
-                    <TextBox Height="120"
-                             Margin="0,4,0,0"
-                             CornerRadius="3"
-                             VerticalContentAlignment="Top"
-                             Text="{Binding GenerateSubjectPrompt, Mode=TwoWay}"
-                             AcceptsReturn="true"
-                             TextWrapping="Wrap"/>
-
-                    <CheckBox Margin="0,12,0,0"
-                              Content="{DynamicResource Text.Preferences.AI.Streaming}"
-                              IsChecked="{Binding Streaming, Mode=TwoWay}"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>

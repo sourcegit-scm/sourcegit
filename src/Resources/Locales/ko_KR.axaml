@@ -18,12 +18,11 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">새 브랜치 생성</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">기존 브랜치</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI 어시스턴트</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">재생성</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI를 사용하여 커밋 메시지 생성</x:String>
-  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">커밋 메시지로 적용</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit 숨기기</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">모두 보기</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">패치</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">패치 파일:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">적용할 .patch 파일을 선택하세요</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">공백 변경 사항 무시</x:String>
@@ -97,8 +96,6 @@
   <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">커밋:</x:String>
   <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">경고: 커밋 체크아웃을 하면, HEAD가 분리됩니다(detached)</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.Discard" xml:space="preserve">폐기</x:String>
-  <x:String x:Key="Text.Checkout.LocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">브랜치:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">현재 HEAD에 브랜치/태그에 연결되지 않은 커밋이 있습니다! 계속하시겠습니까?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">체크아웃 &amp; Fast-Forward</x:String>
@@ -269,8 +266,6 @@
   <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">기준:</x:String>
   <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">생성된 브랜치로 체크아웃</x:String>
   <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.Discard" xml:space="preserve">폐기</x:String>
-  <x:String x:Key="Text.CreateBranch.LocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">새 브랜치 이름:</x:String>
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">브랜치 이름을 입력하세요.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">로컬 브랜치 생성</x:String>
@@ -289,6 +284,8 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">경량 태그</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Ctrl을 누른 채 클릭하면 바로 시작합니다</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">잘라내기</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">폐기</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">서브모듈 초기화 해제</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">로컬 변경 사항이 있어도 강제로 초기화 해제합니다.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">서브모듈:</x:String>
@@ -394,7 +391,6 @@
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Hotfix 완료</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Release 완료</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">대상:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishWithPush" xml:space="preserve">완료 후 원격(들)에 푸시</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">병합 시 스쿼시</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">핫픽스:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Hotfix 접두사:</x:String>
@@ -520,11 +516,11 @@
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">병합 도구에서 열기</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">선택 사항.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">새 탭 만들기</x:String>
-  <x:String x:Key="Text.PageTabBar.Tab.Bookmark" xml:space="preserve">북마크</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">다른 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">오른쪽 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">저장소 경로 복사</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">편집</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">저장소</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">붙여넣기</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}일 전</x:String>
@@ -539,14 +535,10 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">어제</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">환경설정</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Preferences.AI.AnalyzeDiffPrompt" xml:space="preserve">Diff 분석 프롬프트</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API 키</x:String>
-  <x:String x:Key="Text.Preferences.AI.GenerateSubjectPrompt" xml:space="preserve">제목 생성 프롬프트</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">이름</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">입력된 값은 환경변수(ENV)에서 API 키를 불러올 이름입니다</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">서버</x:String>
-  <x:String x:Key="Text.Preferences.AI.Streaming" xml:space="preserve">스트리밍 활성화</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">모양</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">기본 글꼴</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">에디터 탭 너비</x:String>
@@ -609,8 +601,6 @@
   <x:String x:Key="Text.Pull.Branch" xml:space="preserve">원격 브랜치:</x:String>
   <x:String x:Key="Text.Pull.Into" xml:space="preserve">대상:</x:String>
   <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.Discard" xml:space="preserve">폐기</x:String>
-  <x:String x:Key="Text.Pull.LocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.Pull.Remote" xml:space="preserve">원격:</x:String>
   <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; 병합)</x:String>
   <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">병합 대신 리베이스 사용</x:String>

@@ -193,7 +193,7 @@ namespace SourceGit.Views
             }
 
             var refetch = new MenuItem();
-            refetch.Icon = App.CreateMenuIcon("Icons.Loading");
+            refetch.Icon = this.CreateMenuIcon("Icons.Loading");
             refetch.Header = App.Text("Avatar.Refetch");
             refetch.Click += (_, ev) =>
             {
@@ -204,7 +204,7 @@ namespace SourceGit.Views
             };
 
             var load = new MenuItem();
-            load.Icon = App.CreateMenuIcon("Icons.Folder.Open");
+            load.Icon = this.CreateMenuIcon("Icons.Folder.Open");
             load.Header = App.Text("Avatar.Load");
             load.Click += async (_, ev) =>
             {
@@ -225,7 +225,7 @@ namespace SourceGit.Views
             };
 
             var saveAs = new MenuItem();
-            saveAs.Icon = App.CreateMenuIcon("Icons.Save");
+            saveAs.Icon = this.CreateMenuIcon("Icons.Save");
             saveAs.Header = App.Text("SaveAs");
             saveAs.Click += async (_, ev) =>
             {

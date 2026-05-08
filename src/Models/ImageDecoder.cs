@@ -6,5 +6,6 @@
         Builtin,
         Pfim,
         Tiff,
+        StbImage,
     }
 }

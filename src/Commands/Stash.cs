@@ -76,6 +76,12 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
+        public async Task<bool> CheckoutBranchAsync(string name, string branch)
+        {
+            Args = $"stash branch {branch.Quoted()} {name.Quoted()}";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
         public async Task<bool> PopAsync(string name)
         {
             Args = $"stash pop -q --index {name.Quoted()}";

@@ -256,11 +256,9 @@ namespace SourceGit.ViewModels
                 await new Commands.Checkout(_repo).MultipleFilesWithRevisionAsync(checkouts, _toHead.SHA);
         }
 
-        public async Task SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
+        public async Task<bool> SaveChangesAsPatchAsync(List<Models.Change> changes, string saveTo)
         {
-            var succ = await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes, _based, _to, saveTo);
-            if (succ)
-                App.SendNotification(_repo, App.Text("SaveAsPatchSuccess"));
+            return await Commands.SaveChangesAsPatch.ProcessRevisionCompareChangesAsync(_repo, changes, _based, _to, saveTo);
         }
 
         private void Refresh()

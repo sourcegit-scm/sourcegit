@@ -8,11 +8,11 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^\-\s+\-\s+.*$")]
         private static partial Regex REG_TEST();
 
-        public IsBinary(string repo, string commit, string path)
+        public IsBinary(string repo, string revision, string path)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff --no-color --no-ext-diff --numstat {Models.Commit.EmptyTreeSHA1} {commit} -- {path.Quoted()}";
+            Args = $"diff --no-color --no-ext-diff --numstat {Models.EmptyTreeHash.Guess(revision)} {revision} -- {path.Quoted()}";
             RaiseError = false;
         }
 

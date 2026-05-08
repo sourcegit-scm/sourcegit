@@ -58,7 +58,7 @@
 * Workspace
 * Custom Action
 * Create PR on GitHub/Gitlab/Gitea/Gitee/Bitbucket...
-* Using AI to generate commit message (C# port of [anjerodev/commitollama](https://github.com/anjerodev/commitollama))
+* Using AI to generate commit message
 * Built-in conventional commit message helper.
 
 > [!WARNING]
@@ -120,6 +120,7 @@ For **Linux** users:
 
   `deb` how to:
   ```shell
+  sudo mkdir -p /etc/apt/keyrings
   curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
   echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc, arch=amd64,arm64] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
   sudo apt update
@@ -139,6 +140,29 @@ For **Linux** users:
   ```
 
   If your distribution isn't using `dnf`, please refer to the documentation of your distribution on how to add an `rpm` repository.
+
+* Thanks [@gadfly3173](https://github.com/gadfly3173) for providing `deb` repository, hosted on https://deb-repo.gadfly.vip
+
+  ```shell
+  # Import GPG key
+  curl -fsSL https://deb-repo.gadfly.vip/public.key | sudo gpg --dearmor -o /usr/share/keyrings/deb-repo.gpg
+
+  # Add repository (DEB822 format, recommended for Bookworm+ / 22.04+)
+  echo "Types: deb
+  URIs: https://deb-repo.gadfly.vip
+  Suites: stable
+  Components: main
+  Architectures: $(dpkg --print-architecture)
+  Signed-By: /usr/share/keyrings/deb-repo.gpg" | sudo tee /etc/apt/sources.list.d/deb-repo.sources
+  
+  # Or use one‑line format for older releases:
+  # echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/deb-repo.gpg] https://deb-repo.gadfly.vip stable main" | sudo tee /  etc/apt/sources.list.d/deb-repo.list
+  
+  # Update and install
+  sudo apt update
+  sudo apt install sourcegit
+  ```
+
 * `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) or [git-credential-libsecret](https://pkgs.org/search/?q=git-credential-libsecret) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.

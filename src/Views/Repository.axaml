@@ -101,7 +101,7 @@
                                 Classes="line_path"
                                 Width="26" Height="26"
                                 Background="Transparent"
-                                IsChecked="{Binding OnlyHighlightCurrentBranchInHistory, Mode=TwoWay}"
+                                IsChecked="{Binding HighlightCurrentBranchOnlyInHistory, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
                   </ToggleButton>
@@ -238,7 +238,14 @@
                   <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
                 </Grid>
               </Button>
-              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
+              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding CreateNewBranch}" HotKey="{OnPlatform Ctrl+B, macOS=⌘+B}">
+                <ToolTip.Tip>
+                  <TextBlock>
+                    <Run Text="{DynamicResource Text.Repository.NewBranch}"/>
+                    <Run Text=" "/>
+                    <Run Text="{OnPlatform Ctrl+B, macOS=⌘+B}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                  </TextBlock>
+                </ToolTip.Tip>
                 <Path Width="12" Height="12" Data="{StaticResource Icons.Branch.Add}"/>
               </Button>
             </Grid>
@@ -545,13 +552,13 @@
 
             <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
               <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
-                <ListBox x:Name="SearchSuggestionBox"
-                         Background="Transparent"
-                         SelectionMode="Single"
-                         ItemsSource="{Binding SearchCommitContext.Suggestions}"
-                         MaxHeight="400"
-                         Focusable="True"
-                         KeyDown="OnSearchSuggestionBoxKeyDown">
+                <v:ListBoxEx x:Name="SearchSuggestionBox"
+                             Background="Transparent"
+                             SelectionMode="Single"
+                             ItemsSource="{Binding SearchCommitContext.Suggestions}"
+                             MaxHeight="400"
+                             Focusable="True"
+                             KeyDown="OnSearchSuggestionBoxKeyDown">
                   <ListBox.Styles>
                     <Style Selector="ListBoxItem">
                       <Setter Property="Padding" Value="0"/>
@@ -585,7 +592,7 @@
                       </StackPanel>
                     </DataTemplate>
                   </ListBox.ItemTemplate>
-                </ListBox>
+                </v:ListBoxEx>
               </Border>
             </Border>
           </Popup>
@@ -656,12 +663,12 @@
                   <Path Grid.Column="0" Width="14" Height="14" Margin="0,2,2,0" Data="{StaticResource Icons.Check}" Fill="Green" IsVisible="{Binding IsMerged, Mode=OneWay}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Subject}" Margin="2,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                 </Grid>
-                <TextBlock Grid.Column="2"
-                           Margin="4,0"
-                           Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding CommitterTimeShortStr}"
-                           HorizontalAlignment="Right" VerticalAlignment="Center"
-                           TextTrimming="CharacterEllipsis"/>
+                <v:DateTimePresenter Grid.Column="2"
+                                     Margin="4,0"
+                                     ShowDateOnly="True"
+                                     Timestamp="{Binding CommitterTime}"
+                                     Foreground="{DynamicResource Brush.FG2}"
+                                     HorizontalAlignment="Right" VerticalAlignment="Center"/>
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
@@ -693,7 +700,8 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
                   BorderThickness="0,0,1,0"
-                  BorderBrush="{DynamicResource Brush.Border0}"/>
+                  BorderBrush="{DynamicResource Brush.Border0}"
+                  Focusable="False"/>
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
@@ -705,7 +713,10 @@
                 <Grid ColumnDefinitions="Auto,*,Auto">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                  <TextBlock Grid.Column="2" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <v:DateTimePresenter Grid.Column="2"
+                                       Margin="8,0,0,0"
+                                       Timestamp="{Binding CommitterTime}"
+                                       Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
 
                 <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
@@ -908,25 +919,34 @@
         </Grid>
       </Border>
 
-      <ContentControl Grid.Row="3" Content="{Binding SelectedView}">
-        <ContentControl.DataTemplates>
-          <DataTemplate DataType="vm:Histories">
-            <v:Histories CurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).CurrentBranch}"
-                         Bisect="{Binding Bisect}"
-                         IssueTrackers="{Binding $parent[v:Repository].((vm:Repository)DataContext).IssueTrackers}"
-                         OnlyHighlightCurrentBranch="{Binding $parent[v:Repository].((vm:Repository)DataContext).OnlyHighlightCurrentBranchInHistory}"
-                         NavigationId="{Binding NavigationId}"/>
-          </DataTemplate>
+      <Grid Grid.Row="3">
+        <ContentControl Content="{Binding Histories, Mode=OneWay}" IsVisible="{Binding IsHistoriesVisible, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:Histories">
+              <v:Histories CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
+                           Bisect="{Binding Bisect, Mode=OneWay}"
+                           IssueTrackers="{Binding IssueTrackers, Mode=OneWay}"
+                           OnlyHighlightCurrentBranch="{Binding HighlightCurrentBranchOnly, Mode=OneWay}"/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
 
-          <DataTemplate DataType="vm:WorkingCopy">
-            <v:WorkingCopy/>
-          </DataTemplate>
+        <ContentControl Content="{Binding WorkingCopy, Mode=OneWay}" IsVisible="{Binding IsWorkingCopyVisible, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:WorkingCopy">
+              <v:WorkingCopy/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
 
-          <DataTemplate DataType="vm:StashesPage">
-            <v:StashesPage/>
-          </DataTemplate>
-        </ContentControl.DataTemplates>
-      </ContentControl>
+        <ContentControl Content="{Binding StashesPage, Mode=OneWay}" IsVisible="{Binding IsStashesVisible, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:StashesPage">
+              <v:StashesPage/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
     </Grid>
 
     <!-- Right (Auto-Fetch) -->

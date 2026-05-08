@@ -110,7 +110,7 @@ namespace SourceGit.Views
             var copy = new MenuItem() { Header = App.Text("Copy") };
             copy.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(selected);
+                await this.CopyTextAsync(selected);
                 ev.Handled = true;
             };
 

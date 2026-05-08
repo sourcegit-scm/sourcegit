@@ -97,7 +97,7 @@ namespace SourceGit.Views
             }
 
             var include = new MenuItem();
-            include.Icon = App.CreateMenuIcon("Icons.Filter");
+            include.Icon = this.CreateMenuIcon("Icons.Filter");
             include.Header = App.Text("Repository.FilterCommits.Include");
             include.IsEnabled = current != Models.FilterMode.Included;
             include.Click += (_, ev) =>
@@ -107,7 +107,7 @@ namespace SourceGit.Views
             };
 
             var exclude = new MenuItem();
-            exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
+            exclude.Icon = this.CreateMenuIcon("Icons.EyeClose");
             exclude.Header = App.Text("Repository.FilterCommits.Exclude");
             exclude.IsEnabled = current != Models.FilterMode.Excluded;
             exclude.Click += (_, ev) =>
@@ -142,7 +142,7 @@ namespace SourceGit.Views
             }
 
             var include = new MenuItem();
-            include.Icon = App.CreateMenuIcon("Icons.Filter");
+            include.Icon = this.CreateMenuIcon("Icons.Filter");
             include.Header = App.Text("Repository.FilterCommits.Include");
             include.IsEnabled = current != Models.FilterMode.Included;
             include.Click += (_, ev) =>
@@ -152,7 +152,7 @@ namespace SourceGit.Views
             };
 
             var exclude = new MenuItem();
-            exclude.Icon = App.CreateMenuIcon("Icons.EyeClose");
+            exclude.Icon = this.CreateMenuIcon("Icons.EyeClose");
             exclude.Header = App.Text("Repository.FilterCommits.Exclude");
             exclude.IsEnabled = current != Models.FilterMode.Excluded;
             exclude.Click += (_, ev) =>

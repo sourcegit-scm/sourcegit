@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeSubmoduleUrl"
              x:DataType="vm:ChangeSubmoduleUrl">
@@ -34,9 +35,20 @@
       <TextBox Grid.Row="1" Grid.Column="1"
                Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="3"
                Watermark="{DynamicResource Text.RepositoryURL}"
-               Text="{Binding Url, Mode=TwoWay}"/>
+               Text="{Binding Url, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Link}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+
+        <TextBox.InnerRightContent>
+          <v:RemoteProtocolSwitcher Url="{Binding Url, Mode=TwoWay}"/>
+        </TextBox.InnerRightContent>
+      </TextBox>
     </Grid>
   </StackPanel>
 </UserControl>

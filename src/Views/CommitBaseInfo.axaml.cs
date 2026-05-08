@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -55,16 +56,51 @@ namespace SourceGit.Views
             set => SetValue(ChildrenProperty, value);
         }
 
+        public static readonly StyledProperty<bool> IsSHACopiedProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsSHACopied));
+
+        public bool IsSHACopied
+        {
+            get => GetValue(IsSHACopiedProperty);
+            set => SetValue(IsSHACopiedProperty, value);
+        }
+
         public CommitBaseInfo()
         {
             InitializeComponent();
         }
 
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ContentProperty)
+            {
+                _iconResetTimer?.Dispose();
+                SetCurrentValue(IsSHACopiedProperty, false);
+            }
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            _iconResetTimer?.Dispose();
+        }
+
         private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Commit commit })
-                await App.CopyTextAsync(commit.SHA);
+                await this.CopyTextAsync(commit.SHA);
 
+            _iconResetTimer = DispatcherTimer.RunOnce(() =>
+            {
+                if (IsSHACopied)
+                    IsSHACopied = false;
+
+                _iconResetTimer = null;
+            }, TimeSpan.FromSeconds(2));
+
+            IsSHACopied = true;
             e.Handled = true;
         }
 
@@ -151,28 +187,28 @@ namespace SourceGit.Views
 
             var copyName = new MenuItem();
             copyName.Header = App.Text("CommitDetail.Info.CopyName");
-            copyName.Icon = App.CreateMenuIcon("Icons.Copy");
+            copyName.Icon = this.CreateMenuIcon("Icons.Copy");
             copyName.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(user.Name);
+                await this.CopyTextAsync(user.Name);
                 ev.Handled = true;
             };
 
             var copyEmail = new MenuItem();
             copyEmail.Header = App.Text("CommitDetail.Info.CopyEmail");
-            copyEmail.Icon = App.CreateMenuIcon("Icons.Email");
+            copyEmail.Icon = this.CreateMenuIcon("Icons.Email");
             copyEmail.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(user.Email);
+                await this.CopyTextAsync(user.Email);
                 ev.Handled = true;
             };
 
             var copyUser = new MenuItem();
             copyUser.Header = App.Text("CommitDetail.Info.CopyNameAndEmail");
-            copyUser.Icon = App.CreateMenuIcon("Icons.User");
+            copyUser.Icon = this.CreateMenuIcon("Icons.User");
             copyUser.Click += async (_, ev) =>
             {
-                await App.CopyTextAsync(user.ToString());
+                await this.CopyTextAsync(user.ToString());
                 ev.Handled = true;
             };
 
@@ -183,5 +219,41 @@ namespace SourceGit.Views
             menu.Open(control);
             e.Handled = true;
         }
+
+        private async void OnCopyAllCommitMessage(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail detail)
+                await this.CopyTextAsync(detail.FullMessage.Message);
+            e.Handled = true;
+        }
+
+        private void OnCommitRefsPresenterPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            e.Handled = true;
+
+            if (DataContext is ViewModels.CommitDetail detail &&
+                sender is CommitRefsPresenter presenter &&
+                e.Properties.PointerUpdateKind == PointerUpdateKind.RightButtonReleased)
+            {
+                var decorator = presenter.DecoratorAt(e.GetPosition(presenter));
+                if (decorator != null)
+                {
+                    var copy = new MenuItem();
+                    copy.Icon = this.CreateMenuIcon("Icons.Copy");
+                    copy.Header = App.Text("Copy");
+                    copy.Click += async (_, ev) =>
+                    {
+                        await this.CopyTextAsync(decorator.Name);
+                        ev.Handled = true;
+                    };
+
+                    var menu = new ContextMenu();
+                    menu.Items.Add(copy);
+                    menu.Open(presenter);
+                }
+            }
+        }
+
+        private IDisposable _iconResetTimer;
     }
 }
