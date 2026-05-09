@@ -238,12 +238,12 @@ namespace SourceGit.Views
                 if (lastUnselected != -1)
                     return tree.Rows[lastUnselected].Change;
             }
-            else
+            else if (Content is ViewModels.ChangeCollectionAsGrid grid)
             {
                 var lastUnselected = -1;
-                for (int i = changes.Count - 1; i >= 0; i--)
+                for (int i = grid.Changes.Count - 1; i >= 0; i--)
                 {
-                    if (set.Contains(changes[i].Path))
+                    if (set.Contains(grid.Changes[i].Path))
                     {
                         if (lastUnselected == -1)
                             continue;
@@ -255,7 +255,26 @@ namespace SourceGit.Views
                 }
 
                 if (lastUnselected != -1)
-                    return changes[lastUnselected];
+                    return grid.Changes[lastUnselected];
+            }
+            else if (Content is ViewModels.ChangeCollectionAsList list)
+            {
+                var lastUnselected = -1;
+                for (int i = list.Changes.Count - 1; i >= 0; i--)
+                {
+                    if (set.Contains(list.Changes[i].Path))
+                    {
+                        if (lastUnselected == -1)
+                            continue;
+
+                        break;
+                    }
+
+                    lastUnselected = i;
+                }
+
+                if (lastUnselected != -1)
+                    return list.Changes[lastUnselected];
             }
 
             return null;
