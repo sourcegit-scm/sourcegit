@@ -1212,7 +1212,7 @@ namespace SourceGit.ViewModels
                     .Append(_uiStates.BuildHistoryParams());
 
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString()).GetResultAsync().ConfigureAwait(false);
-                var graph = Models.CommitGraph.Parse(commits, _uiStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
+                var graph = Models.CommitGraph.Parse(commits, _uiStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly), Preferences.Instance.AlwaysShowCurrentHeadOnLeftInGraph);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {

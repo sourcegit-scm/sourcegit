@@ -653,6 +653,7 @@
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Input path for diff/merge tool</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">GENERAL</x:String>
+  <x:String x:Key="Text.Preferences.General.AlwaysShowCurrentHeadOnLeft" xml:space="preserve">Always show current HEAD on the left</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Date Format</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Enable compact folders in changes tree</x:String>

@@ -657,6 +657,7 @@
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">填写工具可执行文件所在位置</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">工具</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">通用配置</x:String>
+  <x:String x:Key="Text.Preferences.General.AlwaysShowCurrentHeadOnLeft" xml:space="preserve">HEAD 路径永远显示在最左边</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">启动时检测软件更新</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">日期时间格式</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">在变更列表树中启用紧凑文件夹模式</x:String>

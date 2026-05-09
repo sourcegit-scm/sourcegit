@@ -211,6 +211,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _ignoreUpdateTag, value);
         }
 
+        public bool AlwaysShowCurrentHeadOnLeftInGraph
+        {
+            get => _alwaysShowCurrentHeadOnLeftInGraph;
+            set => SetProperty(ref _alwaysShowCurrentHeadOnLeftInGraph, value);
+        }
+
         public bool ShowTagsInGraph
         {
             get => _showTagsInGraph;
@@ -833,6 +839,7 @@ namespace SourceGit.ViewModels
         private string _ignoreUpdateTag = string.Empty;
 
         private bool _showTagsInGraph = true;
+        private bool _alwaysShowCurrentHeadOnLeftInGraph = false;
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;

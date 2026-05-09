@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Avalonia;
@@ -62,7 +62,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Parse(List<Commit> commits, bool firstParentOnlyEnabled)
+        public static CommitGraph Parse(List<Commit> commits, bool firstParentOnlyEnabled, bool alwaysShowCurrentHeadOnLeft)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -75,40 +75,106 @@ namespace SourceGit.Models
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
 
+            // 1. Pre-scan for the Grand Lineage (Trunk)
+            var headPathSHAs = new HashSet<string>();
+            string topTrunkSHA = null;
+            if (alwaysShowCurrentHeadOnLeft)
+            {
+                var head = commits.Find(x => x.IsCurrentHead);
+                if (head != null)
+                {
+                    headPathSHAs.Add(head.SHA);
+
+                    // Trace DOWN (Ancestors) via first parent
+                    string currentDown = head.SHA;
+                    for (int i = commits.IndexOf(head); i < commits.Count; i++)
+                    {
+                        if (commits[i].SHA == currentDown)
+                        {
+                            headPathSHAs.Add(currentDown);
+                            if (commits[i].Parents.Count > 0)
+                                currentDown = commits[i].Parents[0];
+                        }
+                    }
+
+                    // Trace UP (Descendants) via strict single line
+                    string currentUp = head.SHA;
+                    for (int i = commits.IndexOf(head) - 1; i >= 0; i--)
+                    {
+                        if (commits[i].Parents.Count > 0 && commits[i].Parents[0] == currentUp)
+                        {
+                            headPathSHAs.Add(commits[i].SHA);
+                            currentUp = commits[i].SHA;
+                        }
+                    }
+
+                    // Find the top-most trunk commit to anchor the Phantom Path
+                    foreach (var c in commits)
+                    {
+                        if (headPathSHAs.Contains(c.SHA))
+                        {
+                            topTrunkSHA = c.SHA;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // 2. Inject Phantom Path for Trunk at Y=0.
+            // This forces the Trunk to occupy Slot 0 (X=10) permanently, simulating an uncommitted node.
+            if (topTrunkSHA != null)
+            {
+                var phantom = new PathHelper(topTrunkSHA, false, colorPicker.Next(), new Point(10.0, offsetY));
+                phantom.IsTrunk = true;
+                unsolved.Add(phantom);
+                temp.Paths.Add(phantom.Path);
+            }
+
             foreach (var commit in commits)
             {
                 PathHelper major = null;
                 var isMerged = commit.IsMerged;
+                bool isCommitTrunk = alwaysShowCurrentHeadOnLeft && headPathSHAs.Contains(commit.SHA);
 
                 // Update current y offset
                 offsetY += unitHeight;
 
                 // Find first curves that links to this commit and marks others that links to this commit ended.
-                var offsetX = 4 - halfWidth;
-                var maxOffsetOld = unsolved.Count > 0 ? unsolved[^1].LastX : offsetX + unitWidth;
+                var maxOffsetOld = 0.0;
+                for (int i = 0; i < unsolved.Count; i++)
+                {
+                    if (unsolved[i].LastX > maxOffsetOld)
+                        maxOffsetOld = unsolved[i].LastX;
+                }
+
+                var currentOffsetX = 4 - halfWidth;
                 foreach (var l in unsolved)
                 {
+                    currentOffsetX += unitWidth;
+
                     if (l.Next.Equals(commit.SHA, StringComparison.Ordinal))
                     {
-                        if (major == null)
+                        // Only Trunk paths can claim major status for Trunk commits.
+                        bool canBeMajor = !isCommitTrunk || l.IsTrunk;
+
+                        if (major == null && canBeMajor)
                         {
-                            offsetX += unitWidth;
                             major = l;
 
                             if (commit.Parents.Count > 0)
                             {
                                 major.Next = commit.Parents[0];
-                                major.Goto(offsetX, offsetY, halfHeight);
+                                major.Goto(currentOffsetX, offsetY, halfHeight);
                             }
                             else
                             {
-                                major.End(offsetX, offsetY, halfHeight);
+                                major.End(currentOffsetX, offsetY, halfHeight);
                                 ended.Add(l);
                             }
                         }
                         else
                         {
-                            l.End(major.LastX, offsetY, halfHeight);
+                            l.End(major?.LastX ?? currentOffsetX, offsetY, halfHeight);
                             ended.Add(l);
                         }
 
@@ -116,8 +182,7 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        offsetX += unitWidth;
-                        l.Pass(offsetX, offsetY, halfHeight);
+                        l.Pass(currentOffsetX, offsetY, halfHeight);
                     }
                 }
 
@@ -133,11 +198,10 @@ namespace SourceGit.Models
                 // Otherwise, create new curve for new merged commit
                 if (major == null)
                 {
-                    offsetX += unitWidth;
-
                     if (commit.Parents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isMerged, colorPicker.Next(), new Point(offsetX, offsetY));
+                        currentOffsetX += unitWidth;
+                        major = new PathHelper(commit.Parents[0], isMerged, colorPicker.Next(), new Point(currentOffsetX, offsetY));
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
@@ -149,7 +213,7 @@ namespace SourceGit.Models
                 }
 
                 // Calculate link position of this commit.
-                var position = new Point(major?.LastX ?? offsetX, offsetY);
+                var position = new Point(major?.LastX ?? Math.Max(currentOffsetX, 10.0), offsetY);
                 var dotColor = major?.Path.Color ?? 0;
                 var anchor = new Dot() { Center = position, Color = dotColor, IsMerged = isMerged };
                 if (commit.IsCurrentHead)
@@ -187,10 +251,10 @@ namespace SourceGit.Models
                         }
                         else
                         {
-                            offsetX += unitWidth;
+                            currentOffsetX += unitWidth;
 
                             // Create new curve for parent commit that not includes before
-                            var l = new PathHelper(parentHash, isMerged, colorPicker.Next(), position, new Point(offsetX, position.Y + halfHeight));
+                            var l = new PathHelper(parentHash, isMerged, colorPicker.Next(), position, new Point(currentOffsetX, position.Y + halfHeight));
                             unsolved.Add(l);
                             temp.Paths.Add(l.Path);
                         }
@@ -200,7 +264,7 @@ namespace SourceGit.Models
                 // Margins & merge state (used by Views.Histories).
                 commit.IsMerged = isMerged;
                 commit.Color = dotColor;
-                commit.LeftMargin = Math.Max(offsetX, maxOffsetOld) + halfWidth + 2;
+                commit.LeftMargin = Math.Max(currentOffsetX, maxOffsetOld) + halfWidth + 2;
             }
 
             // Deal with curves haven't ended yet.
@@ -246,6 +310,7 @@ namespace SourceGit.Models
             public Path Path { get; private set; }
             public string Next { get; set; }
             public double LastX { get; private set; }
+            public bool IsTrunk { get; set; } = false;
 
             public bool IsMerged => Path.IsMerged;
 
@@ -273,9 +338,6 @@ namespace SourceGit.Models
             /// <summary>
             ///     A path that just passed this row.
             /// </summary>
-            /// <param name="x"></param>
-            /// <param name="y"></param>
-            /// <param name="halfHeight"></param>
             public void Pass(double x, double y, double halfHeight)
             {
                 if (x > LastX)
@@ -297,9 +359,6 @@ namespace SourceGit.Models
             /// <summary>
             ///     A path that has commit in this row but not ended
             /// </summary>
-            /// <param name="x"></param>
-            /// <param name="y"></param>
-            /// <param name="halfHeight"></param>
             public void Goto(double x, double y, double halfHeight)
             {
                 if (x > LastX)
@@ -324,9 +383,6 @@ namespace SourceGit.Models
             /// <summary>
             ///     A path that has commit in this row and end.
             /// </summary>
-            /// <param name="x"></param>
-            /// <param name="y"></param>
-            /// <param name="halfHeight"></param>
             public void End(double x, double y, double halfHeight)
             {
                 if (x > LastX)
