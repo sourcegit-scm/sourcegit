@@ -121,6 +121,13 @@
         </Border>
 
         <!-- Notifications Clear Button -->
+        <Button Width="0"
+                Height="0"
+                IsVisible="False"
+                Focusable="False"
+                Command="{Binding ClearNotifications}"
+                HotKey="Escape"
+                IsEnabled="{Binding Notifications.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
         <Button Grid.Row="1"
                 Classes="flat primary"
                 Margin="0,8,0,0"
