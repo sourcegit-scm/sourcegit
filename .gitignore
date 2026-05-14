@@ -23,6 +23,7 @@ ehthumbs_vista.db
 
 bin/
 obj/
+publish/
 # ignore ci node files
 node_modules/
 package.json

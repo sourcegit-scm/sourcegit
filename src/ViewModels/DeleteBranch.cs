@@ -90,7 +90,7 @@ namespace SourceGit.ViewModels
                 {
                     await new Commands.Worktree(_repo.FullPath)
                         .Use(log)
-                        .RemoveAsync(worktreePath, false);
+                        .RemoveAsync(worktreePath, true);
                     await new Commands.Worktree(_repo.FullPath)
                         .Use(log)
                         .PruneAsync();
