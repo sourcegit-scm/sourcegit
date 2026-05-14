@@ -24,6 +24,8 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public string RepoName => System.IO.Path.GetFileName(FullPath);
+
         public string GitDir
         {
             get;

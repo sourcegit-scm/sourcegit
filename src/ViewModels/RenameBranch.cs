@@ -11,6 +11,23 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public Models.Branch TrackingRemoteBranch
+        {
+            get;
+        }
+
+        public string RenameRemoteTip
+        {
+            get;
+            private set;
+        }
+
+        public bool AlsoRenameRemote
+        {
+            get => _alsoRenameRemote;
+            set => SetProperty(ref _alsoRenameRemote, value);
+        }
+
         [Required(ErrorMessage = "Branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(RenameBranch), nameof(ValidateBranchName))]
@@ -25,6 +42,13 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _name = target.Name;
             Target = target;
+
+            if (target.IsLocal && !string.IsNullOrEmpty(target.Upstream))
+            {
+                TrackingRemoteBranch = repo.Branches.Find(x => x.FullName == target.Upstream);
+                if (TrackingRemoteBranch != null)
+                    RenameRemoteTip = App.Text("RenameBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
+            }
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -52,15 +76,28 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Rename Branch '{Target.Name}'");
             Use(log);
 
-            var isCurrent = Target.IsCurrent;
-            var oldName = Target.FullName;
+            var oldName = Target.Name;
 
             var succ = await new Commands.Branch(_repo.FullPath, Target.Name)
                 .Use(log)
                 .RenameAsync(_name);
 
             if (succ)
+            {
                 _repo.RefreshAfterRenameBranch(Target, _name);
+
+                if (_alsoRenameRemote && TrackingRemoteBranch != null)
+                {
+                    var remote = TrackingRemoteBranch.Remote;
+                    var pushNew = new Commands.Push(_repo.FullPath, remote, $"refs/heads/{_name}", false);
+                    pushNew.Use(log);
+                    await pushNew.RunAsync();
+
+                    var deleteOld = new Commands.Push(_repo.FullPath, remote, $"refs/heads/{oldName}", true);
+                    deleteOld.Use(log);
+                    await deleteOld.RunAsync();
+                }
+            }
 
             log.Complete();
             return succ;
@@ -68,5 +105,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo;
         private string _name;
+        private bool _alsoRenameRemote = false;
     }
 }

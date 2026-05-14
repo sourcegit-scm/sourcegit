@@ -207,6 +207,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Ви збираєтеся видалити віддалену гілку!!!</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Також видалити віддалену гілку ${0}$</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithWorktree" xml:space="preserve">Також видалити робочу директорію ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Видалити кілька гілок</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Ви намагаєтеся видалити кілька гілок одночасно. Перевірте ще раз перед виконанням!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Видалити віддалене сховище</x:String>
@@ -517,6 +518,7 @@
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">Нова назва:</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Унікальна назва для цієї гілки</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Гілка:</x:String>
+  <x:String x:Key="Text.RenameBranch.WithTrackingRemote" xml:space="preserve">Також перейменувати віддалену гілку ${0}$</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ПЕРЕРВАТИ</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Автоматичне отримання змін з віддалених сховищ...</x:String>
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Очистка (GC &amp; Prune)</x:String>

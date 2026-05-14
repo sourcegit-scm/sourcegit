@@ -342,6 +342,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支 ${0}$</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithWorktree" xml:space="preserve">同时删除工作树 ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">删除多个标签</x:String>
@@ -752,6 +753,7 @@
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">新的名称 ：</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">新的分支名不能与现有分支名相同</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">分支 ：</x:String>
+  <x:String x:Key="Text.RenameBranch.WithTrackingRemote" xml:space="preserve">同时重命名远程分支 ${0}$</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">终止合并</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">自动拉取远端变更中...</x:String>
   <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">排序方式</x:String>

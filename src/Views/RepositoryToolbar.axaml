@@ -108,6 +108,12 @@
     </StackPanel>
 
     <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
+      <TextBlock Text="{Binding RepoName}"
+                 FontWeight="Bold"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 VerticalAlignment="Center"
+                 Margin="0,0,4,0" />
+
       <Path Width="13" Height="13" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
 
       <ContentControl Margin="6,0,0,0">

@@ -341,6 +341,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Rama:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">¡Estás a punto de eliminar una rama remota!</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">También eliminar la rama remota ${0}$</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithWorktree" xml:space="preserve">También eliminar el worktree en ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Eliminar Múltiples Ramas</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Estás intentando eliminar múltiples ramas a la vez. ¡Asegúrate de comprobar dos veces antes de realizar esta acción!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Eliminar Múltiples Etiquetas</x:String>
@@ -750,6 +751,7 @@
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">Nuevo Nombre:</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Nombre único para esta rama</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Rama:</x:String>
+  <x:String x:Key="Text.RenameBranch.WithTrackingRemote" xml:space="preserve">Renombrar también la rama remota ${0}$</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ABORTAR</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Auto fetching cambios desde remotos...</x:String>
   <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Ordenar</x:String>

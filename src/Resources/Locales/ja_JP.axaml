@@ -324,6 +324,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">リモートブランチを削除しようとしています！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">リモートブランチの ${0}$ も削除</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithWorktree" xml:space="preserve">ワークツリー ${0}$ も削除</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">複数のブランチを削除</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">複数のブランチをまとめて削除しようとしています。操作を行う前によく確認してください！</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">複数のタグを削除</x:String>
@@ -721,6 +722,7 @@
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">新しい名前:</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">このブランチに付ける一意な名前</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">ブランチ:</x:String>
+  <x:String x:Key="Text.RenameBranch.WithTrackingRemote" xml:space="preserve">リモートブランチ ${0}$ もリネーム</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">中止</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">リモートから変更を自動取得しています...</x:String>
   <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">並べ替え</x:String>

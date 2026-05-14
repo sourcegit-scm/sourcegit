@@ -26,6 +26,24 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _alsoDeleteTrackingRemote, value);
         }
 
+        public string DeleteWorktreeTip
+        {
+            get;
+            private set;
+        }
+
+        public bool AlsoRemoveWorktree
+        {
+            get => _alsoRemoveWorktree;
+            set => SetProperty(ref _alsoRemoveWorktree, value);
+        }
+
+        public bool HasWorktree
+        {
+            get;
+            private set;
+        }
+
         public DeleteBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
@@ -36,6 +54,12 @@ namespace SourceGit.ViewModels
                 TrackingRemoteBranch = repo.Branches.Find(x => x.FullName == branch.Upstream);
                 if (TrackingRemoteBranch != null)
                     DeleteTrackingRemoteTip = App.Text("DeleteBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
+            }
+
+            if (branch.HasWorktree)
+            {
+                HasWorktree = true;
+                DeleteWorktreeTip = App.Text("DeleteBranch.WithWorktree", branch.WorktreePath);
             }
         }
 
@@ -49,6 +73,8 @@ namespace SourceGit.ViewModels
 
             if (Target.IsLocal)
             {
+                var worktreePath = Target.WorktreePath;
+
                 await new Commands.Branch(_repo.FullPath, Target.Name)
                     .Use(log)
                     .DeleteLocalAsync();
@@ -58,6 +84,16 @@ namespace SourceGit.ViewModels
                 {
                     await DeleteRemoteBranchAsync(TrackingRemoteBranch, log);
                     _repo.UIStates.RemoveHistoryFilter(TrackingRemoteBranch.FullName, Models.FilterType.RemoteBranch);
+                }
+
+                if (_alsoRemoveWorktree && !string.IsNullOrEmpty(worktreePath))
+                {
+                    await new Commands.Worktree(_repo.FullPath)
+                        .Use(log)
+                        .RemoveAsync(worktreePath, false);
+                    await new Commands.Worktree(_repo.FullPath)
+                        .Use(log)
+                        .PruneAsync();
                 }
             }
             else
@@ -91,5 +127,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private bool _alsoDeleteTrackingRemote = false;
+        private bool _alsoRemoveWorktree = false;
     }
 }

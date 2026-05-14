@@ -295,6 +295,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Anda akan menghapus remote branch!!!</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Juga hapus remote branch ${0}$</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithWorktree" xml:space="preserve">Juga hapus worktree di ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Hapus Beberapa Branch</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Anda akan menghapus beberapa branch sekaligus. Pastikan untuk memeriksa ulang sebelum bertindak!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Hapus Beberapa Tag</x:String>
@@ -644,6 +645,7 @@
   <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">Nama Baru:</x:String>
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Nama unik untuk branch ini</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</x:String>
+  <x:String x:Key="Text.RenameBranch.WithTrackingRemote" xml:space="preserve">Juga ganti nama remote branch ${0}$</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">BATALKAN</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Auto fetch perubahan dari remote...</x:String>
   <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Urut</x:String>
