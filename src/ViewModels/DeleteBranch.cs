@@ -75,6 +75,18 @@ namespace SourceGit.ViewModels
             {
                 var worktreePath = Target.WorktreePath;
 
+                // Remove the worktree first, since git refuses to delete a branch
+                // that is checked out in another worktree.
+                if (_alsoRemoveWorktree && !string.IsNullOrEmpty(worktreePath))
+                {
+                    await new Commands.Worktree(_repo.FullPath)
+                        .Use(log)
+                        .RemoveAsync(worktreePath, true);
+                    await new Commands.Worktree(_repo.FullPath)
+                        .Use(log)
+                        .PruneAsync();
+                }
+
                 await new Commands.Branch(_repo.FullPath, Target.Name)
                     .Use(log)
                     .DeleteLocalAsync();
@@ -84,16 +96,6 @@ namespace SourceGit.ViewModels
                 {
                     await DeleteRemoteBranchAsync(TrackingRemoteBranch, log);
                     _repo.UIStates.RemoveHistoryFilter(TrackingRemoteBranch.FullName, Models.FilterType.RemoteBranch);
-                }
-
-                if (_alsoRemoveWorktree && !string.IsNullOrEmpty(worktreePath))
-                {
-                    await new Commands.Worktree(_repo.FullPath)
-                        .Use(log)
-                        .RemoveAsync(worktreePath, true);
-                    await new Commands.Worktree(_repo.FullPath)
-                        .Use(log)
-                        .PruneAsync();
                 }
             }
             else
