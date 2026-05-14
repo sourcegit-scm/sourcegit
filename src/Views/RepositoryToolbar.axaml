@@ -27,7 +27,7 @@
     </StackPanel>
 
     <StackPanel Grid.Column="1" Orientation="Horizontal">
-      <Button Classes="icon_button" Width="32" Tapped="Fetch">
+      <Button Classes="icon_button" Padding="4,2" Tapped="Fetch">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Fetch}"/>
@@ -35,10 +35,13 @@
           </StackPanel>
         </ToolTip.Tip>
 
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
+          <TextBlock Text="{DynamicResource Text.Fetch}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}">
+      <Button Classes="icon_button" Margin="12,0,0,0" Padding="4,2" Tapped="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Pull}"/>
@@ -46,10 +49,13 @@
           </StackPanel>
         </ToolTip.Tip>
 
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
+          <TextBlock Text="{DynamicResource Text.Pull}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Push">
+      <Button Classes="icon_button" Margin="12,0,0,0" Padding="4,2" Tapped="Push">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Push}"/>
@@ -57,10 +63,13 @@
           </StackPanel>
         </ToolTip.Tip>
 
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
+          <TextBlock Text="{DynamicResource Text.Push}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="StashAll" IsVisible="{Binding !IsBare}">
+      <Button Classes="icon_button" Margin="12,0,0,0" Padding="4,2" Tapped="StashAll" IsVisible="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Stash}"/>
@@ -68,11 +77,31 @@
           </StackPanel>
         </ToolTip.Tip>
 
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Stashes.Add}"/>
+          <TextBlock Text="{DynamicResource Text.Stash}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
       </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Command="{Binding ApplyPatch}" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Apply}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Diff}"/>
+      <Button Classes="icon_button" Margin="12,0,0,0" Padding="4,2" Command="{Binding ApplyPatch}" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Apply}">
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Diff}"/>
+          <TextBlock Text="{DynamicResource Text.Apply}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
+      </Button>
+
+      <Button Classes="icon_button" Margin="16,0,0,0" Padding="4,2" Tapped="OpenCreateBranch" IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.CreateBranch}">
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Branch.Add}" />
+          <TextBlock Text="{DynamicResource Text.CreateBranch}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
+      </Button>
+
+      <Button Classes="icon_button" Margin="12,0,0,0" Padding="4,2" Tapped="OpenAddWorktree" ToolTip.Tip="{DynamicResource Text.AddWorktree}">
+        <StackPanel Orientation="Vertical" Spacing="1">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Worktree.Add}" />
+          <TextBlock Text="{DynamicResource Text.AddWorktree}" FontSize="10" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG1}"/>
+        </StackPanel>
       </Button>
 
       <Rectangle Width="1" Height="16"

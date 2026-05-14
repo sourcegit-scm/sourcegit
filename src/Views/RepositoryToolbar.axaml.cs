@@ -454,6 +454,24 @@ namespace SourceGit.Views
             }
         }
 
+        private void OpenCreateBranch(object sender, RoutedEventArgs ev)
+        {
+            if (DataContext is ViewModels.Repository { CurrentBranch: not null } repo && repo.CanCreatePopup())
+            {
+                repo.ShowPopup(new ViewModels.CreateBranch(repo, repo.CurrentBranch));
+                ev.Handled = true;
+            }
+        }
+
+        private void OpenAddWorktree(object sender, RoutedEventArgs ev)
+        {
+            if (DataContext is ViewModels.Repository repo && repo.CanCreatePopup())
+            {
+                repo.ShowPopup(new ViewModels.AddWorktree(repo));
+                ev.Handled = true;
+            }
+        }
+
         private void OpenCustomActionMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
