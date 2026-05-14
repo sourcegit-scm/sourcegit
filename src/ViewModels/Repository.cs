@@ -777,6 +777,7 @@ namespace SourceGit.ViewModels
             _watcher?.MarkBranchUpdated();
             _watcher?.MarkWorkingCopyUpdated();
 
+            _branches.RemoveAll(b => b.IsLocal && b.FriendlyName.Equals(created.FriendlyName, StringComparison.Ordinal));
             _branches.Add(created);
 
             if (checkout)
