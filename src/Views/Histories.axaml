@@ -263,12 +263,11 @@
                   Focusable="False"
                   IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-      <ContentControl>
-        <ContentControl.Content>
-          <Binding Path="DetailContext">
-            <Binding.TargetNullValue>
-              <TabControl Padding="0,4">
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+      <ContentControl Content="{Binding DetailContext, Mode=OneWay}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:Null">
+            <TabControl Padding="0,4">
                 <TabItem>
                   <TabItem.Header>
                     <Border Background="Transparent" PointerPressed="OnTabHeaderPointerPressed">
@@ -303,11 +302,8 @@
                   </TabItem.Header>
                 </TabItem>
               </TabControl>
-            </Binding.TargetNullValue>
-          </Binding>
-        </ContentControl.Content>
-        
-        <ContentControl.DataTemplates>
+          </DataTemplate>
+          
           <DataTemplate DataType="vm:CommitDetail">
             <v:CommitDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
           </DataTemplate>

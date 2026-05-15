@@ -437,7 +437,7 @@ namespace SourceGit.ViewModels
             if (_selectedCommits.Count == 0)
             {
                 _repo.SearchCommitContext.Selected = null;
-                DetailContext = null;
+                DetailContext = new Models.Null();
             }
             else if (_selectedCommits.Count == 1)
             {
@@ -473,7 +473,7 @@ namespace SourceGit.ViewModels
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
-        private object _detailContext = null;
+        private object _detailContext = new Models.Null();
         private bool _ignoreSelectionChange = false;
 
         private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
