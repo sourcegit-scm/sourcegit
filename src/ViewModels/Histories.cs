@@ -73,6 +73,20 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _graph, value);
         }
 
+        public Models.CommitGraphHighlighting GraphHighlighting
+        {
+            get => _repo.UIStates.GraphHighlighting;
+            set
+            {
+                if (_repo.UIStates.GraphHighlighting != value)
+                {
+                    _repo.UIStates.GraphHighlighting = value;
+                    GenerateGraph(_commits);
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public List<Models.Commit> SelectedCommits
         {
             get => _selectedCommits;
@@ -102,19 +116,6 @@ namespace SourceGit.ViewModels
         public Models.Branch CurrentBranch
         {
             get => _repo.CurrentBranch;
-        }
-
-        public bool HighlightCurrentBranchOnly
-        {
-            get => _repo.UIStates.OnlyHighlightCurrentBranchInHistory;
-            set
-            {
-                if (_repo.UIStates.OnlyHighlightCurrentBranchInHistory != value)
-                {
-                    _repo.UIStates.OnlyHighlightCurrentBranchInHistory = value;
-                    OnPropertyChanged();
-                }
-            }
         }
 
         public AvaloniaList<Models.IssueTracker> IssueTrackers
@@ -177,6 +178,21 @@ namespace SourceGit.ViewModels
         public void NotifyCurrentBranchChanged()
         {
             OnPropertyChanged(nameof(CurrentBranch));
+        }
+
+        public void GenerateGraph(List<Models.Commit> commits)
+        {
+            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
+            var highlighting = _repo.UIStates.GraphHighlighting;
+            var extraHeads = new HashSet<string>();
+
+            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+            {
+                foreach (var c in _selectedCommits)
+                    extraHeads.Add(c.SHA);
+            }
+
+            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -464,22 +480,25 @@ namespace SourceGit.ViewModels
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(_selectedCommits.Count);
             }
+
+            if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+                GenerateGraph(_commits);
         }
 
         private Repository _repo = null;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
-        private List<Models.Commit> _commits = new List<Models.Commit>();
+        private List<Models.Commit> _commits = [];
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
         private object _detailContext = new Models.Null();
         private bool _ignoreSelectionChange = false;
 
-        private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
-        private GridLength _rightArea = new GridLength(1, GridUnitType.Star);
-        private GridLength _topArea = new GridLength(1, GridUnitType.Star);
-        private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
+        private GridLength _leftArea = new(1, GridUnitType.Star);
+        private GridLength _rightArea = new(1, GridUnitType.Star);
+        private GridLength _topArea = new(1, GridUnitType.Star);
+        private GridLength _bottomArea = new(1, GridUnitType.Star);
         private bool _isCollapseDetails = false;
     }
 }

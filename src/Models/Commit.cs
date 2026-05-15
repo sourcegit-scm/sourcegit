@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
@@ -13,7 +14,7 @@ namespace SourceGit.Models
         ByContent,
     }
 
-    public class Commit
+    public class Commit : ObservableObject
     {
         public string SHA { get; set; } = string.Empty;
         public User Author { get; set; } = User.Invalid;
@@ -27,6 +28,12 @@ namespace SourceGit.Models
         public bool IsMerged { get; set; } = false;
         public int Color { get; set; } = 0;
         public double LeftMargin { get; set; } = 0;
+
+        public bool IsHighlightedInGraph
+        {
+            get => _isHighlightedInGraph;
+            set => SetProperty(ref _isHighlightedInGraph, value);
+        }
 
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
@@ -118,6 +125,8 @@ namespace SourceGit.Models
                 return NumericSort.Compare(l.Name, r.Name);
             });
         }
+
+        private bool _isHighlightedInGraph = false;
     }
 
     public class CommitFullMessage

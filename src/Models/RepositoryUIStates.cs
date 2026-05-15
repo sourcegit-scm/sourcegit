@@ -39,11 +39,11 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public bool OnlyHighlightCurrentBranchInHistory
+        public CommitGraphHighlighting GraphHighlighting
         {
             get;
             set;
-        } = false;
+        } = CommitGraphHighlighting.All;
 
         public BranchSortMode LocalBranchSortMode
         {

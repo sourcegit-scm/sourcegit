@@ -310,15 +310,6 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackersProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<Histories, bool>(nameof(OnlyHighlightCurrentBranch), true);
-
-        public bool OnlyHighlightCurrentBranch
-        {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
-        }
-
         public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
             AvaloniaProperty.Register<Histories, bool>(nameof(IsScrollToTopVisible));
 

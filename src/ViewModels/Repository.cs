@@ -126,12 +126,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool HighlightCurrentBranchOnlyInHistory
-        {
-            get => _histories.HighlightCurrentBranchOnly;
-            set => _histories.HighlightCurrentBranchOnly = value;
-        }
-
         public string Filter
         {
             get => _filter;
@@ -1212,8 +1206,9 @@ namespace SourceGit.ViewModels
                     .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
                     .Append(_uiStates.BuildHistoryParams());
 
-                var commits = await new Commands.QueryCommits(FullPath, builder.ToString()).GetResultAsync().ConfigureAwait(false);
-                var graph = Models.CommitGraph.Parse(commits, _uiStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
+                var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -1223,9 +1218,8 @@ namespace SourceGit.ViewModels
                     if (_histories != null)
                     {
                         _histories.IsLoading = false;
+                        _histories.GenerateGraph(commits);
                         _histories.Commits = commits;
-                        _histories.Graph = graph;
-
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))

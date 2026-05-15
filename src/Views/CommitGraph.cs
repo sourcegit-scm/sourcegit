@@ -24,13 +24,13 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlightCurrentBranch), true);
+        public static readonly StyledProperty<bool> OnlyHighlightedProperty =
+            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlighted), true);
 
-        public bool OnlyHighlightCurrentBranch
+        public bool OnlyHighlighted
         {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
+            get => GetValue(OnlyHighlightedProperty);
+            set => SetValue(OnlyHighlightedProperty, value);
         }
 
         public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
@@ -47,7 +47,7 @@ namespace SourceGit.Views
             AffectsRender<CommitGraph>(
                 GraphProperty,
                 DotBrushProperty,
-                OnlyHighlightCurrentBranchProperty,
+                OnlyHighlightedProperty,
                 LayoutProperty);
         }
 
@@ -63,19 +63,19 @@ namespace SourceGit.Views
             var clipHeight = Bounds.Height;
             var rowHeight = layout.RowHeight;
             var endY = startY + clipHeight + 28;
+            var onlyHighlighted = OnlyHighlighted;
 
             using (context.PushClip(new Rect(0, 0, clipWidth, clipHeight)))
             using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
-                DrawCurves(context, graph, startY, endY, rowHeight);
-                DrawAnchors(context, graph, startY, endY, rowHeight);
+                DrawCurves(context, graph, startY, endY, rowHeight, onlyHighlighted);
+                DrawAnchors(context, graph, startY, endY, rowHeight, onlyHighlighted);
             }
         }
 
-        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
+        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight, bool onlyHighlighted)
         {
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
             foreach (var link in graph.Links)
             {
@@ -88,7 +88,7 @@ namespace SourceGit.Views
                     break;
 
                 var pen = Models.CommitGraph.Pens[link.Color];
-                if (onlyHighlightCurrentBranch && !link.IsMerged)
+                if (onlyHighlighted && !link.IsHighlighted)
                     pen = grayedPen;
 
                 var geo = new StreamGeometry();
@@ -167,19 +167,18 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (!line.IsMerged && onlyHighlightCurrentBranch)
+                if (onlyHighlighted && !line.IsHighlighted)
                     context.DrawGeometry(null, grayedPen, geo);
                 else
                     context.DrawGeometry(null, pen, geo);
             }
         }
 
-        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
+        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight, bool onlyHighlighted)
         {
             var dotFill = DotBrush;
             var dotFillPen = new Pen(dotFill, 2);
             var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
             foreach (var dot in graph.Dots)
             {
@@ -191,7 +190,7 @@ namespace SourceGit.Views
                     break;
 
                 var pen = Models.CommitGraph.Pens[dot.Color];
-                if (!dot.IsMerged && onlyHighlightCurrentBranch)
+                if (!dot.IsHighlighted && onlyHighlighted)
                     pen = grayedPen;
 
                 switch (dot.Type)
