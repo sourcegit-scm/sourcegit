@@ -268,47 +268,47 @@
                   Focusable="False"
                   IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <ContentControl Content="{Binding DetailContext, Mode=OneWay}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Null">
             <TabControl Padding="0,4">
-                <TabItem>
-                  <TabItem.Header>
-                    <Border Background="Transparent" PointerPressed="OnTabHeaderPointerPressed">
-                      <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Info}"/>
-                    </Border>
-                  </TabItem.Header>
+              <TabItem>
+                <TabItem.Header>
+                  <Border Background="Transparent" PointerPressed="OnTabHeaderPointerPressed">
+                    <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Info}"/>
+                  </Border>
+                </TabItem.Header>
 
-                  <Grid IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
-                    <Path Width="128" Height="128"
-                          Data="{StaticResource Icons.Detail}"
-                          HorizontalAlignment="Center"
-                          Fill="{DynamicResource Brush.FG2}"/>
+                <Grid IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
+                  <Path Width="128" Height="128"
+                        Data="{StaticResource Icons.Detail}"
+                        HorizontalAlignment="Center"
+                        Fill="{DynamicResource Brush.FG2}"/>
 
-                    <StackPanel Margin="0,8" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
-                      <Path Width="12" Height="12" VerticalAlignment="Center" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG2}"/>
-                      <TextBlock Margin="4,0" Text="{DynamicResource Text.Histories.Tips.Prefix}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
-                      <TextBlock Text="{DynamicResource Text.Histories.Tips}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform True, macOS=False}"/>
-                      <TextBlock Text="{DynamicResource Text.Histories.Tips.MacOS}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform False, macOS=True}"/>
-                    </StackPanel>
-                  </Grid>
-                </TabItem>
+                  <StackPanel Margin="0,8" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                    <Path Width="12" Height="12" VerticalAlignment="Center" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Margin="4,0" Text="{DynamicResource Text.Histories.Tips.Prefix}" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Text="{DynamicResource Text.Histories.Tips}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform True, macOS=False}"/>
+                    <TextBlock Text="{DynamicResource Text.Histories.Tips.MacOS}" Foreground="{DynamicResource Brush.FG2}" IsVisible="{OnPlatform False, macOS=True}"/>
+                  </StackPanel>
+                </Grid>
+              </TabItem>
 
-                <TabItem IsEnabled="False">
-                  <TabItem.Header>
-                    <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Changes}"/>
-                  </TabItem.Header>
-                </TabItem>
+              <TabItem IsEnabled="False">
+                <TabItem.Header>
+                  <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Changes}"/>
+                </TabItem.Header>
+              </TabItem>
 
-                <TabItem IsEnabled="False">
-                  <TabItem.Header>
-                    <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Files}"/>
-                  </TabItem.Header>
-                </TabItem>
-              </TabControl>
+              <TabItem IsEnabled="False">
+                <TabItem.Header>
+                  <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Files}"/>
+                </TabItem.Header>
+              </TabItem>
+            </TabControl>
           </DataTemplate>
-          
+
           <DataTemplate DataType="vm:CommitDetail">
             <v:CommitDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
           </DataTemplate>

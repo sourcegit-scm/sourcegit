@@ -469,6 +469,9 @@ namespace SourceGit.Views
             if (!IsLoaded)
                 return;
 
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
             var dataGrid = CommitListContainer;
             var rowsPresenter = dataGrid.FindDescendantOfType<DataGridRowsPresenter>();
             if (rowsPresenter == null)
@@ -476,11 +479,18 @@ namespace SourceGit.Views
 
             double rowHeight = dataGrid.RowHeight;
             double startY = 0;
+            var visibleTopIndex = int.MaxValue;
+            var visibleBottomIndex = -1;
             foreach (var child in rowsPresenter.Children)
             {
                 if (child is DataGridRow { IsVisible: true } row)
                 {
                     rowHeight = row.Bounds.Height;
+                    if (row.Index < visibleTopIndex)
+                        visibleTopIndex = row.Index;
+
+                    if (row.Index > visibleBottomIndex)
+                        visibleBottomIndex = row.Index;
 
                     if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
                     {
@@ -490,6 +500,11 @@ namespace SourceGit.Views
                     }
                 }
             }
+
+            if (visibleBottomIndex >= visibleTopIndex)
+                vm.SetVisibleCommitRange(visibleTopIndex, visibleBottomIndex);
+            else
+                vm.SetVisibleCommitRange(-1, -1);
 
             SetCurrentValue(IsScrollToTopVisibleProperty, startY >= rowHeight);
 

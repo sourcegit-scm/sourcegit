@@ -81,8 +81,29 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _hoveredCommitIndex, value))
                 {
                     if (value >= 0 && value < _commits.Count)
-                        HoveredLineageCommits = GetCommitLineage(_commits[(int)value],
-                            Models.CommitLineageSearchMethod.FullLineage, 1000);
+                    {
+                        var hoveredIndex = (int)value;
+                        var depth = 1000u;
+                        var topLimit = -1;
+                        var bottomLimit = -1;
+
+                        if (_visibleTopIndex >= 0 && _visibleBottomIndex >= _visibleTopIndex)
+                        {
+                            topLimit = _visibleTopIndex;
+                            bottomLimit = _visibleBottomIndex;
+
+                            // Add a small guard band to keep context around viewport edges.
+                            var dist = Math.Max(Math.Abs(hoveredIndex - topLimit), Math.Abs(bottomLimit - hoveredIndex));
+                            depth = (uint)Math.Max(500, dist + 32);
+                        }
+
+                        HoveredLineageCommits = GetCommitLineage(
+                            _commits[hoveredIndex],
+                            Models.CommitLineageSearchMethod.FullLineage,
+                            depth,
+                            topLimit,
+                            bottomLimit);
+                    }
                     else
                         HoveredLineageCommits = null;
                 }
@@ -298,6 +319,41 @@ namespace SourceGit.ViewModels
             return await new Commands.QuerySingleCommit(_repo.FullPath, sha)
                 .GetResultAsync()
                 .ConfigureAwait(false);
+        }
+
+        public void SetVisibleCommitRange(int topIndex, int bottomIndex)
+        {
+            // 扩展 viewport 上下各 100 行，保证高亮连续性
+            const int VIEWPORT_PADDING = 100;
+            int paddedTop = Math.Max(0, topIndex - VIEWPORT_PADDING);
+            int paddedBottom = Math.Min(_commits.Count - 1, bottomIndex + VIEWPORT_PADDING);
+
+            // 只有当滚动超过阈值时才触发 lineage 重新计算
+            const int SCROLL_THRESHOLD = 40; // 可根据实际体验调整
+            bool needUpdate = false;
+            if (_visibleTopIndex < 0 || _visibleBottomIndex < 0)
+            {
+                needUpdate = true;
+            }
+            else if (Math.Abs(paddedTop - _visibleTopIndex) > SCROLL_THRESHOLD ||
+                     Math.Abs(paddedBottom - _visibleBottomIndex) > SCROLL_THRESHOLD)
+            {
+                needUpdate = true;
+            }
+
+            if (needUpdate)
+            {
+                _visibleTopIndex = paddedTop;
+                _visibleBottomIndex = paddedBottom;
+                // 触发 hover lineage 重新计算（如果有 hover）
+                if (_hoveredCommitIndex >= 0 && _hoveredCommitIndex < _commits.Count)
+                {
+                    // 重新赋值以触发 setter
+                    var tmp = _hoveredCommitIndex;
+                    _hoveredCommitIndex = -1;
+                    HoveredCommitIndex = tmp;
+                }
+            }
         }
 
         public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)
@@ -533,7 +589,7 @@ namespace SourceGit.ViewModels
             if (_selectedCommits.Count == 0)
             {
                 _repo.SearchCommitContext.Selected = null;
-                DetailContext = new Models.Null();
+                DetailContext = null;
                 SelectedLineageCommits = null;
                 SelectedLineagePaths = null;
             }
@@ -572,7 +628,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public HashSet<int> GetCommitLineage(Models.Commit commit, Models.CommitLineageSearchMethod method, uint depth = 100)
+        public HashSet<int> GetCommitLineage(
+            Models.Commit commit,
+            Models.CommitLineageSearchMethod method,
+            uint depth = 100,
+            int viewportTopIndex = -1,
+            int viewportBottomIndex = -1)
         {
             var active = new HashSet<int>();
             if (commit == null || method == Models.CommitLineageSearchMethod.None)
@@ -583,6 +644,13 @@ namespace SourceGit.ViewModels
             // GUI boundaries: only search within a limited range of commits to improve performance
             int topLimit = Math.Max(0, commit.Index - (int)depth);
             int bottomLimit = Math.Min(_commits.Count - 1, commit.Index + (int)depth);
+
+            // Viewport boundaries: tighten the traversal window to visible rows when available.
+            if (viewportTopIndex >= 0 && viewportBottomIndex >= viewportTopIndex)
+            {
+                topLimit = Math.Max(topLimit, viewportTopIndex);
+                bottomLimit = Math.Min(bottomLimit, viewportBottomIndex);
+            }
 
             // UP (Ancestors) - Moving to higher indices
             if (method == Models.CommitLineageSearchMethod.ParentsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
@@ -657,6 +725,8 @@ namespace SourceGit.ViewModels
         private bool _isCollapseDetails = false;
         private HashSet<int> _selectedLineagePaths = null;
         private HashSet<int> _selectedLineageCommits = null;
+        private int _visibleTopIndex = -1;
+        private int _visibleBottomIndex = -1;
         private Dictionary<string, Models.Commit> _commitMap = new Dictionary<string, Models.Commit>();
         private Dictionary<string, List<Models.Commit>> _childrenMap = new Dictionary<string, List<Models.Commit>>();
     }
