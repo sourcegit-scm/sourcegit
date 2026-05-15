@@ -162,8 +162,12 @@ namespace SourceGit.Views
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
+            var hoverBold = 2.0;
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
             var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
+            var highlightSelectedLineage = HighlightSelectedLineage;
+            var selectedLineageCommits = SelectedLineageCommits;
+            var hoveredLineage = HoveredLineageCommits;
 
             foreach (var link in graph.Links)
             {
@@ -175,9 +179,25 @@ namespace SourceGit.Views
                 if (startY > bottom)
                     break;
 
-                var pen = Models.CommitGraph.Pens[link.Color];
-                if (onlyHighlightCurrentBranch && !link.IsMerged)
+                var isLinkInSelectedLineage =
+                    highlightSelectedLineage &&
+                    onlyHighlightCurrentBranch &&
+                    selectedLineageCommits != null &&
+                    link.StartCommitIndex >= 0 && link.EndCommitIndex >= 0 &&
+                    selectedLineageCommits.Contains(link.StartCommitIndex) &&
+                    selectedLineageCommits.Contains(link.EndCommitIndex);
+
+                var isLinkInHoveredLineage = hoveredLineage != null &&
+                    link.StartCommitIndex >= 0 && link.EndCommitIndex >= 0 &&
+                    hoveredLineage.Contains(link.StartCommitIndex) &&
+                    hoveredLineage.Contains(link.EndCommitIndex);
+
+                var pen = link.Color < 0 ? grayedPen : Models.CommitGraph.Pens[link.Color];
+                if (onlyHighlightCurrentBranch && !link.IsMerged && !isLinkInSelectedLineage)
                     pen = grayedPen;
+
+                if (isLinkInHoveredLineage)
+                    pen = new Pen(pen.Brush, pen.Thickness + hoverBold);
 
                 var geo = new StreamGeometry();
                 using (var ctx = geo.Open())
@@ -200,8 +220,18 @@ namespace SourceGit.Views
                 if (last.Y > bottom)
                     break;
 
+                var isLineInSelectedLineage = highlightSelectedLineage && selectedLineageCommits != null &&
+                    line.StartCommitIndex >= 0 && line.EndCommitIndex >= 0 &&
+                    selectedLineageCommits.Contains(line.StartCommitIndex) &&
+                    selectedLineageCommits.Contains(line.EndCommitIndex);
+
                 var geo = new StreamGeometry();
-                var pen = Models.CommitGraph.Pens[line.Color];
+                var pen = line.Color < 0 ? grayedPen : Models.CommitGraph.Pens[line.Color];
+                if (onlyHighlightCurrentBranch && !line.IsMerged && !isLineInSelectedLineage)
+                    pen = grayedPen;
+
+                if (line.IsHoveredRelated)
+                    pen = new Pen(pen.Brush, pen.Thickness + hoverBold);
 
                 using (var ctx = geo.Open())
                 {
@@ -255,10 +285,7 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (!line.IsMerged && onlyHighlightCurrentBranch)
-                    context.DrawGeometry(null, grayedPen, geo);
-                else
-                    context.DrawGeometry(null, pen, geo);
+                context.DrawGeometry(null, pen, geo);
             }
         }
 
@@ -268,9 +295,15 @@ namespace SourceGit.Views
             var dotFillPen = new Pen(dotFill, 2);
             var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
             var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
+            var highlightSelectedLineage = HighlightSelectedLineage;
+            var selectedLineageCommits = SelectedLineageCommits;
 
-            foreach (var dot in graph.Dots)
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            for (int i = 0; i < graph.Dots.Count; i++)
             {
+                var dot = graph.Dots[i];
                 var center = new Point(dot.Center.X, dot.Center.Y * rowHeight);
 
                 if (center.Y < top)
@@ -278,8 +311,10 @@ namespace SourceGit.Views
                 if (center.Y > bottom)
                     break;
 
+                bool isDotInSelectedLineage = highlightSelectedLineage && selectedLineageCommits != null && selectedLineageCommits.Contains(i);
+
                 var pen = Models.CommitGraph.Pens[dot.Color];
-                if (!dot.IsMerged && onlyHighlightCurrentBranch)
+                if (onlyHighlightCurrentBranch && !dot.IsMerged && !isDotInSelectedLineage)
                     pen = grayedPen;
 
                 switch (dot.Type)
