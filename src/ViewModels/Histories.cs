@@ -86,7 +86,11 @@ namespace SourceGit.ViewModels
         public object DetailContext
         {
             get => _detailContext;
-            set => SetProperty(ref _detailContext, value);
+            set
+            {
+                if (SetProperty(ref _detailContext, value))
+                    OnPropertyChanged(nameof(IsOpenAsStandaloneVisible));
+            }
         }
 
         public Models.Bisect Bisect
@@ -148,8 +152,7 @@ namespace SourceGit.ViewModels
 
         public bool IsOpenAsStandaloneVisible
         {
-            get => _isOpenAsStandaloneVisible;
-            set => SetProperty(ref _isOpenAsStandaloneVisible, value);
+            get => DetailContext is CommitDetail or RevisionCompare;
         }
 
         public bool IsCollapseDetails
@@ -226,7 +229,6 @@ namespace SourceGit.ViewModels
                 {
                     _ignoreSelectionChange = true;
                     SelectedCommits = [];
-                    IsOpenAsStandaloneVisible = true;
 
                     if (_detailContext is CommitDetail detail)
                     {
@@ -436,7 +438,6 @@ namespace SourceGit.ViewModels
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = null;
-                IsOpenAsStandaloneVisible = false;
             }
             else if (_selectedCommits.Count == 1)
             {
@@ -448,8 +449,6 @@ namespace SourceGit.ViewModels
                     detail.Commit = c;
                 else
                     DetailContext = new CommitDetail(_repo, _commitDetailSharedData) { Commit = c };
-
-                IsOpenAsStandaloneVisible = true;
             }
             else if (_selectedCommits.Count == 2)
             {
@@ -459,14 +458,11 @@ namespace SourceGit.ViewModels
                     compare.SetTargets(_selectedCommits[1], _selectedCommits[0]);
                 else
                     DetailContext = new RevisionCompare(_repo, _selectedCommits[1], _selectedCommits[0]);
-
-                IsOpenAsStandaloneVisible = true;
             }
             else
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(_selectedCommits.Count);
-                IsOpenAsStandaloneVisible = false;
             }
         }
 
@@ -485,6 +481,5 @@ namespace SourceGit.ViewModels
         private GridLength _topArea = new GridLength(1, GridUnitType.Star);
         private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
         private bool _isCollapseDetails = false;
-        private bool _isOpenAsStandaloneVisible = false;
     }
 }
