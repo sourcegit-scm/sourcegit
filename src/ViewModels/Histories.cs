@@ -401,6 +401,24 @@ namespace SourceGit.ViewModels
 
         private void PostCommitsChanged()
         {
+            _commitMap.Clear();
+            _childrenMap.Clear();
+            for (int i = 0; i < _commits.Count; i++)
+            {
+                var c = _commits[i];
+                c.Index = i;
+                _commitMap[c.SHA] = c;
+                foreach (var p in c.Parents)
+                {
+                    if (!_childrenMap.TryGetValue(p, out var list))
+                    {
+                        list = new List<Models.Commit>();
+                        _childrenMap[p] = list;
+                    }
+                    list.Add(c);
+                }
+            }
+
             if (_selectedCommits.Count == 0)
                 return;
 
@@ -466,6 +484,72 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public HashSet<int> GetCommitLineage(Models.Commit commit, Models.CommitLineageSearchMethod method, uint depth = 100)
+        {
+            var active = new HashSet<int>();
+            if (commit == null || method == Models.CommitLineageSearchMethod.None)
+                return active;
+
+            active.Add(commit.Index);
+
+            // GUI boundaries: only search within a limited range of commits to improve performance
+            int topLimit = Math.Max(0, commit.Index - (int)depth);
+            int bottomLimit = Math.Min(_commits.Count - 1, commit.Index + (int)depth);
+
+            // UP (Ancestors) - Moving to higher indices
+            if (method == Models.CommitLineageSearchMethod.ParentsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
+            {
+                var queueUp = new Queue<Models.Commit>();
+                queueUp.Enqueue(commit);
+                var visitedUp = new HashSet<string>();
+                visitedUp.Add(commit.SHA);
+                while (queueUp.Count > 0)
+                {
+                    var c = queueUp.Dequeue();
+                    foreach (var pSha in c.Parents)
+                    {
+                        if (_commitMap.TryGetValue(pSha, out var parent) && visitedUp.Add(pSha))
+                        {
+                            if (parent.Index <= bottomLimit)
+                            {
+                                active.Add(parent.Index);
+                                queueUp.Enqueue(parent);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // DOWN (Descendants) - Moving to lower indices
+            if (method == Models.CommitLineageSearchMethod.ChildsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
+            {
+                var queueDown = new Queue<Models.Commit>();
+                queueDown.Enqueue(commit);
+                var visitedDown = new HashSet<string>();
+                visitedDown.Add(commit.SHA);
+                while (queueDown.Count > 0)
+                {
+                    var c = queueDown.Dequeue();
+                    if (_childrenMap.TryGetValue(c.SHA, out var children))
+                    {
+                        foreach (var child in children)
+                        {
+                            if (visitedDown.Add(child.SHA))
+                            {
+                                if (child.Index >= topLimit)
+                                {
+                                    active.Add(child.Index);
+                                    queueDown.Enqueue(child);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return active;
+        }
+
         private Repository _repo = null;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
@@ -481,5 +565,7 @@ namespace SourceGit.ViewModels
         private GridLength _topArea = new GridLength(1, GridUnitType.Star);
         private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
         private bool _isCollapseDetails = false;
+        private Dictionary<string, Models.Commit> _commitMap = new Dictionary<string, Models.Commit>();
+        private Dictionary<string, List<Models.Commit>> _childrenMap = new Dictionary<string, List<Models.Commit>>();
     }
 }

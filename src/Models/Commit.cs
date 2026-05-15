@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Models
@@ -11,6 +11,14 @@ namespace SourceGit.Models
         ByMessage,
         ByPath,
         ByContent,
+    }
+
+    public enum CommitLineageSearchMethod
+    {
+        None = 0,
+        ParentsOnly = 1,
+        ChildsOnly = 2,
+        FullLineage = 3,
     }
 
     public class Commit
