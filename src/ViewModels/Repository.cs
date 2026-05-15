@@ -126,16 +126,10 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool HighlightCurrentBranchOnlyInHistory
+        public Models.CommitGraphHighlighting CommitGraphHighlighting
         {
-            get => _histories.HighlightCurrentBranchOnly;
-            set => _histories.HighlightCurrentBranchOnly = value;
-        }
-
-        public bool HighlightSelectedLineageInHistory
-        {
-            get => _histories.HighlightSelectedLineage;
-            set => _histories.HighlightSelectedLineage = value;
+            get => _histories.CommitGraphHighlighting;
+            set => _histories.CommitGraphHighlighting = value;
         }
 
         public string Filter

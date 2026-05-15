@@ -159,28 +159,25 @@ namespace SourceGit.ViewModels
             get => _repo.CurrentBranch;
         }
 
-        public bool HighlightCurrentBranchOnly
+        public Models.CommitGraphHighlighting CommitGraphHighlighting
         {
-            get => _repo.UIStates.OnlyHighlightCurrentBranchInHistory;
+            get => _repo.UIStates.CommitGraphHighlighting;
             set
             {
-                if (_repo.UIStates.OnlyHighlightCurrentBranchInHistory != value)
+                if (_repo.UIStates.CommitGraphHighlighting != value)
                 {
-                    _repo.UIStates.OnlyHighlightCurrentBranchInHistory = value;
+                    _repo.UIStates.CommitGraphHighlighting = value;
                     OnPropertyChanged();
-                }
-            }
-        }
 
-        public bool HighlightSelectedLineage
-        {
-            get => _repo.UIStates.HighlightSelectedLineageInHistory;
-            set
-            {
-                if (_repo.UIStates.HighlightSelectedLineageInHistory != value)
-                {
-                    _repo.UIStates.HighlightSelectedLineageInHistory = value;
-                    OnPropertyChanged();
+                    var highlightSelected = value == Models.CommitGraphHighlighting.SelectedLineageOnly ||
+                                             value == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+                    if (highlightSelected && _selectedCommits.Count == 1)
+                        CalculateTargetLineage(_selectedCommits[0]);
+                    else if (!highlightSelected)
+                    {
+                        SelectedLineageCommits = null;
+                        SelectedLineagePaths = null;
+                    }
                 }
             }
         }
@@ -555,7 +552,7 @@ namespace SourceGit.ViewModels
                 }
 
                 var paths = new HashSet<int>();
-                var lineage = GetCommitLineage(commit, Models.CommitLineageSearchMethod.FullLineage);
+                var lineage = GetCommitLineage(commit, Models.CommitLineageSearchMethod.FullLineage, 20000);
                 for (int i = 0; i < lineage.Length; i++)
                 {
                     if (lineage[i])
@@ -582,7 +579,7 @@ namespace SourceGit.ViewModels
             if (_selectedCommits.Count == 0)
             {
                 _repo.SearchCommitContext.Selected = null;
-                DetailContext = null;
+                DetailContext = new Models.Null();
                 SelectedLineageCommits = null;
                 SelectedLineagePaths = null;
             }
@@ -597,7 +594,9 @@ namespace SourceGit.ViewModels
                 else
                     DetailContext = new CommitDetail(_repo, _commitDetailSharedData) { Commit = c };
 
-                if (_repo.UIStates.HighlightSelectedLineageInHistory)
+                var highlightSelected = _repo.UIStates.CommitGraphHighlighting == Models.CommitGraphHighlighting.SelectedLineageOnly ||
+                                         _repo.UIStates.CommitGraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+                if (highlightSelected)
                     CalculateTargetLineage(c);
             }
             else if (_selectedCommits.Count == 2)

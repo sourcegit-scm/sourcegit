@@ -495,6 +495,11 @@
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交时间</x:String>
   <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日期时间</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights" xml:space="preserve">高亮模式</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.All" xml:space="preserve">全部显示</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchOnly" xml:space="preserve">仅当前分支</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.SelectedLineageOnly" xml:space="preserve">仅选中谱系</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchAndSelectedLineage" xml:space="preserve">当前分支与选中谱系</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">显示列</x:String>

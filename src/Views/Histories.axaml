@@ -100,7 +100,14 @@
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
+              <Grid>
+                <Button Classes="icon_button"
+                        Click="OnHighlightsClicked"
+                        ToolTip.Tip="{DynamicResource Text.Histories.Header.Highlights}">
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
+                </Button>
+                <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
+              </Grid>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
@@ -128,7 +135,7 @@
                       <v:CommitRefsPresenter.UseGraphColor>
                         <MultiBinding Converter="{x:Static BoolConverters.Or}">
                           <Binding Path="IsMerged"/>
-                          <Binding Path="$parent[v:Histories].OnlyHighlightCurrentBranch" Converter="{x:Static BoolConverters.Not}"/>
+                          <Binding Path="$parent[v:Histories].CommitGraphHighlighting" Converter="{x:Static c:FilterModeConverters.HighlightModeToIsAllBright}"/>
                         </MultiBinding>
                       </v:CommitRefsPresenter.UseGraphColor>
                     </v:CommitRefsPresenter>
@@ -233,12 +240,11 @@
                      Margin="0,24,0,0"
                      Graph="{Binding Graph}"
                      DotBrush="{DynamicResource Brush.Contents}"
-                     OnlyHighlightCurrentBranch="{Binding $parent[v:Histories].OnlyHighlightCurrentBranch}"
+                     HighlightMode="{Binding $parent[v:Histories].CommitGraphHighlighting}"
                      HoveredCommitIndex="{Binding HoveredCommitIndex}"
                      HoveredLineageCommits="{Binding HoveredLineageCommits}"
                      SelectedLineageCommits="{Binding SelectedLineageCommits}"
                      SelectedLineagePaths="{Binding SelectedLineagePaths}"
-                     HighlightSelectedLineage="{Binding $parent[v:Histories].HighlightSelectedLineage}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>

@@ -343,22 +343,13 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackersProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<Histories, bool>(nameof(OnlyHighlightCurrentBranch), true);
+        public static readonly StyledProperty<Models.CommitGraphHighlighting> CommitGraphHighlightingProperty =
+            AvaloniaProperty.Register<Histories, Models.CommitGraphHighlighting>(nameof(CommitGraphHighlighting), Models.CommitGraphHighlighting.All);
 
-        public bool OnlyHighlightCurrentBranch
+        public Models.CommitGraphHighlighting CommitGraphHighlighting
         {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> HighlightSelectedLineageProperty =
-            AvaloniaProperty.Register<Histories, bool>(nameof(HighlightSelectedLineage), false);
-
-        public bool HighlightSelectedLineage
-        {
-            get => GetValue(HighlightSelectedLineageProperty);
-            set => SetValue(HighlightSelectedLineageProperty, value);
+            get => GetValue(CommitGraphHighlightingProperty);
+            set => SetValue(CommitGraphHighlightingProperty, value);
         }
 
         public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
@@ -468,6 +459,48 @@ namespace SourceGit.Views
                 if (c != null)
                     vm.NavigateTo(c.SHA);
             }
+        }
+
+        private void OnHighlightsClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm || sender is not Control button)
+                return;
+
+            var all = new MenuItem();
+            all.Header = App.Text("Histories.Header.Highlights.All");
+            all.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.All ? this.CreateMenuIcon("Icons.Check") : null;
+            all.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.All;
+
+            var currentBranchOnly = new MenuItem();
+            currentBranchOnly.Header = App.Text("Histories.Header.Highlights.CurrentBranchOnly");
+            currentBranchOnly.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            currentBranchOnly.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchOnly;
+
+            var selectedCommitsOnly = new MenuItem();
+            selectedCommitsOnly.Header = App.Text("Histories.Header.Highlights.SelectedLineageOnly");
+            selectedCommitsOnly.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.SelectedLineageOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            selectedCommitsOnly.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.SelectedLineageOnly;
+
+            var currentBranchAndSelectedCommits = new MenuItem();
+            currentBranchAndSelectedCommits.Header = App.Text("Histories.Header.Highlights.CurrentBranchAndSelectedLineage");
+            currentBranchAndSelectedCommits.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage ? this.CreateMenuIcon("Icons.Check") : null;
+            currentBranchAndSelectedCommits.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
+            var modeHeader = new MenuItem();
+            modeHeader.Header = new TextBlock() { Text = App.Text("Histories.Header.Highlights"), FontWeight = FontWeight.Bold };
+            modeHeader.IsEnabled = false;
+            menu.Items.Add(modeHeader);
+
+            menu.Items.Add(all);
+            menu.Items.Add(currentBranchOnly);
+            menu.Items.Add(selectedCommitsOnly);
+            menu.Items.Add(currentBranchAndSelectedCommits);
+            menu.Open(button);
+
+            e.Handled = true;
         }
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)

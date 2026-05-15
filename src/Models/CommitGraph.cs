@@ -6,6 +6,14 @@ using Avalonia.Media;
 
 namespace SourceGit.Models
 {
+    public enum CommitGraphHighlighting
+    {
+        All,
+        CurrentBranchOnly,
+        SelectedLineageOnly,
+        CurrentBranchAndSelectedLineage,
+    }
+
     public record CommitGraphLayout(double StartY, double ClipWidth, double RowHeight);
 
     public class CommitGraph

@@ -15,5 +15,11 @@ namespace SourceGit.Converters
                     _ => Brushes.Transparent,
                 };
             });
+
+        public static readonly FuncValueConverter<Models.CommitGraphHighlighting, bool> HighlightModeToIsAllBright =
+            new FuncValueConverter<Models.CommitGraphHighlighting, bool>(v =>
+            {
+                return v == Models.CommitGraphHighlighting.All;
+            });
     }
 }

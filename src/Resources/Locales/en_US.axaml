@@ -491,6 +491,11 @@
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT TIME</x:String>
   <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">DATE TIME</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights" xml:space="preserve">Highlighting Mode</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.All" xml:space="preserve">Show All</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchOnly" xml:space="preserve">Current Branch Only</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.SelectedLineageOnly" xml:space="preserve">Selected Lineage Only</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchAndSelectedLineage" xml:space="preserve">Current Branch &amp; Selected Lineage</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>
