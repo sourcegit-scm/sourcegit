@@ -992,6 +992,27 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
                     menu.Items.Add(tracking);
+
+                    if (!string.IsNullOrEmpty(branch.Upstream))
+                    {
+                        var removeTracking = new MenuItem();
+                        removeTracking.Header = App.Text("BranchCM.RemoveTracking");
+                        removeTracking.Icon = this.CreateMenuIcon("Icons.Clear");
+                        removeTracking.Click += async (_, e) =>
+                        {
+                            if (repo.CanCreatePopup())
+                            {
+                                var log = repo.CreateLog("Remove Tracking Reference");
+                                await new Commands.Branch(repo.FullPath, branch.Name)
+                                    .Use(log)
+                                    .SetUpstreamAsync(null);
+                                log.Complete();
+                                repo.MarkBranchesDirtyManually();
+                            }
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(removeTracking);
+                    }
                 }
             }
 
@@ -1202,6 +1223,17 @@ namespace SourceGit.Views
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var rename = new MenuItem();
+            rename.Header = App.Text("BranchCM.Rename", name);
+            rename.Icon = this.CreateMenuIcon("Icons.Rename");
+            rename.Click += (_, e) =>
+            {
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.RenameRemoteBranch(repo, branch));
+                e.Handled = true;
+            };
+            menu.Items.Add(rename);
 
             var editDescription = new MenuItem();
             editDescription.Header = App.Text("BranchCM.EditDescription", branch.Name);

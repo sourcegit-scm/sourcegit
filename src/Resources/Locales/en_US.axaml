@@ -82,6 +82,7 @@
   <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase ${0}$ on ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Rename ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.RemoveTracking" xml:space="preserve">Remove Tracking Reference</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Reset ${0}$ to ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Switch to ${0}$ (worktree)</x:String>
   <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Set Tracking Branch...</x:String>
@@ -750,6 +751,7 @@
   <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Unique name for this branch</x:String>
   <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.RenameBranch.WithTrackingRemote" xml:space="preserve">Also rename remote branch ${0}$</x:String>
+  <x:String x:Key="Text.RenameRemoteBranch" xml:space="preserve">Rename Remote Branch</x:String>
   <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ABORT</x:String>
   <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Auto fetching changes from remotes...</x:String>
   <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Sort</x:String>
