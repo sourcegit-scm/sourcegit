@@ -45,6 +45,12 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public bool HighlightSelectedLineageInHistory
+        {
+            get;
+            set;
+        } = false;
+
         public BranchSortMode LocalBranchSortMode
         {
             get;

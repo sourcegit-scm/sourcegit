@@ -73,6 +73,28 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _graph, value);
         }
 
+        public long HoveredCommitIndex
+        {
+            get => _hoveredCommitIndex;
+            set
+            {
+                if (SetProperty(ref _hoveredCommitIndex, value))
+                {
+                    if (value >= 0 && value < _commits.Count)
+                        HoveredLineageCommits = GetCommitLineage(_commits[(int)value],
+                            Models.CommitLineageSearchMethod.FullLineage, 1000);
+                    else
+                        HoveredLineageCommits = null;
+                }
+            }
+        }
+
+        public HashSet<int> HoveredLineageCommits
+        {
+            get => _hoveredLineageCommits;
+            set => SetProperty(ref _hoveredLineageCommits, value);
+        }
+
         public List<Models.Commit> SelectedCommits
         {
             get => _selectedCommits;
@@ -81,6 +103,18 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _selectedCommits, value))
                     PostSelectedCommitsChanged();
             }
+        }
+
+        public HashSet<int> SelectedLineagePaths
+        {
+            get => _selectedLineagePaths;
+            set => SetProperty(ref _selectedLineagePaths, value);
+        }
+
+        public HashSet<int> SelectedLineageCommits
+        {
+            get => _selectedLineageCommits;
+            set => SetProperty(ref _selectedLineageCommits, value);
         }
 
         public object DetailContext
@@ -112,6 +146,19 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.OnlyHighlightCurrentBranchInHistory != value)
                 {
                     _repo.UIStates.OnlyHighlightCurrentBranchInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool HighlightSelectedLineage
+        {
+            get => _repo.UIStates.HighlightSelectedLineageInHistory;
+            set
+            {
+                if (_repo.UIStates.HighlightSelectedLineageInHistory != value)
+                {
+                    _repo.UIStates.HighlightSelectedLineageInHistory = value;
                     OnPropertyChanged();
                 }
             }
@@ -555,6 +602,8 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;
+        private long _hoveredCommitIndex = -1;
+        private HashSet<int> _hoveredLineageCommits = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
         private object _detailContext = new Models.Null();
@@ -565,6 +614,8 @@ namespace SourceGit.ViewModels
         private GridLength _topArea = new GridLength(1, GridUnitType.Star);
         private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
         private bool _isCollapseDetails = false;
+        private HashSet<int> _selectedLineagePaths = null;
+        private HashSet<int> _selectedLineageCommits = null;
         private Dictionary<string, Models.Commit> _commitMap = new Dictionary<string, Models.Commit>();
         private Dictionary<string, List<Models.Commit>> _childrenMap = new Dictionary<string, List<Models.Commit>>();
     }

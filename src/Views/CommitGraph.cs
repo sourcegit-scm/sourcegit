@@ -33,6 +33,51 @@ namespace SourceGit.Views
             set => SetValue(OnlyHighlightCurrentBranchProperty, value);
         }
 
+        public static readonly StyledProperty<bool> HighlightSelectedLineageProperty =
+            AvaloniaProperty.Register<CommitGraph, bool>(nameof(HighlightSelectedLineage), false);
+
+        public bool HighlightSelectedLineage
+        {
+            get => GetValue(HighlightSelectedLineageProperty);
+            set => SetValue(HighlightSelectedLineageProperty, value);
+        }
+
+        public static readonly StyledProperty<System.Collections.Generic.HashSet<int>> HoveredLineageCommitsProperty =
+            AvaloniaProperty.Register<CommitGraph, System.Collections.Generic.HashSet<int>>(nameof(HoveredLineageCommits));
+
+        public System.Collections.Generic.HashSet<int> HoveredLineageCommits
+        {
+            get => GetValue(HoveredLineageCommitsProperty);
+            set => SetValue(HoveredLineageCommitsProperty, value);
+        }
+
+        public static readonly StyledProperty<long> HoveredCommitIndexProperty =
+            AvaloniaProperty.Register<CommitGraph, long>(nameof(HoveredCommitIndex), -1);
+
+        public long HoveredCommitIndex
+        {
+            get => GetValue(HoveredCommitIndexProperty);
+            set => SetValue(HoveredCommitIndexProperty, value);
+        }
+
+        public static readonly StyledProperty<System.Collections.Generic.HashSet<int>> SelectedLineageCommitsProperty =
+            AvaloniaProperty.Register<CommitGraph, System.Collections.Generic.HashSet<int>>(nameof(SelectedLineageCommits));
+
+        public System.Collections.Generic.HashSet<int> SelectedLineageCommits
+        {
+            get => GetValue(SelectedLineageCommitsProperty);
+            set => SetValue(SelectedLineageCommitsProperty, value);
+        }
+
+        public static readonly StyledProperty<System.Collections.Generic.HashSet<int>> SelectedLineagePathsProperty =
+            AvaloniaProperty.Register<CommitGraph, System.Collections.Generic.HashSet<int>>(nameof(SelectedLineagePaths));
+
+        public System.Collections.Generic.HashSet<int> SelectedLineagePaths
+        {
+            get => GetValue(SelectedLineagePathsProperty);
+            set => SetValue(SelectedLineagePathsProperty, value);
+        }
+
         public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
             AvaloniaProperty.Register<CommitGraph, Models.CommitGraphLayout>(nameof(Layout));
 
@@ -48,7 +93,50 @@ namespace SourceGit.Views
                 GraphProperty,
                 DotBrushProperty,
                 OnlyHighlightCurrentBranchProperty,
+                HighlightSelectedLineageProperty,
+                HoveredLineageCommitsProperty,
+                HoveredCommitIndexProperty,
+                SelectedLineageCommitsProperty,
+                SelectedLineagePathsProperty,
                 LayoutProperty);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == GraphProperty ||
+                change.Property == HoveredCommitIndexProperty ||
+                change.Property == HoveredLineageCommitsProperty ||
+                change.Property == SelectedLineageCommitsProperty ||
+                change.Property == SelectedLineagePathsProperty ||
+                change.Property == HighlightSelectedLineageProperty)
+            {
+                UpdateHoveredRelated();
+            }
+        }
+
+        private void UpdateHoveredRelated()
+        {
+            var graph = Graph;
+            if (graph == null)
+                return;
+
+            foreach (var line in graph.Paths)
+                line.IsHoveredRelated = false;
+
+            var hoveredLineage = HoveredLineageCommits;
+            if (hoveredLineage != null && hoveredLineage.Count > 0)
+            {
+                foreach (var line in graph.Paths)
+                {
+                    if (line.StartCommitIndex >= 0 && line.EndCommitIndex >= 0)
+                    {
+                        line.IsHoveredRelated = hoveredLineage.Contains(line.StartCommitIndex) &&
+                                                hoveredLineage.Contains(line.EndCommitIndex);
+                    }
+                }
+            }
         }
 
         public override void Render(DrawingContext context)
