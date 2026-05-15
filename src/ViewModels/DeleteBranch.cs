@@ -100,8 +100,20 @@ namespace SourceGit.ViewModels
             }
             else
             {
+                var oldUpstream = Target.FullName;
                 await DeleteRemoteBranchAsync(Target, log);
                 _repo.UIStates.RemoveHistoryFilter(Target.FullName, Models.FilterType.RemoteBranch);
+
+                // Unset tracking on any local branches that were tracking this remote branch
+                foreach (var local in _repo.Branches)
+                {
+                    if (local.IsLocal && local.Upstream == oldUpstream)
+                    {
+                        await new Commands.Branch(_repo.FullPath, local.Name)
+                            .Use(log)
+                            .SetUpstreamAsync(null);
+                    }
+                }
             }
 
             log.Complete();

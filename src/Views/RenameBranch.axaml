@@ -41,7 +41,7 @@
 
       <Border Grid.Row="2" Grid.Column="1" Height="32"
               IsVisible="{Binding TrackingRemoteBranch, Converter={x:Static ObjectConverters.IsNotNull}}">
-        <CheckBox Margin="6,0,0,0" IsChecked="{Binding AlsoRenameRemote, Mode=TwoWay}">
+        <CheckBox Margin="6,0,0,0" IsChecked="{Binding AlsoRenameRemote, Mode=TwoWay}" IsEnabled="{Binding CanRenameRemote}">
           <v:NameHighlightedTextBlock Text="{Binding RenameRemoteTip}" VerticalAlignment="Center" />
         </CheckBox>
       </Border>

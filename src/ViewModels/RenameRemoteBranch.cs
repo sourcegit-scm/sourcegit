@@ -38,6 +38,8 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var remote = Target.Remote;
+            var oldUpstream = Target.FullName;
+            var newUpstream = $"refs/remotes/{remote}/{_name}";
             var succ = false;
 
             // Push the current commit to the new branch name on the remote
@@ -51,6 +53,27 @@ namespace SourceGit.ViewModels
                 var deleteOld = new Commands.Push(_repo.FullPath, remote, $"refs/heads/{Target.Name}", true);
                 deleteOld.Use(log);
                 succ = await deleteOld.RunAsync();
+
+                // Update tracking of local branches that tracked the old remote branch
+                if (succ)
+                {
+                    foreach (var local in _repo.Branches)
+                    {
+                        if (local.IsLocal && local.Upstream == oldUpstream)
+                        {
+                            var trackingBranch = new Models.Branch
+                            {
+                                Name = _name,
+                                FullName = newUpstream,
+                                Remote = remote,
+                                IsLocal = false,
+                            };
+                            await new Commands.Branch(_repo.FullPath, local.Name)
+                                .Use(log)
+                                .SetUpstreamAsync(trackingBranch);
+                        }
+                    }
+                }
             }
 
             log.Complete();

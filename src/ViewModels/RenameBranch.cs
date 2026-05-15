@@ -28,6 +28,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _alsoRenameRemote, value);
         }
 
+        public bool CanRenameRemote
+        {
+            get;
+            private set;
+        }
+
         [Required(ErrorMessage = "Branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(RenameBranch), nameof(ValidateBranchName))]
@@ -47,7 +53,10 @@ namespace SourceGit.ViewModels
             {
                 TrackingRemoteBranch = repo.Branches.Find(x => x.FullName == target.Upstream);
                 if (TrackingRemoteBranch != null)
+                {
                     RenameRemoteTip = App.Text("RenameBranch.WithTrackingRemote", TrackingRemoteBranch.FriendlyName);
+                    CanRenameRemote = target.Head == TrackingRemoteBranch.Head;
+                }
             }
         }
 
@@ -89,13 +98,25 @@ namespace SourceGit.ViewModels
                 if (_alsoRenameRemote && TrackingRemoteBranch != null)
                 {
                     var remote = TrackingRemoteBranch.Remote;
-                    var pushNew = new Commands.Push(_repo.FullPath, remote, $"refs/heads/{_name}", false);
+                    var pushNew = new Commands.Push(_repo.FullPath, TrackingRemoteBranch.Head, remote, $"refs/heads/{_name}", false, false, false, false);
                     pushNew.Use(log);
                     await pushNew.RunAsync();
 
-                    var deleteOld = new Commands.Push(_repo.FullPath, remote, $"refs/heads/{oldName}", true);
+                    var deleteOld = new Commands.Push(_repo.FullPath, remote, $"refs/heads/{TrackingRemoteBranch.Name}", true);
                     deleteOld.Use(log);
                     await deleteOld.RunAsync();
+
+                    // Update local branch's tracking to the new remote branch
+                    var newUpstream = new Models.Branch
+                    {
+                        Name = _name,
+                        FullName = $"refs/remotes/{remote}/{_name}",
+                        Remote = remote,
+                        IsLocal = false,
+                    };
+                    await new Commands.Branch(_repo.FullPath, _name)
+                        .Use(log)
+                        .SetUpstreamAsync(newUpstream);
                 }
             }
 
