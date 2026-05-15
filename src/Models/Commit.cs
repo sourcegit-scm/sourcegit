@@ -27,6 +27,8 @@ namespace SourceGit.Models
         public bool IsMerged { get; set; } = false;
         public int Color { get; set; } = 0;
         public double LeftMargin { get; set; } = 0;
+        public int Index { get; set; } = -1;
+        public int PathIndex { get; set; } = -1;
 
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
