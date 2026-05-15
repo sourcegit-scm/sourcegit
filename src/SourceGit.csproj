@@ -7,6 +7,7 @@
     <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\\..\\VERSION"))</Version>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+    <InvariantGlobalization>false</InvariantGlobalization>
 
     <Product>SourceGit</Product>
     <Description>OpenSource GIT client</Description>
