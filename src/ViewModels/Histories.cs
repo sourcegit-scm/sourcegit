@@ -110,7 +110,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public HashSet<int> HoveredLineageCommits
+        public bool[] HoveredLineageCommits
         {
             get => _hoveredLineageCommits;
             set => SetProperty(ref _hoveredLineageCommits, value);
@@ -132,7 +132,7 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedLineagePaths, value);
         }
 
-        public HashSet<int> SelectedLineageCommits
+        public bool[] SelectedLineageCommits
         {
             get => _selectedLineageCommits;
             set => SetProperty(ref _selectedLineageCommits, value);
@@ -505,21 +505,11 @@ namespace SourceGit.ViewModels
         private void PostCommitsChanged()
         {
             _commitMap.Clear();
-            _childrenMap.Clear();
             for (int i = 0; i < _commits.Count; i++)
             {
                 var c = _commits[i];
                 c.Index = i;
                 _commitMap[c.SHA] = c;
-                foreach (var p in c.Parents)
-                {
-                    if (!_childrenMap.TryGetValue(p, out var list))
-                    {
-                        list = new List<Models.Commit>();
-                        _childrenMap[p] = list;
-                    }
-                    list.Add(c);
-                }
             }
 
             if (_selectedCommits.Count == 0)
@@ -566,11 +556,14 @@ namespace SourceGit.ViewModels
 
                 var paths = new HashSet<int>();
                 var lineage = GetCommitLineage(commit, Models.CommitLineageSearchMethod.FullLineage);
-                foreach (var idx in lineage)
+                for (int i = 0; i < lineage.Length; i++)
                 {
-                    var c = _commits[idx];
-                    if (c.PathIndex >= 0)
-                        paths.Add(c.PathIndex);
+                    if (lineage[i])
+                    {
+                        var c = _commits[i];
+                        if (c.PathIndex >= 0)
+                            paths.Add(c.PathIndex);
+                    }
                 }
 
                 Dispatcher.UIThread.Post(() =>
@@ -628,18 +621,18 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public HashSet<int> GetCommitLineage(
+        public bool[] GetCommitLineage(
             Models.Commit commit,
             Models.CommitLineageSearchMethod method,
             uint depth = 100,
             int viewportTopIndex = -1,
             int viewportBottomIndex = -1)
         {
-            var active = new HashSet<int>();
+            var active = new bool[_commits.Count];
             if (commit == null || method == Models.CommitLineageSearchMethod.None)
                 return active;
 
-            active.Add(commit.Index);
+            active[commit.Index] = true;
 
             // GUI boundaries: only search within a limited range of commits to improve performance
             int topLimit = Math.Max(0, commit.Index - (int)depth);
@@ -652,51 +645,34 @@ namespace SourceGit.ViewModels
                 bottomLimit = Math.Min(bottomLimit, viewportBottomIndex);
             }
 
-            // UP (Ancestors) - Moving to higher indices
-            if (method == Models.CommitLineageSearchMethod.ParentsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
+            // DOWN (Descendants) - Moving to lower indices
+            if (method == Models.CommitLineageSearchMethod.ChildsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
             {
-                var queueUp = new Queue<Models.Commit>();
-                queueUp.Enqueue(commit);
-                var visitedUp = new HashSet<string>();
-                visitedUp.Add(commit.SHA);
-                while (queueUp.Count > 0)
+                for (int i = commit.Index - 1; i >= topLimit; i--)
                 {
-                    var c = queueUp.Dequeue();
-                    foreach (var pSha in c.Parents)
+                    foreach (var pSha in _commits[i].Parents)
                     {
-                        if (_commitMap.TryGetValue(pSha, out var parent) && visitedUp.Add(pSha))
+                        if (_commitMap.TryGetValue(pSha, out var parent) && parent.Index < _commits.Count && active[parent.Index])
                         {
-                            if (parent.Index <= bottomLimit)
-                            {
-                                active.Add(parent.Index);
-                                queueUp.Enqueue(parent);
-                            }
+                            active[i] = true;
+                            break;
                         }
                     }
                 }
             }
 
-            // DOWN (Descendants) - Moving to lower indices
-            if (method == Models.CommitLineageSearchMethod.ChildsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
+            // UP (Ancestors) - Moving to higher indices
+            if (method == Models.CommitLineageSearchMethod.ParentsOnly || method == Models.CommitLineageSearchMethod.FullLineage)
             {
-                var queueDown = new Queue<Models.Commit>();
-                queueDown.Enqueue(commit);
-                var visitedDown = new HashSet<string>();
-                visitedDown.Add(commit.SHA);
-                while (queueDown.Count > 0)
+                for (int i = commit.Index; i <= bottomLimit; i++)
                 {
-                    var c = queueDown.Dequeue();
-                    if (_childrenMap.TryGetValue(c.SHA, out var children))
+                    if (active[i])
                     {
-                        foreach (var child in children)
+                        foreach (var pSha in _commits[i].Parents)
                         {
-                            if (visitedDown.Add(child.SHA))
+                            if (_commitMap.TryGetValue(pSha, out var parent) && parent.Index <= bottomLimit)
                             {
-                                if (child.Index >= topLimit)
-                                {
-                                    active.Add(child.Index);
-                                    queueDown.Enqueue(child);
-                                }
+                                active[parent.Index] = true;
                             }
                         }
                     }
@@ -712,7 +688,7 @@ namespace SourceGit.ViewModels
         private List<Models.Commit> _commits = new List<Models.Commit>();
         private Models.CommitGraph _graph = null;
         private long _hoveredCommitIndex = -1;
-        private HashSet<int> _hoveredLineageCommits = null;
+        private bool[] _hoveredLineageCommits = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
         private object _detailContext = new Models.Null();
@@ -724,10 +700,9 @@ namespace SourceGit.ViewModels
         private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
         private bool _isCollapseDetails = false;
         private HashSet<int> _selectedLineagePaths = null;
-        private HashSet<int> _selectedLineageCommits = null;
+        private bool[] _selectedLineageCommits = null;
         private int _visibleTopIndex = -1;
         private int _visibleBottomIndex = -1;
         private Dictionary<string, Models.Commit> _commitMap = new Dictionary<string, Models.Commit>();
-        private Dictionary<string, List<Models.Commit>> _childrenMap = new Dictionary<string, List<Models.Commit>>();
     }
 }
