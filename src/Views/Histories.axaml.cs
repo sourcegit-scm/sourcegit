@@ -234,6 +234,33 @@ namespace SourceGit.Views
                 base.OnKeyDown(e);
         }
 
+        protected override void OnPointerMoved(PointerEventArgs e)
+        {
+            base.OnPointerMoved(e);
+
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            var point = e.GetPosition(this);
+            var row = (this.InputHitTest(point) as Visual)?.FindAncestorOfType<DataGridRow>();
+            if (row != null)
+            {
+                var index = (long)row.Index;
+                vm.HoveredCommitIndex = index;
+            }
+            else
+            {
+                vm.HoveredCommitIndex = -1;
+            }
+        }
+
+        protected override void OnPointerExited(PointerEventArgs e)
+        {
+            base.OnPointerExited(e);
+            if (DataContext is ViewModels.Histories vm)
+                vm.HoveredCommitIndex = -1;
+        }
+
         private void ApplySelection()
         {
             _ignoreSelectionChanged = true;

@@ -494,6 +494,37 @@ namespace SourceGit.ViewModels
             SelectedCommits = selected;
         }
 
+        private void CalculateTargetLineage(Models.Commit commit)
+        {
+            Task.Run(() =>
+            {
+                if (commit == null)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        SelectedLineageCommits = null;
+                        SelectedLineagePaths = null;
+                    });
+                    return;
+                }
+
+                var paths = new HashSet<int>();
+                var lineage = GetCommitLineage(commit, Models.CommitLineageSearchMethod.FullLineage);
+                foreach (var idx in lineage)
+                {
+                    var c = _commits[idx];
+                    if (c.PathIndex >= 0)
+                        paths.Add(c.PathIndex);
+                }
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    SelectedLineageCommits = lineage;
+                    SelectedLineagePaths = paths;
+                });
+            });
+        }
+
         private void PostSelectedCommitsChanged()
         {
             if (_ignoreSelectionChange)
@@ -503,6 +534,8 @@ namespace SourceGit.ViewModels
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Null();
+                SelectedLineageCommits = null;
+                SelectedLineagePaths = null;
             }
             else if (_selectedCommits.Count == 1)
             {
@@ -514,6 +547,9 @@ namespace SourceGit.ViewModels
                     detail.Commit = c;
                 else
                     DetailContext = new CommitDetail(_repo, _commitDetailSharedData) { Commit = c };
+
+                if (_repo.UIStates.HighlightSelectedLineageInHistory)
+                    CalculateTargetLineage(c);
             }
             else if (_selectedCommits.Count == 2)
             {
@@ -523,11 +559,16 @@ namespace SourceGit.ViewModels
                     compare.SetTargets(_selectedCommits[1], _selectedCommits[0]);
                 else
                     DetailContext = new RevisionCompare(_repo, _selectedCommits[1], _selectedCommits[0]);
+
+                SelectedLineageCommits = null;
+                SelectedLineagePaths = null;
             }
             else
             {
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(_selectedCommits.Count);
+                SelectedLineageCommits = null;
+                SelectedLineagePaths = null;
             }
         }
 
