@@ -181,6 +181,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useAutoHideScrollBars, value);
         }
 
+        public bool EnableHoverViewTracking
+        {
+            get => _enableHoverViewTracking;
+            set => SetProperty(ref _enableHoverViewTracking, value);
+        }
+
         public bool UseGitHubStyleAvatar
         {
             get => _useGitHubStyleAvatar;
@@ -824,6 +830,7 @@ namespace SourceGit.ViewModels
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
+        private bool _enableHoverViewTracking = true;
         private bool _useGitHubStyleAvatar = true;
         private bool _showAuthorTimeInGraph = false;
         private bool _showChildren = false;

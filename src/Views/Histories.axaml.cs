@@ -241,6 +241,12 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.Histories vm)
                 return;
 
+            if (!ViewModels.Preferences.Instance.EnableHoverViewTracking)
+            {
+                vm.HoveredCommitIndex = -1;
+                return;
+            }
+
             var point = e.GetPosition(this);
             var row = (this.InputHitTest(point) as Visual)?.FindAncestorOfType<DataGridRow>();
             if (row != null)

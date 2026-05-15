@@ -80,7 +80,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _hoveredCommitIndex, value))
                 {
-                    if (value >= 0 && value < _commits.Count)
+                    if (Preferences.Instance.EnableHoverViewTracking && value >= 0 && value < _commits.Count)
                     {
                         var hoveredIndex = (int)value;
                         var depth = 1000u;
