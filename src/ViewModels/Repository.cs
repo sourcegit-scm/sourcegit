@@ -132,6 +132,12 @@ namespace SourceGit.ViewModels
             set => _histories.HighlightCurrentBranchOnly = value;
         }
 
+        public bool HighlightSelectedLineageInHistory
+        {
+            get => _histories.HighlightSelectedLineage;
+            set => _histories.HighlightSelectedLineage = value;
+        }
+
         public string Filter
         {
             get => _filter;

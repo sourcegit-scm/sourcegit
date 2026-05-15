@@ -211,7 +211,7 @@
   <x:String x:Key="Text.Configure" xml:space="preserve">仓库配置</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交信息模板</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">内置变量：
-  
+
   ${branch_name} 当前分支名
   ${files_num} 变更文件数量
   ${files} 变更文件路径列表
@@ -223,7 +223,7 @@
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">命令行参数 ：</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">内置变量：
-  
+
   ${REPO} 仓库路径
   ${REMOTE} 选中的远程仓库或选中分支所属的远程仓库
   ${BRANCH} 选中的分支，对于远程分支不包含远程名
@@ -786,6 +786,7 @@
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">新建分支</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">清空通知列表</x:String>
   <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">仅高亮显示当前分支</x:String>
+  <x:String x:Key="Text.Repository.HighlightSelectedLineageInGraph" xml:space="preserve">高亮显示所选提交的血缘关系</x:String>
   <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">本仓库（文件夹）</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">在 {0} 中打开</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">使用外部工具打开</x:String>

@@ -23,7 +23,7 @@
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
     </v:HistoriesLayout.ColumnDefinitions>
 
-    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">      
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <v:HistoriesCommitList x:Name="CommitListContainer"
                              Classes="static_scrollbar"
                              ScrollViewer.AllowAutoHide="False"
@@ -53,7 +53,7 @@
               <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             </Style>
           </Style>
-          
+
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -234,6 +234,11 @@
                      Graph="{Binding Graph}"
                      DotBrush="{DynamicResource Brush.Contents}"
                      OnlyHighlightCurrentBranch="{Binding $parent[v:Histories].OnlyHighlightCurrentBranch}"
+                     HoveredCommitIndex="{Binding HoveredCommitIndex}"
+                     HoveredLineageCommits="{Binding HoveredLineageCommits}"
+                     SelectedLineageCommits="{Binding SelectedLineageCommits}"
+                     SelectedLineagePaths="{Binding SelectedLineagePaths}"
+                     HighlightSelectedLineage="{Binding $parent[v:Histories].HighlightSelectedLineage}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>
@@ -346,7 +351,7 @@
                 <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
-                  
+
                   <Path Width="128" Height="128"
                         Data="{StaticResource Icons.Detail}"
                         HorizontalAlignment="Center"
@@ -387,7 +392,7 @@
                 ToolTip.Tip="{DynamicResource Text.HistoriesDetailsStandalone}">
           <Path Width="15" Height="15" Margin="0,1,0,0" Data="{StaticResource Icons.OpenAsStandalone}"/>
         </Button>
-        
+
         <ToggleButton Classes="line_path"
                       Width="28" Height="28"
                       Padding="0"

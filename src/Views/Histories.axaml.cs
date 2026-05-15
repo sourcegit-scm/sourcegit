@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -344,6 +344,15 @@ namespace SourceGit.Views
         {
             get => GetValue(OnlyHighlightCurrentBranchProperty);
             set => SetValue(OnlyHighlightCurrentBranchProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> HighlightSelectedLineageProperty =
+            AvaloniaProperty.Register<Histories, bool>(nameof(HighlightSelectedLineage), false);
+
+        public bool HighlightSelectedLineage
+        {
+            get => GetValue(HighlightSelectedLineageProperty);
+            set => SetValue(HighlightSelectedLineageProperty, value);
         }
 
         public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
