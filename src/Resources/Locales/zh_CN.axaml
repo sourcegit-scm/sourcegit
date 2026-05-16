@@ -500,6 +500,10 @@
   <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchOnly" xml:space="preserve">仅当前分支</x:String>
   <x:String x:Key="Text.Histories.Header.Highlights.SelectedLineageOnly" xml:space="preserve">仅选中谱系</x:String>
   <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchAndSelectedLineage" xml:space="preserve">当前分支与选中谱系</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod" xml:space="preserve">谱系搜索方式</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.ParentsOnly" xml:space="preserve">仅祖先</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.ChildsOnly" xml:space="preserve">仅后代</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.FullLineage" xml:space="preserve">完整谱系</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">显示列</x:String>

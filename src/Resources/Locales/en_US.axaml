@@ -496,6 +496,10 @@
   <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchOnly" xml:space="preserve">Current Branch Only</x:String>
   <x:String x:Key="Text.Histories.Header.Highlights.SelectedLineageOnly" xml:space="preserve">Selected Lineage Only</x:String>
   <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchAndSelectedLineage" xml:space="preserve">Current Branch &amp; Selected Lineage</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod" xml:space="preserve">Lineage Search Method</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.ParentsOnly" xml:space="preserve">Ancestors Only</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.ChildsOnly" xml:space="preserve">Descendants Only</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.FullLineage" xml:space="preserve">Full Lineage</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>

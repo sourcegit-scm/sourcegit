@@ -182,6 +182,26 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Models.CommitLineageSearchMethod LineageSearchMethod
+        {
+            get => _repo.UIStates.LineageSearchMethod;
+            set
+            {
+                if (_repo.UIStates.LineageSearchMethod != value)
+                {
+                    _repo.UIStates.LineageSearchMethod = value;
+                    OnPropertyChanged();
+
+                    if (_selectedCommits.Count == 1 &&
+                        (CommitGraphHighlighting == Models.CommitGraphHighlighting.SelectedLineageOnly ||
+                         CommitGraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage))
+                    {
+                        CalculateTargetLineage(_selectedCommits[0]);
+                    }
+                }
+            }
+        }
+
         public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
             get => _repo.IssueTrackers;
@@ -552,7 +572,7 @@ namespace SourceGit.ViewModels
                 }
 
                 var paths = new HashSet<int>();
-                var lineage = GetCommitLineage(commit, Models.CommitLineageSearchMethod.FullLineage, 20000);
+                var lineage = GetCommitLineage(commit, LineageSearchMethod, 20000);
                 for (int i = 0; i < lineage.Length; i++)
                 {
                     if (lineage[i])

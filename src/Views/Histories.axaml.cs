@@ -498,6 +498,31 @@ namespace SourceGit.Views
             menu.Items.Add(currentBranchOnly);
             menu.Items.Add(selectedCommitsOnly);
             menu.Items.Add(currentBranchAndSelectedCommits);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var methodHeader = new MenuItem();
+            methodHeader.Header = new TextBlock() { Text = App.Text("Histories.Header.Highlights.LineageMethod"), FontWeight = FontWeight.Bold };
+            methodHeader.IsEnabled = false;
+            menu.Items.Add(methodHeader);
+
+            var parentsOnly = new MenuItem();
+            parentsOnly.Header = App.Text("Histories.Header.Highlights.LineageMethod.ParentsOnly");
+            parentsOnly.Icon = vm.LineageSearchMethod == Models.CommitLineageSearchMethod.ParentsOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            parentsOnly.Click += (_, _) => vm.LineageSearchMethod = Models.CommitLineageSearchMethod.ParentsOnly;
+            menu.Items.Add(parentsOnly);
+
+            var childsOnly = new MenuItem();
+            childsOnly.Header = App.Text("Histories.Header.Highlights.LineageMethod.ChildsOnly");
+            childsOnly.Icon = vm.LineageSearchMethod == Models.CommitLineageSearchMethod.ChildsOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            childsOnly.Click += (_, _) => vm.LineageSearchMethod = Models.CommitLineageSearchMethod.ChildsOnly;
+            menu.Items.Add(childsOnly);
+
+            var fullLineage = new MenuItem();
+            fullLineage.Header = App.Text("Histories.Header.Highlights.LineageMethod.FullLineage");
+            fullLineage.Icon = vm.LineageSearchMethod == Models.CommitLineageSearchMethod.FullLineage ? this.CreateMenuIcon("Icons.Check") : null;
+            fullLineage.Click += (_, _) => vm.LineageSearchMethod = Models.CommitLineageSearchMethod.FullLineage;
+            menu.Items.Add(fullLineage);
+
             menu.Open(button);
 
             e.Handled = true;
