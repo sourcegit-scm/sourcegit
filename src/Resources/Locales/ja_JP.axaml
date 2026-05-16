@@ -738,7 +738,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD に移動</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">ブランチを作成</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">通知を消去</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">現在のブランチのみを強調表示</x:String>
   <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">フォルダーとして開く</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0} で開く</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">外部ツールで開く</x:String>
@@ -770,7 +769,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">名前順</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">並べ替え</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">端末で開く</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">相対時間を使用</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">ログを表示</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">ブラウザーで '{0}' を訪問</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">作業ツリー</x:String>

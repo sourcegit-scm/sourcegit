@@ -663,7 +663,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD로 이동</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">브랜치 생성</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">알림 지우기</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">현재 브랜치만 강조</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0}에서 열기</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">외부 도구에서 열기</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">원격</x:String>
@@ -693,7 +692,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">이름 순</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">정렬</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">터미널에서 열기</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">상대 시간 사용</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">로그 보기</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">브라우저에서 '{0}' 방문</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">워크트리</x:String>

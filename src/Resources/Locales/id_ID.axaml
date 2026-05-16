@@ -666,7 +666,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigasi ke HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Buat Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BERSIHKAN NOTIFIKASI</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Hanya highlight branch saat ini</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Buka di {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Buka di Tool Eksternal</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTE</x:String>
@@ -696,7 +695,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Berdasarkan Nama</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Urut</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Buka di Terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Gunakan waktu relatif</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Lihat Log</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Kunjungi '{0}' di Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREE</x:String>
