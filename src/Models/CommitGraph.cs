@@ -6,6 +6,14 @@ using Avalonia.Media;
 
 namespace SourceGit.Models
 {
+    public enum CommitGraphHighlighting
+    {
+        All,
+        CurrentBranchOnly,
+        SelectedLineageOnly,
+        CurrentBranchAndSelectedLineage,
+    }
+
     public record CommitGraphLayout(double StartY, double ClipWidth, double RowHeight);
 
     public class CommitGraph
@@ -32,6 +40,9 @@ namespace SourceGit.Models
             public List<Point> Points { get; } = [];
             public int Color { get; } = color;
             public bool IsMerged { get; } = isMerged;
+            public bool IsHoveredRelated { get; set; } = false;
+            public int StartCommitIndex { get; set; } = -1;
+            public int EndCommitIndex { get; set; } = -1;
         }
 
         public class Link
@@ -41,6 +52,8 @@ namespace SourceGit.Models
             public Point End;
             public int Color;
             public bool IsMerged;
+            public int StartCommitIndex;
+            public int EndCommitIndex;
         }
 
         public enum DotType
@@ -75,6 +88,13 @@ namespace SourceGit.Models
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
 
+            var commitMap = new Dictionary<string, int>();
+            for (int i = 0; i < commits.Count; i++)
+            {
+                commits[i].Index = i;
+                commitMap[commits[i].SHA] = i;
+            }
+
             foreach (var commit in commits)
             {
                 PathHelper major = null;
@@ -103,12 +123,14 @@ namespace SourceGit.Models
                             else
                             {
                                 major.End(offsetX, offsetY, halfHeight);
+                                major.Path.EndCommitIndex = commit.Index;
                                 ended.Add(l);
                             }
                         }
                         else
                         {
                             l.End(major.LastX, offsetY, halfHeight);
+                            l.Path.EndCommitIndex = commit.Index;
                             ended.Add(l);
                         }
 
@@ -137,16 +159,27 @@ namespace SourceGit.Models
 
                     if (commit.Parents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isMerged, colorPicker.Next(), new Point(offsetX, offsetY));
+                        major = new PathHelper(commit.Parents[0], isMerged, colorPicker.Next(), new Point(offsetX, offsetY), commit.Index);
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
                 }
                 else if (isMerged && !major.IsMerged && commit.Parents.Count > 0)
                 {
-                    major.ReplaceMerged();
+                    major.Path.EndCommitIndex = commit.Index;
+                    major.ReplaceMerged(commit.Index);
                     temp.Paths.Add(major.Path);
                 }
+                else if (major != null && commit.Parents.Count > 0)
+                {
+                    // Break at every commit to ensure path-aware highlight is precise.
+                    major.Path.EndCommitIndex = commit.Index;
+                    major.Replace(major.Path.Color, major.Path.IsMerged, commit.Index);
+                    temp.Paths.Add(major.Path);
+                }
+
+                if (major != null)
+                    commit.PathIndex = temp.Paths.IndexOf(major.Path);
 
                 // Calculate link position of this commit.
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
@@ -172,7 +205,8 @@ namespace SourceGit.Models
                             if (isMerged && !parent.IsMerged)
                             {
                                 parent.Goto(parent.LastX, offsetY + halfHeight, halfHeight);
-                                parent.ReplaceMerged();
+                                parent.Path.EndCommitIndex = commit.Index;
+                                parent.ReplaceMerged(commit.Index);
                                 temp.Paths.Add(parent.Path);
                             }
 
@@ -183,6 +217,8 @@ namespace SourceGit.Models
                                 Control = new Point(parent.LastX, position.Y),
                                 Color = parent.Path.Color,
                                 IsMerged = isMerged,
+                                StartCommitIndex = commit.Index,
+                                EndCommitIndex = commitMap.GetValueOrDefault(parentHash, -1),
                             });
                         }
                         else
@@ -190,7 +226,7 @@ namespace SourceGit.Models
                             offsetX += unitWidth;
 
                             // Create new curve for parent commit that not includes before
-                            var l = new PathHelper(parentHash, isMerged, colorPicker.Next(), position, new Point(offsetX, position.Y + halfHeight));
+                            var l = new PathHelper(parentHash, isMerged, colorPicker.Next(), position, new Point(offsetX, position.Y + halfHeight), commit.Index);
                             unsolved.Add(l);
                             temp.Paths.Add(l.Path);
                         }
@@ -213,6 +249,7 @@ namespace SourceGit.Models
                     continue;
 
                 path.End((i + 0.5) * unitWidth + 4, endY + halfHeight, halfHeight);
+                path.Path.EndCommitIndex = commits.Count - 1;
             }
             unsolved.Clear();
 
@@ -249,7 +286,7 @@ namespace SourceGit.Models
 
             public bool IsMerged => Path.IsMerged;
 
-            public PathHelper(string next, bool isMerged, int color, Point start)
+            public PathHelper(string next, bool isMerged, int color, Point start, int startCommitIndex)
             {
                 Next = next;
                 LastX = start.X;
@@ -257,9 +294,10 @@ namespace SourceGit.Models
 
                 Path = new Path(color, isMerged);
                 Path.Points.Add(start);
+                Path.StartCommitIndex = startCommitIndex;
             }
 
-            public PathHelper(string next, bool isMerged, int color, Point start, Point to)
+            public PathHelper(string next, bool isMerged, int color, Point start, Point to, int startCommitIndex)
             {
                 Next = next;
                 LastX = to.X;
@@ -268,6 +306,7 @@ namespace SourceGit.Models
                 Path = new Path(color, isMerged);
                 Path.Points.Add(start);
                 Path.Points.Add(to);
+                Path.StartCommitIndex = startCommitIndex;
             }
 
             /// <summary>
@@ -348,14 +387,19 @@ namespace SourceGit.Models
             /// <summary>
             ///     End the current path and create a new from the end.
             /// </summary>
-            public void ReplaceMerged()
+            public void Replace(int newColor, bool isMerged, int startCommitIndex)
             {
-                var color = Path.Color;
                 Add(LastX, _lastY);
 
-                Path = new Path(color, true);
+                Path = new Path(newColor, isMerged);
                 Path.Points.Add(new Point(LastX, _lastY));
+                Path.StartCommitIndex = startCommitIndex;
                 _endY = 0;
+            }
+
+            public void ReplaceMerged(int startCommitIndex)
+            {
+                Replace(Path.Color, true, startCommitIndex);
             }
 
             private void Add(double x, double y)

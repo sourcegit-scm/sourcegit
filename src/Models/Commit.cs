@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Models
@@ -11,6 +11,14 @@ namespace SourceGit.Models
         ByMessage,
         ByPath,
         ByContent,
+    }
+
+    public enum CommitLineageSearchMethod
+    {
+        None = 0,
+        ParentsOnly = 1,
+        ChildsOnly = 2,
+        FullLineage = 3,
     }
 
     public class Commit
@@ -27,6 +35,8 @@ namespace SourceGit.Models
         public bool IsMerged { get; set; } = false;
         public int Color { get; set; } = 0;
         public double LeftMargin { get; set; } = 0;
+        public int Index { get; set; } = -1;
+        public int PathIndex { get; set; } = -1;
 
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -234,6 +234,39 @@ namespace SourceGit.Views
                 base.OnKeyDown(e);
         }
 
+        protected override void OnPointerMoved(PointerEventArgs e)
+        {
+            base.OnPointerMoved(e);
+
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            if (!ViewModels.Preferences.Instance.EnableHoverViewTracking)
+            {
+                vm.HoveredCommitIndex = -1;
+                return;
+            }
+
+            var point = e.GetPosition(this);
+            var row = (this.InputHitTest(point) as Visual)?.FindAncestorOfType<DataGridRow>();
+            if (row != null)
+            {
+                var index = (long)row.Index;
+                vm.HoveredCommitIndex = index;
+            }
+            else
+            {
+                vm.HoveredCommitIndex = -1;
+            }
+        }
+
+        protected override void OnPointerExited(PointerEventArgs e)
+        {
+            base.OnPointerExited(e);
+            if (DataContext is ViewModels.Histories vm)
+                vm.HoveredCommitIndex = -1;
+        }
+
         private void ApplySelection()
         {
             _ignoreSelectionChanged = true;
@@ -310,13 +343,13 @@ namespace SourceGit.Views
             set => SetValue(IssueTrackersProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<Histories, bool>(nameof(OnlyHighlightCurrentBranch), true);
+        public static readonly StyledProperty<Models.CommitGraphHighlighting> CommitGraphHighlightingProperty =
+            AvaloniaProperty.Register<Histories, Models.CommitGraphHighlighting>(nameof(CommitGraphHighlighting), Models.CommitGraphHighlighting.All);
 
-        public bool OnlyHighlightCurrentBranch
+        public Models.CommitGraphHighlighting CommitGraphHighlighting
         {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
+            get => GetValue(CommitGraphHighlightingProperty);
+            set => SetValue(CommitGraphHighlightingProperty, value);
         }
 
         public static readonly StyledProperty<bool> IsScrollToTopVisibleProperty =
@@ -428,9 +461,79 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnHighlightsClicked(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm || sender is not Control button)
+                return;
+
+            var all = new MenuItem();
+            all.Header = App.Text("Histories.Header.Highlights.All");
+            all.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.All ? this.CreateMenuIcon("Icons.Check") : null;
+            all.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.All;
+
+            var currentBranchOnly = new MenuItem();
+            currentBranchOnly.Header = App.Text("Histories.Header.Highlights.CurrentBranchOnly");
+            currentBranchOnly.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            currentBranchOnly.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchOnly;
+
+            var selectedCommitsOnly = new MenuItem();
+            selectedCommitsOnly.Header = App.Text("Histories.Header.Highlights.SelectedLineageOnly");
+            selectedCommitsOnly.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.SelectedLineageOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            selectedCommitsOnly.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.SelectedLineageOnly;
+
+            var currentBranchAndSelectedCommits = new MenuItem();
+            currentBranchAndSelectedCommits.Header = App.Text("Histories.Header.Highlights.CurrentBranchAndSelectedLineage");
+            currentBranchAndSelectedCommits.Icon = vm.CommitGraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage ? this.CreateMenuIcon("Icons.Check") : null;
+            currentBranchAndSelectedCommits.Click += (_, _) => vm.CommitGraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+
+            var menu = new ContextMenu();
+            menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
+
+            var modeHeader = new MenuItem();
+            modeHeader.Header = new TextBlock() { Text = App.Text("Histories.Header.Highlights"), FontWeight = FontWeight.Bold };
+            modeHeader.IsEnabled = false;
+            menu.Items.Add(modeHeader);
+
+            menu.Items.Add(all);
+            menu.Items.Add(currentBranchOnly);
+            menu.Items.Add(selectedCommitsOnly);
+            menu.Items.Add(currentBranchAndSelectedCommits);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var methodHeader = new MenuItem();
+            methodHeader.Header = new TextBlock() { Text = App.Text("Histories.Header.Highlights.LineageMethod"), FontWeight = FontWeight.Bold };
+            methodHeader.IsEnabled = false;
+            menu.Items.Add(methodHeader);
+
+            var parentsOnly = new MenuItem();
+            parentsOnly.Header = App.Text("Histories.Header.Highlights.LineageMethod.ParentsOnly");
+            parentsOnly.Icon = vm.LineageSearchMethod == Models.CommitLineageSearchMethod.ParentsOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            parentsOnly.Click += (_, _) => vm.LineageSearchMethod = Models.CommitLineageSearchMethod.ParentsOnly;
+            menu.Items.Add(parentsOnly);
+
+            var childsOnly = new MenuItem();
+            childsOnly.Header = App.Text("Histories.Header.Highlights.LineageMethod.ChildsOnly");
+            childsOnly.Icon = vm.LineageSearchMethod == Models.CommitLineageSearchMethod.ChildsOnly ? this.CreateMenuIcon("Icons.Check") : null;
+            childsOnly.Click += (_, _) => vm.LineageSearchMethod = Models.CommitLineageSearchMethod.ChildsOnly;
+            menu.Items.Add(childsOnly);
+
+            var fullLineage = new MenuItem();
+            fullLineage.Header = App.Text("Histories.Header.Highlights.LineageMethod.FullLineage");
+            fullLineage.Icon = vm.LineageSearchMethod == Models.CommitLineageSearchMethod.FullLineage ? this.CreateMenuIcon("Icons.Check") : null;
+            fullLineage.Click += (_, _) => vm.LineageSearchMethod = Models.CommitLineageSearchMethod.FullLineage;
+            menu.Items.Add(fullLineage);
+
+            menu.Open(button);
+
+            e.Handled = true;
+        }
+
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
         {
             if (!IsLoaded)
+                return;
+
+            if (DataContext is not ViewModels.Histories vm)
                 return;
 
             var dataGrid = CommitListContainer;
@@ -440,11 +543,18 @@ namespace SourceGit.Views
 
             double rowHeight = dataGrid.RowHeight;
             double startY = 0;
+            var visibleTopIndex = int.MaxValue;
+            var visibleBottomIndex = -1;
             foreach (var child in rowsPresenter.Children)
             {
                 if (child is DataGridRow { IsVisible: true } row)
                 {
                     rowHeight = row.Bounds.Height;
+                    if (row.Index < visibleTopIndex)
+                        visibleTopIndex = row.Index;
+
+                    if (row.Index > visibleBottomIndex)
+                        visibleBottomIndex = row.Index;
 
                     if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
                     {
@@ -454,6 +564,11 @@ namespace SourceGit.Views
                     }
                 }
             }
+
+            if (visibleBottomIndex >= visibleTopIndex)
+                vm.SetVisibleCommitRange(visibleTopIndex, visibleBottomIndex);
+            else
+                vm.SetVisibleCommitRange(-1, -1);
 
             SetCurrentValue(IsScrollToTopVisibleProperty, startY >= rowHeight);
 

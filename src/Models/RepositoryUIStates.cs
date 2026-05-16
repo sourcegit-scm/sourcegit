@@ -39,11 +39,17 @@ namespace SourceGit.Models
             set;
         } = false;
 
-        public bool OnlyHighlightCurrentBranchInHistory
+        public CommitGraphHighlighting CommitGraphHighlighting
         {
             get;
             set;
-        } = false;
+        } = CommitGraphHighlighting.All;
+
+        public CommitLineageSearchMethod LineageSearchMethod
+        {
+            get;
+            set;
+        } = CommitLineageSearchMethod.FullLineage;
 
         public BranchSortMode LocalBranchSortMode
         {

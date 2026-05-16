@@ -24,13 +24,49 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlightCurrentBranch), true);
+        public static readonly StyledProperty<Models.CommitGraphHighlighting> HighlightModeProperty =
+            AvaloniaProperty.Register<CommitGraph, Models.CommitGraphHighlighting>(nameof(HighlightMode), Models.CommitGraphHighlighting.All);
 
-        public bool OnlyHighlightCurrentBranch
+        public Models.CommitGraphHighlighting HighlightMode
         {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
+            get => GetValue(HighlightModeProperty);
+            set => SetValue(HighlightModeProperty, value);
+        }
+
+        public static readonly StyledProperty<bool[]> HoveredLineageCommitsProperty =
+            AvaloniaProperty.Register<CommitGraph, bool[]>(nameof(HoveredLineageCommits));
+
+        public bool[] HoveredLineageCommits
+        {
+            get => GetValue(HoveredLineageCommitsProperty);
+            set => SetValue(HoveredLineageCommitsProperty, value);
+        }
+
+        public static readonly StyledProperty<long> HoveredCommitIndexProperty =
+            AvaloniaProperty.Register<CommitGraph, long>(nameof(HoveredCommitIndex), -1);
+
+        public long HoveredCommitIndex
+        {
+            get => GetValue(HoveredCommitIndexProperty);
+            set => SetValue(HoveredCommitIndexProperty, value);
+        }
+
+        public static readonly StyledProperty<bool[]> SelectedLineageCommitsProperty =
+            AvaloniaProperty.Register<CommitGraph, bool[]>(nameof(SelectedLineageCommits));
+
+        public bool[] SelectedLineageCommits
+        {
+            get => GetValue(SelectedLineageCommitsProperty);
+            set => SetValue(SelectedLineageCommitsProperty, value);
+        }
+
+        public static readonly StyledProperty<System.Collections.Generic.HashSet<int>> SelectedLineagePathsProperty =
+            AvaloniaProperty.Register<CommitGraph, System.Collections.Generic.HashSet<int>>(nameof(SelectedLineagePaths));
+
+        public System.Collections.Generic.HashSet<int> SelectedLineagePaths
+        {
+            get => GetValue(SelectedLineagePathsProperty);
+            set => SetValue(SelectedLineagePathsProperty, value);
         }
 
         public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
@@ -47,8 +83,51 @@ namespace SourceGit.Views
             AffectsRender<CommitGraph>(
                 GraphProperty,
                 DotBrushProperty,
-                OnlyHighlightCurrentBranchProperty,
+                HighlightModeProperty,
+                HoveredLineageCommitsProperty,
+                HoveredCommitIndexProperty,
+                SelectedLineageCommitsProperty,
+                SelectedLineagePathsProperty,
                 LayoutProperty);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == GraphProperty ||
+                change.Property == HoveredCommitIndexProperty ||
+                change.Property == HoveredLineageCommitsProperty ||
+                change.Property == SelectedLineageCommitsProperty ||
+                change.Property == SelectedLineagePathsProperty ||
+                change.Property == HighlightModeProperty)
+            {
+                UpdateHoveredRelated();
+            }
+        }
+
+        private void UpdateHoveredRelated()
+        {
+            var graph = Graph;
+            if (graph == null)
+                return;
+
+            foreach (var line in graph.Paths)
+                line.IsHoveredRelated = false;
+
+            var hoveredLineage = HoveredLineageCommits;
+            if (hoveredLineage != null)
+            {
+                foreach (var line in graph.Paths)
+                {
+                    if (line.StartCommitIndex >= 0 && line.EndCommitIndex >= 0 &&
+                        line.StartCommitIndex < hoveredLineage.Length && line.EndCommitIndex < hoveredLineage.Length)
+                    {
+                        line.IsHoveredRelated = hoveredLineage[line.StartCommitIndex] &&
+                                                hoveredLineage[line.EndCommitIndex];
+                    }
+                }
+            }
         }
 
         public override void Render(DrawingContext context)
@@ -74,8 +153,15 @@ namespace SourceGit.Views
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
+            var hoverBold = 2.0;
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
+            var highlightMode = HighlightMode;
+            var onlyHighlightCurrentBranch = highlightMode == Models.CommitGraphHighlighting.CurrentBranchOnly ||
+                                             highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+            var highlightSelectedLineage = highlightMode == Models.CommitGraphHighlighting.SelectedLineageOnly ||
+                                             highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+            var selectedLineageCommits = SelectedLineageCommits;
+            var hoveredLineage = HoveredLineageCommits;
 
             foreach (var link in graph.Links)
             {
@@ -87,9 +173,34 @@ namespace SourceGit.Views
                 if (startY > bottom)
                     break;
 
-                var pen = Models.CommitGraph.Pens[link.Color];
-                if (onlyHighlightCurrentBranch && !link.IsMerged)
+                var isLinkInSelectedLineage =
+                    highlightSelectedLineage &&
+                    selectedLineageCommits != null &&
+                    link.StartCommitIndex >= 0 && link.EndCommitIndex >= 0 &&
+                    link.StartCommitIndex < selectedLineageCommits.Length && link.EndCommitIndex < selectedLineageCommits.Length &&
+                    selectedLineageCommits[link.StartCommitIndex] &&
+                    selectedLineageCommits[link.EndCommitIndex];
+
+                var isLinkInHoveredLineage = hoveredLineage != null &&
+                    link.StartCommitIndex >= 0 && link.EndCommitIndex >= 0 &&
+                    link.StartCommitIndex < hoveredLineage.Length && link.EndCommitIndex < hoveredLineage.Length &&
+                    hoveredLineage[link.StartCommitIndex] &&
+                    hoveredLineage[link.EndCommitIndex];
+
+                var pen = link.Color < 0 ? grayedPen : Models.CommitGraph.Pens[link.Color];
+                bool shouldDim = false;
+                if (highlightMode == Models.CommitGraphHighlighting.CurrentBranchOnly)
+                    shouldDim = !link.IsMerged;
+                else if (highlightMode == Models.CommitGraphHighlighting.SelectedLineageOnly)
+                    shouldDim = !isLinkInSelectedLineage;
+                else if (highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage)
+                    shouldDim = !link.IsMerged && !isLinkInSelectedLineage;
+
+                if (shouldDim)
                     pen = grayedPen;
+
+                if (isLinkInHoveredLineage)
+                    pen = new Pen(pen.Brush, pen.Thickness + hoverBold);
 
                 var geo = new StreamGeometry();
                 using (var ctx = geo.Open())
@@ -112,8 +223,27 @@ namespace SourceGit.Views
                 if (last.Y > bottom)
                     break;
 
+                var isLineInSelectedLineage = highlightSelectedLineage && selectedLineageCommits != null &&
+                    line.StartCommitIndex >= 0 && line.EndCommitIndex >= 0 &&
+                    line.StartCommitIndex < selectedLineageCommits.Length && line.EndCommitIndex < selectedLineageCommits.Length &&
+                    selectedLineageCommits[line.StartCommitIndex] &&
+                    selectedLineageCommits[line.EndCommitIndex];
+
                 var geo = new StreamGeometry();
-                var pen = Models.CommitGraph.Pens[line.Color];
+                var pen = line.Color < 0 ? grayedPen : Models.CommitGraph.Pens[line.Color];
+                bool shouldDim = false;
+                if (highlightMode == Models.CommitGraphHighlighting.CurrentBranchOnly)
+                    shouldDim = !line.IsMerged;
+                else if (highlightMode == Models.CommitGraphHighlighting.SelectedLineageOnly)
+                    shouldDim = !isLineInSelectedLineage;
+                else if (highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage)
+                    shouldDim = !line.IsMerged && !isLineInSelectedLineage;
+
+                if (shouldDim)
+                    pen = grayedPen;
+
+                if (line.IsHoveredRelated)
+                    pen = new Pen(pen.Brush, pen.Thickness + hoverBold);
 
                 using (var ctx = geo.Open())
                 {
@@ -167,10 +297,7 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (!line.IsMerged && onlyHighlightCurrentBranch)
-                    context.DrawGeometry(null, grayedPen, geo);
-                else
-                    context.DrawGeometry(null, pen, geo);
+                context.DrawGeometry(null, pen, geo);
             }
         }
 
@@ -179,10 +306,19 @@ namespace SourceGit.Views
             var dotFill = DotBrush;
             var dotFillPen = new Pen(dotFill, 2);
             var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
+            var highlightMode = HighlightMode;
+            var onlyHighlightCurrentBranch = highlightMode == Models.CommitGraphHighlighting.CurrentBranchOnly ||
+                                             highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+            var highlightSelectedLineage = highlightMode == Models.CommitGraphHighlighting.SelectedLineageOnly ||
+                                             highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage;
+            var selectedLineageCommits = SelectedLineageCommits;
 
-            foreach (var dot in graph.Dots)
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            for (int i = 0; i < graph.Dots.Count; i++)
             {
+                var dot = graph.Dots[i];
                 var center = new Point(dot.Center.X, dot.Center.Y * rowHeight);
 
                 if (center.Y < top)
@@ -190,8 +326,18 @@ namespace SourceGit.Views
                 if (center.Y > bottom)
                     break;
 
+                bool isDotInSelectedLineage = highlightSelectedLineage && selectedLineageCommits != null && i >= 0 && i < selectedLineageCommits.Length && selectedLineageCommits[i];
+
                 var pen = Models.CommitGraph.Pens[dot.Color];
-                if (!dot.IsMerged && onlyHighlightCurrentBranch)
+                bool shouldDim = false;
+                if (highlightMode == Models.CommitGraphHighlighting.CurrentBranchOnly)
+                    shouldDim = !dot.IsMerged;
+                else if (highlightMode == Models.CommitGraphHighlighting.SelectedLineageOnly)
+                    shouldDim = !isDotInSelectedLineage;
+                else if (highlightMode == Models.CommitGraphHighlighting.CurrentBranchAndSelectedLineage)
+                    shouldDim = !dot.IsMerged && !isDotInSelectedLineage;
+
+                if (shouldDim)
                     pen = grayedPen;
 
                 switch (dot.Type)
@@ -213,3 +359,4 @@ namespace SourceGit.Views
         }
     }
 }
+

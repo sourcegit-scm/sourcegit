@@ -495,6 +495,15 @@
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交時間</x:String>
   <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日期時間</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路線圖與訊息標題</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights" xml:space="preserve">高亮模式</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.All" xml:space="preserve">全部顯示</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchOnly" xml:space="preserve">僅目前分支</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.SelectedLineageOnly" xml:space="preserve">僅選取譜系</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.CurrentBranchAndSelectedLineage" xml:space="preserve">目前分支與選取譜系</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod" xml:space="preserve">譜系搜尋方式</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.ParentsOnly" xml:space="preserve">僅祖先</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.ChildsOnly" xml:space="preserve">僅後代</x:String>
+  <x:String x:Key="Text.Histories.Header.Highlights.LineageMethod.FullLineage" xml:space="preserve">完整譜系</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選取 {0} 項提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">顯示欄位</x:String>
@@ -645,6 +654,7 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">佈景主題</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">自訂主題</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">允許自動隱藏捲軸</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EnableHoverViewTracking" xml:space="preserve">開啟懸停視圖跟蹤</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">使用固定寬度的分頁標籤</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">使用系統原生預設視窗樣式</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">對比/合併工具</x:String>

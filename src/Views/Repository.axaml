@@ -93,7 +93,7 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem BorderThickness="0">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
 
@@ -101,19 +101,11 @@
                                 Classes="line_path"
                                 Width="26" Height="26"
                                 Background="Transparent"
-                                IsChecked="{Binding HighlightCurrentBranchOnlyInHistory, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
-                  </ToggleButton>
-                  <ToggleButton Grid.Column="3"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
                                 IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInGraph}">
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
                   </ToggleButton>
-                  <Button Grid.Column="4"
+                  <Button Grid.Column="3"
                           Classes="icon_button"
                           Width="26" Height="26"
                           Click="OnOpenAdvancedHistoriesOption"
@@ -424,7 +416,7 @@
                 <Setter Property="CornerRadius" Value="4"/>
               </Style>
             </ListBox.Styles>
-            <ListBox.ItemTemplate>              
+            <ListBox.ItemTemplate>
               <DataTemplate DataType="vm:Worktree">
                 <Border Height="24"
                         Background="Transparent"
@@ -450,7 +442,7 @@
                         <TextBlock Grid.Row="0" Grid.Column="3"
                                    Margin="6,0,0,0"
                                    Text="{Binding Branch, Mode=OneWay}"/>
-                        
+
                         <TextBlock Grid.Row="1" Grid.Column="0"
                                    Classes="info_label"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -926,7 +918,7 @@
               <v:Histories CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                            Bisect="{Binding Bisect, Mode=OneWay}"
                            IssueTrackers="{Binding IssueTrackers, Mode=OneWay}"
-                           OnlyHighlightCurrentBranch="{Binding HighlightCurrentBranchOnly, Mode=OneWay}">
+                           CommitGraphHighlighting="{Binding CommitGraphHighlighting, Mode=OneWay}">
                 <v:Histories.IsDetailsPanelExpanded>
                   <MultiBinding Converter="{x:Static BoolConverters.Or}">
                     <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseTwoColumnsLayoutInHistories" Mode="OneWay"/>
@@ -971,3 +963,4 @@
     </Border>
   </Grid>
 </UserControl>
+
