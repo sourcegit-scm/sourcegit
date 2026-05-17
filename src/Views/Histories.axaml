@@ -23,7 +23,7 @@
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
     </v:HistoriesLayout.ColumnDefinitions>
 
-    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">      
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
       <v:HistoriesCommitList x:Name="CommitListContainer"
                              Classes="static_scrollbar"
                              ScrollViewer.AllowAutoHide="False"
@@ -53,7 +53,7 @@
               <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             </Style>
           </Style>
-          
+
           <Style Selector="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="24"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -257,7 +257,7 @@
                   Focusable="False"
                   IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
       <ContentControl Content="{Binding DetailContext, Mode=OneWay}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Null">
@@ -269,7 +269,13 @@
                     </Border>
                   </TabItem.Header>
 
-                  <Grid IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
+                  <Grid>
+                    <Grid.IsVisible>
+                      <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                        <Binding Path="#ThisControl.IsDetailsPanelExpanded" Mode="OneWay"/>
+                        <Binding Path="#ThisControl.IsDetailsPanelMaximize" Mode="OneWay"/>
+                      </MultiBinding>
+                    </Grid.IsVisible>
                     <Path Width="128" Height="128"
                           Data="{StaticResource Icons.Detail}"
                           HorizontalAlignment="Center"
@@ -297,9 +303,16 @@
                 </TabItem>
               </TabControl>
           </DataTemplate>
-          
+
           <DataTemplate DataType="vm:CommitDetail">
-            <v:CommitDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
+            <v:CommitDetail>
+              <v:CommitDetail.IsDetailsPanelExpanded>
+                <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                  <Binding Path="#ThisControl.IsDetailsPanelExpanded" Mode="OneWay"/>
+                  <Binding Path="#ThisControl.IsDetailsPanelMaximize" Mode="OneWay"/>
+                </MultiBinding>
+              </v:CommitDetail.IsDetailsPanelExpanded>
+            </v:CommitDetail>
           </DataTemplate>
 
           <DataTemplate DataType="vm:RevisionCompare">
@@ -317,7 +330,14 @@
                   </Border>
                 </TabItem.Header>
 
-                <v:RevisionCompare IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
+                <v:RevisionCompare>
+                  <v:RevisionCompare.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                      <Binding Path="#ThisControl.IsDetailsPanelExpanded" Mode="OneWay"/>
+                      <Binding Path="#ThisControl.IsDetailsPanelMaximize" Mode="OneWay"/>
+                    </MultiBinding>
+                  </v:RevisionCompare.IsVisible>
+                </v:RevisionCompare>
               </TabItem>
 
               <TabItem IsEnabled="False">
@@ -338,9 +358,14 @@
                 </TabItem.Header>
 
                 <StackPanel Orientation="Vertical"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                            IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
-                  
+                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <StackPanel.IsVisible>
+                    <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                      <Binding Path="#ThisControl.IsDetailsPanelExpanded" Mode="OneWay"/>
+                      <Binding Path="#ThisControl.IsDetailsPanelMaximize" Mode="OneWay"/>
+                    </MultiBinding>
+                  </StackPanel.IsVisible>
+
                   <Path Width="128" Height="128"
                         Data="{StaticResource Icons.Detail}"
                         HorizontalAlignment="Center"
@@ -381,7 +406,7 @@
                 ToolTip.Tip="{DynamicResource Text.HistoriesDetailsStandalone}">
           <Path Width="15" Height="15" Margin="0,1,0,0" Data="{StaticResource Icons.OpenAsStandalone}"/>
         </Button>
-        
+
         <ToggleButton Classes="line_path"
                       Width="28" Height="28"
                       Padding="0"
@@ -400,6 +425,24 @@
           </ToolTip.Tip>
           <Path Width="14" Height="14" Data="{StaticResource Icons.CollapseToBottom}"/>
         </ToggleButton>
+
+        <ToggleButton Classes="line_path"
+                      Width="28" Height="28"
+                      Padding="0"
+                      IsChecked="{Binding IsMaximizeDetails, Mode=TwoWay}"
+                      IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=OneWay, Converter={x:Static BoolConverters.Not}}">
+          <ToolTip.Tip>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource Text.CommitDetail.Maximize}" VerticalAlignment="Center"/>
+              <TextBlock Margin="16,0,0,0"
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         FontSize="11"
+                         VerticalAlignment="Center"/>
+            </StackPanel>
+          </ToolTip.Tip>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Window.Maximize}"/>
+        </ToggleButton>
+
       </StackPanel>
     </Grid>
   </v:HistoriesLayout>

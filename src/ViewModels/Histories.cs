@@ -137,16 +137,23 @@ namespace SourceGit.ViewModels
 
         public GridLength TopArea
         {
-            get => _topArea;
-            set => SetProperty(ref _topArea, value);
+            get => _isMaximizeDetails ? new GridLength(0, GridUnitType.Pixel) : _topArea;
+            set
+            {
+                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isMaximizeDetails)
+                    SetProperty(ref _topArea, value);
+            }
         }
 
         public GridLength BottomArea
         {
-            get => _isCollapseDetails ? new GridLength(28, GridUnitType.Pixel) : _bottomArea;
+            get => _isCollapseDetails ?
+                    new GridLength(28, GridUnitType.Pixel) :
+                    (_isMaximizeDetails ? new GridLength(1, GridUnitType.Star) : _bottomArea);
             set
             {
-                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isCollapseDetails)
+                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories
+                    && !_isCollapseDetails && !_isMaximizeDetails)
                     SetProperty(ref _bottomArea, value);
             }
         }
@@ -163,6 +170,25 @@ namespace SourceGit.ViewModels
             {
                 if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && SetProperty(ref _isCollapseDetails, value))
                 {
+                    if (value && _isMaximizeDetails)
+                        SetProperty(ref _isMaximizeDetails, false, nameof(IsMaximizeDetails));
+
+                    OnPropertyChanged(nameof(TopArea));
+                    OnPropertyChanged(nameof(BottomArea));
+                }
+            }
+        }
+
+        public bool IsMaximizeDetails
+        {
+            get => _isMaximizeDetails;
+            set
+            {
+                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && SetProperty(ref _isMaximizeDetails, value))
+                {
+                    if (value && _isCollapseDetails)
+                        SetProperty(ref _isCollapseDetails, false, nameof(IsCollapseDetails));
+
                     OnPropertyChanged(nameof(TopArea));
                     OnPropertyChanged(nameof(BottomArea));
                 }
@@ -499,6 +525,7 @@ namespace SourceGit.ViewModels
         private GridLength _rightArea = new(1, GridUnitType.Star);
         private GridLength _topArea = new(1, GridUnitType.Star);
         private GridLength _bottomArea = new(1, GridUnitType.Star);
+        private bool _isMaximizeDetails = false;
         private bool _isCollapseDetails = false;
     }
 }
