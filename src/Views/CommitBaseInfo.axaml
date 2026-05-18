@@ -199,7 +199,8 @@
                                    FontSize="12"
                                    AllowWrap="True"
                                    Margin="0,4,0,0"
-                                   UseGraphColor="False"/>
+                                   UseGraphColor="False"
+                                   PointerReleased="OnCommitRefsPresenterPointerReleased"/>
           </Border>
 
           <!-- Messages -->

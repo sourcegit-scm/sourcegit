@@ -240,14 +240,21 @@ namespace SourceGit.ViewModels
             var repoPath = OperatingSystem.IsWindows() ? _repo.FullPath.Replace("/", "\\") : _repo.FullPath;
             org = org.Replace("${REPO}", repoPath);
 
+            if (Target is Models.Branch { IsDetachedHead: false } targetBranch)
+                org = org.Replace("${BRANCH}", targetBranch.Name).Replace("${BRANCH_FRIENDLY_NAME}", targetBranch.FriendlyName).Replace("${REMOTE}", targetBranch.Remote);
+            else if (_repo.CurrentBranch is { IsDetachedHead: false } currentBranch)
+                org = org.Replace("${BRANCH}", currentBranch.Name).Replace("${BRANCH_FRIENDLY_NAME}", currentBranch.FriendlyName);
+            else
+                org = org.Replace("${BRANCH}", "HEAD").Replace("${BRANCH_FRIENDLY_NAME}", "HEAD");
+
             return Target switch
             {
-                Models.Branch b => org.Replace("${BRANCH_FRIENDLY_NAME}", b.FriendlyName).Replace("${BRANCH}", b.Name).Replace("${REMOTE}", b.Remote),
+                Models.Branch b => org.Replace("${SHA}", b.Head),
                 Models.Commit c => org.Replace("${SHA}", c.SHA),
-                Models.Tag t => org.Replace("${TAG}", t.Name),
+                Models.Tag t => org.Replace("${SHA}", t.SHA).Replace("${TAG}", t.Name),
                 Models.Remote r => org.Replace("${REMOTE}", r.Name),
-                Models.CustomActionTargetFile f => org.Replace("${FILE}", f.File).Replace("${SHA}", f.Revision?.SHA ?? string.Empty),
-                _ => org.Replace("${BRANCH}", _repo.CurrentBranch?.Name ?? "HEAD")
+                Models.CustomActionTargetFile f => org.Replace("${SHA}", f.Revision?.SHA ?? "HEAD").Replace("${FILE}", f.File),
+                _ => org
             };
         }
 

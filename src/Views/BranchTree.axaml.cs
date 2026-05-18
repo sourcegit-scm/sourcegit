@@ -557,6 +557,7 @@ namespace SourceGit.Views
                     var deleteMulti = new MenuItem();
                     deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
                     deleteMulti.Icon = this.CreateMenuIcon("Icons.Clear");
+                    deleteMulti.Tag = "Delete/Back";
                     deleteMulti.Click += (_, ev) =>
                     {
                         repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
@@ -579,43 +580,59 @@ namespace SourceGit.Views
             {
                 RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
                 e.Handled = true;
-                return;
             }
-
-            if (e.Key is not (Key.Delete or Key.Back))
-                return;
-
-            var repo = DataContext as ViewModels.Repository;
-            if (repo?.Settings == null)
-                return;
-
-            var selected = BranchesPresenter.SelectedItems;
-            if (selected == null || selected.Count == 0)
-                return;
-
-            if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Remote remote })
+            else if ((e.Key == Key.Delete || e.Key == Key.Back) && e.KeyModifiers == KeyModifiers.None)
             {
-                repo.DeleteRemote(remote);
+                var repo = DataContext as ViewModels.Repository;
+                if (repo?.Settings == null)
+                    return;
+
+                var selected = BranchesPresenter.SelectedItems;
+                if (selected == null || selected.Count == 0)
+                    return;
+
+                if (selected.Count == 1 && selected[0] is ViewModels.BranchTreeNode { Backend: Models.Remote remote })
+                {
+                    repo.DeleteRemote(remote);
+                    e.Handled = true;
+                    return;
+                }
+
+                var branches = new List<Models.Branch>();
+                foreach (var item in selected)
+                {
+                    if (item is ViewModels.BranchTreeNode node)
+                        CollectBranchesInNode(branches, node);
+                }
+
+                if (branches.Find(x => x.IsCurrent) != null)
+                    return;
+
+                if (branches.Count == 1)
+                    repo.DeleteBranch(branches[0]);
+                else
+                    repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
+
                 e.Handled = true;
-                return;
             }
-
-            var branches = new List<Models.Branch>();
-            foreach (var item in selected)
+            else if (e.Key == Key.F2 && e.KeyModifiers == KeyModifiers.None)
             {
-                if (item is ViewModels.BranchTreeNode node)
-                    CollectBranchesInNode(branches, node);
+                var repo = DataContext as ViewModels.Repository;
+                if (repo?.Settings == null)
+                    return;
+
+                var selected = BranchesPresenter.SelectedItems;
+                if (selected == null || selected.Count != 1)
+                    return;
+
+                if (selected[0] is ViewModels.BranchTreeNode { Backend: Models.Branch { IsLocal: true } branch })
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.RenameBranch(repo, branch));
+
+                    e.Handled = true;
+                }
             }
-
-            if (branches.Find(x => x.IsCurrent) != null)
-                return;
-
-            if (branches.Count == 1)
-                repo.DeleteBranch(branches[0]);
-            else
-                repo.DeleteMultipleBranches(branches, branches[0].IsLocal);
-
-            e.Handled = true;
         }
 
         private async void OnDoubleTappedBranchNode(object sender, TappedEventArgs _)
@@ -732,6 +749,19 @@ namespace SourceGit.Views
                 }
 
                 menu.Items.Add(push);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+                if (upstream != null)
+                {
+                    var compareWithUpstream = new MenuItem();
+                    compareWithUpstream.Header = App.Text("BranchCM.CompareWithSpecial", upstream.FriendlyName);
+                    compareWithUpstream.Icon = this.CreateMenuIcon("Icons.Compare");
+                    compareWithUpstream.Click += (_, _) =>
+                    {
+                        this.ShowWindow(new ViewModels.Compare(repo, upstream, branch));
+                    };
+                    menu.Items.Add(compareWithUpstream);
+                }
 
                 var compareWith = new MenuItem();
                 compareWith.Header = App.Text("BranchCM.CompareWith");
@@ -740,7 +770,6 @@ namespace SourceGit.Views
                 {
                     new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
-                menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(compareWith);
             }
             else
@@ -848,6 +877,8 @@ namespace SourceGit.Views
                     }
                 }
 
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
                 var compareWithCurrent = new MenuItem();
                 compareWithCurrent.Header = App.Text("BranchCM.CompareWithHead");
                 compareWithCurrent.Icon = this.CreateMenuIcon("Icons.Compare");
@@ -855,6 +886,19 @@ namespace SourceGit.Views
                 {
                     this.ShowWindow(new ViewModels.Compare(repo, branch, current));
                 };
+                menu.Items.Add(compareWithCurrent);
+
+                if (upstream != null)
+                {
+                    var compareWithUpstream = new MenuItem();
+                    compareWithUpstream.Header = App.Text("BranchCM.CompareWithSpecial", upstream.FriendlyName);
+                    compareWithUpstream.Icon = this.CreateMenuIcon("Icons.Compare");
+                    compareWithUpstream.Click += (_, _) =>
+                    {
+                        this.ShowWindow(new ViewModels.Compare(repo, upstream, branch));
+                    };
+                    menu.Items.Add(compareWithUpstream);
+                }
 
                 var compareWith = new MenuItem();
                 compareWith.Header = App.Text("BranchCM.CompareWith");
@@ -863,8 +907,6 @@ namespace SourceGit.Views
                 {
                     new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(compareWithCurrent);
                 menu.Items.Add(compareWith);
             }
 
@@ -903,6 +945,7 @@ namespace SourceGit.Views
                 var rename = new MenuItem();
                 rename.Header = App.Text("BranchCM.Rename", branch.Name);
                 rename.Icon = this.CreateMenuIcon("Icons.Rename");
+                rename.Tag = "F2";
                 rename.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -913,6 +956,7 @@ namespace SourceGit.Views
                 var delete = new MenuItem();
                 delete.Header = App.Text("BranchCM.Delete", branch.Name);
                 delete.Icon = this.CreateMenuIcon("Icons.Clear");
+                delete.Tag = "Delete/Back";
                 delete.IsEnabled = !branch.IsCurrent;
                 delete.Click += (_, e) =>
                 {
@@ -1217,6 +1261,7 @@ namespace SourceGit.Views
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", name);
             delete.Icon = this.CreateMenuIcon("Icons.Clear");
+            delete.Tag = "Delete/Back";
             delete.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())

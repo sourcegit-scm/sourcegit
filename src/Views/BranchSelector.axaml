@@ -5,7 +5,8 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
-             x:Class="SourceGit.Views.BranchSelector">
+             x:Class="SourceGit.Views.BranchSelector"
+             x:Name="ThisControl">
   <UserControl.Styles>
     <Style Selector="v|BranchSelector">
       <Setter Property="FocusAdorner">
@@ -25,25 +26,38 @@
 
             <Grid x:Name="PART_Selected"
                   Background="Transparent"
-                  ColumnDefinitions="Auto,*,32"
+                  ColumnDefinitions="*,32"
                   PointerPressed="OnToggleDropDown">
-              <Path Grid.Column="0"
-                    Margin="8,0,0,0"
-                    Width="14" Height="14"
-                    Data="{StaticResource Icons.Branch}"
-                    IsHitTestVisible="False"/>
-
-              <ContentControl Grid.Column="1"
+              <ContentControl Grid.Column="0"
                               Margin="8,0,0,0"
-                              Content="{TemplateBinding SelectedBranch, Mode=OneWay}">
+                              IsHitTestVisible="False"
+                              Content="{TemplateBinding SelectedBranch}">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Branch">
-                    <TextBlock Text="{Binding FriendlyName, Mode=OneWay}" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                      <Path Width="14" Height="14"
+                            Data="{StaticResource Icons.Branch}"
+                            Fill="{DynamicResource Brush.FG1}"/>
+
+                      <v:BranchSelectorChoice Margin="8,0,0,0"
+                                              VerticalAlignment="Center"
+                                              Branch="{Binding Mode=OneWay}"
+                                              UsePureName="{Binding #ThisControl.UsePureName, Mode=OneWay}"/>
+
+                      <Border Height="14"
+                              CornerRadius="7"
+                              Margin="4,0,0,0" Padding="6,0"
+                              VerticalAlignment="Center"
+                              Background="Green"
+                              IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                        <TextBlock Text="{DynamicResource Text.Push.New}" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
+                      </Border>
+                    </StackPanel>
                   </DataTemplate>
                 </ContentControl.DataTemplates>
               </ContentControl>
 
-              <Path Grid.Column="2"
+              <Path Grid.Column="1"
                     Width="12" Height="12"
                     Margin="0,0,10,0"
                     HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -107,7 +121,8 @@
                                BorderThickness="0"
                                Background="Transparent"
                                ItemsSource="{TemplateBinding VisibleBranches, Mode=OneWay}"
-                               SelectedItem="{TemplateBinding SelectedBranch, Mode=TwoWay}"
+                               SelectedItem="{TemplateBinding SelectedBranch, Mode=OneWay}"
+                               SelectionChanged="OnDropDownListSelectionChanged"
                                KeyDown="OnDropDownListKeyDown">
                     <ListBox.ItemsPanel>
                       <ItemsPanelTemplate>
@@ -126,7 +141,18 @@
                       <DataTemplate DataType="m:Branch">
                         <StackPanel Orientation="Horizontal" Background="Transparent" Height="28" PointerPressed="OnDropDownItemPointerPressed">
                           <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-                          <TextBlock Margin="8,0,0,0" Text="{Binding FriendlyName, Mode=OneWay}" VerticalAlignment="Center"/>
+                          <v:BranchSelectorChoice Margin="8,0,0,0"
+                                                  VerticalAlignment="Center"
+                                                  Branch="{Binding Mode=OneWay}"
+                                                  UsePureName="{Binding #ThisControl.UsePureName, Mode=OneWay}"/>
+                          <Border Height="14"
+                                  CornerRadius="7"
+                                  Margin="4,0,0,0" Padding="6,0"
+                                  VerticalAlignment="Center"
+                                  Background="Green"
+                                  IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
+                            <TextBlock Text="{DynamicResource Text.Push.New}" FontSize="9" FontFamily="{DynamicResource Fonts.Monospace}" Foreground="White" VerticalAlignment="Center"/>
+                          </Border>
                         </StackPanel>
                       </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -145,6 +171,15 @@
       <Style Selector="^:focus-visible">
         <Style Selector="^ /template/ Border#PART_Background">
           <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundUnfocused}" />
+        </Style>
+      </Style>
+
+      <Style Selector="^:disabled">
+        <Setter Property="Opacity" Value="0.6"/>
+        
+        <Style Selector="^ /template/ Border#PART_Background">
+          <Setter Property="Background" Value="Transparent" />
+          <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
         </Style>
       </Style>
     </Style>

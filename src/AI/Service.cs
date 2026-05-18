@@ -35,12 +35,6 @@ namespace SourceGit.AI
             set;
         } = false;
 
-        public string AdditionalPrompt
-        {
-            get;
-            set;
-        } = string.Empty;
-
         [JsonIgnore]
         public List<string> AvailableModels
         {
@@ -50,26 +44,38 @@ namespace SourceGit.AI
 
         public string Model
         {
+            get => _model;
+            set => SetProperty(ref _model, value);
+        }
+
+        public bool AutoFetchAvailableModels
+        {
+            get => _autoFetchAvailableModels;
+            set => SetProperty(ref _autoFetchAvailableModels, value);
+        }
+
+        public string AdditionalPrompt
+        {
             get;
             set;
         } = string.Empty;
 
         public void FetchAvailableModels()
         {
+            if (!_autoFetchAvailableModels)
+            {
+                if (!string.IsNullOrEmpty(Model))
+                    AvailableModels = [Model];
+                return;
+            }
+
             var allModels = GetOpenAIClient().GetOpenAIModelClient().GetModels();
             AvailableModels = new List<string>();
             foreach (var model in allModels.Value)
                 AvailableModels.Add(model.Id);
 
-            if (AvailableModels.Count > 0)
-            {
-                if (string.IsNullOrEmpty(Model) || !AvailableModels.Contains(Model))
-                    Model = AvailableModels[0];
-            }
-            else
-            {
-                Model = null;
-            }
+            if (AvailableModels.Count > 0 && (string.IsNullOrEmpty(Model) || !AvailableModels.Contains(Model)))
+                Model = AvailableModels[0];
         }
 
         public ChatClient GetChatClient()
@@ -86,5 +92,7 @@ namespace SourceGit.AI
         }
 
         private string _name = string.Empty;
+        private string _model = string.Empty;
+        private bool _autoFetchAvailableModels = true;
     }
 }

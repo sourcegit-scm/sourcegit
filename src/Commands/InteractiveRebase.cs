@@ -4,7 +4,7 @@ namespace SourceGit.Commands
 {
     public class InteractiveRebase : Command
     {
-        public InteractiveRebase(string repo, string basedOn, bool autoStash)
+        public InteractiveRebase(string repo, string basedOn, bool autoStash, bool noVerify)
         {
             WorkingDirectory = repo;
             Context = repo;
@@ -14,6 +14,8 @@ namespace SourceGit.Commands
             builder.Append("rebase -i --autosquash ");
             if (autoStash)
                 builder.Append("--autostash ");
+            if (noVerify)
+                builder.Append("--no-verify ");
 
             Args = builder.Append(basedOn).ToString();
         }

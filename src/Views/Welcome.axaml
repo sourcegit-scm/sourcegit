@@ -44,9 +44,17 @@
         </TextBox.InnerLeftContent>
 
         <TextBox.InnerRightContent>
-          <Button Classes="icon_button" IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearSearchFilter}">
-            <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
-          </Button>
+          <StackPanel Orientation="Horizontal">
+            <!-- Invisible Button to handle search hotkey pressed-->
+            <Button Width="0" Height="0"
+                    Margin="0" Padding="0"
+                    Click="OnSearchHotKey"
+                    HotKey="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+            
+            <Button Classes="icon_button" IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Click="OnClearSearchFilter">
+              <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+            </Button>
+          </StackPanel>
         </TextBox.InnerRightContent>
       </TextBox>
 

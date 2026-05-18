@@ -18,7 +18,14 @@ namespace SourceGit.Views
         public DealWithLocalChangesMethod()
         {
             InitializeComponent();
-            UpdateRadioButtons();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == MethodProperty)
+                UpdateRadioButtons();
         }
 
         private void OnRadioButtonClicked(object sender, RoutedEventArgs e)

@@ -107,7 +107,7 @@ namespace SourceGit.Views
         }
     }
 
-    public class RevisionFileRowsListBox : ListBox
+    public class RevisionFileRowsListBox : ListBoxEx
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
@@ -123,14 +123,37 @@ namespace SourceGit.Views
 
             if (SelectedItem is ViewModels.RevisionFileTreeNode node)
             {
-                if (node.IsFolder &&
-                    e.KeyModifiers == KeyModifiers.None &&
-                    (node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right))
+                if (e is { Key: Key.Left, KeyModifiers: KeyModifiers.None })
                 {
-                    var tree = this.FindAncestorOfType<RevisionFileTreeView>();
-                    if (tree != null)
-                        await tree.ToggleNodeIsExpandedAsync(node);
-                    e.Handled = true;
+                    if (node.IsFolder && node.IsExpanded)
+                    {
+                        var tree = this.FindAncestorOfType<RevisionFileTreeView>();
+                        if (tree != null)
+                            await tree.ToggleNodeIsExpandedAsync(node);
+
+                        e.Handled = true;
+                    }
+                    else if (FindParent(node) is { } parent)
+                    {
+                        Select(parent);
+                        e.Handled = true;
+                    }
+                }
+                else if (e is { Key: Key.Right, KeyModifiers: KeyModifiers.None })
+                {
+                    if (node.IsFolder && !node.IsExpanded)
+                    {
+                        var tree = this.FindAncestorOfType<RevisionFileTreeView>();
+                        if (tree != null)
+                            await tree.ToggleNodeIsExpandedAsync(node);
+
+                        e.Handled = true;
+                    }
+                    else if (node.Children.Count > 0)
+                    {
+                        Select(node.Children[0]);
+                        e.Handled = true;
+                    }
                 }
                 else if (e.Key == Key.C &&
                     e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
@@ -181,6 +204,24 @@ namespace SourceGit.Views
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private ViewModels.RevisionFileTreeNode FindParent(ViewModels.RevisionFileTreeNode item)
+        {
+            if (item.Depth == 0)
+                return null;
+
+            var idx = Items.IndexOf(item);
+            if (idx < 1)
+                return null;
+
+            for (var i = idx - 1; i >= 0; i--)
+            {
+                if (Items[i] is ViewModels.RevisionFileTreeNode node && node.Depth < item.Depth)
+                    return node;
+            }
+
+            return null;
         }
     }
 

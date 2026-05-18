@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -30,28 +31,44 @@ namespace SourceGit.Views
         {
             if (SelectedItem is ViewModels.RepositoryNode node && e.KeyModifiers == KeyModifiers.None)
             {
-                if (e.Key is Key.Delete or Key.Back)
+                if (e.Key is Key.Left)
                 {
-                    node.Delete();
+                    if (node.IsExpanded)
+                        ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                    else if (FindParent(node) is { } parent)
+                        Select(parent);
+
                     e.Handled = true;
                 }
-                else if (node.IsRepository)
+                else if (e.Key is Key.Right && node.SubNodes.Count > 0)
                 {
-                    if (e.Key == Key.Enter)
-                    {
-                        node.Open();
-                        e.Handled = true;
-                    }
-                }
-                else if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right) || e.Key == Key.Enter)
-                {
-                    ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
+                    if (!node.IsExpanded)
+                        ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                    else
+                        Select(node.SubNodes[0]);
                 }
             }
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private ViewModels.RepositoryNode FindParent(ViewModels.RepositoryNode item)
+        {
+            if (item.Depth == 0)
+                return null;
+
+            var idx = Items.IndexOf(item);
+            if (idx < 1)
+                return null;
+
+            for (var i = idx - 1; i >= 0; i--)
+            {
+                if (Items[i] is ViewModels.RepositoryNode node && node.Depth < item.Depth)
+                    return node;
+            }
+
+            return null;
         }
     }
 
@@ -79,7 +96,7 @@ namespace SourceGit.Views
         {
             base.OnKeyDown(e);
 
-            if (!e.Handled)
+            if (!e.Handled && e.KeyModifiers == KeyModifiers.None)
             {
                 if (e.Key == Key.Down && ViewModels.Welcome.Instance.Rows.Count > 0)
                 {
@@ -89,10 +106,40 @@ namespace SourceGit.Views
                 }
                 else if (e.Key == Key.Escape)
                 {
-                    ViewModels.Welcome.Instance.ClearSearchFilter();
-                    e.Handled = true;
+                    var page = this.FindAncestorOfType<LauncherPage>();
+                    if (page is { DataContext: ViewModels.LauncherPage ctx } && ctx.Popup == null)
+                        OnClearSearchFilter(this, e);
+                }
+                else if (e.Key == Key.Enter)
+                {
+                    if (TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+                    {
+                        node.Open();
+                        e.Handled = true;
+                    }
+                }
+                else if (e.Key == Key.Delete || e.Key == Key.Back)
+                {
+                    if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node)
+                    {
+                        node.Delete();
+                        e.Handled = true;
+                    }
                 }
             }
+        }
+
+        private void OnSearchHotKey(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Focus(NavigationMethod.Directional);
+            e.Handled = true;
+        }
+
+        private void OnClearSearchFilter(object sender, RoutedEventArgs e)
+        {
+            ViewModels.Welcome.Instance.ClearSearchFilter();
+            SearchBox.Focus(NavigationMethod.Directional);
+            e.Handled = true;
         }
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs ev)

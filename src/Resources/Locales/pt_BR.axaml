@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todos</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Arquivo de Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selecione o arquivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
@@ -126,9 +125,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Ação customizada</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Reverter Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Modificar Mensagem</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Salvar como Patch...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Mesclar ao Commit Pai</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ALTERAÇÕES</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Alterações...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARQUIVOS</x:String>
@@ -366,11 +363,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Alternar para 'Mudanças'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Alternar para 'Históricos'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Alternar para 'Stashes'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">EDITOR DE TEXTO</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Fechar painel de busca</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Encontrar próxima correspondência</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Encontrar correspondência anterior</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Abrir painel de busca</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descartar</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Preparar</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Despreparar</x:String>
@@ -561,7 +553,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Reverter Commit</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commitar alterações de reversão</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Reescrever Mensagem do Commit</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Executando. Por favor, aguarde...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SALVAR</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Salvar Como...</x:String>

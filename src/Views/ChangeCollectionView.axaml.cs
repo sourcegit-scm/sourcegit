@@ -35,18 +35,56 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItems is [ViewModels.ChangeTreeNode node])
+            if (SelectedItems is [ViewModels.ChangeTreeNode node] && e.KeyModifiers == KeyModifiers.None)
             {
-                if (((e.Key == Key.Left && node.IsExpanded) || (e.Key == Key.Right && !node.IsExpanded)) &&
-                    e.KeyModifiers == KeyModifiers.None)
+                if (e.Key == Key.Left)
                 {
-                    this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
+                    if (node.IsExpanded && node.IsFolder)
+                    {
+                        this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
+                        e.Handled = true;
+                    }
+                    else if (FindParent(node) is { } parent)
+                    {
+                        Select(parent);
+                        e.Handled = true;
+                    }
+                }
+                else if (e.Key == Key.Right && node.IsFolder)
+                {
+                    if (!node.IsExpanded)
+                    {
+                        this.FindAncestorOfType<ChangeCollectionView>()?.ToggleNodeIsExpanded(node);
+                        e.Handled = true;
+                    }
+                    else if (node.Children.Count > 0)
+                    {
+                        Select(node.Children[0]);
+                        e.Handled = true;
+                    }
                 }
             }
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private ViewModels.ChangeTreeNode FindParent(ViewModels.ChangeTreeNode item)
+        {
+            if (item.Depth == 0)
+                return null;
+
+            var idx = Items.IndexOf(item);
+            if (idx < 1)
+                return null;
+
+            for (var i = idx - 1; i >= 0; i--)
+            {
+                if (Items[i] is ViewModels.ChangeTreeNode node && node.Depth < item.Depth)
+                    return node;
+            }
+
+            return null;
         }
     }
 

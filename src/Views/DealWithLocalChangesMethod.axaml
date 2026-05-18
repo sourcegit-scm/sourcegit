@@ -10,16 +10,19 @@
     <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.DoNothing}"
                  x:Name="RadioDoNothing"
                  Height="24"
+                 IsChecked="True"
                  Click="OnRadioButtonClicked"
                  Tag="{Binding Source={x:Static m:DealWithLocalChanges.DoNothing}}"/>
     <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.StashAndReapply}"
                  x:Name="RadioStashAndReapply"
                  Height="24"
+                 IsChecked="False"
                  Click="OnRadioButtonClicked"
                  Tag="{Binding Source={x:Static m:DealWithLocalChanges.StashAndReapply}}"/>
     <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.Discard}"
                  x:Name="RadioDiscard"
                  Height="24"
+                 IsChecked="False"
                  Click="OnRadioButtonClicked"
                  Tag="{Binding Source={x:Static m:DealWithLocalChanges.Discard}}"/>
   </StackPanel>

@@ -126,12 +126,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool HighlightCurrentBranchOnlyInHistory
-        {
-            get => _histories.HighlightCurrentBranchOnly;
-            set => _histories.HighlightCurrentBranchOnly = value;
-        }
-
         public string Filter
         {
             get => _filter;
@@ -168,7 +162,7 @@ namespace SourceGit.ViewModels
                 var oldHead = _currentBranch?.Head;
                 if (SetProperty(ref _currentBranch, value))
                 {
-                    _histories.NotifyCurrentBranchChanged();
+                    _histories?.NotifyCurrentBranchChanged();
                     if (value != null && !value.Head.Equals(oldHead, StringComparison.Ordinal) && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
                 }
@@ -458,13 +452,13 @@ namespace SourceGit.ViewModels
             {
                 _gitCommonDir = GitDir;
             }
+
+            _settings = Models.RepositorySettings.Get(_gitCommonDir);
+            _uiStates = Models.RepositoryUIStates.Load(GitDir);
         }
 
         public void Open()
         {
-            _settings = Models.RepositorySettings.Get(_gitCommonDir);
-            _uiStates = Models.RepositoryUIStates.Load(GitDir);
-
             try
             {
                 _watcher = new Models.Watcher(this, FullPath, _gitCommonDir);
@@ -777,6 +771,7 @@ namespace SourceGit.ViewModels
             _watcher?.MarkBranchUpdated();
             _watcher?.MarkWorkingCopyUpdated();
 
+            _branches.RemoveAll(b => b.IsLocal && b.FriendlyName.Equals(created.FriendlyName, StringComparison.Ordinal));
             _branches.Add(created);
 
             if (checkout)
@@ -1211,8 +1206,9 @@ namespace SourceGit.ViewModels
                     .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
                     .Append(_uiStates.BuildHistoryParams());
 
-                var commits = await new Commands.QueryCommits(FullPath, builder.ToString()).GetResultAsync().ConfigureAwait(false);
-                var graph = Models.CommitGraph.Parse(commits, _uiStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
+                var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -1222,9 +1218,8 @@ namespace SourceGit.ViewModels
                     if (_histories != null)
                     {
                         _histories.IsLoading = false;
+                        _histories.GenerateGraph(commits);
                         _histories.Commits = commits;
-                        _histories.Graph = graph;
-
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))

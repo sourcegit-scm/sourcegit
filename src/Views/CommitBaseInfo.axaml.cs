@@ -227,6 +227,33 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnCommitRefsPresenterPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            e.Handled = true;
+
+            if (DataContext is ViewModels.CommitDetail detail &&
+                sender is CommitRefsPresenter presenter &&
+                e.Properties.PointerUpdateKind == PointerUpdateKind.RightButtonReleased)
+            {
+                var decorator = presenter.DecoratorAt(e.GetPosition(presenter));
+                if (decorator != null)
+                {
+                    var copy = new MenuItem();
+                    copy.Icon = this.CreateMenuIcon("Icons.Copy");
+                    copy.Header = App.Text("Copy");
+                    copy.Click += async (_, ev) =>
+                    {
+                        await this.CopyTextAsync(decorator.Name);
+                        ev.Handled = true;
+                    };
+
+                    var menu = new ContextMenu();
+                    menu.Items.Add(copy);
+                    menu.Open(presenter);
+                }
+            }
+        }
+
         private IDisposable _iconResetTimer;
     }
 }

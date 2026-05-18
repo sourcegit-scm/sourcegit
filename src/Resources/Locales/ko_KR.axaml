@@ -23,7 +23,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI를 사용하여 커밋 메시지 생성</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit 숨기기</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">모두 보기</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">패치</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">패치 파일:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">적용할 .patch 파일을 선택하세요</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">공백 변경 사항 무시</x:String>
@@ -130,7 +129,6 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">제목</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
-  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">커밋 삭제</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">대화형 리베이스</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">삭제(Drop)...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">수정(Edit)...</x:String>
@@ -144,10 +142,7 @@
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 리베이스</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$을(를) ${1}$(으)로 리셋</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">커밋 되돌리기</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">메시지 수정</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">패치로 저장...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">부모에 합치기</x:String>
-  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">부모에 합치기(Fixup)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">변경 사항</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">변경된 파일</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">변경 사항 검색...</x:String>
@@ -352,9 +347,6 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">추적하지 않는 파일 포함</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0}개의 변경 사항이 폐기됩니다</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">이 작업은 되돌릴 수 없습니다!!!</x:String>
-  <x:String x:Key="Text.DropHead" xml:space="preserve">커밋 삭제</x:String>
-  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">커밋:</x:String>
-  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">새 HEAD:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">북마크:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">새 이름:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">대상:</x:String>
@@ -467,12 +459,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'변경 사항'으로 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'히스토리'로 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'스태시'로 전환</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">텍스트 에디터</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">검색 패널 닫기</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">다음 일치 항목 찾기</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">이전 일치 항목 찾기</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">외부 diff/merge 도구로 열기</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">검색 패널 열기</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">폐기</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">스테이지</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">언스테이지</x:String>
@@ -677,7 +663,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD로 이동</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">브랜치 생성</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">알림 지우기</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">현재 브랜치만 강조</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0}에서 열기</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">외부 도구에서 열기</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">원격</x:String>
@@ -707,7 +692,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">이름 순</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">정렬</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">터미널에서 열기</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">상대 시간 사용</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">로그 보기</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">브라우저에서 '{0}' 방문</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">워크트리</x:String>
@@ -725,7 +709,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">커밋 되돌리기</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">커밋:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">되돌린 변경 사항 커밋</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">커밋 메시지 수정</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">실행 중. 잠시만 기다려주세요...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">저장</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">다른 이름으로 저장...</x:String>

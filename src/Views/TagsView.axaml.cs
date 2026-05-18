@@ -440,22 +440,34 @@ namespace SourceGit.Views
             {
                 RaiseEvent(new RoutedEventArgs(SearchRequestedEvent));
                 e.Handled = true;
-                return;
             }
+            else if (e.Key is (Key.Delete or Key.Back) && e.KeyModifiers == KeyModifiers.None)
+            {
+                if (DataContext is not ViewModels.Repository repo)
+                    return;
 
-            if (e.Key is not (Key.Delete or Key.Back))
-                return;
+                var selected = (sender as ListBox)?.SelectedItems;
+                var tags = new List<Models.Tag>();
+                foreach (var item in selected)
+                {
+                    if (item is ViewModels.TagListItem i)
+                        tags.Add(i.Tag);
+                    else if (item is ViewModels.TagTreeNode n)
+                        CollectTagsInNode(n, tags);
+                }
 
-            if (DataContext is not ViewModels.Repository repo)
-                return;
+                if (tags.Count == 1)
+                {
+                    repo.DeleteTag(tags[0]);
+                }
+                else if (tags.Count > 1)
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.DeleteMultipleTags(repo, tags));
+                }
 
-            var selected = (sender as ListBox)?.SelectedItem;
-            if (selected is ViewModels.TagTreeNode { Tag: { } tagInNode })
-                repo.DeleteTag(tagInNode);
-            else if (selected is ViewModels.TagListItem { Tag: { } tagInItem })
-                repo.DeleteTag(tagInItem);
-
-            e.Handled = true;
+                e.Handled = true;
+            }
         }
 
         private void CollectTagsInNode(ViewModels.TagTreeNode node, List<Models.Tag> outs)

@@ -240,8 +240,20 @@
                            Text="{Binding Value, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
               </StackPanel>
             </DataTemplate>
+            
             <DataTemplate DataType="vm:CommitDetail">
-              <v:CommitDetail/>
+              <Grid>
+                <v:CommitDetail IsDetailsPanelExpanded="True"/>
+
+                <Button Classes="icon_button"
+                        Width="28" Height="28"
+                        Margin="0,0,4,0" Padding="0"
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Click="OnOpenDetailsAsStandalone"
+                        ToolTip.Tip="{DynamicResource Text.HistoriesDetailsStandalone}">
+                  <Path Width="15" Height="15" Margin="0,1,0,0" Data="{StaticResource Icons.OpenAsStandalone}"/>
+                </Button>
+              </Grid>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>
@@ -250,10 +262,17 @@
 
     <!-- Options -->
     <Grid Grid.Row="3" ColumnDefinitions="*,Auto,Auto" Margin="8,0,8,8">
-      <CheckBox Grid.Column="0"
-                Content="{DynamicResource Text.InteractiveRebase.AutoStash}"
-                VerticalAlignment="Center"
-                IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+      <StackPanel Grid.Column="0" Orientation="Horizontal" ClipToBounds="True">
+        <CheckBox Content="{DynamicResource Text.InteractiveRebase.AutoStash}"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+        
+        <CheckBox Margin="16,0,0,0"
+                  Content="{DynamicResource Text.InteractiveRebase.NoVerify}"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding NoVerify, Mode=TwoWay}"/>
+      </StackPanel>
+      
       <Button Grid.Column="1" Classes="flat primary" MinWidth="80" Content="{DynamicResource Text.Start}" Click="OnStartJobs"/>
       <Button Grid.Column="2" Classes="flat" Margin="8,0,0,0" MinWidth="80" Content="{DynamicResource Text.Cancel}" Click="CloseWindow"/>
     </Grid>

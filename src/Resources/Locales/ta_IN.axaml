@@ -20,7 +20,6 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">மறு-உருவாக்கு</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">உறுதிமொழி செய்தியை உருவாக்க செநுவைப் பயன்படுத்து</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">ஒட்டு</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">ஒட்டு கோப்பு:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">.ஒட்டு இடுவதற்கு கோப்பைத் தேர்ந்தெடு</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">வெள்ளைவெளி மாற்றங்களைப் புறக்கணி</x:String>
@@ -100,9 +99,7 @@
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ இதற்கு ஒன்றிணை</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">ஒன்றிணை ...</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">உறுதிமொழி திரும்பபெறு</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">வேறுமொழி</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">ஒட்டாக சேமி...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">பெற்றோர்களில் நொறுக்கு</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">மாற்றங்கள்</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">மாற்றங்களைத் தேடு...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">கோப்புகள்</x:String>
@@ -354,11 +351,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'மாற்றங்கள்' என்பதற்கு மாறு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'வரலாறுகள்' என்பதற்கு மாறு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'பதுகிவைத்தவை' என்பதற்கு மாறு</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">உரை திருத்தி</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">தேடல் பலகத்தை மூடு</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">அடுத்த பொருத்தத்தைக் கண்டறி</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">முந்தைய பொருத்தத்தைக் கண்டறி</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">தேடல் பலகத்தைத் திற</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">நிராகரி</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">நிலைபடுத்து</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">நிலைநீக்கு</x:String>
@@ -573,7 +565,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">பின்வாங்கு உறுதிமொழி</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">உறுதிமொழி:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">பின்வாங்கு மாற்றங்களை உறுதிமொழி</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">மாறுசொல் உறுதிமொழி செய்தி</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">இயங்குகிறது. காத்திருக்கவும்...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">சேமி</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">எனச் சேமி...</x:String>
