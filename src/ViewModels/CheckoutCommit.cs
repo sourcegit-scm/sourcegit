@@ -24,7 +24,10 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Commit = commit;
-            DealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+
+            DealWithLocalChanges = Preferences.Instance.UseStashAndReapplyByDefault ?
+                Models.DealWithLocalChanges.StashAndReapply :
+                Models.DealWithLocalChanges.DoNothing;
         }
 
         public override async Task<bool> Sure()

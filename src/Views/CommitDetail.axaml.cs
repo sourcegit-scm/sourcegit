@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.LogicalTree;
 using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public partial class CommitDetail : UserControl
     {
+        public static readonly StyledProperty<bool> IsDetailsPanelExpandedProperty =
+            AvaloniaProperty.Register<CommitDetail, bool>(nameof(IsDetailsPanelExpanded));
+
+        public bool IsDetailsPanelExpanded
+        {
+            get => GetValue(IsDetailsPanelExpandedProperty);
+            set => SetValue(IsDetailsPanelExpandedProperty, value);
+        }
+
         public CommitDetail()
         {
             InitializeComponent();
@@ -470,6 +481,19 @@ namespace SourceGit.Views
             menu.Items.Add(copyPath);
             menu.Items.Add(copyFullPath);
             return menu;
+        }
+
+        private void OnTabHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                return;
+
+            var historiesView = this.FindAncestorOfType<Histories>();
+            if (historiesView is not { DataContext: ViewModels.Histories vm })
+                return;
+
+            if (vm.IsCollapseDetails)
+                vm.IsCollapseDetails = false;
         }
 
         private async void OnCommitListKeyDown(object sender, KeyEventArgs e)

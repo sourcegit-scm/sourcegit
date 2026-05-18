@@ -120,6 +120,7 @@ For **Linux** users:
 
   `deb` how to:
   ```shell
+  sudo mkdir -p /etc/apt/keyrings
   curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
   echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc, arch=amd64,arm64] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
   sudo apt update
@@ -173,7 +174,7 @@ Users can also launcher `SourceGit` from commandline. Usage:
 
 ```
 <SOURCEGIT_EXEC> <DIR>                       // Open repository in existing `SourceGit` instance or a new one
-<SOURCEGIT_EXEC> --file-history <FILE_PATH>  // Launch `SourceGit` to see the history of a file
+<SOURCEGIT_EXEC> --history <FILE_OR_DIR>     // Launch `SourceGit` to see the history of a file or dir
 <SOURCEGIT_EXEC> --blame <FILE_PATH>         // Launch `SourceGit` to blame a file (HEAD version only) 
 ```
 

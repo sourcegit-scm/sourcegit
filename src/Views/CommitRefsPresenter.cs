@@ -119,6 +119,8 @@ namespace SourceGit.Views
             var x = 1.5;
             var y = 0.5;
 
+            context.FillRectangle(Brushes.Transparent, Bounds);
+
             foreach (var item in _items)
             {
                 if (allowWrap && x > 1.5 && x + item.Width > Bounds.Width)

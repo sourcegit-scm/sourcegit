@@ -19,7 +19,7 @@
                  Text="{DynamicResource Text.Rebase}"/>
     </StackPanel>
     
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="130,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="130,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -54,7 +54,13 @@
 
       <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.Rebase.AutoStash}"
-                IsChecked="{Binding AutoStash, Mode=TwoWay}"/>
+                IsChecked="{Binding AutoStash, Mode=TwoWay}"
+                ToolTip.Tip="--autostash"/>
+
+      <CheckBox Grid.Row="3" Grid.Column="1"
+                Content="{DynamicResource Text.Rebase.NoVerify}"
+                IsChecked="{Binding NoVerify, Mode=TwoWay}"
+                ToolTip.Tip="--no-verify"/>
     </Grid>
   </StackPanel>
 </UserControl>

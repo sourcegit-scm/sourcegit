@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Verwende AI, um Commit-Nachrichten zu generieren</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit minimieren</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Alles anzeigen</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch-Datei:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Wähle die anzuwendende .patch-Datei</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignoriere Leerzeichen-Änderungen</x:String>
@@ -147,7 +146,6 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Betreff</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
-  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">Commit entfernen</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Interaktives Rebase</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Entfernen…</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Bearbeiten…</x:String>
@@ -161,10 +159,7 @@
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ auf ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Setze ${0}$ auf ${1}$ zurück</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Umformulieren</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Als Patch speichern…</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash in den Vorgänger</x:String>
-  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">Fixup in den Vorgänger</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">geänderte Datei(en)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Änderungen durchsuchen…</x:String>
@@ -192,7 +187,6 @@
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Commit-Nachricht eingeben. Leerzeile zum Trennen von Betreff und Beschreibung verwenden!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">BETREFF</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Vergleichen</x:String>
-  <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">Vergleichen mit HEAD</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Repository-Einstellungen</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">COMMIT-VORLAGE</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Vordefinierte Parameter:
@@ -382,9 +376,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Nicht-verfolgte Dateien einbeziehen</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} Änderungen werden verworfen</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Du kannst das nicht rückgängig machen!!!</x:String>
-  <x:String x:Key="Text.DropHead" xml:space="preserve">Commit entfernen</x:String>
-  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit:</x:String>
-  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Neuer HEAD:</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Beschreibung des Branches bearbeiten</x:String>
   <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Ziel-Branch:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Lesezeichen:</x:String>
@@ -508,12 +499,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Wechsle zu ‚Änderungen‘</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Wechsle zu ‚Verlauf‘</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Wechsle zu ‚Stashes‘</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXTEDITOR</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Suchleiste schließen</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Suche nächste Übereinstimmung</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Suche vorherige Übereinstimmung</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Öffne mit externem Diff- / Merge-Tool</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Öffne Suchleiste</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Verwerfen</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stagen</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstagen</x:String>
@@ -751,7 +736,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BENACHRICHTIGUNGEN LÖSCHEN</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Nur aktuellen Branch hervorheben</x:String>
   <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Als Ordner öffnen</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Öffne in {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Öffne in externen Tools</x:String>
@@ -783,7 +767,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Nach Name</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sortieren</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Öffne im Terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Verwende relative Zeitangaben</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Logs ansehen</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Öffne ‚{0}‘ im Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
@@ -801,7 +784,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Revert" xml:space="preserve">Commit rückgängig machen</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit-Änderungen rückgängig machen</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Commit-Nachricht umformulieren</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">In Bearbeitung. Bitte warten…</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SPEICHERN</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Speichern als…</x:String>
@@ -829,9 +811,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA kopieren</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Zum Commit wechseln</x:String>
-  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">Squash HEAD in Vorgänger</x:String>
-  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">Fixup HEAD in Vorgänger</x:String>
-  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">Ziel:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Privater SSH-Schlüssel:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Pfad zum privaten SSH-Schlüssel</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">START</x:String>

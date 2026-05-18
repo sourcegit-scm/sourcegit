@@ -65,7 +65,7 @@
                      IsVisible="{Binding IsGenerating}"/>
 
       <Button Grid.Column="3"
-              Classes="flat"
+              Classes="flat primary"
               Height="28"
               Margin="8,0" Padding="12,0"
               Content="{DynamicResource Text.AIAssistant.Use}"

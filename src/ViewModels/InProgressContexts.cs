@@ -27,6 +27,12 @@ namespace SourceGit.ViewModels
         {
             if (_abortCmd != null)
                 await _abortCmd.Use(log).ExecAsync();
+
+            OnAborted();
+        }
+
+        protected virtual void OnAborted()
+        {
         }
 
         protected Commands.Command _continueCmd = null;
@@ -101,6 +107,7 @@ namespace SourceGit.ViewModels
 
         public RebaseInProgress(Repository repo)
         {
+            _gitDir = repo.GitDir;
             Name = "Rebase";
 
             _continueCmd = new Commands.Command
@@ -123,6 +130,7 @@ namespace SourceGit.ViewModels
                 WorkingDirectory = repo.FullPath,
                 Context = repo.FullPath,
                 Args = "rebase --abort",
+                RaiseError = false,
             };
 
             HeadName = File.ReadAllText(Path.Combine(repo.GitDir, "rebase-merge", "head-name")).Trim();
@@ -143,6 +151,19 @@ namespace SourceGit.ViewModels
             Onto = new Commands.QuerySingleCommit(repo.FullPath, ontoSHA).GetResult() ?? new Models.Commit() { SHA = ontoSHA };
             BaseName = Onto.GetFriendlyName();
         }
+
+        protected override void OnAborted()
+        {
+            var rebaseMergeDir = Path.Combine(_gitDir, "rebase-merge");
+            if (Directory.Exists(rebaseMergeDir))
+                Directory.Delete(rebaseMergeDir, true);
+
+            var rebaseApplyDir = Path.Combine(_gitDir, "rebase-apply");
+            if (Directory.Exists(rebaseApplyDir))
+                Directory.Delete(rebaseApplyDir, true);
+        }
+
+        private readonly string _gitDir;
     }
 
     public class RevertInProgress : InProgressContext

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -93,6 +95,19 @@ namespace SourceGit.ViewModels
                     string.Empty)
                     .Use(log)
                     .ExecAsync();
+
+                if (!AutoCommit && Targets.Count > 1)
+                {
+                    var builder = new StringBuilder();
+                    foreach (var t in Targets)
+                        builder.Append(t.Subject).Append("\n");
+
+                    builder.Append("\n");
+                    foreach (var t in Targets)
+                        builder.Append("(cherry picked from commit ").Append(t.SHA).Append(")\n");
+
+                    File.WriteAllText(Path.Combine(_repo.GitDir, "MERGE_MSG"), builder.ToString());
+                }
             }
 
             log.Complete();

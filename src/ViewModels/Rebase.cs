@@ -22,6 +22,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool NoVerify
+        {
+            get;
+            set;
+        }
+
         public Rebase(Repository repo, Models.Branch current, Models.Branch on)
         {
             _repo = repo;
@@ -49,7 +55,7 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Rebase");
             Use(log);
 
-            await new Commands.Rebase(_repo.FullPath, _revision, AutoStash)
+            await new Commands.Rebase(_repo.FullPath, _revision, AutoStash, NoVerify)
                 .Use(log)
                 .ExecAsync();
 

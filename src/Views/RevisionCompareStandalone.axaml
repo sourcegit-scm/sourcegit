@@ -1,0 +1,42 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    x:Class="SourceGit.Views.RevisionCompareStandalone"
+                    x:DataType="vm:RevisionCompare"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.HistoriesDetailsStandalone.RevisionCompare}"
+                    MinWidth="1280" MinHeight="720"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <!-- Bottom border -->
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
+
+      <Path Width="12" Height="12"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Compare}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"
+                 Text="{DynamicResource Text.HistoriesDetailsStandalone.RevisionCompare}"/>
+
+      <!-- Caption Buttons (Windows/Linux) -->
+      <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Body -->
+    <v:RevisionCompare Grid.Row="1"/>
+  </Grid>
+</v:ChromelessWindow>

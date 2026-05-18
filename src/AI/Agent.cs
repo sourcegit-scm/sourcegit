@@ -21,11 +21,6 @@ namespace SourceGit.AI
                 throw new Exception("Failed to fetch available models from this service. Please check your configuration and try again.");
 
             var options = new ChatCompletionOptions() { Tools = { ChatTools.GetDetailChangesInFile } };
-#pragma warning disable SCME0001
-            options.Patch.Set("$.thinking"u8, Encoding.UTF8.GetBytes("""{"type": "disabled"}"""));
-            options.Patch.Set("$.enable_thinking"u8, false);
-#pragma warning restore SCME0001
-
             var userMessageBuilder = new StringBuilder();
             userMessageBuilder
                 .AppendLine("Generate a commit message (follow the rule of conventional commit message) for given git repository.")
@@ -46,22 +41,50 @@ namespace SourceGit.AI
                 switch (completion.FinishReason)
                 {
                     case ChatFinishReason.Stop:
-                        onUpdate?.Invoke(string.Empty);
-                        onUpdate?.Invoke("# Assistant");
-                        if (completion.Content.Count > 0)
-                            onUpdate?.Invoke(completion.Content[0].Text);
-                        else
-                            onUpdate?.Invoke("[No content was generated.]");
+                        if (onUpdate != null)
+                        {
+                            onUpdate.Invoke(string.Empty);
+                            onUpdate.Invoke("# Assistant");
+                            if (completion.Content.Count > 0)
+                            {
+                                var text = completion.Content[0].Text.ReplaceLineEndings("\n").Trim();
+                                var start = 0;
+                                var len = text.Length;
+                                if (text.StartsWith("```\n", StringComparison.Ordinal))
+                                {
+                                    start += 4;
+                                    len -= 4;
+                                }
 
-                        onUpdate?.Invoke(string.Empty);
-                        onUpdate?.Invoke("# Token Usage");
-                        onUpdate?.Invoke($"Total: {completion.Usage.TotalTokenCount}. Input: {completion.Usage.InputTokenCount}. Output: {completion.Usage.OutputTokenCount}");
+                                if (text.EndsWith("\n```", StringComparison.Ordinal))
+                                    len -= 4;
+
+                                if (len > 0)
+                                    onUpdate.Invoke(text.Substring(start, len));
+                                else
+                                    onUpdate.Invoke("[No content was generated.]");
+                            }
+                            else
+                            {
+                                onUpdate.Invoke("[No content was generated.]");
+                            }
+
+                            onUpdate.Invoke(string.Empty);
+                            onUpdate.Invoke("# Token Usage");
+                            onUpdate.Invoke($"Total: {completion.Usage.TotalTokenCount}. Input: {completion.Usage.InputTokenCount}. Output: {completion.Usage.OutputTokenCount}");
+                        }
                         break;
                     case ChatFinishReason.Length:
                         throw new Exception("The response was cut off because it reached the maximum length. Consider increasing the max tokens limit.");
                     case ChatFinishReason.ToolCalls:
                         {
-                            messages.Add(new AssistantChatMessage(completion));
+                            var message = new AssistantChatMessage(completion);
+#pragma warning disable SCME0001
+                            var hasReasoningContent = completion.Patch.TryGetValue("$.choices[0].message.reasoning_content"u8, out string reasoning);
+                            if (hasReasoningContent)
+                                message.Patch.Set("$.reasoning_content"u8, reasoning);
+#pragma warning restore SCME0001
+                            messages.Add(message);
 
                             foreach (var call in completion.ToolCalls)
                             {

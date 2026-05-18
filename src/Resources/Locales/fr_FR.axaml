@@ -26,7 +26,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utiliser l'IA pour générer un message de commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Masquer SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tout Afficher</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Appliquer</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Fichier de patch :</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selectionner le fichier .patch à appliquer</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorer les changements d'espaces blancs</x:String>
@@ -137,7 +136,6 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Sujet</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Action personnalisée</x:String>
-  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">Supprimer le Commit</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase Interactif</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Supprimer...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Modifier...</x:String>
@@ -151,10 +149,7 @@
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebaser ${0}$ sur ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Réinitialiser ${0}$ sur ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Annuler le commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reformuler</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Enregistrer en tant que patch...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash dans le Parent</x:String>
-  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">Fixup dans le Parent</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CHANGEMENTS</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">fichier(s) modifié(s)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Rechercher les changements...</x:String>
@@ -369,9 +364,6 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Inclure les fichiers non suivis</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} changements seront rejetés</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Vous ne pouvez pas annuler cette action !!!</x:String>
-  <x:String x:Key="Text.DropHead" xml:space="preserve">Supprimer le Commit</x:String>
-  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">Commit :</x:String>
-  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">Nouveau HEAD :</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Signet :</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Nouveau nom :</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Cible :</x:String>
@@ -487,12 +479,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Basculer vers 'Changements'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Basculer vers 'Historique'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Basculer vers 'Stashes'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">ÉDITEUR DE TEXTE</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Fermer le panneau de recherche</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Trouver la prochaine correspondance</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Trouver la correspondance précédente</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Ouvrir avec l'outil externe de diff/fusion</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Ouvrir le panneau de recherche</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Rejeter</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Indexer</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Retirer de l'index</x:String>
@@ -704,7 +690,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Naviguer vers le HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Créer une branche</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">EFFACER LES NOTIFICATIONS</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Surligner uniquement la branche actuelle</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Ouvrir dans {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Ouvrir dans un outil externe</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">DEPOTS DISTANTS</x:String>
@@ -734,7 +719,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Par nom</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Trier</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Ouvrir dans un terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Utiliser l'heure relative</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Voir les Logs</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visiter '{0}' dans le navigateur</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
@@ -752,7 +736,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Annuler le Commit</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit :</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit les changements de l'annulation</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Reformuler le message de commit</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">En exécution. Veuillez patienter...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SAUVEGARDER</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Sauvegarder en tant que...</x:String>

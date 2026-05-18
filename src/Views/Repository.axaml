@@ -93,27 +93,10 @@
               </ListBox.ItemsPanel>
 
               <ListBoxItem BorderThickness="0">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
-
-                  <ToggleButton Grid.Column="2"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding HighlightCurrentBranchOnlyInHistory, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
-                  </ToggleButton>
-                  <ToggleButton Grid.Column="3"
-                                Classes="line_path"
-                                Width="26" Height="26"
-                                Background="Transparent"
-                                IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
-                                ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
-                  </ToggleButton>
-                  <Button Grid.Column="4"
+                  <Button Grid.Column="2"
                           Classes="icon_button"
                           Width="26" Height="26"
                           Click="OnOpenAdvancedHistoriesOption"
@@ -434,7 +417,7 @@
                   <ToolTip.Tip>
                     <StackPanel Orientation="Vertical">
                       <StackPanel Orientation="Horizontal">
-                        <v:WorktreeIcon Grid.Column="0" Width="12" Height="12"/>
+                        <v:WorktreeIcon Width="12" Height="12"/>
                         <TextBlock FontWeight="Bold" Margin="8,0,0,0" Text="{Binding Name, Mode=OneWay}"/>
                       </StackPanel>
 
@@ -925,8 +908,14 @@
             <DataTemplate DataType="vm:Histories">
               <v:Histories CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                            Bisect="{Binding Bisect, Mode=OneWay}"
-                           IssueTrackers="{Binding IssueTrackers, Mode=OneWay}"
-                           OnlyHighlightCurrentBranch="{Binding HighlightCurrentBranchOnly, Mode=OneWay}"/>
+                           IssueTrackers="{Binding IssueTrackers, Mode=OneWay}">
+                <v:Histories.IsDetailsPanelExpanded>
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseTwoColumnsLayoutInHistories" Mode="OneWay"/>
+                    <Binding Path="IsCollapseDetails" Converter="{x:Static BoolConverters.Not}" Mode="OneWay"/>
+                  </MultiBinding>
+                </v:Histories.IsDetailsPanelExpanded>
+              </v:Histories>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>

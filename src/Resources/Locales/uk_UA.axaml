@@ -20,7 +20,6 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕГЕНЕРУВАТИ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Використати AI для генерації повідомлення коміту</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Застосувати</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Файл патчу:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Виберіть файл .patch для застосування</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
@@ -100,9 +99,7 @@
   <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Злиття в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Злити ...</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Скасувати коміт</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Змінити повідомлення</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Зберегти як патч...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Склеїти з батьківським комітом</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ЗМІНИ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Пошук змін...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ФАЙЛИ</x:String>
@@ -358,11 +355,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Перейти до 'Зміни'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Перейти до 'Історія'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Перейти до 'Схованки'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">ТЕКСТОВИЙ РЕДАКТОР</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Закрити панель пошуку</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Знайти наступний збіг</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Знайти попередній збіг</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Відкрити панель пошуку</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Скасувати</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Індексувати</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Видалити з індексу</x:String>
@@ -577,7 +569,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Revert (Скасувати коміт)</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Коміт:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Закомітити зміни скасування</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Змінити повідомлення коміту</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Виконується. Будь ласка, зачекайте...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">ЗБЕРЕГТИ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Зберегти як...</x:String>

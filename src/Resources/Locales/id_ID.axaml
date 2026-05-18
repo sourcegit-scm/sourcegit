@@ -25,7 +25,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Gunakan AI untuk membuat pesan commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Sembunyikan SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tampilkan Semua</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">Patch</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Berkas Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Pilih berkas .patch untuk diterapkan</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Abaikan perubahan whitespace</x:String>
@@ -146,10 +145,7 @@
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ pada ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Reset ${0}$ ke ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Revert Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Reword</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Simpan sebagai Patch...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Squash ke Parent</x:String>
-  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">Fixup ke Parent</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">PERUBAHAN</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">berkas berubah</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Cari Perubahan...</x:String>
@@ -465,12 +461,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Pindah ke 'Changes'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Pindah ke 'History'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Pindah ke 'Stashes'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">TEXT EDITOR</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Tutup panel pencarian</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Cari kecocokan berikutnya</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Cari kecocokan sebelumnya</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">Buka dengan diff/merge tool eksternal</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Buka panel pencarian</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Buang</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
@@ -676,7 +666,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigasi ke HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Buat Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BERSIHKAN NOTIFIKASI</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">Hanya highlight branch saat ini</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Buka di {0}</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Buka di Tool Eksternal</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTE</x:String>
@@ -706,7 +695,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Berdasarkan Nama</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Urut</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Buka di Terminal</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">Gunakan waktu relatif</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Lihat Log</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Kunjungi '{0}' di Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREE</x:String>
@@ -724,7 +712,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Revert Commit</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit perubahan revert</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Reword Pesan Commit</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Sedang berjalan. Harap tunggu...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SIMPAN</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Simpan Sebagai...</x:String>
