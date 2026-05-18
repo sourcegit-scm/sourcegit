@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -10,6 +11,24 @@ namespace SourceGit.Commands
 {
     public partial class Command
     {
+        /// <summary>
+        /// Cached path to the current process executable.
+        /// Uses Environment.ProcessPath (instead of MainModule.FileName) to avoid
+        /// the "(deleted)" suffix issue when the binary is overwritten during
+        /// development (e.g., dotnet build with hot-reload).
+        /// </summary>
+        internal static readonly string SelfExecPath = ResolveSelfExecPath();
+
+        private static string ResolveSelfExecPath()
+        {
+            var path = Environment.ProcessPath;
+            if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                return path;
+
+            // fallback to old method
+            return Process.GetCurrentProcess().MainModule!.FileName;
+        }
+
         public class Result
         {
             public bool IsSuccess { get; set; } = false;
@@ -172,8 +191,10 @@ namespace SourceGit.Commands
             }
 
             // Force using this app as SSH askpass program
-            var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
-            start.Environment.Add("SSH_ASKPASS", selfExecFile); // Can not use parameter here, because it invoked by SSH with `exec`
+            // Uses cached SelfExecPath (resolved once at startup via Environment.ProcessPath)
+            // instead of Process.GetCurrentProcess().MainModule.FileName to avoid
+            // the "(deleted)" suffix when the binary is overwritten during development.
+            start.Environment.Add("SSH_ASKPASS", SelfExecPath); // Can not use parameter here, because it invoked by SSH with `exec`
             start.Environment.Add("SSH_ASKPASS_REQUIRE", "prefer");
             start.Environment.Add("SOURCEGIT_LAUNCH_AS_ASKPASS", "TRUE");
             if (!OperatingSystem.IsLinux())
@@ -199,10 +220,10 @@ namespace SourceGit.Commands
             switch (Editor)
             {
                 case EditorType.CoreEditor:
-                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --core-editor" """);
+                    builder.Append($"""-c core.editor="\"{SelfExecPath}\" --core-editor" """);
                     break;
                 case EditorType.RebaseEditor:
-                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --rebase-message-editor" -c sequence.editor="\"{selfExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """);
+                    builder.Append($"""-c core.editor="\"{SelfExecPath}\" --rebase-message-editor" -c sequence.editor="\"{SelfExecPath}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """);
                     break;
                 default:
                     builder.Append("-c core.editor=true ");

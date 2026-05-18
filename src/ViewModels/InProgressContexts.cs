@@ -114,7 +114,11 @@ namespace SourceGit.ViewModels
             {
                 WorkingDirectory = repo.FullPath,
                 Context = repo.FullPath,
-                Editor = Commands.Command.EditorType.RebaseEditor,
+                // Use CoreEditor instead of RebaseEditor to avoid re-triggering
+                // the sequence.editor on each --continue. Re-triggering the todo
+                // editor mid-rebase can cause git to mis-count done/todo entries
+                // and write duplicate commit entries to the done file.
+                Editor = Commands.Command.EditorType.CoreEditor,
                 Args = "rebase --continue",
             };
 
