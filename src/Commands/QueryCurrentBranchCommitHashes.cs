@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -9,10 +8,9 @@ namespace SourceGit.Commands
     {
         public QueryCurrentBranchCommitHashes(string repo, ulong sinceTimestamp)
         {
-            var since = DateTime.UnixEpoch.AddSeconds(sinceTimestamp).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --since={since.Quoted()} --format=%H";
+            Args = $"log --since=@{sinceTimestamp} --format=%H";
         }
 
         public async Task<HashSet<string>> GetResultAsync()
