@@ -286,10 +286,12 @@
                 <TextBlock Classes="group_header_label" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
               </StackPanel>
               <ToggleButton Grid.Column="2"
-                            Classes="show_as_tree"
+                            Classes="line_path"
                             Width="14"
                             IsChecked="{Binding ShowTagsAsTree, Mode=TwoWay}"
-                            ToolTip.Tip="{DynamicResource Text.Repository.ShowTagsAsTree}"/>
+                            ToolTip.Tip="{DynamicResource Text.Repository.ShowTagsAsTree}">
+                <Path Width="11" Height="11" Data="{DynamicResource Icons.Tree}"/>
+              </ToggleButton>
               <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
@@ -332,11 +334,13 @@
                 <TextBlock Classes="group_header_label" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
               </StackPanel>
               <ToggleButton Grid.Column="2"
-                            Classes="show_as_tree"
+                            Classes="line_path"
                             Width="14"
                             IsChecked="{Binding ShowSubmodulesAsTree, Mode=TwoWay}"
                             IsVisible="{Binding Submodules, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
-                            ToolTip.Tip="{DynamicResource Text.Repository.ShowSubmodulesAsTree}"/>
+                            ToolTip.Tip="{DynamicResource Text.Repository.ShowSubmodulesAsTree}">
+                <Path Width="11" Height="11" Data="{DynamicResource Icons.Tree}"/>
+              </ToggleButton>
               <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
