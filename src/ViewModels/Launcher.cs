@@ -73,30 +73,15 @@ namespace SourceGit.ViewModels
 
             _ignoreIndexChange = false;
 
-            if (TryOpenRepositoryFromPath(startupRepo))
-                return;
-
-            if (!string.IsNullOrEmpty(startupRepo))
+            if (!TryOpenRepositoryFromPath(startupRepo))
             {
-                var test = new Commands.QueryRepositoryRootPath(startupRepo).GetResult();
-                if (test.IsSuccess && !string.IsNullOrEmpty(test.StdOut))
-                {
-                    var node = pref.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
-                    Welcome.Instance.Refresh();
-
-                    OpenRepositoryInTab(node, null);
-                    return;
-                }
+                var activeIdx = ActiveWorkspace.ActiveIdx;
+                if (activeIdx > 0 && activeIdx < Pages.Count)
+                    ActivePage = Pages[activeIdx];
+                else
+                    ActivePage = Pages[0];
             }
 
-            var activeIdx = ActiveWorkspace.ActiveIdx;
-            if (activeIdx > 0 && activeIdx < Pages.Count)
-            {
-                ActivePage = Pages[activeIdx];
-                return;
-            }
-
-            ActivePage = Pages[0];
             PostActivePageChanged();
         }
 
@@ -110,6 +95,14 @@ namespace SourceGit.ViewModels
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
                     Welcome.Instance.Refresh();
                     OpenRepositoryInTab(node, null);
+                    return true;
+                }
+                else
+                {
+                    if (ActivePage is not { Data: Welcome { }, Popup: null })
+                        AddNewTab();
+
+                    ActivePage.Popup = new Init(ActivePage.Node.Id, repo, null, 0, test.StdErr ?? "Unknown error occurred while opening the repository.");
                     return true;
                 }
             }
