@@ -227,7 +227,6 @@
                      Margin="0,24,0,0"
                      Graph="{Binding Graph}"
                      DotBrush="{DynamicResource Brush.Contents}"
-                     OnlyHighlighted="{Binding GraphHighlighting, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CommitGraphHighlighting.All}}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"/>

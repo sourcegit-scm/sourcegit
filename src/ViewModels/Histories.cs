@@ -82,7 +82,6 @@ namespace SourceGit.ViewModels
                 {
                     _repo.UIStates.GraphHighlighting = value;
                     GenerateGraph(_commits);
-                    OnPropertyChanged();
                 }
             }
         }

@@ -24,15 +24,6 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightedProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlighted), true);
-
-        public bool OnlyHighlighted
-        {
-            get => GetValue(OnlyHighlightedProperty);
-            set => SetValue(OnlyHighlightedProperty, value);
-        }
-
         public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
             AvaloniaProperty.Register<CommitGraph, Models.CommitGraphLayout>(nameof(Layout));
 
@@ -47,7 +38,6 @@ namespace SourceGit.Views
             AffectsRender<CommitGraph>(
                 GraphProperty,
                 DotBrushProperty,
-                OnlyHighlightedProperty,
                 LayoutProperty);
         }
 
@@ -63,17 +53,16 @@ namespace SourceGit.Views
             var clipHeight = Bounds.Height;
             var rowHeight = layout.RowHeight;
             var endY = startY + clipHeight + 28;
-            var onlyHighlighted = OnlyHighlighted;
 
             using (context.PushClip(new Rect(0, 0, clipWidth, clipHeight)))
             using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
-                DrawCurves(context, graph, startY, endY, rowHeight, onlyHighlighted);
-                DrawAnchors(context, graph, startY, endY, rowHeight, onlyHighlighted);
+                DrawCurves(context, graph, startY, endY, rowHeight);
+                DrawAnchors(context, graph, startY, endY, rowHeight);
             }
         }
 
-        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight, bool onlyHighlighted)
+        private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
 
@@ -87,10 +76,6 @@ namespace SourceGit.Views
                 if (startY > bottom)
                     break;
 
-                var pen = Models.CommitGraph.Pens[link.Color];
-                if (onlyHighlighted && !link.IsHighlighted)
-                    pen = grayedPen;
-
                 var geo = new StreamGeometry();
                 using (var ctx = geo.Open())
                 {
@@ -98,6 +83,7 @@ namespace SourceGit.Views
                     ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
                 }
 
+                var pen = link.IsHighlighted ? Models.CommitGraph.Pens[link.Color] : grayedPen;
                 context.DrawGeometry(null, pen, geo);
             }
 
@@ -113,7 +99,7 @@ namespace SourceGit.Views
                     break;
 
                 var geo = new StreamGeometry();
-                var pen = Models.CommitGraph.Pens[line.Color];
+                var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
 
                 using (var ctx = geo.Open())
                 {
@@ -167,14 +153,11 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (onlyHighlighted && !line.IsHighlighted)
-                    context.DrawGeometry(null, grayedPen, geo);
-                else
-                    context.DrawGeometry(null, pen, geo);
+                context.DrawGeometry(null, pen, geo);
             }
         }
 
-        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight, bool onlyHighlighted)
+        private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var dotFill = DotBrush;
             var dotFillPen = new Pen(dotFill, 2);
@@ -189,10 +172,7 @@ namespace SourceGit.Views
                 if (center.Y > bottom)
                     break;
 
-                var pen = Models.CommitGraph.Pens[dot.Color];
-                if (!dot.IsHighlighted && onlyHighlighted)
-                    pen = grayedPen;
-
+                var pen = dot.IsHighlighted ? Models.CommitGraph.Pens[dot.Color] : grayedPen;
                 switch (dot.Type)
                 {
                     case Models.CommitGraph.DotType.Head:
