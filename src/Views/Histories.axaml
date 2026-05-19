@@ -221,10 +221,10 @@
       <Border Background="Transparent"
               Height="24"
               HorizontalAlignment="Stretch" VerticalAlignment="Top"
-              Cursor="None"
               PointerMoved="OnCommitListHeaderPointerMoved"
               PointerPressed="OnCommitListHeaderPointerPressed"
-              PointerReleased="OnCommitListHeaderPointerReleased"/>              
+              PointerReleased="OnCommitListHeaderPointerReleased"
+              ContextRequested="OnCommitListHeaderContextRequested"/>              
 
       <v:CommitGraph x:Name="CommitGraph"
                      Margin="0,24,0,0"
