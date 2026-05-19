@@ -152,6 +152,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public double AuthorColumnWidth
+        {
+            get => _repo.UIStates.AuthorColumnWidth;
+            set => _repo.UIStates.AuthorColumnWidth = value;
+        }
+
         public bool IsOpenAsStandaloneVisible
         {
             get => DetailContext is CommitDetail or RevisionCompare;

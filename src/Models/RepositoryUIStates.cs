@@ -33,6 +33,12 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        public double AuthorColumnWidth
+        {
+            get;
+            set;
+        } = 120;
+
         public bool EnableTopoOrderInHistory
         {
             get;

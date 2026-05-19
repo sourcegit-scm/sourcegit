@@ -104,7 +104,7 @@ namespace SourceGit.Views
         {
             SelectionMode = DataGridSelectionMode.Extended;
             CanUserReorderColumns = false;
-            CanUserResizeColumns = true;
+            CanUserResizeColumns = false;
             CanUserSortColumns = false;
             AutoGenerateColumns = false;
             IsReadOnly = true;
@@ -417,6 +417,69 @@ namespace SourceGit.Views
                 if (c != null)
                     vm.NavigateTo(c.SHA);
             }
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            if (DataContext is ViewModels.Histories vm)
+                CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+        }
+
+        private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
+        {
+            if (sender is not Border border)
+                return;
+
+            if (DataContext is not ViewModels.Histories { IsAuthorColumnVisible: true } vm)
+                return;
+
+            var pos = e.GetPosition(border);
+            if (_resizingAuthorColumn)
+            {
+                var posX = CommitListContainer.Columns[0].ActualWidth;
+                var maxW = posX + CommitListContainer.Columns[1].ActualWidth - 100;
+                var delta = posX - pos.X;
+                var w = Math.Max(Math.Min(vm.AuthorColumnWidth + delta, maxW), 80);
+                CommitListContainer.Columns[1].Width = new(w, DataGridLengthUnitType.Pixel);
+                vm.AuthorColumnWidth = w;
+            }
+            else
+            {
+                var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
+                if (dis < 4 && dis > -4)
+                {
+                    if (border.Cursor == null)
+                        border.Cursor = new Cursor(StandardCursorType.SizeWestEast);
+                }
+                else if (border.Cursor != null)
+                {
+                    border.Cursor = null;
+                }
+            }
+        }
+
+        private void OnCommitListHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is not Border border)
+                return;
+
+            var pos = e.GetPosition(border);
+            var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
+            if (dis > 4 || dis < -4)
+                return;
+
+            if (e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _resizingAuthorColumn = true;
+                e.Handled = true;
+            }
+        }
+
+        private void OnCommitListHeaderPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            _resizingAuthorColumn = false;
         }
 
         private void OnCommitListLayoutUpdated(object _1, EventArgs _2)
@@ -1574,5 +1637,6 @@ namespace SourceGit.Views
         private double _lastGraphStartY = 0;
         private double _lastGraphClipWidth = 0;
         private double _lastGraphRowHeight = 0;
+        private bool _resizingAuthorColumn = false;
     }
 }
