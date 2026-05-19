@@ -76,33 +76,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-97.98%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.CommitDetail.CollapseToBottom
-- Text.Compare.Changes
-- Text.Compare.Commits
-- Text.Compare.Commits.LeftOnly
-- Text.Compare.Commits.RightOnly
-- Text.Compare.Commits.Tips
-- Text.Histories.HighlightsInGraph
-- Text.Histories.HighlightsInGraph.All
-- Text.Histories.HighlightsInGraph.CurrentBranchOnly
-- Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits
-- Text.Histories.HighlightsInGraph.SelectedCommitsOnly
-- Text.HistoriesDetailsStandalone
-- Text.HistoriesDetailsStandalone.CommitDetail
-- Text.HistoriesDetailsStandalone.RevisionCompare
-- Text.Hotkeys.Repo.ToggleHistoriesDetailPanel
-- Text.InteractiveRebase.NoVerify
-- Text.Preferences.AI.Model
-- Text.Preferences.AI.Model.AutoFetchAvailableModels
-- Text.Preferences.General.ShowRelativeTimeInGraph
-- Text.Rebase.NoVerify
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-%E2%88%9A-brightgreen)
 

@@ -177,8 +177,8 @@
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CAMBIOS</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">archivo(s) modificado(s)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Cambios...</x:String>
-  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARCHIVOS</x:String>
   <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">Colapsar detalles</x:String>
+  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARCHIVOS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Archivo LFS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Buscar Archivos...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submódulo</x:String>
