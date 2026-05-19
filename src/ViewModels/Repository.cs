@@ -1218,7 +1218,6 @@ namespace SourceGit.ViewModels
                     if (_histories != null)
                     {
                         _histories.IsLoading = false;
-                        _histories.GenerateGraph(commits);
                         _histories.Commits = commits;
                         BisectState = _histories.UpdateBisectInfo();
 
