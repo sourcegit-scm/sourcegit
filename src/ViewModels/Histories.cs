@@ -474,22 +474,7 @@ namespace SourceGit.ViewModels
             }
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
-            {
-                if (_selectedCommits.Count == 0)
-                {
-                    GenerateGraph(_commits);
-                    return;
-                }
-
-                foreach (var c in _selectedCommits)
-                {
-                    if (!c.IsHighlightedInGraph)
-                    {
-                        GenerateGraph(_commits);
-                        return;
-                    }
-                }
-            }
+                GenerateGraph(_commits);
         }
 
         private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
