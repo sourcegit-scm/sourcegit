@@ -50,26 +50,13 @@ namespace SourceGit.ViewModels
             Models.Notification.Raised += DispatchNotification;
             _ignoreIndexChange = true;
 
+            ActiveWorkspace = Preferences.Instance.GetActiveWorkspace();
             Pages = new AvaloniaList<LauncherPage>();
             AddNewTab();
 
-            var pref = Preferences.Instance;
-            ActiveWorkspace = pref.GetActiveWorkspace();
-
             var repos = ActiveWorkspace.Repositories.ToArray();
             foreach (var repo in repos)
-            {
-                var node = pref.FindNode(repo) ??
-                    new RepositoryNode
-                    {
-                        Id = repo,
-                        Name = Path.GetFileName(repo),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
-
-                OpenRepositoryInTab(node, null);
-            }
+                OpenRepositoryInTab(repo, null);
 
             _ignoreIndexChange = false;
 
@@ -142,18 +129,7 @@ namespace SourceGit.ViewModels
 
             var repos = to.Repositories.ToArray();
             foreach (var repo in repos)
-            {
-                var node = pref.FindNode(repo) ??
-                    new RepositoryNode
-                    {
-                        Id = repo,
-                        Name = Path.GetFileName(repo),
-                        Bookmark = 0,
-                        IsRepository = true,
-                    };
-
-                OpenRepositoryInTab(node, null);
-            }
+                OpenRepositoryInTab(repo, null);
 
             var activeIdx = to.ActiveIdx;
             if (activeIdx >= 0 && activeIdx < Pages.Count)
@@ -223,6 +199,8 @@ namespace SourceGit.ViewModels
                     _activeWorkspace.Repositories.Clear();
                     _activeWorkspace.ActiveIdx = 0;
 
+                    if (last.Node.IsUnmanaged)
+                        last.Node.SaveMinimalInfo(repo.GitDir);
                     repo.Close();
 
                     Welcome.Instance.ClearSearchFilter();
@@ -291,6 +269,21 @@ namespace SourceGit.ViewModels
             GC.Collect();
         }
 
+        public void OpenRepositoryInTab(string repo, LauncherPage page)
+        {
+            var normalizedPath = repo.Replace('\\', '/').TrimEnd('/');
+            var node = Preferences.Instance.FindNode(normalizedPath) ?? new RepositoryNode
+            {
+                Id = normalizedPath,
+                Name = Path.GetFileName(normalizedPath),
+                Bookmark = 0,
+                IsRepository = true,
+                IsUnmanaged = true
+            };
+
+            OpenRepositoryInTab(node, null);
+        }
+
         public void OpenRepositoryInTab(RepositoryNode node, LauncherPage page)
         {
             foreach (var one in Pages)
@@ -325,6 +318,9 @@ namespace SourceGit.ViewModels
                 });
                 return;
             }
+
+            if (node.IsUnmanaged)
+                node.LoadMinimalInfo(gitDir);
 
             var repo = new Repository(isBare, node.Id, gitDir);
             repo.Open();
@@ -426,6 +422,9 @@ namespace SourceGit.ViewModels
             {
                 if (removeFromWorkspace)
                     _activeWorkspace.Repositories.Remove(repo.FullPath);
+
+                if (page.Node.IsUnmanaged)
+                    page.Node.SaveMinimalInfo(repo.GitDir);
 
                 repo.Close();
             }
