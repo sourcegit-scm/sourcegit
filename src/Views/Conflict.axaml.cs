@@ -37,12 +37,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnMerge(object _, RoutedEventArgs e)
+        private void OnMerge(object _, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Conflict vm)
             {
                 var request = vm.CreateOpenMergeEditorRequest();
-                await this.ShowDialogAsync(request);
+                this.ShowWindow(request);
             }
 
             e.Handled = true;
