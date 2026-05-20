@@ -44,6 +44,32 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnRevisionsContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is ListBox { SelectedItems: { Count: > 0 } selected } listBox)
+            {
+                var copySHA = new MenuItem();
+                copySHA.Header = App.Text("SHALinkCM.CopySHA");
+                copySHA.Icon = this.CreateMenuIcon("Icons.Copy");
+                copySHA.Click += async (_, ev) =>
+                {
+                    var shas = new List<string>();
+                    foreach (var item in selected)
+                    {
+                        if (item is Models.FileVersion ver)
+                            shas.Add(ver.SHA);
+                    }
+                    await this.CopyTextAsync(string.Join("\n", shas));
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(copySHA);
+                menu.Open(listBox);
+                e.Handled = true;
+            }
+        }
+
         private void OnPressCommitSHA(object sender, PointerPressedEventArgs e)
         {
             if (sender is TextBlock { DataContext: Models.FileVersion ver } &&
