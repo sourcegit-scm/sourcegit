@@ -173,6 +173,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">コミッター</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">このコミットが含まれる参照を確認</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">これらの参照にコミットが含まれています</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">含まれる参照</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">メールアドレスをコピー</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">名前をコピー</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">名前 &amp; メールアドレスをコピー</x:String>

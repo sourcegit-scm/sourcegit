@@ -163,6 +163,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Vérifier les références contenant ce commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">LE COMMIT EST CONTENU PAR</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">CONTENU PAR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Copier l'E-mail</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Copier le Nom</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Copier le Nom &amp; l'E-mail</x:String>
@@ -576,6 +577,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Afficher la page 'CHANGEMENTS LOCAUX' par défaut</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Afficher l'onglet 'CHANGEMENTS' dans les détails du commit par défaut</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Afficher les enfants dans les détails du commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Afficher les références contenant le commit sélectionné dans les détails du commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Afficher les tags dans le graphique des commits</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Guide de longueur du sujet</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Générer un avatar par défaut de style GitHub</x:String>

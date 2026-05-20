@@ -112,6 +112,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">КОМІТЕР</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Перевірити посилання, що містять цей коміт</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">КОМІТ МІСТИТЬСЯ В</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">МІСТИТЬСЯ В</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Показано лише перші 100 змін. Дивіться всі зміни на вкладці ЗМІНИ.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">ПОВІДОМЛЕННЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">БАТЬКІВСЬКІ</x:String>
