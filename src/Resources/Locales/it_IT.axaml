@@ -172,6 +172,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">CHI HA COMMITTATO</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Controlla i riferimenti che contengono questo commit</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">IL COMMIT È CONTENUTO DA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">CONTENUTO IN</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Copia Email</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Copia Nome</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Copia Nome ed Email</x:String>

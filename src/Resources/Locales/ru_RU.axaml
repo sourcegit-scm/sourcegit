@@ -188,6 +188,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">РЕВИЗОР (ИСПОЛНИТЕЛЬ)</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Найти все ветки с этой ревизией</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ВЕТКИ С ЭТОЙ РЕВИЗИЕЙ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">СОДЕРЖИТСЯ В</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Копировать адрес почты</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Копировать имя</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Копировать имя и адрес почты</x:String>

@@ -50,10 +50,35 @@ namespace SourceGit.Views
         public static readonly StyledProperty<List<string>> ChildrenProperty =
             AvaloniaProperty.Register<CommitBaseInfo, List<string>>(nameof(Children));
 
+        public static readonly StyledProperty<List<Models.Decorator>> ContainingRefsProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, List<Models.Decorator>>(nameof(ContainingRefs));
+        public static readonly StyledProperty<bool> ShowContainingRefsInCommitDetailProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(ShowContainingRefsInCommitDetail));
+        public static readonly StyledProperty<bool> IsContainingRefsLoadingProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsContainingRefsLoading));
+
         public List<string> Children
         {
             get => GetValue(ChildrenProperty);
             set => SetValue(ChildrenProperty, value);
+        }
+
+        public List<Models.Decorator> ContainingRefs
+        {
+            get => GetValue(ContainingRefsProperty);
+            set => SetValue(ContainingRefsProperty, value);
+        }
+
+        public bool ShowContainingRefsInCommitDetail
+        {
+            get => GetValue(ShowContainingRefsInCommitDetailProperty);
+            set => SetValue(ShowContainingRefsInCommitDetailProperty, value);
+        }
+
+        public bool IsContainingRefsLoading
+        {
+            get => GetValue(IsContainingRefsLoadingProperty);
+            set => SetValue(IsContainingRefsLoadingProperty, value);
         }
 
         public static readonly StyledProperty<bool> IsSHACopiedProperty =

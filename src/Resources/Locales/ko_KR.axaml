@@ -156,6 +156,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">커밋터</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">이 커밋을 포함하는 ref 확인</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">커밋 포함 REF</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">포함된 REF</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">이메일 복사</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">이름 복사</x:String>
   <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">이름 &amp; 이메일 복사</x:String>

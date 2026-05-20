@@ -112,6 +112,7 @@
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">உறுதிமொழியாளர்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">இந்த உறுதிமொழிடைக் கொண்ட குறிப்புகளைச் சரிபார்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">உறுதிமொழி இதில் உள்ளது</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.TableTitle" xml:space="preserve">இதில் உள்ளது</x:String>
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">முதல் 100 மாற்றங்களை மட்டும் காட்டுகிறது மாற்றங்கள் தாவலில் அனைத்து மாற்றங்களையும் காண்க.</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">செய்தி</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">பெற்றோர்கள்</x:String>

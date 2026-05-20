@@ -84,6 +84,18 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _children, value);
         }
 
+        public List<Models.Decorator> ContainingRefs
+        {
+            get => _containingRefs;
+            private set => SetProperty(ref _containingRefs, value);
+        }
+
+        public bool IsContainingRefsLoading
+        {
+            get => _isContainingRefsLoading;
+            private set => SetProperty(ref _isContainingRefsLoading, value);
+        }
+
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -471,6 +483,8 @@ namespace SourceGit.ViewModels
             ViewRevisionFilePath = string.Empty;
             CanOpenRevisionFileWithDefaultEditor = false;
             Children = null;
+            ContainingRefs = null;
+            IsContainingRefsLoading = false;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
             ScrollOffset = Vector.Zero;
@@ -526,6 +540,25 @@ namespace SourceGit.ViewModels
                     var children = await cmd.GetResultAsync().ConfigureAwait(false);
                     if (!token.IsCancellationRequested)
                         Dispatcher.UIThread.Post(() => Children = children);
+                }, token);
+            }
+
+            if (Preferences.Instance.ShowContainingRefsInCommitDetail)
+            {
+                IsContainingRefsLoading = true;
+
+                Task.Run(async () =>
+                {
+                    var refs = await new Commands.QueryRefsContainsCommit(_repo.FullPath, _commit.SHA)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                    if (!token.IsCancellationRequested)
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            ContainingRefs = refs;
+                            IsContainingRefsLoading = false;
+                        });
                 }, token);
             }
 
@@ -764,6 +797,8 @@ namespace SourceGit.ViewModels
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
         private List<string> _children = null;
+        private List<Models.Decorator> _containingRefs = null;
+        private bool _isContainingRefsLoading = false;
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;

@@ -55,7 +55,7 @@
         <Rectangle Height=".65" Margin="8,8,0,8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
-        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
+        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="112,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
@@ -68,7 +68,13 @@
               </Grid>
             </Button>
 
-            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenContainsIn" IsVisible="{Binding #ThisControl.SupportsContainsIn}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
+            <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenContainsIn" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
+              <Button.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="#ThisControl.SupportsContainsIn"/>
+                  <Binding Path="#ThisControl.ShowContainingRefsInCommitDetail" Converter="{x:Static BoolConverters.Not}"/>
+                </MultiBinding>
+              </Button.IsVisible>
               <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Relation}"/>
             </Button>
 
@@ -145,6 +151,31 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
 
+          <!-- CONTAINS IN -->
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.ContainsIn.TableTitle}" IsVisible="{Binding #ThisControl.ShowContainingRefsInCommitDetail}"/>
+          <Grid Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" IsVisible="{Binding #ThisControl.ShowContainingRefsInCommitDetail}">
+            <v:LoadingIcon Width="14" Height="14" Margin="0,4,0,0" IsVisible="{Binding #ThisControl.IsContainingRefsLoading}"/>
+            <ItemsControl ItemsSource="{Binding #ThisControl.ContainingRefs}" IsVisible="{Binding #ThisControl.ContainingRefs, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" ItemHeight="24"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="m:Decorator">
+                  <Border Height="20" Margin="0,4,6,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="12">
+                    <StackPanel Orientation="Horizontal" Margin="8,0" VerticalAlignment="Center">
+                      <Path Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding !IsTag}"/>
+                      <Path Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding IsTag}"/>
+                      <TextBlock Text="{Binding Name}" Margin="2,0,0,0"/>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Grid>
+
           <!-- CHILDREN -->
           <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
           <ItemsControl Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" ItemsSource="{Binding #ThisControl.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
@@ -193,8 +224,8 @@
           </ItemsControl>
 
           <!-- REFS -->
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
-          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
+          <Border Grid.Row="4" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
                                    FontSize="12"
                                    AllowWrap="True"
@@ -204,8 +235,8 @@
           </Border>
 
           <!-- Messages -->
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
-          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
+          <TextBlock Grid.Row="5" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
+          <v:CommitMessagePresenter Grid.Row="5" Grid.Column="1"
                                     Margin="12,4,0,0"
                                     Foreground="{DynamicResource Brush.FG1}"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
