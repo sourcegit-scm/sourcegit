@@ -34,6 +34,8 @@ namespace SourceGit.ViewModels
             get => _settings;
         }
 
+        public event Action ContainingRefsSettingsChanged;
+
         public Models.RepositoryUIStates UIStates
         {
             get => _uiStates;
@@ -455,6 +457,11 @@ namespace SourceGit.ViewModels
 
             _settings = Models.RepositorySettings.Get(_gitCommonDir);
             _uiStates = Models.RepositoryUIStates.Load(GitDir);
+        }
+
+        public void NotifyContainingRefsSettingsChanged()
+        {
+            ContainingRefsSettingsChanged?.Invoke();
         }
 
         public void Open()

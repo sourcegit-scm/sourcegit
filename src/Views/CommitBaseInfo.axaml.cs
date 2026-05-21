@@ -127,6 +127,10 @@ namespace SourceGit.Views
             {
                 SetCurrentValue(IsContainingRefsExpandedProperty, ContainingRefsExpandedByDefault);
             }
+            else if (change.Property == ContainingRefsExpandedByDefaultProperty)
+            {
+                SetCurrentValue(IsContainingRefsExpandedProperty, ContainingRefsExpandedByDefault);
+            }
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)

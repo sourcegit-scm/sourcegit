@@ -110,6 +110,7 @@ namespace SourceGit.ViewModels
                 {
                     _repo.Settings.ShowContainingRefsInCommitDetail = value;
                     OnPropertyChanged();
+                    _repo.NotifyContainingRefsSettingsChanged();
                 }
             }
         }
@@ -123,6 +124,7 @@ namespace SourceGit.ViewModels
                 {
                     _repo.Settings.ContainingRefsDefaultExpansion = value;
                     OnPropertyChanged();
+                    _repo.NotifyContainingRefsSettingsChanged();
                 }
             }
         }

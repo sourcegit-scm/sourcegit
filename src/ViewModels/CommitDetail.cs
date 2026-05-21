@@ -222,6 +222,15 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged(nameof(ContainingRefsExpandedByDefault));
                 }
             };
+
+            _repo.ContainingRefsSettingsChanged += OnContainingRefsSettingsChanged;
+        }
+
+        private void OnContainingRefsSettingsChanged()
+        {
+            OnPropertyChanged(nameof(ShowContainingRefsInCommitDetail));
+            OnPropertyChanged(nameof(ContainingRefsExpandedByDefault));
+            Refresh();
         }
 
         public CommitDetail Clone()
