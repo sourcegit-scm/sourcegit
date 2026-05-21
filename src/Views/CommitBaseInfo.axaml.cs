@@ -90,6 +90,15 @@ namespace SourceGit.Views
             set => SetValue(IsContainingRefsExpandedProperty, value);
         }
 
+        public static readonly StyledProperty<bool> ContainingRefsExpandedByDefaultProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(ContainingRefsExpandedByDefault));
+
+        public bool ContainingRefsExpandedByDefault
+        {
+            get => GetValue(ContainingRefsExpandedByDefaultProperty);
+            set => SetValue(ContainingRefsExpandedByDefaultProperty, value);
+        }
+
         public static readonly StyledProperty<bool> IsSHACopiedProperty =
             AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsSHACopied));
 
@@ -112,11 +121,11 @@ namespace SourceGit.Views
             {
                 _iconResetTimer?.Dispose();
                 SetCurrentValue(IsSHACopiedProperty, false);
-                SetCurrentValue(IsContainingRefsExpandedProperty, false);
+                SetCurrentValue(IsContainingRefsExpandedProperty, ContainingRefsExpandedByDefault);
             }
             else if (change.Property == ContainingRefsProperty)
             {
-                SetCurrentValue(IsContainingRefsExpandedProperty, false);
+                SetCurrentValue(IsContainingRefsExpandedProperty, ContainingRefsExpandedByDefault);
             }
         }
 

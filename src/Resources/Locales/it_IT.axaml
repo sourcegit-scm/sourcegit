@@ -225,6 +225,14 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Attendi la fine dell'azione</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Indirizzo Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Indirizzo email</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">GENERALE</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">Compresso</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">Disabilitato</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">Abilitato</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">Espanso</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">Eredita preferenza globale</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">Stato predefinito dei ref contenenti il commit</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Mostra i ref che contengono il commit selezionato</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Chiedi prima di aggiornare automaticamente i sottomoduli</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Recupera automaticamente i remoti</x:String>
@@ -617,6 +625,8 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostra pagina `MODIFICHE LOCALI` per impostazione predefinita</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostra scheda `MODIFICHE` nei dettagli del commit per impostazione predefinita</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostra i figli nei dettagli del commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">Espandi di default i ref che contengono il commit selezionato</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Mostra i ref che contengono il commit selezionato nei dettagli del commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Mostra i tag nel grafico dei commit</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Lunghezza Guida Oggetto</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Genera avatar predefinito stile GitHub</x:String>

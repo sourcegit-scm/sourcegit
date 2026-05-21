@@ -243,6 +243,14 @@
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Wait for action exit</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Email Address</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Email address</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">GENERAL</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">Collapsed</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">Disabled</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">Enabled</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">Expanded</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">Inherit global preference</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">Contained-by refs default state</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Show refs containing selected commit</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Ask before auto-updating submodules</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remotes automatically</x:String>
@@ -667,6 +675,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Show `LOCAL CHANGES` page by default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Show `CHANGES` tab in commit detail by default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Show children in the commit details</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">Expand refs containing selected commit by default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Show refs containing selected commit in commit detail</x:String>
   <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">Show relative time in commit graph</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Show tags in commit graph</x:String>

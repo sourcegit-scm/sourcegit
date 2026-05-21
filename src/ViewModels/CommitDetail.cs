@@ -96,6 +96,32 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isContainingRefsLoading, value);
         }
 
+        public bool ShowContainingRefsInCommitDetail
+        {
+            get
+            {
+                return _repo.Settings.ShowContainingRefsInCommitDetail switch
+                {
+                    1 => false,
+                    2 => true,
+                    _ => Preferences.Instance.ShowContainingRefsInCommitDetail,
+                };
+            }
+        }
+
+        public bool ContainingRefsExpandedByDefault
+        {
+            get
+            {
+                return _repo.Settings.ContainingRefsDefaultExpansion switch
+                {
+                    1 => false,
+                    2 => true,
+                    _ => Preferences.Instance.ShowContainingRefsExpandedByDefault,
+                };
+            }
+        }
+
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -184,6 +210,18 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
+            Preferences.Instance.PropertyChanged += (_, e) =>
+            {
+                if (e.PropertyName == nameof(Preferences.ShowContainingRefsInCommitDetail))
+                {
+                    OnPropertyChanged(nameof(ShowContainingRefsInCommitDetail));
+                    Refresh();
+                }
+                else if (e.PropertyName == nameof(Preferences.ShowContainingRefsExpandedByDefault))
+                {
+                    OnPropertyChanged(nameof(ContainingRefsExpandedByDefault));
+                }
+            };
         }
 
         public CommitDetail Clone()
@@ -543,7 +581,7 @@ namespace SourceGit.ViewModels
                 }, token);
             }
 
-            if (Preferences.Instance.ShowContainingRefsInCommitDetail)
+            if (ShowContainingRefsInCommitDetail)
             {
                 IsContainingRefsLoading = true;
 

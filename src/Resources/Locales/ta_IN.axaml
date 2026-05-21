@@ -135,6 +135,14 @@
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">செயல்பாட்டிலிருந்து வெளியேற காத்திரு</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">மின்னஞ்சல் முகவரி</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">மின்னஞ்சல் முகவரி</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">பொது</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">சுருக்கப்பட்டது</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">முடக்கப்பட்டது</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">இயக்கப்பட்டது</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">விரிவாக்கப்பட்டது</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">உலகளாவிய விருப்பத்தைப் பெறு</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">உறுதிமொழியை கொண்டுள்ள refs-இன் இயல்புநிலை நிலை</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">தேர்ந்தெடுத்த உறுதிமொழியை கொண்டுள்ள refs-ஐ காட்டு</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">அறிவிலி</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">தொலைகளை தானாக எடு</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">நிமையங்கள்</x:String>
@@ -433,6 +441,8 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">வரலாற்று உறுதிமொழிகள்</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">வரைபடத்தில் உறுதிமொழி நேரத்திற்குப் பதிலாக ஆசிரியர் நேரத்தைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">உறுதிமொழி விவரங்களில் குழந்தைகளைக் காட்டு</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">தேர்ந்தெடுத்த உறுதிமொழியை கொண்டுள்ள refs-ஐ இயல்பாக விரிவாக்கு</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">உறுதிமொழி விவரங்களில் தேர்ந்தெடுத்த உறுதிமொழியை கொண்டுள்ள refs-ஐ காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">உறுதிமொழி வரைபடத்தில் குறிச்சொற்களைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">பொருள் வழிகாட்டி நீளம்</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">அறிவிலி</x:String>

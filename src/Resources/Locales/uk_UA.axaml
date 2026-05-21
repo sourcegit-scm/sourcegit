@@ -135,6 +135,14 @@
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Чекати завершення дії</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Адреса Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Адреса електронної пошти</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">ЗАГАЛЬНІ</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">Згорнуто</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">Вимкнено</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">Увімкнено</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">Розгорнуто</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">Успадкувати глобальне налаштування</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">Типовий стан посилань, що містять коміт</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Показувати посилання, що містять вибраний коміт</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автоматично отримувати зміни з віддалених сховищ</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">хвилин(и)</x:String>
@@ -437,6 +445,8 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Кількість комітів в історії</x:String>
   <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Показувати час автора замість часу коміту в графі</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показувати дочірні коміти в деталях</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">Типово розгортати посилання, що містять вибраний коміт</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Показувати посилання, що містять вибраний коміт, у деталях коміту</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показувати теги в графі комітів</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Довжина лінії-орієнтира для теми</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>

@@ -203,6 +203,14 @@
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Tunggu aksi selesai</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Alamat Email</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Alamat email</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">UMUM</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">Diciutkan</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">Dinonaktifkan</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">Diaktifkan</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">Diperluas</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">Ikuti preferensi global</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">Status default ref yang memuat commit</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Tampilkan ref yang memuat commit terpilih</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch remote secara otomatis</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Menit</x:String>
@@ -555,6 +563,8 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Tampilkan halaman `LOCAL CHANGES` secara default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Tampilkan tab `CHANGES` di detail commit secara default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Tampilkan children di detail commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">Perluas ref yang memuat commit terpilih secara default</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Tampilkan ref yang memuat commit terpilih di detail commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Tampilkan tag di grafik commit</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Panjang Panduan Subjek</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Generate avatar default bergaya GitHub</x:String>

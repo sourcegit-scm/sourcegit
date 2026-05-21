@@ -36,6 +36,18 @@ namespace SourceGit.Models
             set;
         } = false;
 
+        public int ShowContainingRefsInCommitDetail
+        {
+            get;
+            set;
+        } = 0;
+
+        public int ContainingRefsDefaultExpansion
+        {
+            get;
+            set;
+        } = 0;
+
         public string PreferredOpenAIService
         {
             get;

@@ -215,6 +215,14 @@
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Attendre la fin de l'action</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">Adresse e-mail</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Adresse e-mail</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">GÉNÉRAL</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">Réduit</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">Désactivé</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">Activé</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">Développé</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">Hériter de la préférence globale</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">État par défaut des références contenant le commit</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Afficher les références contenant le commit sélectionné</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch les dépôts distants automatiquement</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">minute(s)</x:String>
@@ -577,6 +585,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Afficher la page 'CHANGEMENTS LOCAUX' par défaut</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Afficher l'onglet 'CHANGEMENTS' dans les détails du commit par défaut</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Afficher les enfants dans les détails du commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">Développer par défaut les références contenant le commit sélectionné</x:String>
   <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">Afficher les références contenant le commit sélectionné dans les détails du commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Afficher les tags dans le graphique des commits</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Guide de longueur du sujet</x:String>

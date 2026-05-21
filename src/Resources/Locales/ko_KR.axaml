@@ -201,6 +201,14 @@
   <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">작업이 끝날 때까지 대기</x:String>
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">이메일 주소</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">이메일 주소</x:String>
+  <x:String x:Key="Text.Configure.General" xml:space="preserve">일반</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Collapsed" xml:space="preserve">접힘</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Disabled" xml:space="preserve">비활성화</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Enabled" xml:space="preserve">활성화</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Expanded" xml:space="preserve">펼침</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefs.Inherit" xml:space="preserve">전역 설정 상속</x:String>
+  <x:String x:Key="Text.Configure.General.ContainingRefsDefaultExpansion" xml:space="preserve">포함하는 ref의 기본 상태</x:String>
+  <x:String x:Key="Text.Configure.General.ShowContainingRefsInCommitDetail" xml:space="preserve">선택한 커밋을 포함하는 ref 표시</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">원격 자동 Fetch</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">분</x:String>
@@ -552,6 +560,8 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">기본으로 `로컬 변경 사항` 페이지 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">커밋 세부 정보에서 기본으로 `변경 사항` 탭 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">커밋 세부 정보에 자식 커밋 표시</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsExpandedByDefault" xml:space="preserve">선택한 커밋을 포함하는 ref를 기본으로 펼침</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowContainingRefsInCommitDetail" xml:space="preserve">커밋 세부 정보에 선택한 커밋을 포함하는 ref 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">커밋 그래프에 태그 표시</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">제목 가이드 길이</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">GitHub 스타일 기본 아바타 생성</x:String>

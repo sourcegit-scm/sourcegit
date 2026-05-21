@@ -101,6 +101,32 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.AskBeforeAutoUpdatingSubmodules = value;
         }
 
+        public int ShowContainingRefsInCommitDetail
+        {
+            get => _repo.Settings.ShowContainingRefsInCommitDetail;
+            set
+            {
+                if (_repo.Settings.ShowContainingRefsInCommitDetail != value)
+                {
+                    _repo.Settings.ShowContainingRefsInCommitDetail = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int ContainingRefsDefaultExpansion
+        {
+            get => _repo.Settings.ContainingRefsDefaultExpansion;
+            set
+            {
+                if (_repo.Settings.ContainingRefsDefaultExpansion != value)
+                {
+                    _repo.Settings.ContainingRefsDefaultExpansion = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public AvaloniaList<Models.CommitTemplate> CommitTemplates
         {
             get => _repo.Settings.CommitTemplates;

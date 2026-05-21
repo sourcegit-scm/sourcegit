@@ -32,7 +32,8 @@
                             WebLinks="{Binding WebLinks}"
                             Children="{Binding Children}"
                             ContainingRefs="{Binding ContainingRefs}"
-                            ShowContainingRefsInCommitDetail="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowContainingRefsInCommitDetail}"
+                            ShowContainingRefsInCommitDetail="{Binding ShowContainingRefsInCommitDetail}"
+                            ContainingRefsExpandedByDefault="{Binding ContainingRefsExpandedByDefault}"
                             IsContainingRefsLoading="{Binding IsContainingRefsLoading}"
                             Margin="0,0,12,0"/>
 
