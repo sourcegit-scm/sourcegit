@@ -19,5 +19,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<double, Thickness> ToLeftMargin =
             new FuncValueConverter<double, Thickness>(v => new Thickness(v, 0, 0, 0));
+
+        public static readonly FuncValueConverter<bool, double> ToContainingRefsMaxHeight =
+            new FuncValueConverter<bool, double>(v => v ? double.PositiveInfinity : 24.0);
     }
 }

@@ -81,6 +81,15 @@ namespace SourceGit.Views
             set => SetValue(IsContainingRefsLoadingProperty, value);
         }
 
+        public static readonly StyledProperty<bool> IsContainingRefsExpandedProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsContainingRefsExpanded));
+
+        public bool IsContainingRefsExpanded
+        {
+            get => GetValue(IsContainingRefsExpandedProperty);
+            set => SetValue(IsContainingRefsExpandedProperty, value);
+        }
+
         public static readonly StyledProperty<bool> IsSHACopiedProperty =
             AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsSHACopied));
 
@@ -103,6 +112,11 @@ namespace SourceGit.Views
             {
                 _iconResetTimer?.Dispose();
                 SetCurrentValue(IsSHACopiedProperty, false);
+                SetCurrentValue(IsContainingRefsExpandedProperty, false);
+            }
+            else if (change.Property == ContainingRefsProperty)
+            {
+                SetCurrentValue(IsContainingRefsExpandedProperty, false);
             }
         }
 
@@ -175,6 +189,12 @@ namespace SourceGit.Views
                 await tracking.SetDataAsync(detail);
             }
 
+            e.Handled = true;
+        }
+
+        private void OnToggleContainingRefsExpanded(object sender, RoutedEventArgs e)
+        {
+            IsContainingRefsExpanded = !IsContainingRefsExpanded;
             e.Handled = true;
         }
 

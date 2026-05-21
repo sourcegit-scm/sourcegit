@@ -83,6 +83,24 @@ namespace SourceGit.Views
             set => SetValue(ShowTagsProperty, value);
         }
 
+        public static readonly StyledProperty<List<Models.Decorator>> RefsProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, List<Models.Decorator>>(nameof(Refs));
+
+        public List<Models.Decorator> Refs
+        {
+            get => GetValue(RefsProperty);
+            set => SetValue(RefsProperty, value);
+        }
+
+        public static readonly DirectProperty<CommitRefsPresenter, bool> HasOverflowProperty =
+            AvaloniaProperty.RegisterDirect<CommitRefsPresenter, bool>(nameof(HasOverflow), o => o.HasOverflow);
+
+        public bool HasOverflow
+        {
+            get => _hasOverflow;
+            private set => SetAndRaise(HasOverflowProperty, ref _hasOverflow, value);
+        }
+
         static CommitRefsPresenter()
         {
             AffectsMeasure<CommitRefsPresenter>(
@@ -91,7 +109,9 @@ namespace SourceGit.Views
                 ForegroundProperty,
                 UseGraphColorProperty,
                 BackgroundProperty,
-                ShowTagsProperty);
+                AllowWrapProperty,
+                ShowTagsProperty,
+                RefsProperty);
         }
 
         public Models.Decorator DecoratorAt(Point point)
@@ -176,18 +196,18 @@ namespace SourceGit.Views
         {
             _items.Clear();
 
-            if (DataContext is not Models.Commit commit)
-                return new Size(0, 0);
+            var explicitRefs = Refs;
+            var commit = DataContext as Models.Commit;
+            var refs = explicitRefs ?? commit?.Decorators;
 
-            var refs = commit.Decorators;
             if (refs is { Count: > 0 })
             {
                 var typeface = new Typeface(FontFamily);
                 var typefaceBold = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
                 var fg = Foreground;
-                var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
+                var normalBG = UseGraphColor && commit != null ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
                 var labelSize = FontSize;
-                var requiredHeight = 16.0;
+                var requiredHeight = 17.0;
                 var x = 0.0;
                 var allowWrap = AllowWrap;
                 var showTags = ShowTags;
@@ -259,17 +279,21 @@ namespace SourceGit.Views
                     }
                 }
 
-                var requiredWidth = allowWrap && requiredHeight > 16.0
+                HasOverflow = allowWrap && requiredHeight > 17.0;
+
+                var requiredWidth = allowWrap && requiredHeight > 17.0
                     ? (double.IsInfinity(availableSize.Width) ? x + 2 : availableSize.Width)
                     : x + 2;
                 InvalidateVisual();
                 return new Size(requiredWidth, requiredHeight);
             }
 
+            HasOverflow = false;
             InvalidateVisual();
             return new Size(0, 0);
         }
 
         private List<RenderItem> _items = new List<RenderItem>();
+        private bool _hasOverflow = false;
     }
 }
