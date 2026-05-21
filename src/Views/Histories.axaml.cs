@@ -1488,6 +1488,9 @@ namespace SourceGit.Views
 
         private void FillRemoteBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current, bool merged)
         {
+            if (branch == null)
+                return;
+
             var name = branch.FriendlyName;
 
             var submenu = new MenuItem();
