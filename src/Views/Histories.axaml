@@ -125,7 +125,8 @@
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                            FontSize="12"
                                            VerticalAlignment="Center"
-                                           UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"/>
+                                           UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"
+                                           UseCompactBranchNames="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseCompactBranchNamesInGraph}"/>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
                                               Height="26"

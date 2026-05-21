@@ -57,6 +57,15 @@ namespace SourceGit.Views
             set => SetValue(ForegroundProperty, value);
         }
 
+        public static readonly StyledProperty<bool> UseCompactBranchNamesProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseCompactBranchNames));
+
+        public bool UseCompactBranchNames
+        {
+            get => GetValue(UseCompactBranchNamesProperty);
+            set => SetValue(UseCompactBranchNamesProperty, value);
+        }
+
         public static readonly StyledProperty<bool> UseGraphColorProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseGraphColor));
 
@@ -91,6 +100,7 @@ namespace SourceGit.Views
                 FontSizeProperty,
                 ForegroundProperty,
                 UseGraphColorProperty,
+                UseCompactBranchNamesProperty,
                 BackgroundProperty,
                 ShowTagsProperty);
         }
@@ -195,6 +205,7 @@ namespace SourceGit.Views
                 return new Size(0, 0);
             }
 
+            var useCompactBranchNames = UseCompactBranchNames;
             var typeface = new Typeface(FontFamily);
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
@@ -264,7 +275,7 @@ namespace SourceGit.Views
 
                 item.Width = item.Label.Width + 24;
 
-                if (findRemotes)
+                if (findRemotes && useCompactBranchNames)
                 {
                     for (var j = i + 1; j < count; j++)
                     {
