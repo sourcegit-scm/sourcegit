@@ -28,7 +28,9 @@
               <v:DateTimePresenter Margin="2,0,0,0"
                                    Timestamp="{Binding AuthorTime}"
                                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                                   Foreground="{DynamicResource Brush.FG2}"/>
+                                   Foreground="{DynamicResource Brush.FG2}"
+                                   Background="Transparent"
+                                   ContextRequested="OnDateTimeContextMenuRequested"/>
             </StackPanel>
           </Grid>
 
@@ -46,7 +48,9 @@
               <v:DateTimePresenter Margin="2,0,0,0"
                                    Timestamp="{Binding CommitterTime}"
                                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-                                   Foreground="{DynamicResource Brush.FG2}"/>
+                                   Foreground="{DynamicResource Brush.FG2}"
+                                   Background="Transparent"
+                                   ContextRequested="OnDateTimeContextMenuRequested"/>
             </StackPanel>
           </Grid>
         </UniformGrid>

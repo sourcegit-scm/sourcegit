@@ -87,6 +87,26 @@ namespace SourceGit.Views
             _iconResetTimer?.Dispose();
         }
 
+        private void OnDateTimeContextMenuRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is DateTimePresenter presenter)
+            {
+                var copy = new MenuItem();
+                copy.Header = App.Text("Copy");
+                copy.Icon = this.CreateMenuIcon("Icons.Copy");
+                copy.Click += async (_, ev) =>
+                {
+                    await this.CopyTextAsync(presenter.Text);
+                    ev.Handled = true;
+                };
+
+                var menu = new ContextMenu();
+                menu.Items.Add(copy);
+                menu.Open(presenter);
+                e.Handled = true;
+            }
+        }
+
         private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.Commit commit })
