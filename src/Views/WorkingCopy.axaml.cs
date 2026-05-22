@@ -993,6 +993,7 @@ namespace SourceGit.Views
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
+                stash.IsEnabled = !vm.UseAmend;
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -1210,6 +1211,7 @@ namespace SourceGit.Views
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", selectedStaged.Count);
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
+                stash.IsEnabled = !vm.UseAmend;
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
