@@ -21,9 +21,7 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _mode, value))
-                    CanEditMessage = _mode == Models.MergeMode.Default ||
-                        _mode == Models.MergeMode.FastForward ||
-                        _mode == Models.MergeMode.NoFastForward;
+                    CanEditMessage = _mode == Models.MergeMode.Default || _mode == Models.MergeMode.NoFastForward;
             }
         }
 
