@@ -101,6 +101,17 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
+### ![he__IL](https://img.shields.io/badge/he__IL-99.70%25-yellow)
+
+<details>
+<summary>Missing keys in he_IL.axaml</summary>
+
+- Text.CommitCM.CopyAuthorTime
+- Text.CommitCM.CopyCommitterTime
+- Text.Preferences.General.UseCompactBranchNames
+
+</details>
+
 ### ![id__ID](https://img.shields.io/badge/id__ID-86.09%25-yellow)
 
 <details>
