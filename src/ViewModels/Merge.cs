@@ -1,8 +1,17 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 
 namespace SourceGit.ViewModels
 {
+    public enum MergeTestingState
+    {
+        Disabled = 0,
+        Testing = 1,
+        WillCauseConflicts = 2,
+        NoConflicts = 3,
+    }
+
     public class Merge : Popup
     {
         public object Source
@@ -37,6 +46,12 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
+        public MergeTestingState TestingState
+        {
+            get => _testingState;
+            private set => SetProperty(ref _testingState, value);
+        }
+
         public Merge(Repository repo, Models.Branch source, string into, bool forceFastForward)
         {
             _repo = repo;
@@ -45,6 +60,9 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = forceFastForward ? Models.MergeMode.FastForward : AutoSelectMergeMode();
+
+            if (!forceFastForward)
+                Test();
         }
 
         public Merge(Repository repo, Models.Commit source, string into)
@@ -55,6 +73,8 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = AutoSelectMergeMode();
+
+            Test();
         }
 
         public Merge(Repository repo, Models.Tag source, string into)
@@ -65,6 +85,8 @@ namespace SourceGit.ViewModels
             Source = source;
             Into = into;
             Mode = AutoSelectMergeMode();
+
+            Test();
         }
 
         public override async Task<bool> Sure()
@@ -125,9 +147,35 @@ namespace SourceGit.ViewModels
             return Models.MergeMode.Supported[preferredMergeModeIdx];
         }
 
+        private void Test()
+        {
+            TestingState = MergeTestingState.Testing;
+
+            Task.Run(async () =>
+            {
+                var mergeBase = await new Commands.MergeBase(_repo.FullPath, _sourceName, Into)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(mergeBase))
+                {
+                    var ok = await new Commands.MergeTree(_repo.FullPath, mergeBase, _sourceName, Into)
+                        .CheckAsync()
+                        .ConfigureAwait(false);
+
+                    Dispatcher.UIThread.Post(() => TestingState = ok ? MergeTestingState.NoConflicts : MergeTestingState.WillCauseConflicts);
+                }
+                else
+                {
+                    Dispatcher.UIThread.Post(() => TestingState = MergeTestingState.Disabled);
+                }
+            });
+        }
+
         private readonly Repository _repo = null;
         private readonly string _sourceName;
         private Models.MergeMode _mode = Models.MergeMode.Default;
         private bool _canEditMessage = true;
+        private MergeTestingState _testingState = MergeTestingState.Disabled;
     }
 }
