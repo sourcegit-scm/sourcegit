@@ -149,26 +149,18 @@ namespace SourceGit.ViewModels
 
         private void Test()
         {
+            if (Native.OS.GitVersion < Models.GitVersions.TESTING_MERGE)
+                return;
+
             TestingState = MergeTestingState.Testing;
 
             Task.Run(async () =>
             {
-                var mergeBase = await new Commands.MergeBase(_repo.FullPath, _sourceName, Into)
-                    .GetResultAsync()
+                var ok = await new Commands.MergeTree(_repo.FullPath, _sourceName, Into)
+                    .CheckAsync()
                     .ConfigureAwait(false);
 
-                if (!string.IsNullOrEmpty(mergeBase))
-                {
-                    var ok = await new Commands.MergeTree(_repo.FullPath, mergeBase, _sourceName, Into)
-                        .CheckAsync()
-                        .ConfigureAwait(false);
-
-                    Dispatcher.UIThread.Post(() => TestingState = ok ? MergeTestingState.NoConflicts : MergeTestingState.WillCauseConflicts);
-                }
-                else
-                {
-                    Dispatcher.UIThread.Post(() => TestingState = MergeTestingState.Disabled);
-                }
+                Dispatcher.UIThread.Post(() => TestingState = ok ? MergeTestingState.NoConflicts : MergeTestingState.WillCauseConflicts);
             });
         }
 

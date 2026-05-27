@@ -1,29 +1,32 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public class MergeTree : Command
     {
-        public MergeTree(string repo, string baseTree, string source, string dest)
+        public MergeTree(string repo, string source, string dest)
         {
             WorkingDirectory = repo;
-            Context = repo;
-            RaiseError = false;
-            Args = $"merge-tree {baseTree} {source} {dest}";
+            Args = $"merge-tree --write-tree {source} {dest}";
         }
 
         public async Task<bool> CheckAsync()
         {
-            var rs = await ReadToEndAsync().ConfigureAwait(false);
-            if (!rs.IsSuccess)
-                return false;
+            using var proc = new Process();
+            proc.StartInfo = CreateGitStartInfo(false);
 
-            var stdout = rs.StdOut;
-            return !stdout.Contains("\n+>>>>>>>", StringComparison.Ordinal) &&
-                !stdout.Contains("\n+<<<<<<<", StringComparison.Ordinal) &&
-                !stdout.Contains("\n->>>>>>>", StringComparison.Ordinal) &&
-                !stdout.Contains("\n-<<<<<<<", StringComparison.Ordinal);
+            try
+            {
+                proc.Start();
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+                return proc.ExitCode == 0;
+            }
+            catch
+            {
+                // Ignore any exceptions and just return false
+                return false;
+            }
         }
     }
 }
