@@ -668,7 +668,7 @@ namespace SourceGit.Views
 
         private void OnRightPagePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == ContentControl.IsVisibleProperty && sender is ContentControl page)
+            if (e.Property == Border.IsVisibleProperty && sender is Border page)
             {
                 var diffViewer = page.FindDescendantOfType<DiffView>();
                 diffViewer?.ToggleHotkeyBindings(page.IsVisible);
