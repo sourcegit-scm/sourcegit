@@ -114,8 +114,7 @@
                     Classes="icon_button"
                     Width="28"
                     Click="OnGotoLastChange"
-                    IsVisible="{Binding IsTextDiff}"
-                    HotKey="{OnPlatform Ctrl+Alt+End, macOS=⌘+Alt+End}">
+                    IsVisible="{Binding IsTextDiff}">
               <ToolTip.Tip>
                 <TextBlock>
                   <Run Text="{DynamicResource Text.Diff.Last}"/>
