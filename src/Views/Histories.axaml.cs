@@ -850,11 +850,11 @@ namespace SourceGit.Views
                             break;
                         case Models.DecoratorType.LocalBranchHead:
                             var lb = repo.Branches.Find(x => x.IsLocal && d.Name.Equals(x.Name, StringComparison.Ordinal));
-                            FillOtherLocalBranchMenu(menu, repo, lb, current, commit.IsMerged);
+                            FillOtherLocalBranchMenu(menu, repo, lb, current);
                             break;
                         case Models.DecoratorType.RemoteBranchHead:
                             var rb = repo.Branches.Find(x => !x.IsLocal && d.Name.Equals(x.FriendlyName, StringComparison.Ordinal));
-                            FillRemoteBranchMenu(menu, repo, rb, current, commit.IsMerged);
+                            FillRemoteBranchMenu(menu, repo, rb, current);
                             break;
                         case Models.DecoratorType.Tag:
                             var t = repo.Tags.Find(x => d.Name.Equals(x.Name, StringComparison.Ordinal));
@@ -871,7 +871,7 @@ namespace SourceGit.Views
             if (tags.Count > 0)
             {
                 foreach (var tag in tags)
-                    FillTagMenu(menu, repo, tag, current, commit.IsMerged);
+                    FillTagMenu(menu, repo, tag, current);
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
 
@@ -1417,7 +1417,7 @@ namespace SourceGit.Views
             menu.Items.Add(submenu);
         }
 
-        private void FillOtherLocalBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current, bool merged)
+        private void FillOtherLocalBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current)
         {
             var submenu = new MenuItem();
             submenu.Icon = this.CreateMenuIcon("Icons.Branch");
@@ -1509,7 +1509,7 @@ namespace SourceGit.Views
             menu.Items.Add(submenu);
         }
 
-        private void FillRemoteBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current, bool merged)
+        private void FillRemoteBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current)
         {
             if (branch == null)
                 return;
@@ -1573,7 +1573,7 @@ namespace SourceGit.Views
             menu.Items.Add(submenu);
         }
 
-        private void FillTagMenu(ContextMenu menu, ViewModels.Repository repo, Models.Tag tag, Models.Branch current, bool merged)
+        private void FillTagMenu(ContextMenu menu, ViewModels.Repository repo, Models.Tag tag, Models.Branch current)
         {
             var submenu = new MenuItem();
             submenu.Header = tag.Name;
