@@ -152,7 +152,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Ribasare interattivamente ${0}$ su ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Riformula...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Compatta nel Genitore...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Unisci a ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Unisci ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Invia ${0}$ a ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Ribasa ${0}$ su ${1}$</x:String>
@@ -866,7 +865,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Azione Personalizzata</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Elimina ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Elimina i {0} tag selezionati...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Unisci ${0}$ in ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Invia ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Aggiorna Sottomoduli</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Tutti i sottomoduli</x:String>

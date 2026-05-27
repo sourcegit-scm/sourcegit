@@ -139,7 +139,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Rebase ${0}$ pada ${1}$ secara Interaktif</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Reword...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash ke Parent...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge ke ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ ke ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ pada ${1}$</x:String>
@@ -795,7 +794,6 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Aksi Kustom</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Hapus ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Hapus {0} tag yang dipilih...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ ke ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Perbarui Submodule</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Semua submodule</x:String>

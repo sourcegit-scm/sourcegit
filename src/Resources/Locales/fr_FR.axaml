@@ -167,7 +167,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Rebaser Interactivement ${0}$ sur ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Reformuler...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash dans le Parent...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Fusionner dans ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Fusionner ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Pousser ${0}$ vers ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebaser ${0}$ sur ${1}$</x:String>
@@ -931,7 +930,6 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Action personnalisée</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Supprimer ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Supprimer les {0} tags sélectionnés...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Fusionner ${0}$ dans ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Pousser ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualiser les sous-modules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Tous les sous-modules</x:String>
