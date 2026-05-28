@@ -57,26 +57,17 @@
       <TextBox Grid.Row="2" Grid.Column="1"
                Height="28"
                CornerRadius="3"
-               Text="{Binding SelectedBranch, Mode=TwoWay}"
+               Text="{Binding NewBranchName, Mode=TwoWay}"
                Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
                IsEnabled="{Binding CreateNewBranch, Mode=OneWay}"
                IsVisible="{Binding CreateNewBranch, Mode=OneWay}"/>
-      <ComboBox Grid.Row="2" Grid.Column="1"
-                Height="28" Padding="8,0"
-                VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding LocalBranches}"
-                SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
-                IsEnabled="{Binding !CreateNewBranch, Mode=OneWay}"
-                IsVisible="{Binding !CreateNewBranch, Mode=OneWay}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate>
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock Text="{Binding}"/>
-            </StackPanel>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
+      <v:BranchSelector Grid.Row="2" Grid.Column="1"
+                        Height="28"
+                        VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                        Branches="{Binding LocalBranches}"
+                        SelectedBranch="{Binding SelectedBranch, Mode=TwoWay}"
+                        IsEnabled="{Binding !CreateNewBranch, Mode=OneWay}"
+                        IsVisible="{Binding !CreateNewBranch, Mode=OneWay}"/>
 
       <Border Grid.Row="3" Grid.Column="0"
               Height="32"

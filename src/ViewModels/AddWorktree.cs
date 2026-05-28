@@ -24,23 +24,29 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _createNewBranch, value, true))
                 {
                     if (value)
-                        SelectedBranch = string.Empty;
+                        SelectedBranch = null;
                     else
-                        SelectedBranch = LocalBranches.Count > 0 ? LocalBranches[0] : string.Empty;
+                        SelectedBranch = LocalBranches.Count > 0 ? LocalBranches[0] : null;
                 }
             }
         }
 
-        public List<string> LocalBranches
+        public List<Models.Branch> LocalBranches
         {
             get;
             private set;
         }
 
-        public string SelectedBranch
+        public Models.Branch SelectedBranch
         {
             get => _selectedBranch;
             set => SetProperty(ref _selectedBranch, value);
+        }
+
+        public string NewBranchName
+        {
+            get => _newBranchName;
+            set => SetProperty(ref _newBranchName, value);
         }
 
         public bool SetTrackingBranch
@@ -69,12 +75,12 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
 
-            LocalBranches = new List<string>();
+            LocalBranches = new List<Models.Branch>();
             RemoteBranches = new List<Models.Branch>();
             foreach (var branch in repo.Branches)
             {
                 if (branch.IsLocal)
-                    LocalBranches.Add(branch.Name);
+                    LocalBranches.Add(branch);
                 else
                     RemoteBranches.Add(branch);
             }
@@ -109,7 +115,7 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding worktree ...";
 
-            var branchName = _selectedBranch;
+            var branchName = _createNewBranch ? _newBranchName : (_selectedBranch?.FriendlyName ?? string.Empty);
             var tracking = (_setTrackingBranch && _selectedTrackingBranch != null) ? _selectedTrackingBranch.FriendlyName : string.Empty;
             var log = _repo.CreateLog("Add Worktree");
 
@@ -128,7 +134,7 @@ namespace SourceGit.ViewModels
             if (!_setTrackingBranch || RemoteBranches.Count == 0)
                 return;
 
-            var name = string.IsNullOrEmpty(_selectedBranch) ? System.IO.Path.GetFileName(_path.TrimEnd('/', '\\')) : _selectedBranch;
+            var name = string.IsNullOrEmpty(_selectedBranch?.FriendlyName) ? System.IO.Path.GetFileName(_path.TrimEnd('/', '\\')) : _selectedBranch.FriendlyName;
             var remoteBranch = RemoteBranches.Find(b => b.Name.EndsWith(name, StringComparison.Ordinal));
             if (remoteBranch == null)
                 remoteBranch = RemoteBranches[0];
@@ -139,7 +145,8 @@ namespace SourceGit.ViewModels
         private Repository _repo = null;
         private string _path = string.Empty;
         private bool _createNewBranch = true;
-        private string _selectedBranch = string.Empty;
+        private Models.Branch _selectedBranch = null;
+        private string _newBranchName = string.Empty;
         private bool _setTrackingBranch = false;
         private Models.Branch _selectedTrackingBranch = null;
     }
