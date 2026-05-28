@@ -115,7 +115,7 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding worktree ...";
 
-            var branchName = _createNewBranch ? _newBranchName : (_selectedBranch?.FriendlyName ?? string.Empty);
+            var branchName = GetBranchName(false);
             var tracking = (_setTrackingBranch && _selectedTrackingBranch != null) ? _selectedTrackingBranch.FriendlyName : string.Empty;
             var log = _repo.CreateLog("Add Worktree");
 
@@ -134,12 +134,37 @@ namespace SourceGit.ViewModels
             if (!_setTrackingBranch || RemoteBranches.Count == 0)
                 return;
 
-            var name = string.IsNullOrEmpty(_selectedBranch?.FriendlyName) ? System.IO.Path.GetFileName(_path.TrimEnd('/', '\\')) : _selectedBranch.FriendlyName;
-            var remoteBranch = RemoteBranches.Find(b => b.Name.EndsWith(name, StringComparison.Ordinal));
-            if (remoteBranch == null)
-                remoteBranch = RemoteBranches[0];
+            var name = GetBranchName(true);
+            if (!string.IsNullOrEmpty(name))
+            {
+                var remoteBranch = RemoteBranches.Find(b => b.Name.EndsWith(name, StringComparison.Ordinal));
+                if (remoteBranch != null)
+                {
+                    SelectedTrackingBranch = remoteBranch;
+                    return;
+                }
+            }
 
-            SelectedTrackingBranch = remoteBranch;
+            SelectedTrackingBranch = RemoteBranches[0];
+        }
+
+        private string GetBranchName(bool fallback)
+        {
+            do
+            {
+                if (!_createNewBranch)
+                {
+                    if (_selectedBranch != null)
+                        return _selectedBranch.Name;
+
+                    break;
+                }
+
+                if (!string.IsNullOrEmpty(_newBranchName))
+                    return _newBranchName;
+            } while (false);
+
+            return fallback ? System.IO.Path.GetFileName(_path.TrimEnd('/', '\\')) : string.Empty;
         }
 
         private Repository _repo = null;

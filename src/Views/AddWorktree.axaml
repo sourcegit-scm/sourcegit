@@ -54,13 +54,13 @@
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.AddWorktree.Name}"/>
-      <TextBox Grid.Row="2" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
-               Text="{Binding NewBranchName, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
-               IsEnabled="{Binding CreateNewBranch, Mode=OneWay}"
-               IsVisible="{Binding CreateNewBranch, Mode=OneWay}"/>
+      <v:BranchOrTagNameTextBox Grid.Row="2" Grid.Column="1"
+                                Height="28"
+                                VerticalAlignment="Center"
+                                CornerRadius="3"
+                                Text="{Binding NewBranchName, Mode=TwoWay}"
+                                Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
+                                IsVisible="{Binding CreateNewBranch, Mode=OneWay}"/>
       <v:BranchSelector Grid.Row="2" Grid.Column="1"
                         Height="28"
                         VerticalAlignment="Center" HorizontalAlignment="Stretch"
