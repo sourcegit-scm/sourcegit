@@ -67,10 +67,7 @@ namespace SourceGit.Views
             TextArea.TextView.ContextRequested -= OnTextViewContextRequested;
 
             if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
+                Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope);
 
             GC.Collect();
         }
@@ -82,7 +79,7 @@ namespace SourceGit.Views
             if (DataContext is Models.RevisionTextFile source)
             {
                 Text = source.Content;
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName);
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, source.FileName, ref _lastGrammarScope);
                 ScrollToHome();
             }
             else
@@ -139,19 +136,18 @@ namespace SourceGit.Views
                 _textMate ??= Models.TextMateHelper.CreateForEditor(this);
 
                 if (DataContext is Models.RevisionTextFile file)
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName, ref _lastGrammarScope);
             }
             else if (_textMate != null)
             {
-                _textMate.Dispose();
-                _textMate = null;
-                GC.Collect();
+                Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope, true);
 
                 TextArea.TextView.Redraw();
             }
         }
 
         private TextMate.Installation _textMate = null;
+        private string _lastGrammarScope = string.Empty;
     }
 
     public partial class RevisionFileContentViewer : UserControl

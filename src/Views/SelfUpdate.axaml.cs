@@ -34,7 +34,7 @@ namespace SourceGit.Views
             if (_textMate == null)
             {
                 _textMate = Models.TextMateHelper.CreateForEditor(this);
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, "README.md");
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, "README.md", ref _lastGrammarScope);
             }
         }
 
@@ -43,10 +43,7 @@ namespace SourceGit.Views
             base.OnUnloaded(e);
 
             if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
+                Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope);
 
             GC.Collect();
         }
@@ -60,6 +57,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate = null;
+        private string _lastGrammarScope = string.Empty;
     }
 
     public partial class SelfUpdate : ChromelessWindow

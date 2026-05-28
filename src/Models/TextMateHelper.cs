@@ -84,8 +84,6 @@ namespace SourceGit.Models
 
     public class RegistryOptionsWrapper(ThemeName defaultTheme) : IRegistryOptions
     {
-        public string LastScope { get; set; } = string.Empty;
-
         public IRawTheme GetTheme(string scopeName) => _backend.GetTheme(scopeName);
         public IRawTheme GetDefaultTheme() => _backend.GetDefaultTheme();
         public IRawTheme LoadTheme(ThemeName name) => _backend.LoadTheme(name);
@@ -98,11 +96,20 @@ namespace SourceGit.Models
 
     public static class TextMateHelper
     {
+        private static RegistryOptionsWrapper s_darkRegistry;
+        private static RegistryOptionsWrapper s_lightRegistry;
+
+        private static RegistryOptionsWrapper GetRegistry(bool isDark)
+        {
+            if (isDark)
+                return s_darkRegistry ??= new RegistryOptionsWrapper(ThemeName.DarkPlus);
+            return s_lightRegistry ??= new RegistryOptionsWrapper(ThemeName.LightPlus);
+        }
+
         public static TextMate.Installation CreateForEditor(TextEditor editor)
         {
-            return editor.InstallTextMate(Application.Current?.ActualThemeVariant == ThemeVariant.Dark ?
-                new RegistryOptionsWrapper(ThemeName.DarkPlus) :
-                new RegistryOptionsWrapper(ThemeName.LightPlus));
+            var isDark = Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
+            return editor.InstallTextMate(GetRegistry(isDark == true));
         }
 
         public static void SetThemeByApp(TextMate.Installation installation)
@@ -114,18 +121,29 @@ namespace SourceGit.Models
             }
         }
 
-        public static void SetGrammarByFileName(TextMate.Installation installation, string filePath)
+        public static void SetGrammarByFileName(TextMate.Installation installation, string filePath, ref string lastScope)
         {
             if (installation is { RegistryOptions: RegistryOptionsWrapper reg } && !string.IsNullOrEmpty(filePath))
             {
+                // Registry options are shared across editors, so the last grammar scope must stay editor-local.
                 var scope = reg.GetScope(filePath);
-                if (reg.LastScope != scope)
+                if (lastScope != scope)
                 {
-                    reg.LastScope = scope;
-                    installation.SetGrammar(reg.GetScope(filePath));
+                    lastScope = scope;
+                    installation.SetGrammar(scope);
                     GC.Collect();
                 }
             }
+        }
+
+        public static void DisposeInstallation(ref TextMate.Installation installation, ref string lastScope, bool collectGarbage = false)
+        {
+            installation?.Dispose();
+            installation = null;
+            lastScope = string.Empty;
+
+            if (collectGarbage)
+                GC.Collect();
         }
     }
 }

@@ -550,10 +550,7 @@ namespace SourceGit.Views
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
+                Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -576,7 +573,7 @@ namespace SourceGit.Views
             }
             else if (change.Property == FileNameProperty)
             {
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName, ref _lastGrammarScope);
             }
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
@@ -773,16 +770,14 @@ namespace SourceGit.Views
                     TextArea.TextView.LineTransformers.Remove(_lineStyleTransformer);
                     _textMate = Models.TextMateHelper.CreateForEditor(this);
                     TextArea.TextView.LineTransformers.Add(_lineStyleTransformer);
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName, ref _lastGrammarScope);
                 }
             }
             else
             {
                 if (_textMate != null)
                 {
-                    _textMate.Dispose();
-                    _textMate = null;
-                    GC.Collect();
+                    Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope, true);
 
                     TextArea.TextView.Redraw();
                 }
@@ -885,6 +880,7 @@ namespace SourceGit.Views
 
         private bool _execSizeChanged;
         private TextMate.Installation _textMate;
+        private string _lastGrammarScope = string.Empty;
         private TextLocation _lastSelectStart = TextLocation.Empty;
         private TextLocation _lastSelectEnd = TextLocation.Empty;
         private LineStyleTransformer _lineStyleTransformer;

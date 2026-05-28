@@ -310,7 +310,7 @@ namespace SourceGit.Views
 
             _textMate = Models.TextMateHelper.CreateForEditor(this);
             if (!string.IsNullOrEmpty(FileName))
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName, ref _lastGrammarScope);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
             TextArea.TextView.PointerEntered += OnTextViewPointerChanged;
@@ -331,10 +331,7 @@ namespace SourceGit.Views
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
+                Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope);
 
             base.OnUnloaded(e);
         }
@@ -346,7 +343,7 @@ namespace SourceGit.Views
             if (change.Property == LinesProperty)
                 UpdateContent();
             else if (change.Property == FileNameProperty)
-                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName);
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, FileName, ref _lastGrammarScope);
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
                 Models.TextMateHelper.SetThemeByApp(_textMate);
             else if (change.Property == SelectedChunkProperty)
@@ -539,6 +536,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate;
+        private string _lastGrammarScope = string.Empty;
         private ScrollViewer _scrollViewer;
     }
 

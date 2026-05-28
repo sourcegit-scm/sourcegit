@@ -375,10 +375,7 @@ namespace SourceGit.Views
             TextArea.TextView.VisualLinesChanged -= OnTextViewVisualLinesChanged;
 
             if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-            }
+                Models.TextMateHelper.DisposeInstallation(ref _textMate, ref _lastGrammarScope);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -388,7 +385,7 @@ namespace SourceGit.Views
             if (change.Property == FileProperty)
             {
                 if (File is { Length: > 0 })
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, File);
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, File, ref _lastGrammarScope);
             }
             if (change.Property == BlameDataProperty)
             {
@@ -454,6 +451,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate = null;
+        private string _lastGrammarScope = string.Empty;
         private string _highlight = string.Empty;
     }
 
