@@ -634,6 +634,12 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnCommitGraphLoaded(object sender, RoutedEventArgs e)
+        {
+            // Force-update the graph layout to ensure the graph is correctly rendered when it's loaded.
+            OnCommitListLayoutUpdated(sender, e);
+        }
+
         private void OnTabHeaderPointerPressed(object sender, PointerPressedEventArgs e)
         {
             if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)

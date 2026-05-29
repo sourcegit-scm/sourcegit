@@ -233,7 +233,8 @@
                      DotBrush="{DynamicResource Brush.Contents}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
-                     ClipToBounds="True"/>
+                     ClipToBounds="True"
+                     Loaded="OnCommitGraphLoaded"/>
 
       <Border Width="28" Height="28"
               Margin="0,0,16,8"
