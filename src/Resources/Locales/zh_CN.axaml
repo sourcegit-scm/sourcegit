@@ -743,6 +743,10 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>
   <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">绕过 pre-rebase 钩子</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目标提交 ：</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">检测变基冲突中 ...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">未检测到文件冲突</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">检测变基冲突时出现未知错误</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">检测到冲突文件</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">添加远程仓库</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>

@@ -743,6 +743,10 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自動擱置變更並復原本機變更</x:String>
   <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">繞過 pre-rebase 鉤子</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目標提交:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">偵測重定基底衝突中...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">重定基底操作不會產生衝突</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">偵測重定基底衝突時發生未知錯誤</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">重定基底操作將存在衝突檔案</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">新增遠端存放庫</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">編輯遠端存放庫</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">遠端名稱:</x:String>
