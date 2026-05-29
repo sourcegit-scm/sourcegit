@@ -11,22 +11,24 @@ namespace SourceGit.Commands
             Args = $"merge-tree --write-tree {source} {dest}";
         }
 
-        public async Task<bool> CheckAsync()
+        public async Task<int> GetExitCodeAsync()
         {
             using var proc = new Process();
             proc.StartInfo = CreateGitStartInfo(false);
 
+            var exitCode = -1;
             try
             {
                 proc.Start();
                 await proc.WaitForExitAsync().ConfigureAwait(false);
-                return proc.ExitCode == 0;
+                exitCode = proc.ExitCode;
             }
             catch
             {
-                // Ignore any exceptions and just return false
-                return false;
+                // Ignore any exceptions and just return -1
             }
+
+            return exitCode;
         }
     }
 }

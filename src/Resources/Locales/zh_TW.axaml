@@ -575,8 +575,9 @@
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合併方式:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合併來源:</x:String>
   <x:String x:Key="Text.Merge.Test" xml:space="preserve">偵測合併衝突中...</x:String>
-  <x:String x:Key="Text.Merge.Test.Conflicts" xml:space="preserve">合併操作將存在衝突檔案</x:String>
-  <x:String x:Key="Text.Merge.Test.OK" xml:space="preserve">合併操作不會產生衝突</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">合併操作不會產生衝突</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">偵測合併衝突時發生未知錯誤</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">合併操作將存在衝突檔案</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">先套用我方版本 (ours)，再套用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">先套用對方版本 (theirs)，再套用我方版本 (ours)</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">套用兩者</x:String>

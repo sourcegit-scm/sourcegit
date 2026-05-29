@@ -7,9 +7,10 @@ namespace SourceGit.ViewModels
     public enum MergeTestingState
     {
         Disabled = 0,
-        Testing = 1,
-        WillCauseConflicts = 2,
-        NoConflicts = 3,
+        Testing,
+        WillCauseConflicts,
+        UnknownError,
+        NoConflicts,
     }
 
     public class Merge : Popup
@@ -156,11 +157,16 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var ok = await new Commands.MergeTree(_repo.FullPath, _sourceName, Into)
-                    .CheckAsync()
+                var exitCode = await new Commands.MergeTree(_repo.FullPath, _sourceName, Into)
+                    .GetExitCodeAsync()
                     .ConfigureAwait(false);
 
-                Dispatcher.UIThread.Post(() => TestingState = ok ? MergeTestingState.NoConflicts : MergeTestingState.WillCauseConflicts);
+                Dispatcher.UIThread.Post(() => TestingState = exitCode switch
+                {
+                    0 => MergeTestingState.NoConflicts,
+                    1 => MergeTestingState.WillCauseConflicts,
+                    _ => MergeTestingState.UnknownError,
+                });
             });
         }
 

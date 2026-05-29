@@ -575,8 +575,9 @@
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并目标 ：</x:String>
   <x:String x:Key="Text.Merge.Test" xml:space="preserve">检测合并冲突中...</x:String>
-  <x:String x:Key="Text.Merge.Test.Conflicts" xml:space="preserve">合并操作将存在冲突文件</x:String>
-  <x:String x:Key="Text.Merge.Test.OK" xml:space="preserve">合并操作不会产生冲突</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">合并操作不会产生冲突</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">检测合并冲突时出现未知错误</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">合并操作将存在冲突文件</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">先应用 MINE 后 THEIRS</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">先应用 THEIRS 后 MINE</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">应用全部</x:String>

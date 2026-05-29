@@ -7,10 +7,10 @@ namespace SourceGit.ViewModels
     public enum RebaseTestingState
     {
         Disabled = 0,
-        Testing = 1,
-        WillCauseConflicts = 2,
-        UnknownError = 3,
-        NoConflicts = 4,
+        Testing,
+        WillCauseConflicts,
+        UnknownError,
+        NoConflicts,
     }
 
     public class Rebase : Popup
@@ -112,14 +112,11 @@ namespace SourceGit.ViewModels
                     .GetExitCodeAsync()
                     .ConfigureAwait(false);
 
-                Dispatcher.UIThread.Post(() =>
+                Dispatcher.UIThread.Post(() => TestingState = exitCode switch
                 {
-                    TestingState = exitCode switch
-                    {
-                        0 => RebaseTestingState.NoConflicts,
-                        1 => RebaseTestingState.WillCauseConflicts,
-                        _ => RebaseTestingState.UnknownError,
-                    };
+                    0 => RebaseTestingState.NoConflicts,
+                    1 => RebaseTestingState.WillCauseConflicts,
+                    _ => RebaseTestingState.UnknownError,
                 });
             });
         }

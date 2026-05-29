@@ -571,8 +571,9 @@
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Merge Option:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Source:</x:String>
   <x:String x:Key="Text.Merge.Test" xml:space="preserve">Testing for merge...</x:String>
-  <x:String x:Key="Text.Merge.Test.Conflicts" xml:space="preserve">Merge will cause conflicts</x:String>
-  <x:String x:Key="Text.Merge.Test.OK" xml:space="preserve">Merge can be done without conflicts</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">Merge can be done without conflicts</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">Unknown error occurs while testing for merge</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">Merge will cause conflicts</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">First Mine, then Theirs</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">First Theirs, then Mine</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">USE BOTH</x:String>
