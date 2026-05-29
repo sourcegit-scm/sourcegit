@@ -8,16 +8,71 @@ using Avalonia.Media;
 
 namespace SourceGit.Views
 {
+    public class CommitRefsIconCache
+    {
+        public static CommitRefsIconCache Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new CommitRefsIconCache();
+                return _instance;
+            }
+        }
+
+        public CommitRefsIconCache()
+        {
+            _head = LoadIcon("Icons.Head");
+            _branch = LoadIcon("Icons.Branch");
+            _remote = LoadIcon("Icons.Remote");
+            _tag = LoadIcon("Icons.Tag");
+        }
+
+        public Geometry GetIcon(Models.DecoratorType type)
+        {
+            return type switch
+            {
+                Models.DecoratorType.CurrentBranchHead => _head,
+                Models.DecoratorType.CurrentCommitHead => _head,
+                Models.DecoratorType.LocalBranchHead => _branch,
+                Models.DecoratorType.RemoteBranchHead => _remote,
+                Models.DecoratorType.Tag => _tag,
+                _ => null,
+            };
+        }
+
+        private Geometry LoadIcon(string resourceKey)
+        {
+            var geo = App.Current.FindResource(resourceKey) as StreamGeometry;
+            var drawGeo = geo!.Clone();
+            var iconBounds = drawGeo.Bounds;
+            var translation = Matrix.CreateTranslation(-(Vector)iconBounds.Position);
+            var scale = Math.Min(10.0 / iconBounds.Width, 10.0 / iconBounds.Height);
+            var transform = translation * Matrix.CreateScale(scale, scale);
+            if (drawGeo.Transform == null || drawGeo.Transform.Value == Matrix.Identity)
+                drawGeo.Transform = new MatrixTransform(transform);
+            else
+                drawGeo.Transform = new MatrixTransform(drawGeo.Transform.Value * transform);
+
+            return drawGeo;
+        }
+
+        private static CommitRefsIconCache _instance = null;
+        private Geometry _head = null;
+        private Geometry _branch = null;
+        private Geometry _remote = null;
+        private Geometry _tag = null;
+    }
+
     public class CommitRefsPresenter : Control
     {
         public class RenderItem
         {
-            public Geometry Icon { get; set; } = null;
+            public Models.Decorator Decorator { get; set; } = null;
             public FormattedText Label { get; set; } = null;
             public IBrush Brush { get; set; } = null;
             public bool IsHead { get; set; } = false;
             public double Width { get; set; } = 0.0;
-            public Models.Decorator Decorator { get; set; } = null;
             public List<FormattedText> Remotes { get; set; } = [];
         }
 
@@ -177,8 +232,13 @@ namespace SourceGit.Views
                 }
 
                 context.DrawRectangle(null, new Pen(item.Brush), entireRect);
-                using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
-                    context.DrawGeometry(fg, null, item.Icon);
+
+                var icon = CommitRefsIconCache.Instance.GetIcon(item.Decorator.Type);
+                if (icon != null)
+                {
+                    using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
+                        context.DrawGeometry(fg, null, icon);
+                }
 
                 x += item.Width + 4;
             }
@@ -227,30 +287,13 @@ namespace SourceGit.Views
                 if (!showTags && decorator.Type == Models.DecoratorType.Tag)
                     continue;
 
-                var item = new RenderItem() { Brush = normalBG, Decorator = decorator };
-                var findRemotes = true;
-                _items.Add(item);
-
-                switch (decorator.Type)
+                var item = new RenderItem()
                 {
-                    case Models.DecoratorType.CurrentBranchHead:
-                    case Models.DecoratorType.CurrentCommitHead:
-                        item.Icon = LoadIcon("Icons.Head");
-                        item.IsHead = true;
-                        break;
-                    case Models.DecoratorType.RemoteBranchHead:
-                        findRemotes = false;
-                        item.Icon = LoadIcon("Icons.Remote");
-                        break;
-                    case Models.DecoratorType.Tag:
-                        item.Brush = Brushes.Gray;
-                        findRemotes = false;
-                        item.Icon = LoadIcon("Icons.Tag");
-                        break;
-                    default:
-                        item.Icon = LoadIcon("Icons.Branch");
-                        break;
-                }
+                    Decorator = decorator,
+                    Brush = decorator.Type == Models.DecoratorType.Tag ? Brushes.Gray : normalBG,
+                    IsHead = decorator.Type is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead,
+                };
+                _items.Add(item);
 
                 if (item.IsHead)
                 {
@@ -275,7 +318,8 @@ namespace SourceGit.Views
 
                 item.Width = item.Label.Width + 24;
 
-                if (findRemotes && useCompactBranchNames)
+                var findRemotes = useCompactBranchNames && (decorator.Type == Models.DecoratorType.CurrentBranchHead || decorator.Type == Models.DecoratorType.LocalBranchHead);
+                if (findRemotes)
                 {
                     for (var j = i + 1; j < count; j++)
                     {
@@ -291,7 +335,7 @@ namespace SourceGit.Views
                         if (decorator.Name.Equals(name, StringComparison.Ordinal))
                         {
                             var remote = new FormattedText(
-                                test.Name.Substring(0, idxOfSlash),
+                                $"+{test.Name.Substring(0, idxOfSlash)}",
                                 CultureInfo.CurrentCulture,
                                 FlowDirection.LeftToRight,
                                 typefaceRemote,
@@ -327,22 +371,6 @@ namespace SourceGit.Views
 
             InvalidateVisual();
             return new Size(requiredWidth, requiredHeight);
-        }
-
-        private Geometry LoadIcon(string resourceKey)
-        {
-            var geo = this.FindResource(resourceKey) as StreamGeometry;
-            var drawGeo = geo!.Clone();
-            var iconBounds = drawGeo.Bounds;
-            var translation = Matrix.CreateTranslation(-(Vector)iconBounds.Position);
-            var scale = Math.Min(10.0 / iconBounds.Width, 10.0 / iconBounds.Height);
-            var transform = translation * Matrix.CreateScale(scale, scale);
-            if (drawGeo.Transform == null || drawGeo.Transform.Value == Matrix.Identity)
-                drawGeo.Transform = new MatrixTransform(transform);
-            else
-                drawGeo.Transform = new MatrixTransform(drawGeo.Transform.Value * transform);
-
-            return drawGeo;
         }
 
         private List<RenderItem> _items = new List<RenderItem>();
