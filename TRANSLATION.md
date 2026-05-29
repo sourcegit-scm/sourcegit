@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-93.15%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-92.78%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -71,6 +71,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.UseCompactBranchNames
 - Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.EnableAutoFetch
 - Text.StashCM.ApplyFileChanges
 - Text.StashCM.Branch
@@ -82,7 +86,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.40%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.00%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -93,10 +97,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test.Conflicts
 - Text.Merge.Test.OK
 - Text.Preferences.General.UseCompactBranchNames
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-99.40%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-99.00%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -107,10 +115,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test.Conflicts
 - Text.Merge.Test.OK
 - Text.Preferences.General.UseCompactBranchNames
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-99.40%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-99.00%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -121,10 +133,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test.Conflicts
 - Text.Merge.Test.OK
 - Text.Preferences.General.UseCompactBranchNames
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-85.80%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-85.46%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -252,6 +268,10 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.EnableAutoFetch
 - Text.Repository.OpenAsFolder
 - Text.Repository.Resolve
@@ -273,7 +293,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-92.55%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-92.18%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -342,6 +362,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.UseCompactBranchNames
 - Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.EnableAutoFetch
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
@@ -355,7 +379,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-93.45%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-93.08%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -418,6 +442,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.UseCompactBranchNames
 - Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.EnableAutoFetch
 - Text.StashCM.Branch
 - Text.SubmoduleRevisionCompare
@@ -428,7 +456,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-85.70%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-85.36%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -556,6 +584,10 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.EnableAutoFetch
 - Text.Repository.OpenAsFolder
 - Text.Repository.Resolve
@@ -578,7 +610,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-65.36%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-65.10%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -826,6 +858,10 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.CustomAction
 - Text.RemoteCM.EnableAutoFetch
 - Text.Repository.BranchSort
@@ -930,7 +966,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.70%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.30%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -938,10 +974,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test
 - Text.Merge.Test.Conflicts
 - Text.Merge.Test.OK
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-67.27%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-67.00%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1188,6 +1228,10 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.CustomAction
 - Text.RemoteCM.EnableAutoFetch
 - Text.Repository.BranchSort
@@ -1274,7 +1318,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-68.08%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-67.80%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1517,6 +1561,10 @@ This document shows the translation status of each locale file in the repository
 - Text.PushToNewBranch
 - Text.PushToNewBranch.Title
 - Text.Rebase.NoVerify
+- Text.Rebase.Test
+- Text.Rebase.Test.OK
+- Text.Rebase.Test.UnknownError
+- Text.Rebase.Test.WillCauseConflicts
 - Text.RemoteCM.CustomAction
 - Text.RemoteCM.EnableAutoFetch
 - Text.Repository.BranchSort
