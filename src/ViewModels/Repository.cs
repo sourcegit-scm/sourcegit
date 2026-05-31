@@ -1204,7 +1204,7 @@ namespace SourceGit.ViewModels
                 var builder = new StringBuilder();
                 builder
                     .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
-                    .Append(_uiStates.BuildHistoryParams());
+                    .Append(_uiStates.BuildHistoryParams(GitDir));
 
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
                     .GetResultAsync()
