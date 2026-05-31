@@ -744,7 +744,7 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
   <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">Обходной зацеп предварительного перемещения</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">На:</x:String>
-  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">Тестировать на перемещение ...</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">Тестировать на перемещение...</x:String>
   <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">Перемещение может быть выполнено без конфликтов</x:String>
   <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">Неизвестная ошибка при тестировании перемещения</x:String>
   <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">Перемещение вызовет конфликты</x:String>
