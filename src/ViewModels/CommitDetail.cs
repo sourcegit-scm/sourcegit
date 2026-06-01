@@ -127,6 +127,34 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool HideCaseOnlyChanges
+        {
+            get => Preferences.Instance.IgnoreCaseChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreCaseChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreCaseChangesInDiff = value;
+                    OnPropertyChanged();
+                    RecomputeHidden();
+                }
+            }
+        }
+
+        public bool HideWhitespaceOnlyChanges
+        {
+            get => Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
+                    OnPropertyChanged();
+                    RecomputeHidden();
+                }
+            }
+        }
+
         public string ViewRevisionFilePath
         {
             get => _viewRevisionFilePath;
@@ -471,6 +499,7 @@ namespace SourceGit.ViewModels
             ViewRevisionFilePath = string.Empty;
             CanOpenRevisionFileWithDefaultEditor = false;
             Children = null;
+            _hiddenChanges = [];
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
             ScrollOffset = Vector.Zero;
@@ -533,25 +562,17 @@ namespace SourceGit.ViewModels
             {
                 var cmd = new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA) { CancellationToken = token };
                 var changes = await cmd.ReadAsync().ConfigureAwait(false);
-                var visible = changes;
-                if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
-                {
-                    visible = new List<Models.Change>();
-                    foreach (var c in changes)
-                    {
-                        if (c.Path.Contains(_searchChangeFilter, StringComparison.OrdinalIgnoreCase))
-                            visible.Add(c);
-                    }
-                }
+                var hidden = await ComputeHiddenAsync(changes, token).ConfigureAwait(false);
 
                 if (!token.IsCancellationRequested)
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
+                        _hiddenChanges = hidden;
                         Changes = changes;
-                        VisibleChanges = visible;
+                        VisibleChanges = ApplyFilters(changes);
 
-                        if (visible.Count == 0)
+                        if (VisibleChanges.Count == 0)
                             SelectedChanges = null;
                         else
                             SelectedChanges = [VisibleChanges[0]];
@@ -613,21 +634,90 @@ namespace SourceGit.ViewModels
 
         private void RefreshVisibleChanges()
         {
-            if (string.IsNullOrEmpty(_searchChangeFilter))
-            {
-                VisibleChanges = _changes;
-            }
-            else
-            {
-                var visible = new List<Models.Change>();
-                foreach (var c in _changes)
-                {
-                    if (c.Path.Contains(_searchChangeFilter, StringComparison.OrdinalIgnoreCase))
-                        visible.Add(c);
-                }
+            VisibleChanges = ApplyFilters(_changes);
+        }
 
-                VisibleChanges = visible;
+        private List<Models.Change> ApplyFilters(List<Models.Change> source)
+        {
+            var hideEmpty = Preferences.Instance.IgnoreCaseChangesInDiff ||
+                            Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+
+            if (string.IsNullOrEmpty(_searchChangeFilter) && !hideEmpty)
+                return source;
+
+            var visible = new List<Models.Change>();
+            foreach (var c in source)
+            {
+                if (!string.IsNullOrEmpty(_searchChangeFilter) && !c.Path.Contains(_searchChangeFilter, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (hideEmpty && _hiddenChanges.Contains(c.Path))
+                    continue;
+
+                visible.Add(c);
             }
+
+            return visible;
+        }
+
+        private void RecomputeHidden()
+        {
+            var gen = ++_hiddenToken;
+
+            if (!Preferences.Instance.IgnoreCaseChangesInDiff && !Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+            {
+                _hiddenChanges = [];
+                RefreshVisibleChanges();
+                return;
+            }
+
+            var changes = _changes;
+            Task.Run(async () =>
+            {
+                var hidden = await ComputeHiddenAsync(changes, CancellationToken.None).ConfigureAwait(false);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (gen != _hiddenToken)
+                        return;
+
+                    _hiddenChanges = hidden;
+                    RefreshVisibleChanges();
+                });
+            });
+        }
+
+        private async Task<HashSet<string>> ComputeHiddenAsync(List<Models.Change> changes, CancellationToken token)
+        {
+            var set = new HashSet<string>();
+            if (changes == null || _commit == null)
+                return set;
+
+            var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            var ignoreCase = Preferences.Instance.IgnoreCaseChangesInDiff;
+            if (!ignoreWhitespace && !ignoreCase)
+                return set;
+
+            foreach (var c in changes)
+            {
+                if (token.IsCancellationRequested)
+                    break;
+
+                // Only plain content modifications can be whitespace/case-only noise; never hide
+                // additions, deletions, renames or copies.
+                if (c.Index != Models.ChangeState.Modified)
+                    continue;
+
+                var opt = new Models.DiffOption(_commit, c);
+                var rs = await new Commands.Diff(_repo.FullPath, opt, 0, ignoreWhitespace, ignoreCase) { CancellationToken = token }
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
+                if (!rs.IsBinary && !rs.IsLFS &&
+                    (rs.TextDiff == null || (rs.TextDiff.AddedLines == 0 && rs.TextDiff.DeletedLines == 0)))
+                    set.Add(c.Path);
+            }
+
+            return set;
         }
 
         private void RefreshRevisionSearchSuggestion()
@@ -767,6 +857,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;
+        private HashSet<string> _hiddenChanges = [];
+        private int _hiddenToken = 0;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
         private string _viewRevisionFilePath = string.Empty;

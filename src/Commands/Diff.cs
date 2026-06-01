@@ -20,9 +20,10 @@ namespace SourceGit.Commands
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
-        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
+        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace, bool ignoreCase = false)
         {
             _result.TextDiff = new Models.TextDiff();
+            _ignoreCase = ignoreCase;
 
             WorkingDirectory = repo;
             Context = repo;
@@ -32,7 +33,7 @@ namespace SourceGit.Commands
             if (Models.DiffOption.IgnoreCRAtEOL)
                 builder.Append("--ignore-cr-at-eol ");
             if (ignoreWhitespace)
-                builder.Append("--ignore-space-change ");
+                builder.Append("--ignore-all-space --ignore-blank-lines ");
             builder.Append("--unified=").Append(unified).Append(' ');
             builder.Append(opt.ToString());
 
@@ -245,14 +246,61 @@ namespace SourceGit.Commands
 
         private void ProcessInlineHighlights()
         {
-            if (_deleted.Count > 0)
+            // Git has no `--ignore-case` option for `diff`, so case-insensitivity is
+            // handled here. Within a balanced block (equal number of removed/added
+            // lines, which is how a re-casing shows up) any pair that differs only by
+            // letter casing is turned into a context (unchanged) line; the remaining
+            // real changes keep their normal removed/added rendering.
+            if (_ignoreCase && _deleted.Count > 0 && _deleted.Count == _added.Count)
             {
-                if (_added.Count == _deleted.Count)
+                var pendingDeleted = new List<Models.TextDiffLine>();
+                var pendingAdded = new List<Models.TextDiffLine>();
+
+                for (int i = 0; i < _deleted.Count; i++)
                 {
-                    for (int i = _added.Count - 1; i >= 0; i--)
+                    var del = _deleted[i];
+                    var add = _added[i];
+
+                    if (del.Content.Equals(add.Content, StringComparison.OrdinalIgnoreCase))
                     {
-                        var left = _deleted[i];
-                        var right = _added[i];
+                        // Emit any preceding real change first so line order is preserved.
+                        FlushBlock(pendingDeleted, pendingAdded);
+
+                        _result.TextDiff.DeletedLines--;
+                        _result.TextDiff.AddedLines--;
+                        _result.TextDiff.Lines.Add(new Models.TextDiffLine(
+                            Models.TextDiffLineType.Normal,
+                            add.Content,
+                            add.RawContent,
+                            del.OldLineNumber,
+                            add.NewLineNumber));
+                    }
+                    else
+                    {
+                        pendingDeleted.Add(del);
+                        pendingAdded.Add(add);
+                    }
+                }
+
+                FlushBlock(pendingDeleted, pendingAdded);
+                _deleted.Clear();
+                _added.Clear();
+                return;
+            }
+
+            FlushBlock(_deleted, _added);
+        }
+
+        private void FlushBlock(List<Models.TextDiffLine> deleted, List<Models.TextDiffLine> added)
+        {
+            if (deleted.Count > 0)
+            {
+                if (added.Count == deleted.Count)
+                {
+                    for (int i = added.Count - 1; i >= 0; i--)
+                    {
+                        var left = deleted[i];
+                        var right = added[i];
 
                         if (left.Content.Length > 1024 || right.Content.Length > 1024)
                             continue;
@@ -272,14 +320,14 @@ namespace SourceGit.Commands
                     }
                 }
 
-                _result.TextDiff.Lines.AddRange(_deleted);
-                _deleted.Clear();
+                _result.TextDiff.Lines.AddRange(deleted);
+                deleted.Clear();
             }
 
-            if (_added.Count > 0)
+            if (added.Count > 0)
             {
-                _result.TextDiff.Lines.AddRange(_added);
-                _added.Clear();
+                _result.TextDiff.Lines.AddRange(added);
+                added.Clear();
             }
         }
 
@@ -289,5 +337,6 @@ namespace SourceGit.Commands
         private Models.TextDiffLine _last = null;
         private int _oldLine = 0;
         private int _newLine = 0;
+        private readonly bool _ignoreCase = false;
     }
 }

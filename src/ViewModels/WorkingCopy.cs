@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -107,7 +108,7 @@ namespace SourceGit.ViewModels
                     }
 
                     Staged = GetStagedChanges(_cached);
-                    VisibleStaged = GetVisibleChanges(_staged);
+                    VisibleStaged = GetVisibleChanges(_staged, false);
                     SelectedStaged = [];
                 }
             }
@@ -129,9 +130,37 @@ namespace SourceGit.ViewModels
                     if (_isLoadingData)
                         return;
 
-                    VisibleUnstaged = GetVisibleChanges(_unstaged);
-                    VisibleStaged = GetVisibleChanges(_staged);
+                    VisibleUnstaged = GetVisibleChanges(_unstaged, true);
+                    VisibleStaged = GetVisibleChanges(_staged, false);
                     SelectedUnstaged = [];
+                }
+            }
+        }
+
+        public bool HideCaseOnlyChanges
+        {
+            get => Preferences.Instance.IgnoreCaseChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreCaseChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreCaseChangesInDiff = value;
+                    OnPropertyChanged();
+                    RefreshHiddenFilter();
+                }
+            }
+        }
+
+        public bool HideWhitespaceOnlyChanges
+        {
+            get => Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
+                    OnPropertyChanged();
+                    RefreshHiddenFilter();
                 }
             }
         }
@@ -277,7 +306,7 @@ namespace SourceGit.ViewModels
             }
 
             var staged = GetStagedChanges(changes);
-            var visibleStaged = GetVisibleChanges(staged);
+            var visibleStaged = GetVisibleChanges(staged, false);
             var selectedStaged = new List<Models.Change>();
             if (_selectedStaged is { Count: > 0 })
             {
@@ -312,6 +341,9 @@ namespace SourceGit.ViewModels
 
             UpdateInProgressState();
             UpdateDetail();
+
+            if (Preferences.Instance.IgnoreCaseChangesInDiff || Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+                RefreshHiddenFilter();
         }
 
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
@@ -662,20 +694,92 @@ namespace SourceGit.ViewModels
             IsCommitting = false;
         }
 
-        private List<Models.Change> GetVisibleChanges(List<Models.Change> changes)
+        private List<Models.Change> GetVisibleChanges(List<Models.Change> changes, bool isUnstaged)
         {
-            if (string.IsNullOrEmpty(_filter))
+            var hideEmpty = Preferences.Instance.IgnoreCaseChangesInDiff ||
+                            Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            var hidden = isUnstaged ? _hiddenUnstaged : _hiddenStaged;
+
+            if (string.IsNullOrEmpty(_filter) && !hideEmpty)
                 return changes;
 
             var visible = new List<Models.Change>();
 
             foreach (var c in changes)
             {
-                if (c.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
-                    visible.Add(c);
+                if (!string.IsNullOrEmpty(_filter) && !c.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (hideEmpty && hidden.Contains(c.Path))
+                    continue;
+
+                visible.Add(c);
             }
 
             return visible;
+        }
+
+        private void RefreshHiddenFilter()
+        {
+            var token = ++_caseFilterToken;
+
+            var ignoreCase = Preferences.Instance.IgnoreCaseChangesInDiff;
+            var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            if (!ignoreCase && !ignoreWhitespace)
+            {
+                _hiddenUnstaged = [];
+                _hiddenStaged = [];
+                VisibleUnstaged = GetVisibleChanges(_unstaged, true);
+                VisibleStaged = GetVisibleChanges(_staged, false);
+                return;
+            }
+
+            var repo = _repo.FullPath;
+            var unstaged = _unstaged;
+            var staged = _staged;
+
+            Task.Run(async () =>
+            {
+                var hiddenUnstaged = new HashSet<string>();
+                foreach (var c in unstaged)
+                {
+                    if (await IsHiddenChangeAsync(repo, c, true, ignoreWhitespace, ignoreCase).ConfigureAwait(false))
+                        hiddenUnstaged.Add(c.Path);
+                }
+
+                var hiddenStaged = new HashSet<string>();
+                foreach (var c in staged)
+                {
+                    if (await IsHiddenChangeAsync(repo, c, false, ignoreWhitespace, ignoreCase).ConfigureAwait(false))
+                        hiddenStaged.Add(c.Path);
+                }
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (token != _caseFilterToken)
+                        return;
+
+                    _hiddenUnstaged = hiddenUnstaged;
+                    _hiddenStaged = hiddenStaged;
+                    VisibleUnstaged = GetVisibleChanges(_unstaged, true);
+                    VisibleStaged = GetVisibleChanges(_staged, false);
+                });
+            });
+        }
+
+        private static async Task<bool> IsHiddenChangeAsync(string repo, Models.Change c, bool isUnstaged, bool ignoreWhitespace, bool ignoreCase)
+        {
+            // Only plain content modifications can be whitespace/case-only noise; never hide
+            // additions, deletions, renames, untracked or conflicted entries.
+            var state = isUnstaged ? c.WorkTree : c.Index;
+            if (state != Models.ChangeState.Modified)
+                return false;
+
+            var rs = await new Commands.Diff(repo, new Models.DiffOption(c, isUnstaged), 0, ignoreWhitespace, ignoreCase)
+                .ReadAsync()
+                .ConfigureAwait(false);
+            return !rs.IsBinary && !rs.IsLFS &&
+                (rs.TextDiff == null || (rs.TextDiff.AddedLines == 0 && rs.TextDiff.DeletedLines == 0));
         }
 
         private async Task<List<Models.Change>> GetCanStageChangesAsync(List<Models.Change> changes)
@@ -816,6 +920,9 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleStaged = [];
         private List<Models.Change> _selectedUnstaged = [];
         private List<Models.Change> _selectedStaged = [];
+        private HashSet<string> _hiddenUnstaged = [];
+        private HashSet<string> _hiddenStaged = [];
+        private int _caseFilterToken = 0;
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;

@@ -309,6 +309,9 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">바이너리 비교</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">파일 모드 변경됨</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">첫 번째 차이점</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">대소문자만 변경된 파일 숨기기</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">공백만 변경된 파일 숨기기</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">대소문자 변경 무시</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">공백 변경 사항 무시</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">혼합</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">차이점</x:String>

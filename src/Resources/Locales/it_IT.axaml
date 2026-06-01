@@ -337,6 +337,9 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFF BINARIO</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modalità File Modificata</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Prima differenza</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">Nascondi i file con sole modifiche di maiuscole/minuscole</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">Nascondi i file con sole modifiche agli spazi</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">Ignora le modifiche di maiuscole/minuscole</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora Modifiche agli Spazi</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">FUSIONE</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">DIFFERENZA</x:String>

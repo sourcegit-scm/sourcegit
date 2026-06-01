@@ -93,6 +93,34 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool HideCaseOnlyChanges
+        {
+            get => Preferences.Instance.IgnoreCaseChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreCaseChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreCaseChangesInDiff = value;
+                    OnPropertyChanged();
+                    RecomputeHidden();
+                }
+            }
+        }
+
+        public bool HideWhitespaceOnlyChanges
+        {
+            get => Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
+                    OnPropertyChanged();
+                    RecomputeHidden();
+                }
+            }
+        }
+
         public DiffContext DiffContext
         {
             get => _diffContext;
@@ -311,27 +339,24 @@ namespace SourceGit.ViewModels
             VisibleChanges = [];
             SelectedChanges = [];
 
+            var token = ++_caseFilterToken;
+
             Task.Run(async () =>
             {
                 _changes = await new Commands.CompareRevisions(_repo.FullPath, _based, _to)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
-                var visible = _changes;
-                if (!string.IsNullOrWhiteSpace(_searchFilter))
-                {
-                    visible = new List<Models.Change>();
-                    foreach (var c in _changes)
-                    {
-                        if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                            visible.Add(c);
-                    }
-                }
+                var hidden = await ComputeHiddenAsync(_changes).ConfigureAwait(false);
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (token != _caseFilterToken)
+                        return;
+
+                    _hidden = hidden;
                     TotalChanges = _changes.Count;
-                    VisibleChanges = visible;
+                    VisibleChanges = ApplyFilters(_changes);
                     IsLoadingChanges = false;
 
                     if (VisibleChanges.Count > 0)
@@ -342,26 +367,89 @@ namespace SourceGit.ViewModels
             });
         }
 
+        private List<Models.Change> ApplyFilters(List<Models.Change> source)
+        {
+            var hideEmpty = Preferences.Instance.IgnoreCaseChangesInDiff ||
+                            Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            if (string.IsNullOrEmpty(_searchFilter) && !hideEmpty)
+                return source;
+
+            var visible = new List<Models.Change>();
+            foreach (var c in source)
+            {
+                if (!string.IsNullOrEmpty(_searchFilter) && !c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                    continue;
+
+                if (hideEmpty && _hidden.Contains(c.Path))
+                    continue;
+
+                visible.Add(c);
+            }
+
+            return visible;
+        }
+
         private void RefreshVisibleChanges()
         {
             if (_changes == null)
                 return;
 
-            if (string.IsNullOrEmpty(_searchFilter))
-            {
-                VisibleChanges = _changes;
-            }
-            else
-            {
-                var visible = new List<Models.Change>();
-                foreach (var c in _changes)
-                {
-                    if (c.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
-                        visible.Add(c);
-                }
+            VisibleChanges = ApplyFilters(_changes);
+        }
 
-                VisibleChanges = visible;
+        private void RecomputeHidden()
+        {
+            var token = ++_caseFilterToken;
+
+            if (!Preferences.Instance.IgnoreCaseChangesInDiff && !Preferences.Instance.IgnoreWhitespaceChangesInDiff)
+            {
+                _hidden = [];
+                RefreshVisibleChanges();
+                return;
             }
+
+            var changes = _changes;
+            Task.Run(async () =>
+            {
+                var set = await ComputeHiddenAsync(changes).ConfigureAwait(false);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (token != _caseFilterToken)
+                        return;
+
+                    _hidden = set;
+                    RefreshVisibleChanges();
+                });
+            });
+        }
+
+        private async Task<HashSet<string>> ComputeHiddenAsync(List<Models.Change> changes)
+        {
+            var set = new HashSet<string>();
+            var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+            var ignoreCase = Preferences.Instance.IgnoreCaseChangesInDiff;
+            if (changes == null || (!ignoreWhitespace && !ignoreCase))
+                return set;
+
+            var repo = _repo.FullPath;
+            var based = _based;
+            var to = _to;
+
+            foreach (var c in changes)
+            {
+                // Only plain content modifications can be whitespace/case-only noise; never hide
+                // additions, deletions, renames or copies.
+                if (c.Index != Models.ChangeState.Modified)
+                    continue;
+
+                var opt = new Models.DiffOption(based, to, c);
+                var rs = await new Commands.Diff(repo, opt, 0, ignoreWhitespace, ignoreCase).ReadAsync().ConfigureAwait(false);
+                if (!rs.IsBinary && !rs.IsLFS &&
+                    (rs.TextDiff == null || (rs.TextDiff.AddedLines == 0 && rs.TextDiff.DeletedLines == 0)))
+                    set.Add(c.Path);
+            }
+
+            return set;
         }
 
         private string GetName(object obj)
@@ -401,6 +489,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;
+        private HashSet<string> _hidden = [];
+        private int _caseFilterToken = 0;
         private List<Models.Commit> _leftOnlyCommits = [];
         private List<Models.Commit> _rightOnlyCommits = [];
         private string _searchFilter = string.Empty;

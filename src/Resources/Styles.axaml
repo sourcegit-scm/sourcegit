@@ -1300,6 +1300,10 @@
       <Style Selector="^ Path">
         <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
       </Style>
+
+      <Style Selector="^ TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}"/>
+      </Style>
     </Style>
   </Style>
 

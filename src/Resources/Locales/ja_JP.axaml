@@ -338,6 +338,9 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">バイナリの差分</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">ファイルモードが変更されました</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">最初の差分</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">大文字と小文字の変更のみのファイルを非表示</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">空白文字の変更のみのファイルを非表示</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">大文字と小文字の変更を無視</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白文字の変更を無視</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">ブレンド</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">色差</x:String>
