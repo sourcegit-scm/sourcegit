@@ -248,7 +248,15 @@ namespace SourceGit.Views
             foreach (var rule in rules)
                 rule.Matches(_elements, subject);
 
-            if (subject.StartsWith('['))
+            if (subject.StartsWith("fixup! ", StringComparison.Ordinal) || subject.StartsWith("amend! ", StringComparison.Ordinal))
+            {
+                _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, 6, string.Empty));
+            }
+            else if (subject.StartsWith("squash! ", StringComparison.Ordinal))
+            {
+                _elements.Add(new Models.InlineElement(Models.InlineElementType.Keyword, 0, 7, string.Empty));
+            }
+            else if (subject.StartsWith('['))
             {
                 var bracketIdx = subject.IndexOf(']');
                 if (bracketIdx > 1 && bracketIdx < 50 && _elements.Intersect(0, bracketIdx + 1) == null)

@@ -96,7 +96,6 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Злиття в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Злити ...</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Скасувати коміт</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Зберегти як патч...</x:String>
@@ -622,7 +621,6 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Видалити підмодуль</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Злиття ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Надіслати ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Оновити підмодулі</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Усі підмодулі</x:String>

@@ -70,7 +70,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        public static CommitGraph Generate(List<Commit> commits, bool recalculateMergeState, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -89,53 +89,21 @@ namespace SourceGit.Models
                 PathHelper major = null;
 
                 // Update merge state of this commit.
-                if (commit.IsMerged)
-                {
-                    merged.Remove(commit.SHA);
-                    foreach (var p in commit.Parents)
-                        merged.Add(p);
-                }
-                else if (merged.Remove(commit.SHA))
-                {
-                    commit.IsMerged = true;
-                    foreach (var p in commit.Parents)
-                        merged.Add(p);
-                }
-
-                // Calculate highlighted state
-                var isHighlighted = false;
-                if (highlighting == CommitGraphHighlighting.All)
-                {
-                    isHighlighted = true;
-                }
-                else if (highlighting == CommitGraphHighlighting.CurrentBranchOnly)
-                {
-                    isHighlighted = commit.IsMerged;
-                }
-                else if (highlighting == CommitGraphHighlighting.SelectedCommitsOnly)
-                {
-                    isHighlighted = highlightExtraCommits.Remove(commit.SHA);
-                    if (isHighlighted)
-                    {
-                        commit.IsHighlightedInGraph = true;
-                        foreach (var p in commit.Parents)
-                            highlightExtraCommits.Add(p);
-                    }
-                }
-                else
+                if (recalculateMergeState)
                 {
                     if (commit.IsMerged)
                     {
-                        isHighlighted = true;
-                    }
-                    else if (highlightExtraCommits.Remove(commit.SHA))
-                    {
-                        isHighlighted = true;
+                        merged.Remove(commit.SHA);
                         foreach (var p in commit.Parents)
-                            highlightExtraCommits.Add(p);
+                            merged.Add(p);
+                    }
+                    else if (merged.Remove(commit.SHA))
+                    {
+                        commit.IsMerged = true;
+                        foreach (var p in commit.Parents)
+                            merged.Add(p);
                     }
                 }
-                commit.IsHighlightedInGraph = isHighlighted;
 
                 // Update current y offset
                 offsetY += unitHeight;
@@ -143,6 +111,7 @@ namespace SourceGit.Models
                 // Find first curves that links to this commit and marks others that links to this commit ended.
                 var offsetX = 4 - halfWidth;
                 var maxOffsetOld = unsolved.Count > 0 ? unsolved[^1].LastX : offsetX + unitWidth;
+                var isHighlighted = false;
                 foreach (var l in unsolved)
                 {
                     if (l.Next.Equals(commit.SHA, StringComparison.Ordinal))
@@ -151,6 +120,7 @@ namespace SourceGit.Models
                         {
                             offsetX += unitWidth;
                             major = l;
+                            isHighlighted = major.IsHighlighted;
 
                             if (commit.Parents.Count > 0)
                             {
@@ -167,6 +137,9 @@ namespace SourceGit.Models
                         {
                             l.End(major.LastX, offsetY, halfHeight);
                             ended.Add(l);
+
+                            if (!isHighlighted && l.IsHighlighted)
+                                isHighlighted = true;
                         }
                     }
                     else
@@ -183,6 +156,42 @@ namespace SourceGit.Models
                     unsolved.Remove(l);
                 }
                 ended.Clear();
+
+                // Calculate highlighted state
+                if (!isHighlighted)
+                {
+                    if (highlighting == CommitGraphHighlighting.All)
+                    {
+                        isHighlighted = true;
+                    }
+                    else if (highlighting == CommitGraphHighlighting.CurrentBranchOnly)
+                    {
+                        isHighlighted = commit.IsMerged;
+                    }
+                    else if (highlighting == CommitGraphHighlighting.SelectedCommitsOnly)
+                    {
+                        isHighlighted = highlightExtraCommits.Remove(commit.SHA);
+                        if (isHighlighted)
+                        {
+                            foreach (var p in commit.Parents)
+                                highlightExtraCommits.Add(p);
+                        }
+                    }
+                    else
+                    {
+                        if (commit.IsMerged)
+                        {
+                            isHighlighted = true;
+                        }
+                        else if (highlightExtraCommits.Remove(commit.SHA))
+                        {
+                            isHighlighted = true;
+                            foreach (var p in commit.Parents)
+                                highlightExtraCommits.Add(p);
+                        }
+                    }
+                }
+                commit.IsHighlightedInGraph = isHighlighted;
 
                 // If no path found, create new curve for branch head
                 // Otherwise, create new curve for new merged commit

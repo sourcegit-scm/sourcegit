@@ -62,6 +62,7 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
+                GenerateGraph(value, true);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
             }
@@ -82,7 +83,6 @@ namespace SourceGit.ViewModels
                 {
                     _repo.UIStates.GraphHighlighting = value;
                     GenerateGraph(_commits);
-                    OnPropertyChanged();
                 }
             }
         }
@@ -92,7 +92,8 @@ namespace SourceGit.ViewModels
             get => _selectedCommits;
             set
             {
-                if (SetProperty(ref _selectedCommits, value))
+                var oldCount = _selectedCommits.Count;
+                if (SetProperty(ref _selectedCommits, value) && oldCount + value.Count > 0)
                     PostSelectedCommitsChanged();
             }
         }
@@ -151,6 +152,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public double AuthorColumnWidth
+        {
+            get => _repo.UIStates.AuthorColumnWidth;
+            set => _repo.UIStates.AuthorColumnWidth = value;
+        }
+
         public bool IsOpenAsStandaloneVisible
         {
             get => DetailContext is CommitDetail or RevisionCompare;
@@ -178,21 +185,6 @@ namespace SourceGit.ViewModels
         public void NotifyCurrentBranchChanged()
         {
             OnPropertyChanged(nameof(CurrentBranch));
-        }
-
-        public void GenerateGraph(List<Models.Commit> commits)
-        {
-            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
-            var highlighting = _repo.UIStates.GraphHighlighting;
-            var extraHeads = new HashSet<string>();
-
-            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
-            {
-                foreach (var c in _selectedCommits)
-                    extraHeads.Add(c.SHA);
-            }
-
-            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -483,6 +475,21 @@ namespace SourceGit.ViewModels
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
                 GenerateGraph(_commits);
+        }
+
+        private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
+        {
+            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
+            var highlighting = _repo.UIStates.GraphHighlighting;
+            var extraHeads = new HashSet<string>();
+
+            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+            {
+                foreach (var c in _selectedCommits)
+                    extraHeads.Add(c.SHA);
+            }
+
+            Graph = Models.CommitGraph.Generate(commits, commitsChanged, firstParentOnly, highlighting, extraHeads);
         }
 
         private Repository _repo = null;

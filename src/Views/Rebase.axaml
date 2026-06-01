@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Rebase"
@@ -19,7 +20,7 @@
                  Text="{DynamicResource Text.Rebase}"/>
     </StackPanel>
     
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="130,*">
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32,Auto" ColumnDefinitions="130,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -61,6 +62,57 @@
                 Content="{DynamicResource Text.Rebase.NoVerify}"
                 IsChecked="{Binding NoVerify, Mode=TwoWay}"
                 ToolTip.Tip="--no-verify"/>
+
+      <Grid Grid.Row="4" Grid.Column="1"
+            Height="32"
+            IsVisible="{Binding TestingState, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static vm:RebaseTestingState.Disabled}}">
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding TestingState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static vm:RebaseTestingState.Testing}}">
+          <v:LoadingIcon Width="14" Height="14"
+                         IsVisible="{Binding TestingState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static vm:RebaseTestingState.Testing}}"/>
+
+          <TextBlock Margin="8,0,0,0"
+                     VerticalAlignment="Center"
+                     Text="{DynamicResource Text.Rebase.Test}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding TestingState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static vm:RebaseTestingState.NoConflicts}}">
+          <Path Width="14" Height="14"
+                Data="{DynamicResource Icons.CheckCircled}"
+                Fill="Green"/>
+
+          <TextBlock Margin="8,0,0,0"
+                     VerticalAlignment="Center"
+                     Text="{DynamicResource Text.Rebase.Test.OK}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding TestingState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static vm:RebaseTestingState.WillCauseConflicts}}">
+          <Path Width="14" Height="14"
+                Data="{DynamicResource Icons.Error}"
+                Fill="Goldenrod"/>
+
+          <TextBlock Margin="8,0,0,0"
+                     VerticalAlignment="Center"
+                     Text="{DynamicResource Text.Rebase.Test.WillCauseConflicts}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding TestingState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static vm:RebaseTestingState.UnknownError}}">
+          <Path Width="14" Height="14"
+                Data="{DynamicResource Icons.Error}"
+                Fill="Goldenrod"/>
+
+          <TextBlock Margin="8,0,0,0"
+                     VerticalAlignment="Center"
+                     Text="{DynamicResource Text.Rebase.Test.UnknownError}"/>
+        </StackPanel>
+      </Grid>
     </Grid>
   </StackPanel>
 </UserControl>

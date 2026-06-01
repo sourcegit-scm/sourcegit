@@ -89,6 +89,8 @@ namespace SourceGit.Views
 
             if (change.Property == ContentProperty)
                 Text = Content;
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
+                Models.TextMateHelper.SetThemeByApp(_textMate);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)

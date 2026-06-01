@@ -96,7 +96,6 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">பணிமரத்துடன் ஒப்பிடுக</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">பாகொவ-வை</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">தனிப்பயன் செயல்</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ இதற்கு ஒன்றிணை</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">ஒன்றிணை ...</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">உறுதிமொழி திரும்பபெறு</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">ஒட்டாக சேமி...</x:String>
@@ -618,7 +617,6 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">துணை தொகுதியை நீக்கு</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">சரி</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">நீக்கு ${0}$...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$ இதை ${1}$ இல் இணை...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">தள்ளு ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">துணைத்தொகுதிகளைப் புதுப்பி</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">அனைத்து துணைத்தொகுதிகள்</x:String>

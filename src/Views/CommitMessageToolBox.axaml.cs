@@ -386,6 +386,7 @@ namespace SourceGit.Views
         private readonly List<string> _trailers =
         [
             "Acked-by: ",
+            "Assisted-by:",
             "BREAKING CHANGE: ",
             "Co-authored-by: ",
             "Fixes: ",

@@ -355,7 +355,7 @@ namespace SourceGit
             Models.AvatarManager.Instance.Start();
 
             var repo = test.StdOut.Trim();
-            var relativePath = Path.GetRelativePath(repo, fullPath);
+            var relativePath = Path.GetRelativePath(repo, fullPath).Replace('\\', '/');
             if (File.Exists(fullPath))
             {
                 desktop.MainWindow = new Views.FileHistories()
@@ -367,7 +367,7 @@ namespace SourceGit
             {
                 desktop.MainWindow = new Views.DirHistories()
                 {
-                    DataContext = new ViewModels.DirHistories(repo, relativePath.TrimEnd('/', '\\'))
+                    DataContext = new ViewModels.DirHistories(repo, relativePath.TrimEnd('/'))
                 };
             }
             else

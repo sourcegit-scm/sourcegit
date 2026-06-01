@@ -80,7 +80,8 @@ namespace SourceGit.Commands
                     commit.Subject = parts[7];
                     commits.Add(commit);
 
-                    findHead |= commit.IsMerged;
+                    if (!findHead && commit.IsMerged)
+                        findHead = true;
                 }
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);

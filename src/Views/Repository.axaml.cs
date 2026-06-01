@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -663,6 +664,15 @@ namespace SourceGit.Views
                 await repo.ExecBisectCommandAsync(button.Tag as string);
 
             e.Handled = true;
+        }
+
+        private void OnRightPagePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == Border.IsVisibleProperty && sender is Border page)
+            {
+                var diffViewer = page.FindDescendantOfType<DiffView>();
+                diffViewer?.ToggleHotkeyBindings(page.IsVisible);
+            }
         }
     }
 }

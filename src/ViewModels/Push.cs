@@ -212,11 +212,14 @@ namespace SourceGit.ViewModels
 
         private void AutoSelectBranchByRemote()
         {
+            if (_selectedRemote == null || _selectedLocalBranch == null)
+                return;
+
             // Gather branches.
             var branches = new List<Models.Branch>();
             foreach (var branch in _repo.Branches)
             {
-                if (branch.Remote == _selectedRemote.Name)
+                if (!branch.IsLocal && _selectedRemote.Name.Equals(branch.Remote, StringComparison.Ordinal))
                     branches.Add(branch);
             }
 
@@ -225,7 +228,7 @@ namespace SourceGit.ViewModels
             {
                 foreach (var branch in branches)
                 {
-                    if (_selectedLocalBranch.Upstream == branch.FullName)
+                    if (_selectedLocalBranch.Upstream.Equals(branch.FullName, StringComparison.Ordinal))
                     {
                         RemoteBranches = branches;
                         SelectedRemoteBranch = branch;
@@ -237,7 +240,7 @@ namespace SourceGit.ViewModels
             // Try to find a remote branch with the same name of selected local branch.
             foreach (var branch in branches)
             {
-                if (_selectedLocalBranch.Name == branch.Name)
+                if (_selectedLocalBranch.Name.Equals(branch.Name, StringComparison.Ordinal))
                 {
                     RemoteBranches = branches;
                     SelectedRemoteBranch = branch;

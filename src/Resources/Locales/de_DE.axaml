@@ -153,7 +153,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Interaktives Rebase von ${0}$ auf ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Umformulieren…</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash in den Vorgänger…</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge in ${0}$ hinein</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge…</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ zu ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ auf ${1}$</x:String>
@@ -872,7 +871,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Benutzerdefinierte Aktion</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Lösche ${0}$…</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Lösche ausgewählte {0} Tags…</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ in ${1}$ hinein…</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Pushe ${0}$…</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Submodule aktualisieren</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Alle Submodule</x:String>

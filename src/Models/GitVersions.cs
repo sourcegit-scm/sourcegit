@@ -16,5 +16,15 @@
         ///     The minimal version of Git that supports the `stash push` command with the `--staged` option.
         /// </summary>
         public static readonly System.Version STASH_PUSH_ONLY_STAGED = new(2, 35, 0);
+
+        /// <summary>
+        ///     The minimal version of Git that supports the `git merge-tree --write-tree` command, which is used for testing merge results without actually performing a merge.
+        /// </summary>
+        public static readonly System.Version TESTING_MERGE = new(2, 38, 0);
+
+        /// <summary>
+        ///     The minimal version of Git that supports the `git replay` command.
+        /// </summary>
+        public static readonly System.Version REPLAY = new(2, 44, 0);
     }
 }

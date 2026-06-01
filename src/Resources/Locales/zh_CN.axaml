@@ -155,8 +155,10 @@
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">与当前HEAD比较</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">与本地工作树比较</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">作者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthorTime" xml:space="preserve">修改时间</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">提交信息</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">提交者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitterTime" xml:space="preserve">提交时间</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">自定义操作</x:String>
@@ -167,7 +169,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">交互式变基 ${0}$ 到 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">修改提交信息...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">合并至父提交...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">合并(merge)此提交至 ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合并(merge)...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送(push) ${0}$ 到 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">变基(rebase) ${0}$ 到 ${1}</x:String>
@@ -573,6 +574,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">目标分支 ：</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">合并方式 ：</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">合并目标 ：</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">检测合并冲突中...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">合并操作不会产生冲突</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">检测合并冲突时出现未知错误</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">合并操作将存在冲突文件</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">先应用 MINE 后 THEIRS</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">先应用 THEIRS 后 MINE</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">应用全部</x:String>
@@ -674,6 +679,7 @@
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">在提交路线图中显示标签</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">SUBJECT字数检测</x:String>
   <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24小时制</x:String>
+  <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">在提交路线图中使用精简分支名</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">生成GitHub风格的默认头像</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自动换行转换</x:String>
@@ -738,6 +744,10 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自动贮藏并恢复本地变更</x:String>
   <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">绕过 pre-rebase 钩子</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目标提交 ：</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">检测变基冲突中 ...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">未检测到文件冲突</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">检测变基冲突时出现未知错误</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">检测到冲突文件</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">添加远程仓库</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>
@@ -931,7 +941,6 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">删除 ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">删除选中 {0} 个标签...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模块</x:String>

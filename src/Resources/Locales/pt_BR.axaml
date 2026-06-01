@@ -600,7 +600,6 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Excluir Submódulo</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Excluir ${0}$...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Mesclar ${0}$ em ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Enviar ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Atualizar Submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Todos os submódulos</x:String>

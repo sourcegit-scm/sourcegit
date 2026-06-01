@@ -125,7 +125,8 @@
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                            FontSize="12"
                                            VerticalAlignment="Center"
-                                           UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"/>
+                                           UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"
+                                           UseCompactBranchNames="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseCompactBranchNamesInGraph}"/>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
                                               Height="26"
@@ -144,12 +145,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="80" CanUserResize="True" IsReadOnly="True" IsVisible="{Binding IsAuthorColumnVisible, Mode=OneWay}">
-            <DataGridTemplateColumn.Width>
-              <Binding Source="{x:Static vm:Preferences.Instance}"
-                       Path="Layout.AuthorColumnWidth"
-                       Mode="TwoWay"/>
-            </DataGridTemplateColumn.Width>
+          <DataGridTemplateColumn MinWidth="80" IsReadOnly="True" IsVisible="{Binding IsAuthorColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -177,7 +173,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="100" CanUserResize="False" IsReadOnly="True" IsVisible="{Binding IsSHAColumnVisible, Mode=OneWay}">
+          <DataGridTemplateColumn MinWidth="100" IsReadOnly="True" IsVisible="{Binding IsSHAColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -193,7 +189,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="160" CanUserResize="False" IsReadOnly="True" IsVisible="{Binding IsDateTimeColumnVisible, Mode=OneWay}">
+          <DataGridTemplateColumn MinWidth="160" IsReadOnly="True" IsVisible="{Binding IsDateTimeColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <Grid HorizontalAlignment="Center">
                 <TextBlock Classes="table_header"
@@ -222,15 +218,23 @@
           </DataGridTemplateColumn>
         </DataGrid.Columns>
       </v:HistoriesCommitList>
+      
+      <Border Background="Transparent"
+              Height="24"
+              HorizontalAlignment="Stretch" VerticalAlignment="Top"
+              PointerMoved="OnCommitListHeaderPointerMoved"
+              PointerPressed="OnCommitListHeaderPointerPressed"
+              PointerReleased="OnCommitListHeaderPointerReleased"
+              ContextRequested="OnCommitListHeaderContextRequested"/>              
 
       <v:CommitGraph x:Name="CommitGraph"
                      Margin="0,24,0,0"
                      Graph="{Binding Graph}"
                      DotBrush="{DynamicResource Brush.Contents}"
-                     OnlyHighlighted="{Binding GraphHighlighting, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:CommitGraphHighlighting.All}}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
-                     ClipToBounds="True"/>
+                     ClipToBounds="True"
+                     Loaded="OnCommitGraphLoaded"/>
 
       <Border Width="28" Height="28"
               Margin="0,0,16,8"

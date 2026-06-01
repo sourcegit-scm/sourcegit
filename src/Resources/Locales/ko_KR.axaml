@@ -136,7 +136,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 대화형 리베이스</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">메시지 수정(Reword)...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">부모에 합치기(Squash)...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$(으)로 병합</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">병합...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">${0}$을(를) ${1}$(으)로 푸시</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 리베이스</x:String>
@@ -791,7 +790,6 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">${0}$ 삭제...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">선택한 {0}개의 태그 삭제...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$을(를) ${1}$(으)로 병합...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">${0}$ 푸시...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">서브모듈 업데이트</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">모든 서브모듈</x:String>

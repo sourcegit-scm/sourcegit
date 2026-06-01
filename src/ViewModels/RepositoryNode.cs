@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +9,12 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
+    public class RepositoryNodeMinimalInfo
+    {
+        public string FriendlyName { get; set; } = string.Empty;
+        public int Bookmark { get; set; } = 0;
+    }
+
     public class RepositoryNode : ObservableObject
     {
         public string Id
@@ -56,6 +63,13 @@ namespace SourceGit.ViewModels
         {
             get => _isRepository && !Directory.Exists(_id);
         }
+
+        [JsonIgnore]
+        public bool IsUnmanaged
+        {
+            get;
+            set;
+        } = false;
 
         [JsonIgnore]
         public int Depth
@@ -168,6 +182,36 @@ namespace SourceGit.ViewModels
 
             _lastUpdateStatus = DateTime.Now;
             Status = await new Commands.QueryRepositoryStatus(_id).GetResultAsync();
+        }
+
+        public void LoadMinimalInfo(string gitDir)
+        {
+            var savedTo = Path.Combine(gitDir, "sourcegit.node");
+            if (!File.Exists(savedTo))
+                return;
+
+            try
+            {
+                var minimalInfo = JsonSerializer.Deserialize(File.ReadAllText(savedTo), JsonCodeGen.Default.RepositoryNodeMinimalInfo);
+                if (!string.IsNullOrEmpty(minimalInfo.FriendlyName))
+                    Name = minimalInfo.FriendlyName;
+                Bookmark = minimalInfo.Bookmark;
+            }
+            catch
+            {
+                // Ignore any error and just use default values.
+            }
+        }
+
+        public void SaveMinimalInfo(string gitDir)
+        {
+            var savedTo = Path.Combine(gitDir, "sourcegit.node");
+            var minimalInfo = new RepositoryNodeMinimalInfo
+            {
+                FriendlyName = Name,
+                Bookmark = Bookmark
+            };
+            File.WriteAllText(savedTo, JsonSerializer.Serialize(minimalInfo, JsonCodeGen.Default.RepositoryNodeMinimalInfo));
         }
 
         private string _id = string.Empty;

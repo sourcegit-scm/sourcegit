@@ -63,6 +63,7 @@
                SelectionMode="Multiple"
                SelectionChanged="OnRevisionsSelectionChanged"
                PropertyChanged="OnRevisionsPropertyChanged"
+               ContextRequested="OnRevisionsContextRequested"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>

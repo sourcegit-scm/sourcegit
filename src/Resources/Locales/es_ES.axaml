@@ -167,7 +167,6 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Hacer Rebase interactivamente ${0}$ en ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Reescribir...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash en el Padre...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Merge a ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Merge ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ a ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase ${0}$ en ${1}$</x:String>
@@ -177,6 +176,7 @@
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CAMBIOS</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">archivo(s) modificado(s)</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Cambios...</x:String>
+  <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">Colapsar detalles</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARCHIVOS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Archivo LFS</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Buscar Archivos...</x:String>
@@ -202,6 +202,11 @@
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Ingresa el mensaje de commit. ¡Por favor usa una línea en blanco para separar el título y la descripción!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">ASUNTO</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Comparar</x:String>
+  <x:String x:Key="Text.Compare.Changes" xml:space="preserve">CAMBIOS</x:String>
+  <x:String x:Key="Text.Compare.Commits" xml:space="preserve">COMMITS</x:String>
+  <x:String x:Key="Text.Compare.Commits.LeftOnly" xml:space="preserve">SOLO COMMITS A LA IZQUIERDA</x:String>
+  <x:String x:Key="Text.Compare.Commits.RightOnly" xml:space="preserve">SOLO COMMITS A LA DERECHA</x:String>
+  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">Tips: Puedes hacer cherry-pick a los commits seleccionados si el otro lado está en HEAD (usando el menú contextual).</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">Configurar Repositorio</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">PLANTILLA DE COMMIT</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Parámetros incorporados:
@@ -490,11 +495,19 @@
   <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">FECHA HORA</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO y ASUNTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">DESTACADOS EN EL GRÁFICO</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.All" xml:space="preserve">Todos</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Solo la Rama Actual</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Rama Actual y los Commits Seleccionados</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Solo los Commits Seleccionados</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SELECCIONADOS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">MOSTRAR COLUMNAS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Mantén 'Ctrl' o 'Shift' para seleccionar múltiples commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Mantén ⌘ o ⇧ para seleccionar múltiples commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">CONSEJOS:</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone" xml:space="preserve">Abrir en una ventana separada</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.CommitDetail" xml:space="preserve">Detalles del Commit</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.RevisionCompare" xml:space="preserve">Comparación de Revisiones</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">Referencia de Atajos de Teclado</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clonar repositorio nuevo</x:String>
@@ -521,6 +534,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forzar a recargar este repositorio</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Expandir/Colapsar el panel de detalles en el `HISTORIAL`/`HISTORY`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Cambiar a 'Cambios'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Cambiar a 'Historias'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Cambiar a 'Stashes'</x:String>
@@ -541,6 +555,7 @@
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Haciendo revert del commit</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase Interactivo</x:String>
   <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Stash y volver a aplicar cambios locales</x:String>
+  <x:String x:Key="Text.InteractiveRebase.NoVerify" xml:space="preserve">Saltar el hook de pre-rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">Arrastrar y soltar para reordenar commits</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Rama Objetivo:</x:String>
@@ -619,6 +634,8 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt adicional (Usa `-` para listar tus requerimientos)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clave API</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Traer automáticamente los model-ids disponibles</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nombre</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">El valor ingresado es el nombre de la clave API a cargar desde ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>
@@ -652,6 +669,7 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostrar la página `CAMBIOS LOCALES` por defecto</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostrar pestaña de `CAMBIOS` en los detalles del commit por defecto</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostrar hijos en los detalles de commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">Mostrar hora relativa en el gráfico de commits</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Mostrar etiquetas en el gráfico de commit</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Longitud de la guía del asunto</x:String>
   <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24-Horas</x:String>
@@ -717,6 +735,7 @@
   <x:String x:Key="Text.Quit" xml:space="preserve">Salir</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase Rama Actual</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash y volver a aplicar cambios locales</x:String>
+  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">Saltar el hook de pre-rebase</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Añadir Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Editar Remoto</x:String>
@@ -911,7 +930,6 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Eliminar {0} etiquetas seleccionadas...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ en ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualizar Submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Todos los submódulos</x:String>

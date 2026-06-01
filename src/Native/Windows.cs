@@ -75,7 +75,7 @@ namespace SourceGit.Native
 
         public string GetDataDir()
         {
-            var execFile = Process.GetCurrentProcess().MainModule!.FileName;
+            var execFile = Environment.ProcessPath;
             var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
             if (Directory.Exists(portableDir))
                 return portableDir;
