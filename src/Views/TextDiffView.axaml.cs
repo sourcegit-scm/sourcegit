@@ -1467,14 +1467,21 @@ namespace SourceGit.Views
             {
                 if (SelectedChunk is { } chunk)
                 {
+                    var syscmd = OperatingSystem.IsMacOS() ? "Cmd" : "Ctrl";
                     var top = chunk.Y + 4;
                     var right = (chunk.Combined || !chunk.IsOldSide) ? 26 : (Bounds.Width * 0.5f) + 26;
                     Popup.Margin = new Thickness(0, top, right, 0);
                     Popup.IsVisible = true;
+                    BtnStageChunk.HotKey = KeyGesture.Parse($"{syscmd}+S");
+                    BtnUnstageChunk.HotKey = KeyGesture.Parse($"{syscmd}+U");
+                    BtnDiscardChunk.HotKey = KeyGesture.Parse($"{syscmd}+D");
                 }
                 else
                 {
                     Popup.IsVisible = false;
+                    BtnStageChunk.HotKey = null;
+                    BtnUnstageChunk.HotKey = null;
+                    BtnDiscardChunk.HotKey = null;
                 }
             }
         }
