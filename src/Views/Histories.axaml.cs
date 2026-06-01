@@ -110,7 +110,6 @@ namespace SourceGit.Views
             IsReadOnly = true;
             HeadersVisibility = DataGridHeadersVisibility.Column;
             ClipboardCopyMode = DataGridClipboardCopyMode.None;
-            Focusable = false;
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
         }
