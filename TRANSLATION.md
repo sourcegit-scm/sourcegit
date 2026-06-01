@@ -975,21 +975,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.20%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Merge.Test
-- Text.Merge.Test.NoConflicts
-- Text.Merge.Test.UnknownError
-- Text.Merge.Test.WillCauseConflicts
-- Text.Rebase.Test
-- Text.Rebase.Test.OK
-- Text.Rebase.Test.UnknownError
-- Text.Rebase.Test.WillCauseConflicts
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-66.93%25-red)
 
