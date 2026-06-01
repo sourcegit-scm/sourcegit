@@ -259,9 +259,11 @@
                   Background="{DynamicResource Brush.Window}"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   Focusable="False"
-                  IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
+                  DragStarted="OnDetailsSplitterDragStarted"
+                  DragDelta="OnDetailsSplitterDragDelta"
+                  DragCompleted="OnDetailsSplitterDragCompleted"/>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" x:Name="DetailsArea">
       <ContentControl Content="{Binding DetailContext, Mode=OneWay}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Null">

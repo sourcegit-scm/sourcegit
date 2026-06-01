@@ -648,6 +648,33 @@ namespace SourceGit.Views
                 vm.IsCollapseDetails = false;
         }
 
+        private void OnDetailsSplitterDragStarted(object sender, VectorEventArgs e)
+        {
+            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                return;
+
+            if (DataContext is ViewModels.Histories vm)
+                vm.BeginDetailsResize();
+        }
+
+        private void OnDetailsSplitterDragDelta(object sender, VectorEventArgs e)
+        {
+            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                return;
+
+            if (DataContext is ViewModels.Histories vm)
+                vm.PreviewDetailsResize(DetailsArea.Bounds.Height <= 48);
+        }
+
+        private void OnDetailsSplitterDragCompleted(object sender, VectorEventArgs e)
+        {
+            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                return;
+
+            if (DataContext is ViewModels.Histories vm)
+                vm.EndDetailsResize(DetailsArea.Bounds.Height <= 48);
+        }
+
         private void OnOpenDetailsAsStandalone(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Histories vm)

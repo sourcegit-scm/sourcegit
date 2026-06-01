@@ -144,10 +144,10 @@ namespace SourceGit.ViewModels
 
         public GridLength BottomArea
         {
-            get => _isCollapseDetails ? new GridLength(28, GridUnitType.Pixel) : _bottomArea;
+            get => _bottomArea;
             set
             {
-                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isCollapseDetails)
+                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories)
                     SetProperty(ref _bottomArea, value);
             }
         }
@@ -168,12 +168,41 @@ namespace SourceGit.ViewModels
             get => _isCollapseDetails;
             set
             {
-                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && SetProperty(ref _isCollapseDetails, value))
-                {
-                    OnPropertyChanged(nameof(TopArea));
-                    OnPropertyChanged(nameof(BottomArea));
-                }
+                if (Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                    return;
+
+                if (SetProperty(ref _isCollapseDetails, value))
+                    if (value)
+                    {
+                        _bottomAreaBackup = _bottomArea;
+                        BottomArea = new GridLength(28, GridUnitType.Pixel);
+                    }
+                    else
+                        BottomArea = _bottomAreaBackup;
             }
+        }
+
+        public void BeginDetailsResize()
+        {
+            if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isCollapseDetails)
+                _bottomAreaBackup = _bottomArea;
+        }
+
+        public void PreviewDetailsResize(bool shouldCollapse)
+        {
+            if (!Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                SetProperty(ref _isCollapseDetails, shouldCollapse, nameof(IsCollapseDetails));
+        }
+
+        public void EndDetailsResize(bool shouldCollapse)
+        {
+            if (Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                return;
+
+            SetProperty(ref _isCollapseDetails, shouldCollapse, nameof(IsCollapseDetails));
+
+            if (shouldCollapse)
+                BottomArea = new GridLength(28, GridUnitType.Pixel);
         }
 
         public Histories(Repository repo)
@@ -506,6 +535,7 @@ namespace SourceGit.ViewModels
         private GridLength _rightArea = new(1, GridUnitType.Star);
         private GridLength _topArea = new(1, GridUnitType.Star);
         private GridLength _bottomArea = new(1, GridUnitType.Star);
+        private GridLength _bottomAreaBackup = new(1, GridUnitType.Star);
         private bool _isCollapseDetails = false;
     }
 }
