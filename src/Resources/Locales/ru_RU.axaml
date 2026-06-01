@@ -574,6 +574,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">В:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Опции слияния:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Источник:</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">Тестировать на слияние...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">Слияние может быть выполнено без конфликтов</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">Неизвестная ошибка при тестировании слияния</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">Слияние вызовет конфликты</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">Сначала мои, а потом их</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">Сначала их, а потом мои</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">ИСПОЛЬЗОВАТЬ ОБА</x:String>
@@ -740,6 +744,10 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
   <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">Обходной зацеп предварительного перемещения</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">На:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">Тестировать на перемещение...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">Перемещение может быть выполнено без конфликтов</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">Неизвестная ошибка при тестировании перемещения</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">Перемещение вызовет конфликты</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Добавить внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редактировать внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Имя:</x:String>
