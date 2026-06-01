@@ -83,11 +83,6 @@ namespace SourceGit.Views
             }
         };
 
-        static ColorPicker()
-        {
-            ValueProperty.Changed.AddClassHandler<ColorPicker>((c, _) => c.UpdateColors());
-        }
-
         public override void Render(DrawingContext context)
         {
             base.Render(context);
