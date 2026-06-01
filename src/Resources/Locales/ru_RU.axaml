@@ -365,6 +365,9 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">СРАВНЕНИЕ БИНАРНИКОВ</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое сравнение</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">Скрыть файлы, содержащие только изменения регистра</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">Скрыть файлы, содержащие только изменения пробелов</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">Игнорировать изменения регистра</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменения пробелов</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">СМЕСЬ</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">СРАВНЕНИЕ</x:String>

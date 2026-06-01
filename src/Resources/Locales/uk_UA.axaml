@@ -221,6 +221,9 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">РІЗНИЦЯ ДЛЯ БІНАРНИХ ФАЙЛІВ</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Змінено режим файлу</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Перша відмінність</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">Приховати файли, що містять лише зміни регістру</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">Приховати файли, що містять лише зміни пробілів</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">Ігнорувати зміни регістру</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Остання відмінність</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ЗМІНА ОБ'ЄКТА LFS</x:String>

@@ -217,6 +217,9 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">இருமம்  வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">கோப்பு முறை மாற்றப்பட்டது</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">முதல் வேறுபாடு</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">பெரிய/சிறிய எழுத்து மாற்றங்கள் மட்டுமே உள்ள கோப்புகளை மறை</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">வெள்ளைவெளி மாற்றங்கள் மட்டுமே உள்ள கோப்புகளை மறை</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">பெரிய/சிறிய எழுத்து மாற்றங்களைப் புறக்கணி</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">வெள்ளைவெளி மாற்றத்தை புறக்கணி</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">கடைசி வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">பெகோஅ பொருள் மாற்றம்</x:String>

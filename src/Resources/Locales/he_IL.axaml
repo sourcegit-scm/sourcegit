@@ -363,7 +363,10 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFF בינארי</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">הרשאות הקובץ שונו</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">ההבדל הראשון</x:String>
-  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">התעלמות משינויי Whitespace</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">הסתרת קבצים עם שינויי רישיות בלבד</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">הסתרת קבצים עם שינויי רווחים בלבד</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">התעלמות משינויי רישיות</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">התעלמות משינויי רווחים</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">מיזוג</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">הבדל</x:String>
   <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">זה לצד זה</x:String>

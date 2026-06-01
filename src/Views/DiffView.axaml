@@ -188,6 +188,13 @@
 
             <ToggleButton Classes="line_path"
                           Width="28"
+                          IsChecked="{Binding IgnoreCase, Mode=TwoWay}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.IgnoreCase}">
+              <TextBlock Text="Aa" FontSize="12" FontWeight="Bold"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="28"
                           IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowHiddenSymbolsInDiffView, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">

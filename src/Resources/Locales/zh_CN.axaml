@@ -365,6 +365,9 @@
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">二进制文件</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">文件权限已变化</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">隐藏仅有大小写变化的文件</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">隐藏仅有空白符号变化的文件</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">忽略大小写变化</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">混合对比</x:String>
   <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">差异比较</x:String>

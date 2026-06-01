@@ -234,6 +234,9 @@
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Excluir dos repositórios remotos</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFERENÇA BINÁRIA</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modo de Arquivo Alterado</x:String>
+  <x:String x:Key="Text.Diff.HideCaseOnlyFiles" xml:space="preserve">Esconder arquivos com apenas mudanças de maiúsculas/minúsculas</x:String>
+  <x:String x:Key="Text.Diff.HideWhitespaceOnlyFiles" xml:space="preserve">Esconder arquivos com apenas mudanças de espaço em branco</x:String>
+  <x:String x:Key="Text.Diff.IgnoreCase" xml:space="preserve">Ignorar mudanças de maiúsculas/minúsculas</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MUDANÇA DE OBJETO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Próxima Diferença</x:String>

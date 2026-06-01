@@ -27,6 +27,20 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IgnoreCase
+        {
+            get => Preferences.Instance.IgnoreCaseChangesInDiff;
+            set
+            {
+                if (value != Preferences.Instance.IgnoreCaseChangesInDiff)
+                {
+                    Preferences.Instance.IgnoreCaseChangesInDiff = value;
+                    OnPropertyChanged();
+                    LoadContent();
+                }
+            }
+        }
+
         public bool ShowEntireFile
         {
             get => Preferences.Instance.UseFullTextDiff;
@@ -128,7 +142,8 @@ namespace SourceGit.ViewModels
             {
                 if ((ShowEntireFile && _info.UnifiedLines != _entireFileLine) ||
                     (!ShowEntireFile && _info.UnifiedLines == _entireFileLine) ||
-                    (IgnoreWhitespace != _info.IgnoreWhitespace))
+                    (IgnoreWhitespace != _info.IgnoreWhitespace) ||
+                    (IgnoreCase != _info.IgnoreCase))
                 {
                     LoadContent();
                     return;
@@ -152,12 +167,13 @@ namespace SourceGit.ViewModels
             {
                 var numLines = Preferences.Instance.UseFullTextDiff ? _entireFileLine : _unifiedLines;
                 var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+                var ignoreCase = Preferences.Instance.IgnoreCaseChangesInDiff;
 
-                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace)
+                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace, ignoreCase)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
-                var info = new Info(_option, numLines, ignoreWhitespace, latest);
+                var info = new Info(_option, numLines, ignoreWhitespace, ignoreCase, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
@@ -319,14 +335,16 @@ namespace SourceGit.ViewModels
             public string Argument { get; }
             public int UnifiedLines { get; }
             public bool IgnoreWhitespace { get; }
+            public bool IgnoreCase { get; }
             public string OldHash { get; }
             public string NewHash { get; }
 
-            public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, Models.DiffResult result)
+            public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, bool ignoreCase, Models.DiffResult result)
             {
                 Argument = option.ToString();
                 UnifiedLines = unifiedLines;
                 IgnoreWhitespace = ignoreWhitespace;
+                IgnoreCase = ignoreCase;
                 OldHash = result.OldHash;
                 NewHash = result.NewHash;
             }
@@ -336,6 +354,7 @@ namespace SourceGit.ViewModels
                 return Argument.Equals(other.Argument, StringComparison.Ordinal) &&
                     UnifiedLines == other.UnifiedLines &&
                     IgnoreWhitespace == other.IgnoreWhitespace &&
+                    IgnoreCase == other.IgnoreCase &&
                     OldHash.Equals(other.OldHash, StringComparison.Ordinal) &&
                     NewHash.Equals(other.NewHash, StringComparison.Ordinal);
             }
