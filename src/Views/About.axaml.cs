@@ -15,7 +15,12 @@ namespace SourceGit.Views
             var assembly = Assembly.GetExecutingAssembly();
             var ver = assembly.GetName().Version;
             if (ver != null)
+            {
                 TxtVersion.Text = $"{ver.Major}.{ver.Minor:D2}";
+#if DEBUG
+                TxtVersion.Text += "-dev";
+#endif
+            }
 
             var meta = assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
             foreach (var attr in meta)
