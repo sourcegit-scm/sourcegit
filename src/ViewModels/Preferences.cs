@@ -249,15 +249,8 @@ namespace SourceGit.ViewModels
 
         public bool IgnoreCRAtEOLInDiff
         {
-            get => Models.DiffOption.IgnoreCRAtEOL;
-            set
-            {
-                if (Models.DiffOption.IgnoreCRAtEOL != value)
-                {
-                    Models.DiffOption.IgnoreCRAtEOL = value;
-                    OnPropertyChanged();
-                }
-            }
+            get => _ignoreCRAtEOLInDiff;
+            set => SetProperty(ref _ignoreCRAtEOLInDiff, value);
         }
 
         public bool UseStashAndReapplyByDefault
@@ -844,6 +837,7 @@ namespace SourceGit.ViewModels
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _ignoreWhitespaceChangesInDiff = false;
+        private bool _ignoreCRAtEOLInDiff = true;
         private bool _useSyntaxHighlighting = false;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;

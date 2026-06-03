@@ -6,15 +6,6 @@ namespace SourceGit.Models
 {
     public class DiffOption
     {
-        /// <summary>
-        ///     Enable `--ignore-cr-at-eol` by default?
-        /// </summary>
-        public static bool IgnoreCRAtEOL
-        {
-            get;
-            set;
-        } = true;
-
         public Change WorkingCopyChange => _workingCopyChange;
         public bool IsUnstaged => _isUnstaged;
         public List<string> Revisions => _revisions;

@@ -152,8 +152,9 @@ namespace SourceGit.ViewModels
             {
                 var numLines = Preferences.Instance.UseFullTextDiff ? _entireFileLine : _unifiedLines;
                 var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
+                var ignoreCRAtEOL = Preferences.Instance.IgnoreCRAtEOLInDiff;
 
-                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace)
+                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace, ignoreCRAtEOL)
                     .ReadAsync()
                     .ConfigureAwait(false);
 

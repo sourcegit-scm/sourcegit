@@ -20,7 +20,7 @@ namespace SourceGit.Commands
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
-        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
+        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace, bool ignoreCRAtEOL)
         {
             _result.TextDiff = new Models.TextDiff();
 
@@ -29,10 +29,10 @@ namespace SourceGit.Commands
 
             var builder = new StringBuilder(256);
             builder.Append("diff --no-color --no-ext-diff --patch ");
-            if (Models.DiffOption.IgnoreCRAtEOL)
-                builder.Append("--ignore-cr-at-eol ");
             if (ignoreWhitespace)
                 builder.Append("--ignore-space-change ");
+            if (ignoreCRAtEOL)
+                builder.Append("--ignore-cr-at-eol ");
             builder.Append("--unified=").Append(unified).Append(' ');
             builder.Append(opt.ToString());
 
