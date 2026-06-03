@@ -54,7 +54,7 @@
         <!-- Page Switcher for Right Panel -->
         <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
           <Border CornerRadius="6" ClipToBounds="True">
-            <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
+            <ListBox Background="Transparent" Padding="4" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
               <ListBox.Styles>
                 <Style Selector="Path.icon">
                   <Setter Property="Width" Value="12"/>
@@ -70,12 +70,13 @@
                   <Setter Property="Height" Value="28"/>
                   <Setter Property="Margin" Value="0"/>
                   <Setter Property="Padding" Value="0"/>
-                  <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>
+                  <Setter Property="BorderThickness" Value="0"/>
+                  <Setter Property="CornerRadius" Value="4"/>
                 </Style>
-                <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                   <Setter Property="Background" Value="Transparent"/>
                 </Style>
-                <Style Selector="ListBoxItem:selected Grid.view_mode">
+                <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
                   <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
                 </Style>
                 <Style Selector="ListBoxItem:selected TextBlock.header">
@@ -92,8 +93,8 @@
                 </ItemsPanelTemplate>
               </ListBox.ItemsPanel>
 
-              <ListBoxItem BorderThickness="0">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto">
+              <ListBoxItem>
+                <Grid ColumnDefinitions="Auto,*,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
                   <Button Grid.Column="2"
@@ -106,8 +107,8 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem BorderThickness="0,1,0,0" IsVisible="{Binding !IsBare}">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+              <ListBoxItem IsVisible="{Binding !IsBare}">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <Border Grid.Column="2"
@@ -138,8 +139,8 @@
                 </Grid>
               </ListBoxItem>
 
-              <ListBoxItem BorderThickness="0,1,0,0" IsVisible="{Binding !IsBare}">
-                <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
+              <ListBoxItem IsVisible="{Binding !IsBare}">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                   <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
                   <Border Grid.Column="2"
