@@ -1469,7 +1469,13 @@ namespace SourceGit.Views
                 {
                     var syscmd = OperatingSystem.IsMacOS() ? "Cmd" : "Ctrl";
                     var top = chunk.Y + 4;
-                    var right = (chunk.Combined || !chunk.IsOldSide) ? 26 : (Bounds.Width * 0.5f) + 26;
+                    var right = 28.0;
+                    if (!chunk.Combined && chunk.IsOldSide)
+                    {
+                        var left = this.FindDescendantOfType<SingleSideTextDiffPresenter>()?.Bounds.Width ?? 0.0;
+                        right = Bounds.Width - left + 16;
+                    }
+
                     Popup.Margin = new Thickness(0, top, right, 0);
                     Popup.IsVisible = true;
                     BtnStageChunk.HotKey = KeyGesture.Parse($"{syscmd}+S");
