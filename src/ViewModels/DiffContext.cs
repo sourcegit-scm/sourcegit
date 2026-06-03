@@ -13,52 +13,6 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        public bool IgnoreWhitespace
-        {
-            get => Preferences.Instance.IgnoreWhitespaceChangesInDiff;
-            set
-            {
-                if (value != Preferences.Instance.IgnoreWhitespaceChangesInDiff)
-                {
-                    Preferences.Instance.IgnoreWhitespaceChangesInDiff = value;
-                    OnPropertyChanged();
-                    LoadContent();
-                }
-            }
-        }
-
-        public bool ShowEntireFile
-        {
-            get => Preferences.Instance.UseFullTextDiff;
-            set
-            {
-                if (value != Preferences.Instance.UseFullTextDiff)
-                {
-                    Preferences.Instance.UseFullTextDiff = value;
-                    OnPropertyChanged();
-
-                    if (Content is TextDiffContext ctx)
-                        LoadContent();
-                }
-            }
-        }
-
-        public bool UseSideBySide
-        {
-            get => Preferences.Instance.UseSideBySideDiff;
-            set
-            {
-                if (value != Preferences.Instance.UseSideBySideDiff)
-                {
-                    Preferences.Instance.UseSideBySideDiff = value;
-                    OnPropertyChanged();
-
-                    if (Content is TextDiffContext ctx && ctx.IsSideBySide() != value)
-                        Content = ctx.SwitchMode();
-                }
-            }
-        }
-
         public string FileModeChange
         {
             get => _fileModeChange;
@@ -126,15 +80,17 @@ namespace SourceGit.ViewModels
         {
             if (Content is TextDiffContext ctx)
             {
-                if ((ShowEntireFile && _info.UnifiedLines != _entireFileLine) ||
-                    (!ShowEntireFile && _info.UnifiedLines == _entireFileLine) ||
-                    (IgnoreWhitespace != _info.IgnoreWhitespace))
+                var pref = Preferences.Instance;
+
+                if ((pref.UseFullTextDiff && _info.UnifiedLines != _entireFileLine) ||
+                    (!pref.UseFullTextDiff && _info.UnifiedLines == _entireFileLine) ||
+                    (pref.IgnoreWhitespaceChangesInDiff != _info.IgnoreWhitespace))
                 {
                     LoadContent();
                     return;
                 }
 
-                if (ctx.IsSideBySide() != UseSideBySide)
+                if (ctx.IsSideBySide() != pref.UseSideBySideDiff)
                     Content = ctx.SwitchMode();
             }
         }
@@ -150,9 +106,10 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var numLines = Preferences.Instance.UseFullTextDiff ? _entireFileLine : _unifiedLines;
-                var ignoreWhitespace = Preferences.Instance.IgnoreWhitespaceChangesInDiff;
-                var ignoreCRAtEOL = Preferences.Instance.IgnoreCRAtEOLInDiff;
+                var pref = Preferences.Instance;
+                var numLines = pref.UseFullTextDiff ? _entireFileLine : _unifiedLines;
+                var ignoreWhitespace = pref.IgnoreWhitespaceChangesInDiff;
+                var ignoreCRAtEOL = pref.IgnoreCRAtEOLInDiff;
 
                 var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace, ignoreCRAtEOL)
                     .ReadAsync()
