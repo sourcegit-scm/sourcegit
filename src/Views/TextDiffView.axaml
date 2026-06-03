@@ -43,7 +43,15 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:TwoSideTextDiff">
-          <Grid ColumnDefinitions="*,1,*,1,12">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" MinWidth="100"/>
+              <ColumnDefinition Width="3"/>
+              <ColumnDefinition Width="*" MinWidth="100"/>
+              <ColumnDefinition Width="1" MinWidth="1" MaxWidth="1"/>
+              <ColumnDefinition Width="12" MinWidth="12" MaxWidth="12"/>
+            </Grid.ColumnDefinitions>
+            
             <v:SingleSideTextDiffPresenter Grid.Column="0"
                                            IsOld="True"
                                            FileName="{Binding Option.Path}"
@@ -65,7 +73,14 @@
                                            SelectedChunk="{Binding SelectedChunk, Mode=TwoWay}"
                                            BlockNavigation="{Binding BlockNavigation, Mode=OneWay}"/>
 
-            <Rectangle Grid.Column="1" Fill="{DynamicResource Brush.Border2}" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch"/>
+            <!-- Splitter -->
+            <GridSplitter Grid.Column="1"
+                          MinWidth="1"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          Background="Transparent"
+                          BorderThickness="1,0,0,0"
+                          BorderBrush="{DynamicResource Brush.Border2}"
+                          Focusable="False"/>
 
             <v:SingleSideTextDiffPresenter Grid.Column="2"
                                            IsOld="False"
