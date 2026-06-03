@@ -58,18 +58,6 @@ namespace SourceGit.Models
         }
 
         /// <summary>
-        ///     Diff with filepath. Used by FileHistories
-        /// </summary>
-        /// <param name="commit"></param>
-        /// <param name="file"></param>
-        public DiffOption(Commit commit, string file)
-        {
-            _revisions.Add(commit.FirstParentToCompare);
-            _revisions.Add(commit.SHA);
-            _path = file;
-        }
-
-        /// <summary>
         ///     Used to diff in `FileHistory`
         /// </summary>
         /// <param name="ver"></param>
