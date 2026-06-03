@@ -87,24 +87,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.90%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.CommitCM.CopyAuthorTime
-- Text.CommitCM.CopyCommitterTime
-- Text.Merge.Test
-- Text.Merge.Test.NoConflicts
-- Text.Merge.Test.UnknownError
-- Text.Merge.Test.WillCauseConflicts
-- Text.Preferences.General.UseCompactBranchNames
-- Text.Rebase.Test
-- Text.Rebase.Test.OK
-- Text.Rebase.Test.UnknownError
-- Text.Rebase.Test.WillCauseConflicts
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-98.90%25-yellow)
 
