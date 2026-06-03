@@ -101,16 +101,25 @@ namespace SourceGit.Models
 
         public void GenerateNewPatchFromSelection(string file, string fileBlobGuid, TextDiffSelection selection, bool revert, string output)
         {
-            var isTracked = !string.IsNullOrEmpty(fileBlobGuid);
-            var fileGuid = isTracked ? fileBlobGuid : "00000000";
-
             using var writer = new StreamWriter(output);
             writer.NewLine = "\n";
             writer.WriteLine($"diff --git a/{file} b/{file}");
-            if (!revert && !isTracked)
+
+            if (!string.IsNullOrEmpty(fileBlobGuid))
+            {
+                writer.WriteLine($"index 00000000...{fileBlobGuid}");
+                writer.WriteLine($"--- a/{file}");
+            }
+            else if (revert)
+            {
+                writer.WriteLine($"--- a/{file}");
+            }
+            else
+            {
                 writer.WriteLine("new file mode 100644");
-            writer.WriteLine($"index 00000000...{fileGuid}");
-            writer.WriteLine($"--- {(revert || isTracked ? $"a/{file}" : "/dev/null")}");
+                writer.WriteLine($"--- /dev/null");
+            }
+
             writer.WriteLine($"+++ b/{file}");
 
             var additions = selection.EndLine - selection.StartLine;
