@@ -54,7 +54,7 @@
       <Color x:Key="Color.FlatButton.BackgroundHovered">#FF333333</Color>
       <Color x:Key="Color.FlatButton.FloatingBorder">#FF4F4F4F</Color>
       <Color x:Key="Color.FG1">#FFDDDDDD</Color>
-      <Color x:Key="Color.FG2">#60FFFFFF</Color>
+      <Color x:Key="Color.FG2">#FF9F9F9F</Color>
       <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
       <Color x:Key="Color.Diff.AddedBG">#C03A5C3F</Color>
       <Color x:Key="Color.Diff.DeletedBG">#C0633F3E</Color>
