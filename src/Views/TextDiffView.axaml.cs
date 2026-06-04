@@ -649,8 +649,18 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
+            var copyAsPatch = new MenuItem();
+            copyAsPatch.Header = App.Text("CopyAsPatch");
+            copyAsPatch.Icon = this.CreateMenuIcon("Icons.Copy");
+            copyAsPatch.Click += async (_, ev) =>
+            {
+                await CopyAsPatchAsync();
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(copy);
+            menu.Items.Add(copyAsPatch);
             menu.Open(TextArea.TextView);
 
             e.Handled = true;
@@ -894,6 +904,42 @@ namespace SourceGit.Views
             }
 
             await this.CopyTextAsync(builder.ToString());
+        }
+
+        private async Task CopyAsPatchAsync()
+        {
+            if (DataContext is not ViewModels.TextDiffContext { Data: { } diff, Option: { } option } ctx)
+                return;
+
+            var selection = TextArea.Selection;
+            var startPosition = selection.StartPosition;
+            var endPosition = selection.EndPosition;
+
+            if (startPosition.Location > endPosition.Location)
+                (startPosition, endPosition) = (endPosition, startPosition);
+
+            var maxIdx = GetLines().Count - 1;
+            var startIdx = Math.Min(startPosition.Line - 1, maxIdx);
+            var endIdx = Math.Min(endPosition.Line - 1, maxIdx);
+            var isCombined = true;
+            if (ctx is ViewModels.TwoSideTextDiff twoSides)
+            {
+                isCombined = false;
+                twoSides.GetCombinedRangeForSingleSide(ref startIdx, ref endIdx, IsOld);
+            }
+
+            var tmpFile = Path.GetTempFileName();
+            var patch = new Models.PatchGenerator(tmpFile, option, diff);
+            var succ = patch.Generate(startIdx, endIdx, isCombined, IsOld, false);
+            if (!succ)
+            {
+                Models.Notification.Send(null, "You should select at lease one changed line!", true);
+                return;
+            }
+
+            var patchText = File.ReadAllText(tmpFile);
+            File.Delete(tmpFile);
+            await this.CopyTextAsync(patchText);
         }
 
         private bool _execSizeChanged;
