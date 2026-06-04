@@ -9,6 +9,7 @@ namespace SourceGit.Models
 
         public static readonly List<Locale> Supported = new List<Locale>() {
             new Locale("Deutsch", "de_DE"),
+            new Locale("Ελληνικά", "el_GR"),
             new Locale("English", "en_US"),
             new Locale("Español", "es_ES"),
             new Locale("Français", "fr_FR"),

@@ -87,6 +87,8 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
+### ![el__GR](https://img.shields.io/badge/el__GR-%E2%88%9A-brightgreen)
+
 ### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-98.90%25-yellow)
