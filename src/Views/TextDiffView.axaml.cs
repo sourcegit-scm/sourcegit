@@ -658,7 +658,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
-            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+            if (DataContext is not ViewModels.TextDiffContext { Option: { IsLocalChange: true } })
                 return;
 
             if (sender is not TextView view)
@@ -701,7 +701,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+            if (DataContext is not ViewModels.TextDiffContext { Option: { IsLocalChange: true } })
                 return;
 
             if (sender is not TextView view)
@@ -1502,109 +1502,92 @@ namespace SourceGit.Views
 
         private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { } option } vm)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
-            if (!selection.HasChanges)
+            if (!option.IsLocalChange || !option.IsUnstaged)
                 return;
-
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView?.DataContext is not ViewModels.Repository repo)
-                return;
-
-            using var lockWatcher = repo.LockWatcher();
 
             var tmpFile = Path.GetTempFileName();
-            if (change.WorkTree == Models.ChangeState.Untracked)
+            var patch = new Models.PatchGenerator(tmpFile, option, diff);
+            var succ = patch.Generate(chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide, false);
+            if (succ)
             {
-                diff.GenerateNewPatchFromSelection(change.Path, null, selection, false, tmpFile);
-            }
-            else if (chunk.Combined)
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, false, tmpFile);
-            }
-            else
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
-            }
+                do
+                {
+                    var repoView = this.FindAncestorOfType<Repository>();
+                    if (repoView?.DataContext is not ViewModels.Repository repo)
+                        break;
 
-            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
-            File.Delete(tmpFile);
+                    using var lockWatcher = repo.LockWatcher();
+                    await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
 
-            vm.BlockNavigation.UpdateByChunk(chunk);
-            repo.MarkWorkingCopyDirtyManually();
+                    vm.BlockNavigation.UpdateByChunk(chunk);
+                    repo.MarkWorkingCopyDirtyManually();
+                } while (false);
+
+                File.Delete(tmpFile);
+            }
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } } vm)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { } option } vm)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
-            if (!selection.HasChanges)
+            if (!option.IsLocalChange || option.IsUnstaged)
                 return;
 
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView?.DataContext is not ViewModels.Repository repo)
-                return;
-
-            using var lockWatcher = repo.LockWatcher();
-
-            var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
             var tmpFile = Path.GetTempFileName();
-            if (change.Index == Models.ChangeState.Added)
-                diff.GenerateNewPatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
-            else if (chunk.Combined)
-                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
-            else
-                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
+            var patch = new Models.PatchGenerator(tmpFile, option, diff);
+            var succ = patch.Generate(chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide, true);
+            if (succ)
+            {
+                do
+                {
+                    var repoView = this.FindAncestorOfType<Repository>();
+                    if (repoView?.DataContext is not ViewModels.Repository repo)
+                        break;
 
-            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
-            File.Delete(tmpFile);
+                    using var lockWatcher = repo.LockWatcher();
+                    await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
 
-            vm.BlockNavigation.UpdateByChunk(chunk);
-            repo.MarkWorkingCopyDirtyManually();
+                    vm.BlockNavigation.UpdateByChunk(chunk);
+                    repo.MarkWorkingCopyDirtyManually();
+                } while (false);
+
+                File.Delete(tmpFile);
+            }
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { } option } vm)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
-            if (!selection.HasChanges)
+            if (!option.IsLocalChange || !option.IsUnstaged)
                 return;
-
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView?.DataContext is not ViewModels.Repository repo)
-                return;
-
-            using var lockWatcher = repo.LockWatcher();
 
             var tmpFile = Path.GetTempFileName();
-            if (change.WorkTree == Models.ChangeState.Untracked)
+            var patch = new Models.PatchGenerator(tmpFile, option, diff);
+            var succ = patch.Generate(chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide, true);
+            if (succ)
             {
-                diff.GenerateNewPatchFromSelection(change.Path, null, selection, true, tmpFile);
-            }
-            else if (chunk.Combined)
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
-            }
-            else
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
-            }
+                do
+                {
+                    var repoView = this.FindAncestorOfType<Repository>();
+                    if (repoView?.DataContext is not ViewModels.Repository repo)
+                        break;
 
-            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
-            File.Delete(tmpFile);
+                    using var lockWatcher = repo.LockWatcher();
+                    await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
 
-            vm.BlockNavigation.UpdateByChunk(chunk);
-            repo.MarkWorkingCopyDirtyManually();
+                    vm.BlockNavigation.UpdateByChunk(chunk);
+                    repo.MarkWorkingCopyDirtyManually();
+                } while (false);
+
+                File.Delete(tmpFile);
+            }
         }
     }
 }
