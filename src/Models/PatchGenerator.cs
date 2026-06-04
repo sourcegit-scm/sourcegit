@@ -8,15 +8,15 @@ namespace SourceGit.Models
         [GeneratedRegex(@"^@@ \-(\d+),?\d* \+(\d+),?\d* @@")]
         private static partial Regex REG_INDICATOR();
 
-        public PatchGenerator(string saveTo, DiffOption option, TextDiff diff)
+        public bool IsValid => _selection != null;
+
+        public PatchGenerator(DiffOption option, TextDiff diff, int startLine, int endLine, bool isCombined, bool isOldSide)
         {
-            _saveTo = saveTo;
             _targetFile = option.Path;
             _diff = diff;
-        }
+            _isCombined = isCombined;
+            _isOldSide = isOldSide;
 
-        public bool Generate(int startLine, int endLine, bool isCombined, bool isOldSide, bool revert)
-        {
             var lines = _diff.Lines;
             var hasChanges = false;
 
@@ -54,50 +54,33 @@ namespace SourceGit.Models
                 }
             }
 
-            if (!hasChanges)
-                return false;
-
-            if (isCombined)
-                GenerateCombined(selection, revert);
-            else
-                GenerateForSingleSide(selection, revert, isOldSide);
-
-            return true;
+            if (hasChanges)
+                _selection = selection;
         }
 
-        private void GenerateCombined(Selection selection, bool revert)
+        public void Generate(string saveTo, bool revert)
         {
-            using var writer = CreateWriter(revert);
-            var lines = _diff.Lines;
+            if (_selection == null)
+                return;
 
-            // If last line of selection is a change. Find one more line.
-            TextDiffLine tail = null;
-            if (selection.EndLine < lines.Count - 1)
-            {
-                var lastLine = lines[selection.EndLine];
-                if (lastLine.Type == TextDiffLineType.Added || lastLine.Type == TextDiffLineType.Deleted)
-                {
-                    for (int i = selection.EndLine + 1; i < lines.Count; i++)
-                    {
-                        var line = lines[i];
-                        if (line.Type == TextDiffLineType.Indicator)
-                            break;
-                        if (line.Type == TextDiffLineType.Normal ||
-                            (revert && line.Type == TextDiffLineType.Added) ||
-                            (!revert && line.Type == TextDiffLineType.Deleted))
-                        {
-                            tail = line;
-                            break;
-                        }
-                    }
-                }
-            }
+            using var writer = CreateWriter(saveTo, revert);
+
+            if (_isCombined)
+                GenerateCombined(writer, revert);
+            else
+                GenerateForSingleSide(writer, revert);
+        }
+
+        private void GenerateCombined(StreamWriter writer, bool revert)
+        {
+            var lines = _diff.Lines;
+            var tail = FindTail(revert);
 
             // If the first line is not indicator.
-            if (lines[selection.StartLine].Type != TextDiffLineType.Indicator)
+            if (lines[_selection.StartLine].Type != TextDiffLineType.Indicator)
             {
-                var indicator = selection.StartLine;
-                for (int i = selection.StartLine - 1; i >= 0; i--)
+                var indicator = _selection.StartLine;
+                for (int i = _selection.StartLine - 1; i >= 0; i--)
                 {
                     var line = lines[i];
                     if (line.Type == TextDiffLineType.Indicator)
@@ -122,12 +105,12 @@ namespace SourceGit.Models
                     }
                 }
 
-                for (int i = indicator; i < selection.StartLine; i++)
+                for (int i = indicator; i < _selection.StartLine; i++)
                 {
                     var line = lines[i];
                     if (line.Type == TextDiffLineType.Indicator)
                     {
-                        ProcessIndicator(writer, line, i, selection.StartLine, selection.EndLine, ignoreRemoves, ignoreAdds, revert, tail != null);
+                        ProcessIndicator(writer, line, i, ignoreRemoves, ignoreAdds, revert, tail != null);
                     }
                     else if (line.Type == TextDiffLineType.Added)
                     {
@@ -147,12 +130,12 @@ namespace SourceGit.Models
             }
 
             // Outputs the selected lines.
-            for (int i = selection.StartLine; i <= selection.EndLine; i++)
+            for (int i = _selection.StartLine; i <= _selection.EndLine; i++)
             {
                 var line = lines[i];
                 if (line.Type == TextDiffLineType.Indicator)
                 {
-                    if (!ProcessIndicator(writer, line, i, selection.StartLine, selection.EndLine, selection.IgnoredDeletes, selection.IgnoredAdds, revert, tail != null))
+                    if (!ProcessIndicator(writer, line, i, _selection.IgnoredDeletes, _selection.IgnoredAdds, revert, tail != null))
                         break;
                 }
                 else if (line.Type == TextDiffLineType.Normal)
@@ -173,48 +156,16 @@ namespace SourceGit.Models
                 Append(writer, ' ', tail);
         }
 
-        private void GenerateForSingleSide(Selection selection, bool revert, bool isOldSide)
+        private void GenerateForSingleSide(StreamWriter writer, bool revert)
         {
-            using var writer = CreateWriter(revert);
             var lines = _diff.Lines;
-
-            // If last line of selection is a change. Find one more line.
-            TextDiffLine tail = null;
-            if (selection.EndLine < lines.Count - 1)
-            {
-                var lastLine = lines[selection.EndLine];
-                if (lastLine.Type == TextDiffLineType.Added || lastLine.Type == TextDiffLineType.Deleted)
-                {
-                    for (int i = selection.EndLine + 1; i < lines.Count; i++)
-                    {
-                        var line = lines[i];
-                        if (line.Type == TextDiffLineType.Indicator)
-                            break;
-                        if (revert)
-                        {
-                            if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Added)
-                            {
-                                tail = line;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Deleted)
-                            {
-                                tail = line;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            var tail = FindTail(revert);
 
             // If the first line is not indicator.
-            if (lines[selection.StartLine].Type != TextDiffLineType.Indicator)
+            if (lines[_selection.StartLine].Type != TextDiffLineType.Indicator)
             {
-                var indicator = selection.StartLine;
-                for (int i = selection.StartLine - 1; i >= 0; i--)
+                var indicator = _selection.StartLine;
+                for (int i = _selection.StartLine - 1; i >= 0; i--)
                 {
                     var line = lines[i];
                     if (line.Type == TextDiffLineType.Indicator)
@@ -239,12 +190,12 @@ namespace SourceGit.Models
                     }
                 }
 
-                for (int i = indicator; i < selection.StartLine; i++)
+                for (int i = indicator; i < _selection.StartLine; i++)
                 {
                     var line = lines[i];
                     if (line.Type == TextDiffLineType.Indicator)
                     {
-                        ProcessIndicatorForSingleSide(writer, line, i, selection.StartLine, selection.EndLine, ignoreRemoves, ignoreAdds, revert, isOldSide, tail != null);
+                        ProcessIndicatorForSingleSide(writer, line, i, ignoreRemoves, ignoreAdds, revert, tail != null);
                     }
                     else if (line.Type == TextDiffLineType.Added)
                     {
@@ -264,12 +215,12 @@ namespace SourceGit.Models
             }
 
             // Outputs the selected lines.
-            for (int i = selection.StartLine; i <= selection.EndLine; i++)
+            for (int i = _selection.StartLine; i <= _selection.EndLine; i++)
             {
                 var line = lines[i];
                 if (line.Type == TextDiffLineType.Indicator)
                 {
-                    if (!ProcessIndicatorForSingleSide(writer, line, i, selection.StartLine, selection.EndLine, selection.IgnoredDeletes, selection.IgnoredAdds, revert, isOldSide, tail != null))
+                    if (!ProcessIndicatorForSingleSide(writer, line, i, _selection.IgnoredDeletes, _selection.IgnoredAdds, revert, tail != null))
                         break;
                 }
                 else if (line.Type == TextDiffLineType.Normal)
@@ -278,12 +229,12 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Added)
                 {
-                    if (isOldSide)
+                    if (_isOldSide)
                     {
                         if (revert)
                             Append(writer, ' ', line);
                         else
-                            selection.IgnoredAdds++;
+                            _selection.IgnoredAdds++;
                     }
                     else
                     {
@@ -292,7 +243,7 @@ namespace SourceGit.Models
                 }
                 else if (line.Type == TextDiffLineType.Deleted)
                 {
-                    if (isOldSide)
+                    if (_isOldSide)
                     {
                         Append(writer, '-', line);
                     }
@@ -301,7 +252,7 @@ namespace SourceGit.Models
                         if (!revert)
                             Append(writer, ' ', line);
                         else
-                            selection.IgnoredDeletes++;
+                            _selection.IgnoredDeletes++;
                     }
                 }
             }
@@ -310,9 +261,9 @@ namespace SourceGit.Models
                 Append(writer, ' ', tail);
         }
 
-        private StreamWriter CreateWriter(bool revert)
+        private StreamWriter CreateWriter(string saveTo, bool revert)
         {
-            var writer = new StreamWriter(_saveTo) { NewLine = "\n" };
+            var writer = new StreamWriter(saveTo) { NewLine = "\n" };
             writer.WriteLine($"diff --git \"a/{_targetFile}\" \"b/{_targetFile}\"");
 
             if (string.IsNullOrEmpty(_diff.OldMode))
@@ -342,6 +293,38 @@ namespace SourceGit.Models
             return writer;
         }
 
+        private TextDiffLine FindTail(bool revert)
+        {
+            var lines = _diff.Lines;
+
+            if (_selection.EndLine < lines.Count - 1)
+            {
+                var lastLine = lines[_selection.EndLine];
+                if (lastLine.Type == TextDiffLineType.Added || lastLine.Type == TextDiffLineType.Deleted)
+                {
+                    for (int i = _selection.EndLine + 1; i < lines.Count; i++)
+                    {
+                        var line = lines[i];
+                        if (line.Type == TextDiffLineType.Indicator)
+                            break;
+
+                        if (revert)
+                        {
+                            if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Added)
+                                return line;
+                        }
+                        else
+                        {
+                            if (line.Type == TextDiffLineType.Normal || line.Type == TextDiffLineType.Deleted)
+                                return line;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
         private void Append(StreamWriter writer, char prefix, TextDiffLine line)
         {
             writer.Flush();
@@ -354,14 +337,17 @@ namespace SourceGit.Models
                 writer.WriteLine("\\ No newline at end of file");
         }
 
-        private bool ProcessIndicator(StreamWriter writer, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed)
+        private bool ProcessIndicator(StreamWriter writer, TextDiffLine indicator, int idx, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed)
         {
             var lines = _diff.Lines;
+            var start = _selection.StartLine;
+            var end = _selection.EndLine;
             var match = REG_INDICATOR().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
             var oldCount = 0;
             var newCount = 0;
+
             for (int i = idx + 1; i <= end; i++)
             {
                 var test = lines[i];
@@ -424,14 +410,17 @@ namespace SourceGit.Models
             return true;
         }
 
-        private bool ProcessIndicatorForSingleSide(StreamWriter writer, TextDiffLine indicator, int idx, int start, int end, int ignoreRemoves, int ignoreAdds, bool revert, bool isOldSide, bool tailed)
+        private bool ProcessIndicatorForSingleSide(StreamWriter writer, TextDiffLine indicator, int idx, int ignoreRemoves, int ignoreAdds, bool revert, bool tailed)
         {
             var lines = _diff.Lines;
+            var start = _selection.StartLine;
+            var end = _selection.EndLine;
             var match = REG_INDICATOR().Match(indicator.Content);
             var oldStart = int.Parse(match.Groups[1].Value);
             var newStart = int.Parse(match.Groups[2].Value) + ignoreRemoves - ignoreAdds;
             var oldCount = 0;
             var newCount = 0;
+
             for (int i = idx + 1; i <= end; i++)
             {
                 var test = lines[i];
@@ -445,7 +434,7 @@ namespace SourceGit.Models
                 }
                 else if (test.Type == TextDiffLineType.Added)
                 {
-                    if (i < start || isOldSide)
+                    if (i < start || _isOldSide)
                     {
                         if (revert)
                         {
@@ -476,7 +465,7 @@ namespace SourceGit.Models
                     }
                     else
                     {
-                        if (isOldSide)
+                        if (_isOldSide)
                         {
                             oldCount++;
                         }
@@ -513,8 +502,10 @@ namespace SourceGit.Models
             public int IgnoredDeletes { get; set; } = 0;
         }
 
-        private string _saveTo = null;
         private string _targetFile = null;
         private TextDiff _diff = null;
+        private bool _isCombined = false;
+        private bool _isOldSide = false;
+        private Selection _selection = null;
     }
 }

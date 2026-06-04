@@ -928,14 +928,15 @@ namespace SourceGit.Views
                 twoSides.GetCombinedRangeForSingleSide(ref startIdx, ref endIdx, IsOld);
             }
 
-            var tmpFile = Path.GetTempFileName();
-            var patch = new Models.PatchGenerator(tmpFile, option, diff);
-            var succ = patch.Generate(startIdx, endIdx, isCombined, IsOld, false);
-            if (!succ)
+            var patch = new Models.PatchGenerator(option, diff, startIdx, endIdx, isCombined, IsOld);
+            if (!patch.IsValid)
             {
                 Models.Notification.Send(null, "You should select at lease one changed line!", true);
                 return;
             }
+
+            var tmpFile = Path.GetTempFileName();
+            patch.Generate(tmpFile, false);
 
             var patchText = File.ReadAllText(tmpFile);
             File.Delete(tmpFile);
@@ -1554,26 +1555,22 @@ namespace SourceGit.Views
             if (!option.IsLocalChange || !option.IsUnstaged)
                 return;
 
+            var patch = new Models.PatchGenerator(option, diff, chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide);
+            if (!patch.IsValid)
+                return;
+
+            if (this.FindAncestorOfType<Repository>()?.DataContext is not ViewModels.Repository repo)
+                return;
+
             var tmpFile = Path.GetTempFileName();
-            var patch = new Models.PatchGenerator(tmpFile, option, diff);
-            var succ = patch.Generate(chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide, false);
-            if (succ)
-            {
-                do
-                {
-                    var repoView = this.FindAncestorOfType<Repository>();
-                    if (repoView?.DataContext is not ViewModels.Repository repo)
-                        break;
+            patch.Generate(tmpFile, false);
 
-                    using var lockWatcher = repo.LockWatcher();
-                    await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
+            using var lockWatcher = repo.LockWatcher();
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
 
-                    vm.BlockNavigation.UpdateByChunk(chunk);
-                    repo.MarkWorkingCopyDirtyManually();
-                } while (false);
-
-                File.Delete(tmpFile);
-            }
+            vm.BlockNavigation.UpdateByChunk(chunk);
+            repo.MarkWorkingCopyDirtyManually();
+            File.Delete(tmpFile);
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
@@ -1584,26 +1581,22 @@ namespace SourceGit.Views
             if (!option.IsLocalChange || option.IsUnstaged)
                 return;
 
+            var patch = new Models.PatchGenerator(option, diff, chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide);
+            if (!patch.IsValid)
+                return;
+
+            if (this.FindAncestorOfType<Repository>()?.DataContext is not ViewModels.Repository repo)
+                return;
+
             var tmpFile = Path.GetTempFileName();
-            var patch = new Models.PatchGenerator(tmpFile, option, diff);
-            var succ = patch.Generate(chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide, true);
-            if (succ)
-            {
-                do
-                {
-                    var repoView = this.FindAncestorOfType<Repository>();
-                    if (repoView?.DataContext is not ViewModels.Repository repo)
-                        break;
+            patch.Generate(tmpFile, true);
 
-                    using var lockWatcher = repo.LockWatcher();
-                    await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
+            using var lockWatcher = repo.LockWatcher();
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
 
-                    vm.BlockNavigation.UpdateByChunk(chunk);
-                    repo.MarkWorkingCopyDirtyManually();
-                } while (false);
-
-                File.Delete(tmpFile);
-            }
+            vm.BlockNavigation.UpdateByChunk(chunk);
+            repo.MarkWorkingCopyDirtyManually();
+            File.Delete(tmpFile);
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
@@ -1614,26 +1607,22 @@ namespace SourceGit.Views
             if (!option.IsLocalChange || !option.IsUnstaged)
                 return;
 
+            var patch = new Models.PatchGenerator(option, diff, chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide);
+            if (!patch.IsValid)
+                return;
+
+            if (this.FindAncestorOfType<Repository>()?.DataContext is not ViewModels.Repository repo)
+                return;
+
             var tmpFile = Path.GetTempFileName();
-            var patch = new Models.PatchGenerator(tmpFile, option, diff);
-            var succ = patch.Generate(chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide, true);
-            if (succ)
-            {
-                do
-                {
-                    var repoView = this.FindAncestorOfType<Repository>();
-                    if (repoView?.DataContext is not ViewModels.Repository repo)
-                        break;
+            patch.Generate(tmpFile, true);
 
-                    using var lockWatcher = repo.LockWatcher();
-                    await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
+            using var lockWatcher = repo.LockWatcher();
+            await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
 
-                    vm.BlockNavigation.UpdateByChunk(chunk);
-                    repo.MarkWorkingCopyDirtyManually();
-                } while (false);
-
-                File.Delete(tmpFile);
-            }
+            vm.BlockNavigation.UpdateByChunk(chunk);
+            repo.MarkWorkingCopyDirtyManually();
+            File.Delete(tmpFile);
         }
     }
 }
