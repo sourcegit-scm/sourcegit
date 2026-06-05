@@ -30,6 +30,9 @@
   <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch File:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select .patch file to apply</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignore whitespace changes</x:String>
+  <x:String x:Key="Text.Apply.Source" xml:space="preserve">Source:</x:String>
+  <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">File</x:String>
+  <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">Clipboard</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Apply Patch</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Apply Stash</x:String>
