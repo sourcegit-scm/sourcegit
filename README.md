@@ -251,6 +251,9 @@ You can define your own conventional commit types (per-repository) by following 
 
 Everyone is welcome to submit a PR. Please make sure your PR is based on the latest `develop` branch and the target branch of PR is `develop`.
 
+This project has a submodule in `depends/AvaloniaEdit` which is a custom fork of [Official AvaloniaEdit](https://github.com/AvaloniaUI/AvaloniaEdit). 
+Please make sure it is initialized - enable `--recurse-submodules` option while cloning or run `git submodule update --init` after cloned.
+
 In short, here are the commands to get started once [.NET tools are installed](https://dotnet.microsoft.com/en-us/download):
 
 ```sh
