@@ -614,8 +614,14 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories &&
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 sender is DataGrid grid &&
-                !Equals(e.Source, grid))
+                e.Source is Control { DataContext: Models.Commit c })
             {
+                if (histories.Bisect != null)
+                {
+                    histories.CheckoutCommitDetached(c);
+                    return;
+                }
+
                 if (e.Source is CommitRefsPresenter crp)
                 {
                     var decorator = crp.DecoratorAt(e.GetPosition(crp));
@@ -624,8 +630,7 @@ namespace SourceGit.Views
                         return;
                 }
 
-                if (e.Source is Control { DataContext: Models.Commit c })
-                    await histories.CheckoutBranchByCommitAsync(c);
+                await histories.CheckoutBranchByCommitAsync(c);
             }
         }
 

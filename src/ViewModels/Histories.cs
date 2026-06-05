@@ -261,6 +261,12 @@ namespace SourceGit.ViewModels
                 .ConfigureAwait(false);
         }
 
+        public void CheckoutCommitDetached(Models.Commit c)
+        {
+            if (!c.IsCurrentHead && _repo.CanCreatePopup())
+                _repo.ShowPopup(new CheckoutCommit(_repo, c));
+        }
+
         public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)
         {
             if (decorator == null)
