@@ -33,10 +33,10 @@
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">尝试三路合并</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">补丁文件 ：</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">选择补丁文件</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">补丁来源 ：</x:String>
   <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">文件</x:String>
   <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">剪贴板</x:String>
-  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">应用补丁</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白符号处理 ：</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">应用贮藏</x:String>
