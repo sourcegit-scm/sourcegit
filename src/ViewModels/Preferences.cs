@@ -498,6 +498,12 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public AvaloniaList<Models.UserProfile> UserProfiles
+        {
+            get;
+            set;
+        } = [];
+
         public AvaloniaList<AI.Service> OpenAIServices
         {
             get;
