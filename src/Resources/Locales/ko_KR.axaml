@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml" />
+  </ResourceDictionary.MergedDictionaries>
   <x:String x:Key="Text.About" xml:space="preserve">정보</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">SourceGit 정보</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">릴리스 노트</x:String>
