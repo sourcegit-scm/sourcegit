@@ -44,14 +44,27 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool IsDateTimeColumnVisible
+        public bool IsAuthorTimeColumnVisible
         {
-            get => _repo.UIStates.IsDateTimeColumnVisibleInHistory;
+            get => _repo.UIStates.IsAuthorTimeColumnVisibleInHistory;
             set
             {
-                if (_repo.UIStates.IsDateTimeColumnVisibleInHistory != value)
+                if (_repo.UIStates.IsAuthorTimeColumnVisibleInHistory != value)
                 {
-                    _repo.UIStates.IsDateTimeColumnVisibleInHistory = value;
+                    _repo.UIStates.IsAuthorTimeColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsCommitTimeColumnVisible
+        {
+            get => _repo.UIStates.IsCommitTimeColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsCommitTimeColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsCommitTimeColumnVisibleInHistory = value;
                     OnPropertyChanged();
                 }
             }

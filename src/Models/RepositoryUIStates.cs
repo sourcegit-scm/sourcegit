@@ -27,7 +27,13 @@ namespace SourceGit.Models
             set;
         } = true;
 
-        public bool IsDateTimeColumnVisibleInHistory
+        public bool IsAuthorTimeColumnVisibleInHistory
+        {
+            get;
+            set;
+        } = false;
+
+        public bool IsCommitTimeColumnVisibleInHistory
         {
             get;
             set;

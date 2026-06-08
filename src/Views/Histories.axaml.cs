@@ -513,13 +513,23 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
-            var timeColumn = new MenuItem();
-            timeColumn.Header = App.Text("Histories.Header.DateTime");
-            if (vm.IsDateTimeColumnVisible)
-                timeColumn.Icon = this.CreateMenuIcon("Icons.Check");
-            timeColumn.Click += (_, ev) =>
+            var authorTimeColumn = new MenuItem();
+            authorTimeColumn.Header = App.Text("Histories.Header.AuthorTime");
+            if (vm.IsAuthorTimeColumnVisible)
+                authorTimeColumn.Icon = this.CreateMenuIcon("Icons.Check");
+            authorTimeColumn.Click += (_, ev) =>
             {
-                vm.IsDateTimeColumnVisible = !vm.IsDateTimeColumnVisible;
+                vm.IsAuthorTimeColumnVisible = !vm.IsAuthorTimeColumnVisible;
+                ev.Handled = true;
+            };
+
+            var commitTimeColumn = new MenuItem();
+            commitTimeColumn.Header = App.Text("Histories.Header.CommitTime");
+            if (vm.IsCommitTimeColumnVisible)
+                commitTimeColumn.Icon = this.CreateMenuIcon("Icons.Check");
+            commitTimeColumn.Click += (_, ev) =>
+            {
+                vm.IsCommitTimeColumnVisible = !vm.IsCommitTimeColumnVisible;
                 ev.Handled = true;
             };
 
@@ -527,7 +537,8 @@ namespace SourceGit.Views
             menu.Items.Add(columnsHeader);
             menu.Items.Add(authorColumn);
             menu.Items.Add(shaColumn);
-            menu.Items.Add(timeColumn);
+            menu.Items.Add(authorTimeColumn);
+            menu.Items.Add(commitTimeColumn);
             menu.Open(border);
             e.Handled = true;
         }

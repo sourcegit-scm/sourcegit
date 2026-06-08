@@ -193,12 +193,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _check4UpdatesOnStartup, value);
         }
 
-        public bool ShowAuthorTimeInGraph
-        {
-            get => _showAuthorTimeInGraph;
-            set => SetProperty(ref _showAuthorTimeInGraph, value);
-        }
-
         public bool ShowChildren
         {
             get => _showChildren;
@@ -824,7 +818,6 @@ namespace SourceGit.ViewModels
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;
-        private bool _showAuthorTimeInGraph = false;
         private bool _showChildren = false;
         private bool _useCompactBranchNamesInGraph = true;
 
