@@ -60,7 +60,8 @@
   <x:String x:Key="Text.Bisect.Detecting">二分搜尋進行中。目前的提交是「良好」是「錯誤」?</x:String>
   <x:String x:Key="Text.Bisect.Good">標記為良好</x:String>
   <x:String x:Key="Text.Bisect.Skip">無法確認</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">二分搜尋進行中。請標記目前的提交為「良好」或「錯誤」，然後簽出另一個提交。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstBad">二分搜尋進行中。請標記目前的提交為「錯誤」，或簽出另一個提交並標記為「錯誤」。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">二分搜尋進行中。請標記目前的提交為「良好」或「錯誤」，然後簽出另一個提交。</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行溯源 (blame)</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">對上一個版本執行逐行溯源</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">忽略空白符號變化</x:String>

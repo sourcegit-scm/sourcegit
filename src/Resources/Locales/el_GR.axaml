@@ -57,7 +57,7 @@
   <x:String x:Key="Text.Bisect.Detecting">Εκτέλεση bisect. Το τρέχον HEAD είναι καλό ή κακό;</x:String>
   <x:String x:Key="Text.Bisect.Good">Καλό</x:String>
   <x:String x:Key="Text.Bisect.Skip">Παράλειψη</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Εκτέλεση bisect. Σημειώστε το τρέχον commit ως καλό ή κακό και κάντε checkout σε άλλο.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Εκτέλεση bisect. Σημειώστε το τρέχον commit ως καλό ή κακό και κάντε checkout σε άλλο.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame στην προηγούμενη αναθεώρηση</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Αγνόηση αλλαγών κενών χαρακτήρων</x:String>

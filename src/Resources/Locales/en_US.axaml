@@ -56,7 +56,8 @@
   <x:String x:Key="Text.Bisect.Detecting">Bisecting. Is current HEAD good or bad?</x:String>
   <x:String x:Key="Text.Bisect.Good">Good</x:String>
   <x:String x:Key="Text.Bisect.Skip">Skip</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Mark current commit as good or bad and checkout another one.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstBad">Bisecting. Mark current commit as bad or checkout another one then mark it as bad.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Bisecting. Mark current commit as good or bad and checkout another one.</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame on Previous Revision</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Ignore whitespace changes</x:String>

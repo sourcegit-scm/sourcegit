@@ -792,14 +792,15 @@
                    FontWeight="Bold"
                    Margin="8,0"
                    Foreground="{DynamicResource Brush.Conflict.Foreground}"
-                   Text="{DynamicResource Text.Bisect.WaitingForRange}">
-          <TextBlock.IsVisible>
-            <MultiBinding Converter="{x:Static BoolConverters.Or}">
-              <Binding Path="BisectState" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:BisectState.WaitingForFirstBad}"/>
-              <Binding Path="BisectState" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:BisectState.WaitingForFirstGood}"/>
-            </MultiBinding>
-          </TextBlock.IsVisible>
-        </TextBlock>
+                   Text="{DynamicResource Text.Bisect.WaitingForFirstBad}"
+                   IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.WaitingForFirstBad}}"/>
+
+        <TextBlock Grid.Column="0"
+                   FontWeight="Bold"
+                   Margin="8,0"
+                   Foreground="{DynamicResource Brush.Conflict.Foreground}"
+                   Text="{DynamicResource Text.Bisect.WaitingForFirstGood}"
+                   IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.WaitingForFirstGood}}"/>
 
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
@@ -818,6 +819,16 @@
                 Margin="4,0"
                 FontWeight="Regular"
                 BorderThickness="0"
+                Content="{DynamicResource Text.Bisect.Bad}"
+                IsEnabled="{Binding !IsBisectCommandRunning}"
+                Padding="8,2"
+                Click="OnBisectCommand"
+                Tag="bad"/>
+        <Button Grid.Column="3"
+                Classes="flat"
+                Margin="4,0"
+                FontWeight="Regular"
+                BorderThickness="0"
                 Content="{DynamicResource Text.Bisect.Good}"
                 Padding="8,2"
                 Click="OnBisectCommand"
@@ -828,17 +839,7 @@
               <Binding Path="BisectState" Converter="{x:Static ObjectConverters.NotEqual}" ConverterParameter="{x:Static m:BisectState.WaitingForFirstBad}"/>
             </MultiBinding>
           </Button.IsEnabled>
-        </Button>        
-        <Button Grid.Column="3"
-                Classes="flat"
-                Margin="4,0"
-                FontWeight="Regular"
-                BorderThickness="0"
-                Content="{DynamicResource Text.Bisect.Bad}"
-                IsEnabled="{Binding !IsBisectCommandRunning}"
-                Padding="8,2"
-                Click="OnBisectCommand"
-                Tag="bad"/>
+        </Button>
         <Button Grid.Column="4"
                 Classes="flat"
                 Margin="4,0"
