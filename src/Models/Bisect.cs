@@ -6,7 +6,8 @@ namespace SourceGit.Models
     public enum BisectState
     {
         None = 0,
-        WaitingForRange,
+        WaitingForFirstBad,
+        WaitingForFirstGood,
         Detecting,
     }
 
