@@ -77,6 +77,15 @@ namespace SourceGit.Views
             set => SetValue(LinkForegroundProperty, value);
         }
 
+        public static readonly StyledProperty<IBrush> InlineCodeForegroundProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(InlineCodeForeground), Brushes.White);
+
+        public IBrush InlineCodeForeground
+        {
+            get => GetValue(InlineCodeForegroundProperty);
+            set => SetValue(InlineCodeForegroundProperty, value);
+        }
+
         public static readonly StyledProperty<bool> ShowStrikethroughProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, bool>(nameof(ShowStrikethrough), false);
 
@@ -305,6 +314,7 @@ namespace SourceGit.Views
             var codeFontFamily = CodeFontFamily;
             var fontSize = FontSize;
             var foreground = Foreground;
+            var inlineCodeForeground = InlineCodeForeground;
             var linkForeground = LinkForeground;
             var typeface = new Typeface(fontFamily, FontStyle.Normal, FontWeight);
             var codeTypeface = new Typeface(codeFontFamily, FontStyle.Normal, FontWeight);
@@ -359,7 +369,7 @@ namespace SourceGit.Views
                         FlowDirection.LeftToRight,
                         codeTypeface,
                         fontSize - 0.5,
-                        foreground);
+                        inlineCodeForeground);
                     _inlines.Add(new Inline(x, link, elem));
                     x += link.WidthIncludingTrailingWhitespace + 8;
                 }
