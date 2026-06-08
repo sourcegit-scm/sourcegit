@@ -420,10 +420,23 @@ namespace SourceGit.Views
 
         protected override void OnDataContextChanged(EventArgs e)
         {
+            if (_boundHistories != null)
+                _boundHistories.RequestBringIntoView -= OnRequestBringIntoView;
+
             base.OnDataContextChanged(e);
 
-            if (DataContext is ViewModels.Histories vm)
-                CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+            _boundHistories = DataContext as ViewModels.Histories;
+            if (_boundHistories != null)
+            {
+                CommitListContainer.Columns[1].Width = new(_boundHistories.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+                _boundHistories.RequestBringIntoView += OnRequestBringIntoView;
+            }
+        }
+
+        private void OnRequestBringIntoView(Models.Commit commit)
+        {
+            if (commit != null)
+                CommitListContainer.ScrollIntoView(commit, null);
         }
 
         private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
@@ -431,32 +444,48 @@ namespace SourceGit.Views
             if (sender is not Border border)
                 return;
 
-            if (DataContext is not ViewModels.Histories { IsAuthorColumnVisible: true } vm)
+            if (DataContext is not ViewModels.Histories vm)
                 return;
 
             var pos = e.GetPosition(border);
+
             if (_resizingAuthorColumn)
             {
+                if (!vm.IsAuthorColumnVisible)
+                {
+                    _resizingAuthorColumn = false;
+                    return;
+                }
+
                 var posX = CommitListContainer.Columns[0].ActualWidth;
                 var maxW = posX + CommitListContainer.Columns[1].ActualWidth - 100;
                 var delta = posX - pos.X;
                 var w = Math.Max(Math.Min(vm.AuthorColumnWidth + delta, maxW), 80);
                 CommitListContainer.Columns[1].Width = new(w, DataGridLengthUnitType.Pixel);
                 vm.AuthorColumnWidth = w;
+                return;
             }
-            else
+
+            if (FindHeaderFlyoutOwner(e.GetPosition(CommitListContainer)) != null)
+            {
+                if (border.Cursor != _pointerCursor)
+                    border.Cursor = _pointerCursor;
+                return;
+            }
+
+            if (vm.IsAuthorColumnVisible)
             {
                 var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
                 if (dis < 4 && dis > -4)
                 {
                     if (border.Cursor != _resizingCursor)
                         border.Cursor = _resizingCursor;
-                }
-                else if (border.Cursor != Cursor.Default)
-                {
-                    border.Cursor = Cursor.Default;
+                    return;
                 }
             }
+
+            if (border.Cursor != Cursor.Default)
+                border.Cursor = Cursor.Default;
         }
 
         private void OnCommitListHeaderPointerPressed(object sender, PointerPressedEventArgs e)
@@ -464,16 +493,31 @@ namespace SourceGit.Views
             if (sender is not Border border)
                 return;
 
+            if (!e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+                return;
+
             var pos = e.GetPosition(border);
+
+            var flyoutOwner = FindHeaderFlyoutOwner(e.GetPosition(CommitListContainer));
+            if (flyoutOwner != null)
+            {
+                if (flyoutOwner.Tag is "GoToSHA" && DataContext is ViewModels.Histories vm)
+                    vm.GoToSHAInput = string.Empty;
+
+                FlyoutBase.ShowAttachedFlyout(flyoutOwner);
+                e.Handled = true;
+                return;
+            }
+
+            if (DataContext is not ViewModels.Histories { IsAuthorColumnVisible: true })
+                return;
+
             var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
             if (dis > 4 || dis < -4)
                 return;
 
-            if (e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
-            {
-                _resizingAuthorColumn = true;
-                e.Handled = true;
-            }
+            _resizingAuthorColumn = true;
+            e.Handled = true;
         }
 
         private void OnCommitListHeaderPointerReleased(object sender, PointerReleasedEventArgs e)
@@ -500,6 +544,8 @@ namespace SourceGit.Views
             authorColumn.Click += (_, ev) =>
             {
                 vm.IsAuthorColumnVisible = !vm.IsAuthorColumnVisible;
+                if (!vm.IsAuthorColumnVisible)
+                    vm.CommitAuthorFilter = string.Empty;
                 ev.Handled = true;
             };
 
@@ -583,8 +629,8 @@ namespace SourceGit.Views
 
         private void OnScrollToTopPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories)
-                CommitListContainer.ScrollIntoView(histories.Commits[0], null);
+            if (DataContext is ViewModels.Histories { Commits: { Count: > 0 } commits })
+                CommitListContainer.ScrollIntoView(commits[0], null);
         }
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
@@ -1692,7 +1738,25 @@ namespace SourceGit.Views
                 await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, on, prefill));
         }
 
+        // The transparent header overlay sits above the grid and swallows clicks, so hit-test the
+        // grid's own subtree to reach the header icons and return whichever carries an attached flyout.
+        private Control FindHeaderFlyoutOwner(Point pointInGrid)
+        {
+            var hit = CommitListContainer.InputHitTest(pointInGrid) as Visual;
+            while (hit != null)
+            {
+                if (hit is Control control && FlyoutBase.GetAttachedFlyout(control) != null)
+                    return control;
+
+                hit = hit.GetVisualParent();
+            }
+
+            return null;
+        }
+
         private bool _resizingAuthorColumn = false;
         private Cursor _resizingCursor = new Cursor(StandardCursorType.SizeWestEast);
+        private Cursor _pointerCursor = new Cursor(StandardCursorType.Hand);
+        private ViewModels.Histories _boundHistories = null;
     }
 }

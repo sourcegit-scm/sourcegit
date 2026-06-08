@@ -497,6 +497,11 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Select Commit</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">HISTORY</x:String>
+  <x:String x:Key="Text.Histories.Filter.Author" xml:space="preserve">Filter by author name or email</x:String>
+  <x:String x:Key="Text.Histories.Filter.MoreContributors" xml:space="preserve">Showing top 100 of {0}. Refine to narrow.</x:String>
+  <x:String x:Key="Text.Histories.GoToSHA" xml:space="preserve">Go to SHA</x:String>
+  <x:String x:Key="Text.Histories.GoToSHA.Hint" xml:space="preserve">Jumps to the commit with this SHA prefix.</x:String>
+  <x:String x:Key="Text.Histories.GoToSHA.NotFound" xml:space="preserve">No loaded commit matches this SHA prefix.</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT TIME</x:String>

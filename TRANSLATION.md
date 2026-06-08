@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-91.08%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-90.63%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -55,6 +55,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
 - Text.GotoRevisionSelector
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -104,7 +109,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-98.22%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-97.73%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
@@ -124,13 +129,18 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.TagCM.Checkout
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.22%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-97.73%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -150,13 +160,18 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.TagCM.Checkout
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-97.13%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-96.65%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -178,6 +193,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Merge.Test
 - Text.Merge.Test.NoConflicts
 - Text.Merge.Test.UnknownError
@@ -193,7 +213,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-97.13%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-96.65%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -215,6 +235,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Merge.Test
 - Text.Merge.Test.NoConflicts
 - Text.Merge.Test.UnknownError
@@ -230,7 +255,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-83.94%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-83.53%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -304,6 +329,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.GotoRevisionSelector
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -400,7 +430,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-90.58%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-90.14%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -450,6 +480,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
 - Text.GotoRevisionSelector
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -503,7 +538,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-91.38%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-90.93%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -551,6 +586,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -598,7 +638,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-98.61%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-98.13%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -614,13 +654,18 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.TagCM.Checkout
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-63.83%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-63.51%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -780,6 +825,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.GotoRevisionSelector
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -993,7 +1043,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.61%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.13%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -1009,13 +1059,18 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.FinishWithRebase
 - Text.GitFlow.StartAt
 - Text.GitFlow.StartName
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.TagCM.Checkout
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-65.71%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-65.38%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1189,6 +1244,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.GotoRevisionSelector
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -1369,7 +1429,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-66.50%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-66.17%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1539,6 +1599,11 @@ This document shows the translation status of each locale file in the repository
 - Text.GitLFS.Locks.UnlockAllMyLocks
 - Text.GitLFS.Locks.UnlockAllMyLocks.Confirm
 - Text.GotoRevisionSelector
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
 - Text.Histories.HighlightsInGraph
 - Text.Histories.HighlightsInGraph.All
 - Text.Histories.HighlightsInGraph.CurrentBranchOnly
@@ -1715,6 +1780,28 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
+### ![zh__CN](https://img.shields.io/badge/zh__CN-99.51%25-yellow)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+<details>
+<summary>Missing keys in zh_CN.axaml</summary>
+
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
+
+</details>
+
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.51%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.Histories.Filter.Author
+- Text.Histories.Filter.MoreContributors
+- Text.Histories.GoToSHA
+- Text.Histories.GoToSHA.Hint
+- Text.Histories.GoToSHA.NotFound
+
+</details>

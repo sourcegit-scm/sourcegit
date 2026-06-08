@@ -75,11 +75,76 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                GenerateGraph(value, true);
-                if (SetProperty(ref _commits, value))
-                    PostCommitsChanged();
+                _fullCommits = value ?? [];
+                RebuildContributors();
+                ApplyCommitFilters();
             }
         }
+
+        public string CommitAuthorFilter
+        {
+            get => _commitAuthorFilter;
+            set
+            {
+                if (SetProperty(ref _commitAuthorFilter, value ?? string.Empty))
+                {
+                    OnPropertyChanged(nameof(IsAuthorFilterActive));
+                    UpdateVisibleContributors();
+                    ScheduleApplyCommitFilters();
+                }
+            }
+        }
+
+        public string GoToSHAInput
+        {
+            get => _goToSHAInput;
+            set
+            {
+                if (SetProperty(ref _goToSHAInput, value ?? string.Empty))
+                    TryGoToSHA(value);
+            }
+        }
+
+        public bool GoToSHANotFound
+        {
+            get => _goToSHANotFound;
+            private set => SetProperty(ref _goToSHANotFound, value);
+        }
+
+        public List<Models.StatisticsAuthor> VisibleContributors
+        {
+            get => _visibleContributors;
+            private set => SetProperty(ref _visibleContributors, value);
+        }
+
+        public int MatchedContributorsCount
+        {
+            get => _matchedContributorsCount;
+            private set => SetProperty(ref _matchedContributorsCount, value);
+        }
+
+        public bool HasMoreContributors
+        {
+            get => _hasMoreContributors;
+            private set => SetProperty(ref _hasMoreContributors, value);
+        }
+
+        public bool IsAuthorFilterActive
+        {
+            get => !string.IsNullOrEmpty(_commitAuthorFilter);
+        }
+
+        public Models.StatisticsAuthor SelectedContributor
+        {
+            get => _selectedContributor;
+            set
+            {
+                if (SetProperty(ref _selectedContributor, value) && value != null)
+                    PickContributor(value);
+            }
+        }
+
+        public event Action<Models.Commit> RequestBringIntoView;
 
         public Models.CommitGraph Graph
         {
@@ -193,6 +258,12 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _commitDetailSharedData = new CommitDetailSharedData();
+            _applyFiltersTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(200) };
+            _applyFiltersTimer.Tick += (_, _) =>
+            {
+                _applyFiltersTimer.Stop();
+                ApplyCommitFilters();
+            };
         }
 
         public void NotifyCurrentBranchChanged()
@@ -510,6 +581,144 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
+        public void PickContributor(Models.StatisticsAuthor contributor)
+        {
+            if (contributor?.User is not { } user)
+                return;
+
+            CommitAuthorFilter = string.IsNullOrEmpty(user.Email) ? user.Name : user.Email;
+        }
+
+        public void ClearAuthorFilter() => ClearAuthorFilterCore(debounce: true);
+
+        private void TryGoToSHA(string text)
+        {
+            var prefix = text?.Trim();
+            if (string.IsNullOrEmpty(prefix) || prefix.Length < 4)
+            {
+                GoToSHANotFound = false;
+                return;
+            }
+
+            var found = _fullCommits.Find(c => c.SHA.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+            GoToSHANotFound = found == null;
+            NavigateToCommit(found);
+        }
+
+        private void NavigateToCommit(Models.Commit target, bool select = true, Models.Commit fallback = null)
+        {
+            var scrollTo = target ?? fallback;
+            if (scrollTo == null)
+                return;
+
+            if (!_commits.Contains(scrollTo))
+                ClearAuthorFilterImmediate();
+
+            if (select && target != null)
+                SelectedCommits = [target];
+
+            RequestBringIntoView?.Invoke(scrollTo);
+        }
+
+        private void ClearAuthorFilterImmediate() => ClearAuthorFilterCore(debounce: false);
+
+        private void ClearAuthorFilterCore(bool debounce)
+        {
+            SelectedContributor = null;
+            if (!SetProperty(ref _commitAuthorFilter, string.Empty, nameof(CommitAuthorFilter)))
+                return;
+
+            OnPropertyChanged(nameof(IsAuthorFilterActive));
+            UpdateVisibleContributors();
+            if (debounce)
+                ScheduleApplyCommitFilters();
+            else
+                ApplyCommitFilters();
+        }
+
+        private void RebuildContributors()
+        {
+            var map = new Dictionary<string, Models.StatisticsAuthor>();
+            foreach (var c in _fullCommits)
+            {
+                var user = c.Author;
+                var key = $"{user.Name}{user.Email}";
+                if (map.TryGetValue(key, out var exist))
+                    exist.Count++;
+                else
+                    map.Add(key, new Models.StatisticsAuthor(user, 1));
+            }
+
+            _allContributors = new List<Models.StatisticsAuthor>(map.Values);
+            _allContributors.Sort((l, r) => string.Compare(l.User.Name, r.User.Name, StringComparison.OrdinalIgnoreCase));
+
+            UpdateVisibleContributors();
+        }
+
+        private void UpdateVisibleContributors()
+        {
+            var filter = _commitAuthorFilter;
+            var hasFilter = !string.IsNullOrEmpty(filter);
+
+            var shown = new List<Models.StatisticsAuthor>();
+            var matched = 0;
+            foreach (var c in _allContributors)
+            {
+                if (hasFilter &&
+                    c.User.Name.IndexOf(filter, StringComparison.OrdinalIgnoreCase) < 0 &&
+                    c.User.Email.IndexOf(filter, StringComparison.OrdinalIgnoreCase) < 0)
+                    continue;
+
+                matched++;
+                if (shown.Count < MAX_VISIBLE_CONTRIBUTORS)
+                    shown.Add(c);
+            }
+
+            HasMoreContributors = matched > shown.Count;
+            MatchedContributorsCount = matched;
+            VisibleContributors = shown;
+        }
+
+        private void ScheduleApplyCommitFilters()
+        {
+            _applyFiltersTimer.Stop();
+            _applyFiltersTimer.Start();
+        }
+
+        private void ApplyCommitFilters()
+        {
+            _applyFiltersTimer.Stop();
+
+            var filtered = BuildFilteredCommits();
+            GenerateGraph(filtered, true);
+            if (SetProperty(ref _commits, filtered, nameof(Commits)))
+                PostCommitsChanged();
+        }
+
+        private List<Models.Commit> BuildFilteredCommits()
+        {
+            var author = _commitAuthorFilter;
+            if (string.IsNullOrEmpty(author))
+                return _fullCommits;
+
+            var result = new List<Models.Commit>();
+            foreach (var c in _fullCommits)
+            {
+                if (c.Author.Name.IndexOf(author, StringComparison.OrdinalIgnoreCase) < 0 &&
+                    c.Author.Email.IndexOf(author, StringComparison.OrdinalIgnoreCase) < 0)
+                    continue;
+
+                result.Add(c);
+            }
+
+            return result;
+        }
+
+        public void StopFilterTimer()
+        {
+            _applyFiltersTimer?.Stop();
+        }
+
         private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
@@ -525,10 +734,22 @@ namespace SourceGit.ViewModels
             Graph = Models.CommitGraph.Generate(commits, commitsChanged, firstParentOnly, highlighting, extraHeads);
         }
 
+        private const int MAX_VISIBLE_CONTRIBUTORS = 100;
+
         private Repository _repo = null;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];
+        private List<Models.Commit> _fullCommits = [];
+        private string _commitAuthorFilter = string.Empty;
+        private string _goToSHAInput = string.Empty;
+        private bool _goToSHANotFound = false;
+        private Models.StatisticsAuthor _selectedContributor = null;
+        private List<Models.StatisticsAuthor> _allContributors = [];
+        private List<Models.StatisticsAuthor> _visibleContributors = [];
+        private bool _hasMoreContributors = false;
+        private int _matchedContributorsCount = 0;
+        private readonly DispatcherTimer _applyFiltersTimer = null;
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
