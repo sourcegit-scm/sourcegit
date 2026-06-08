@@ -49,7 +49,7 @@ namespace SourceGit.Views
             if (_prefix == null)
             {
                 _prefix = LoadIcon("Icons.Bisect");
-                _good = LoadIcon("Icons.Check");
+                _good = LoadIcon("Icons.Good");
                 _bad = LoadIcon("Icons.Bad");
             }
 
