@@ -187,7 +187,7 @@ namespace SourceGit
             {
                 if (!string.IsNullOrEmpty(defaultFont))
                 {
-                    monospaceFont = $"fonts:SourceGit#JetBrains Mono,{defaultFont}";
+                    monospaceFont = $"fonts:SourceGit#JetBrains Mono NL,{defaultFont}";
                     resDic.Add("Fonts.Monospace", FontFamily.Parse(monospaceFont));
                 }
             }
