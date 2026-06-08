@@ -907,7 +907,7 @@
       </Border>
 
       <Grid Grid.Row="3">
-        <Border IsVisible="{Binding IsHistoriesVisible, Mode=OneWay}" PropertyChanged="OnRightPagePropertyChanged">
+        <Border Background="{DynamicResource Brush.HistoryBG}" IsVisible="{Binding IsHistoriesVisible, Mode=OneWay}" PropertyChanged="OnRightPagePropertyChanged">
           <v:Histories DataContext="{Binding Histories, Mode=OneWay}"
                        CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                        Bisect="{Binding Bisect, Mode=OneWay}"

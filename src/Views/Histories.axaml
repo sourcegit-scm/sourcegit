@@ -27,7 +27,7 @@
       <v:HistoriesCommitList x:Name="CommitListContainer"
                              Classes="static_scrollbar"
                              ScrollViewer.AllowAutoHide="False"
-                             Background="{DynamicResource Brush.DataGridHeaderBG}"
+                             Background="Transparent"
                              ItemsSource="{Binding Commits, Mode=OneWay}"
                              TotalCommits="{Binding Commits.Count, Mode=OneWay}"
                              SelectedCommits="{Binding SelectedCommits, Mode=TwoWay}"
@@ -256,7 +256,7 @@
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                   MinWidth="1" MinHeight="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="{DynamicResource Brush.Window}"
+                  Background="Transparent"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   Focusable="False"
                   IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
