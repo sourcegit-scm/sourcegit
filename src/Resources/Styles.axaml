@@ -1002,6 +1002,7 @@
     <Setter Property="MinHeight" Value="20"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
+    <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
 
     <Style Selector="^ /template/ Popup#PART_Popup">
       <Setter Property="Placement" Value="BottomEdgeAlignedLeft"/>
@@ -1009,6 +1010,7 @@
     </Style>
     <Style Selector="^:pointerover /template/ Border#Background">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}" />
+      <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
     </Style>
     <Style Selector="^:disabled">
       <Setter Property="Opacity" Value=".6"/>
@@ -1071,6 +1073,8 @@
         <Border/>
       </FocusAdornerTemplate>
     </Setter>
+    
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
     
     <Setter Property="Template">
       <ControlTemplate>
@@ -1369,6 +1373,9 @@
   </Style>
 
   <Style Selector="NumericUpDown">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+    <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+    
     <Style Selector="^ /template/ ButtonSpinner#PART_Spinner">
       <Setter Property="MinHeight" Value="0"/>
       <Setter Property="Height" Value="28"/>
