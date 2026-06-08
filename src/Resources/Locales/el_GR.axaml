@@ -493,7 +493,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">ΣΥΓΓΡΑΦΕΑΣ</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ΩΡΑ ΣΥΓΓΡΑΦΕΑ</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ΩΡΑ COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">ΗΜΕΡΟΜΗΝΙΑ &amp; ΩΡΑ</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ΓΡΑΦΗΜΑ &amp; ΘΕΜΑ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">ΕΠΙΣΗΜΑΝΣΕΙΣ ΣΤΟ ΓΡΑΦΗΜΑ</x:String>
@@ -670,7 +669,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Ενεργοποίηση συμπαγών φακέλων στο δέντρο αλλαγών</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Γλώσσα</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits ιστορικού</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Εμφάνιση ώρας συγγραφέα αντί για ώρα commit στο γράφημα</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Εμφάνιση της σελίδας `ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ` από προεπιλογή</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Εμφάνιση της καρτέλας `ΑΛΛΑΓΕΣ` στις λεπτομέρειες commit από προεπιλογή</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Εμφάνιση απογόνων στις λεπτομέρειες commit</x:String>

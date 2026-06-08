@@ -493,7 +493,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HORA DEL AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">FECHA DE COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">FECHA HORA</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO y ASUNTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">DESTACADOS EN EL GRÁFICO</x:String>
@@ -670,7 +669,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Habilitar carpetas compactas en el árbol de cambios</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits en el historial</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostrar hora del autor en lugar de la hora del commit en el gráfico</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostrar la página `CAMBIOS LOCALES` por defecto</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostrar pestaña de `CAMBIOS` en los detalles del commit por defecto</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostrar hijos en los detalles de commit</x:String>

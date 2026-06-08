@@ -464,7 +464,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">著者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">著者の日時</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">コミット日時</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日時</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">グラフ &amp; コミットのタイトル</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} コミットを選択しました</x:String>
@@ -616,7 +615,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">変更ツリーのフォルダー階層をまとめる</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">言語</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">コミット履歴</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">グラフにコミット日時ではなく著者の日時を表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">初めから `ローカルの変更` ページを表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">初めからコミットの詳細の `変更` タブを表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">コミットの詳細に子コミットを表示</x:String>

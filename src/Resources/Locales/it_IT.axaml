@@ -610,7 +610,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Abilita cartelle compatte nell'albero delle modifiche</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Lingua</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Numero massimo di commit nella cronologia</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostra nel grafico l'orario dell'autore anziché quello del commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostra pagina `MODIFICHE LOCALI` per impostazione predefinita</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostra scheda `MODIFICHE` nei dettagli del commit per impostazione predefinita</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostra i figli nei dettagli del commit</x:String>

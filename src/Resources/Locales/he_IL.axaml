@@ -491,7 +491,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">זמן AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">זמן COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">תאריך ושעה</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">גרף ו־SUBJECT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">הדגשות בגרף</x:String>
@@ -664,7 +663,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">תיקיות מצומצמות בעץ השינויים</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">שפה</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits בהיסטוריה</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">הצג זמן author במקום זמן commit בגרף</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">הצג דף `LOCAL CHANGES` כברירת מחדל</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">הצג לשונית `CHANGES` בפרטי ה־commit כברירת מחדל</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">הצג צאצאים בפרטי ה־commit</x:String>

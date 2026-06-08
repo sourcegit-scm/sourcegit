@@ -497,7 +497,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ВРЕМЯ РЕВИЗИИ</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">ДАТА И ВРЕМЯ</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">ПОДСВЕТКА В ГРАФЕ</x:String>
@@ -674,7 +673,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Включить компактные каталоги в дереве изменений</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Язык</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Максимальная длина истории</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени ревизии на графике</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Показывать вкладку «ЛОКАЛЬНЫЕ ИЗМЕНЕНИЯ» по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Показывать вкладку «Изменения» в сведении ревизии по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>

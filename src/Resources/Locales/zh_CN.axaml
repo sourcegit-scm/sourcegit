@@ -498,7 +498,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改时间</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交时间</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日期时间</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">路线图与主题</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">高亮分支</x:String>
@@ -675,7 +674,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">在变更列表树中启用紧凑文件夹模式</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">显示语言</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">最大历史提交数</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">在提交路线图中显示修改时间而非提交时间</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">默认显示【本地更改】页</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">在提交详情页默认打开【变更对比】标签页</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">在提交详情页中显示子提交列表</x:String>
