@@ -31,7 +31,6 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Απόκρυψη άλλων</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Εμφάνιση όλων</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Τριμερής συγχώνευση (3-Way)</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Αρχείο patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Επιλέξτε αρχείο .patch για εφαρμογή</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Αγνόηση αλλαγών κενών χαρακτήρων</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Εφαρμογή Patch</x:String>

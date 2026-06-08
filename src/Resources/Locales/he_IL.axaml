@@ -31,7 +31,6 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">הסתר אחרים</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">הצג הכול</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">קובץ Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">בחר קובץ .patch להחלה</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">התעלמות משינויי whitespace</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">החל Patch</x:String>

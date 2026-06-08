@@ -31,7 +31,6 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">隱藏其他</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">顯示全部</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">嘗試三向合併</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">修補檔:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">選擇修補檔</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符號</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">修補檔來源:</x:String>

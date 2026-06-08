@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-92.32%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-92.31%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -161,7 +161,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-85.03%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-85.01%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -319,7 +319,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-91.72%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-91.71%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -494,7 +494,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ko__KR](https://img.shields.io/badge/ko__KR-%E2%88%9A-brightgreen)
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-64.77%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-64.74%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -857,7 +857,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-66.67%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-66.63%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1199,7 +1199,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-67.47%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-67.43%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
