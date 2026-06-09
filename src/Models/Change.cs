@@ -7,6 +7,12 @@
         Tree,
     }
 
+    public enum ChangeSortMode
+    {
+        Path,
+        Status,
+    }
+
     public enum ChangeState
     {
         None,
@@ -77,6 +83,48 @@
 
             if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
                 OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
+        }
+
+        /// <summary>
+        /// Gets the sort priority for a change based on its status, used for sorting changes by status.
+        /// Lower numbers indicate higher priority (appear first in sorted lists).
+        /// </summary>
+        /// <param name="change">The change object to get priority for</param>
+        /// <param name="isUnstagedContext">True if sorting in unstaged context, false for staged context</param>
+        /// <returns>Priority value where lower numbers appear first</returns>
+        public static int GetStatusSortPriority(Change change, bool isUnstagedContext)
+        {
+            if (change == null) return int.MaxValue;
+
+            if (isUnstagedContext)
+            {
+                // For unstaged context, only consider WorkTree state
+                return change.WorkTree switch
+                {
+                    ChangeState.Conflicted => 1,   // Conflicts first - most urgent
+                    ChangeState.Modified => 2,
+                    ChangeState.TypeChanged => 3,
+                    ChangeState.Deleted => 4,      // Missing files
+                    ChangeState.Renamed => 5,
+                    ChangeState.Copied => 6,
+                    ChangeState.Untracked => 7,    // New files last
+                    _ => 10
+                };
+            }
+            else
+            {
+                // For staged context, only consider Index state
+                return change.Index switch
+                {
+                    ChangeState.Modified => 1,
+                    ChangeState.TypeChanged => 2,
+                    ChangeState.Renamed => 3,
+                    ChangeState.Copied => 4,
+                    ChangeState.Added => 5,
+                    ChangeState.Deleted => 6,
+                    _ => 10
+                };
+            }
         }
 
         private static readonly string[] TYPE_DESCS =

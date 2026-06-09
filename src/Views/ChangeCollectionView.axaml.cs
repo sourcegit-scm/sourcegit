@@ -108,6 +108,15 @@ namespace SourceGit.Views
             set => SetValue(ViewModeProperty, value);
         }
 
+        public static readonly StyledProperty<Models.ChangeSortMode> SortModeProperty =
+            AvaloniaProperty.Register<ChangeCollectionView, Models.ChangeSortMode>(nameof(SortMode), Models.ChangeSortMode.Path);
+
+        public Models.ChangeSortMode SortMode
+        {
+            get => GetValue(SortModeProperty);
+            set => SetValue(SortModeProperty, value);
+        }
+
         public static readonly StyledProperty<bool> EnableCompactFoldersProperty =
             AvaloniaProperty.Register<ChangeCollectionView, bool>(nameof(EnableCompactFolders));
 
@@ -222,12 +231,12 @@ namespace SourceGit.Views
                 if (lastUnselected != -1)
                     return tree.Rows[lastUnselected].Change;
             }
-            else
+            else if (Content is ViewModels.ChangeCollectionAsGrid grid)
             {
                 var lastUnselected = -1;
-                for (int i = changes.Count - 1; i >= 0; i--)
+                for (int i = grid.Changes.Count - 1; i >= 0; i--)
                 {
-                    if (set.Contains(changes[i].Path))
+                    if (set.Contains(grid.Changes[i].Path))
                     {
                         if (lastUnselected == -1)
                             continue;
@@ -239,7 +248,26 @@ namespace SourceGit.Views
                 }
 
                 if (lastUnselected != -1)
-                    return changes[lastUnselected];
+                    return grid.Changes[lastUnselected];
+            }
+            else if (Content is ViewModels.ChangeCollectionAsList list)
+            {
+                var lastUnselected = -1;
+                for (int i = list.Changes.Count - 1; i >= 0; i--)
+                {
+                    if (set.Contains(list.Changes[i].Path))
+                    {
+                        if (lastUnselected == -1)
+                            continue;
+
+                        break;
+                    }
+
+                    lastUnselected = i;
+                }
+
+                if (lastUnselected != -1)
+                    return list.Changes[lastUnselected];
             }
 
             return null;
@@ -257,6 +285,8 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == ViewModeProperty)
+                UpdateDataSource(true);
+            else if (change.Property == SortModeProperty)
                 UpdateDataSource(true);
             else if (change.Property == ChangesProperty)
                 UpdateDataSource(false);
@@ -397,7 +427,7 @@ namespace SourceGit.Views
                 }
 
                 var tree = new ViewModels.ChangeCollectionAsTree();
-                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, EnableCompactFolders);
+                tree.Tree = ViewModels.ChangeTreeNode.Build(changes, oldFolded, SortMode, IsUnstagedChange, EnableCompactFolders);
 
                 var rows = new List<ViewModels.ChangeTreeNode>();
                 MakeTreeRows(rows, tree.Tree);
@@ -421,7 +451,8 @@ namespace SourceGit.Views
             else if (ViewMode == Models.ChangeViewMode.Grid)
             {
                 var grid = new ViewModels.ChangeCollectionAsGrid();
-                grid.Changes.AddRange(changes);
+                var sortedChanges = SortChanges(changes, SortMode);
+                grid.Changes.AddRange(sortedChanges);
                 if (selected.Count > 0)
                     grid.SelectedChanges.AddRange(selected);
 
@@ -430,7 +461,8 @@ namespace SourceGit.Views
             else
             {
                 var list = new ViewModels.ChangeCollectionAsList();
-                list.Changes.AddRange(changes);
+                var sortedChanges = SortChanges(changes, SortMode);
+                list.Changes.AddRange(sortedChanges);
                 if (selected.Count > 0)
                     list.SelectedChanges.AddRange(selected);
 
@@ -508,6 +540,36 @@ namespace SourceGit.Views
             }
 
             ToolTip.SetTip(control, tip);
+        }
+
+        private List<Models.Change> SortChanges(List<Models.Change> changes, Models.ChangeSortMode sortMode)
+        {
+            var sortedChanges = new List<Models.Change>(changes);
+
+            if (sortMode == Models.ChangeSortMode.Status)
+            {
+                sortedChanges.Sort((l, r) =>
+                {
+                    var leftPriority = Models.Change.GetStatusSortPriority(l, IsUnstagedChange);
+                    var rightPriority = Models.Change.GetStatusSortPriority(r, IsUnstagedChange);
+                    
+                    // First sort by status priority
+                    var statusComparison = leftPriority.CompareTo(rightPriority);
+                    if (statusComparison != 0)
+                        return statusComparison;
+
+                    // If status priorities are equal, sort by path as secondary sort
+                    // Use the same sorting logic as the path-only sort for consistency
+                    return Models.NumericSort.Compare(l.Path, r.Path);
+                });
+            }
+            else
+            {
+                // Path sort mode - use NumericSort for consistency
+                sortedChanges.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
+            }
+
+            return sortedChanges;
         }
 
         private bool _disableSelectionChangingEvent = false;
