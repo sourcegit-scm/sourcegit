@@ -101,6 +101,12 @@ namespace SourceGit.ViewModels
             set => _repo.Settings.AskBeforeAutoUpdatingSubmodules = value;
         }
 
+        public bool EnableRecursiveWhenAutoUpdatingSubmodules
+        {
+            get => _repo.Settings.EnableRecursiveWhenAutoUpdatingSubmodules;
+            set => _repo.Settings.EnableRecursiveWhenAutoUpdatingSubmodules = value;
+        }
+
         public AvaloniaList<Models.CommitTemplate> CommitTemplates
         {
             get => _repo.Settings.CommitTemplates;

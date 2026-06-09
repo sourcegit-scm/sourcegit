@@ -39,6 +39,12 @@ namespace SourceGit.ViewModels
             set;
         } = true;
 
+        public bool EnableRecursive
+        {
+            get;
+            set;
+        } = true;
+
         public bool EnableRemote
         {
             get;
@@ -87,7 +93,7 @@ namespace SourceGit.ViewModels
 
             await new Commands.Submodule(_repo.FullPath)
                 .Use(log)
-                .UpdateAsync(targets, EnableInit, EnableRemote);
+                .UpdateAsync(targets, EnableInit, EnableRecursive, EnableRemote);
 
             log.Complete();
             _repo.MarkSubmodulesDirtyManually();
