@@ -50,10 +50,10 @@
   <x:String x:Key="Text.Bisect" xml:space="preserve">Biseca</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Annulla</x:String>
   <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Cattiva</x:String>
-  <x:String x:Key="Text.Bisect.Detecting" xml:space="preserve">Bisecando. La HEAD corrente è buona o cattiva?</x:String>
   <x:String x:Key="Text.Bisect.Good" xml:space="preserve">Buona</x:String>
   <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Salta</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood" xml:space="preserve">Bisecando. Marca il commit corrente come buono o cattivo e fai checkout di un altro.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark" xml:space="preserve">Bisecando. La HEAD corrente è buona o cattiva?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Attribuisci</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Attribuisci sulla Revisione Precedente</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">Ignora modifiche agli spazi</x:String>

@@ -50,10 +50,10 @@
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Abbrechen</x:String>
   <x:String x:Key="Text.Bisect.Bad">Schlecht</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">Bisecting. Ist der aktuelle HEAD gut oder schlecht?</x:String>
   <x:String x:Key="Text.Bisect.Good">Gut</x:String>
   <x:String x:Key="Text.Bisect.Skip">Überspringen</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">Bisecting. Aktuellen Commit als gut oder schlecht markieren und einen anderen auschecken.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Bisecting. Ist der aktuelle HEAD gut oder schlecht?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame auf vorheriger Revision</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Leerzeichen-Änderungen ignorieren</x:String>

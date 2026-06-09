@@ -50,10 +50,10 @@
   <x:String x:Key="Text.Bisect" xml:space="preserve">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Abortar</x:String>
   <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Inválido</x:String>
-  <x:String x:Key="Text.Bisect.Detecting" xml:space="preserve">Bisect. O HEAD atual é válido ou inválido?</x:String>
   <x:String x:Key="Text.Bisect.Good" xml:space="preserve">Válido</x:String>
   <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Pular</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood" xml:space="preserve">Bisect. Marcar o commit atual como válido ou inválido e checar outro commit.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark" xml:space="preserve">Bisect. O HEAD atual é válido ou inválido?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">Ignorar espaços em branco</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME NESSE ARQUIVO NÃO É SUPORTADO!!!</x:String>

@@ -57,10 +57,10 @@
   <x:String x:Key="Text.Bisect">이진 탐색</x:String>
   <x:String x:Key="Text.Bisect.Abort">중단</x:String>
   <x:String x:Key="Text.Bisect.Bad">나쁨</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">이진 탐색 중. 현재 HEAD가 '좋음' 상태입니까, '나쁨' 상태입니까?</x:String>
   <x:String x:Key="Text.Bisect.Good">좋음</x:String>
   <x:String x:Key="Text.Bisect.Skip">건너뛰기</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">이진 탐색 중. 현재 커밋을 '좋음' 또는 '나쁨'으로 표시하고 다른 커밋을 체크아웃하세요.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">이진 탐색 중. 현재 HEAD가 '좋음' 상태입니까, '나쁨' 상태입니까?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">블레임</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">이전 리비전으로 책임 추적</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">공백 변경 무시</x:String>

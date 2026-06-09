@@ -57,10 +57,10 @@
   <x:String x:Key="Text.Bisect">Раздвоить</x:String>
   <x:String x:Key="Text.Bisect.Abort">О</x:String>
   <x:String x:Key="Text.Bisect.Bad">Плохая</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">Раздвоение. Текущая ГОЛОВА (HEAD) хорошая или плохая?</x:String>
   <x:String x:Key="Text.Bisect.Good">Хорошая</x:String>
   <x:String x:Key="Text.Bisect.Skip">Пропустить</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Раздвоение. Текущая ГОЛОВА (HEAD) хорошая или плохая?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Игнорировать изменения пробелов</x:String>

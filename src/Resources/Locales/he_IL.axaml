@@ -54,10 +54,10 @@
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">ביטול</x:String>
   <x:String x:Key="Text.Bisect.Bad">פגום (Bad)</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">מתבצע Bisect. האם ה־HEAD הנוכחי תקין או פגום?</x:String>
   <x:String x:Key="Text.Bisect.Good">תקין (Good)</x:String>
   <x:String x:Key="Text.Bisect.Skip">דלג</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">מתבצע Bisect. יש לסמן את ה־commit הנוכחי כתקין או כפגום ולבצע checkout לאחר.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">מתבצע Bisect. האם ה־HEAD הנוכחי תקין או פגום?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame ל־revision הקודם</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">התעלמות משינויי whitespace</x:String>

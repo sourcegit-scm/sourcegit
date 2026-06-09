@@ -50,10 +50,10 @@
   <x:String x:Key="Text.Bisect">問題の発生源を特定</x:String>
   <x:String x:Key="Text.Bisect.Abort">中止</x:String>
   <x:String x:Key="Text.Bisect.Bad">問題あり</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">問題の発生源となったコミットを特定しています。現在の HEAD に問題はありませんか？</x:String>
   <x:String x:Key="Text.Bisect.Good">問題なし</x:String>
   <x:String x:Key="Text.Bisect.Skip">スキップ</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">問題の発生源となったコミットを特定しています。現在のコミットに問題があるかどうかを調査したあと、別のコミットをチェックアウトしてみてください。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">問題の発生源となったコミットを特定しています。現在の HEAD に問題はありませんか？</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">著者の履歴</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">前のリビジョンの著者の履歴</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">空白文字の変更を無視</x:String>
