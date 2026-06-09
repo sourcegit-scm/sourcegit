@@ -508,10 +508,12 @@ namespace SourceGit.Views
             if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
+            var extentHeight = ExtentHeight;
+            var width = extentHeight > Bounds.Height ? Bounds.Width - 12 : Bounds.Width;
             var color = (Color)this.FindResource("SystemAccentColor")!;
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
-            var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+            var rect = new Rect(0, chunk.Y, width, chunk.Height);
             var aligned = PixelSnapHelpers.PixelAlign(rect, PixelSnapHelpers.GetPixelSize(this));
 
             context.DrawRectangle(brush, null, aligned);
