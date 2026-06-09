@@ -284,9 +284,15 @@
                      CornerRadius="3"
                      Text="{Binding ThemeOverrides, Mode=TwoWay}">
               <TextBox.InnerRightContent>
-                <Button Classes="icon_button" Width="30" Height="30" Click="SelectThemeOverrideFile">
-                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-                </Button>
+                <StackPanel Orientation="Horizontal">
+                  <Button Classes="icon_button" Width="28" Height="28" Click="SelectThemeOverrideFile">
+                    <Path Width="16" Height="16" Data="{StaticResource Icons.Folder.Open}" Margin="0,2,0,0" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                  
+                  <Button Classes="icon_button" Width="28" Height="28" Click="OpenThemeRepository">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                </StackPanel>
               </TextBox.InnerRightContent>
             </TextBox>
 
