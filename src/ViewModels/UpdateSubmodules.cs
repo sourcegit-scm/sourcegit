@@ -69,6 +69,8 @@ namespace SourceGit.ViewModels
                 IsEnableInitVisible = true;
                 HasPreSelectedSubmodule = false;
             }
+
+            EnableRecursive = _repo.Settings.EnableRecursiveWhenAutoUpdatingSubmodules;
         }
 
         public override async Task<bool> Sure()
