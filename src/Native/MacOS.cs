@@ -40,25 +40,28 @@ namespace SourceGit.Native
             public CGSize Size;
         }
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_getClass")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_getClass")]
         public static extern IntPtr objc_getClass(string name);
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "sel_registerName")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "sel_registerName")]
         public static extern IntPtr sel_registerName(string name);
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_msgSend")]
         public static extern IntPtr objc_msgSend_IntPtr(IntPtr receiver, IntPtr selector);
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_msgSend")]
         public static extern IntPtr objc_msgSend_IntPtr_Int(IntPtr receiver, IntPtr selector, int arg);
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_msgSend")]
         public static extern void objc_msgSend_Void_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg);
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_msgSend")]
         public static extern void objc_msgSend_Void_Point(IntPtr receiver, IntPtr selector, CGPoint arg);
 
-        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_msgSend_stret")]
+        public static extern void objc_msgSendStrect_Rect(out CGRect rect, IntPtr receiver, IntPtr selector);
+
+        [DllImport("/usr/lib/libobjc.A.dylib", EntryPoint = "objc_msgSend")]
         public static extern CGRect objc_msgSend_Rect(IntPtr receiver, IntPtr selector);
 
         private static readonly IntPtr s_selStandardWindowButton = sel_registerName("standardWindowButton:");
@@ -108,9 +111,19 @@ namespace SourceGit.Native
             if (nsCloseBtn == IntPtr.Zero || nsMinBtn == IntPtr.Zero || nsZoomBtn == IntPtr.Zero)
                 return;
 
-            CGRect frame = objc_msgSend_Rect(nsCloseBtn, s_selFrame);
-            if (Math.Abs(frame.Origin.X - 14) <= 0.5 || Math.Abs(frame.Origin.Y - 2) <= 0.5)
-                return;
+            // For Intel CPU, we need to use `objc_msgSend_stret` to get the `CGRect` struct, while for Apple Silicon, we can directly use `objc_msgSend`.
+            if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            {
+                objc_msgSendStrect_Rect(out var frame, nsCloseBtn, s_selFrame);
+                if (Math.Abs(frame.Origin.X - 14) <= 0.5 || Math.Abs(frame.Origin.Y - 2) <= 0.5)
+                    return;
+            }
+            else
+            {
+                CGRect frame = objc_msgSend_Rect(nsCloseBtn, s_selFrame);
+                if (Math.Abs(frame.Origin.X - 14) <= 0.5 || Math.Abs(frame.Origin.Y - 2) <= 0.5)
+                    return;
+            }
 
             objc_msgSend_Void_Point(nsCloseBtn, s_selSetFrameOrigin, new(14, 2));
             objc_msgSend_Void_Point(nsMinBtn, s_selSetFrameOrigin, new(14 + 20, 2));
