@@ -123,10 +123,10 @@
                   Tag="{x:Static WindowEdge.SouthEast}"/>
 
           <Grid Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #60000000)">
-            <Panel>
-              <Border Name="PART_TransparencyFallback" IsHitTestVisible="False" />
-              <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" />
-              <Panel Background="Transparent" Margin="{TemplateBinding WindowDecorationMargin}" />
+            <Border Background="{DynamicResource Brush.Window}"
+                    BorderBrush="{DynamicResource Brush.WindowBorder}"
+                    BorderThickness="1"
+                    CornerRadius="{TemplateBinding CornerRadius}">
               <VisualLayerManager Name="PART_VisualLayerManager">
                 <LayoutTransformControl>
                   <LayoutTransformControl.LayoutTransform>
@@ -134,14 +134,16 @@
                                     ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
                   </LayoutTransformControl.LayoutTransform>
 
-                  <ContentPresenter Name="PART_ContentPresenter"
-                                    ContentTemplate="{TemplateBinding ContentTemplate}"
-                                    Content="{TemplateBinding Content}"
-                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                  <Border CornerRadius="{TemplateBinding CornerRadius}" ClipToBounds="True">
+                    <ContentPresenter Name="PART_ContentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}"
+                                      Content="{TemplateBinding Content}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                  </Border>
                 </LayoutTransformControl>
               </VisualLayerManager>
-            </Panel>
+            </Border>
           </Grid>
         </Grid>
       </ControlTemplate>
