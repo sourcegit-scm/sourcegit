@@ -32,7 +32,7 @@ namespace SourceGit.Views
 
         public ChromelessWindow()
         {
-            LeftCaptionButtonWidth = 72.0 / Math.Max(1.0, ViewModels.Preferences.Instance.Zoom);
+            LeftCaptionButtonWidth = 76.0 / Math.Max(1.0, ViewModels.Preferences.Instance.Zoom);
             Focusable = true;
             Native.OS.SetupForWindow(this);
         }

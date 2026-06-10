@@ -120,6 +120,9 @@ namespace SourceGit.Views
                 if (!IsActive && DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
                     vm.CommandPalette = null;
             }
+
+            if (HasLeftCaptionButton && OperatingSystem.IsMacOS())
+                Native.MacOS.AdjustTrafficLightsForThickTitleBar(this);
         }
 
         protected override void OnSizeChanged(SizeChangedEventArgs e)

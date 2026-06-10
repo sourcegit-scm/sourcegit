@@ -13,6 +13,33 @@ namespace SourceGit.Native
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
     {
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CGPoint
+        {
+            public double X;
+            public double Y;
+
+            public CGPoint(double x, double y)
+            {
+                X = x;
+                Y = y;
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CGSize
+        {
+            public double Width;
+            public double Height;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct CGRect
+        {
+            public CGPoint Origin;
+            public CGSize Size;
+        }
+
         [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_getClass")]
         public static extern IntPtr objc_getClass(string name);
 
@@ -20,10 +47,23 @@ namespace SourceGit.Native
         public static extern IntPtr sel_registerName(string name);
 
         [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
-        public static extern IntPtr objc_msgSend(IntPtr receiver, IntPtr selector);
+        public static extern IntPtr objc_msgSend_IntPtr(IntPtr receiver, IntPtr selector);
 
         [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
-        public static extern IntPtr objc_msgSendWithArg(IntPtr receiver, IntPtr selector, IntPtr arg);
+        public static extern IntPtr objc_msgSend_IntPtr_Int(IntPtr receiver, IntPtr selector, int arg);
+
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        public static extern void objc_msgSend_Void_IntPtr(IntPtr receiver, IntPtr selector, IntPtr arg);
+
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        public static extern void objc_msgSend_Void_Point(IntPtr receiver, IntPtr selector, CGPoint arg);
+
+        [DllImport("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+        public static extern CGRect objc_msgSend_Rect(IntPtr receiver, IntPtr selector);
+
+        private static readonly IntPtr s_selStandardWindowButton = sel_registerName("standardWindowButton:");
+        private static readonly IntPtr s_selFrame = sel_registerName("frame");
+        private static readonly IntPtr s_selSetFrameOrigin = sel_registerName("setFrameOrigin:");
 
         public void SetupApp(AppBuilder builder)
         {
@@ -56,37 +96,58 @@ namespace SourceGit.Native
             window.WindowDecorations = WindowDecorations.Full;
         }
 
+        public static void AdjustTrafficLightsForThickTitleBar(Window window)
+        {
+            IntPtr nsWindow = window.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
+            if (nsWindow == IntPtr.Zero)
+                return;
+
+            IntPtr nsCloseBtn = objc_msgSend_IntPtr_Int(nsWindow, s_selStandardWindowButton, 0);
+            IntPtr nsMinBtn = objc_msgSend_IntPtr_Int(nsWindow, s_selStandardWindowButton, 1);
+            IntPtr nsZoomBtn = objc_msgSend_IntPtr_Int(nsWindow, s_selStandardWindowButton, 2);
+            if (nsCloseBtn == IntPtr.Zero || nsMinBtn == IntPtr.Zero || nsZoomBtn == IntPtr.Zero)
+                return;
+
+            CGRect frame = objc_msgSend_Rect(nsCloseBtn, s_selFrame);
+            if (Math.Abs(frame.Origin.X - 14) <= 0.5 || Math.Abs(frame.Origin.Y - 2) <= 0.5)
+                return;
+
+            objc_msgSend_Void_Point(nsCloseBtn, s_selSetFrameOrigin, new(14, 2));
+            objc_msgSend_Void_Point(nsMinBtn, s_selSetFrameOrigin, new(14 + 20, 2));
+            objc_msgSend_Void_Point(nsZoomBtn, s_selSetFrameOrigin, new(14 + 40, 2));
+        }
+
         public void HideSelf()
         {
             IntPtr nsApplicationClass = objc_getClass("NSApplication");
             IntPtr nsSharedApplicationSelector = sel_registerName("sharedApplication");
-            IntPtr nsApp = objc_msgSend(nsApplicationClass, nsSharedApplicationSelector);
+            IntPtr nsApp = objc_msgSend_IntPtr(nsApplicationClass, nsSharedApplicationSelector);
             IntPtr nsMethodSelector = sel_registerName("hide:");
             IntPtr nsDelegateSelector = sel_registerName("delegate");
-            IntPtr nsDelegate = objc_msgSend(nsApp, nsDelegateSelector);
-            objc_msgSendWithArg(nsApp, nsMethodSelector, nsDelegate);
+            IntPtr nsDelegate = objc_msgSend_IntPtr(nsApp, nsDelegateSelector);
+            objc_msgSend_Void_IntPtr(nsApp, nsMethodSelector, nsDelegate);
         }
 
         public void HideOtherApplications()
         {
             IntPtr nsApplicationClass = objc_getClass("NSApplication");
             IntPtr nsSharedApplicationSelector = sel_registerName("sharedApplication");
-            IntPtr nsApp = objc_msgSend(nsApplicationClass, nsSharedApplicationSelector);
+            IntPtr nsApp = objc_msgSend_IntPtr(nsApplicationClass, nsSharedApplicationSelector);
             IntPtr nsMethodSelector = sel_registerName("hideOtherApplications:");
             IntPtr nsDelegateSelector = sel_registerName("delegate");
-            IntPtr nsDelegate = objc_msgSend(nsApp, nsDelegateSelector);
-            objc_msgSendWithArg(nsApp, nsMethodSelector, nsDelegate);
+            IntPtr nsDelegate = objc_msgSend_IntPtr(nsApp, nsDelegateSelector);
+            objc_msgSend_Void_IntPtr(nsApp, nsMethodSelector, nsDelegate);
         }
 
         public void ShowAllApplications()
         {
             IntPtr nsApplicationClass = objc_getClass("NSApplication");
             IntPtr nsSharedApplicationSelector = sel_registerName("sharedApplication");
-            IntPtr nsApp = objc_msgSend(nsApplicationClass, nsSharedApplicationSelector);
+            IntPtr nsApp = objc_msgSend_IntPtr(nsApplicationClass, nsSharedApplicationSelector);
             IntPtr nsMethodSelector = sel_registerName("unhideAllApplications:");
             IntPtr nsDelegateSelector = sel_registerName("delegate");
-            IntPtr nsDelegate = objc_msgSend(nsApp, nsDelegateSelector);
-            objc_msgSendWithArg(nsApp, nsMethodSelector, nsDelegate);
+            IntPtr nsDelegate = objc_msgSend_IntPtr(nsApp, nsDelegateSelector);
+            objc_msgSend_Void_IntPtr(nsApp, nsMethodSelector, nsDelegate);
         }
 
         public string GetDataDir()
