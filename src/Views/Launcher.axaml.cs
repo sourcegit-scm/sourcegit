@@ -122,7 +122,7 @@ namespace SourceGit.Views
             }
 
             if (HasLeftCaptionButton && OperatingSystem.IsMacOS())
-                Native.MacOS.AdjustTrafficLightsForThickTitleBar(this);
+                Native.MacOSUtilities.AdjustTrafficLightsForThickTitleBar(this);
         }
 
         protected override void OnSizeChanged(SizeChangedEventArgs e)

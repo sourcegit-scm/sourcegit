@@ -38,21 +38,6 @@ namespace SourceGit.Native
             window.ExtendClientAreaToDecorationsHint = true;
         }
 
-        public void HideSelf()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void HideOtherApplications()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void ShowAllApplications()
-        {
-            // Do Nothing. Never used.
-        }
-
         public string GetDataDir()
         {
             var execFile = Environment.ProcessPath;

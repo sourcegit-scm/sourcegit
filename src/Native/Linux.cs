@@ -32,21 +32,6 @@ namespace SourceGit.Native
             }
         }
 
-        public void HideSelf()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void HideOtherApplications()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void ShowAllApplications()
-        {
-            // Do Nothing. Never used.
-        }
-
         public string GetDataDir()
         {
             // AppImage supports portable mode

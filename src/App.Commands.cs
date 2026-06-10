@@ -81,17 +81,20 @@ namespace SourceGit
 
         public static readonly Command HideAppCommand = new Command(_ =>
         {
-            Native.OS.HideSelf();
+            if (OperatingSystem.IsMacOS())
+                Native.MacOSUtilities.HideSelf();
         });
 
         public static readonly Command HideOtherApplicationsCommand = new Command(_ =>
         {
-            Native.OS.HideOtherApplications();
+            if (OperatingSystem.IsMacOS())
+                Native.MacOSUtilities.HideOtherApplications();
         });
 
         public static readonly Command ShowAllApplicationsCommand = new Command(_ =>
         {
-            Native.OS.ShowAllApplications();
+            if (OperatingSystem.IsMacOS())
+                Native.MacOSUtilities.ShowAllApplications();
         });
     }
 }

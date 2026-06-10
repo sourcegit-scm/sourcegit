@@ -8,13 +8,13 @@ namespace SourceGit.Views
 {
     public class ChromelessWindow : Window
     {
-        public static readonly StyledProperty<double> LeftCaptionButtonWidthProperty =
-            AvaloniaProperty.Register<ChromelessWindow, double>(nameof(LeftCaptionButtonWidth), 72.0);
+        public static readonly StyledProperty<double> MacOSWindowButtonWidthProperty =
+            AvaloniaProperty.Register<ChromelessWindow, double>(nameof(MacOSWindowButtonWidth), 76.0);
 
-        public double LeftCaptionButtonWidth
+        public double MacOSWindowButtonWidth
         {
-            get => GetValue(LeftCaptionButtonWidthProperty);
-            set => SetValue(LeftCaptionButtonWidthProperty, value);
+            get => GetValue(MacOSWindowButtonWidthProperty);
+            set => SetValue(MacOSWindowButtonWidthProperty, value);
         }
 
         public bool UseSystemWindowFrame
@@ -32,7 +32,7 @@ namespace SourceGit.Views
 
         public ChromelessWindow()
         {
-            LeftCaptionButtonWidth = 76.0 / Math.Max(1.0, ViewModels.Preferences.Instance.Zoom);
+            MacOSWindowButtonWidth = 76.0 / Math.Max(1.0, ViewModels.Preferences.Instance.Zoom);
             Focusable = true;
             Native.OS.SetupForWindow(this);
         }
@@ -104,14 +104,14 @@ namespace SourceGit.Views
                 {
                     var zoom = Math.Min(ViewModels.Preferences.Instance.Zoom + 0.05, 2.5);
                     ViewModels.Preferences.Instance.Zoom = zoom;
-                    LeftCaptionButtonWidth = 72.0 / zoom;
+                    MacOSWindowButtonWidth = 76.0 / zoom;
                     e.Handled = true;
                 }
                 else if (e.Key == Key.OemMinus)
                 {
                     var zoom = Math.Max(ViewModels.Preferences.Instance.Zoom - 0.05, 1);
                     ViewModels.Preferences.Instance.Zoom = zoom;
-                    LeftCaptionButtonWidth = 72.0 / zoom;
+                    MacOSWindowButtonWidth = 76.0 / zoom;
                     e.Handled = true;
                 }
             }
