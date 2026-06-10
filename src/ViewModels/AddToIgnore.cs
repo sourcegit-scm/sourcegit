@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -6,6 +7,11 @@ namespace SourceGit.ViewModels
 {
     public class AddToIgnore : Popup
     {
+        public List<Models.GitIgnoreFile> StorageFiles
+        {
+            get;
+        }
+
         [Required(ErrorMessage = "Ignore pattern is required!")]
         public string Pattern
         {
@@ -14,17 +20,23 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Storage file is required!!!")]
-        public Models.GitIgnoreFile StorageFile
+        public Models.GitIgnoreFile SelectedStorageFile
         {
-            get;
-            set;
+            get => _selectedStorageFile;
+            set
+            {
+                if (SetProperty(ref _selectedStorageFile, value, true))
+                    Pattern = value.Pattern;
+            }
         }
 
         public AddToIgnore(Repository repo, string pattern)
         {
             _repo = repo;
             _pattern = pattern;
-            StorageFile = Models.GitIgnoreFile.Supported[0];
+
+            StorageFiles = Models.GitIgnoreFile.GetSupported(repo.FullPath, repo.GitDir, pattern);
+            SelectedStorageFile = StorageFiles[0];
         }
 
         public override async Task<bool> Sure()
@@ -32,7 +44,7 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = "Adding Ignored File(s) ...";
 
-            var file = StorageFile.GetFullPath(_repo.FullPath, _repo.GitDir);
+            var file = _selectedStorageFile.FullPath;
             if (!File.Exists(file))
             {
                 await File.WriteAllLinesAsync(file!, [_pattern]);
@@ -52,5 +64,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo;
         private string _pattern;
+        private Models.GitIgnoreFile _selectedStorageFile;
     }
 }
