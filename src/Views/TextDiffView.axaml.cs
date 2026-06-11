@@ -1024,6 +1024,9 @@ namespace SourceGit.Views
                 return;
 
             var view = TextArea.TextView;
+            if (!view.VisualLinesValid)
+                return;
+
             var selection = TextArea.Selection;
             if (!selection.IsEmpty)
             {
@@ -1212,6 +1215,9 @@ namespace SourceGit.Views
                 return;
 
             var view = TextArea.TextView;
+            if (!view.VisualLinesValid)
+                return;
+
             var lines = IsOld ? diff.Old : diff.New;
             var selection = TextArea.Selection;
             if (!selection.IsEmpty)
