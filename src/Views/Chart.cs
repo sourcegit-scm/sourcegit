@@ -105,6 +105,7 @@ namespace SourceGit.Views
             var step = Math.Max((w - leftMargin) / count, hasUserSamples ? 10.0 : 8.0);
             _maxOffsetX = Math.Max(count * step - (w - leftMargin), 0);
             _hitBoxes.Clear();
+            _lastHitted = new Rect(0, 0, 0, 0);
 
             var x = w + Math.Min(_maxOffsetX, _offsetX);
             var corner = new CornerRadius(2, 2, 0, 0);
@@ -237,22 +238,28 @@ namespace SourceGit.Views
 
                 _offsetX = Math.Max(0, Math.Min(_offsetX + posX - _lastDragX, _maxOffsetX));
                 _lastDragX = posX;
+                _lastHitted = new Rect(0, 0, 0, 0);
                 InvalidateVisual();
             }
             else
             {
                 var p = e.GetPosition(this);
 
-                foreach (var box in _hitBoxes)
+                if (!_lastHitted.Contains(p))
                 {
-                    if (box.Rect.Contains(p))
+                    foreach (var box in _hitBoxes)
                     {
-                        ToolTip.SetTip(this, box.ToolTip);
-                        return;
+                        if (box.Rect.Contains(p))
+                        {
+                            ToolTip.SetTip(this, box.ToolTip);
+                            _lastHitted = box.Rect;
+                            return;
+                        }
                     }
-                }
 
-                ToolTip.SetTip(this, null);
+                    _lastHitted = new Rect(0, 0, 0, 0);
+                    ToolTip.SetTip(this, null);
+                }
             }
         }
 
@@ -282,5 +289,6 @@ namespace SourceGit.Views
         private bool _isDraging = false;
         private double _lastDragX = 0;
         private List<HitBox> _hitBoxes = [];
+        private Rect _lastHitted = new(0, 0, 0, 0);
     }
 }
