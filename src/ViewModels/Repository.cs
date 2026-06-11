@@ -126,12 +126,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool HighlightCurrentBranchOnlyInHistory
-        {
-            get => _histories.HighlightCurrentBranchOnly;
-            set => _histories.HighlightCurrentBranchOnly = value;
-        }
-
         public string Filter
         {
             get => _filter;
@@ -168,7 +162,7 @@ namespace SourceGit.ViewModels
                 var oldHead = _currentBranch?.Head;
                 if (SetProperty(ref _currentBranch, value))
                 {
-                    _histories.NotifyCurrentBranchChanged();
+                    _histories?.NotifyCurrentBranchChanged();
                     if (value != null && !value.Head.Equals(oldHead, StringComparison.Ordinal) && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
                 }
@@ -458,13 +452,13 @@ namespace SourceGit.ViewModels
             {
                 _gitCommonDir = GitDir;
             }
+
+            _settings = Models.RepositorySettings.Get(_gitCommonDir);
+            _uiStates = Models.RepositoryUIStates.Load(GitDir);
         }
 
         public void Open()
         {
-            _settings = Models.RepositorySettings.Get(_gitCommonDir);
-            _uiStates = Models.RepositoryUIStates.Load(GitDir);
-
             try
             {
                 _watcher = new Models.Watcher(this, FullPath, _gitCommonDir);
@@ -801,6 +795,7 @@ namespace SourceGit.ViewModels
             _watcher?.MarkBranchUpdated();
             _watcher?.MarkWorkingCopyUpdated();
 
+            _branches.RemoveAll(b => b.IsLocal && b.FriendlyName.Equals(created.FriendlyName, StringComparison.Ordinal));
             _branches.Add(created);
 
             if (checkout)
@@ -1233,10 +1228,11 @@ namespace SourceGit.ViewModels
                 var builder = new StringBuilder();
                 builder
                     .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
-                    .Append(_uiStates.BuildHistoryParams());
+                    .Append(_uiStates.BuildHistoryParams(GitDir));
 
-                var commits = await new Commands.QueryCommits(FullPath, builder.ToString()).GetResultAsync().ConfigureAwait(false);
-                var graph = Models.CommitGraph.Parse(commits, _uiStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
+                var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -1247,8 +1243,6 @@ namespace SourceGit.ViewModels
                     {
                         _histories.IsLoading = false;
                         _histories.Commits = commits;
-                        _histories.Graph = graph;
-
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
@@ -1553,17 +1547,7 @@ namespace SourceGit.ViewModels
 
             var root = Path.GetFullPath(Path.Combine(FullPath, submodule));
             var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
-
-            var node = Preferences.Instance.FindNode(normalizedPath) ??
-                new RepositoryNode
-                {
-                    Id = normalizedPath,
-                    Name = Path.GetFileName(normalizedPath),
-                    Bookmark = selfPage.Node.Bookmark,
-                    IsRepository = true,
-                };
-
-            App.GetLauncher().OpenRepositoryInTab(node, null);
+            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
         }
 
         public void AddWorktree()
@@ -1583,16 +1567,8 @@ namespace SourceGit.ViewModels
             if (worktree.IsCurrent)
                 return;
 
-            var node = Preferences.Instance.FindNode(worktree.FullPath) ??
-                new RepositoryNode
-                {
-                    Id = worktree.FullPath,
-                    Name = Path.GetFileName(worktree.FullPath),
-                    Bookmark = 0,
-                    IsRepository = true,
-                };
-
-            App.GetLauncher().OpenRepositoryInTab(node, null);
+            var normalizedPath = worktree.FullPath.Replace('\\', '/').TrimEnd('/');
+            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
         }
 
         public async Task LockWorktreeAsync(Worktree worktree)

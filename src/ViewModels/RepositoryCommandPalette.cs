@@ -59,7 +59,7 @@ namespace SourceGit.ViewModels
             // Sub-CommandPalettes
             _cmds.Add(new("Blame", "blame", "Blame", new BlameCommandPalette(repo.FullPath)));
             _cmds.Add(new("Checkout", "checkout", "Check", new CheckoutCommandPalette(repo)));
-            _cmds.Add(new("Compare.WithHead", "compare", "Compare", new CompareCommandPalette(repo, null)));
+            _cmds.Add(new("Compare", "compare", "Compare", new CompareCommandPalette(repo, null)));
             _cmds.Add(new("FileHistory", "history", "Histories", new FileHistoryCommandPalette(repo.FullPath)));
             _cmds.Add(new("Merge", "merge", "Merge", new MergeCommandPalette(repo)));
             _cmds.Add(new("OpenFile", "open", "OpenWith", new OpenFileCommandPalette(repo.FullPath)));
@@ -72,7 +72,7 @@ namespace SourceGit.ViewModels
             _cmds.Add(new("Pull.Title", "pull", "Pull", async () => await repo.PullAsync(false)));
             _cmds.Add(new("Push", "push", "Push", async () => await repo.PushAsync(false)));
             _cmds.Add(new("Stash.Title", "stash", "Stashes.Add", async () => await repo.StashAllAsync(false)));
-            _cmds.Add(new("Apply.Title", "apply", "Diff", () => repo.ApplyPatch()));
+            _cmds.Add(new("Apply.Title", "apply", "ApplyPatch", () => repo.ApplyPatch()));
 
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
             _visibleCmds = _cmds;

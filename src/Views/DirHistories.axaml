@@ -130,7 +130,7 @@
         <ContentControl Content="{Binding Detail, Mode=OneWay}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="vm:CommitDetail">
-              <v:CommitDetail/>
+              <v:CommitDetail IsDetailsPanelExpanded="True"/>
             </DataTemplate>
           </ContentControl.DataTemplates>
         </ContentControl>

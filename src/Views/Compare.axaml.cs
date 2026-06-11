@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -202,6 +203,72 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
+        }
+
+        private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Compare vm)
+                return;
+
+            if (sender is ListBox { SelectedItems: { Count: > 0 } selected } listBox)
+            {
+                var commits = new List<Models.Commit>();
+                foreach (var o in selected)
+                {
+                    if (o is Models.Commit c)
+                        commits.Add(c);
+                }
+
+                if (commits.Count == 0)
+                    return;
+
+                commits.Sort((l, r) => l.CommitterTime.CompareTo(r.CommitterTime));
+
+                var menu = new ContextMenu();
+                var hasCurrentHead = vm.BaseHead.IsCurrentHead || vm.ToHead.IsCurrentHead;
+                if (hasCurrentHead && listBox.Tag is Models.Commit { IsCurrentHead: false })
+                {
+                    var cherryPick = new MenuItem();
+                    cherryPick.Header = App.Text("CommitCM.CherryPickMultiple");
+                    cherryPick.Icon = this.CreateMenuIcon("Icons.CherryPick");
+                    cherryPick.Click += (_, ev) =>
+                    {
+                        vm.CherryPick(commits);
+                        ev.Handled = true;
+                    };
+
+                    menu.Items.Add(cherryPick);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
+                var copy = new MenuItem();
+                copy.Header = App.Text("Copy");
+                copy.Icon = this.CreateMenuIcon("Icons.Copy");
+                copy.Click += async (_, ev) =>
+                {
+                    var builder = new StringBuilder();
+                    foreach (var c in commits)
+                        builder.Append(c.SHA.Substring(0, 10)).Append(" - ").AppendLine(c.Subject);
+
+                    await this.CopyTextAsync(builder.ToString());
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(copy);
+                menu.Open(listBox);
+                e.Handled = true;
+            }
+        }
+
+        private void OnCommitListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is ViewModels.Compare vm &&
+                sender is ListBox { SelectedItems: { Count: 1 } selected } listBox &&
+                selected[0] is Models.Commit c)
+            {
+                vm.NavigateTo(c.SHA);
+                e.Handled = true;
+            }
         }
 
         private void OnPressedSHA(object sender, PointerPressedEventArgs e)

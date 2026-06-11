@@ -62,6 +62,7 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
+                GenerateGraph(value, true);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
             }
@@ -73,12 +74,26 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _graph, value);
         }
 
+        public Models.CommitGraphHighlighting GraphHighlighting
+        {
+            get => _repo.UIStates.GraphHighlighting;
+            set
+            {
+                if (_repo.UIStates.GraphHighlighting != value)
+                {
+                    _repo.UIStates.GraphHighlighting = value;
+                    GenerateGraph(_commits);
+                }
+            }
+        }
+
         public List<Models.Commit> SelectedCommits
         {
             get => _selectedCommits;
             set
             {
-                if (SetProperty(ref _selectedCommits, value))
+                var oldCount = _selectedCommits.Count;
+                if (SetProperty(ref _selectedCommits, value) && oldCount + value.Count > 0)
                     PostSelectedCommitsChanged();
             }
         }
@@ -86,7 +101,11 @@ namespace SourceGit.ViewModels
         public object DetailContext
         {
             get => _detailContext;
-            set => SetProperty(ref _detailContext, value);
+            set
+            {
+                if (SetProperty(ref _detailContext, value))
+                    OnPropertyChanged(nameof(IsOpenAsStandaloneVisible));
+            }
         }
 
         public Models.Bisect Bisect
@@ -98,19 +117,6 @@ namespace SourceGit.ViewModels
         public Models.Branch CurrentBranch
         {
             get => _repo.CurrentBranch;
-        }
-
-        public bool HighlightCurrentBranchOnly
-        {
-            get => _repo.UIStates.OnlyHighlightCurrentBranchInHistory;
-            set
-            {
-                if (_repo.UIStates.OnlyHighlightCurrentBranchInHistory != value)
-                {
-                    _repo.UIStates.OnlyHighlightCurrentBranchInHistory = value;
-                    OnPropertyChanged();
-                }
-            }
         }
 
         public AvaloniaList<Models.IssueTracker> IssueTrackers
@@ -138,8 +144,36 @@ namespace SourceGit.ViewModels
 
         public GridLength BottomArea
         {
-            get => _bottomArea;
-            set => SetProperty(ref _bottomArea, value);
+            get => _isCollapseDetails ? new GridLength(28, GridUnitType.Pixel) : _bottomArea;
+            set
+            {
+                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isCollapseDetails)
+                    SetProperty(ref _bottomArea, value);
+            }
+        }
+
+        public double AuthorColumnWidth
+        {
+            get => _repo.UIStates.AuthorColumnWidth;
+            set => _repo.UIStates.AuthorColumnWidth = value;
+        }
+
+        public bool IsOpenAsStandaloneVisible
+        {
+            get => DetailContext is CommitDetail or RevisionCompare;
+        }
+
+        public bool IsCollapseDetails
+        {
+            get => _isCollapseDetails;
+            set
+            {
+                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && SetProperty(ref _isCollapseDetails, value))
+                {
+                    OnPropertyChanged(nameof(TopArea));
+                    OnPropertyChanged(nameof(BottomArea));
+                }
+            }
         }
 
         public Histories(Repository repo)
@@ -345,45 +379,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task RewordHeadAsync(Models.Commit head)
-        {
-            if (_repo.CanCreatePopup())
-            {
-                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                _repo.ShowPopup(new Reword(_repo, head, message));
-            }
-        }
-
-        public async Task SquashOrFixupHeadAsync(Models.Commit head, bool fixup)
-        {
-            if (head.Parents.Count == 1)
-            {
-                var parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
-                if (parent == null)
-                    return;
-
-                string message = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.Parents[0]).GetResultAsync();
-                if (!fixup)
-                {
-                    var headMessage = await new Commands.QueryCommitFullMessage(_repo.FullPath, head.SHA).GetResultAsync();
-                    message = $"{message}\n\n{headMessage}";
-                }
-
-                if (_repo.CanCreatePopup())
-                    _repo.ShowPopup(new SquashOrFixupHead(_repo, parent, message, fixup));
-            }
-        }
-
-        public async Task DropHeadAsync(Models.Commit head)
-        {
-            var parent = _commits.Find(x => x.SHA.Equals(head.Parents[0]));
-            if (parent == null)
-                parent = await new Commands.QuerySingleCommit(_repo.FullPath, head.Parents[0]).GetResultAsync();
-
-            if (parent != null && _repo.CanCreatePopup())
-                _repo.ShowPopup(new DropHead(_repo, head, parent));
-        }
-
         public async Task<string> GetCommitFullMessageAsync(Models.Commit commit)
         {
             return await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA)
@@ -417,7 +412,7 @@ namespace SourceGit.ViewModels
             if (_selectedCommits.Count == 0)
                 return;
 
-            if (_commits.Count == 0 || _selectedCommits.Count > 2)
+            if (_commits.Count == 0 || _selectedCommits.Count > 20)
             {
                 SelectedCommits = [];
                 return;
@@ -450,7 +445,7 @@ namespace SourceGit.ViewModels
             if (_selectedCommits.Count == 0)
             {
                 _repo.SearchCommitContext.Selected = null;
-                DetailContext = null;
+                DetailContext = new Models.Null();
             }
             else if (_selectedCommits.Count == 1)
             {
@@ -477,21 +472,40 @@ namespace SourceGit.ViewModels
                 _repo.SearchCommitContext.Selected = null;
                 DetailContext = new Models.Count(_selectedCommits.Count);
             }
+
+            if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+                GenerateGraph(_commits);
+        }
+
+        private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
+        {
+            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
+            var highlighting = _repo.UIStates.GraphHighlighting;
+            var extraHeads = new HashSet<string>();
+
+            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+            {
+                foreach (var c in _selectedCommits)
+                    extraHeads.Add(c.SHA);
+            }
+
+            Graph = Models.CommitGraph.Generate(commits, commitsChanged, firstParentOnly, highlighting, extraHeads);
         }
 
         private Repository _repo = null;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
-        private List<Models.Commit> _commits = new List<Models.Commit>();
+        private List<Models.Commit> _commits = [];
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
-        private object _detailContext = null;
+        private object _detailContext = new Models.Null();
         private bool _ignoreSelectionChange = false;
 
-        private GridLength _leftArea = new GridLength(1, GridUnitType.Star);
-        private GridLength _rightArea = new GridLength(1, GridUnitType.Star);
-        private GridLength _topArea = new GridLength(1, GridUnitType.Star);
-        private GridLength _bottomArea = new GridLength(1, GridUnitType.Star);
+        private GridLength _leftArea = new(1, GridUnitType.Star);
+        private GridLength _rightArea = new(1, GridUnitType.Star);
+        private GridLength _topArea = new(1, GridUnitType.Star);
+        private GridLength _bottomArea = new(1, GridUnitType.Star);
+        private bool _isCollapseDetails = false;
     }
 }

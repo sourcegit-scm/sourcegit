@@ -29,6 +29,8 @@ namespace SourceGit.Models
             new ExtraGrammar("source.vue", [".vue"], "vue.json"),
         ];
 
+        private static readonly Dictionary<string, IRawGrammar> s_cachedRawGrammars = new();
+
         public static string GetScope(string file, RegistryOptions reg)
         {
             var extension = Path.GetExtension(file);
@@ -53,6 +55,12 @@ namespace SourceGit.Models
 
         public static IRawGrammar GetGrammar(string scopeName, RegistryOptions reg)
         {
+            if (string.IsNullOrEmpty(scopeName))
+                return null;
+
+            if (s_cachedRawGrammars.TryGetValue(scopeName, out var cached))
+                return cached;
+
             foreach (var grammar in s_extraGrammars)
             {
                 if (grammar.Scope.Equals(scopeName, StringComparison.OrdinalIgnoreCase))
@@ -62,7 +70,9 @@ namespace SourceGit.Models
 
                     try
                     {
-                        return GrammarReader.ReadGrammarSync(new StreamReader(asset));
+                        var raw = GrammarReader.ReadGrammarSync(new StreamReader(asset));
+                        s_cachedRawGrammars.Add(scopeName, raw);
+                        return raw;
                     }
                     catch
                     {
@@ -71,7 +81,9 @@ namespace SourceGit.Models
                 }
             }
 
-            return reg.GetGrammar(scopeName);
+            var fallback = reg.GetGrammar(scopeName);
+            s_cachedRawGrammars.Add(scopeName, fallback);
+            return fallback;
         }
 
         private record ExtraGrammar(string Scope, List<string> Extensions, string File)
@@ -88,11 +100,21 @@ namespace SourceGit.Models
 
         public IRawTheme GetTheme(string scopeName) => _backend.GetTheme(scopeName);
         public IRawTheme GetDefaultTheme() => _backend.GetDefaultTheme();
-        public IRawTheme LoadTheme(ThemeName name) => _backend.LoadTheme(name);
         public ICollection<string> GetInjections(string scopeName) => _backend.GetInjections(scopeName);
         public IRawGrammar GetGrammar(string scopeName) => GrammarUtility.GetGrammar(scopeName, _backend);
         public string GetScope(string filename) => GrammarUtility.GetScope(filename, _backend);
 
+        public IRawTheme LoadTheme(ThemeName name)
+        {
+            if (s_cachedTheme.TryGetValue(name, out var cached))
+                return cached;
+
+            var loaded = _backend.LoadTheme(name);
+            s_cachedTheme.Add(name, loaded);
+            return loaded;
+        }
+
+        private static readonly Dictionary<ThemeName, IRawTheme> s_cachedTheme = new();
         private readonly RegistryOptions _backend = new(defaultTheme);
     }
 
@@ -122,7 +144,7 @@ namespace SourceGit.Models
                 if (reg.LastScope != scope)
                 {
                     reg.LastScope = scope;
-                    installation.SetGrammar(reg.GetScope(filePath));
+                    installation.SetGrammar(scope);
                     GC.Collect();
                 }
             }

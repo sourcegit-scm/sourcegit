@@ -217,6 +217,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _showTagsInGraph, value);
         }
 
+        public bool UseCompactBranchNamesInGraph
+        {
+            get => _useCompactBranchNamesInGraph;
+            set => SetProperty(ref _useCompactBranchNamesInGraph, value);
+        }
+
         public bool UseTwoColumnsLayoutInHistories
         {
             get => _useTwoColumnsLayoutInHistories;
@@ -253,6 +259,12 @@ namespace SourceGit.ViewModels
                 }
             }
         }
+
+        public bool UseStashAndReapplyByDefault
+        {
+            get;
+            set;
+        } = false;
 
         public bool EnableAutoFetch
         {
@@ -823,6 +835,7 @@ namespace SourceGit.ViewModels
         private bool _useGitHubStyleAvatar = true;
         private bool _showAuthorTimeInGraph = false;
         private bool _showChildren = false;
+        private bool _useCompactBranchNamesInGraph = true;
 
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;

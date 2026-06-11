@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
-  <x:String x:Key="Text.Apply" xml:space="preserve">パッチ</x:String>
   <x:String x:Key="Text.Apply.File" xml:space="preserve">パッチファイル:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patch ファイルを選択</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">空白文字の変更を無視</x:String>
@@ -147,7 +146,6 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">タイトル</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
-  <x:String x:Key="Text.CommitCM.Drop" xml:space="preserve">コミットを削除</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">対話式リベース</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">削除...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">編集...</x:String>
@@ -155,16 +153,12 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">${0}$ を ${1}$ で対話式リベース</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">書き直す...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">親コミットに記録付きで統合...</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">${0}$ にマージ</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">マージ...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">${0}$ を ${1}$ にプッシュ</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${0}$ を ${1}$ でリベース</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$ を ${1}$ にリセット</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">コミットを取り消す</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">書き直す</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">パッチとして保存...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">親コミットに記録付きで統合</x:String>
-  <x:String x:Key="Text.CommitCM.Fixup" xml:space="preserve">親コミットに統合</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">個の変更されたファイル</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">変更を検索...</x:String>
@@ -193,7 +187,6 @@
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">コミットメッセージを入力してください。タイトルと説明は、空行で分けて記述してください！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">タイトル</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
-  <x:String x:Key="Text.Compare.WithHead" xml:space="preserve">HEAD と比較</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">リポジトリの設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">コミットテンプレート</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">組み込みのパラメーター:
@@ -382,9 +375,6 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">未追跡のファイルを含める</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} 件の変更が破棄されます</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">この操作は元に戻せません！！！</x:String>
-  <x:String x:Key="Text.DropHead" xml:space="preserve">コミットを削除</x:String>
-  <x:String x:Key="Text.DropHead.Commit" xml:space="preserve">コミット:</x:String>
-  <x:String x:Key="Text.DropHead.NewHead" xml:space="preserve">新しい HEAD:</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">ブランチの説明を編集</x:String>
   <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">対象:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">ブックマーク:</x:String>
@@ -510,12 +500,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'変更' に切り替え</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'履歴' に切り替え</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'スタッシュ' に切り替え</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">テキストエディター</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">検索パネルを閉じる</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">次の一致を検索</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">前の一致を検索</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.OpenExternalMergeTool" xml:space="preserve">外部の比較/マージツールで開く</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">検索パネルを開く</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">破棄</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">ステージに上げる</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">ステージから降ろす</x:String>
@@ -753,7 +737,6 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD に移動</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">ブランチを作成</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">通知を消去</x:String>
-  <x:String x:Key="Text.Repository.OnlyHighlightCurrentBranchInGraph" xml:space="preserve">現在のブランチのみを強調表示</x:String>
   <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">フォルダーとして開く</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0} で開く</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">外部ツールで開く</x:String>
@@ -785,7 +768,6 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">名前順</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">並べ替え</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">端末で開く</x:String>
-  <x:String x:Key="Text.Repository.UseRelativeTimeInGraph" xml:space="preserve">相対時間を使用</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">ログを表示</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">ブラウザーで '{0}' を訪問</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">作業ツリー</x:String>
@@ -803,7 +785,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">コミットを取り消す</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">コミット:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">取り消しの変更をコミット</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">コミットメッセージを書き直す</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">実行しています。お待ちください...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">保存</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">名前を付けて保存...</x:String>
@@ -831,9 +812,6 @@
   <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">上流のブランチ:</x:String>
   <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">SHA をコピー</x:String>
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">このコミットに移動</x:String>
-  <x:String x:Key="Text.SquashOrFixup.Squash" xml:space="preserve">親コミットに記録付きで統合</x:String>
-  <x:String x:Key="Text.SquashOrFixup.Fixup" xml:space="preserve">親コミットに統合</x:String>
-  <x:String x:Key="Text.SquashOrFixup.Into" xml:space="preserve">統合先:</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">SSH の秘密鍵:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">SSH の秘密鍵が保管されているパス</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">開始</x:String>
@@ -896,7 +874,6 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">${0}$ を削除...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">選択した {0} 個のタグを削除...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$ を ${1}$ にマージ...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">${0}$ をプッシュ...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">サブモジュールを更新</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">すべてのサブモジュール</x:String>

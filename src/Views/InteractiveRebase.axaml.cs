@@ -418,6 +418,18 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnOpenDetailsAsStandalone(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: ViewModels.CommitDetail detail })
+            {
+                var standalone = new CommitDetailStandalone();
+                standalone.DataContext = detail.Clone();
+                standalone.Show(TopLevel.GetTopLevel(this) as Window);
+            }
+
+            e.Handled = true;
+        }
+
         private async void OnStartJobs(object _1, RoutedEventArgs _2)
         {
             if (DataContext is not ViewModels.InteractiveRebase vm)

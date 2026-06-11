@@ -10,6 +10,42 @@ using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
+    public class BranchSelectorChoice : TextBlock
+    {
+        public static readonly StyledProperty<Models.Branch> BranchProperty =
+            AvaloniaProperty.Register<BranchSelectorChoice, Models.Branch>(nameof(Branch));
+
+        public Models.Branch Branch
+        {
+            get => GetValue(BranchProperty);
+            set => SetValue(BranchProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> UsePureNameProperty =
+            AvaloniaProperty.Register<BranchSelectorChoice, bool>(nameof(UsePureName));
+
+        public bool UsePureName
+        {
+            get => GetValue(UsePureNameProperty);
+            set => SetValue(UsePureNameProperty, value);
+        }
+
+        protected override Type StyleKeyOverride => typeof(TextBlock);
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == BranchProperty || change.Property == UsePureNameProperty)
+            {
+                if (Branch is { } branch)
+                    Text = UsePureName ? branch.Name : branch.FriendlyName;
+                else
+                    Text = "---";
+            }
+        }
+    }
+
     public partial class BranchSelector : UserControl
     {
         public static readonly StyledProperty<List<Models.Branch>> BranchesProperty =
@@ -30,13 +66,16 @@ namespace SourceGit.Views
             set => SetValue(VisibleBranchesProperty, value);
         }
 
-        public static readonly StyledProperty<Models.Branch> SelectedBranchProperty =
-            AvaloniaProperty.Register<BranchSelector, Models.Branch>(nameof(SelectedBranch));
+        public static readonly DirectProperty<BranchSelector, Models.Branch> SelectedBranchProperty =
+            AvaloniaProperty.RegisterDirect<BranchSelector, Models.Branch>(
+                nameof(SelectedBranch),
+                o => o.SelectedBranch,
+                (o, v) => o.SelectedBranch = v);
 
         public Models.Branch SelectedBranch
         {
-            get => GetValue(SelectedBranchProperty);
-            set => SetValue(SelectedBranchProperty, value);
+            get => _selectedBranch;
+            set => SetAndRaise(SelectedBranchProperty, ref _selectedBranch, value);
         }
 
         public static readonly StyledProperty<bool> IsDropDownOpenedProperty =
@@ -55,6 +94,15 @@ namespace SourceGit.Views
         {
             get => GetValue(SearchFilterProperty);
             set => SetValue(SearchFilterProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> UsePureNameProperty =
+            AvaloniaProperty.Register<BranchSelector, bool>(nameof(UsePureName));
+
+        public bool UsePureName
+        {
+            get => GetValue(UsePureNameProperty);
+            set => SetValue(UsePureNameProperty, value);
         }
 
         public BranchSelector()
@@ -97,7 +145,7 @@ namespace SourceGit.Views
 
                     SetCurrentValue(VisibleBranchesProperty, visible);
                     if (!keepSelection && visible.Count > 0)
-                        SetCurrentValue(SelectedBranchProperty, visible[0]);
+                        SelectedBranch = visible[0];
                 }
             }
         }
@@ -215,6 +263,12 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnDropDownListSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 1 && e.AddedItems[0] is Models.Branch branch)
+                SelectedBranch = branch;
+        }
+
         private void OnDropDownItemPointerPressed(object sender, PointerPressedEventArgs e)
         {
             if (sender is Control { DataContext: Models.Branch branch })
@@ -225,5 +279,6 @@ namespace SourceGit.Views
         }
 
         private Popup _popup = null;
+        private Models.Branch _selectedBranch = null;
     }
 }

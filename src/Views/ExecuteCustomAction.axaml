@@ -149,7 +149,7 @@
                        HorizontalAlignment="Right" VerticalAlignment="Center"
                        Margin="0,0,8,0"/>
             <v:BranchSelector Grid.Row="0" Grid.Column="1"
-                              Height="28" Padding="8,0"
+                              Height="28"
                               VerticalAlignment="Center" HorizontalAlignment="Stretch"
                               Branches="{Binding Branches, Mode=OneWay}"
                               SelectedBranch="{Binding SelectedBranch, Mode=TwoWay}"/>

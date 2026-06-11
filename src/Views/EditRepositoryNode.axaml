@@ -52,7 +52,6 @@
     <Grid Height="28" Margin="8,4,0,0" ColumnDefinitions="120,*" IsVisible="{Binding IsRepository}">
       <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Bookmark}"/>
       <ComboBox Grid.Column="1"
-                BorderThickness="0"
                 Height="28"
                 ItemsSource="{Binding Bookmarks}"
                 SelectedIndex="{Binding Bookmark, Mode=TwoWay}">

@@ -24,15 +24,6 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlightCurrentBranch), true);
-
-        public bool OnlyHighlightCurrentBranch
-        {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
-        }
-
         public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
             AvaloniaProperty.Register<CommitGraph, Models.CommitGraphLayout>(nameof(Layout));
 
@@ -47,7 +38,6 @@ namespace SourceGit.Views
             AffectsRender<CommitGraph>(
                 GraphProperty,
                 DotBrushProperty,
-                OnlyHighlightCurrentBranchProperty,
                 LayoutProperty);
         }
 
@@ -75,32 +65,26 @@ namespace SourceGit.Views
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
-            if (onlyHighlightCurrentBranch)
+            foreach (var link in graph.Links)
             {
-                foreach (var link in graph.Links)
+                var startY = link.Start.Y * rowHeight;
+                var endY = link.End.Y * rowHeight;
+
+                if (endY < top)
+                    continue;
+                if (startY > bottom)
+                    break;
+
+                var geo = new StreamGeometry();
+                using (var ctx = geo.Open())
                 {
-                    if (link.IsMerged)
-                        continue;
-
-                    var startY = link.Start.Y * rowHeight;
-                    var endY = link.End.Y * rowHeight;
-
-                    if (endY < top)
-                        continue;
-                    if (startY > bottom)
-                        break;
-
-                    var geo = new StreamGeometry();
-                    using (var ctx = geo.Open())
-                    {
-                        ctx.BeginFigure(new Point(link.Start.X, startY), false);
-                        ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
-                    }
-
-                    context.DrawGeometry(null, grayedPen, geo);
+                    ctx.BeginFigure(new Point(link.Start.X, startY), false);
+                    ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
                 }
+
+                var pen = link.IsHighlighted ? Models.CommitGraph.Pens[link.Color] : grayedPen;
+                context.DrawGeometry(null, pen, geo);
             }
 
             foreach (var line in graph.Paths)
@@ -115,7 +99,7 @@ namespace SourceGit.Views
                     break;
 
                 var geo = new StreamGeometry();
-                var pen = Models.CommitGraph.Pens[line.Color];
+                var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
 
                 using (var ctx = geo.Open())
                 {
@@ -169,33 +153,7 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (!line.IsMerged && onlyHighlightCurrentBranch)
-                    context.DrawGeometry(null, grayedPen, geo);
-                else
-                    context.DrawGeometry(null, pen, geo);
-            }
-
-            foreach (var link in graph.Links)
-            {
-                if (onlyHighlightCurrentBranch && !link.IsMerged)
-                    continue;
-
-                var startY = link.Start.Y * rowHeight;
-                var endY = link.End.Y * rowHeight;
-
-                if (endY < top)
-                    continue;
-                if (startY > bottom)
-                    break;
-
-                var geo = new StreamGeometry();
-                using (var ctx = geo.Open())
-                {
-                    ctx.BeginFigure(new Point(link.Start.X, startY), false);
-                    ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
-                }
-
-                context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
+                context.DrawGeometry(null, pen, geo);
             }
         }
 
@@ -204,7 +162,6 @@ namespace SourceGit.Views
             var dotFill = DotBrush;
             var dotFillPen = new Pen(dotFill, 2);
             var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
             foreach (var dot in graph.Dots)
             {
@@ -215,10 +172,7 @@ namespace SourceGit.Views
                 if (center.Y > bottom)
                     break;
 
-                var pen = Models.CommitGraph.Pens[dot.Color];
-                if (!dot.IsMerged && onlyHighlightCurrentBranch)
-                    pen = grayedPen;
-
+                var pen = dot.IsHighlighted ? Models.CommitGraph.Pens[dot.Color] : grayedPen;
                 switch (dot.Type)
                 {
                     case Models.CommitGraph.DotType.Head:

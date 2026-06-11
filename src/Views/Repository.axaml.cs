@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -342,7 +343,7 @@ namespace SourceGit.Views
 
         private void OnOpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
         {
-            if (sender is Button button && DataContext is ViewModels.Repository repo)
+            if (sender is Button button && DataContext is ViewModels.Repository { Histories: { } histories } repo)
             {
                 var pref = ViewModels.Preferences.Instance;
 
@@ -434,6 +435,50 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
+                var highlights = new MenuItem();
+                highlights.Header = App.Text("Histories.HighlightsInGraph");
+                highlights.IsEnabled = false;
+
+                var all = new MenuItem();
+                all.Header = App.Text("Histories.HighlightsInGraph.All");
+                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.All)
+                    all.Icon = this.CreateMenuIcon("Icons.Check");
+                all.Click += (_, ev) =>
+                {
+                    histories.GraphHighlighting = Models.CommitGraphHighlighting.All;
+                    ev.Handled = true;
+                };
+
+                var currentBranchOnly = new MenuItem();
+                currentBranchOnly.Header = App.Text("Histories.HighlightsInGraph.CurrentBranchOnly");
+                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchOnly)
+                    currentBranchOnly.Icon = this.CreateMenuIcon("Icons.Check");
+                currentBranchOnly.Click += (_, ev) =>
+                {
+                    histories.GraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchOnly;
+                    ev.Handled = true;
+                };
+
+                var selectedCommitsOnly = new MenuItem();
+                selectedCommitsOnly.Header = App.Text("Histories.HighlightsInGraph.SelectedCommitsOnly");
+                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.SelectedCommitsOnly)
+                    selectedCommitsOnly.Icon = this.CreateMenuIcon("Icons.Check");
+                selectedCommitsOnly.Click += (_, ev) =>
+                {
+                    histories.GraphHighlighting = Models.CommitGraphHighlighting.SelectedCommitsOnly;
+                    ev.Handled = true;
+                };
+
+                var currentBranchAndSelectedCommits = new MenuItem();
+                currentBranchAndSelectedCommits.Header = App.Text("Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits");
+                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedCommits)
+                    currentBranchAndSelectedCommits.Icon = this.CreateMenuIcon("Icons.Check");
+                currentBranchAndSelectedCommits.Click += (_, ev) =>
+                {
+                    histories.GraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchAndSelectedCommits;
+                    ev.Handled = true;
+                };
+
                 var menu = new ContextMenu();
                 menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
                 menu.Items.Add(layout);
@@ -448,6 +493,12 @@ namespace SourceGit.Views
                 menu.Items.Add(order);
                 menu.Items.Add(dateOrder);
                 menu.Items.Add(topoOrder);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(highlights);
+                menu.Items.Add(all);
+                menu.Items.Add(currentBranchOnly);
+                menu.Items.Add(selectedCommitsOnly);
+                menu.Items.Add(currentBranchAndSelectedCommits);
                 menu.Open(button);
             }
 
@@ -613,6 +664,15 @@ namespace SourceGit.Views
                 await repo.ExecBisectCommandAsync(button.Tag as string);
 
             e.Handled = true;
+        }
+
+        private void OnRightPagePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == Border.IsVisibleProperty && sender is Border page)
+            {
+                var diffViewer = page.FindDescendantOfType<DiffView>();
+                diffViewer?.ToggleHotkeyBindings(page.IsVisible);
+            }
         }
     }
 }

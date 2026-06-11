@@ -21,8 +21,7 @@
                                  SubjectGuideLength="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength, Mode=OneWay}"
                                  Foreground="{DynamicResource Brush.FG1}"
                                  FontFamily="{DynamicResource Fonts.Default}"
-                                 FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize, Mode=OneWay}"
-                                 Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
+                                 FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize, Mode=OneWay}"/>
 
       <Rectangle Grid.Row="1"
                  Height="1"

@@ -619,8 +619,10 @@ namespace SourceGit.Views
             {
                 if (e.Key == Key.C)
                 {
-                    await CopyWithoutIndicatorsAsync();
                     e.Handled = true;
+
+                    if (CanCopyText())
+                        await CopyWithoutIndicatorsAsync();
                 }
             }
 
@@ -635,8 +637,7 @@ namespace SourceGit.Views
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            var selection = TextArea.Selection;
-            if (selection.IsEmpty)
+            if (!CanCopyText())
                 return;
 
             var copy = new MenuItem();
@@ -815,17 +816,31 @@ namespace SourceGit.Views
             }
         }
 
-        private async Task CopyWithoutIndicatorsAsync()
+        private bool CanCopyText()
         {
             var selection = TextArea.Selection;
             if (selection.IsEmpty)
+                return false;
+
+            var startPosition = selection.StartPosition;
+            var endPosition = selection.EndPosition;
+            if (startPosition.Line == endPosition.Line)
             {
-                await this.CopyTextAsync(string.Empty);
-                return;
+                var lines = GetLines();
+                var idx = startPosition.Line - 1;
+                if (idx >= lines.Count)
+                    return false;
+
+                var line = lines[idx];
+                return line.Type != Models.TextDiffLineType.Indicator && line.Type != Models.TextDiffLineType.None;
             }
 
-            var lines = GetLines();
+            return true;
+        }
 
+        private async Task CopyWithoutIndicatorsAsync()
+        {
+            var selection = TextArea.Selection;
             var startPosition = selection.StartPosition;
             var endPosition = selection.EndPosition;
 
@@ -837,13 +852,11 @@ namespace SourceGit.Views
 
             if (startIdx == endIdx)
             {
-                if (lines[startIdx].Type is Models.TextDiffLineType.Indicator or Models.TextDiffLineType.None)
-                    await this.CopyTextAsync(string.Empty);
-                else
-                    await this.CopyTextAsync(SelectedText);
+                await this.CopyTextAsync(SelectedText);
                 return;
             }
 
+            var lines = GetLines();
             var builder = new StringBuilder();
             for (var i = startIdx; i <= endIdx && i <= lines.Count - 1; i++)
             {

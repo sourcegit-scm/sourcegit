@@ -164,11 +164,23 @@ namespace SourceGit.ViewModels
                         return new ImageSource(null, 0);
                 }
 
-                var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
-                var pixelSize = new PixelSize(pfiImage.Width, pfiImage.Height);
-                var dpi = new Vector(96, 96);
-                var bitmap = new Bitmap(pixelFormat, alphaFormat, ptr, pixelSize, dpi, stride);
-                return new ImageSource(bitmap, size);
+                var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+                try
+                {
+                    var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
+                    var pixelSize = new PixelSize(pfiImage.Width, pfiImage.Height);
+                    var dpi = new Vector(96, 96);
+                    var bitmap = new Bitmap(pixelFormat, alphaFormat, ptr, pixelSize, dpi, stride);
+                    return new ImageSource(bitmap, size);
+                }
+                catch
+                {
+                    return new ImageSource(null, 0);
+                }
+                finally
+                {
+                    handle.Free();
+                }
             }
         }
 
@@ -198,14 +210,14 @@ namespace SourceGit.ViewModels
         private static ImageSource DecodeWithStbImage(Stream stream, long size)
         {
             var image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
-
             var data = image.Data;
             var stride = image.Width * (int)image.Comp;
-
-            var ptr = Marshal.UnsafeAddrOfPinnedArrayElement(data, 0);
             var pixelSize = new PixelSize(image.Width, image.Height);
             var dpi = new Vector(96, 96);
-            var bitmap = new Bitmap(PixelFormat.Rgba8888, AlphaFormat.Unpremul, ptr, pixelSize, dpi, stride);
+            var bitmap = new WriteableBitmap(pixelSize, dpi, PixelFormats.Rgba8888, AlphaFormat.Unpremul);
+
+            using var frameBuffer = bitmap.Lock();
+            Marshal.Copy(data, 0, frameBuffer.Address, data.Length);
             return new ImageSource(bitmap, size);
         }
     }

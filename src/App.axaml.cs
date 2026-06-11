@@ -366,11 +366,11 @@ namespace SourceGit
         private bool TryLaunchAsFileHistoryViewer(IClassicDesktopStyleApplicationLifetime desktop)
         {
             var args = desktop.Args;
-            if (args is not { Length: > 1 } || !args[0].Equals("--file-history", StringComparison.Ordinal))
+            if (args is not { Length: > 1 } || !args[0].Equals("--history", StringComparison.Ordinal))
                 return false;
 
-            var file = Path.GetFullPath(args[1]);
-            var dir = Path.GetDirectoryName(file);
+            var fullPath = Path.GetFullPath(args[1]);
+            var dir = Path.GetDirectoryName(fullPath);
 
             var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
             if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
@@ -380,13 +380,31 @@ namespace SourceGit
                 return true;
             }
 
+            Native.OS.SetupExternalTools();
+            Models.AvatarManager.Instance.Start();
+
             var repo = test.StdOut.Trim();
-            var relFile = Path.GetRelativePath(repo, file);
-            var viewer = new Views.FileHistories()
+            var relativePath = Path.GetRelativePath(repo, fullPath).Replace('\\', '/');
+            if (File.Exists(fullPath))
             {
-                DataContext = new ViewModels.FileHistories(repo, relFile)
-            };
-            desktop.MainWindow = viewer;
+                desktop.MainWindow = new Views.FileHistories()
+                {
+                    DataContext = new ViewModels.FileHistories(repo, relativePath)
+                };
+            }
+            else if (Directory.Exists(fullPath))
+            {
+                desktop.MainWindow = new Views.DirHistories()
+                {
+                    DataContext = new ViewModels.DirHistories(repo, relativePath.TrimEnd('/'))
+                };
+            }
+            else
+            {
+                Console.Out.WriteLine($"'{args[1]}' does not exist in repository: '{repo}'");
+                desktop.Shutdown(-1);
+            }
+
             return true;
         }
 
