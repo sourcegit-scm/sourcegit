@@ -269,7 +269,36 @@ namespace SourceGit
                 if (TryLaunchAsAskpass(desktop))
                     return;
 
-                TryLaunchAsNormal(desktop);
+                _ipcChannel = new Models.IpcChannel();
+                if (!_ipcChannel.IsFirstInstance)
+                {
+                    var argsToSend = new List<string>();
+                    if (desktop.Args != null)
+                    {
+                        for (int i = 0; i < desktop.Args.Length; i++)
+                        {
+                            var arg = desktop.Args[i].Trim();
+                            if (i == 0 && !arg.StartsWith("--"))
+                            {
+                                if (arg.StartsWith('"') && arg.EndsWith('"'))
+                                    arg = arg.Substring(1, arg.Length - 2).Trim();
+
+                                if (arg.Length > 0 && !Path.IsPathFullyQualified(arg))
+                                    arg = Path.GetFullPath(arg);
+                            }
+                            argsToSend.Add(arg);
+                        }
+                    }
+
+                    _ipcChannel.SendToFirstInstance(string.Join("\n", argsToSend));
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    _ipcChannel.MessageReceived += TryOpenRepository;
+                    desktop.Exit += (_, _) => _ipcChannel.Dispose();
+                    TryLaunchAsNormal(desktop);
+                }
             }
         }
         #endregion
@@ -475,8 +504,8 @@ namespace SourceGit
             Models.AvatarManager.Instance.Start();
 
             string startupRepo = null;
-            if (desktop.Args is { Length: 1 } && Directory.Exists(desktop.Args[0]))
-                startupRepo = desktop.Args[0];
+            if (desktop.Args != null)
+                ParsedArgs = ParseArgs(desktop.Args, out startupRepo);
 
             var pref = ViewModels.Preferences.Instance;
             pref.SetCanModify();
@@ -502,7 +531,21 @@ namespace SourceGit
                 _ipcChannel = null;
             };
 
-            _ipcChannel.MessageReceived += repo =>
+#if !DISABLE_UPDATE_DETECTION
+            if (pref.ShouldCheck4UpdateOnStartup())
+                Check4Update();
+#endif
+        }
+
+        private void TryOpenRepository(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                return;
+
+            string[] args = message.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            ParsedArgs = ParseArgs(args, out string repo);
+
+            if (!string.IsNullOrEmpty(repo) && Directory.Exists(repo))
             {
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -581,6 +624,82 @@ namespace SourceGit
             }
         }
         #endregion
+
+        private string FixFontFamilyName(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return string.Empty;
+
+            var parts = input.Split(',');
+            var trimmed = new List<string>();
+
+            foreach (var part in parts)
+            {
+                var t = part.Trim();
+                if (string.IsNullOrEmpty(t))
+                    continue;
+
+                var sb = new StringBuilder();
+                var prevChar = '\0';
+
+                foreach (var c in t)
+                {
+                    if (c == ' ' && prevChar == ' ')
+                        continue;
+                    sb.Append(c);
+                    prevChar = c;
+                }
+
+                var name = sb.ToString();
+                try
+                {
+                    var fontFamily = FontFamily.Parse(name);
+                    if (fontFamily.FamilyTypefaces.Count > 0)
+                        trimmed.Add(name);
+                }
+                catch
+                {
+                    // Ignore exceptions.
+                }
+            }
+
+            return string.Join(",", trimmed);
+        }
+
+        public class LaunchArguments
+        {
+            public bool IgnoreWorkspace { get; set; }
+            public bool NoSaveWorkspace { get; set; }
+            public int? StartupViewIndex { get; set; }
+        }
+
+        public static LaunchArguments ParseArgs(string[] args, out string repoPath)
+        {
+            repoPath = null;
+            var parsed = new LaunchArguments();
+            for (int i = 0; i < args.Length; i++)
+            {
+                var arg = args[i].Trim();
+                if (arg.Equals("--ignore-workspace", StringComparison.OrdinalIgnoreCase))
+                    parsed.IgnoreWorkspace = true;
+                else if (arg.Equals("--no-save-workspace", StringComparison.OrdinalIgnoreCase))
+                    parsed.NoSaveWorkspace = true;
+                else if (arg.Equals("--commit", StringComparison.OrdinalIgnoreCase))
+                    parsed.StartupViewIndex = 1;
+                else if (arg.Equals("--history", StringComparison.OrdinalIgnoreCase))
+                    parsed.StartupViewIndex = 0;
+                else if (arg.Equals("--stashes", StringComparison.OrdinalIgnoreCase))
+                    parsed.StartupViewIndex = 2;
+                else if (i == 0 && !arg.StartsWith("--"))
+                    repoPath = arg;
+            }
+            return parsed;
+        }
+
+        public static LaunchArguments ParsedArgs { get; set; } = new LaunchArguments();
+
+        [GeneratedRegex(@"^[a-z]+\s+([a-fA-F0-9]{4,40})(\s+.*)?$")]
+        private static partial Regex REG_REBASE_TODO();
 
         private Models.IpcChannel _ipcChannel = null;
         private ViewModels.Launcher _launcher = null;

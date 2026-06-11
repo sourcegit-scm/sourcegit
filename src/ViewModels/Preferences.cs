@@ -664,10 +664,12 @@ namespace SourceGit.ViewModels
             if (_isLoading || _isReadonly)
                 return;
 
+            if (App.ParsedArgs != null && App.ParsedArgs.NoSaveWorkspace)
+                return;
+            
             var tmpfile = Path.Combine(Native.OS.DataDir, "preference_tmp.json");
             var content = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
             File.WriteAllText(tmpfile, content);
-
             var finalFile = Path.Combine(Native.OS.DataDir, "preference.json");
             File.Move(tmpfile, finalFile, true);
         }
