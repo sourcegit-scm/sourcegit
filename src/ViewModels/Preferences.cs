@@ -468,12 +468,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public uint StatisticsSampleColor
-        {
-            get => _statisticsSampleColor;
-            set => SetProperty(ref _statisticsSampleColor, value);
-        }
-
         public List<RepositoryNode> RepositoryNodes
         {
             get;
@@ -846,6 +840,5 @@ namespace SourceGit.ViewModels
 
         private string _gitDefaultCloneDir = string.Empty;
         private int _shellOrTerminalType = -1;
-        private uint _statisticsSampleColor = 0xFF00FF00;
     }
 }

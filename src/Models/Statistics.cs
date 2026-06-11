@@ -2,18 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-using LiveChartsCore;
-using LiveChartsCore.Defaults;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-
-using SkiaSharp;
-
 namespace SourceGit.Models
 {
     public enum StatisticsMode
     {
-        All,
+        All = 0,
         ThisMonth,
         ThisWeek,
     }
@@ -24,45 +17,47 @@ namespace SourceGit.Models
         public int Count { get; set; } = count;
     }
 
+    public class StatisticsSample(DateTime time, int count)
+    {
+        public DateTime Time { get; set; } = time;
+        public int Count { get; set; } = count;
+    }
+
+    public class StatisticsSeries
+    {
+        public int MaxSampleValue = 0;
+        public DateTime MinSampleTime = DateTime.MaxValue;
+        public DateTime MaxSampleTime = DateTime.MinValue;
+        public Dictionary<DateTime, int> TotalSamples = null;
+        public Dictionary<DateTime, int> UserSamples = null;
+    }
+
     public class StatisticsReport
     {
         public int Total { get; set; } = 0;
+        public StatisticsMode Mode { get; set; } = StatisticsMode.All;
         public List<StatisticsAuthor> Authors { get; set; } = new();
-        public List<ISeries> Series { get; set; } = new();
-        public List<Axis> XAxes { get; set; } = new();
-        public List<Axis> YAxes { get; set; } = new();
-        public StatisticsAuthor SelectedAuthor { get => _selectedAuthor; set => ChangeAuthor(value); }
 
         public StatisticsReport(StatisticsMode mode, DateTime start)
         {
-            _mode = mode;
-
-            YAxes.Add(new Axis()
-            {
-                TextSize = 10,
-                MinLimit = 0,
-                SeparatorsPaint = new SolidColorPaint(new SKColor(0x40808080)) { StrokeThickness = 1 }
-            });
+            Mode = mode;
 
             if (mode == StatisticsMode.ThisWeek)
             {
+                _minSampleTime = start;
+                _maxSampleTime = start.AddDays(6);
+
                 for (int i = 0; i < 7; i++)
                     _mapSamples.Add(start.AddDays(i), 0);
-
-                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(1), v => WEEKDAYS[(int)v.DayOfWeek]) { TextSize = 10 });
             }
             else if (mode == StatisticsMode.ThisMonth)
             {
                 var now = DateTime.Now;
                 var maxDays = DateTime.DaysInMonth(now.Year, now.Month);
+                _minSampleTime = start;
+                _maxSampleTime = start.AddDays(maxDays - 1);
                 for (int i = 0; i < maxDays; i++)
                     _mapSamples.Add(start.AddDays(i), 0);
-
-                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(1), v => $"{v:MM/dd}") { TextSize = 10 });
-            }
-            else
-            {
-                XAxes.Add(new DateTimeAxis(TimeSpan.FromDays(30), v => $"{v:yyyy/MM}") { TextSize = 10 });
             }
         }
 
@@ -71,10 +66,19 @@ namespace SourceGit.Models
             Total++;
 
             DateTime normalized;
-            if (_mode == StatisticsMode.ThisWeek || _mode == StatisticsMode.ThisMonth)
+            if (Mode == StatisticsMode.ThisWeek || Mode == StatisticsMode.ThisMonth)
+            {
                 normalized = time.Date;
+            }
             else
-                normalized = new DateTime(time.Year, time.Month, 1).ToLocalTime();
+            {
+                normalized = new DateTime(time.Year, time.Month, 1).ToLocalTime().Date;
+
+                if (normalized < _minSampleTime)
+                    _minSampleTime = normalized;
+                if (normalized > _maxSampleTime)
+                    _maxSampleTime = normalized;
+            }
 
             if (_mapSamples.TryGetValue(normalized, out var vs))
                 _mapSamples[normalized] = vs + 1;
@@ -95,10 +99,9 @@ namespace SourceGit.Models
             }
             else
             {
-                _mapUserSamples.Add(author, new Dictionary<DateTime, int>
-                {
-                    { normalized, 1 }
-                });
+                var added = new Dictionary<DateTime, int>();
+                added.Add(normalized, 1);
+                _mapUserSamples.Add(author, added);
             }
         }
 
@@ -107,76 +110,36 @@ namespace SourceGit.Models
             foreach (var kv in _mapUsers)
                 Authors.Add(new StatisticsAuthor(kv.Key, kv.Value));
 
+            _mapUsers.Clear();
             Authors.Sort((l, r) => r.Count - l.Count);
 
-            var samples = new List<DateTimePoint>();
             foreach (var kv in _mapSamples)
-                samples.Add(new DateTimePoint(kv.Key, kv.Value));
-
-            Series.Add(
-                new ColumnSeries<DateTimePoint>()
-                {
-                    Values = samples,
-                    Stroke = null,
-                    Fill = null,
-                    Padding = 1,
-                }
-            );
-
-            _mapUsers.Clear();
-            _mapSamples.Clear();
-        }
-
-        public void ChangeColor(uint color)
-        {
-            _fillColor = color;
-
-            var fill = new SKColor(color);
-
-            if (Series.Count > 0 && Series[0] is ColumnSeries<DateTimePoint> total)
-                total.Fill = new SolidColorPaint(_selectedAuthor == null ? fill : fill.WithAlpha(51));
-
-            if (Series.Count > 1 && Series[1] is ColumnSeries<DateTimePoint> user)
-                user.Fill = new SolidColorPaint(fill);
-        }
-
-        public void ChangeAuthor(StatisticsAuthor author)
-        {
-            if (author == _selectedAuthor)
-                return;
-
-            _selectedAuthor = author;
-            Series.RemoveRange(1, Series.Count - 1);
-            if (author == null || !_mapUserSamples.TryGetValue(author.User, out var userSamples))
             {
-                ChangeColor(_fillColor);
-                return;
+                if (kv.Value > _maxSampleValue)
+                    _maxSampleValue = kv.Value;
             }
-
-            var samples = new List<DateTimePoint>();
-            foreach (var kv in userSamples)
-                samples.Add(new DateTimePoint(kv.Key, kv.Value));
-
-            Series.Add(
-                new ColumnSeries<DateTimePoint>()
-                {
-                    Values = samples,
-                    Stroke = null,
-                    Fill = null,
-                    Padding = 1,
-                }
-            );
-
-            ChangeColor(_fillColor);
         }
 
-        private static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-        private StatisticsMode _mode;
+        public StatisticsSeries GetStatisticsSeries(StatisticsAuthor extraAuthor = null)
+        {
+            var series = new StatisticsSeries();
+            series.MaxSampleValue = _maxSampleValue;
+            series.MinSampleTime = _minSampleTime;
+            series.MaxSampleTime = _maxSampleTime;
+            series.TotalSamples = _mapSamples;
+
+            if (extraAuthor != null && _mapUserSamples.TryGetValue(extraAuthor.User, out var userSamples))
+                series.UserSamples = userSamples;
+
+            return series;
+        }
+
+        private DateTime _minSampleTime = DateTime.MaxValue;
+        private DateTime _maxSampleTime = DateTime.MinValue;
+        private int _maxSampleValue = 0;
         private Dictionary<User, int> _mapUsers = new();
         private Dictionary<DateTime, int> _mapSamples = new();
         private Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new();
-        private StatisticsAuthor _selectedAuthor = null;
-        private uint _fillColor = 255;
     }
 
     public class Statistics
@@ -207,7 +170,7 @@ namespace SourceGit.Models
                 _users.Add(email, user);
             }
 
-            var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime();
+            var time = DateTime.UnixEpoch.AddSeconds(timestamp).ToLocalTime().Date;
             if (time >= _thisWeekStart)
                 Week.AddCommit(time, user);
 
