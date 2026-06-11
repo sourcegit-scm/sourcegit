@@ -1,5 +1,5 @@
 ﻿using System;
-using Avalonia;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -8,15 +8,6 @@ namespace SourceGit.Views
 {
     public class ChromelessWindow : Window
     {
-        public static readonly StyledProperty<double> MacOSWindowButtonWidthProperty =
-            AvaloniaProperty.Register<ChromelessWindow, double>(nameof(MacOSWindowButtonWidth), 76.0);
-
-        public double MacOSWindowButtonWidth
-        {
-            get => GetValue(MacOSWindowButtonWidthProperty);
-            set => SetValue(MacOSWindowButtonWidthProperty, value);
-        }
-
         public bool UseSystemWindowFrame
         {
             get => Native.OS.UseSystemWindowFrame;
@@ -32,7 +23,6 @@ namespace SourceGit.Views
 
         public ChromelessWindow()
         {
-            MacOSWindowButtonWidth = 76.0 / Math.Max(1.0, ViewModels.Preferences.Instance.Zoom);
             Focusable = true;
             Native.OS.SetupForWindow(this);
         }
@@ -104,14 +94,12 @@ namespace SourceGit.Views
                 {
                     var zoom = Math.Min(ViewModels.Preferences.Instance.Zoom + 0.05, 2.5);
                     ViewModels.Preferences.Instance.Zoom = zoom;
-                    MacOSWindowButtonWidth = 76.0 / zoom;
                     e.Handled = true;
                 }
                 else if (e.Key == Key.OemMinus)
                 {
                     var zoom = Math.Max(ViewModels.Preferences.Instance.Zoom - 0.05, 1);
                     ViewModels.Preferences.Instance.Zoom = zoom;
-                    MacOSWindowButtonWidth = 76.0 / zoom;
                     e.Handled = true;
                 }
             }
