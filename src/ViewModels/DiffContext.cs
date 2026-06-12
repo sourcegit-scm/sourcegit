@@ -85,12 +85,12 @@ namespace SourceGit.ViewModels
 
         public void CheckSettings()
         {
+            var pref = Preferences.Instance;
+
             if (Content is TextDiffContext ctx)
             {
-                var pref = Preferences.Instance;
-
-                if ((pref.UseFullTextDiff && _info.UnifiedLines != _entireFileLine) ||
-                    (!pref.UseFullTextDiff && _info.UnifiedLines == _entireFileLine) ||
+                if ((pref.UseFullTextDiff && _info.UnifiedLines != _entireFileLines) ||
+                    (!pref.UseFullTextDiff && _info.UnifiedLines == _entireFileLines) ||
                     (pref.IgnoreWhitespaceChangesInDiff != _info.IgnoreWhitespace))
                 {
                     LoadContent();
@@ -99,6 +99,11 @@ namespace SourceGit.ViewModels
 
                 if (ctx.IsSideBySide() != pref.UseSideBySideDiff)
                     Content = ctx.SwitchMode();
+            }
+            else if (Content is Models.NoOrEOLChange)
+            {
+                if (pref.IgnoreWhitespaceChangesInDiff != _info.IgnoreWhitespace)
+                    LoadContent();
             }
         }
 
@@ -114,7 +119,7 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var pref = Preferences.Instance;
-                var numLines = pref.UseFullTextDiff ? _entireFileLine : _unifiedLines;
+                var numLines = pref.UseFullTextDiff ? _entireFileLines : _unifiedLines;
                 var ignoreWhitespace = pref.IgnoreWhitespaceChangesInDiff;
                 var ignoreCRAtEOL = pref.IgnoreCRAtEOLInDiff;
 
@@ -326,7 +331,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private readonly int _entireFileLine = 999999999;
+        private readonly int _entireFileLines = 999999999;
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
         private string _fileModeChange = string.Empty;

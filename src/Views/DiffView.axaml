@@ -182,15 +182,6 @@
 
             <ToggleButton Classes="line_path"
                           Width="28"
-                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=IgnoreWhitespaceChangesInDiff, Mode=TwoWay}"
-                          IsVisible="{Binding IsIgnoreWhitespaceVisible, Mode=OneWay}"
-                          ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}"
-                          PropertyChanged="OnToggleButtonPropertyChanged">
-              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
-            </ToggleButton>
-
-            <ToggleButton Classes="line_path"
-                          Width="28"
                           IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowHiddenSymbolsInDiffView, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">
@@ -205,6 +196,15 @@
                           ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}"
                           PropertyChanged="OnToggleButtonPropertyChanged">
               <Path Width="12" Height="12" Data="{StaticResource Icons.Layout}" Margin="0,2,0,0"/>
+            </ToggleButton>
+
+            <ToggleButton Classes="line_path"
+                          Width="28"
+                          IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=IgnoreWhitespaceChangesInDiff, Mode=TwoWay}"
+                          IsVisible="{Binding IsIgnoreWhitespaceVisible, Mode=OneWay}"
+                          ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}"
+                          PropertyChanged="OnToggleButtonPropertyChanged">
+              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
             </ToggleButton>
 
             <Button x:Name="BtnOpenExternalMergeTool"
