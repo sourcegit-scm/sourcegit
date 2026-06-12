@@ -125,7 +125,7 @@ namespace SourceGit.Views
                     _ => WEEKDAYS[(int)time.DayOfWeek]
                 };
 
-                if (x <= w && series.TotalSamples.TryGetValue(time, out var total) && total > 0)
+                if (x - step <= w && series.TotalSamples.TryGetValue(time, out var total) && total > 0)
                 {
                     if (hasUserSamples)
                     {
