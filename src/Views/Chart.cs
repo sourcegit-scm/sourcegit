@@ -111,7 +111,7 @@ namespace SourceGit.Views
             var corner = new CornerRadius(2, 2, 0, 0);
             var sampleBrush = SampleBrush;
             var time = series.MaxSampleTime;
-            var sampleW = hasUserSamples ? Math.Min((step - 4) * 0.5, 14.0) : Math.Min(step - 4, 28.0);
+            var sampleW = hasUserSamples ? Math.Min(step * 0.5 - 2.5, 14.0) : Math.Min(step - 3, 28.0);
             var maxSampleH = h - 24.0;
             var maxLabelEndX = w - 4.0;
 
