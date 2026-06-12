@@ -236,7 +236,11 @@ namespace SourceGit.Views
                 if (Math.Abs(posX - _lastDragX) < 0.5f)
                     return;
 
-                _offsetX = Math.Max(0, Math.Min(_offsetX + posX - _lastDragX, _maxOffsetX));
+                var desired = Math.Max(0, Math.Min(_offsetX + posX - _lastDragX, _maxOffsetX));
+                if (Math.Abs(desired - _offsetX) < 0.5f)
+                    return;
+
+                _offsetX = desired;
                 _lastDragX = posX;
                 _lastHitted = new Rect(0, 0, 0, 0);
                 InvalidateVisual();
