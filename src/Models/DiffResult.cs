@@ -79,6 +79,12 @@ namespace SourceGit.Models
         public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
     }
 
+    public class EmptyFile
+    {
+        public const string SHA1 = "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391";
+        public const string SHA256 = "473a0f4c3be8a93681a267e3b1e9a7dcda1185436fe141f7749120a303721813";
+    }
+
     public class NoOrEOLChange;
 
     public class SubmoduleDiff

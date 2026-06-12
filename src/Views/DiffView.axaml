@@ -387,7 +387,19 @@
             <v:TextDiffView SelectedChunk="{Binding SelectedChunk, Mode=OneWay}"/>
           </DataTemplate>
 
-          <!-- Empty or only EOL changes -->
+          <!-- New Empty File -->
+          <DataTemplate DataType="m:EmptyFile">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+              <Path Width="64" Height="64" Data="{StaticResource Icons.Empty}" Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Margin="0,16,0,0"
+                         Text="{DynamicResource Text.Diff.EmptyFile}"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+            </StackPanel>
+          </DataTemplate>
+
+          <!-- Only EOL changes -->
           <DataTemplate DataType="m:NoOrEOLChange">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
               <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>

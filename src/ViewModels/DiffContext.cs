@@ -220,6 +220,10 @@ namespace SourceGit.ViewModels
                     else
                         rs = latest.LFSDiff;
                 }
+                else if (IsEmptyFileHash(latest.OldHash) || IsEmptyFileHash(latest.NewHash))
+                {
+                    rs = new Models.EmptyFile();
+                }
                 else
                 {
                     rs = new Models.NoOrEOLChange();
@@ -270,6 +274,20 @@ namespace SourceGit.ViewModels
                 FullMessage = new Models.CommitFullMessage { Message = body },
                 UncommittedChanges = uncommittedChangesCount
             };
+        }
+
+        private bool IsEmptyFileHash(string hash)
+        {
+            if (string.IsNullOrEmpty(hash))
+                return false;
+
+            if (hash.Length == 40)
+                return hash.Equals(Models.EmptyFile.SHA1, StringComparison.Ordinal);
+
+            if (hash.Length == 64)
+                return hash.Equals(Models.EmptyFile.SHA256, StringComparison.Ordinal);
+
+            return false;
         }
 
         private class Info

@@ -28,7 +28,7 @@ namespace SourceGit.Commands
             Context = repo;
 
             var builder = new StringBuilder(256);
-            builder.Append("diff --no-color --no-ext-diff --patch ");
+            builder.Append("diff --no-color --no-ext-diff --full-index --patch ");
             if (ignoreWhitespace)
                 builder.Append("--ignore-space-change ");
             if (ignoreCRAtEOL)
