@@ -102,7 +102,7 @@ namespace SourceGit.Views
                 context.DrawLine(labelPen, new Point(leftMargin, y), new Point(w, y));
             }
 
-            var step = Math.Max((w - leftMargin) / count, hasUserSamples ? 10.0 : 8.0);
+            var step = Math.Max((w - leftMargin) / count, 10.0);
             _maxOffsetX = Math.Max(count * step - (w - leftMargin), 0);
             _hitBoxes.Clear();
             _lastHitted = new Rect(0, 0, 0, 0);
