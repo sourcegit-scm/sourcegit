@@ -424,7 +424,7 @@ namespace SourceGit.Views
             {
                 var standalone = new CommitDetailStandalone();
                 standalone.DataContext = detail.Clone();
-                standalone.Show(TopLevel.GetTopLevel(this) as Window);
+                this.ShowWindow(standalone);
             }
 
             e.Handled = true;
