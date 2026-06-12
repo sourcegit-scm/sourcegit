@@ -189,9 +189,9 @@
       <!-- Right -->
       <v:Chart Grid.Column="1"
                Margin="8,0"
-               Series="{Binding Series, Mode=OneWay}"
-               Mode="{Binding ViewMode, Mode=OneWay}"
-               SampleBrush="{DynamicResource Brush.Accent}">
+               Samples="{Binding Samples, Mode=OneWay}"
+               SampleBrush="{DynamicResource Brush.Accent}"
+               LabelFontFamily="{DynamicResource Fonts.Default}">
         <v:Chart.DataTemplates>
           <DataTemplate DataType="v:ChartToolTip">
             <Border>
@@ -208,7 +208,7 @@
                   
                   <TextBlock Grid.Row="0" Grid.Column="1"
                              Margin="12,0,0,0"
-                             Text="{Binding Total, Mode=OneWay}"/>
+                             Text="{Binding All, Mode=OneWay}"/>
 
                   <Ellipse Grid.Row="2" Grid.Column="0"
                            Width="12" Height="12"
@@ -223,7 +223,7 @@
                             Orientation="Horizontal"
                             IsVisible="{Binding !HasUser, Mode=OneWay}">
                   <Ellipse Width="12" Height="12" Fill="{DynamicResource Brush.Accent}"/>
-                  <TextBlock Margin="12,0,0,0" Text="{Binding Total, Mode=OneWay}"/>
+                  <TextBlock Margin="12,0,0,0" Text="{Binding All, Mode=OneWay}"/>
                 </StackPanel>
               </StackPanel>
             </Border>

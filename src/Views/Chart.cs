@@ -9,38 +9,26 @@ using Avalonia.Media;
 
 namespace SourceGit.Views
 {
-    public class ChartToolTip
-    {
-        public string Title { get; set; } = string.Empty;
-        public bool HasUser { get; set; } = false;
-        public int Total { get; set; } = 0;
-        public int User { get; set; } = 0;
-
-        public ChartToolTip(string title, bool hasUser)
-        {
-            Title = title;
-            HasUser = hasUser;
-        }
-    }
+    public record ChartToolTip(string Title, bool HasUser, int All, int User);
 
     public class Chart : Control
     {
-        public static readonly StyledProperty<Models.StatisticsSeries> SeriesProperty =
-            AvaloniaProperty.Register<Chart, Models.StatisticsSeries>(nameof(Series));
+        public static readonly StyledProperty<Models.StatisticsSamples> SamplesProperty =
+            AvaloniaProperty.Register<Chart, Models.StatisticsSamples>(nameof(Samples));
 
-        public Models.StatisticsSeries Series
+        public Models.StatisticsSamples Samples
         {
-            get => GetValue(SeriesProperty);
-            set => SetValue(SeriesProperty, value);
+            get => GetValue(SamplesProperty);
+            set => SetValue(SamplesProperty, value);
         }
 
-        public static readonly StyledProperty<Models.StatisticsMode> ModeProperty =
-            AvaloniaProperty.Register<Chart, Models.StatisticsMode>(nameof(Mode));
+        public static readonly StyledProperty<FontFamily> LabelFontFamilyProperty =
+            AvaloniaProperty.Register<Chart, FontFamily>(nameof(LabelFontFamily));
 
-        public Models.StatisticsMode Mode
+        public FontFamily LabelFontFamily
         {
-            get => GetValue(ModeProperty);
-            set => SetValue(ModeProperty, value);
+            get => GetValue(LabelFontFamilyProperty);
+            set => SetValue(LabelFontFamilyProperty, value);
         }
 
         public static readonly StyledProperty<IBrush> SampleBrushProperty =
@@ -62,24 +50,25 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
-            var series = Series;
-            if (series == null || series.TotalSamples == null || series.MaxSampleValue == 0)
+            var samples = Samples;
+            if (samples == null || samples.Count == 0)
                 return;
 
             var w = Bounds.Width;
             var h = Bounds.Height;
             context.FillRectangle(Brushes.Transparent, new Rect(0, 0, w, h));
 
-            var mode = Mode;
-            var hasUserSamples = series.UserSamples != null;
-            var count = mode switch
-            {
-                Models.StatisticsMode.All => (series.MaxSampleTime.Year - series.MinSampleTime.Year) * 12 + (series.MaxSampleTime.Month - series.MinSampleTime.Month) + 1,
-                _ => series.TotalSamples.Count,
-            };
+            var count = samples.Count;
+            var maxValue = samples.MaxValue;
+            var time = samples.EndTime;
+            var minTime = samples.StartTime;
+            var hasUserSamples = samples.HasSpecialUser;
 
-            var maxValue = GetTheMaxValueInChart(series.MaxSampleValue);
             var labelPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), .5);
+            var labelTypeface = new Typeface(LabelFontFamily);
+            var corner = new CornerRadius(2, 2, 0, 0);
+            var sampleBrush = SampleBrush;
+
             var leftMargin = 0.0;
             for (var i = 1; i <= 8; i++)
             {
@@ -91,7 +80,7 @@ namespace SourceGit.Views
                     $"{value}",
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
-                    Typeface.Default,
+                    labelTypeface,
                     11,
                     Brushes.Gray);
 
@@ -108,9 +97,6 @@ namespace SourceGit.Views
             _lastHitted = new Rect(0, 0, 0, 0);
 
             var x = w + Math.Min(_maxOffsetX, _offsetX);
-            var corner = new CornerRadius(2, 2, 0, 0);
-            var sampleBrush = SampleBrush;
-            var time = series.MaxSampleTime;
             var sampleW = hasUserSamples ? Math.Min(step * 0.5 - 2.5, 14.0) : Math.Min(step - 3, 28.0);
             var maxSampleH = h - 24.0;
             var maxLabelEndX = w - 4.0;
@@ -118,37 +104,31 @@ namespace SourceGit.Views
             using var clip = context.PushClip(new Rect(leftMargin, 0, w - leftMargin, h));
             do
             {
-                var label = mode switch
-                {
-                    Models.StatisticsMode.All => time.ToString("yyyy/MM"),
-                    Models.StatisticsMode.ThisMonth => time.ToString("MM/dd"),
-                    _ => WEEKDAYS[(int)time.DayOfWeek]
-                };
+                var (label, total, user) = samples.GetSample(time);
 
-                if (x - step <= w && series.TotalSamples.TryGetValue(time, out var total) && total > 0)
+                if (x - step <= w && total > 0)
                 {
                     if (hasUserSamples)
                     {
                         var startX = x - step * 0.5 - 1 - sampleW;
                         var startY = maxSampleH * (1.0 - total * 1.0 / maxValue);
                         var rect = new Rect(startX, startY, sampleW, maxSampleH - startY);
-                        var tip = new ChartToolTip(label, true);
-                        tip.Total = total;
 
-                        using (var opacity = context.PushOpacity(0.2))
+                        using (context.PushOpacity(0.2))
+                        {
                             context.DrawRectangle(sampleBrush, null, new RoundedRect(rect, corner));
+                        }
 
-                        if (series.UserSamples.TryGetValue(time, out var user) && user > 0)
+                        if (user > 0)
                         {
                             var userStartX = startX + sampleW + 2;
                             var userStartY = maxSampleH * (1.0 - user * 1.0 / maxValue);
                             var userRect = new Rect(userStartX, userStartY, sampleW, maxSampleH - userStartY);
                             context.DrawRectangle(sampleBrush, null, new RoundedRect(userRect, corner));
-                            tip.User = user;
                         }
 
                         var hitRect = new Rect(startX, startY, sampleW * 2 + 2, maxSampleH - startY);
-                        _hitBoxes.Add(new(hitRect, tip));
+                        _hitBoxes.Add(new(hitRect, new(label, true, total, user)));
                     }
                     else
                     {
@@ -157,9 +137,7 @@ namespace SourceGit.Views
                         var rect = new Rect(startX, startY, sampleW, maxSampleH - startY);
 
                         context.DrawRectangle(sampleBrush, null, new RoundedRect(rect, corner));
-
-                        var tip = new ChartToolTip(label, false) { Total = total };
-                        _hitBoxes.Add(new(rect, tip));
+                        _hitBoxes.Add(new(rect, new(label, false, total, 0)));
                     }
                 }
 
@@ -169,7 +147,7 @@ namespace SourceGit.Views
                         label,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
-                        Typeface.Default,
+                        labelTypeface,
                         11,
                         Brushes.Gray);
 
@@ -188,13 +166,9 @@ namespace SourceGit.Views
                     break;
 
                 x -= step;
-                time = mode switch
-                {
-                    Models.StatisticsMode.All => time.Month == 1 ? new DateTime(time.Year - 1, 12, 1).ToLocalTime().Date : new DateTime(time.Year, time.Month - 1, 1).ToLocalTime().Date,
-                    _ => time.AddDays(-1),
-                };
 
-                if (time < series.MinSampleTime)
+                time = samples.NextSampleTime(time);
+                if (time < minTime)
                     break;
             } while (true);
         }
@@ -203,7 +177,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == SeriesProperty || change.Property == ModeProperty)
+            if (change.Property == SamplesProperty)
             {
                 _offsetX = 0;
                 InvalidateVisual();
@@ -274,20 +248,8 @@ namespace SourceGit.Views
             e.Pointer.Capture(null);
         }
 
-        private double GetTheMaxValueInChart(int maxSampleValue)
-        {
-            if (maxSampleValue < 8)
-                return 8;
-
-            if (maxSampleValue < 16)
-                return 16;
-
-            return Math.Floor(maxSampleValue / 6.0) * 8.0;
-        }
-
         private record HitBox(Rect Rect, ChartToolTip ToolTip);
 
-        private static readonly string[] WEEKDAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
         private double _offsetX = 0;
         private double _maxOffsetX = 0;
         private bool _isDraging = false;

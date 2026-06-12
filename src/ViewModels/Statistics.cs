@@ -28,10 +28,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _selectedReport, value);
         }
 
-        public Models.StatisticsSeries Series
+        public Models.StatisticsSamples Samples
         {
-            get => _series;
-            private set => SetProperty(ref _series, value);
+            get => _samples;
+            private set => SetProperty(ref _samples, value);
         }
 
         public Statistics(string repo)
@@ -56,7 +56,7 @@ namespace SourceGit.ViewModels
             if (SelectedReport == null)
                 return;
 
-            Series = SelectedReport.GetStatisticsSeries(author);
+            Samples = SelectedReport.GetSamples(author);
         }
 
         private void RefreshReport()
@@ -71,13 +71,13 @@ namespace SourceGit.ViewModels
                 _ => _data.Week,
             };
 
-            Series = SelectedReport.GetStatisticsSeries();
+            Samples = SelectedReport.GetSamples(null);
         }
 
         private bool _isLoading = true;
         private Models.Statistics _data = null;
         private Models.StatisticsMode _viewMode = Models.StatisticsMode.All;
         private Models.StatisticsReport _selectedReport = null;
-        private Models.StatisticsSeries _series = null;
+        private Models.StatisticsSamples _samples = null;
     }
 }

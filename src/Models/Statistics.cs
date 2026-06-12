@@ -17,25 +17,76 @@ namespace SourceGit.Models
         public int Count { get; set; } = count;
     }
 
-    public class StatisticsSample(DateTime time, int count)
+    public class StatisticsSamples
     {
-        public DateTime Time { get; set; } = time;
-        public int Count { get; set; } = count;
-    }
+        public DateTime StartTime { get; }
+        public DateTime EndTime { get; }
+        public int Count { get; }
+        public int MaxValue { get; }
+        public bool HasSpecialUser => _user != null;
 
-    public class StatisticsSeries
-    {
-        public int MaxSampleValue = 0;
-        public DateTime MinSampleTime = DateTime.MaxValue;
-        public DateTime MaxSampleTime = DateTime.MinValue;
-        public Dictionary<DateTime, int> TotalSamples = null;
-        public Dictionary<DateTime, int> UserSamples = null;
+        public StatisticsSamples(StatisticsMode mode, DateTime start, DateTime end, Dictionary<DateTime, int> all, int maxValue)
+        {
+            _mode = mode;
+            _all = all;
+
+            StartTime = start;
+            EndTime = end;
+
+            if (maxValue < 8)
+                MaxValue = 8;
+            else if (maxValue < 16)
+                MaxValue = 16;
+            else
+                MaxValue = (int)(Math.Floor(maxValue / 6.0) * 8.0);
+
+            Count = mode switch
+            {
+                StatisticsMode.All => (end.Year - start.Year) * 12 + (end.Month - start.Month) + 1,
+                _ => all.Count,
+            };
+        }
+
+        public void WithUser(Dictionary<DateTime, int> user)
+        {
+            _user = user;
+        }
+
+        public (string, int, int) GetSample(DateTime time)
+        {
+            var label = _mode switch
+            {
+                StatisticsMode.All => time.ToString("yyyy/MM"),
+                StatisticsMode.ThisMonth => time.ToString("MM/dd"),
+                _ => s_weekdays[(int)time.DayOfWeek]
+            };
+
+            var total = _all.GetValueOrDefault(time, 0);
+            var user = _user?.GetValueOrDefault(time, 0) ?? 0;
+            return (label, total, user);
+        }
+
+        public DateTime NextSampleTime(DateTime time)
+        {
+            if (_mode != StatisticsMode.All)
+                return time.AddDays(-1);
+
+            if (time.Month == 1)
+                return new DateTime(time.Year - 1, 12, 1).ToLocalTime().Date;
+
+            return new DateTime(time.Year, time.Month - 1, 1).ToLocalTime().Date;
+        }
+
+        private static readonly string[] s_weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+        private StatisticsMode _mode;
+        private Dictionary<DateTime, int> _all;
+        private Dictionary<DateTime, int> _user;
     }
 
     public class StatisticsReport
     {
+        public StatisticsMode Mode { get; }
         public int Total { get; set; } = 0;
-        public StatisticsMode Mode { get; set; } = StatisticsMode.All;
         public List<StatisticsAuthor> Authors { get; set; } = new();
 
         public StatisticsReport(StatisticsMode mode, DateTime start)
@@ -48,7 +99,7 @@ namespace SourceGit.Models
                 _maxSampleTime = start.AddDays(6);
 
                 for (int i = 0; i < 7; i++)
-                    _mapSamples.Add(start.AddDays(i), 0);
+                    _all.Add(start.AddDays(i), 0);
             }
             else if (mode == StatisticsMode.ThisMonth)
             {
@@ -57,7 +108,7 @@ namespace SourceGit.Models
                 _minSampleTime = start;
                 _maxSampleTime = start.AddDays(maxDays - 1);
                 for (int i = 0; i < maxDays; i++)
-                    _mapSamples.Add(start.AddDays(i), 0);
+                    _all.Add(start.AddDays(i), 0);
             }
         }
 
@@ -80,10 +131,10 @@ namespace SourceGit.Models
                     _maxSampleTime = normalized;
             }
 
-            if (_mapSamples.TryGetValue(normalized, out var vs))
-                _mapSamples[normalized] = vs + 1;
+            if (_all.TryGetValue(normalized, out var vs))
+                _all[normalized] = vs + 1;
             else
-                _mapSamples.Add(normalized, 1);
+                _all.Add(normalized, 1);
 
             if (_mapUsers.TryGetValue(author, out var vu))
                 _mapUsers[author] = vu + 1;
@@ -113,32 +164,26 @@ namespace SourceGit.Models
             _mapUsers.Clear();
             Authors.Sort((l, r) => r.Count - l.Count);
 
-            foreach (var kv in _mapSamples)
+            foreach (var kv in _all)
             {
                 if (kv.Value > _maxSampleValue)
                     _maxSampleValue = kv.Value;
             }
         }
 
-        public StatisticsSeries GetStatisticsSeries(StatisticsAuthor extraAuthor = null)
+        public StatisticsSamples GetSamples(StatisticsAuthor withUser)
         {
-            var series = new StatisticsSeries();
-            series.MaxSampleValue = _maxSampleValue;
-            series.MinSampleTime = _minSampleTime;
-            series.MaxSampleTime = _maxSampleTime;
-            series.TotalSamples = _mapSamples;
-
-            if (extraAuthor != null && _mapUserSamples.TryGetValue(extraAuthor.User, out var userSamples))
-                series.UserSamples = userSamples;
-
-            return series;
+            var samples = new StatisticsSamples(Mode, _minSampleTime, _maxSampleTime, _all, _maxSampleValue);
+            if (withUser != null && _mapUserSamples.TryGetValue(withUser.User, out var userSamples))
+                samples.WithUser(userSamples);
+            return samples;
         }
 
         private DateTime _minSampleTime = DateTime.MaxValue;
         private DateTime _maxSampleTime = DateTime.MinValue;
         private int _maxSampleValue = 0;
+        private Dictionary<DateTime, int> _all = new();
         private Dictionary<User, int> _mapUsers = new();
-        private Dictionary<DateTime, int> _mapSamples = new();
         private Dictionary<User, Dictionary<DateTime, int>> _mapUserSamples = new();
     }
 
