@@ -248,6 +248,22 @@ namespace SourceGit.Views
             e.Pointer.Capture(null);
         }
 
+        protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+        {
+            e.Handled = true;
+
+            var deltaX = e.KeyModifiers == KeyModifiers.Shift ? e.Delta.Y : e.Delta.X;
+            var deltaOffset = Bounds.Width * deltaX * 0.5;
+            var desired = Math.Max(0, Math.Min(_offsetX + deltaOffset, _maxOffsetX));
+            if (Math.Abs(desired - _offsetX) < 0.1)
+                return;
+
+            _offsetX = desired;
+            _isDraging = false;
+            _lastHitted = new Rect(0, 0, 0, 0);
+            InvalidateVisual();
+        }
+
         private record HitBox(Rect Rect, ChartToolTip ToolTip);
 
         private double _offsetX = 0;
