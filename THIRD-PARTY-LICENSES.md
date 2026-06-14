@@ -61,6 +61,12 @@ The project uses the following third-party libraries or assets
 - **License**: MIT License
 - **License Link**: https://github.com/nickbabcock/Pfim/blob/master/LICENSE.txt
 
+### StbImageSharp
+
+- **Source**: https://github.com/StbSharp/StbImageSharp
+- **Version**: 2.30.15
+- **License**: Public Domain
+
 ## Fonts
 
 ### JetBrainsMono
