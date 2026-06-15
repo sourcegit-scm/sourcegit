@@ -174,7 +174,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">編輯提交訊息...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">合併至父提交...</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合併 (merge)...</x:String>
-  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送(push) ${0}$ 至 ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送 (push) ${0}$ 至 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 至 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重設 (reset) ${0}$ 至 ${1}$</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">復原此提交</x:String>
@@ -212,7 +212,7 @@
   <x:String x:Key="Text.Compare.Commits" xml:space="preserve">差異提交</x:String>
   <x:String x:Key="Text.Compare.Commits.LeftOnly" xml:space="preserve">左側獨有提交</x:String>
   <x:String x:Key="Text.Compare.Commits.RightOnly" xml:space="preserve">右側獨有提交</x:String>
-  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">提示：如果比較的另一方是 HEAD，您可以揀選 (cherry-pick) 已選擇的提交(使用滑鼠右鍵)</x:String>
+  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">提示：如果比較的另一方是 HEAD，您可以揀選 (cherry-pick) 已選擇的提交 (使用滑鼠右鍵)</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">存放庫設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">提交訊息範本</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">內建參數:
@@ -257,7 +257,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">自訂約定式提交類型</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">預設遠端存放庫</x:String>
-  <x:String x:Key="Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules" xml:space="preserve">自動更新子模組時啟用「--recursive」选项</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules" xml:space="preserve">自動更新子模組時啟用「--recursive」選項</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">預設合併模式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">Issue 追蹤</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">新增符合 Azure DevOps 規則</x:String>
@@ -345,7 +345,7 @@
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">取消初始化子模組</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">強制取消，即使包含本機變更</x:String>
-  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模組: </x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模組:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名稱:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在刪除遠端上的分支，請務必小心!</x:String>
@@ -399,7 +399,7 @@
   <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">減少可見的行數</x:String>
   <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">增加可見的行數</x:String>
   <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">請選擇需要對比的檔案</x:String>
-  <x:String x:Key="Text.DirHistories" xml:space="preserve">目錄内容變更歷史</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">目錄內容變更歷史</x:String>
   <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">未提交的本機變更</x:String>
   <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">目前分支 HEAD 與上游不相符</x:String>
   <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">已更新至最新</x:String>
@@ -442,7 +442,7 @@
   <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">使用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.FileHistory" xml:space="preserve">檔案歷史</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">檔案變更</x:String>
-  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">檔案内容</x:String>
+  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">檔案內容</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git 工作流</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">開發分支:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">功能分支:</x:String>
@@ -468,7 +468,7 @@
   <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">輸入分支名稱</x:String>
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">開始發行分支...</x:String>
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">開始發行分支</x:String>
-  <x:String x:Key="Text.GitFlow.StartTarget" xml:space="preserve">分支名稱 ：</x:String>
+  <x:String x:Key="Text.GitFlow.StartTarget" xml:space="preserve">分支名稱:</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">版本標籤前置詞:</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
   <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">加入追蹤檔案規則...</x:String>
@@ -991,7 +991,7 @@
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交 (修改原始提交)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
-  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">您正在向一个分離狀態的 HEAD 提交變更，您確定要繼續提交嗎?</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">您正在向一個分離狀態的 HEAD 提交變更，您確定要繼續提交嗎?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter" xml:space="preserve">您已暫存 {0} 個檔案，但只顯示 {1} 個檔案 ({2} 個檔案被篩選器隱藏)。您確定要繼續提交嗎?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">偵測到衝突</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">解決衝突</x:String>
