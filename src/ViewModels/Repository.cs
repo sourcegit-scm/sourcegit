@@ -806,7 +806,7 @@ namespace SourceGit.ViewModels
                     locals.Add(b);
             }
 
-            var builder = BuildBranchTree(locals, []);
+            var builder = BuildBranchTree(locals, _remotes);
             LocalBranchTrees = builder.Locals;
 
             RefreshCommits();
@@ -841,7 +841,7 @@ namespace SourceGit.ViewModels
                     locals.Add(b);
             }
 
-            var builder = BuildBranchTree(locals, []);
+            var builder = BuildBranchTree(locals, _remotes);
             LocalBranchTrees = builder.Locals;
             CurrentBranch = checkouted;
 
@@ -867,7 +867,7 @@ namespace SourceGit.ViewModels
                     locals.Add(branch);
             }
 
-            var builder = BuildBranchTree(locals, []);
+            var builder = BuildBranchTree(locals, _remotes);
             LocalBranchTrees = builder.Locals;
 
             RefreshCommits();
