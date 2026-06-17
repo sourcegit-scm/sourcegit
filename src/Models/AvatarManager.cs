@@ -224,10 +224,7 @@ namespace SourceGit.Models
         {
             var lowered = email.ToLower(CultureInfo.CurrentCulture).Trim();
             var hash = MD5.HashData(Encoding.Default.GetBytes(lowered));
-            var builder = new StringBuilder(hash.Length * 2);
-            foreach (var c in hash)
-                builder.Append(c.ToString("x2"));
-            return builder.ToString();
+            return Convert.ToHexStringLower(hash);
         }
 
         private void NotifyResourceChanged(string email, Bitmap image)
