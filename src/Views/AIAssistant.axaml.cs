@@ -49,6 +49,7 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            WordWrap = true;
 
             TextArea.TextView.Margin = new Thickness(4, 0);
             TextArea.TextView.Options.EnableHyperlinks = false;

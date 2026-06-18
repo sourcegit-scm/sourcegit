@@ -20,6 +20,24 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕГЕНЕРУВАТИ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Використати AI для генерації повідомлення коміту</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">AI Diff Analysis</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">AI Analyze Changes</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">AI Analyze Changes</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">AI is analyzing changes...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">RETRY</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">No changes to analyze.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">No AI service is configured. Please configure one in Preferences.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">Collecting Git changes...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">Waiting for AI response...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff truncated due to size</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">Skipped files: {0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">Working Tree (Staged + Unstaged)</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">AI request failed. Check your network and API key.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">Content filtered by AI service.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">Response too long. Consider increasing max tokens or reducing diff size.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">Analyze staged and unstaged changes with AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">Analyze changes between these commits with AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">Analyze selected commit range with AI</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Виберіть файл .patch для застосування</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Застосувати Патч</x:String>

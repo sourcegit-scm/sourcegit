@@ -650,5 +650,60 @@ namespace SourceGit.Views
             var view = new AIAssistant() { DataContext = assistant };
             view.Show(owner);
         }
+
+        private async void OnAIDiffAnalyzeChanges(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.WorkingCopy vm && sender is Button button)
+            {
+                var repo = vm.Repository;
+                var services = repo.GetPreferredOpenAIServices();
+                if (services.Count == 0)
+                {
+                    repo.SendNotification(App.Text("AIDiffAnalysis.NoService"), true);
+                    e.Handled = true;
+                    return;
+                }
+
+                var owner = TopLevel.GetTopLevel(this) as Window;
+                if (owner == null)
+                    return;
+
+                if (services.Count == 1)
+                {
+                    var analysis = new ViewModels.AIDiffAnalysis(repo, services[0]);
+                    var view = new AIDiffAnalysis() { DataContext = analysis };
+                    view.Show(owner);
+                    await analysis.AnalyzeWorkingTreeAsync();
+                    view.MarkReady();
+                    e.Handled = true;
+                    return;
+                }
+
+                var menu = new ContextMenu();
+                foreach (var service in services)
+                {
+                    var dup = service;
+                    var item = new MenuItem();
+                    item.Header = service.Name;
+                    item.Click += async (_, ev) =>
+                    {
+                        var analysis = new ViewModels.AIDiffAnalysis(repo, dup);
+                        var view = new AIDiffAnalysis() { DataContext = analysis };
+                        view.Show(owner);
+                        await analysis.AnalyzeWorkingTreeAsync();
+                        view.MarkReady();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(item);
+                }
+
+                button.IsEnabled = false;
+                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu.Closed += (_, _) => button.IsEnabled = true;
+                menu.Open(button);
+            }
+
+            e.Handled = true;
+        }
     }
 }

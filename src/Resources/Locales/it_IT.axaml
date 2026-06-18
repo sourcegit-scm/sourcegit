@@ -25,6 +25,24 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modello</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RIGENERA</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare il messaggio di commit</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">Analisi AI Diff</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">Analizza modifiche con AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">Analizza modifiche con AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">AI sta analizzando le modifiche...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">RIPROVA</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">Nessuna modifica da analizzare.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">Nessun servizio AI configurato. Configurarne uno in Preferenze.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">Raccolta modifiche Git...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">In attesa della risposta AI...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff troncato per dimensione</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">File saltati: {0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">Directory di lavoro (Staged + Unstaged)</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">Richiesta AI fallita. Verifica rete e chiave API.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">Contenuto filtrato dal servizio AI.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">Risposta troppo lunga. Aumenta max tokens o riduci dimensione diff.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">Analizza modifiche staged e unstaged con AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">Analizza modifiche tra questi commit con AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">Analizza intervallo commit selezionato con AI</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Nascondi SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostra Tutto</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleziona file .patch da applicare</x:String>

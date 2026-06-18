@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:v="using:SourceGit.Views"
+             x:Class="SourceGit.Views.MarkdownResultView">
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+    <StackPanel x:Name="ContentPanel"
+                Margin="4,0"
+                Spacing="2"/>
+  </ScrollViewer>
+</UserControl>

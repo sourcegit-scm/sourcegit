@@ -101,6 +101,11 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _diffContext, value);
         }
 
+        public Repository Repository
+        {
+            get => _repo;
+        }
+
         public RevisionCompare(Repository repo, Models.Commit startPoint, Models.Commit endPoint)
         {
             _repo = repo;
@@ -379,7 +384,7 @@ namespace SourceGit.ViewModels
             });
         }
 
-        private string GetSHA(object obj)
+        public string GetSHA(object obj)
         {
             return obj is Models.Commit commit ? commit.SHA : string.Empty;
         }

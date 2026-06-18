@@ -26,6 +26,24 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新產生</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">使用 AI 產生提交訊息</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">套用</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">AI Diff 分析</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">AI 分析變更</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">AI 分析變更</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">AI 正在分析變更…</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">重試</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">沒有可分析的變更。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">尚未設定 AI 服務，請在偏好設定中設定。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">正在收集 Git 變更…</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">等待 AI 回應…</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff 因檔案過大已截斷</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">已跳過檔案：{0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">工作目錄（已暫存 + 未暫存）</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">AI 請求失敗，請檢查網路及 API 金鑰。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">內容被 AI 服務過濾。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">回應過長，請考慮增加 max tokens 或減少 diff 大小。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">使用 AI 分析已暫存及未暫存的變更</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">使用 AI 分析這些 commit 之間的變更</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">使用 AI 分析選取的 commit 範圍</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">隱藏 SourceGit</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">隱藏其他</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">顯示全部</x:String>

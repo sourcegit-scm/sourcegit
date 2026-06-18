@@ -26,6 +26,24 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕСОЗДАТЬ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Использовать OpenAI для создания сообщения о ревизии</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Использовать</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">AI Diff анализ</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">AI анализ изменений</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">AI анализ изменений</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">AI анализирует изменения...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">ПОВТОРИТЬ</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">Нет изменений для анализа.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">Служба AI не настроена. Настройте в Параметрах.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">Сбор изменений Git...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">Ожидание ответа AI...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff усечен из-за размера</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">Пропущенные файлы: {0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">Рабочий каталог (Staged + Unstaged)</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">Ошибка запроса AI. Проверьте сеть и API ключ.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">Содержимое отфильтровано службой AI.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">Ответ слишком длинный. Увеличьте max tokens или уменьшите размер diff.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">Анализ staged и unstaged изменений с AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">Анализ изменений между этими коммитами с AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">Анализ выбранного диапазона коммитов с AI</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Скрыть SourceGit</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Скрыть остальные</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Показать все</x:String>

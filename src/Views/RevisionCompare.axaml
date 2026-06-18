@@ -38,7 +38,7 @@
 
   <Grid RowDefinitions="Auto,*" Margin="4">
     <!-- Compare Revision Info -->
-    <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
+    <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto,Auto">
       <!-- Base Revision -->
       <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding StartPoint}"/>
@@ -54,8 +54,13 @@
         <ContentControl Content="{Binding EndPoint}"/>
       </Border>
 
+      <!-- AI Analyze Button -->
+      <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnAIAnalyzeCompare" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.AIDiffAnalysis.Tip.Compare}">
+        <Path Width="16" Height="16" Data="{DynamicResource Icons.AIAssist}"/>
+      </Button>
+
       <!-- Save As Patch Button -->
-      <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
+      <Button Grid.Column="4" Classes="icon_button" Width="32" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
         <Path Width="16" Height="16" Data="{DynamicResource Icons.Save}"/>
       </Button>
     </Grid>

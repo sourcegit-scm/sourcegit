@@ -26,6 +26,24 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GÉNÉRER</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utiliser l'IA pour générer un message de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Utiliser</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">Analyse AI Diff</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">Analyser les modifications avec AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">Analyser les modifications avec AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">L'AI analyse les modifications...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">RÉESSAYER</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">Aucune modification à analyser.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">Aucun service AI configuré. Veuillez en configurer un dans Préférences.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">Collecte des modifications Git...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">En attente de la réponse AI...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff tronqué en raison de la taille</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">Fichiers ignorés : {0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">Répertoire de travail (Staged + Unstaged)</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">Échec de la requête AI. Vérifiez le réseau et la clé API.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">Contenu filtré par le service AI.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">Réponse trop longue. Augmentez max tokens ou réduisez la taille du diff.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">Analyser les modifications staged et unstaged avec AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">Analyser les modifications entre ces commits avec AI</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">Analyser la plage de commits sélectionnée avec AI</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Masquer SourceGit</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Masquer les autres</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tout Afficher</x:String>
