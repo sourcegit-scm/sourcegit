@@ -87,7 +87,7 @@ namespace SourceGit.ViewModels
                     }
 
                     Dispatcher.UIThread.Post(() => Text = builder.ToString());
-                }, _cancel.Token);
+                }, _cancel.Token, Preferences.Instance.Locale);
 
                 Response = responseBuilder.ToString().Trim();
             }
