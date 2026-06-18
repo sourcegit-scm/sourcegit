@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -122,9 +123,26 @@ namespace SourceGit.ViewModels
 
                 LoadingText = App.Text("AIDiffAnalysis.Waiting");
                 var agent = new AI.DiffAgent();
-                var response = await agent.AnalyzeAsync(_service, prompt, _cancel.Token);
+                var resultBuilder = new StringBuilder();
+                var hasContent = false;
 
-                Result = StripPreamble(response);
+                var full = await agent.AnalyzeStreamingAsync(_service, prompt, chunk =>
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        resultBuilder.Append(chunk);
+                        Result = resultBuilder.ToString();
+                    });
+                }, _cancel.Token);
+
+                if (!string.IsNullOrEmpty(full))
+                {
+                    hasContent = true;
+                    Dispatcher.UIThread.Post(() => Result = StripPreamble(full));
+                }
+
+                if (!hasContent)
+                    Dispatcher.UIThread.Post(() => Result = "[No content was generated.]");
             }
             catch (OperationCanceledException)
             {
@@ -132,12 +150,15 @@ namespace SourceGit.ViewModels
             }
             catch (Exception e)
             {
-                ErrorMessage = MapError(e);
-                HasError = true;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    ErrorMessage = MapError(e);
+                    HasError = true;
+                });
             }
             finally
             {
-                IsAnalyzing = false;
+                Dispatcher.UIThread.Post(() => IsAnalyzing = false);
             }
         }
 
@@ -184,9 +205,26 @@ namespace SourceGit.ViewModels
 
                 LoadingText = App.Text("AIDiffAnalysis.Waiting");
                 var agent = new AI.DiffAgent();
-                var response = await agent.AnalyzeAsync(_service, prompt, _cancel.Token);
+                var resultBuilder = new StringBuilder();
+                var hasContent = false;
 
-                Result = StripPreamble(response);
+                var full = await agent.AnalyzeStreamingAsync(_service, prompt, chunk =>
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        resultBuilder.Append(chunk);
+                        Result = resultBuilder.ToString();
+                    });
+                }, _cancel.Token);
+
+                if (!string.IsNullOrEmpty(full))
+                {
+                    hasContent = true;
+                    Dispatcher.UIThread.Post(() => Result = StripPreamble(full));
+                }
+
+                if (!hasContent)
+                    Dispatcher.UIThread.Post(() => Result = "[No content was generated.]");
             }
             catch (OperationCanceledException)
             {
@@ -194,12 +232,15 @@ namespace SourceGit.ViewModels
             }
             catch (Exception e)
             {
-                ErrorMessage = MapError(e);
-                HasError = true;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    ErrorMessage = MapError(e);
+                    HasError = true;
+                });
             }
             finally
             {
-                IsAnalyzing = false;
+                Dispatcher.UIThread.Post(() => IsAnalyzing = false);
             }
         }
 

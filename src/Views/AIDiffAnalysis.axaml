@@ -54,8 +54,7 @@
 
     <!-- Result / Error / Loading -->
     <Grid Grid.Row="3" Margin="8,4,8,0">
-      <v:MarkdownResultView Markdown="{Binding Result}"
-                            IsVisible="{Binding !IsAnalyzing}"/>
+      <v:MarkdownResultView Markdown="{Binding Result}"/>
 
       <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
                   Spacing="8"
