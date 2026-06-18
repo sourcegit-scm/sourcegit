@@ -18,29 +18,45 @@
                  Text="{DynamicResource Text.Apply.Title}"/>
     </StackPanel>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="120,*">
-      <TextBlock Grid.Column="0"
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,32,32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Apply.File}"/>
-      <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{DynamicResource Text.Apply.Source}"/>
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+        <RadioButton Content="{DynamicResource Text.Apply.Source.File}"
+                     IsChecked="{Binding !FromClipboard, Mode=TwoWay}"/>
+        <RadioButton Content="{DynamicResource Text.Apply.Source.Clipboard}"
+                     IsChecked="{Binding FromClipboard, Mode=TwoWay}"
+                     Margin="18,0,0,0"/>
+      </StackPanel>
+      
+      <TextBox Grid.Row="1" Grid.Column="1"
                x:Name="TxtPatchFile"
                Height="28"
+               Margin="0,0,0,6"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Apply.File.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Apply.File.Placeholder}"
+               IsEnabled="{Binding !FromClipboard, Mode=OneWay}"
+               IsVisible="{Binding !FromClipboard, Mode=OneWay}"
                Text="{Binding PatchFile, Mode=TwoWay}">
+        <TextBox.Styles>
+          <Style Selector="TextBox:disabled Path">
+            <Setter Property="Opacity" Value=".6"/>
+          </Style>
+        </TextBox.Styles>
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="30" Height="30" Click="SelectPatchFile">
             <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
           </Button>
         </TextBox.InnerRightContent>
-      </TextBox>
+      </TextBox>     
 
-      <TextBlock Grid.Row="1" Grid.Column="0"
+      <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Apply.WS}"/>
-      <ComboBox Grid.Row="1" Grid.Column="1"
+      <ComboBox Grid.Row="2" Grid.Column="1"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:ApplyWhiteSpaceMode.Supported}}"
@@ -73,12 +89,12 @@
         </ComboBox.SelectionBoxItemTemplate>
       </ComboBox>
 
-      <CheckBox Grid.Row="2" Grid.Column="1"
+      <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.Apply.IgnoreWS}"
                 IsChecked="{Binding IgnoreWhiteSpace, Mode=TwoWay}"
                 ToolTip.Tip="--ignore-whitespace"/>
 
-      <CheckBox Grid.Row="3" Grid.Column="1"
+      <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.Apply.3Way}"
                 IsChecked="{Binding ThreeWayMerge, Mode=TwoWay}"
                 ToolTip.Tip="--3way"/>

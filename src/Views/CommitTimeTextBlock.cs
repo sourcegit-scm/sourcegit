@@ -37,13 +37,13 @@ namespace SourceGit.Views
             set => SetValue(DateTimeFormatProperty, value);
         }
 
-        public static readonly StyledProperty<bool> UseAuthorTimeProperty =
-            AvaloniaProperty.Register<CommitTimeTextBlock, bool>(nameof(UseAuthorTime), true);
+        public static readonly StyledProperty<ulong> TimestampProperty =
+            AvaloniaProperty.Register<CommitTimeTextBlock, ulong>(nameof(Timestamp));
 
-        public bool UseAuthorTime
+        public ulong Timestamp
         {
-            get => GetValue(UseAuthorTimeProperty);
-            set => SetValue(UseAuthorTimeProperty, value);
+            get => GetValue(TimestampProperty);
+            set => SetValue(TimestampProperty, value);
         }
 
         protected override Type StyleKeyOverride => typeof(TextBlock);
@@ -52,7 +52,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == UseAuthorTimeProperty)
+            if (change.Property == TimestampProperty)
             {
                 SetCurrentValue(TextProperty, GetDisplayText());
             }
@@ -126,7 +126,7 @@ namespace SourceGit.Views
             if (DataContext is not Models.Commit commit)
                 return string.Empty;
 
-            var timestamp = UseAuthorTime ? commit.AuthorTime : commit.CommitterTime;
+            var timestamp = Timestamp;
             if (ShowAsDateTime)
                 return Models.DateTimeFormat.Format(timestamp);
 

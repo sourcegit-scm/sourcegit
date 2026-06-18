@@ -39,22 +39,28 @@
       <ComboBox Grid.Row="1" Grid.Column="1"
                 Height="28" Padding="4,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
-                ItemsSource="{Binding Source={x:Static m:GitIgnoreFile.Supported}}"
-                SelectedItem="{Binding StorageFile, Mode=TwoWay}">
+                ItemsSource="{Binding StorageFiles, Mode=OneWay}"
+                SelectedItem="{Binding SelectedStorageFile, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:GitIgnoreFile">
-            <Grid ColumnDefinitions="20,*,Auto">
-              <Path Grid.Column="0"
-                    Width="12" Height="12"
+            <StackPanel Orientation="Horizontal">
+              <Path Width="12" Height="12"
+                    Margin="4,0"
                     Data="{StaticResource Icons.File}"
                     Fill="{DynamicResource Brush.FG2}"/>
 
-              <TextBlock Grid.Column="1" Text="{Binding File, Mode=OneWay}" VerticalAlignment="Center"/>
+              <TextBlock Text="{Binding DisplayName, Mode=OneWay}"
+                         VerticalAlignment="Center"/>
 
-              <Border Grid.Column="2" Height="16" Background="{Binding Brush}" CornerRadius="8" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
+              <Border Height="16"
+                      Margin="8,0,0,0"
+                      CornerRadius="8"
+                      Background="Gray"
+                      HorizontalAlignment="Left" VerticalAlignment="Center"
+                      IsVisible="{Binding IsLocalOnly}">
+                <TextBlock Text="LOCAL ONLY" Margin="6,0" FontSize="10" Foreground="White"/>
               </Border>
-            </Grid>
+            </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>

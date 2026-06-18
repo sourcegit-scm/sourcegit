@@ -1,5 +1,5 @@
 ﻿using System;
-using Avalonia;
+
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
@@ -8,15 +8,6 @@ namespace SourceGit.Views
 {
     public class ChromelessWindow : Window
     {
-        public static readonly StyledProperty<double> LeftCaptionButtonWidthProperty =
-            AvaloniaProperty.Register<ChromelessWindow, double>(nameof(LeftCaptionButtonWidth), 72.0);
-
-        public double LeftCaptionButtonWidth
-        {
-            get => GetValue(LeftCaptionButtonWidthProperty);
-            set => SetValue(LeftCaptionButtonWidthProperty, value);
-        }
-
         public bool UseSystemWindowFrame
         {
             get => Native.OS.UseSystemWindowFrame;
@@ -32,7 +23,6 @@ namespace SourceGit.Views
 
         public ChromelessWindow()
         {
-            LeftCaptionButtonWidth = 72.0 / Math.Max(1.0, ViewModels.Preferences.Instance.Zoom);
             Focusable = true;
             Native.OS.SetupForWindow(this);
         }
@@ -84,25 +74,6 @@ namespace SourceGit.Views
             }
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == WindowStateProperty && OperatingSystem.IsWindows())
-            {
-                if (WindowState == WindowState.Maximized)
-                {
-                    BorderThickness = new Thickness(0);
-                    Padding = new Thickness(8, 6, 8, 8);
-                }
-                else
-                {
-                    BorderThickness = new Thickness(1);
-                    Padding = new Thickness(0);
-                }
-            }
-        }
-
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -123,14 +94,12 @@ namespace SourceGit.Views
                 {
                     var zoom = Math.Min(ViewModels.Preferences.Instance.Zoom + 0.05, 2.5);
                     ViewModels.Preferences.Instance.Zoom = zoom;
-                    LeftCaptionButtonWidth = 72.0 / zoom;
                     e.Handled = true;
                 }
                 else if (e.Key == Key.OemMinus)
                 {
                     var zoom = Math.Max(ViewModels.Preferences.Instance.Zoom - 0.05, 1);
                     ViewModels.Preferences.Instance.Zoom = zoom;
-                    LeftCaptionButtonWidth = 72.0 / zoom;
                     e.Handled = true;
                 }
             }

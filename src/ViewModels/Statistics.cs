@@ -1,8 +1,5 @@
 ﻿using System.Threading.Tasks;
-
-using Avalonia.Media;
 using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -15,12 +12,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isLoading, value);
         }
 
-        public int SelectedIndex
+        public Models.StatisticsMode ViewMode
         {
-            get => _selectedIndex;
+            get => _viewMode;
             set
             {
-                if (SetProperty(ref _selectedIndex, value))
+                if (SetProperty(ref _viewMode, value))
                     RefreshReport();
             }
         }
@@ -28,37 +25,23 @@ namespace SourceGit.ViewModels
         public Models.StatisticsReport SelectedReport
         {
             get => _selectedReport;
-            private set
-            {
-                value?.ChangeAuthor(null);
-                SetProperty(ref _selectedReport, value);
-            }
+            private set => SetProperty(ref _selectedReport, value);
         }
 
-        public uint SampleColor
+        public Models.StatisticsSamples Samples
         {
-            get => Preferences.Instance.StatisticsSampleColor;
-            set
-            {
-                if (value != Preferences.Instance.StatisticsSampleColor)
-                {
-                    Preferences.Instance.StatisticsSampleColor = value;
-                    OnPropertyChanged(nameof(SampleBrush));
-                    _selectedReport?.ChangeColor(value);
-                }
-            }
-        }
-
-        public IBrush SampleBrush
-        {
-            get => new SolidColorBrush(SampleColor);
+            get => _samples;
+            private set => SetProperty(ref _samples, value);
         }
 
         public Statistics(string repo)
         {
             Task.Run(async () =>
             {
-                var result = await new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits).ReadAsync().ConfigureAwait(false);
+                var result = await new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
                 Dispatcher.UIThread.Post(() =>
                 {
                     _data = result;
@@ -68,25 +51,33 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public void ChangeAuthor(Models.StatisticsAuthor author)
+        {
+            if (SelectedReport == null)
+                return;
+
+            Samples = SelectedReport.GetSamples(author);
+        }
+
         private void RefreshReport()
         {
             if (_data == null)
                 return;
 
-            var report = _selectedIndex switch
+            SelectedReport = _viewMode switch
             {
-                0 => _data.All,
-                1 => _data.Month,
+                Models.StatisticsMode.All => _data.All,
+                Models.StatisticsMode.ThisMonth => _data.Month,
                 _ => _data.Week,
             };
 
-            report.ChangeColor(SampleColor);
-            SelectedReport = report;
+            Samples = SelectedReport.GetSamples(null);
         }
 
         private bool _isLoading = true;
         private Models.Statistics _data = null;
+        private Models.StatisticsMode _viewMode = Models.StatisticsMode.All;
         private Models.StatisticsReport _selectedReport = null;
-        private int _selectedIndex = 0;
+        private Models.StatisticsSamples _samples = null;
     }
 }

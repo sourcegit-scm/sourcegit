@@ -232,6 +232,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OpenThemeRepository(object _, RoutedEventArgs e)
+        {
+            Native.OS.OpenBrowser($"https://github.com/sourcegit-scm/sourcegit-theme");
+            e.Handled = true;
+        }
+
         private async void SelectGitExecutable(object _, RoutedEventArgs e)
         {
             var pattern = OperatingSystem.IsWindows() ? "git.exe" : "git";

@@ -58,7 +58,7 @@
                x:Name="TxtSaveFile"
                Height="28"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.Archive.File.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Archive.File.Placeholder}"
                Text="{Binding SaveFile, Mode=TwoWay}">
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="30" Height="30" Click="SelectOutputFile">

@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">パッチファイル:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patch ファイルを選択</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">空白文字の変更を無視</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">パッチを適用</x:String>
@@ -51,10 +50,10 @@
   <x:String x:Key="Text.Bisect">問題の発生源を特定</x:String>
   <x:String x:Key="Text.Bisect.Abort">中止</x:String>
   <x:String x:Key="Text.Bisect.Bad">問題あり</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">問題の発生源となったコミットを特定しています。現在の HEAD に問題はありませんか？</x:String>
   <x:String x:Key="Text.Bisect.Good">問題なし</x:String>
   <x:String x:Key="Text.Bisect.Skip">スキップ</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">問題の発生源となったコミットを特定しています。現在のコミットに問題があるかどうかを調査したあと、別のコミットをチェックアウトしてみてください。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">問題の発生源となったコミットを特定しています。現在のコミットに問題があるかどうかを調査したあと、別のコミットをチェックアウトしてみてください。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">問題の発生源となったコミットを特定しています。現在の HEAD に問題はありませんか？</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">著者の履歴</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">前のリビジョンの著者の履歴</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">空白文字の変更を無視</x:String>
@@ -465,7 +464,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">著者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">著者の日時</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">コミット日時</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">日時</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">グラフ &amp; コミットのタイトル</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} コミットを選択しました</x:String>
@@ -617,7 +615,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">変更ツリーのフォルダー階層をまとめる</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">言語</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">コミット履歴</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">グラフにコミット日時ではなく著者の日時を表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">初めから `ローカルの変更` ページを表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">初めからコミットの詳細の `変更` タブを表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">コミットの詳細に子コミットを表示</x:String>

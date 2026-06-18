@@ -8,6 +8,7 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -39,12 +40,9 @@ namespace SourceGit.Views
         {
             RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
 
-            this.Bind(UseGitHubStyleAvatarProperty, new Binding()
-            {
-                Mode = BindingMode.OneWay,
-                Source = ViewModels.Preferences.Instance,
-                Path = "UseGitHubStyleAvatar"
-            });
+            Bind(UseGitHubStyleAvatarProperty, CompiledBinding.Create<ViewModels.Preferences, bool>(
+                vm => vm.UseGitHubStyleAvatar,
+                source: ViewModels.Preferences.Instance));
         }
 
         public override void Render(DrawingContext context)
@@ -63,7 +61,7 @@ namespace SourceGit.Views
             else if (!UseGitHubStyleAvatar)
             {
                 var fallback = GetFallbackString(User.Name);
-                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
+                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono NL");
                 var label = new FormattedText(
                     fallback,
                     CultureInfo.CurrentCulture,

@@ -1,5 +1,7 @@
 ﻿using System;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
@@ -66,6 +68,12 @@ namespace SourceGit.Views
         {
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.Last);
             e.Handled = true;
+        }
+
+        private void OnToggleButtonPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == ToggleButton.IsCheckedProperty && DataContext is ViewModels.DiffContext vm)
+                vm.CheckSettings();
         }
 
         private void OnOpenSubmoduleRevisionCompare(object sender, RoutedEventArgs e)

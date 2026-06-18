@@ -209,24 +209,23 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    _pressedTab = true;
+                    _pressedTabEvent = e;
                     _startDragTab = false;
-                    _pressedTabPosition = e.GetPosition(border);
                 }
             }
         }
 
         private void OnPointerReleasedTab(object _1, PointerReleasedEventArgs _2)
         {
-            _pressedTab = false;
+            _pressedTabEvent = null;
             _startDragTab = false;
         }
 
         private async void OnPointerMovedOverTab(object sender, PointerEventArgs e)
         {
-            if (_pressedTab && !_startDragTab && sender is Border { DataContext: ViewModels.LauncherPage page } border)
+            if (_pressedTabEvent != null && !_startDragTab && sender is Border { DataContext: ViewModels.LauncherPage page } border)
             {
-                var delta = e.GetPosition(border) - _pressedTabPosition;
+                var delta = e.GetPosition(border) - _pressedTabEvent.GetPosition(border);
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
                 if (sizeSquired < 64)
                     return;
@@ -235,7 +234,7 @@ namespace SourceGit.Views
 
                 var data = new DataTransfer();
                 data.Add(DataTransferItem.Create(_dndMainTabFormat, page.Node.Id));
-                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
+                await DragDrop.DoDragDropAsync(_pressedTabEvent, data, DragDropEffects.Move);
             }
             e.Handled = true;
         }
@@ -269,7 +268,7 @@ namespace SourceGit.Views
 
             launcher.MoveTab(target, to);
 
-            _pressedTab = false;
+            _pressedTabEvent = null;
             _startDragTab = false;
             e.Handled = true;
         }
@@ -393,8 +392,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private bool _pressedTab = false;
-        private Point _pressedTabPosition = new();
+        private PointerPressedEventArgs _pressedTabEvent = null;
         private bool _startDragTab = false;
         private readonly DataFormat<string> _dndMainTabFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-main-tab");
     }

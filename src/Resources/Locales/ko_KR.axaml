@@ -1,7 +1,12 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">정보</x:String>
+  <x:String x:Key="Text.About.GitSourceRevision" xml:space="preserve">소스 버전:</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">SourceGit 정보</x:String>
+  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">배포일: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">릴리스 노트</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">오픈소스 &amp; 무료 Git GUI 클라이언트</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">무시할 파일 추가</x:String>
@@ -21,11 +26,16 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">재생성</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI를 사용하여 커밋 메시지 생성</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">사용</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit 숨기기</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">다른 항목 숨기기</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">모두 보기</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">패치 파일:</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3방향 병합</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">적용할 .patch 파일을 선택하세요</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">공백 변경 사항 무시</x:String>
+  <x:String x:Key="Text.Apply.Source" xml:space="preserve">원본:</x:String>
+  <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">파일</x:String>
+  <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">클립보드</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">패치 적용</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">공백:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">스태시 적용</x:String>
@@ -47,16 +57,26 @@
   <x:String x:Key="Text.Bisect">이진 탐색</x:String>
   <x:String x:Key="Text.Bisect.Abort">중단</x:String>
   <x:String x:Key="Text.Bisect.Bad">나쁨</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">이진 탐색 중. 현재 HEAD가 '좋음' 상태입니까, '나쁨' 상태입니까?</x:String>
   <x:String x:Key="Text.Bisect.Good">좋음</x:String>
   <x:String x:Key="Text.Bisect.Skip">건너뛰기</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">이진 탐색 중. 현재 커밋을 '좋음' 또는 '나쁨'으로 표시하고 다른 커밋을 체크아웃하세요.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">이진 탐색 중. 현재 커밋을 '좋음' 또는 '나쁨'으로 표시하고 다른 커밋을 체크아웃하세요.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">이진 탐색 중. 현재 HEAD가 '좋음' 상태입니까, '나쁨' 상태입니까?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">블레임</x:String>
-  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$ 체크아웃...</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">이전 리비전으로 책임 추적</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">공백 변경 무시</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">이 파일은 책임 추적 기능을 지원하지 않습니다</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">${0}$(으)로 체크아웃...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">선택한 두 브랜치 비교하기</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">다음과 비교...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">HEAD와 비교</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithSpecial" xml:space="preserve">${0}$와 비교</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">브랜치 이름 복사</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">PR 생성</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">업스트림 ${0}$에 대한 PR 생성...</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$ 삭제...</x:String>
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">선택한 {0}개의 브랜치 삭제</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">${0}$ 설명 편집...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">${0}$(으)로 Fast-Forward</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$에서 ${1}$(으)로 Fetch...</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - ${0}$ 완료</x:String>
@@ -65,7 +85,7 @@
   <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">선택한 {0}개의 브랜치를 현재 브랜치로 병합</x:String>
   <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">${0}$ Pull</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">${0}$에서 ${1}$(으)로 Pull...</x:String>
-  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">${0}$ Push</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">${0}$(으)로 Push</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 리베이스...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">${0}$ 이름 바꾸기...</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">${0}$을(를) ${1}$(으)로 리셋...</x:String>
@@ -84,6 +104,9 @@
   <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">부모 리비전으로 리셋</x:String>
   <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">이 리비전으로 리셋</x:String>
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">커밋 메시지 생성</x:String>
+  <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">병합(내장)</x:String>
+  <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">병합(외부 도구)</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">파일을 ${0}$(으)로 되돌리기</x:String>
   <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">표시 모드 변경</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">파일 및 디렉터리 목록으로 보기</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">경로 목록으로 보기</x:String>
@@ -98,8 +121,12 @@
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">로컬 변경 사항:</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">브랜치:</x:String>
   <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">현재 HEAD에 브랜치/태그에 연결되지 않은 커밋이 있습니다! 계속하시겠습니까?</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">다음 서브모듈을 업데이트해야 합니다:{0}업데이트하시겠습니까?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">체크아웃 &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward 대상:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">스태시에서 브랜치 체크아웃</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">새로운 브랜치:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">스태시:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">체리픽</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">커밋 메시지에 원본 추가</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">커밋:</x:String>
@@ -111,6 +138,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">원격 저장소 복제</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">추가 파라미터:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">저장소 복제 시 추가 인수. 선택 사항.</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">북마크:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">그룹:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">로컬 이름:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">저장소 이름. 선택 사항.</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">상위 폴더:</x:String>
@@ -118,14 +147,20 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">저장소 URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">닫기</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">에디터</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">브랜치</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">브랜치 &amp; 태그</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">저장소 사용자 지정 작업</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">리비전 파일</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">커밋 체크아웃</x:String>
   <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">커밋 체리픽</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">체리픽...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">HEAD와 비교</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">워크트리와 비교</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">작성자</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthorTime" xml:space="preserve">작성 시간</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">메시지</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">커밋터</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitterTime" xml:space="preserve">커밋 시간</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">제목</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
@@ -133,18 +168,19 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">삭제(Drop)...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">수정(Edit)...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">부모에 합치기(Fixup)...</x:String>
-  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 대화형 리베이스</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">${1}$을(를) 기반으로 ${0}$(을)를 대화형 리베이스</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">메시지 수정(Reword)...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">부모에 합치기(Squash)...</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">병합...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">${0}$을(를) ${1}$(으)로 푸시</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${1}$을(를) 기반으로 ${0}$ 리베이스</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${1}$을(를) 기반으로 ${0}$(을)를 리베이스</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$을(를) ${1}$(으)로 리셋</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">커밋 되돌리기</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">패치로 저장...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">변경 사항</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">변경된 파일</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">변경 사항 검색...</x:String>
+  <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">세부 정보 접기</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">파일</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS 파일</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">파일 검색...</x:String>
@@ -166,8 +202,15 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">서명자:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">브라우저에서 열기</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">열</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">커밋 메시지를 입력하세요. 제목과 설명은 빈 줄로 구분하세요!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">제목</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">비교</x:String>
+  <x:String x:Key="Text.Compare.Changes" xml:space="preserve">변경점</x:String>
+  <x:String x:Key="Text.Compare.Commits" xml:space="preserve">커밋</x:String>
+  <x:String x:Key="Text.Compare.Commits.LeftOnly" xml:space="preserve">왼쪽에만 있는 커밋</x:String>
+  <x:String x:Key="Text.Compare.Commits.RightOnly" xml:space="preserve">오른쪽에만 있는 커밋</x:String>
+  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">팁: 반대편이 HEAD인 경우 선택한 커밋을 체리픽할 수 있습니다(컨텍스트 메뉴 사용).</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">저장소 설정</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">커밋 템플릿</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">${files_num}, ${branch_name}, ${files} 및 ${files:N} (N은 출력할 최대 파일 경로 수)을(를) 사용할 수 있습니다.</x:String>
@@ -175,8 +218,8 @@
   <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">템플릿 이름:</x:String>
   <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">인수:</x:String>
-  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">내장 파라미터: 
-  
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">내장 파라미터:
+
   ${REPO} 저장소 경로
   ${REMOTE} 선택한 원격 또는 선택한 브랜치의 원격
   ${BRANCH} 선택한 브랜치 (원격 브랜치의 경우 ${REMOTE} 부분 제외)
@@ -200,8 +243,10 @@
   <x:String x:Key="Text.Configure.Email" xml:space="preserve">이메일 주소</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">이메일 주소</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">서브모듈 자동 업데이트 전에 확인</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">원격 자동 Fetch</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">분</x:String>
+  <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Conventional Commit 유형</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">기본 원격</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">선호하는 병합 모드</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">이슈 트래커</x:String>
@@ -235,7 +280,11 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">레이블:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">옵션:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">옵션 구분자로 '|'를 사용하세요</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">문자열 포매터:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">선택 사항. 출력 문자열 형식 지정에 사용합니다. 입력이 비어 있으면 무시됩니다. 입력 문자열은 `${VALUE}`로 표시하세요.</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">여기에서도 내장 변수 ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, ${TAG}를 사용할 수 있습니다</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">유형:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">표시용 이름 사용:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">작업 공간</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">색상</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">이름</x:String>
@@ -243,6 +292,7 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">계속</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">빈 커밋이 감지되었습니다! 계속하시겠습니까 (--allow-empty)?</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">모두 스테이징 &amp; 커밋</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">선택 항목 스테이징 후 커밋</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">빈 커밋이 감지되었습니다! 계속하시겠습니까 (--allow-empty) 아니면 모두 스테이징 후 커밋하시겠습니까?</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">재시작 필요</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">변경 사항을 적용하려면 앱을 다시 시작해야 합니다.</x:String>
@@ -255,6 +305,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">변경 유형:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">복사</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">전체 텍스트 복사</x:String>
+  <x:String x:Key="Text.CopyAsPatch" xml:space="preserve">패치로 복사</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">전체 경로 복사</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">경로 복사</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">브랜치 생성...</x:String>
@@ -280,6 +331,7 @@
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Ctrl을 누른 채 클릭하면 바로 시작합니다</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">잘라내기</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">폐기</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">아무것도 하지 않기</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">스태시 &amp; 재적용</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">서브모듈 초기화 해제</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">로컬 변경 사항이 있어도 강제로 초기화 해제합니다.</x:String>
@@ -327,6 +379,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">서브모듈</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">삭제됨</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">신규</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">커밋 안 한 변경 사항 + {0}개</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">전환</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">구문 강조</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">줄 바꿈</x:String>
@@ -343,9 +396,12 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">작업 사본의 모든 로컬 변경 사항.</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">변경 사항:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">무시된 파일 포함</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">수정/삭제된 파일 포함</x:String>
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">추적하지 않는 파일 포함</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0}개의 변경 사항이 폐기됩니다</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">이 작업은 되돌릴 수 없습니다!!!</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">브랜치 설명 수정</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">대상:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">북마크:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">새 이름:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">대상:</x:String>
@@ -360,6 +416,7 @@
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">원격:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">원격 변경 사항 Fetch</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">변경되지 않음으로 간주</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">폐기...</x:String>
   <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">{0}개 파일 폐기...</x:String>
   <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">${0}$을(를) 사용하여 해결</x:String>
@@ -414,6 +471,8 @@
   <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">내 잠금만 보기</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">LFS 잠금</x:String>
   <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">잠금 해제</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">내 잠금 모두 해제</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">잠근 파일을 모두 해제하시겠습니까?</x:String>
   <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">강제 잠금 해제</x:String>
   <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">정리</x:String>
   <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">로컬 저장소에서 오래된 LFS 파일을 삭제하려면 `git lfs prune`을 실행하세요</x:String>
@@ -426,16 +485,26 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">원격:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">'{0}' 이름의 파일 추적</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">모든 *{0} 파일 추적</x:String>
+  <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">커밋 선택</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">히스토리</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">작성자</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">작성 시간</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">커밋 시간</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">그래프 &amp; 제목</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">그래프 강조 표시</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.All" xml:space="preserve">모두</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">현재 브랜치만</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">현재 브랜치와 선택한 커밋</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">선택한 커밋만</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0}개 커밋 선택됨</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">표시할 역</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">'Ctrl' 또는 'Shift' 키를 누른 채로 여러 커밋을 선택하세요.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">⌘ 또는 ⇧ 키를 누른 채로 여러 커밋을 선택하세요.</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">팁:</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone" xml:space="preserve">별도의 창으로 열기</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.CommitDetail" xml:space="preserve">커밋 세부 정보</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.RevisionCompare" xml:space="preserve">리비전 비교</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">키보드 단축키 참조</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">전역</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">새 저장소 복제</x:String>
@@ -443,18 +512,26 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">다음 탭으로 이동</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">이전 탭으로 이동</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">새 탭 만들기</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">로컬 저장소 열기</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">환경설정 대화상자 열기</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">작업 공간 드롭다운 메뉴 열기</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">활성 탭 전환</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">확대 / 축소</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">저장소</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">스테이징된 변경 사항 커밋</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">스테이징된 변경 사항 커밋 및 푸시</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">모든 변경 사항 스테이징 후 커밋</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">브랜치 생성</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">대시보드 모드 (기본)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">선택한 커밋의 자식으로 이동</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">선택한 커밋의 부모로 이동</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">명령 팔레트 열기</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">커밋 검색 모드 열기</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">푸시 (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">이 저장소 강제 새로고침</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">히스토리에서 세부 정보 패널 펼치기/접기</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'변경 사항'으로 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'히스토리'로 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'스태시'로 전환</x:String>
@@ -462,6 +539,8 @@
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">스테이지</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">언스테이지</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">저장소 초기화</x:String>
+  <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">이 경로에서 `git init` 명령을 실행하시겠습니까?</x:String>
+  <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">저장소를 열지 못했습니다. 원인:  </x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">경로:</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">체리픽 진행 중.</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">커밋 처리 중</x:String>
@@ -473,13 +552,16 @@
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">커밋 되돌리는 중</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">대화형 리베이스</x:String>
   <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">로컬 변경 사항 스태시 &amp; 재적용</x:String>
+  <x:String x:Key="Text.InteractiveRebase.NoVerify" xml:space="preserve">pre-rebase 훅 건너뛰기</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">기준:</x:String>
   <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">드래그 앤 드롭으로 커밋 순서 변경</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">대상 브랜치:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">링크 복사</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">브라우저에서 열기</x:String>
+  <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">명령</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">오류</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">알림</x:String>
+  <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">저장소 열기</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">탭</x:String>
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">작업 공간</x:String>
   <x:String x:Key="Text.Merge" xml:space="preserve">브랜치 병합</x:String>
@@ -487,6 +569,26 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">대상:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">병합 옵션:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">소스:</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">병합 가능 여부 확인 중...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">충돌 없이 병합할 수 있습니다</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">병합 테스트 중 알 수 없는 오류가 발생했습니다</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">병합 시 충돌이 발생합니다</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">내 변경 먼저, 상대 변경 나중</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">상대 변경 먼저, 내 변경 나중</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">둘 다 사용</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">모든 충돌 해결됨</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">남은 충돌 {0}개</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">내 변경</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">다음 충돌</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">이전 충돌</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">결과</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">저장 후 스테이징</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">상대 변경</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">병합 충돌</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">저장하지 않은 변경사항을 버리시겠습니까?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">내 변경 사용</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">상대 변경 사용</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">실행 취소</x:String>
   <x:String x:Key="Text.MergeMultiple" xml:space="preserve">병합 (다중)</x:String>
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">모든 변경 사항 커밋</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">전략:</x:String>
@@ -497,9 +599,17 @@
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">저장소 노드 이동</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">상위 노드 선택:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">이름:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">아니요</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git이 구성되지 않았습니다. [환경설정]으로 이동하여 먼저 구성하세요.</x:String>
+  <x:String x:Key="Text.Open" xml:space="preserve">열기</x:String>
+  <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">시스템 기본 편집기</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">데이터 저장 디렉터리 열기</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">파일 열기</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">병합 도구에서 열기</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">로컬 저장소 열기</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">북마크:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">그룹:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">폴더:</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">선택 사항.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">새 탭 만들기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">탭 닫기</x:String>
@@ -507,6 +617,8 @@
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">오른쪽 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">저장소 경로 복사</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">편집</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">작업 공간으로 이동</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">새로 고침</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">저장소</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">붙여넣기</x:String>
   <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0}일 전</x:String>
@@ -521,7 +633,10 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">어제</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">환경설정</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">추가 프롬프트(`-`로 요구 사항 나열)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API 키</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">모델</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">사용 가능한 모델 ID 자동 가져오기</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">이름</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">입력된 값은 환경변수(ENV)에서 API 키를 불러올 이름입니다</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">서버</x:String>
@@ -535,8 +650,13 @@
   <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">테마</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">테마 재정의</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">스크롤바 자동 숨기기 사용</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">제목 표시줄에서 고정 탭 너비 사용</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">네이티브 윈도우 프레임 사용</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE 도구</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">비교 인수</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">사용 가능한 변수: $LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">병합 인수</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">사용 가능한 변수: $BASE, $LOCAL, $REMOTE, $MERGED</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">설치 경로</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">diff/merge 도구 경로 입력</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">도구</x:String>
@@ -546,12 +666,14 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">변경 사항 트리에서 폴더 압축 활성화</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">언어</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">히스토리 커밋 수</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">그래프에 커밋 시간 대신 작성자 시간 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">기본으로 `로컬 변경 사항` 페이지 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">커밋 세부 정보에서 기본으로 `변경 사항` 탭 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">커밋 세부 정보에 자식 커밋 표시</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">커밋 그래프에 상대 시간 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">커밋 그래프에 태그 표시</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">제목 가이드 길이</x:String>
+  <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24시간 형식</x:String>
+  <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">커밋 그래프에서 축약 브랜치 이름 사용</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">GitHub 스타일 기본 아바타 생성</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">자동 CRLF 활성화</x:String>
@@ -566,6 +688,7 @@
   <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">git-credential-manager 대신 git-credential-libsecret 사용</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">사용자 이름</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">전역 git 사용자 이름</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseStashAndReapplyByDefault" xml:space="preserve">브랜치 체크아웃 또는 병합 시 기본적으로 변경 사항을 스태시한 뒤 다시 적용</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git 버전</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG 서명</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">커밋 GPG 서명</x:String>
@@ -577,6 +700,8 @@
   <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">사용자의 gpg 서명 키</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">연동</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">셸/터미널</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">인수</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">작업 디렉터리는 `.`으로 표시하세요</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">경로</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">셸/터미널</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">원격 정리</x:String>
@@ -606,10 +731,17 @@
   <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">모든 원격에 푸시</x:String>
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">원격:</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">태그:</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">새 브랜치로 푸시</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">새 원격 브랜치 이름을 입력하세요:</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">종료</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">현재 브랜치 리베이스</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">로컬 변경 사항 스태시 &amp; 재적용</x:String>
+  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">pre-rebase 훅 건너뛰기</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">기준:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">리베이스 가능 여부 확인 중...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">충돌 없이 리베이스할 수 있습니다</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">리베이스 테스트 중 알 수 없는 오류가 발생했습니다</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">리베이스 시 충돌이 발생합니다</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">원격 추가</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">원격 편집</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">이름:</x:String>
@@ -620,6 +752,7 @@
   <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">삭제...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">편집...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">자동 Fetch 사용</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">브라우저에서 열기</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">정리</x:String>
@@ -662,10 +795,12 @@
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD로 이동</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">브랜치 생성</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">알림 지우기</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">폴더로 열기</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">{0}에서 열기</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">외부 도구에서 열기</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">원격</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">원격 추가</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">해결</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">커밋 검색</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">작성자</x:String>
   <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">커밋터</x:String>
@@ -717,9 +852,11 @@
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">다른 사용자 정의 디렉터리 스캔</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">업데이트 확인...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">이 소프트웨어의 새 버전을 사용할 수 있습니다: </x:String>
+  <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">현재 버전:</x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">업데이트 확인 실패!</x:String>
   <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">다운로드</x:String>
   <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">이 버전 건너뛰기</x:String>
+  <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">새 버전 릴리스 날짜:</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">소프트웨어 업데이트</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">현재 사용 가능한 업데이트가 없습니다.</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">서브모듈 브랜치 설정</x:String>
@@ -745,6 +882,8 @@
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">선택한 파일의 스테이징된 변경 사항과 스테이징되지 않은 변경 사항이 모두 스태시됩니다!!!</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">로컬 변경 사항 스태시</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">적용</x:String>
+  <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">변경 사항 적용</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">새 브랜치 체크아웃</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">메시지 복사</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">삭제</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">패치로 저장...</x:String>
@@ -778,11 +917,17 @@
   <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">수정됨</x:String>
   <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">초기화 안 됨</x:String>
   <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">리비전 변경됨</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">병합되지 않음</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">업데이트</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">서브모듈 변경 상세</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">상세 열기</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">확인</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">태그 생성자</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">시간</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">태그 2개 비교</x:String>
+  <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">다음과 비교...</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">HEAD와 비교</x:String>
   <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">메시지</x:String>
   <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">이름</x:String>
   <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">태그 생성자</x:String>
@@ -834,6 +979,8 @@
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">분리된(detached) HEAD에 커밋을 생성하고 있습니다. 계속하시겠습니까?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">{0}개의 파일을 스테이징했지만 {1}개의 파일만 표시됩니다 ({2}개의 파일은 필터링됨). 계속하시겠습니까?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">충돌 감지됨</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">병합</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.MergeExternal" xml:space="preserve">외부 도구로 병합</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">모든 충돌을 외부 병합 도구에서 열기</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">파일 충돌 해결됨</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">내 것 사용</x:String>
@@ -855,9 +1002,13 @@
   <x:String x:Key="Text.Workspace" xml:space="preserve">작업 공간: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">작업 공간 설정...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">워크트리</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">브랜치</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">경로 복사</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">HEAD</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">잠금</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">열기</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">경로</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">제거</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">잠금 해제</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">예</x:String>
 </ResourceDictionary>

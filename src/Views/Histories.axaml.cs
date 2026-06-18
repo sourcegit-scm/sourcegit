@@ -110,7 +110,6 @@ namespace SourceGit.Views
             IsReadOnly = true;
             HeadersVisibility = DataGridHeadersVisibility.Column;
             ClipboardCopyMode = DataGridClipboardCopyMode.None;
-            Focusable = false;
             HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
             VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
         }
@@ -514,13 +513,23 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
-            var timeColumn = new MenuItem();
-            timeColumn.Header = App.Text("Histories.Header.DateTime");
-            if (vm.IsDateTimeColumnVisible)
-                timeColumn.Icon = this.CreateMenuIcon("Icons.Check");
-            timeColumn.Click += (_, ev) =>
+            var authorTimeColumn = new MenuItem();
+            authorTimeColumn.Header = App.Text("Histories.Header.AuthorTime");
+            if (vm.IsAuthorTimeColumnVisible)
+                authorTimeColumn.Icon = this.CreateMenuIcon("Icons.Check");
+            authorTimeColumn.Click += (_, ev) =>
             {
-                vm.IsDateTimeColumnVisible = !vm.IsDateTimeColumnVisible;
+                vm.IsAuthorTimeColumnVisible = !vm.IsAuthorTimeColumnVisible;
+                ev.Handled = true;
+            };
+
+            var commitTimeColumn = new MenuItem();
+            commitTimeColumn.Header = App.Text("Histories.Header.CommitTime");
+            if (vm.IsCommitTimeColumnVisible)
+                commitTimeColumn.Icon = this.CreateMenuIcon("Icons.Check");
+            commitTimeColumn.Click += (_, ev) =>
+            {
+                vm.IsCommitTimeColumnVisible = !vm.IsCommitTimeColumnVisible;
                 ev.Handled = true;
             };
 
@@ -528,7 +537,8 @@ namespace SourceGit.Views
             menu.Items.Add(columnsHeader);
             menu.Items.Add(authorColumn);
             menu.Items.Add(shaColumn);
-            menu.Items.Add(timeColumn);
+            menu.Items.Add(authorTimeColumn);
+            menu.Items.Add(commitTimeColumn);
             menu.Open(border);
             e.Handled = true;
         }
@@ -615,8 +625,14 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories histories &&
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 sender is DataGrid grid &&
-                !Equals(e.Source, grid))
+                e.Source is Control { DataContext: Models.Commit c })
             {
+                if (histories.Bisect != null)
+                {
+                    histories.CheckoutCommitDetached(c);
+                    return;
+                }
+
                 if (e.Source is CommitRefsPresenter crp)
                 {
                     var decorator = crp.DecoratorAt(e.GetPosition(crp));
@@ -625,8 +641,7 @@ namespace SourceGit.Views
                         return;
                 }
 
-                if (e.Source is Control { DataContext: Models.Commit c })
-                    await histories.CheckoutBranchByCommitAsync(c);
+                await histories.CheckoutBranchByCommitAsync(c);
             }
         }
 
@@ -656,13 +671,13 @@ namespace SourceGit.Views
                 {
                     var standalone = new CommitDetailStandalone();
                     standalone.DataContext = detail.Clone();
-                    standalone.Show(TopLevel.GetTopLevel(this) as Window);
+                    this.ShowWindow(standalone);
                 }
                 else if (vm.DetailContext is ViewModels.RevisionCompare compare)
                 {
                     var standalone = new RevisionCompareStandalone();
                     standalone.DataContext = compare.Clone();
-                    standalone.Show(TopLevel.GetTopLevel(this) as Window);
+                    this.ShowWindow(standalone);
                 }
             }
 
@@ -852,11 +867,11 @@ namespace SourceGit.Views
                             break;
                         case Models.DecoratorType.LocalBranchHead:
                             var lb = repo.Branches.Find(x => x.IsLocal && d.Name.Equals(x.Name, StringComparison.Ordinal));
-                            FillOtherLocalBranchMenu(menu, repo, lb, current);
+                            FillOtherLocalBranchMenu(menu, repo, lb, current, commit.IsMerged);
                             break;
                         case Models.DecoratorType.RemoteBranchHead:
                             var rb = repo.Branches.Find(x => !x.IsLocal && d.Name.Equals(x.FriendlyName, StringComparison.Ordinal));
-                            FillRemoteBranchMenu(menu, repo, rb, current);
+                            FillRemoteBranchMenu(menu, repo, rb, current, commit.IsMerged);
                             break;
                         case Models.DecoratorType.Tag:
                             var t = repo.Tags.Find(x => d.Name.Equals(x.Name, StringComparison.Ordinal));
@@ -1419,7 +1434,7 @@ namespace SourceGit.Views
             menu.Items.Add(submenu);
         }
 
-        private void FillOtherLocalBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current)
+        private void FillOtherLocalBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current, bool merged)
         {
             var submenu = new MenuItem();
             submenu.Icon = this.CreateMenuIcon("Icons.Branch");
@@ -1442,6 +1457,18 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
                 submenu.Items.Add(checkout);
+
+                var merge = new MenuItem();
+                merge.Header = App.Text("BranchCM.Merge", branch.Name, current.Name);
+                merge.Icon = this.CreateMenuIcon("Icons.Merge");
+                merge.IsEnabled = !merged;
+                merge.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Merge(repo, branch, current.Name, false));
+                    e.Handled = true;
+                };
+                submenu.Items.Add(merge);
             }
 
             var rename = new MenuItem();
@@ -1511,7 +1538,7 @@ namespace SourceGit.Views
             menu.Items.Add(submenu);
         }
 
-        private void FillRemoteBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current)
+        private void FillRemoteBranchMenu(ContextMenu menu, ViewModels.Repository repo, Models.Branch branch, Models.Branch current, bool merged)
         {
             if (branch == null)
                 return;
@@ -1537,6 +1564,18 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
             submenu.Items.Add(checkout);
+
+            var merge = new MenuItem();
+            merge.Header = App.Text("BranchCM.Merge", name, current.Name);
+            merge.Icon = this.CreateMenuIcon("Icons.Merge");
+            merge.IsEnabled = !merged;
+            merge.Click += (_, e) =>
+            {
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.Merge(repo, branch, current.Name, false));
+                e.Handled = true;
+            };
+            submenu.Items.Add(merge);
 
             var delete = new MenuItem();
             delete.Header = App.Text("BranchCM.Delete", name);

@@ -20,7 +20,6 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕГЕНЕРУВАТИ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Використати AI для генерації повідомлення коміту</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Файл патчу:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Виберіть файл .patch для застосування</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Застосувати Патч</x:String>
@@ -433,7 +432,6 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Формат дати</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Мова</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Кількість комітів в історії</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Показувати час автора замість часу коміту в графі</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показувати дочірні коміти в деталях</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показувати теги в графі комітів</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Довжина лінії-орієнтира для теми</x:String>

@@ -31,7 +31,7 @@
       <Color x:Key="Color.Link">#0000EE</Color>
       <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
       <Color x:Key="Color.InlineCodeFG">Black</Color>
-      <Color x:Key="Color.DataGridHeaderBG">#FFF0F5F9</Color>
+      <Color x:Key="Color.HistoryBG">#FFF0F5F9</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -42,7 +42,7 @@
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
       <Color x:Key="Color.Contents">#FF1C1C1C</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
-      <Color x:Key="Color.BadgeFG">#FFDDDDDD</Color>
+      <Color x:Key="Color.BadgeFG">#FFE0E0E0</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
       <Color x:Key="Color.Conflict.Foreground">#FF252525</Color>
       <Color x:Key="Color.Conflict.MineBG">#400078D7</Color>
@@ -53,8 +53,8 @@
       <Color x:Key="Color.FlatButton.Background">#FF303030</Color>
       <Color x:Key="Color.FlatButton.BackgroundHovered">#FF333333</Color>
       <Color x:Key="Color.FlatButton.FloatingBorder">#FF4F4F4F</Color>
-      <Color x:Key="Color.FG1">#FFDDDDDD</Color>
-      <Color x:Key="Color.FG2">#60FFFFFF</Color>
+      <Color x:Key="Color.FG1">#FFDFDFDF</Color>
+      <Color x:Key="Color.FG2">#FF9F9F9F</Color>
       <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
       <Color x:Key="Color.Diff.AddedBG">#C03A5C3F</Color>
       <Color x:Key="Color.Diff.DeletedBG">#C0633F3E</Color>
@@ -64,7 +64,7 @@
       <Color x:Key="Color.Link">#4DAAFC</Color>
       <Color x:Key="Color.InlineCode">#FF383838</Color>
       <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
-      <Color x:Key="Color.DataGridHeaderBG">#FF2B2B2B</Color>
+      <Color x:Key="Color.HistoryBG">#FF272727</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -99,8 +99,8 @@
   <SolidColorBrush x:Key="Brush.Link" Color="{DynamicResource Color.Link}"/>
   <SolidColorBrush x:Key="Brush.InlineCode" Color="{DynamicResource Color.InlineCode}"/>
   <SolidColorBrush x:Key="Brush.InlineCodeFG" Color="{DynamicResource Color.InlineCodeFG}"/>
-  <SolidColorBrush x:Key="Brush.DataGridHeaderBG" Color="{DynamicResource Color.DataGridHeaderBG}"/>
+  <SolidColorBrush x:Key="Brush.HistoryBG" Color="{DynamicResource Color.HistoryBG}"/>
 
   <FontFamily x:Key="Fonts.Default">fonts:Inter#Inter</FontFamily>
-  <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono</FontFamily>
+  <FontFamily x:Key="Fonts.Monospace">fonts:SourceGit#JetBrains Mono NL</FontFamily>
 </ResourceDictionary>

@@ -7,24 +7,24 @@ The project uses the following third-party libraries or assets
 ### AvaloniaUI
 
 - **Source**: https://github.com/AvaloniaUI/Avalonia
-- **Version**: 11.3.13
+- **Version**: 12.0.4
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/Avalonia/blob/master/licence.md
+
+### Avalonia.Controls.DataGrid
+
+- **Source**: https://github.com/AvaloniaUI/Avalonia.Controls.DataGrid
+- **Version**: 12.0.2
+- **License**: MIT License
+- **License Link**: https://github.com/AvaloniaUI/Avalonia.Controls.DataGrid/blob/master/licence.md
 
 ### AvaloniaEdit
 
 - **Official Source**: https://github.com/AvaloniaUI/AvaloniaEdit
 - **Fork (Modified)**: https://github.com/love-linger/AvaloniaEdit
-- **Version**: 11.4.1
+- **Version**: Based on 12.0.x
 - **License**: MIT License
 - **License Link**: https://github.com/AvaloniaUI/AvaloniaEdit/blob/master/LICENSE
-
-### LiveChartsCore.SkiaSharpView.Avalonia
-
-- **Source**: https://github.com/beto-rodriguez/LiveCharts2
-- **Version**: 2.0.0
-- **License**: MIT License
-- **License Link**: https://github.com/beto-rodriguez/LiveCharts2/blob/master/LICENSE
 
 ### TextMateSharp
 
@@ -60,6 +60,12 @@ The project uses the following third-party libraries or assets
 - **Version**: 0.11.4
 - **License**: MIT License
 - **License Link**: https://github.com/nickbabcock/Pfim/blob/master/LICENSE.txt
+
+### StbImageSharp
+
+- **Source**: https://github.com/StbSharp/StbImageSharp
+- **Version**: 2.30.15
+- **License**: Public Domain
 
 ## Fonts
 

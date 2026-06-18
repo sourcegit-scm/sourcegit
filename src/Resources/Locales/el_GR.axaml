@@ -1,0 +1,1017 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <x:String x:Key="Text.About" xml:space="preserve">Σχετικά</x:String>
+  <x:String x:Key="Text.About.GitSourceRevision" xml:space="preserve">Αναθεώρηση πηγαίου κώδικα:</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Σχετικά με το SourceGit</x:String>
+  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Ημερομηνία έκδοσης: {0}</x:String>
+  <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Σημειώσεις έκδοσης</x:String>
+  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Ελεύθερο &amp; ανοιχτού κώδικα γραφικό περιβάλλον για το Git</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Προσθήκη αρχείου(-ων) στα αγνοούμενα</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Μοτίβο:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Αρχείο αποθήκευσης:</x:String>
+  <x:String x:Key="Text.AddWorktree" xml:space="preserve">Προσθήκη Worktree</x:String>
+  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Τοποθεσία:</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Διαδρομή για αυτό το worktree. Υποστηρίζεται σχετική διαδρομή.</x:String>
+  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Όνομα κλάδου:</x:String>
+  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Προαιρετικό. Προεπιλογή είναι το όνομα του φακέλου προορισμού.</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Παρακολούθηση κλάδου:</x:String>
+  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Παρακολούθηση απομακρυσμένου κλάδου</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Τι να γίνει checkout:</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Δημιουργία νέου κλάδου</x:String>
+  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Υπάρχων κλάδος</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">Βοηθός AI</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">ΜΟΝΤΕΛΟ</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ΕΠΑΝΑΔΗΜΙΟΥΡΓΙΑ</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Χρήση AI για δημιουργία μηνύματος commit</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Χρήση</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Απόκρυψη SourceGit</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Απόκρυψη άλλων</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Εμφάνιση όλων</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Τριμερής συγχώνευση (3-Way)</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Επιλέξτε αρχείο .patch για εφαρμογή</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Αγνόηση αλλαγών κενών χαρακτήρων</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Εφαρμογή Patch</x:String>
+  <x:String x:Key="Text.Apply.WS" xml:space="preserve">Κενά:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Εφαρμογή Stash</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Διαγραφή μετά την εφαρμογή</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Επαναφορά των αλλαγών του index</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">Stash:</x:String>
+  <x:String x:Key="Text.Archive" xml:space="preserve">Αρχειοθέτηση...</x:String>
+  <x:String x:Key="Text.Archive.File" xml:space="preserve">Αποθήκευση αρχείου σε:</x:String>
+  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Επιλέξτε διαδρομή για το αρχείο</x:String>
+  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Αναθεώρηση:</x:String>
+  <x:String x:Key="Text.Archive.Title" xml:space="preserve">Αρχειοθέτηση</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Εισαγωγή κωδικής φράσης:</x:String>
+  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ΑΡΧΕΙΑ ΠΟΥ ΘΕΩΡΟΥΝΤΑΙ ΑΜΕΤΑΒΛΗΤΑ</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">ΚΑΝΕΝΑ ΑΡΧΕΙΟ ΔΕΝ ΘΕΩΡΕΙΤΑΙ ΑΜΕΤΑΒΛΗΤΟ</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Φόρτωση εικόνας...</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Ανανέωση</x:String>
+  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ΤΟ ΔΥΑΔΙΚΟ ΑΡΧΕΙΟ ΔΕΝ ΥΠΟΣΤΗΡΙΖΕΤΑΙ!!!</x:String>
+  <x:String x:Key="Text.Bisect">Bisect</x:String>
+  <x:String x:Key="Text.Bisect.Abort">Ματαίωση</x:String>
+  <x:String x:Key="Text.Bisect.Bad">Κακό</x:String>
+  <x:String x:Key="Text.Bisect.Good">Καλό</x:String>
+  <x:String x:Key="Text.Bisect.Skip">Παράλειψη</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Εκτέλεση bisect. Σημειώστε το τρέχον commit ως καλό ή κακό και κάντε checkout σε άλλο.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Εκτέλεση bisect. Το τρέχον HEAD είναι καλό ή κακό;</x:String>
+  <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame στην προηγούμενη αναθεώρηση</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace">Αγνόηση αλλαγών κενών χαρακτήρων</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">ΤΟ BLAME ΣΕ ΑΥΤΟ ΤΟ ΑΡΧΕΙΟ ΔΕΝ ΥΠΟΣΤΗΡΙΖΕΤΑΙ!!!</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Σύγκριση των 2 επιλεγμένων κλάδων</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">Σύγκριση με...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Σύγκριση με το HEAD</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithSpecial" xml:space="preserve">Σύγκριση με ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Αντιγραφή ονόματος κλάδου</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Δημιουργία PR...</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Δημιουργία PR για το upstream ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Προσαρμοσμένη ενέργεια</x:String>
+  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Διαγραφή ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Διαγραφή {0} επιλεγμένων κλάδων</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Επεξεργασία περιγραφής για ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward στο ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ στο ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Ολοκλήρωση ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.InteractiveRebase.Manually" xml:space="preserve">Διαδραστικό rebase του ${0}$ πάνω στο ${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Συγχώνευση ${0}$ στο ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Συγχώνευση {0} επιλεγμένων κλάδων στον τρέχοντα</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Pull ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Pull ${0}$ στο ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Push ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Rebase του ${0}$ πάνω στο ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Μετονομασία ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Επαναφορά ${0}$ στο ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Μετάβαση στο ${0}$ (worktree)</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Ορισμός κλάδου παρακολούθησης...</x:String>
+  <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} commit μπροστά</x:String>
+  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit μπροστά, {1} commit πίσω</x:String>
+  <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit πίσω</x:String>
+  <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Μη έγκυρο</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">ΑΠΟΜΑΚΡΥΣΜΕΝΟ</x:String>
+  <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">ΚΑΤΑΣΤΑΣΗ</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">ΠΑΡΑΚΟΛΟΥΘΗΣΗ</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.BranchTree.Worktree" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Cancel" xml:space="preserve">ΑΚΥΡΟ</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Επαναφορά στη γονική αναθεώρηση</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Επαναφορά σε αυτή την αναθεώρηση</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Δημιουργία μηνύματος commit</x:String>
+  <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">Συγχώνευση (ενσωματωμένη)</x:String>
+  <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">Συγχώνευση (εξωτερική)</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">Επαναφορά αρχείου(-ων) στο ${0}$</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">ΑΛΛΑΓΗ ΤΡΟΠΟΥ ΕΜΦΑΝΙΣΗΣ</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Εμφάνιση ως λίστα αρχείων και φακέλων</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Εμφάνιση ως λίστα διαδρομών</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Εμφάνιση ως δέντρο αρχείων</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Αλλαγή URL της υπομονάδας</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Υπομονάδα:</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout κλάδου</x:String>
+  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout commit</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Προειδοποίηση: Με το checkout σε commit, το HEAD θα αποσυνδεθεί (detached)</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Τοπικές αλλαγές:</x:String>
+  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Κλάδος:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">Το τρέχον HEAD περιέχει commit που δεν συνδέονται με κανέναν κλάδο/ετικέτα! Θέλετε να συνεχίσετε;</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Οι ακόλουθες υπομονάδες πρέπει να ενημερωθούν:{0}Θέλετε να τις ενημερώσετε;</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward στο:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Checkout κλάδου από Stash</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Νέος κλάδος:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Stash:</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Προσθήκη πηγής στο μήνυμα commit</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Commit όλων των αλλαγών</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Κύρια γραμμή:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Συνήθως δεν μπορείτε να κάνετε cherry-pick μια συγχώνευση, επειδή δεν γνωρίζετε ποια πλευρά της συγχώνευσης πρέπει να θεωρηθεί η κύρια γραμμή. Αυτή η επιλογή επιτρέπει στο cherry-pick να αναπαράγει την αλλαγή σε σχέση με τον καθορισμένο γονέα.</x:String>
+  <x:String x:Key="Text.ClearStashes" xml:space="preserve">Εκκαθάριση Stashes</x:String>
+  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Πρόκειται να εκκαθαρίσετε όλα τα stashes. Είστε σίγουροι ότι θέλετε να συνεχίσετε;</x:String>
+  <x:String x:Key="Text.Clone" xml:space="preserve">Κλωνοποίηση απομακρυσμένου αποθετηρίου</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Επιπλέον παράμετροι:</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Πρόσθετα ορίσματα για την κλωνοποίηση του αποθετηρίου. Προαιρετικό.</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">Σελιδοδείκτης:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">Ομάδα:</x:String>
+  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Τοπικό όνομα:</x:String>
+  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Όνομα αποθετηρίου. Προαιρετικό.</x:String>
+  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Γονικός φάκελος:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Αρχικοποίηση &amp; ενημέρωση υπομονάδων</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL αποθετηρίου:</x:String>
+  <x:String x:Key="Text.Close" xml:space="preserve">ΚΛΕΙΣΙΜΟ</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">Επεξεργαστής</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">Κλάδοι</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">Κλάδοι &amp; Ετικέτες</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">Προσαρμοσμένες ενέργειες αποθετηρίου</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">Αρχεία αναθεώρησης</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout commit</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Cherry-Pick commit</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Cherry-Pick ...</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Σύγκριση με το HEAD</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Σύγκριση με το Worktree</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Συγγραφέας</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthorTime" xml:space="preserve">Ώρα συγγραφέα</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">Μήνυμα</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitterTime" xml:space="preserve">Ώρα committer</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Θέμα</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Προσαρμοσμένη ενέργεια</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Διαδραστικό rebase</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Απόρριψη (Drop)...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Επεξεργασία...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Fixup στον γονέα...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Διαδραστικό rebase του ${0}$ πάνω στο ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Επαναδιατύπωση...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash στον γονέα...</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Συγχώνευση ...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Push ${0}$ στο ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Rebase του ${0}$ πάνω στο ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Επαναφορά ${0}$ στο ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Αναίρεση commit</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Αποθήκευση ως Patch...</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ΑΛΛΑΓΕΣ</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">αλλαγμένο(-α) αρχείο(-α)</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Αναζήτηση αλλαγών...</x:String>
+  <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">Σύμπτυξη λεπτομερειών</x:String>
+  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ΑΡΧΕΙΑ</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Αρχείο LFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Αναζήτηση αρχείων...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Υπομονάδα</x:String>
+  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">ΠΛΗΡΟΦΟΡΙΕΣ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">ΣΥΓΓΡΑΦΕΑΣ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ΑΠΟΓΟΝΟΙ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Έλεγχος refs που περιέχουν αυτό το commit</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ΤΟ COMMIT ΠΕΡΙΕΧΕΤΑΙ ΣΕ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Αντιγραφή email</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Αντιγραφή ονόματος</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Αντιγραφή ονόματος &amp; email</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Εμφανίζονται μόνο οι πρώτες 100 αλλαγές. Δείτε όλες τις αλλαγές στην καρτέλα ΑΛΛΑΓΕΣ.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Κλειδί:</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">ΜΗΝΥΜΑ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">ΓΟΝΕΙΣ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Υπογράφων:</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Άνοιγμα στον περιηγητή</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">ΣΤΗΛΗ</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Εισαγάγετε το μήνυμα commit. Χρησιμοποιήστε μια κενή γραμμή για να διαχωρίσετε το θέμα από την περιγραφή!</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">ΘΕΜΑ</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Σύγκριση</x:String>
+  <x:String x:Key="Text.Compare.Changes" xml:space="preserve">ΑΛΛΑΓΕΣ</x:String>
+  <x:String x:Key="Text.Compare.Commits" xml:space="preserve">COMMITS</x:String>
+  <x:String x:Key="Text.Compare.Commits.LeftOnly" xml:space="preserve">COMMITS ΜΟΝΟ ΑΡΙΣΤΕΡΑ</x:String>
+  <x:String x:Key="Text.Compare.Commits.RightOnly" xml:space="preserve">COMMITS ΜΟΝΟ ΔΕΞΙΑ</x:String>
+  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">Συμβουλή: Μπορείτε να κάνετε cherry-pick τα επιλεγμένα commits αν η άλλη πλευρά είναι το HEAD (μέσω του μενού περιβάλλοντος).</x:String>
+  <x:String x:Key="Text.Configure" xml:space="preserve">Ρύθμιση αποθετηρίου</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">ΠΡΟΤΥΠΟ COMMIT</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Ενσωματωμένες παράμετροι:
+
+  ${branch_name} Όνομα τρέχοντος τοπικού κλάδου.
+  ${files_num} Πλήθος αλλαγμένων αρχείων
+  ${files} Διαδρομές αλλαγμένων αρχείων
+  ${files:N} Έως N διαδρομές αλλαγμένων αρχείων
+  ${pure_files} Όπως το ${files}, αλλά μόνο καθαρά ονόματα αρχείων
+  ${pure_files:N} Όπως το ${files:N}, αλλά χωρίς φακέλους</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Περιεχόμενο προτύπου:</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Όνομα προτύπου:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ΠΡΟΣΑΡΜΟΣΜΕΝΗ ΕΝΕΡΓΕΙΑ</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Ορίσματα:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Ενσωματωμένες παράμετροι:
+
+  ${REPO} Διαδρομή του αποθετηρίου
+  ${REMOTE} Επιλεγμένο remote ή το remote του επιλεγμένου κλάδου
+  ${BRANCH} Επιλεγμένος κλάδος, χωρίς το τμήμα ${REMOTE} για απομακρυσμένους κλάδους
+  ${BRANCH_FRIENDLY_NAME} Φιλικό όνομα του επιλεγμένου κλάδου, περιέχει το τμήμα ${REMOTE} για απομακρυσμένους κλάδους
+  ${SHA} Hash του επιλεγμένου commit
+  ${TAG} Επιλεγμένη ετικέτα
+  ${FILE} Επιλεγμένο αρχείο, σε σχέση με τη ρίζα του αποθετηρίου
+  $1, $2 ... Τιμές των στοιχείων εισόδου</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Εκτελέσιμο αρχείο:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Στοιχεία εισόδου:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Επεξεργασία</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Όνομα:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Εμβέλεια:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Κλάδος</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Commit</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.File" xml:space="preserve">Αρχείο</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">Απομακρυσμένο</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Αποθετήριο</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Ετικέτα</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Αναμονή για έξοδο της ενέργειας</x:String>
+  <x:String x:Key="Text.Configure.Email" xml:space="preserve">Διεύθυνση email</x:String>
+  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Διεύθυνση email</x:String>
+  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Ερώτηση πριν την αυτόματη ενημέρωση υπομονάδων</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Αυτόματο fetch από τα απομακρυσμένα</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Λεπτό(-ά)</x:String>
+  <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Τύποι Conventional Commit</x:String>
+  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Προεπιλεγμένο απομακρυσμένο</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Προτιμώμενος τρόπος συγχώνευσης</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ΣΥΣΤΗΜΑ ΠΑΡΑΚΟΛΟΥΘΗΣΗΣ ΖΗΤΗΜΑΤΩΝ</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Προσθήκη κανόνα Azure DevOps</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Προσθήκη κανόνα Gerrit Change-Id Commit</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Προσθήκη κανόνα Gitee Issue</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Προσθήκη κανόνα Gitee Pull Request</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Προσθήκη κανόνα GitHub</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Προσθήκη κανόνα GitLab Issue</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Προσθήκη κανόνα GitLab Merge Request</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Προσθήκη κανόνα Jira</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Νέος κανόνας</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Κανονική έκφραση ζητήματος:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Όνομα κανόνα:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Κοινή χρήση αυτού του κανόνα στο αρχείο .issuetracker</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL αποτελέσματος:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Χρησιμοποιήστε $1, $2 για πρόσβαση στις τιμές των ομάδων της κανονικής έκφρασης.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Προτιμώμενη υπηρεσία:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Αν οριστεί η «Προτιμώμενη υπηρεσία», το SourceGit θα τη χρησιμοποιεί μόνο σε αυτό το αποθετήριο. Διαφορετικά, αν υπάρχουν περισσότερες από μία διαθέσιμες υπηρεσίες, θα εμφανίζεται μενού για να επιλέξετε μία.</x:String>
+  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
+  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy που χρησιμοποιεί αυτό το αποθετήριο</x:String>
+  <x:String x:Key="Text.Configure.User" xml:space="preserve">Όνομα χρήστη</x:String>
+  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Όνομα χρήστη για αυτό το αποθετήριο</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Επεξεργασία στοιχείων προσαρμοσμένης ενέργειας</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Τιμή όταν επιλεγεί:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Όταν είναι επιλεγμένο, αυτή η τιμή θα χρησιμοποιείται στα ορίσματα της γραμμής εντολών</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Περιγραφή:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Προεπιλογή:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">Είναι φάκελος:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Ετικέτα:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Επιλογές:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Χρησιμοποιήστε το '|' ως διαχωριστικό για τις επιλογές</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">Μορφοποιητής συμβολοσειράς:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">Προαιρετικό. Χρησιμοποιείται για μορφοποίηση της συμβολοσειράς εξόδου. Αγνοείται όταν η είσοδος είναι κενή. Χρησιμοποιήστε το `${VALUE}` για να αναπαραστήσετε τη συμβολοσειρά εισόδου.</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Οι ενσωματωμένες μεταβλητές ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, και ${TAG} παραμένουν διαθέσιμες εδώ</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Τύπος:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">Χρήση φιλικού ονόματος:</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Χώροι εργασίας</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Χρώμα</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Όνομα</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Επαναφορά καρτελών κατά την εκκίνηση</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">ΣΥΝΕΧΕΙΑ</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">Εντοπίστηκε κενό commit! Θέλετε να συνεχίσετε (--allow-empty);</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">ΠΡΟΣΘΗΚΗ ΟΛΩΝ &amp; COMMIT</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">ΠΡΟΣΘΗΚΗ ΕΠΙΛΕΓΜΕΝΩΝ &amp; COMMIT</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">Εντοπίστηκε κενό commit! Θέλετε να συνεχίσετε (--allow-empty) ή να γίνει αυτόματη προσθήκη στο ευρετήριο και μετά commit;</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Απαιτείται επανεκκίνηση</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">Πρέπει να επανεκκινήσετε την εφαρμογή για να εφαρμοστούν οι αλλαγές.</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Βοηθός Conventional Commit</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Breaking Change:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Ζήτημα που κλείνει:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Λεπτομέρειες αλλαγών:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Εμβέλεια:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Σύντομη περιγραφή:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Τύπος αλλαγής:</x:String>
+  <x:String x:Key="Text.Copy" xml:space="preserve">Αντιγραφή</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Αντιγραφή όλου του κειμένου</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Αντιγραφή πλήρους διαδρομής</x:String>
+  <x:String x:Key="Text.CopyPath" xml:space="preserve">Αντιγραφή διαδρομής</x:String>
+  <x:String x:Key="Text.CreateBranch" xml:space="preserve">Δημιουργία κλάδου...</x:String>
+  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Με βάση:</x:String>
+  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Checkout του κλάδου που δημιουργήθηκε</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Τοπικές αλλαγές:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Όνομα νέου κλάδου:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Εισαγάγετε όνομα κλάδου.</x:String>
+  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Δημιουργία τοπικού κλάδου</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Αντικατάσταση υπάρχοντος κλάδου</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">Δημιουργία ετικέτας...</x:String>
+  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Νέα ετικέτα στο:</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Υπογραφή GPG</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Μήνυμα ετικέτας:</x:String>
+  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Προαιρετικό.</x:String>
+  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Όνομα ετικέτας:</x:String>
+  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Προτεινόμενη μορφή: v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Push σε όλα τα απομακρυσμένα μετά τη δημιουργία</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Δημιουργία ετικέτας</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Είδος:</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">επισημειωμένη</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">ελαφριά</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Κρατήστε Ctrl για άμεση εκκίνηση</x:String>
+  <x:String x:Key="Text.Cut" xml:space="preserve">Αποκοπή</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Απόρριψη</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Καμία ενέργεια</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Stash &amp; επανεφαρμογή</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Απο-αρχικοποίηση υπομονάδας</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Εξαναγκασμός απο-αρχικοποίησης ακόμη κι αν περιέχει τοπικές αλλαγές.</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Υπομονάδα:</x:String>
+  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Διαγραφή κλάδου</x:String>
+  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Κλάδος:</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Πρόκειται να διαγράψετε έναν απομακρυσμένο κλάδο!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Διαγραφή και του απομακρυσμένου κλάδου ${0}$</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Διαγραφή πολλαπλών κλάδων</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Προσπαθείτε να διαγράψετε πολλούς κλάδους ταυτόχρονα. Βεβαιωθείτε ότι ελέγξατε ξανά πριν προχωρήσετε!</x:String>
+  <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Διαγραφή πολλαπλών ετικετών</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.DeleteFromRemotes" xml:space="preserve">Διαγραφή τους από τα απομακρυσμένα</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.Tip" xml:space="preserve">Προσπαθείτε να διαγράψετε πολλές ετικέτες ταυτόχρονα. Βεβαιωθείτε ότι ελέγξατε ξανά πριν προχωρήσετε!</x:String>
+  <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Διαγραφή απομακρυσμένου</x:String>
+  <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Διαδρομή:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">Όλα τα παιδιά θα αφαιρεθούν από τη λίστα.</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">Αυτό θα το αφαιρέσει μόνο από τη λίστα, όχι από τον δίσκο!</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Επιβεβαίωση διαγραφής ομάδας</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Επιβεβαίωση διαγραφής αποθετηρίου</x:String>
+  <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Διαγραφή υπομονάδας</x:String>
+  <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Διαδρομή υπομονάδας:</x:String>
+  <x:String x:Key="Text.DeleteTag" xml:space="preserve">Διαγραφή ετικέτας</x:String>
+  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Ετικέτα:</x:String>
+  <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Διαγραφή από τα απομακρυσμένα αποθετήρια</x:String>
+  <x:String x:Key="Text.Diff.Binary" xml:space="preserve">ΔΥΑΔΙΚΟ DIFF</x:String>
+  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Άλλαξε η λειτουργία αρχείου (file mode)</x:String>
+  <x:String x:Key="Text.Diff.First" xml:space="preserve">Πρώτη διαφορά</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Αγνόηση αλλαγών κενών χαρακτήρων</x:String>
+  <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">ΑΝΑΜΕΙΞΗ</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">ΔΙΑΦΟΡΑ</x:String>
+  <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">ΔΙΠΛΑ-ΔΙΠΛΑ</x:String>
+  <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">ΣΑΡΩΣΗ</x:String>
+  <x:String x:Key="Text.Diff.Last" xml:space="preserve">Τελευταία διαφορά</x:String>
+  <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ΑΛΛΑΓΗ ΑΝΤΙΚΕΙΜΕΝΟΥ LFS</x:String>
+  <x:String x:Key="Text.Diff.New" xml:space="preserve">ΝΕΟ</x:String>
+  <x:String x:Key="Text.Diff.Next" xml:space="preserve">Επόμενη διαφορά</x:String>
+  <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">ΚΑΜΙΑ ΑΛΛΑΓΗ Ή ΜΟΝΟ ΑΛΛΑΓΕΣ EOL</x:String>
+  <x:String x:Key="Text.Diff.Old" xml:space="preserve">ΠΑΛΙΟ</x:String>
+  <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Προηγούμενη διαφορά</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Αποθήκευση ως Patch</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Εμφάνιση κρυφών συμβόλων</x:String>
+  <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diff δίπλα-δίπλα</x:String>
+  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">ΥΠΟΜΟΝΑΔΑ</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">ΔΙΑΓΡΑΦΗΚΕ</x:String>
+  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">ΝΕΟ</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} μη υποβληθείσες αλλαγές</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Εναλλαγή</x:String>
+  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Επισήμανση σύνταξης</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Αναδίπλωση γραμμών</x:String>
+  <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Άνοιγμα στο εργαλείο συγχώνευσης</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Εμφάνιση όλων των γραμμών</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Μείωση αριθμού ορατών γραμμών</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Αύξηση αριθμού ορατών γραμμών</x:String>
+  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">ΕΠΙΛΕΞΤΕ ΑΡΧΕΙΟ ΓΙΑ ΠΡΟΒΟΛΗ ΑΛΛΑΓΩΝ</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">Ιστορικό φακέλου</x:String>
+  <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">Έχει τοπικές αλλαγές</x:String>
+  <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">Αναντιστοιχία με το upstream</x:String>
+  <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">Ήδη ενημερωμένο</x:String>
+  <x:String x:Key="Text.Discard" xml:space="preserve">Απόρριψη αλλαγών</x:String>
+  <x:String x:Key="Text.Discard.All" xml:space="preserve">Όλες οι τοπικές αλλαγές στο αντίγραφο εργασίας.</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Αλλαγές:</x:String>
+  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Συμπερίληψη αγνοούμενων αρχείων</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">Συμπερίληψη τροποποιημένων/διαγραμμένων αρχείων</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Συμπερίληψη μη παρακολουθούμενων αρχείων</x:String>
+  <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} αλλαγές θα απορριφθούν</x:String>
+  <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Δεν μπορείτε να αναιρέσετε αυτή την ενέργεια!!!</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Επεξεργασία περιγραφής κλάδου</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Σελιδοδείκτης:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Νέο όνομα:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Επεξεργασία επιλεγμένης ομάδας</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Επεξεργασία επιλεγμένου αποθετηρίου</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Αυτό το αποθετήριο</x:String>
+  <x:String x:Key="Text.Fetch" xml:space="preserve">Fetch</x:String>
+  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Fetch από όλα τα απομακρυσμένα</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Εξαναγκασμός αντικατάστασης τοπικών refs</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Fetch χωρίς ετικέτες</x:String>
+  <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
+  <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Fetch απομακρυσμένων αλλαγών</x:String>
+  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Θεώρηση ως αμετάβλητο</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Προσαρμοσμένη ενέργεια</x:String>
+  <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Απόρριψη...</x:String>
+  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Απόρριψη {0} αρχείων...</x:String>
+  <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Επίλυση με χρήση ${0}$</x:String>
+  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Αποθήκευση ως Patch...</x:String>
+  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Προσθήκη στο ευρετήριο</x:String>
+  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Προσθήκη {0} αρχείων στο ευρετήριο</x:String>
+  <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Stash...</x:String>
+  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Stash {0} αρχείων...</x:String>
+  <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Αφαίρεση από το ευρετήριο</x:String>
+  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Αφαίρεση {0} αρχείων από το ευρετήριο</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Χρήση δικού μου (checkout --ours)</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Χρήση δικού τους (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileHistory" xml:space="preserve">Ιστορικό αρχείου</x:String>
+  <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">ΑΛΛΑΓΗ</x:String>
+  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">ΠΕΡΙΕΧΟΜΕΝΟ</x:String>
+  <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
+  <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Κλάδος ανάπτυξης:</x:String>
+  <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
+  <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Πρόθεμα Feature:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW - Ολοκλήρωση Feature</x:String>
+  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Ολοκλήρωση Hotfix</x:String>
+  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Ολοκλήρωση Release</x:String>
+  <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash κατά τη συγχώνευση</x:String>
+  <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
+  <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Πρόθεμα Hotfix:</x:String>
+  <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Αρχικοποίηση Git-Flow</x:String>
+  <x:String x:Key="Text.GitFlow.KeepBranchAfterFinish" xml:space="preserve">Διατήρηση κλάδου</x:String>
+  <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Κλάδος παραγωγής:</x:String>
+  <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Release:</x:String>
+  <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Πρόθεμα Release:</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Έναρξη Feature...</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW - Έναρξη Feature</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Έναρξη Hotfix...</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW - Έναρξη Hotfix</x:String>
+  <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Εισαγάγετε όνομα</x:String>
+  <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Έναρξη Release...</x:String>
+  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Έναρξη Release</x:String>
+  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Πρόθεμα ετικέτας έκδοσης:</x:String>
+  <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Προσθήκη μοτίβου παρακολούθησης...</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">Το μοτίβο είναι όνομα αρχείου</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">Προσαρμοσμένο μοτίβο:</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Προσθήκη μοτίβου παρακολούθησης στο Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Fetch</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Εκτελέστε `git lfs fetch` για να κατεβάσετε αντικείμενα Git LFS. Αυτό δεν ενημερώνει το αντίγραφο εργασίας.</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Fetch αντικειμένων LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Εγκατάσταση hooks του Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Εμφάνιση κλειδωμάτων</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">Δεν υπάρχουν κλειδωμένα αρχεία</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Κλείδωμα</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Εμφάνιση μόνο των δικών μου κλειδωμάτων</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">Κλειδώματα LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Ξεκλείδωμα</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">Ξεκλείδωμα όλων των δικών μου κλειδωμάτων</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">Είστε σίγουροι ότι θέλετε να ξεκλειδώσετε όλα τα κλειδωμένα σας αρχεία;</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Εξαναγκασμός ξεκλειδώματος</x:String>
+  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Εκκαθάριση</x:String>
+  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Εκτελέστε `git lfs prune` για να διαγράψετε παλιά αρχεία LFS από την τοπική αποθήκευση</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Pull</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Εκτελέστε `git lfs pull` για να κατεβάσετε όλα τα αρχεία Git LFS για το τρέχον ref &amp; checkout</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Pull αντικειμένων LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Push</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Push των μεγάλων αρχείων που βρίσκονται σε αναμονή προς το endpoint του Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Push αντικειμένων LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
+  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Παρακολούθηση αρχείων με όνομα '{0}'</x:String>
+  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Παρακολούθηση όλων των αρχείων *{0}</x:String>
+  <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Επιλογή commit</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">ΙΣΤΟΡΙΚΟ</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">ΣΥΓΓΡΑΦΕΑΣ</x:String>
+  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ΩΡΑ ΣΥΓΓΡΑΦΕΑ</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ΩΡΑ COMMIT</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ΓΡΑΦΗΜΑ &amp; ΘΕΜΑ</x:String>
+  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">ΕΠΙΣΗΜΑΝΣΕΙΣ ΣΤΟ ΓΡΑΦΗΜΑ</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.All" xml:space="preserve">Όλα</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Μόνο ο τρέχων κλάδος</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Τρέχων κλάδος &amp; επιλεγμένα commits</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Μόνο τα επιλεγμένα commits</x:String>
+  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ΕΠΙΛΕΓΜΕΝΑ {0} COMMITS</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">ΕΜΦΑΝΙΣΗ ΣΤΗΛΩΝ</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Κρατήστε 'Ctrl' ή 'Shift' για να επιλέξετε πολλαπλά commits.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Κρατήστε ⌘ ή ⇧ για να επιλέξετε πολλαπλά commits.</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ΣΥΜΒΟΥΛΕΣ:</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone" xml:space="preserve">Άνοιγμα σε ξεχωριστό παράθυρο</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.CommitDetail" xml:space="preserve">Λεπτομέρειες commit</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.RevisionCompare" xml:space="preserve">Σύγκριση αναθεωρήσεων</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Αναφορά συντομεύσεων πληκτρολογίου</x:String>
+  <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">ΚΑΘΟΛΙΚΑ</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Κλωνοποίηση νέου αποθετηρίου</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Κλείσιμο τρέχουσας καρτέλας</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Μετάβαση στην επόμενη καρτέλα</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Μετάβαση στην προηγούμενη καρτέλα</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Δημιουργία νέας καρτέλας</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">Άνοιγμα τοπικού αποθετηρίου</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Άνοιγμα διαλόγου Προτιμήσεων</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Εμφάνιση αναπτυσσόμενου μενού χώρων εργασίας</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Εναλλαγή ενεργής καρτέλας</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">Μεγέθυνση/σμίκρυνση</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">ΑΠΟΘΕΤΗΡΙΟ</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Commit των αλλαγών στο ευρετήριο</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commit και push των αλλαγών στο ευρετήριο</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Προσθήκη όλων των αλλαγών στο ευρετήριο και commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Δημιουργία νέου κλάδου</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, ξεκινά άμεσα</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Λειτουργία πίνακα ελέγχου (Προεπιλογή)</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Μετάβαση στον απόγονο του επιλεγμένου commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Μετάβαση στον γονέα του επιλεγμένου commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Άνοιγμα παλέτας εντολών</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Λειτουργία αναζήτησης commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, ξεκινά άμεσα</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, ξεκινά άμεσα</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Εξαναγκασμός επαναφόρτωσης αυτού του αποθετηρίου</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Ανάπτυξη/σύμπτυξη πίνακα λεπτομερειών στο `ΙΣΤΟΡΙΚΟ`</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Μετάβαση στις 'ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Μετάβαση στο 'ΙΣΤΟΡΙΚΟ'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Μετάβαση στα 'STASHES'</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Απόρριψη</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Προσθήκη στο ευρετήριο</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Αφαίρεση από το ευρετήριο</x:String>
+  <x:String x:Key="Text.Init" xml:space="preserve">Αρχικοποίηση αποθετηρίου</x:String>
+  <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">Θέλετε να εκτελέσετε την εντολή `git init` σε αυτή τη διαδρομή;</x:String>
+  <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">Το άνοιγμα του αποθετηρίου απέτυχε. Αιτία:  </x:String>
+  <x:String x:Key="Text.Init.Path" xml:space="preserve">Διαδρομή:</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-Pick σε εξέλιξη.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Επεξεργασία commit</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Συγχώνευση σε εξέλιξη.</x:String>
+  <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">Συγχώνευση</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase σε εξέλιξη.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Σταμάτησε στο</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Αναίρεση σε εξέλιξη.</x:String>
+  <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">Αναίρεση commit</x:String>
+  <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Διαδραστικό rebase</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Stash &amp; επανεφαρμογή τοπικών αλλαγών</x:String>
+  <x:String x:Key="Text.InteractiveRebase.NoVerify" xml:space="preserve">Παράκαμψη του pre-rebase hook</x:String>
+  <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Πάνω στο:</x:String>
+  <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">Σύρετε και αφήστε για αναδιάταξη των commits</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Κλάδος-στόχος:</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Αντιγραφή συνδέσμου</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Άνοιγμα στον περιηγητή</x:String>
+  <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">Εντολές</x:String>
+  <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ΣΦΑΛΜΑ</x:String>
+  <x:String x:Key="Text.Launcher.Info" xml:space="preserve">ΕΙΔΟΠΟΙΗΣΗ</x:String>
+  <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">Άνοιγμα αποθετηρίων</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Καρτέλες</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Χώροι εργασίας</x:String>
+  <x:String x:Key="Text.Merge" xml:space="preserve">Συγχώνευση κλάδου</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Προσαρμογή μηνύματος συγχώνευσης</x:String>
+  <x:String x:Key="Text.Merge.Into" xml:space="preserve">Στο:</x:String>
+  <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Τρόπος συγχώνευσης:</x:String>
+  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Πηγή:</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">Έλεγχος για συγχώνευση...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">Η συγχώνευση μπορεί να γίνει χωρίς συγκρούσεις</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">Παρουσιάστηκε άγνωστο σφάλμα κατά τον έλεγχο για συγχώνευση</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">Η συγχώνευση θα προκαλέσει συγκρούσεις</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">Πρώτα το δικό μου, μετά το δικό τους</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">Πρώτα το δικό τους, μετά το δικό μου</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">ΧΡΗΣΗ ΚΑΙ ΤΩΝ ΔΥΟ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">Όλες οι συγκρούσεις επιλύθηκαν</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">Απομένουν {0} συγκρούσεις</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">ΔΙΚΟ ΜΟΥ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Επόμενη σύγκρουση</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">Προηγούμενη σύγκρουση</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">ΑΠΟΤΕΛΕΣΜΑ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">ΑΠΟΘΗΚΕΥΣΗ &amp; ΠΡΟΣΘΗΚΗ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">ΔΙΚΟ ΤΟΥΣ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Συγκρούσεις συγχώνευσης</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Απόρριψη μη αποθηκευμένων αλλαγών;</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">ΧΡΗΣΗ ΔΙΚΟΥ ΜΟΥ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">ΧΡΗΣΗ ΔΙΚΟΥ ΤΟΥΣ</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">ΑΝΑΙΡΕΣΗ</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Συγχώνευση (πολλαπλή)</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit όλων των αλλαγών</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Στρατηγική:</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Στόχοι:</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Μετακίνηση υπομονάδας</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Μετακίνηση σε:</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Υπομονάδα:</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Μετακίνηση κόμβου αποθετηρίου</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Επιλέξτε γονικό κόμβο για:</x:String>
+  <x:String x:Key="Text.Name" xml:space="preserve">Όνομα:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">ΟΧΙ</x:String>
+  <x:String x:Key="Text.NotConfigured" xml:space="preserve">Το Git ΔΕΝ έχει ρυθμιστεί. Μεταβείτε στις [Προτιμήσεις] και ρυθμίστε το πρώτα.</x:String>
+  <x:String x:Key="Text.Open" xml:space="preserve">Άνοιγμα</x:String>
+  <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Προεπιλεγμένος επεξεργαστής (συστήματος)</x:String>
+  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Άνοιγμα φακέλου αποθήκευσης δεδομένων</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Άνοιγμα αρχείου</x:String>
+  <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Άνοιγμα σε εξωτερικό εργαλείο συγχώνευσης</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Άνοιγμα τοπικού αποθετηρίου</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">Σελιδοδείκτης:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">Ομάδα:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">Φάκελος:</x:String>
+  <x:String x:Key="Text.Optional" xml:space="preserve">Προαιρετικό.</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Δημιουργία νέας καρτέλας</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Κλείσιμο καρτέλας</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Κλείσιμο άλλων καρτελών</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Κλείσιμο καρτελών στα δεξιά</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Αντιγραφή διαδρομής αποθετηρίου</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Επεξεργασία</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Μετακίνηση σε χώρο εργασίας</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Ανανέωση</x:String>
+  <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Αποθετήρια</x:String>
+  <x:String x:Key="Text.Paste" xml:space="preserve">Επικόλληση</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">{0} ημέρες πριν</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">1 ώρα πριν</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">{0} ώρες πριν</x:String>
+  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Μόλις τώρα</x:String>
+  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">Τον προηγούμενο μήνα</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Πέρυσι</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} λεπτά πριν</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} μήνες πριν</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} χρόνια πριν</x:String>
+  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Χθες</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">Προτιμήσεις</x:String>
+  <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Επιπλέον prompt (χρησιμοποιήστε `-` για να απαριθμήσετε τις απαιτήσεις σας)</x:String>
+  <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Κλειδί API</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Μοντέλο</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Αυτόματη ανάκτηση διαθέσιμων model-ids</x:String>
+  <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Όνομα</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Η τιμή που εισήχθη είναι το όνομα για φόρτωση του κλειδιού API από το ENV</x:String>
+  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Διακομιστής</x:String>
+  <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ΕΜΦΑΝΙΣΗ</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Προεπιλεγμένη γραμματοσειρά</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Πλάτος tab επεξεργαστή</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Μέγεθος γραμματοσειράς</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Προεπιλογή</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Επεξεργαστής</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Γραμματοσειρά σταθερού πλάτους</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Θέμα</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Παρακάμψεις θέματος</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Χρήση μπαρών κύλισης αυτόματης απόκρυψης</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Χρήση σταθερού πλάτους καρτελών στη γραμμή τίτλου</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Χρήση εγγενούς πλαισίου παραθύρου</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ΕΡΓΑΛΕΙΟ DIFF/MERGE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Ορίσματα Diff</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">Διαθέσιμες μεταβλητές: $LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">Ορίσματα Merge</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">Διαθέσιμες μεταβλητές: $BASE, $LOCAL, $REMOTE, $MERGED</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Διαδρομή εγκατάστασης</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Εισαγάγετε τη διαδρομή του εργαλείου diff/merge</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Εργαλείο</x:String>
+  <x:String x:Key="Text.Preferences.General" xml:space="preserve">ΓΕΝΙΚΑ</x:String>
+  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Έλεγχος για ενημερώσεις κατά την εκκίνηση</x:String>
+  <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Μορφή ημερομηνίας</x:String>
+  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Ενεργοποίηση συμπαγών φακέλων στο δέντρο αλλαγών</x:String>
+  <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Γλώσσα</x:String>
+  <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits ιστορικού</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Εμφάνιση της σελίδας `ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ` από προεπιλογή</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Εμφάνιση της καρτέλας `ΑΛΛΑΓΕΣ` στις λεπτομέρειες commit από προεπιλογή</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Εμφάνιση απογόνων στις λεπτομέρειες commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">Εμφάνιση σχετικού χρόνου στο γράφημα commit</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Εμφάνιση ετικετών στο γράφημα commit</x:String>
+  <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Μήκος οδηγού θέματος</x:String>
+  <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24ωρη μορφή</x:String>
+  <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">Χρήση συμπαγών ονομάτων κλάδων στο γράφημα commit</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Δημιουργία προεπιλεγμένου avatar τύπου Github</x:String>
+  <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Ενεργοποίηση αυτόματου CRLF</x:String>
+  <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Προεπιλεγμένος φάκελος κλωνοποίησης</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Email χρήστη</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Καθολικό email χρήστη git</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Εκκαθάριση νεκρών κλάδων μετά το fetch</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Αγνόηση CR στο τέλος γραμμής στο diff κειμένου</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Απαιτείται Git (&gt;= 2.25.1) από αυτή την εφαρμογή</x:String>
+  <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Διαδρομή εγκατάστασης</x:String>
+  <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Ενεργοποίηση επαλήθευσης HTTP SSL</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Χρήση git-credential-libsecret αντί για git-credential-manager</x:String>
+  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Όνομα χρήστη</x:String>
+  <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Καθολικό όνομα χρήστη git</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseStashAndReapplyByDefault" xml:space="preserve">Stash &amp; επανεφαρμογή αλλαγών από προεπιλογή κατά το checkout ή τη συγχώνευση κλάδων</x:String>
+  <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Έκδοση Git</x:String>
+  <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">ΥΠΟΓΡΑΦΗ GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">Υπογραφή GPG στα commit</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Μορφή GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path" xml:space="preserve">Διαδρομή εγκατάστασης προγράμματος</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path.Placeholder" xml:space="preserve">Εισαγάγετε τη διαδρομή του εγκατεστημένου προγράμματος gpg</x:String>
+  <x:String x:Key="Text.Preferences.GPG.TagEnabled" xml:space="preserve">Υπογραφή GPG στις ετικέτες</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey" xml:space="preserve">Κλειδί υπογραφής χρήστη</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">Κλειδί υπογραφής gpg του χρήστη</x:String>
+  <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">ΕΝΣΩΜΑΤΩΣΗ</x:String>
+  <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/ΤΕΡΜΑΤΙΚΟ</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Ορίσματα</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Χρησιμοποιήστε το '.' για να υποδείξετε τον φάκελο εργασίας</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Διαδρομή</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Τερματικό</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Εκκαθάριση απομακρυσμένου</x:String>
+  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Εκκαθάριση Worktrees</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Εκκαθάριση πληροφοριών worktree στο `$GIT_COMMON_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.Pull" xml:space="preserve">Pull</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Απομακρυσμένος κλάδος:</x:String>
+  <x:String x:Key="Text.Pull.Into" xml:space="preserve">Στο:</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Τοπικές αλλαγές:</x:String>
+  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
+  <x:String x:Key="Text.Pull.Title" xml:space="preserve">Pull (Fetch &amp; Merge)</x:String>
+  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Χρήση rebase αντί για συγχώνευση</x:String>
+  <x:String x:Key="Text.Push" xml:space="preserve">Push</x:String>
+  <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Βεβαιωθείτε ότι έχει γίνει push στις υπομονάδες</x:String>
+  <x:String x:Key="Text.Push.Force" xml:space="preserve">Εξαναγκασμένο push</x:String>
+  <x:String x:Key="Text.Push.Local" xml:space="preserve">Τοπικός κλάδος:</x:String>
+  <x:String x:Key="Text.Push.New" xml:space="preserve">ΝΕΟ</x:String>
+  <x:String x:Key="Text.Push.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Αναθεώρηση:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push αναθεώρησης σε απομακρυσμένο</x:String>
+  <x:String x:Key="Text.Push.Title" xml:space="preserve">Push αλλαγών σε απομακρυσμένο</x:String>
+  <x:String x:Key="Text.Push.To" xml:space="preserve">Απομακρυσμένος κλάδος:</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Ορισμός ως κλάδου παρακολούθησης</x:String>
+  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Push όλων των ετικετών</x:String>
+  <x:String x:Key="Text.PushTag" xml:space="preserve">Push ετικέτας σε απομακρυσμένο</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Push σε όλα τα απομακρυσμένα</x:String>
+  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
+  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Ετικέτα:</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">Push σε ΝΕΟ κλάδο</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Εισαγάγετε το όνομα του νέου απομακρυσμένου κλάδου:</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">Έξοδος</x:String>
+  <x:String x:Key="Text.Rebase" xml:space="preserve">Rebase τρέχοντος κλάδου</x:String>
+  <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash &amp; επανεφαρμογή τοπικών αλλαγών</x:String>
+  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">Παράκαμψη του pre-rebase hook</x:String>
+  <x:String x:Key="Text.Rebase.On" xml:space="preserve">Πάνω στο:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">Έλεγχος για rebase ...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">Το rebase μπορεί να γίνει χωρίς συγκρούσεις</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">Παρουσιάστηκε άγνωστο σφάλμα κατά τον έλεγχο για rebase</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">Το rebase θα προκαλέσει συγκρούσεις</x:String>
+  <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Προσθήκη απομακρυσμένου</x:String>
+  <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Επεξεργασία απομακρυσμένου</x:String>
+  <x:String x:Key="Text.Remote.Name" xml:space="preserve">Όνομα:</x:String>
+  <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Όνομα απομακρυσμένου</x:String>
+  <x:String x:Key="Text.Remote.URL" xml:space="preserve">URL αποθετηρίου:</x:String>
+  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">URL απομακρυσμένου αποθετηρίου git</x:String>
+  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Αντιγραφή URL</x:String>
+  <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Προσαρμοσμένη ενέργεια</x:String>
+  <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Διαγραφή...</x:String>
+  <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Επεξεργασία...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">Ενεργοποίηση αυτόματου Fetch</x:String>
+  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
+  <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Άνοιγμα στον περιηγητή</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Εκκαθάριση</x:String>
+  <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Επιβεβαίωση αφαίρεσης Worktree</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Ενεργοποίηση της επιλογής `--force`</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Στόχος:</x:String>
+  <x:String x:Key="Text.RenameBranch" xml:space="preserve">Μετονομασία κλάδου</x:String>
+  <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">Νέο όνομα:</x:String>
+  <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Μοναδικό όνομα για αυτόν τον κλάδο</x:String>
+  <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Κλάδος:</x:String>
+  <x:String x:Key="Text.Repository.Abort" xml:space="preserve">ΜΑΤΑΙΩΣΗ</x:String>
+  <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">Αυτόματο fetch αλλαγών από τα απομακρυσμένα...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Ταξινόμηση</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">Κατά ημερομηνία committer</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">Κατά όνομα</x:String>
+  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Εκκαθάριση (GC &amp; Prune)</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Εκτέλεση της εντολής `git gc` για αυτό το αποθετήριο.</x:String>
+  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Εκκαθάριση όλων</x:String>
+  <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Εκκαθάριση</x:String>
+  <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Ρύθμιση αυτού του αποθετηρίου</x:String>
+  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ΣΥΝΕΧΕΙΑ</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Προσαρμοσμένες ενέργειες</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Καμία προσαρμοσμένη ενέργεια</x:String>
+  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Πίνακας ελέγχου</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Απόρριψη όλων των αλλαγών</x:String>
+  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Άνοιγμα στον περιηγητή αρχείων</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Αναζήτηση κλάδων/ετικετών/υπομονάδων</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Ορατότητα στο γράφημα</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Μη ορισμένο</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Απόκρυψη στο γράφημα commit</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Φιλτράρισμα στο γράφημα commit</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">ΔΙΑΤΑΞΗ</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Οριζόντια</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Κάθετη</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">ΣΕΙΡΑ COMMITS</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Ημερομηνία commit</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Τοπολογικά</x:String>
+  <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ΤΟΠΙΚΟΙ ΚΛΑΔΟΙ</x:String>
+  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Περισσότερες επιλογές...</x:String>
+  <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Μετάβαση στο HEAD</x:String>
+  <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Δημιουργία κλάδου</x:String>
+  <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ΕΚΚΑΘΑΡΙΣΗ ΕΙΔΟΠΟΙΗΣΕΩΝ</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Άνοιγμα ως φάκελος</x:String>
+  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Άνοιγμα σε {0}</x:String>
+  <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Άνοιγμα σε εξωτερικά εργαλεία</x:String>
+  <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">ΑΠΟΜΑΚΡΥΣΜΕΝΑ</x:String>
+  <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">Προσθήκη απομακρυσμένου</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">ΕΠΙΛΥΣΗ</x:String>
+  <x:String x:Key="Text.Repository.Search" xml:space="preserve">Αναζήτηση commit</x:String>
+  <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Συγγραφέας</x:String>
+  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Περιεχόμενο</x:String>
+  <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Μήνυμα</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Διαδρομή</x:String>
+  <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Τρέχων κλάδος</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Μόνο commits με αναφορές</x:String>
+  <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Μόνο πρώτος γονέας</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">ΕΜΦΑΝΙΣΗ ΣΗΜΑΙΩΝ</x:String>
+  <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Εμφάνιση χαμένων commits</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Εμφάνιση υπομονάδων ως δέντρο</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Εμφάνιση ετικετών ως δέντρο</x:String>
+  <x:String x:Key="Text.Repository.Skip" xml:space="preserve">ΠΑΡΑΛΕΙΨΗ</x:String>
+  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Στατιστικά</x:String>
+  <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">ΥΠΟΜΟΝΑΔΕΣ</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">Προσθήκη υπομονάδας</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">Ενημέρωση υπομονάδας</x:String>
+  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">ΕΤΙΚΕΤΕΣ</x:String>
+  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">Νέα ετικέτα</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Κατά ημερομηνία δημιουργίας</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Κατά όνομα</x:String>
+  <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ταξινόμηση</x:String>
+  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Άνοιγμα στο τερματικό</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Προβολή καταγραφών</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Επίσκεψη '{0}' στον περιηγητή</x:String>
+  <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">Προσθήκη Worktree</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">Εκκαθάριση</x:String>
+  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">URL αποθετηρίου Git</x:String>
+  <x:String x:Key="Text.Reset" xml:space="preserve">Επαναφορά τρέχοντος κλάδου σε αναθεώρηση</x:String>
+  <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Τρόπος επαναφοράς:</x:String>
+  <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Μετακίνηση σε:</x:String>
+  <x:String x:Key="Text.Reset.Target" xml:space="preserve">Τρέχων κλάδος:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Επαναφορά κλάδου (χωρίς checkout)</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Μετακίνηση σε:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Κλάδος:</x:String>
+  <x:String x:Key="Text.RevealFile" xml:space="preserve">Εμφάνιση στον περιηγητή αρχείων</x:String>
+  <x:String x:Key="Text.Revert" xml:space="preserve">Αναίρεση commit</x:String>
+  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
+  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commit των αλλαγών αναίρεσης</x:String>
+  <x:String x:Key="Text.Running" xml:space="preserve">Εκτελείται. Παρακαλώ περιμένετε...</x:String>
+  <x:String x:Key="Text.Save" xml:space="preserve">ΑΠΟΘΗΚΕΥΣΗ</x:String>
+  <x:String x:Key="Text.SaveAs" xml:space="preserve">Αποθήκευση ως...</x:String>
+  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Το patch αποθηκεύτηκε με επιτυχία!</x:String>
+  <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Σάρωση αποθετηρίων</x:String>
+  <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Ριζικός φάκελος:</x:String>
+  <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Σάρωση άλλου προσαρμοσμένου φακέλου</x:String>
+  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Έλεγχος για ενημερώσεις...</x:String>
+  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Είναι διαθέσιμη νέα έκδοση αυτού του λογισμικού: </x:String>
+  <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Τρέχουσα έκδοση: </x:String>
+  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Ο έλεγχος για ενημερώσεις απέτυχε!</x:String>
+  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Λήψη</x:String>
+  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Παράλειψη αυτής της έκδοσης</x:String>
+  <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">Ημερομηνία έκδοσης νέας έκδοσης: </x:String>
+  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Ενημέρωση λογισμικού</x:String>
+  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Δεν υπάρχουν διαθέσιμες ενημερώσεις αυτή τη στιγμή.</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Ορισμός κλάδου υπομονάδας</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Υπομονάδα:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Τρέχων:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New" xml:space="preserve">Αλλαγή σε:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New.Tip" xml:space="preserve">Προαιρετικό. Όταν είναι κενό, ορίζεται στην προεπιλογή.</x:String>
+  <x:String x:Key="Text.SetUpstream" xml:space="preserve">Ορισμός κλάδου παρακολούθησης</x:String>
+  <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">Κλάδος:</x:String>
+  <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">Κατάργηση upstream</x:String>
+  <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Upstream:</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Αντιγραφή SHA</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Μετάβαση σε</x:String>
+  <x:String x:Key="Text.SSHKey" xml:space="preserve">Ιδιωτικό κλειδί SSH:</x:String>
+  <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Διαδρομή αποθήκευσης ιδιωτικού κλειδιού SSH</x:String>
+  <x:String x:Key="Text.Start" xml:space="preserve">ΕΝΑΡΞΗ</x:String>
+  <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
+  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Συμπερίληψη μη παρακολουθούμενων αρχείων</x:String>
+  <x:String x:Key="Text.Stash.Message" xml:space="preserve">Μήνυμα:</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Προαιρετικό. Μήνυμα αυτού του stash</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Λειτουργία:</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Μόνο τα αρχεία στο ευρετήριο</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Θα γίνουν stash τόσο οι αλλαγές στο ευρετήριο όσο και αυτές εκτός ευρετηρίου των επιλεγμένων αρχείων!!!</x:String>
+  <x:String x:Key="Text.Stash.Title" xml:space="preserve">Stash τοπικών αλλαγών</x:String>
+  <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Εφαρμογή</x:String>
+  <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">Εφαρμογή αλλαγών</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">Checkout νέου κλάδου</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Αντιγραφή μηνύματος</x:String>
+  <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Απόρριψη</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Αποθήκευση ως Patch...</x:String>
+  <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Απόρριψη Stash</x:String>
+  <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Απόρριψη:</x:String>
+  <x:String x:Key="Text.Stashes" xml:space="preserve">STASHES</x:String>
+  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">ΑΛΛΑΓΕΣ</x:String>
+  <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASHES</x:String>
+  <x:String x:Key="Text.Statistics" xml:space="preserve">Στατιστικά</x:String>
+  <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">ΕΠΙΣΚΟΠΗΣΗ</x:String>
+  <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">ΜΗΝΑΣ</x:String>
+  <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">ΕΒΔΟΜΑΔΑ</x:String>
+  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">ΣΥΓΓΡΑΦΕΙΣ: </x:String>
+  <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
+  <x:String x:Key="Text.Submodule" xml:space="preserve">ΥΠΟΜΟΝΑΔΕΣ</x:String>
+  <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Προσθήκη υπομονάδας</x:String>
+  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">ΚΛΑΔΟΣ</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">Κλάδος</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Σχετική διαδρομή</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">Απο-αρχικοποίηση</x:String>
+  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Fetch ένθετων υπομονάδων</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">Ιστορικό</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Μετακίνηση...</x:String>
+  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Άνοιγμα αποθετηρίου</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Σχετική διαδρομή:</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Σχετικός φάκελος για την αποθήκευση αυτής της υπομονάδας.</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Διαγραφή</x:String>
+  <x:String x:Key="Text.Submodule.SetBranch" xml:space="preserve">Ορισμός κλάδου</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">Αλλαγή URL</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">ΚΑΤΑΣΤΑΣΗ</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">τροποποιημένη</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">μη αρχικοποιημένη</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">η αναθεώρηση άλλαξε</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">μη συγχωνευμένη</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Ενημέρωση</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">Λεπτομέρειες αλλαγής υπομονάδας</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">ΑΝΟΙΓΜΑ ΛΕΠΤΟΜΕΡΕΙΩΝ</x:String>
+  <x:String x:Key="Text.Sure" xml:space="preserve">ΟΚ</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">ΔΗΜΙΟΥΡΓΟΣ ΕΤΙΚΕΤΑΣ</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">ΩΡΑ</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Σύγκριση 2 ετικετών</x:String>
+  <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Σύγκριση με...</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Σύγκριση με το HEAD</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Μήνυμα</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Όνομα</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Δημιουργός ετικέτας</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Αντιγραφή ονόματος ετικέτας</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Προσαρμοσμένη ενέργεια</x:String>
+  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Διαγραφή ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Διαγραφή {0} επιλεγμένων ετικετών...</x:String>
+  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Ενημέρωση υπομονάδων</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Όλες οι υπομονάδες</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Αρχικοποίηση όπου χρειάζεται</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Υπομονάδα:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Ενημέρωση στον απομακρυσμένο κλάδο παρακολούθησης της υπομονάδας</x:String>
+  <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Καταγραφές</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">ΕΚΚΑΘΑΡΙΣΗ ΟΛΩΝ</x:String>
+  <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">Αντιγραφή</x:String>
+  <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">Διαγραφή</x:String>
+  <x:String x:Key="Text.Warn" xml:space="preserve">Προειδοποίηση</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">Σελίδα υποδοχής</x:String>
+  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Δημιουργία ομάδας</x:String>
+  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Δημιουργία υπο-ομάδας</x:String>
+  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Κλωνοποίηση αποθετηρίου</x:String>
+  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Διαγραφή</x:String>
+  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">ΥΠΟΣΤΗΡΙΖΕΤΑΙ ΜΕΤΑΦΟΡΑ &amp; ΑΠΟΘΕΣΗ ΦΑΚΕΛΟΥ. ΥΠΟΣΤΗΡΙΖΕΤΑΙ ΠΡΟΣΑΡΜΟΣΜΕΝΗ ΟΜΑΔΟΠΟΙΗΣΗ.</x:String>
+  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Επεξεργασία</x:String>
+  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Μετακίνηση σε άλλη ομάδα</x:String>
+  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Άνοιγμα όλων των αποθετηρίων</x:String>
+  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Άνοιγμα αποθετηρίου</x:String>
+  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Άνοιγμα τερματικού</x:String>
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Επανασάρωση αποθετηρίων στον προεπιλεγμένο φάκελο κλωνοποίησης</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Αναζήτηση αποθετηρίων...</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Αγνόηση όλων των αρχείων *{0}</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Αγνόηση αρχείων *{0} στον ίδιο φάκελο</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Αγνόηση μη παρακολουθούμενων αρχείων σε αυτόν τον φάκελο</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Αγνόηση μόνο αυτού του αρχείου</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Τροποποίηση</x:String>
+  <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Μπορείτε να προσθέσετε αυτό το αρχείο στο ευρετήριο τώρα.</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">Εκκαθάριση ιστορικού</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">Είστε σίγουροι ότι θέλετε να εκκαθαρίσετε όλο το ιστορικό μηνυμάτων commit; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.</x:String>
+  <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Πρότυπο/Ιστορικό</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Ενεργοποίηση συμβάντος κλικ</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Επεξεργασία)</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Προσθήκη όλων των αλλαγών στο ευρετήριο και commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Δημιουργείτε commit σε αποσυνδεδεμένο (detached) HEAD. Θέλετε να συνεχίσετε;</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Έχετε προσθέσει στο ευρετήριο {0} αρχείο(-α) αλλά εμφανίζονται μόνο {1} αρχείο(-α) ({2} αρχεία είναι φιλτραρισμένα). Θέλετε να συνεχίσετε;</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">ΕΝΤΟΠΙΣΤΗΚΑΝ ΣΥΓΚΡΟΥΣΕΙΣ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">ΣΥΓΧΩΝΕΥΣΗ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.MergeExternal" xml:space="preserve">Συγχώνευση με εξωτερικό εργαλείο</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">ΑΝΟΙΓΜΑ ΟΛΩΝ ΤΩΝ ΣΥΓΚΡΟΥΣΕΩΝ ΣΕ ΕΞΩΤΕΡΙΚΟ ΕΡΓΑΛΕΙΟ ΣΥΓΧΩΝΕΥΣΗΣ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">ΟΙ ΣΥΓΚΡΟΥΣΕΙΣ ΑΡΧΕΙΩΝ ΕΠΙΛΥΘΗΚΑΝ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">ΧΡΗΣΗ ΔΙΚΟΥ ΜΟΥ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">ΧΡΗΣΗ ΔΙΚΟΥ ΤΟΥΣ</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">ΣΥΜΠΕΡΙΛΗΨΗ ΜΗ ΠΑΡΑΚΟΛΟΥΘΟΥΜΕΝΩΝ ΑΡΧΕΙΩΝ</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">ΔΕΝ ΥΠΑΡΧΟΥΝ ΠΡΟΣΦΑΤΑ ΜΗΝΥΜΑΤΑ ΕΙΣΟΔΟΥ</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">ΔΕΝ ΥΠΑΡΧΟΥΝ ΠΡΟΤΥΠΑ COMMIT</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">Χωρίς έλεγχο</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Επαναφορά συγγραφέα</x:String>
+  <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">Προσυπογραφή</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">ΣΤΟ ΕΥΡΕΤΗΡΙΟ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">ΑΦΑΙΡΕΣΗ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">ΑΦΑΙΡΕΣΗ ΟΛΩΝ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">ΕΚΤΟΣ ΕΥΡΕΤΗΡΙΟΥ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">ΠΡΟΣΘΗΚΗ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">ΠΡΟΣΘΗΚΗ ΟΛΩΝ</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">ΠΡΟΒΟΛΗ ΑΡΧΕΙΩΝ ΠΟΥ ΘΕΩΡΟΥΝΤΑΙ ΑΜΕΤΑΒΛΗΤΑ</x:String>
+  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Πρότυπο: ${0}$</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">ΧΩΡΟΣ ΕΡΓΑΣΙΑΣ: </x:String>
+  <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Ρύθμιση χώρων εργασίας...</x:String>
+  <x:String x:Key="Text.Worktree" xml:space="preserve">WORKTREE</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">ΚΛΑΔΟΣ</x:String>
+  <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Αντιγραφή διαδρομής</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">HEAD</x:String>
+  <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Κλείδωμα</x:String>
+  <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Άνοιγμα</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">ΔΙΑΔΡΟΜΗ</x:String>
+  <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Αφαίρεση</x:String>
+  <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Ξεκλείδωμα</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">ΝΑΙ</x:String>
+</ResourceDictionary>

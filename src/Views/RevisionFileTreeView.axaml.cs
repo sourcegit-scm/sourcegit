@@ -54,10 +54,12 @@ namespace SourceGit.Views
             set => SetValue(IsExpandedProperty, value);
         }
 
-        static RevisionTreeNodeIcon()
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            NodeProperty.Changed.AddClassHandler<RevisionTreeNodeIcon>((icon, _) => icon.UpdateContent());
-            IsExpandedProperty.Changed.AddClassHandler<RevisionTreeNodeIcon>((icon, _) => icon.UpdateContent());
+            base.OnPropertyChanged(change);
+
+            if (change.Property == NodeProperty || change.Property == IsExpandedProperty)
+                UpdateContent();
         }
 
         private void UpdateContent()

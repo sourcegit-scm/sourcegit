@@ -20,7 +20,7 @@ namespace SourceGit.Commands
         private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
         private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
 
-        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
+        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace, bool ignoreCRAtEOL)
         {
             _result.TextDiff = new Models.TextDiff();
 
@@ -28,11 +28,11 @@ namespace SourceGit.Commands
             Context = repo;
 
             var builder = new StringBuilder(256);
-            builder.Append("diff --no-color --no-ext-diff --patch ");
-            if (Models.DiffOption.IgnoreCRAtEOL)
-                builder.Append("--ignore-cr-at-eol ");
+            builder.Append("diff --no-color --no-ext-diff --full-index --patch ");
             if (ignoreWhitespace)
                 builder.Append("--ignore-space-change ");
+            if (ignoreCRAtEOL)
+                builder.Append("--ignore-cr-at-eol ");
             builder.Append("--unified=").Append(unified).Append(' ');
             builder.Append(opt.ToString());
 
@@ -83,6 +83,10 @@ namespace SourceGit.Commands
             {
                 ProcessInlineHighlights();
                 _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
+                _result.TextDiff.OldMode = _result.OldMode;
+                _result.TextDiff.NewMode = _result.NewMode;
+                _result.TextDiff.OldHash = _result.OldHash;
+                _result.TextDiff.NewHash = _result.NewHash;
             }
 
             return _result;
@@ -91,14 +95,11 @@ namespace SourceGit.Commands
         private void ParseLine(byte[] lineBytes)
         {
             var line = Encoding.UTF8.GetString(lineBytes);
-            if (ParseFileModeChange(line))
-                return;
-
-            if (ParseLFSChange(line))
-                return;
-
             if (_result.TextDiff.Lines.Count == 0)
             {
+                if (ParseFileModeChange(line))
+                    return;
+
                 if (line.StartsWith("Binary", StringComparison.Ordinal))
                 {
                     _result.IsBinary = true;
@@ -128,6 +129,9 @@ namespace SourceGit.Commands
             }
             else
             {
+                if (ParseLFSChange(line))
+                    return;
+
                 if (line.Length == 0)
                 {
                     ProcessInlineHighlights();

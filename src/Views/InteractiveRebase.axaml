@@ -160,6 +160,7 @@
                                             FontFamily="{DynamicResource Fonts.Default}"
                                             CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                             InlineCodeBackground="{DynamicResource Brush.InlineCode}"
+                                            InlineCodeForeground="{DynamicResource Brush.InlineCodeFG}"
                                             Foreground="{DynamicResource Brush.FG1}"
                                             LinkForeground="{DynamicResource Brush.Link}"
                                             Subject="{Binding Subject}"

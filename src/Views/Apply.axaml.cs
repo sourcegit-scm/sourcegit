@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
@@ -9,6 +10,14 @@ namespace SourceGit.Views
         public Apply()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            if (DataContext is ViewModels.Apply vm && TopLevel.GetTopLevel(this) is { } toplevel)
+                vm.Clipboard = toplevel.Clipboard;
         }
 
         private async void SelectPatchFile(object _, RoutedEventArgs e)

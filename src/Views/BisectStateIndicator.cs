@@ -43,26 +43,20 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
-            if (_flags == Models.BisectCommitFlag.None)
-                return;
-
-            if (_prefix == null)
+            switch (_flag)
             {
-                _prefix = LoadIcon("Icons.Bisect");
-                _good = LoadIcon("Icons.Check");
-                _bad = LoadIcon("Icons.Bad");
+                case Models.BisectCommitFlag.Good:
+                    RenderImpl(context, Brushes.Green, "Icons.Good");
+                    break;
+                case Models.BisectCommitFlag.Bad:
+                    RenderImpl(context, Brushes.Red, "Icons.Bad");
+                    break;
+                case Models.BisectCommitFlag.Skipped:
+                    RenderImpl(context, Brushes.Gray, "Icons.Skip");
+                    break;
+                default:
+                    break;
             }
-
-            var x = 0.0;
-
-            if (_flags.HasFlag(Models.BisectCommitFlag.Good))
-            {
-                RenderImpl(context, Brushes.Green, _good, x);
-                x += 36;
-            }
-
-            if (_flags.HasFlag(Models.BisectCommitFlag.Bad))
-                RenderImpl(context, Brushes.Red, _bad, x);
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -73,31 +67,29 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var desiredFlags = Models.BisectCommitFlag.None;
-            var desiredWidth = 0.0;
+            var flag = Models.BisectCommitFlag.None;
+
             if (Bisect is { } bisect && DataContext is Models.Commit commit)
             {
                 var sha = commit.SHA;
-                if (bisect.Goods.Contains(sha))
-                {
-                    desiredFlags |= Models.BisectCommitFlag.Good;
-                    desiredWidth = 36;
-                }
-
                 if (bisect.Bads.Contains(sha))
-                {
-                    desiredFlags |= Models.BisectCommitFlag.Bad;
-                    desiredWidth += 36;
-                }
+                    flag = Models.BisectCommitFlag.Bad;
+                else if (bisect.Goods.Contains(sha))
+                    flag = Models.BisectCommitFlag.Good;
+                else if (bisect.Skipped.Contains(sha))
+                    flag = Models.BisectCommitFlag.Skipped;
             }
 
-            if (desiredFlags != _flags)
+            if (flag != _flag)
             {
-                _flags = desiredFlags;
+                _flag = flag;
                 InvalidateVisual();
             }
 
-            return new Size(desiredWidth, desiredWidth > 0 ? 16 : 0);
+            if (flag == Models.BisectCommitFlag.None)
+                return new Size(0, 0);
+
+            return new Size(36, 16);
         }
 
         private Geometry LoadIcon(string key)
@@ -116,25 +108,24 @@ namespace SourceGit.Views
             return drawGeo;
         }
 
-        private void RenderImpl(DrawingContext context, IBrush brush, Geometry icon, double x)
+        private void RenderImpl(DrawingContext context, IBrush brush, string iconKey)
         {
-            var entireRect = new RoundedRect(new Rect(x, 0, 32, 16), new CornerRadius(2));
-            var stateRect = new RoundedRect(new Rect(x + 16, 0, 16, 16), new CornerRadius(0, 2, 2, 0));
+            var prefix = LoadIcon("Icons.Bisect");
+            var icon = LoadIcon(iconKey);
+            var entireRect = new RoundedRect(new Rect(0, 0, 32, 16), new CornerRadius(2));
+            var stateRect = new RoundedRect(new Rect(16, 0, 16, 16), new CornerRadius(0, 2, 2, 0));
             context.DrawRectangle(Background, new Pen(brush), entireRect);
             using (context.PushOpacity(.2))
                 context.DrawRectangle(brush, null, stateRect);
-            context.DrawLine(new Pen(brush), new Point(x + 16, 0), new Point(x + 16, 16));
+            context.DrawLine(new Pen(brush), new Point(16, 0), new Point(16, 16));
 
-            using (context.PushTransform(Matrix.CreateTranslation(x + 3, 3)))
-                context.DrawGeometry(Foreground, null, _prefix);
+            using (context.PushTransform(Matrix.CreateTranslation(3, 3)))
+                context.DrawGeometry(Foreground, null, prefix);
 
-            using (context.PushTransform(Matrix.CreateTranslation(x + 19, 3)))
+            using (context.PushTransform(Matrix.CreateTranslation(19, 3)))
                 context.DrawGeometry(Foreground, null, icon);
         }
 
-        private Geometry _prefix = null;
-        private Geometry _good = null;
-        private Geometry _bad = null;
-        private Models.BisectCommitFlag _flags = Models.BisectCommitFlag.None;
+        private Models.BisectCommitFlag _flag = Models.BisectCommitFlag.None;
     }
 }

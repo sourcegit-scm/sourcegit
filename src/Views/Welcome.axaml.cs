@@ -252,29 +252,29 @@ namespace SourceGit.Views
         {
             if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed)
             {
-                _pressedTreeNode = true;
+                _pressTreeNodeEvent = e;
                 _startDragTreeNode = false;
-                _pressedTreeNodePosition = e.GetPosition(sender as Grid);
             }
             else
             {
-                _pressedTreeNode = false;
+                _pressTreeNodeEvent = null;
                 _startDragTreeNode = false;
             }
         }
 
         private void OnPointerReleasedOnTreeNode(object _1, PointerReleasedEventArgs _2)
         {
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
         private async void OnPointerMovedOverTreeNode(object sender, PointerEventArgs e)
         {
-            if (_pressedTreeNode && !_startDragTreeNode &&
+            if (_pressTreeNodeEvent != null &&
+                !_startDragTreeNode &&
                 sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
-                var delta = e.GetPosition(grid) - _pressedTreeNodePosition;
+                var delta = e.GetPosition(grid) - _pressTreeNodeEvent.GetPosition(grid);
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
                 if (sizeSquired < 64)
                     return;
@@ -283,13 +283,13 @@ namespace SourceGit.Views
 
                 var data = new DataTransfer();
                 data.Add(DataTransferItem.Create(_dndRepoNode, node.Id));
-                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
+                await DragDrop.DoDragDropAsync(_pressTreeNodeEvent, data, DragDropEffects.Move);
             }
         }
 
         private void OnTreeViewLostFocus(object _1, RoutedEventArgs _2)
         {
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
@@ -336,7 +336,7 @@ namespace SourceGit.Views
                     ViewModels.Welcome.Instance.Refresh();
             }
 
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
@@ -395,7 +395,7 @@ namespace SourceGit.Views
                     ViewModels.Welcome.Instance.Refresh();
             }
 
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
@@ -412,8 +412,7 @@ namespace SourceGit.Views
             }
         }
 
-        private bool _pressedTreeNode = false;
-        private Point _pressedTreeNodePosition = new Point();
+        private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
         private CancellationTokenSource _cancellation = new CancellationTokenSource();

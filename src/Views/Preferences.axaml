@@ -47,7 +47,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.General}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.General.Locale}"
                        HorizontalAlignment="Right"
@@ -153,40 +153,35 @@
 
             <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
-                      Content="{DynamicResource Text.Preferences.General.ShowAuthorTime}"
-                      IsChecked="{Binding ShowAuthorTimeInGraph, Mode=TwoWay}"/>
-
-            <CheckBox Grid.Row="8" Grid.Column="1"
-                      Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowTagsInGraph}"
                       IsChecked="{Binding ShowTagsInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="9" Grid.Column="1"
+            <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowRelativeTimeInGraph}"
                       IsChecked="{Binding DisplayTimeAsPeriodInHistories, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="10" Grid.Column="1"
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowChildren}"
                       IsChecked="{Binding ShowChildren, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="11" Grid.Column="1"
+            <CheckBox Grid.Row="10" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.UseCompactBranchNames}"
                       IsChecked="{Binding UseCompactBranchNamesInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="12" Grid.Column="1"
+            <CheckBox Grid.Row="11" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.EnableCompactFolders}"
                       IsChecked="{Binding EnableCompactFoldersInChangesTree, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="13" Grid.Column="1"
+            <CheckBox Grid.Row="12" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.UseGitHubStyleAvatar}"
                       IsChecked="{Binding UseGitHubStyleAvatar, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="14" Grid.Column="1"
+            <CheckBox Grid.Row="13" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.Check4UpdatesOnStartup}"
                       IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"
@@ -289,9 +284,15 @@
                      CornerRadius="3"
                      Text="{Binding ThemeOverrides, Mode=TwoWay}">
               <TextBox.InnerRightContent>
-                <Button Classes="icon_button" Width="30" Height="30" Click="SelectThemeOverrideFile">
-                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-                </Button>
+                <StackPanel Orientation="Horizontal">
+                  <Button Classes="icon_button" Width="28" Height="28" Click="SelectThemeOverrideFile">
+                    <Path Width="16" Height="16" Data="{StaticResource Icons.Folder.Open}" Margin="0,2,0,0" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                  
+                  <Button Classes="icon_button" Width="28" Height="28" Click="OpenThemeRepository">
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG1}"/>
+                  </Button>
+                </StackPanel>
               </TextBox.InnerRightContent>
             </TextBox>
 
@@ -360,7 +361,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultUser, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.Git.User.Placeholder}"/>
+                     PlaceholderText="{DynamicResource Text.Preferences.Git.User.Placeholder}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.Email}"
@@ -370,7 +371,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.DefaultEmail, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.Git.Email.Placeholder}"/>
+                     PlaceholderText="{DynamicResource Text.Preferences.Git.Email.Placeholder}"/>
 
             <TextBlock Grid.Row="4" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Git.CRLF}"
@@ -478,7 +479,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.GPGExecutableFile, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.GPG.Path.Placeholder}"
+                     PlaceholderText="{DynamicResource Text.Preferences.GPG.Path.Placeholder}"
                      IsVisible="{Binding #ThisControl.GPGFormat.NeedFindProgram}">
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button" Width="30" Height="30" Click="SelectGPGExecutable">
@@ -495,7 +496,7 @@
                      Height="28"
                      CornerRadius="3"
                      Text="{Binding #ThisControl.GPGUserKey, Mode=TwoWay}"
-                     Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"/>
+                     PlaceholderText="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"/>
 
             <CheckBox Grid.Row="3" Grid.Column="1"
                       Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
@@ -630,7 +631,7 @@
                        Height="28"
                        CornerRadius="3"
                        Text="{Binding ExternalMergeToolPath, Mode=TwoWay}"
-                       Watermark="{DynamicResource Text.Preferences.DiffMerge.Path.Placeholder}"
+                       PlaceholderText="{DynamicResource Text.Preferences.DiffMerge.Path.Placeholder}"
                        IsVisible="{Binding ExternalMergeToolType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                 <TextBox.InnerRightContent>
                   <Button Classes="icon_button" Width="30" Height="30" Click="SelectExternalMergeTool">

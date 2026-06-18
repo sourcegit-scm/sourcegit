@@ -31,9 +31,11 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Скрыть остальные</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Показать все</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Трехстороннее слияние</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Файл заплатки:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Выберите файл .patch для применения</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Игнорировать изменения пробелов</x:String>
+  <x:String x:Key="Text.Apply.Source" xml:space="preserve">Источник:</x:String>
+  <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">Файл</x:String>
+  <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">Буфер обмена</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Применить заплатку</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Пробел:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Отложить</x:String>
@@ -55,10 +57,10 @@
   <x:String x:Key="Text.Bisect">Раздвоить</x:String>
   <x:String x:Key="Text.Bisect.Abort">О</x:String>
   <x:String x:Key="Text.Bisect.Bad">Плохая</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">Раздвоение. Текущая ГОЛОВА (HEAD) хорошая или плохая?</x:String>
   <x:String x:Key="Text.Bisect.Good">Хорошая</x:String>
   <x:String x:Key="Text.Bisect.Skip">Пропустить</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Раздвоение. Текущая ГОЛОВА (HEAD) хорошая или плохая?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Игнорировать изменения пробелов</x:String>
@@ -310,6 +312,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Тип изменения:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Копировать</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Копировать весь текст</x:String>
+  <x:String x:Key="Text.CopyAsPatch" xml:space="preserve">Копировать как исправление</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Копировать полный путь</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Копировать путь</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Создать ветку...</x:String>
@@ -494,7 +497,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">АВТОР</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ВРЕМЯ АВТОРА</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ВРЕМЯ РЕВИЗИИ</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">ДАТА И ВРЕМЯ</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">ГРАФ И СУБЪЕКТ</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">ПОДСВЕТКА В ГРАФЕ</x:String>
@@ -671,7 +673,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Включить компактные каталоги в дереве изменений</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Язык</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Максимальная длина истории</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Показывать время автора вместо времени ревизии на графике</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Показывать вкладку «ЛОКАЛЬНЫЕ ИЗМЕНЕНИЯ» по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Показывать вкладку «Изменения» в сведении ревизии по умолчанию</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показать наследника в деталях комментария</x:String>

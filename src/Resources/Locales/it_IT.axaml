@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usa AI per generare il messaggio di commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Nascondi SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostra Tutto</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">File Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleziona file .patch da applicare</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignora modifiche agli spazi</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Applica Patch</x:String>
@@ -51,10 +50,10 @@
   <x:String x:Key="Text.Bisect" xml:space="preserve">Biseca</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Annulla</x:String>
   <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Cattiva</x:String>
-  <x:String x:Key="Text.Bisect.Detecting" xml:space="preserve">Bisecando. La HEAD corrente è buona o cattiva?</x:String>
   <x:String x:Key="Text.Bisect.Good" xml:space="preserve">Buona</x:String>
   <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Salta</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange" xml:space="preserve">Bisecando. Marca il commit corrente come buono o cattivo e fai checkout di un altro.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood" xml:space="preserve">Bisecando. Marca il commit corrente come buono o cattivo e fai checkout di un altro.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark" xml:space="preserve">Bisecando. La HEAD corrente è buona o cattiva?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Attribuisci</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Attribuisci sulla Revisione Precedente</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">Ignora modifiche agli spazi</x:String>
@@ -611,7 +610,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Abilita cartelle compatte nell'albero delle modifiche</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Lingua</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Numero massimo di commit nella cronologia</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostra nel grafico l'orario dell'autore anziché quello del commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostra pagina `MODIFICHE LOCALI` per impostazione predefinita</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostra scheda `MODIFICHE` nei dettagli del commit per impostazione predefinita</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostra i figli nei dettagli del commit</x:String>

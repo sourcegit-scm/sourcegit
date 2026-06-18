@@ -31,7 +31,6 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">הסתר אחרים</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">הצג הכול</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">קובץ Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">בחר קובץ .patch להחלה</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">התעלמות משינויי whitespace</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">החל Patch</x:String>
@@ -55,10 +54,10 @@
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">ביטול</x:String>
   <x:String x:Key="Text.Bisect.Bad">פגום (Bad)</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">מתבצע Bisect. האם ה־HEAD הנוכחי תקין או פגום?</x:String>
   <x:String x:Key="Text.Bisect.Good">תקין (Good)</x:String>
   <x:String x:Key="Text.Bisect.Skip">דלג</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">מתבצע Bisect. יש לסמן את ה־commit הנוכחי כתקין או כפגום ולבצע checkout לאחר.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">מתבצע Bisect. יש לסמן את ה־commit הנוכחי כתקין או כפגום ולבצע checkout לאחר.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">מתבצע Bisect. האם ה־HEAD הנוכחי תקין או פגום?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame ל־revision הקודם</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">התעלמות משינויי whitespace</x:String>
@@ -492,7 +491,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">זמן AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">זמן COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">תאריך ושעה</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">גרף ו־SUBJECT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">הדגשות בגרף</x:String>
@@ -665,7 +663,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">תיקיות מצומצמות בעץ השינויים</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">שפה</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits בהיסטוריה</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">הצג זמן author במקום זמן commit בגרף</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">הצג דף `LOCAL CHANGES` כברירת מחדל</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">הצג לשונית `CHANGES` בפרטי ה־commit כברירת מחדל</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">הצג צאצאים בפרטי ה־commit</x:String>

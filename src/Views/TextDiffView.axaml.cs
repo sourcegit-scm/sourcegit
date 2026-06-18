@@ -508,10 +508,12 @@ namespace SourceGit.Views
             if (chunk == null || (!chunk.Combined && chunk.IsOldSide != IsOld))
                 return;
 
+            var extentHeight = ExtentHeight;
+            var width = extentHeight > Bounds.Height ? Bounds.Width - 12 : Bounds.Width;
             var color = (Color)this.FindResource("SystemAccentColor")!;
             var brush = new SolidColorBrush(color, 0.1);
             var pen = new Pen(color.ToUInt32());
-            var rect = new Rect(0, chunk.Y, Bounds.Width, chunk.Height);
+            var rect = new Rect(0, chunk.Y, width, chunk.Height);
             var aligned = PixelSnapHelpers.PixelAlign(rect, PixelSnapHelpers.GetPixelSize(this));
 
             context.DrawRectangle(brush, null, aligned);
@@ -649,8 +651,18 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
+            var copyAsPatch = new MenuItem();
+            copyAsPatch.Header = App.Text("CopyAsPatch");
+            copyAsPatch.Icon = this.CreateMenuIcon("Icons.Copy");
+            copyAsPatch.Click += async (_, ev) =>
+            {
+                await CopyAsPatchAsync();
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Items.Add(copy);
+            menu.Items.Add(copyAsPatch);
             menu.Open(TextArea.TextView);
 
             e.Handled = true;
@@ -658,7 +670,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerChanged(object sender, PointerEventArgs e)
         {
-            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+            if (DataContext is not ViewModels.TextDiffContext { Option: { IsLocalChange: true } })
                 return;
 
             if (sender is not TextView view)
@@ -701,7 +713,7 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            if (DataContext is not ViewModels.TextDiffContext { Option: { WorkingCopyChange: { } } })
+            if (DataContext is not ViewModels.TextDiffContext { Option: { IsLocalChange: true } })
                 return;
 
             if (sender is not TextView view)
@@ -896,6 +908,43 @@ namespace SourceGit.Views
             await this.CopyTextAsync(builder.ToString());
         }
 
+        private async Task CopyAsPatchAsync()
+        {
+            if (DataContext is not ViewModels.TextDiffContext { Data: { } diff, Option: { } option } ctx)
+                return;
+
+            var selection = TextArea.Selection;
+            var startPosition = selection.StartPosition;
+            var endPosition = selection.EndPosition;
+
+            if (startPosition.Location > endPosition.Location)
+                (startPosition, endPosition) = (endPosition, startPosition);
+
+            var maxIdx = GetLines().Count - 1;
+            var startIdx = Math.Min(startPosition.Line - 1, maxIdx);
+            var endIdx = Math.Min(endPosition.Line - 1, maxIdx);
+            var isCombined = true;
+            if (ctx is ViewModels.TwoSideTextDiff twoSides)
+            {
+                isCombined = false;
+                twoSides.GetCombinedRangeForSingleSide(ref startIdx, ref endIdx, IsOld);
+            }
+
+            var patch = new Models.PatchGenerator(option, diff, startIdx, endIdx, isCombined, IsOld);
+            if (!patch.IsValid)
+            {
+                Models.Notification.Send(null, "You should select at lease one changed line!", true);
+                return;
+            }
+
+            var tmpFile = Path.GetTempFileName();
+            patch.Generate(tmpFile, false);
+
+            var patchText = File.ReadAllText(tmpFile);
+            File.Delete(tmpFile);
+            await this.CopyTextAsync(patchText);
+        }
+
         private bool _execSizeChanged;
         private TextMate.Installation _textMate;
         private TextLocation _lastSelectStart = TextLocation.Empty;
@@ -921,7 +970,7 @@ namespace SourceGit.Views
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.TwoWay));
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, CompiledBinding.Create<ViewModels.TextDiffContext, Vector>(vm => vm.ScrollOffset, mode: BindingMode.TwoWay));
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
             }
         }
@@ -975,6 +1024,9 @@ namespace SourceGit.Views
                 return;
 
             var view = TextArea.TextView;
+            if (!view.VisualLinesValid)
+                return;
+
             var selection = TextArea.Selection;
             if (!selection.IsEmpty)
             {
@@ -1107,7 +1159,7 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, CompiledBinding.Create<ViewModels.TextDiffContext, Vector>(vm => vm.ScrollOffset));
             }
         }
 
@@ -1163,6 +1215,9 @@ namespace SourceGit.Views
                 return;
 
             var view = TextArea.TextView;
+            if (!view.VisualLinesValid)
+                return;
+
             var lines = IsOld ? diff.Old : diff.New;
             var selection = TextArea.Selection;
             if (!selection.IsEmpty)
@@ -1467,14 +1522,27 @@ namespace SourceGit.Views
             {
                 if (SelectedChunk is { } chunk)
                 {
+                    var syscmd = OperatingSystem.IsMacOS() ? "Cmd" : "Ctrl";
                     var top = chunk.Y + 4;
-                    var right = (chunk.Combined || !chunk.IsOldSide) ? 26 : (Bounds.Width * 0.5f) + 26;
+                    var right = 28.0;
+                    if (!chunk.Combined && chunk.IsOldSide)
+                    {
+                        var left = this.FindDescendantOfType<SingleSideTextDiffPresenter>()?.Bounds.Width ?? 0.0;
+                        right = Bounds.Width - left + 16;
+                    }
+
                     Popup.Margin = new Thickness(0, top, right, 0);
                     Popup.IsVisible = true;
+                    BtnStageChunk.HotKey = KeyGesture.Parse($"{syscmd}+S");
+                    BtnUnstageChunk.HotKey = KeyGesture.Parse($"{syscmd}+U");
+                    BtnDiscardChunk.HotKey = KeyGesture.Parse($"{syscmd}+D");
                 }
                 else
                 {
                     Popup.IsVisible = false;
+                    BtnStageChunk.HotKey = null;
+                    BtnUnstageChunk.HotKey = null;
+                    BtnDiscardChunk.HotKey = null;
                 }
             }
         }
@@ -1489,109 +1557,80 @@ namespace SourceGit.Views
 
         private async void OnStageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { } option } vm)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
-            if (!selection.HasChanges)
+            if (!option.IsLocalChange || !option.IsUnstaged)
                 return;
 
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView?.DataContext is not ViewModels.Repository repo)
+            var patch = new Models.PatchGenerator(option, diff, chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide);
+            if (!patch.IsValid)
                 return;
 
-            using var lockWatcher = repo.LockWatcher();
+            if (this.FindAncestorOfType<Repository>()?.DataContext is not ViewModels.Repository repo)
+                return;
 
             var tmpFile = Path.GetTempFileName();
-            if (change.WorkTree == Models.ChangeState.Untracked)
-            {
-                diff.GenerateNewPatchFromSelection(change.Path, null, selection, false, tmpFile);
-            }
-            else if (chunk.Combined)
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, false, tmpFile);
-            }
-            else
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, false, chunk.IsOldSide, tmpFile);
-            }
+            patch.Generate(tmpFile, false);
 
+            using var lockWatcher = repo.LockWatcher();
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index").ExecAsync();
-            File.Delete(tmpFile);
 
             vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
+            File.Delete(tmpFile);
         }
 
         private async void OnUnstageChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: false, WorkingCopyChange: { } change } } vm)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { } option } vm)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
-            if (!selection.HasChanges)
+            if (!option.IsLocalChange || option.IsUnstaged)
                 return;
 
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView?.DataContext is not ViewModels.Repository repo)
+            var patch = new Models.PatchGenerator(option, diff, chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide);
+            if (!patch.IsValid)
                 return;
+
+            if (this.FindAncestorOfType<Repository>()?.DataContext is not ViewModels.Repository repo)
+                return;
+
+            var tmpFile = Path.GetTempFileName();
+            patch.Generate(tmpFile, true);
 
             using var lockWatcher = repo.LockWatcher();
-
-            var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-            var tmpFile = Path.GetTempFileName();
-            if (change.Index == Models.ChangeState.Added)
-                diff.GenerateNewPatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
-            else if (chunk.Combined)
-                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
-            else
-                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
-
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--cache --index --reverse").ExecAsync();
-            File.Delete(tmpFile);
 
             vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
+            File.Delete(tmpFile);
         }
 
         private async void OnDiscardChunk(object _1, RoutedEventArgs _2)
         {
-            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { IsUnstaged: true, WorkingCopyChange: { } change } } vm)
+            if (DataContext is not ViewModels.TextDiffContext { SelectedChunk: { } chunk, Data: { } diff, Option: { } option } vm)
                 return;
 
-            var selection = diff.MakeSelection(chunk.StartIdx + 1, chunk.EndIdx + 1, chunk.Combined, chunk.IsOldSide);
-            if (!selection.HasChanges)
+            if (!option.IsLocalChange || !option.IsUnstaged)
                 return;
 
-            var repoView = this.FindAncestorOfType<Repository>();
-            if (repoView?.DataContext is not ViewModels.Repository repo)
+            var patch = new Models.PatchGenerator(option, diff, chunk.StartIdx, chunk.EndIdx, chunk.Combined, chunk.IsOldSide);
+            if (!patch.IsValid)
                 return;
 
-            using var lockWatcher = repo.LockWatcher();
+            if (this.FindAncestorOfType<Repository>()?.DataContext is not ViewModels.Repository repo)
+                return;
 
             var tmpFile = Path.GetTempFileName();
-            if (change.WorkTree == Models.ChangeState.Untracked)
-            {
-                diff.GenerateNewPatchFromSelection(change.Path, null, selection, true, tmpFile);
-            }
-            else if (chunk.Combined)
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelection(change.Path, treeGuid, selection, true, tmpFile);
-            }
-            else
-            {
-                var treeGuid = await new Commands.QueryStagedFileBlobGuid(repo.FullPath, change.Path).GetResultAsync();
-                diff.GeneratePatchFromSelectionSingleSide(change.Path, treeGuid, selection, true, chunk.IsOldSide, tmpFile);
-            }
+            patch.Generate(tmpFile, true);
 
+            using var lockWatcher = repo.LockWatcher();
             await new Commands.Apply(repo.FullPath, tmpFile, true, "nowarn", "--reverse").ExecAsync();
-            File.Delete(tmpFile);
 
             vm.BlockNavigation.UpdateByChunk(chunk);
             repo.MarkWorkingCopyDirtyManually();
+            File.Delete(tmpFile);
         }
     }
 }

@@ -27,7 +27,7 @@
       <v:HistoriesCommitList x:Name="CommitListContainer"
                              Classes="static_scrollbar"
                              ScrollViewer.AllowAutoHide="False"
-                             Background="{DynamicResource Brush.DataGridHeaderBG}"
+                             Background="Transparent"
                              ItemsSource="{Binding Commits, Mode=OneWay}"
                              TotalCommits="{Binding Commits.Count, Mode=OneWay}"
                              SelectedCommits="{Binding SelectedCommits, Mode=TwoWay}"
@@ -133,6 +133,7 @@
                                               FontFamily="{DynamicResource Fonts.Default}"
                                               CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                               InlineCodeBackground="{DynamicResource Brush.InlineCode}"
+                                              InlineCodeForeground="{DynamicResource Brush.InlineCodeFG}"
                                               Foreground="{DynamicResource Brush.FG1}"
                                               LinkForeground="{DynamicResource Brush.Link}"
                                               Subject="{Binding Subject}"
@@ -189,18 +190,9 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
 
-          <DataGridTemplateColumn MinWidth="160" IsReadOnly="True" IsVisible="{Binding IsDateTimeColumnVisible, Mode=OneWay}">
+          <DataGridTemplateColumn MinWidth="160" IsReadOnly="True" IsVisible="{Binding IsAuthorTimeColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
-              <Grid HorizontalAlignment="Center">
-                <TextBlock Classes="table_header"
-                           Margin="6,0,0,0"
-                           Text="{DynamicResource Text.Histories.Header.CommitTime}"
-                           IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Converter={x:Static BoolConverters.Not}, Mode=OneWay}"/>
-                <TextBlock Classes="table_header"
-                           Margin="6,0,0,0"
-                           Text="{DynamicResource Text.Histories.Header.AuthorTime}"
-                           IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"/>
-              </Grid>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.AuthorTime}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
@@ -208,7 +200,26 @@
                 <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
                   <v:CommitTimeTextBlock FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
-                                         UseAuthorTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowAuthorTimeInGraph, Mode=OneWay}"
+                                         Timestamp="{Binding AuthorTime, Mode=OneWay}"
+                                         ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories, Mode=OneWay}"
+                                         DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat, Mode=OneWay}"
+                                         Use24Hours="{Binding Source={x:Static vm:Preferences.Instance}, Path=Use24Hours, Mode=OneWay}"/>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
+          <DataGridTemplateColumn MinWidth="160" IsReadOnly="True" IsVisible="{Binding IsCommitTimeColumnVisible, Mode=OneWay}">
+            <DataGridTemplateColumn.Header>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.CommitTime}" HorizontalAlignment="Center"/>
+            </DataGridTemplateColumn.Header>
+
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="m:Commit">
+                <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
+                  <v:CommitTimeTextBlock FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
+                                         Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                                         Timestamp="{Binding CommitterTime, Mode=OneWay}"
                                          ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories, Mode=OneWay}"
                                          DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat, Mode=OneWay}"
                                          Use24Hours="{Binding Source={x:Static vm:Preferences.Instance}, Path=Use24Hours, Mode=OneWay}"/>
@@ -256,7 +267,7 @@
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                   MinWidth="1" MinHeight="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="{DynamicResource Brush.Window}"
+                  Background="Transparent"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   Focusable="False"
                   IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>

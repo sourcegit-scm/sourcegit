@@ -31,7 +31,6 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Ocultar Otros</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todo</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Merge a 3 vías (3-Way)</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Archivo del Parche:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar cambios de espacios en blanco</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Parche</x:String>
@@ -55,10 +54,10 @@
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Abortar</x:String>
   <x:String x:Key="Text.Bisect.Bad">Malo</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">Bisecting. ¿Es el HEAD actual bueno o malo?</x:String>
   <x:String x:Key="Text.Bisect.Good">Bueno</x:String>
   <x:String x:Key="Text.Bisect.Skip">Saltar</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Marcar el commit actual como bueno o malo y revisar otro.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Bisecting. Marcar el commit actual como bueno o malo y revisar otro.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Bisecting. ¿Es el HEAD actual bueno o malo?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame sobre la Revisión Previa</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Ignorar cambios de espacios en blanco</x:String>
@@ -155,8 +154,10 @@
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Comparar con HEAD</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Comparar con Worktree</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Autor</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthorTime" xml:space="preserve">Fecha/Hora del Autor</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">Mensaje</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Committer</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitterTime" xml:space="preserve">Fecha/Hora del Committer</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Asunto</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Acción personalizada</x:String>
@@ -492,7 +493,6 @@
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HORA DEL AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">FECHA DE COMMIT</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">FECHA HORA</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO y ASUNTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">DESTACADOS EN EL GRÁFICO</x:String>
@@ -572,6 +572,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opción de Merge:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">Rama Fuente:</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">Pruebas para hacer merge...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">El merge se puede realizar sin conflictos</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">Error desconocido ocurrido al probar el merge</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">Hacer merge causará conflictos</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">Primero Míos, después Suyos</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">Primero Suyos, después Míos</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">USAR AMBOS</x:String>
@@ -665,7 +669,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Habilitar carpetas compactas en el árbol de cambios</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits en el historial</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Mostrar hora del autor en lugar de la hora del commit en el gráfico</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostrar la página `CAMBIOS LOCALES` por defecto</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostrar pestaña de `CAMBIOS` en los detalles del commit por defecto</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Mostrar hijos en los detalles de commit</x:String>
@@ -673,6 +676,7 @@
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Mostrar etiquetas en el gráfico de commit</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Longitud de la guía del asunto</x:String>
   <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24-Horas</x:String>
+  <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">Utilizar nombres de ramas compactos en el gráfico de commits</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Generar avatar con estilo por defecto de Github</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>
@@ -737,6 +741,10 @@
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Stash y volver a aplicar cambios locales</x:String>
   <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">Saltar el hook de pre-rebase</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">En:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">Pruebas para hacer rebase ...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">El rebase se puede realizar sin conflictos</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">Error desconocido ocurrido al probar el rebase</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">Hacer rebase causará conflictos</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Añadir Remoto</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Editar Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nombre:</x:String>

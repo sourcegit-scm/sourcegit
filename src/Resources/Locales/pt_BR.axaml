@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todos</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Arquivo de Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selecione o arquivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Patch</x:String>
@@ -51,10 +50,10 @@
   <x:String x:Key="Text.Bisect" xml:space="preserve">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Abortar</x:String>
   <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Inválido</x:String>
-  <x:String x:Key="Text.Bisect.Detecting" xml:space="preserve">Bisect. O HEAD atual é válido ou inválido?</x:String>
   <x:String x:Key="Text.Bisect.Good" xml:space="preserve">Válido</x:String>
   <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Pular</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange" xml:space="preserve">Bisect. Marcar o commit atual como válido ou inválido e checar outro commit.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood" xml:space="preserve">Bisect. Marcar o commit atual como válido ou inválido e checar outro commit.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark" xml:space="preserve">Bisect. O HEAD atual é válido ou inválido?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">Ignorar espaços em branco</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME NESSE ARQUIVO NÃO É SUPORTADO!!!</x:String>
@@ -431,7 +430,6 @@
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Verificar atualizações na inicialização</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Exibir data do autor em vez da data do commit no gráfico</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>

@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Verwende AI, um Commit-Nachrichten zu generieren</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit minimieren</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Alles anzeigen</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Patch-Datei:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Wähle die anzuwendende .patch-Datei</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignoriere Leerzeichen-Änderungen</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Patch anwenden</x:String>
@@ -51,10 +50,10 @@
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Abbrechen</x:String>
   <x:String x:Key="Text.Bisect.Bad">Schlecht</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">Bisecting. Ist der aktuelle HEAD gut oder schlecht?</x:String>
   <x:String x:Key="Text.Bisect.Good">Gut</x:String>
   <x:String x:Key="Text.Bisect.Skip">Überspringen</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Bisecting. Aktuellen Commit als gut oder schlecht markieren und einen anderen auschecken.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Bisecting. Aktuellen Commit als gut oder schlecht markieren und einen anderen auschecken.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Bisecting. Ist der aktuelle HEAD gut oder schlecht?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame auf vorheriger Revision</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Leerzeichen-Änderungen ignorieren</x:String>
@@ -464,7 +463,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTOR-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
-  <x:String x:Key="Text.Histories.Header.DateTime" xml:space="preserve">COMMIT-ZEITPUNKT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">VERLAUF &amp; COMMIT-NACHRICHT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS AUSGEWÄHLT</x:String>
@@ -615,7 +613,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Aktiviere kompakte Ordner im Änderungsbaum</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Sprache</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commit-Historie</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Zeige Autor-Zeitpunkt anstatt Commit-Zeitpunkt</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Standardmäßig ‚ÄNDERUNGEN‘-Ansicht anzeigen</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Standardmäßig Registerkarte ‚ÄNDERUNGEN‘ in Commit-Details anzeigen</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Zeige Nachfolger in den Commit-Details</x:String>

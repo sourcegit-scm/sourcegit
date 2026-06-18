@@ -10,8 +10,7 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.HistoriesDetailsStandalone.RevisionCompare}"
-                    MinWidth="1280" MinHeight="720"
-                    WindowStartupLocation="CenterOwner">
+                    MinWidth="1280" MinHeight="720">
   <Grid RowDefinitions="Auto,*">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">

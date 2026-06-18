@@ -44,14 +44,27 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool IsDateTimeColumnVisible
+        public bool IsAuthorTimeColumnVisible
         {
-            get => _repo.UIStates.IsDateTimeColumnVisibleInHistory;
+            get => _repo.UIStates.IsAuthorTimeColumnVisibleInHistory;
             set
             {
-                if (_repo.UIStates.IsDateTimeColumnVisibleInHistory != value)
+                if (_repo.UIStates.IsAuthorTimeColumnVisibleInHistory != value)
                 {
-                    _repo.UIStates.IsDateTimeColumnVisibleInHistory = value;
+                    _repo.UIStates.IsAuthorTimeColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsCommitTimeColumnVisible
+        {
+            get => _repo.UIStates.IsCommitTimeColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsCommitTimeColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsCommitTimeColumnVisibleInHistory = value;
                     OnPropertyChanged();
                 }
             }
@@ -196,26 +209,40 @@ namespace SourceGit.ViewModels
                 return Models.BisectState.None;
             }
 
+            var head = new Commands.QueryRevisionByRefName(_repo.FullPath, "HEAD").GetResult();
             var info = new Models.Bisect();
+            var markedHead = false;
             var dir = Path.Combine(_repo.GitDir, "refs", "bisect");
             if (Directory.Exists(dir))
             {
                 var files = new DirectoryInfo(dir).GetFiles();
                 foreach (var file in files)
                 {
+                    var sha = File.ReadAllText(file.FullName).Trim();
+                    if (!markedHead)
+                        markedHead = head.Equals(sha, StringComparison.Ordinal);
+
                     if (file.Name.StartsWith("bad"))
-                        info.Bads.Add(File.ReadAllText(file.FullName).Trim());
+                        info.Bads.Add(sha);
                     else if (file.Name.StartsWith("good"))
-                        info.Goods.Add(File.ReadAllText(file.FullName).Trim());
+                        info.Goods.Add(sha);
+                    else if (file.Name.StartsWith("skip"))
+                        info.Skipped.Add(sha);
                 }
             }
 
             Bisect = info;
 
-            if (info.Bads.Count == 0 || info.Goods.Count == 0)
-                return Models.BisectState.WaitingForRange;
-            else
-                return Models.BisectState.Detecting;
+            if (info.Bads.Count == 0)
+                return Models.BisectState.WaitingForFirstBad;
+
+            if (markedHead)
+                return Models.BisectState.WaitingForCheckoutAnother;
+
+            if (info.Goods.Count == 0)
+                return Models.BisectState.WaitingForFirstGood;
+
+            return Models.BisectState.WaitingForMark;
         }
 
         public void NavigateTo(string commitSHA)
@@ -259,6 +286,12 @@ namespace SourceGit.ViewModels
             return await new Commands.QuerySingleCommit(_repo.FullPath, sha)
                 .GetResultAsync()
                 .ConfigureAwait(false);
+        }
+
+        public void CheckoutCommitDetached(Models.Commit c)
+        {
+            if (!c.IsCurrentHead && _repo.CanCreatePopup())
+                _repo.ShowPopup(new CheckoutCommit(_repo, c));
         }
 
         public async Task<bool> CheckoutBranchByDecoratorAsync(Models.Decorator decorator)

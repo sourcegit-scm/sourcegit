@@ -77,6 +77,15 @@ namespace SourceGit.Views
             set => SetValue(LinkForegroundProperty, value);
         }
 
+        public static readonly StyledProperty<IBrush> InlineCodeForegroundProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(InlineCodeForeground), Brushes.White);
+
+        public IBrush InlineCodeForeground
+        {
+            get => GetValue(InlineCodeForegroundProperty);
+            set => SetValue(InlineCodeForegroundProperty, value);
+        }
+
         public static readonly StyledProperty<bool> ShowStrikethroughProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, bool>(nameof(ShowStrikethrough), false);
 
@@ -115,13 +124,8 @@ namespace SourceGit.Views
             if (_inlines.Count == 0)
                 return;
 
-            var ro = new RenderOptions()
-            {
-                TextRenderingMode = TextRenderingMode.SubpixelAntialias,
-                EdgeMode = EdgeMode.Antialias
-            };
-
-            using (context.PushRenderOptions(ro))
+            using (context.PushRenderOptions(new() { EdgeMode = EdgeMode.Antialias }))
+            using (context.PushTextOptions(new() { TextRenderingMode = TextRenderingMode.SubpixelAntialias }))
             {
                 var height = Bounds.Height;
                 var width = Bounds.Width;
@@ -305,6 +309,7 @@ namespace SourceGit.Views
             var codeFontFamily = CodeFontFamily;
             var fontSize = FontSize;
             var foreground = Foreground;
+            var inlineCodeForeground = InlineCodeForeground;
             var linkForeground = LinkForeground;
             var typeface = new Typeface(fontFamily, FontStyle.Normal, FontWeight);
             var codeTypeface = new Typeface(codeFontFamily, FontStyle.Normal, FontWeight);
@@ -359,7 +364,7 @@ namespace SourceGit.Views
                         FlowDirection.LeftToRight,
                         codeTypeface,
                         fontSize - 0.5,
-                        foreground);
+                        inlineCodeForeground);
                     _inlines.Add(new Inline(x, link, elem));
                     x += link.WidthIncludingTrailingWhitespace + 8;
                 }

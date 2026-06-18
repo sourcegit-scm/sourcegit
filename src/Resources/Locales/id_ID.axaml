@@ -25,7 +25,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Gunakan AI untuk membuat pesan commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Sembunyikan SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tampilkan Semua</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Berkas Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Pilih berkas .patch untuk diterapkan</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Abaikan perubahan whitespace</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Terapkan Patch</x:String>
@@ -49,10 +48,10 @@
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Batalkan</x:String>
   <x:String x:Key="Text.Bisect.Bad">Buruk</x:String>
-  <x:String x:Key="Text.Bisect.Detecting">Bisect berjalan. Apakah HEAD saat ini baik atau buruk?</x:String>
   <x:String x:Key="Text.Bisect.Good">Baik</x:String>
   <x:String x:Key="Text.Bisect.Skip">Lewati</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange">Bisect berjalan. Tandai commit saat ini sebagai baik atau buruk dan checkout yang lain.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Bisect berjalan. Tandai commit saat ini sebagai baik atau buruk dan checkout yang lain.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">Bisect berjalan. Apakah HEAD saat ini baik atau buruk?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME PADA BERKAS INI TIDAK DIDUKUNG!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
@@ -549,7 +548,6 @@
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Aktifkan folder kompak di pohon perubahan</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Bahasa</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commit Riwayat</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Tampilkan waktu author alih-alih waktu commit di grafik</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Tampilkan halaman `LOCAL CHANGES` secara default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Tampilkan tab `CHANGES` di detail commit secara default</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Tampilkan children di detail commit</x:String>

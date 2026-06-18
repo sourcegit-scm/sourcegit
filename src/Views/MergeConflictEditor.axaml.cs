@@ -300,7 +300,7 @@ namespace SourceGit.Views
             if (_scrollViewer != null)
             {
                 _scrollViewer.ScrollChanged += OnTextViewScrollChanged;
-                _scrollViewer.Bind(ScrollViewer.OffsetProperty, new Binding("ScrollOffset", BindingMode.OneWay));
+                _scrollViewer.Bind(ScrollViewer.OffsetProperty, CompiledBinding.Create<ViewModels.MergeConflictEditor, Vector>(vm => vm.ScrollOffset));
             }
         }
 
@@ -408,7 +408,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            if (sender is not TextView view)
+            if (sender is not TextView { VisualLinesValid: true } view)
                 return;
 
             UpdateSelectedChunkPosition(vm, e.GetPosition(view).Y + view.VerticalOffset);
@@ -419,7 +419,7 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            if (sender is not TextView view)
+            if (sender is not TextView { VisualLinesValid: true } view)
                 return;
 
             var y = e.GetPosition(view).Y + view.VerticalOffset;

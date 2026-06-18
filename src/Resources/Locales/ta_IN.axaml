@@ -20,7 +20,6 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">மாதிரி</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">மறு-உருவாக்கு</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">உறுதிமொழி செய்தியை உருவாக்க செநுவைப் பயன்படுத்து</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">ஒட்டு கோப்பு:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">.ஒட்டு இடுவதற்கு கோப்பைத் தேர்ந்தெடு</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">வெள்ளைவெளி மாற்றங்களைப் புறக்கணி</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">ஒட்டு இடு</x:String>
@@ -429,7 +428,6 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">தேதி வடிவம்</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">மொழி</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">வரலாற்று உறுதிமொழிகள்</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">வரைபடத்தில் உறுதிமொழி நேரத்திற்குப் பதிலாக ஆசிரியர் நேரத்தைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">உறுதிமொழி விவரங்களில் குழந்தைகளைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">உறுதிமொழி வரைபடத்தில் குறிச்சொற்களைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">பொருள் வழிகாட்டி நீளம்</x:String>
