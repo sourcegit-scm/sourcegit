@@ -25,6 +25,24 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">再生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">AI Diff 分析</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">AI 変更分析</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">AI 変更分析</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">AI が変更を分析中…</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">再試行</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">分析する変更がありません。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">AI サービスが設定されていません。設定で構成してください。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">Git 変更を収集中…</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">AI 応答を待機中…</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff がサイズ制限により切り詰められました</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">スキップされたファイル: {0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">作業ツリー（ステージング済み + 未ステージング）</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">AI リクエストが失敗しました。ネットワークと API キーを確認してください。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">AI サービスによってコンテンツがフィルタリングされました。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">応答が長すぎます。max tokens を増やすか diff サイズを減らしてください。</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">AI でステージング済みと未ステージングの変更を分析</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">AI でこれらのコミット間の変更を分析</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">AI で選択したコミット範囲を分析</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patch ファイルを選択</x:String>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -228,6 +229,72 @@ namespace SourceGit.Views
             catch (Exception exception)
             {
                 Models.Notification.Send(null, $"Failed to save as patch: {exception.Message}", true);
+            }
+
+            e.Handled = true;
+        }
+
+        private async void OnAIAnalyzeCompare(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.RevisionCompare vm)
+                return;
+
+            var repo = vm.Repository;
+            var services = repo.GetPreferredOpenAIServices();
+            if (services.Count == 0)
+            {
+                Models.Notification.Send(null, App.Text("AIDiffAnalysis.NoService"), true);
+                e.Handled = true;
+                return;
+            }
+
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner == null)
+                return;
+
+            if (services.Count == 1)
+            {
+                var fromSHA = vm.GetSHA(vm.StartPoint);
+                var toSHA = vm.GetSHA(vm.EndPoint);
+                var fromName = vm.LeftSideDesc;
+                var toName = vm.RightSideDesc;
+                var analysis = new ViewModels.AIDiffAnalysis(repo, services[0]);
+                var view = new AIDiffAnalysis() { DataContext = analysis };
+                view.Show(owner);
+                await analysis.AnalyzeCommitRangeAsync(fromSHA, toSHA, fromName, toName);
+                view.MarkReady();
+                e.Handled = true;
+                return;
+            }
+
+            var menu = new ContextMenu();
+            foreach (var service in services)
+            {
+                var dup = service;
+                var item = new MenuItem();
+                item.Header = service.Name;
+                item.Click += async (_, ev) =>
+                {
+                    var fromSHA = vm.GetSHA(vm.StartPoint);
+                    var toSHA = vm.GetSHA(vm.EndPoint);
+                    var fromName = vm.LeftSideDesc;
+                    var toName = vm.RightSideDesc;
+                    var analysis = new ViewModels.AIDiffAnalysis(repo, dup);
+                    var view = new AIDiffAnalysis() { DataContext = analysis };
+                    view.Show(owner);
+                    await analysis.AnalyzeCommitRangeAsync(fromSHA, toSHA, fromName, toName);
+                    view.MarkReady();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(item);
+            }
+
+            if (sender is Button button)
+            {
+                button.IsEnabled = false;
+                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+                menu.Closed += (_, _) => button.IsEnabled = true;
+                menu.Open(button);
             }
 
             e.Handled = true;

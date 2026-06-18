@@ -25,6 +25,24 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modell</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">NEU GENERIEREN</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Verwende AI, um Commit-Nachrichten zu generieren</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis" xml:space="preserve">AI Diff-Analyse</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeWorktree" xml:space="preserve">AI-Änderungen analysieren</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AnalyzeCompare" xml:space="preserve">AI-Änderungen analysieren</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.InProgress" xml:space="preserve">AI analysiert Änderungen...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Retry" xml:space="preserve">WIEDERHOLEN</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoChanges" xml:space="preserve">Keine Änderungen zu analysieren.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.NoService" xml:space="preserve">Kein AI-Dienst konfiguriert. In Einstellungen konfigurieren.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Collecting" xml:space="preserve">Sammle Git-Änderungen...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Waiting" xml:space="preserve">Warte auf AI-Antwort...</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Truncated" xml:space="preserve">Diff aufgrund Größe abgeschnitten</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.SkippedFiles" xml:space="preserve">Übersprungene Dateien: {0}</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.WorkingTree" xml:space="preserve">Arbeitsverzeichnis (Staged + Unstaged)</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.AIFailed" xml:space="preserve">AI-Anfrage fehlgeschlagen. Netzwerk und API-Key prüfen.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ContentFiltered" xml:space="preserve">Inhalt durch AI-Dienst gefiltert.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.ResponseLengthExceeded" xml:space="preserve">Antwort zu lang. Max Tokens erhöhen oder Diff-Größe reduzieren.</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Worktree" xml:space="preserve">Gestagete und ungestagete Änderungen mit AI analysieren</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.Compare" xml:space="preserve">Änderungen zwischen diesen Commits mit AI analysieren</x:String>
+  <x:String x:Key="Text.AIDiffAnalysis.Tip.History" xml:space="preserve">Ausgewählten Commit-Bereich mit AI analysieren</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit minimieren</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Alles anzeigen</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Wähle die anzuwendende .patch-Datei</x:String>

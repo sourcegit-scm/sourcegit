@@ -775,6 +775,59 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
             menu.Items.Add(saveToPatch);
+
+            if (selected.Count == 2)
+            {
+                var aiAnalyze = new MenuItem();
+                aiAnalyze.Icon = this.CreateMenuIcon("Icons.AIAssist");
+                aiAnalyze.Header = App.Text("AIDiffAnalysis.AnalyzeCompare");
+                ToolTip.SetTip(aiAnalyze, App.Text("AIDiffAnalysis.Tip.History"));
+
+                var services = repo.GetPreferredOpenAIServices();
+                if (services.Count > 0)
+                {
+                    if (services.Count == 1)
+                    {
+                        var svc = services[0];
+                        aiAnalyze.Click += async (_, ev) =>
+                        {
+                            var fromSHA = selected[1].SHA;
+                            var toSHA = selected[0].SHA;
+                            var fromName = selected[1].Subject;
+                            var toName = selected[0].Subject;
+                            DoAIDiffCompare(repo, svc, fromSHA, toSHA, fromName, toName);
+                            ev.Handled = true;
+                        };
+                    }
+                    else
+                    {
+                        foreach (var service in services)
+                        {
+                            var dup = service;
+                            var item = new MenuItem();
+                            item.Header = service.Name;
+                            item.Click += async (_, ev) =>
+                            {
+                                var fromSHA = selected[1].SHA;
+                                var toSHA = selected[0].SHA;
+                                var fromName = selected[1].Subject;
+                                var toName = selected[0].Subject;
+                                DoAIDiffCompare(repo, dup, fromSHA, toSHA, fromName, toName);
+                                ev.Handled = true;
+                            };
+                            aiAnalyze.Items.Add(item);
+                        }
+                    }
+                }
+                else
+                {
+                    aiAnalyze.IsEnabled = false;
+                }
+
+                menu.Items.Add(aiAnalyze);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             var copyInfos = new MenuItem();
@@ -1690,6 +1743,19 @@ namespace SourceGit.Views
                 repo.SendNotification($"Commit '{start}' is not a valid revision for `git rebase -i`!", true);
             else
                 await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, on, prefill));
+        }
+
+        private void DoAIDiffCompare(ViewModels.Repository repo, AI.Service service, string fromSHA, string toSHA, string fromName, string toName)
+        {
+            var owner = TopLevel.GetTopLevel(this) as Window;
+            if (owner == null)
+                return;
+
+            var analysis = new ViewModels.AIDiffAnalysis(repo, service);
+            var view = new AIDiffAnalysis() { DataContext = analysis };
+            view.Show(owner);
+            _ = analysis.AnalyzeCommitRangeAsync(fromSHA, toSHA, fromName, toName);
+            view.MarkReady();
         }
 
         private bool _resizingAuthorColumn = false;
