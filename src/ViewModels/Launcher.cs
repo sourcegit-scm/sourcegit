@@ -55,8 +55,22 @@ namespace SourceGit.ViewModels
             AddNewTab();
 
             var repos = ActiveWorkspace.Repositories.ToArray();
-            foreach (var repo in repos)
-                OpenRepositoryInTab(repo, null);
+            if (!App.ParsedArgs.IgnoreWorkspace)
+            {
+                foreach (var repo in repos)
+                {
+                    var node = pref.FindNode(repo) ??
+                        new RepositoryNode
+                        {
+                            Id = repo,
+                            Name = Path.GetFileName(repo),
+                            Bookmark = 0,
+                            IsRepository = true,
+                        };
+
+                    OpenRepositoryInTab(node, null);
+                }
+            }
 
             _ignoreIndexChange = false;
 

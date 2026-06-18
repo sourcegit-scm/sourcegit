@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -473,7 +473,31 @@ namespace SourceGit.ViewModels
             _workingCopy = new WorkingCopy(this) { CommitMessage = _uiStates.LastCommitMessage };
             _stashesPage = new StashesPage(this);
             _searchCommitContext = new SearchCommitContext(this);
-            _selectedViewIndex = Preferences.Instance.ShowLocalChangesByDefault ? 1 : 0;
+
+            if (App.ParsedArgs != null && App.ParsedArgs.StartupViewIndex.HasValue)
+            {
+                switch (App.ParsedArgs.StartupViewIndex.Value)
+                {
+                    case 1:
+                        _selectedView = _workingCopy;
+                        _selectedViewIndex = 1;
+                        break;
+                    case 2:
+                        _selectedView = _stashesPage;
+                        _selectedViewIndex = 2;
+                        break;
+                    default:
+                        _selectedView = _histories;
+                        _selectedViewIndex = 0;
+                        break;
+                }
+            }
+            else
+            {
+                _selectedViewIndex = Preferences.Instance.ShowLocalChangesByDefault ? 1 : 0;
+                _selectedView = (_selectedViewIndex == 1) ? _workingCopy : _histories;
+            }
+
             _lastFetchTime = DateTime.Now;
             _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);
             RefreshAll();
