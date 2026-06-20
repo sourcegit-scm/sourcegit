@@ -15,7 +15,7 @@
                   Classes="icon_button"
                   Width="18" Height="28"
                   Margin="0,2,0,0"
-                  Click="ScrollTabsLeft"
+                  Click="OnScrollTabsLeft"
                   IsVisible="{Binding #ThisControl.IsScrollerVisible}">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
     </RepeatButton>
@@ -26,7 +26,7 @@
                   HorizontalAlignment="Left"
                   HorizontalScrollBarVisibility="Hidden"
                   VerticalScrollBarVisibility="Disabled"
-                  PointerWheelChanged="ScrollTabs">
+                  PointerWheelChanged="OnScrollTabs">
       <StackPanel Orientation="Horizontal">
         <ListBox x:Name="LauncherTabsList"
                  Classes="launcher_page_tabbar"
@@ -148,7 +148,7 @@
     </ScrollViewer>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollerVisible}">
-      <RepeatButton Classes="icon_button" Width="18" Height="28" Margin="0,2,0,0" Click="ScrollTabsRight">
+      <RepeatButton Classes="icon_button" Width="18" Height="28" Margin="0,2,0,0" Click="OnScrollTabsRight">
         <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
       </RepeatButton>
 

@@ -162,28 +162,46 @@ namespace SourceGit.Views
                 InvalidateVisual();
         }
 
-        private void ScrollTabs(object _, PointerWheelEventArgs e)
+        private void OnScrollTabs(object _, PointerWheelEventArgs e)
         {
             if (!e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             {
+                var lines = e.Pointer.Type switch
+                {
+                    PointerType.Mouse => 3,
+                    _ => 1
+                };
+
                 if (e.Delta.Y < 0)
-                    LauncherTabsScroller.LineRight();
+                    ScrollTabsRight(lines);
                 else if (e.Delta.Y > 0)
-                    LauncherTabsScroller.LineLeft();
+                    ScrollTabsLeft(lines);
                 e.Handled = true;
             }
         }
 
-        private void ScrollTabsLeft(object _, RoutedEventArgs e)
+        private void OnScrollTabsLeft(object _, RoutedEventArgs e)
         {
-            LauncherTabsScroller.LineLeft();
+            ScrollTabsLeft(3);
             e.Handled = true;
         }
 
-        private void ScrollTabsRight(object _, RoutedEventArgs e)
+        private void OnScrollTabsRight(object _, RoutedEventArgs e)
         {
-            LauncherTabsScroller.LineRight();
+            ScrollTabsRight(3);
             e.Handled = true;
+        }
+
+        private void ScrollTabsLeft(int lines)
+        {
+            for (var i = 0; i < lines; i++)
+                LauncherTabsScroller.LineLeft();
+        }
+
+        private void ScrollTabsRight(int lines)
+        {
+            for (var i = 0; i < lines; i++)
+                LauncherTabsScroller.LineRight();
         }
 
         private void OnTabsLayoutUpdated(object _1, EventArgs _2)
