@@ -58,7 +58,9 @@
   <x:String x:Key="Text.Bisect.Bad">Плохая</x:String>
   <x:String x:Key="Text.Bisect.Good">Хорошая</x:String>
   <x:String x:Key="Text.Bisect.Skip">Пропустить</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Раздвоение. Сделать текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForCheckoutAnother">Раздвоение. Пожалуйста, переключитесь на другой, затем отметьте его как хороший или плохой.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstBad">Раздвоение. Отметить текущую ревизию как плохую или переключиться на другую, а затем отметить её как плохую.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">Раздвоение. Отметить текущую ревизию хорошей или плохой и переключиться на другой.</x:String>
   <x:String x:Key="Text.Bisect.WaitingForMark">Раздвоение. Текущая ГОЛОВА (HEAD) хорошая или плохая?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Расследование</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Расследование на предыдущей редакции</x:String>
@@ -123,6 +125,9 @@
   <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Переключить ветку из отложенного</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Новая ветка:</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Отложенный:</x:String>
+  <x:String x:Key="Text.CheckoutDetached" xml:space="preserve">Переключить ревизию или метку</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Target" xml:space="preserve">Цель:</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Warning" xml:space="preserve">Предупреждение: После этого ГОЛОВА будет отсоединена</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve"> Частичный выбор</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Добавить источник для ревизии сообщения</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Ревизия(и):</x:String>
@@ -251,6 +256,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Общепринятые типы ревизии</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Внешний репозиторий по умолчанию</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules" xml:space="preserve">Включить (--recursive) при автоматическом обновлении подмодулей</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Предпочтительный режим слияния</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">ОТСЛЕЖИВАНИЕ ПРОБЛЕМ</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Добавить пример правила Azure DevOps</x:String>
@@ -362,6 +368,7 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Удалить из внешнего репозитория</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">СРАВНЕНИЕ БИНАРНИКОВ</x:String>
+  <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">ФАЙЛ ПУСТ</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Режим файла изменён</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое сравнение</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменения пробелов</x:String>
@@ -439,10 +446,12 @@
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Ветка разработчика:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Свойство:</x:String>
   <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Свойство префикса:</x:String>
+  <x:String x:Key="Text.GitFlow.Finish" xml:space="preserve">Завершение ${0}$</x:String>
   <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">ПРОЦЕСС - Свойства завершения</x:String>
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">ПРОЦЕСС - Закончить исправление</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">ПРОЦЕСС - Завершить выпуск</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Цель:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithRebase" xml:space="preserve">Перенос перед слиянием</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Втиснуть при слиянии</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Исправление:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Префикс исправлений:</x:String>
@@ -451,10 +460,12 @@
   <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Производственная ветка:</x:String>
   <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Выпуск:</x:String>
   <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Префикс выпуска:</x:String>
+  <x:String x:Key="Text.GitFlow.StartAt" xml:space="preserve">Начать с:</x:String>
   <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Свойство запуска...</x:String>
   <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">ПРОЦЕСС - Свойство запуска</x:String>
   <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Запуск исправлений...</x:String>
   <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">ПРОЦЕСС - Запуск исправлений</x:String>
+  <x:String x:Key="Text.GitFlow.StartName" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Ввести имя</x:String>
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Запуск выпуска...</x:String>
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">ПРОЦЕСС - Запуск выпуска</x:String>
@@ -927,6 +938,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">ОК</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">РАЗМЕТЧИК</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">ВРЕМЯ</x:String>
+  <x:String x:Key="Text.TagCM.Checkout" xml:space="preserve">Переключить метку...</x:String>
   <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Сравнить две ветки</x:String>
   <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Сравнить с ...</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Сравнить с ГОЛОВОЙ</x:String>
@@ -937,11 +949,13 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Удалить ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Удалить выбранные метки ({0})...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Обновление подмодулей</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Все подмодули</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Создавать по необходимости</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Подмодуль:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Обновить вложенные подмодули</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Обновить до отслеживаемой ветки удалённого подмодуля</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">Сетевой адрес:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">Журналы</x:String>
