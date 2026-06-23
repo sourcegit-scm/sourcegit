@@ -242,7 +242,24 @@ namespace SourceGit.Native
 
         public static void OpenBrowser(string url)
         {
+            if (!IsSafeBrowserTarget(url))
+            {
+                Models.Notification.Send(null, $"Blocked unsafe URL: {url}", true);
+                return;
+            }
+
             _backend.OpenBrowser(url);
+        }
+
+        private static bool IsSafeBrowserTarget(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute) &&
+                Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+                (
+                    uri.Scheme == Uri.UriSchemeHttp ||
+                    uri.Scheme == Uri.UriSchemeHttps ||
+                    uri.Scheme == Uri.UriSchemeFtp
+                );
         }
 
         public static void OpenTerminal(string workdir)
