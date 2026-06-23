@@ -32,6 +32,9 @@
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Merge a 3 vías (3-Way)</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccionar archivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar cambios de espacios en blanco</x:String>
+  <x:String x:Key="Text.Apply.Source" xml:space="preserve">Fuente:</x:String>
+  <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">Archivo</x:String>
+  <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">Portapapeles</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Parche</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espacios en Blanco:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">Aplicar Stash</x:String>
@@ -55,6 +58,8 @@
   <x:String x:Key="Text.Bisect.Bad">Malo</x:String>
   <x:String x:Key="Text.Bisect.Good">Bueno</x:String>
   <x:String x:Key="Text.Bisect.Skip">Saltar</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForCheckoutAnother">Bisecting. Por favor revisa otro y márcalo como bueno o malo.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstBad">Bisecting. Marca el commit actual como malo o revisa otro y márcalo como malo.</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">Bisecting. Marcar el commit actual como bueno o malo y revisar otro.</x:String>
   <x:String x:Key="Text.Bisect.WaitingForMark">Bisecting. ¿Es el HEAD actual bueno o malo?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
@@ -120,6 +125,9 @@
   <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Checkout a la Rama desde el Stash</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Nueva Rama:</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Stash:</x:String>
+  <x:String x:Key="Text.CheckoutDetached" xml:space="preserve">Hacer checkout a Commit o Etiqueta</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Target" xml:space="preserve">Objetivo:</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Warning" xml:space="preserve">Advertencia: Después de hacer esto, se deprenderá/separará de HEAD</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Añadir fuente al mensaje de commit</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Commit(s):</x:String>
@@ -248,6 +256,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto(s)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Tipos de Commit Convencionales</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remoto por Defecto</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules" xml:space="preserve">Habilitar `--recursive` cuando se actualicen automáticamente los submódulos</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Modo preferido de Merge</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SEGUIMIENTO DE INCIDENCIAS</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Añadir Regla de Ejemplo para Azure DevOps</x:String>
@@ -305,6 +314,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipo de Cambio:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copiar</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copiar Todo el Texto</x:String>
+  <x:String x:Key="Text.CopyAsPatch" xml:space="preserve">Copiar como Parche</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Copiar Ruta Completa</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">Copiar Ruta</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">Crear Rama...</x:String>
@@ -358,6 +368,7 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Etiqueta:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Eliminar de los repositorios remotos</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFERENCIA BINARIA</x:String>
+  <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">ARCHIVO VACÍO</x:String>
   <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modo de Archivo Cambiado</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Primera Diferencia</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar Cambio de Espacios en Blanco</x:String>
@@ -435,10 +446,12 @@
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Rama de Desarrollo:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
   <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Prefijo de Feature:</x:String>
+  <x:String x:Key="Text.GitFlow.Finish" xml:space="preserve">Finalizar ${0}$</x:String>
   <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">FLOW - Finalizar Feature</x:String>
   <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">FLOW - Finalizar Hotfix</x:String>
   <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">FLOW - Finalizar Release</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Destino:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithRebase" xml:space="preserve">Hacer rebase antes de fusionar</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Squash durante el merge</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Hotfix:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Prefijo de Hotfix:</x:String>
@@ -447,10 +460,12 @@
   <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Rama de Producción:</x:String>
   <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Release:</x:String>
   <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Prefijo de Release:</x:String>
+  <x:String x:Key="Text.GitFlow.StartAt" xml:space="preserve">Iniciar en:</x:String>
   <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Iniciar Feature...</x:String>
   <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">FLOW - Iniciar Feature</x:String>
   <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Iniciar Hotfix...</x:String>
   <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">FLOW - Iniciar Hotfix</x:String>
+  <x:String x:Key="Text.GitFlow.StartName" xml:space="preserve">Nombre:</x:String>
   <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Introducir nombre</x:String>
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Iniciar Release...</x:String>
   <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">FLOW - Iniciar Release</x:String>
@@ -923,6 +938,7 @@
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">ETIQUETADOR</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">HORA</x:String>
+  <x:String x:Key="Text.TagCM.Checkout" xml:space="preserve">Hacer checkout a Etiqueta...</x:String>
   <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Comparar 2 etiquetas</x:String>
   <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Comparar con...</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Comparar con HEAD</x:String>
@@ -933,10 +949,12 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acción Personalizada</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Eliminar ${0}$...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Eliminar {0} etiquetas seleccionadas...</x:String>
-  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Hacer merge de ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Hacer push a ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualizar Submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Todos los submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inicializar según sea necesario</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Actualizar submódulos anidados</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submódulo:</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Actualizar la rama de seguimiento remota del submódulo</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
