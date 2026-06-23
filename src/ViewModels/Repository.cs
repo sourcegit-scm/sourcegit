@@ -847,8 +847,29 @@ namespace SourceGit.ViewModels
             var newFullName = $"refs/heads/{newName}";
             _uiStates.RenameBranchFilter(b.FullName, newFullName);
 
-            b.Name = newName;
-            b.FullName = newFullName;
+            var renamed = new Models.Branch
+            {
+                Name = newName,
+                FullName = newFullName,
+                CommitterDate = b.CommitterDate,
+                Head = b.Head,
+                IsLocal = b.IsLocal,
+                IsCurrent = b.IsCurrent,
+                IsDetachedHead = b.IsDetachedHead,
+                Upstream = b.Upstream,
+                Ahead = b.Ahead,
+                Behind = b.Behind,
+                Remote = b.Remote,
+                IsUpstreamGone = b.IsUpstreamGone,
+                WorktreePath = b.WorktreePath,
+            };
+
+            var idx = _branches.IndexOf(b);
+            if (idx >= 0)
+                _branches[idx] = renamed;
+
+            if (b.IsCurrent)
+                CurrentBranch = renamed;
 
             List<Models.Branch> locals = [];
             foreach (var branch in _branches)
