@@ -799,6 +799,14 @@ namespace SourceGit.ViewModels
             var builder = BuildBranchTree(locals, [], false);
             LocalBranchTrees = builder.Locals;
 
+            var localBranchesCount = 0;
+            foreach (var b in locals)
+            {
+                if (!b.IsDetachedHead)
+                    localBranchesCount++;
+            }
+            LocalBranchesCount = localBranchesCount;
+
             RefreshCommits();
             RefreshWorkingCopyChanges();
             RefreshWorktrees();
