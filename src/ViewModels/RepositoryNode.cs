@@ -205,13 +205,24 @@ namespace SourceGit.ViewModels
 
         public void SaveMinimalInfo(string gitDir)
         {
+            if (!Directory.Exists(gitDir))
+                return;
+
             var savedTo = Path.Combine(gitDir, "sourcegit.node");
             var minimalInfo = new RepositoryNodeMinimalInfo
             {
                 FriendlyName = Name,
                 Bookmark = Bookmark
             };
-            File.WriteAllText(savedTo, JsonSerializer.Serialize(minimalInfo, JsonCodeGen.Default.RepositoryNodeMinimalInfo));
+
+            try
+            {
+                File.WriteAllText(savedTo, JsonSerializer.Serialize(minimalInfo, JsonCodeGen.Default.RepositoryNodeMinimalInfo));
+            }
+            catch
+            {
+                // Ignore any error (e.g. the repository directory was removed while the tab was open).
+            }
         }
 
         private string _id = string.Empty;
