@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -21,6 +22,24 @@ namespace SourceGit.Views
         public DealWithLocalChangesMethod()
         {
             InitializeComponent();
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            switch (Method)
+            {
+                case Models.DealWithLocalChanges.StashAndReapply:
+                    RadioStashAndReapply.Focus(NavigationMethod.Tab);
+                    break;
+                case Models.DealWithLocalChanges.Discard:
+                    RadioDiscard.Focus(NavigationMethod.Tab);
+                    break;
+                default:
+                    RadioDoNothing.Focus(NavigationMethod.Tab);
+                    break;
+            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
