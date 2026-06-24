@@ -11,7 +11,7 @@
   <Grid SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
-      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="4"/>
       <ColumnDefinition Width="*" MinWidth="300"/>
     </Grid.ColumnDefinitions>
 
@@ -145,7 +145,7 @@
                     Focusable="False"/>
 
       <!-- Staged -->
-      <Grid Grid.Row="3" RowDefinitions="28,*">
+      <Grid Grid.Row="3" RowDefinitions="27,*">
         <!-- Staged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
