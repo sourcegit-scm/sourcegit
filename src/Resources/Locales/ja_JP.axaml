@@ -2,7 +2,6 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
-
   <x:String x:Key="Text.About" xml:space="preserve">情報</x:String>
   <x:String x:Key="Text.About.Menu" xml:space="preserve">SourceGit について</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">リリース日: {0}</x:String>
@@ -25,10 +24,16 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">再生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">使用</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">他を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3 分割マージ</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patch ファイルを選択</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">空白文字の変更を無視</x:String>
+  <x:String x:Key="Text.Apply.Source" xml:space="preserve">適用元:</x:String>
+  <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">ファイル</x:String>
+  <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">クリップボード</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">パッチを適用</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">空白文字:</x:String>
   <x:String x:Key="Text.ApplyStash" xml:space="preserve">スタッシュを適用</x:String>
@@ -52,6 +57,8 @@
   <x:String x:Key="Text.Bisect.Bad">問題あり</x:String>
   <x:String x:Key="Text.Bisect.Good">問題なし</x:String>
   <x:String x:Key="Text.Bisect.Skip">スキップ</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForCheckoutAnother">問題の発生源となったコミットを特定しています。別のコミットをチェックアウトし、そのコミットに問題があるかどうかを調査してください。</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstBad">問題の発生源となったコミットを特定しています。問題があるコミットをチェックアウト・選択してください。</x:String>
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">問題の発生源となったコミットを特定しています。現在のコミットに問題があるかどうかを調査したあと、別のコミットをチェックアウトしてみてください。</x:String>
   <x:String x:Key="Text.Bisect.WaitingForMark">問題の発生源となったコミットを特定しています。現在の HEAD に問題はありませんか？</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">著者の履歴</x:String>
@@ -62,22 +69,23 @@
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">選択した 2 つのブランチを比較</x:String>
   <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">比較対象を選択...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">HEAD と比較</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithSpecial" xml:space="preserve">${0}$ と比較</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">ブランチ名をコピー</x:String>
   <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">プルリクエストを作成...</x:String>
   <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">上流の ${0}$ にプルリクエストを作成...</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">${0}$ を削除...</x:String>
-  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">選択した {0} 個のブランチを削除</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">選択した {0} 個のブランチを削除...</x:String>
   <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">${0}$ の説明を編集...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">${0}$ まで早送り</x:String>
-  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$ から ${1}$ にフェッチ...</x:String>
-  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git フロー - ${0}$ を完了</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">${0}$ から ${1}$ にフェッチ</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git フロー - ${0}$ を完了...</x:String>
   <x:String x:Key="Text.BranchCM.InteractiveRebase.Manually" xml:space="preserve">${0}$ を ${1}$ で対話式リベース</x:String>
   <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">${0}$ を ${1}$ にマージ...</x:String>
-  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">現在のブランチに、選択した {0} 個のブランチをマージ</x:String>
-  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">${0}$ からプル</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">現在のブランチに、選択した {0} 個のブランチをマージ...</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">${0}$ からプル...</x:String>
   <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">${0}$ から ${1}$ にプル...</x:String>
-  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">${0}$ をプッシュ</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">${0}$ をプッシュ...</x:String>
   <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">${0}$ を ${1}$ でリベース...</x:String>
   <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">${0}$ の名前を変更...</x:String>
   <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">${0}$ を ${1}$ にリセット...</x:String>
@@ -113,6 +121,12 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">これらのサブモジュールを更新する必要があります:{0}更新しますか？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">チェックアウト &amp; 早送り</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">早送り先:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">スタッシュからブランチをチェックアウト</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">新しいブランチ:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">スタッシュ:</x:String>
+  <x:String x:Key="Text.CheckoutDetached" xml:space="preserve">コミットまたはタグをチェックアウト</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Target" xml:space="preserve">対象:</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Warning" xml:space="preserve">警告: これを行うと、HEAD が切断されます</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">コミットを取り込む</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">取り込み元をコミットメッセージに明記</x:String>
   <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">コミット:</x:String>
@@ -124,6 +138,8 @@
   <x:String x:Key="Text.Clone" xml:space="preserve">リモートリポジトリをクローン</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">追加の引数:</x:String>
   <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">リポジトリをクローンする際の追加の引数 (省略可能)</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">ブックマーク:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">グループ:</x:String>
   <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">ローカル名:</x:String>
   <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">リポジトリの名前 (省略可能)</x:String>
   <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">親フォルダー:</x:String>
@@ -131,14 +147,20 @@
   <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">リポジトリの URL:</x:String>
   <x:String x:Key="Text.Close" xml:space="preserve">閉じる</x:String>
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">エディター</x:String>
-  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">コミットをチェックアウト</x:String>
-  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">コミットを取り込む</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">ブランチ</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">ブランチ &amp; タグ</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">リポジトリのカスタムアクション</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">リビジョンのファイル</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">コミットをチェックアウト...</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">コミットを取り込む...</x:String>
   <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">取り込む...</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">HEAD と比較</x:String>
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">作業ツリーと比較</x:String>
   <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">著者</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthorTime" xml:space="preserve">著者の日時</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">メッセージ</x:String>
   <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">コミッター</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitterTime" xml:space="preserve">コミット日時</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">タイトル</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
@@ -150,14 +172,15 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">書き直す...</x:String>
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">親コミットに記録付きで統合...</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">マージ...</x:String>
-  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">${0}$ を ${1}$ にプッシュ</x:String>
-  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${0}$ を ${1}$ でリベース</x:String>
-  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$ を ${1}$ にリセット</x:String>
-  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">コミットを取り消す</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">${0}$ を ${1}$ にプッシュ...</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">${0}$ を ${1}$ でリベース...</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">${0}$ を ${1}$ にリセット...</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">コミットを取り消す...</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">パッチとして保存...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">個の変更されたファイル</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">変更を検索...</x:String>
+  <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">詳細を折りたたむ</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ファイル</x:String>
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS ファイル</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">ファイルを検索...</x:String>
@@ -183,6 +206,11 @@
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">コミットメッセージを入力してください。タイトルと説明は、空行で分けて記述してください！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">タイトル</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
+  <x:String x:Key="Text.Compare.Changes" xml:space="preserve">変更</x:String>
+  <x:String x:Key="Text.Compare.Commits" xml:space="preserve">コミット</x:String>
+  <x:String x:Key="Text.Compare.Commits.LeftOnly" xml:space="preserve">左側のみに含まれるコミット</x:String>
+  <x:String x:Key="Text.Compare.Commits.RightOnly" xml:space="preserve">右側のみに含まれるコミット</x:String>
+  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">ヒント: もう片側が HEAD を指しているのであれば、(コンテキストメニューから) コミットを選択して取り込むことができます。</x:String>
   <x:String x:Key="Text.Configure" xml:space="preserve">リポジトリの設定</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">コミットテンプレート</x:String>
   <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">組み込みのパラメーター:
@@ -227,6 +255,7 @@
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分ごとに自動フェッチ</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">コンベンショナルコミットの種類定義</x:String>
   <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">既定のリモート</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules" xml:space="preserve">サブモジュールを自動更新する際は再帰的に実行</x:String>
   <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">優先するマージ方式</x:String>
   <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">イシュートラッカー</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Azure DevOps のルールを追加</x:String>
@@ -259,8 +288,11 @@
   <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">ラベル:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">選択肢:</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">選択肢は '|' で区切って記述します</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">文字列の整形ツール:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">省略可能 - 最終的な出力文字列を整形するために使用されます (入力がなければ何もしません)。入力された値は `${VALUE}` で参照してください。</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">ここでも組み込みの変数 ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE}, ${TAG} がそのまま利用できます</x:String>
   <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">種類:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">リモート名付きの名前を使用:</x:String>
   <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">ワークスペース</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">色</x:String>
   <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">名前</x:String>
@@ -268,7 +300,8 @@
   <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">続行</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">コミットの内容が何もありません！それでも続行しますか (--allow-empty)？</x:String>
   <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">すべてステージに上げてからコミット</x:String>
-  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">コミットの内容が何もありません！コミットする前に、すべての変更をステージに上げますか？それともこのまま続行しますか (--allow-empty)？</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">選択した変更をステージに上げてからコミット</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">コミットの内容が何もありません！コミットする前に、変更をステージに上げますか？それともこのまま続行しますか (--allow-empty)？</x:String>
   <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">再起動が必要です</x:String>
   <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">この変更は、アプリを再起動したあとに反映されます。</x:String>
   <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">コンベンショナルコミットの生成補助ツール</x:String>
@@ -280,6 +313,7 @@
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">変更の種類:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">コピー</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">すべてのテキストをコピー</x:String>
+  <x:String x:Key="Text.CopyAsPatch" xml:space="preserve">パッチとしてコピー</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">絶対パスをコピー</x:String>
   <x:String x:Key="Text.CopyPath" xml:space="preserve">パスをコピー</x:String>
   <x:String x:Key="Text.CreateBranch" xml:space="preserve">ブランチを作成...</x:String>
@@ -298,19 +332,22 @@
   <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">タグ名:</x:String>
   <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">推奨される形式: v1.0.0-alpha</x:String>
   <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">タグの作成後、すべてのリモートにプッシュ</x:String>
-  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">新しいタグを作成</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">タグを作成</x:String>
   <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">種類:</x:String>
   <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">注釈付き</x:String>
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">軽量</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Ctrl キーを押しながらで直接実行できます</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">切り取り</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">破棄</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">何もしない</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">スタッシュして再適用</x:String>
   <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">サブモジュールの初期化を解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">ローカルの変更の有無に関わらず、強制的に解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">サブモジュール:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">ブランチを削除</x:String>
+  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">次のリモートブランチも削除しますか？</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">ブランチ:</x:String>
+  <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">未マージのコミットがあっても強制的に削除</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">リモートブランチを削除しようとしています！！！</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">複数のブランチを削除</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">複数のブランチをまとめて削除しようとしています。操作を行う前によく確認してください！</x:String>
@@ -331,6 +368,7 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">タグ:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">リモートリポジトリからも削除</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">バイナリの差分</x:String>
+  <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">空のファイル</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">最初の差分</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">空白文字の変更を無視</x:String>
   <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">ブレンド</x:String>
@@ -350,6 +388,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">サブモジュール</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">削除</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">新規</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">さらに {0} 件のコミットされていない変更があります</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">入れ替え</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">構文を強調表示</x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">行を折り返す</x:String>
@@ -366,6 +405,7 @@
   <x:String x:Key="Text.Discard.All" xml:space="preserve">作業コピーに対するローカルのすべての変更</x:String>
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">変更:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">無視されたファイルを含める</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">変更/削除されたファイルを含める</x:String>
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">未追跡のファイルを含める</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} 件の変更が破棄されます</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">この操作は元に戻せません！！！</x:String>
@@ -401,14 +441,25 @@
   <x:String x:Key="Text.FileHistory" xml:space="preserve">ファイルの履歴</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">変更</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">ファイルの内容</x:String>
+  <x:String x:Key="Text.FileModeChange" xml:space="preserve">ファイルモードの変更: </x:String>
+  <x:String x:Key="Text.FileModeChange.Deleted" xml:space="preserve">削除されたファイルのモード: </x:String>
+  <x:String x:Key="Text.FileModeChange.Directory" xml:space="preserve">ディレクトリ</x:String>
+  <x:String x:Key="Text.FileModeChange.Executable" xml:space="preserve">実行可能</x:String>
+  <x:String x:Key="Text.FileModeChange.New" xml:space="preserve">新しいファイルのモード: </x:String>
+  <x:String x:Key="Text.FileModeChange.Normal" xml:space="preserve">通常</x:String>
+  <x:String x:Key="Text.FileModeChange.Submodule" xml:space="preserve">サブモジュール</x:String>
+  <x:String x:Key="Text.FileModeChange.Symlink" xml:space="preserve">シンボリックリンク</x:String>
+  <x:String x:Key="Text.FileModeChange.Unknown" xml:space="preserve">不明</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git フロー</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">開発ブランチ:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">新機能の実装:</x:String>
   <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">新機能の実装用のプレフィックス:</x:String>
-  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">フロー - 新機能の実装を完了</x:String>
-  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">フロー - 緊急のバグ修正を完了</x:String>
-  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">フロー - リリース作業を完了</x:String>
+  <x:String x:Key="Text.GitFlow.Finish" xml:space="preserve">${0}$ を完了</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">新機能の実装を完了</x:String>
+  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">緊急のバグ修正を完了</x:String>
+  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">リリース作業を完了</x:String>
   <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">対象:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithRebase" xml:space="preserve">マージする前にリベース</x:String>
   <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">スカッシュしてマージ</x:String>
   <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">緊急のバグ修正:</x:String>
   <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">緊急のバグ修正用のプレフィックス:</x:String>
@@ -417,13 +468,15 @@
   <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">本番ブランチ:</x:String>
   <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">リリース作業:</x:String>
   <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">リリース作業用のプレフィックス:</x:String>
+  <x:String x:Key="Text.GitFlow.StartAt" xml:space="preserve">開始地点:</x:String>
   <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">新機能の実装を開始...</x:String>
-  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">フロー - 新機能の実装を開始</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">新機能の実装を開始</x:String>
   <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">緊急のバグ修正を開始...</x:String>
-  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">フロー - 緊急のバグ修正を開始</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">緊急のバグ修正を開始</x:String>
+  <x:String x:Key="Text.GitFlow.StartName" xml:space="preserve">名前:</x:String>
   <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">名前を入力</x:String>
   <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">リリース作業を開始...</x:String>
-  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">フロー - リリース作業を開始</x:String>
+  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">リリース作業を開始</x:String>
   <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">バージョンタグのプレフィックス:</x:String>
   <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
   <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">追跡パターンを追加...</x:String>
@@ -461,11 +514,19 @@
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">コミット日時</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">グラフ &amp; コミットのタイトル</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">グラフでの強調表示</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.All" xml:space="preserve">全範囲</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">現在のブランチのみ</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">現在のブランチ &amp; 選択したコミット</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">選択したコミットのみ</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} コミットを選択しました</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">表示する列</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">'Ctrl' または 'Shift' キーを押しながらで、複数のコミットを選択できます。</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">⌘ または ⇧ キーを押しながらで、複数のコミットを選択できます。</x:String>
   <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">ヒント:</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone" xml:space="preserve">別のウィンドウで開く</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.CommitDetail" xml:space="preserve">コミットの詳細</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.RevisionCompare" xml:space="preserve">リビジョンを比較</x:String>
   <x:String x:Key="Text.Hotkeys" xml:space="preserve">キーボードショートカットを確認</x:String>
   <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">総合</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">新しいリポジトリをクローン</x:String>
@@ -473,6 +534,7 @@
   <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">次のタブに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">前のタブに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">新しいタブを作成</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">ローカルリポジトリを開く</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">設定ダイアログを開く</x:String>
   <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">ワークスペースのドロップダウンメニューを表示</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">アクティブなタブを切り替え</x:String>
@@ -481,6 +543,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">ステージに上げた変更をコミット</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">ステージに上げた変更をコミットしてプッシュ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">すべての変更をステージに上げてコミット</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">新しいブランチを作成</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">フェッチ (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">ダッシュボードモード (既定)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">選択したコミットの子コミットに移動</x:String>
@@ -490,13 +553,16 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">プル (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">プッシュ (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">現在のリポジトリを強制的に再読み込み</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'変更' に切り替え</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">`履歴` の詳細パネルを広げる/折りたたむ</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'ローカルの変更' に切り替え</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'履歴' に切り替え</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'スタッシュ' に切り替え</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">破棄</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">ステージに上げる</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">ステージから降ろす</x:String>
   <x:String x:Key="Text.Init" xml:space="preserve">リポジトリを初期化</x:String>
+  <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">このパスで `git init` コマンドを実行しますか？</x:String>
+  <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">リポジトリを開けませんでした。理由:  </x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">パス:</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">取り込み作業が進行中です。</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">取り込み対象のコミット:</x:String>
@@ -508,6 +574,7 @@
   <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">取り消し対象のコミット:</x:String>
   <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">対話式リベース</x:String>
   <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">ローカルの変更をスタッシュして再適用</x:String>
+  <x:String x:Key="Text.InteractiveRebase.NoVerify" xml:space="preserve">リベース前のフックを実行しない</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">リベース地点:</x:String>
   <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">ドラッグ &amp; ドロップでコミットを並べ替えられます</x:String>
   <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">対象のブランチ:</x:String>
@@ -524,6 +591,10 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">マージ先:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">マージオプション:</x:String>
   <x:String x:Key="Text.Merge.Source" xml:space="preserve">マージ元:</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">マージができるかを確認しています...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">マージは衝突せずに行えます</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">マージ時に何らかのエラーが発生します</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">マージに衝突が発生します</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">自分の変更 → 相手の変更の順で適用</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">相手の変更 → 自分の変更の順で適用</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">両方を使用</x:String>
@@ -557,6 +628,10 @@
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">データの保管ディレクトリを開く</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">ファイルを開く</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">外部のマージツールで開く</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">ローカルリポジトリを開く</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">ブックマーク:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">グループ:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">フォルダー:</x:String>
   <x:String x:Key="Text.Optional" xml:space="preserve">省略可能</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">新しいタブを作成</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">タブを閉じる</x:String>
@@ -580,7 +655,10 @@
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨日</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">設定</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">追加のプロンプト (`-` で必要事項を羅列してください)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API キー</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">モデル</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">利用できるモデル ID を自動的に取得</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">この値を環境変数の名前とし、そこから API キーを読み込む</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>
@@ -605,7 +683,7 @@
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">差分/マージツールへのパスを入力</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">ツール</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">総合</x:String>
-  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">起動時にアップデートを確認</x:String>
+  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">起動時に更新を確認</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">日付の書式</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">変更ツリーのフォルダー階層をまとめる</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">言語</x:String>
@@ -613,8 +691,11 @@
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">初めから `ローカルの変更` ページを表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">初めからコミットの詳細の `変更` タブを表示</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">コミットの詳細に子コミットを表示</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">コミットグラフを相対時間で表記</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">コミットグラフにタグを表示</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">適切とするコミットタイトルの長さ</x:String>
+  <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24 時間</x:String>
+  <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">コミットグラフのブランチ名をまとめる</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">GitHub のような既定のアバターを生成</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">Git</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">自動 CRLF 変換を有効化</x:String>
@@ -629,6 +710,7 @@
   <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">git-credential-manager ではなく git-credential-libsecret を使用</x:String>
   <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">ユーザー名</x:String>
   <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Git ユーザーの名前 (グローバル設定)</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseStashAndReapplyByDefault" xml:space="preserve">ブランチのチェックアウトやマージ時に、既定で変更をスタッシュして再適用</x:String>
   <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Git バージョン</x:String>
   <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">GPG 署名</x:String>
   <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">コミットを GPG で署名</x:String>
@@ -676,7 +758,12 @@
   <x:String x:Key="Text.Quit" xml:space="preserve">終了</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">現在のブランチをリベース</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">ローカルの変更をスタッシュして再適用</x:String>
+  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">リベース前のフックを実行しない</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">リベース地点:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">リベースができるかを確認しています...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">リベースは衝突せずに行えます</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">リベース時に何らかのエラーが発生します</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">リベースに衝突が発生します</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">リモートを追加</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">リモートを編集</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">名前:</x:String>
@@ -687,6 +774,7 @@
   <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">削除...</x:String>
   <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">編集...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">自動フェッチを有効化</x:String>
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">フェッチ</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">ブラウザーで開く</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">掃除</x:String>
@@ -754,7 +842,7 @@
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">サブモジュールを追加</x:String>
   <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">サブモジュールを更新</x:String>
   <x:String x:Key="Text.Repository.Tags" xml:space="preserve">タグ</x:String>
-  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">新しいタグ</x:String>
+  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">タグを作成</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">作成者の日時順</x:String>
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">名前順</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">並べ替え</x:String>
@@ -811,11 +899,12 @@
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">メッセージ:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">省略可能 - このスタッシュのメッセージ</x:String>
   <x:String x:Key="Text.Stash.Mode" xml:space="preserve">方式:</x:String>
-  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">ステージに上げた変更のみ</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">ステージに上げたファイルのみ</x:String>
   <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">選択したファイルの、ステージに上がっている変更とそうではない変更の両方がスタッシュされます！！！</x:String>
   <x:String x:Key="Text.Stash.Title" xml:space="preserve">ローカルの変更をスタッシュ</x:String>
   <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">適用</x:String>
   <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">変更を適用</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">新しいブランチをチェックアウト</x:String>
   <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">メッセージをコピー</x:String>
   <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">削除</x:String>
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">パッチとして保存...</x:String>
@@ -836,7 +925,7 @@
   <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">ブランチ</x:String>
   <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">相対パス</x:String>
   <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">初期化を解除</x:String>
-  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">入れ子になったサブモジュールを取得</x:String>
+  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">入れ子になったサブモジュールも取得</x:String>
   <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">履歴</x:String>
   <x:String x:Key="Text.Submodule.Move" xml:space="preserve">移動</x:String>
   <x:String x:Key="Text.Submodule.Open" xml:space="preserve">リポジトリを開く</x:String>
@@ -852,9 +941,12 @@
   <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">未マージ</x:String>
   <x:String x:Key="Text.Submodule.Update" xml:space="preserve">更新</x:String>
   <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">サブモジュールの変更の詳細</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">詳細を開く</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">タグの作成者</x:String>
   <x:String x:Key="Text.Tag.Time" xml:space="preserve">日時</x:String>
+  <x:String x:Key="Text.TagCM.Checkout" xml:space="preserve">タグをチェックアウト...</x:String>
   <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">2 つのタグを比較</x:String>
   <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">比較対象を選択...</x:String>
   <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">HEAD と比較</x:String>
@@ -865,11 +957,13 @@
   <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">${0}$ を削除...</x:String>
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">選択した {0} 個のタグを削除...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">${0}$ を ${1}$ にマージ...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">${0}$ をプッシュ...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">サブモジュールを更新</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">すべてのサブモジュール</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">必要に応じて初期化</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">サブモジュール:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">入れ子になったサブモジュールも更新</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">サブモジュールのリモート追跡ブランチに更新</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.ViewLogs" xml:space="preserve">ログ</x:String>
@@ -892,10 +986,11 @@
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">リポジトリを検索...</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ローカルの変更</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">無視</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">すべての *{0} ファイルを無視</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">同一フォルダーの *{0} ファイルを無視</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">*{0} ファイルをすべて無視</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">同じフォルダーの *{0} ファイルを無視</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">このフォルダーで未追跡のファイルを無視</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">このファイルのみを無視</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder" xml:space="preserve">同じフォルダーで未追跡のファイルをすべて無視</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">最後のコミットをやり直す</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">このファイルをステージに上げられるようになりました。</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">履歴を消去</x:String>
@@ -932,9 +1027,12 @@
   <x:String x:Key="Text.Workspace" xml:space="preserve">ワークスペース: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">ワークスペースの設定...</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">作業ツリー</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">ブランチ</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">パスをコピー</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">HEAD</x:String>
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">ロック</x:String>
   <x:String x:Key="Text.Worktree.Open" xml:space="preserve">開く</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">パス</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">削除</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">ロックを解除</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">はい</x:String>
