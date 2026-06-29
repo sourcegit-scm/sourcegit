@@ -6,7 +6,6 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.LogicalTree;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
@@ -532,11 +531,8 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
             {
-                var tabControl = this.FindLogicalDescendantOfType<TabControl>();
-                if (tabControl != null)
-                    tabControl.SelectedIndex = 1;
-
                 detail.SelectedChanges = new() { change };
+                detail.ActiveTabIndex = 1;
             }
 
             e.Handled = true;
