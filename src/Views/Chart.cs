@@ -54,7 +54,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var samples = _samples;
-            if (samples == null || samples.Count == 0)
+            if (samples == null || samples.Count <= 0)
                 return;
 
             var w = Bounds.Width;
