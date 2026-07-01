@@ -174,29 +174,32 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
 
-                    var explore = new MenuItem();
-                    explore.Header = App.Text("Repository.Explore");
-                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
-                    explore.Click += (_, e) =>
-                    {
-                        node.OpenInFileManager();
-                        e.Handled = true;
-                    };
-
-                    var terminal = new MenuItem();
-                    terminal.Header = App.Text("Repository.Terminal");
-                    terminal.Icon = this.CreateMenuIcon("Icons.Terminal");
-                    terminal.Click += (_, e) =>
-                    {
-                        node.OpenTerminal();
-                        e.Handled = true;
-                    };
-
                     menu.Items.Add(open);
                     menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(explore);
-                    menu.Items.Add(terminal);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    if (!node.IsInvalid)
+                    {
+                        var explore = new MenuItem();
+                        explore.Header = App.Text("Repository.Explore");
+                        explore.Icon = this.CreateMenuIcon("Icons.Explore");
+                        explore.Click += (_, e) =>
+                        {
+                            node.OpenInFileManager();
+                            e.Handled = true;
+                        };
+
+                        var terminal = new MenuItem();
+                        terminal.Header = App.Text("Repository.Terminal");
+                        terminal.Icon = this.CreateMenuIcon("Icons.Terminal");
+                        terminal.Click += (_, e) =>
+                        {
+                            node.OpenTerminal();
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(explore);
+                        menu.Items.Add(terminal);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                    }
                 }
                 else
                 {
