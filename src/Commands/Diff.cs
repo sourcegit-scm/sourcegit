@@ -35,6 +35,9 @@ namespace SourceGit.Commands
         private const string SPECIAL_NO_NEWLINE = " No newline at end of file";
         private const string SPECIAL_SUBMODULE = "Subproject commit ";
 
+        private const int MAX_INLINE_CONTENT_LENGTH = 1024;
+        private const int MAX_INLINE_CHUNKS_PER_LINE = 16;
+
         public Diff(string repo, Models.DiffOption opt, int numContextLines, bool ignoreWhitespace, bool ignoreCRAtEOL)
         {
             _result.TextDiff = new Models.TextDiff();
@@ -330,11 +333,11 @@ namespace SourceGit.Commands
                         var left = _deleted[i];
                         var right = _added[i];
 
-                        if (left.Content.Length > 1024 || right.Content.Length > 1024)
+                        if (left.Content.Length > MAX_INLINE_CONTENT_LENGTH || right.Content.Length > MAX_INLINE_CONTENT_LENGTH)
                             continue;
 
                         var chunks = Models.TextInlineChange.Compare(left.Content, right.Content);
-                        if (chunks.Count > 4)
+                        if (chunks.Count > MAX_INLINE_CHUNKS_PER_LINE)
                             continue;
 
                         foreach (var chunk in chunks)
