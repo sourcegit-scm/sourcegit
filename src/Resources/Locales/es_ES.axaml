@@ -346,7 +346,9 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Forzar desinicialización incluso si contiene cambios locales.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submódulo:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Eliminar Rama</x:String>
+  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">¿Quieres que también se elimine la siguiente rama remota?</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Rama:</x:String>
+  <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Forzar la eliminación incluso si contiene commit(s) sin fusionar</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">¡Estás a punto de eliminar una rama remota!</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Eliminar Múltiples Ramas</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Estás intentando eliminar múltiples ramas a la vez. ¡Asegúrate de comprobar dos veces antes de realizar esta acción!</x:String>
@@ -405,7 +407,7 @@
   <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Cambios:</x:String>
   <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Incluir archivos ignorados</x:String>
   <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">Incluir archivos modificados/eliminados</x:String>
-  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Incluir archivos sin rastrear</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} cambios serán descartados</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">¡No puedes deshacer esta acción!</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Editar la descripción de la rama</x:String>
@@ -440,6 +442,15 @@
   <x:String x:Key="Text.FileHistory" xml:space="preserve">Historial de Archivos</x:String>
   <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">CAMBIO</x:String>
   <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">CONTENIDO</x:String>
+  <x:String x:Key="Text.FileModeChange" xml:space="preserve">Cambiar modo archivo: </x:String>
+  <x:String x:Key="Text.FileModeChange.Deleted" xml:space="preserve">Modo archivo eliminado: </x:String>
+  <x:String x:Key="Text.FileModeChange.Directory" xml:space="preserve">Directorio</x:String>
+  <x:String x:Key="Text.FileModeChange.Executable" xml:space="preserve">Ejecutable</x:String>
+  <x:String x:Key="Text.FileModeChange.New" xml:space="preserve">Modo archivo nuevo: </x:String>
+  <x:String x:Key="Text.FileModeChange.Normal" xml:space="preserve">Normal</x:String>
+  <x:String x:Key="Text.FileModeChange.Submodule" xml:space="preserve">Submódulo</x:String>
+  <x:String x:Key="Text.FileModeChange.Symlink" xml:space="preserve">Enlace simbólico (Symlink)</x:String>
+  <x:String x:Key="Text.FileModeChange.Unknown" xml:space="preserve">Desconocido</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Rama de Desarrollo:</x:String>
   <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Feature:</x:String>
@@ -885,7 +896,7 @@
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Ruta de almacenamiento de la clave privada SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
-  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos no rastreados</x:String>
+  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos sin rastrear</x:String>
   <x:String x:Key="Text.Stash.Message" xml:space="preserve">Mensaje:</x:String>
   <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Información de este stash</x:String>
   <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Modo:</x:String>
@@ -978,8 +989,9 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorar todos los archivos *{0}</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignorar archivos *{0} en la misma carpeta</x:String>
-  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignorar archivos no rastreados en esta carpeta</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignorar archivos sin rastrear en esta carpeta</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignorar solo este archivo</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder" xml:space="preserve">Ignorar todos los archivos sin rastrear en la misma carpeta</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Enmendar</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Puedes hacer stage a este archivo ahora.</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">Limpiar Historial</x:String>
@@ -999,7 +1011,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LOS CONFLICTOS DE ARCHIVOS ESTÁN RESUELTOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USAR MÍOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">USAR SUYOS</x:String>
-  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUIR ARCHIVOS NO RASTREADOS</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUIR ARCHIVOS SIN RASTREAR</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO HAY MENSAJES DE ENTRADA RECIENTES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO HAY PLANTILLAS DE COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">Sin verificar</x:String>
