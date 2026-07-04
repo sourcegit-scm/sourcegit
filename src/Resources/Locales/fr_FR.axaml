@@ -262,9 +262,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Partager cette règle dans le fichier .issuetracker</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL résultant:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Veuillez utiliser $1, $2 pour accéder aux valeurs des groupes regex.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">IA</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Service préféré:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si le 'Service préféré' est défini, SourceGit l'utilisera seulement dans ce repository. Sinon, si plus d'un service est disponible, un menu contextuel permettant de choisir l'un d'eux sera affiché.</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">IA</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">Service préféré:</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">Si le 'Service préféré' est défini, SourceGit l'utilisera seulement dans ce repository. Sinon, si plus d'un service est disponible, un menu contextuel permettant de choisir l'un d'eux sera affiché.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilisé par ce dépôt</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nom d'utilisateur</x:String>
@@ -627,7 +627,6 @@
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt supplémentaire (utilisez `-` pour lister vos exigences)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clé d'API</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modèle</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Récupérer automatiquement les modèles disponibles</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nom</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">La valeur saisie est le nom pour charger la clé API depuis l'ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Serveur</x:String>

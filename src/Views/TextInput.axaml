@@ -1,0 +1,55 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="160"
+                    x:Class="SourceGit.Views.TextInput"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Width="400"
+                    SizeToContent="Height"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,Auto,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <TextBlock x:Name="TxtTitle"
+                 Classes="bold"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Input -->
+    <TextBox x:Name="TxtInput"
+             Grid.Row="1"
+             Margin="16,12,16,0"
+             Height="32"
+             CornerRadius="3"
+             Focusable="True"/>
+
+    <!-- Buttons -->
+    <StackPanel Grid.Row="2" Margin="0,12,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button Classes="flat"
+              Width="80" Height="30"
+              Margin="4,0"
+              Content="{DynamicResource Text.Cancel}"
+              Click="OnCancel"/>
+
+      <Button Classes="flat primary"
+              Width="80" Height="30"
+              Margin="4,0"
+              Content="{DynamicResource Text.Sure}"
+              Click="OnOk"
+              HotKey="Enter"/>
+    </StackPanel>
+  </Grid>
+</v:ChromelessWindow>

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -933,35 +934,46 @@ namespace SourceGit.Views
             var menu = new ContextMenu();
 
             MenuItem ai = null;
-            var services = repo.GetPreferredOpenAIServices();
-            if (services.Count > 0)
+            var allServices = repo.GetAllOpenAIServices();
+            if (allServices.Count > 0)
             {
                 ai = new MenuItem();
                 ai.Icon = this.CreateMenuIcon("Icons.AIAssist");
                 ai.Header = App.Text("ChangeCM.GenerateCommitMessage");
 
-                if (services.Count == 1)
+                var resolved = repo.ResolveAIService();
+                if (resolved != null)
                 {
                     ai.Click += (_, e) =>
                     {
-                        DoOpenAIAssistant(repo, services[0], selectedStaged);
+                        DoOpenAIAssistant(repo, resolved, selectedStaged);
                         e.Handled = true;
                     };
                 }
                 else
                 {
-                    foreach (var service in services)
+                    foreach (var svc in allServices)
                     {
-                        var dup = service;
-
                         var item = new MenuItem();
-                        item.Header = service.Name;
-                        item.Click += (_, e) =>
-                        {
-                            DoOpenAIAssistant(repo, dup, selectedStaged);
-                            e.Handled = true;
-                        };
+                        item.Header = svc.Name;
 
+                        var modelMenu = new ContextMenu();
+                        foreach (var m in svc.AvailableModels)
+                        {
+                            var dup = svc;
+                            var dupModel = m;
+                            var modelItem = new MenuItem();
+                            modelItem.Header = dupModel;
+                            modelItem.Click += (_, e) =>
+                            {
+                                var cloned = dup.Clone();
+                                cloned.Model = dupModel;
+                                DoOpenAIAssistant(repo, cloned, selectedStaged);
+                                e.Handled = true;
+                            };
+                            modelMenu.Items.Add(modelItem);
+                        }
+                        item.Items.Add(modelMenu);
                         ai.Items.Add(item);
                     }
                 }

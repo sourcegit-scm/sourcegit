@@ -146,9 +146,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">விதியின் பெயர்:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">முடிவு முகவரி:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">வழக்கவெளி குழுக்கள் மதிப்புகளை அணுக $1, $2 ஐப் பயன்படுத்து</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">செநு</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">விருப்பமான சேவை:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">'விருப்பமான சேவை' அமைக்கப்பட்டிருந்தால், மூலஅறிவிலி இந்த களஞ்சியத்தில் மட்டுமே அதைப் பயன்படுத்தும். இல்லையெனில், ஒன்றுக்கு மேற்பட்ட சேவைகள் இருந்தால், அவற்றில் ஒன்றைத் தேர்ந்தெடுப்பதற்கான சூழல் பட்டயல் காண்பிக்கப்படும்.</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">செநு</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">விருப்பமான சேவை:</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">'விருப்பமான சேவை' அமைக்கப்பட்டிருந்தால், மூலஅறிவிலி இந்த களஞ்சியத்தில் மட்டுமே அதைப் பயன்படுத்தும். இல்லையெனில், ஒன்றுக்கு மேற்பட்ட சேவைகள் இருந்தால், அவற்றில் ஒன்றைத் தேர்ந்தெடுப்பதற்கான சூழல் பட்டயல் காண்பிக்கப்படும்.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">உஉபநெ பதிலாள்</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">இந்த களஞ்சியத்தால் பயன்படுத்தப்படும் உஉபநெ பதிலாள்</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">பயனர் பெயர்</x:String>

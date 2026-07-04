@@ -262,9 +262,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">שיתוף כלל זה בקובץ .issuetracker</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL התוצאה:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">השתמש ב־$1, $2 לגישה לערכי קבוצות ה־regex.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">שירות מועדף:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">אם מוגדר 'שירות מועדף', SourceGit ישתמש רק בו במאגר זה. אחרת, אם זמינים מספר שירותים, יוצג תפריט הקשר לבחירת אחד מהם.</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">שירות מועדף:</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">אם מוגדר 'שירות מועדף', SourceGit ישתמש רק בו במאגר זה. אחרת, אם זמינים מספר שירותים, יוצג תפריט הקשר לבחירת אחד מהם.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy לשימוש המאגר הזה</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">שם משתמש</x:String>
@@ -627,7 +627,6 @@
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt נוסף (השתמש ב־`-` לרשימת דרישות)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">מודל</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Fetch אוטומטי של model-ids זמינים</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">שם</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">הערך שהוזן הוא שם משתנה סביבה לטעינת ה־API key</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">שרת</x:String>

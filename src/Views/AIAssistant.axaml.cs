@@ -110,6 +110,8 @@ namespace SourceGit.Views
             apply.Click += (_, ev) =>
             {
                 vm.Use(selected);
+                if (TopLevel.GetTopLevel(this) is Window window)
+                    window.Close();
                 ev.Handled = true;
             };
 
@@ -166,7 +168,10 @@ namespace SourceGit.Views
         private void OnUseClicked(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.AIAssistant vm && !string.IsNullOrEmpty(vm.Response))
+            {
                 vm.Use(vm.Response);
+                Close();
+            }
 
             e.Handled = true;
         }

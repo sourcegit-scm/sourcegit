@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -137,8 +137,72 @@ namespace SourceGit.ViewModels
 
         public string PreferredOpenAIService
         {
-            get => _repo.Settings.PreferredOpenAIService;
-            set => _repo.Settings.PreferredOpenAIService = value;
+            get
+            {
+                var value = _repo.Settings.PreferredOpenAIService;
+                if (string.IsNullOrEmpty(value))
+                    return App.Text("Configure.AI.DefaultService.None");
+                return value;
+            }
+            set
+            {
+                var noneText = App.Text("Configure.AI.DefaultService.None");
+                var storedValue = (value == noneText) ? "" : value;
+
+                if (_repo.Settings.PreferredOpenAIService != storedValue)
+                {
+                    _repo.Settings.PreferredOpenAIService = storedValue;
+
+                    var modelNoneText = App.Text("Configure.AI.PreferredModel.None");
+                    var models = GetModelsForService(storedValue);
+                    if (models.Count > 0)
+                        models.Insert(0, modelNoneText);
+
+                    AvailableAIModels = models;
+                    IsModelSelectorEnabled = models.Count > 0;
+
+                    if (!AvailableAIModels.Contains(PreferredAIModel))
+                        PreferredAIModel = modelNoneText;
+
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(AvailableAIModels));
+                    OnPropertyChanged(nameof(IsModelSelectorEnabled));
+                }
+            }
+        }
+
+        public bool IsModelSelectorEnabled
+        {
+            get => _isModelSelectorEnabled;
+            private set => SetProperty(ref _isModelSelectorEnabled, value);
+        }
+
+        public List<string> AvailableAIModels
+        {
+            get => _availableAIModels;
+            private set => SetProperty(ref _availableAIModels, value);
+        }
+
+        public string PreferredAIModel
+        {
+            get
+            {
+                var value = _repo.Settings.PreferredAIModel;
+                if (string.IsNullOrEmpty(value))
+                    return App.Text("Configure.AI.PreferredModel.None");
+                return value;
+            }
+            set
+            {
+                var noneText = App.Text("Configure.AI.PreferredModel.None");
+                var storedValue = (value == noneText) ? "" : value;
+
+                if (_repo.Settings.PreferredAIModel != storedValue)
+                {
+                    _repo.Settings.PreferredAIModel = storedValue;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public AvaloniaList<Models.CustomAction> CustomActions
@@ -160,12 +224,27 @@ namespace SourceGit.ViewModels
             foreach (var remote in _repo.Remotes)
                 Remotes.Add(remote.Name);
 
-            AvailableOpenAIServices = new List<string>() { "---" };
+            var serviceNoneText = App.Text("Configure.AI.DefaultService.None");
+            var modelNoneText = App.Text("Configure.AI.PreferredModel.None");
+
+            AvailableOpenAIServices = new List<string>() { serviceNoneText };
             foreach (var service in Preferences.Instance.OpenAIServices)
                 AvailableOpenAIServices.Add(service.Name);
 
             if (!AvailableOpenAIServices.Contains(PreferredOpenAIService))
-                PreferredOpenAIService = "---";
+                PreferredOpenAIService = serviceNoneText;
+
+            // 使用存储值判断，而不是 getter 返回的本地化文本
+            var storedService = _repo.Settings.PreferredOpenAIService;
+            var models = GetModelsForService(storedService);
+            if (models.Count > 0)
+                models.Insert(0, modelNoneText);
+
+            AvailableAIModels = models;
+            IsModelSelectorEnabled = models.Count > 0;
+
+            if (!AvailableAIModels.Contains(PreferredAIModel))
+                PreferredAIModel = modelNoneText;
 
             _cached = new Commands.Config(repo.FullPath).ReadAll();
             if (_cached.TryGetValue("user.name", out var name))
@@ -347,9 +426,24 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private List<string> GetModelsForService(string serviceName)
+        {
+            if (string.IsNullOrEmpty(serviceName))
+                return [];
+
+            foreach (var service in Preferences.Instance.OpenAIServices)
+            {
+                if (service.Name == serviceName)
+                    return new List<string>(service.AvailableModels);
+            }
+            return [];
+        }
+
         private readonly Repository _repo;
         private readonly Dictionary<string, string> _cached;
         private string _httpProxy;
+        private bool _isModelSelectorEnabled;
+        private List<string> _availableAIModels = [];
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTracker _selectedIssueTracker = null;
         private Models.CustomAction _selectedCustomAction = null;

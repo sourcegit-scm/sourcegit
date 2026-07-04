@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.ClientModel;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
@@ -35,23 +34,16 @@ namespace SourceGit.AI
             set;
         } = false;
 
-        [JsonIgnore]
         public List<string> AvailableModels
         {
-            get;
-            private set;
-        } = [];
+            get => _availableModels;
+            set => SetProperty(ref _availableModels, value);
+        }
 
         public string Model
         {
             get => _model;
             set => SetProperty(ref _model, value);
-        }
-
-        public bool AutoFetchAvailableModels
-        {
-            get => _autoFetchAvailableModels;
-            set => SetProperty(ref _autoFetchAvailableModels, value);
         }
 
         public string AdditionalPrompt
@@ -60,27 +52,51 @@ namespace SourceGit.AI
             set;
         } = string.Empty;
 
-        public void FetchAvailableModels()
+        public void AddModel(string model)
         {
-            if (!_autoFetchAvailableModels)
+            if (!_availableModels.Contains(model))
             {
-                if (!string.IsNullOrEmpty(Model))
-                    AvailableModels = [Model];
-                return;
+                var newList = new List<string>(_availableModels) { model };
+                AvailableModels = newList;
             }
+        }
 
+        public void RemoveModel(string model)
+        {
+            if (_availableModels.Contains(model))
+            {
+                var newList = new List<string>(_availableModels);
+                newList.Remove(model);
+                AvailableModels = newList;
+            }
+        }
+
+        public List<string> FetchModelsFromServer()
+        {
             var allModels = GetOpenAIClient().GetOpenAIModelClient().GetModels();
-            AvailableModels = new List<string>();
+            var result = new List<string>();
             foreach (var model in allModels.Value)
-                AvailableModels.Add(model.Id);
-
-            if (AvailableModels.Count > 0 && (string.IsNullOrEmpty(Model) || !AvailableModels.Contains(Model)))
-                Model = AvailableModels[0];
+                result.Add(model.Id);
+            return result;
         }
 
         public ChatClient GetChatClient()
         {
             return !string.IsNullOrEmpty(Model) ? GetOpenAIClient().GetChatClient(Model) : null;
+        }
+
+        public Service Clone()
+        {
+            return new Service
+            {
+                Name = Name,
+                Server = Server,
+                ApiKey = ApiKey,
+                ReadApiKeyFromEnv = ReadApiKeyFromEnv,
+                Model = Model,
+                AdditionalPrompt = AdditionalPrompt,
+                AvailableModels = new List<string>(AvailableModels),
+            };
         }
 
         private OpenAIClient GetOpenAIClient()
@@ -93,6 +109,6 @@ namespace SourceGit.AI
 
         private string _name = string.Empty;
         private string _model = string.Empty;
-        private bool _autoFetchAvailableModels = true;
+        private List<string> _availableModels = [];
     }
 }
