@@ -6,6 +6,7 @@
 *.user
 *.suo
 *.code-workspace
+*.tss
 
 .DS_Store
 .DocumentRevisions-V100
