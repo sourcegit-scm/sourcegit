@@ -838,8 +838,12 @@
             <Border Grid.Column="0"
                     BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                     Background="{DynamicResource Brush.Contents}">
-              <Grid RowDefinitions="*,1,Auto">
-                <ListBox Grid.Row="0"
+              <Grid RowDefinitions="Auto,*,1,Auto">
+                <TextBlock Grid.Row="0"
+                           Text="{DynamicResource Text.Preferences.AI.Services}"
+                           FontSize="12" FontWeight="SemiBold"
+                           Margin="8,4,0,4"/>
+                <ListBox Grid.Row="1"
                          Background="Transparent"
                          ItemsSource="{Binding OpenAIServices}"
                          SelectedItem="{Binding #ThisControl.SelectedOpenAIService, Mode=TwoWay}"
@@ -868,9 +872,9 @@
                   </ListBox.ItemTemplate>
                 </ListBox>
 
-                <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
+                <Rectangle Grid.Row="2" Height="1" Fill="{DynamicResource Brush.Border2}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"/>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
                   <Button Classes="icon_button" Click="OnAddOpenAIService">
                     <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
                   </Button>
@@ -897,7 +901,8 @@
 
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="ai:Service">
-                  <StackPanel Orientation="Vertical" MaxWidth="680">
+                  <ScrollViewer MaxHeight="500" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Vertical" MaxWidth="680">
                     <TextBlock Text="{DynamicResource Text.Preferences.AI.Name}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
@@ -912,25 +917,82 @@
                               IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
-                    <TextBox Margin="0,4,0,0"
-                             CornerRadius="3"
-                             Height="28"
-                             Text="{Binding Model, Mode=TwoWay}"
-                             IsEnabled="{Binding !AutoFetchAvailableModels, Mode=OneWay}"/>
-                    <CheckBox Margin="0,4,0,0"
-                              Height="28"
-                              Content="{DynamicResource Text.Preferences.AI.Model.AutoFetchAvailableModels}"
-                              IsChecked="{Binding AutoFetchAvailableModels, Mode=TwoWay}"/>
+                    <Border Margin="0,4,0,0"
+                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                            Background="{DynamicResource Brush.Contents}"
+                            MinHeight="80">
+                      <ListBox x:Name="AIModelListBox"
+                               Background="Transparent"
+                               ScrollViewer.VerticalScrollBarVisibility="Auto"
+                               ItemsSource="{Binding AvailableModels}"
+                               SelectedValue="{Binding Model, Mode=TwoWay}"
+                               SelectedValueBinding="{Binding}"
+                               SelectionMode="Single">
+                        <ListBox.Styles>
+                          <Style Selector="ListBoxItem">
+                            <Setter Property="MinHeight" Value="0"/>
+                            <Setter Property="Height" Value="26"/>
+                            <Setter Property="Padding" Value="4,2"/>
+                          </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                          <DataTemplate>
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                              <TextBlock Grid.Column="0" Text="{Binding}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                              <Button Grid.Column="1"
+                                      Classes="icon_button"
+                                      Tag="{Binding}"
+                                      Click="OnEditAIModelInList">
+                                <Path Width="8" Height="8" Data="{StaticResource Icons.Edit}"/>
+                              </Button>
+                              <Button Grid.Column="2"
+                                      Classes="icon_button"
+                                      Tag="{Binding}"
+                                      Click="OnRemoveAIModelInList">
+                                <Path Width="8" Height="8" Data="{StaticResource Icons.Close}"/>
+                              </Button>
+                            </Grid>
+                          </DataTemplate>
+                        </ListBox.ItemTemplate>
+                      </ListBox>
+                    </Border>
+                    <Border Margin="0,4,0,0"
+                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+                            CornerRadius="3"
+                            HorizontalAlignment="Left"
+                            Background="{DynamicResource Brush.Contents}">
+                      <Grid ColumnDefinitions="Auto,Auto,Auto">
+                        <Button Grid.Column="0"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Left"
+                                Click="OnFetchAIModels">
+                          <StackPanel Orientation="Horizontal">
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.Fetch}" Margin="0,0,6,0"/>
+                            <TextBlock Text="{DynamicResource Text.Preferences.AI.Model.FetchModels}"/>
+                          </StackPanel>
+                        </Button>
+                        <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource Brush.Border2}" Margin="0,4"/>
+                        <Button Grid.Column="2"
+                                Classes="icon_button"
+                                Click="OnAddAIModel"
+                                ToolTip.Tip="{DynamicResource Text.Preferences.AI.Model.AddModel}">
+                          <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+                        </Button>
+                      </Grid>
+                    </Border>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AdditionalPrompt}"/>
-                    <TextBox Height="120"
+                    <TextBox MinHeight="60"
                              Margin="0,4,0,0"
                              CornerRadius="3"
                              VerticalContentAlignment="Top"
                              Text="{Binding AdditionalPrompt, Mode=TwoWay}"
                              AcceptsReturn="true"
-                             TextWrapping="Wrap"/>
-                  </StackPanel>
+                              TextWrapping="Wrap"/>
+                    </StackPanel>
+                  </ScrollViewer>
                 </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>

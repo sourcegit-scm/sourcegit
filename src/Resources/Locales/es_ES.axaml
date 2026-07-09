@@ -21,10 +21,10 @@
   <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Qué Checkout:</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Crear Nueva Rama</x:String>
   <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Rama Existente</x:String>
-  <x:String x:Key="Text.AIAssistant" xml:space="preserve">Asistente OpenAI</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">Asistente AI</x:String>
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERAR</x:String>
-  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar OpenAI para generar mensaje de commit</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Usar AI para generar mensaje de commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Usar</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Ocultar SourceGit</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Ocultar Otros</x:String>
@@ -273,9 +273,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Compartir esta regla en el archivo .issuetracker</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL Resultante:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Por favor, use $1, $2 para acceder a los valores de los grupos regex.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">OPEN AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Servicio Preferido:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">OPEN AI</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">Servicio Preferido:</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">Si el 'Servicio Preferido' está establecido, SourceGit sólo lo usará en este repositorio. De lo contrario, si hay más de un servicio disponible, se mostrará un menú de contexto para elegir uno.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP utilizado por este repositorio</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nombre del Usuario</x:String>
@@ -659,7 +659,6 @@
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt adicional (Usa `-` para listar tus requerimientos)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clave API</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Traer automáticamente los model-ids disponibles</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nombre</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">El valor ingresado es el nombre de la clave API a cargar desde ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>

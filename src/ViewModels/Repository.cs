@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -1583,26 +1583,33 @@ namespace SourceGit.ViewModels
             log.Complete();
         }
 
-        public List<AI.Service> GetPreferredOpenAIServices()
+        public List<AI.Service> GetAllOpenAIServices()
         {
-            var services = Preferences.Instance.OpenAIServices;
-            if (services == null || services.Count == 0)
-                return [];
+            return new List<AI.Service>(Preferences.Instance.OpenAIServices ?? []);
+        }
 
-            if (services.Count == 1)
-                return [services[0]];
+        public (string Service, string Model) GetOpenAIConfig()
+        {
+            return (_settings.PreferredOpenAIService, _settings.PreferredAIModel);
+        }
 
-            var preferred = _settings.PreferredOpenAIService;
-            var all = new List<AI.Service>();
-            foreach (var service in services)
-            {
-                if (service.Name.Equals(preferred, StringComparison.Ordinal))
-                    return [service];
+        public AI.Service ResolveAIService()
+        {
+            var allServices = GetAllOpenAIServices();
+            var (preferredServiceName, preferredModelName) = GetOpenAIConfig();
 
-                all.Add(service);
-            }
+            if (string.IsNullOrEmpty(preferredServiceName) || allServices.Count == 0)
+                return null;
 
-            return all;
+            var service = allServices.Find(s => s.Name == preferredServiceName);
+            if (service == null)
+                return null;
+
+            var resolved = service.Clone();
+            if (!string.IsNullOrEmpty(preferredModelName))
+                resolved.Model = preferredModelName;
+
+            return resolved;
         }
 
         public void DiscardAllChanges()

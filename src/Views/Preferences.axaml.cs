@@ -222,7 +222,6 @@ namespace SourceGit.Views
             }
 
             var preferences = ViewModels.Preferences.Instance;
-            preferences.UpdateAvailableAIModels();
             preferences.Save();
         }
 
@@ -435,6 +434,108 @@ namespace SourceGit.Views
 
             ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
+            e.Handled = true;
+        }
+
+        private async void OnFetchAIModels(object sender, RoutedEventArgs e)
+        {
+            if (SelectedOpenAIService == null)
+                return;
+
+            var dialog = new FetchAIModels();
+            dialog.LoadModels(SelectedOpenAIService);
+            await this.ShowDialogAsync(dialog);
+
+            var serverSet = new HashSet<string>(dialog.ServerModels);
+            var customModels = new List<string>();
+            foreach (var model in SelectedOpenAIService.AvailableModels)
+            {
+                if (!serverSet.Contains(model))
+                    customModels.Add(model);
+            }
+
+            var newList = new List<string>(dialog.SelectedModels);
+            foreach (var model in customModels)
+            {
+                if (!newList.Contains(model))
+                    newList.Add(model);
+            }
+
+            SelectedOpenAIService.AvailableModels = newList;
+
+            if (string.IsNullOrEmpty(SelectedOpenAIService.Model) && SelectedOpenAIService.AvailableModels.Count > 0)
+                SelectedOpenAIService.Model = SelectedOpenAIService.AvailableModels[0];
+
+            e.Handled = true;
+        }
+
+        private async void OnAddAIModel(object sender, RoutedEventArgs e)
+        {
+            if (SelectedOpenAIService == null)
+                return;
+
+            var dialog = new TextInput();
+            dialog.SetData(App.Text("Preferences.AI.Model.AddModel"));
+            await this.ShowDialogAsync(dialog);
+
+            if (dialog.Value != null && !string.IsNullOrWhiteSpace(dialog.Value))
+            {
+                var model = dialog.Value.Trim();
+                SelectedOpenAIService.AddModel(model);
+
+                if (string.IsNullOrEmpty(SelectedOpenAIService.Model))
+                    SelectedOpenAIService.Model = model;
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnRemoveAIModelInList(object sender, RoutedEventArgs e)
+        {
+            if (SelectedOpenAIService == null)
+                return;
+
+            if (sender is Button btn && btn.Tag is string model)
+            {
+                SelectedOpenAIService.RemoveModel(model);
+
+                if (SelectedOpenAIService.Model == model)
+                {
+                    if (SelectedOpenAIService.AvailableModels.Count > 0)
+                        SelectedOpenAIService.Model = SelectedOpenAIService.AvailableModels[0];
+                    else
+                        SelectedOpenAIService.Model = string.Empty;
+                }
+            }
+
+            e.Handled = true;
+        }
+
+        private async void OnEditAIModelInList(object sender, RoutedEventArgs e)
+        {
+            if (SelectedOpenAIService == null)
+                return;
+
+            if (sender is Button btn && btn.Tag is string oldModel)
+            {
+                var dialog = new TextInput();
+                dialog.SetData(App.Text("Preferences.AI.Model.AddModel"), oldModel);
+                await this.ShowDialogAsync(dialog);
+
+                if (dialog.Value != null && !string.IsNullOrWhiteSpace(dialog.Value))
+                {
+                    var newModel = dialog.Value.Trim();
+                    if (newModel != oldModel)
+                    {
+                        SelectedOpenAIService.RemoveModel(oldModel);
+                        SelectedOpenAIService.AddModel(newModel);
+
+                        if (SelectedOpenAIService.Model == oldModel)
+                            SelectedOpenAIService.Model = newModel;
+                    }
+                }
+            }
+
             e.Handled = true;
         }
 

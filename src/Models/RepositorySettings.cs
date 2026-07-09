@@ -46,7 +46,13 @@ namespace SourceGit.Models
         {
             get;
             set;
-        } = "---";
+        } = "";
+
+        public string PreferredAIModel
+        {
+            get;
+            set;
+        } = string.Empty;
 
         public AvaloniaList<CommitTemplate> CommitTemplates
         {

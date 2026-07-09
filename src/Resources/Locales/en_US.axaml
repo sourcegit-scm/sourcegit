@@ -3,6 +3,7 @@
   <x:String x:Key="Text.About.Menu" xml:space="preserve">About SourceGit</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Release Date: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Release Notes</x:String>
+  <x:String x:Key="Text.Add" xml:space="preserve">Add</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Opensource &amp; Free Git GUI Client</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Add File(s) To Ignore</x:String>
   <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Pattern:</x:String>
@@ -269,9 +270,12 @@
   <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Share this rule in .issuetracker file</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">Result URL:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Please use $1, $2 to access regex groups values.</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Preferred Service:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">If the 'Preferred Service' is set, SourceGit will only use it in this repository. Otherwise, if there is more than one service available, a context menu to choose one of them will be shown.</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">Default Service:</x:String>
+  <x:String x:Key="Text.Configure.AI.PreferredModel" xml:space="preserve">Default Model:</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">If set, SourceGit will use this service and model directly for AI commit message generation in this repository. Otherwise, a selection menu will be shown.</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.None" xml:space="preserve">(None)</x:String>
+  <x:String x:Key="Text.Configure.AI.PreferredModel.None" xml:space="preserve">(None)</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy used by this repository</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">User Name</x:String>
@@ -655,10 +659,15 @@
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Additional Prompt (Use `-` to list your requirements)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Fetch available model-ids automatically</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AddModel" xml:space="preserve">Add Model</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.FetchModels" xml:space="preserve">Fetch Models</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.Fetching" xml:space="preserve">Fetching models...</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.RemoveModel" xml:space="preserve">Remove Model</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.SelectModels" xml:space="preserve">Select Models</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Name</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Entered value is the name to load API key from ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
+  <x:String x:Key="Text.Preferences.AI.Services" xml:space="preserve">AI Services</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPEARANCE</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Editor Tab Width</x:String>

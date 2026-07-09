@@ -7,6 +7,7 @@
   <x:String x:Key="Text.About.Menu" xml:space="preserve">关于本软件</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">发布日期：{0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">浏览版本更新说明</x:String>
+  <x:String x:Key="Text.Add" xml:space="preserve">添加</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">开源免费的Git客户端</x:String>
   <x:String x:Key="Text.AddToIgnore" xml:space="preserve">新增忽略文件</x:String>
   <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">匹配模式 ：</x:String>
@@ -273,9 +274,12 @@
   <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">写入 .issuetracker 文件共享此规则</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">为ISSUE生成的URL链接 ：</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">可在URL中使用$1，$2等变量填入正则表达式匹配的内容</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">启用特定服务 ：</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">当【启用特定服务】被设置时，SourceGit将在本仓库中仅使用该服务。否则将弹出可用的AI服务列表供用户选择。</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">默认模型服务：</x:String>
+  <x:String x:Key="Text.Configure.AI.PreferredModel" xml:space="preserve">默认模型 ：</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">设置后，SourceGit将在本仓库中直接使用该服务和模型生成提交信息，否则将弹出选择菜单。</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.None" xml:space="preserve">(无)</x:String>
+  <x:String x:Key="Text.Configure.AI.PreferredModel.None" xml:space="preserve">(无)</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP代理</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP网络代理</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">用户名</x:String>
@@ -659,10 +663,15 @@
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">附加提示词 (请使用 `-` 列出您的要求)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">自动拉取可用模型列表</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AddModel" xml:space="preserve">添加模型</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.FetchModels" xml:space="preserve">获取模型列表</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.Fetching" xml:space="preserve">正在获取模型列表...</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.RemoveModel" xml:space="preserve">删除模型</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.SelectModels" xml:space="preserve">选择模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
+  <x:String x:Key="Text.Preferences.AI.Services" xml:space="preserve">模型服务</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">编辑器制表符宽度</x:String>

@@ -1,0 +1,92 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="500"
+                    x:Class="SourceGit.Views.FetchAIModels"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.Preferences.AI.Model.SelectModels}"
+                    Width="400" Height="500"
+                    CanResize="True"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*,Auto,Auto">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.Preferences.AI.Model.SelectModels}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- Loading indicator -->
+    <StackPanel Grid.Row="1"
+                x:Name="LoadingPanel"
+                Margin="16"
+                IsVisible="True"
+                Orientation="Vertical"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+      <ProgressBar IsIndeterminate="True" Width="200" Height="4"/>
+      <TextBlock Margin="0,8,0,0"
+                 Text="{DynamicResource Text.Preferences.AI.Model.Fetching}"
+                 HorizontalAlignment="Center"/>
+    </StackPanel>
+
+    <!-- Model list -->
+    <Border Grid.Row="1" Margin="16,0,16,0"
+            x:Name="ModelListBorder"
+            IsVisible="False"
+            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+            Background="{DynamicResource Brush.Contents}">
+      <ListBox x:Name="ModelListBox"
+               Background="Transparent">
+        <ListBox.Styles>
+          <Style Selector="ListBoxItem">
+            <Setter Property="MinHeight" Value="0"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Padding" Value="4,2"/>
+          </Style>
+        </ListBox.Styles>
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="v:FetchAIModelItem">
+            <CheckBox Content="{Binding Name}"
+                      IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+
+    <!-- Error message -->
+    <TextBlock Grid.Row="2"
+               x:Name="ErrorMessage"
+               Margin="16,0,16,0"
+               IsVisible="False"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Brush.FG1}"/>
+
+    <!-- Buttons -->
+    <StackPanel Grid.Row="3" Margin="0,16,0,16" Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button Classes="flat"
+              Width="80" Height="30"
+              Margin="4,0"
+              Content="{DynamicResource Text.Cancel}"
+              Click="OnCancel"/>
+
+      <Button Classes="flat primary"
+              Width="80" Height="30"
+              Margin="4,0"
+              Content="{DynamicResource Text.Sure}"
+              Click="OnAdd"/>
+    </StackPanel>
+  </Grid>
+</v:ChromelessWindow>

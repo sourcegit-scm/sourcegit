@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Avalonia;
@@ -649,7 +650,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenOpenAIHelper(object sender, RoutedEventArgs e)
+        private void OnOpenAIHelper(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.WorkingCopy vm && sender is Button button && _showAdvancedOptions)
             {
@@ -662,43 +663,59 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var services = repo.GetPreferredOpenAIServices();
-                if (services.Count == 0)
+                var resolved = repo.ResolveAIService();
+                if (resolved != null)
                 {
-                    repo.SendNotification("Bad configuration for OpenAI", true);
-                    e.Handled = true;
-                    return;
+                    DoOpenAIAssistant(repo, resolved, vm.Staged);
                 }
-
-                if (services.Count == 1)
+                else
                 {
-                    DoOpenAIAssistant(repo, services[0], vm.Staged);
-                    e.Handled = true;
-                    return;
-                }
-
-                var menu = new ContextMenu();
-                foreach (var service in services)
-                {
-                    var dup = service;
-                    var item = new MenuItem();
-                    item.Header = service.Name;
-                    item.Click += (_, ev) =>
+                    var allServices = repo.GetAllOpenAIServices();
+                    if (allServices.Count == 0)
                     {
-                        DoOpenAIAssistant(repo, dup, vm.Staged);
-                        ev.Handled = true;
-                    };
-
-                    menu.Items.Add(item);
+                        repo.SendNotification("Bad configuration for AI", true);
+                    }
+                    else
+                    {
+                        ShowOpenAIServicesMenu(repo, allServices, vm.Staged, button);
+                    }
                 }
-
-                button.IsEnabled = false;
-                menu.Placement = PlacementMode.TopEdgeAlignedLeft;
-                menu.Closed += (_, _) => button.IsEnabled = true;
-                menu.Open(button);
             }
 
             e.Handled = true;
+        }
+
+        private void ShowOpenAIServicesMenu(ViewModels.Repository repo, List<AI.Service> services, List<Models.Change> changes, Button button)
+        {
+            var menu = new ContextMenu();
+            foreach (var service in services)
+            {
+                var item = new MenuItem();
+                item.Header = service.Name;
+
+                foreach (var model in service.AvailableModels)
+                {
+                    var dup = service;
+                    var dupModel = model;
+                    var modelItem = new MenuItem();
+                    modelItem.Header = dupModel;
+                    modelItem.Click += (_, ev) =>
+                    {
+                        var cloned = dup.Clone();
+                        cloned.Model = dupModel;
+                        DoOpenAIAssistant(repo, cloned, changes);
+                        ev.Handled = true;
+                    };
+                    item.Items.Add(modelItem);
+                }
+
+                menu.Items.Add(item);
+            }
+
+            button.IsEnabled = false;
+            menu.Placement = PlacementMode.TopEdgeAlignedLeft;
+            menu.Closed += (_, _) => button.IsEnabled = true;
+            menu.Open(button);
         }
 
         private void OnOpenConventionalCommitHelper(object _, RoutedEventArgs e)

@@ -273,9 +273,9 @@
   <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">このルールを .issuetracker ファイルで共有</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">最終的な URL:</x:String>
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">正規表現のグループ値は $1, $2 で取得してください。</x:String>
-  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">優先するサービス:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">'優先するサービス' を設定すると、このリポジトリではそのサービスのみを使用するようになります。そうでなければ、複数のサービスが存在する場合に限り、その中からひとつを選択できるコンテキストメニューが表示されます。</x:String>
+  <x:String x:Key="Text.Configure.AI" xml:space="preserve">AI</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService" xml:space="preserve">優先するサービス:</x:String>
+  <x:String x:Key="Text.Configure.AI.DefaultService.Tip" xml:space="preserve">'優先するサービス' を設定すると、このリポジトリではそのサービスのみを使用するようになります。そうでなければ、複数のサービスが存在する場合に限り、その中からひとつを選択できるコンテキストメニューが表示されます。</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP プロキシ</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">このリポジトリで使用する HTTP プロキシ</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">ユーザー名</x:String>
@@ -659,7 +659,6 @@
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">追加のプロンプト (`-` で必要事項を羅列してください)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API キー</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">モデル</x:String>
-  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">利用できるモデル ID を自動的に取得</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名前</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">この値を環境変数の名前とし、そこから API キーを読み込む</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>
