@@ -193,12 +193,24 @@
 
           <!-- Summary -->
           <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1,0,1,1" Background="Transparent">
-            <TextBlock Margin="4,0,0,0"
-                       Foreground="{DynamicResource Brush.FG2}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center">
-              <Run Text="{Binding TotalChanges, Mode=OneWay}" FontWeight="Bold"/>
-              <Run Text="{DynamicResource Text.CommitDetail.Changes.Count}"/>
-            </TextBlock>
+            <StackPanel Orientation="Horizontal" Margin="4,0,0,0" VerticalAlignment="Center">
+              <TextBlock Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Run Text="{Binding TotalChanges, Mode=OneWay}" FontWeight="Bold"/>
+                <Run Text="{DynamicResource Text.CommitDetail.Changes.Count}"/>
+              </TextBlock>
+              <TextBlock FontSize="11"
+                         Margin="12,0,0,0"
+                         Foreground="Green"
+                         Text="{Binding TotalAddedLines, StringFormat=+{0}}"
+                         IsVisible="{Binding TotalAddedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                         VerticalAlignment="Center"/>
+              <TextBlock FontSize="11"
+                         Margin="4,0,0,0"
+                         Foreground="Red"
+                         Text="{Binding TotalDeletedLines, StringFormat=-{0}}"
+                         IsVisible="{Binding TotalDeletedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                         VerticalAlignment="Center"/>
+            </StackPanel>
           </Border>
         </Grid>
 

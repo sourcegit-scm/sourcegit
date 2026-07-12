@@ -59,6 +59,18 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _totalChanges, value);
         }
 
+        public int TotalAddedLines
+        {
+            get => _totalAddedLines;
+            private set => SetProperty(ref _totalAddedLines, value);
+        }
+
+        public int TotalDeletedLines
+        {
+            get => _totalDeletedLines;
+            private set => SetProperty(ref _totalDeletedLines, value);
+        }
+
         public List<Models.Change> VisibleChanges
         {
             get => _visibleChanges;
@@ -350,9 +362,20 @@ namespace SourceGit.ViewModels
         {
             Task.Run(async () =>
             {
-                _changes = await new Commands.CompareRevisions(_repo.FullPath, GetSHA(_startPoint), GetSHA(_endPoint))
+                var startSHA = GetSHA(_startPoint);
+                var endSHA = GetSHA(_endPoint);
+                _changes = await new Commands.CompareRevisions(_repo.FullPath, startSHA, endSHA)
                     .ReadAsync()
                     .ConfigureAwait(false);
+
+                var pref = Preferences.Instance;
+                var stats = await new Commands.QueryDiffLineStats(
+                        _repo.FullPath,
+                        startSHA,
+                        endSHA,
+                        pref.IgnoreWhitespaceChangesInDiff,
+                        pref.IgnoreCRAtEOLInDiff)
+                    .GetResultAsync().ConfigureAwait(false);
 
                 var visible = _changes;
                 if (!string.IsNullOrWhiteSpace(_searchFilter))
@@ -368,6 +391,8 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     TotalChanges = _changes.Count;
+                    TotalAddedLines = stats.added;
+                    TotalDeletedLines = stats.deleted;
                     VisibleChanges = visible;
                     IsLoading = false;
 
@@ -394,6 +419,8 @@ namespace SourceGit.ViewModels
         private object _startPoint = null;
         private object _endPoint = null;
         private int _totalChanges = 0;
+        private int _totalAddedLines = 0;
+        private int _totalDeletedLines = 0;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
         private List<Models.Change> _selectedChanges = null;
