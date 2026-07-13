@@ -36,28 +36,36 @@ namespace SourceGit.Views
 
     public class RevisionTreeNodeIcon : UserControl
     {
-        public static readonly StyledProperty<ViewModels.RevisionFileTreeNode> NodeProperty =
-            AvaloniaProperty.Register<RevisionTreeNodeIcon, ViewModels.RevisionFileTreeNode>(nameof(Node));
+        public static readonly DirectProperty<RevisionTreeNodeIcon, ViewModels.RevisionFileTreeNode> NodeProperty =
+            AvaloniaProperty.RegisterDirect<RevisionTreeNodeIcon, ViewModels.RevisionFileTreeNode>(
+                nameof(Node),
+                static o => o.Node,
+                static (o, v) => o.Node = v);
 
         public ViewModels.RevisionFileTreeNode Node
         {
-            get => GetValue(NodeProperty);
-            set => SetValue(NodeProperty, value);
+            get => _node;
+            set => SetAndRaise(NodeProperty, ref _node, value);
         }
 
-        public static readonly StyledProperty<bool> IsExpandedProperty =
-            AvaloniaProperty.Register<RevisionTreeNodeIcon, bool>(nameof(IsExpanded));
+        public static readonly DirectProperty<RevisionTreeNodeIcon, bool> IsExpandedProperty =
+            AvaloniaProperty.RegisterDirect<RevisionTreeNodeIcon, bool>(
+                nameof(IsExpanded),
+                static o => o.IsExpanded,
+                static (o, v) => o.IsExpanded = v);
 
         public bool IsExpanded
         {
-            get => GetValue(IsExpandedProperty);
-            set => SetValue(IsExpandedProperty, value);
+            get => _isExpanded;
+            set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
         }
 
-        static RevisionTreeNodeIcon()
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
-            NodeProperty.Changed.AddClassHandler<RevisionTreeNodeIcon>((icon, _) => icon.UpdateContent());
-            IsExpandedProperty.Changed.AddClassHandler<RevisionTreeNodeIcon>((icon, _) => icon.UpdateContent());
+            base.OnPropertyChanged(change);
+
+            if (change.Property == NodeProperty || change.Property == IsExpandedProperty)
+                UpdateContent();
         }
 
         private void UpdateContent()
@@ -105,9 +113,12 @@ namespace SourceGit.Views
 
             Content = icon;
         }
+
+        private ViewModels.RevisionFileTreeNode _node = null;
+        private bool _isExpanded = false;
     }
 
-    public class RevisionFileRowsListBox : ListBox
+    public class RevisionFileRowsListBox : ListBoxEx
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
 
@@ -116,7 +127,7 @@ namespace SourceGit.Views
             if (e.Key == Key.F && e.KeyModifiers == (OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
                 var panel = this.FindAncestorOfType<RevisionFileTreeView>();
-                panel.RaiseEvent(new RoutedEventArgs(RevisionFileTreeView.SearchRequestedEvent));
+                panel?.RaiseEvent(new RoutedEventArgs(RevisionFileTreeView.SearchRequestedEvent));
                 e.Handled = true;
                 return;
             }
@@ -206,13 +217,6 @@ namespace SourceGit.Views
                 base.OnKeyDown(e);
         }
 
-        private void Select(object item)
-        {
-            SelectedItem = item;
-            ScrollIntoView(item);
-            ContainerFromItem(item)?.Focus();
-        }
-
         private ViewModels.RevisionFileTreeNode FindParent(ViewModels.RevisionFileTreeNode item)
         {
             if (item.Depth == 0)
@@ -234,13 +238,16 @@ namespace SourceGit.Views
 
     public partial class RevisionFileTreeView : UserControl
     {
-        public static readonly StyledProperty<string> RevisionProperty =
-            AvaloniaProperty.Register<RevisionFileTreeView, string>(nameof(Revision));
+        public static readonly DirectProperty<RevisionFileTreeView, string> RevisionProperty =
+            AvaloniaProperty.RegisterDirect<RevisionFileTreeView, string>(
+                nameof(Revision),
+                static o => o.Revision,
+                static (o, v) => o.Revision = v);
 
         public string Revision
         {
-            get => GetValue(RevisionProperty);
-            set => SetValue(RevisionProperty, value);
+            get => _revision;
+            set => SetAndRaise(RevisionProperty, ref _revision, value);
         }
 
         public AvaloniaList<ViewModels.RevisionFileTreeNode> Rows { get; } = [];
@@ -389,7 +396,7 @@ namespace SourceGit.Views
             {
                 var menu = obj.Type switch
                 {
-                    Models.ObjectType.Tree => CreateRevisionFileContextMenuByFolder(repo, vm, commit, obj.Path),
+                    Models.ObjectType.Tree => CreateRevisionFileContextMenuByFolder(repo, commit, obj.Path),
                     _ => CreateRevisionFileContextMenu(repo, vm, commit, obj),
                 };
                 menu.Open(grid);
@@ -502,7 +509,7 @@ namespace SourceGit.Views
             _isReloadingTreeData = false;
         }
 
-        private ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, ViewModels.CommitDetail vm, Models.Commit commit, string path)
+        private ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, Models.Commit commit, string path)
         {
             var fullPath = Native.OS.GetAbsPath(repo.FullPath, path);
             var explore = new MenuItem();
@@ -800,6 +807,7 @@ namespace SourceGit.Views
             return menu;
         }
 
+        private string _revision = string.Empty;
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
         private bool _disableSelectionChangingEvent = false;
         private List<ViewModels.RevisionFileTreeNode> _searchResult = [];

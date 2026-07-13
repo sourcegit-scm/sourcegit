@@ -126,12 +126,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool HighlightCurrentBranchOnlyInHistory
-        {
-            get => _histories.HighlightCurrentBranchOnly;
-            set => _histories.HighlightCurrentBranchOnly = value;
-        }
-
         public string Filter
         {
             get => _filter;
@@ -168,7 +162,7 @@ namespace SourceGit.ViewModels
                 var oldHead = _currentBranch?.Head;
                 if (SetProperty(ref _currentBranch, value))
                 {
-                    _histories.NotifyCurrentBranchChanged();
+                    _histories?.NotifyCurrentBranchChanged();
                     if (value != null && !value.Head.Equals(oldHead, StringComparison.Ordinal) && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
                 }
@@ -458,13 +452,13 @@ namespace SourceGit.ViewModels
             {
                 _gitCommonDir = GitDir;
             }
+
+            _settings = Models.RepositorySettings.Get(_gitCommonDir);
+            _uiStates = Models.RepositoryUIStates.Load(GitDir);
         }
 
         public void Open()
         {
-            _settings = Models.RepositorySettings.Get(_gitCommonDir);
-            _uiStates = Models.RepositoryUIStates.Load(GitDir);
-
             try
             {
                 _watcher = new Models.Watcher(this, FullPath, _gitCommonDir);
@@ -542,8 +536,8 @@ namespace SourceGit.ViewModels
         public bool IsGitFlowEnabled()
         {
             return GitFlow is { IsValid: true } &&
-                _branches.Find(x => x.IsLocal && x.Name.Equals(GitFlow.Master, StringComparison.Ordinal)) != null &&
-                _branches.Find(x => x.IsLocal && x.Name.Equals(GitFlow.Develop, StringComparison.Ordinal)) != null;
+                _branches.Find(x => x.IsLocal && x.Name.Equals(GitFlow.ProductionBranch, StringComparison.Ordinal)) != null &&
+                _branches.Find(x => x.IsLocal && x.Name.Equals(GitFlow.DevelopmentBranch, StringComparison.Ordinal)) != null;
         }
 
         public Models.GitFlowBranchType GetGitFlowType(Models.Branch b)
@@ -660,17 +654,7 @@ namespace SourceGit.ViewModels
 
                 var config = await new Commands.Config(FullPath).ReadAllAsync().ConfigureAwait(false);
                 _hasAllowedSignersFile = config.TryGetValue("gpg.ssh.allowedsignersfile", out var allowedSignersFile) && !string.IsNullOrEmpty(allowedSignersFile);
-
-                if (config.TryGetValue("gitflow.branch.master", out var masterName))
-                    GitFlow.Master = masterName;
-                if (config.TryGetValue("gitflow.branch.develop", out var developName))
-                    GitFlow.Develop = developName;
-                if (config.TryGetValue("gitflow.prefix.feature", out var featurePrefix))
-                    GitFlow.FeaturePrefix = featurePrefix;
-                if (config.TryGetValue("gitflow.prefix.release", out var releasePrefix))
-                    GitFlow.ReleasePrefix = releasePrefix;
-                if (config.TryGetValue("gitflow.prefix.hotfix", out var hotfixPrefix))
-                    GitFlow.HotfixPrefix = hotfixPrefix;
+                GitFlow.Parse(config);
             });
         }
 
@@ -777,6 +761,7 @@ namespace SourceGit.ViewModels
             _watcher?.MarkBranchUpdated();
             _watcher?.MarkWorkingCopyUpdated();
 
+            _branches.RemoveAll(b => b.IsLocal && b.Name.Equals(created.Name, StringComparison.Ordinal));
             _branches.Add(created);
 
             if (checkout)
@@ -804,15 +789,21 @@ namespace SourceGit.ViewModels
                 CurrentBranch = created;
             }
 
-            List<Models.Branch> locals = [];
+            var locals = new List<Models.Branch>();
+            var count = 0;
             foreach (var b in _branches)
             {
                 if (b.IsLocal)
+                {
                     locals.Add(b);
+                    if (!b.IsDetachedHead)
+                        count++;
+                }
             }
 
-            var builder = BuildBranchTree(locals, []);
+            var builder = BuildBranchTree(locals, [], false);
             LocalBranchTrees = builder.Locals;
+            LocalBranchesCount = count;
 
             RefreshCommits();
             RefreshWorkingCopyChanges();
@@ -846,7 +837,7 @@ namespace SourceGit.ViewModels
                     locals.Add(b);
             }
 
-            var builder = BuildBranchTree(locals, []);
+            var builder = BuildBranchTree(locals, [], false);
             LocalBranchTrees = builder.Locals;
             CurrentBranch = checkouted;
 
@@ -862,8 +853,28 @@ namespace SourceGit.ViewModels
             var newFullName = $"refs/heads/{newName}";
             _uiStates.RenameBranchFilter(b.FullName, newFullName);
 
-            b.Name = newName;
-            b.FullName = newFullName;
+            var renamed = new Models.Branch
+            {
+                Name = newName,
+                FullName = newFullName,
+                CommitterDate = b.CommitterDate,
+                Head = b.Head,
+                IsLocal = b.IsLocal,
+                IsCurrent = b.IsCurrent,
+                IsDetachedHead = b.IsDetachedHead,
+                Upstream = b.Upstream,
+                Ahead = b.Ahead,
+                Behind = b.Behind,
+                Remote = b.Remote,
+                IsUpstreamGone = b.IsUpstreamGone,
+                WorktreePath = b.WorktreePath,
+            };
+
+            _branches.Remove(b);
+            _branches.Add(renamed);
+
+            if (b.IsCurrent)
+                CurrentBranch = renamed;
 
             List<Models.Branch> locals = [];
             foreach (var branch in _branches)
@@ -872,7 +883,7 @@ namespace SourceGit.ViewModels
                     locals.Add(branch);
             }
 
-            var builder = BuildBranchTree(locals, []);
+            var builder = BuildBranchTree(locals, [], false);
             LocalBranchTrees = builder.Locals;
 
             RefreshCommits();
@@ -1209,10 +1220,11 @@ namespace SourceGit.ViewModels
                 var builder = new StringBuilder();
                 builder
                     .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
-                    .Append(_uiStates.BuildHistoryParams());
+                    .Append(_uiStates.BuildHistoryParams(GitDir));
 
-                var commits = await new Commands.QueryCommits(FullPath, builder.ToString()).GetResultAsync().ConfigureAwait(false);
-                var graph = Models.CommitGraph.Parse(commits, _uiStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly));
+                var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -1223,8 +1235,6 @@ namespace SourceGit.ViewModels
                     {
                         _histories.IsLoading = false;
                         _histories.Commits = commits;
-                        _histories.Graph = graph;
-
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
@@ -1517,7 +1527,7 @@ namespace SourceGit.ViewModels
 
                 await new Commands.Submodule(FullPath)
                     .Use(log)
-                    .UpdateAsync(submodules);
+                    .UpdateAsync(submodules, false, _settings.EnableRecursiveWhenAutoUpdatingSubmodules, false);
             } while (false);
         }
 
@@ -1529,17 +1539,7 @@ namespace SourceGit.ViewModels
 
             var root = Path.GetFullPath(Path.Combine(FullPath, submodule));
             var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
-
-            var node = Preferences.Instance.FindNode(normalizedPath) ??
-                new RepositoryNode
-                {
-                    Id = normalizedPath,
-                    Name = Path.GetFileName(normalizedPath),
-                    Bookmark = selfPage.Node.Bookmark,
-                    IsRepository = true,
-                };
-
-            App.GetLauncher().OpenRepositoryInTab(node, null);
+            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
         }
 
         public void AddWorktree()
@@ -1559,16 +1559,8 @@ namespace SourceGit.ViewModels
             if (worktree.IsCurrent)
                 return;
 
-            var node = Preferences.Instance.FindNode(worktree.FullPath) ??
-                new RepositoryNode
-                {
-                    Id = worktree.FullPath,
-                    Name = Path.GetFileName(worktree.FullPath),
-                    Bookmark = 0,
-                    IsRepository = true,
-                };
-
-            App.GetLauncher().OpenRepositoryInTab(node, null);
+            var normalizedPath = worktree.FullPath.Replace('\\', '/').TrimEnd('/');
+            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
         }
 
         public async Task LockWorktreeAsync(Worktree worktree)
@@ -1673,7 +1665,7 @@ namespace SourceGit.ViewModels
             return null;
         }
 
-        private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes)
+        private BranchTreeNode.Builder BuildBranchTree(List<Models.Branch> branches, List<Models.Remote> remotes, bool validateExpandedNodes = true)
         {
             var builder = new BranchTreeNode.Builder(_uiStates.LocalBranchSortMode, _uiStates.RemoteBranchSortMode);
             if (string.IsNullOrEmpty(_filter))
@@ -1681,8 +1673,11 @@ namespace SourceGit.ViewModels
                 builder.SetExpandedNodes(_uiStates.ExpandedBranchNodesInSideBar);
                 builder.Run(branches, remotes, false);
 
-                foreach (var invalid in builder.InvalidExpandedNodes)
-                    _uiStates.ExpandedBranchNodesInSideBar.Remove(invalid);
+                if (validateExpandedNodes)
+                {
+                    foreach (var invalid in builder.InvalidExpandedNodes)
+                        _uiStates.ExpandedBranchNodesInSideBar.Remove(invalid);
+                }
             }
             else
             {
@@ -1906,13 +1901,13 @@ namespace SourceGit.ViewModels
                     await new Commands.Fetch(FullPath, remote).Use(log).RunAsync();
 
                 _lastFetchTime = DateTime.Now;
-                IsAutoFetching = false;
             }
             catch
             {
                 // Ignore all exceptions.
             }
 
+            IsAutoFetching = false;
             log?.Complete();
         }
 

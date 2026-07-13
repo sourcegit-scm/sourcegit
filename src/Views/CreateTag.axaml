@@ -19,7 +19,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.CreateTag.Title}"/>
     </StackPanel>
-    
+
     <Grid Margin="0,16,8,0" RowDefinitions="32,32,32,Auto,Auto,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -37,8 +37,17 @@
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Grid.Column="1"
+                         VerticalAlignment="Center"
+                         Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                         FontFamily="{DynamicResource Fonts.Monospace}"
+                         Foreground="DarkOrange"
+                         Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="2"
+                         VerticalAlignment="Center"
+                         Text="{Binding Subject}"
+                         Margin="4,0,0,0"
+                         TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>
         </ContentControl.DataTemplates>

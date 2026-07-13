@@ -15,5 +15,12 @@ namespace SourceGit.Views
 
             base.OnKeyDown(e);
         }
+
+        protected void Select(object item)
+        {
+            SelectedItem = item;
+            ScrollIntoView(item);
+            ContainerFromItem(item)?.Focus();
+        }
     }
 }

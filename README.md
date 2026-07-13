@@ -174,7 +174,7 @@ Users can also launcher `SourceGit` from commandline. Usage:
 
 ```
 <SOURCEGIT_EXEC> <DIR>                       // Open repository in existing `SourceGit` instance or a new one
-<SOURCEGIT_EXEC> --file-history <FILE_PATH>  // Launch `SourceGit` to see the history of a file
+<SOURCEGIT_EXEC> --history <FILE_OR_DIR>     // Launch `SourceGit` to see the history of a file or dir
 <SOURCEGIT_EXEC> --blame <FILE_PATH>         // Launch `SourceGit` to blame a file (HEAD version only) 
 ```
 
@@ -250,6 +250,9 @@ You can define your own conventional commit types (per-repository) by following 
 ## Contributing
 
 Everyone is welcome to submit a PR. Please make sure your PR is based on the latest `develop` branch and the target branch of PR is `develop`.
+
+This project has a submodule in `depends/AvaloniaEdit` which is a custom fork of [Official AvaloniaEdit](https://github.com/AvaloniaUI/AvaloniaEdit). 
+Please make sure it is initialized - enable `--recurse-submodules` option while cloning or run `git submodule update --init` after cloned.
 
 In short, here are the commands to get started once [.NET tools are installed](https://dotnet.microsoft.com/en-us/download):
 

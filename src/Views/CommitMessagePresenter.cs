@@ -13,13 +13,16 @@ namespace SourceGit.Views
 {
     public class CommitMessagePresenter : SelectableTextBlock
     {
-        public static readonly StyledProperty<Models.CommitFullMessage> FullMessageProperty =
-            AvaloniaProperty.Register<CommitMessagePresenter, Models.CommitFullMessage>(nameof(FullMessage));
+        public static readonly DirectProperty<CommitMessagePresenter, Models.CommitFullMessage> FullMessageProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessagePresenter, Models.CommitFullMessage>(
+                nameof(FullMessage),
+                static o => o.FullMessage,
+                static (o, v) => o.FullMessage = v);
 
         public Models.CommitFullMessage FullMessage
         {
-            get => GetValue(FullMessageProperty);
-            set => SetValue(FullMessageProperty, value);
+            get => _fullMessage;
+            set => SetAndRaise(FullMessageProperty, ref _fullMessage, value);
         }
 
         protected override Type StyleKeyOverride => typeof(SelectableTextBlock);
@@ -35,11 +38,11 @@ namespace SourceGit.Views
                 _lastHover = null;
                 ClearHoveredIssueLink();
 
-                var message = FullMessage?.Message;
+                var message = _fullMessage?.Message;
                 if (string.IsNullOrEmpty(message))
                     return;
 
-                var links = FullMessage?.Inlines;
+                var links = _fullMessage?.Inlines;
                 if (links == null || links.Count == 0)
                 {
                     Inlines.Add(new Run(message));
@@ -96,7 +99,7 @@ namespace SourceGit.Views
                         scrollViewer.LineDown();
                 }
             }
-            else if (FullMessage is { Inlines: { Count: > 0 } links })
+            else if (_fullMessage is { Inlines: { Count: > 0 } links })
             {
                 var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
                 var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
@@ -303,6 +306,7 @@ namespace SourceGit.Views
             }
         }
 
+        private Models.CommitFullMessage _fullMessage = null;
         private Models.InlineElement _lastHover = null;
         private Dictionary<string, Models.Commit> _inlineCommits = new();
     }

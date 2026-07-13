@@ -54,21 +54,24 @@ namespace SourceGit.Views
 
     public class ImageView : ImageContainer
     {
-        public static readonly StyledProperty<Bitmap> ImageProperty =
-            AvaloniaProperty.Register<ImageView, Bitmap>(nameof(Image));
+        public static readonly DirectProperty<ImageView, Bitmap> ImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageView, Bitmap>(
+                nameof(Image),
+                static o => o.Image,
+                static (o, v) => o.Image = v);
 
         public Bitmap Image
         {
-            get => GetValue(ImageProperty);
-            set => SetValue(ImageProperty, value);
+            get => _image;
+            set => SetAndRaise(ImageProperty, ref _image, value);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            if (Image is { } image)
-                context.DrawImage(image, new Rect(0, 0, Bounds.Width, Bounds.Height));
+            if (_image != null)
+                context.DrawImage(_image, new Rect(0, 0, Bounds.Width, Bounds.Height));
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -81,9 +84,9 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (Image is { } image)
+            if (_image != null)
             {
-                var imageSize = image.Size;
+                var imageSize = _image.Size;
                 var scaleW = availableSize.Width / imageSize.Width;
                 var scaleH = availableSize.Height / imageSize.Height;
                 var scale = Math.Min(1, Math.Min(scaleW, scaleH));
@@ -92,59 +95,74 @@ namespace SourceGit.Views
 
             return new Size(0, 0);
         }
+
+        private Bitmap _image = null;
     }
 
     public class ImageSwipeControl : ImageContainer
     {
-        public static readonly StyledProperty<double> AlphaProperty =
-            AvaloniaProperty.Register<ImageSwipeControl, double>(nameof(Alpha), 0.5);
+        public static readonly DirectProperty<ImageSwipeControl, double> AlphaProperty =
+            AvaloniaProperty.RegisterDirect<ImageSwipeControl, double>(
+                nameof(Alpha),
+                static o => o.Alpha,
+                static (o, v) => o.Alpha = v);
 
         public double Alpha
         {
-            get => GetValue(AlphaProperty);
-            set => SetValue(AlphaProperty, value);
+            get => _alpha;
+            set => SetAndRaise(AlphaProperty, ref _alpha, value);
         }
 
-        public static readonly StyledProperty<Bitmap> OldImageProperty =
-            AvaloniaProperty.Register<ImageSwipeControl, Bitmap>(nameof(OldImage));
+        public static readonly DirectProperty<ImageSwipeControl, Bitmap> OldImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageSwipeControl, Bitmap>(
+                nameof(OldImage),
+                static o => o.OldImage,
+                static (o, v) => o.OldImage = v);
 
         public Bitmap OldImage
         {
-            get => GetValue(OldImageProperty);
-            set => SetValue(OldImageProperty, value);
+            get => _oldImage;
+            set => SetAndRaise(OldImageProperty, ref _oldImage, value);
         }
 
-        public static readonly StyledProperty<Bitmap> NewImageProperty =
-            AvaloniaProperty.Register<ImageSwipeControl, Bitmap>(nameof(NewImage));
+        public static readonly DirectProperty<ImageSwipeControl, Bitmap> NewImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageSwipeControl, Bitmap>(
+                nameof(NewImage),
+                static o => o.NewImage,
+                static (o, v) => o.NewImage = v);
 
         public Bitmap NewImage
         {
-            get => GetValue(NewImageProperty);
-            set => SetValue(NewImageProperty, value);
-        }
-
-        static ImageSwipeControl()
-        {
-            AffectsMeasure<ImageSwipeControl>(OldImageProperty, NewImageProperty);
-            AffectsRender<ImageSwipeControl>(AlphaProperty);
+            get => _newImage;
+            set => SetAndRaise(NewImageProperty, ref _newImage, value);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            var alpha = Alpha;
             var w = Bounds.Width;
             var h = Bounds.Height;
-            var x = w * alpha;
+            var x = w * _alpha;
 
-            if (OldImage is { } left && alpha > 0)
-                RenderSingleSide(context, left, new Rect(0, 0, x, h));
+            if (_oldImage != null && _alpha > 0)
+                RenderSingleSide(context, _oldImage, new Rect(0, 0, x, h));
 
-            if (NewImage is { } right && alpha < 1)
-                RenderSingleSide(context, right, new Rect(x, 0, w - x, h));
+            if (_newImage != null && _alpha < 1)
+                RenderSingleSide(context, _newImage, new Rect(x, 0, w - x, h));
 
             context.DrawLine(new Pen(Brushes.DarkGreen, 2), new Point(x, 0), new Point(x, Bounds.Height));
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == OldImageProperty ||
+                change.Property == NewImageProperty)
+                InvalidateMeasure();
+            else if (change.Property == AlphaProperty)
+                InvalidateVisual();
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -176,7 +194,7 @@ namespace SourceGit.Views
 
             if (_pressedOnSlider)
             {
-                SetCurrentValue(AlphaProperty, Math.Clamp(p.X, 0, w) / w);
+                Alpha = Math.Clamp(p.X, 0, w) / w;
             }
             else
             {
@@ -202,17 +220,14 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var left = OldImage;
-            var right = NewImage;
+            if (_oldImage == null)
+                return _newImage == null ? new Size(0, 0) : GetDesiredSize(_newImage.Size, availableSize);
 
-            if (left == null)
-                return right == null ? new Size(0, 0) : GetDesiredSize(right.Size, availableSize);
+            if (_newImage == null)
+                return GetDesiredSize(_oldImage.Size, availableSize);
 
-            if (right == null)
-                return GetDesiredSize(left.Size, availableSize);
-
-            var ls = GetDesiredSize(left.Size, availableSize);
-            var rs = GetDesiredSize(right.Size, availableSize);
+            var ls = GetDesiredSize(_oldImage.Size, availableSize);
+            var rs = GetDesiredSize(_newImage.Size, availableSize);
             return ls.Width > rs.Width ? ls : rs;
         }
 
@@ -243,43 +258,49 @@ namespace SourceGit.Views
                 context.DrawImage(img, src, dst);
         }
 
+        private Bitmap _oldImage = null;
+        private Bitmap _newImage = null;
+        private double _alpha = 0.5;
         private bool _pressedOnSlider = false;
         private bool _lastInSlider = false;
     }
 
     public class ImageBlendControl : ImageContainer
     {
-        public static readonly StyledProperty<double> AlphaProperty =
-            AvaloniaProperty.Register<ImageBlendControl, double>(nameof(Alpha), 1.0);
+        public static readonly DirectProperty<ImageBlendControl, double> AlphaProperty =
+            AvaloniaProperty.RegisterDirect<ImageBlendControl, double>(
+                nameof(Alpha),
+                static o => o.Alpha,
+                static (o, v) => o.Alpha = v);
 
         public double Alpha
         {
-            get => GetValue(AlphaProperty);
-            set => SetValue(AlphaProperty, value);
+            get => _alpha;
+            set => SetAndRaise(AlphaProperty, ref _alpha, value);
         }
 
-        public static readonly StyledProperty<Bitmap> OldImageProperty =
-            AvaloniaProperty.Register<ImageBlendControl, Bitmap>(nameof(OldImage));
+        public static readonly DirectProperty<ImageBlendControl, Bitmap> OldImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageBlendControl, Bitmap>(
+                nameof(OldImage),
+                static o => o.OldImage,
+                static (o, v) => o.OldImage = v);
 
         public Bitmap OldImage
         {
-            get => GetValue(OldImageProperty);
-            set => SetValue(OldImageProperty, value);
+            get => _oldImage;
+            set => SetAndRaise(OldImageProperty, ref _oldImage, value);
         }
 
-        public static readonly StyledProperty<Bitmap> NewImageProperty =
-            AvaloniaProperty.Register<ImageBlendControl, Bitmap>(nameof(NewImage));
+        public static readonly DirectProperty<ImageBlendControl, Bitmap> NewImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageBlendControl, Bitmap>(
+                nameof(NewImage),
+                static o => o.NewImage,
+                static (o, v) => o.NewImage = v);
 
         public Bitmap NewImage
         {
-            get => GetValue(NewImageProperty);
-            set => SetValue(NewImageProperty, value);
-        }
-
-        static ImageBlendControl()
-        {
-            AffectsMeasure<ImageBlendControl>(OldImageProperty, NewImageProperty);
-            AffectsRender<ImageBlendControl>(AlphaProperty);
+            get => _newImage;
+            set => SetAndRaise(NewImageProperty, ref _newImage, value);
         }
 
         public override void Render(DrawingContext context)
@@ -318,6 +339,17 @@ namespace SourceGit.Views
             }
         }
 
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == OldImageProperty ||
+                change.Property == NewImageProperty)
+                InvalidateMeasure();
+            else if (change.Property == AlphaProperty)
+                InvalidateVisual();
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             var left = OldImage;
@@ -358,43 +390,49 @@ namespace SourceGit.Views
                 context.DrawImage(img, src, dst);
         }
 
-        private static readonly RenderOptions RO_SRC = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
-        private static readonly RenderOptions RO_DST = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Plus, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+        private Bitmap _oldImage = null;
+        private Bitmap _newImage = null;
+        private double _alpha = 0.5;
+        private static readonly RenderOptions RO_SRC = new() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+        private static readonly RenderOptions RO_DST = new() { BitmapBlendingMode = BitmapBlendingMode.Plus, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
     }
 
     public class ImageDifferenceControl : ImageContainer
     {
-        public static readonly StyledProperty<double> AlphaProperty =
-            AvaloniaProperty.Register<ImageDifferenceControl, double>(nameof(Alpha), 1.0);
+        public static readonly DirectProperty<ImageDifferenceControl, double> AlphaProperty =
+            AvaloniaProperty.RegisterDirect<ImageDifferenceControl, double>(
+                nameof(Alpha),
+                static o => o.Alpha,
+                static (o, v) => o.Alpha = v);
 
         public double Alpha
         {
-            get => GetValue(AlphaProperty);
-            set => SetValue(AlphaProperty, value);
+            get => _alpha;
+            set => SetAndRaise(AlphaProperty, ref _alpha, value);
         }
 
-        public static readonly StyledProperty<Bitmap> OldImageProperty =
-            AvaloniaProperty.Register<ImageDifferenceControl, Bitmap>(nameof(OldImage));
+        public static readonly DirectProperty<ImageDifferenceControl, Bitmap> OldImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageDifferenceControl, Bitmap>(
+                nameof(OldImage),
+                static o => o.OldImage,
+                static (o, v) => o.OldImage = v);
 
         public Bitmap OldImage
         {
-            get => GetValue(OldImageProperty);
-            set => SetValue(OldImageProperty, value);
+            get => _oldImage;
+            set => SetAndRaise(OldImageProperty, ref _oldImage, value);
         }
 
-        public static readonly StyledProperty<Bitmap> NewImageProperty =
-            AvaloniaProperty.Register<ImageDifferenceControl, Bitmap>(nameof(NewImage));
+        public static readonly DirectProperty<ImageDifferenceControl, Bitmap> NewImageProperty =
+            AvaloniaProperty.RegisterDirect<ImageDifferenceControl, Bitmap>(
+                nameof(NewImage),
+                static o => o.NewImage,
+                static (o, v) => o.NewImage = v);
 
         public Bitmap NewImage
         {
-            get => GetValue(NewImageProperty);
-            set => SetValue(NewImageProperty, value);
-        }
-
-        static ImageDifferenceControl()
-        {
-            AffectsMeasure<ImageDifferenceControl>(OldImageProperty, NewImageProperty);
-            AffectsRender<ImageDifferenceControl>(AlphaProperty);
+            get => _newImage;
+            set => SetAndRaise(NewImageProperty, ref _newImage, value);
         }
 
         public override void Render(DrawingContext context)
@@ -433,6 +471,17 @@ namespace SourceGit.Views
             }
         }
 
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == OldImageProperty ||
+                change.Property == NewImageProperty)
+                InvalidateMeasure();
+            else if (change.Property == AlphaProperty)
+                InvalidateVisual();
+        }
+
         protected override Size MeasureOverride(Size availableSize)
         {
             var left = OldImage;
@@ -473,7 +522,10 @@ namespace SourceGit.Views
                 context.DrawImage(img, src, dst);
         }
 
-        private static readonly RenderOptions RO_SRC = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
-        private static readonly RenderOptions RO_DST = new RenderOptions() { BitmapBlendingMode = BitmapBlendingMode.Difference, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+        private Bitmap _oldImage = null;
+        private Bitmap _newImage = null;
+        private double _alpha = 0.5;
+        private static readonly RenderOptions RO_SRC = new() { BitmapBlendingMode = BitmapBlendingMode.Source, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
+        private static readonly RenderOptions RO_DST = new() { BitmapBlendingMode = BitmapBlendingMode.Difference, BitmapInterpolationMode = BitmapInterpolationMode.HighQuality };
     }
 }

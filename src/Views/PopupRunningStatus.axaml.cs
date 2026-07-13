@@ -7,13 +7,16 @@ namespace SourceGit.Views
 {
     public partial class PopupRunningStatus : UserControl
     {
-        public static readonly StyledProperty<string> DescriptionProperty =
-            AvaloniaProperty.Register<PopupRunningStatus, string>(nameof(Description));
+        public static readonly DirectProperty<PopupRunningStatus, string> DescriptionProperty =
+            AvaloniaProperty.RegisterDirect<PopupRunningStatus, string>(
+                nameof(Description),
+                static o => o.Description,
+                static (o, v) => o.Description = v);
 
         public string Description
         {
-            get => GetValue(DescriptionProperty);
-            set => SetValue(DescriptionProperty, value);
+            get => _description;
+            set => SetAndRaise(DescriptionProperty, ref _description, value);
         }
 
         public PopupRunningStatus()
@@ -63,6 +66,7 @@ namespace SourceGit.Views
             ProgressBar.IsIndeterminate = false;
         }
 
+        private string _description = string.Empty;
         private bool _isUnloading = false;
     }
 }

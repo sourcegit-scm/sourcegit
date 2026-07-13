@@ -44,30 +44,6 @@ namespace SourceGit.Views
             set => SetValue(ForegroundProperty, value);
         }
 
-        static NameHighlightedTextBlock()
-        {
-            AffectsMeasure<NameHighlightedTextBlock>(TextProperty);
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            var text = Text;
-            if (string.IsNullOrEmpty(text))
-                return base.MeasureOverride(availableSize);
-
-            var trimmed = text.Replace("$", "");
-            var typeface = new Typeface(FontFamily);
-            var formatted = new FormattedText(
-                    trimmed,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    FontSize,
-                    Foreground);
-
-            return new Size(formatted.Width, formatted.Height);
-        }
-
         public override void Render(DrawingContext context)
         {
             var text = Text;
@@ -106,6 +82,33 @@ namespace SourceGit.Views
                 offsetX += formatted.WidthIncludingTrailingWhitespace;
                 isName = !isName;
             }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == TextProperty)
+                InvalidateMeasure();
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            var text = Text;
+            if (string.IsNullOrEmpty(text))
+                return base.MeasureOverride(availableSize);
+
+            var trimmed = text.Replace("$", "");
+            var typeface = new Typeface(FontFamily);
+            var formatted = new FormattedText(
+                    trimmed,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    FontSize,
+                    Foreground);
+
+            return new Size(formatted.Width, formatted.Height);
         }
     }
 }

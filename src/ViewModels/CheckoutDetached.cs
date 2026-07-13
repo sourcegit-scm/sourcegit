@@ -2,9 +2,9 @@
 
 namespace SourceGit.ViewModels
 {
-    public class CheckoutCommit : Popup
+    public class CheckoutDetached : Popup
     {
-        public Models.Commit Commit
+        public object Target
         {
             get;
         }
@@ -20,11 +20,23 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public CheckoutCommit(Repository repo, Models.Commit commit)
+        public CheckoutDetached(Repository repo, Models.Commit commit)
         {
             _repo = repo;
-            Commit = commit;
+            _revision = commit.SHA;
 
+            Target = commit;
+            DealWithLocalChanges = Preferences.Instance.UseStashAndReapplyByDefault ?
+                Models.DealWithLocalChanges.StashAndReapply :
+                Models.DealWithLocalChanges.DoNothing;
+        }
+
+        public CheckoutDetached(Repository repo, Models.Tag tag)
+        {
+            _repo = repo;
+            _revision = tag.SHA;
+
+            Target = tag;
             DealWithLocalChanges = Preferences.Instance.UseStashAndReapplyByDefault ?
                 Models.DealWithLocalChanges.StashAndReapply :
                 Models.DealWithLocalChanges.DoNothing;
@@ -33,7 +45,7 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
-            ProgressDescription = $"Checkout Commit '{Commit.SHA}' ...";
+            ProgressDescription = $"Checkout Commit '{_revision}' ...";
 
             var log = _repo.CreateLog("Checkout Commit");
             Use(log);
@@ -57,7 +69,7 @@ namespace SourceGit.ViewModels
             {
                 succ = await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .CommitAsync(Commit.SHA, false);
+                    .CommitAsync(_revision, false);
             }
             else if (DealWithLocalChanges == Models.DealWithLocalChanges.StashAndReapply)
             {
@@ -79,13 +91,13 @@ namespace SourceGit.ViewModels
 
                 succ = await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .CommitAsync(Commit.SHA, false);
+                    .CommitAsync(_revision, false);
             }
             else
             {
                 succ = await new Commands.Checkout(_repo.FullPath)
                     .Use(log)
-                    .CommitAsync(Commit.SHA, true);
+                    .CommitAsync(_revision, true);
             }
 
             if (succ)
@@ -103,5 +115,6 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
+        private readonly string _revision = string.Empty;
     }
 }

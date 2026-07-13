@@ -9,13 +9,16 @@ namespace SourceGit.Views
 {
     public class ColorPicker : Control
     {
-        public static readonly StyledProperty<uint> ValueProperty =
-            AvaloniaProperty.Register<ColorPicker, uint>(nameof(Value));
+        public static readonly DirectProperty<ColorPicker, uint> ValueProperty =
+            AvaloniaProperty.RegisterDirect<ColorPicker, uint>(
+                nameof(Value),
+                static o => o.Value,
+                static (o, v) => o.Value = v);
 
         public uint Value
         {
-            get => GetValue(ValueProperty);
-            set => SetValue(ValueProperty, value);
+            get => _value;
+            set => SetAndRaise(ValueProperty, ref _value, value);
         }
 
         // Values are copied from Avalonia: src/Avalonia.Controls.ColorPicker/ColorPalettes/FluentColorPalette.cs
@@ -82,11 +85,6 @@ namespace SourceGit.Views
                 Color.FromArgb(255, 126, 115,  95), /* #7E735F */
             }
         };
-
-        static ColorPicker()
-        {
-            ValueProperty.Changed.AddClassHandler<ColorPicker>((c, _) => c.UpdateColors());
-        }
 
         public override void Render(DrawingContext context)
         {
@@ -164,7 +162,7 @@ namespace SourceGit.Views
                 if (!rect.Equals(_highlightedTableRect))
                 {
                     _highlightedTableRect = rect;
-                    SetCurrentValue(ValueProperty, COLOR_TABLE[row, col].ToUInt32());
+                    Value = COLOR_TABLE[row, col].ToUInt32();
                 }
 
                 return;
@@ -173,38 +171,38 @@ namespace SourceGit.Views
             if (_darkestRect.Rect.Contains(p))
             {
                 _highlightedTableRect = null;
-                SetCurrentValue(ValueProperty, _darkestColor.ToUInt32());
+                Value = _darkestColor.ToUInt32();
             }
             else if (_darkerRect.Contains(p))
             {
                 _highlightedTableRect = null;
-                SetCurrentValue(ValueProperty, _darkerColor.ToUInt32());
+                Value = _darkerColor.ToUInt32();
             }
             else if (_darkRect.Contains(p))
             {
                 _highlightedTableRect = null;
-                SetCurrentValue(ValueProperty, _darkColor.ToUInt32());
+                Value = _darkColor.ToUInt32();
             }
             else if (_lightRect.Contains(p))
             {
                 _highlightedTableRect = null;
-                SetCurrentValue(ValueProperty, _lightColor.ToUInt32());
+                Value = _lightColor.ToUInt32();
             }
             else if (_lighterRect.Contains(p))
             {
                 _highlightedTableRect = null;
-                SetCurrentValue(ValueProperty, _lighterColor.ToUInt32());
+                Value = _lighterColor.ToUInt32();
             }
             else if (_lightestRect.Rect.Contains(p))
             {
                 _highlightedTableRect = null;
-                SetCurrentValue(ValueProperty, _lightestColor.ToUInt32());
+                Value = _lightestColor.ToUInt32();
             }
         }
 
         private void UpdateColors()
         {
-            _color = Color.FromUInt32(Value);
+            _color = Color.FromUInt32(_value);
 
             var hsvColor = _color.ToHsv();
             _darkestColor = GetNextColor(hsvColor, -0.3);
@@ -225,15 +223,16 @@ namespace SourceGit.Views
             return newColor.ToRgb();
         }
 
+        private uint _value = 0;
         private BoxShadows _shadow = BoxShadows.Parse("0 0 6 0 #A9000000");
 
-        private Rect _colorTableRect = new Rect(0, 0, 32 * 8, 32 * 6);
-        private RoundedRect _darkestRect = new RoundedRect(new Rect(0, 200, 32, 32), new CornerRadius(4, 0, 0, 4));
-        private Rect _darkerRect = new Rect(32, 200, 32, 32);
-        private Rect _darkRect = new Rect(64, 200, 32, 32);
-        private Rect _lightRect = new Rect(160, 200, 32, 32);
-        private Rect _lighterRect = new Rect(192, 200, 32, 32);
-        private RoundedRect _lightestRect = new RoundedRect(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
+        private Rect _colorTableRect = new(0, 0, 32 * 8, 32 * 6);
+        private RoundedRect _darkestRect = new(new Rect(0, 200, 32, 32), new CornerRadius(4, 0, 0, 4));
+        private Rect _darkerRect = new(32, 200, 32, 32);
+        private Rect _darkRect = new(64, 200, 32, 32);
+        private Rect _lightRect = new(160, 200, 32, 32);
+        private Rect _lighterRect = new(192, 200, 32, 32);
+        private RoundedRect _lightestRect = new(new Rect(224, 200, 32, 32), new CornerRadius(0, 4, 4, 0));
         private Rect? _highlightedTableRect = null;
 
         private Color _darkestColor;

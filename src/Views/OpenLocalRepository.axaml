@@ -56,22 +56,9 @@
                  HorizontalAlignment="Right"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.OpenLocalRepository.Bookmark}"/>
-      <ComboBox Grid.Row="2" Grid.Column="1"
-                Height="28" Padding="8,0"
-                VerticalAlignment="Center"
-                ItemsSource="{Binding Bookmarks}"
-                SelectedItem="{Binding Bookmark, Mode=TwoWay}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate>
-            <Grid Height="20">
-              <Path Width="12" Height="12"
-                    Fill="{Binding Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Data="{StaticResource Icons.Bookmark}"/>
-            </Grid>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
+      <v:BookmarkSelector Grid.Row="2" Grid.Column="1"
+                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                          Bookmark="{Binding Bookmark, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

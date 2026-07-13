@@ -27,11 +27,13 @@ namespace SourceGit.Models
         public string Name { get; }
         public string ExecFile { get; }
         public Bitmap IconImage { get; }
+        public bool SupportOpenFolder { get; }
 
-        public ExternalTool(string name, string icon, string execFile, Func<string, List<LaunchOption>> optionsGenerator = null)
+        public ExternalTool(string name, string icon, string execFile, Func<string, List<LaunchOption>> optionsGenerator, bool supportOpenFolder)
         {
             Name = name;
             ExecFile = execFile;
+            SupportOpenFolder = supportOpenFolder;
 
             _optionsGenerator = optionsGenerator;
 
@@ -147,20 +149,20 @@ namespace SourceGit.Models
             _customization ??= new ExternalToolCustomization();
         }
 
-        public void TryAdd(string name, string icon, Func<string> finder, Func<string, List<ExternalTool.LaunchOption>> optionsGenerator = null)
+        public void TryAdd(string name, string icon, Func<string> finder, Func<string, List<ExternalTool.LaunchOption>> optionsGenerator = null, bool supportOpenFolder = true)
         {
             if (_customization.Excludes.Contains(name))
                 return;
 
             if (_customization.Tools.TryGetValue(name, out var customPath) && File.Exists(customPath))
             {
-                Tools.Add(new ExternalTool(name, icon, customPath, optionsGenerator));
+                Tools.Add(new ExternalTool(name, icon, customPath, optionsGenerator, supportOpenFolder));
             }
             else
             {
                 var path = finder();
                 if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                    Tools.Add(new ExternalTool(name, icon, path, optionsGenerator));
+                    Tools.Add(new ExternalTool(name, icon, path, optionsGenerator, supportOpenFolder));
             }
         }
 
@@ -213,7 +215,9 @@ namespace SourceGit.Models
                         Tools.Add(new ExternalTool(
                             $"{tool.DisplayName} {tool.DisplayVersion}",
                             supportedIcons.Contains(tool.ProductCode) ? $"JetBrains/{tool.ProductCode}" : "JetBrains/JB",
-                            Path.Combine(tool.InstallLocation, tool.LaunchCommand)));
+                            Path.Combine(tool.InstallLocation, tool.LaunchCommand),
+                            null,
+                            true));
                     }
                 }
                 catch

@@ -7,7 +7,7 @@ namespace SourceGit.Commands
 {
     public partial class CompareRevisions : Command
     {
-        [GeneratedRegex(@"^([MAD])\s+(.+)$")]
+        [GeneratedRegex(@"^([MADT])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
         [GeneratedRegex(@"^([CR])[0-9]{0,4}\s+(.+)$")]
         private static partial Regex REG_RENAME_FORMAT();
@@ -71,6 +71,10 @@ namespace SourceGit.Commands
                             break;
                         case 'D':
                             change.Set(Models.ChangeState.Deleted);
+                            changes.Add(change);
+                            break;
+                        case 'T':
+                            change.Set(Models.ChangeState.TypeChanged);
                             changes.Add(change);
                             break;
                     }

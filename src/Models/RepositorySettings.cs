@@ -30,6 +30,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool EnableRecursiveWhenAutoUpdatingSubmodules
+        {
+            get;
+            set;
+        } = true;
+
         public bool AskBeforeAutoUpdatingSubmodules
         {
             get;
@@ -43,12 +49,6 @@ namespace SourceGit.Models
         } = "---";
 
         public AvaloniaList<CommitTemplate> CommitTemplates
-        {
-            get;
-            set;
-        } = [];
-
-        public AvaloniaList<string> CommitMessages
         {
             get;
             set;
@@ -116,25 +116,6 @@ namespace SourceGit.Models
             }
         }
 
-        public void PushCommitMessage(string message)
-        {
-            message = message.Trim().ReplaceLineEndings("\n");
-            var existIdx = CommitMessages.IndexOf(message);
-            if (existIdx == 0)
-                return;
-
-            if (existIdx > 0)
-            {
-                CommitMessages.Move(existIdx, 0);
-                return;
-            }
-
-            if (CommitMessages.Count > 9)
-                CommitMessages.RemoveRange(9, CommitMessages.Count - 9);
-
-            CommitMessages.Insert(0, message);
-        }
-
         public CustomAction AddNewCustomAction()
         {
             var act = new CustomAction() { Name = "Unnamed Action" };
@@ -165,10 +146,7 @@ namespace SourceGit.Models
         private static string HashContent(string source)
         {
             var hash = MD5.HashData(Encoding.Default.GetBytes(source));
-            var builder = new StringBuilder(hash.Length * 2);
-            foreach (var c in hash)
-                builder.Append(c.ToString("x2"));
-            return builder.ToString();
+            return Convert.ToHexStringLower(hash);
         }
 
         private static Dictionary<string, RepositorySettings> _cache = new();

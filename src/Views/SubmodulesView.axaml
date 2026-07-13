@@ -48,6 +48,7 @@
 
                   <TextBlock Margin="8,0,0,0"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             FontFamily="{DynamicResource Fonts.Monospace}"
                              VerticalAlignment="Center"/>
 
                   <Path Margin="6,0,0,0"
@@ -183,6 +184,7 @@
 
                       <TextBlock Margin="8,0,0,0"
                                  Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                 FontFamily="{DynamicResource Fonts.Monospace}"
                                  VerticalAlignment="Center"/>
 
                       <Path Margin="6,0,0,0"

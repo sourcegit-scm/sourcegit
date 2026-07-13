@@ -30,7 +30,7 @@ namespace SourceGit.ViewModels
                 foreach (var target in Targets)
                     await new Commands.Branch(_repo.FullPath, target.Name)
                         .Use(log)
-                        .DeleteLocalAsync();
+                        .DeleteLocalAsync(false);
             }
             else
             {

@@ -574,7 +574,7 @@ namespace SourceGit.ViewModels
         {
             var sure = await App.AskConfirmAsync(App.Text("WorkingCopy.ClearCommitHistories.Confirm"));
             if (sure)
-                _repo.Settings.CommitMessages.Clear();
+                _repo.UIStates.RecentCommitMessages.Clear();
         }
 
         public async Task CommitAsync(bool autoStage, bool autoPush)
@@ -627,7 +627,7 @@ namespace SourceGit.ViewModels
 
             using var lockWatcher = _repo.LockWatcher();
             IsCommitting = true;
-            _repo.Settings.PushCommitMessage(_commitMessage);
+            _repo.UIStates.AddRecentCommitMessage(_commitMessage);
 
             if (autoStage && _unstaged.Count > 0)
                 await StageChangesAsync(_unstaged, null);
@@ -659,6 +659,7 @@ namespace SourceGit.ViewModels
             }
 
             _repo.MarkBranchesDirtyManually();
+            _repo.RefreshSubmodules(); // Committing will not change submodule's HEAD (stage already changes it), So we need refresh submodules here manually.
             IsCommitting = false;
         }
 
@@ -708,7 +709,11 @@ namespace SourceGit.ViewModels
         private List<Models.Change> GetStagedChanges(List<Models.Change> cached)
         {
             if (_useAmend)
-                return new Commands.QueryStagedChangesWithAmend(_repo.FullPath).GetResult();
+            {
+                var changes = new Commands.QueryStagedChangesWithAmend(_repo.FullPath).GetResult();
+                changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
+                return changes;
+            }
 
             var rs = new List<Models.Change>();
             foreach (var c in cached)

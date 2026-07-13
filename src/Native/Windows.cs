@@ -17,18 +17,6 @@ namespace SourceGit.Native
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
     {
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct MARGINS
-        {
-            public int cxLeftWidth;
-            public int cxRightWidth;
-            public int cyTopHeight;
-            public int cyBottomHeight;
-        }
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
-
         [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern bool PathFindOnPath([In, Out] StringBuilder pszFile, [In] string[] ppszOtherDirs);
 
@@ -43,12 +31,7 @@ namespace SourceGit.Native
 
         public void SetupApp(AppBuilder builder)
         {
-            // Fix drop shadow issue on Windows 10
-            if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
-            {
-                Window.WindowStateProperty.Changed.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
-                Control.LoadedEvent.AddClassHandler<Window>((w, _) => FixWindowFrameOnWin10(w));
-            }
+            // Do nothing for now.
         }
 
         public void SetupWindow(Window window)
@@ -56,26 +39,12 @@ namespace SourceGit.Native
             window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
             window.ExtendClientAreaToDecorationsHint = true;
             window.BorderThickness = new Thickness(1);
-        }
-
-        public void HideSelf()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void HideOtherApplications()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void ShowAllApplications()
-        {
-            // Do Nothing. Never used.
+            window.Padding = new Thickness(0);
         }
 
         public string GetDataDir()
         {
-            var execFile = Process.GetCurrentProcess().MainModule!.FileName;
+            var execFile = Environment.ProcessPath;
             var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
             if (Directory.Exists(portableDir))
                 return portableDir;
@@ -168,7 +137,8 @@ namespace SourceGit.Native
 
         public void OpenBrowser(string url)
         {
-            var info = new ProcessStartInfo("cmd", $"""/c start "" {url.Quoted()}""");
+            var info = new ProcessStartInfo(url);
+            info.UseShellExecute = true;
             info.CreateNoWindow = true;
             Process.Start(info);
         }
@@ -227,21 +197,6 @@ namespace SourceGit.Native
         }
 
         #region HELPER_METHODS
-        private void FixWindowFrameOnWin10(Window w)
-        {
-            // Schedule the DWM frame extension to run in the next render frame
-            // to ensure proper timing with the window initialization sequence
-            Dispatcher.UIThread.Post(() =>
-            {
-                var platformHandle = w.TryGetPlatformHandle();
-                if (platformHandle == null)
-                    return;
-
-                var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
-                DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
-            }, DispatcherPriority.Render);
-        }
-
         private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {
             var root = new DirectoryInfo(path);
@@ -386,7 +341,7 @@ namespace SourceGit.Native
                     {
                         var exec = instance.ProductPath;
                         var icon = instance.IsPrerelease ? "vs-preview" : "vs";
-                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateVSProjectLaunchOptions);
+                        finder.TryAdd(instance.DisplayName, icon, () => exec, GenerateVSProjectLaunchOptions, false);
                     }
                 }
             }
@@ -414,5 +369,48 @@ namespace SourceGit.Native
             return string.Empty;
         }
         #endregion
+    }
+
+    [SupportedOSPlatform("windows")]
+    public static class Win64Utilities
+    {
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct MARGINS
+        {
+            public int cxLeftWidth;
+            public int cxRightWidth;
+            public int cyTopHeight;
+            public int cyBottomHeight;
+        }
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmExtendFrameIntoClientArea(IntPtr hwnd, ref MARGINS margins);
+
+        public static void FixWindowFrame(Window w)
+        {
+            if (w.WindowState == WindowState.Maximized)
+            {
+                w.BorderThickness = new Thickness(0);
+                w.Padding = new Thickness(8, 6, 8, 8);
+            }
+            else
+            {
+                w.BorderThickness = new Thickness(1);
+                w.Padding = new Thickness(0);
+            }
+
+            if (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
+                return;
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                var platformHandle = w.TryGetPlatformHandle();
+                if (platformHandle == null)
+                    return;
+
+                var margins = new MARGINS { cxLeftWidth = 1, cxRightWidth = 1, cyTopHeight = 1, cyBottomHeight = 1 };
+                DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
+            }, DispatcherPriority.Render);
+        }
     }
 }

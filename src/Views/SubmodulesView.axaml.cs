@@ -30,13 +30,16 @@ namespace SourceGit.Views
 
     public class SubmoduleTreeNodeIcon : UserControl
     {
-        public static readonly StyledProperty<bool> IsExpandedProperty =
-            AvaloniaProperty.Register<SubmoduleTreeNodeIcon, bool>(nameof(IsExpanded));
+        public static readonly DirectProperty<SubmoduleTreeNodeIcon, bool> IsExpandedProperty =
+            AvaloniaProperty.RegisterDirect<SubmoduleTreeNodeIcon, bool>(
+                nameof(IsExpanded),
+                static o => o.IsExpanded,
+                static (o, v) => o.IsExpanded = v);
 
         public bool IsExpanded
         {
-            get => GetValue(IsExpandedProperty);
-            set => SetValue(IsExpandedProperty, value);
+            get => _isExpanded;
+            set => SetAndRaise(IsExpandedProperty, ref _isExpanded, value);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -84,6 +87,8 @@ namespace SourceGit.Views
                 Data = geo,
             };
         }
+
+        private bool _isExpanded = false;
     }
 
     public partial class SubmodulesView : UserControl

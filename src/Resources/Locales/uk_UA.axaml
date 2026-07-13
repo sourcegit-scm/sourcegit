@@ -20,7 +20,6 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ПЕРЕГЕНЕРУВАТИ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Використати AI для генерації повідомлення коміту</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Файл патчу:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Виберіть файл .patch для застосування</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Застосувати Патч</x:String>
@@ -66,9 +65,6 @@
   <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Показати як список шляхів</x:String>
   <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Показати як дерево файлової системи</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Перейти на гілку</x:String>
-  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Перейти на коміт</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Коміт:</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Попередження: Перехід на коміт призведе до стану "від'єднаний HEAD"</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Локальні зміни:</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-pick</x:String>
@@ -96,12 +92,9 @@
   <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Порівняти з робочим деревом</x:String>
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Спеціальна дія</x:String>
-  <x:String x:Key="Text.CommitCM.Merge" xml:space="preserve">Злиття в ${0}$</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Злити ...</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Скасувати коміт</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Змінити повідомлення</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Зберегти як патч...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Склеїти з батьківським комітом</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ЗМІНИ</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Пошук змін...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ФАЙЛИ</x:String>
@@ -205,7 +198,6 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Видалити гілку</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Ви збираєтеся видалити віддалену гілку!!!</x:String>
-  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Також видалити віддалену гілку ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Видалити кілька гілок</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Ви намагаєтеся видалити кілька гілок одночасно. Перевірте ще раз перед виконанням!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Видалити віддалене сховище</x:String>
@@ -222,7 +214,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Тег:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Видалити з віддалених сховищ</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">РІЗНИЦЯ ДЛЯ БІНАРНИХ ФАЙЛІВ</x:String>
-  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Змінено режим файлу</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Перша відмінність</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ігнорувати зміни пробілів</x:String>
   <x:String x:Key="Text.Diff.Last" xml:space="preserve">Остання відмінність</x:String>
@@ -357,11 +348,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Перейти до 'Зміни'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Перейти до 'Історія'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Перейти до 'Схованки'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">ТЕКСТОВИЙ РЕДАКТОР</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Закрити панель пошуку</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Знайти наступний збіг</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Знайти попередній збіг</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Відкрити панель пошуку</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Скасувати</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Індексувати</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Видалити з індексу</x:String>
@@ -441,7 +427,6 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Формат дати</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Мова</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Кількість комітів в історії</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Показувати час автора замість часу коміту в графі</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показувати дочірні коміти в деталях</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показувати теги в графі комітів</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Довжина лінії-орієнтира для теми</x:String>
@@ -548,7 +533,6 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ДОДАТИ ВІДДАЛЕНЕ СХОВИЩЕ</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Пошук коміту</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Автор</x:String>
-  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Комітер</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Повідомлення</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Поточна гілка</x:String>
@@ -576,7 +560,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Revert (Скасувати коміт)</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Коміт:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Закомітити зміни скасування</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Змінити повідомлення коміту</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Виконується. Будь ласка, зачекайте...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">ЗБЕРЕГТИ</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Зберегти як...</x:String>
@@ -630,7 +613,6 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Видалити підмодуль</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Видалити ${0}$...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Злиття ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Надіслати ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Оновити підмодулі</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Усі підмодулі</x:String>

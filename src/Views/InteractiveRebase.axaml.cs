@@ -96,20 +96,23 @@ namespace SourceGit.Views
             set => SetValue(FillProperty, value);
         }
 
-        public static readonly StyledProperty<Models.InteractiveRebasePendingType> PendingTypeProperty =
-            AvaloniaProperty.Register<InteractiveRebaseIndicator, Models.InteractiveRebasePendingType>(nameof(PendingType));
+        public static readonly DirectProperty<InteractiveRebaseIndicator, Models.InteractiveRebasePendingType> PendingTypeProperty =
+            AvaloniaProperty.RegisterDirect<InteractiveRebaseIndicator, Models.InteractiveRebasePendingType>(
+                nameof(PendingType),
+                static o => o.PendingType,
+                static (o, v) => o.PendingType = v);
 
         public Models.InteractiveRebasePendingType PendingType
         {
-            get => GetValue(PendingTypeProperty);
-            set => SetValue(PendingTypeProperty, value);
+            get => _pendingType;
+            set => SetAndRaise(PendingTypeProperty, ref _pendingType, value);
         }
 
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            if (PendingType == Models.InteractiveRebasePendingType.None)
+            if (_pendingType == Models.InteractiveRebasePendingType.None)
                 return;
 
             var startW = 4;
@@ -118,17 +121,17 @@ namespace SourceGit.Views
             var halfH = height * 0.5;
             var fill = Fill;
 
-            if (PendingType == Models.InteractiveRebasePendingType.Last)
+            if (_pendingType == Models.InteractiveRebasePendingType.Last)
             {
                 var center = new Point(startW, halfH);
                 context.DrawEllipse(fill, null, center, 4, 4);
                 context.DrawLine(new Pen(fill, 2), center, new Point(startW, height));
             }
-            else if (PendingType == Models.InteractiveRebasePendingType.Ignore)
+            else if (_pendingType == Models.InteractiveRebasePendingType.Ignore)
             {
                 context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
             }
-            else if (PendingType == Models.InteractiveRebasePendingType.Pending)
+            else if (_pendingType == Models.InteractiveRebasePendingType.Pending)
             {
                 context.DrawEllipse(fill, null, new Point(startW, halfH), 4, 4);
                 context.DrawLine(new Pen(fill, 2), new Point(startW, 0), new Point(startW, height));
@@ -164,6 +167,8 @@ namespace SourceGit.Views
                 change.Property == PendingTypeProperty)
                 InvalidateVisual();
         }
+
+        private Models.InteractiveRebasePendingType _pendingType = Models.InteractiveRebasePendingType.None;
     }
 
     public partial class InteractiveRebase : ChromelessWindow
@@ -414,6 +419,18 @@ namespace SourceGit.Views
         {
             if (sender is Button { DataContext: ViewModels.InteractiveRebaseItem item })
                 OpenCommitMessageEditor(item);
+
+            e.Handled = true;
+        }
+
+        private void OnOpenDetailsAsStandalone(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: ViewModels.CommitDetail detail })
+            {
+                var standalone = new CommitDetailStandalone();
+                standalone.DataContext = detail.Clone();
+                this.ShowWindow(standalone);
+            }
 
             e.Handled = true;
         }

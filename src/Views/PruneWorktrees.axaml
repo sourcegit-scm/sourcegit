@@ -14,7 +14,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.PruneWorktrees}"/>
     </StackPanel>
-    
+
     <TextBlock Text="{DynamicResource Text.PruneWorktrees.Tip}"
                Margin="0,16,0,0"
                HorizontalAlignment="Center"/>

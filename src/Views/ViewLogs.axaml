@@ -81,7 +81,7 @@
                 <ColumnDefinition Width="Auto" SharedSizeGroup="StartTimeColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="DurationColumn"/>
               </Grid.ColumnDefinitions>
-              
+
               <v:LoadingIcon Grid.Column="0"
                              Width="14" Height="14"
                              Margin="4,0,4,0"
@@ -92,7 +92,7 @@
                          Text="{Binding Name}"
                          VerticalAlignment="Center"
                          TextTrimming="CharacterEllipsis"/>
-              
+
               <TextBlock Grid.Column="2"
                          Margin="4,0"
                          Foreground="{DynamicResource Brush.FG2}"

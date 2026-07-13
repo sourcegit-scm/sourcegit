@@ -11,6 +11,12 @@ namespace SourceGit.ViewModels
             private set;
         }
 
+        public string StartPoint
+        {
+            get;
+            private set;
+        }
+
         public string Prefix
         {
             get;
@@ -32,6 +38,11 @@ namespace SourceGit.ViewModels
 
             Type = type;
             Prefix = _repo.GitFlow.GetPrefix(type);
+            StartPoint = type switch
+            {
+                Models.GitFlowBranchType.Hotfix => _repo.GitFlow.ProductionBranch,
+                _ => _repo.GitFlow.DevelopmentBranch,
+            };
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -57,7 +68,10 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("GitFlow - Start");
             Use(log);
 
-            var succ = await Commands.GitFlow.StartAsync(_repo.FullPath, Type, _name, log);
+            var succ = await new Commands.GitFlow(_repo.FullPath)
+                .Use(log)
+                .StartAsync(Type, _name);
+
             log.Complete();
             return succ;
         }

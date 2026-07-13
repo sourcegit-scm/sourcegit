@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 
@@ -9,6 +10,14 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+        }
+
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+
+            if (DataContext is ViewModels.ViewLogs vm && vm.Logs.Count > 0)
+                vm.SelectedLog = vm.Logs[0];
         }
 
         private void OnLogContextRequested(object sender, ContextRequestedEventArgs e)

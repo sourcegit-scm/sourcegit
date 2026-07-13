@@ -14,7 +14,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.GitLFS.Prune}"/>
     </StackPanel>
-    
+
     <TextBlock Text="{DynamicResource Text.GitLFS.Prune.Tips}"
                Margin="8,16,8,0"
                HorizontalAlignment="Center"

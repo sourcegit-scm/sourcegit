@@ -44,7 +44,7 @@
 
         <Popup PlacementTarget="{Binding #TxtSearchRevisionFiles}"
                Placement="BottomEdgeAlignedLeft"
-               HorizontalOffset="-8" VerticalAlignment="-8">
+               HorizontalOffset="-8" VerticalOffset="-6">
           <Popup.IsOpen>
             <MultiBinding Converter="{x:Static BoolConverters.And}">
               <Binding Path="RevisionFileSearchSuggestion" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
@@ -53,7 +53,10 @@
           </Popup.IsOpen>
 
           <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
-            <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
+            <Border Padding="4"
+                    CornerRadius="4"
+                    Background="{DynamicResource Brush.Popup}"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.PopupBorder}">
               <v:ListBoxEx x:Name="SearchSuggestionBox"
                            Background="Transparent"
                            SelectionMode="Single"
@@ -85,12 +88,16 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="x:String">
-                    <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
-                      <StackPanel Orientation="Horizontal">
+                    <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" Tapped="OnSearchSuggestionTapped">
+                      <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
                         <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
                         <TextBlock Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                       </StackPanel>
-                      <TextBlock FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                      <TextBlock FontSize="12"
+                                 Margin="18,2,0,0"
+                                 Foreground="{DynamicResource Brush.FG2}"
+                                 Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"
+                                 IsHitTestVisible="False"/>
                     </StackPanel>
                   </DataTemplate>
                 </ListBox.ItemTemplate>

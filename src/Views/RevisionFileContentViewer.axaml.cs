@@ -99,6 +99,8 @@ namespace SourceGit.Views
                 Options.IndentationSize = TabWidth;
             else if (change.Property == UseSyntaxHighlightingProperty)
                 UpdateTextMate();
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
+                Models.TextMateHelper.SetThemeByApp(_textMate);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)

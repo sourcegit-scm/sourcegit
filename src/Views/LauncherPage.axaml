@@ -31,7 +31,7 @@
 
     <!-- Body -->
     <Border Grid.Row="1">
-      <ContentControl Content="{Binding Data}">        
+      <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
             <v:Welcome/>
@@ -60,61 +60,64 @@
       <Grid RowDefinitions="Auto,Auto,*" Width="560" HorizontalAlignment="Center">
         <!-- Popup -->
         <Border Grid.Row="0"
-                Margin="6,0"
+                Padding="6,0,6,6"
+                Background="Transparent"
                 Effect="drop-shadow(0 0 8 #8F000000)"
-                CornerRadius="0,0,8,8"
-                ClipToBounds="True"
                 IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
-            <ContentControl.DataTemplates>
-              <DataTemplate DataType="vm:Popup">
-                <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
-                  <!-- Popup Widget -->
-                  <ContentControl Margin="8,16,8,8"
-                                  Content="{Binding}"
-                                  IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                    <ContentControl.DataTemplates>
-                      <v:PopupDataTemplates/>
-                    </ContentControl.DataTemplates>
-                  </ContentControl>
+          <Border Background="{DynamicResource Brush.Popup}"
+                  BorderThickness="1,0,1,1" BorderBrush="{DynamicResource Brush.PopupBorder}"
+                  CornerRadius="0,0,8,8">
+            <ContentControl x:Name="PopupPanel" Content="{Binding Popup}">
+              <ContentControl.DataTemplates>
+                <DataTemplate DataType="vm:Popup">
+                  <StackPanel Orientation="Vertical">
+                    <!-- Popup Widget -->
+                    <ContentControl Margin="8,16,8,8"
+                                    Content="{Binding}"
+                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                      <ContentControl.DataTemplates>
+                        <v:PopupDataTemplates/>
+                      </ContentControl.DataTemplates>
+                    </ContentControl>
 
-                  <!-- Options -->
-                  <StackPanel Margin="8,4,8,8"
-                              Height="32"
-                              Orientation="Horizontal"
-                              HorizontalAlignment="Right"
-                              IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                    <Button Width="0" Height="0"
-                            Click="OnPopupSureByHotKey"
-                            HotKey="Enter"
-                            Focusable="False"/>
-                    <Button Classes="flat primary"
-                            Width="100" Height="28"
-                            Padding="0"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Content="{DynamicResource Text.Sure}"
-                            Click="OnPopupSure"
-                            ToolTip.Tip="Enter"/>
-                    <Button Classes="flat"
-                            Width="100" Height="28"
-                            Margin="8,0,0,0"
-                            Padding="0"
-                            HorizontalContentAlignment="Center"
-                            VerticalContentAlignment="Center"
-                            Content="{DynamicResource Text.Cancel}"
-                            Click="OnPopupCancel"
-                            ToolTip.Tip="ESC"/>
+                    <!-- Options -->
+                    <StackPanel Margin="8,4,8,8"
+                                Height="32"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                      <Button Width="0" Height="0"
+                              Click="OnPopupSureByHotKey"
+                              HotKey="Enter"
+                              Focusable="False"/>
+                      <Button Classes="flat primary"
+                              Width="100" Height="28"
+                              Padding="0"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              Content="{DynamicResource Text.Sure}"
+                              Click="OnPopupSure"
+                              ToolTip.Tip="Enter"/>
+                      <Button Classes="flat"
+                              Width="100" Height="28"
+                              Margin="8,0,0,0"
+                              Padding="0"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              Content="{DynamicResource Text.Cancel}"
+                              Click="OnPopupCancel"
+                              ToolTip.Tip="ESC"/>
+                    </StackPanel>
+
+                    <!-- Running -->
+                    <v:PopupRunningStatus Margin="12,8"
+                                          Description="{Binding ProgressDescription}"
+                                          IsVisible="{Binding InProgress}"/>
                   </StackPanel>
-
-                  <!-- Running -->
-                  <v:PopupRunningStatus Margin="12,8"
-                                        Description="{Binding ProgressDescription}"
-                                        IsVisible="{Binding InProgress}"/>
-                </StackPanel>
-              </DataTemplate>
-            </ContentControl.DataTemplates>
-          </ContentControl>
+                </DataTemplate>
+              </ContentControl.DataTemplates>
+            </ContentControl>
+          </Border>
         </Border>
 
         <!-- Notifications Clear Button -->
@@ -138,8 +141,8 @@
           <ItemsControl ItemsSource="{Binding Notifications}">
             <ItemsControl.ItemTemplate>
               <DataTemplate DataType="m:Notification">
-                <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)">
-                  <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
+                <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
+                  <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}" BorderThickness="1" BorderBrush="{DynamicResource Brush.PopupBorder}">
                     <Grid RowDefinitions="26,Auto">
                       <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" Margin="8,0">
                         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" IsVisible="{Binding IsError}"/>
@@ -157,7 +160,7 @@
                       <v:CommandLogContentPresenter Grid.Row="1"
                                                     Margin="8" Padding="2"
                                                     MaxHeight="200"
-                                                    PureText="{Binding Message}"
+                                                    Log="{Binding Message, Mode=OneWay}"
                                                     WordWrap="True"
                                                     HorizontalScrollBarVisibility="Disabled"
                                                     VerticalScrollBarVisibility="Auto"/>

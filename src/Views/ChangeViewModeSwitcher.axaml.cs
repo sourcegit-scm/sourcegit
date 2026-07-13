@@ -6,22 +6,28 @@ namespace SourceGit.Views
 {
     public partial class ChangeViewModeSwitcher : UserControl
     {
-        public static readonly StyledProperty<Models.ChangeViewMode> ViewModeProperty =
-            AvaloniaProperty.Register<ChangeViewModeSwitcher, Models.ChangeViewMode>(nameof(ViewMode));
+        public static readonly DirectProperty<ChangeViewModeSwitcher, Models.ChangeViewMode> ViewModeProperty =
+            AvaloniaProperty.RegisterDirect<ChangeViewModeSwitcher, Models.ChangeViewMode>(
+                nameof(ViewMode),
+                static o => o.ViewMode,
+                static (o, v) => o.ViewMode = v);
 
         public Models.ChangeViewMode ViewMode
         {
-            get => GetValue(ViewModeProperty);
-            set => SetValue(ViewModeProperty, value);
+            get => _viewMode;
+            set => SetAndRaise(ViewModeProperty, ref _viewMode, value);
         }
 
-        public static readonly StyledProperty<Models.ChangeSortMode> SortModeProperty =
-            AvaloniaProperty.Register<ChangeViewModeSwitcher, Models.ChangeSortMode>(nameof(SortMode));
+        public static readonly DirectProperty<ChangeViewModeSwitcher, Models.ChangeSortMode> SortModeProperty =
+            AvaloniaProperty.RegisterDirect<ChangeViewModeSwitcher, Models.ChangeSortMode>(
+                nameof(SortMode),
+                static o => o.SortMode,
+                static (o, v) => o.SortMode = v);
 
         public Models.ChangeSortMode SortMode
         {
-            get => GetValue(SortModeProperty);
-            set => SetValue(SortModeProperty, value);
+            get => _sortMode;
+            set => SetAndRaise(SortModeProperty, ref _sortMode, value);
         }
 
         public ChangeViewModeSwitcher()
@@ -58,5 +64,8 @@ namespace SourceGit.Views
             SortMode = Models.ChangeSortMode.Status;
             e.Handled = true;
         }
+
+        private Models.ChangeViewMode _viewMode = Models.ChangeViewMode.List;
+        private Models.ChangeSortMode _sortMode = Models.ChangeSortMode.Path;
     }
 }

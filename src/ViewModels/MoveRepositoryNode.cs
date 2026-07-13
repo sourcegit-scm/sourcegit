@@ -32,6 +32,7 @@ namespace SourceGit.ViewModels
                 Id = Guid.NewGuid().ToString()
             });
             MakeRows(Preferences.Instance.RepositoryNodes, 1);
+            Selected = Rows[0];
         }
 
         public override Task<bool> Sure()

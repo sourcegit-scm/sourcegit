@@ -53,6 +53,9 @@ namespace SourceGit.Models
 
             Task.Run(async () =>
             {
+                using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromSeconds(2);
+
                 while (true)
                 {
                     string email = null;
@@ -88,8 +91,6 @@ namespace SourceGit.Models
                     Bitmap img = null;
                     try
                     {
-                        using var client = new HttpClient();
-                        client.Timeout = TimeSpan.FromSeconds(2);
                         var rsp = await client.GetAsync(url);
                         if (rsp.IsSuccessStatusCode)
                         {
@@ -224,10 +225,7 @@ namespace SourceGit.Models
         {
             var lowered = email.ToLower(CultureInfo.CurrentCulture).Trim();
             var hash = MD5.HashData(Encoding.Default.GetBytes(lowered));
-            var builder = new StringBuilder(hash.Length * 2);
-            foreach (var c in hash)
-                builder.Append(c.ToString("x2"));
-            return builder.ToString();
+            return Convert.ToHexStringLower(hash);
         }
 
         private void NotifyResourceChanged(string email, Bitmap image)

@@ -27,7 +27,7 @@
              Margin="4,0"
              Padding="4"
              MinHeight="28"
-             MaxHeight="100"
+             MaxHeight="400"
              Focusable="True"
              BorderThickness="1"
              BorderBrush="{DynamicResource Brush.Border2}"

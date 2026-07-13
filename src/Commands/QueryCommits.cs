@@ -28,10 +28,6 @@ namespace SourceGit.Commands
             {
                 builder.Append("-i --author=").Append(filter.Quoted());
             }
-            else if (method == Models.CommitSearchMethod.ByCommitter)
-            {
-                builder.Append("-i --committer=").Append(filter.Quoted());
-            }
             else if (method == Models.CommitSearchMethod.ByMessage)
             {
                 var words = filter.Split([' ', '\t', '\r'], StringSplitOptions.RemoveEmptyEntries);
@@ -80,7 +76,8 @@ namespace SourceGit.Commands
                     commit.Subject = parts[7];
                     commits.Add(commit);
 
-                    findHead |= commit.IsMerged;
+                    if (!findHead && commit.IsMerged)
+                        findHead = true;
                 }
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);

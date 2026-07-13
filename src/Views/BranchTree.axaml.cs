@@ -147,18 +147,6 @@ namespace SourceGit.Views
             set => SetValue(BackgroundProperty, value);
         }
 
-        static BranchTreeNodeTrackStatusPresenter()
-        {
-            AffectsMeasure<BranchTreeNodeTrackStatusPresenter>(
-                FontSizeProperty,
-                FontFamilyProperty,
-                ForegroundProperty);
-
-            AffectsRender<BranchTreeNodeTrackStatusPresenter>(
-                ForegroundProperty,
-                BackgroundProperty);
-        }
-
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -168,6 +156,18 @@ namespace SourceGit.Views
                 context.DrawRectangle(Background, null, new RoundedRect(new Rect(8, 0, _label.Width + 18, 18), new CornerRadius(9)));
                 context.DrawText(_label, new Point(17, 9 - _label.Height * 0.5));
             }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == FontSizeProperty ||
+                change.Property == FontFamilyProperty ||
+                change.Property == ForegroundProperty)
+                InvalidateMeasure();
+            else if (change.Property == BackgroundProperty)
+                InvalidateVisual();
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -270,20 +270,22 @@ namespace SourceGit.Views
 
     public partial class BranchTree : UserControl
     {
-        public static readonly StyledProperty<List<ViewModels.BranchTreeNode>> NodesProperty =
-            AvaloniaProperty.Register<BranchTree, List<ViewModels.BranchTreeNode>>(nameof(Nodes));
+        public static readonly DirectProperty<BranchTree, List<ViewModels.BranchTreeNode>> NodesProperty =
+            AvaloniaProperty.RegisterDirect<BranchTree, List<ViewModels.BranchTreeNode>>(
+                nameof(Nodes),
+                static o => o.Nodes,
+                static (o, v) => o.Nodes = v);
 
         public List<ViewModels.BranchTreeNode> Nodes
         {
-            get => GetValue(NodesProperty);
-            set => SetValue(NodesProperty, value);
+            get => _nodes;
+            set => SetAndRaise(NodesProperty, ref _nodes, value);
         }
 
         public AvaloniaList<ViewModels.BranchTreeNode> Rows
         {
             get;
-            private set;
-        } = new AvaloniaList<ViewModels.BranchTreeNode>();
+        } = [];
 
         public static readonly RoutedEvent<RoutedEventArgs> SelectionChangedEvent =
             RoutedEvent.Register<BranchTree, RoutedEventArgs>(nameof(SelectionChanged), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
@@ -323,7 +325,7 @@ namespace SourceGit.Views
                 return;
 
             var treePath = new List<ViewModels.BranchTreeNode>();
-            FindTreePath(treePath, Nodes, branch.Name, 0);
+            FindTreePath(treePath, _nodes, branch.Name, 0);
 
             if (treePath.Count == 0)
                 return;
@@ -412,10 +414,10 @@ namespace SourceGit.Views
             {
                 Rows.Clear();
 
-                if (Nodes is { Count: > 0 })
+                if (_nodes is { Count: > 0 })
                 {
                     var rows = new List<ViewModels.BranchTreeNode>();
-                    MakeRows(rows, Nodes, 0);
+                    MakeRows(rows, _nodes, 0);
                     Rows.AddRange(rows);
                 }
 
@@ -751,10 +753,27 @@ namespace SourceGit.Views
                 menu.Items.Add(push);
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
+                var type = repo.GetGitFlowType(branch);
+                if (type != Models.GitFlowBranchType.None)
+                {
+                    var finish = new MenuItem();
+                    finish.Header = App.Text("BranchCM.Finish", branch.Name);
+                    finish.Icon = this.CreateMenuIcon("Icons.GitFlow.Finish");
+                    finish.IsEnabled = !repo.IsBare;
+                    finish.Click += (_, e) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.GitFlowFinish(repo, branch, type));
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(finish);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                }
+
                 if (upstream != null)
                 {
                     var compareWithUpstream = new MenuItem();
-                    compareWithUpstream.Header = App.Text("BranchCM.CompareWithUpstream", upstream.FriendlyName);
+                    compareWithUpstream.Header = App.Text("BranchCM.CompareWithSpecial", upstream.FriendlyName);
                     compareWithUpstream.Icon = this.CreateMenuIcon("Icons.Compare");
                     compareWithUpstream.Click += (_, _) =>
                     {
@@ -856,6 +875,23 @@ namespace SourceGit.Views
                     menu.Items.Add(rebase);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(interactiveRebase);
+
+                    var type = repo.GetGitFlowType(branch);
+                    if (type != Models.GitFlowBranchType.None)
+                    {
+                        var finish = new MenuItem();
+                        finish.Header = App.Text("BranchCM.Finish", branch.Name);
+                        finish.Icon = this.CreateMenuIcon("Icons.GitFlow.Finish");
+                        finish.IsEnabled = !repo.IsBare || !hasNoWorktree;
+                        finish.Click += (_, e) =>
+                        {
+                            if (repo.CanCreatePopup())
+                                repo.ShowPopup(new ViewModels.GitFlowFinish(repo, branch, type));
+                            e.Handled = true;
+                        };
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                        menu.Items.Add(finish);
+                    }
                 }
 
                 if (hasNoWorktree)
@@ -891,7 +927,7 @@ namespace SourceGit.Views
                 if (upstream != null)
                 {
                     var compareWithUpstream = new MenuItem();
-                    compareWithUpstream.Header = App.Text("BranchCM.CompareWithUpstream", upstream.FriendlyName);
+                    compareWithUpstream.Header = App.Text("BranchCM.CompareWithSpecial", upstream.FriendlyName);
                     compareWithUpstream.Icon = this.CreateMenuIcon("Icons.Compare");
                     compareWithUpstream.Click += (_, _) =>
                     {
@@ -908,25 +944,6 @@ namespace SourceGit.Views
                     new ViewModels.CompareCommandPalette(repo, branch).Open();
                 };
                 menu.Items.Add(compareWith);
-            }
-
-            if (!repo.IsBare)
-            {
-                var type = repo.GetGitFlowType(branch);
-                if (type != Models.GitFlowBranchType.None)
-                {
-                    var finish = new MenuItem();
-                    finish.Header = App.Text("BranchCM.Finish", branch.Name);
-                    finish.Icon = this.CreateMenuIcon("Icons.GitFlow");
-                    finish.Click += (_, e) =>
-                    {
-                        if (repo.CanCreatePopup())
-                            repo.ShowPopup(new ViewModels.GitFlowFinish(repo, branch, type));
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(new MenuItem() { Header = "-" });
-                    menu.Items.Add(finish);
-                }
             }
 
             if (!branch.IsDetachedHead)
@@ -1397,6 +1414,7 @@ namespace SourceGit.Views
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
+        private List<ViewModels.BranchTreeNode> _nodes = null;
         private bool _disableSelectionChangingEvent = false;
     }
 }

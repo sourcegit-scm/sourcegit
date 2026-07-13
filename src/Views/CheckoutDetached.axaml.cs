@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace SourceGit.Views
 {
-    public partial class CheckoutCommit : UserControl
+    public partial class CheckoutDetached : UserControl
     {
-        public CheckoutCommit()
+        public CheckoutDetached()
         {
             InitializeComponent();
         }

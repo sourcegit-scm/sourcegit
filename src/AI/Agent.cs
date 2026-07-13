@@ -50,10 +50,11 @@ namespace SourceGit.AI
                                 var text = completion.Content[0].Text.ReplaceLineEndings("\n").Trim();
                                 var start = 0;
                                 var len = text.Length;
-                                if (text.StartsWith("```\n", StringComparison.Ordinal))
+                                if (text.StartsWith("```", StringComparison.Ordinal))
                                 {
-                                    start += 4;
-                                    len -= 4;
+                                    var idx = text.IndexOf('\n') + 1;
+                                    start += idx;
+                                    len -= idx;
                                 }
 
                                 if (text.EndsWith("\n```", StringComparison.Ordinal))
@@ -82,7 +83,12 @@ namespace SourceGit.AI
 #pragma warning disable SCME0001
                             var hasReasoningContent = completion.Patch.TryGetValue("$.choices[0].message.reasoning_content"u8, out string reasoning);
                             if (hasReasoningContent)
-                                message.Patch.Set("$.reasoning_content"u8, reasoning);
+                            {
+                                if (string.IsNullOrEmpty(reasoning))
+                                    message.Patch.Set("$.reasoning_content"u8, BinaryData.FromString("\"\""));
+                                else
+                                    message.Patch.Set("$.reasoning_content"u8, reasoning);
+                            }
 #pragma warning restore SCME0001
                             messages.Add(message);
 

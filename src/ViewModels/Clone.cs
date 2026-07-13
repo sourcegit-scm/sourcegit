@@ -57,11 +57,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selectedGroup, value);
         }
 
-        public List<int> Bookmarks
-        {
-            get;
-        }
-
         public int Bookmark
         {
             get => _bookmark;
@@ -88,10 +83,6 @@ namespace SourceGit.ViewModels
             Groups.Add(new RepositoryNode { Name = "No Group (Uncategorized)", Id = string.Empty });
             SelectedGroup = Groups[0];
             CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
-
-            Bookmarks = new List<int>();
-            for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
-                Bookmarks.Add(i);
 
             var activeWorkspace = Preferences.Instance.GetActiveWorkspace();
             _parentFolder = activeWorkspace?.DefaultCloneDir;
@@ -161,7 +152,7 @@ namespace SourceGit.ViewModels
                 if (submodules.Count > 0)
                     await new Commands.Submodule(path)
                         .Use(log)
-                        .UpdateAsync(submodules, true);
+                        .UpdateAsync(submodules, true, true, false);
             }
 
             log.Complete();

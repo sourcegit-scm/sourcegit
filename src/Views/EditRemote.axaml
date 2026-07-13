@@ -82,7 +82,7 @@
               <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
             </Button>
           </TextBox.InnerRightContent>
-        </TextBox>        
+        </TextBox>
       </Border>
     </Grid>
   </StackPanel>

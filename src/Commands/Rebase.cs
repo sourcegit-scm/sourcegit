@@ -4,15 +4,17 @@ namespace SourceGit.Commands
 {
     public class Rebase : Command
     {
-        public Rebase(string repo, string basedOn, bool autoStash)
+        public Rebase(string repo, string basedOn, bool autoStash, bool noVerify)
         {
             WorkingDirectory = repo;
             Context = repo;
 
             var builder = new StringBuilder(512);
-            builder.Append("rebase ");
+            builder.Append("-c core.commentChar=\"^\" -c core.commentString=\"±\" rebase ");
             if (autoStash)
                 builder.Append("--autostash ");
+            if (noVerify)
+                builder.Append("--no-verify ");
 
             Args = builder.Append(basedOn).ToString();
         }

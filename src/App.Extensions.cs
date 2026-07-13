@@ -18,6 +18,18 @@ namespace SourceGit
             return value.Replace("\"", "\\\"", StringComparison.Ordinal);
         }
 
+        public static string EscapeForBRE(this string value)
+        {
+            return value
+                .Replace("\\", "\\\\", StringComparison.Ordinal)
+                .Replace(".", "\\.", StringComparison.Ordinal)
+                .Replace("[", "\\[", StringComparison.Ordinal)
+                .Replace("*", "\\*", StringComparison.Ordinal)
+                .Replace("^", "\\^", StringComparison.Ordinal)
+                .Replace("$", "\\$", StringComparison.Ordinal)
+                .Replace("{", "\\{", StringComparison.Ordinal);
+        }
+
         public static string FormatFontNames(string input)
         {
             if (string.IsNullOrEmpty(input))

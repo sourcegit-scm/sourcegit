@@ -8,13 +8,16 @@ namespace SourceGit.Views
 {
     public class CommitStatusIndicator : Control
     {
-        public static readonly StyledProperty<Models.Branch> CurrentBranchProperty =
-            AvaloniaProperty.Register<CommitStatusIndicator, Models.Branch>(nameof(CurrentBranch));
+        public static readonly DirectProperty<CommitStatusIndicator, Models.Branch> CurrentBranchProperty =
+            AvaloniaProperty.RegisterDirect<CommitStatusIndicator, Models.Branch>(
+                nameof(CurrentBranch),
+                static o => o.CurrentBranch,
+                static (o, v) => o.CurrentBranch = v);
 
         public Models.Branch CurrentBranch
         {
-            get => GetValue(CurrentBranchProperty);
-            set => SetValue(CurrentBranchProperty, value);
+            get => _currentBranch;
+            set => SetAndRaise(CurrentBranchProperty, ref _currentBranch, value);
         }
 
         public static readonly StyledProperty<IBrush> AheadBrushProperty =
@@ -52,13 +55,13 @@ namespace SourceGit.Views
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (DataContext is Models.Commit commit && CurrentBranch is { } b)
+            if (DataContext is Models.Commit commit && _currentBranch != null)
             {
                 var sha = commit.SHA;
 
-                if (b.Ahead.Contains(sha))
+                if (_currentBranch.Ahead.Contains(sha))
                     _status = Status.Ahead;
-                else if (b.Behind.Contains(sha))
+                else if (_currentBranch.Behind.Contains(sha))
                     _status = Status.Behind;
                 else
                     _status = Status.Normal;
@@ -84,6 +87,7 @@ namespace SourceGit.Views
                 InvalidateMeasure();
         }
 
+        private Models.Branch _currentBranch = null;
         private Status _status = Status.Normal;
     }
 }

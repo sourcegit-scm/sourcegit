@@ -50,7 +50,7 @@
               Content="{DynamicResource Text.ConfirmEmptyCommit.StageSelectedThenCommit}"
               HorizontalContentAlignment="Center"
               VerticalContentAlignment="Center"/>
-      
+
       <Button Classes="flat"
               x:Name="BtnStageAllAndCommit"
               Height="30"

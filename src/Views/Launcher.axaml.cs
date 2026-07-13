@@ -1,33 +1,24 @@
-﻿using System;
+using System;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
-using Avalonia.Platform;
-using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public partial class Launcher : ChromelessWindow
     {
-        public static readonly StyledProperty<GridLength> CaptionHeightProperty =
-            AvaloniaProperty.Register<Launcher, GridLength>(nameof(CaptionHeight));
+        public static readonly DirectProperty<Launcher, GridLength> CaptionHeightProperty =
+            AvaloniaProperty.RegisterDirect<Launcher, GridLength>(
+                nameof(CaptionHeight),
+                static o => o.CaptionHeight);
 
         public GridLength CaptionHeight
         {
-            get => GetValue(CaptionHeightProperty);
-            set => SetValue(CaptionHeightProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> HasLeftCaptionButtonProperty =
-            AvaloniaProperty.Register<Launcher, bool>(nameof(HasLeftCaptionButton));
-
-        public bool HasLeftCaptionButton
-        {
-            get => GetValue(HasLeftCaptionButtonProperty);
-            set => SetValue(HasLeftCaptionButtonProperty, value);
+            get => _captionHeight;
+            set => SetAndRaise(CaptionHeightProperty, ref _captionHeight, value);
         }
 
         public bool HasRightCaptionButton
@@ -44,19 +35,11 @@ namespace SourceGit.Views
         public Launcher()
         {
             if (OperatingSystem.IsMacOS())
-            {
-                HasLeftCaptionButton = true;
                 CaptionHeight = new GridLength(34);
-                ExtendClientAreaChromeHints |= ExtendClientAreaChromeHints.OSXThickTitleBar;
-            }
             else if (UseSystemWindowFrame)
-            {
                 CaptionHeight = new GridLength(30);
-            }
             else
-            {
                 CaptionHeight = new GridLength(38);
-            }
 
             InitializeComponent();
             PositionChanged += OnPositionChanged;
@@ -99,9 +82,7 @@ namespace SourceGit.Views
             base.OnOpened(e);
 
             var preferences = ViewModels.Preferences.Instance;
-            var state = preferences.Layout.LauncherWindowState;
-            if (state == WindowState.Maximized || state == WindowState.FullScreen)
-                WindowState = WindowState.Maximized;
+            WindowState = preferences.Layout.LauncherWindowState;
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -113,9 +94,7 @@ namespace SourceGit.Views
                 var state = (WindowState)change.NewValue!;
                 _lastWindowState = (WindowState)change.OldValue!;
 
-                if (OperatingSystem.IsMacOS())
-                    HasLeftCaptionButton = state != WindowState.FullScreen;
-                else if (!UseSystemWindowFrame)
+                if (!OperatingSystem.IsMacOS() && !UseSystemWindowFrame)
                     CaptionHeight = new GridLength(state == WindowState.Maximized ? 30 : 38);
 
                 ViewModels.Preferences.Instance.Layout.LauncherWindowState = state;
@@ -124,6 +103,14 @@ namespace SourceGit.Views
             {
                 if (!IsActive && DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
                     vm.CommandPalette = null;
+            }
+
+            if (OperatingSystem.IsMacOS() && WindowState != WindowState.FullScreen)
+            {
+                if (change.Property == WindowStateProperty ||
+                    change.Property == BoundsProperty ||
+                    change.Property == TitleProperty)
+                    Native.MacOSUtilities.AdjustTrafficLightsForThickTitleBar(this);
             }
         }
 
@@ -156,7 +143,9 @@ namespace SourceGit.Views
             }
 
             // Register hotkeys for Windows/Linux (macOS has registered these keys in system menu bar)
-            if (!OperatingSystem.IsMacOS())
+            var isMacOS = OperatingSystem.IsMacOS();
+            var cmdKey = isMacOS ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (!isMacOS)
             {
                 if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
                 {
@@ -179,7 +168,17 @@ namespace SourceGit.Views
                 }
             }
 
-            var cmdKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            // Ctrl+` to open terminal. On macOS, Cmd+` is used to switch between windows
+            if (e is { Key: Key.OemTilde, KeyModifiers: KeyModifiers.Control })
+            {
+                if (vm.ActivePage.Data is ViewModels.Repository repo)
+                    Native.OS.OpenTerminal(repo.FullPath);
+                else
+                    ViewModels.Welcome.Instance.OpenTerminal();
+
+                e.Handled = true;
+                return;
+            }
 
             if (vm.CommandPalette != null)
             {
@@ -209,7 +208,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                if (e.Key == Key.N)
+                if (e.Key == Key.R)
                 {
                     if (vm.ActivePage.Data is not ViewModels.Welcome)
                         vm.AddNewTab();
@@ -219,7 +218,7 @@ namespace SourceGit.Views
                     return;
                 }
 
-                if (e.Key == Key.O && e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                if (e.Key == Key.L)
                 {
                     if (vm.ActivePage.Data is not ViewModels.Welcome)
                         vm.AddNewTab();
@@ -229,23 +228,23 @@ namespace SourceGit.Views
                     return;
                 }
 
-                if (e.Key == Key.T)
+                if (e.Key == Key.T && e.KeyModifiers == cmdKey)
                 {
                     vm.AddNewTab();
                     e.Handled = true;
                     return;
                 }
 
-                if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
-                    (!OperatingSystem.IsMacOS() && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
+                if ((isMacOS && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Right) ||
+                    (!isMacOS && !e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
                     vm.GotoNextTab();
                     e.Handled = true;
                     return;
                 }
 
-                if ((OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Left) ||
-                    (!OperatingSystem.IsMacOS() && e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
+                if ((isMacOS && e.KeyModifiers.HasFlag(KeyModifiers.Alt) && e.Key == Key.Left) ||
+                    (!isMacOS && e.KeyModifiers.HasFlag(KeyModifiers.Shift) && e.Key == Key.Tab))
                 {
                     vm.GotoPrevTab();
                     e.Handled = true;
@@ -280,19 +279,20 @@ namespace SourceGit.Views
                             vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                             e.Handled = true;
                             return;
-                    }
-                }
-                else
-                {
-                    var welcome = this.FindDescendantOfType<Welcome>();
-                    if (welcome != null)
-                    {
-                        if (e.Key == Key.F)
-                        {
-                            welcome.SearchBox.Focus();
+                        case Key.B when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            if (repo.CanCreatePopup() && repo.GetSelectedCommitInHistory() is { } bc)
+                                repo.ShowPopup(new ViewModels.CreateBranch(repo, bc));
                             e.Handled = true;
                             return;
-                        }
+                        case Key.T when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            if (repo.CanCreatePopup() && repo.GetSelectedCommitInHistory() is { } tc)
+                                repo.ShowPopup(new ViewModels.CreateTag(repo, tc));
+                            e.Handled = true;
+                            return;
+                        case Key.E:
+                            Native.OS.OpenInFileManager(repo.FullPath);
+                            e.Handled = true;
+                            return;
                     }
                 }
             }
@@ -423,6 +423,8 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private GridLength _captionHeight = new(32);
         private WindowState _lastWindowState = WindowState.Normal;
     }
 }
+

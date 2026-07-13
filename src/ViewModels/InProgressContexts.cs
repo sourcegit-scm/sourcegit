@@ -60,7 +60,8 @@ namespace SourceGit.ViewModels
             {
                 WorkingDirectory = repo.FullPath,
                 Context = repo.FullPath,
-                Args = "cherry-pick --continue",
+                Editor = Commands.Command.EditorType.None,
+                Args = "-c core.commentChar=\"^\" -c core.commentString=\"±\" cherry-pick --continue",
             };
 
             _skipCmd = new Commands.Command
@@ -115,7 +116,7 @@ namespace SourceGit.ViewModels
                 WorkingDirectory = repo.FullPath,
                 Context = repo.FullPath,
                 Editor = Commands.Command.EditorType.RebaseEditor,
-                Args = "rebase --continue",
+                Args = "-c core.commentChar=\"^\" -c core.commentString=\"±\" rebase --continue",
             };
 
             _skipCmd = new Commands.Command
@@ -161,6 +162,10 @@ namespace SourceGit.ViewModels
             var rebaseApplyDir = Path.Combine(_gitDir, "rebase-apply");
             if (Directory.Exists(rebaseApplyDir))
                 Directory.Delete(rebaseApplyDir, true);
+
+            var jobFile = Path.Combine(_gitDir, "sourcegit.interactive_rebase");
+            if (File.Exists(jobFile))
+                File.Delete(jobFile);
         }
 
         private readonly string _gitDir;
@@ -181,7 +186,8 @@ namespace SourceGit.ViewModels
             {
                 WorkingDirectory = repo.FullPath,
                 Context = repo.FullPath,
-                Args = "revert --continue",
+                Editor = Commands.Command.EditorType.None,
+                Args = "-c core.commentChar=\"^\" -c core.commentString=\"±\" revert --continue",
             };
 
             _skipCmd = new Commands.Command
@@ -228,7 +234,8 @@ namespace SourceGit.ViewModels
             {
                 WorkingDirectory = repo.FullPath,
                 Context = repo.FullPath,
-                Args = "merge --continue",
+                Editor = Commands.Command.EditorType.None,
+                Args = "-c core.commentChar=\"^\" -c core.commentString=\"±\" merge --continue",
             };
 
             _abortCmd = new Commands.Command

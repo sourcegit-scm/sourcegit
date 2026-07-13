@@ -31,11 +31,7 @@ namespace SourceGit.Views
                         PhysicalKey = PhysicalKey.Enter,
                     };
 
-                    if (control is AvaloniaEdit.TextEditor editor)
-                        editor.TextArea.TextView.RaiseEvent(fake);
-                    else
-                        control.RaiseEvent(fake);
-
+                    control.RaiseEvent(fake);
                     e.Handled = false;
                     return;
                 }

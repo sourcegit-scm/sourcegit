@@ -13,16 +13,72 @@
           BorderBrush="{DynamicResource Brush.Border2}"
           CornerRadius="4">
     <Grid RowDefinitions="*,1,24">
-      <v:CommitMessageTextEditor Grid.Row="0"
-                                 x:Name="Editor"
-                                 CommitMessage="{Binding #ThisControl.CommitMessage, Mode=TwoWay}"
-                                 Placeholder="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
-                                 SubjectLineBrush="{DynamicResource Brush.Border2}"
-                                 SubjectGuideLength="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength, Mode=OneWay}"
-                                 Foreground="{DynamicResource Brush.FG1}"
-                                 FontFamily="{DynamicResource Fonts.Default}"
-                                 FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize, Mode=OneWay}"
-                                 Tag="{Binding Source={x:Static v:StealHotKey.Enter}}"/>
+      <Grid Grid.Row="0">
+        <v:CommitMessageTextBox x:Name="Editor"
+                                Classes="no_border"
+                                CornerRadius="4,4,0,0"
+                                Background="Transparent"
+                                Text="{Binding #ThisControl.CommitMessage, Mode=TwoWay}"
+                                Watermark="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
+                                SubjectGuideLength="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength, Mode=OneWay}"
+                                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize, Mode=OneWay}"/>
+
+        <v:CommitMessageSubjectEndIndicator LineBrush="{DynamicResource Brush.Border2}"
+                                            FontFamily="{DynamicResource Fonts.Default}"
+                                            SubjectEndY="{Binding #Editor.SubjectEndY, Mode=OneWay}"/>
+
+        <Popup PlacementTarget="{Binding #Editor, Mode=OneWay}"
+               Placement="AnchorAndGravity"
+               PlacementAnchor="TopLeft"
+               PlacementGravity="BottomRight"
+               HorizontalOffset="-4" VerticalOffset="{Binding #Editor.SuggestionPopupY, Mode=OneWay}">
+          <Popup.IsOpen>
+            <MultiBinding Converter="{x:Static BoolConverters.And}">
+              <Binding Path="#Editor.Suggestions" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}"/>
+              <Binding Path="$parent[Window].IsActive"/>
+            </MultiBinding>
+          </Popup.IsOpen>
+
+          <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
+            <Border Padding="4"
+                    BorderThickness="1" BorderBrush="{DynamicResource Brush.PopupBorder}"
+                    Background="{DynamicResource Brush.Popup}"
+                    CornerRadius="4">
+              <v:ListBoxEx x:Name="SuggestionBox"
+                           Background="Transparent"
+                           SelectionMode="Single"
+                           ItemsSource="{Binding #Editor.Suggestions, Mode=OneWay}"
+                           SelectedIndex="{Binding #Editor.SelectedSuggestionIndex, Mode=TwoWay}"
+                           MaxHeight="400"
+                           Focusable="False">
+                <ListBox.Styles>
+                  <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="MinWidth" Value="140"/>
+                    <Setter Property="MinHeight" Value="26"/>
+                    <Setter Property="CornerRadius" Value="4"/>
+                    <Setter Property="Focusable" Value="False"/>
+                  </Style>
+                </ListBox.Styles>
+
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" Spacing="2"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="v:CommitMessageTextBoxSuggestion">
+                    <Border Padding="8,0" Height="26" Background="Transparent" Tapped="OnSuggestionTapped">
+                      <TextBlock Text="{Binding Text, Mode=OneWay}" VerticalAlignment="Center"/>
+                    </Border>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </v:ListBoxEx>
+            </Border>
+          </Border>
+        </Popup>
+      </Grid>
 
       <Rectangle Grid.Row="1"
                  Height="1"
@@ -82,13 +138,13 @@
             <TextBlock Margin="8,0,0,0"
                        FontSize="11"
                        Text="{Binding #Editor.Column, Mode=OneWay}"/>
-            
+
             <Rectangle Width="1"
                        Margin="8,0"
                        Fill="{DynamicResource Brush.Border2}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Stretch"/>
-            
+
             <TextBlock Classes="info_label"
                        FontSize="13"
                        HorizontalAlignment="Left"
@@ -96,7 +152,7 @@
             <TextBlock Margin="8,0,0,0"
                        FontSize="11"
                        Text="{Binding #Editor.SubjectLength}"
-                       Foreground="{Binding #Editor.IsSubjectWarningIconVisible, Converter={x:Static c:BoolConverters.IsWarningToBrush}, Mode=OneWay}"
+                       Foreground="{Binding #Editor.WarnSubjectLength, Converter={x:Static c:BoolConverters.IsWarningToBrush}, Mode=OneWay}"
                        VerticalAlignment="Center"/>
             <TextBlock FontSize="11"
                        Text="/"
@@ -104,7 +160,7 @@
             <TextBlock FontSize="11"
                        Text="{Binding #Editor.SubjectGuideLength, Mode=OneWay}"
                        VerticalAlignment="Center"/>
-            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #Editor.IsSubjectWarningIconVisible, Mode=OneWay}"/>
+            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #Editor.WarnSubjectLength, Mode=OneWay}"/>
           </StackPanel>
         </Grid>
       </Border>

@@ -109,6 +109,11 @@ namespace SourceGit.ViewModels
             Refresh();
         }
 
+        public RevisionCompare Clone()
+        {
+            return new RevisionCompare(_repo, _startPoint as Models.Commit, _endPoint as Models.Commit);
+        }
+
         public void SetTargets(Models.Commit l, Models.Commit r)
         {
             var hashes = new HashSet<string>();

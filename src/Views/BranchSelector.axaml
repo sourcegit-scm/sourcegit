@@ -176,7 +176,7 @@
 
       <Style Selector="^:disabled">
         <Setter Property="Opacity" Value="0.6"/>
-        
+
         <Style Selector="^ /template/ Border#PART_Background">
           <Setter Property="Background" Value="Transparent" />
           <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border2}"/>

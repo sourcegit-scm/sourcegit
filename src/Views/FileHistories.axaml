@@ -63,6 +63,7 @@
                SelectionMode="Multiple"
                SelectionChanged="OnRevisionsSelectionChanged"
                PropertyChanged="OnRevisionsPropertyChanged"
+               ContextRequested="OnRevisionsContextRequested"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>
@@ -88,6 +89,7 @@
                   <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
                   <TextBlock Grid.Column="2"
                              Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                             FontFamily="{DynamicResource Fonts.Monospace}"
                              Cursor="Hand"
                              Background="Transparent"
                              Foreground="DarkOrange"
@@ -95,6 +97,7 @@
                              Margin="8,0,0,0"
                              PointerPressed="OnPressCommitSHA"/>
                   <v:DateTimePresenter Grid.Column="3"
+                                       FontFeatures="+tnum"
                                        Margin="8,0,0,0"
                                        ShowDateOnly="True"
                                        Timestamp="{Binding AuthorTime}"
@@ -207,7 +210,14 @@
                       <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto">
                         <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                        <TextBlock Grid.Column="2" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressCommitSHA" />
+                        <TextBlock Grid.Column="2"
+                                   Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
+                                   Foreground="DarkOrange"
+                                   Margin="8,0,0,0"
+                                   TextDecorations="Underline"
+                                   Cursor="Hand"
+                                   PointerPressed="OnPressCommitSHA" />
                         <v:DateTimePresenter Grid.Column="3"
                                              Margin="8,0,0,0"
                                              Timestamp="{Binding AuthorTime}"

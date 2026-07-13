@@ -17,7 +17,12 @@ namespace SourceGit.Views
             if (toplevel == null)
                 return;
 
-            var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }] };
+            var options = new FilePickerOpenOptions()
+            {
+                AllowMultiple = false,
+                FileTypeFilter = [new("SSHKey") { Patterns = ["*"] }]
+            };
+
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);
             if (selected.Count == 1)
                 TxtSshKey.Text = selected[0].Path.LocalPath;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -12,11 +11,6 @@ namespace SourceGit.ViewModels
         }
 
         public bool IsRepository
-        {
-            get;
-        }
-
-        public List<int> Bookmarks
         {
             get;
         }
@@ -42,9 +36,6 @@ namespace SourceGit.ViewModels
 
             Target = node.IsRepository ? node.Id : node.Name;
             IsRepository = node.IsRepository;
-            Bookmarks = new List<int>();
-            for (var i = 0; i < Models.Bookmarks.Brushes.Length; i++)
-                Bookmarks.Add(i);
         }
 
         public override Task<bool> Sure()

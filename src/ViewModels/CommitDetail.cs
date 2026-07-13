@@ -40,6 +40,7 @@ namespace SourceGit.ViewModels
                 if (value != _sharedData.ActiveTabIndex)
                 {
                     _sharedData.ActiveTabIndex = value;
+                    OnPropertyChanged(nameof(ActiveTabIndex));
 
                     if (value == 1 && DiffContext == null && _selectedChanges is { Count: 1 })
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _selectedChanges[0]));
@@ -172,6 +173,14 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
+        }
+
+        public CommitDetail Clone()
+        {
+            var cloned = new CommitDetail(_repo, null);
+            cloned.ActiveTabIndex = ActiveTabIndex;
+            cloned.Commit = _commit;
+            return cloned;
         }
 
         public void NavigateTo(string commitSHA)

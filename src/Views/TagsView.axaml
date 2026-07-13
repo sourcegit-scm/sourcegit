@@ -10,7 +10,7 @@
              x:Class="SourceGit.Views.TagsView">
   <UserControl.Styles>
     <Style Selector="ListBoxItem:pointerover v|FilterModeSwitchButton">
-      <Setter Property="IsNoneVisible" Value="True"/>
+      <Setter Property="IsHoverParent" Value="True"/>
     </Style>
   </UserControl.Styles>
 

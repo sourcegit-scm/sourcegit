@@ -50,7 +50,7 @@
                                               IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                               IsVisible="{Binding IsFolder}"/>
               </Border>
-              
+
               <ToggleButton Classes="folder"
                             Focusable="False"
                             Width="14" Height="14"
@@ -70,7 +70,7 @@
                          FontWeight="Bold"
                          Margin="4,0,0,0"
                          IsVisible="{Binding ShowConflictMarker}"/>
-              
+
               <TextBlock Text="{Binding DisplayName, Mode=OneWay}"
                          Margin="4,0,0,0"/>
             </StackPanel>
@@ -101,7 +101,7 @@
                          Foreground="DarkOrange"
                          FontWeight="Bold"
                          Margin="4,0,0,0" IsVisible="{Binding IsConflicted}"/>
-              
+
               <TextBlock Text="{Binding Path, Converter={x:Static c:PathConverters.PureFileName}}"
                          Margin="4,0,0,0"/>
 
@@ -137,7 +137,7 @@
                          FontWeight="Bold"
                          Margin="4,0,0,0"
                          IsVisible="{Binding IsConflicted}"/>
-              
+
               <TextBlock Margin="4,0,0,0"
                          Text="{Binding Path}"/>
             </StackPanel>

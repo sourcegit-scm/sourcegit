@@ -85,12 +85,10 @@
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:LauncherPage">
           <Grid ColumnDefinitions="Auto,6,*" Background="Transparent" Tapped="OnItemTapped">
-            <Path Grid.Column="0"
-                  Width="12" Height="12"
-                  Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                  Data="{StaticResource Icons.Bookmark}"
-                  IsVisible="{Binding Node.IsRepository}"
-                  IsHitTestVisible="False"/>
+            <v:Bookmark Grid.Column="0"
+                        Width="12" Height="12"
+                        Value="{Binding Node.Bookmark, Mode=OneWay}"
+                        IsVisible="{Binding Node.IsRepository}"/>
             <Path Grid.Column="0"
                   Width="12" Height="12"
                   Fill="{DynamicResource Brush.FG1}"
@@ -157,11 +155,9 @@
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:RepositoryNode">
           <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnItemTapped" ToolTip.Tip="{Binding Id, Mode=OneWay}">
-            <Path Grid.Column="0"
-                  Width="12" Height="12"
-                  Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                  Data="{StaticResource Icons.Bookmark}"
-                  IsHitTestVisible="False"/>
+            <v:Bookmark Grid.Column="0"
+                        Width="12" Height="12"
+                        Value="{Binding Bookmark, Mode=OneWay}"/>
             <TextBlock Grid.Column="1"
                        Margin="6,0,0,0"
                        VerticalAlignment="Center"

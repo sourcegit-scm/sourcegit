@@ -31,13 +31,16 @@ namespace SourceGit.Views
             }
         }
 
-        public static readonly StyledProperty<string> ContentProperty =
-            AvaloniaProperty.Register<AIResponseView, string>(nameof(Content), string.Empty);
+        public static readonly DirectProperty<AIResponseView, string> ContentProperty =
+            AvaloniaProperty.RegisterDirect<AIResponseView, string>(
+                nameof(Content),
+                static o => o.Content,
+                static (o, v) => o.Content = v);
 
         public string Content
         {
-            get => GetValue(ContentProperty);
-            set => SetValue(ContentProperty, value);
+            get => _content;
+            set => SetAndRaise(ContentProperty, ref _content, value);
         }
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
@@ -88,7 +91,9 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == ContentProperty)
-                Text = Content;
+                Text = _content;
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
+                Models.TextMateHelper.SetThemeByApp(_textMate);
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -125,6 +130,7 @@ namespace SourceGit.Views
         }
 
         private TextMate.Installation _textMate = null;
+        private string _content = string.Empty;
     }
 
     public partial class AIAssistant : ChromelessWindow

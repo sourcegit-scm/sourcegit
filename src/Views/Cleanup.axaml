@@ -16,7 +16,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.Repository.Clean}"/>
     </StackPanel>
-    
+
     <TextBlock Text="{DynamicResource Text.Repository.CleanTips}"
                Margin="0,16,0,0"
                HorizontalAlignment="Center"/>

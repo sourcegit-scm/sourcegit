@@ -56,7 +56,7 @@
                Text="{DynamicResource Text.CommandPalette.RevisionFiles}"
                FontWeight="Bold"
                Foreground="{DynamicResource Brush.FG2}"/>
-    
+
     <v:ListBoxEx Grid.Row="2"
                  x:Name="FileListBox"
                  MaxHeight="360"

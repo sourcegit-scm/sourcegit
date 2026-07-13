@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-
+using System.Text.RegularExpressions;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -13,30 +13,26 @@ namespace SourceGit.Views
             InitializeComponent();
 
             var assembly = Assembly.GetExecutingAssembly();
-            var ver = assembly.GetName().Version;
-            if (ver != null)
-                TxtVersion.Text = $"{ver.Major}.{ver.Minor:D2}";
-
             var meta = assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+            var foundFriendlyVersion = false;
             foreach (var attr in meta)
             {
                 if (attr.Key.Equals("BuildDate", StringComparison.OrdinalIgnoreCase) && DateTime.TryParse(attr.Value, out var date))
                 {
                     TxtReleaseDate.Text = App.Text("About.ReleaseDate", Models.DateTimeFormat.Format(date, true));
-                    break;
+                }
+                else if (attr.Key.Equals("FriendlyVersion", StringComparison.OrdinalIgnoreCase) && REG_FRIENDLY_VERSION().IsMatch(attr.Value))
+                {
+                    foundFriendlyVersion = true;
+                    TxtVersion.Text = attr.Value;
                 }
             }
 
-            var informationVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            if (informationVersion != null)
+            if (!foundFriendlyVersion)
             {
-                var infoVer = informationVersion.InformationalVersion;
-                var idx = infoVer.IndexOf('+');
-                if (idx > 0 && infoVer.Length > idx + 11)
-                {
-                    TxtGitSourceRevision.Text = infoVer.Substring(idx + 1, 10);
-                    PnlGitSourceRevision.IsVisible = true;
-                }
+                var ver = assembly.GetName().Version;
+                if (ver != null)
+                    TxtVersion.Text = $"v{ver.Major}.{ver.Minor:D2}";
             }
 
             var copyright = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
@@ -46,7 +42,12 @@ namespace SourceGit.Views
 
         private void OnVisitReleaseNotes(object _, RoutedEventArgs e)
         {
-            Native.OS.OpenBrowser($"https://github.com/sourcegit-scm/sourcegit/releases/tag/v{TxtVersion.Text}");
+            var ver = TxtVersion.Text ?? string.Empty;
+            var endOfTagIdx = ver.IndexOf('-');
+            if (endOfTagIdx > 0)
+                ver = ver.Substring(0, endOfTagIdx);
+
+            Native.OS.OpenBrowser($"https://github.com/sourcegit-scm/sourcegit/releases/tag/{ver}");
             e.Handled = true;
         }
 
@@ -61,5 +62,8 @@ namespace SourceGit.Views
             Native.OS.OpenBrowser("https://github.com/sourcegit-scm/sourcegit");
             e.Handled = true;
         }
+
+        [GeneratedRegex(@"^v\d{4}\.\d{1,2}(?:\-\d+\-[0-9a-f]{8})?(?:\-dirty)?$")]
+        private static partial Regex REG_FRIENDLY_VERSION();
     }
 }

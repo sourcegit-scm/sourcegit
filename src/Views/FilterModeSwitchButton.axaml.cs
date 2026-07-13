@@ -7,31 +7,36 @@ namespace SourceGit.Views
 {
     public partial class FilterModeSwitchButton : UserControl
     {
-        public static readonly StyledProperty<Models.FilterMode> ModeProperty =
-            AvaloniaProperty.Register<FilterModeSwitchButton, Models.FilterMode>(nameof(Mode));
+        public static readonly DirectProperty<FilterModeSwitchButton, Models.FilterMode> ModeProperty =
+            AvaloniaProperty.RegisterDirect<FilterModeSwitchButton, Models.FilterMode>(
+                nameof(Mode),
+                static o => o.Mode,
+                static (o, v) => o.Mode = v);
 
         public Models.FilterMode Mode
         {
-            get => GetValue(ModeProperty);
-            set => SetValue(ModeProperty, value);
+            get => _mode;
+            set => SetAndRaise(ModeProperty, ref _mode, value);
         }
 
-        public static readonly StyledProperty<bool> IsNoneVisibleProperty =
-            AvaloniaProperty.Register<FilterModeSwitchButton, bool>(nameof(IsNoneVisible));
-
-        public bool IsNoneVisible
-        {
-            get => GetValue(IsNoneVisibleProperty);
-            set => SetValue(IsNoneVisibleProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> IsContextMenuOpeningProperty =
-            AvaloniaProperty.Register<FilterModeSwitchButton, bool>(nameof(IsContextMenuOpening));
+        public static readonly DirectProperty<FilterModeSwitchButton, bool> IsContextMenuOpeningProperty =
+            AvaloniaProperty.RegisterDirect<FilterModeSwitchButton, bool>(
+                nameof(IsContextMenuOpening),
+                static o => o.IsContextMenuOpening);
 
         public bool IsContextMenuOpening
         {
-            get => GetValue(IsContextMenuOpeningProperty);
-            set => SetValue(IsContextMenuOpeningProperty, value);
+            get => _isContextMenuOpening;
+            set => SetAndRaise(IsContextMenuOpeningProperty, ref _isContextMenuOpening, value);
+        }
+
+        public static readonly StyledProperty<bool> IsHoverParentProperty =
+            AvaloniaProperty.Register<FilterModeSwitchButton, bool>(nameof(IsHoverParent));
+
+        public bool IsHoverParent
+        {
+            get => GetValue(IsHoverParentProperty);
+            set => SetValue(IsHoverParentProperty, value);
         }
 
         public FilterModeSwitchButton()
@@ -45,10 +50,10 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == ModeProperty ||
-                change.Property == IsNoneVisibleProperty ||
+                change.Property == IsHoverParentProperty ||
                 change.Property == IsContextMenuOpeningProperty)
             {
-                var visible = (Mode != Models.FilterMode.None || IsNoneVisible || IsContextMenuOpening);
+                var visible = (Mode != Models.FilterMode.None || IsHoverParent || IsContextMenuOpening);
                 SetCurrentValue(IsVisibleProperty, visible);
             }
         }
@@ -71,7 +76,10 @@ namespace SourceGit.Views
             else if (DataContext is ViewModels.BranchTreeNode branchNode)
                 FillContextMenuForBranch(menu, repo, branchNode, branchNode.FilterMode);
 
+            menu.Closed += (_, _) => IsContextMenuOpening = false;
             menu.Open(button);
+
+            IsContextMenuOpening = true;
             e.Handled = true;
         }
 
@@ -89,11 +97,6 @@ namespace SourceGit.Views
 
                 menu.Items.Add(unset);
                 menu.Items.Add(new MenuItem() { Header = "-" });
-            }
-            else
-            {
-                IsContextMenuOpening = true;
-                menu.Closed += (_, _) => IsContextMenuOpening = false;
             }
 
             var include = new MenuItem();
@@ -135,11 +138,6 @@ namespace SourceGit.Views
                 menu.Items.Add(unset);
                 menu.Items.Add(new MenuItem() { Header = "-" });
             }
-            else
-            {
-                IsContextMenuOpening = true;
-                menu.Closed += (_, _) => IsContextMenuOpening = false;
-            }
 
             var include = new MenuItem();
             include.Icon = this.CreateMenuIcon("Icons.Filter");
@@ -164,5 +162,8 @@ namespace SourceGit.Views
             menu.Items.Add(include);
             menu.Items.Add(exclude);
         }
+
+        private Models.FilterMode _mode = Models.FilterMode.None;
+        private bool _isContextMenuOpening = false;
     }
 }

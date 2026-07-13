@@ -46,13 +46,16 @@ namespace SourceGit.Views
             set => SetValue(PrefixBackgroundProperty, value);
         }
 
-        public static readonly StyledProperty<string> SubjectProperty =
-            AvaloniaProperty.Register<StashSubjectPresenter, string>(nameof(Subject));
+        public static readonly DirectProperty<StashSubjectPresenter, string> SubjectProperty =
+            AvaloniaProperty.RegisterDirect<StashSubjectPresenter, string>(
+                nameof(Subject),
+                static o => o.Subject,
+                static (o, v) => o.Subject = v);
 
         public string Subject
         {
-            get => GetValue(SubjectProperty);
-            set => SetValue(SubjectProperty, value);
+            get => _subject;
+            set => SetAndRaise(SubjectProperty, ref _subject, value);
         }
 
         public override void Render(DrawingContext context)
@@ -129,5 +132,7 @@ namespace SourceGit.Views
 
         [GeneratedRegex(@"^WIP on ([^\s]+)\: ([a-f0-9]{6,64}) ")]
         private static partial Regex REG_KEYWORD_WIP();
+
+        private string _subject = string.Empty;
     }
 }

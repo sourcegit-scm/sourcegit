@@ -45,8 +45,17 @@
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
               <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Grid.Column="1"
+                         VerticalAlignment="Center"
+                         Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                         FontFamily="{DynamicResource Fonts.Monospace}"
+                         Foreground="DarkOrange"
+                         Margin="8,0,0,0"/>
+              <TextBlock Grid.Column="2"
+                         VerticalAlignment="Center"
+                         Text="{Binding Subject}"
+                         Margin="4,0,0,0"
+                         TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>
 
@@ -141,7 +150,7 @@
                        IsVisible="{Binding Description, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
           </Grid>
         </DataTemplate>
-      
+
         <DataTemplate DataType="vm:CustomActionControlBranchSelector">
           <Grid RowDefinitions="32,Auto" ColumnDefinitions="150,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
@@ -149,7 +158,7 @@
                        HorizontalAlignment="Right" VerticalAlignment="Center"
                        Margin="0,0,8,0"/>
             <v:BranchSelector Grid.Row="0" Grid.Column="1"
-                              Height="28" Padding="8,0"
+                              Height="28"
                               VerticalAlignment="Center" HorizontalAlignment="Stretch"
                               Branches="{Binding Branches, Mode=OneWay}"
                               SelectedBranch="{Binding SelectedBranch, Mode=TwoWay}"/>

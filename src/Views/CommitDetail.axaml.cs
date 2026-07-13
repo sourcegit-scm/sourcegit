@@ -3,15 +3,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.LogicalTree;
 using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public partial class CommitDetail : UserControl
     {
+        public static readonly DirectProperty<CommitDetail, bool> IsDetailsPanelExpandedProperty =
+            AvaloniaProperty.RegisterDirect<CommitDetail, bool>(
+                nameof(IsDetailsPanelExpanded),
+                static o => o.IsDetailsPanelExpanded,
+                static (o, v) => o.IsDetailsPanelExpanded = v);
+
+        public bool IsDetailsPanelExpanded
+        {
+            get => _isDetailsPanelExpanded;
+            set => SetAndRaise(IsDetailsPanelExpandedProperty, ref _isDetailsPanelExpanded, value);
+        }
+
         public CommitDetail()
         {
             InitializeComponent();
@@ -472,6 +485,19 @@ namespace SourceGit.Views
             return menu;
         }
 
+        private void OnTabHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+                return;
+
+            var historiesView = this.FindAncestorOfType<Histories>();
+            if (historiesView is not { DataContext: ViewModels.Histories vm })
+                return;
+
+            if (vm.IsCollapseDetails)
+                vm.IsCollapseDetails = false;
+        }
+
         private async void OnCommitListKeyDown(object sender, KeyEventArgs e)
         {
             if (DataContext is not ViewModels.CommitDetail vm)
@@ -505,11 +531,8 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
             {
-                var tabControl = this.FindLogicalDescendantOfType<TabControl>();
-                if (tabControl != null)
-                    tabControl.SelectedIndex = 1;
-
                 detail.SelectedChanges = new() { change };
+                detail.ActiveTabIndex = 1;
             }
 
             e.Handled = true;
@@ -521,5 +544,7 @@ namespace SourceGit.Views
                 CreateChangeContextMenu(change)?.Open(grid);
             e.Handled = true;
         }
+
+        private bool _isDetailsPanelExpanded = true;
     }
 }

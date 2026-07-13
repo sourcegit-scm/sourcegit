@@ -19,7 +19,6 @@ namespace SourceGit.ViewModels
         public ViewLogs(Repository repo)
         {
             _repo = repo;
-            _selectedLog = repo.Logs?.Count > 0 ? repo.Logs[0] : null;
         }
 
         public void ClearAll()

@@ -17,29 +17,35 @@ namespace SourceGit.Views
 {
     public class Avatar : Control, Models.IAvatarHost
     {
-        public static readonly StyledProperty<Models.User> UserProperty =
-            AvaloniaProperty.Register<Avatar, Models.User>(nameof(User));
+        public static readonly DirectProperty<Avatar, Models.User> UserProperty =
+            AvaloniaProperty.RegisterDirect<Avatar, Models.User>(
+                nameof(User),
+                static o => o.User,
+                static (o, v) => o.User = v);
 
         public Models.User User
         {
-            get => GetValue(UserProperty);
-            set => SetValue(UserProperty, value);
+            get => _user;
+            set => SetAndRaise(UserProperty, ref _user, value);
         }
 
-        public static readonly StyledProperty<bool> UseGitHubStyleAvatarProperty =
-            AvaloniaProperty.Register<Avatar, bool>(nameof(UseGitHubStyleAvatar));
+        public static readonly DirectProperty<Avatar, bool> UseGitHubStyleAvatarProperty =
+            AvaloniaProperty.RegisterDirect<Avatar, bool>(
+                nameof(UseGitHubStyleAvatar),
+                static o => o.UseGitHubStyleAvatar,
+                static (o, v) => o.UseGitHubStyleAvatar = v);
 
         public bool UseGitHubStyleAvatar
         {
-            get => GetValue(UseGitHubStyleAvatarProperty);
-            set => SetValue(UseGitHubStyleAvatarProperty, value);
+            get => _useGitHubStyleAvatar;
+            set => SetAndRaise(UseGitHubStyleAvatarProperty, ref _useGitHubStyleAvatar, value);
         }
 
         public Avatar()
         {
             RenderOptions.SetBitmapInterpolationMode(this, BitmapInterpolationMode.HighQuality);
 
-            this.Bind(UseGitHubStyleAvatarProperty, new Binding()
+            Bind(UseGitHubStyleAvatarProperty, new Binding()
             {
                 Mode = BindingMode.OneWay,
                 Source = ViewModels.Preferences.Instance,
@@ -49,7 +55,7 @@ namespace SourceGit.Views
 
         public override void Render(DrawingContext context)
         {
-            if (User == null)
+            if (_user == null)
                 return;
 
             var corner = (float)Math.Max(2, Bounds.Width / 16);
@@ -60,10 +66,10 @@ namespace SourceGit.Views
             {
                 context.DrawImage(_img, rect);
             }
-            else if (!UseGitHubStyleAvatar)
+            else if (!_useGitHubStyleAvatar)
             {
-                var fallback = GetFallbackString(User.Name);
-                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono");
+                var fallback = GetFallbackString(_user.Name);
+                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono NL");
                 var label = new FormattedText(
                     fallback,
                     CultureInfo.CurrentCulture,
@@ -98,8 +104,7 @@ namespace SourceGit.Views
                 var stepX = (Bounds.Width - offsetX * 2) / 5.0;
                 var stepY = (Bounds.Height - offsetY * 2) / 5.0;
 
-                var user = User;
-                var lowered = user.Email.ToLower(CultureInfo.CurrentCulture).Trim();
+                var lowered = _user.Email.ToLower(CultureInfo.CurrentCulture).Trim();
                 var hash = MD5.HashData(Encoding.Default.GetBytes(lowered));
 
                 var brush = new SolidColorBrush(new Color(255, hash[0], hash[1], hash[2]));
@@ -142,7 +147,7 @@ namespace SourceGit.Views
 
         public void OnAvatarResourceChanged(string email, Bitmap image)
         {
-            if (email.Equals(User?.Email, StringComparison.Ordinal))
+            if (email.Equals(_user?.Email, StringComparison.Ordinal))
             {
                 _img = image;
                 InvalidateVisual();
@@ -169,11 +174,10 @@ namespace SourceGit.Views
 
             if (change.Property == UserProperty)
             {
-                var user = User;
-                if (user == null)
+                if (_user == null)
                     return;
 
-                _img = Models.AvatarManager.Instance.Request(User.Email, false);
+                _img = Models.AvatarManager.Instance.Request(_user.Email, false);
                 InvalidateVisual();
             }
             else if (change.Property == UseGitHubStyleAvatarProperty)
@@ -197,8 +201,8 @@ namespace SourceGit.Views
             refetch.Header = App.Text("Avatar.Refetch");
             refetch.Click += (_, ev) =>
             {
-                if (User != null)
-                    Models.AvatarManager.Instance.Request(User.Email, true);
+                if (_user != null)
+                    Models.AvatarManager.Instance.Request(_user.Email, true);
 
                 ev.Handled = true;
             };
@@ -218,7 +222,7 @@ namespace SourceGit.Views
                 if (selected.Count == 1)
                 {
                     var localFile = selected[0].Path.LocalPath;
-                    Models.AvatarManager.Instance.SetFromLocal(User.Email, localFile);
+                    Models.AvatarManager.Instance.SetFromLocal(_user.Email, localFile);
                 }
 
                 ev.Handled = true;
@@ -288,13 +292,15 @@ namespace SourceGit.Views
         }
 
         private static readonly GradientStops[] FALLBACK_GRADIENTS = [
-            new GradientStops() { new GradientStop(Colors.Orange, 0), new GradientStop(Color.FromRgb(255, 213, 134), 1) },
-            new GradientStops() { new GradientStop(Colors.DodgerBlue, 0), new GradientStop(Colors.LightSkyBlue, 1) },
-            new GradientStops() { new GradientStop(Colors.LimeGreen, 0), new GradientStop(Color.FromRgb(124, 241, 124), 1) },
-            new GradientStops() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
-            new GradientStops() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
+            new() { new GradientStop(Colors.Orange, 0), new GradientStop(Color.FromRgb(255, 213, 134), 1) },
+            new() { new GradientStop(Colors.DodgerBlue, 0), new GradientStop(Colors.LightSkyBlue, 1) },
+            new() { new GradientStop(Colors.LimeGreen, 0), new GradientStop(Color.FromRgb(124, 241, 124), 1) },
+            new() { new GradientStop(Colors.Orchid, 0), new GradientStop(Color.FromRgb(248, 161, 245), 1) },
+            new() { new GradientStop(Colors.Tomato, 0), new GradientStop(Color.FromRgb(252, 165, 150), 1) },
         ];
 
+        private Models.User _user = null;
+        private bool _useGitHubStyleAvatar = false;
         private Bitmap _img = null;
     }
 }

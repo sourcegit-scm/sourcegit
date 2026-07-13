@@ -6,13 +6,16 @@ namespace SourceGit.Views
 {
     public partial class DealWithLocalChangesMethod : UserControl
     {
-        public static readonly StyledProperty<Models.DealWithLocalChanges> MethodProperty =
-            AvaloniaProperty.Register<DealWithLocalChangesMethod, Models.DealWithLocalChanges>(nameof(Method), Models.DealWithLocalChanges.DoNothing);
+        public static readonly DirectProperty<DealWithLocalChangesMethod, Models.DealWithLocalChanges> MethodProperty =
+            AvaloniaProperty.RegisterDirect<DealWithLocalChangesMethod, Models.DealWithLocalChanges>(
+                nameof(Method),
+                static o => o.Method,
+                static (o, v) => o.Method = v);
 
         public Models.DealWithLocalChanges Method
         {
-            get => GetValue(MethodProperty);
-            set => SetValue(MethodProperty, value);
+            get => _method;
+            set => SetAndRaise(MethodProperty, ref _method, value);
         }
 
         public DealWithLocalChangesMethod()
@@ -40,7 +43,7 @@ namespace SourceGit.Views
 
         private void UpdateRadioButtons()
         {
-            switch (Method)
+            switch (_method)
             {
                 case Models.DealWithLocalChanges.DoNothing:
                     RadioDoNothing.IsChecked = true;
@@ -59,5 +62,7 @@ namespace SourceGit.Views
                     break;
             }
         }
+
+        private Models.DealWithLocalChanges _method = Models.DealWithLocalChanges.DoNothing;
     }
 }

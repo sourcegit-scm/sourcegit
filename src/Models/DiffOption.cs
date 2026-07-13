@@ -6,16 +6,7 @@ namespace SourceGit.Models
 {
     public class DiffOption
     {
-        /// <summary>
-        ///     Enable `--ignore-cr-at-eol` by default?
-        /// </summary>
-        public static bool IgnoreCRAtEOL
-        {
-            get;
-            set;
-        } = true;
-
-        public Change WorkingCopyChange => _workingCopyChange;
+        public bool IsLocalChange => _revisions.Count == 0;
         public bool IsUnstaged => _isUnstaged;
         public List<string> Revisions => _revisions;
         public string Path => _path;
@@ -28,7 +19,6 @@ namespace SourceGit.Models
         /// <param name="isUnstaged"></param>
         public DiffOption(Change change, bool isUnstaged)
         {
-            _workingCopyChange = change;
             _isUnstaged = isUnstaged;
             _path = change.Path;
             _orgPath = change.OriginalPath;
@@ -64,18 +54,6 @@ namespace SourceGit.Models
             _revisions.Add(commit.SHA);
             _path = change.Path;
             _orgPath = change.OriginalPath;
-        }
-
-        /// <summary>
-        ///     Diff with filepath. Used by FileHistories
-        /// </summary>
-        /// <param name="commit"></param>
-        /// <param name="file"></param>
-        public DiffOption(Commit commit, string file)
-        {
-            _revisions.Add(commit.FirstParentToCompare);
-            _revisions.Add(commit.SHA);
-            _path = file;
         }
 
         /// <summary>
@@ -171,7 +149,6 @@ namespace SourceGit.Models
             return builder.ToString();
         }
 
-        private readonly Change _workingCopyChange = null;
         private readonly bool _isUnstaged = false;
         private readonly string _path;
         private readonly string _orgPath = string.Empty;

@@ -11,16 +11,16 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"^[\w\-/\.]+$")]
         private static partial Regex REG_TAG_PREFIX();
 
-        [Required(ErrorMessage = "Master branch name is required!!!")]
+        [Required(ErrorMessage = "Production branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(InitGitFlow), nameof(ValidateBaseBranch))]
-        public string Master
+        public string Production
         {
-            get => _master;
-            set => SetProperty(ref _master, value, true);
+            get => _production;
+            set => SetProperty(ref _production, value, true);
         }
 
-        [Required(ErrorMessage = "Develop branch name is required!!!")]
+        [Required(ErrorMessage = "Development branch name is required!!!")]
         [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(InitGitFlow), nameof(ValidateBaseBranch))]
         public string Develop
@@ -72,21 +72,21 @@ namespace SourceGit.ViewModels
             }
 
             if (localBranches.Contains("master"))
-                _master = "master";
+                _production = "master";
             else if (localBranches.Contains("main"))
-                _master = "main";
+                _production = "main";
             else if (localBranches.Count > 0)
-                _master = localBranches[0];
+                _production = localBranches[0];
             else
-                _master = "master";
+                _production = "main";
         }
 
         public static ValidationResult ValidateBaseBranch(string _, ValidationContext ctx)
         {
             if (ctx.ObjectInstance is InitGitFlow initializer)
             {
-                if (initializer._master == initializer._develop)
-                    return new ValidationResult("Develop branch has the same name with master branch!");
+                if (initializer._production == initializer._develop)
+                    return new ValidationResult("Develop branch has the same name with production branch!");
             }
 
             return ValidationResult.Success;
@@ -111,10 +111,10 @@ namespace SourceGit.ViewModels
             bool succ;
             var current = _repo.CurrentBranch;
 
-            var masterBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_master, StringComparison.Ordinal));
-            if (masterBranch == null)
+            var productionBranch = _repo.Branches.Find(x => x.IsLocal && x.Name.Equals(_production, StringComparison.Ordinal));
+            if (productionBranch == null)
             {
-                succ = await new Commands.Branch(_repo.FullPath, _master)
+                succ = await new Commands.Branch(_repo.FullPath, _production)
                     .Use(log)
                     .CreateAsync(current.Head, true);
                 if (!succ)
@@ -137,23 +137,17 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            succ = await Commands.GitFlow.InitAsync(
-                _repo.FullPath,
-                _master,
-                _develop,
-                _featurePrefix,
-                _releasePrefix,
-                _hotfixPrefix,
-                _tagPrefix,
-                log);
+            succ = await new Commands.GitFlow(_repo.FullPath)
+                .Use(log)
+                .InitAsync(_production, _develop, _featurePrefix, _releasePrefix, _hotfixPrefix, _tagPrefix);
 
             log.Complete();
 
             if (succ)
             {
                 var gitflow = new Models.GitFlow();
-                gitflow.Master = _master;
-                gitflow.Develop = _develop;
+                gitflow.ProductionBranch = _production;
+                gitflow.DevelopmentBranch = _develop;
                 gitflow.FeaturePrefix = _featurePrefix;
                 gitflow.ReleasePrefix = _releasePrefix;
                 gitflow.HotfixPrefix = _hotfixPrefix;
@@ -164,7 +158,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo;
-        private string _master;
+        private string _production;
         private string _develop = "develop";
         private string _featurePrefix = "feature/";
         private string _releasePrefix = "release/";

@@ -29,7 +29,7 @@
       </Style>
 
       <Style Selector="ListBoxItem:pointerover v|FilterModeSwitchButton">
-        <Setter Property="IsNoneVisible" Value="True"/>
+        <Setter Property="IsHoverParent" Value="True"/>
       </Style>
     </ListBox.Styles>
 
@@ -112,7 +112,7 @@
               </StackPanel>
             </DataTemplate>
           </Border.DataTemplates>
-          
+
           <Grid Height="24"
                 Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                 ColumnDefinitions="16,*">

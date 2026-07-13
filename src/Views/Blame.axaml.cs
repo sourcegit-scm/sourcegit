@@ -313,31 +313,40 @@ namespace SourceGit.Views
             private readonly BlameTextEditor _owner;
         }
 
-        public static readonly StyledProperty<string> FileProperty =
-            AvaloniaProperty.Register<BlameTextEditor, string>(nameof(File));
+        public static readonly DirectProperty<BlameTextEditor, string> FileProperty =
+            AvaloniaProperty.RegisterDirect<BlameTextEditor, string>(
+                nameof(File),
+                static o => o.File,
+                static (o, v) => o.File = v);
 
         public string File
         {
-            get => GetValue(FileProperty);
-            set => SetValue(FileProperty, value);
+            get => _file;
+            set => SetAndRaise(FileProperty, ref _file, value);
         }
 
-        public static readonly StyledProperty<Models.BlameData> BlameDataProperty =
-            AvaloniaProperty.Register<BlameTextEditor, Models.BlameData>(nameof(BlameData));
+        public static readonly DirectProperty<BlameTextEditor, Models.BlameData> BlameDataProperty =
+            AvaloniaProperty.RegisterDirect<BlameTextEditor, Models.BlameData>(
+                nameof(BlameData),
+                static o => o.BlameData,
+                static (o, v) => o.BlameData = v);
 
         public Models.BlameData BlameData
         {
-            get => GetValue(BlameDataProperty);
-            set => SetValue(BlameDataProperty, value);
+            get => _blameData;
+            set => SetAndRaise(BlameDataProperty, ref _blameData, value);
         }
 
-        public static readonly StyledProperty<int> TabWidthProperty =
-            AvaloniaProperty.Register<BlameTextEditor, int>(nameof(TabWidth), 4);
+        public static readonly DirectProperty<BlameTextEditor, int> TabWidthProperty =
+            AvaloniaProperty.RegisterDirect<BlameTextEditor, int>(
+                nameof(TabWidth),
+                static o => o.TabWidth,
+                static (o, v) => o.TabWidth = v);
 
         public int TabWidth
         {
-            get => GetValue(TabWidthProperty);
-            set => SetValue(TabWidthProperty, value);
+            get => _tabWidth;
+            set => SetAndRaise(TabWidthProperty, ref _tabWidth, value);
         }
 
         protected override Type StyleKeyOverride => typeof(TextEditor);
@@ -348,7 +357,7 @@ namespace SourceGit.Views
             ShowLineNumbers = false;
             WordWrap = false;
 
-            Options.IndentationSize = TabWidth;
+            Options.IndentationSize = _tabWidth;
             Options.EnableHyperlinks = false;
             Options.EnableEmailHyperlinks = false;
 
@@ -387,19 +396,19 @@ namespace SourceGit.Views
 
             if (change.Property == FileProperty)
             {
-                if (File is { Length: > 0 })
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, File);
+                if (_file is { Length: > 0 })
+                    Models.TextMateHelper.SetGrammarByFileName(_textMate, _file);
             }
             if (change.Property == BlameDataProperty)
             {
-                if (BlameData is { IsBinary: false } blame)
+                if (_blameData is { IsBinary: false } blame)
                     Text = blame.Content;
                 else
                     Text = string.Empty;
             }
             else if (change.Property == TabWidthProperty)
             {
-                Options.IndentationSize = TabWidth;
+                Options.IndentationSize = _tabWidth;
             }
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
@@ -409,14 +418,14 @@ namespace SourceGit.Views
 
         private void OnTextAreaCaretPositionChanged(object sender, EventArgs e)
         {
-            if (!TextArea.IsFocused)
+            if (!TextArea.IsFocused || _blameData == null)
                 return;
 
             var caret = TextArea.Caret;
-            if (caret == null || caret.Line > BlameData.LineInfos.Count)
+            if (caret == null || caret.Line > _blameData.LineInfos.Count)
                 return;
 
-            _highlight = BlameData.LineInfos[caret.Line - 1].CommitSHA;
+            _highlight = _blameData.LineInfos[caret.Line - 1].CommitSHA;
         }
 
         private void OnTextViewContextRequested(object sender, ContextRequestedEventArgs e)
@@ -453,6 +462,9 @@ namespace SourceGit.Views
             }
         }
 
+        private string _file = null;
+        private Models.BlameData _blameData = null;
+        private int _tabWidth = 4;
         private TextMate.Installation _textMate = null;
         private string _highlight = string.Empty;
     }

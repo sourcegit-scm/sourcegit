@@ -28,7 +28,10 @@
               PointerPressed="BeginMoveWindow"/>
 
       <!-- Caption Buttons (macOS) -->
-      <Border Grid.Column="0" Width="{Binding #ThisControl.LeftCaptionButtonWidth}" IsVisible="{Binding #ThisControl.HasLeftCaptionButton}"/>
+      <v:MacOSTrafficLightsSpacer Grid.Column="0"
+                                  Zoom="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                                  IsFullScreen="{Binding #ThisControl.WindowState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static WindowState.FullScreen}}"
+                                  IsVisible="{OnPlatform False, macOS=True}"/>
 
       <!-- Menu (Windows/Linux) -->
       <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,0,3" IsVisible="{OnPlatform True, macOS=False}">
@@ -128,8 +131,10 @@
             Background="Transparent"
             IsVisible="{Binding CommandPalette, Converter={x:Static ObjectConverters.IsNotNull}}"
             PointerPressed="OnCloseCommandPalette">
-      <Border Width="420" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)">
-        <Border Background="{DynamicResource Brush.Popup}" CornerRadius="8">
+      <Border Width="420" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #60000000)">
+        <Border Background="{DynamicResource Brush.Popup}"
+                BorderThickness="1" BorderBrush="{DynamicResource Brush.PopupBorder}"
+                CornerRadius="8">
           <ContentControl Margin="16,10,16,12" Content="{Binding CommandPalette}">
             <ContentControl.DataTemplates>
               <v:CommandPaletteDataTemplates/>

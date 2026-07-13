@@ -6,13 +6,28 @@ namespace SourceGit.Views
 {
     public class CommitGraph : Control
     {
-        public static readonly StyledProperty<Models.CommitGraph> GraphProperty =
-            AvaloniaProperty.Register<CommitGraph, Models.CommitGraph>(nameof(Graph));
+        public static readonly DirectProperty<CommitGraph, Models.CommitGraph> GraphProperty =
+            AvaloniaProperty.RegisterDirect<CommitGraph, Models.CommitGraph>(
+                nameof(Graph),
+                static o => o.Graph,
+                static (o, v) => o.Graph = v);
 
         public Models.CommitGraph Graph
         {
-            get => GetValue(GraphProperty);
-            set => SetValue(GraphProperty, value);
+            get => _graph;
+            set => SetAndRaise(GraphProperty, ref _graph, value);
+        }
+
+        public static readonly DirectProperty<CommitGraph, Models.CommitGraphLayout> LayoutProperty =
+            AvaloniaProperty.RegisterDirect<CommitGraph, Models.CommitGraphLayout>(
+                nameof(Layout),
+                static o => o.Layout,
+                static (o, v) => o.Layout = v);
+
+        public Models.CommitGraphLayout Layout
+        {
+            get => _layout;
+            set => SetAndRaise(LayoutProperty, ref _layout, value);
         }
 
         public static readonly StyledProperty<IBrush> DotBrushProperty =
@@ -24,83 +39,60 @@ namespace SourceGit.Views
             set => SetValue(DotBrushProperty, value);
         }
 
-        public static readonly StyledProperty<bool> OnlyHighlightCurrentBranchProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(OnlyHighlightCurrentBranch), true);
-
-        public bool OnlyHighlightCurrentBranch
-        {
-            get => GetValue(OnlyHighlightCurrentBranchProperty);
-            set => SetValue(OnlyHighlightCurrentBranchProperty, value);
-        }
-
-        public static readonly StyledProperty<Models.CommitGraphLayout> LayoutProperty =
-            AvaloniaProperty.Register<CommitGraph, Models.CommitGraphLayout>(nameof(Layout));
-
-        public Models.CommitGraphLayout Layout
-        {
-            get => GetValue(LayoutProperty);
-            set => SetValue(LayoutProperty, value);
-        }
-
-        static CommitGraph()
-        {
-            AffectsRender<CommitGraph>(
-                GraphProperty,
-                DotBrushProperty,
-                OnlyHighlightCurrentBranchProperty,
-                LayoutProperty);
-        }
-
         public override void Render(DrawingContext context)
         {
             base.Render(context);
 
-            if (Graph is not { } graph || Layout is not { } layout)
+            if (_graph == null || _layout == null)
                 return;
 
-            var startY = layout.StartY;
-            var clipWidth = layout.ClipWidth;
+            var startY = _layout.StartY;
+            var clipWidth = _layout.ClipWidth;
             var clipHeight = Bounds.Height;
-            var rowHeight = layout.RowHeight;
+            var rowHeight = _layout.RowHeight;
             var endY = startY + clipHeight + 28;
 
             using (context.PushClip(new Rect(0, 0, clipWidth, clipHeight)))
             using (context.PushTransform(Matrix.CreateTranslation(0, -startY)))
             {
-                DrawCurves(context, graph, startY, endY, rowHeight);
-                DrawAnchors(context, graph, startY, endY, rowHeight);
+                DrawCurves(context, _graph, startY, endY, rowHeight);
+                DrawAnchors(context, _graph, startY, endY, rowHeight);
             }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == GraphProperty ||
+                change.Property == LayoutProperty ||
+                change.Property == DotBrushProperty)
+                InvalidateVisual();
         }
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
-            if (onlyHighlightCurrentBranch)
+            foreach (var link in graph.Links)
             {
-                foreach (var link in graph.Links)
+                var startY = link.Start.Y * rowHeight;
+                var endY = link.End.Y * rowHeight;
+
+                if (endY < top)
+                    continue;
+                if (startY > bottom)
+                    break;
+
+                var geo = new StreamGeometry();
+                using (var ctx = geo.Open())
                 {
-                    if (link.IsMerged)
-                        continue;
-
-                    var startY = link.Start.Y * rowHeight;
-                    var endY = link.End.Y * rowHeight;
-
-                    if (endY < top)
-                        continue;
-                    if (startY > bottom)
-                        break;
-
-                    var geo = new StreamGeometry();
-                    using (var ctx = geo.Open())
-                    {
-                        ctx.BeginFigure(new Point(link.Start.X, startY), false);
-                        ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
-                    }
-
-                    context.DrawGeometry(null, grayedPen, geo);
+                    ctx.BeginFigure(new Point(link.Start.X, startY), false);
+                    ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
                 }
+
+                var pen = link.IsHighlighted ? Models.CommitGraph.Pens[link.Color] : grayedPen;
+                context.DrawGeometry(null, pen, geo);
             }
 
             foreach (var line in graph.Paths)
@@ -115,7 +107,7 @@ namespace SourceGit.Views
                     break;
 
                 var geo = new StreamGeometry();
-                var pen = Models.CommitGraph.Pens[line.Color];
+                var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
 
                 using (var ctx = geo.Open())
                 {
@@ -169,33 +161,7 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (!line.IsMerged && onlyHighlightCurrentBranch)
-                    context.DrawGeometry(null, grayedPen, geo);
-                else
-                    context.DrawGeometry(null, pen, geo);
-            }
-
-            foreach (var link in graph.Links)
-            {
-                if (onlyHighlightCurrentBranch && !link.IsMerged)
-                    continue;
-
-                var startY = link.Start.Y * rowHeight;
-                var endY = link.End.Y * rowHeight;
-
-                if (endY < top)
-                    continue;
-                if (startY > bottom)
-                    break;
-
-                var geo = new StreamGeometry();
-                using (var ctx = geo.Open())
-                {
-                    ctx.BeginFigure(new Point(link.Start.X, startY), false);
-                    ctx.QuadraticBezierTo(new Point(link.Control.X, link.Control.Y * rowHeight), new Point(link.End.X, endY));
-                }
-
-                context.DrawGeometry(null, Models.CommitGraph.Pens[link.Color], geo);
+                context.DrawGeometry(null, pen, geo);
             }
         }
 
@@ -204,7 +170,6 @@ namespace SourceGit.Views
             var dotFill = DotBrush;
             var dotFillPen = new Pen(dotFill, 2);
             var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
-            var onlyHighlightCurrentBranch = OnlyHighlightCurrentBranch;
 
             foreach (var dot in graph.Dots)
             {
@@ -215,10 +180,7 @@ namespace SourceGit.Views
                 if (center.Y > bottom)
                     break;
 
-                var pen = Models.CommitGraph.Pens[dot.Color];
-                if (!dot.IsMerged && onlyHighlightCurrentBranch)
-                    pen = grayedPen;
-
+                var pen = dot.IsHighlighted ? Models.CommitGraph.Pens[dot.Color] : grayedPen;
                 switch (dot.Type)
                 {
                     case Models.CommitGraph.DotType.Head:
@@ -236,5 +198,8 @@ namespace SourceGit.Views
                 }
             }
         }
+
+        private Models.CommitGraph _graph = null;
+        private Models.CommitGraphLayout _layout = null;
     }
 }

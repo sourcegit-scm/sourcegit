@@ -190,6 +190,9 @@ namespace SourceGit.ViewModels
             for (var j = lastLineIdx; j < lines.Length; j++)
                 builder.Append(lines[j]).Append('\n');
 
+            if (builder.Length > 1)
+                builder.Length--; // Remove extra '\n'
+
             try
             {
                 // Write merged content to file

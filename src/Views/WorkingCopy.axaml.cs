@@ -360,7 +360,7 @@ namespace SourceGit.Views
                         mergeBuiltin.Click += async (_, e) =>
                         {
                             var head = await new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResultAsync();
-                            await this.ShowDialogAsync(new ViewModels.MergeConflictEditor(repo, head, change.Path));
+                            this.ShowWindow(new ViewModels.MergeConflictEditor(repo, head, change.Path));
                             e.Handled = true;
                         };
 
@@ -515,6 +515,20 @@ namespace SourceGit.Views
                                     e.Handled = true;
                                 };
                                 addToIgnore.Items.Add(byExtensionInSameFolder);
+                            }
+
+                            if (!isRooted)
+                            {
+                                var untrackedInSameFolder = new MenuItem();
+                                untrackedInSameFolder.Header = App.Text("WorkingCopy.AddToGitIgnore.UntrackedInSameFolder");
+                                untrackedInSameFolder.Click += (_, e) =>
+                                {
+                                    var dir = Path.GetDirectoryName(change.Path)!.Replace('\\', '/').TrimEnd('/');
+                                    if (repo.CanCreatePopup())
+                                        repo.ShowPopup(new ViewModels.AddToIgnore(repo, $"{dir}/"));
+                                    e.Handled = true;
+                                };
+                                addToIgnore.Items.Add(untrackedInSameFolder);
                             }
                         }
 
@@ -993,6 +1007,7 @@ namespace SourceGit.Views
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.Stash");
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
+                stash.IsEnabled = !vm.UseAmend;
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
@@ -1210,6 +1225,7 @@ namespace SourceGit.Views
                 var stash = new MenuItem();
                 stash.Header = App.Text("FileCM.StashMulti", selectedStaged.Count);
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
+                stash.IsEnabled = !vm.UseAmend;
                 stash.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())

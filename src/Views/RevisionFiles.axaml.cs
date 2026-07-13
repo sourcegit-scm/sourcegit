@@ -29,7 +29,7 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Down || e.Key == Key.Up)
             {
-                if (vm.RevisionFileSearchSuggestion.Count > 0)
+                if (vm.RevisionFileSearchSuggestion?.Count > 0)
                 {
                     SearchSuggestionBox.Focus(NavigationMethod.Tab);
                     SearchSuggestionBox.SelectedIndex = 0;
@@ -69,7 +69,7 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OnSearchSuggestionDoubleTapped(object sender, TappedEventArgs e)
+        private async void OnSearchSuggestionTapped(object sender, TappedEventArgs e)
         {
             if (DataContext is not ViewModels.CommitDetail vm)
                 return;

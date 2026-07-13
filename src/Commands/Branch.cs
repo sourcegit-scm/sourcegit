@@ -42,9 +42,9 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteLocalAsync()
+        public async Task<bool> DeleteLocalAsync(bool force)
         {
-            Args = $"branch -D {_name}";
+            Args = $"branch {(force ? "-D" : "-d")} {_name}";
             return await ExecAsync().ConfigureAwait(false);
         }
 

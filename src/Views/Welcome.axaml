@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Welcome"
              x:DataType="vm:Welcome">
-  <Grid RowDefinitions="*,36">
+  <Grid RowDefinitions="*,Auto" Margin="8">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="2*" MinWidth="600"/>
@@ -17,7 +17,7 @@
     </Grid.ColumnDefinitions>
 
     <!-- Managed Repositories -->
-    <Grid Grid.Row="0" Grid.Column="1" Margin="8" RowDefinitions="Auto,*">
+    <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,*">
       <!-- Search Box -->
       <TextBox Grid.Row="0"
                x:Name="SearchBox"
@@ -44,9 +44,17 @@
         </TextBox.InnerLeftContent>
 
         <TextBox.InnerRightContent>
-          <Button Classes="icon_button" IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearSearchFilter}">
-            <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
-          </Button>
+          <StackPanel Orientation="Horizontal">
+            <!-- Invisible Button to handle search hotkey pressed-->
+            <Button Width="0" Height="0"
+                    Margin="0" Padding="0"
+                    Click="OnSearchHotKey"
+                    HotKey="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+
+            <Button Classes="icon_button" IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Click="OnClearSearchFilter">
+              <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+            </Button>
+          </StackPanel>
         </TextBox.InnerRightContent>
       </TextBox>
 
@@ -124,12 +132,11 @@
                                                 IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                                 IsVisible="{Binding !IsRepository}"/>
 
-              <Path Grid.Column="1"
-                    Width="14" Height="14"
-                    Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                    HorizontalAlignment="Center"
-                    Data="{StaticResource Icons.Bookmark}"
-                    IsVisible="{Binding IsRepository}"/>
+              <v:Bookmark Grid.Column="1"
+                          Width="14" Height="14"
+                          HorizontalAlignment="Center"
+                          Value="{Binding Bookmark, Mode=OneWay}"
+                          IsVisible="{Binding IsRepository}"/>
 
               <ToggleButton Grid.Column="1"
                             Classes="folder"
@@ -205,12 +212,14 @@
     </Grid>
 
     <!-- Tips -->
-    <TextBlock Grid.Row="1" Grid.Column="1"
-               Classes="italic"
-               Margin="0,0,8,0"
-               HorizontalAlignment="Center" VerticalAlignment="Center"
-               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
-               Text="{DynamicResource Text.Welcome.DragDropTip}"
-               Foreground="{DynamicResource Brush.FG2}"/>
+    <Border Grid.Row="1" Grid.Column="1"
+            Margin="0,8,0,0"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            IsVisible="{OnPlatform True, Linux=False}">
+      <TextBlock Classes="italic"
+                 FontSize="12"
+                 Text="{DynamicResource Text.Welcome.DragDropTip}"
+                 Opacity=".5"/>
+    </Border>
   </Grid>
 </UserControl>

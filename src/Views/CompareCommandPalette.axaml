@@ -32,7 +32,7 @@
                   Margin="4,0,0,0" Padding="4,0">
             <StackPanel Orientation="Horizontal">
               <TextBlock Text="{DynamicResource Text.Compare}" Foreground="Black" FontWeight="Bold"/>
-              
+
               <ContentControl Content="{Binding BasedOn}" Margin="4,0,0,0" MaxWidth="100">
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:Branch">

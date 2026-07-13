@@ -16,11 +16,26 @@ namespace SourceGit.Commands
         [GeneratedRegex(@"^index\s([0-9a-f]{6,64})\.\.([0-9a-f]{6,64})(\s[1-9]{6})?")]
         private static partial Regex REG_HASH_CHANGE();
 
-        private const string PREFIX_LFS_NEW = "+version https://git-lfs.github.com/spec/";
-        private const string PREFIX_LFS_DEL = "-version https://git-lfs.github.com/spec/";
-        private const string PREFIX_LFS_MODIFY = " version https://git-lfs.github.com/spec/";
+        private const char PREFIX_CONTEXT = ' ';
+        private const char PREFIX_DELETED = '-';
+        private const char PREFIX_ADDED = '+';
+        private const char PREFIX_COMMAND = '\\';
 
-        public Diff(string repo, Models.DiffOption opt, int unified, bool ignoreWhitespace)
+        private const string FILE_MODE_OLD = "old mode ";
+        private const string FILE_MODE_NEW = "new mode ";
+        private const string FILE_MODE_DELETED = "deleted file mode ";
+        private const string FILE_MODE_ADDED = "new file mode ";
+
+        private const string LFS_SPECIFIER = "version https://git-lfs.github.com/spec/";
+        private const string LFS_OID_PREFIX = "oid sha256:";
+        private const string LFS_SIZE_PREFIX = "size ";
+
+        private const string SPECIAL_DIFF_START = "diff ";
+        private const string SPECIAL_BINARY = "Binary files ";
+        private const string SPECIAL_NO_NEWLINE = " No newline at end of file";
+        private const string SPECIAL_SUBMODULE = "Subproject commit ";
+
+        public Diff(string repo, Models.DiffOption opt, int numContextLines, bool ignoreWhitespace, bool ignoreCRAtEOL)
         {
             _result.TextDiff = new Models.TextDiff();
 
@@ -28,12 +43,12 @@ namespace SourceGit.Commands
             Context = repo;
 
             var builder = new StringBuilder(256);
-            builder.Append("diff --no-color --no-ext-diff --patch ");
-            if (Models.DiffOption.IgnoreCRAtEOL)
-                builder.Append("--ignore-cr-at-eol ");
+            builder.Append("diff --no-color --no-ext-diff --full-index --patch ");
             if (ignoreWhitespace)
-                builder.Append("--ignore-space-change ");
-            builder.Append("--unified=").Append(unified).Append(' ');
+                builder.Append("--ignore-space-change --ignore-blank-lines ");
+            if (ignoreCRAtEOL)
+                builder.Append("--ignore-cr-at-eol ");
+            builder.Append("--unified=").Append(numContextLines).Append(' ');
             builder.Append(opt.ToString());
 
             Args = builder.ToString();
@@ -50,22 +65,25 @@ namespace SourceGit.Commands
                 using var ms = new MemoryStream();
                 await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
 
-                var bytes = ms.ToArray();
-                var start = 0;
-                while (start < bytes.Length)
+                if (ms.TryGetBuffer(out var buffer))
                 {
-                    var end = Array.IndexOf(bytes, (byte)'\n', start);
-                    if (end < 0)
+                    var start = buffer.Offset;
+                    var end = buffer.Offset + buffer.Count;
+                    while (start < end)
                     {
-                        ParseLine(bytes[start..]);
-                        break;
+                        var lineEnd = Array.IndexOf(buffer.Array, (byte)'\n', start);
+                        if (lineEnd < 0)
+                        {
+                            ParseLine(buffer[start..]);
+                            break;
+                        }
+
+                        ParseLine(buffer[start..lineEnd]);
+                        if (_result.IsBinary)
+                            break;
+
+                        start = lineEnd + 1;
                     }
-
-                    ParseLine(bytes[start..end]);
-                    if (_result.IsBinary)
-                        break;
-
-                    start = end + 1;
                 }
 
                 await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
@@ -75,169 +93,224 @@ namespace SourceGit.Commands
                 // Ignore exceptions.
             }
 
-            if (_result.IsBinary || _result.IsLFS || _result.TextDiff.Lines.Count == 0)
+            if (_isLFS || _result.IsBinary || _result.TextDiff.Lines.Count == 0)
             {
                 _result.TextDiff = null;
             }
             else
             {
-                ProcessInlineHighlights();
+                if (_isInChunk)
+                {
+                    ProcessInlineHighlights();
+                    _isInChunk = false;
+                }
+
+                if (_result.TextDiff.Lines.Count < 4)
+                {
+                    var isSubmoduleChange = true;
+
+                    for (int i = 1; i < _result.TextDiff.Lines.Count; i++)
+                    {
+                        var line = _result.TextDiff.Lines[i];
+                        if (!line.Content.StartsWith(SPECIAL_SUBMODULE, StringComparison.Ordinal))
+                        {
+                            isSubmoduleChange = false;
+                            break;
+                        }
+                    }
+
+                    if (isSubmoduleChange)
+                    {
+                        _result.IsSubmoduleChange = true;
+                        _result.TextDiff = null;
+                        return _result;
+                    }
+                }
+
                 _result.TextDiff.MaxLineNumber = Math.Max(_newLine, _oldLine);
+                _result.TextDiff.OldMode = _result.OldMode;
+                _result.TextDiff.NewMode = _result.NewMode;
+                _result.TextDiff.OldHash = _result.OldHash;
+                _result.TextDiff.NewHash = _result.NewHash;
             }
 
             return _result;
         }
 
-        private void ParseLine(byte[] lineBytes)
+        private void ParseLine(ArraySegment<byte> lineBytes)
         {
-            var line = Encoding.UTF8.GetString(lineBytes);
+            // Decode line bytes to UTF-8 string
+            var line = Encoding.UTF8.GetString(lineBytes.Array, lineBytes.Offset, lineBytes.Count);
+            if (line.Length == 0)
+                return;
+
+            // If we are reading a chunk body, try to read the current line as body first (because
+            // the number of chunk body is greater than the number of chunk indicator in most time.
+            if (_isInChunk)
+            {
+                if (ParseChunkBodyLine(line, lineBytes[1..]))
+                    return;
+
+                ProcessInlineHighlights();
+                _isInChunk = false;
+            }
+
+            // If the current line is not a chunk body, try to parse it as chunk indicator
+            if (ParseChunkStartLine(line))
+                return;
+
+            // Fallback to diff headers to support type-changed diff (multiple headers).
+            ParseDiffHeaderLine(line);
+        }
+
+        private void ParseDiffHeaderLine(string line)
+        {
+            if (line.StartsWith(SPECIAL_DIFF_START, StringComparison.Ordinal))
+                return;
+
             if (ParseFileModeChange(line))
                 return;
 
-            if (ParseLFSChange(line))
-                return;
-
-            if (_result.TextDiff.Lines.Count == 0)
+            var match = REG_HASH_CHANGE().Match(line);
+            if (match.Success)
             {
-                if (line.StartsWith("Binary", StringComparison.Ordinal))
-                {
-                    _result.IsBinary = true;
-                    return;
-                }
-
                 if (string.IsNullOrEmpty(_result.OldHash))
-                {
-                    var match = REG_HASH_CHANGE().Match(line);
-                    if (!match.Success)
-                        return;
-
                     _result.OldHash = match.Groups[1].Value;
-                    _result.NewHash = match.Groups[2].Value;
-                }
-                else
-                {
-                    var match = REG_INDICATOR().Match(line);
-                    if (!match.Success)
-                        return;
-
-                    _oldLine = int.Parse(match.Groups[1].Value);
-                    _newLine = int.Parse(match.Groups[2].Value);
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, lineBytes, 0, 0);
-                    _result.TextDiff.Lines.Add(_last);
-                }
+                _result.NewHash = match.Groups[2].Value;
+                return;
             }
-            else
-            {
-                if (line.Length == 0)
-                {
-                    ProcessInlineHighlights();
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, "", [], _oldLine, _newLine);
-                    _result.TextDiff.Lines.Add(_last);
-                    _oldLine++;
-                    _newLine++;
-                    return;
-                }
 
-                var ch = line[0];
-                if (ch == '-')
-                {
-                    _result.TextDiff.DeletedLines++;
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, line.Substring(1), lineBytes[1..], _oldLine, 0);
-                    _deleted.Add(_last);
-                    _oldLine++;
-                }
-                else if (ch == '+')
-                {
-                    _result.TextDiff.AddedLines++;
-                    _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, line.Substring(1), lineBytes[1..], 0, _newLine);
-                    _added.Add(_last);
-                    _newLine++;
-                }
-                else if (ch != '\\')
-                {
-                    ProcessInlineHighlights();
-                    var match = REG_INDICATOR().Match(line);
-                    if (match.Success)
-                    {
-                        _oldLine = int.Parse(match.Groups[1].Value);
-                        _newLine = int.Parse(match.Groups[2].Value);
-                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, lineBytes, 0, 0);
-                        _result.TextDiff.Lines.Add(_last);
-                    }
-                    else
-                    {
-                        _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, line.Substring(1), lineBytes[1..], _oldLine, _newLine);
-                        _result.TextDiff.Lines.Add(_last);
-                        _oldLine++;
-                        _newLine++;
-                    }
-                }
-                else if (line.Equals("\\ No newline at end of file", StringComparison.Ordinal))
-                {
-                    _last.NoNewLineEndOfFile = true;
-                }
-            }
+            if (line.StartsWith(SPECIAL_BINARY, StringComparison.Ordinal))
+                _result.IsBinary = true;
         }
 
-        private bool ParseFileModeChange(string line)
+        private bool ParseChunkStartLine(string line)
         {
-            if (line.StartsWith("old mode ", StringComparison.Ordinal))
+            var match = REG_INDICATOR().Match(line);
+            if (match.Success)
             {
-                _result.OldMode = line.Substring(9);
-                return true;
-            }
-
-            if (line.StartsWith("new mode ", StringComparison.Ordinal))
-            {
-                _result.NewMode = line.Substring(9);
-                return true;
-            }
-
-            if (line.StartsWith("deleted file mode ", StringComparison.Ordinal))
-            {
-                _result.OldMode = line.Substring(18);
-                return true;
-            }
-
-            if (line.StartsWith("new file mode ", StringComparison.Ordinal))
-            {
-                _result.NewMode = line.Substring(14);
+                _oldLine = int.Parse(match.Groups[1].Value);
+                _newLine = int.Parse(match.Groups[2].Value);
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, null, 0, 0);
+                _result.TextDiff.Lines.Add(_last);
+                _isInChunk = true;
                 return true;
             }
 
             return false;
         }
 
-        private bool ParseLFSChange(string line)
+        private bool ParseChunkBodyLine(string line, ArraySegment<byte> lineBytes)
         {
-            if (_result.IsLFS)
-            {
-                if (line.StartsWith("-oid sha256:", StringComparison.Ordinal))
-                    _result.LFSDiff.Old.Oid = line.Substring(12);
-                else if (line.StartsWith("-size ", StringComparison.Ordinal))
-                    _result.LFSDiff.Old.Size = long.Parse(line.AsSpan(6));
-                else if (line.StartsWith("+oid sha256:", StringComparison.Ordinal))
-                    _result.LFSDiff.New.Oid = line.Substring(12);
-                else if (line.StartsWith("+size ", StringComparison.Ordinal))
-                    _result.LFSDiff.New.Size = long.Parse(line.AsSpan(6));
-                else if (line.StartsWith(" size ", StringComparison.Ordinal))
-                    _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(line.AsSpan(6));
+            var prefix = line[0];
+            var content = line.Substring(1);
+            if (ParseLFSChange(prefix, content))
+                return true;
 
+            if (prefix == PREFIX_DELETED)
+            {
+                _result.TextDiff.DeletedLines++;
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, content, lineBytes.ToArray(), _oldLine, 0);
+                _deleted.Add(_last);
+                _oldLine++;
                 return true;
             }
 
-            if (_result.TextDiff.Lines.Count != 1)
-                return false;
-
-            var isLFS = (_oldLine == 1 && _newLine == 1 && line.StartsWith(PREFIX_LFS_MODIFY, StringComparison.Ordinal)) ||
-                (_oldLine == 1 && _newLine == 0 && line.StartsWith(PREFIX_LFS_DEL, StringComparison.Ordinal)) ||
-                (_oldLine == 0 && _newLine == 1 && line.StartsWith(PREFIX_LFS_NEW, StringComparison.Ordinal));
-
-            if (isLFS)
+            if (prefix == PREFIX_ADDED)
             {
-                _result.IsLFS = true;
-                _result.LFSDiff = new Models.LFSDiff();
+                _result.TextDiff.AddedLines++;
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, content, lineBytes.ToArray(), 0, _newLine);
+                _added.Add(_last);
+                _newLine++;
                 return true;
+            }
+
+            if (prefix == PREFIX_CONTEXT)
+            {
+                ProcessInlineHighlights();
+
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, content, lineBytes.ToArray(), _oldLine, _newLine);
+                _result.TextDiff.Lines.Add(_last);
+                _oldLine++;
+                _newLine++;
+                return true;
+            }
+
+            if (prefix == PREFIX_COMMAND)
+            {
+                if (content.Equals(SPECIAL_NO_NEWLINE, StringComparison.Ordinal))
+                    _last.NoNewLineEndOfFile = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ParseFileModeChange(string line)
+        {
+            if (line.StartsWith(FILE_MODE_OLD, StringComparison.Ordinal))
+            {
+                _result.OldMode = int.Parse(line.AsSpan(9));
+                return true;
+            }
+
+            if (line.StartsWith(FILE_MODE_NEW, StringComparison.Ordinal))
+            {
+                _result.NewMode = int.Parse(line.AsSpan(9));
+                return true;
+            }
+
+            if (line.StartsWith(FILE_MODE_DELETED, StringComparison.Ordinal))
+            {
+                _result.OldMode = int.Parse(line.AsSpan(18));
+                return true;
+            }
+
+            if (line.StartsWith(FILE_MODE_ADDED, StringComparison.Ordinal))
+            {
+                _result.NewMode = int.Parse(line.AsSpan(14));
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool ParseLFSChange(char prefix, string content)
+        {
+            if (_isLFS)
+            {
+                if (prefix == PREFIX_DELETED)
+                {
+                    if (content.StartsWith(LFS_OID_PREFIX, StringComparison.Ordinal))
+                        _result.LFSDiff.Old.Oid = content.Substring(11);
+                    else if (content.StartsWith(LFS_SIZE_PREFIX, StringComparison.Ordinal))
+                        _result.LFSDiff.Old.Size = long.Parse(content.AsSpan(5));
+                }
+                else if (prefix == PREFIX_ADDED)
+                {
+                    if (content.StartsWith(LFS_OID_PREFIX, StringComparison.Ordinal))
+                        _result.LFSDiff.New.Oid = content.Substring(11);
+                    else if (content.StartsWith(LFS_SIZE_PREFIX, StringComparison.Ordinal))
+                        _result.LFSDiff.New.Size = long.Parse(content.AsSpan(5));
+                }
+                else if (prefix == PREFIX_CONTEXT)
+                {
+                    if (content.StartsWith(LFS_SIZE_PREFIX, StringComparison.Ordinal))
+                        _result.LFSDiff.New.Size = _result.LFSDiff.Old.Size = long.Parse(content.AsSpan(5));
+                }
+                return true;
+            }
+
+            if ((_oldLine == 1 && _newLine == 1 && prefix == PREFIX_CONTEXT) ||
+                (_oldLine == 1 && _newLine == 0 && prefix == PREFIX_DELETED) ||
+                (_oldLine == 0 && _newLine == 1 && prefix == PREFIX_ADDED))
+            {
+                if (content.StartsWith(LFS_SPECIFIER, StringComparison.Ordinal))
+                {
+                    _isLFS = true;
+                    _result.LFSDiff = new Models.LFSDiff();
+                    return true;
+                }
             }
 
             return false;
@@ -289,5 +362,7 @@ namespace SourceGit.Commands
         private Models.TextDiffLine _last = null;
         private int _oldLine = 0;
         private int _newLine = 0;
+        private bool _isInChunk = false;
+        private bool _isLFS = false;
     }
 }

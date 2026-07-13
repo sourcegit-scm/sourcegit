@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.EditRepositoryNode"
              x:DataType="vm:EditRepositoryNode">
@@ -24,49 +25,42 @@
                  IsVisible="{Binding IsRepository}"/>
     </StackPanel>
 
-    <Grid Height="28" Margin="8,16,0,0" ColumnDefinitions="120,Auto,*" >
-      <TextBlock Grid.Column="0"
+    <Grid Margin="8,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.EditRepositoryNode.Target}"/>
-      
-      <Path Grid.Column="1"
-            Width="12" Height="12"
-            Margin="0,1,0,0"
-            Data="{StaticResource Icons.Folder.Open}"
-            IsVisible="{Binding !IsRepository, Mode=OneWay}"/>
-      <Path Grid.Column="1"
-            Width="12" Height="12"
-            Data="{StaticResource Icons.Repositories}"
-            IsVisible="{Binding IsRepository, Mode=OneWay}"/>
-      
-      <TextBlock Grid.Column="2"
-                 Margin="6,0,0,0"
-                 VerticalAlignment="Center"
-                 Text="{Binding Target, Mode=OneWay}"/>
-    </Grid>
-    <Grid Height="28" Margin="8,4,0,0" ColumnDefinitions="120,*">
-      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Name}"/>
-      <TextBox Grid.Column="1" CornerRadius="3" Text="{Binding Name, Mode=TwoWay}"/>
-    </Grid>
-    <Grid Height="28" Margin="8,4,0,0" ColumnDefinitions="120,*" IsVisible="{Binding IsRepository}">
-      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,8,0" Text="{DynamicResource Text.EditRepositoryNode.Bookmark}"/>
-      <ComboBox Grid.Column="1"
-                BorderThickness="0"
-                Height="28"
-                ItemsSource="{Binding Bookmarks}"
-                SelectedIndex="{Binding Bookmark, Mode=TwoWay}">
-        <ComboBox.ItemTemplate>
-          <DataTemplate>
-            <Grid Height="20">
-              <Path Width="12" Height="12"
-                    Fill="{Binding Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Data="{StaticResource Icons.Bookmark}"/>
-            </Grid>
-          </DataTemplate>
-        </ComboBox.ItemTemplate>
-      </ComboBox>
+      <StackPanel Grid.Row="0" Grid.Column="1"
+                  Orientation="Horizontal">
+        <Path Width="12" Height="12"
+              Margin="0,1,0,0"
+              Data="{StaticResource Icons.Folder.Open}"
+              IsVisible="{Binding !IsRepository, Mode=OneWay}"/>
+        <Path Width="12" Height="12"
+              Data="{StaticResource Icons.Repositories}"
+              IsVisible="{Binding IsRepository, Mode=OneWay}"/>
+
+        <TextBlock Margin="6,0,0,0"
+                   VerticalAlignment="Center"
+                   Text="{Binding Target, Mode=OneWay}"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.EditRepositoryNode.Name}"/>
+      <TextBox Grid.Row="1" Grid.Column="1"
+               Height="28"
+               CornerRadius="3"
+               Text="{Binding Name, Mode=TwoWay}"/>
+
+      <TextBlock Grid.Row="2" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.EditRepositoryNode.Bookmark}"/>
+      <v:BookmarkSelector Grid.Row="2" Grid.Column="1"
+                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                          Bookmark="{Binding Bookmark, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

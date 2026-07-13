@@ -13,7 +13,7 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.MergeConflictEditor.Title}"
                     MinWidth="1024" MinHeight="600">
-  <Grid RowDefinitions="Auto,32,*,Auto">
+  <Grid RowDefinitions="Auto,32,*,32">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
@@ -37,47 +37,39 @@
 
     <!-- Toolbar -->
     <Border Grid.Row="1" Padding="8,0" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
-      <Grid ColumnDefinitions="Auto,*,Auto">
-        <!-- File Path -->
-        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-          <Path Width="14" Height="14" Data="{StaticResource Icons.File}"/>
-          <TextBlock Margin="8" Text="{Binding FilePath}" VerticalAlignment="Center"/>
-        </StackPanel>
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.File}"/>
 
-        <!-- Navigation and Actions -->
-        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-          <!-- Navigation -->
-          <Button Classes="icon_button"
-                  Width="24"
-                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
-                  Click="OnGotoPrevConflict"
-                  HotKey="{OnPlatform Ctrl+Up, macOS=⌘+Up}"
-                  IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
-            <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
-          </Button>
-          <Button Classes="icon_button"
-                  Width="24"
-                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
-                  Click="OnGotoNextConflict"
-                  HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"
-                  IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
-            <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
-          </Button>
-          
-          <!-- Info Bar -->
-          <TextBlock Text="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.ToUnsolvedDesc}, Mode=OneWay}"
-                     VerticalAlignment="Center"/>
-          <Rectangle Width="1" Fill="{DynamicResource Brush.Border2}" Margin="4,6"/>
+        <TextBlock Grid.Column="1"
+                   Margin="8"
+                   Text="{Binding FilePath}"
+                   VerticalAlignment="Center"
+                   TextTrimming="CharacterEllipsis"/>
 
-          <!-- Save -->
-          <Button Classes="icon_button"
-                  Margin="0" Padding="0"
-                  Click="OnSaveAndStage"
-                  HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}"
-                  ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.SaveAndStage}">
-            <Path Width="16" Height="16" Data="{StaticResource Icons.Save}"/>
-          </Button>
-        </StackPanel>
+        <Button Grid.Column="2"
+                Classes="icon_button"
+                Width="32"
+                ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
+                Click="OnGotoPrevConflict"
+                HotKey="{OnPlatform Ctrl+Up, macOS=⌘+Up}"
+                IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
+          <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+        </Button>
+
+        <Button Grid.Column="3"
+                Classes="icon_button"
+                Width="32"
+                ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
+                Click="OnGotoNextConflict"
+                HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"
+                IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
+          <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+        </Button>
+
+        <TextBlock Grid.Column="4"
+                   Margin="8,0,0,0"
+                   Text="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.ToUnsolvedDesc}, Mode=OneWay}"
+                   VerticalAlignment="Center"/>
       </Grid>
     </Border>
 
@@ -103,6 +95,7 @@
                                                VerticalAlignment="Center"
                                                UseGraphColor="False"/>
                         <TextBlock Margin="4,0,0,0"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
                                    Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                                    Foreground="DarkOrange"
                                    TextDecorations="Underline"
@@ -169,6 +162,7 @@
                                                VerticalAlignment="Center"
                                                UseGraphColor="False"/>
                         <TextBlock Margin="4,0,0,0"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
                                    Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                                    Foreground="DarkOrange"
                                    TextDecorations="Underline"
@@ -308,6 +302,7 @@
     <!-- Error -->
     <Border Grid.Row="2"
             Background="{DynamicResource Brush.Popup}"
+            BorderThickness="1" BorderBrush="{DynamicResource Brush.PopupBorder}"
             Padding="16"
             CornerRadius="6"
             HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -328,5 +323,22 @@
                 HotKey="Escape"/>
       </StackPanel>
     </Border>
+
+    <!-- Foot -->
+    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Spacing="8">
+      <Button Classes="flat primary"
+              HorizontalAlignment="Center" VerticalAlignment="Top"
+              HotKey="{OnPlatform Ctrl+S, macOS=⌘+S}"
+              Click="OnSaveAndStage"
+              IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsZero}}">
+        <TextBlock Text="{DynamicResource Text.MergeConflictEditor.SaveAndStage}"/>
+      </Button>
+
+      <Button Classes="flat"
+              Width="80"
+              Content="{DynamicResource Text.Cancel}"
+              Click="CloseWindow"
+              HorizontalAlignment="Center"/>
+    </StackPanel>
   </Grid>
 </v:ChromelessWindow>

@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
@@ -9,13 +8,6 @@ namespace SourceGit.Views
         public Reset()
         {
             InitializeComponent();
-        }
-
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            ResetMode.Focus();
         }
 
         private void OnResetModeKeyDown(object sender, KeyEventArgs e)

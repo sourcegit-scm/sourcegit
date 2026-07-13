@@ -9,7 +9,6 @@ namespace SourceGit.Commands
         {
             WorkingDirectory = repo;
             Context = repo;
-            Editor = EditorType.CoreEditor;
 
             var builder = new StringBuilder();
             builder.Append("merge --progress ");

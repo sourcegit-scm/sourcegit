@@ -16,7 +16,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.GitFlow.Init}"/>
     </StackPanel>
-    
+
     <Grid Margin="8,16,0,0" RowDefinitions="32,32,8,32,32,32,32" ColumnDefinitions="Auto,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -26,7 +26,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Text="{Binding Master, Mode=TwoWay}"/>
+               Text="{Binding Production, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"

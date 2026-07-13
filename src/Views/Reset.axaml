@@ -18,7 +18,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.Reset}"/>
     </StackPanel>
-    
+
     <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -35,8 +35,16 @@
                  Text="{DynamicResource Text.Reset.MoveTo}"/>
       <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
         <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
-        <TextBlock Grid.Column="2" Text="{Binding To.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Grid.Column="1"
+                   Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                   FontFamily="{DynamicResource Fonts.Monospace}"
+                   VerticalAlignment="Center"
+                   Foreground="DarkOrange"/>
+        <TextBlock Grid.Column="2"
+                   Text="{Binding To.Subject}"
+                   Margin="8,0,0,0"
+                   VerticalAlignment="Center"
+                   TextTrimming="CharacterEllipsis"/>
       </Grid>
 
       <TextBlock Grid.Row="2" Grid.Column="0"

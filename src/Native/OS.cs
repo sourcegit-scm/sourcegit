@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 
@@ -17,10 +18,6 @@ namespace SourceGit.Native
         {
             void SetupApp(AppBuilder builder);
             void SetupWindow(Window window);
-
-            void HideSelf();
-            void HideOtherApplications();
-            void ShowAllApplications();
 
             string GetDataDir();
             string FindGitExecutable();
@@ -63,6 +60,12 @@ namespace SourceGit.Native
             get;
             private set;
         } = new Version(0, 0, 0);
+
+        public static Models.GitFlowVersion GitFlowVersion
+        {
+            get;
+            private set;
+        } = Models.GitFlowVersion.None;
 
         public static string CredentialHelper
         {
@@ -152,21 +155,6 @@ namespace SourceGit.Native
             _backend.SetupWindow(window);
         }
 
-        public static void HideSelf()
-        {
-            _backend.HideSelf();
-        }
-
-        public static void HideOtherApplications()
-        {
-            _backend.HideOtherApplications();
-        }
-
-        public static void ShowAllApplications()
-        {
-            _backend.ShowAllApplications();
-        }
-
         public static void LogException(Exception ex)
         {
             if (ex == null)
@@ -254,7 +242,24 @@ namespace SourceGit.Native
 
         public static void OpenBrowser(string url)
         {
+            if (!IsSafeBrowserTarget(url))
+            {
+                Models.Notification.Send(null, $"Blocked unsafe URL: {url}", true);
+                return;
+            }
+
             _backend.OpenBrowser(url);
+        }
+
+        private static bool IsSafeBrowserTarget(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute) &&
+                Uri.TryCreate(url, UriKind.Absolute, out var uri) &&
+                (
+                    uri.Scheme == Uri.UriSchemeHttp ||
+                    uri.Scheme == Uri.UriSchemeHttps ||
+                    uri.Scheme == Uri.UriSchemeFtp
+                );
         }
 
         public static void OpenTerminal(string workdir)
@@ -298,6 +303,7 @@ namespace SourceGit.Native
             {
                 GitVersionString = string.Empty;
                 GitVersion = new Version(0, 0, 0);
+                GitFlowVersion = Models.GitFlowVersion.None;
                 return;
             }
 
@@ -329,6 +335,42 @@ namespace SourceGit.Native
                         GitVersion = new Version(major, minor, build);
                         GitVersionString = GitVersionString.Substring(11).Trim();
                     }
+
+                    // Update git flow version in background to avoid blocking the UI
+                    Task.Run(UpdateGitFlowVersion);
+                }
+            }
+            catch
+            {
+                // Ignore errors
+            }
+        }
+
+        private static void UpdateGitFlowVersion()
+        {
+            var start = new ProcessStartInfo();
+            start.FileName = _gitExecutable;
+            start.Arguments = "flow version";
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.RedirectStandardOutput = true;
+            start.RedirectStandardError = true;
+            start.StandardOutputEncoding = Encoding.UTF8;
+            start.StandardErrorEncoding = Encoding.UTF8;
+
+            GitFlowVersion = Models.GitFlowVersion.None;
+
+            try
+            {
+                using var proc = Process.Start(start)!;
+                var rs = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+                if (proc.ExitCode == 0 && !string.IsNullOrWhiteSpace(rs))
+                {
+                    if (rs.Contains("git-flow-next", StringComparison.Ordinal))
+                        GitFlowVersion = Models.GitFlowVersion.Next;
+                    else
+                        GitFlowVersion = Models.GitFlowVersion.Legacy;
                 }
             }
             catch

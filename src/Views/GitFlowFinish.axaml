@@ -11,7 +11,7 @@
     <StackPanel Orientation="Horizontal">
       <Path Width="16" Height="16"
             Margin="0,0,8,0"
-            Data="{StaticResource Icons.GitFlow}"/>
+            Data="{StaticResource Icons.GitFlow.Finish}"/>
 
       <TextBlock FontSize="18"
                  Classes="bold"
@@ -26,8 +26,8 @@
                  Text="{DynamicResource Text.GitFlow.FinishHotfix}"
                  IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:GitFlowBranchType.Hotfix}}"/>
     </StackPanel>
-    
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="150,*">
+
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="150,*">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
@@ -38,14 +38,19 @@
       </StackPanel>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
+                Content="{DynamicResource Text.GitFlow.FinishWithRebase}"
+                IsChecked="{Binding RebaseBeforeMerging, Mode=TwoWay}"
+                ToolTip.Tip="--rebase"/>
+
+      <CheckBox Grid.Row="2" Grid.Column="1"
                 Content="{DynamicResource Text.GitFlow.FinishWithSquash}"
                 IsChecked="{Binding Squash, Mode=TwoWay}"
                 ToolTip.Tip="--squash"/>
 
-      <CheckBox Grid.Row="2" Grid.Column="1"
+      <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.GitFlow.KeepBranchAfterFinish}"
                 IsChecked="{Binding KeepBranch, Mode=TwoWay}"
-                ToolTip.Tip="-k"/>
+                ToolTip.Tip="--keep"/>
     </Grid>
   </StackPanel>
 </UserControl>

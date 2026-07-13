@@ -16,7 +16,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.Fetch.Title}"/>
     </StackPanel>
-    
+
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
       <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
       <TextBlock Text="{Binding Upstream.FriendlyName}" Margin="8,0,0,0"/>

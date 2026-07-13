@@ -1,10 +1,13 @@
 using System;
+using System.IO;
 using System.Threading;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -30,28 +33,44 @@ namespace SourceGit.Views
         {
             if (SelectedItem is ViewModels.RepositoryNode node && e.KeyModifiers == KeyModifiers.None)
             {
-                if (e.Key is Key.Delete or Key.Back)
+                if (e.Key is Key.Left)
                 {
-                    node.Delete();
+                    if (node.IsExpanded)
+                        ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                    else if (FindParent(node) is { } parent)
+                        Select(parent);
+
                     e.Handled = true;
                 }
-                else if (node.IsRepository)
+                else if (e.Key is Key.Right && node.SubNodes.Count > 0)
                 {
-                    if (e.Key == Key.Enter)
-                    {
-                        node.Open();
-                        e.Handled = true;
-                    }
-                }
-                else if ((node.IsExpanded && e.Key == Key.Left) || (!node.IsExpanded && e.Key == Key.Right) || e.Key == Key.Enter)
-                {
-                    ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
-                    e.Handled = true;
+                    if (!node.IsExpanded)
+                        ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
+                    else
+                        Select(node.SubNodes[0]);
                 }
             }
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private ViewModels.RepositoryNode FindParent(ViewModels.RepositoryNode item)
+        {
+            if (item.Depth == 0)
+                return null;
+
+            var idx = Items.IndexOf(item);
+            if (idx < 1)
+                return null;
+
+            for (var i = idx - 1; i >= 0; i--)
+            {
+                if (Items[i] is ViewModels.RepositoryNode node && node.Depth < item.Depth)
+                    return node;
+            }
+
+            return null;
         }
     }
 
@@ -79,7 +98,7 @@ namespace SourceGit.Views
         {
             base.OnKeyDown(e);
 
-            if (!e.Handled)
+            if (!e.Handled && e.KeyModifiers == KeyModifiers.None)
             {
                 if (e.Key == Key.Down && ViewModels.Welcome.Instance.Rows.Count > 0)
                 {
@@ -89,10 +108,40 @@ namespace SourceGit.Views
                 }
                 else if (e.Key == Key.Escape)
                 {
-                    ViewModels.Welcome.Instance.ClearSearchFilter();
-                    e.Handled = true;
+                    var page = this.FindAncestorOfType<LauncherPage>();
+                    if (page is { DataContext: ViewModels.LauncherPage ctx } && ctx.Popup == null)
+                        OnClearSearchFilter(this, e);
+                }
+                else if (e.Key == Key.Enter)
+                {
+                    if (TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+                    {
+                        node.Open();
+                        e.Handled = true;
+                    }
+                }
+                else if (e.Key == Key.Delete || e.Key == Key.Back)
+                {
+                    if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node)
+                    {
+                        node.Delete();
+                        e.Handled = true;
+                    }
                 }
             }
+        }
+
+        private void OnSearchHotKey(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Focus(NavigationMethod.Directional);
+            e.Handled = true;
+        }
+
+        private void OnClearSearchFilter(object sender, RoutedEventArgs e)
+        {
+            ViewModels.Welcome.Instance.ClearSearchFilter();
+            SearchBox.Focus(NavigationMethod.Directional);
+            e.Handled = true;
         }
 
         private void OnTreeNodeContextRequested(object sender, ContextRequestedEventArgs ev)
@@ -101,22 +150,66 @@ namespace SourceGit.Views
             {
                 var menu = new ContextMenu();
 
-                if (!node.IsRepository && node.SubNodes.Count > 0)
+                var edit = new MenuItem();
+                edit.Header = App.Text("Welcome.Edit");
+                edit.Icon = this.CreateMenuIcon("Icons.Edit");
+                edit.Click += (_, e) =>
                 {
-                    var openAll = new MenuItem();
-                    openAll.Header = App.Text("Welcome.OpenAllInNode");
-                    openAll.Icon = this.CreateMenuIcon("Icons.Folder.Open");
-                    openAll.Click += (_, e) =>
+                    node.Edit();
+                    e.Handled = true;
+                };
+
+                var move = new MenuItem();
+                move.Header = App.Text("Welcome.Move");
+                move.Icon = this.CreateMenuIcon("Icons.MoveTo");
+                move.Click += (_, e) =>
+                {
+                    node.Move();
+                    e.Handled = true;
+                };
+
+                var delete = new MenuItem();
+                delete.Header = App.Text("Welcome.Delete");
+                delete.Icon = this.CreateMenuIcon("Icons.Clear");
+                delete.Click += (_, e) =>
+                {
+                    node.Delete();
+                    e.Handled = true;
+                };
+
+                if (!node.IsRepository)
+                {
+                    if (node.SubNodes.Count > 0)
                     {
-                        node.Open();
+                        var openAll = new MenuItem();
+                        openAll.Header = App.Text("Welcome.OpenAllInNode");
+                        openAll.Icon = this.CreateMenuIcon("Icons.Folder.Open");
+                        openAll.Click += (_, e) =>
+                        {
+                            node.Open();
+                            e.Handled = true;
+                        };
+
+                        menu.Items.Add(openAll);
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+                    }
+
+                    var addSubFolder = new MenuItem();
+                    addSubFolder.Header = App.Text("Welcome.AddSubFolder");
+                    addSubFolder.Icon = this.CreateMenuIcon("Icons.Folder.Add");
+                    addSubFolder.Click += (_, e) =>
+                    {
+                        node.AddSubFolder();
                         e.Handled = true;
                     };
 
-                    menu.Items.Add(openAll);
+                    menu.Items.Add(addSubFolder);
+                    menu.Items.Add(edit);
+                    menu.Items.Add(move);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(delete);
                 }
-
-                if (node.IsRepository)
+                else if (Directory.Exists(node.Id))
                 {
                     var open = new MenuItem();
                     open.Header = App.Text("Welcome.OpenOrInit");
@@ -150,51 +243,16 @@ namespace SourceGit.Views
                     menu.Items.Add(explore);
                     menu.Items.Add(terminal);
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(edit);
+                    menu.Items.Add(move);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(delete);
                 }
                 else
                 {
-                    var addSubFolder = new MenuItem();
-                    addSubFolder.Header = App.Text("Welcome.AddSubFolder");
-                    addSubFolder.Icon = this.CreateMenuIcon("Icons.Folder.Add");
-                    addSubFolder.Click += (_, e) =>
-                    {
-                        node.AddSubFolder();
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(addSubFolder);
+                    menu.Items.Add(delete);
                 }
 
-                var edit = new MenuItem();
-                edit.Header = App.Text("Welcome.Edit");
-                edit.Icon = this.CreateMenuIcon("Icons.Edit");
-                edit.Click += (_, e) =>
-                {
-                    node.Edit();
-                    e.Handled = true;
-                };
-
-                var move = new MenuItem();
-                move.Header = App.Text("Welcome.Move");
-                move.Icon = this.CreateMenuIcon("Icons.MoveTo");
-                move.Click += (_, e) =>
-                {
-                    node.Move();
-                    e.Handled = true;
-                };
-
-                var delete = new MenuItem();
-                delete.Header = App.Text("Welcome.Delete");
-                delete.Icon = this.CreateMenuIcon("Icons.Clear");
-                delete.Click += (_, e) =>
-                {
-                    node.Delete();
-                    e.Handled = true;
-                };
-
-                menu.Items.Add(edit);
-                menu.Items.Add(move);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(delete);
                 menu.Open(grid);
             }
 
@@ -205,29 +263,29 @@ namespace SourceGit.Views
         {
             if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed)
             {
-                _pressedTreeNode = true;
+                _pressTreeNodeEvent = e;
                 _startDragTreeNode = false;
-                _pressedTreeNodePosition = e.GetPosition(sender as Grid);
             }
             else
             {
-                _pressedTreeNode = false;
+                _pressTreeNodeEvent = null;
                 _startDragTreeNode = false;
             }
         }
 
         private void OnPointerReleasedOnTreeNode(object _1, PointerReleasedEventArgs _2)
         {
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
         private async void OnPointerMovedOverTreeNode(object sender, PointerEventArgs e)
         {
-            if (_pressedTreeNode && !_startDragTreeNode &&
+            if (_pressTreeNodeEvent != null &&
+                !_startDragTreeNode &&
                 sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
-                var delta = e.GetPosition(grid) - _pressedTreeNodePosition;
+                var delta = e.GetPosition(grid) - _pressTreeNodeEvent.GetPosition(grid);
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
                 if (sizeSquired < 64)
                     return;
@@ -236,13 +294,13 @@ namespace SourceGit.Views
 
                 var data = new DataTransfer();
                 data.Add(DataTransferItem.Create(_dndRepoNode, node.Id));
-                await DragDrop.DoDragDropAsync(e, data, DragDropEffects.Move);
+                await DragDrop.DoDragDropAsync(_pressTreeNodeEvent, data, DragDropEffects.Move);
             }
         }
 
         private void OnTreeViewLostFocus(object _1, RoutedEventArgs _2)
         {
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
@@ -289,7 +347,7 @@ namespace SourceGit.Views
                     ViewModels.Welcome.Instance.Refresh();
             }
 
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
@@ -348,7 +406,7 @@ namespace SourceGit.Views
                     ViewModels.Welcome.Instance.Refresh();
             }
 
-            _pressedTreeNode = false;
+            _pressTreeNodeEvent = null;
             _startDragTreeNode = false;
         }
 
@@ -365,8 +423,7 @@ namespace SourceGit.Views
             }
         }
 
-        private bool _pressedTreeNode = false;
-        private Point _pressedTreeNodePosition = new Point();
+        private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
         private CancellationTokenSource _cancellation = new CancellationTokenSource();

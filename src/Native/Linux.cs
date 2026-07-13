@@ -20,6 +20,8 @@ namespace SourceGit.Native
 
         public void SetupWindow(Window window)
         {
+            window.BorderThickness = new Thickness(0);
+
             if (OS.UseSystemWindowFrame)
             {
                 window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.Default;
@@ -31,21 +33,6 @@ namespace SourceGit.Native
                 window.ExtendClientAreaToDecorationsHint = true;
                 window.Classes.Add("custom_window_frame");
             }
-        }
-
-        public void HideSelf()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void HideOtherApplications()
-        {
-            // Do Nothing. Never used.
-        }
-
-        public void ShowAllApplications()
-        {
-            // Do Nothing. Never used.
         }
 
         public string GetDataDir()

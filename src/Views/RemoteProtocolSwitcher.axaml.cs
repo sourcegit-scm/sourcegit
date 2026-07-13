@@ -10,22 +10,27 @@ namespace SourceGit.Views
 {
     public partial class RemoteProtocolSwitcher : UserControl
     {
-        public static readonly StyledProperty<string> UrlProperty =
-            AvaloniaProperty.Register<RemoteProtocolSwitcher, string>(nameof(Url));
+        public static readonly DirectProperty<RemoteProtocolSwitcher, string> UrlProperty =
+            AvaloniaProperty.RegisterDirect<RemoteProtocolSwitcher, string>(
+                nameof(Url),
+                static o => o.Url,
+                static (o, v) => o.Url = v);
 
         public string Url
         {
-            get => GetValue(UrlProperty);
-            set => SetValue(UrlProperty, value);
+            get => _url;
+            set => SetAndRaise(UrlProperty, ref _url, value);
         }
 
-        public static readonly StyledProperty<string> ActiveProtocolProperty =
-            AvaloniaProperty.Register<RemoteProtocolSwitcher, string>(nameof(ActiveProtocol));
+        public static readonly DirectProperty<RemoteProtocolSwitcher, string> ActiveProtocolProperty =
+            AvaloniaProperty.RegisterDirect<RemoteProtocolSwitcher, string>(
+                nameof(ActiveProtocol),
+                static o => o.ActiveProtocol);
 
         public string ActiveProtocol
         {
-            get => GetValue(ActiveProtocolProperty);
-            set => SetValue(ActiveProtocolProperty, value);
+            get => _activeProtocol;
+            set => SetAndRaise(ActiveProtocolProperty, ref _activeProtocol, value);
         }
 
         public RemoteProtocolSwitcher()
@@ -41,7 +46,7 @@ namespace SourceGit.Views
             {
                 _protocols.Clear();
 
-                var url = Url ?? string.Empty;
+                var url = _url ?? string.Empty;
                 if (url.StartsWith("https://", StringComparison.Ordinal) && Uri.TryCreate(url, UriKind.Absolute, out var uri))
                 {
                     var host = uri.Host;
@@ -50,7 +55,7 @@ namespace SourceGit.Views
                     _protocols.Add(url);
                     _protocols.Add($"git@{host}:{route}");
 
-                    SetCurrentValue(ActiveProtocolProperty, "HTTPS");
+                    ActiveProtocol = "HTTPS";
                     SetCurrentValue(IsVisibleProperty, true);
                     return;
                 }
@@ -64,7 +69,7 @@ namespace SourceGit.Views
                     _protocols.Add($"https://{host}/{repo}");
                     _protocols.Add(url);
 
-                    SetCurrentValue(ActiveProtocolProperty, "SSH");
+                    ActiveProtocol = "SSH";
                     SetCurrentValue(IsVisibleProperty, true);
                     return;
                 }
@@ -96,6 +101,9 @@ namespace SourceGit.Views
 
         [GeneratedRegex(@"^git@([\w\.\-]+):(.+)$")]
         private static partial Regex REG_SSH_FORMAT();
+
+        private string _url = string.Empty;
+        private string _activeProtocol = string.Empty;
         private List<string> _protocols = [];
     }
 }

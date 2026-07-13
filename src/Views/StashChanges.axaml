@@ -18,7 +18,7 @@
                  Classes="bold"
                  Text="{DynamicResource Text.Stash.Title}"/>
     </StackPanel>
-    
+
     <Grid Margin="8,20,0,0" RowDefinitions="32,Auto,Auto,Auto,Auto" ColumnDefinitions="100,356">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"

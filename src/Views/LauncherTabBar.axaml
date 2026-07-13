@@ -16,7 +16,7 @@
                   Width="18" Height="28"
                   Margin="0,2,0,0"
                   Click="ScrollTabsLeft"
-                  IsVisible="{Binding #ThisControl.IsScrollerVisible}">
+                  IsVisible="{Binding #ThisControl.IsScrollButtonVisible}">
       <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
     </RepeatButton>
 
@@ -29,12 +29,30 @@
                   PointerWheelChanged="ScrollTabs">
       <StackPanel Orientation="Horizontal">
         <ListBox x:Name="LauncherTabsList"
-                 Classes="launcher_page_tabbar"
+                 Background="Transparent"
                  ItemsSource="{Binding Pages}"
                  SelectionMode="AlwaysSelected"
                  SelectedItem="{Binding ActivePage, Mode=TwoWay}"
                  SelectionChanged="OnTabsSelectionChanged"
                  LayoutUpdated="OnTabsLayoutUpdated">
+          <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+              <Setter Property="Padding" Value="0"/>
+            </Style>
+            <Style Selector="ListBoxItem /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="Transparent"/>
+              <Setter Property="Opacity" Value=".5"/>
+            </Style>
+            <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="Transparent"/>
+              <Setter Property="Opacity" Value=".85"/>
+            </Style>
+            <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+              <Setter Property="Background" Value="Transparent"/>
+              <Setter Property="Opacity" Value="1"/>
+            </Style>
+          </ListBox.Styles>
+
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <StackPanel Orientation="Horizontal" Height="30"/>
@@ -64,12 +82,11 @@
                 </ToolTip.Tip>
 
                 <Grid ColumnDefinitions="Auto,*,Auto">
-                  <Path Grid.Column="0"
-                        Width="12" Height="12" Margin="12,0"
-                        Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                        Data="{StaticResource Icons.Bookmark}"
-                        IsVisible="{Binding Node.IsRepository}"
-                        IsHitTestVisible="False"/>
+                  <v:Bookmark Grid.Column="0"
+                              Width="12" Height="12"
+                              Margin="12,0"
+                              Value="{Binding Node.Bookmark, Mode=OneWay}"
+                              IsVisible="{Binding Node.IsRepository}"/>
                   <Path Grid.Column="0"
                         Width="12" Height="12" Margin="12,0"
                         Fill="{DynamicResource Brush.FG1}"
@@ -131,7 +148,7 @@
                 Width="16" Height="16"
                 Margin="8,2,8,0"
                 Command="{Binding AddNewTab}"
-                IsVisible="{Binding !#ThisControl.IsScrollerVisible}">
+                IsVisible="{Binding !#ThisControl.IsScrollButtonVisible}">
           <ToolTip.Tip>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
               <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
@@ -148,7 +165,7 @@
       </StackPanel>
     </ScrollViewer>
 
-    <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollerVisible}">
+    <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollButtonVisible}">
       <RepeatButton Classes="icon_button" Width="18" Height="28" Margin="0,2,0,0" Click="ScrollTabsRight">
         <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
       </RepeatButton>

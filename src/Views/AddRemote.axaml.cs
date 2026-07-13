@@ -20,7 +20,7 @@ namespace SourceGit.Views
             var options = new FilePickerOpenOptions()
             {
                 AllowMultiple = false,
-                FileTypeFilter = [new FilePickerFileType("SSHKey") { Patterns = ["*.*"] }]
+                FileTypeFilter = [new("SSHKey") { Patterns = ["*"] }]
             };
 
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);

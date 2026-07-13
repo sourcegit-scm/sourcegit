@@ -27,7 +27,6 @@
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder SourceGit</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todos</x:String>
-  <x:String x:Key="Text.Apply.File" xml:space="preserve">Arquivo de Patch:</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selecione o arquivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplicar Patch</x:String>
@@ -51,10 +50,10 @@
   <x:String x:Key="Text.Bisect" xml:space="preserve">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Abortar</x:String>
   <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Inválido</x:String>
-  <x:String x:Key="Text.Bisect.Detecting" xml:space="preserve">Bisect. O HEAD atual é válido ou inválido?</x:String>
   <x:String x:Key="Text.Bisect.Good" xml:space="preserve">Válido</x:String>
   <x:String x:Key="Text.Bisect.Skip" xml:space="preserve">Pular</x:String>
-  <x:String x:Key="Text.Bisect.WaitingForRange" xml:space="preserve">Bisect. Marcar o commit atual como válido ou inválido e checar outro commit.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood" xml:space="preserve">Bisect. Marcar o commit atual como válido ou inválido e checar outro commit.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark" xml:space="preserve">Bisect. O HEAD atual é válido ou inválido?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace" xml:space="preserve">Ignorar espaços em branco</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME NESSE ARQUIVO NÃO É SUPORTADO!!!</x:String>
@@ -97,9 +96,6 @@
   <x:String x:Key="Text.ChangeSortMode.Path" xml:space="preserve">Ordenar por caminho</x:String>
   <x:String x:Key="Text.ChangeSortMode.Status" xml:space="preserve">Ordenar por status</x:String>
   <x:String x:Key="Text.Checkout" xml:space="preserve">Checkout Branch</x:String>
-  <x:String x:Key="Text.Checkout.Commit" xml:space="preserve">Checkout Commit</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Target" xml:space="preserve">Commit:</x:String>
-  <x:String x:Key="Text.Checkout.Commit.Warning" xml:space="preserve">Aviso: Ao fazer o checkout de um commit, seu Head ficará desanexado</x:String>
   <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Alterações Locais:</x:String>
   <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry-Pick</x:String>
@@ -127,9 +123,7 @@
   <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Ação customizada</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Reverter Commit</x:String>
-  <x:String x:Key="Text.CommitCM.Reword" xml:space="preserve">Modificar Mensagem</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Salvar como Patch...</x:String>
-  <x:String x:Key="Text.CommitCM.Squash" xml:space="preserve">Mesclar ao Commit Pai</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">ALTERAÇÕES</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Buscar Alterações...</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">ARQUIVOS</x:String>
@@ -223,7 +217,6 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Excluir Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Você está prestes a excluir uma branch remota!!!</x:String>
-  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Também excluir branch remoto ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Excluir Múltiplos Branches</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Você está tentando excluir vários branches de uma vez. Certifique-se de verificar antes de agir!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Excluir Remoto</x:String>
@@ -237,7 +230,6 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Tag:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Excluir dos repositórios remotos</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFERENÇA BINÁRIA</x:String>
-  <x:String x:Key="Text.Diff.FileModeChanged" xml:space="preserve">Modo de Arquivo Alterado</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">MUDANÇA DE OBJETO LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Próxima Diferença</x:String>
@@ -367,11 +359,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Alternar para 'Mudanças'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Alternar para 'Históricos'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Alternar para 'Stashes'</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor" xml:space="preserve">EDITOR DE TEXTO</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.CloseSearch" xml:space="preserve">Fechar painel de busca</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoNextMatch" xml:space="preserve">Encontrar próxima correspondência</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.GotoPrevMatch" xml:space="preserve">Encontrar correspondência anterior</x:String>
-  <x:String x:Key="Text.Hotkeys.TextEditor.Search" xml:space="preserve">Abrir painel de busca</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descartar</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Preparar</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Despreparar</x:String>
@@ -440,7 +427,6 @@
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Verificar atualizações na inicialização</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Idioma</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits do Histórico</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowAuthorTime" xml:space="preserve">Exibir data do autor em vez da data do commit no gráfico</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Comprimento do Guia de Assunto</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Habilitar Auto CRLF</x:String>
@@ -538,7 +524,6 @@
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">ADICIONAR REMOTO</x:String>
   <x:String x:Key="Text.Repository.Search" xml:space="preserve">Pesquisar Commit</x:String>
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Autor</x:String>
-  <x:String x:Key="Text.Repository.Search.ByCommitter" xml:space="preserve">Committer</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Mensagem</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Branch Atual</x:String>
@@ -562,7 +547,6 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">Reverter Commit</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Commit:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Commitar alterações de reversão</x:String>
-  <x:String x:Key="Text.Reword" xml:space="preserve">Reescrever Mensagem do Commit</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">Executando. Por favor, aguarde...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">SALVAR</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">Salvar Como...</x:String>
@@ -610,7 +594,6 @@
   <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Excluir Submódulo</x:String>
   <x:String x:Key="Text.Sure" xml:space="preserve">OK</x:String>
   <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Excluir ${0}$...</x:String>
-  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Mesclar ${0}$ em ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Enviar ${0}$...</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Atualizar Submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Todos os submódulos</x:String>

@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 
 using Avalonia.Interactivity;
@@ -13,7 +14,7 @@ namespace SourceGit.Views
 
         private void Restart(object _1, RoutedEventArgs _2)
         {
-            var selfExecFile = Process.GetCurrentProcess().MainModule!.FileName;
+            var selfExecFile = Environment.ProcessPath;
             Process.Start(selfExecFile);
             App.Quit(-1);
         }
