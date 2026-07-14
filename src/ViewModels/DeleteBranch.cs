@@ -65,7 +65,8 @@ namespace SourceGit.ViewModels
             else
             {
                 succ = await DeleteRemoteBranchAsync(Target, log);
-                _repo.UIStates.RemoveHistoryFilter(Target.FullName, Models.FilterType.RemoteBranch);
+                if (succ)
+                    _repo.UIStates.RemoveHistoryFilter(Target.FullName, Models.FilterType.RemoteBranch);
             }
 
             log.Complete();
