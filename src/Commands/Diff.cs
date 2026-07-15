@@ -204,6 +204,12 @@ namespace SourceGit.Commands
         {
             var prefix = line[0];
             var content = line.Substring(1);
+
+            // Strip the trailing '\r' carried over from CRLF/CR line endings;
+            // RawContent keeps the raw bytes for patch generation.
+            if (content.Length > 0 && content[^1] == '\r')
+                content = content[..^1];
+
             if (ParseLFSChange(prefix, content))
                 return true;
 
