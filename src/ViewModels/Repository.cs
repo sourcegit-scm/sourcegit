@@ -697,6 +697,40 @@ namespace SourceGit.ViewModels
                 ShowPopup(new Fetch(this));
         }
 
+        public async Task<bool> FetchAllRemotesAsync()
+        {
+            if (IsAutoFetching)
+                return false;
+
+            CommandLog log = null;
+
+            try
+            {
+                var lockFile = Path.Combine(GitDir, "index.lock");
+                if (File.Exists(lockFile))
+                    return false;
+
+                if (_remotes.Count == 0)
+                    return false;
+
+                IsAutoFetching = true;
+                log = CreateLog("Fetch");
+
+                foreach (var remote in _remotes)
+                    await new Commands.Fetch(FullPath, remote.Name).Use(log).RunAsync();
+
+                _lastFetchTime = DateTime.Now;
+            }
+            catch
+            {
+                // Ignore all exceptions.
+            }
+
+            IsAutoFetching = false;
+            log?.Complete();
+            return true;
+        }
+
         public async Task PullAsync(bool autoStart)
         {
             if (IsBare || !CanCreatePopup())

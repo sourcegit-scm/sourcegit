@@ -1039,6 +1039,7 @@
   <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">範本: ${0}$</x:String>
   <x:String x:Key="Text.Workspace" xml:space="preserve">工作區: </x:String>
   <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">設定工作區...</x:String>
+  <x:String x:Key="Text.Workspace.FetchAllRepositories" xml:space="preserve">提取工作區所有存放庫</x:String>
   <x:String x:Key="Text.Worktree" xml:space="preserve">本機工作樹</x:String>
   <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">分支</x:String>
   <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">複製工作樹路徑</x:String>
