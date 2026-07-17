@@ -523,8 +523,10 @@ namespace SourceGit.ViewModels
                 Task.Run(async () =>
                 {
                     var max = Preferences.Instance.MaxHistoryCommits;
-                    var cmd = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { CancellationToken = token };
-                    var children = await cmd.GetResultAsync().ConfigureAwait(false);
+                    var children = await new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max)
+                        .WithCancellation(token)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
                     if (!token.IsCancellationRequested)
                         Dispatcher.UIThread.Post(() => Children = children);
                 }, token);
@@ -532,8 +534,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var cmd = new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA) { CancellationToken = token };
-                var changes = await cmd.ReadAsync().ConfigureAwait(false);
+                var changes = await new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
+                    .WithCancellation(token)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
                 {
