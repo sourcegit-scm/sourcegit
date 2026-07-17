@@ -584,7 +584,7 @@
   <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">命令列表</x:String>
   <x:String x:Key="Text.Launcher.Error" xml:space="preserve">發生錯誤</x:String>
   <x:String x:Key="Text.Launcher.Info" xml:space="preserve">系統提示</x:String>
-  <x:String x:Key="Text.Launcher.NewVersion" xml:space="preserve">檢測到新版本</x:String>
+  <x:String x:Key="Text.Launcher.NewVersion" xml:space="preserve">有新版本可用</x:String>
   <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">開啟存放庫</x:String>
   <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">頁面列表</x:String>
   <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">工作區列表</x:String>
@@ -760,7 +760,7 @@
   <x:String x:Key="Text.Quit" xml:space="preserve">結束</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">重定基底 (rebase) 操作</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">自動擱置變更並復原本機變更</x:String>
-  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">繞過 pre-rebase 鉤子</x:String>
+  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">繞過 pre-rebase hook</x:String>
   <x:String x:Key="Text.Rebase.On" xml:space="preserve">目標提交:</x:String>
   <x:String x:Key="Text.Rebase.Test" xml:space="preserve">正在偵測重定基底衝突...</x:String>
   <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">重定基底操作不會產生衝突</x:String>
@@ -805,12 +805,12 @@
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速搜尋分支/標籤/子模組</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">篩選以顯示或隱藏</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Collapse" xml:space="preserve">折疊篩選項列表</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Collapse" xml:space="preserve">摺疊篩選器</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">取消指定</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">在提交列表中隱藏</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Expand" xml:space="preserve">展開篩選項列表</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Expand" xml:space="preserve">展開篩選器</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">以其篩選提交列表</x:String>
-  <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">個篩選項已被啟用</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">個篩選規則已啟用</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">版面配置</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">橫向顯示</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">縱向顯示</x:String>
