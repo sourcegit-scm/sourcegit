@@ -103,7 +103,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Підмодуль</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">ІНФОРМАЦІЯ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">АВТОР</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">ДОЧІРНІ</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">КОМІТЕР</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Перевірити посилання, що містять цей коміт</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">КОМІТ МІСТИТЬСЯ В</x:String>
@@ -427,7 +426,6 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Формат дати</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Мова</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Кількість комітів в історії</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">Показувати дочірні коміти в деталях</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Показувати теги в графі комітів</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Довжина лінії-орієнтира для теми</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
