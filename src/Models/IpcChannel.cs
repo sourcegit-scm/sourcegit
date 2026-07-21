@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.IO.Pipes;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,7 +21,7 @@ namespace SourceGit.Models
                 _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 IsFirstInstance = true;
                 _server = new NamedPipeServerStream(
-                    "SourceGitIPCChannel" + Environment.UserName,
+                    GetPipeName(),
                     PipeDirection.In,
                     -1,
                     PipeTransmissionMode.Byte,
@@ -37,7 +39,7 @@ namespace SourceGit.Models
         {
             try
             {
-                using (var client = new NamedPipeClientStream(".", "SourceGitIPCChannel" + Environment.UserName, PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly))
+                using (var client = new NamedPipeClientStream(".", GetPipeName(), PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly))
                 {
                     client.Connect(1000);
                     if (!client.IsConnected)
@@ -65,6 +67,14 @@ namespace SourceGit.Models
         {
             _cancellationTokenSource?.Cancel();
             _singletonLock?.Dispose();
+        }
+
+        private static string GetPipeName()
+        {
+            var dataDir = Native.OS.DataDir.Replace('\\', '/').TrimEnd('/');
+            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(dataDir));
+            var hashStr = Convert.ToHexString(hash)[..16];
+            return $"SourceGitIPCChannel{Environment.UserName}_{hashStr}";
         }
 
         private async void StartServer()
