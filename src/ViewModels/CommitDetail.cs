@@ -79,12 +79,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public List<string> Children
-        {
-            get => _children;
-            private set => SetProperty(ref _children, value);
-        }
-
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -471,7 +465,6 @@ namespace SourceGit.ViewModels
             ViewRevisionFileContent = null;
             ViewRevisionFilePath = string.Empty;
             CanOpenRevisionFileWithDefaultEditor = false;
-            Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
             ScrollOffset = Vector.Zero;
@@ -517,20 +510,6 @@ namespace SourceGit.ViewModels
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Post(() => SignInfo = signInfo);
             }, token);
-
-            if (Preferences.Instance.ShowChildren)
-            {
-                Task.Run(async () =>
-                {
-                    var max = Preferences.Instance.MaxHistoryCommits;
-                    var children = await new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max)
-                        .WithCancellation(token)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-                    if (!token.IsCancellationRequested)
-                        Dispatcher.UIThread.Post(() => Children = children);
-                }, token);
-            }
 
             Task.Run(async () =>
             {
@@ -757,7 +736,6 @@ namespace SourceGit.ViewModels
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
-        private List<string> _children = null;
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;

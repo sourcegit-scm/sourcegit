@@ -59,7 +59,7 @@
         <Rectangle Height=".65" Margin="8,8,0,8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
-        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
+        <Grid RowDefinitions="24,Auto,Auto,Auto" ColumnDefinitions="96,*">
           <!-- SHA -->
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
@@ -150,57 +150,9 @@
             </ItemsControl.ItemTemplate>
           </ItemsControl>
 
-          <!-- CHILDREN -->
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
-          <ItemsControl Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" ItemsSource="{Binding #ThisControl.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" ItemHeight="24"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <TextBlock Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}"
-                           FontFamily="{DynamicResource Fonts.Monospace}"
-                           Foreground="DarkOrange"
-                           TextDecorations="Underline"
-                           Cursor="Hand"
-                           Margin="0,0,16,0"
-                           PointerEntered="OnSHAPointerEntered"
-                           PointerPressed="OnSHAPressed"
-                           ToolTip.ShowDelay="0">
-                  <ToolTip.IsOpen>
-                    <MultiBinding Converter="{x:Static BoolConverters.And}">
-                      <Binding Path="$self.IsPointerOver"/>
-                      <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
-                    </MultiBinding>
-                  </ToolTip.IsOpen>
-
-                  <TextBlock.DataTemplates>
-                    <DataTemplate DataType="m:Commit">
-                      <StackPanel MinWidth="400" Orientation="Vertical">
-                        <Grid ColumnDefinitions="Auto,*,Auto">
-                          <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <v:DateTimePresenter Grid.Column="2"
-                                               Margin="8,0,0,0"
-                                               Timestamp="{Binding CommitterTime}"
-                                               Foreground="{DynamicResource Brush.FG2}"/>
-                        </Grid>
-
-                        <TextBlock Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
-                      </StackPanel>
-                    </DataTemplate>
-                  </TextBlock.DataTemplates>
-                </TextBlock>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-
           <!-- REFS -->
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
-          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
+          <Border Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
                                    FontSize="12"
                                    AllowWrap="True"
@@ -210,8 +162,8 @@
           </Border>
 
           <!-- Messages -->
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
-          <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
+          <v:CommitMessagePresenter Grid.Row="3" Grid.Column="1"
                                     Margin="12,4,0,0"
                                     Foreground="{DynamicResource Brush.FG1}"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
