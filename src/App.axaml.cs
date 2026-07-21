@@ -101,8 +101,11 @@ namespace SourceGit
 
         public static void SetLocale(string localeKey)
         {
+            var locale = Models.Locale.Supported.Find(x => x.Key.Equals(localeKey, StringComparison.OrdinalIgnoreCase));
+            var finalLocaleKey = locale?.Key ?? "en_US";
+
             if (Current is not App app ||
-                app.Resources[localeKey] is not ResourceDictionary targetLocale ||
+                app.Resources[finalLocaleKey] is not ResourceDictionary targetLocale ||
                 targetLocale == app._activeLocale)
                 return;
 
