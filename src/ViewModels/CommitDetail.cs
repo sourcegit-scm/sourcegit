@@ -734,25 +734,13 @@ namespace SourceGit.ViewModels
 
         private async Task SetViewingCommitAsync(Models.Object file)
         {
-            var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
-            var commit = await new Commands.QuerySingleCommit(submoduleRoot, file.SHA).GetResultAsync();
-            if (commit == null)
+            var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').TrimEnd('/');
+            var info = await new Commands.QuerySubmoduleRevision(submoduleRoot, file.SHA).GetResultAsync();
+            ViewRevisionFileContent = info ?? new Models.RevisionSubmodule()
             {
-                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                {
-                    Commit = new Models.Commit() { SHA = file.SHA },
-                    FullMessage = new Models.CommitFullMessage()
-                };
-            }
-            else
-            {
-                var message = await new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).GetResultAsync();
-                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                {
-                    Commit = commit,
-                    FullMessage = new Models.CommitFullMessage { Message = message }
-                };
-            }
+                Commit = new Models.Commit() { SHA = file.SHA },
+                FullMessage = new Models.CommitFullMessage()
+            };
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
