@@ -121,6 +121,7 @@
                            Margin="0,0,16,0"
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed"
+                           ContextRequested="OnSHAContextRequested"
                            ToolTip.ShowDelay="0">
                   <ToolTip.IsOpen>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">

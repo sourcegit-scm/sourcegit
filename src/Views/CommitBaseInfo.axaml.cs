@@ -225,6 +225,26 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnSHAContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is not Control { DataContext: string sha } control)
+                return;
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
+            copy.Click += async (_, ev) =>
+            {
+                await this.CopyTextAsync(sha);
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(copy);
+            menu.Open(control);
+            e.Handled = true;
+        }
+
         private void OnUserContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (sender is not Control { Tag: Models.User user } control)
