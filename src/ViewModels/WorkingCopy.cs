@@ -422,6 +422,14 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
+                    // `git checkout --theirs/--ours` overwrites the current on-disk file with the
+                    // chosen version, discarding whatever is in the working copy now (including any
+                    // manual conflict edits). Snapshot that file to the trash first so the resolution
+                    // stays undoable — only when the safetynet is on and a file is actually there.
+                    var fullpath = Path.Combine(_repo.FullPath, change.Path);
+                    if (Preferences.Instance.TrashOnResolveConflict && File.Exists(fullpath))
+                        Models.TrashBin.Delete(fullpath, true, log);
+
                     files.Add(change.Path);
                 }
             }
@@ -468,6 +476,14 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
+                    // `git checkout --theirs/--ours` overwrites the current on-disk file with the
+                    // chosen version, discarding whatever is in the working copy now (including any
+                    // manual conflict edits). Snapshot that file to the trash first so the resolution
+                    // stays undoable — only when the safetynet is on and a file is actually there.
+                    var fullpath = Path.Combine(_repo.FullPath, change.Path);
+                    if (Preferences.Instance.TrashOnResolveConflict && File.Exists(fullpath))
+                        Models.TrashBin.Delete(fullpath, true, log);
+
                     files.Add(change.Path);
                 }
             }
