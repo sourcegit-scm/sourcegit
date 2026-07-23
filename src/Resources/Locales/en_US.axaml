@@ -718,6 +718,11 @@
   <x:String x:Key="Text.Preferences.GPG.UserKey" xml:space="preserve">User Signing Key</x:String>
   <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">User's gpg signing key</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRATION</x:String>
+  <x:String x:Key="Text.Preferences.Safetynet" xml:space="preserve">SAFETYNET</x:String>
+  <x:String x:Key="Text.Preferences.Safetynet.Tip" xml:space="preserve">When enabled, files removed by these operations are sent to the system trash/recycle bin instead of being permanently deleted, so they can be recovered.</x:String>
+  <x:String x:Key="Text.Preferences.Safetynet.TrashOnDiscard" xml:space="preserve">Move to trash when discarding selected changes</x:String>
+  <x:String x:Key="Text.Preferences.Safetynet.TrashOnDiscardAll" xml:space="preserve">Move to trash when discarding all changes</x:String>
+  <x:String x:Key="Text.Preferences.Safetynet.TrashOnResolveConflict" xml:space="preserve">Move to trash when resolving conflicts (use theirs / use mine)</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Arguments</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Please use '.' to indicate working directory</x:String>

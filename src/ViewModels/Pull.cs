@@ -138,7 +138,7 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    await Commands.Discard.AllAsync(_repo.FullPath, true, false, false, log);
+                    await Commands.Discard.AllAsync(_repo.FullPath, true, false, false, Preferences.Instance.TrashOnDiscardAll, log);
                 }
             }
 

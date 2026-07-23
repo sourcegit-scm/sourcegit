@@ -156,6 +156,25 @@ namespace SourceGit.Native
             }
         }
 
+        public bool MoveToTrash(string path)
+        {
+            // TODO: route to the freedesktop.org Trash (~/.local/share/Trash) per the trash spec.
+            // Not implemented yet, so fall back to a permanent delete to preserve behavior.
+            try
+            {
+                if (Directory.Exists(path))
+                    Directory.Delete(path, true);
+                else if (File.Exists(path))
+                    File.Delete(path);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;

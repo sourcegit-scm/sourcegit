@@ -10,7 +10,7 @@ namespace SourceGit.Commands
         /// <summary>
         ///     Discard all local changes (unstaged & staged)
         /// </summary>
-        public static async Task AllAsync(string repo, bool includeModified, bool includeUntracked, bool includeIgnored, Models.ICommandLog log)
+        public static async Task AllAsync(string repo, bool includeModified, bool includeUntracked, bool includeIgnored, bool useTrash, Models.ICommandLog log)
         {
             if (includeUntracked)
             {
@@ -27,7 +27,7 @@ namespace SourceGit.Commands
                         {
                             var fullPath = Path.Combine(repo, c.Path);
                             if (Directory.Exists(fullPath))
-                                Directory.Delete(fullPath, true);
+                                Models.TrashBin.Delete(fullPath, useTrash, log);
                         }
                     }
                 }
@@ -36,18 +36,37 @@ namespace SourceGit.Commands
                     Models.Notification.Send(repo, $"Failed to discard changes. Reason: {e.Message}", true);
                 }
 
-                if (includeIgnored)
-                    await new Clean(repo, Models.CleanMode.UntrackedAndIgnoredFiles).Use(log).ExecAsync().ConfigureAwait(false);
-                else
-                    await new Clean(repo, Models.CleanMode.OnlyUntrackedFiles).Use(log).ExecAsync().ConfigureAwait(false);
+                var mode = includeIgnored ? Models.CleanMode.UntrackedAndIgnoredFiles : Models.CleanMode.OnlyUntrackedFiles;
+                await CleanAsync(repo, mode, useTrash, log).ConfigureAwait(false);
             }
             else if (includeIgnored)
             {
-                await new Clean(repo, Models.CleanMode.OnlyIgnoredFiles).Use(log).ExecAsync().ConfigureAwait(false);
+                await CleanAsync(repo, Models.CleanMode.OnlyIgnoredFiles, useTrash, log).ConfigureAwait(false);
             }
 
             if (includeModified)
                 await new Reset(repo, "", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        ///     Remove the untracked/ignored files for the given clean mode. When the safetynet is
+        ///     enabled, each path that `git clean` would remove is moved to the trash bin instead
+        ///     (so it can be recovered); otherwise the original `git clean` is used.
+        /// </summary>
+        private static async Task CleanAsync(string repo, Models.CleanMode mode, bool useTrash, Models.ICommandLog log)
+        {
+            if (!useTrash)
+            {
+                await new Clean(repo, mode).Use(log).ExecAsync().ConfigureAwait(false);
+                return;
+            }
+
+            var paths = await new QueryCleanablePaths(repo, mode).GetResultAsync().ConfigureAwait(false);
+            foreach (var path in paths)
+            {
+                var fullPath = Path.Combine(repo, path);
+                Models.TrashBin.Delete(fullPath, true, log);
+            }
         }
 
         /// <summary>
@@ -56,7 +75,7 @@ namespace SourceGit.Commands
         /// <param name="repo"></param>
         /// <param name="changes"></param>
         /// <param name="log"></param>
-        public static async Task ChangesAsync(string repo, List<Models.Change> changes, Models.ICommandLog log)
+        public static async Task ChangesAsync(string repo, List<Models.Change> changes, bool useTrash, Models.ICommandLog log)
         {
             var restores = new List<string>();
 
@@ -67,10 +86,7 @@ namespace SourceGit.Commands
                     if (c.WorkTree == Models.ChangeState.Untracked || c.WorkTree == Models.ChangeState.Added)
                     {
                         var fullPath = Path.Combine(repo, c.Path);
-                        if (Directory.Exists(fullPath))
-                            Directory.Delete(fullPath, true);
-                        else
-                            File.Delete(fullPath);
+                        Models.TrashBin.Delete(fullPath, useTrash, log);
                     }
                     else
                     {

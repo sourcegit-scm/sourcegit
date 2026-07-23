@@ -28,6 +28,8 @@ namespace SourceGit.Native
             void OpenInFileManager(string path);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
+
+            bool MoveToTrash(string path);
         }
 
         public static string DataDir
@@ -273,6 +275,17 @@ namespace SourceGit.Native
         public static void OpenWithDefaultEditor(string file)
         {
             _backend.OpenWithDefaultEditor(file);
+        }
+
+        /// <summary>
+        ///     Move a file or directory into the operating system's trash/recycle bin.
+        ///     The per-platform behavior lives in each <see cref="IBackend"/> implementation.
+        ///     Prefer calling <see cref="Models.TrashBin.Delete"/> which adds existence checks,
+        ///     the permanent-delete fallback, and logging on top of this.
+        /// </summary>
+        public static bool MoveToTrash(string path)
+        {
+            return _backend.MoveToTrash(path);
         }
 
         public static string GetAbsPath(string root, string sub)

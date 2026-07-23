@@ -78,12 +78,12 @@ namespace SourceGit.ViewModels
 
             if (Mode is DiscardAllMode all)
             {
-                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeModified, all.IncludeUntracked, all.IncludeIgnored, log);
+                await Commands.Discard.AllAsync(_repo.FullPath, all.IncludeModified, all.IncludeUntracked, all.IncludeIgnored, Preferences.Instance.TrashOnDiscardAll, log);
                 _repo.ClearCommitMessage();
             }
             else
             {
-                await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, log);
+                await Commands.Discard.ChangesAsync(_repo.FullPath, _changes, Preferences.Instance.TrashOnDiscard, log);
             }
 
             log.Complete();

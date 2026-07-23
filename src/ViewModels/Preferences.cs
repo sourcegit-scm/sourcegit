@@ -129,6 +129,26 @@ namespace SourceGit.ViewModels
             set;
         } = false;
 
+        // Safetynet: when enabled, files removed by the matching operation are moved to the OS
+        // trash/recycle bin instead of being permanently deleted, so they can be recovered.
+        public bool TrashOnDiscard
+        {
+            get;
+            set;
+        } = true;
+
+        public bool TrashOnDiscardAll
+        {
+            get;
+            set;
+        } = true;
+
+        public bool TrashOnResolveConflict
+        {
+            get;
+            set;
+        } = true;
+
         public int MaxHistoryCommits
         {
             get => _maxHistoryCommits;

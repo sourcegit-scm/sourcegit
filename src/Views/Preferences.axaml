@@ -191,6 +191,34 @@
 
         <TabItem>
           <TabItem.Header>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Safetynet}"/>
+          </TabItem.Header>
+          <Grid Margin="8" RowDefinitions="Auto,32,32,32" ColumnDefinitions="*">
+            <TextBlock Grid.Row="0"
+                       Margin="0,0,0,8"
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Brush.FG2}"
+                       Text="{DynamicResource Text.Preferences.Safetynet.Tip}"/>
+
+            <CheckBox Grid.Row="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Safetynet.TrashOnDiscard}"
+                      IsChecked="{Binding TrashOnDiscard, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="2"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Safetynet.TrashOnDiscardAll}"
+                      IsChecked="{Binding TrashOnDiscardAll, Mode=TwoWay}"/>
+
+            <CheckBox Grid.Row="3"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Safetynet.TrashOnResolveConflict}"
+                      IsChecked="{Binding TrashOnResolveConflict, Mode=TwoWay}"/>
+          </Grid>
+        </TabItem>
+
+        <TabItem>
+          <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
           <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">

@@ -416,7 +416,7 @@ namespace SourceGit.ViewModels
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
-                        File.Delete(fullpath);
+                        Models.TrashBin.Delete(fullpath, Preferences.Instance.TrashOnResolveConflict, log);
 
                     needStage.Add(change.Path);
                 }
@@ -462,7 +462,7 @@ namespace SourceGit.ViewModels
                 {
                     var fullpath = Path.Combine(_repo.FullPath, change.Path);
                     if (File.Exists(fullpath))
-                        File.Delete(fullpath);
+                        Models.TrashBin.Delete(fullpath, Preferences.Instance.TrashOnResolveConflict, log);
 
                     needStage.Add(change.Path);
                 }

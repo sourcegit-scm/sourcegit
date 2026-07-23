@@ -29,6 +29,28 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct SHFILEOPSTRUCTW
+        {
+            public IntPtr hwnd;
+            public uint wFunc;
+            [MarshalAs(UnmanagedType.LPWStr)] public string pFrom;
+            [MarshalAs(UnmanagedType.LPWStr)] public string pTo;
+            public ushort fFlags;
+            [MarshalAs(UnmanagedType.Bool)] public bool fAnyOperationsAborted;
+            public IntPtr hNameMappings;
+            [MarshalAs(UnmanagedType.LPWStr)] public string lpszProgressTitle;
+        }
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        private static extern int SHFileOperationW(ref SHFILEOPSTRUCTW lpFileOp);
+
+        private const uint FO_DELETE = 0x0003;
+        private const ushort FOF_SILENT = 0x0004;
+        private const ushort FOF_NOCONFIRMATION = 0x0010;
+        private const ushort FOF_ALLOWUNDO = 0x0040;
+        private const ushort FOF_NOERRORUI = 0x0400;
+
         public void SetupApp(AppBuilder builder)
         {
             // Do nothing for now.
@@ -194,6 +216,36 @@ namespace SourceGit.Native
             var start = new ProcessStartInfo("cmd", $"""/c start "" {info.FullName.Quoted()}""");
             start.CreateNoWindow = true;
             Process.Start(start);
+        }
+
+        public bool MoveToTrash(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return false;
+
+            try
+            {
+                // SHFileOperation requires an absolute, backslash-separated path. Trailing
+                // separators (as reported by git for directories) must be removed.
+                var full = Path.TrimEndingDirectorySeparator(Path.GetFullPath(path));
+
+                // pFrom must be double-null-terminated; the LPWStr marshaller appends the final
+                // terminator, so we only add one explicit '\0' here.
+                var op = new SHFILEOPSTRUCTW
+                {
+                    hwnd = IntPtr.Zero,
+                    wFunc = FO_DELETE,
+                    pFrom = full + '\0',
+                    pTo = null,
+                    fFlags = (ushort)(FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT),
+                };
+
+                return SHFileOperationW(ref op) == 0 && !op.fAnyOperationsAborted;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         #region HELPER_METHODS
