@@ -45,7 +45,37 @@ namespace SourceGit.Commands
             }
 
             if (includeModified)
+            {
+                if (useTrash)
+                    await SnapshotTrackedChangesToTrashAsync(repo, log).ConfigureAwait(false);
+
                 await new Reset(repo, "", "--hard").Use(log).ExecAsync().ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        ///     Before `git reset --hard` overwrites tracked files with their committed (HEAD) version,
+        ///     move the current on-disk version of each to the trash bin so the discard stays undoable
+        ///     (restoring from the bin overwrites the reverted file at its original path).
+        ///
+        ///     Untracked and newly-added files are skipped: `reset --hard` does not overwrite them
+        ///     (they are not in HEAD), so there is nothing here to preserve — and recycling them would
+        ///     wrongly remove them from the working copy. Deleted files have nothing on disk to snapshot.
+        /// </summary>
+        private static async Task SnapshotTrackedChangesToTrashAsync(string repo, Models.ICommandLog log)
+        {
+            var changes = await new QueryLocalChanges(repo).GetResultAsync().ConfigureAwait(false);
+            foreach (var c in changes)
+            {
+                if (c.WorkTree == Models.ChangeState.Untracked ||
+                    c.WorkTree == Models.ChangeState.Added ||
+                    c.Index == Models.ChangeState.Added)
+                    continue;
+
+                var fullPath = Path.Combine(repo, c.Path);
+                if (File.Exists(fullPath))
+                    Models.TrashBin.Delete(fullPath, true, log);
+            }
         }
 
         /// <summary>
@@ -90,6 +120,16 @@ namespace SourceGit.Commands
                     }
                     else
                     {
+                        // `git restore --worktree` recreates the file from the index. Snapshot the
+                        // current on-disk (working) version to the trash first so the revert is
+                        // undoable. Deleted files have nothing on disk to snapshot.
+                        if (useTrash)
+                        {
+                            var fullPath = Path.Combine(repo, c.Path);
+                            if (File.Exists(fullPath))
+                                Models.TrashBin.Delete(fullPath, true, log);
+                        }
+
                         restores.Add(c.Path);
                     }
                 }

@@ -41,7 +41,8 @@
                       Content="{DynamicResource Text.Discard.IncludeIgnored}"
                       IsChecked="{Binding IncludeIgnored, Mode=TwoWay}"/>
 
-            <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+            <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0"
+                  IsVisible="{Binding !CanRestoreFromTrash}">
               <Path Grid.Column="0"
                     Width="14" Height="14"
                     Data="{StaticResource Icons.Error}"
@@ -50,6 +51,18 @@
                          Text="{DynamicResource Text.Discard.Warning}"
                          TextWrapping="Wrap"
                          Foreground="DarkOrange"/>
+            </Grid>
+
+            <Grid Grid.Row="4" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0"
+                  IsVisible="{Binding CanRestoreFromTrash}">
+              <Path Grid.Column="0"
+                    Width="14" Height="14"
+                    Data="{StaticResource Icons.Info}"
+                    Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="1" Margin="8,0,0,0"
+                         Text="{DynamicResource Text.Discard.RestoreHint}"
+                         TextWrapping="Wrap"
+                         Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </Grid>
         </DataTemplate>
@@ -66,7 +79,8 @@
               <TextBlock Text="{Binding Path}" Margin="4,0,0,0"/>
             </StackPanel>
 
-            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0"
+                  IsVisible="{Binding !CanRestoreFromTrash}">
               <Path Grid.Column="0"
                     Width="14" Height="14"
                     Data="{StaticResource Icons.Error}"
@@ -75,6 +89,18 @@
                          Text="{DynamicResource Text.Discard.Warning}"
                          TextWrapping="Wrap"
                          Foreground="DarkOrange"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0"
+                  IsVisible="{Binding CanRestoreFromTrash}">
+              <Path Grid.Column="0"
+                    Width="14" Height="14"
+                    Data="{StaticResource Icons.Info}"
+                    Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="1" Margin="8,0,0,0"
+                         Text="{DynamicResource Text.Discard.RestoreHint}"
+                         TextWrapping="Wrap"
+                         Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </Grid>
         </DataTemplate>
@@ -91,7 +117,8 @@
                          Margin="4,0,0,0"/>
             </StackPanel>
 
-            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0"
+                  IsVisible="{Binding !CanRestoreFromTrash}">
               <Path Grid.Column="0"
                     Width="14" Height="14"
                     Data="{StaticResource Icons.Error}"
@@ -100,6 +127,18 @@
                          Text="{DynamicResource Text.Discard.Warning}"
                          TextWrapping="Wrap"
                          Foreground="DarkOrange"/>
+            </Grid>
+
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0"
+                  IsVisible="{Binding CanRestoreFromTrash}">
+              <Path Grid.Column="0"
+                    Width="14" Height="14"
+                    Data="{StaticResource Icons.Info}"
+                    Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="1" Margin="8,0,0,0"
+                         Text="{DynamicResource Text.Discard.RestoreHint}"
+                         TextWrapping="Wrap"
+                         Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </Grid>
         </DataTemplate>
