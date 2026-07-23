@@ -88,7 +88,7 @@ namespace SourceGit.ViewModels
             else
                 return await new Commands.Branch(_repo.FullPath, branch.Name)
                     .Use(log)
-                    .DeleteRemoteAsync(branch.Remote)
+                    .DeleteRemoteAsync(branch.Remote, Force)
                     .ConfigureAwait(false);
         }
 
