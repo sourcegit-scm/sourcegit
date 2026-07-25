@@ -144,20 +144,23 @@ namespace SourceGit.Commands
             if (line.Length == 0)
                 return;
 
-            // If we are reading a chunk body, try to read the current line as body first (because
-            // the number of chunk body is greater than the number of chunk indicator in most time.
+            // If we are reading a chunk-body, try to read the current line as chunk-body first (because
+            // there are usually more chunk-body lines than chunk-indicator lines).
             if (_isInChunk)
             {
-                if (ParseChunkBodyLine(line, lineBytes[1..]))
+                if (ParseChunkBodyLine(line, lineBytes))
                     return;
 
                 ProcessInlineHighlights();
                 _isInChunk = false;
             }
 
-            // If the current line is not a chunk body, try to parse it as chunk indicator
+            // If the current line is not a chunk-body, try to parse it as chunk-indicator
             if (ParseChunkStartLine(line))
+            {
+                _isInChunk = true;
                 return;
+            }
 
             // Fallback to diff headers to support type-changed diff (multiple headers).
             ParseDiffHeaderLine(line);
@@ -193,7 +196,6 @@ namespace SourceGit.Commands
                 _newLine = int.Parse(match.Groups[2].Value);
                 _last = new Models.TextDiffLine(Models.TextDiffLineType.Indicator, line, null, 0, 0);
                 _result.TextDiff.Lines.Add(_last);
-                _isInChunk = true;
                 return true;
             }
 
@@ -204,13 +206,14 @@ namespace SourceGit.Commands
         {
             var prefix = line[0];
             var content = line.Substring(1);
+            var rawContent = lineBytes[1..].ToArray();
             if (ParseLFSChange(prefix, content))
                 return true;
 
             if (prefix == PREFIX_DELETED)
             {
                 _result.TextDiff.DeletedLines++;
-                _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, content, lineBytes.ToArray(), _oldLine, 0);
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Deleted, content, rawContent, _oldLine, 0);
                 _deleted.Add(_last);
                 _oldLine++;
                 return true;
@@ -219,7 +222,7 @@ namespace SourceGit.Commands
             if (prefix == PREFIX_ADDED)
             {
                 _result.TextDiff.AddedLines++;
-                _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, content, lineBytes.ToArray(), 0, _newLine);
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Added, content, rawContent, 0, _newLine);
                 _added.Add(_last);
                 _newLine++;
                 return true;
@@ -229,7 +232,7 @@ namespace SourceGit.Commands
             {
                 ProcessInlineHighlights();
 
-                _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, content, lineBytes.ToArray(), _oldLine, _newLine);
+                _last = new Models.TextDiffLine(Models.TextDiffLineType.Normal, content, rawContent, _oldLine, _newLine);
                 _result.TextDiff.Lines.Add(_last);
                 _oldLine++;
                 _newLine++;
