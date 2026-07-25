@@ -33,6 +33,7 @@
                  CornerRadius="12"
                  Text="{Binding Filter, Mode=TwoWay}"
                  BorderBrush="{DynamicResource Brush.Border2}"
+                 Watermark="{DynamicResource Text.WorkingCopy.FilterChanges}"
                  VerticalContentAlignment="Center">
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14"
