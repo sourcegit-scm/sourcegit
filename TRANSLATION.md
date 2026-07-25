@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-89.61%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-89.52%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -114,13 +114,14 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.FilterChanges
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-99.61%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-99.51%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
@@ -129,12 +130,20 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
+- Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.90%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-95.59%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.WorkingCopy.FilterChanges
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-95.49%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -184,10 +193,11 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-95.59%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-95.49%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -237,12 +247,20 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-%E2%88%9A-brightgreen)
+### ![id__ID](https://img.shields.io/badge/id__ID-99.90%25-yellow)
 
-### ![it__IT](https://img.shields.io/badge/it__IT-89.12%25-yellow)
+<details>
+<summary>Missing keys in id_ID.axaml</summary>
+
+- Text.WorkingCopy.FilterChanges
+
+</details>
+
+### ![it__IT](https://img.shields.io/badge/it__IT-89.03%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -355,13 +373,14 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.FilterChanges
 - Text.Worktree.Branch
 - Text.Worktree.Head
 - Text.Worktree.Path
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-99.61%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-99.51%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -370,10 +389,11 @@ This document shows the translation status of each locale file in the repository
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
+- Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-97.06%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-96.96%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -408,10 +428,11 @@ This document shows the translation status of each locale file in the repository
 - Text.TagCM.Merge
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-62.84%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-62.78%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -787,6 +808,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.FilterChanges
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
 - Text.WorkingCopy.SignOff
@@ -798,9 +820,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.90%25-yellow)
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-64.51%25-red)
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.WorkingCopy.FilterChanges
+
+</details>
+
+### ![ta__IN](https://img.shields.io/badge/ta__IN-64.45%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1160,6 +1189,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
+- Text.WorkingCopy.FilterChanges
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
 - Text.Worktree.Branch
@@ -1170,7 +1200,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-65.29%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-65.23%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1522,6 +1552,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
 - Text.WorkingCopy.Conflicts.Merge
 - Text.WorkingCopy.Conflicts.MergeExternal
+- Text.WorkingCopy.FilterChanges
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
 - Text.Worktree.Branch
