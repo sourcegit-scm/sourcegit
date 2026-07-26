@@ -689,15 +689,16 @@ namespace SourceGit.ViewModels
             {
                 if (c.IsConflicted)
                 {
-                    var isResolved = c.ConflictReason switch
+                    if (c.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified)
                     {
-                        Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified =>
-                            await new Commands.IsConflictResolved(_repo.FullPath, c).GetResultAsync(),
-                        _ => false,
-                    };
-
-                    if (!isResolved)
+                        var state = await new Commands.QueryConflictFileState(_repo.FullPath, c).GetResultAsync();
+                        if (state != Models.ConflictFileState.Resolved)
+                            continue;
+                    }
+                    else
+                    {
                         continue;
+                    }
                 }
 
                 outs.Add(c);

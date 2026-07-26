@@ -2,6 +2,14 @@ using System.Collections.Generic;
 
 namespace SourceGit.Models
 {
+    public enum ConflictFileState
+    {
+        Unknown,
+        UnmergedText,
+        UnmergedBinary,
+        Resolved
+    }
+
     public enum ConflictPanelType
     {
         Ours,
