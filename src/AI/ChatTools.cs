@@ -32,7 +32,7 @@ namespace SourceGit.AI
             }
             """)), false);
 
-        public static async Task<ToolChatMessage> ProcessAsync(ChatToolCall call, Action<string> output)
+        public static async Task<ToolChatMessage> ProcessAsync(ChatToolCall call, Action<string> output, string amendParent)
         {
             using var doc = JsonDocument.Parse(call.FunctionArguments);
 
@@ -49,7 +49,7 @@ namespace SourceGit.AI
                 output?.Invoke($"Read changes in file: {filePath.GetString()}");
 
                 var orgFilePath = hasOriginalFile ? originalFilePath.GetString() : string.Empty;
-                var rs = await new Commands.GetFileChangeForAI(repoPath.GetString(), filePath.GetString(), orgFilePath).ReadAsync();
+                var rs = await new Commands.GetFileChangeForAI(repoPath.GetString(), filePath.GetString(), orgFilePath, amendParent).ReadAsync();
                 var message = rs.IsSuccess ? rs.StdOut : string.Empty;
                 return new ToolChatMessage(call.Id, message);
             }

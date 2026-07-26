@@ -49,6 +49,8 @@ namespace SourceGit.ViewModels
             foreach (var c in changes)
                 SerializeChange(c, builder);
             _changeList = builder.ToString();
+
+            _amendParent = changes.Count > 0 ? changes[0].DataForAmend?.ParentSHA : null;
         }
 
         public async Task GenAsync()
@@ -71,7 +73,7 @@ namespace SourceGit.ViewModels
 
             try
             {
-                await agent.GenerateCommitMessageAsync(_repo.FullPath, currentBranchName, _changeList, message =>
+                await agent.GenerateCommitMessageAsync(_repo.FullPath, currentBranchName, _changeList, _amendParent, message =>
                 {
                     builder.AppendLine(message);
 
@@ -145,6 +147,7 @@ namespace SourceGit.ViewModels
         private readonly Repository _repo = null;
         private readonly AI.Service _service = null;
         private readonly string _changeList = null;
+        private readonly string _amendParent = null;
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;
         private string _text = string.Empty;
