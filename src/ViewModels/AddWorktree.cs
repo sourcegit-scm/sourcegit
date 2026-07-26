@@ -137,7 +137,14 @@ namespace SourceGit.ViewModels
             var name = GetBranchName(true);
             if (!string.IsNullOrEmpty(name))
             {
-                var remoteBranch = RemoteBranches.Find(b => b.Name.EndsWith(name, StringComparison.Ordinal));
+                var remoteBranch = RemoteBranches.Find(b => b.Name.Equals(name, StringComparison.Ordinal));
+                if (remoteBranch != null)
+                {
+                    SelectedTrackingBranch = remoteBranch;
+                    return;
+                }
+
+                remoteBranch = RemoteBranches.Find(b => b.Name.EndsWith(name, StringComparison.Ordinal));
                 if (remoteBranch != null)
                 {
                     SelectedTrackingBranch = remoteBranch;
