@@ -39,7 +39,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _wc = wc;
-            _canMerge = (change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified) && !Directory.Exists(Path.Combine(repo.FullPath, change.Path));
             _change = change;
 
             Task.Run(async () =>
@@ -56,7 +55,7 @@ namespace SourceGit.ViewModels
                 };
 
                 var state = Models.ConflictFileState.Unknown;
-                if (_canMerge)
+                if ((_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified) && !Directory.Exists(Path.Combine(_repo.FullPath, _change.Path)))
                     state = await new Commands.QueryConflictFileState(repo.FullPath, change)
                         .GetResultAsync()
                         .ConfigureAwait(false);
@@ -82,18 +81,17 @@ namespace SourceGit.ViewModels
 
         public MergeConflictEditor CreateOpenMergeEditorRequest()
         {
-            return _canMerge ? new MergeConflictEditor(_repo, _head, _change.Path) : null;
+            return _state == Models.ConflictFileState.UnmergedText ? new MergeConflictEditor(_repo, _head, _change.Path) : null;
         }
 
         public async Task MergeExternalAsync()
         {
-            if (_canMerge)
+            if (_state == Models.ConflictFileState.UnmergedText)
                 await _wc.UseExternalMergeToolAsync(_change);
         }
 
         private Repository _repo = null;
         private WorkingCopy _wc = null;
-        private bool _canMerge = false;
         private Models.Change _change = null;
         private Models.Commit _head = null;
         private Models.ConflictFileState _state = Models.ConflictFileState.Unknown;
