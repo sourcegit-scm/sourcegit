@@ -484,7 +484,7 @@
   <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">规则 ：</x:String>
   <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">添加LFS追踪文件规则</x:String>
   <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">拉取LFS对象 (fetch)</x:String>
-  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">执行`git lfs prune`命令，下载远程LFS对象，但不会更新工作副本。</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">执行`git lfs fetch`命令，下载远程LFS对象，但不会更新工作副本。</x:String>
   <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">拉取LFS对象</x:String>
   <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">启用Git LFS支持</x:String>
   <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">显示LFS对象锁</x:String>
