@@ -14,7 +14,7 @@ namespace SourceGit.AI
             _service = service;
         }
 
-        public async Task GenerateCommitMessageAsync(string repo, string currentBranch, string changeList, Action<string> onUpdate, CancellationToken cancellation)
+        public async Task GenerateCommitMessageAsync(string repo, string currentBranch, string changeList, string amendParent, Action<string> onUpdate, CancellationToken cancellation)
         {
             var chatClient = _service.GetChatClient();
             if (chatClient == null)
@@ -95,7 +95,7 @@ namespace SourceGit.AI
 
                             foreach (var call in completion.ToolCalls)
                             {
-                                var result = await ChatTools.ProcessAsync(call, onUpdate);
+                                var result = await ChatTools.ProcessAsync(call, onUpdate, amendParent);
                                 messages.Add(result);
                             }
 
