@@ -1052,7 +1052,6 @@ namespace SourceGit.Views
                     builder.Append('\n');
                 }
 
-                builder.Length--;
                 Text = builder.ToString();
             }
             else
@@ -1243,7 +1242,6 @@ namespace SourceGit.Views
                     builder.Append('\n');
                 }
 
-                builder.Length--;
                 Text = builder.ToString();
             }
             else

@@ -93,8 +93,10 @@ namespace SourceGit.ViewModels
             await minDelay;
 
             var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
-            foreach (var f in found)
+            for (var i = 0; i < found.Count; i++)
             {
+                var f = found[i];
+                ProgressDescription = $"Registering ({i + 1}/{found.Count}) {f}...";
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                 if (parent.Equals(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {

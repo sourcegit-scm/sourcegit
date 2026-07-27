@@ -168,6 +168,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.AIAssistant vm && !string.IsNullOrEmpty(vm.Response))
                 vm.Use(vm.Response);
 
+            Close();
             e.Handled = true;
         }
 

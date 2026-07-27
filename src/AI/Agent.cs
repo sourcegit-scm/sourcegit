@@ -14,7 +14,7 @@ namespace SourceGit.AI
             _service = service;
         }
 
-        public async Task GenerateCommitMessageAsync(string repo, string changeList, Action<string> onUpdate, CancellationToken cancellation)
+        public async Task GenerateCommitMessageAsync(string repo, string currentBranch, string changeList, string amendParent, Action<string> onUpdate, CancellationToken cancellation)
         {
             var chatClient = _service.GetChatClient();
             if (chatClient == null)
@@ -28,6 +28,7 @@ namespace SourceGit.AI
                 .AppendLine("- Output the conventional commit message (with detail changes in list) directly. Do not explain your output nor introduce your answer.")
                 .AppendLine(_service.AdditionalPrompt)
                 .Append("Repository path: ").AppendLine(repo.Quoted())
+                .Append("Current branch: ").AppendLine(currentBranch.Quoted())
                 .AppendLine("Changed files ('A' means added, 'M' means modified, 'D' means deleted, 'T' means type changed, 'R' means renamed, 'C' means copied): ")
                 .Append(changeList);
 
@@ -94,7 +95,7 @@ namespace SourceGit.AI
 
                             foreach (var call in completion.ToolCalls)
                             {
-                                var result = await ChatTools.ProcessAsync(call, onUpdate);
+                                var result = await ChatTools.ProcessAsync(call, repo, amendParent, onUpdate);
                                 messages.Add(result);
                             }
 

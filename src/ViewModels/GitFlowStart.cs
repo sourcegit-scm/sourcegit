@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -11,10 +13,16 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public string StartPoint
+        public List<Models.Branch> LocalBranches
         {
             get;
             private set;
+        }
+
+        public Models.Branch StartPoint
+        {
+            get => _startPoint;
+            set => SetProperty(ref _startPoint, value);
         }
 
         public string Prefix
@@ -38,11 +46,21 @@ namespace SourceGit.ViewModels
 
             Type = type;
             Prefix = _repo.GitFlow.GetPrefix(type);
-            StartPoint = type switch
+            LocalBranches = new List<Models.Branch>();
+
+            foreach (var b in _repo.Branches)
+            {
+                if (b.IsLocal && !b.IsDetachedHead)
+                    LocalBranches.Add(b);
+            }
+
+            var defBranch = type switch
             {
                 Models.GitFlowBranchType.Hotfix => _repo.GitFlow.ProductionBranch,
                 _ => _repo.GitFlow.DevelopmentBranch,
             };
+
+            StartPoint = LocalBranches.Find(b => b.Name.Equals(defBranch, StringComparison.Ordinal));
         }
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
@@ -70,7 +88,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.GitFlow(_repo.FullPath)
                 .Use(log)
-                .StartAsync(Type, _name);
+                .StartAsync(Type, _name, _startPoint);
 
             log.Complete();
             return succ;
@@ -78,5 +96,6 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo;
         private string _name = null;
+        private Models.Branch _startPoint = null;
     }
 }

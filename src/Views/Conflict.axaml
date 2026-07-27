@@ -11,7 +11,7 @@
              x:DataType="vm:Conflict">
   <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
     <Grid VerticalAlignment="Center">
-      <StackPanel Orientation="Vertical" IsVisible="{Binding !IsResolved}">
+      <StackPanel Orientation="Vertical" IsVisible="{Binding State, Mode=OneWay, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:ConflictFileState.Resolved}}">
         <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
         <TextBlock Margin="0,16" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
 
@@ -50,13 +50,6 @@
             </DataTemplate>
           </Border.DataTemplates>
 
-          <Border.IsVisible>
-            <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="Theirs" Converter="{x:Static ObjectConverters.IsNotNull}"/>
-              <Binding Path="Mine" Converter="{x:Static ObjectConverters.IsNotNull}"/>
-            </MultiBinding>
-          </Border.IsVisible>
-
           <Grid Margin="8,0,0,0" RowDefinitions="32,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="MINE"/>
             <ContentControl Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Mine}"/>
@@ -81,7 +74,7 @@
           <SplitButton Height="28"
                        Margin="8,0,0,0" Padding="8,0"
                        Click="OnMerge"
-                       IsVisible="{Binding CanMerge, Mode=OneWay}">
+                       IsVisible="{Binding State, Mode=OneWay, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ConflictFileState.UnmergedText}}">
             <SplitButton.Styles>
               <Style Selector="SplitButton">
                 <Setter Property="MinHeight" Value="24"/>
@@ -157,7 +150,7 @@
         </StackPanel>
       </StackPanel>
 
-      <StackPanel Orientation="Vertical" IsVisible="{Binding IsResolved}">
+      <StackPanel Orientation="Vertical" IsVisible="{Binding State, Mode=OneWay, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ConflictFileState.Resolved}}">
         <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="Green"/>
         <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts.Resolved}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
         <TextBlock Text="{DynamicResource Text.WorkingCopy.CanStageTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>

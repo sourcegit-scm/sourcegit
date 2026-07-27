@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
@@ -20,6 +21,7 @@ namespace SourceGit.Views
 
         public DealWithLocalChangesMethod()
         {
+            Focusable = true;
             InitializeComponent();
         }
 
@@ -31,12 +33,33 @@ namespace SourceGit.Views
                 UpdateRadioButtons();
         }
 
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+
+            if (e.Key == Key.Up)
+            {
+                if (Method == Models.DealWithLocalChanges.StashAndReapply)
+                    Method = Models.DealWithLocalChanges.DoNothing;
+                else if (Method == Models.DealWithLocalChanges.Discard)
+                    Method = Models.DealWithLocalChanges.StashAndReapply;
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                if (Method == Models.DealWithLocalChanges.DoNothing)
+                    Method = Models.DealWithLocalChanges.StashAndReapply;
+                else if (Method == Models.DealWithLocalChanges.StashAndReapply)
+                    Method = Models.DealWithLocalChanges.Discard;
+                e.Handled = true;
+            }
+        }
+
         private void OnRadioButtonClicked(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton { Tag: Models.DealWithLocalChanges way })
             {
                 Method = way;
-                UpdateRadioButtons();
                 e.Handled = true;
             }
         }

@@ -10,6 +10,12 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public bool Force
+        {
+            get;
+            set;
+        } = false;
+
         public DeleteMultipleBranches(Repository repo, List<Models.Branch> branches, bool isLocal)
         {
             _repo = repo;
@@ -30,7 +36,7 @@ namespace SourceGit.ViewModels
                 foreach (var target in Targets)
                     await new Commands.Branch(_repo.FullPath, target.Name)
                         .Use(log)
-                        .DeleteLocalAsync(false);
+                        .DeleteLocalAsync(Force);
             }
             else
             {
@@ -44,7 +50,7 @@ namespace SourceGit.ViewModels
                     else
                         await new Commands.Branch(_repo.FullPath, target.Name)
                             .Use(log)
-                            .DeleteRemoteAsync(target.Remote);
+                            .DeleteRemoteAsync(target.Remote, Force);
                 }
             }
 

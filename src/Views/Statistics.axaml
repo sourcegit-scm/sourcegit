@@ -117,74 +117,85 @@
     <!-- Contents -->
     <Grid Grid.Row="2" Margin="8" ColumnDefinitions="256,*">
       <!-- Left -->
-      <ContentControl Grid.Column="0" Content="{Binding SelectedReport, Mode=OneWay}">
-        <ContentControl.DataTemplates>
-          <DataTemplate DataType="m:StatisticsReport">
-            <Grid RowDefinitions="*,16">
-              <!-- Table of author -->
-              <ListBox Grid.Column="0"
-                       ItemsSource="{Binding Authors}"
-                       SelectionMode="Single"
-                       BorderThickness="1"
-                       BorderBrush="{DynamicResource Brush.Border2}"
-                       Background="{DynamicResource Brush.Contents}"
-                       SelectionChanged="OnAuthorSelectionChanged"
-                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ListBox.Styles>
-                  <Style Selector="ListBoxItem">
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Height" Value="26"/>
-                  </Style>
-                </ListBox.Styles>
+      <Grid Grid.Column="0" RowDefinitions="36,*">
+        <v:BranchSelector Grid.Row="0"
+                          Height="28"
+                          VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                          BorderBrush="{DynamicResource Brush.Border2}"
+                          Branches="{Binding Branches, Mode=OneWay}"
+                          SelectedBranch="{Binding SelectedBranch, Mode=TwoWay}"
+                          UsePureName="False"/>
+        
+        <ContentControl Grid.Row="1" Content="{Binding SelectedReport, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:StatisticsReport">
+              <Grid RowDefinitions="*,24">
+                <!-- Table of author -->
+                <ListBox Grid.Column="0"
+                         ItemsSource="{Binding Authors}"
+                         SelectionMode="Single"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource Brush.Border2}"
+                         Background="{DynamicResource Brush.Contents}"
+                         CornerRadius="3"
+                         SelectionChanged="OnAuthorSelectionChanged"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                  <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                      <Setter Property="Margin" Value="0"/>
+                      <Setter Property="Padding" Value="0"/>
+                      <Setter Property="Height" Value="26"/>
+                    </Style>
+                  </ListBox.Styles>
 
-                <ListBox.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical"/>
-                  </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <VirtualizingStackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
 
-                <ListBox.ItemTemplate>
-                  <DataTemplate DataType="m:StatisticsAuthor">
-                    <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
-                            Background="Transparent"
-                            ToolTip.Tip="{Binding User}">
-                      <Grid ColumnDefinitions="26,*,72">
-                        <v:Avatar Grid.Column="0"
-                                  Width="16" Height="16"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center"
-                                  User="{Binding User}"/>
-                        <Border Grid.Column="1" Padding="4,0,8,0" ClipToBounds="True">
-                          <TextBlock Text="{Binding User.Name}" HorizontalAlignment="Left"/>
-                        </Border>
-                        <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
-                          <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
-                        </Border>
-                      </Grid>
-                    </Border>
-                  </DataTemplate>
-                </ListBox.ItemTemplate>
-              </ListBox>
+                  <ListBox.ItemTemplate>
+                    <DataTemplate DataType="m:StatisticsAuthor">
+                      <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+                              Background="Transparent"
+                              ToolTip.Tip="{Binding User}">
+                        <Grid ColumnDefinitions="26,*,72">
+                          <v:Avatar Grid.Column="0"
+                                    Width="16" Height="16"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    User="{Binding User}"/>
+                          <Border Grid.Column="1" Padding="4,0,8,0" ClipToBounds="True">
+                            <TextBlock Text="{Binding User.Name}" HorizontalAlignment="Left"/>
+                          </Border>
+                          <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
+                            <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
+                          </Border>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
 
-              <!-- Summary -->
-              <Grid Grid.Row="1" ColumnDefinitions="*,*">
-                <!-- Total Authors -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
-                  <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
-                </StackPanel>
+                <!-- Summary -->
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,2,0,0">
+                  <!-- Total Authors -->
+                  <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  </StackPanel>
 
-                <!-- Total Commits -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                  <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
-                </StackPanel>
+                  <!-- Total Commits -->
+                  <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
+                  </StackPanel>
+                </Grid>
               </Grid>
-            </Grid>
-          </DataTemplate>
-        </ContentControl.DataTemplates>
-      </ContentControl>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
 
       <!-- Right -->
       <v:Chart Grid.Column="1"

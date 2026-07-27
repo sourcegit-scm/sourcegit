@@ -28,9 +28,7 @@
           <v:CommitBaseInfo Content="{Binding Commit}"
                             FullMessage="{Binding FullMessage}"
                             SignInfo="{Binding SignInfo}"
-                            SupportsContainsIn="True"
                             WebLinks="{Binding WebLinks}"
-                            Children="{Binding Children}"
                             Margin="0,0,12,0"/>
 
           <!-- Line -->

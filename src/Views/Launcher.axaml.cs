@@ -423,6 +423,20 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnShowNewVersion(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Launcher { NewVersion: { } ver } vm)
+            {
+                vm.NewVersion = null;
+
+                var ctx = new ViewModels.SelfUpdate { Data = ver };
+                var dialog = new SelfUpdate() { DataContext = ctx };
+                await dialog.ShowDialog(this);
+            }
+
+            e.Handled = true;
+        }
+
         private GridLength _captionHeight = new(32);
         private WindowState _lastWindowState = WindowState.Normal;
     }

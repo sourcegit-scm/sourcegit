@@ -47,24 +47,32 @@ namespace SourceGit.Commands
             return await ExecAsync().ConfigureAwait(false);
         }
 
-        public async Task<bool> StartAsync(Models.GitFlowBranchType type, string name)
+        public async Task<bool> StartAsync(Models.GitFlowBranchType type, string name, Models.Branch based)
         {
+            var builder = new StringBuilder();
+            builder.Append("flow ");
+
             switch (type)
             {
                 case Models.GitFlowBranchType.Feature:
-                    Args = $"flow feature start {name}";
+                    builder.Append("feature");
                     break;
                 case Models.GitFlowBranchType.Release:
-                    Args = $"flow release start {name}";
+                    builder.Append("release");
                     break;
                 case Models.GitFlowBranchType.Hotfix:
-                    Args = $"flow hotfix start {name}";
+                    builder.Append("hotfix");
                     break;
                 default:
                     RaiseException("Bad git-flow branch type!!!");
                     return false;
             }
 
+            builder.Append(" start ").Append(name);
+            if (based != null)
+                builder.Append(' ').Append(based.Name);
+
+            Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
         }
 

@@ -21,6 +21,10 @@ namespace SourceGit.Views
             if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
                 DataContext is ViewModels.ChangeTreeNode { IsFolder: true } node)
             {
+                var container = this.FindAncestorOfType<ChangeCollectionContainer>();
+                if (container != null)
+                    container.SelectedItem = node;
+
                 var tree = this.FindAncestorOfType<ChangeCollectionView>();
                 tree?.ToggleNodeIsExpanded(node);
             }

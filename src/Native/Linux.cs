@@ -48,25 +48,7 @@ namespace SourceGit.Native
 
             // Runtime data dir: ~/.sourcegit
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var dataDir = Path.Combine(home, ".sourcegit");
-            if (Directory.Exists(dataDir))
-                return dataDir;
-
-            // Migrate old data: ~/.config/SourceGit
-            var oldDataDir = Path.Combine(home, ".config", "SourceGit");
-            if (Directory.Exists(oldDataDir))
-            {
-                try
-                {
-                    Directory.Move(oldDataDir, dataDir);
-                }
-                catch
-                {
-                    // Ignore errors
-                }
-            }
-
-            return dataDir;
+            return Path.Combine(home, ".sourcegit");
         }
 
         public string FindGitExecutable()

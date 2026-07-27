@@ -103,7 +103,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">துணைத்தொகுதி</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">தகவல்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">ஆசிரியர்</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">குழந்தைகள்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">உறுதிமொழியாளர்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">இந்த உறுதிமொழிடைக் கொண்ட குறிப்புகளைச் சரிபார்</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">உறுதிமொழி இதில் உள்ளது</x:String>
@@ -423,7 +422,6 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">தேதி வடிவம்</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">மொழி</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">வரலாற்று உறுதிமொழிகள்</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">உறுதிமொழி விவரங்களில் குழந்தைகளைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">உறுதிமொழி வரைபடத்தில் குறிச்சொற்களைக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">பொருள் வழிகாட்டி நீளம்</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">அறிவிலி</x:String>

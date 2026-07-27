@@ -67,7 +67,7 @@
           <Border Background="{DynamicResource Brush.Popup}"
                   BorderThickness="1,0,1,1" BorderBrush="{DynamicResource Brush.PopupBorder}"
                   CornerRadius="0,0,8,8">
-            <ContentControl x:Name="PopupPanel" Content="{Binding Popup}">
+            <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" KeyboardNavigation.TabNavigation="Cycle">
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="vm:Popup">
                   <StackPanel Orientation="Vertical">
@@ -111,8 +111,10 @@
 
                     <!-- Running -->
                     <v:PopupRunningStatus Margin="12,8"
+                                          Focusable="False"
                                           Description="{Binding ProgressDescription}"
-                                          IsVisible="{Binding InProgress}"/>
+                                          IsVisible="{Binding InProgress}"
+                                          IsHitTestVisible="False"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>

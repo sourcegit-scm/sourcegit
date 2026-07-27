@@ -10,7 +10,7 @@ namespace SourceGit.Views
 {
     public class ChangeStatusIcon : Control
     {
-        private static readonly string[] INDICATOR = ["?", "±", "T", "+", "−", "➜", "❏", "★", "!"];
+        private static readonly string[] INDICATOR = ["?", "M", "T", "+", "−", "➜", "❏", "?", "!"];
         private static readonly Color[] COLOR =
         [
             Colors.Transparent,
@@ -20,7 +20,7 @@ namespace SourceGit.Views
             Colors.Tomato,
             Colors.Orchid,
             Colors.Goldenrod,
-            Colors.LimeGreen,
+            Colors.SkyBlue,
             Colors.OrangeRed,
         ];
 

@@ -193,12 +193,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _check4UpdatesOnStartup, value);
         }
 
-        public bool ShowChildren
-        {
-            get => _showChildren;
-            set => SetProperty(ref _showChildren, value);
-        }
-
         public string IgnoreUpdateTag
         {
             get => _ignoreUpdateTag;
@@ -812,7 +806,6 @@ namespace SourceGit.ViewModels
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;
-        private bool _showChildren = false;
         private bool _useCompactBranchNamesInGraph = true;
 
         private bool _check4UpdatesOnStartup = true;

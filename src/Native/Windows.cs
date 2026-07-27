@@ -127,11 +127,11 @@ namespace SourceGit.Native
             finder.VSCode(FindVSCode);
             finder.VSCodeInsiders(FindVSCodeInsiders);
             finder.VSCodium(FindVSCodium);
+            FindVisualStudio(finder);
             finder.Cursor(() => Path.Combine(localAppDataDir, @"Programs\Cursor\Cursor.exe"));
             finder.FindJetBrainsFromToolbox(() => Path.Combine(localAppDataDir, @"JetBrains\Toolbox"));
             finder.SublimeText(FindSublimeText);
             finder.Zed(FindZed);
-            FindVisualStudio(finder);
             return finder.Tools;
         }
 

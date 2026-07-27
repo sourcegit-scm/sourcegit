@@ -153,14 +153,16 @@ namespace SourceGit.ViewModels
 
             if (obj.Type == Models.ObjectType.Commit)
             {
-                var submoduleRoot = Path.Combine(_repo, _file);
-                var commit = await new Commands.QuerySingleCommit(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false);
-                var message = commit != null ? await new Commands.QueryCommitFullMessage(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false) : null;
-                var module = new Models.RevisionSubmodule()
+                var submoduleRoot = Path.Combine(_repo, _file).Replace('\\', '/').TrimEnd('/');
+                var module = await new Commands.QuerySubmoduleRevision(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false);
+                if (module == null)
                 {
-                    Commit = commit ?? new Models.Commit() { SHA = obj.SHA },
-                    FullMessage = new Models.CommitFullMessage { Message = message }
-                };
+                    module = new Models.RevisionSubmodule()
+                    {
+                        Commit = new Models.Commit() { SHA = obj.SHA },
+                        FullMessage = new Models.CommitFullMessage { Message = null }
+                    };
+                }
 
                 return new FileHistoriesRevisionFile(_file, module);
             }

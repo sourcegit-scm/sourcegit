@@ -12,7 +12,7 @@
           BorderThickness="1"
           BorderBrush="{DynamicResource Brush.Border2}"
           CornerRadius="4">
-    <Grid RowDefinitions="*,1,24">
+    <Grid RowDefinitions="*,24">
       <Grid Grid.Row="0">
         <v:CommitMessageTextBox x:Name="Editor"
                                 Classes="no_border"
@@ -80,16 +80,10 @@
         </Popup>
       </Grid>
 
-      <Rectangle Grid.Row="1"
-                 Height="1"
-                 HorizontalAlignment="Stretch"
-                 VerticalAlignment="Center"
-                 IsHitTestVisible="False"
-                 Fill="{DynamicResource Brush.Border2}"/>
-
-      <Border Grid.Row="2"
+      <Border Grid.Row="1"
               Background="{DynamicResource Brush.Window}"
-              BorderThickness="0"
+              BorderThickness="0,1,0,0"
+              BorderBrush="{DynamicResource Brush.Border2}"
               CornerRadius="0,0,4,4">
         <Grid ColumnDefinitions="Auto,Auto,Auto,*" >
           <Button Grid.Column="0"
@@ -125,7 +119,7 @@
                       Margin="0,0,6,0"
                       HorizontalAlignment="Right" VerticalAlignment="Stretch"
                       Orientation="Horizontal">
-            <Rectangle Width="1"
+            <Rectangle Width=".5"
                        Margin="8,0"
                        Fill="{DynamicResource Brush.Border2}"
                        HorizontalAlignment="Center"
@@ -139,7 +133,7 @@
                        FontSize="11"
                        Text="{Binding #Editor.Column, Mode=OneWay}"/>
 
-            <Rectangle Width="1"
+            <Rectangle Width=".5"
                        Margin="8,0"
                        Fill="{DynamicResource Brush.Border2}"
                        HorizontalAlignment="Center"

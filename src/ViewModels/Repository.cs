@@ -51,6 +51,19 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _historyFilterMode, value);
         }
 
+        public bool IsHistoryFiltersCollapsed
+        {
+            get => _uiStates.IsHistoryFiltersCollapsed;
+            set
+            {
+                if (value != _uiStates.IsHistoryFiltersCollapsed)
+                {
+                    _uiStates.IsHistoryFiltersCollapsed = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool HasAllowedSignersFile
         {
             get => _hasAllowedSignersFile;

@@ -79,12 +79,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public List<string> Children
-        {
-            get => _children;
-            private set => SetProperty(ref _children, value);
-        }
-
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -471,7 +465,6 @@ namespace SourceGit.ViewModels
             ViewRevisionFileContent = null;
             ViewRevisionFilePath = string.Empty;
             CanOpenRevisionFileWithDefaultEditor = false;
-            Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
             ScrollOffset = Vector.Zero;
@@ -518,22 +511,13 @@ namespace SourceGit.ViewModels
                     Dispatcher.UIThread.Post(() => SignInfo = signInfo);
             }, token);
 
-            if (Preferences.Instance.ShowChildren)
-            {
-                Task.Run(async () =>
-                {
-                    var max = Preferences.Instance.MaxHistoryCommits;
-                    var cmd = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { CancellationToken = token };
-                    var children = await cmd.GetResultAsync().ConfigureAwait(false);
-                    if (!token.IsCancellationRequested)
-                        Dispatcher.UIThread.Post(() => Children = children);
-                }, token);
-            }
-
             Task.Run(async () =>
             {
-                var cmd = new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA) { CancellationToken = token };
-                var changes = await cmd.ReadAsync().ConfigureAwait(false);
+                var changes = await new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
+                    .WithCancellation(token)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
                 {
@@ -729,25 +713,13 @@ namespace SourceGit.ViewModels
 
         private async Task SetViewingCommitAsync(Models.Object file)
         {
-            var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
-            var commit = await new Commands.QuerySingleCommit(submoduleRoot, file.SHA).GetResultAsync();
-            if (commit == null)
+            var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').TrimEnd('/');
+            var info = await new Commands.QuerySubmoduleRevision(submoduleRoot, file.SHA).GetResultAsync();
+            ViewRevisionFileContent = info ?? new Models.RevisionSubmodule()
             {
-                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                {
-                    Commit = new Models.Commit() { SHA = file.SHA },
-                    FullMessage = new Models.CommitFullMessage()
-                };
-            }
-            else
-            {
-                var message = await new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).GetResultAsync();
-                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                {
-                    Commit = commit,
-                    FullMessage = new Models.CommitFullMessage { Message = message }
-                };
-            }
+                Commit = new Models.Commit() { SHA = file.SHA },
+                FullMessage = new Models.CommitFullMessage()
+            };
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
@@ -764,7 +736,6 @@ namespace SourceGit.ViewModels
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
-        private List<string> _children = null;
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;

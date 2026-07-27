@@ -183,7 +183,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">서브모듈</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">정보</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">작성자</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">자식</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">커밋터</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">이 커밋을 포함하는 ref 확인</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">커밋 포함 REF</x:String>
@@ -662,7 +661,6 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">히스토리 커밋 수</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">기본으로 `로컬 변경 사항` 페이지 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">커밋 세부 정보에서 기본으로 `변경 사항` 탭 표시</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">커밋 세부 정보에 자식 커밋 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">커밋 그래프에 상대 시간 표시</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">커밋 그래프에 태그 표시</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">제목 가이드 길이</x:String>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -10,6 +11,22 @@ namespace SourceGit.ViewModels
         {
             get => _isLoading;
             private set => SetProperty(ref _isLoading, value);
+        }
+
+        public List<Models.Branch> Branches
+        {
+            get => _branches;
+            private set => SetProperty(ref _branches, value);
+        }
+
+        public Models.Branch SelectedBranch
+        {
+            get => _selectedBranch;
+            set
+            {
+                if (SetProperty(ref _selectedBranch, value))
+                    LoadStatistics();
+            }
         }
 
         public Models.StatisticsMode ViewMode
@@ -36,9 +53,39 @@ namespace SourceGit.ViewModels
 
         public Statistics(string repo)
         {
+            _repo = repo;
+            LoadBranches();
+            LoadStatistics();
+        }
+
+        public void ChangeAuthor(Models.StatisticsAuthor author)
+        {
+            if (SelectedReport == null)
+                return;
+
+            Samples = SelectedReport.GetSamples(author);
+        }
+
+        private void LoadBranches()
+        {
             Task.Run(async () =>
             {
-                var result = await new Commands.Statistics(repo, Preferences.Instance.MaxHistoryCommits)
+                var branches = await new Commands.QueryBranches(_repo)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                branches.Insert(0, _selectedBranch);
+                Dispatcher.UIThread.Post(() => Branches = branches);
+            });
+        }
+
+        private void LoadStatistics()
+        {
+            IsLoading = true;
+
+            Task.Run(async () =>
+            {
+                var result = await new Commands.Statistics(_repo, Preferences.Instance.MaxHistoryCommits, _selectedBranch)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
@@ -49,14 +96,6 @@ namespace SourceGit.ViewModels
                     IsLoading = false;
                 });
             });
-        }
-
-        public void ChangeAuthor(Models.StatisticsAuthor author)
-        {
-            if (SelectedReport == null)
-                return;
-
-            Samples = SelectedReport.GetSamples(author);
         }
 
         private void RefreshReport()
@@ -74,7 +113,10 @@ namespace SourceGit.ViewModels
             Samples = SelectedReport.GetSamples(null);
         }
 
+        private string _repo = null;
         private bool _isLoading = true;
+        private List<Models.Branch> _branches = new List<Models.Branch>();
+        private Models.Branch _selectedBranch = new Models.Branch() { Name = "--- (All)", IsLocal = true, FullName = "", Head = "---" }; // Fake branch to represent all branches
         private Models.Statistics _data = null;
         private Models.StatisticsMode _viewMode = Models.StatisticsMode.All;
         private Models.StatisticsReport _selectedReport = null;

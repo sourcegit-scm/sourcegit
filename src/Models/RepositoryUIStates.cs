@@ -231,6 +231,12 @@ namespace SourceGit.Models
             set;
         } = [];
 
+        public bool IsHistoryFiltersCollapsed
+        {
+            get;
+            set;
+        } = false;
+
         public List<string> RecentCommitMessages
         {
             get;
