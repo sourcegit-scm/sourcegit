@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -226,42 +226,33 @@ namespace SourceGit.Views
             preferences.Save();
         }
 
-        private async void SelectThemeOverrideFile(object _, RoutedEventArgs e)
-        {
-            var options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType("Theme Overrides File") { Patterns = ["*.json"] }],
-                AllowMultiple = false,
-            };
-
-            try
-            {
-                var selected = await StorageProvider.OpenFilePickerAsync(options);
-                if (selected is { Count: 1 })
-                    ViewModels.Preferences.Instance.ThemeOverrides = selected[0].Path.LocalPath;
-            }
-            catch (Exception ex)
-            {
-                await new Alert().ShowAsync(this, $"Failed to select theme override file: {ex.Message}", true);
-            }
-
-            e.Handled = true;
-        }
-
         private void OpenThemeRepository(object _, RoutedEventArgs e)
         {
             Native.OS.OpenBrowser($"https://github.com/sourcegit-scm/sourcegit-theme");
             e.Handled = true;
         }
 
+        private async void OpenThemeFolder(object _, RoutedEventArgs e)
+        {
+            var themesPath = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "themes");
+            try
+            {
+                if (!Directory.Exists(themesPath))
+                    Directory.CreateDirectory(themesPath);
+                Native.OS.OpenInFileManager(themesPath);
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            e.Handled = true;
+        }
+
         private async void SelectGitExecutable(object _, RoutedEventArgs e)
         {
             var pattern = OperatingSystem.IsWindows() ? "git.exe" : "git";
-            var options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType("Git Executable") { Patterns = [pattern] }],
-                AllowMultiple = false,
-            };
+            var options = new FilePickerOpenOptions() { FileTypeFilter = [new FilePickerFileType("Git Executable") { Patterns = [pattern] }], AllowMultiple = false, };
 
             try
             {
@@ -309,11 +300,7 @@ namespace SourceGit.Views
             else
                 patterns.Add(GPGFormat.Program);
 
-            var options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType("GPG Program") { Patterns = patterns }],
-                AllowMultiple = false,
-            };
+            var options = new FilePickerOpenOptions() { FileTypeFilter = [new FilePickerFileType("GPG Program") { Patterns = patterns }], AllowMultiple = false, };
 
             try
             {
@@ -348,6 +335,7 @@ namespace SourceGit.Views
                     }],
                     AllowMultiple = false,
                 };
+                options = new FilePickerOpenOptions() { FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }], AllowMultiple = false, };
             }
 
             try
@@ -375,11 +363,7 @@ namespace SourceGit.Views
             }
 
             var tool = Models.ExternalMerger.Supported[type];
-            var options = new FilePickerOpenOptions()
-            {
-                FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatternsToFindExecFile() }],
-                AllowMultiple = false,
-            };
+            var options = new FilePickerOpenOptions() { FileTypeFilter = [new FilePickerFileType(tool.Name) { Patterns = tool.GetPatternsToFindExecFile() }], AllowMultiple = false, };
 
             try
             {
@@ -453,11 +437,7 @@ namespace SourceGit.Views
 
         private async void SelectExecutableForCustomAction(object sender, RoutedEventArgs e)
         {
-            var options = new FilePickerOpenOptions()
-            {
-                AllowMultiple = false,
-                FileTypeFilter = [new("Executable file(script)") { Patterns = ["*"] }]
-            };
+            var options = new FilePickerOpenOptions() { AllowMultiple = false, FileTypeFilter = [new("Executable file(script)") { Patterns = ["*"] }] };
 
             try
             {

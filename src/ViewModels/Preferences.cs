@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.Models;
 
 namespace SourceGit.ViewModels
 {
@@ -41,25 +43,32 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public string Theme
+        [JsonIgnore]
+        public List<ThemeOverrides> Themes
         {
-            get => _theme;
+            get => _themes;
             set
             {
-                if (SetProperty(ref _theme, value) && !_isLoading)
-                    App.SetTheme(_theme, _themeOverrides);
+                SetProperty(ref _themes, value);
             }
         }
 
-        public string ThemeOverrides
+        [JsonIgnore]
+        public ThemeOverrides SelectedTheme
         {
-            get => _themeOverrides;
+            get
+            {
+                return Themes.FirstOrDefault(m => m.Name == Theme) ?? new ThemeOverrides("Default");
+            }
             set
             {
-                if (SetProperty(ref _themeOverrides, value) && !_isLoading)
-                    App.SetTheme(_theme, value);
+                if (SetProperty(ref _selectedTheme, value) && !_isLoading)
+                    App.SetTheme(_selectedTheme);
+                Theme = _selectedTheme.Name;
             }
         }
+
+        public string Theme { get; set; }
 
         public string DefaultFontFamily
         {
@@ -664,6 +673,25 @@ namespace SourceGit.ViewModels
         private static Preferences Load()
         {
             var path = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "preference.json");
+            try
+            {
+                var themesPath = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "themes");
+                var themeFiles = Directory.GetFiles(themesPath, "theme.json", SearchOption.AllDirectories);
+                foreach (var file in themeFiles)
+                {
+                    using var stream = File.OpenRead(file);
+                    var theme = JsonSerializer.Deserialize(stream, JsonCodeGen.Default.ThemeOverrides);
+                    if (theme == null)
+                        continue;
+                    theme.FilePath = file;
+                    _themes.Add(theme);
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
             if (!File.Exists(path))
                 return new Preferences();
 
@@ -826,8 +854,8 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private bool _isReadonly = true;
         private string _locale = "en_US";
-        private string _theme = "Default";
-        private string _themeOverrides = string.Empty;
+        private ThemeOverrides _selectedTheme = new("Default");
+        private static List<ThemeOverrides> _themes = new() { new ThemeOverrides("Default"), new ThemeOverrides("Dark"), new ThemeOverrides("Light") };
         private string _defaultFontFamily = string.Empty;
         private string _monospaceFontFamily = string.Empty;
         private double _defaultFontSize = 13;
