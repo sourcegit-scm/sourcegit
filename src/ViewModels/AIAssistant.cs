@@ -50,7 +50,8 @@ namespace SourceGit.ViewModels
                 SerializeChange(c, builder);
             _changeList = builder.ToString();
 
-            _amendParent = changes.Count > 0 ? changes[0].DataForAmend?.ParentSHA : null;
+            if (changes.Count > 0 && changes[0].DataForAmend is { } amend)
+                _amendParent = amend.ParentSHA;
         }
 
         public async Task GenAsync()

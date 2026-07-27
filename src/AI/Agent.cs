@@ -95,7 +95,7 @@ namespace SourceGit.AI
 
                             foreach (var call in completion.ToolCalls)
                             {
-                                var result = await ChatTools.ProcessAsync(call, onUpdate, amendParent);
+                                var result = await ChatTools.ProcessAsync(call, repo, amendParent, onUpdate);
                                 messages.Add(result);
                             }
 
