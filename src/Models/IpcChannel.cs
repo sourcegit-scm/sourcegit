@@ -74,7 +74,7 @@ namespace SourceGit.Models
             var dataDir = Native.OS.DataDir.Replace('\\', '/').TrimEnd('/');
             var hash = SHA256.HashData(Encoding.UTF8.GetBytes(dataDir));
             var hashStr = Convert.ToHexString(hash)[..8];
-            return $"SGit{Environment.UserName}_{hashStr}";
+            return $"SourceGit{Environment.UserName}_{hashStr}";
         }
 
         private async void StartServer()
