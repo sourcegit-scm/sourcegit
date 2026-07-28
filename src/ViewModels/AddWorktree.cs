@@ -80,9 +80,14 @@ namespace SourceGit.ViewModels
             foreach (var branch in repo.Branches)
             {
                 if (branch.IsLocal)
-                    LocalBranches.Add(branch);
+                {
+                    if (!branch.IsCurrent && !branch.HasWorktree)
+                        LocalBranches.Add(branch);
+                }
                 else
+                {
                     RemoteBranches.Add(branch);
+                }
             }
         }
 
