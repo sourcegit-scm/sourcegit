@@ -20,12 +20,12 @@ namespace SourceGit.Models
             {
                 _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 IsFirstInstance = true;
-                _server = new NamedPipeServerStream(
+                _server = WithShortTmpDir(() => new NamedPipeServerStream(
                     GetPipeName(),
                     PipeDirection.In,
                     -1,
                     PipeTransmissionMode.Byte,
-                    PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+                    PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly));
                 _cancellationTokenSource = new CancellationTokenSource();
                 Task.Run(StartServer);
             }
@@ -39,7 +39,7 @@ namespace SourceGit.Models
         {
             try
             {
-                using (var client = new NamedPipeClientStream(".", GetPipeName(), PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly))
+                using (var client = WithShortTmpDir(() => new NamedPipeClientStream(".", GetPipeName(), PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly)))
                 {
                     client.Connect(1000);
                     if (!client.IsConnected)
@@ -75,6 +75,32 @@ namespace SourceGit.Models
             var hash = SHA256.HashData(Encoding.UTF8.GetBytes(dataDir));
             var hashStr = Convert.ToHexString(hash)[..16];
             return $"SourceGitIPCChannel{Environment.UserName}_{hashStr}";
+        }
+
+        // .NET's named pipes on non-Windows platforms are backed by a Unix domain
+        // socket created under Path.GetTempPath() (i.e. $TMPDIR). macOS assigns each
+        // user a long per-session TMPDIR (/var/folders/xx/<27 random chars>/T/), which
+        // combined with our pipe name routinely exceeds the 104-byte sun_path limit for
+        // AF_UNIX addresses. When that happens, NamedPipeServerStream/NamedPipeClientStream
+        // throw, IsFirstInstance silently becomes false, and the app exits immediately
+        // with no diagnostics - it looks like SourceGit simply refuses to start.
+        // Forcing a short TMPDIR just for the pipe path keeps the socket path short
+        // regardless of the platform's default temp directory.
+        private static T WithShortTmpDir<T>(Func<T> factory)
+        {
+            if (OperatingSystem.IsWindows())
+                return factory();
+
+            var original = Environment.GetEnvironmentVariable("TMPDIR");
+            try
+            {
+                Environment.SetEnvironmentVariable("TMPDIR", "/tmp");
+                return factory();
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("TMPDIR", original);
+            }
         }
 
         private async void StartServer()
