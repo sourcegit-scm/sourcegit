@@ -163,6 +163,14 @@ For **Linux** users:
   sudo apt install sourcegit
   ```
 
+* `AOSC OS`: In addition to AMD64 and ARM64, support for LoongArch and RISC-V has been added.
+  ```shell
+  sudo oma install sourcegit
+  ```
+  
+> [!NOTE]
+> RISC-V support is untested.
+
 * `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) or [git-credential-libsecret](https://pkgs.org/search/?q=git-credential-libsecret) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
