@@ -179,7 +179,9 @@
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">復原此提交...</x:String>
   <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)...</x:String>
   <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">變更對比</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Added" xml:space="preserve">新增</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">個檔案已變更</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Deleted" xml:space="preserve">刪除</x:String>
   <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">搜尋變更...</x:String>
   <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">收合詳細面板</x:String>
   <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">檔案列表</x:String>

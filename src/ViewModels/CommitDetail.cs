@@ -106,6 +106,18 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int TotalAddedLines
+        {
+            get => _totalAddedLines;
+            set => SetProperty(ref _totalAddedLines, value);
+        }
+
+        public int TotalDeletedLines
+        {
+            get => _totalDeletedLines;
+            set => SetProperty(ref _totalDeletedLines, value);
+        }
+
         public DiffContext DiffContext
         {
             get => _diffContext;
@@ -543,6 +555,22 @@ namespace SourceGit.ViewModels
                     });
                 }
             }, token);
+
+            Task.Run(async () =>
+            {
+                var (_, added, deleted) = await new Commands.QueryCommitStatistic(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                if (!token.IsCancellationRequested)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        TotalAddedLines = added;
+                        TotalDeletedLines = deleted;
+                    });
+                }
+            }, token);
         }
 
         private async Task<Models.InlineElementCollector> ParseInlinesInMessageAsync(string message)
@@ -750,5 +778,7 @@ namespace SourceGit.ViewModels
         private List<string> _revisionFileSearchSuggestion = null;
         private bool _canOpenRevisionFileWithDefaultEditor = false;
         private Vector _scrollOffset = Vector.Zero;
+        private int _totalAddedLines = 0;
+        private int _totalDeletedLines = 0;
     }
 }
