@@ -27,9 +27,6 @@
             <Style Selector="ContentPresenter">
               <Setter Property="FontFamily" Value="{DynamicResource Fonts.Monospace}"/>
             </Style>
-            <Style Selector="TextBlock">
-              <Setter Property="FontFamily" Value="{DynamicResource Fonts.Monospace}"/>
-            </Style>
           </v:CommitMessageTextBox.Styles>
         </v:CommitMessageTextBox>
 
