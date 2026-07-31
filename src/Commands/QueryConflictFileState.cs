@@ -12,7 +12,7 @@ namespace SourceGit.Commands
 
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"diff --no-color --no-ext-diff --full-index --patch {opt}";
+            Args = $"diff --no-color --no-ext-diff --no-textconv --full-index --patch {opt}";
         }
 
         public async Task<Models.ConflictFileState> GetResultAsync()

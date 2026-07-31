@@ -71,10 +71,15 @@ namespace SourceGit.Models
 
         private static string GetPipeName()
         {
+            // SourceGit does not support multiple instances on macOS, so we can use a fixed pipe name for macOS.
+            if (OperatingSystem.IsMacOS())
+                return "SourceGit";
+
+            // Windows and Linux can have multiple instances of SourceGit running (portable-mode), so we need to generate a unique pipe name based on the data directory.
             var dataDir = Native.OS.DataDir.Replace('\\', '/').TrimEnd('/');
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(dataDir));
-            var hashStr = Convert.ToHexString(hash)[..16];
-            return $"SourceGitIPCChannel{Environment.UserName}_{hashStr}";
+            var hashStr = $"{Environment.UserName}_{dataDir}";
+            var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(hashStr))).Substring(0, 10);
+            return $"SG_{hash}";
         }
 
         private async void StartServer()

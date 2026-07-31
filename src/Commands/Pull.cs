@@ -13,10 +13,13 @@ namespace SourceGit.Commands
             Context = repo;
 
             var builder = new StringBuilder(512);
-            builder.Append("pull --verbose --progress ");
-            if (useRebase)
-                builder.Append("--rebase=true ");
-            builder.Append(remote).Append(' ').Append(branch);
+            builder
+                .Append("pull --verbose --progress --rebase=")
+                .Append(useRebase ? "true" : "false")
+                .Append(' ')
+                .Append(remote)
+                .Append(' ')
+                .Append(branch);
 
             Args = builder.ToString();
         }

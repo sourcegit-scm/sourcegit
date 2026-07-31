@@ -36,17 +36,6 @@ namespace SourceGit.Views
 
     public class CommitMessageTextBox : TextBox
     {
-        public static readonly DirectProperty<CommitMessageTextBox, int> ColumnProperty =
-            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(
-                nameof(Column),
-                static o => o.Column);
-
-        public int Column
-        {
-            get => _column;
-            set => SetAndRaise(ColumnProperty, ref _column, value);
-        }
-
         public static readonly DirectProperty<CommitMessageTextBox, int> SubjectLengthProperty =
             AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(
                 nameof(SubjectLength),
@@ -126,6 +115,15 @@ namespace SourceGit.Views
             set => SetAndRaise(SuggestionPopupYProperty, ref _suggestionPopupY, value);
         }
 
+        public static readonly StyledProperty<IBrush> GuideLineBrushProperty =
+            AvaloniaProperty.Register<CommitMessageTextBox, IBrush>(nameof(GuideLineBrush), Brushes.Gray);
+
+        public IBrush GuideLineBrush
+        {
+            get => GetValue(GuideLineBrushProperty);
+            set => SetValue(GuideLineBrushProperty, value);
+        }
+
         protected override Type StyleKeyOverride => typeof(TextBox);
 
         public CommitMessageTextBox()
@@ -139,6 +137,44 @@ namespace SourceGit.Views
 
             SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
             SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+        }
+
+        public override void Render(DrawingContext context)
+        {
+            base.Render(context);
+
+            var font = FontFamily ?? FontFamily.Default;
+            var pen = new Pen(GuideLineBrush) { DashStyle = DashStyle.Dash };
+            var y = SubjectEndY;
+            if (y > Bounds.Height - 0.05)
+                return;
+
+            if (y >= 0.05)
+            {
+                var w = Bounds.Width;
+                var subjectEndTip = new FormattedText(
+                    "SUBJECT END",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface(font, FontStyle.Italic),
+                    10,
+                    Brushes.Gray);
+                context.DrawLine(pen, new Point(0, y), new Point(w, y));
+                context.DrawText(subjectEndTip, new Point(w - subjectEndTip.WidthIncludingTrailingWhitespace - 18, y + 1));
+            }
+
+            if (y == 0 && _subjectLen == 0)
+                return;
+
+            var columnTest = new FormattedText(
+                "W",
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(font),
+                ViewModels.Preferences.Instance.DefaultFontSize,
+                Brushes.White);
+            var columnGuideX = columnTest.WidthIncludingTrailingWhitespace * 80 + 5.5;
+            context.DrawLine(pen, new Point(columnGuideX, Math.Max(0, y)), new Point(columnGuideX, Bounds.Height));
         }
 
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -223,13 +259,16 @@ namespace SourceGit.Views
             {
                 WarnSubjectLength = _subjectLen > _subjectGuideLen;
             }
+            else if (change.Property == SubjectEndYProperty)
+            {
+                InvalidateVisual();
+            }
             else if (change.Property == CaretIndexProperty)
             {
                 var text = Text ?? string.Empty;
                 if (string.IsNullOrEmpty(text))
                 {
                     _suggestionMatchStartIdx = -1;
-                    Column = 0;
                     Suggestions = null;
                     return;
                 }
@@ -237,18 +276,19 @@ namespace SourceGit.Views
                 var caretIdx = CaretIndex;
                 var startIdx = Math.Max(Math.Min(text.Length - 1, caretIdx - 1), 0);
                 var hasWhitespace = false;
+                var column = 0;
                 for (var i = startIdx; i >= 0; i--)
                 {
                     if (i == 0)
                     {
-                        Column = startIdx + 2;
+                        column = startIdx + 2;
                         break;
                     }
 
                     var ch = text[i];
                     if (ch == '\n')
                     {
-                        Column = startIdx - i + 1;
+                        column = startIdx - i + 1;
                         break;
                     }
 
@@ -256,8 +296,8 @@ namespace SourceGit.Views
                         hasWhitespace = char.IsWhiteSpace(ch);
                 }
 
-                var suggestionMatchStartIdx = Math.Max(caretIdx - _column + 1, 0);
-                if (hasWhitespace || _column == 1 || suggestionMatchStartIdx < _subjectEndCharIdx)
+                var suggestionMatchStartIdx = Math.Max(caretIdx - column + 1, 0);
+                if (hasWhitespace || column == 1 || suggestionMatchStartIdx < _subjectEndCharIdx)
                 {
                     _suggestionMatchStartIdx = -1;
                     Suggestions = null;
@@ -394,7 +434,6 @@ namespace SourceGit.Views
 
         private TextPresenter _textPresenter = null;
         private ScrollViewer _scrollViewer = null;
-        private int _column = 0;
         private int _subjectLen = 0;
         private int _subjectGuideLen = 0;
         private int _subjectEndCharIdx = -1;
@@ -404,75 +443,6 @@ namespace SourceGit.Views
         private List<CommitMessageTextBoxSuggestion> _suggestions = null;
         private int _selectedSuggestionIdx = 0;
         private double _suggestionPopupY = 0;
-    }
-
-    public class CommitMessageSubjectEndIndicator : Control
-    {
-        public static readonly StyledProperty<FontFamily> FontFamilyProperty =
-            AvaloniaProperty.Register<CommitMessageSubjectEndIndicator, FontFamily>(nameof(FontFamily));
-
-        public FontFamily FontFamily
-        {
-            get => GetValue(FontFamilyProperty);
-            set => SetValue(FontFamilyProperty, value);
-        }
-
-        public static readonly StyledProperty<IBrush> LineBrushProperty =
-            AvaloniaProperty.Register<CommitMessageSubjectEndIndicator, IBrush>(nameof(LineBrush), Brushes.Gray);
-
-        public IBrush LineBrush
-        {
-            get => GetValue(LineBrushProperty);
-            set => SetValue(LineBrushProperty, value);
-        }
-
-        public static readonly DirectProperty<CommitMessageSubjectEndIndicator, double> SubjectEndYProperty =
-            AvaloniaProperty.RegisterDirect<CommitMessageSubjectEndIndicator, double>(
-                nameof(SubjectEndY),
-                static o => o.SubjectEndY,
-                static (o, v) => o.SubjectEndY = v);
-
-        public double SubjectEndY
-        {
-            get => _subjectEndY;
-            set => SetAndRaise(SubjectEndYProperty, ref _subjectEndY, value);
-        }
-
-        public CommitMessageSubjectEndIndicator()
-        {
-            IsHitTestVisible = false;
-        }
-
-        public override void Render(DrawingContext context)
-        {
-            var y = SubjectEndY;
-            if (y < 0.05 || y > Bounds.Height - 0.05)
-                return;
-
-            var font = FontFamily ?? FontFamily.Default;
-            var pen = new Pen(LineBrush) { DashStyle = DashStyle.Dash };
-            var w = Bounds.Width;
-
-            var subjectEndTip = new FormattedText(
-                "SUBJECT END",
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(font, FontStyle.Italic),
-                10,
-                Brushes.Gray);
-            context.DrawLine(pen, new Point(0, y), new Point(w, y));
-            context.DrawText(subjectEndTip, new Point(w - subjectEndTip.WidthIncludingTrailingWhitespace - 18, y + 1));
-        }
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == SubjectEndYProperty)
-                InvalidateVisual();
-        }
-
-        private double _subjectEndY = 0;
     }
 
     public partial class CommitMessageToolBox : UserControl
