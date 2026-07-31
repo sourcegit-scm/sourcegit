@@ -151,7 +151,7 @@ namespace SourceGit.Views
 
             if (y >= 0.05)
             {
-                var w = Bounds.Width;
+                var w = _scrollViewer != null ? (_scrollViewer.Viewport.Width + 10) : Bounds.Width;
                 var subjectEndTip = new FormattedText(
                     "SUBJECT END",
                     CultureInfo.CurrentCulture,
@@ -160,7 +160,7 @@ namespace SourceGit.Views
                     10,
                     Brushes.Gray);
                 context.DrawLine(pen, new Point(0, y), new Point(w, y));
-                context.DrawText(subjectEndTip, new Point(w - subjectEndTip.WidthIncludingTrailingWhitespace - 18, y + 1));
+                context.DrawText(subjectEndTip, new Point(w - subjectEndTip.WidthIncludingTrailingWhitespace - 8, y + 1));
             }
 
             if (y == 0 && _subjectLen == 0)
@@ -330,13 +330,6 @@ namespace SourceGit.Views
                     Suggestions = null;
                 }
             }
-            else if (change.Property == BoundsProperty)
-            {
-                // Sync the actual width to TextPresenter. Otherwise, `TextWrapping` will not work well without
-                // a fixed width. See https://github.com/AvaloniaUI/Avalonia/issues/5819
-                if (_textPresenter != null)
-                    _textPresenter.Width = Bounds.Width - 10.0;
-            }
         }
 
         protected override void OnLostFocus(RoutedEventArgs e)
@@ -386,19 +379,34 @@ namespace SourceGit.Views
 
         private void OnLayoutUpdated(object sender, EventArgs e)
         {
+            if (_textPresenter == null)
+            {
+                SubjectEndY = 0;
+                SuggestionPopupY = 0;
+                Suggestions = null;
+                return;
+            }
+
+            var requiredWidth = _scrollViewer?.Viewport.Width ?? Bounds.Width;
+            if (Math.Abs(_textPresenter.Bounds.Width - requiredWidth) >= 0.01)
+            {
+                _textPresenter.Width = requiredWidth;
+                return;
+            }
+
             if (_subjectEndCharIdx < 0)
             {
                 SubjectEndY = 0;
             }
             else
             {
-                var y = _textPresenter?.TextLayout.HitTestTextPosition(_subjectEndCharIdx).Bottom ?? 0.0;
+                var y = _textPresenter.TextLayout.HitTestTextPosition(_subjectEndCharIdx).Bottom;
                 var offset = _scrollViewer?.Offset.Y ?? 0;
                 SubjectEndY = y - offset + 6;
 
                 if (_suggestionMatchStartIdx >= 0)
                 {
-                    var popupY = _textPresenter?.TextLayout.HitTestTextPosition(_suggestionMatchStartIdx).Bottom ?? 0;
+                    var popupY = _textPresenter.TextLayout.HitTestTextPosition(_suggestionMatchStartIdx).Bottom;
                     y = popupY - offset;
                     if (y < 0.05 || y > Bounds.Height - 0.05)
                     {
