@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:c="using:SourceGit.Converters"
@@ -111,17 +112,23 @@
       </Button>
 
       <Border Grid.Column="3" Padding="6,0" Margin="0,2" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Background="#20000000">
-        <Grid ColumnDefinitions="Auto,*">
-          <TextBlock Grid.Column="0"
-                     FontWeight="Bold"
-                     Margin="0,0,6,0"
-                     FontFamily="{DynamicResource Fonts.Monospace}"
-                     Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay, FallbackValue={x:Null}}"/>
+        <ContentControl Content="{Binding Revision, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:Commit">
+              <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Grid.Column="0"
+                           FontWeight="Bold"
+                           Margin="0,0,6,0"
+                           FontFamily="{DynamicResource Fonts.Monospace}"
+                           Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay}"/>
 
-          <TextBlock Grid.Column="1"
-                     Text="{Binding Revision.Subject, FallbackValue={x:Null}}"
-                     TextTrimming="CharacterEllipsis"/>
-        </Grid>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Subject}"
+                           TextTrimming="CharacterEllipsis"/>
+              </Grid>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
       </Border>
 
       <Button Grid.Column="4"
