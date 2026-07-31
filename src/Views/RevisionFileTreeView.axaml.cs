@@ -312,7 +312,7 @@ namespace SourceGit.Views
 
                         last.Add(folder);
                         last = folder.Children;
-                        prefix = folder.Backend + "/";
+                        prefix = folder.Backend.Path + "/";
                     }
 
                     last.Add(new ViewModels.RevisionFileTreeNode
