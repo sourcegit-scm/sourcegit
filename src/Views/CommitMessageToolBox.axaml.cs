@@ -243,7 +243,7 @@ namespace SourceGit.Views
                     }
                 }
 
-                if (lastLineStart < lastNonLineBreakCharIdx)
+                if (lastLineStart <= lastNonLineBreakCharIdx)
                 {
                     var validCharLen = text.Substring(lastLineStart).TrimEnd().Length;
                     if (subjectLen > 0)
