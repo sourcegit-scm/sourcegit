@@ -335,7 +335,7 @@ namespace SourceGit.Views
                 // Sync the actual width to TextPresenter. Otherwise, `TextWrapping` will not work well without
                 // a fixed width. See https://github.com/AvaloniaUI/Avalonia/issues/5819
                 if (_textPresenter != null)
-                    _textPresenter.Width = Bounds.Width;
+                    _textPresenter.Width = Bounds.Width - 10.0;
             }
         }
 
