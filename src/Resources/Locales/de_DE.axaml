@@ -532,7 +532,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">ERGEBNIS</x:String>
   <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">SPEICHERN &amp; STAGEN</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">DEREN</x:String>
-  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Merge-Konflikt – {0}</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Merge-Konflikte</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Ungespeicherte Änderungen verwerfen?</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">MEINE VERWENDEN</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">DEREN VERWENDEN</x:String>
