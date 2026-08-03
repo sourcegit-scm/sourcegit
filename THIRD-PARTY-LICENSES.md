@@ -112,3 +112,17 @@ The project uses the following third-party libraries or assets
 - **Commit**: 68d98dc57f8486c2946ae28dc86bf8e91d45da4d
 - **License**: MIT License
 - **License Link**: https://github.com/vuejs/language-tools/blob/68d98dc57f8486c2946ae28dc86bf8e91d45da4d/LICENSE
+
+### OCaml
+
+- **Source**: https://github.com/shentao/vue-multiselect/blob/master/docs/shiki/languages/ocaml.tmLanguage.json
+- **Commit**: 8092917041f0ae02cbe4c6982deddc931c6adecd
+- **License**: MIT License
+- **License Link**: https://github.com/shentao/vue-multiselect/blob/master/LICENSE
+
+### Erlang
+
+- **Source**: https://github.com/shentao/vue-multiselect/blob/master/docs/shiki/languages/erlang.tmLanguage.json
+- **Commit**: 8092917041f0ae02cbe4c6982deddc931c6adecd
+- **License**: MIT License
+- **License Link**: https://github.com/shentao/vue-multiselect/blob/master/LICENSE
