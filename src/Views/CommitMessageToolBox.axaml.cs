@@ -387,7 +387,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            var requiredWidth = _scrollViewer?.Viewport.Width ?? Bounds.Width;
+            var requiredWidth = _scrollViewer?.Viewport.Width ?? (Bounds.Width - 10);
             if (Math.Abs(_textPresenter.Bounds.Width - requiredWidth) >= 0.01)
             {
                 _textPresenter.Width = requiredWidth;
