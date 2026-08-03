@@ -87,6 +87,7 @@ namespace SourceGit.ViewModels
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(repo, null, false);
                     Welcome.Instance.Refresh();
+                    TrySwitchToContainingWorkspace(node);
                     OpenRepositoryInTab(node, null);
                     return true;
                 }
@@ -96,6 +97,7 @@ namespace SourceGit.ViewModels
                 {
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(test.StdOut.Trim(), null, false);
                     Welcome.Instance.Refresh();
+                    TrySwitchToContainingWorkspace(node);
                     OpenRepositoryInTab(node, null);
                     return true;
                 }
@@ -110,6 +112,16 @@ namespace SourceGit.ViewModels
             }
 
             return false;
+        }
+
+        private void TrySwitchToContainingWorkspace(RepositoryNode node)
+        {
+            if (ActiveWorkspace.Repositories.Contains(node.Id))
+                return;
+
+            var owner = Preferences.Instance.Workspaces.Find(w => w.Repositories.Contains(node.Id));
+            if (owner != null)
+                SwitchWorkspace(owner);
         }
 
         public void CloseAll()
