@@ -159,6 +159,7 @@ namespace SourceGit.Native
             startInfo.WorkingDirectory = cwd;
             startInfo.FileName = terminal;
             startInfo.Arguments = args;
+            startInfo.UseShellExecute = true;
             Process.Start(startInfo);
         }
 
