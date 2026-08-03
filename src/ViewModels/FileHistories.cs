@@ -131,7 +131,7 @@ namespace SourceGit.ViewModels
                     return new FileHistoriesRevisionFile(_file, binaryFile, true);
                 }
 
-                var contentStream = await Commands.QueryFileContent.RunAsync(_repo, _revision.SHA, _file).ConfigureAwait(false);
+                await using var contentStream = await Commands.QueryFileContent.RunAsync(_repo, _revision.SHA, _file).ConfigureAwait(false);
                 var content = await new StreamReader(contentStream).ReadToEndAsync();
                 var lfs = Models.LFSObject.Parse(content);
                 if (lfs != null)

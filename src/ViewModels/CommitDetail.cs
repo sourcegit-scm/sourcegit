@@ -694,7 +694,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _commit.SHA, file.Path);
+            await using var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _commit.SHA, file.Path);
             var content = await new StreamReader(contentStream).ReadToEndAsync();
             var lfs = Models.LFSObject.Parse(content);
             if (lfs != null)
