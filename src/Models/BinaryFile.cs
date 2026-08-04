@@ -1,28 +1,13 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace SourceGit.Models
 {
-    public class BinaryFile : ObservableObject, IDisposable
+    public class BinaryFile : IDisposable
     {
-        public long FileSize
+        public long Size
         {
-            get => _fileSize;
-            private set => SetProperty(ref _fileSize, value);
-        }
-
-        public static async Task<BinaryFile> LoadAsync(string repo, string path, string revision)
-        {
-            if (revision != null)
-            {
-                string saveTo = Path.GetTempFileName();
-                await Commands.SaveRevisionFile.RunAsync(repo, revision, path, saveTo).ConfigureAwait(false);
-                return new BinaryFile(saveTo, true);
-            }
-
-            return new BinaryFile(Path.Combine(repo, path));
+            get => _size;
         }
 
         public BinaryFile(string file, bool needDeleteFile = false)
@@ -32,12 +17,12 @@ namespace SourceGit.ViewModels
 
             if (File.Exists(_filePath))
             {
-                _fileSize = new FileInfo(_filePath).Length;
+                _size = new FileInfo(_filePath).Length;
                 _reader = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.Read, BUFFER_SIZE, FileOptions.RandomAccess);
                 _readedStart = 0;
-                _readedEnd = Math.Min(_fileSize, BUFFER_SIZE);
+                _readedEnd = Math.Min(_size, BUFFER_SIZE);
 
-                if (_fileSize > 0)
+                if (_size > 0)
                 {
                     _reader.Seek(_readedStart, SeekOrigin.Begin);
                     _reader.ReadExactly(_buffer, 0, (int)_readedEnd);
@@ -56,20 +41,20 @@ namespace SourceGit.ViewModels
 
         public ArraySegment<byte> Read(long offset, long length)
         {
-            if (_reader == null || _fileSize == 0 || offset >= _fileSize)
+            if (_reader == null || _size == 0 || offset >= _size)
                 return Array.Empty<byte>();
 
             if (length > 8192)
                 length = 8192;
 
-            if (offset + length > _fileSize)
-                length = _fileSize - offset;
+            if (offset + length > _size)
+                length = _size - offset;
 
             if (_readedStart <= offset && _readedEnd >= offset + length)
                 return new ArraySegment<byte>(_buffer, (int)(offset - _readedStart), (int)length);
 
             _readedStart = (Math.Max(0, offset - 2048) / 1024) * 1024;
-            _readedEnd = Math.Min(_readedStart + BUFFER_SIZE, _fileSize);
+            _readedEnd = Math.Min(_readedStart + BUFFER_SIZE, _size);
 
             _reader.Seek(_readedStart, SeekOrigin.Begin);
             _reader.ReadExactly(_buffer, 0, (int)(_readedEnd - _readedStart));
@@ -82,7 +67,7 @@ namespace SourceGit.ViewModels
         private string _filePath = string.Empty;
         private bool _needDeleteFile = false;
         private FileStream _reader = null;
-        private long _fileSize = 0;
+        private long _size = 0;
         private long _readedStart = 0;
         private long _readedEnd = 0;
         private byte[] _buffer = new byte[BUFFER_SIZE];

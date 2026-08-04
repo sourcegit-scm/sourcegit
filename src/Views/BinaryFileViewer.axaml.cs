@@ -129,7 +129,7 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
-            if (DataContext is not ViewModels.BinaryFile vm)
+            if (DataContext is not Models.BinaryFile vm)
                 return;
 
             context.FillRectangle(Brushes.Transparent, new Rect(0, 0, Bounds.Width, Bounds.Height));
@@ -250,7 +250,7 @@ namespace SourceGit.Views
         {
             base.OnPointerPressed(e);
 
-            if (DataContext is not ViewModels.BinaryFile vm)
+            if (DataContext is not Models.BinaryFile vm)
                 return;
 
             var pos = e.GetPosition(this);
@@ -285,7 +285,7 @@ namespace SourceGit.Views
 
             var rowIdx = (long)Math.Floor(testY / LINE_HEIGHT);
             var idx = _offset + rowIdx * BYTES_PER_LINE + columnIdx;
-            if (idx >= vm.FileSize)
+            if (idx >= vm.Size)
                 return;
 
             SetHighlightedIndex(idx);
@@ -350,10 +350,10 @@ namespace SourceGit.Views
 
         private void OnScrollBarSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (sender is ScrollBar { DataContext: ViewModels.BinaryFile file } scroller)
+            if (sender is ScrollBar { DataContext: Models.BinaryFile file } scroller)
             {
                 var viewport = scroller.Bounds.Height;
-                var max = Math.Ceiling(file.FileSize / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - viewport;
+                var max = Math.Ceiling(file.Size / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - viewport;
 
                 scroller.ViewportSize = viewport;
                 scroller.Maximum = Math.Max(viewport, max);
@@ -379,7 +379,7 @@ namespace SourceGit.Views
                     // Ignore parsing errors
                 }
 
-                if (idx < 0 || idx >= file.FileSize)
+                if (idx < 0 || idx >= file.Size)
                     return;
 
                 var scroller = ContentPanel.FindDescendantOfType<ScrollBar>();
