@@ -335,7 +335,7 @@ namespace SourceGit.Views
         {
             base.OnPointerWheelChanged(e);
 
-            if (Content is not ViewModels.BinaryFile file)
+            if (Content is not ViewModels.BinaryFile)
                 return;
 
             // TextBox itself contains a ScrollBar.
@@ -343,8 +343,7 @@ namespace SourceGit.Views
             if (scroller == null)
                 return;
 
-            var delta = Math.Ceiling(e.Delta.Y) * HexViewer.LINE_HEIGHT;
-            scroller.Value -= delta;
+            scroller.Value -= e.Delta.Y * HexViewer.LINE_HEIGHT;
         }
 
         private void OnScrollBarValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -411,8 +410,7 @@ namespace SourceGit.Views
                 if (scroller == null)
                     return;
 
-                var viewport = Bounds.Height - HexViewer.HEADER_HEIGHT - 26;
-                var offset = Math.Floor(idx / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - (viewport * 0.5);
+                var offset = Math.Floor(idx / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - (scroller.ViewportSize * 0.5);
                 scroller.Value = Math.Max(0, offset);
 
                 var viewer = this.FindDescendantOfType<HexViewer>(false);
