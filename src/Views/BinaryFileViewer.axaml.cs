@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Threading;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -179,6 +180,9 @@ namespace SourceGit.Views
         {
             base.OnPointerPressed(e);
 
+            if (DataContext is not ViewModels.BinaryFile vm)
+                return;
+
             var pos = e.GetPosition(this);
             var testX = pos.X;
             var testY = pos.Y - HEADER_HEIGHT;
@@ -210,7 +214,11 @@ namespace SourceGit.Views
                 return;
 
             var rowIdx = (long)Math.Floor(testY / LINE_HEIGHT);
-            SetHighlightedIndex(_offset + rowIdx * BYTES_PER_LINE + columnIdx);
+            var idx = _offset + rowIdx * BYTES_PER_LINE + columnIdx;
+            if (idx >= vm.FileSize)
+                return;
+
+            SetHighlightedIndex(idx);
         }
 
         private void SetHighlightedIndex(long idx)
@@ -240,6 +248,8 @@ namespace SourceGit.Views
         protected override void OnUnloaded(RoutedEventArgs e)
         {
             base.OnUnloaded(e);
+
+            _cancellation?.Cancel();
 
             if (Content is ViewModels.BinaryFile old)
             {
