@@ -251,26 +251,47 @@ namespace SourceGit.ViewModels
             var binaryDiff = new Models.BinaryDiff();
             var fullPath = Path.Combine(_repo, _option.Path);
 
+            binaryDiff.Repository = _repo;
+            binaryDiff.FilePath = _option.Path;
+
             if (_option.Revisions.Count == 2)
             {
                 if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal))
                 {
                     binaryDiff.OldSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                     binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
+                    binaryDiff.NewRevision = _option.Revisions[1];
                 }
                 else
                 {
                     binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).GetResultAsync().ConfigureAwait(false);
                     if (string.IsNullOrEmpty(_option.Revisions[1]))
+                    {
                         binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
+                        binaryDiff.NewRevision = null;
+                    }
                     else
+                    {
                         binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
+                        binaryDiff.NewRevision = _option.Revisions[1];
+                    }
                 }
             }
             else
             {
-                binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, "HEAD").GetResultAsync().ConfigureAwait(false);
-                binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
+                if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
+                    binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, "HEAD").GetResultAsync().ConfigureAwait(false);
+
+                if (_option.IsUnstaged)
+                {
+                    binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
+                    binaryDiff.NewRevision = null;
+                }
+                else
+                {
+                    binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, string.Empty).GetResultAsync().ConfigureAwait(false);
+                    binaryDiff.NewRevision = string.Empty;
+                }
             }
 
             return binaryDiff;

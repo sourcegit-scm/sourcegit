@@ -63,6 +63,10 @@ namespace SourceGit.Models
 
     public class BinaryDiff
     {
+        public string Repository { get; set; } = string.Empty;
+        public string FilePath { get; set; } = string.Empty;
+        public string NewRevision { get; set; } = string.Empty;
+
         public long OldSize { get; set; } = 0;
         public long NewSize { get; set; } = 0;
     }
