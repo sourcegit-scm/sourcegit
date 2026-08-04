@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Text;
-using System.Threading;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -10,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -299,47 +299,39 @@ namespace SourceGit.Views
         private long _highlightedIdx = -1;
     }
 
-    public partial class BinaryFileViewer : UserControl
+    public partial class BinaryFileViewer : ChromelessWindow
     {
         public BinaryFileViewer()
         {
             InitializeComponent();
         }
 
-        protected override void OnUnloaded(RoutedEventArgs e)
+        protected override void OnOpened(EventArgs e)
         {
-            base.OnUnloaded(e);
+            base.OnOpened(e);
 
-            _cancellation?.Cancel();
-
-            if (Content is ViewModels.BinaryFile old)
+            // Queue loading to the next frame to avoid blocking the window-opening.
+            Dispatcher.UIThread.Post(async () =>
             {
-                Content = null;
-                old.Dispose();
-            }
+                if (DataContext is ViewModels.BinaryFileViewer vm)
+                    await vm.LoadAsync();
+            });
         }
 
-        protected override void OnDataContextChanged(EventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
-            base.OnDataContextChanged(e);
+            base.OnClosed(e);
 
-            var old = Content;
-            Content = DataContext;
-            _cancellation?.Cancel();
-
-            if (old is ViewModels.BinaryFile oldFile)
-                oldFile.Dispose();
+            if (DataContext is ViewModels.BinaryFileViewer vm)
+                vm.Cleanup();
         }
 
-        protected override void OnPointerWheelChanged(PointerWheelEventArgs e)
+        private void OnContentPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
-            base.OnPointerWheelChanged(e);
-
-            if (Content is not ViewModels.BinaryFile)
+            if (sender is not Grid grid)
                 return;
 
-            // TextBox itself contains a ScrollBar.
-            var scroller = this.FindDescendantOfType<ScrollBar>(false, s => s.Name.Equals("HexViewerScroller", StringComparison.Ordinal));
+            var scroller = grid.FindDescendantOfType<ScrollBar>();
             if (scroller == null)
                 return;
 
@@ -368,25 +360,10 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OnOpenHexViewer(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is not Models.RevisionBinaryFile vm)
-                return;
-
-            Content = new Models.Null();
-            _cancellation = new();
-
-            var token = _cancellation.Token;
-            var file = await ViewModels.BinaryFile.LoadAsync(vm.Repository, vm.File, vm.Revision);
-            if (token.IsCancellationRequested)
-                return;
-
-            Content = file;
-        }
-
         private void OnGotoAddressTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (sender is BinaryFileAddressTextBox { DataContext: ViewModels.BinaryFile file } textBox)
+            if (sender is BinaryFileAddressTextBox textBox &&
+                DataContext is ViewModels.BinaryFileViewer { Content: { } file })
             {
                 var text = textBox.Text;
                 if (string.IsNullOrEmpty(text))
@@ -405,8 +382,7 @@ namespace SourceGit.Views
                 if (idx < 0 || idx >= file.FileSize)
                     return;
 
-                // TextBox itself contains a ScrollBar.
-                var scroller = this.FindDescendantOfType<ScrollBar>(false, s => s.Name.Equals("HexViewerScroller", StringComparison.Ordinal));
+                var scroller = ContentPanel.FindDescendantOfType<ScrollBar>();
                 if (scroller == null)
                     return;
 
@@ -417,7 +393,5 @@ namespace SourceGit.Views
                 viewer?.SetHighlightedIndex(idx);
             }
         }
-
-        private CancellationTokenSource _cancellation = new();
     }
 }

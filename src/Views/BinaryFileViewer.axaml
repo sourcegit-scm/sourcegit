@@ -1,38 +1,55 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
-             xmlns:c="using:SourceGit.Converters"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.BinaryFileViewer">
-  <UserControl.DataTemplates>
-    <DataTemplate DataType="m:RevisionBinaryFile">
-      <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
-        <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.File.Binary}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
-        <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-          <TextBlock Text="{Binding Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
-        </StackPanel>
-        <Button Classes="flat"
-                Margin="0,16,0,0"
-                HorizontalAlignment="Center"
-                Content="{DynamicResource Text.File.HexViewer}"
-                Click="OnOpenHexViewer"/>
-      </StackPanel>
-    </DataTemplate>
-    
-    <DataTemplate DataType="m:Null">
-      <v:LoadingIcon Width="64" Height="64"
-                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
-    </DataTemplate>
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="230"
+                    x:Class="SourceGit.Views.BinaryFileViewer"
+                    x:Name="ThisControl"
+                    x:DataType="vm:BinaryFileViewer"
+                    Icon="/App.ico"
+                    Title="{DynamicResource Text.File.HexViewer}"
+                    Width="800" Height="600"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,32,*">
+    <!-- TitleBar -->
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <!-- Bottom border -->
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+              DoubleTapped="MaximizeOrRestoreWindow"
+              PointerPressed="BeginMoveWindow"/>
 
-    <DataTemplate DataType="vm:BinaryFile">
-      <Grid RowDefinitions="28,*" Background="Transparent">
-        <v:BinaryFileAddressTextBox Grid.Row="0"
-                                    Width="600" Height="26"
+      <Path Width="12" Height="12"
+            Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Binary}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+
+      <TextBlock Classes="bold"
+                 Text="{DynamicResource Text.File.HexViewer}"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+
+      <!-- Caption Buttons (Windows/Linux) -->
+      <v:CaptionButtons HorizontalAlignment="Right" IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <!-- File -->
+    <Border Grid.Row="1" Height="32" VerticalAlignment="Center">
+      <Grid Margin="8,0" ColumnDefinitions="Auto,*,Auto">
+        <Path Grid.Column="0"
+              Width="14" Height="14"
+              Data="{StaticResource Icons.File}"/>
+
+        <TextBlock Grid.Column="1"
+                   Margin="4,0,0,0"
+                   Text="{Binding File, Mode=OneWay}"
+                   VerticalAlignment="Center"/>
+
+        <v:BinaryFileAddressTextBox Grid.Column="2"
+                                    Width="200" Height="26"
                                     HorizontalAlignment="Left" VerticalAlignment="Center"
                                     BorderThickness="1"
                                     BorderBrush="{DynamicResource Brush.Border2}"
@@ -48,23 +65,36 @@
                   Data="{StaticResource Icons.Address}"/>
           </TextBox.InnerLeftContent>
         </v:BinaryFileAddressTextBox>
-        
-        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
-          <v:HexViewer Grid.Column="0"
-                       Foreground="{DynamicResource Brush.FG1}"
-                       HeaderForeground="{DynamicResource Brush.Accent}"
-                       ClipToBounds="True"/>
-
-          <ScrollBar Grid.Column="1"
-                     x:Name="HexViewerScroller"
-                     Margin="0,24,0,0"
-                     Orientation="Vertical"
-                     AllowAutoHide="False"
-                     SmallChange="18"
-                     ValueChanged="OnScrollBarValueChanged"
-                     SizeChanged="OnScrollBarSizeChanged"/>
-        </Grid>
       </Grid>
-    </DataTemplate>
-  </UserControl.DataTemplates>
-</UserControl>
+    </Border>
+    
+    <!-- Body -->
+    <Border Grid.Row="2" Margin="4,0,4,4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+      <ContentControl x:Name="ContentPanel" Margin="8,4,0,4" Content="{Binding Content, Mode=OneWay}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:BinaryFile">
+            <Grid ColumnDefinitions="*,Auto" Background="Transparent" PointerWheelChanged="OnContentPointerWheelChanged">
+              <v:HexViewer Grid.Column="0"
+                           Foreground="{DynamicResource Brush.FG1}"
+                           HeaderForeground="{DynamicResource Brush.Accent}"
+                           ClipToBounds="True"/>
+
+              <ScrollBar Grid.Column="1"
+                         Margin="0,24,0,0"
+                         Orientation="Vertical"
+                         AllowAutoHide="False"
+                         SmallChange="18"
+                         ValueChanged="OnScrollBarValueChanged"
+                         SizeChanged="OnScrollBarSizeChanged"/>
+            </Grid>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Border>
+
+    <!-- Loading Icon -->
+    <v:LoadingIcon Grid.Row="2"
+                   Width="64" Height="64"
+                   IsVisible="{Binding IsLoading, Mode=OneWay}"/>
+  </Grid>
+</v:ChromelessWindow>
