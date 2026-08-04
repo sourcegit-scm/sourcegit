@@ -1,17 +1,78 @@
 using System;
 using System.Globalization;
+using System.Text;
 using System.Threading;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
+    public class BinaryFileAddressTextBox : TextBox
+    {
+        protected override Type StyleKeyOverride => typeof(TextBox);
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            PastingFromClipboard += OnPastingFromClipboard;
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            PastingFromClipboard -= OnPastingFromClipboard;
+            base.OnUnloaded(e);
+        }
+
+        protected override void OnTextInput(TextInputEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.Text))
+                return;
+
+            var builder = new StringBuilder(e.Text.Length);
+            var chars = e.Text.ToCharArray();
+            foreach (var ch in chars)
+            {
+                if ((ch >= '0' && ch <= '9') ||
+                    (ch >= 'a' && ch <= 'f') ||
+                    (ch >= 'A' && ch <= 'F'))
+                    builder.Append(ch);
+
+                if (builder.Length >= 8)
+                    break;
+            }
+
+            e.Text = builder.ToString();
+            base.OnTextInput(e);
+        }
+
+        private async void OnPastingFromClipboard(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+
+            try
+            {
+                var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+                if (clipboard != null)
+                {
+                    var text = await clipboard.TryGetTextAsync();
+                    if (!string.IsNullOrEmpty(text))
+                        OnTextInput(new TextInputEventArgs() { Text = text });
+                }
+            }
+            catch
+            {
+                // Ignore exceptions
+            }
+        }
+    }
+
     public class HexViewer : Control
     {
         public static readonly DirectProperty<HexViewer, long> OffsetProperty =
@@ -54,6 +115,15 @@ namespace SourceGit.Views
         public const int BYTES_PER_LINE = 16;
         public const int BYTES_PER_LINE_HALF = 8;
         public const double FONT_SIZE = 13;
+
+        public void SetHighlightedIndex(long idx)
+        {
+            if (idx == _highlightedIdx)
+                return;
+
+            _highlightedIdx = idx;
+            InvalidateVisual();
+        }
 
         public override void Render(DrawingContext context)
         {
@@ -221,15 +291,6 @@ namespace SourceGit.Views
             SetHighlightedIndex(idx);
         }
 
-        private void SetHighlightedIndex(long idx)
-        {
-            if (idx == _highlightedIdx)
-                return;
-
-            _highlightedIdx = idx;
-            InvalidateVisual();
-        }
-
         private long _offset = 0;
         private double _charWidth = 0;
         private double _first8BytesX = 0;
@@ -277,7 +338,8 @@ namespace SourceGit.Views
             if (Content is not ViewModels.BinaryFile file)
                 return;
 
-            var scroller = this.FindDescendantOfType<ScrollBar>();
+            // TextBox itself contains a ScrollBar.
+            var scroller = this.FindDescendantOfType<ScrollBar>(false, s => s.Name.Equals("HexViewerScroller", StringComparison.Ordinal));
             if (scroller == null)
                 return;
 
@@ -299,8 +361,8 @@ namespace SourceGit.Views
         {
             if (sender is ScrollBar { DataContext: ViewModels.BinaryFile file } scroller)
             {
-                var viewport = Bounds.Height - HexViewer.HEADER_HEIGHT;
-                var max = Math.Ceiling(file.FileSize / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - Bounds.Height + HexViewer.HEADER_HEIGHT;
+                var viewport = Bounds.Height - HexViewer.HEADER_HEIGHT - 26;
+                var max = Math.Ceiling(file.FileSize / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - viewport;
 
                 scroller.ViewportSize = viewport;
                 scroller.Maximum = Math.Max(viewport, max);
@@ -321,6 +383,41 @@ namespace SourceGit.Views
                 return;
 
             Content = file;
+        }
+
+        private void OnGotoAddressTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is BinaryFileAddressTextBox { DataContext: ViewModels.BinaryFile file } textBox)
+            {
+                var text = textBox.Text;
+                if (string.IsNullOrEmpty(text))
+                    return;
+
+                long idx = 0;
+                try
+                {
+                    idx = Convert.ToInt64($"0x{text}", 16);
+                }
+                catch
+                {
+                    // Ignore parsing errors
+                }
+
+                if (idx < 0 || idx >= file.FileSize)
+                    return;
+
+                // TextBox itself contains a ScrollBar.
+                var scroller = this.FindDescendantOfType<ScrollBar>(false, s => s.Name.Equals("HexViewerScroller", StringComparison.Ordinal));
+                if (scroller == null)
+                    return;
+
+                var viewport = Bounds.Height - HexViewer.HEADER_HEIGHT - 26;
+                var offset = Math.Floor(idx / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - (viewport * 0.5);
+                scroller.Value = Math.Max(0, offset);
+
+                var viewer = this.FindDescendantOfType<HexViewer>(false);
+                viewer?.SetHighlightedIndex(idx);
+            }
         }
 
         private CancellationTokenSource _cancellation = new();

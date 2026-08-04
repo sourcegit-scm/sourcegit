@@ -30,19 +30,40 @@
     </DataTemplate>
 
     <DataTemplate DataType="vm:BinaryFile">
-      <Grid ColumnDefinitions="*,Auto" Background="Transparent">
-        <v:HexViewer Grid.Column="0"
-                     Foreground="{DynamicResource Brush.FG1}"
-                     HeaderForeground="{DynamicResource Brush.Accent}"
-                     ClipToBounds="True"/>
+      <Grid RowDefinitions="28,*" Background="Transparent">
+        <v:BinaryFileAddressTextBox Grid.Row="0"
+                                    Width="600" Height="26"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    BorderThickness="1"
+                                    BorderBrush="{DynamicResource Brush.Border2}"
+                                    CornerRadius="13"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    Watermark="{DynamicResource Text.File.HexViewer.GotoAddress}"
+                                    TextChanged="OnGotoAddressTextChanged">
+          <TextBox.InnerLeftContent>
+            <Path Width="14" Height="14"
+                  Margin="6,0,0,0"
+                  Fill="{DynamicResource Brush.FG2}"
+                  Data="{StaticResource Icons.Address}"/>
+          </TextBox.InnerLeftContent>
+        </v:BinaryFileAddressTextBox>
+        
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
+          <v:HexViewer Grid.Column="0"
+                       Foreground="{DynamicResource Brush.FG1}"
+                       HeaderForeground="{DynamicResource Brush.Accent}"
+                       ClipToBounds="True"/>
 
-        <ScrollBar Grid.Column="1"
-                   Margin="0,24,0,0"
-                   Orientation="Vertical"
-                   AllowAutoHide="False"
-                   SmallChange="18"
-                   ValueChanged="OnScrollBarValueChanged"
-                   SizeChanged="OnScrollBarSizeChanged"/>
+          <ScrollBar Grid.Column="1"
+                     x:Name="HexViewerScroller"
+                     Margin="0,24,0,0"
+                     Orientation="Vertical"
+                     AllowAutoHide="False"
+                     SmallChange="18"
+                     ValueChanged="OnScrollBarValueChanged"
+                     SizeChanged="OnScrollBarSizeChanged"/>
+        </Grid>
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
