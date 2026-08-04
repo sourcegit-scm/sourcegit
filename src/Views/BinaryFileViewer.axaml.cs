@@ -360,7 +360,7 @@ namespace SourceGit.Views
         {
             if (sender is ScrollBar { DataContext: ViewModels.BinaryFile file } scroller)
             {
-                var viewport = Bounds.Height - HexViewer.HEADER_HEIGHT - 26;
+                var viewport = scroller.Bounds.Height;
                 var max = Math.Ceiling(file.FileSize / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - viewport;
 
                 scroller.ViewportSize = viewport;

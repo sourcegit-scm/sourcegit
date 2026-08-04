@@ -13,16 +13,22 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _fileSize, value);
         }
 
-        public static async Task<BinaryFile> LoadAsync(string repo, string path, string revision = "HEAD")
+        public static async Task<BinaryFile> LoadAsync(string repo, string path, string revision)
         {
-            string saveTo = Path.GetTempFileName();
-            await Commands.SaveRevisionFile.RunAsync(repo, revision, path, saveTo).ConfigureAwait(false);
-            return new BinaryFile(saveTo);
+            if (revision != null)
+            {
+                string saveTo = Path.GetTempFileName();
+                await Commands.SaveRevisionFile.RunAsync(repo, revision, path, saveTo).ConfigureAwait(false);
+                return new BinaryFile(saveTo, true);
+            }
+
+            return new BinaryFile(Path.Combine(repo, path));
         }
 
-        public BinaryFile(string file)
+        public BinaryFile(string file, bool needDeleteFile = false)
         {
             _filePath = file;
+            _needDeleteFile = needDeleteFile;
 
             if (File.Exists(_filePath))
             {
@@ -44,7 +50,7 @@ namespace SourceGit.ViewModels
             _reader?.Dispose();
             _reader = null;
 
-            if (File.Exists(_filePath))
+            if (_needDeleteFile && File.Exists(_filePath))
                 File.Delete(_filePath);
         }
 
@@ -74,6 +80,7 @@ namespace SourceGit.ViewModels
         private const int BUFFER_SIZE = 16384;
 
         private string _filePath = string.Empty;
+        private bool _needDeleteFile = false;
         private FileStream _reader = null;
         private long _fileSize = 0;
         private long _readedStart = 0;

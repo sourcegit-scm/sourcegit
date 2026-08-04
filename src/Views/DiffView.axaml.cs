@@ -84,5 +84,14 @@ namespace SourceGit.Views
                 this.ShowWindow(vm);
             }
         }
+
+        private async void OnOpenStandaloneHexEditor(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: Models.BinaryDiff diff } && diff.NewSize > 0)
+            {
+                await this.ShowDialogAsync(new ViewModels.BinaryFileViewerStandalone(diff.Repository, diff.FilePath, diff.NewRevision));
+                e.Handled = true;
+            }
+        }
     }
 }

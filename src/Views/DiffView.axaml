@@ -246,6 +246,13 @@
 
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
               </Grid>
+
+              <Button Classes="flat"
+                      Margin="0,16,0,0"
+                      HorizontalAlignment="Center"
+                      Content="{DynamicResource Text.Diff.Binary.ViewContentOfNew}"
+                      IsVisible="{Binding NewSize, Mode=OneWay, Converter={x:Static c:LongConverters.IsGreaterThanZero}}"
+                      Click="OnOpenStandaloneHexEditor"/>
             </StackPanel>
           </DataTemplate>
 
