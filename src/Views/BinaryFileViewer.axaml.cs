@@ -396,7 +396,7 @@ namespace SourceGit.Views
                 long idx = 0;
                 try
                 {
-                    idx = Convert.ToInt64($"0x{text}", 16);
+                    idx = Convert.ToInt64(text, 16);
                 }
                 catch
                 {
