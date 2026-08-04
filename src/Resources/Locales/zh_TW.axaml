@@ -424,6 +424,8 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不提取遠端標籤</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">提取遠端存放庫內容</x:String>
+  <x:String x:Key="Text.File.Binary" xml:space="preserve">二進位檔案</x:String>
+  <x:String x:Key="Text.File.HexViewer" xml:space="preserve">檢視內容</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不追蹤此檔案的變更</x:String>
   <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">捨棄變更...</x:String>

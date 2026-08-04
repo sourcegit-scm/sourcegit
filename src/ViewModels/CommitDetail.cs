@@ -688,7 +688,7 @@ namespace SourceGit.ViewModels
                 else
                 {
                     var size = await new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).GetResultAsync();
-                    ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
+                    ViewRevisionFileContent = new Models.RevisionBinaryFile(_repo.FullPath, file.Path, _commit.SHA, size);
                 }
 
                 return;

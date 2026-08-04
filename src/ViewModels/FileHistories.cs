@@ -127,7 +127,7 @@ namespace SourceGit.ViewModels
                     }
 
                     var size = await new Commands.QueryFileSize(_repo, _file, _revision.SHA).GetResultAsync().ConfigureAwait(false);
-                    var binaryFile = new Models.RevisionBinaryFile() { Size = size };
+                    var binaryFile = new Models.RevisionBinaryFile(_repo, _file, _revision.SHA, size);
                     return new FileHistoriesRevisionFile(_file, binaryFile, true);
                 }
 
