@@ -252,7 +252,7 @@
                       HorizontalAlignment="Center"
                       Content="{DynamicResource Text.Diff.Binary.ViewContentOfNew}"
                       IsVisible="{Binding NewSize, Mode=OneWay, Converter={x:Static c:LongConverters.IsGreaterThanZero}}"
-                      Click="OnOpenStandaloneHexEditor"/>
+                      Click="OnOpenBinaryFileViewer"/>
             </StackPanel>
           </DataTemplate>
 

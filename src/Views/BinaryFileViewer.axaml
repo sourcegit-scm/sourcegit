@@ -74,7 +74,10 @@
       <ContentControl x:Name="ContentPanel" Margin="8,4,0,4" Content="{Binding Content, Mode=OneWay}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:BinaryFile">
-            <Grid ColumnDefinitions="*,Auto" Background="Transparent" PointerWheelChanged="OnContentPointerWheelChanged">
+            <Grid ColumnDefinitions="*,Auto"
+                  Background="Transparent"
+                  PointerWheelChanged="OnContentPointerWheelChanged"
+                  SizeChanged="OnContentSizeChanged">
               <v:HexViewer Grid.Column="0"
                            Foreground="{DynamicResource Brush.FG1}"
                            HeaderForeground="{DynamicResource Brush.Accent}"
@@ -85,8 +88,7 @@
                          Orientation="Vertical"
                          AllowAutoHide="False"
                          SmallChange="18"
-                         ValueChanged="OnScrollBarValueChanged"
-                         SizeChanged="OnScrollBarSizeChanged"/>
+                         ValueChanged="OnScrollBarValueChanged"/>
             </Grid>
           </DataTemplate>
         </ContentControl.DataTemplates>

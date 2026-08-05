@@ -332,10 +332,34 @@ namespace SourceGit.Views
                 return;
 
             var scroller = grid.FindDescendantOfType<ScrollBar>();
-            if (scroller == null)
+            if (scroller == null || !scroller.IsVisible)
                 return;
 
             scroller.Value -= e.Delta.Y * HexViewer.LINE_HEIGHT;
+        }
+
+        private void OnContentSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (sender is not Grid { DataContext: Models.BinaryFile file } grid)
+                return;
+
+            var scroller = grid.FindDescendantOfType<ScrollBar>();
+            if (scroller == null)
+                return;
+
+            var viewport = grid.Bounds.Height - HexViewer.HEADER_HEIGHT;
+            var max = Math.Ceiling(file.Size * 1.0 / HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - viewport;
+
+            if (max <= 0)
+            {
+                scroller.IsVisible = false;
+            }
+            else
+            {
+                scroller.IsVisible = true;
+                scroller.ViewportSize = viewport;
+                scroller.Maximum = max;
+            }
         }
 
         private void OnScrollBarValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -345,18 +369,6 @@ namespace SourceGit.Views
                 var viewer = this.FindDescendantOfType<HexViewer>();
                 if (viewer != null)
                     viewer.Offset = (long)(Math.Ceiling(scroller.Value / HexViewer.LINE_HEIGHT) * HexViewer.BYTES_PER_LINE);
-            }
-        }
-
-        private void OnScrollBarSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (sender is ScrollBar { DataContext: Models.BinaryFile file } scroller)
-            {
-                var viewport = scroller.Bounds.Height;
-                var max = Math.Ceiling(file.Size / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - viewport;
-
-                scroller.ViewportSize = viewport;
-                scroller.Maximum = Math.Max(viewport, max);
             }
         }
 
@@ -383,11 +395,11 @@ namespace SourceGit.Views
                     return;
 
                 var scroller = ContentPanel.FindDescendantOfType<ScrollBar>();
-                if (scroller == null)
-                    return;
-
-                var offset = Math.Floor(idx / (double)HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - (scroller.ViewportSize * 0.5);
-                scroller.Value = Math.Max(0, offset);
+                if (scroller is { IsVisible: true })
+                {
+                    var offset = Math.Floor(idx * 1.0 / HexViewer.BYTES_PER_LINE) * HexViewer.LINE_HEIGHT - (scroller.ViewportSize * 0.5);
+                    scroller.Value = Math.Max(0, offset);
+                }
 
                 var viewer = this.FindDescendantOfType<HexViewer>(false);
                 viewer?.SetHighlightedIndex(idx);

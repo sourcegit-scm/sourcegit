@@ -85,7 +85,7 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OnOpenStandaloneHexEditor(object sender, RoutedEventArgs e)
+        private async void OnOpenBinaryFileViewer(object sender, RoutedEventArgs e)
         {
             if (sender is Button { DataContext: Models.BinaryDiff diff } && diff.NewSize > 0)
             {
