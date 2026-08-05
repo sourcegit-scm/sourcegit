@@ -197,6 +197,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Видалити гілку</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Гілка:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Ви збираєтеся видалити віддалену гілку!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Також видалити віддалену гілку ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Видалити кілька гілок</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Ви намагаєтеся видалити кілька гілок одночасно. Перевірте ще раз перед виконанням!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Видалити віддалене сховище</x:String>

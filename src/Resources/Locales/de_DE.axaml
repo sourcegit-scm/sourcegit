@@ -349,6 +349,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Löschen erzwingen, auch bei nicht gemergten Commits</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Du bist dabei, einen Remote-Branch zu löschen!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Auch Remote-Branch ${0}$ löschen</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Mehrere Branches löschen</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Du versuchst, mehrere Branches auf einmal zu löschen. Kontrolliere dies sorgfältig, bevor du fortfährst!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Mehrere Tags löschen</x:String>

@@ -334,6 +334,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">브랜치 삭제</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">브랜치:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">원격 브랜치를 삭제하려고 합니다!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">원격 브랜치 ${0}$도 함께 삭제</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">여러 브랜치 삭제</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">한 번에 여러 브랜치를 삭제하려고 합니다. 실행하기 전에 다시 한번 확인하세요!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">여러 태그 삭제</x:String>

@@ -349,6 +349,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Принудительно удалить, даже если содержит неслитые ревизии</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Вы собираетесь удалить внешнюю ветку!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Также удалите внешнюю ветку ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Удаление нескольких веток</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Вы пытаетесь удалить несколько веток одновременно. Обязательно перепроверьте, прежде чем предпринимать какие-либо действия!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Удалить несколько меток</x:String>

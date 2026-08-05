@@ -310,6 +310,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Elimina Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Stai per eliminare un branch remoto!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Elimina anche il branch remoto ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Elimina Branch Multipli</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Stai per eliminare più branch contemporaneamente. Controlla attentamente prima di procedere!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Elimina Tag Multipli</x:String>

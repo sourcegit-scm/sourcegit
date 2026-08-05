@@ -349,6 +349,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Rama:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Forzar la eliminación incluso si contiene commit(s) sin fusionar</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">¡Estás a punto de eliminar una rama remota!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">También eliminar la rama remota ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Eliminar Múltiples Ramas</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Estás intentando eliminar múltiples ramas a la vez. ¡Asegúrate de comprobar dos veces antes de realizar esta acción!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Eliminar Múltiples Etiquetas</x:String>

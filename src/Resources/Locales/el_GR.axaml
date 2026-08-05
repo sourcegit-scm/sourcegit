@@ -349,6 +349,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Κλάδος:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Εξαναγκασμένη διαγραφή ακόμη κι αν περιέχει μη συγχωνευμένα commit</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Πρόκειται να διαγράψετε έναν απομακρυσμένο κλάδο!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Διαγραφή και του απομακρυσμένου κλάδου ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Διαγραφή πολλαπλών κλάδων</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Προσπαθείτε να διαγράψετε πολλούς κλάδους ταυτόχρονα. Βεβαιωθείτε ότι ελέγξατε ξανά πριν προχωρήσετε!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Διαγραφή πολλαπλών ετικετών</x:String>

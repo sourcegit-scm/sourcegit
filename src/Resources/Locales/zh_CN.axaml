@@ -349,6 +349,7 @@
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">强制删除，即使包含未合并的提交</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支 ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">删除多个标签</x:String>

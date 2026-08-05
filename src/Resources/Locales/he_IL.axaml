@@ -335,6 +335,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">מחק Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">פעולה זו תמחק branch מרוחק!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">למחוק גם את ה־branch המרוחק ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">מחק מספר Branches</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">פעולה זו תמחק מספר branches בו זמנית. בדוק היטב לפני הביצוע!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">מחק מספר Tags</x:String>
