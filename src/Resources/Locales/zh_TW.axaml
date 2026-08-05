@@ -345,7 +345,6 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">強制取消，即使包含本機變更</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模組:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">刪除分支確認</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">您是否也想刪除以下遠端分支?</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名稱:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">強制刪除，即使包含未合併的提交</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在刪除遠端上的分支，請務必小心!</x:String>

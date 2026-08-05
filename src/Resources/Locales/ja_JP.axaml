@@ -345,7 +345,6 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">ローカルの変更の有無に関わらず、強制的に解除</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">サブモジュール:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">ブランチを削除</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">次のリモートブランチも削除しますか？</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">ブランチ:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">未マージのコミットがあっても強制的に削除</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">リモートブランチを削除しようとしています！！！</x:String>

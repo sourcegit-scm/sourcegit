@@ -345,7 +345,6 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Paksa de-init meski mengandung perubahan lokal.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Hapus Branch</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">Apakah Anda juga ingin menghapus remote branch berikut?</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Paksa hapus meskipun berisi commit yang belum di-merge</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Anda akan menghapus remote branch!!!</x:String>

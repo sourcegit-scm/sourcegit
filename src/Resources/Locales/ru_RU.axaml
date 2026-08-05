@@ -345,7 +345,6 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Принудительно удалить даже если содержит локальные изменения.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Подмодуль:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Удалить ветку</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">Вы хотите также удалить следующую удалённую ветку?</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Ветка:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Принудительно удалить, даже если содержит неслитые ревизии</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Вы собираетесь удалить внешнюю ветку!!!</x:String>

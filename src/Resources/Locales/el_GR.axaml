@@ -345,7 +345,6 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Εξαναγκασμός απο-αρχικοποίησης ακόμη κι αν περιέχει τοπικές αλλαγές.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Υπομονάδα:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Διαγραφή κλάδου</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">Θέλετε να διαγράψετε και τον ακόλουθο απομακρυσμένο κλάδο;</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Κλάδος:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Εξαναγκασμένη διαγραφή ακόμη κι αν περιέχει μη συγχωνευμένα commit</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Πρόκειται να διαγράψετε έναν απομακρυσμένο κλάδο!!!</x:String>

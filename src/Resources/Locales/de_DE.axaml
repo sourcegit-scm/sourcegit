@@ -345,7 +345,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Erzwinge Deinitialisierung, selbst wenn lokale Änderungen enthalten sind.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submodul:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Branch löschen</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">Möchtest du auch den folgenden Remote-Branch löschen?</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Löschen erzwingen, auch bei nicht gemergten Commits</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Du bist dabei, einen Remote-Branch zu löschen!!!</x:String>
