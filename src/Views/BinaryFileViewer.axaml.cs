@@ -303,6 +303,7 @@ namespace SourceGit.Views
     {
         public BinaryFileViewer()
         {
+            CloseOnESC = true;
             InitializeComponent();
         }
 
