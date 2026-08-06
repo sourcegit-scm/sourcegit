@@ -52,7 +52,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">未変更と見なしたファイルはありません</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">画像を選択...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">再読み込み</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">バイナリファイルはサポートされていません！！！</x:String>
   <x:String x:Key="Text.Bisect">問題の発生源を特定</x:String>
   <x:String x:Key="Text.Bisect.Abort">中止</x:String>
   <x:String x:Key="Text.Bisect.Bad">問題あり</x:String>
