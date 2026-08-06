@@ -368,6 +368,7 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Удалить из внешнего репозитория</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">СРАВНЕНИЕ БИНАРНИКОВ</x:String>
+  <x:String x:Key="Text.Diff.Binary.ViewContentOfNew" xml:space="preserve">ПРОСМОТР НОВОГО СОДЕРЖИМОГО</x:String>
   <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">ФАЙЛ ПУСТ</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">Первое сравнение</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Игнорировать изменения пробелов</x:String>
@@ -424,6 +425,9 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Извлечь без меток</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Извлечь внешние изменения</x:String>
+  <x:String x:Key="Text.File.Binary" xml:space="preserve">ДВОИЧНЫЙ ФАЙЛ</x:String>
+  <x:String x:Key="Text.File.HexViewer" xml:space="preserve">ПРОСМОТР В ШЕСТНАДЦАТЕРИЧНОМ ФОРМАТЕ</x:String>
+  <x:String x:Key="Text.File.HexViewer.GotoAddress" xml:space="preserve">Перейти по адресу...</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Не отслеживать</x:String>
   <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Пользовательское действие</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Отклонить...</x:String>
