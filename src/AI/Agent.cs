@@ -21,6 +21,11 @@ namespace SourceGit.AI
                 throw new Exception("Failed to fetch available models from this service. Please check your configuration and try again.");
 
             var options = new ChatCompletionOptions() { Tools = { ChatTools.GetDetailChangesInFile } };
+#pragma warning disable OPENAI001
+            if (!_service.ReasoningEffortLevel.Equals(Options.IgnoredReasoningEffortLevel, StringComparison.OrdinalIgnoreCase))
+                options.ReasoningEffortLevel = new ChatReasoningEffortLevel(_service.ReasoningEffortLevel);
+#pragma warning restore OPENAI001
+
             var userMessageBuilder = new StringBuilder();
             userMessageBuilder
                 .AppendLine("Generate a commit message (follow the rule of conventional commit message) for given git repository.")
