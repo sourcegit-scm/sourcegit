@@ -1552,7 +1552,7 @@ namespace SourceGit.ViewModels
 
             var root = Path.GetFullPath(Path.Combine(FullPath, submodule));
             var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
-            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
+            App.GetLauncher().OpenRepositoryInTab(normalizedPath, selfPage);
         }
 
         public void AddWorktree()

@@ -296,7 +296,7 @@ namespace SourceGit.ViewModels
                 IsUnmanaged = true
             };
 
-            OpenRepositoryInTab(node, null);
+            OpenRepositoryInTab(node, page);
         }
 
         public void OpenRepositoryInTab(RepositoryNode node, LauncherPage page)
@@ -353,6 +353,13 @@ namespace SourceGit.ViewModels
                     page.Node = node;
                     page.Data = repo;
                 }
+            }
+            else if (page.Node.IsRepository)
+            {
+                var parent = page;
+                page = new LauncherPage(node, repo);
+                var parentIdx = Pages.IndexOf(parent);
+                Pages.Insert(parentIdx + 1, page);
             }
             else
             {
