@@ -301,10 +301,21 @@ namespace SourceGit.ViewModels
 
         public void OpenRepositoryInTab(RepositoryNode node, LauncherPage page)
         {
+            // Compose submodule title from current parent name
+            if (page != null && page.Node.IsRepository)
+            {
+                var baseName = Path.GetFileName(node.Id);
+                node.Name = $"{page.Node.Name} : {baseName}";
+            }
+
             foreach (var one in Pages)
             {
                 if (one.Node.Id == node.Id)
                 {
+                    // Update title in case parent was renamed
+                    if (page != null && page.Node.IsRepository)
+                        one.Node.Name = node.Name;
+
                     ActivePage = one;
                     return;
                 }
@@ -357,6 +368,7 @@ namespace SourceGit.ViewModels
             else if (page.Node.IsRepository)
             {
                 var parent = page;
+                node.Name = $"{parent.Node.Name} : {node.Name}";
                 page = new LauncherPage(node, repo);
                 var parentIdx = Pages.IndexOf(parent);
                 Pages.Insert(parentIdx + 1, page);
