@@ -305,7 +305,6 @@ namespace SourceGit.ViewModels
             {
                 if (one.Node.Id == node.Id)
                 {
-                    // Update title in case parent was renamed
                     if (page != null && page.Node.IsRepository)
                         one.Node.Name = ComposeSubmoduleTitle(page, node);
 
