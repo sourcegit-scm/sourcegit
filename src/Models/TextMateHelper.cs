@@ -31,6 +31,7 @@ namespace SourceGit.Models
             new ExtraGrammar("source.ocaml", [".ml", ".mli"], "ocaml.json"),
             new ExtraGrammar("source.ocamllex", [".mll"], "ocamllex.json"),
             new ExtraGrammar("source.ocamlyacc", [".mly"], "ocamlyacc.json"),
+            new ExtraGrammar("source.swift", [".swift"], "swift.json"),
         ];
 
         private static readonly Dictionary<string, IRawGrammar> s_cachedRawGrammars = new();
