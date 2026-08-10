@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -117,15 +118,31 @@ namespace SourceGit.Views
                         Native.OS.OpenWithDefaultEditor(fullpath);
                     e.Handled = true;
                 }
-                else if (e.Key is Key.C && e.KeyModifiers.HasFlag(cmdKey) && vm.SelectedUnstaged is { Count: 1 })
+                else if (e.Key is Key.C && e.KeyModifiers.HasFlag(cmdKey))
                 {
-                    var change = vm.SelectedUnstaged[0];
-                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                        await this.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
-                    else
-                        await this.CopyTextAsync(change.Path);
+                    var builder = new StringBuilder();
+                    var copyAbsPath = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+                    var container = UnstagedChangesView.FindDescendantOfType<ChangeCollectionContainer>();
+                    if (container is { SelectedItems.Count: 1, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                    {
+                        builder.Append(copyAbsPath ? Native.OS.GetAbsPath(vm.Repository.FullPath, node.FullPath) : node.FullPath);
+                    }
+                    else if (vm.SelectedUnstaged is { Count: 1 })
+                    {
+                        var change = vm.SelectedUnstaged[0];
+                        builder.Append(copyAbsPath ? Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path) : change.Path);
+                    }
+                    else if (vm.SelectedUnstaged is { Count: > 0 })
+                    {
+                        foreach (var c in vm.SelectedUnstaged)
+                            builder.AppendLine(copyAbsPath ? Native.OS.GetAbsPath(vm.Repository.FullPath, c.Path) : c.Path);
+                    }
 
-                    e.Handled = true;
+                    if (builder.Length > 0)
+                    {
+                        await this.CopyTextAsync(builder.ToString());
+                        e.Handled = true;
+                    }
                 }
                 else if (e.Key is Key.F && e.KeyModifiers == cmdKey)
                 {
@@ -156,15 +173,31 @@ namespace SourceGit.Views
                         Native.OS.OpenWithDefaultEditor(fullpath);
                     e.Handled = true;
                 }
-                else if (e.Key is Key.C && e.KeyModifiers.HasFlag(cmdKey) && vm.SelectedStaged is { Count: 1 })
+                else if (e.Key is Key.C && e.KeyModifiers.HasFlag(cmdKey))
                 {
-                    var change = vm.SelectedStaged[0];
-                    if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
-                        await this.CopyTextAsync(Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path));
-                    else
-                        await this.CopyTextAsync(change.Path);
+                    var builder = new StringBuilder();
+                    var copyAbsPath = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
+                    var container = StagedChangesView.FindDescendantOfType<ChangeCollectionContainer>();
+                    if (container is { SelectedItems.Count: 1, SelectedItem: ViewModels.ChangeTreeNode { IsFolder: true } node })
+                    {
+                        builder.Append(copyAbsPath ? Native.OS.GetAbsPath(vm.Repository.FullPath, node.FullPath) : node.FullPath);
+                    }
+                    else if (vm.SelectedStaged is { Count: 1 })
+                    {
+                        var change = vm.SelectedStaged[0];
+                        builder.Append(copyAbsPath ? Native.OS.GetAbsPath(vm.Repository.FullPath, change.Path) : change.Path);
+                    }
+                    else if (vm.SelectedStaged is { Count: > 0 })
+                    {
+                        foreach (var c in vm.SelectedStaged)
+                            builder.AppendLine(copyAbsPath ? Native.OS.GetAbsPath(vm.Repository.FullPath, c.Path) : c.Path);
+                    }
 
-                    e.Handled = true;
+                    if (builder.Length > 0)
+                    {
+                        await this.CopyTextAsync(builder.ToString());
+                        e.Handled = true;
+                    }
                 }
                 else if (e.Key is Key.F && e.KeyModifiers == cmdKey)
                 {
