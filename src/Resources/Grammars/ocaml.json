@@ -729,7 +729,7 @@
     "commentBlock": {
       "begin": "\\(\\*(?!\\*[^\\)])",
       "end": "\\*\\)",
-      "name": "comment constant.regexp meta.separator.markdown",
+      "name": "comment",
       "contentName": "emphasis",
       "patterns": [
         {
@@ -743,7 +743,7 @@
     "commentDoc": {
       "begin": "\\(\\*\\*",
       "end": "\\*\\)",
-      "name": "comment constant.regexp meta.separator.markdown",
+      "name": "comment",
       "patterns": [
         {
           "match": "\\*"

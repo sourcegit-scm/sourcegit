@@ -29,6 +29,8 @@ namespace SourceGit.Models
             new ExtraGrammar("source.vue", [".vue"], "vue.json"),
             new ExtraGrammar("source.erlang", [".erl", ".escript", ".hrl"], "erlang.json"),
             new ExtraGrammar("source.ocaml", [".ml", ".mli"], "ocaml.json"),
+            new ExtraGrammar("source.ocamllex", [".mll"], "ocamllex.json"),
+            new ExtraGrammar("source.ocamlyacc", [".mly"], "ocamlyacc.json"),
         ];
 
         private static readonly Dictionary<string, IRawGrammar> s_cachedRawGrammars = new();
