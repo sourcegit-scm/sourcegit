@@ -202,7 +202,7 @@
                Margin="8,0"
                Samples="{Binding Samples, Mode=OneWay}"
                SampleBrush="{DynamicResource Brush.Accent}"
-               LabelFontFamily="{DynamicResource Fonts.Default}">
+               LabelFontFamily="{DynamicResource Fonts.Monospace}">
         <v:Chart.DataTemplates>
           <DataTemplate DataType="v:ChartToolTip">
             <Border>
