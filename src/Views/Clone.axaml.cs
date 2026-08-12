@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
@@ -42,6 +44,10 @@ namespace SourceGit.Views
             var toplevel = TopLevel.GetTopLevel(this);
             if (toplevel == null)
                 return;
+
+            var prefilled = TxtParentFolder.Text;
+            if (!string.IsNullOrWhiteSpace(prefilled) && Directory.Exists(prefilled))
+                options.SuggestedStartLocation = await toplevel.StorageProvider.TryGetFolderFromPathAsync(prefilled);
 
             try
             {
