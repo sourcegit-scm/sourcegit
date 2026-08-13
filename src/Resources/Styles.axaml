@@ -1021,7 +1021,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <Grid Background="Transparent" ColumnDefinitions="Auto,*">
-          <Border x:Name="Border" Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" BorderBrush="{DynamicResource Brush.Border1}" BorderThickness="1" Background="Transparent" CornerRadius="2">
+          <Border x:Name="Border" Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" BorderBrush="{DynamicResource Brush.CheckBox.Border}" BorderThickness="1" Background="Transparent" CornerRadius="2">
             <Path x:Name="Icon" Height="12" Width="12" Data="{DynamicResource Icons.Check}" Fill="{DynamicResource Brush.Accent}" IsVisible="False" Margin="0,2,0,0"/>
           </Border>
 
@@ -1038,8 +1038,16 @@
     <Style Selector="^:pointerover /template/ Border#Border">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     </Style>
+    <Style Selector="^:checked /template/ Border#Border">
+      <Setter Property="Background" Value="{DynamicResource Brush.CheckBox.CheckedBackground}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.CheckBox.CheckedBorder}"/>
+    </Style>
     <Style Selector="^:checked /template/ Path#Icon">
       <Setter Property="IsVisible" Value="True"/>
+      <Setter Property="Fill" Value="{DynamicResource Brush.CheckBox.CheckedFG}"/>
+    </Style>
+    <Style Selector="^:checked:pointerover /template/ Border#Border">
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     </Style>
     <Style Selector="^:focus-visible /template/ Border#Border">
       <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>

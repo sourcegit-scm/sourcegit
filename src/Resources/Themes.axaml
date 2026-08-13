@@ -33,6 +33,10 @@
       <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
       <Color x:Key="Color.InlineCodeFG">Black</Color>
       <Color x:Key="Color.HistoryBG">#FFF0F5F9</Color>
+      <Color x:Key="Color.CheckBox.Border">#FF898989</Color>
+      <SolidColorBrush x:Key="Brush.CheckBox.CheckedBackground" Color="Transparent"/>
+      <SolidColorBrush x:Key="Brush.CheckBox.CheckedBorder" Color="#FF898989"/>
+      <SolidColorBrush x:Key="Brush.CheckBox.CheckedFG" Color="{DynamicResource SystemAccentColor}"/>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -67,6 +71,10 @@
       <Color x:Key="Color.InlineCode">#FF383838</Color>
       <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
       <Color x:Key="Color.HistoryBG">#FF272727</Color>
+      <Color x:Key="Color.CheckBox.Border">#FFA8A8A8</Color>
+      <SolidColorBrush x:Key="Brush.CheckBox.CheckedBackground" Color="Transparent"/>
+      <SolidColorBrush x:Key="Brush.CheckBox.CheckedBorder" Color="#FFA8A8A8"/>
+      <SolidColorBrush x:Key="Brush.CheckBox.CheckedFG" Color="White"/>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -85,6 +93,7 @@
   <SolidColorBrush x:Key="Brush.Conflict.TheirsBG" Color="{DynamicResource Color.Conflict.TheirsBG}"/>
   <SolidColorBrush x:Key="Brush.Border0" Color="{DynamicResource Color.Border0}"/>
   <SolidColorBrush x:Key="Brush.Border1" Color="{DynamicResource Color.Border1}"/>
+  <SolidColorBrush x:Key="Brush.CheckBox.Border" Color="{DynamicResource Color.CheckBox.Border}"/>
   <SolidColorBrush x:Key="Brush.Border2" Color="{DynamicResource Color.Border2}"/>
   <SolidColorBrush x:Key="Brush.FlatButton.Background" Color="{DynamicResource Color.FlatButton.Background}"/>
   <SolidColorBrush x:Key="Brush.FlatButton.BackgroundHovered" Color="{DynamicResource Color.FlatButton.BackgroundHovered}"/>
