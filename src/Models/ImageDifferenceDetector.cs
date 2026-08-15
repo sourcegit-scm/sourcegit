@@ -7,34 +7,72 @@ using StbImageSharp;
 
 namespace SourceGit.Models
 {
+    public class ImageDiffDetectionResult
+    {
+        public long ChangedPixels { get; set; } = 0;
+        public long TotalPixels { get; set; } = 0;
+        public double ChangedPercentage => TotalPixels > 0 ? (double)ChangedPixels / TotalPixels * 100.0 : 0.0;
+        public List<Rect> ChangeBoxes { get; set; } = [];
+    }
+
     public static class ImageDifferenceDetector
     {
-        public static List<Rect> DetectChangeBoxes(Bitmap oldBmp, Bitmap newBmp)
+        public static ImageDiffDetectionResult Detect(Bitmap oldBmp, Bitmap newBmp)
         {
+            var result = new ImageDiffDetectionResult();
+
             if (oldBmp == null && newBmp == null)
-                return [];
+                return result;
 
             if (oldBmp == null)
-                return [new Rect(0, 0, newBmp.PixelSize.Width, newBmp.PixelSize.Height)];
+            {
+                var w = newBmp.PixelSize.Width;
+                var h = newBmp.PixelSize.Height;
+                result.TotalPixels = (long)w * h;
+                result.ChangedPixels = result.TotalPixels;
+                result.ChangeBoxes = [new Rect(0, 0, w, h)];
+                return result;
+            }
 
             if (newBmp == null)
-                return [new Rect(0, 0, oldBmp.PixelSize.Width, oldBmp.PixelSize.Height)];
+            {
+                var w = oldBmp.PixelSize.Width;
+                var h = oldBmp.PixelSize.Height;
+                result.TotalPixels = (long)w * h;
+                result.ChangedPixels = result.TotalPixels;
+                result.ChangeBoxes = [new Rect(0, 0, w, h)];
+                return result;
+            }
 
             var oldBytes = GetRgbaBytes(oldBmp, out var w1, out var h1);
             var newBytes = GetRgbaBytes(newBmp, out var w2, out var h2);
 
             if (oldBytes == null && newBytes == null)
-                return [];
+                return result;
+
             if (oldBytes == null)
-                return [new Rect(0, 0, w2, h2)];
+            {
+                result.TotalPixels = (long)w2 * h2;
+                result.ChangedPixels = result.TotalPixels;
+                result.ChangeBoxes = [new Rect(0, 0, w2, h2)];
+                return result;
+            }
+
             if (newBytes == null)
-                return [new Rect(0, 0, w1, h1)];
+            {
+                result.TotalPixels = (long)w1 * h1;
+                result.ChangedPixels = result.TotalPixels;
+                result.ChangeBoxes = [new Rect(0, 0, w1, h1)];
+                return result;
+            }
 
             int maxW = Math.Max(w1, w2);
             int maxH = Math.Max(h1, h2);
 
             if (maxW <= 0 || maxH <= 0)
-                return [];
+                return result;
+
+            result.TotalPixels = (long)maxW * maxH;
 
             const int cellSize = 16;
             int gridW = (maxW + cellSize - 1) / cellSize;
@@ -43,6 +81,7 @@ namespace SourceGit.Models
             var cellBounds = new Rect[gridW, gridH];
             var hasDiff = new bool[gridW, gridH];
             bool anyDiff = false;
+            long diffPixelCount = 0;
 
             for (int cy = 0; cy < gridH; cy++)
             {
@@ -107,6 +146,7 @@ namespace SourceGit.Models
 
                             if (diffPixel)
                             {
+                                diffPixelCount++;
                                 cellHasDiff = true;
                                 if (x < minX) minX = x;
                                 if (x > maxX) maxX = x;
@@ -125,8 +165,10 @@ namespace SourceGit.Models
                 }
             }
 
+            result.ChangedPixels = diffPixelCount;
+
             if (!anyDiff)
-                return [];
+                return result;
 
             var visited = new bool[gridW, gridH];
             var clusters = new List<Rect>();
@@ -193,7 +235,8 @@ namespace SourceGit.Models
                 }
             }
 
-            return clusters;
+            result.ChangeBoxes = clusters;
+            return result;
         }
 
         private static byte[] GetRgbaBytes(Bitmap bitmap, out int width, out int height)

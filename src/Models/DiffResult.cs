@@ -82,10 +82,17 @@ namespace SourceGit.Models
         public string OldImageSize => Old != null ? $"{Old.PixelSize.Width} x {Old.PixelSize.Height}" : "0 x 0";
         public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
 
-        public IReadOnlyList<Avalonia.Rect> ChangeOutlines => _changeOutlines ??= ImageDifferenceDetector.DetectChangeBoxes(Old, New);
-        public int ChangeCount => ChangeOutlines.Count;
+        public ImageDiffDetectionResult DetectionResult => _detectionResult ??= ImageDifferenceDetector.Detect(Old, New);
 
-        private IReadOnlyList<Avalonia.Rect> _changeOutlines = null;
+        public IReadOnlyList<Avalonia.Rect> ChangeOutlines => DetectionResult.ChangeBoxes;
+        public int ChangeCount => DetectionResult.ChangeBoxes.Count;
+        public long ChangedPixelCount => DetectionResult.ChangedPixels;
+        public double ChangedPixelPercentage => DetectionResult.ChangedPercentage;
+
+        public string DiffPixelStatsText => $"{ChangedPixelCount:N0} px ({ChangedPixelPercentage:F2}%)";
+        public string DiffAreaStatsText => ChangeCount == 1 ? "1 area" : $"{ChangeCount} areas";
+
+        private ImageDiffDetectionResult _detectionResult = null;
     }
 
     public class EmptyFile

@@ -51,8 +51,28 @@
           <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
             <Path Width="12" Height="12" Data="{StaticResource Icons.Eye}" Fill="{DynamicResource Brush.FG1}"/>
             <TextBlock Text="{DynamicResource Text.Diff.Image.HighlightChanges}" FontSize="10" VerticalAlignment="Center"/>
+            <Border Background="{DynamicResource Brush.Badge}"
+                    CornerRadius="6"
+                    Height="14"
+                    Padding="4,0"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}">
+              <TextBlock Text="{Binding ChangeCount}" FontSize="9" Foreground="{DynamicResource Brush.BadgeFG}" VerticalAlignment="Center"/>
+            </Border>
           </StackPanel>
         </ToggleButton>
+
+        <Rectangle Width="1" Height="14" Fill="{DynamicResource Brush.Border1}" Margin="4,0"/>
+
+        <!-- Difference statistics (pixels and changed areas) -->
+        <Border Background="{DynamicResource Brush.Badge}" CornerRadius="4" Padding="6,3" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+            <Path Width="11" Height="11" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding DiffPixelStatsText}" FontSize="10" Foreground="{DynamicResource Brush.FG1}" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding DiffAreaStatsText}" FontSize="10" Foreground="{DynamicResource Brush.Accent}" FontWeight="Bold" VerticalAlignment="Center"
+                       IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}"/>
+          </StackPanel>
+        </Border>
       </StackPanel>
     </Border>
 
