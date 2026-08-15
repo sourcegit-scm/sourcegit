@@ -9,214 +9,296 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ImageDiffView"
              x:DataType="m:ImageDiff">
-  <TabControl SelectedIndex="{Binding Source={x:Static vm:Preferences.Instance}, Path=ImageDiffActiveIdx, Mode=TwoWay}" Margin="0,0,0,8" TabStripPlacement="Bottom">
-    <TabControl.Styles>
-      <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-      </Style>
-    </TabControl.Styles>
+  <Grid RowDefinitions="Auto,*">
+    <!-- Zoom Toolbar -->
+    <Border Grid.Row="0" Margin="8,4,8,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <StackPanel Orientation="Horizontal" Spacing="6" Height="24" VerticalAlignment="Center">
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Fill="{DynamicResource Brush.FG2}" VerticalAlignment="Center"/>
+        <TextBlock Text="{DynamicResource Text.Diff.Image.Zoom}" VerticalAlignment="Center" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
 
-    <TabItem>
-      <TabItem.Header>
-        <TextBlock Text="{DynamicResource Text.Diff.Image.SideBySide}" FontSize="11"/>
-      </TabItem.Header>
+        <Button Classes="icon_button" Width="16" Height="16" Padding="0" Click="OnZoomOut" ToolTip.Tip="-">
+          <Path Width="10" Height="10" Stretch="Uniform" Fill="{DynamicResource Brush.FG1}" Data="M0 0M1024 1024 M128 448h768v128H128z"/>
+        </Button>
 
-      <UniformGrid Rows="1" Margin="0,16" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+        <Slider x:Name="ImageZoomSlider"
+                Width="120"
+                Minimum="0.5" Maximum="8.0"
+                Value="1.0"
+                TickFrequency="0.25"
+                VerticalAlignment="Center"/>
+
+        <TextBlock Text="{Binding #ImageZoomSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
+                   Width="40"
+                   TextAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="11"
+                   Foreground="{DynamicResource Brush.FG1}"/>
+
+        <Button Classes="icon_button" Width="16" Height="16" Padding="0" Click="OnZoomIn" ToolTip.Tip="+">
+          <Path Width="10" Height="10" Stretch="Uniform" Fill="{DynamicResource Brush.FG1}" Data="M0 0M1024 1024 M128 448h320V128h128v320h320v128H576v320H448V576H128V448z"/>
+        </Button>
+
+        <Button Classes="flat" Padding="6,2" Click="OnZoomReset" ToolTip.Tip="1:1 / Fit">
+          <TextBlock Text="{DynamicResource Text.Diff.Image.ResetZoom}" FontSize="10"/>
+        </Button>
+      </StackPanel>
+    </Border>
+
+    <TabControl Grid.Row="1" SelectedIndex="{Binding Source={x:Static vm:Preferences.Instance}, Path=ImageDiffActiveIdx, Mode=TwoWay}" Margin="0,0,0,8" TabStripPlacement="Bottom">
+      <TabControl.Styles>
+        <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
+          <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+      </TabControl.Styles>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="{DynamicResource Text.Diff.Image.SideBySide}" FontSize="11"/>
+        </TabItem.Header>
+
+        <Grid ColumnDefinitions="*,*" Margin="8,8">
+          <Grid Grid.Column="0" RowDefinitions="Auto,*" Margin="8,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+              <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+              </Border>
+
+              <TextBlock Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+              <TextBlock Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            </StackPanel>
+
+            <Border Grid.Row="1" Margin="0,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="drop-shadow(0 0 8 #A0000000)">
+              <Border Background="{DynamicResource Brush.Popup}" Padding="8">
+                <ScrollViewer x:Name="OldImageScrollViewer"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              ScrollChanged="OnOldImageScrollChanged"
+                              PointerWheelChanged="OnImagePointerWheelChanged"
+                              PointerPressed="OnImagePointerPressed"
+                              PointerMoved="OnImagePointerMoved"
+                              PointerReleased="OnImagePointerReleased"
+                              PointerCaptureLost="OnImagePointerCaptureLost">
+                  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <v:ImageView Image="{Binding Old}" Zoom="{Binding #ImageZoomSlider.Value}"/>
+                  </Border>
+                </ScrollViewer>
+              </Border>
+            </Border>
+          </Grid>
+
+          <Grid Grid.Column="1" RowDefinitions="Auto,*" Margin="8,0" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+              <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
+                <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+              </Border>
+
+              <TextBlock Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+              <TextBlock Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            </StackPanel>
+
+            <Border Grid.Row="1" Margin="0,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="drop-shadow(0 0 8 #A0000000)">
+              <Border Background="{DynamicResource Brush.Popup}" Padding="8">
+                <ScrollViewer x:Name="NewImageScrollViewer"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto"
+                              ScrollChanged="OnNewImageScrollChanged"
+                              PointerWheelChanged="OnImagePointerWheelChanged"
+                              PointerPressed="OnImagePointerPressed"
+                              PointerMoved="OnImagePointerMoved"
+                              PointerReleased="OnImagePointerReleased"
+                              PointerCaptureLost="OnImagePointerCaptureLost">
+                  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <v:ImageView Image="{Binding New}" Zoom="{Binding #ImageZoomSlider.Value}"/>
+                  </Border>
+                </ScrollViewer>
+              </Border>
+            </Border>
+          </Grid>
+        </Grid>
+      </TabItem>
+
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="{DynamicResource Text.Diff.Image.Swipe}" FontSize="11"/>
+        </TabItem.Header>
+
+        <Grid RowDefinitions="Auto,*" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,8">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center" Margin="0,0,0,6">
+            <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
               <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
             </Border>
 
-            <TextBlock Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
-          </StackPanel>
+            <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
 
-          <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-            <Border Background="{DynamicResource Brush.Popup}" Padding="8">
-              <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
-                <v:ImageView Image="{Binding Old}"/>
-              </Border>
-            </Border>
-          </Border>
-        </Grid>
-
-        <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
+            <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
               <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
             </Border>
 
-            <TextBlock Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
-          </StackPanel>
+            <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          </Grid>
 
-          <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-            <Border Background="{DynamicResource Brush.Popup}" Padding="8">
-              <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
-                <v:ImageView Image="{Binding New}"/>
-              </Border>
+          <Border Grid.Row="1" Margin="0,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Window}">
+              <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto"
+                            PointerWheelChanged="OnImagePointerWheelChanged"
+                            PointerPressed="OnImagePointerPressed"
+                            PointerMoved="OnImagePointerMoved"
+                            PointerReleased="OnImagePointerReleased"
+                            PointerCaptureLost="OnImagePointerCaptureLost">
+                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <v:ImageSwipeControl OldImage="{Binding Old}"
+                                       NewImage="{Binding New}"
+                                       Zoom="{Binding #ImageZoomSlider.Value}"
+                                       RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                </Border>
+              </ScrollViewer>
             </Border>
           </Border>
         </Grid>
-      </UniformGrid>
-    </TabItem>
+      </TabItem>
 
-    <TabItem>
-      <TabItem.Header>
-        <TextBlock Text="{DynamicResource Text.Diff.Image.Swipe}" FontSize="11"/>
-      </TabItem.Header>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="{DynamicResource Text.Diff.Image.Blend}" FontSize="11"/>
+        </TabItem.Header>
 
-      <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
-          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
-          </Border>
+        <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,8,8,0">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center" Margin="0,0,0,6">
+            <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            </Border>
 
-          <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
 
-          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
-          </Border>
+            <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
+              <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+            </Border>
 
-          <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
-        </Grid>
+            <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          </Grid>
 
-        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-          <Border Background="{DynamicResource Brush.Window}">
-            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-              <v:ImageSwipeControl OldImage="{Binding Old}"
-                                   NewImage="{Binding New}"
-                                   RenderOptions.BitmapInterpolationMode="HighQuality"/>
+          <Border Grid.Row="1" Margin="0,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Window}">
+              <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto"
+                            PointerWheelChanged="OnImagePointerWheelChanged"
+                            PointerPressed="OnImagePointerPressed"
+                            PointerMoved="OnImagePointerMoved"
+                            PointerReleased="OnImagePointerReleased"
+                            PointerCaptureLost="OnImagePointerCaptureLost">
+                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
+                                       OldImage="{Binding Old}"
+                                       NewImage="{Binding New}"
+                                       Zoom="{Binding #ImageZoomSlider.Value}"/>
+                </Border>
+              </ScrollViewer>
             </Border>
           </Border>
-        </Border>
-      </Grid>
-    </TabItem>
 
-    <TabItem>
-      <TabItem.Header>
-        <TextBlock Text="{DynamicResource Text.Diff.Image.Blend}" FontSize="11"/>
-      </TabItem.Header>
+          <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,8,0,0" HorizontalAlignment="Center">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
+              <TextBlock Margin="0,0,8,0"
+                         Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Text="{DynamicResource Text.Diff.Old}"/>
+            </StackPanel>
 
-      <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
-          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
-          </Border>
+            <Slider Grid.Column="1"
+                    x:Name="ImageBlendSlider"
+                    Minimum="0" Maximum="1"
+                    VerticalAlignment="Top"
+                    TickFrequency="0.5"
+                    TickPlacement="BottomRight"
+                    Margin="0"
+                    MinHeight="0"
+                    Foreground="{DynamicResource Brush.Border1}"
+                    Value="0.5"/>
 
-          <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
-
-          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
-          </Border>
-
-          <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
+              <TextBlock Text="{DynamicResource Text.Diff.New}"/>
+              <TextBlock Margin="8,0,0,0"
+                         Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </Grid>
         </Grid>
+      </TabItem>
 
-        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-          <Border Background="{DynamicResource Brush.Window}">
-            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-              <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
-                                   OldImage="{Binding Old}"
-                                   NewImage="{Binding New}"/>
+      <TabItem>
+        <TabItem.Header>
+          <TextBlock Text="{DynamicResource Text.Diff.Image.Difference}" FontSize="11"/>
+        </TabItem.Header>
+
+        <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="8,8,8,0">
+          <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center" Margin="0,0,0,6">
+            <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
+              <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            </Border>
+
+            <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+
+            <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
+              <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+            </Border>
+
+            <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
+            <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          </Grid>
+
+          <Border Grid.Row="1" Margin="0,4,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Window}">
+              <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollBarVisibility="Auto"
+                            PointerWheelChanged="OnImagePointerWheelChanged"
+                            PointerPressed="OnImagePointerPressed"
+                            PointerMoved="OnImagePointerMoved"
+                            PointerReleased="OnImagePointerReleased"
+                            PointerCaptureLost="OnImagePointerCaptureLost">
+                <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <v:ImageDifferenceControl Alpha="{Binding #ImageDifferenceSlider.Value}"
+                                            OldImage="{Binding Old}"
+                                            NewImage="{Binding New}"
+                                            Zoom="{Binding #ImageZoomSlider.Value}"/>
+                </Border>
+              </ScrollViewer>
             </Border>
           </Border>
-        </Border>
 
-        <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
-          <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Margin="0,0,8,0"
-                       Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
-                       Foreground="{DynamicResource Brush.FG2}"/>
-            <TextBlock Text="{DynamicResource Text.Diff.Old}"/>
-          </StackPanel>
+          <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,8,0,0" HorizontalAlignment="Center">
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
+              <TextBlock Margin="0,0,8,0"
+                         Text="{Binding #ImageDifferenceSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Text="{DynamicResource Text.Diff.Old}"/>
+            </StackPanel>
 
-          <Slider Grid.Column="1"
-                  x:Name="ImageBlendSlider"
-                  Minimum="0" Maximum="1"
-                  VerticalAlignment="Top"
-                  TickFrequency="0.5"
-                  TickPlacement="BottomRight"
-                  Margin="0"
-                  MinHeight="0"
-                  Foreground="{DynamicResource Brush.Border1}"
-                  Value="0.5"/>
+            <Slider Grid.Column="1"
+                    x:Name="ImageDifferenceSlider"
+                    Minimum="0" Maximum="1"
+                    VerticalAlignment="Top"
+                    TickFrequency="0.5"
+                    TickPlacement="BottomRight"
+                    Margin="0"
+                    MinHeight="0"
+                    Foreground="{DynamicResource Brush.Border1}"
+                    Value="0.5"/>
 
-          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
-            <TextBlock Text="{DynamicResource Text.Diff.New}"/>
-            <TextBlock Margin="8,0,0,0"
-                       Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
-                       Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
+              <TextBlock Text="{DynamicResource Text.Diff.New}"/>
+              <TextBlock Margin="8,0,0,0"
+                         Text="{Binding #ImageDifferenceSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
+                         Foreground="{DynamicResource Brush.FG2}"/>
+            </StackPanel>
+          </Grid>
         </Grid>
-      </Grid>
-    </TabItem>
-
-    <TabItem>
-      <TabItem.Header>
-        <TextBlock Text="{DynamicResource Text.Diff.Image.Difference}" FontSize="11"/>
-      </TabItem.Header>
-
-      <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
-          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
-          </Border>
-
-          <TextBlock Grid.Column="1" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
-
-          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
-          </Border>
-
-          <TextBlock Grid.Column="4" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
-        </Grid>
-
-        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-          <Border Background="{DynamicResource Brush.Window}">
-            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
-              <v:ImageDifferenceControl Alpha="{Binding #ImageDifferenceSlider.Value}"
-                                        OldImage="{Binding Old}"
-                                        NewImage="{Binding New}"/>
-            </Border>
-          </Border>
-        </Border>
-
-        <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
-          <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
-            <TextBlock Margin="0,0,8,0"
-                       Text="{Binding #ImageDifferenceSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
-                       Foreground="{DynamicResource Brush.FG2}"/>
-            <TextBlock Text="{DynamicResource Text.Diff.Old}"/>
-          </StackPanel>
-
-          <Slider Grid.Column="1"
-                  x:Name="ImageDifferenceSlider"
-                  Minimum="0" Maximum="1"
-                  VerticalAlignment="Top"
-                  TickFrequency="0.5"
-                  TickPlacement="BottomRight"
-                  Margin="0"
-                  MinHeight="0"
-                  Foreground="{DynamicResource Brush.Border1}"
-                  Value="0.5"/>
-
-          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
-            <TextBlock Text="{DynamicResource Text.Diff.New}"/>
-            <TextBlock Margin="8,0,0,0"
-                       Text="{Binding #ImageDifferenceSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
-                       Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
-        </Grid>
-      </Grid>
-    </TabItem>
-
-  </TabControl>
+      </TabItem>
+    </TabControl>
+  </Grid>
 </UserControl>

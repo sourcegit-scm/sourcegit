@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -6,11 +6,25 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public class ImageContainer : Control
     {
+        public static readonly DirectProperty<ImageContainer, double> ZoomProperty =
+            AvaloniaProperty.RegisterDirect<ImageContainer, double>(
+                nameof(Zoom),
+                static o => o.Zoom,
+                static (o, v) => o.Zoom = v,
+                1.0);
+
+        public double Zoom
+        {
+            get => _zoom;
+            set => SetAndRaise(ZoomProperty, ref _zoom, value);
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_bgBrush == null)
@@ -42,14 +56,78 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
+            if (change.Property == ZoomProperty)
+            {
+                InvalidateMeasure();
+                InvalidateVisual();
+            }
+            else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
             {
                 _bgBrush = null;
                 InvalidateVisual();
             }
         }
 
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+            _attachedScrollViewer = this.FindAncestorOfType<ScrollViewer>();
+            if (_attachedScrollViewer != null)
+            {
+                _attachedScrollViewer.SizeChanged += OnScrollViewerSizeChanged;
+            }
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnDetachedFromVisualTree(e);
+            if (_attachedScrollViewer != null)
+            {
+                _attachedScrollViewer.SizeChanged -= OnScrollViewerSizeChanged;
+                _attachedScrollViewer = null;
+            }
+        }
+
+        private void OnScrollViewerSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            InvalidateMeasure();
+        }
+
+        protected Size GetDesiredSizeWithZoom(Size img, Size available)
+        {
+            var w = available.Width;
+            var h = available.Height;
+            if (double.IsInfinity(w) || double.IsInfinity(h))
+            {
+                var scrollViewer = _attachedScrollViewer ?? this.FindAncestorOfType<ScrollViewer>();
+                if (scrollViewer != null)
+                {
+                    double vw = scrollViewer.Viewport.Width > 1 ? scrollViewer.Viewport.Width : scrollViewer.Bounds.Width;
+                    double vh = scrollViewer.Viewport.Height > 1 ? scrollViewer.Viewport.Height : scrollViewer.Bounds.Height;
+
+                    if (double.IsInfinity(w)) w = vw > 1 ? vw : img.Width;
+                    if (double.IsInfinity(h)) h = vh > 1 ? vh : img.Height;
+                }
+                else
+                {
+                    if (double.IsInfinity(w)) w = img.Width;
+                    if (double.IsInfinity(h)) h = img.Height;
+                }
+            }
+
+            var sw = w / img.Width;
+            var sh = h / img.Height;
+            var baseScale = Math.Min(1, Math.Min(sw, sh));
+            if (double.IsNaN(baseScale) || double.IsInfinity(baseScale) || baseScale <= 0)
+                baseScale = 1.0;
+
+            var scale = baseScale * _zoom;
+            return new Size(scale * img.Width, scale * img.Height);
+        }
+
         private DrawingBrush _bgBrush = null;
+        private double _zoom = 1.0;
+        private ScrollViewer _attachedScrollViewer;
     }
 
     public class ImageView : ImageContainer
@@ -78,7 +156,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == ImageProperty)
+            if (change.Property == ImageProperty || change.Property == ZoomProperty)
                 InvalidateMeasure();
         }
 
@@ -86,11 +164,7 @@ namespace SourceGit.Views
         {
             if (_image != null)
             {
-                var imageSize = _image.Size;
-                var scaleW = availableSize.Width / imageSize.Width;
-                var scaleH = availableSize.Height / imageSize.Height;
-                var scale = Math.Min(1, Math.Min(scaleW, scaleH));
-                return new Size(scale * imageSize.Width, scale * imageSize.Height);
+                return GetDesiredSizeWithZoom(_image.Size, availableSize);
             }
 
             return new Size(0, 0);
@@ -159,7 +233,8 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == OldImageProperty ||
-                change.Property == NewImageProperty)
+                change.Property == NewImageProperty ||
+                change.Property == ZoomProperty)
                 InvalidateMeasure();
             else if (change.Property == AlphaProperty)
                 InvalidateVisual();
@@ -221,22 +296,14 @@ namespace SourceGit.Views
         protected override Size MeasureOverride(Size availableSize)
         {
             if (_oldImage == null)
-                return _newImage == null ? new Size(0, 0) : GetDesiredSize(_newImage.Size, availableSize);
+                return _newImage == null ? new Size(0, 0) : GetDesiredSizeWithZoom(_newImage.Size, availableSize);
 
             if (_newImage == null)
-                return GetDesiredSize(_oldImage.Size, availableSize);
+                return GetDesiredSizeWithZoom(_oldImage.Size, availableSize);
 
-            var ls = GetDesiredSize(_oldImage.Size, availableSize);
-            var rs = GetDesiredSize(_newImage.Size, availableSize);
+            var ls = GetDesiredSizeWithZoom(_oldImage.Size, availableSize);
+            var rs = GetDesiredSizeWithZoom(_newImage.Size, availableSize);
             return ls.Width > rs.Width ? ls : rs;
-        }
-
-        private Size GetDesiredSize(Size img, Size available)
-        {
-            var sw = available.Width / img.Width;
-            var sh = available.Height / img.Height;
-            var scale = Math.Min(1, Math.Min(sw, sh));
-            return new Size(scale * img.Width, scale * img.Height);
         }
 
         private void RenderSingleSide(DrawingContext context, Bitmap img, Rect clip)
@@ -244,15 +311,8 @@ namespace SourceGit.Views
             var w = Bounds.Width;
             var h = Bounds.Height;
 
-            var imgW = img.Size.Width;
-            var imgH = img.Size.Height;
-            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
-
-            var scaledW = img.Size.Width * scale;
-            var scaledH = img.Size.Height * scale;
-
-            var src = new Rect(0, 0, imgW, imgH);
-            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+            var src = new Rect(0, 0, img.Size.Width, img.Size.Height);
+            var dst = new Rect(0, 0, w, h);
 
             using (context.PushClip(clip))
                 context.DrawImage(img, src, dst);
@@ -315,7 +375,7 @@ namespace SourceGit.Views
 
             if (drawLeft && drawRight)
             {
-                using (var rt = new RenderTargetBitmap(new PixelSize((int)Bounds.Width, (int)Bounds.Height), right.Dpi))
+                using (var rt = new RenderTargetBitmap(new PixelSize((int)Math.Max(1, Bounds.Width), (int)Math.Max(1, Bounds.Height)), right.Dpi))
                 {
                     using (var dc = rt.CreateDrawingContext())
                     {
@@ -344,7 +404,8 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == OldImageProperty ||
-                change.Property == NewImageProperty)
+                change.Property == NewImageProperty ||
+                change.Property == ZoomProperty)
                 InvalidateMeasure();
             else if (change.Property == AlphaProperty)
                 InvalidateVisual();
@@ -356,35 +417,20 @@ namespace SourceGit.Views
             var right = NewImage;
 
             if (left == null)
-                return right == null ? new Size(0, 0) : GetDesiredSize(right.Size, availableSize);
+                return right == null ? new Size(0, 0) : GetDesiredSizeWithZoom(right.Size, availableSize);
 
             if (right == null)
-                return GetDesiredSize(left.Size, availableSize);
+                return GetDesiredSizeWithZoom(left.Size, availableSize);
 
-            var ls = GetDesiredSize(left.Size, availableSize);
-            var rs = GetDesiredSize(right.Size, availableSize);
+            var ls = GetDesiredSizeWithZoom(left.Size, availableSize);
+            var rs = GetDesiredSizeWithZoom(right.Size, availableSize);
             return ls.Width > rs.Width ? ls : rs;
-        }
-
-        private Size GetDesiredSize(Size img, Size available)
-        {
-            var sw = available.Width / img.Width;
-            var sh = available.Height / img.Height;
-            var scale = Math.Min(1, Math.Min(sw, sh));
-            return new Size(scale * img.Width, scale * img.Height);
         }
 
         private void RenderSingleSide(DrawingContext context, Bitmap img, double w, double h, double alpha)
         {
-            var imgW = img.Size.Width;
-            var imgH = img.Size.Height;
-            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
-
-            var scaledW = img.Size.Width * scale;
-            var scaledH = img.Size.Height * scale;
-
-            var src = new Rect(0, 0, imgW, imgH);
-            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+            var src = new Rect(0, 0, img.Size.Width, img.Size.Height);
+            var dst = new Rect(0, 0, w, h);
 
             using (context.PushOpacity(alpha))
                 context.DrawImage(img, src, dst);
@@ -447,7 +493,7 @@ namespace SourceGit.Views
 
             if (drawLeft && drawRight)
             {
-                using (var rt = new RenderTargetBitmap(new PixelSize((int)Bounds.Width, (int)Bounds.Height), right.Dpi))
+                using (var rt = new RenderTargetBitmap(new PixelSize((int)Math.Max(1, Bounds.Width), (int)Math.Max(1, Bounds.Height)), right.Dpi))
                 {
                     using (var dc = rt.CreateDrawingContext())
                     {
@@ -476,7 +522,8 @@ namespace SourceGit.Views
             base.OnPropertyChanged(change);
 
             if (change.Property == OldImageProperty ||
-                change.Property == NewImageProperty)
+                change.Property == NewImageProperty ||
+                change.Property == ZoomProperty)
                 InvalidateMeasure();
             else if (change.Property == AlphaProperty)
                 InvalidateVisual();
@@ -488,35 +535,20 @@ namespace SourceGit.Views
             var right = NewImage;
 
             if (left == null)
-                return right == null ? new Size(0, 0) : GetDesiredSize(right.Size, availableSize);
+                return right == null ? new Size(0, 0) : GetDesiredSizeWithZoom(right.Size, availableSize);
 
             if (right == null)
-                return GetDesiredSize(left.Size, availableSize);
+                return GetDesiredSizeWithZoom(left.Size, availableSize);
 
-            var ls = GetDesiredSize(left.Size, availableSize);
-            var rs = GetDesiredSize(right.Size, availableSize);
+            var ls = GetDesiredSizeWithZoom(left.Size, availableSize);
+            var rs = GetDesiredSizeWithZoom(right.Size, availableSize);
             return ls.Width > rs.Width ? ls : rs;
-        }
-
-        private Size GetDesiredSize(Size img, Size available)
-        {
-            var sw = available.Width / img.Width;
-            var sh = available.Height / img.Height;
-            var scale = Math.Min(1, Math.Min(sw, sh));
-            return new Size(scale * img.Width, scale * img.Height);
         }
 
         private void RenderSingleSide(DrawingContext context, Bitmap img, double w, double h, double alpha)
         {
-            var imgW = img.Size.Width;
-            var imgH = img.Size.Height;
-            var scale = Math.Min(1, Math.Min(w / imgW, h / imgH));
-
-            var scaledW = img.Size.Width * scale;
-            var scaledH = img.Size.Height * scale;
-
-            var src = new Rect(0, 0, imgW, imgH);
-            var dst = new Rect((w - scaledW) * 0.5, (h - scaledH) * 0.5, scaledW, scaledH);
+            var src = new Rect(0, 0, img.Size.Width, img.Size.Height);
+            var dst = new Rect(0, 0, w, h);
 
             using (context.PushOpacity(alpha))
                 context.DrawImage(img, src, dst);
