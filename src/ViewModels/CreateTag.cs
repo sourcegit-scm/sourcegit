@@ -13,7 +13,6 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Tag name is required!")]
-        [RegularExpression(@"^(?!\.)(?!/)(?!.*\.$)(?!.*/$)(?!.*\.\.)[\w\-\+\./]+$", ErrorMessage = "Bad tag name format!")]
         [CustomValidation(typeof(CreateTag), nameof(ValidateTagName))]
         public string TagName
         {
@@ -74,6 +73,9 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is CreateTag creator)
             {
+                if (!Models.RefName.IsValidTagName(name))
+                    return new ValidationResult("Bad tag name format!");
+
                 var found = creator._repo.Tags.Find(x => x.Name == name);
                 if (found != null)
                     return new ValidationResult("A tag with same name already exists!");

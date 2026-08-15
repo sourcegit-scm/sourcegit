@@ -7,7 +7,6 @@ namespace SourceGit.ViewModels
     public class AddRemote : Popup
     {
         [Required(ErrorMessage = "Remote name is required!!!")]
-        [RegularExpression(@"^[\w\-\.]+$", ErrorMessage = "Bad remote name format!!!")]
         [CustomValidation(typeof(AddRemote), nameof(ValidateRemoteName))]
         public string Name
         {
@@ -59,6 +58,9 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is AddRemote add)
             {
+                if (!Models.RefName.IsValidRemoteName(name))
+                    return new ValidationResult("Bad remote name format!!!");
+
                 var exists = add._repo.Remotes.Find(x => x.Name == name);
                 if (exists != null)
                     return new ValidationResult("A remote with given name already exists!!!");
