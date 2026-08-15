@@ -81,6 +81,11 @@ namespace SourceGit.Models
 
         public string OldImageSize => Old != null ? $"{Old.PixelSize.Width} x {Old.PixelSize.Height}" : "0 x 0";
         public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
+
+        public IReadOnlyList<Avalonia.Rect> ChangeOutlines => _changeOutlines ??= ImageDifferenceDetector.DetectChangeBoxes(Old, New);
+        public int ChangeCount => ChangeOutlines.Count;
+
+        private IReadOnlyList<Avalonia.Rect> _changeOutlines = null;
     }
 
     public class EmptyFile

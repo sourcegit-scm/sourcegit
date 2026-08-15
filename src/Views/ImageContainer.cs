@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -23,6 +24,31 @@ namespace SourceGit.Views
         {
             get => _zoom;
             set => SetAndRaise(ZoomProperty, ref _zoom, value);
+        }
+
+        public static readonly DirectProperty<ImageContainer, bool> ShowChangeOutlinesProperty =
+            AvaloniaProperty.RegisterDirect<ImageContainer, bool>(
+                nameof(ShowChangeOutlines),
+                static o => o.ShowChangeOutlines,
+                static (o, v) => o.ShowChangeOutlines = v,
+                false);
+
+        public bool ShowChangeOutlines
+        {
+            get => _showChangeOutlines;
+            set => SetAndRaise(ShowChangeOutlinesProperty, ref _showChangeOutlines, value);
+        }
+
+        public static readonly DirectProperty<ImageContainer, IReadOnlyList<Rect>> ChangeOutlinesProperty =
+            AvaloniaProperty.RegisterDirect<ImageContainer, IReadOnlyList<Rect>>(
+                nameof(ChangeOutlines),
+                static o => o.ChangeOutlines,
+                static (o, v) => o.ChangeOutlines = v);
+
+        public IReadOnlyList<Rect> ChangeOutlines
+        {
+            get => _changeOutlines;
+            set => SetAndRaise(ChangeOutlinesProperty, ref _changeOutlines, value);
         }
 
         public override void Render(DrawingContext context)
@@ -59,6 +85,10 @@ namespace SourceGit.Views
             if (change.Property == ZoomProperty)
             {
                 InvalidateMeasure();
+                InvalidateVisual();
+            }
+            else if (change.Property == ShowChangeOutlinesProperty || change.Property == ChangeOutlinesProperty)
+            {
                 InvalidateVisual();
             }
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
@@ -125,8 +155,55 @@ namespace SourceGit.Views
             return new Size(scale * img.Width, scale * img.Height);
         }
 
+        protected void RenderChangeOutlines(DrawingContext context, double ctrlW, double ctrlH, Size originalSize)
+        {
+            if (!_showChangeOutlines || _changeOutlines == null || _changeOutlines.Count == 0 || originalSize.Width <= 0 || originalSize.Height <= 0)
+                return;
+
+            var scaleX = ctrlW / originalSize.Width;
+            var scaleY = ctrlH / originalSize.Height;
+
+            var fillBrush = new SolidColorBrush(Color.FromArgb(40, 255, 60, 60));
+            var outerPen = new Pen(new SolidColorBrush(Color.FromArgb(220, 0, 0, 0)), 3.0);
+            var innerPen = new Pen(new SolidColorBrush(Color.FromArgb(255, 255, 60, 60)), 1.5);
+            var cornerPen = new Pen(Brushes.White, 2.0);
+
+            for (int i = 0; i < _changeOutlines.Count; i++)
+            {
+                var box = _changeOutlines[i];
+                var rx = box.X * scaleX;
+                var ry = box.Y * scaleY;
+                var rw = box.Width * scaleX;
+                var rh = box.Height * scaleY;
+
+                var rect = new Rect(rx, ry, rw, rh);
+
+                context.FillRectangle(fillBrush, rect);
+                context.DrawRectangle(null, outerPen, rect, 2, 2);
+                context.DrawRectangle(null, innerPen, rect, 2, 2);
+
+                double cornerLen = Math.Min(Math.Min(8.0, rw / 3), rh / 3);
+                if (cornerLen > 2)
+                {
+                    context.DrawLine(cornerPen, new Point(rx, ry + cornerLen), new Point(rx, ry));
+                    context.DrawLine(cornerPen, new Point(rx, ry), new Point(rx + cornerLen, ry));
+
+                    context.DrawLine(cornerPen, new Point(rx + rw - cornerLen, ry), new Point(rx + rw, ry));
+                    context.DrawLine(cornerPen, new Point(rx + rw, ry), new Point(rx + rw, ry + cornerLen));
+
+                    context.DrawLine(cornerPen, new Point(rx, ry + rh - cornerLen), new Point(rx, ry + rh));
+                    context.DrawLine(cornerPen, new Point(rx, ry + rh), new Point(rx + cornerLen, ry + rh));
+
+                    context.DrawLine(cornerPen, new Point(rx + rw - cornerLen, ry + rh), new Point(rx + rw, ry + rh));
+                    context.DrawLine(cornerPen, new Point(rx + rw, ry + rh), new Point(rx + rw, ry + rh - cornerLen));
+                }
+            }
+        }
+
         private DrawingBrush _bgBrush = null;
         private double _zoom = 1.0;
+        private bool _showChangeOutlines = false;
+        private IReadOnlyList<Rect> _changeOutlines = null;
         private ScrollViewer _attachedScrollViewer;
     }
 
@@ -149,7 +226,10 @@ namespace SourceGit.Views
             base.Render(context);
 
             if (_image != null)
+            {
                 context.DrawImage(_image, new Rect(0, 0, Bounds.Width, Bounds.Height));
+                RenderChangeOutlines(context, Bounds.Width, Bounds.Height, _image.Size);
+            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -224,6 +304,9 @@ namespace SourceGit.Views
 
             if (_newImage != null && _alpha < 1)
                 RenderSingleSide(context, _newImage, new Rect(x, 0, w - x, h));
+
+            var baseSize = _newImage?.Size ?? _oldImage?.Size ?? new Size(1, 1);
+            RenderChangeOutlines(context, w, h, baseSize);
 
             context.DrawLine(new Pen(Brushes.DarkGreen, 2), new Point(x, 0), new Point(x, Bounds.Height));
         }
@@ -397,6 +480,9 @@ namespace SourceGit.Views
             {
                 RenderSingleSide(context, right, Bounds.Width, Bounds.Height, alpha);
             }
+
+            var baseSize = right?.Size ?? left?.Size ?? new Size(1, 1);
+            RenderChangeOutlines(context, Bounds.Width, Bounds.Height, baseSize);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -515,6 +601,9 @@ namespace SourceGit.Views
             {
                 RenderSingleSide(context, right, Bounds.Width, Bounds.Height, alpha);
             }
+
+            var baseSize = right?.Size ?? left?.Size ?? new Size(1, 1);
+            RenderChangeOutlines(context, Bounds.Width, Bounds.Height, baseSize);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

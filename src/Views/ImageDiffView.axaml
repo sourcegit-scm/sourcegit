@@ -10,7 +10,7 @@
              x:Class="SourceGit.Views.ImageDiffView"
              x:DataType="m:ImageDiff">
   <Grid RowDefinitions="Auto,*">
-    <!-- Zoom Toolbar -->
+    <!-- Zoom and Diff Toolbar -->
     <Border Grid.Row="0" Margin="8,4,8,0" HorizontalAlignment="Center" VerticalAlignment="Center">
       <StackPanel Orientation="Horizontal" Spacing="6" Height="24" VerticalAlignment="Center">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Explore}" Fill="{DynamicResource Brush.FG2}" VerticalAlignment="Center"/>
@@ -41,6 +41,18 @@
         <Button Classes="flat" Padding="6,2" Click="OnZoomReset" ToolTip.Tip="1:1 / Fit">
           <TextBlock Text="{DynamicResource Text.Diff.Image.ResetZoom}" FontSize="10"/>
         </Button>
+
+        <Rectangle Width="1" Height="14" Fill="{DynamicResource Brush.Border1}" Margin="4,0"/>
+
+        <ToggleButton Classes="flat"
+                      Padding="6,2"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges, Mode=TwoWay}"
+                      ToolTip.Tip="{DynamicResource Text.Diff.Image.HighlightChanges}">
+          <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Eye}" Fill="{DynamicResource Brush.FG1}"/>
+            <TextBlock Text="{DynamicResource Text.Diff.Image.HighlightChanges}" FontSize="10" VerticalAlignment="Center"/>
+          </StackPanel>
+        </ToggleButton>
       </StackPanel>
     </Border>
 
@@ -79,7 +91,10 @@
                               PointerReleased="OnImagePointerReleased"
                               PointerCaptureLost="OnImagePointerCaptureLost">
                   <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <v:ImageView Image="{Binding Old}" Zoom="{Binding #ImageZoomSlider.Value}"/>
+                    <v:ImageView Image="{Binding Old}"
+                                 Zoom="{Binding #ImageZoomSlider.Value}"
+                                 ShowChangeOutlines="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}"
+                                 ChangeOutlines="{Binding ChangeOutlines}"/>
                   </Border>
                 </ScrollViewer>
               </Border>
@@ -108,7 +123,10 @@
                               PointerReleased="OnImagePointerReleased"
                               PointerCaptureLost="OnImagePointerCaptureLost">
                   <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <v:ImageView Image="{Binding New}" Zoom="{Binding #ImageZoomSlider.Value}"/>
+                    <v:ImageView Image="{Binding New}"
+                                 Zoom="{Binding #ImageZoomSlider.Value}"
+                                 ShowChangeOutlines="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}"
+                                 ChangeOutlines="{Binding ChangeOutlines}"/>
                   </Border>
                 </ScrollViewer>
               </Border>
@@ -152,6 +170,8 @@
                   <v:ImageSwipeControl OldImage="{Binding Old}"
                                        NewImage="{Binding New}"
                                        Zoom="{Binding #ImageZoomSlider.Value}"
+                                       ShowChangeOutlines="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}"
+                                       ChangeOutlines="{Binding ChangeOutlines}"
                                        RenderOptions.BitmapInterpolationMode="HighQuality"/>
                 </Border>
               </ScrollViewer>
@@ -195,7 +215,9 @@
                   <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
                                        OldImage="{Binding Old}"
                                        NewImage="{Binding New}"
-                                       Zoom="{Binding #ImageZoomSlider.Value}"/>
+                                       Zoom="{Binding #ImageZoomSlider.Value}"
+                                       ShowChangeOutlines="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}"
+                                       ChangeOutlines="{Binding ChangeOutlines}"/>
                 </Border>
               </ScrollViewer>
             </Border>
@@ -265,7 +287,9 @@
                   <v:ImageDifferenceControl Alpha="{Binding #ImageDifferenceSlider.Value}"
                                             OldImage="{Binding Old}"
                                             NewImage="{Binding New}"
-                                            Zoom="{Binding #ImageZoomSlider.Value}"/>
+                                            Zoom="{Binding #ImageZoomSlider.Value}"
+                                            ShowChangeOutlines="{Binding Source={x:Static vm:Preferences.Instance}, Path=HighlightImageDiffChanges}"
+                                            ChangeOutlines="{Binding ChangeOutlines}"/>
                 </Border>
               </ScrollViewer>
             </Border>
