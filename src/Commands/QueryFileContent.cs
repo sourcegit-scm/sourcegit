@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -28,6 +28,40 @@ namespace SourceGit.Commands
             catch (Exception e)
             {
                 Models.Notification.Send(repo, $"Failed to query file content: {e}", true);
+            }
+
+            stream.Position = 0;
+            return stream;
+        }
+
+        public static async Task<Stream> FromStagedAsync(string repo, string file)
+        {
+            if (string.IsNullOrEmpty(file) || file.Equals("/dev/null", StringComparison.Ordinal))
+                return null;
+
+            var starter = new ProcessStartInfo();
+            starter.WorkingDirectory = repo;
+            starter.FileName = Native.OS.GitExecutable;
+            starter.Arguments = $"show :{file.Quoted()}";
+            starter.UseShellExecute = false;
+            starter.CreateNoWindow = true;
+            starter.WindowStyle = ProcessWindowStyle.Hidden;
+            starter.RedirectStandardOutput = true;
+
+            var stream = new MemoryStream();
+            try
+            {
+                using var proc = Process.Start(starter)!;
+                await proc.StandardOutput.BaseStream.CopyToAsync(stream).ConfigureAwait(false);
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+                if (proc.ExitCode != 0)
+                {
+                    return new MemoryStream();
+                }
+            }
+            catch
+            {
+                return new MemoryStream();
             }
 
             stream.Position = 0;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Avalonia.Media.Imaging;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
@@ -71,16 +72,116 @@ namespace SourceGit.Models
         public long NewSize { get; set; } = 0;
     }
 
-    public class ImageDiff
+    public class ImageDiff : ObservableObject
     {
-        public Bitmap Old { get; set; } = null;
-        public Bitmap New { get; set; } = null;
+        public Bitmap Old
+        {
+            get => _old;
+            set
+            {
+                if (SetProperty(ref _old, value))
+                {
+                    if (HeadImage == null && !_isComparingWithStaged)
+                        HeadImage = value;
+                    _detectionResult = null;
+                    OnPropertyChanged(nameof(OldImageSize));
+                    OnPropertyChanged(nameof(DetectionResult));
+                    OnPropertyChanged(nameof(ChangeOutlines));
+                    OnPropertyChanged(nameof(ChangeCount));
+                    OnPropertyChanged(nameof(ChangedPixelCount));
+                    OnPropertyChanged(nameof(ChangedPixelPercentage));
+                    OnPropertyChanged(nameof(DiffPixelStatsText));
+                    OnPropertyChanged(nameof(DiffAreaStatsText));
+                }
+            }
+        }
 
-        public long OldFileSize { get; set; } = 0;
-        public long NewFileSize { get; set; } = 0;
+        public Bitmap New
+        {
+            get => _new;
+            set
+            {
+                if (SetProperty(ref _new, value))
+                {
+                    _detectionResult = null;
+                    OnPropertyChanged(nameof(NewImageSize));
+                    OnPropertyChanged(nameof(DetectionResult));
+                    OnPropertyChanged(nameof(ChangeOutlines));
+                    OnPropertyChanged(nameof(ChangeCount));
+                    OnPropertyChanged(nameof(ChangedPixelCount));
+                    OnPropertyChanged(nameof(ChangedPixelPercentage));
+                    OnPropertyChanged(nameof(DiffPixelStatsText));
+                    OnPropertyChanged(nameof(DiffAreaStatsText));
+                }
+            }
+        }
+
+        public long OldFileSize
+        {
+            get => _oldFileSize;
+            set
+            {
+                if (SetProperty(ref _oldFileSize, value))
+                {
+                    if (HeadFileSize == 0 && !_isComparingWithStaged)
+                        HeadFileSize = value;
+                }
+            }
+        }
+
+        public long NewFileSize
+        {
+            get => _newFileSize;
+            set => SetProperty(ref _newFileSize, value);
+        }
 
         public string OldImageSize => Old != null ? $"{Old.PixelSize.Width} x {Old.PixelSize.Height}" : "0 x 0";
         public string NewImageSize => New != null ? $"{New.PixelSize.Width} x {New.PixelSize.Height}" : "0 x 0";
+
+        public Bitmap HeadImage { get; set; } = null;
+        public long HeadFileSize { get; set; } = 0;
+
+        public Bitmap StagedImage { get; set; } = null;
+        public long StagedFileSize { get; set; } = 0;
+
+        public bool CanCompareWithStaged => StagedImage != null && (HeadImage != null || IsUnstaged);
+        public bool IsUnstaged { get; set; } = false;
+
+        public bool IsComparingWithStaged
+        {
+            get => _isComparingWithStaged;
+            set
+            {
+                if (SetProperty(ref _isComparingWithStaged, value))
+                {
+                    if (value && StagedImage != null)
+                    {
+                        _old = StagedImage;
+                        _oldFileSize = StagedFileSize;
+                    }
+                    else
+                    {
+                        _old = HeadImage;
+                        _oldFileSize = HeadFileSize;
+                    }
+
+                    _detectionResult = null;
+                    OnPropertyChanged(nameof(Old));
+                    OnPropertyChanged(nameof(OldFileSize));
+                    OnPropertyChanged(nameof(OldImageSize));
+                    OnPropertyChanged(nameof(OldBadgeTitle));
+                    OnPropertyChanged(nameof(DetectionResult));
+                    OnPropertyChanged(nameof(ChangeOutlines));
+                    OnPropertyChanged(nameof(ChangeCount));
+                    OnPropertyChanged(nameof(ChangedPixelCount));
+                    OnPropertyChanged(nameof(ChangedPixelPercentage));
+                    OnPropertyChanged(nameof(DiffPixelStatsText));
+                    OnPropertyChanged(nameof(DiffAreaStatsText));
+                }
+            }
+        }
+
+        public string OldBadgeTitle => _isComparingWithStaged ? "STAGED" : "OLD";
 
         public ImageDiffDetectionResult DetectionResult => _detectionResult ??= ImageDifferenceDetector.Detect(Old, New);
 
@@ -90,8 +191,13 @@ namespace SourceGit.Models
         public double ChangedPixelPercentage => DetectionResult.ChangedPercentage;
 
         public string DiffPixelStatsText => $"{ChangedPixelCount:N0} px ({ChangedPixelPercentage:F2}%)";
-        public string DiffAreaStatsText => ChangeCount == 1 ? "1 area" : $"{ChangeCount} areas";
+        public string DiffAreaStatsText => ChangeCount == 1 ? " · 1 area" : $" · {ChangeCount} areas";
 
+        private Bitmap _old = null;
+        private Bitmap _new = null;
+        private long _oldFileSize = 0;
+        private long _newFileSize = 0;
+        private bool _isComparingWithStaged = false;
         private ImageDiffDetectionResult _detectionResult = null;
     }
 

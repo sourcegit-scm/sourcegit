@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -214,12 +214,16 @@ namespace SourceGit.ViewModels
                 if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal))
                 {
                     var oldImage = await ImageSource.FromFileAsync(fullPath, imgDecoder).ConfigureAwait(false);
+                    imgDiff.HeadImage = oldImage.Bitmap;
+                    imgDiff.HeadFileSize = oldImage.Size;
                     imgDiff.Old = oldImage.Bitmap;
                     imgDiff.OldFileSize = oldImage.Size;
                 }
                 else
                 {
                     var oldImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[0], oldPath, imgDecoder).ConfigureAwait(false);
+                    imgDiff.HeadImage = oldImage.Bitmap;
+                    imgDiff.HeadFileSize = oldImage.Size;
                     imgDiff.Old = oldImage.Bitmap;
                     imgDiff.OldFileSize = oldImage.Size;
                 }
@@ -230,16 +234,39 @@ namespace SourceGit.ViewModels
             }
             else
             {
+                imgDiff.IsUnstaged = _option.IsUnstaged;
+
                 if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
                 {
-                    var oldImage = await ImageSource.FromRevisionAsync(_repo, "HEAD", oldPath, imgDecoder).ConfigureAwait(false);
-                    imgDiff.Old = oldImage.Bitmap;
-                    imgDiff.OldFileSize = oldImage.Size;
+                    var headImage = await ImageSource.FromRevisionAsync(_repo, "HEAD", oldPath, imgDecoder).ConfigureAwait(false);
+                    imgDiff.HeadImage = headImage.Bitmap;
+                    imgDiff.HeadFileSize = headImage.Size;
+                    imgDiff.Old = headImage.Bitmap;
+                    imgDiff.OldFileSize = headImage.Size;
+                }
+
+                if (_option.IsUnstaged)
+                {
+                    var stagedPath = !oldPath.Equals("/dev/null", StringComparison.Ordinal) ? oldPath : _option.Path;
+                    if (!string.IsNullOrEmpty(stagedPath) && !stagedPath.Equals("/dev/null", StringComparison.Ordinal))
+                    {
+                        var stagedImage = await ImageSource.FromStagedAsync(_repo, stagedPath, imgDecoder).ConfigureAwait(false);
+                        if (stagedImage.Bitmap != null)
+                        {
+                            imgDiff.StagedImage = stagedImage.Bitmap;
+                            imgDiff.StagedFileSize = stagedImage.Size;
+                        }
+                    }
                 }
 
                 var newImage = await ImageSource.FromFileAsync(fullPath, imgDecoder).ConfigureAwait(false);
                 imgDiff.New = newImage.Bitmap;
                 imgDiff.NewFileSize = newImage.Size;
+
+                if (_option.IsUnstaged && imgDiff.HeadImage == null && imgDiff.StagedImage != null)
+                {
+                    imgDiff.IsComparingWithStaged = true;
+                }
             }
 
             return imgDiff;

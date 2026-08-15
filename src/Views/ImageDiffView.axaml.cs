@@ -119,5 +119,13 @@ namespace SourceGit.Views
             OldImageScrollViewer.Offset = NewImageScrollViewer.Offset;
             _isSyncingScroll = false;
         }
+
+        private void OnToggleBaseImage(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is Models.ImageDiff diff && diff.CanCompareWithStaged)
+            {
+                diff.IsComparingWithStaged = !diff.IsComparingWithStaged;
+            }
+        }
     }
 }
