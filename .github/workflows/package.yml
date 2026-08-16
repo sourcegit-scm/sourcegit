@@ -83,6 +83,25 @@ jobs:
           ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
           apt-get update
           apt-get install -y curl wget git dpkg-dev fakeroot tzdata zip unzip desktop-file-utils rpm libfuse2 file build-essential binutils
+
+          # Detect Ubuntu Codename
+          UBUNTU_CODENAME=$(lsb_release -cs)
+
+          # If it's not a supported Ubuntu release, the build script
+          # should report failure to create Arch package while not
+          # affecting other packages.
+
+          if [ "$UBUNTU_CODENAME" = "noble" ]; then
+            echo "Detected Ubuntu 24.04 (Noble). Installing official package..."
+            sudo apt-get install -y pacman-package-manager
+          elif [ "$UBUNTU_CODENAME" = "focal" ]; then
+            echo "Detected Ubuntu 20.04 (Focal). Installing community port..."
+            # Use the version compiled for glibc 2.31 (Ubuntu 20.04 standard)
+            wget https://github.com/ThePoorPilot/pacman-utils/releases/download/6.0.1-2_2.31-0/pacman-utils_6.0.1-2_amd64.deb
+            sudo dpkg -i pacman-utils_6.0.1-2_amd64.deb
+            sudo apt-get install -f -y
+          fi
+
       - name: Download build
         uses: actions/download-artifact@v8
         with:
@@ -105,6 +124,8 @@ jobs:
             build/sourcegit-*.AppImage
             build/sourcegit_*.deb
             build/sourcegit-*.rpm
+            build/sourcegit-*.pkg.tar.zst
+            build/sourcegit-*.pkg.tar.xz
       - name: Delete temp artifacts
         uses: geekyeggo/delete-artifact@v6
         with:
