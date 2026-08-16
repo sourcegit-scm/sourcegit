@@ -16,7 +16,7 @@ namespace SourceGit.Commands
             var isLFSFiltered = await new IsLFSFiltered(repo, revision, file).GetResultAsync().ConfigureAwait(false);
             if (isLFSFiltered)
             {
-                var pointerStream = await QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
+                await using var pointerStream = await QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
                 await ExecCmdAsync(repo, "lfs smudge", saveTo, pointerStream).ConfigureAwait(false);
             }
             else

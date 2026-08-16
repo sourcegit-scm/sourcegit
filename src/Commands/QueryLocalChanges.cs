@@ -34,8 +34,23 @@ namespace SourceGit.Commands
             try
             {
                 using var proc = new Process();
+                var captured = new CapturedProcess() { Process = proc };
+                var capturedLock = new object();
+
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
+
+                if (CancellationToken.CanBeCanceled)
+                {
+                    CancellationToken.Register(() =>
+                    {
+                        lock (capturedLock)
+                        {
+                            if (captured is { Process: { HasExited: false } })
+                                captured.Process.Kill(true);
+                        }
+                    });
+                }
 
                 while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
                 {
@@ -165,6 +180,11 @@ namespace SourceGit.Commands
                     if (change.Index != Models.ChangeState.None || change.WorkTree != Models.ChangeState.None)
                         outs.Add(change);
                 }
+
+                lock (capturedLock)
+                {
+                    captured.Process = null;
+                }
             }
             catch
             {
@@ -172,6 +192,11 @@ namespace SourceGit.Commands
             }
 
             return outs;
+        }
+
+        private class CapturedProcess
+        {
+            public Process Process { get; set; } = null;
         }
     }
 }

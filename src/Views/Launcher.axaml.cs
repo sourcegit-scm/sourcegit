@@ -299,6 +299,7 @@ namespace SourceGit.Views
             else if (e.Key == Key.Escape)
             {
                 vm.ActivePage.CancelPopup();
+                vm.ActivePage.Notifications.Clear();
                 e.Handled = true;
                 return;
             }

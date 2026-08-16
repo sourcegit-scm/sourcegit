@@ -48,11 +48,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.18" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.18" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.18" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.18" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.18" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.20" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
     <PackageReference Include="Azure.AI.OpenAI" Version="2.9.0-beta.1" />
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
@@ -71,11 +71,11 @@
 
   <Target BeforeTargets="GetAssemblyAttributes" Name="GenVersionInfo">
     <Exec Command="git describe --abbrev=8 --dirty" ConsoleToMsBuild="True" IgnoreExitCode="true">
-      <Output PropertyName="FriendlyVersion" TaskParameter="ConsoleOutput"/>
+      <Output PropertyName="FriendlyVersion" TaskParameter="ConsoleOutput" />
     </Exec>
 
     <ItemGroup>
-      <AssemblyMetadata Include="FriendlyVersion" Value="$([System.String]::Copy('$(FriendlyVersion)').Replace('g', '').Trim())"/>
+      <AssemblyMetadata Include="FriendlyVersion" Value="$([System.String]::Copy('$(FriendlyVersion)').Replace('g', '').Trim())" />
     </ItemGroup>
   </Target>
 </Project>

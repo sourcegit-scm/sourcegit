@@ -112,3 +112,38 @@ The project uses the following third-party libraries or assets
 - **Commit**: 68d98dc57f8486c2946ae28dc86bf8e91d45da4d
 - **License**: MIT License
 - **License Link**: https://github.com/vuejs/language-tools/blob/68d98dc57f8486c2946ae28dc86bf8e91d45da4d/LICENSE
+
+### OCaml
+
+- **Source**: https://github.com/shentao/vue-multiselect/blob/master/docs/shiki/languages/ocaml.tmLanguage.json
+- **Commit**: 8092917041f0ae02cbe4c6982deddc931c6adecd
+- **License**: MIT License
+- **License Link**: https://github.com/shentao/vue-multiselect/blob/master/LICENSE
+
+### OCamllex
+
+- **Source**: https://github.com/textmate/ocaml.tmbundle/blob/master/Syntaxes/OCamllex.tmLanguage
+- **Commit**: 1eff26848b39368414cb4214183a2cba22f12d0e
+- **License**: Permission to copy, use, modify, sell and distribute this software is granted. This software is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose.
+- **License Link**: https://github.com/textmate/ocaml.tmbundle/tree/master#license
+
+### OCamlyacc
+
+- **Source**: https://github.com/textmate/ocaml.tmbundle/blob/master/Syntaxes/OCamlyacc.tmLanguage
+- **Commit**: 08a892aef6a4b285b1902d9ed1427653fce53e31
+- **License**: Permission to copy, use, modify, sell and distribute this software is granted. This software is provided "as is" without express or implied warranty, and with no claim as to its suitability for any purpose.
+- **License Link**: https://github.com/textmate/ocaml.tmbundle/tree/master#license
+
+### Erlang
+
+- **Source**: https://github.com/shentao/vue-multiselect/blob/master/docs/shiki/languages/erlang.tmLanguage.json
+- **Commit**: 8092917041f0ae02cbe4c6982deddc931c6adecd
+- **License**: MIT License
+- **License Link**: https://github.com/shentao/vue-multiselect/blob/master/LICENSE
+
+### Swift
+
+- **Source**: https://github.com/jtbandes/swift-tmlanguage/blob/main/Swift.tmLanguage.json
+- **Commit**: abda279b567a0a7f35f81642c1b830f437f718d9
+- **License**: MIT License
+- **License Link**: https://github.com/jtbandes/swift-tmlanguage/blob/main/LICENSE.md

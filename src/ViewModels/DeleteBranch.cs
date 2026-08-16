@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -9,6 +8,22 @@ namespace SourceGit.ViewModels
         public Models.Branch Target
         {
             get;
+        }
+
+        public Models.Branch Upstream
+        {
+            get;
+        }
+
+        public string DeleteUpstreamTip
+        {
+            get;
+        }
+
+        public bool DeleteUpstream
+        {
+            get;
+            set;
         }
 
         public bool Force
@@ -21,6 +36,16 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Target = branch;
+
+            if (branch.IsLocal && !string.IsNullOrEmpty(branch.Upstream))
+            {
+                var upstream = _repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal));
+                if (upstream != null && upstream.Name.Equals(branch.Name, StringComparison.Ordinal))
+                {
+                    Upstream = upstream;
+                    DeleteUpstreamTip = App.Text("DeleteBranch.WithTrackingRemote", upstream.FriendlyName);
+                }
+            }
         }
 
         public override async Task<bool> Sure()
@@ -34,33 +59,26 @@ namespace SourceGit.ViewModels
             var succ = false;
             if (Target.IsLocal)
             {
-                succ = await new Commands.Branch(_repo.FullPath, Target.Name)
-                    .Use(log)
-                    .DeleteLocalAsync(Force);
-
-                if (succ)
+                do
                 {
+                    succ = await new Commands.Branch(_repo.FullPath, Target.Name)
+                        .Use(log)
+                        .DeleteLocalAsync(Force);
+
+                    if (!succ)
+                        break;
+
                     _repo.UIStates.RemoveHistoryFilter(Target.FullName, Models.FilterType.LocalBranch);
 
-                    var upstream = Target.Upstream ?? string.Empty;
-                    var tracking = _repo.Branches.Find(x => x.FullName.Equals(upstream, StringComparison.Ordinal));
-                    if (tracking != null && tracking.Name.Equals(Target.Name, StringComparison.Ordinal))
-                    {
-                        var msgBuilder = new StringBuilder();
-                        msgBuilder
-                            .AppendLine(App.Text("DeleteBranch.AskForRemote"))
-                            .AppendLine()
-                            .Append("• ").Append(tracking.FriendlyName);
+                    if (!DeleteUpstream || Upstream == null)
+                        break;
 
-                        var deleteTracking = await App.AskConfirmAsync(msgBuilder.ToString(), Models.ConfirmButtonType.YesNo);
-                        if (deleteTracking)
-                        {
-                            succ = await DeleteRemoteBranchAsync(tracking, log);
-                            if (succ)
-                                _repo.UIStates.RemoveHistoryFilter(tracking.FullName, Models.FilterType.RemoteBranch);
-                        }
-                    }
-                }
+                    succ = await DeleteRemoteBranchAsync(Upstream, log);
+                    if (!succ)
+                        break;
+
+                    _repo.UIStates.RemoveHistoryFilter(Upstream.FullName, Models.FilterType.RemoteBranch);
+                } while (false);
             }
             else
             {

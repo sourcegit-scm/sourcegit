@@ -49,7 +49,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">אין קבצים בהנחת assume-unchanged</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">טען תמונה...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">רענן</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">קובץ בינארי אינו נתמך!!!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">ביטול</x:String>
   <x:String x:Key="Text.Bisect.Bad">פגום (Bad)</x:String>
@@ -335,6 +334,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">מחק Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">פעולה זו תמחק branch מרוחק!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">למחוק גם את ה־branch המרוחק ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">מחק מספר Branches</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">פעולה זו תמחק מספר branches בו זמנית. בדוק היטב לפני הביצוע!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">מחק מספר Tags</x:String>

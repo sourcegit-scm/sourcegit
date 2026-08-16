@@ -52,7 +52,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">没有不跟踪更改的文件</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">加载本地图片</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">重新加载</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">二进制文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.Bisect">二分定位(bisect)</x:String>
   <x:String x:Key="Text.Bisect.Abort">终止</x:String>
   <x:String x:Key="Text.Bisect.Bad">标记错误</x:String>
@@ -345,10 +344,10 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">强制取消，即使包含本地变更</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">是否同时删除以下远程分支？</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">强制删除，即使包含未合并的提交</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支 ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">删除多个分支</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">您正在尝试一次性删除多个分支，请务必仔细检查后再执行操作！</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">删除多个标签</x:String>
@@ -368,6 +367,7 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">标签名 ：</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">同时删除远程仓库中的此标签</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">二进制文件</x:String>
+  <x:String x:Key="Text.Diff.Binary.ViewContentOfNew" xml:space="preserve">查看新内容</x:String>
   <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">空文件</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">首个差异</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符号变化</x:String>
@@ -424,6 +424,9 @@
   <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">不拉取远程标签</x:String>
   <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">远程仓库 ：</x:String>
   <x:String x:Key="Text.Fetch.Title" xml:space="preserve">拉取远程仓库内容</x:String>
+  <x:String x:Key="Text.File.Binary" xml:space="preserve">二进制文件</x:String>
+  <x:String x:Key="Text.File.HexViewer" xml:space="preserve">查看内容</x:String>
+  <x:String x:Key="Text.File.HexViewer.GotoAddress" xml:space="preserve">定位地址...</x:String>
   <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">不跟踪此文件的更改</x:String>
   <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">自定义操作</x:String>
   <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">放弃更改...</x:String>
@@ -662,6 +665,7 @@
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">自动拉取可用模型列表</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
   <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">推理努力等级</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">缺省字体</x:String>

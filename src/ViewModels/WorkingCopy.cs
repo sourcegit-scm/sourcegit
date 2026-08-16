@@ -231,13 +231,45 @@ namespace SourceGit.ViewModels
 
         public void SetData(List<Models.Change> changes)
         {
-            if (!IsChanged(_cached, changes))
+            do
             {
+                if (IsChanged(_cached, changes))
+                    break;
+
+                if (_useAmend)
+                {
+                    var testStaged = GetStagedChanges(_cached);
+                    if (IsChanged(_staged, testStaged))
+                    {
+                        var visibleStagedNew = GetVisibleChanges(testStaged);
+                        var selectedStagedNew = new List<Models.Change>();
+
+                        if (_selectedStaged is { Count: > 0 })
+                        {
+                            var set = new HashSet<string>();
+                            foreach (var c in _selectedStaged)
+                                set.Add(c.Path);
+
+                            foreach (var c in visibleStagedNew)
+                            {
+                                if (set.Contains(c.Path))
+                                    selectedStagedNew.Add(c);
+                            }
+                        }
+
+                        _isLoadingData = true;
+                        Staged = testStaged;
+                        VisibleStaged = visibleStagedNew;
+                        SelectedStaged = selectedStagedNew;
+                        _isLoadingData = false;
+                    }
+                }
+
                 HasUnsolvedConflicts = _cached.Find(x => x.IsConflicted) != null;
                 UpdateInProgressState();
                 UpdateDetail();
                 return;
-            }
+            } while (false);
 
             var lastSelectedUnstaged = new HashSet<string>();
             if (_selectedUnstaged is { Count: > 0 })

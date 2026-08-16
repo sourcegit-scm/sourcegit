@@ -1330,6 +1330,7 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var changes = await new Commands.QueryLocalChanges(FullPath, _uiStates.IncludeUntrackedInLocalChanges, noOptionalLocks)
+                    .WithCancellation(token)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
