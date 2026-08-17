@@ -740,6 +740,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Εξαναγκασμένο push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Τοπικός κλάδος:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">ΝΕΟ</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">Παράκαμψη του pre-push hook</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Απομακρυσμένο:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Αναθεώρηση:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push αναθεώρησης σε απομακρυσμένο</x:String>

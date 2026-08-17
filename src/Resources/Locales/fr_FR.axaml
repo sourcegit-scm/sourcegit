@@ -708,6 +708,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Poussage forcé</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Branche locale :</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">NOUVEAU</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">Contourner le hook de pre-push</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Dépôt distant :</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Révision :</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Pousser la Révision vers le Dépôt Distant</x:String>

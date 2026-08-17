@@ -653,6 +653,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Forza l'invio</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Branch Locale:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">NUOVO</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">Ignora l'hook di pre-push</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revisione:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Invia Revisione Al Remoto</x:String>

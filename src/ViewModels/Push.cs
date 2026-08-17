@@ -97,6 +97,12 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool NoVerify
+        {
+            get;
+            set;
+        }
+
         public Push(Repository repo, Models.Branch localBranch)
         {
             _repo = repo;
@@ -204,7 +210,8 @@ namespace SourceGit.ViewModels
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
                 _isSetTrackOptionVisible && _tracking,
-                ForcePush).Use(log).RunAsync();
+                ForcePush,
+                NoVerify).Use(log).RunAsync();
 
             log.Complete();
             return succ;
