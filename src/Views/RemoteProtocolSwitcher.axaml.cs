@@ -35,6 +35,7 @@ namespace SourceGit.Views
 
         public RemoteProtocolSwitcher()
         {
+            IsVisible = false;
             InitializeComponent();
         }
 

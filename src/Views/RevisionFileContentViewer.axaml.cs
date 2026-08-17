@@ -162,5 +162,14 @@ namespace SourceGit.Views
         {
             InitializeComponent();
         }
+
+        private async void OnOpenBinaryFileViewer(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Control { DataContext: Models.RevisionBinaryFile vm })
+                return;
+
+            await this.ShowDialogAsync(new ViewModels.BinaryFileViewer(vm.Repository, vm.File, vm.Revision));
+            e.Handled = true;
+        }
     }
 }

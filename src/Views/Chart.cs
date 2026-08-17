@@ -160,6 +160,7 @@ namespace SourceGit.Views
                     {
                         var labelStartX = labelCenterX - formattedLabel.Width * 0.5;
                         var labelStartY = h - formattedLabel.Height - 2.0;
+                        context.DrawLine(new Pen(Brushes.Gray), new Point(labelCenterX, maxSampleH + 4), new Point(labelCenterX, maxSampleH));
                         context.DrawText(formattedLabel, new Point(labelStartX, labelStartY));
                         maxLabelEndX = labelStartX - 16.0;
                     }

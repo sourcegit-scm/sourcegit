@@ -1,29 +1,21 @@
-﻿using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public partial class QueryFileSize : Command
+    public class QueryFileSize : Command
     {
-        [GeneratedRegex(@"^\d+\s+\w+\s+[0-9a-f]+\s+(\d+)\s+.*$")]
-        private static partial Regex REG_FORMAT();
-
         public QueryFileSize(string repo, string file, string revision)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"ls-tree {revision} -l -- {file.Quoted()}";
+            Args = $"cat-file -s {revision}:{file.Quoted()}";
         }
 
         public async Task<long> GetResultAsync()
         {
             var rs = await ReadToEndAsync().ConfigureAwait(false);
-            if (rs.IsSuccess)
-            {
-                var match = REG_FORMAT().Match(rs.StdOut);
-                if (match.Success)
-                    return long.Parse(match.Groups[1].Value);
-            }
+            if (rs.IsSuccess && long.TryParse(rs.StdOut.Trim(), out var size))
+                return size;
 
             return 0;
         }

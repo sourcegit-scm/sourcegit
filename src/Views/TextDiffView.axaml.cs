@@ -1014,6 +1014,8 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
+            ApplyTemplate();
+
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
@@ -1198,6 +1200,8 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+
+            ApplyTemplate();
 
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)

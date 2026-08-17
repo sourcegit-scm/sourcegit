@@ -49,7 +49,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">PAS DE FICHIERS PRÉSUMÉS INCHANGÉS</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Charger l'Image...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Rafraîchir</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">FICHIER BINAIRE NON SUPPORTÉ !!!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Annuler</x:String>
   <x:String x:Key="Text.Bisect.Bad">Mauvais</x:String>
@@ -335,6 +334,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Supprimer la branche</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branche :</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Vous êtes sur le point de supprimer une branche distante !!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Supprimer également la branche distante ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Supprimer plusieurs branches</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Vous essayez de supprimer plusieurs branches à la fois. Assurez-vous de revérifier avant de procéder !</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Supprimer plusieurs tags</x:String>

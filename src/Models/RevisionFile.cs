@@ -6,7 +6,18 @@ namespace SourceGit.Models
 {
     public class RevisionBinaryFile
     {
+        public string Repository { get; set; } = string.Empty;
+        public string File { get; set; } = string.Empty;
+        public string Revision { get; set; } = string.Empty;
         public long Size { get; set; } = 0;
+
+        public RevisionBinaryFile(string repo, string file, string revision, long size)
+        {
+            Repository = repo;
+            File = file;
+            Revision = revision;
+            Size = size;
+        }
     }
 
     public class RevisionImageFile

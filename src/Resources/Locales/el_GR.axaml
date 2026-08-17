@@ -52,7 +52,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">ΚΑΝΕΝΑ ΑΡΧΕΙΟ ΔΕΝ ΘΕΩΡΕΙΤΑΙ ΑΜΕΤΑΒΛΗΤΟ</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Φόρτωση εικόνας...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Ανανέωση</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ΤΟ ΔΥΑΔΙΚΟ ΑΡΧΕΙΟ ΔΕΝ ΥΠΟΣΤΗΡΙΖΕΤΑΙ!!!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">Ματαίωση</x:String>
   <x:String x:Key="Text.Bisect.Bad">Κακό</x:String>
@@ -345,10 +344,10 @@
   <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Εξαναγκασμός απο-αρχικοποίησης ακόμη κι αν περιέχει τοπικές αλλαγές.</x:String>
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Υπομονάδα:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Διαγραφή κλάδου</x:String>
-  <x:String x:Key="Text.DeleteBranch.AskForRemote" xml:space="preserve">Θέλετε να διαγράψετε και τον ακόλουθο απομακρυσμένο κλάδο;</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Κλάδος:</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Εξαναγκασμένη διαγραφή ακόμη κι αν περιέχει μη συγχωνευμένα commit</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Πρόκειται να διαγράψετε έναν απομακρυσμένο κλάδο!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Διαγραφή και του απομακρυσμένου κλάδου ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Διαγραφή πολλαπλών κλάδων</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Προσπαθείτε να διαγράψετε πολλούς κλάδους ταυτόχρονα. Βεβαιωθείτε ότι ελέγξατε ξανά πριν προχωρήσετε!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Διαγραφή πολλαπλών ετικετών</x:String>

@@ -46,7 +46,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NENHUM ARQUIVO CONSIDERADO SEM ALTERAÇÕES</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Carregar imagem...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Atualizar</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">ARQUIVO BINÁRIO NÃO SUPORTADO!!!</x:String>
   <x:String x:Key="Text.Bisect" xml:space="preserve">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort" xml:space="preserve">Abortar</x:String>
   <x:String x:Key="Text.Bisect.Bad" xml:space="preserve">Inválido</x:String>
@@ -215,6 +214,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Excluir Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Você está prestes a excluir uma branch remota!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Também excluir branch remoto ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Excluir Múltiplos Branches</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Você está tentando excluir vários branches de uma vez. Certifique-se de verificar antes de agir!</x:String>
   <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Excluir Remoto</x:String>

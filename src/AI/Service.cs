@@ -54,6 +54,12 @@ namespace SourceGit.AI
             set => SetProperty(ref _autoFetchAvailableModels, value);
         }
 
+        public string ReasoningEffortLevel
+        {
+            get => _reasoningEffortLevel;
+            set => SetProperty(ref _reasoningEffortLevel, value);
+        }
+
         public string AdditionalPrompt
         {
             get;
@@ -93,6 +99,7 @@ namespace SourceGit.AI
 
         private string _name = string.Empty;
         private string _model = string.Empty;
+        private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;
     }
 }
