@@ -7,6 +7,7 @@ namespace SourceGit.ViewModels
     public class EditRemote : Popup
     {
         [Required(ErrorMessage = "Remote name is required!!!")]
+        [RegularExpression(@"^[\w\-\.]+$", ErrorMessage = "Bad remote name format!!!")]
         [CustomValidation(typeof(EditRemote), nameof(ValidateRemoteName))]
         public string Name
         {
@@ -59,9 +60,6 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is EditRemote edit)
             {
-                if (!Models.RefName.IsValidRemoteName(name))
-                    return new ValidationResult("Bad remote name format!!!");
-
                 foreach (var remote in edit._repo.Remotes)
                 {
                     if (remote != edit._remote && name == remote.Name)

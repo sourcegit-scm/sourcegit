@@ -3,7 +3,7 @@ using System;
 namespace SourceGit.Models
 {
     /// <summary>
-    ///     Validates branch, tag and remote names using the same rules that git itself enforces,
+    ///     Validates branch and tag names using the same rules that git itself enforces,
     ///     mirroring `git check-ref-format --allow-onelevel`. Rules are taken from the git-check-ref-format documentation.
     ///     Rule 2 (a refname must contain at least one slash) is intentionally waived, matching `--allow-onelevel`.
     /// </summary>
@@ -11,39 +11,23 @@ namespace SourceGit.Models
     {
         public static bool IsValidBranchName(string name)
         {
-            if (string.IsNullOrEmpty(name))
-                return false;
-
-            if (name.StartsWith('-'))
-                return false;
-
             if (string.Equals(name, "HEAD", StringComparison.Ordinal))
                 return false;
 
             return IsValidRefName(name);
         }
 
-        public static bool IsValidTagName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                return false;
-
-            if (name.StartsWith('-'))
-                return false;
-
-            return IsValidRefName(name);
-        }
-
-        public static bool IsValidRemoteName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-                return false;
-
-            return IsValidRefName(name);
-        }
+        public static bool IsValidTagName(string name) => IsValidRefName(name);
 
         private static bool IsValidRefName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return false;
+
+            // Anything starting with '-' is treated as a CLI option.
+            if (name.StartsWith('-'))
+                return false;
+
             // Rule 9: cannot be the single character '@'.
             if (name.Equals("@", StringComparison.Ordinal))
                 return false;
