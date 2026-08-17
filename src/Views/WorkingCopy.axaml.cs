@@ -296,6 +296,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnCommitWithForcePush(object _, RoutedEventArgs e)
+        {
+            if (App.GetLauncher() is { CommandPalette: { } } launcher)
+                return;
+
+            if (DataContext is ViewModels.WorkingCopy vm)
+                await vm.CommitAsync(false, false, true);
+
+            e.Handled = true;
+        }
+
         private ContextMenu CreateContextMenuForUnstagedChanges(ViewModels.WorkingCopy vm, string selectedSingleFolder)
         {
             var repo = vm.Repository;

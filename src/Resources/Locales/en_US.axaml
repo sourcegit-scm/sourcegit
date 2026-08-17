@@ -999,11 +999,13 @@
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">Clear History</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">Are you sure you want to clear all commit message history? This action cannot be undone.</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitAndForcePush" xml:space="preserve">COMMIT &amp; FORCE PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/History</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Trigger click event</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Commit (Edit)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Stage all changes and commit</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitAndForcePush" xml:space="preserve">This operation will amend the last commit and force push it to the remote branch. The remote branch history will be rewritten. Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">You are creating commit on a detached HEAD. Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">You have staged {0} file(s) but only {1} file(s) displayed ({2} files are filtered out). Do you want to continue?</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTS DETECTED</x:String>
