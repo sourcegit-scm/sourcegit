@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -190,6 +191,9 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
+            _cts?.Cancel();
+            _cts = new CancellationTokenSource();
+
             var remoteBranchName = _selectedRemoteBranch.Name;
             ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
 
@@ -204,10 +208,24 @@ namespace SourceGit.ViewModels
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
                 _isSetTrackOptionVisible && _tracking,
-                ForcePush).Use(log).RunAsync();
+                ForcePush).Use(log).WithCancellation(_cts.Token).RunAsync();
 
             log.Complete();
             return succ;
+        }
+
+        public override bool CanCancel => true;
+
+        public override void Cancel()
+        {
+            _cts?.Cancel();
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            _cts?.Dispose();
+            _cts = null;
         }
 
         private void AutoSelectBranchByRemote()
@@ -266,5 +284,6 @@ namespace SourceGit.ViewModels
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
         private bool _tracking = true;
+        private CancellationTokenSource _cts = null;
     }
 }

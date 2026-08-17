@@ -19,6 +19,18 @@ namespace SourceGit.Views
             set => SetAndRaise(DescriptionProperty, ref _description, value);
         }
 
+        public static readonly DirectProperty<PopupRunningStatus, bool> CanCancelProperty =
+            AvaloniaProperty.RegisterDirect<PopupRunningStatus, bool>(
+                nameof(CanCancel),
+                static o => o.CanCancel,
+                static (o, v) => o.CanCancel = v);
+
+        public bool CanCancel
+        {
+            get => _canCancel;
+            set => SetAndRaise(CanCancelProperty, ref _canCancel, value);
+        }
+
         public PopupRunningStatus()
         {
             InitializeComponent();
@@ -52,6 +64,14 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnCancelRequested(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Popup popup)
+                popup.Cancel();
+
+            e.Handled = true;
+        }
+
         private void StartAnim()
         {
             Icon.Content = new Path() { Classes = { "waiting" } };
@@ -67,6 +87,7 @@ namespace SourceGit.Views
         }
 
         private string _description = string.Empty;
+        private bool _canCancel = false;
         private bool _isUnloading = false;
     }
 }

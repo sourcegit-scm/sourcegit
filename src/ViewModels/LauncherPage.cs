@@ -107,8 +107,14 @@ namespace SourceGit.ViewModels
 
         public void CancelPopup()
         {
-            if (_popup == null || _popup.InProgress)
+            if (_popup == null)
                 return;
+
+            if (_popup.InProgress)
+            {
+                _popup.Cancel();
+                return;
+            }
 
             _popup?.Cleanup();
             Popup = null;

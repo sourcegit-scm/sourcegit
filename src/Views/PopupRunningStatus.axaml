@@ -13,6 +13,15 @@
     <StackPanel Orientation="Horizontal" Margin="0,8">
       <ContentPresenter x:Name="Icon" Width="12" Height="12"/>
       <TextBlock Margin="6,0,0,0" FontSize="14" FontWeight="Bold" Text="{DynamicResource Text.Running}"/>
+      <Button Classes="flat"
+              Width="100" Height="28"
+              Margin="12,0,0,0"
+              Padding="0"
+              HorizontalContentAlignment="Center"
+              VerticalContentAlignment="Center"
+              Content="{DynamicResource Text.Cancel}"
+              Click="OnCancelRequested"
+              IsVisible="{Binding #ThisControl.CanCancel}"/>
     </StackPanel>
 
     <TextBlock HorizontalAlignment="Stretch"

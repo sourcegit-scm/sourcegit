@@ -34,7 +34,7 @@ namespace SourceGit.ViewModels
                 ProgressDescription = desc;
         }
 
-        public void Cleanup()
+        public virtual void Cleanup()
         {
             _log?.Unsubscribe(this);
         }
@@ -42,6 +42,18 @@ namespace SourceGit.ViewModels
         public virtual bool CanStartDirectly()
         {
             return true;
+        }
+
+        /// <summary>
+        /// Indicates the in-progress operation of this popup can be interrupted.
+        /// </summary>
+        public virtual bool CanCancel => false;
+
+        /// <summary>
+        /// Interrupts the in-progress operation of this popup.
+        /// </summary>
+        public virtual void Cancel()
+        {
         }
 
         public virtual Task<bool> Sure()

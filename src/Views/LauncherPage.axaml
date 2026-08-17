@@ -113,8 +113,8 @@
                     <v:PopupRunningStatus Margin="12,8"
                                           Focusable="False"
                                           Description="{Binding ProgressDescription}"
-                                          IsVisible="{Binding InProgress}"
-                                          IsHitTestVisible="False"/>
+                                          CanCancel="{Binding CanCancel}"
+                                          IsVisible="{Binding InProgress}"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>
