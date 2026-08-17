@@ -37,19 +37,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.41%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Diff.Binary.ViewContentOfNew
-- Text.File.Binary
-- Text.File.HexViewer
-- Text.File.HexViewer.GotoAddress
-- Text.Preferences.AI.ReasoningEffortLevel
-- Text.WorkingCopy.FilterChanges
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-95.12%25-yellow)
 
