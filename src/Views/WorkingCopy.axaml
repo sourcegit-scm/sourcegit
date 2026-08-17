@@ -68,7 +68,21 @@
               <Run Text="{DynamicResource Text.WorkingCopy.Unstaged}"/>
               <Run Text="{Binding Unstaged, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
             </TextBlock>
-            <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock FontSize="11"
+                         Margin="8,0,0,0"
+                         Foreground="Green"
+                         Text="{Binding UnstagedAddedLines, StringFormat=+{0}}"
+                         IsVisible="{Binding UnstagedAddedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                         VerticalAlignment="Center"/>
+              <TextBlock FontSize="11"
+                         Margin="4,0,0,0"
+                         Foreground="Red"
+                         Text="{Binding UnstagedDeletedLines, StringFormat=-{0}}"
+                         IsVisible="{Binding UnstagedDeletedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                         VerticalAlignment="Center"/>
+              <v:LoadingIcon Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
+            </StackPanel>
 
             <Button Grid.Column="4"
                     Classes="icon_button"
@@ -155,7 +169,21 @@
               <Run Text="{DynamicResource Text.WorkingCopy.Staged}"/>
               <Run Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
             </TextBlock>
-            <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock FontSize="11"
+                         Margin="8,0,0,0"
+                         Foreground="Green"
+                         Text="{Binding StagedAddedLines, StringFormat=+{0}}"
+                         IsVisible="{Binding StagedAddedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                         VerticalAlignment="Center"/>
+              <TextBlock FontSize="11"
+                         Margin="4,0,0,0"
+                         Foreground="Red"
+                         Text="{Binding StagedDeletedLines, StringFormat=-{0}}"
+                         IsVisible="{Binding StagedDeletedLines, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
+                         VerticalAlignment="Center"/>
+              <v:LoadingIcon Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
+            </StackPanel>
             <Button Grid.Column="4" Classes="icon_button" Width="26" Height="14" Padding="0" Click="OnUnstageSelectedButtonClicked">
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">

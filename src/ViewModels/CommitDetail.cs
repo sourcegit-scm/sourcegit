@@ -91,6 +91,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _visibleChanges, value);
         }
 
+        public int TotalAddedLines
+        {
+            get => _totalAddedLines;
+            private set => SetProperty(ref _totalAddedLines, value);
+        }
+
+        public int TotalDeletedLines
+        {
+            get => _totalDeletedLines;
+            private set => SetProperty(ref _totalDeletedLines, value);
+        }
+
         public List<Models.Change> SelectedChanges
         {
             get => _selectedChanges;
@@ -513,10 +525,11 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var changes = await new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
-                    .WithCancellation(token)
-                    .ReadAsync()
-                    .ConfigureAwait(false);
+                var cmd = new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA) { CancellationToken = token };
+                var changes = await cmd.ReadAsync().ConfigureAwait(false);
+                var pref = Preferences.Instance;
+                var statsCmd = new Commands.QueryDiffLineStats(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA, pref.IgnoreWhitespaceChangesInDiff, pref.IgnoreCRAtEOLInDiff) { CancellationToken = token };
+                var stats = await statsCmd.GetResultAsync().ConfigureAwait(false);
 
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
@@ -535,6 +548,8 @@ namespace SourceGit.ViewModels
                     {
                         Changes = changes;
                         VisibleChanges = visible;
+                        TotalAddedLines = stats.added;
+                        TotalDeletedLines = stats.deleted;
 
                         if (visible.Count == 0)
                             SelectedChanges = null;
@@ -739,6 +754,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
         private List<Models.Change> _selectedChanges = null;
+        private int _totalAddedLines = 0;
+        private int _totalDeletedLines = 0;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
         private string _viewRevisionFilePath = string.Empty;
