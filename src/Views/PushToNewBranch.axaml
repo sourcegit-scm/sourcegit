@@ -39,17 +39,17 @@
         <TextBlock Text="{DynamicResource Text.PushToNewBranch.Title}"/>
       </Border>
 
-      <TextBox x:Name="TxtName"
-               MinWidth="300" Height="32"
-               Margin="16,8,16,0"
-               CornerRadius="3"
-               Focusable="True">
+      <v:BranchOrTagNameTextBox x:Name="TxtName"
+                                MinWidth="300" Height="32"
+                                Margin="16,8,16,0"
+                                CornerRadius="3"
+                                Focusable="True">
         <TextBox.InnerLeftContent>
           <Border Height="22" CornerRadius="10" Margin="4,0,0,0" Background="Green">
             <TextBlock x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>
           </Border>
         </TextBox.InnerLeftContent>
-      </TextBox>
+      </v:BranchOrTagNameTextBox>
 
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
         <Button Classes="flat primary"
@@ -63,6 +63,7 @@
                 Content="{DynamicResource Text.Cancel}"
                 Click="OnCancel"/>
       </StackPanel>
-    </StackPanel>
+    
+  </StackPanel>
   </Grid>
 </v:ChromelessWindow>
