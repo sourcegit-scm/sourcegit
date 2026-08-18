@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -27,6 +28,7 @@ namespace SourceGit.ViewModels
             Revision = revision;
             RemoteBranch = remoteBranch;
             Force = false;
+            CanTerminate = true;
         }
 
         public override async Task<bool> Sure()
@@ -37,6 +39,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push Revision");
             Use(log);
 
+            _cancellation = new CancellationTokenSource();
+            var token = _cancellation.Token;
+
             var succ = await new Commands.Push(
                 _repo.FullPath,
                 Revision.SHA,
@@ -46,12 +51,20 @@ namespace SourceGit.ViewModels
                 false,
                 false,
                 Force,
-                false).Use(log).RunAsync();
+                false).WithCancellation(token).Use(log).RunAsync();
 
             log.Complete();
+
+            _cancellation = null;
             return succ;
         }
 
+        public override void Terminate()
+        {
+            _cancellation?.Cancel();
+        }
+
         private readonly Repository _repo;
+        private CancellationTokenSource _cancellation = null;
     }
 }

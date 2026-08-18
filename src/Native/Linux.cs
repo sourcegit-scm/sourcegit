@@ -138,6 +138,11 @@ namespace SourceGit.Native
             }
         }
 
+        public void TerminateProcess(Process proc)
+        {
+            proc.Kill(true);
+        }
+
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;

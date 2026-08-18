@@ -967,6 +967,7 @@
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">刪除所選的 {0} 個標籤...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合併 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
+  <x:String x:Key="Text.Terminate" xml:space="preserve">終止執行</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">如果子模組尚未初始化，則將其初始化</x:String>

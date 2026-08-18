@@ -28,6 +28,8 @@ namespace SourceGit.Native
             void OpenInFileManager(string path);
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
+
+            void TerminateProcess(Process proc);
         }
 
         public static string DataDir
@@ -295,6 +297,11 @@ namespace SourceGit.Native
                 return $"~{path.AsSpan(prefixLen)}";
 
             return path;
+        }
+
+        public static void TerminateProcess(Process proc)
+        {
+            _backend?.TerminateProcess(proc);
         }
 
         private static void UpdateGitVersion()

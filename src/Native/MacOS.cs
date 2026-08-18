@@ -113,6 +113,11 @@ namespace SourceGit.Native
         {
             Process.Start("open", file.Quoted());
         }
+
+        public void TerminateProcess(Process proc)
+        {
+            proc.Kill(true);
+        }
     }
 
     [SupportedOSPlatform("macOS")]
