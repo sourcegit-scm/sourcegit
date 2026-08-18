@@ -741,6 +741,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Erzwinge Push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Lokaler Branch:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">NEU</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">pre-push Hook überspringen</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Revision zu Remote-Branch pushen</x:String>

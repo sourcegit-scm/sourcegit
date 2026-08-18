@@ -746,6 +746,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">啟用強制推送</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">本機分支:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">新增</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">繞過 pre-push hook</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">遠端存放庫:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">修訂:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">推送修訂到遠端存放庫</x:String>

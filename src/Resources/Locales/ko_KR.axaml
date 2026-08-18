@@ -712,6 +712,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">강제 푸시</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">로컬 브랜치:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">신규</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">pre-push 훅 건너뛰기</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">원격:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">리비전:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">리비전을 원격에 푸시</x:String>
