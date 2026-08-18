@@ -91,14 +91,14 @@
                 ToolTip.Tip="--tags"/>
 
       <CheckBox Grid.Row="6" Grid.Column="1"
-                Content="{DynamicResource Text.Push.Force}"
-                IsChecked="{Binding ForcePush, Mode=TwoWay}"
-                ToolTip.Tip="--force-with-lease"/>
-
-      <CheckBox Grid.Row="7" Grid.Column="1"
                 Content="{DynamicResource Text.Push.NoVerify}"
                 IsChecked="{Binding NoVerify, Mode=TwoWay}"
                 ToolTip.Tip="--no-verify"/>
+
+      <CheckBox Grid.Row="7" Grid.Column="1"
+                Content="{DynamicResource Text.Push.Force}"
+                IsChecked="{Binding ForcePush, Mode=TwoWay}"
+                ToolTip.Tip="--force-with-lease"/>
     </Grid>
   </StackPanel>
 </UserControl>
