@@ -323,6 +323,17 @@ namespace SourceGit.Views
                         ev.Handled = true;
                     };
                     menu.Items.Add(copyPath);
+                    var openDirectory = new MenuItem();
+                    openDirectory.Header = App.Text("PageTabBar.Tab.OpenDirectory");
+                    openDirectory.Icon = this.CreateMenuIcon("Icons.Folder.Open");
+                    openDirectory.Click += (_, ev) =>
+                    {
+                        var dir = new DirectoryInfo(repo.FullPath).FullName;
+                        if (Directory.Exists(dir))
+                            Native.OS.OpenInFileManager(dir);
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(openDirectory);
                     menu.Items.Add(new MenuItem() { Header = "-" });
 
                     var edit = new MenuItem();

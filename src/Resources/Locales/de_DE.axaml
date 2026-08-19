@@ -640,6 +640,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Kopiere Repository-Pfad</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Bearbeiten</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">In Arbeitsumgebung verschieben</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.OpenDirectory" xml:space="preserve">Ordner öffnen</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Aktualisieren</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositorys</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Einfügen</x:String>

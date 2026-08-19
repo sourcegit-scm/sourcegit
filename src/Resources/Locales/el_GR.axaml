@@ -639,6 +639,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Αντιγραφή διαδρομής αποθετηρίου</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Επεξεργασία</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Μετακίνηση σε χώρο εργασίας</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.OpenDirectory" xml:space="preserve">Άνοιγμα φακέλου</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Ανανέωση</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Αποθετήρια</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Επικόλληση</x:String>

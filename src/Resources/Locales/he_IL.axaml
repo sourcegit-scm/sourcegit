@@ -608,6 +608,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">העתק נתיב המאגר</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">ערוך</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">העבר לסביבת עבודה</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.OpenDirectory" xml:space="preserve">פתח תיקייה</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">רענן</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">מאגרים</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">הדבק</x:String>

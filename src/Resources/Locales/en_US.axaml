@@ -640,6 +640,7 @@
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copy Repository Path</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Edit</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Move to Workspace</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.OpenDirectory" xml:space="preserve">Open Directory</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Refresh</x:String>
   <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositories</x:String>
   <x:String x:Key="Text.Paste" xml:space="preserve">Paste</x:String>
