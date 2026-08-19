@@ -570,7 +570,7 @@ namespace SourceGit.ViewModels
 
         public bool IsLFSEnabled()
         {
-            var path = Path.Combine(FullPath, ".git", "hooks", "pre-push");
+            var path = Path.Combine(GitDir, "hooks", "pre-push");
             if (!File.Exists(path))
                 return false;
 
