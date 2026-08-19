@@ -124,7 +124,8 @@ namespace SourceGit.ViewModels
 
         public override void Terminate()
         {
-            _cancellation?.Cancel();
+            // Just fire cancel event and UI will auto wait the `Sure` complete
+            var _ = _cancellation?.CancelAsync();
         }
 
         private readonly Repository _repo = null;
