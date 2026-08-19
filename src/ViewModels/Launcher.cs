@@ -482,7 +482,7 @@ namespace SourceGit.ViewModels
         private static string ComposeSubmoduleTitle(LauncherPage parent, RepositoryNode node)
         {
             var baseName = Path.GetFileName(node.Id);
-            return $"{parent.Node.Name} : {baseName}";
+            return $"{parent.Node.Name}: {baseName}";
         }
 
         private Workspace _activeWorkspace;
