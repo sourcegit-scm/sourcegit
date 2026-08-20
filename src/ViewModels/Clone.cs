@@ -120,7 +120,7 @@ namespace SourceGit.ViewModels
                 .WithCancellation(token)
                 .Use(log)
                 .ExecAsync();
-            if (!succ)
+            if (!succ || token.IsCancellationRequested)
                 return false;
 
             var path = _parentFolder;
