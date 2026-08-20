@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Text.Json.Serialization;
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
@@ -43,6 +45,13 @@ namespace SourceGit.Models
             get => Type != FilterType.Tag;
         }
 
+        [JsonIgnore]
+        public bool HasNoMatch
+        {
+            get => _hasNoMatch;
+            set => SetProperty(ref _hasNoMatch, value);
+        }
+
         public HistoryFilter()
         {
         }
@@ -56,5 +65,6 @@ namespace SourceGit.Models
 
         private string _pattern = string.Empty;
         private FilterMode _mode = FilterMode.None;
+        private bool _hasNoMatch = false;
     }
 }

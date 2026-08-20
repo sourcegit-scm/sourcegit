@@ -952,8 +952,13 @@
                         Margin="0,0,6,0"
                         CornerRadius="12"
                         BorderThickness="1"
-                        BorderBrush="{Binding Mode, Converter={x:Static c:FilterModeConverters.ToBorderBrush}}"
                         VerticalAlignment="Center">
+                  <Border.BorderBrush>
+                    <MultiBinding Converter="{x:Static c:FilterModeConverters.ToBorderBrushWithMatchState}">
+                      <Binding Path="Mode"/>
+                      <Binding Path="HasNoMatch"/>
+                    </MultiBinding>
+                  </Border.BorderBrush>
                   <Grid Margin="8,0">
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="Auto"/>

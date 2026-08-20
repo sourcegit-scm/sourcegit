@@ -1168,6 +1168,7 @@ namespace SourceGit.ViewModels
                     CurrentBranch = branches.Find(x => x.IsCurrent);
                     LocalBranchTrees = builder.Locals;
                     RemoteBranchTrees = builder.Remotes;
+                    UpdateBranchHistoryFilterMatchState();
 
                     var localBranchesCount = 0;
                     foreach (var b in branches)
@@ -1214,6 +1215,7 @@ namespace SourceGit.ViewModels
 
                     Tags = tags;
                     VisibleTags = BuildVisibleTags();
+                    UpdateTagHistoryFilterMatchState();
                 });
             }, token);
         }
@@ -1788,6 +1790,10 @@ namespace SourceGit.ViewModels
             UpdateBranchTreeFilterMode(LocalBranchTrees, map);
             UpdateBranchTreeFilterMode(RemoteBranchTrees, map);
             UpdateTagFilterMode(map);
+
+            UpdateBranchHistoryFilterMatchState();
+            UpdateTagHistoryFilterMatchState();
+
             RefreshCommits();
         }
 
@@ -1813,6 +1819,78 @@ namespace SourceGit.ViewModels
             {
                 foreach (var item in list.TagItems)
                     item.FilterMode = map.GetValueOrDefault(item.Tag.Name, Models.FilterMode.None);
+            }
+        }
+
+        private void UpdateBranchHistoryFilterMatchState()
+        {
+            var branchPaths = new HashSet<string>(StringComparer.Ordinal);
+            CollectBranchPaths(LocalBranchTrees, branchPaths);
+            CollectBranchPaths(RemoteBranchTrees, branchPaths);
+
+            foreach (var filter in _uiStates.HistoryFilters)
+            {
+                switch (filter.Type)
+                {
+                    case Models.FilterType.LocalBranch:
+                    case Models.FilterType.RemoteBranch:
+                        filter.HasNoMatch = !branchPaths.Contains(filter.Pattern);
+                        break;
+                    case Models.FilterType.LocalBranchFolder:
+                    case Models.FilterType.RemoteBranchFolder:
+                        var prefix = filter.Pattern + "/";
+                        var hasChild = false;
+                        foreach (var p in branchPaths)
+                        {
+                            if (p.StartsWith(prefix, StringComparison.Ordinal))
+                            {
+                                hasChild = true;
+                                break;
+                            }
+                        }
+                        filter.HasNoMatch = !hasChild;
+                        break;
+                }
+            }
+        }
+
+        private void UpdateTagHistoryFilterMatchState()
+        {
+            var tagNames = new HashSet<string>(StringComparer.Ordinal);
+            if (VisibleTags is TagCollectionAsTree tree)
+                CollectTagNamesRecursive(tree.Tree, tagNames);
+            else if (VisibleTags is TagCollectionAsList list)
+            {
+                foreach (var item in list.TagItems)
+                    tagNames.Add(item.Tag.Name);
+            }
+
+            foreach (var filter in _uiStates.HistoryFilters)
+            {
+                if (filter.Type == Models.FilterType.Tag)
+                    filter.HasNoMatch = !tagNames.Contains(filter.Pattern);
+            }
+        }
+
+        private void CollectBranchPaths(List<BranchTreeNode> nodes, HashSet<string> set)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.IsBranch)
+                    set.Add(node.Path);
+                else
+                    CollectBranchPaths(node.Children, set);
+            }
+        }
+
+        private static void CollectTagNamesRecursive(List<TagTreeNode> nodes, HashSet<string> set)
+        {
+            foreach (var node in nodes)
+            {
+                if (node.IsFolder)
+                    CollectTagNamesRecursive(node.Children, set);
+                else
+                    set.Add(node.FullPath);
             }
         }
 
