@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
@@ -38,9 +39,11 @@ namespace SourceGit.Models
             set => SetProperty(ref _mode, value);
         }
 
-        public bool IsBranch
+        [JsonIgnore]
+        public bool IsValid
         {
-            get => Type != FilterType.Tag;
+            get => _isValid;
+            set => SetProperty(ref _isValid, value);
         }
 
         public HistoryFilter()
@@ -56,5 +59,6 @@ namespace SourceGit.Models
 
         private string _pattern = string.Empty;
         private FilterMode _mode = FilterMode.None;
+        private bool _isValid = true;
     }
 }

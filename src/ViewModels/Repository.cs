@@ -1169,6 +1169,8 @@ namespace SourceGit.ViewModels
                     LocalBranchTrees = builder.Locals;
                     RemoteBranchTrees = builder.Remotes;
 
+                    ValidateHistoryFilters(true);
+
                     var localBranchesCount = 0;
                     foreach (var b in branches)
                     {
@@ -1214,6 +1216,7 @@ namespace SourceGit.ViewModels
 
                     Tags = tags;
                     VisibleTags = BuildVisibleTags();
+                    ValidateHistoryFilters(false);
                 });
             }, token);
         }
@@ -1838,6 +1841,37 @@ namespace SourceGit.ViewModels
             {
                 foreach (var item in list.TagItems)
                     item.FilterMode = Models.FilterMode.None;
+            }
+        }
+
+        private void ValidateHistoryFilters(bool forBranch)
+        {
+            if (_historyFilterMode == Models.FilterMode.None)
+                return;
+
+            var set = new HashSet<string>();
+
+            if (forBranch)
+            {
+                foreach (var b in _branches)
+                    set.Add(b.FullName);
+
+                foreach (var f in _uiStates.HistoryFilters)
+                {
+                    if (f.Type is Models.FilterType.LocalBranch or Models.FilterType.RemoteBranch)
+                        f.IsValid = set.Contains(f.Pattern);
+                }
+            }
+            else
+            {
+                foreach (var t in _tags)
+                    set.Add(t.Name);
+
+                foreach (var f in _uiStates.HistoryFilters)
+                {
+                    if (f.Type is Models.FilterType.Tag)
+                        f.IsValid = set.Contains(f.Pattern);
+                }
             }
         }
 

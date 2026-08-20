@@ -376,7 +376,7 @@ namespace SourceGit.Models
                 if (filter.Type == FilterType.LocalBranch &&
                     filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                 {
-                    filter.Pattern = $"refs/heads/{newName}";
+                    filter.Pattern = newName;
                     break;
                 }
             }
