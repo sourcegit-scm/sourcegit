@@ -36,7 +36,6 @@ namespace SourceGit.Views
                 if (view is { VisualLinesValid: true })
                 {
                     var typeface = view.CreateTypeface();
-                    var underlinePen = new Pen(Brushes.DarkOrange);
                     var width = Bounds.Width;
                     var lineHeight = view.DefaultLineHeight;
                     var pixelHeight = PixelSnapHelpers.GetPixelSize(view).Height;
@@ -51,9 +50,9 @@ namespace SourceGit.Views
                             break;
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        var x = 0.0;
+                        var x = 8.0;
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
-                        if (!info.IsFirstInGroup && y > lineHeight)
+                        if (!info.IsFirstInGroup)
                             continue;
 
                         var shaLink = new FormattedText(
@@ -66,7 +65,6 @@ namespace SourceGit.Views
                         var shaLinkTop = y - shaLink.Height * 0.5;
                         var underlineY = PixelSnapHelpers.PixelAlign(y + shaLink.Height * 0.5 + 0.5, pixelHeight);
                         context.DrawText(shaLink, new Point(x, shaLinkTop));
-                        context.DrawLine(underlinePen, new Point(x, underlineY), new Point(x + shaLink.Width, underlineY));
                         x += shaLink.Width + 8;
 
                         var author = new FormattedText(
@@ -88,7 +86,13 @@ namespace SourceGit.Views
                             _editor.FontSize,
                             _editor.Foreground);
                         var timeTop = y - time.Height * 0.5;
-                        context.DrawText(time, new Point(width - time.Width, timeTop));
+                        context.DrawText(time, new Point(width - time.Width - 8, timeTop));
+
+                        if (lineNumber > 1)
+                        {
+                            var lineTop = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
+                            context.DrawLine(new Pen(_editor.BorderBrush, 1), new Point(0, lineTop), new Point(Bounds.Width, lineTop));
+                        }
                     }
                 }
             }
@@ -101,14 +105,8 @@ namespace SourceGit.Views
                 {
                     var typeface = view.CreateTypeface();
                     var calculated = new HashSet<string>();
-                    foreach (var line in view.VisualLines)
+                    foreach (var info in _editor.BlameData.LineInfos)
                     {
-                        var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber > _editor.BlameData.LineInfos.Count)
-                            break;
-
-                        var info = _editor.BlameData.LineInfos[lineNumber - 1];
-
                         if (!calculated.Add(info.CommitSHA))
                             continue;
 
@@ -141,8 +139,9 @@ namespace SourceGit.Views
                             _editor.Foreground);
                         x += time.Width;
 
-                        if (maxWidth < x)
-                            maxWidth = x;
+                        var required = x + 16;
+                        if (maxWidth < required)
+                            maxWidth = required;
                     }
                 }
 
@@ -179,7 +178,7 @@ namespace SourceGit.Views
                             _editor.FontSize,
                             Brushes.DarkOrange);
 
-                        var rect = new Rect(0, y, shaLink.Width, lineHeight);
+                        var rect = new Rect(8, y, shaLink.Width, lineHeight);
                         if (rect.Contains(pos))
                         {
                             Cursor = Cursor.Parse("Hand");
@@ -228,7 +227,7 @@ namespace SourceGit.Views
                             _editor.FontSize,
                             Brushes.DarkOrange);
 
-                        var rect = new Rect(0, y, shaLink.Width, shaLink.Height);
+                        var rect = new Rect(8, y, shaLink.Width, shaLink.Height);
                         if (rect.Contains(pos))
                         {
                             if (DataContext is ViewModels.Blame blame)
@@ -363,7 +362,7 @@ namespace SourceGit.Views
 
             _textMate = Models.TextMateHelper.CreateForEditor(this);
 
-            TextArea.LeftMargins.Add(new CommitInfoMargin(this) { Margin = new Thickness(8, 0) });
+            TextArea.LeftMargins.Add(new CommitInfoMargin(this));
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
             TextArea.LeftMargins.Add(new LineNumberMargin() { Margin = new Thickness(8, 0) });
             TextArea.LeftMargins.Add(new VerticalSeparatorMargin(this));
