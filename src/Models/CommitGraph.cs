@@ -70,7 +70,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Generate(List<Commit> commits, bool recalculateMergeState, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -82,28 +82,10 @@ namespace SourceGit.Models
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
-            var merged = new HashSet<string>();
 
             foreach (var commit in commits)
             {
                 PathHelper major = null;
-
-                // Update merge state of this commit.
-                if (recalculateMergeState)
-                {
-                    if (commit.IsMerged)
-                    {
-                        merged.Remove(commit.SHA);
-                        foreach (var p in commit.Parents)
-                            merged.Add(p);
-                    }
-                    else if (merged.Remove(commit.SHA))
-                    {
-                        commit.IsMerged = true;
-                        foreach (var p in commit.Parents)
-                            merged.Add(p);
-                    }
-                }
 
                 // Update current y offset
                 offsetY += unitHeight;
