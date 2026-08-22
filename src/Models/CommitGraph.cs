@@ -146,28 +146,21 @@ namespace SourceGit.Models
                     {
                         isHighlighted = true;
                     }
-                    else if (highlighting == CommitGraphHighlighting.CurrentBranchOnly)
+
+                    if (!isHighlighted &&
+                        (highlighting == CommitGraphHighlighting.CurrentBranchOnly ||
+                         highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
                     {
                         isHighlighted = commit.IsMerged;
                     }
-                    else if (highlighting == CommitGraphHighlighting.SelectedCommitsOnly)
+
+                    if (!isHighlighted &&
+                        (highlighting == CommitGraphHighlighting.SelectedCommitsOnly ||
+                         highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
                     {
                         isHighlighted = highlightExtraCommits.Remove(commit.SHA);
                         if (isHighlighted)
                         {
-                            foreach (var p in commit.Parents)
-                                highlightExtraCommits.Add(p);
-                        }
-                    }
-                    else
-                    {
-                        if (commit.IsMerged)
-                        {
-                            isHighlighted = true;
-                        }
-                        else if (highlightExtraCommits.Remove(commit.SHA))
-                        {
-                            isHighlighted = true;
                             foreach (var p in commit.Parents)
                                 highlightExtraCommits.Add(p);
                         }
