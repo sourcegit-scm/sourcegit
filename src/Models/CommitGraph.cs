@@ -159,11 +159,9 @@ namespace SourceGit.Models
                          highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
                     {
                         isHighlighted = highlightExtraCommits.Remove(commit.SHA);
-                        if (isHighlighted)
-                        {
-                            foreach (var p in commit.Parents)
-                                highlightExtraCommits.Add(p);
-                        }
+                        // Highlight first parent, other parents are dealt with later
+                        if (isHighlighted && commit.Parents.Count > 0)
+                            highlightExtraCommits.Add(commit.Parents[0]);
                     }
                 }
                 commit.IsHighlightedInGraph = isHighlighted;
