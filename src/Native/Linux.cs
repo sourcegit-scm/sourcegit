@@ -46,9 +46,15 @@ namespace SourceGit.Native
                     return portableDir;
             }
 
-            // Runtime data dir: ~/.sourcegit
+            // Persistent data dir
+            // https://specifications.freedesktop.org/basedir/latest/
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(home, ".sourcegit");
+            
+            string xdg_data = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+            if (xdg_data == null || !Path.IsPathRooted(xdg_data) || !Directory.Exists(xdg_data))
+                xdg_data = Path.Combine(home, ".local/share/SourceGit");
+            
+            return xdg_data;
         }
 
         public string FindGitExecutable()
