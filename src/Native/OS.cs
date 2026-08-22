@@ -20,7 +20,6 @@ namespace SourceGit.Native
             void SetupWindow(Window window);
 
             string GetDataDir();
-            string GetConfigDir();
             string GetCacheDir();
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
@@ -33,12 +32,6 @@ namespace SourceGit.Native
         }
 
         public static string DataDir
-        {
-            get;
-            private set;
-        } = string.Empty;
-        
-        public static string ConfigDir
         {
             get;
             private set;
@@ -152,13 +145,6 @@ namespace SourceGit.Native
             DataDir = _backend.GetDataDir();
             if (!Directory.Exists(DataDir))
                 Directory.CreateDirectory(DataDir);
-        }
-        
-        public static void SetupConfigDir()
-        {
-            ConfigDir = _backend.GetConfigDir();
-            if (!Directory.Exists(ConfigDir))
-                Directory.CreateDirectory(ConfigDir);
         }
         
         public static void SetupCacheDir()

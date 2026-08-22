@@ -49,11 +49,6 @@ namespace SourceGit.Native
             return GetXdgDir("XDG_DATA_HOME");
         }
 
-        public string GetConfigDir()
-        {
-            return GetXdgDir("XDG_CONFIG_HOME");
-        }
-
         public string GetCacheDir()
         {
             

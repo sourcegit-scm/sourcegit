@@ -24,7 +24,6 @@ namespace SourceGit
         public static void Main(string[] args)
         {
             Native.OS.SetupDataDir();
-            Native.OS.SetupConfigDir();
             Native.OS.SetupCacheDir();
 
             AppDomain.CurrentDomain.UnhandledException += (_, e) =>

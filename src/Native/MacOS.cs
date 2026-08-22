@@ -54,11 +54,6 @@ namespace SourceGit.Native
                 "SourceGit");
         }
 
-        public string GetConfigDir()
-        {
-            return GetDataDir();
-        }
-
         public string GetCacheDir()
         {
             return GetDataDir();
