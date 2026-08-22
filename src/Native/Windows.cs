@@ -54,6 +54,16 @@ namespace SourceGit.Native
                 "SourceGit");
         }
 
+        public string GetConfigDir()
+        {
+            return GetDataDir();
+        }
+
+        public string GetCacheDir()
+        {
+            return GetDataDir();
+        }
+
         public string FindGitExecutable()
         {
             var reg = Microsoft.Win32.RegistryKey.OpenBaseKey(

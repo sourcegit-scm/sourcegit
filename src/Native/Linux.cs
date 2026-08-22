@@ -46,17 +46,42 @@ namespace SourceGit.Native
                     return portableDir;
             }
 
-            // Persistent data dir
-            // https://specifications.freedesktop.org/basedir/latest/
-            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            
-            string xdg_data = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-            if (xdg_data == null || !Path.IsPathRooted(xdg_data) || !Directory.Exists(xdg_data))
-                xdg_data = Path.Combine(home, ".local/share/SourceGit");
-            
-            return xdg_data;
+            return GetXdgDir("XDG_DATA_HOME");
         }
 
+        public string GetConfigDir()
+        {
+            return GetXdgDir("XDG_CONFIG_HOME");
+        }
+
+        public string GetCacheDir()
+        {
+            
+            return GetXdgDir("XDG_CACHE_HOME");
+        }
+
+        // Directories according to the XDG user directory standard
+        // https://specifications.freedesktop.org/basedir/latest/
+        private string GetXdgDir(string name)
+        {
+            string fallback;
+            
+            switch(name)
+            {
+                default:
+                case "XDG_DATA_HOME": fallback = ".local/share/SourceGit"; break;
+                case "XDG_CONFIG_HOME": fallback = ".config/SourceGit"; break;
+                case "XDG_CACHE_HOME": fallback = ".cache/SourceGit"; break;
+            }
+            
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string dir = Environment.GetEnvironmentVariable(name);
+            if (dir == null || !Path.IsPathRooted(dir))
+                dir = Path.Combine(home, fallback);
+            
+            return dir;
+        }
+        
         public string FindGitExecutable()
         {
             return FindExecutable("git");
