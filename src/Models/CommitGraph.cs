@@ -13,6 +13,7 @@ namespace SourceGit.Models
         All = 0,
         CurrentBranchOnly,
         SelectedCommitsOnly,
+        SelectedCommitsOnlyFirstParent,
         CurrentBranchAndSelectedCommits,
     }
 
@@ -156,6 +157,7 @@ namespace SourceGit.Models
 
                     if (!isHighlighted &&
                         (highlighting == CommitGraphHighlighting.SelectedCommitsOnly ||
+                         highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent ||
                          highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
                     {
                         isHighlighted = highlightExtraCommits.Remove(commit.SHA);
@@ -200,6 +202,9 @@ namespace SourceGit.Models
                 // Deal with other parents (the first parent has been processed)
                 if (!firstParentOnlyEnabled)
                 {
+                    if (highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
+                        isHighlighted = false;
+
                     for (int j = 1; j < commit.Parents.Count; j++)
                     {
                         var parentHash = commit.Parents[j];

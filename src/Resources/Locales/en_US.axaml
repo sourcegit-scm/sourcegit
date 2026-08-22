@@ -518,6 +518,7 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Current Branch Only</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Current Branch &amp; Selected Commits</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Selected Commits Only</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Selected Commits (only first-parent)</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Hold 'Ctrl' or 'Shift' to select multiple commits.</x:String>
