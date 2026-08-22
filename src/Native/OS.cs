@@ -149,9 +149,8 @@ namespace SourceGit.Native
         
         public static void SetupCacheDir()
         {
-            CacheDir = _backend.GetCacheDir();
-            if (!Directory.Exists(CacheDir))
-                Directory.CreateDirectory(CacheDir);
+            // cache directory is created when placing data in it
+            return;
         }
 
         public static void SetupApp(AppBuilder builder)

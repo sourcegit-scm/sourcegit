@@ -45,8 +45,6 @@ namespace SourceGit.Models
         public void Start()
         {
             _storePath = Path.Combine(Native.OS.CacheDir, "avatars");
-            if (!Directory.Exists(_storePath))
-                Directory.CreateDirectory(_storePath);
 
             LoadDefaultAvatar("noreply@github.com", "github.png");
             LoadDefaultAvatar("unrealbot@epicgames.com", "unreal.png");
@@ -87,6 +85,9 @@ namespace SourceGit.Models
                         url = $"https://avatars.githubusercontent.com/{githubUser}";
                     }
 
+                    if (!Directory.Exists(_storePath))
+                        Directory.CreateDirectory(_storePath);
+                    
                     var localFile = Path.Combine(_storePath, md5);
                     Bitmap img = null;
                     try
