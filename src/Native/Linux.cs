@@ -50,7 +50,7 @@ namespace SourceGit.Native
             var dataDir = GetXdgDir("XDG_DATA_HOME");
 
             if (!Directory.Exists(dataDir)) {
-                foreach (var oldDataDir in new[] { "~/.SourceGit", "~/.config/SourceGit" }) {
+                foreach (var oldDataDir in new[] { ".SourceGit", ".config/SourceGit" }) {
                     if (!Directory.Exists(Path.Combine(homeDir, oldDataDir))) continue;
 
                     Directory.Move(oldDataDir, dataDir!);
