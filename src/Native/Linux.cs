@@ -53,6 +53,7 @@ namespace SourceGit.Native
                 foreach (var oldDataDir in new[] { ".SourceGit", ".config/SourceGit" }) {
                     if (!Directory.Exists(Path.Combine(homeDir, oldDataDir))) continue;
 
+                    Directory.Delete(Path.Combine(oldDataDir, "avatars"), true);
                     Directory.Move(oldDataDir, dataDir!);
                     break;
                 }
