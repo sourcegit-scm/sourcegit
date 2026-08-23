@@ -29,7 +29,7 @@ main() {
     build_rpm_package
     build_arch_package
 
-    echo "======== Packag Creation Complete For Version: $VERSION ========"
+    echo "======== Package Creation Complete For Version: $VERSION ========"
 }
 
 build_appimage() {
