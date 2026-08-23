@@ -22,13 +22,18 @@ main() {
     esac
 
     cd build
+    echo "======== Creating Linux Packaging For Version: $VERSION ========"
+
     build_appimage
     build_debian_package
     build_rpm_package
     build_arch_package
+
+    echo "======== Packag Creation Complete For Version: $VERSION ========"
 }
 
 build_appimage() {
+    echo "-------- Creating AppImage Package --------"
     APPIMAGETOOL_URL=https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
 
 
@@ -57,6 +62,7 @@ build_appimage() {
 }
 
 build_debian_package() {
+    echo "-------- Creating Debian/Ubuntu Package --------"
     # ICU versions to support (Debian has no virtual package, must list all)
     # Format: space-separated version numbers
     ICU_VERSIONS="78 77 76 74 72 71 70 69 68 67 66 65 63"
@@ -92,12 +98,14 @@ build_debian_package() {
 }
 
 build_rpm_package() {
+    echo "-------- Creating RPM Package --------"
     rpmbuild -bb --target="$target" resources/rpm/SPECS/build.spec --define "_topdir $(pwd)/resources/rpm" --define "_version $VERSION"
 
     mv "resources/rpm/RPMS/$target/sourcegit-$VERSION-1.$target.rpm" ./
 }
 
 build_arch_package() {
+    echo "-------- Creating ARCH Package --------"
     if command -v makepkg &> /dev/null; then
         mkdir -p resources/aur/opt/sourcegit/
         mkdir -p resources/aur/usr/bin
@@ -111,7 +119,7 @@ build_arch_package() {
 
         cd "resources/aur/" || exit 1
 
-        makepkg
+        makepkg --nodeps
 
         cd ../../ # return to previous path
 
