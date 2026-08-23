@@ -69,7 +69,7 @@ namespace SourceGit.Native
 
         // Directories according to the XDG user directory standard
         // https://specifications.freedesktop.org/basedir/latest/
-        private string GetXdgDir(string name)
+        private static string GetXdgDir(string name)
         {
             string fallback;
             
