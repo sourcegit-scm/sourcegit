@@ -109,7 +109,9 @@ build_arch_package() {
         cp -r resources/_common/applications resources/aur/usr/share
         cp -r resources/_common/icons resources/aur/usr/share
 
-        cd "resources/aur/" && makepkg
+        cd "resources/aur/" || exit 1
+
+        makepkg
 
         cd ../../ # return to previous path
 

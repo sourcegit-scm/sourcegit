@@ -82,27 +82,75 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
           apt-get update
-          apt-get install -y curl wget git dpkg-dev fakeroot tzdata zip unzip desktop-file-utils rpm libfuse2 file build-essential binutils
+          apt-get install -y curl wget git dpkg-dev fakeroot tzdata \
+                             zip unzip desktop-file-utils rpm libfuse2 \
+                             file build-essential binutils
 
           # Detect Ubuntu Codename
-          UBUNTU_CODENAME=$(lsb_release -cs)
-
-          # If it's not a supported Ubuntu release, the build script
-          # should report failure to create Arch package while not
-          # affecting other packages.
+          UBUNTU_CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME")
 
           if [ "$UBUNTU_CODENAME" = "noble" ]; then
             echo "Detected Ubuntu 24.04 (Noble). Installing official package..."
-            sudo apt-get install -y pacman-package-manager
+            apt-get install -y pacman-package-manager
           elif [ "$UBUNTU_CODENAME" = "focal" ]; then
-            echo "Detected Ubuntu 20.04 (Focal). Installing community port..."
-            # Use the version compiled for glibc 2.31 (Ubuntu 20.04 standard)
-            wget https://github.com/ThePoorPilot/pacman-utils/releases/download/6.0.1-2_2.31-0/pacman-utils_6.0.1-2_amd64.deb
-            sudo dpkg -i pacman-utils_6.0.1-2_amd64.deb
-            sudo apt-get install -f -y
-          fi
+            echo "Detected Ubuntu 20.04 (Focal). Building Arch Linux packaging tools..."
+            #
+            # Install pacman, makepkg, and Arch packaging utilities on Ubuntu Linux
+            #
+            # Written 2024-06-27 by Ronald Joe Record <ronaldrecord@gmail.com>
 
+            apt-get install -y pkg-config meson gcc libtool libgpgme-dev \
+                            libarchive-dev ninja-build libcurl4-openssl-dev \
+                            libssl-dev curl gettext python3 python3-setuptools \
+                            dash gawk ca-certificates fakechroot \
+                            libarchive-tools
+
+            # Need a more recent version of Meson
+            mkdir -p /usr/local/meson
+            git clone https://github.com/mesonbuild/meson.git /usr/local/meson
+            CWD=$(pwd)
+            cd /usr/local/meson
+            git fetch --tags
+            git checkout 1.4.2
+            cd $CWD
+
+            [ -f /usr/bin/meson ] && {
+                mver=$(/usr/bin/meson --version)
+                mv /usr/bin/meson /usr/bin/meson-${mver}
+            }
+
+            if [ -f /usr/local/meson/meson.py ]; then
+                ln -s /usr/local/meson/meson.py /usr/bin/meson
+            else
+                echo "ERROR: cannot locate /usr/local/meson/meson.py"
+                exit 1
+            fi
+
+            rm -rf pacman
+            git clone https://gitlab.archlinux.org/pacman/pacman.git
+            CWD=$(pwd)
+            cd pacman
+            meson setup -Ddoc=disabled build
+            ninja -C build
+
+            [ -d build ] || {
+                echo "Directory pacman/build does not exist. Exiting."
+                exit 1
+            }
+            cd build
+
+            grep mirror scripts/libmakepkg/source/git.sh > /dev/null && {
+                cat scripts/libmakepkg/source/git.sh | sed -e "s/---mirror//" > /tmp/git$$
+                cp /tmp/git$$ scripts/libmakepkg/source/git.sh
+                rm -f /tmp/git$$
+            }
+
+            meson install --no-rebuild --quiet
+
+            cd $CWD
+          fi
       - name: Download build
+        if : env.ACT == ''
         uses: actions/download-artifact@v8
         with:
           name: sourcegit.${{ matrix.runtime }}
