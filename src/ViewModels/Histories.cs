@@ -517,15 +517,11 @@ namespace SourceGit.ViewModels
 
             foreach (var commit in commits)
             {
+                if (merged.Remove(commit.SHA))
+                    commit.IsMerged = true;
+
                 if (commit.IsMerged)
                 {
-                    merged.Remove(commit.SHA);
-                    foreach (var p in commit.Parents)
-                        merged.Add(p);
-                }
-                else if (merged.Remove(commit.SHA))
-                {
-                    commit.IsMerged = true;
                     foreach (var p in commit.Parents)
                         merged.Add(p);
                 }
