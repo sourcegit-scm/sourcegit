@@ -116,10 +116,16 @@ build_arch_package() {
         ln -rsf resources/aur/opt/sourcegit/sourcegit resources/aur/usr/bin
         cp -r resources/_common/applications resources/aur/usr/share
         cp -r resources/_common/icons resources/aur/usr/share
+        chown -R pkguser:pkguser ./
+
 
         cd "resources/aur/" || exit 1
 
-        makepkg --nodeps
+        if [ "$(id -u)" -eq 0 ]; then
+            sudo -E -u pkguser makepkg --nodeps
+        else
+            makepkg --nodeps
+        fi
 
         cd ../../ # return to previous path
 

@@ -155,6 +155,12 @@ jobs:
         with:
           name: sourcegit.${{ matrix.runtime }}
           path: build
+      - name: Create package user
+        run: |
+          apt-get install -y sudo
+          useradd -m pkguser
+          echo "pkguser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+          chown -R pkguser:pkguser build
       - name: Package
         env:
           VERSION: ${{ inputs.version }}
