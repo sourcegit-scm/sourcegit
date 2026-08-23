@@ -116,8 +116,8 @@ build_arch_package() {
         ln -rsf resources/aur/opt/sourcegit/sourcegit resources/aur/usr/bin
         cp -r resources/_common/applications resources/aur/usr/share
         cp -r resources/_common/icons resources/aur/usr/share
-        chown -R pkguser:pkguser ./
 
+        chown -R pkguser:pkguser ./
 
         cd "resources/aur/" || exit 1
 
@@ -127,11 +127,15 @@ build_arch_package() {
             makepkg --nodeps
         fi
 
-        cd ../../ # return to previous path
-
-        if [[ -f "resources/aur/sourcegit-bin-${VERSION}-1-$(uname -m).pkg.tar.zst" ]]; then
-            mv resources/aur/sourcegit-bin*.pkg.tar.zst .
+        if find . -maxdepth 1 -type f \( -name "sourcegit*.pkg.tar.zst" -o -name "sourcegit*.pkg.tar.xz" \) -quit | grep -q .; then
+            echo "Copying Arch package for artifact upload"
+            cp sourcegit*.pkg.tar.zst ../../
+        else
+            echo "Arch package file not found."
+            echo "$(ls -alh .)"
         fi
+
+        cd ../../ # return to previous path
     else
         echo -e "\033[0;31 ⚠ makepkg not found!\033\[0m"
     fi
