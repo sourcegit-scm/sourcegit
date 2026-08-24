@@ -127,7 +127,7 @@ build_arch_package() {
             makepkg --nodeps
         fi
 
-        if find . -maxdepth 1 -type f \( -name "sourcegit*.pkg.tar.zst" -o -name "sourcegit*.pkg.tar.xz" \) -quit | grep -q .; then
+        if find . -maxdepth 1 -type f -name "sourcegit*.pkg.tar.zst" -o -name "sourcegit*.pkg.tar.xz" -quit | grep -q .; then
             echo "Copying Arch package for artifact upload"
             cp sourcegit*.pkg.tar.zst ../../
         else
