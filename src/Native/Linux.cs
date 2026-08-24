@@ -62,8 +62,14 @@ namespace SourceGit.Native
             dirs.CacheDir = GetXdgDirectory("XDG_CACHE_HOME", Path.Combine(home, ".cache"), "SourceGit");
 
             // If the app basic dirs already exist, we can skip the migration step
-            if (Directory.Exists(dirs.ConfigDir))
+            if (Directory.Exists(dirs.ConfigDir) && Directory.Exists(dirs.CacheDir))
                 return dirs;
+
+            // Create the config and cache directories if they don't exist
+            if (!Directory.Exists(dirs.ConfigDir))
+                Directory.CreateDirectory(dirs.ConfigDir);
+            if (!Directory.Exists(dirs.CacheDir))
+                Directory.CreateDirectory(dirs.CacheDir);
 
             // Migrate legacy data dir: ~/.sourcegit to XDG standard directories
             var legacyDir = Path.Combine(home, ".sourcegit");
@@ -80,12 +86,6 @@ namespace SourceGit.Native
                     // Ignore any errors during migration
                 }
             }
-
-            // Create the config and cache directories if they don't exist
-            if (!Directory.Exists(dirs.ConfigDir))
-                Directory.CreateDirectory(dirs.ConfigDir);
-            if (!Directory.Exists(dirs.CacheDir))
-                Directory.CreateDirectory(dirs.CacheDir);
 
             return dirs;
         }
