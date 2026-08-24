@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-99.32%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-99.13%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -16,12 +16,14 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Terminate
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-98.83%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-98.64%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
@@ -32,6 +34,8 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
 - Text.Launcher.NewVersion
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
@@ -41,17 +45,19 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.81%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.61%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Terminate
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-94.94%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-94.76%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -93,6 +99,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test.NoConflicts
 - Text.Merge.Test.UnknownError
 - Text.Merge.Test.WillCauseConflicts
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Preferences.General.UseCompactBranchNames
 - Text.Rebase.Test
@@ -111,7 +119,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-94.94%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-94.76%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -153,6 +161,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test.NoConflicts
 - Text.Merge.Test.UnknownError
 - Text.Merge.Test.WillCauseConflicts
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Preferences.General.UseCompactBranchNames
 - Text.Rebase.Test
@@ -171,7 +181,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-99.22%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-99.03%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -181,13 +191,15 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Terminate
 - Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-88.52%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-88.35%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -274,6 +286,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Merge.Test.NoConflicts
 - Text.Merge.Test.UnknownError
 - Text.Merge.Test.WillCauseConflicts
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.OpenLocalRepository
 - Text.OpenLocalRepository.Bookmark
 - Text.OpenLocalRepository.Group
@@ -313,7 +327,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-98.83%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-98.64%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -324,6 +338,8 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
 - Text.Launcher.NewVersion
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
@@ -333,7 +349,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-96.40%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-96.21%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -365,6 +381,8 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.StartName
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
 - Text.Launcher.NewVersion
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
@@ -378,7 +396,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-62.45%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-62.33%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -616,6 +634,8 @@ This document shows the translation status of each locale file in the repository
 - Text.No
 - Text.Open
 - Text.Open.SystemDefaultEditor
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.OpenFile
 - Text.OpenLocalRepository
 - Text.OpenLocalRepository.Bookmark
@@ -772,17 +792,19 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.81%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.61%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.Terminate
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-64.11%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-63.98%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1025,6 +1047,8 @@ This document shows the translation status of each locale file in the repository
 - Text.No
 - Text.Open
 - Text.Open.SystemDefaultEditor
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.OpenFile
 - Text.OpenLocalRepository
 - Text.OpenLocalRepository.Bookmark
@@ -1159,7 +1183,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-64.88%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-64.76%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1398,6 +1422,8 @@ This document shows the translation status of each locale file in the repository
 - Text.No
 - Text.Open
 - Text.Open.SystemDefaultEditor
+- Text.OpenAppDataDir.Cache
+- Text.OpenAppDataDir.Config
 - Text.OpenFile
 - Text.OpenLocalRepository
 - Text.OpenLocalRepository.Bookmark
