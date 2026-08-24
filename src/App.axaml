@@ -46,6 +46,7 @@
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" Gesture="⌘+,"/>
       <NativeMenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}"/>
+      <NativeMenuItem Header="{DynamicResource Text.SSHKeyHelper}" Command="{x:Static s:App.OpenSSHKeyHelperCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.App.Hide}" Command="{x:Static s:App.HideAppCommand}" Gesture="⌘+H"/>
       <NativeMenuItem Header="{DynamicResource Text.App.HideOthers}" Command="{x:Static s:App.HideOtherApplicationsCommand}" Gesture="⌘+Alt+H"/>
