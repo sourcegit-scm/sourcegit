@@ -13,6 +13,7 @@ namespace SourceGit.Models
         All = 0,
         CurrentBranchOnly,
         SelectedCommitsOnly,
+        SelectedCommitsOnlyFirstParent,
         CurrentBranchAndSelectedCommits,
     }
 
@@ -70,7 +71,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Generate(List<Commit> commits, bool recalculateMergeState, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -82,28 +83,10 @@ namespace SourceGit.Models
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
-            var merged = new HashSet<string>();
 
             foreach (var commit in commits)
             {
                 PathHelper major = null;
-
-                // Update merge state of this commit.
-                if (recalculateMergeState)
-                {
-                    if (commit.IsMerged)
-                    {
-                        merged.Remove(commit.SHA);
-                        foreach (var p in commit.Parents)
-                            merged.Add(p);
-                    }
-                    else if (merged.Remove(commit.SHA))
-                    {
-                        commit.IsMerged = true;
-                        foreach (var p in commit.Parents)
-                            merged.Add(p);
-                    }
-                }
 
                 // Update current y offset
                 offsetY += unitHeight;
@@ -164,31 +147,23 @@ namespace SourceGit.Models
                     {
                         isHighlighted = true;
                     }
-                    else if (highlighting == CommitGraphHighlighting.CurrentBranchOnly)
+
+                    if (!isHighlighted &&
+                        (highlighting == CommitGraphHighlighting.CurrentBranchOnly ||
+                         highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
                     {
                         isHighlighted = commit.IsMerged;
                     }
-                    else if (highlighting == CommitGraphHighlighting.SelectedCommitsOnly)
+
+                    if (!isHighlighted &&
+                        (highlighting == CommitGraphHighlighting.SelectedCommitsOnly ||
+                         highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent ||
+                         highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
                     {
                         isHighlighted = highlightExtraCommits.Remove(commit.SHA);
-                        if (isHighlighted)
-                        {
-                            foreach (var p in commit.Parents)
-                                highlightExtraCommits.Add(p);
-                        }
-                    }
-                    else
-                    {
-                        if (commit.IsMerged)
-                        {
-                            isHighlighted = true;
-                        }
-                        else if (highlightExtraCommits.Remove(commit.SHA))
-                        {
-                            isHighlighted = true;
-                            foreach (var p in commit.Parents)
-                                highlightExtraCommits.Add(p);
-                        }
+                        // Highlight first parent, other parents are dealt with later
+                        if (isHighlighted && commit.Parents.Count > 0)
+                            highlightExtraCommits.Add(commit.Parents[0]);
                     }
                 }
                 commit.IsHighlightedInGraph = isHighlighted;
@@ -227,6 +202,9 @@ namespace SourceGit.Models
                 // Deal with other parents (the first parent has been processed)
                 if (!firstParentOnlyEnabled)
                 {
+                    if (highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
+                        isHighlighted = false;
+
                     for (int j = 1; j < commit.Parents.Count; j++)
                     {
                         var parentHash = commit.Parents[j];
