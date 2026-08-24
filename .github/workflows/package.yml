@@ -84,7 +84,7 @@ jobs:
           apt-get update
           apt-get install -y curl wget git dpkg-dev fakeroot tzdata \
                              zip unzip desktop-file-utils rpm libfuse2 \
-                             file build-essential binutils
+                             file build-essential binutils zstd
 
           # Detect Ubuntu Codename
           UBUNTU_CODENAME=$(. /etc/os-release && echo "$VERSION_CODENAME")
@@ -149,6 +149,10 @@ jobs:
 
             cd $CWD
           fi
+
+          # Swap Arch package file extension
+          sed -i "s/^PKGEXT='.pkg.tar.gz'$/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
+
       - name: Download build
         if : env.ACT == ''
         uses: actions/download-artifact@v8
