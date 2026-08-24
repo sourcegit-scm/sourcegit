@@ -13,8 +13,8 @@ namespace SourceGit.Models
         All = 0,
         CurrentBranchOnly,
         SelectedCommitsOnly,
-        SelectedCommitsOnlyFirstParent,
         CurrentBranchAndSelectedCommits,
+        SelectedCommitsOnlyFirstParent,
     }
 
     public class CommitGraph
