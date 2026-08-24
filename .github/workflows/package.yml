@@ -154,7 +154,6 @@ jobs:
           sed -i "s/^PKGEXT='.pkg.tar.gz'$/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
 
       - name: Download build
-        if : env.ACT == ''
         uses: actions/download-artifact@v8
         with:
           name: sourcegit.${{ matrix.runtime }}
