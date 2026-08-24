@@ -963,7 +963,7 @@
                     <v:HistoryFilterIcon Grid.Column="0"
                                          Width="12" Height="12"
                                          VerticalAlignment="Center"
-                                         Filter="{Binding, Mode=OneWay}"
+                                         Filter="{Binding Mode=OneWay}"
                                          IsFilterValid="{Binding IsValid, Mode=OneWay}"/>
                     
                     <TextBlock Grid.Column="1"
