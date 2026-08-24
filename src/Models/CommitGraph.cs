@@ -83,6 +83,7 @@ namespace SourceGit.Models
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
+            var defHighlighting = highlighting == CommitGraphHighlighting.All;
 
             foreach (var commit in commits)
             {
@@ -94,7 +95,7 @@ namespace SourceGit.Models
                 // Find first curves that links to this commit and marks others that links to this commit ended.
                 var offsetX = 4 - halfWidth;
                 var maxOffsetOld = unsolved.Count > 0 ? unsolved[^1].LastX : offsetX + unitWidth;
-                var isHighlighted = false;
+                var isHighlighted = defHighlighting;
                 foreach (var l in unsolved)
                 {
                     if (l.Next.Equals(commit.SHA, StringComparison.Ordinal))
@@ -143,27 +144,34 @@ namespace SourceGit.Models
                 // Calculate highlighted state
                 if (!isHighlighted)
                 {
-                    if (highlighting == CommitGraphHighlighting.All)
+                    switch (highlighting)
                     {
-                        isHighlighted = true;
-                    }
-
-                    if (!isHighlighted &&
-                        (highlighting == CommitGraphHighlighting.CurrentBranchOnly ||
-                         highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
-                    {
-                        isHighlighted = commit.IsMerged;
-                    }
-
-                    if (!isHighlighted &&
-                        (highlighting == CommitGraphHighlighting.SelectedCommitsOnly ||
-                         highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent ||
-                         highlighting == CommitGraphHighlighting.CurrentBranchAndSelectedCommits))
-                    {
-                        isHighlighted = highlightExtraCommits.Remove(commit.SHA);
-                        // Highlight first parent, other parents are dealt with later
-                        if (isHighlighted && commit.Parents.Count > 0)
-                            highlightExtraCommits.Add(commit.Parents[0]);
+                        case CommitGraphHighlighting.CurrentBranchOnly:
+                            isHighlighted = commit.IsMerged;
+                            break;
+                        case CommitGraphHighlighting.SelectedCommitsOnly:
+                        case CommitGraphHighlighting.SelectedCommitsOnlyFirstParent:
+                            if (highlightExtraCommits.Remove(commit.SHA))
+                            {
+                                isHighlighted = true;
+                                // Highlight first parent, other parents are dealt with later
+                                if (commit.Parents.Count > 0)
+                                    highlightExtraCommits.Add(commit.Parents[0]);
+                            }
+                            break;
+                        default: // CommitGraphHighlighting.CurrentBranchAndSelectedCommits
+                            if (commit.IsMerged)
+                            {
+                                isHighlighted = true;
+                            }
+                            else if (highlightExtraCommits.Remove(commit.SHA))
+                            {
+                                isHighlighted = true;
+                                // Highlight first parent, other parents are dealt with later
+                                if (commit.Parents.Count > 0)
+                                    highlightExtraCommits.Add(commit.Parents[0]);
+                            }
+                            break;
                     }
                 }
                 commit.IsHighlightedInGraph = isHighlighted;
