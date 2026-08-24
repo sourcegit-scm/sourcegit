@@ -42,7 +42,7 @@ namespace SourceGit.Native
         {
             get;
             private set;
-        }
+        } = new();
 
         public static string GitExecutable
         {
