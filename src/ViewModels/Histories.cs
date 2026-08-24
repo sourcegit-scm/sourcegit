@@ -75,7 +75,6 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                RecalculateMergeState(value);
                 GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
@@ -509,23 +508,6 @@ namespace SourceGit.ViewModels
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
                 GenerateGraph(_commits);
-        }
-
-        private void RecalculateMergeState(List<Models.Commit> commits)
-        {
-            var merged = new HashSet<string>();
-
-            foreach (var commit in commits)
-            {
-                if (merged.Remove(commit.SHA))
-                    commit.IsMerged = true;
-
-                if (commit.IsMerged)
-                {
-                    foreach (var p in commit.Parents)
-                        merged.Add(p);
-                }
-            }
         }
 
         private void GenerateGraph(List<Models.Commit> commits)

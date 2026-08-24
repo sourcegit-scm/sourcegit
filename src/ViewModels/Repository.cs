@@ -1242,6 +1242,19 @@ namespace SourceGit.ViewModels
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
+                var merged = new HashSet<string>();
+                foreach (var c in commits)
+                {
+                    if (merged.Remove(c.SHA))
+                        c.IsMerged = true;
+
+                    if (c.IsMerged)
+                    {
+                        foreach (var p in c.Parents)
+                            merged.Add(p);
+                    }
+                }
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (token.IsCancellationRequested)
