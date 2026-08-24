@@ -29,7 +29,7 @@ namespace SourceGit.Native
             else if (!path.Contains("/opt/homebrew/", StringComparison.Ordinal))
                 path = "/opt/homebrew/bin:/opt/homebrew/sbin:" + path;
 
-            var customPathFile = Path.Combine(OS.DataDir, "PATH");
+            var customPathFile = Path.Combine(OS.BasicDirectories.ConfigDir, "PATH");
             if (File.Exists(customPathFile))
             {
                 var env = File.ReadAllText(customPathFile).Trim();
@@ -47,11 +47,19 @@ namespace SourceGit.Native
             window.BorderThickness = new Thickness(0);
         }
 
-        public string GetDataDir()
+        public OS.Directories GetOrCreateDirectories()
         {
-            return Path.Combine(
+            var dirs = new OS.Directories();
+            var appDataDir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "SourceGit");
+
+            if (!Directory.Exists(appDataDir))
+                Directory.CreateDirectory(appDataDir);
+
+            dirs.ConfigDir = appDataDir;
+            dirs.CacheDir = appDataDir;
+            return dirs;
         }
 
         public string FindGitExecutable()

@@ -14,12 +14,18 @@ namespace SourceGit.Native
 {
     public static partial class OS
     {
+        public class Directories
+        {
+            public string ConfigDir { get; set; } = string.Empty;
+            public string CacheDir { get; set; } = string.Empty;
+        }
+
         public interface IBackend
         {
             void SetupApp(AppBuilder builder);
             void SetupWindow(Window window);
 
-            string GetDataDir();
+            Directories GetOrCreateDirectories();
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
@@ -32,11 +38,11 @@ namespace SourceGit.Native
             void TerminateProcess(Process proc);
         }
 
-        public static string DataDir
+        public static Directories BasicDirectories
         {
             get;
             private set;
-        } = string.Empty;
+        }
 
         public static string GitExecutable
         {
@@ -135,11 +141,9 @@ namespace SourceGit.Native
                 throw new PlatformNotSupportedException();
         }
 
-        public static void SetupDataDir()
+        public static void SetupBasicDirectories()
         {
-            DataDir = _backend.GetDataDir();
-            if (!Directory.Exists(DataDir))
-                Directory.CreateDirectory(DataDir);
+            BasicDirectories = _backend.GetOrCreateDirectories();
         }
 
         public static void SetupApp(AppBuilder builder)
@@ -162,7 +166,7 @@ namespace SourceGit.Native
             if (ex == null)
                 return;
 
-            var crashDir = Path.Combine(DataDir, "crashes");
+            var crashDir = Path.Combine(BasicDirectories.CacheDir, "crashes");
             if (!Directory.Exists(crashDir))
                 Directory.CreateDirectory(crashDir);
 

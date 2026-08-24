@@ -54,16 +54,30 @@ namespace SourceGit.Native
             window.Padding = new Thickness(0);
         }
 
-        public string GetDataDir()
+        public OS.Directories GetOrCreateDirectories()
         {
+            var dirs = new OS.Directories();
             var execFile = Environment.ProcessPath;
             var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
             if (Directory.Exists(portableDir))
-                return portableDir;
+            {
+                dirs.ConfigDir = portableDir;
+                dirs.CacheDir = portableDir;
+            }
+            else
+            {
+                var appDataDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "SourceGit");
 
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit");
+                if (!Directory.Exists(appDataDir))
+                    Directory.CreateDirectory(appDataDir);
+
+                dirs.ConfigDir = appDataDir;
+                dirs.CacheDir = appDataDir;
+            }
+
+            return dirs;
         }
 
         public string FindGitExecutable()

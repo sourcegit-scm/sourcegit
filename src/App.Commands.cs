@@ -55,9 +55,14 @@ namespace SourceGit
             }
         });
 
+        public static readonly Command OpenAppConfigDirCommand = new Command(_ =>
+        {
+            Native.OS.OpenInFileManager(Native.OS.BasicDirectories.ConfigDir);
+        });
+
         public static readonly Command OpenAppDataDirCommand = new Command(_ =>
         {
-            Native.OS.OpenInFileManager(Native.OS.DataDir);
+            Native.OS.OpenInFileManager(Native.OS.BasicDirectories.CacheDir);
         });
 
         public static readonly Command OpenAboutCommand = new Command(async _ =>

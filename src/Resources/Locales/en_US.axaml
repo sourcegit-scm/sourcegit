@@ -627,6 +627,8 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Default Editor (System)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Open Data Storage Directory</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Cache" xml:space="preserve">Cache</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Config" xml:space="preserve">Config</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">Open File</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Open in External Merge Tool</x:String>
   <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Open Local Repository</x:String>

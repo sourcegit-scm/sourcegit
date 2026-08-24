@@ -120,7 +120,7 @@ namespace SourceGit.Models
 
         public ExternalToolsFinder()
         {
-            var customPathsConfig = Path.Combine(Native.OS.DataDir, "external_editors.json");
+            var customPathsConfig = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "external_editors.json");
             try
             {
                 if (File.Exists(customPathsConfig))

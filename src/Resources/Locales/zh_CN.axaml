@@ -631,6 +631,8 @@
   <x:String x:Key="Text.Open" xml:space="preserve">打开</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">系统默认编辑器</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">浏览应用数据目录</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Cache" xml:space="preserve">缓存数据</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Config" xml:space="preserve">偏好设置数据</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">打开文件</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">使用外部对比工具查看</x:String>
   <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">打开本地仓库</x:String>
