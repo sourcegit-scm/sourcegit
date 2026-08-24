@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 using Avalonia;
@@ -13,6 +14,9 @@ namespace SourceGit.Native
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
     {
+        [DllImport("libc", SetLastError = true)]
+        private static extern int kill(int pid, int sig);
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new X11PlatformOptions() { EnableIme = true });
@@ -35,20 +39,55 @@ namespace SourceGit.Native
             }
         }
 
-        public string GetDataDir()
+        public OS.Directories GetOrCreateDirectories()
         {
+            var dirs = new OS.Directories();
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
             // AppImage supports portable mode
             var appImage = Environment.GetEnvironmentVariable("APPIMAGE");
             if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))
             {
                 var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");
                 if (Directory.Exists(portableDir))
-                    return portableDir;
+                {
+                    dirs.ConfigDir = portableDir;
+                    dirs.CacheDir = portableDir;
+                    return dirs;
+                }
             }
 
-            // Runtime data dir: ~/.sourcegit
-            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(home, ".sourcegit");
+            // XDG Base Directory Specification: https://specifications.freedesktop.org/basedir/latest/
+            dirs.ConfigDir = GetXdgDirectory("XDG_CONFIG_HOME", Path.Combine(home, ".config"), "SourceGit");
+            dirs.CacheDir = GetXdgDirectory("XDG_CACHE_HOME", Path.Combine(home, ".cache"), "SourceGit");
+
+            // If the app basic dirs already exist, we can skip the migration step
+            if (Directory.Exists(dirs.ConfigDir))
+                return dirs;
+
+            // Migrate legacy data dir: ~/.sourcegit to XDG standard directories
+            var legacyDir = Path.Combine(home, ".sourcegit");
+            if (Directory.Exists(legacyDir))
+            {
+                try
+                {
+                    File.Copy(Path.Combine(legacyDir, "preference.json"), Path.Combine(dirs.ConfigDir, "preference.json"), true);
+                    Directory.Move(Path.Combine(legacyDir, "avatars"), Path.Combine(dirs.CacheDir, "avatars"));
+                    Directory.Delete(legacyDir, true);
+                }
+                catch
+                {
+                    // Ignore any errors during migration
+                }
+            }
+
+            // Create the config and cache directories if they don't exist
+            if (!Directory.Exists(dirs.ConfigDir))
+                Directory.CreateDirectory(dirs.ConfigDir);
+            if (!Directory.Exists(dirs.CacheDir))
+                Directory.CreateDirectory(dirs.CacheDir);
+
+            return dirs;
         }
 
         public string FindGitExecutable()
@@ -138,6 +177,12 @@ namespace SourceGit.Native
             }
         }
 
+        public void TerminateProcess(Process proc)
+        {
+            if (kill(-proc.Id, 15) != 0)
+                proc.Kill(true); // Fallback to force kill if the process is not terminated by SIGTERM
+        }
+
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
@@ -151,6 +196,15 @@ namespace SourceGit.Native
 
             var local = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "bin", filename);
             return File.Exists(local) ? local : string.Empty;
+        }
+
+        private string GetXdgDirectory(string envVar, string fallback, string subDirName)
+        {
+            var dir = Environment.GetEnvironmentVariable(envVar);
+            if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+                return Path.Combine(dir, subDirName);
+
+            return Path.Combine(fallback, subDirName);
         }
     }
 }

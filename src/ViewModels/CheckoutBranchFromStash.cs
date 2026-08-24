@@ -12,7 +12,6 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Branch name is required!")]
-        [RegularExpression(@"^[\w\-/\.#\+]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(CheckoutBranchFromStash), nameof(ValidateBranchName))]
         public string BranchName
         {
@@ -30,6 +29,9 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is CheckoutBranchFromStash caller)
             {
+                if (!Models.RefName.IsValidBranchName(name))
+                    return new ValidationResult("Bad branch name format!");
+
                 foreach (var b in caller._repo.Branches)
                 {
                     if (b.FriendlyName.Equals(name, StringComparison.Ordinal))

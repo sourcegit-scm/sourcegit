@@ -75,7 +75,7 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                GenerateGraph(value, true);
+                GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
             }
@@ -510,7 +510,7 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
-        private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
+        private void GenerateGraph(List<Models.Commit> commits)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
             var highlighting = _repo.UIStates.GraphHighlighting;
@@ -522,7 +522,7 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, commitsChanged, firstParentOnly, highlighting, extraHeads);
+            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         private Repository _repo = null;

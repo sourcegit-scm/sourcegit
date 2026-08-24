@@ -29,6 +29,18 @@ namespace SourceGit.Native
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
         private static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, int cild, IntPtr apidl, int dwFlags);
 
+        [DllImport("kernel32.dll")]
+        private static extern bool SetConsoleCtrlHandler(IntPtr handler, bool add);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool AttachConsole(int dwProcessId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, int dwProcessGroupId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool FreeConsole();
+
         public void SetupApp(AppBuilder builder)
         {
             // Do nothing for now.
@@ -42,16 +54,30 @@ namespace SourceGit.Native
             window.Padding = new Thickness(0);
         }
 
-        public string GetDataDir()
+        public OS.Directories GetOrCreateDirectories()
         {
+            var dirs = new OS.Directories();
             var execFile = Environment.ProcessPath;
             var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
             if (Directory.Exists(portableDir))
-                return portableDir;
+            {
+                dirs.ConfigDir = portableDir;
+                dirs.CacheDir = portableDir;
+            }
+            else
+            {
+                var appDataDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "SourceGit");
 
-            return Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit");
+                if (!Directory.Exists(appDataDir))
+                    Directory.CreateDirectory(appDataDir);
+
+                dirs.ConfigDir = appDataDir;
+                dirs.CacheDir = appDataDir;
+            }
+
+            return dirs;
         }
 
         public string FindGitExecutable()
@@ -194,6 +220,31 @@ namespace SourceGit.Native
             var start = new ProcessStartInfo("cmd", $"""/c start "" {info.FullName.Quoted()}""");
             start.CreateNoWindow = true;
             Process.Start(start);
+        }
+
+        public void TerminateProcess(Process proc)
+        {
+            var pid = proc.Id;
+            if (AttachConsole(pid))
+            {
+                SetConsoleCtrlHandler(IntPtr.Zero, true);
+                try
+                {
+                    if (!GenerateConsoleCtrlEvent(0, 0))
+                        proc.Kill(true);
+
+                    proc.WaitForExit(2000);
+                }
+                finally
+                {
+                    FreeConsole();
+                    SetConsoleCtrlHandler(IntPtr.Zero, false);
+                }
+            }
+            else
+            {
+                proc.Kill(true);
+            }
         }
 
         #region HELPER_METHODS

@@ -23,7 +23,7 @@ namespace SourceGit
         [STAThread]
         public static void Main(string[] args)
         {
-            Native.OS.SetupDataDir();
+            Native.OS.SetupBasicDirectories();
 
             AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {

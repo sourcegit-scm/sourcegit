@@ -463,6 +463,7 @@
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">துணைத் தொகுதிகள் தள்ளப்பட்டது என்பதை உறுதிசெய்</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">கட்டாயமாக தள்ளு</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">உள்ளக கிளை:</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">pre-push hook-ஐத் தவிர்</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">மாற்றங்களை தொலைக்கு தள்ளு</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">தொலை கிளை:</x:String>

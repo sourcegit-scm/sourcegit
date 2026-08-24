@@ -18,7 +18,7 @@ namespace SourceGit.Models
         {
             try
             {
-                _singletonLock = File.Open(Path.Combine(Native.OS.DataDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                _singletonLock = File.Open(Path.Combine(Native.OS.BasicDirectories.CacheDir, "process.lock"), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                 IsFirstInstance = true;
                 _server = new NamedPipeServerStream(
                     GetPipeName(),
@@ -76,7 +76,7 @@ namespace SourceGit.Models
                 return "SourceGit";
 
             // Windows and Linux can have multiple instances of SourceGit running (portable-mode), so we need to generate a unique pipe name based on the data directory.
-            var dataDir = Native.OS.DataDir.Replace('\\', '/').TrimEnd('/');
+            var dataDir = Native.OS.BasicDirectories.CacheDir.Replace('\\', '/').TrimEnd('/');
             var hashStr = $"{Environment.UserName}_{dataDir}";
             var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(hashStr))).Substring(0, 10);
             return $"SG_{hash}";

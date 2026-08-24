@@ -66,7 +66,9 @@ namespace SourceGit.Commands
             if (!match.Success)
                 return;
 
-            _content.AppendLine(match.Groups[5].Value);
+            if (_content.Length > 0)
+                _content.Append('\n');
+            _content.Append(match.Groups[5].Value);
 
             var commit = match.Groups[1].Value;
             var file = match.Groups[2].Value.Trim();

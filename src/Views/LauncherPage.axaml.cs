@@ -59,6 +59,14 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnPopupTerminate(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.LauncherPage page)
+                page.TerminatePopup();
+
+            e.Handled = true;
+        }
+
         private void OnMaskClicked(object sender, PointerPressedEventArgs e)
         {
             OnPopupCancel(sender, e);

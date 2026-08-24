@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -97,9 +98,16 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool NoVerify
+        {
+            get;
+            set;
+        }
+
         public Push(Repository repo, Models.Branch localBranch)
         {
             _repo = repo;
+            CanTerminate = true;
 
             // Gather all local branches and find current branch.
             LocalBranches = new List<Models.Branch>();
@@ -196,6 +204,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Push");
             Use(log);
 
+            _cancellation = new CancellationTokenSource();
+            var token = _cancellation.Token;
+
             var succ = await new Commands.Push(
                 _repo.FullPath,
                 _selectedLocalBranch.Name,
@@ -204,10 +215,19 @@ namespace SourceGit.ViewModels
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
                 _isSetTrackOptionVisible && _tracking,
-                ForcePush).Use(log).RunAsync();
+                ForcePush,
+                NoVerify).WithCancellation(token).Use(log).RunAsync();
 
             log.Complete();
+
+            _cancellation = null;
             return succ;
+        }
+
+        public override void Terminate()
+        {
+            // Just fire cancel event and UI will auto wait the `Sure` complete
+            var _ = _cancellation?.CancelAsync();
         }
 
         private void AutoSelectBranchByRemote()
@@ -266,5 +286,6 @@ namespace SourceGit.ViewModels
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
         private bool _tracking = true;
+        private CancellationTokenSource _cancellation = null;
     }
 }

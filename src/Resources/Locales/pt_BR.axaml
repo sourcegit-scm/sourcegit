@@ -464,6 +464,7 @@
   <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Certifica de que submodules foram enviadas</x:String>
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Forçar push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Branch Local:</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">Ignorar o hook de pre-push</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remoto:</x:String>
   <x:String x:Key="Text.Push.Title" xml:space="preserve">Empurrar Alterações para o Remoto</x:String>
   <x:String x:Key="Text.Push.To" xml:space="preserve">Branch Remoto:</x:String>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -78,6 +79,7 @@ namespace SourceGit.ViewModels
         public Clone(string pageId)
         {
             _pageId = pageId;
+            CanTerminate = true;
 
             Groups = new List<RepositoryNode>();
             Groups.Add(new RepositoryNode { Name = "No Group (Uncategorized)", Id = string.Empty });
@@ -111,10 +113,14 @@ namespace SourceGit.ViewModels
             var log = new CommandLog("Clone");
             Use(log);
 
+            _cancellation = new CancellationTokenSource();
+            var token = _cancellation.Token;
+
             var succ = await new Commands.Clone(_pageId, _parentFolder, _remote, _local, _useSSH ? _sshKey : "", _extraArgs)
+                .WithCancellation(token)
                 .Use(log)
                 .ExecAsync();
-            if (!succ)
+            if (!succ || token.IsCancellationRequested)
                 return false;
 
             var path = _parentFolder;
@@ -146,11 +152,12 @@ namespace SourceGit.ViewModels
                     .SetAsync("remote.origin.sshkey", _sshKey);
             }
 
-            if (InitAndUpdateSubmodules)
+            if (InitAndUpdateSubmodules && !token.IsCancellationRequested)
             {
                 var submodules = await new Commands.QueryUpdatableSubmodules(path, true).GetResultAsync();
                 if (submodules.Count > 0)
                     await new Commands.Submodule(path)
+                        .WithCancellation(token)
                         .Use(log)
                         .UpdateAsync(submodules, true, true, false);
             }
@@ -175,7 +182,15 @@ namespace SourceGit.ViewModels
 
             Welcome.Instance.Refresh();
             launcher.OpenRepositoryInTab(node, page);
+
+            _cancellation = null;
             return true;
+        }
+
+        public override void Terminate()
+        {
+            // Just fire cancel event and UI will auto wait the `Sure` complete
+            var _ = _cancellation?.CancelAsync();
         }
 
         private void CollectGroups(List<RepositoryNode> outs, List<RepositoryNode> collections)
@@ -199,5 +214,6 @@ namespace SourceGit.ViewModels
         private string _extraArgs = string.Empty;
         private RepositoryNode _selectedGroup = null;
         private int _bookmark = 0;
+        private CancellationTokenSource _cancellation = null;
     }
 }

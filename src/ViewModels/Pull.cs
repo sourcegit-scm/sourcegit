@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -59,6 +60,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             Current = repo.CurrentBranch;
+            CanTerminate = true;
 
             DealWithLocalChanges = Preferences.Instance.UseStashAndReapplyByDefault ?
                 Models.DealWithLocalChanges.StashAndReapply :
@@ -116,6 +118,9 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog("Pull");
             Use(log);
 
+            _cancellation = new CancellationTokenSource();
+            var token = _cancellation.Token;
+
             var changes = await new Commands.CountLocalChanges(_repo.FullPath, false).GetResultAsync();
             var needPopStash = false;
             if (changes > 0)
@@ -131,6 +136,7 @@ namespace SourceGit.ViewModels
                     {
                         log.Complete();
                         _repo.MarkWorkingCopyDirtyManually();
+                        _cancellation = null;
                         return false;
                     }
 
@@ -142,17 +148,25 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            bool rs = await new Commands.Pull(
-                _repo.FullPath,
-                _selectedRemote.Name,
-                !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName) ? string.Empty : _selectedBranch.Name,
-                UseRebase).Use(log).RunAsync();
-            if (rs)
+            bool rs = false;
+            if (!token.IsCancellationRequested)
             {
-                await _repo.AutoUpdateSubmodulesAsync(log);
+                var target = !string.IsNullOrEmpty(Current.Upstream) && Current.Upstream.Equals(_selectedBranch.FullName)
+                    ? string.Empty
+                    : _selectedBranch.Name;
+                rs = await new Commands.Pull(
+                    _repo.FullPath,
+                    _selectedRemote.Name,
+                    target,
+                    UseRebase).WithCancellation(token).Use(log).RunAsync();
 
-                if (needPopStash)
-                    await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+                if (rs)
+                {
+                    await _repo.AutoUpdateSubmodulesAsync(log);
+
+                    if (needPopStash)
+                        await new Commands.Stash(_repo.FullPath).Use(log).PopAsync("stash@{0}");
+                }
             }
 
             log.Complete();
@@ -163,7 +177,14 @@ namespace SourceGit.ViewModels
                 _repo.NavigateToCommit(head, true);
             }
 
+            _cancellation = null;
             return rs;
+        }
+
+        public override void Terminate()
+        {
+            // Just fire cancel event and UI will auto wait the `Sure` complete
+            var _ = _cancellation?.CancelAsync();
         }
 
         private void PostRemoteSelected()
@@ -214,5 +235,6 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;
+        private CancellationTokenSource _cancellation = null;
     }
 }

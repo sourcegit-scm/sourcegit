@@ -708,6 +708,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Branch מקומי:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">חדש</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">דלג על pre-push hook</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push של Revision ל־Remote</x:String>

@@ -12,7 +12,6 @@ namespace SourceGit.ViewModels
         private static partial Regex REG_TAG_PREFIX();
 
         [Required(ErrorMessage = "Production branch name is required!!!")]
-        [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(InitGitFlow), nameof(ValidateBaseBranch))]
         public string Production
         {
@@ -21,7 +20,6 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Development branch name is required!!!")]
-        [RegularExpression(@"^[\w\-/\.]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(InitGitFlow), nameof(ValidateBaseBranch))]
         public string Develop
         {
@@ -81,10 +79,13 @@ namespace SourceGit.ViewModels
                 _production = "main";
         }
 
-        public static ValidationResult ValidateBaseBranch(string _, ValidationContext ctx)
+        public static ValidationResult ValidateBaseBranch(string name, ValidationContext ctx)
         {
             if (ctx.ObjectInstance is InitGitFlow initializer)
             {
+                if (!Models.RefName.IsValidBranchName(name))
+                    return new ValidationResult("Bad branch name format!");
+
                 if (initializer._production == initializer._develop)
                     return new ValidationResult("Develop branch has the same name with production branch!");
             }

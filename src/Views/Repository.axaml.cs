@@ -487,6 +487,16 @@ namespace SourceGit.Views
                     ev.Handled = true;
                 };
 
+                var selectedCommitsOnlyFirstParent = new MenuItem();
+                selectedCommitsOnlyFirstParent.Header = App.Text("Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent");
+                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
+                    selectedCommitsOnlyFirstParent.Icon = this.CreateMenuIcon("Icons.Check");
+                selectedCommitsOnlyFirstParent.Click += (_, ev) =>
+                {
+                    histories.GraphHighlighting = Models.CommitGraphHighlighting.SelectedCommitsOnlyFirstParent;
+                    ev.Handled = true;
+                };
+
                 var currentBranchAndSelectedCommits = new MenuItem();
                 currentBranchAndSelectedCommits.Header = App.Text("Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits");
                 if (histories.GraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedCommits)
@@ -516,6 +526,7 @@ namespace SourceGit.Views
                 menu.Items.Add(all);
                 menu.Items.Add(currentBranchOnly);
                 menu.Items.Add(selectedCommitsOnly);
+                menu.Items.Add(selectedCommitsOnlyFirstParent);
                 menu.Items.Add(currentBranchAndSelectedCommits);
                 menu.Open(button);
             }

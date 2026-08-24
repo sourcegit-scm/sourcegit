@@ -518,6 +518,7 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Current Branch Only</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Current Branch &amp; Selected Commits</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Selected Commits Only</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Selected Commits (First-parent Only)</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Hold 'Ctrl' or 'Shift' to select multiple commits.</x:String>
@@ -626,6 +627,8 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Open</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Default Editor (System)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Open Data Storage Directory</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Cache" xml:space="preserve">Cache</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Config" xml:space="preserve">Config</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">Open File</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Open in External Merge Tool</x:String>
   <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Open Local Repository</x:String>
@@ -742,6 +745,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Local Branch:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">NEW</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">Bypass the pre-push hook</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push Revision To Remote</x:String>
@@ -962,6 +966,7 @@
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Delete selected {0} tags...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
+  <x:String x:Key="Text.Terminate" xml:space="preserve">TERMINATE</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>

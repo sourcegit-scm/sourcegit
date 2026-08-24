@@ -14,6 +14,7 @@ namespace SourceGit.Models
         CurrentBranchOnly,
         SelectedCommitsOnly,
         CurrentBranchAndSelectedCommits,
+        SelectedCommitsOnlyFirstParent,
     }
 
     public class CommitGraph
@@ -70,7 +71,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Generate(List<Commit> commits, bool recalculateMergeState, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -82,28 +83,11 @@ namespace SourceGit.Models
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
-            var merged = new HashSet<string>();
+            var defHighlighting = highlighting == CommitGraphHighlighting.All;
 
             foreach (var commit in commits)
             {
                 PathHelper major = null;
-
-                // Update merge state of this commit.
-                if (recalculateMergeState)
-                {
-                    if (commit.IsMerged)
-                    {
-                        merged.Remove(commit.SHA);
-                        foreach (var p in commit.Parents)
-                            merged.Add(p);
-                    }
-                    else if (merged.Remove(commit.SHA))
-                    {
-                        commit.IsMerged = true;
-                        foreach (var p in commit.Parents)
-                            merged.Add(p);
-                    }
-                }
 
                 // Update current y offset
                 offsetY += unitHeight;
@@ -111,7 +95,7 @@ namespace SourceGit.Models
                 // Find first curves that links to this commit and marks others that links to this commit ended.
                 var offsetX = 4 - halfWidth;
                 var maxOffsetOld = unsolved.Count > 0 ? unsolved[^1].LastX : offsetX + unitWidth;
-                var isHighlighted = false;
+                var isHighlighted = defHighlighting;
                 foreach (var l in unsolved)
                 {
                     if (l.Next.Equals(commit.SHA, StringComparison.Ordinal))
@@ -160,35 +144,34 @@ namespace SourceGit.Models
                 // Calculate highlighted state
                 if (!isHighlighted)
                 {
-                    if (highlighting == CommitGraphHighlighting.All)
+                    switch (highlighting)
                     {
-                        isHighlighted = true;
-                    }
-                    else if (highlighting == CommitGraphHighlighting.CurrentBranchOnly)
-                    {
-                        isHighlighted = commit.IsMerged;
-                    }
-                    else if (highlighting == CommitGraphHighlighting.SelectedCommitsOnly)
-                    {
-                        isHighlighted = highlightExtraCommits.Remove(commit.SHA);
-                        if (isHighlighted)
-                        {
-                            foreach (var p in commit.Parents)
-                                highlightExtraCommits.Add(p);
-                        }
-                    }
-                    else
-                    {
-                        if (commit.IsMerged)
-                        {
-                            isHighlighted = true;
-                        }
-                        else if (highlightExtraCommits.Remove(commit.SHA))
-                        {
-                            isHighlighted = true;
-                            foreach (var p in commit.Parents)
-                                highlightExtraCommits.Add(p);
-                        }
+                        case CommitGraphHighlighting.CurrentBranchOnly:
+                            isHighlighted = commit.IsMerged;
+                            break;
+                        case CommitGraphHighlighting.SelectedCommitsOnly:
+                        case CommitGraphHighlighting.SelectedCommitsOnlyFirstParent:
+                            if (highlightExtraCommits.Remove(commit.SHA))
+                            {
+                                isHighlighted = true;
+                                // Highlight first parent, other parents are dealt with later
+                                if (commit.Parents.Count > 0)
+                                    highlightExtraCommits.Add(commit.Parents[0]);
+                            }
+                            break;
+                        default: // CommitGraphHighlighting.CurrentBranchAndSelectedCommits
+                            if (commit.IsMerged)
+                            {
+                                isHighlighted = true;
+                            }
+                            else if (highlightExtraCommits.Remove(commit.SHA))
+                            {
+                                isHighlighted = true;
+                                // Highlight first parent, other parents are dealt with later
+                                if (commit.Parents.Count > 0)
+                                    highlightExtraCommits.Add(commit.Parents[0]);
+                            }
+                            break;
                     }
                 }
                 commit.IsHighlightedInGraph = isHighlighted;
@@ -227,6 +210,9 @@ namespace SourceGit.Models
                 // Deal with other parents (the first parent has been processed)
                 if (!firstParentOnlyEnabled)
                 {
+                    if (highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
+                        isHighlighted = false;
+
                     for (int j = 1; j < commit.Parents.Count; j++)
                     {
                         var parentHash = commit.Parents[j];

@@ -32,7 +32,6 @@ namespace SourceGit.ViewModels
         }
 
         [Required(ErrorMessage = "Name is required!!!")]
-        [RegularExpression(@"^[\w\-/\.#]+$", ErrorMessage = "Bad branch name format!")]
         [CustomValidation(typeof(GitFlowStart), nameof(ValidateBranchName))]
         public string Name
         {
@@ -67,6 +66,9 @@ namespace SourceGit.ViewModels
         {
             if (ctx.ObjectInstance is GitFlowStart starter)
             {
+                if (!Models.RefName.IsValidBranchName($"{starter.Prefix}{name}"))
+                    return new ValidationResult("Bad branch name format!");
+
                 var check = $"{starter.Prefix}{name}";
                 foreach (var b in starter._repo.Branches)
                 {

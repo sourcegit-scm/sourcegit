@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -6,6 +7,17 @@ namespace SourceGit.ViewModels
 {
     public class Popup : ObservableValidator, Models.ICommandLogReceiver
     {
+        public bool CanTerminate
+        {
+            get => _canTerminate;
+            protected set
+            {
+                // Terminating a process is only supported on Windows/Linux.
+                if (!OperatingSystem.IsMacOS())
+                    SetProperty(ref _canTerminate, value);
+            }
+        }
+
         public bool InProgress
         {
             get => _inProgress;
@@ -49,12 +61,17 @@ namespace SourceGit.ViewModels
             return null;
         }
 
+        public virtual void Terminate()
+        {
+        }
+
         protected void Use(CommandLog log)
         {
             _log = log;
             _log.Subscribe(this);
         }
 
+        private bool _canTerminate = false;
         private bool _inProgress = false;
         private string _progressDescription = string.Empty;
         private CommandLog _log = null;
