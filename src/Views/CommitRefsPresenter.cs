@@ -172,6 +172,7 @@ namespace SourceGit.Views
             var allowWrap = AllowWrap;
             var x = 1.5;
             var y = 0.5;
+            var remoteIcon = CommitRefsIconCache.Instance.GetIcon(Models.DecoratorType.RemoteBranchHead);
 
             context.FillRectangle(Brushes.Transparent, Bounds);
 
@@ -214,19 +215,18 @@ namespace SourceGit.Views
                     foreach (var remote in item.Remotes)
                     {
                         context.DrawLine(new Pen(item.Brush), new Point(rx, y), new Point(rx, y + 16));
-                        context.DrawText(remote, new Point(rx + 4, y + 8.0 - remote.Height * 0.5));
-                        rx += remote.WidthIncludingTrailingWhitespace + 9;
+                        using (context.PushTransform(Matrix.CreateTranslation(rx + 4, y + 4)))
+                            context.DrawGeometry(fg, null, remoteIcon);
+                        context.DrawText(remote, new Point(rx + 16, y + 8.0 - remote.Height * 0.5));
+                        rx += remote.WidthIncludingTrailingWhitespace + 22;
                     }
                 }
 
                 context.DrawRectangle(null, new Pen(item.Brush), entireRect);
 
                 var icon = CommitRefsIconCache.Instance.GetIcon(item.Decorator.Type);
-                if (icon != null)
-                {
-                    using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
-                        context.DrawGeometry(fg, null, icon);
-                }
+                using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
+                    context.DrawGeometry(fg, null, icon);
 
                 x += item.Width + 4;
             }
@@ -337,7 +337,7 @@ namespace SourceGit.Views
                         if (decorator.Name.Equals(name, StringComparison.Ordinal))
                         {
                             var remote = new FormattedText(
-                                $"+{test.Name.Substring(0, idxOfSlash)}",
+                                test.Name.Substring(0, idxOfSlash),
                                 CultureInfo.CurrentCulture,
                                 FlowDirection.LeftToRight,
                                 typefaceRemote,
@@ -345,7 +345,7 @@ namespace SourceGit.Views
                                 fg);
 
                             item.Remotes.Add(remote);
-                            item.Width += remote.Width + 9;
+                            item.Width += remote.WidthIncludingTrailingWhitespace + 22;
                             skippedIdx.Add(j);
                         }
                     }
