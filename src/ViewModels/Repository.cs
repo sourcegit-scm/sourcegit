@@ -1567,9 +1567,8 @@ namespace SourceGit.ViewModels
             if (selfPage == null)
                 return;
 
-            var root = Path.GetFullPath(Path.Combine(FullPath, submodule));
-            var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
-            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
+            var fullpath = Path.GetFullPath(Path.Combine(FullPath, submodule));
+            App.GetLauncher().OpenSubRepository(selfPage, fullpath);
         }
 
         public void AddWorktree()
