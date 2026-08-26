@@ -63,6 +63,7 @@
                            ItemsSource="{Binding RevisionFileSearchSuggestion}"
                            MaxHeight="400"
                            Focusable="True"
+                           SelectionChanged="OnSearchSuggestionSelectionChanged"
                            KeyDown="OnSearchSuggestionBoxKeyDown">
                 <ListBox.Styles>
                   <Style Selector="ListBoxItem">

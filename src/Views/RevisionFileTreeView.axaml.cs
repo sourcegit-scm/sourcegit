@@ -268,7 +268,6 @@ namespace SourceGit.Views
 
         public async Task SetSearchResultAsync(string file)
         {
-            Rows.Clear();
             _searchResult.Clear();
 
             var rows = new List<ViewModels.RevisionFileTreeNode>();
@@ -324,7 +323,27 @@ namespace SourceGit.Views
                 MakeRows(rows, _searchResult, 0);
             }
 
-            Rows.AddRange(rows);
+            _disableSelectionChangingEvent = true;
+            try
+            {
+                Rows.Clear();
+                Rows.AddRange(rows);
+            }
+            finally
+            {
+                _disableSelectionChangingEvent = false;
+            }
+
+            if (!string.IsNullOrEmpty(file))
+            {
+                var target = rows.Find(x => !x.IsFolder);
+                if (target != null)
+                {
+                    RowsList.SelectedItem = target;
+                    RowsList.ScrollIntoView(target);
+                }
+            }
+
             GC.Collect();
         }
 

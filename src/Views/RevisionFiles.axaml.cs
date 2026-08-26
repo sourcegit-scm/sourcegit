@@ -50,6 +50,12 @@ namespace SourceGit.Views
                 await FileTree.SetSearchResultAsync(null);
         }
 
+        private async void OnSearchSuggestionSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox { SelectedItem: string content } && !string.IsNullOrEmpty(content))
+                await FileTree.SetSearchResultAsync(content);
+        }
+
         private async void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
         {
             if (DataContext is not ViewModels.CommitDetail vm)
@@ -62,9 +68,9 @@ namespace SourceGit.Views
             }
             else if (e.Key == Key.Enter && SearchSuggestionBox.SelectedItem is string content)
             {
-                vm.RevisionFileSearchFilter = content;
-                TxtSearchRevisionFiles.CaretIndex = content.Length;
-                await FileTree.SetSearchResultAsync(vm.RevisionFileSearchFilter);
+                await FileTree.SetSearchResultAsync(content);
+                vm.CancelRevisionFileSuggestions();
+                TxtSearchRevisionFiles.Focus();
                 e.Handled = true;
             }
         }
@@ -77,9 +83,9 @@ namespace SourceGit.Views
             var content = (sender as StackPanel)?.DataContext as string;
             if (!string.IsNullOrEmpty(content))
             {
-                vm.RevisionFileSearchFilter = content;
-                TxtSearchRevisionFiles.CaretIndex = content.Length;
-                await FileTree.SetSearchResultAsync(vm.RevisionFileSearchFilter);
+                await FileTree.SetSearchResultAsync(content);
+                vm.CancelRevisionFileSuggestions();
+                TxtSearchRevisionFiles.Focus();
             }
 
             e.Handled = true;

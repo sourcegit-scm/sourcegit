@@ -662,8 +662,7 @@ namespace SourceGit.ViewModels
             var suggestion = new List<string>();
             foreach (var file in _revisionFiles)
             {
-                if (file.Contains(_revisionFileSearchFilter, StringComparison.OrdinalIgnoreCase) &&
-                    file.Length != _revisionFileSearchFilter.Length)
+                if (file.Contains(_revisionFileSearchFilter, StringComparison.OrdinalIgnoreCase))
                     suggestion.Add(file);
 
                 if (suggestion.Count >= 100)
