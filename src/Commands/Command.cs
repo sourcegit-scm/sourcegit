@@ -158,7 +158,7 @@ namespace SourceGit.Commands
 
         protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
-            var useSetSid = OperatingSystem.IsLinux() && CancellationToken.CanBeCanceled;
+            var useSetSid = CancellationToken.CanBeCanceled && Native.OS.SupportSetSid();
             var selfExecFile = Environment.ProcessPath;
             var builder = new StringBuilder(2048);
 
@@ -186,7 +186,7 @@ namespace SourceGit.Commands
             builder.Append(Args);
 
             var start = new ProcessStartInfo();
-            start.FileName = useSetSid ? "setsid" : Native.OS.GitExecutable;
+            start.FileName = useSetSid ? Native.OS.GetSetSidExecutable() : Native.OS.GitExecutable;
             start.Arguments = builder.ToString();
             start.UseShellExecute = false;
             start.CreateNoWindow = true;

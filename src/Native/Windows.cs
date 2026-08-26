@@ -222,6 +222,16 @@ namespace SourceGit.Native
             Process.Start(start);
         }
 
+        public bool SupportSetSid()
+        {
+            return false;
+        }
+
+        public string GetSetSidExecutable()
+        {
+            return null;
+        }
+
         public void TerminateProcess(Process proc)
         {
             var pid = proc.Id;

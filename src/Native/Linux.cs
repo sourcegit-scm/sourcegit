@@ -177,6 +177,16 @@ namespace SourceGit.Native
             }
         }
 
+        public bool SupportSetSid()
+        {
+            return true;
+        }
+
+        public string GetSetSidExecutable()
+        {
+            return "setsid";
+        }
+
         public void TerminateProcess(Process proc)
         {
             if (kill(-proc.Id, 15) != 0)

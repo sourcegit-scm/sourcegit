@@ -12,8 +12,7 @@ namespace SourceGit.ViewModels
             get => _canTerminate;
             protected set
             {
-                // Terminating a process is only supported on Windows/Linux.
-                if (!OperatingSystem.IsMacOS())
+                if (OperatingSystem.IsWindows() || Native.OS.SupportSetSid())
                     SetProperty(ref _canTerminate, value);
             }
         }

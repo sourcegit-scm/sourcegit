@@ -35,6 +35,8 @@ namespace SourceGit.Native
             void OpenBrowser(string url);
             void OpenWithDefaultEditor(string file);
 
+            bool SupportSetSid();
+            string GetSetSidExecutable();
             void TerminateProcess(Process proc);
         }
 
@@ -303,9 +305,19 @@ namespace SourceGit.Native
             return path;
         }
 
+        public static bool SupportSetSid()
+        {
+            return _backend.SupportSetSid();
+        }
+
+        public static string GetSetSidExecutable()
+        {
+            return _backend.GetSetSidExecutable();
+        }
+
         public static void TerminateProcess(Process proc)
         {
-            _backend?.TerminateProcess(proc);
+            _backend.TerminateProcess(proc);
         }
 
         private static void UpdateGitVersion()
