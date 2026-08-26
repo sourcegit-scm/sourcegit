@@ -1013,6 +1013,7 @@
           <v:Histories DataContext="{Binding Histories, Mode=OneWay}"
                        CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                        Bisect="{Binding Bisect, Mode=OneWay}"
+                       HasSingleRemote="{Binding HasSingleRemote, Mode=OneWay}"
                        IssueTrackers="{Binding IssueTrackers, Mode=OneWay}">
             <v:Histories.IsDetailsPanelExpanded>
               <MultiBinding Converter="{x:Static BoolConverters.Or}">

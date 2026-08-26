@@ -129,7 +129,14 @@ namespace SourceGit.ViewModels
 
         public Models.Branch CurrentBranch
         {
-            get => _repo.CurrentBranch;
+            get => _currentBranch;
+            set => SetProperty(ref _currentBranch, value);
+        }
+
+        public bool HasSingleRemote
+        {
+            get => _hasSingleRemote;
+            set => SetProperty(ref _hasSingleRemote, value);
         }
 
         public AvaloniaList<Models.IssueTracker> IssueTrackers
@@ -193,11 +200,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _commitDetailSharedData = new CommitDetailSharedData();
-        }
-
-        public void NotifyCurrentBranchChanged()
-        {
-            OnPropertyChanged(nameof(CurrentBranch));
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -526,6 +528,8 @@ namespace SourceGit.ViewModels
         }
 
         private Repository _repo = null;
+        private Models.Branch _currentBranch = null;
+        private bool _hasSingleRemote = false;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];
