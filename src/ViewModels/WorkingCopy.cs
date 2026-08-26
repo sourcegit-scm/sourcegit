@@ -231,11 +231,8 @@ namespace SourceGit.ViewModels
 
         public void SetData(List<Models.Change> changes)
         {
-            do
+            if (!IsChanged(_cached, changes))
             {
-                if (IsChanged(_cached, changes))
-                    break;
-
                 if (_useAmend)
                 {
                     var testStaged = GetStagedChanges(_cached);
@@ -269,9 +266,7 @@ namespace SourceGit.ViewModels
                 UpdateInProgressState();
                 UpdateDetail();
                 return;
-#pragma warning disable CS0162
-            } while (false);
-#pragma warning restore CS0162
+            }
 
             var lastSelectedUnstaged = new HashSet<string>();
             if (_selectedUnstaged is { Count: > 0 })
