@@ -19,20 +19,22 @@ namespace SourceGit.Models
             IsFirstInstance = false;
 
             var lockFile = GetLockFilePath();
+            _lockFilePath = lockFile.Path;
+
             if (OperatingSystem.IsLinux() && lockFile.NeedChangePermissions)
             {
                 // On Linux, if the lock file is created in the XDG_RUNTIME_DIR, we need to set the permissions to 700 (rwx------) to ensure that only the current user can access it.
                 try
                 {
-                    _singletonLock = new FileStream(lockFile.Path, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
-                    File.SetUnixFileMode(lockFile.Path, File.GetUnixFileMode(lockFile.Path) | UnixFileMode.StickyBit);
+                    _singletonLock = new FileStream(_lockFilePath, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
+                    File.SetUnixFileMode(_lockFilePath, File.GetUnixFileMode(_lockFilePath) | UnixFileMode.StickyBit);
                     IsFirstInstance = true;
                 }
                 catch
                 {
                     try
                     {
-                        _singletonLock = new FileStream(lockFile.Path, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                        _singletonLock = new FileStream(_lockFilePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
                         IsFirstInstance = true;
                     }
                     catch
@@ -45,7 +47,7 @@ namespace SourceGit.Models
             {
                 try
                 {
-                    _singletonLock = File.Open(lockFile.Path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+                    _singletonLock = File.Open(_lockFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
                     IsFirstInstance = true;
                 }
                 catch
@@ -99,6 +101,9 @@ namespace SourceGit.Models
         {
             _cancellationTokenSource?.Cancel();
             _singletonLock?.Dispose();
+
+            if (IsFirstInstance && File.Exists(_lockFilePath))
+                File.Delete(_lockFilePath);
         }
 
         private LockFile GetLockFilePath()
@@ -165,6 +170,7 @@ namespace SourceGit.Models
 
         private record LockFile(string Path, bool NeedChangePermissions);
 
+        private string _lockFilePath = null;
         private FileStream _singletonLock = null;
         private NamedPipeServerStream _server = null;
         private CancellationTokenSource _cancellationTokenSource = null;
