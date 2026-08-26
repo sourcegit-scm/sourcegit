@@ -180,7 +180,24 @@ namespace SourceGit.Native
         public void TerminateProcess(Process proc)
         {
             if (kill(-proc.Id, 15) != 0)
-                proc.Kill(true); // Fallback to force kill if the process is not terminated by SIGTERM
+            {
+                // If the process already exited, we can just ignore the error.
+                if (Marshal.GetLastPInvokeError() == 3 /* ESRCH */)
+                    return;
+
+                // Actually, this will not be called since the process is
+                // spawned by us (EPERM will not happen), and SIGTERM (15)
+                // is a valid signal (EINVAL will not happen).
+                // See https://www.man7.org/linux/man-pages/man2/kill.2.html
+                try
+                {
+                    proc.Kill(true);
+                }
+                catch
+                {
+                    // Ignore any errors when trying to kill the process
+                }
+            }
         }
 
         private string FindExecutable(string filename)
