@@ -122,7 +122,7 @@
               <TextBlock Classes="group_header_label"
                          Text="{DynamicResource Text.SSHKeyHelper.Path}"/>
               <SelectableTextBlock Margin="0,6,0,0"
-                                   Text="{Binding FullPath, Mode=OneWay}"
+                                   Text="{Binding PrivateKeyPath, Mode=OneWay}"
                                    TextWrapping="Wrap"/>
 
               <TextBlock Classes="group_header_label"
@@ -137,7 +137,7 @@
                          Text="{DynamicResource Text.SSHKeyHelper.PublicKey}"/>
               <TextBox Height="80"
                        Margin="0,6,0,0" Padding="2"
-                       Text="{Binding PublicKey}"
+                       Text="{Binding RawPublicKey}"
                        IsReadOnly="True"
                        CornerRadius="4"
                        TextWrapping="Wrap"

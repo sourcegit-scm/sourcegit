@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 
 using Avalonia.Collections;
-using Avalonia.Threading;
-
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -31,41 +28,33 @@ namespace SourceGit.ViewModels
 
         public SSHKeyHelper()
         {
-            _baseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
             Keys = new AvaloniaList<Models.SSHKeyPair>();
 
-            Task.Run(() =>
+            var sshDir = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh"));
+            if (sshDir.Exists)
             {
-                var sshDir = new DirectoryInfo(_baseDir);
+                var files = sshDir.GetFiles("*.pub");
                 var keys = new List<Models.SSHKeyPair>();
 
-                if (sshDir.Exists)
+                foreach (var file in files)
                 {
-                    var files = sshDir.GetFiles("*.pub");
-                    foreach (var file in files)
-                    {
-                        var privateKeyPath = file.FullName.Substring(0, file.FullName.Length - 4);
-                        if (File.Exists(privateKeyPath))
-                            keys.Add(new(privateKeyPath));
-                    }
-
-                    keys.Sort((l, r) => l.Name.CompareTo(r.Name));
+                    var privateKeyPath = file.FullName.Substring(0, file.FullName.Length - 4);
+                    if (File.Exists(privateKeyPath))
+                        keys.Add(new(privateKeyPath, file.FullName));
                 }
 
                 if (keys.Count > 0)
                 {
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        Keys.AddRange(keys);
-                        SelectedKey = keys[0];
-                    });
+                    keys.Sort((l, r) => l.Name.CompareTo(r.Name));
+                    Keys.AddRange(keys);
+                    SelectedKey = keys[0];
                 }
-            });
+            }
         }
 
         public void OpenGenerator()
         {
-            Generator = new SSHKeyGenerator(_baseDir);
+            Generator = new SSHKeyGenerator();
         }
 
         public void CloseGenerator()
@@ -75,18 +64,12 @@ namespace SourceGit.ViewModels
 
         public void Generate()
         {
-            var succ = _generator.Run();
-            if (!succ)
+            var key = _generator.Run();
+            if (key == null)
                 return;
 
-            var keyFile = Path.Combine(_baseDir, $"{_generator.Name}");
-            if (File.Exists(keyFile))
-            {
-                var added = new Models.SSHKeyPair(keyFile);
-                Keys.Add(added);
-                SelectedKey = added;
-            }
-
+            Keys.Add(key);
+            SelectedKey = key;
             Generator = null;
         }
 
@@ -98,10 +81,10 @@ namespace SourceGit.ViewModels
 
             try
             {
-                if (File.Exists(key.FullPath))
-                    File.Delete(key.FullPath);
-                if (File.Exists($"{key.FullPath}.pub"))
-                    File.Delete($"{key.FullPath}.pub");
+                if (File.Exists(key.PrivateKeyPath))
+                    File.Delete(key.PrivateKeyPath);
+                if (File.Exists(key.PublicKeyPath))
+                    File.Delete(key.PublicKeyPath);
 
                 var idx = Keys.IndexOf(key);
                 if (idx >= 0)
@@ -122,7 +105,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private string _baseDir = null;
         private Models.SSHKeyPair _selectedKey = null;
         private SSHKeyGenerator _generator = null;
     }

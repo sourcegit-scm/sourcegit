@@ -63,11 +63,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _errorMessage, value);
         }
 
-        public SSHKeyGenerator(string baseDir)
-        {
-            _baseDir = baseDir;
-        }
-
         public static ValidationResult ValidatePassphrase(string password, ValidationContext context)
         {
             var instance = (SSHKeyGenerator)context.ObjectInstance;
@@ -95,16 +90,17 @@ namespace SourceGit.ViewModels
             return ValidationResult.Success;
         }
 
-        public bool Run()
+        public Models.SSHKeyPair Run()
         {
             ErrorMessage = string.Empty;
 
             ValidateAllProperties();
             if (HasErrors)
-                return false;
+                return null;
 
+            var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
             var passphrase = _usePassphrase ? _passphrase : string.Empty;
-            var keyFile = Path.Combine(_baseDir, _name);
+            var keyFile = Path.Combine(dir, _name);
             var start = new ProcessStartInfo();
             start.FileName = "ssh-keygen";
             start.Arguments = $"-q -t ed25519 -N {passphrase.Quoted()} -C {_email.Quoted()} -f {keyFile.Quoted()}";
@@ -120,16 +116,20 @@ namespace SourceGit.ViewModels
             catch (Exception e)
             {
                 ErrorMessage = $"Failed to generate SSH key: {e.Message}";
-                return false;
+                return null;
             }
 
-            return true;
+            var publicKeyFile = keyFile + ".pub";
+            if (File.Exists(keyFile) && File.Exists(publicKeyFile))
+                return new Models.SSHKeyPair(keyFile, publicKeyFile);
+
+            ErrorMessage = "Failed to generate SSH key: Key files not found.";
+            return null;
         }
 
         [GeneratedRegex(@"^[0-9a-zA-Z_\-\@\#\$\%\!\&\+\=]+$")]
         private static partial Regex REG_PSWD_FORMAT();
 
-        private string _baseDir;
         private string _name;
         private string _email;
         private bool _usePassphrase;

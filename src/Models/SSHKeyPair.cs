@@ -6,18 +6,19 @@ namespace SourceGit.Models
 {
     public class SSHKeyPair
     {
-        public string Name { get; set; }
-        public string FullPath { get; set; }
-        public string PublicKey { get; set; }
+        public string PrivateKeyPath { get; set; }
+        public string PublicKeyPath { get; set; }
+        public string RawPublicKey { get; set; }
         public string Fingerprint { get; set; } = "--- (invalid)";
+        public string Name => Path.GetFileName(PrivateKeyPath);
 
-        public SSHKeyPair(string file)
+        public SSHKeyPair(string privateKey, string publicKey)
         {
-            Name = Path.GetFileName(file);
-            FullPath = file;
-            PublicKey = File.ReadAllText($"{file}.pub");
+            PrivateKeyPath = privateKey;
+            PublicKeyPath = publicKey;
+            RawPublicKey = File.ReadAllText(publicKey);
 
-            var parts = PublicKey.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var parts = RawPublicKey.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length != 3)
                 return;
 
