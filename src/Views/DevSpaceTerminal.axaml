@@ -17,7 +17,6 @@
                                         FontSize="{TemplateBinding FontSize}"
                                         FontStyle="{TemplateBinding FontStyle}"
                                         FontWeight="{TemplateBinding FontWeight}"
-                                        TextDecorations="{TemplateBinding TextDecorations}"
                                         Foreground="{TemplateBinding Foreground}"
                                         Background="{TemplateBinding Background}"
                                         SelectionBrush="{TemplateBinding SelectionBrush}"
