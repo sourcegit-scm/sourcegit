@@ -117,6 +117,39 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _layout, value);
         }
 
+        public bool EnableDevSpaces
+        {
+            get => _enableDevSpaces;
+            set => SetProperty(ref _enableDevSpaces, value);
+        }
+
+        public string DevSpacesDefaultCommand
+        {
+            get => _devSpacesDefaultCommand;
+            set => SetProperty(ref _devSpacesDefaultCommand, value);
+        }
+
+        public Models.DevSpaceLayout DevSpacesDefaultLayout
+        {
+            get => _devSpacesDefaultLayout;
+            set
+            {
+                if (SetProperty(ref _devSpacesDefaultLayout, value))
+                    OnPropertyChanged(nameof(DevSpacesDefaultLayoutIndex));
+            }
+        }
+
+        [JsonIgnore]
+        public int DevSpacesDefaultLayoutIndex
+        {
+            get => (int)_devSpacesDefaultLayout;
+            set
+            {
+                if (value >= 0 && value <= 4)
+                    DevSpacesDefaultLayout = (Models.DevSpaceLayout)value;
+            }
+        }
+
         public bool ShowLocalChangesByDefault
         {
             get;
@@ -800,6 +833,9 @@ namespace SourceGit.ViewModels
         private int _editorTabWidth = 4;
         private double _zoom = 1.0;
         private LayoutInfo _layout = new();
+        private bool _enableDevSpaces = false;
+        private string _devSpacesDefaultCommand = "copilot";
+        private Models.DevSpaceLayout _devSpacesDefaultLayout = Models.DevSpaceLayout.Auto;
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
