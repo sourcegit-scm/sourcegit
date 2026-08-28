@@ -1,6 +1,9 @@
 using System;
+using System.Threading.Tasks;
 
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 
 using Iciclecreek.Terminal;
@@ -12,6 +15,12 @@ namespace SourceGit.Views
         public DevSpaceTerminal()
         {
             InitializeComponent();
+
+            Terminal.AddHandler(
+                PointerPressedEvent,
+                OnTerminalPointerPressed,
+                RoutingStrategies.Tunnel,
+                handledEventsToo: true);
         }
 
         public void Start(SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher)
@@ -60,6 +69,45 @@ namespace SourceGit.Views
         public void Dispose()
         {
             Stop();
+        }
+
+        private void OnTerminalPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            if (!e.GetCurrentPoint(Terminal).Properties.IsRightButtonPressed ||
+                Terminal.IsMouseReportingActive)
+                return;
+
+            var copy = new MenuItem
+            {
+                Header = "Copy",
+                IsEnabled = Terminal.HasSelection,
+            };
+            var paste = new MenuItem { Header = "Paste" };
+            var selectAll = new MenuItem { Header = "Select All" };
+
+            copy.Click += async (_, _) => await TryClipboardAsync(async () => await Terminal.CopyAsync());
+            paste.Click += async (_, _) => await TryClipboardAsync(Terminal.PasteAsync);
+            selectAll.Click += (_, _) => Terminal.SelectAll();
+
+            var menu = new ContextMenu
+            {
+                ItemsSource = new[] { copy, paste, selectAll },
+            };
+
+            menu.Open(Terminal);
+            e.Handled = true;
+        }
+
+        private static async Task TryClipboardAsync(Func<Task> action)
+        {
+            try
+            {
+                await action();
+            }
+            catch
+            {
+                // Clipboard access may be unavailable on the current platform/session.
+            }
         }
 
         private void OnStopRequested(ViewModels.DevSpaceTerminal _)
