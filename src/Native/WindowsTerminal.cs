@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -159,7 +158,7 @@ namespace SourceGit.Native
         [UnmanagedCallConv(CallConvs = [typeof(CallConvStdcall)])]
         internal static partial void TerminalSendCharEvent(
             nint terminal,
-            char ch,
+            ushort ch,
             ushort scanCode,
             ushort flags);
 
