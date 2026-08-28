@@ -42,6 +42,6 @@ namespace SourceGit.Views
             _view = e.NameScope.Find<DevSpaceTerminalView>("PART_TerminalView");
         }
 
-        private DevSpaceTerminalView? _view;
+        private DevSpaceTerminalView _view;
     }
 }
