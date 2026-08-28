@@ -2,373 +2,521 @@
 
 ## Status
 
-Proposed revised architecture after the native-terminal feasibility spike. Pending user review before implementation planning.
+Approved in chat as the replacement architecture for the earlier helper-process design. Pending written-spec review before a new implementation plan is created.
 
-PR #7 keeps the Avalonia 11 terminal improvements already implemented as the portable fallback and proposes an optional Windows-native renderer for Windows x64. The native renderer is isolated in a separate helper process so SourceGit itself remains cross-platform and NativeAOT-compatible.
+This revision supersedes the earlier `SourceGit.WindowsTerminalHost.exe` / WPF helper-process architecture and the implementation plan at `docs/superpowers/plans/2026-08-28-devspaces-windows-native-terminal.md`.
+
+PR #7 keeps the Avalonia 11 terminal improvements already implemented as the portable fallback and adds a Windows-native renderer by calling the native Windows Terminal control directly from `SourceGit.exe`.
 
 ## Problem
 
-DevSpaces currently embeds `Iciclecreek.Avalonia.Terminal` 1.0.12. PR #7 improves full-surface hit testing and adds discoverable Copy/Paste/Select All behavior, but the user wants the terminal interaction to feel like a native terminal, especially for Copilot selection, copy, paste, keyboard input, and mouse behavior.
+DevSpaces currently embeds `Iciclecreek.Avalonia.Terminal` 1.0.12. PR #7 already improves whole-surface selection and adds Copy/Paste/Select All behavior, but the user wants Copilot and shell terminals on Windows to behave like Windows Terminal itself for selection, keyboard input, clipboard behavior, rendering, and mouse handling.
 
-The feasibility spike established that the Windows Terminal rendering stack can be hosted, but directly linking the practical WPF wrapper into SourceGit is not acceptable:
+The earlier helper-process spike was useful because it proved the relevant dependencies compile on Windows, but the helper process is not required for the final architecture.
 
-- SourceGit Release builds use NativeAOT.
-- WPF is not NativeAOT-compatible.
-- `EasyWindowsTerminalControl` 1.0.38 targets `net10.0-windows` but is explicitly x64-only.
-- SourceGit also ships Windows ARM64, macOS x64/ARM64, and Linux x64/ARM64.
-- Native child-window rendering has airspace/opacity limitations that differ from normal Avalonia controls.
+Microsoft's own WPF terminal wrapper is a managed shell around the native `Microsoft.Terminal.Control.dll` exports. Its `TerminalContainer`:
 
-Therefore the Windows Terminal renderer must not become a direct dependency of `SourceGit.exe`.
+- calls `CreateTerminal(parentHwnd, out childHwnd, out terminal)`;
+- registers a terminal write callback;
+- sends PTY output into the renderer with `TerminalSendOutput`;
+- forwards focus, key, character, DPI, and resize events;
+- calls `DestroyTerminal` on teardown.
+
+That native control can therefore be hosted directly under Avalonia's `NativeControlHost` parent HWND without loading WPF into SourceGit.
 
 ## Goals
 
-1. Use the Windows Terminal rendering/input stack for DevSpaces on Windows x64.
-2. Preserve SourceGit's existing NativeAOT release behavior.
-3. Preserve the current Avalonia terminal as the automatic fallback on Windows ARM64, macOS, Linux, or any native-host initialization failure.
-4. Preserve DevSpaces session lifetime: adding terminals, changing layouts, or switching History/Local Changes/Stashes must not restart a terminal.
-5. Keep one DevSpaces session mapped to one terminal process and one terminal surface.
-6. Preserve the existing terminal picker: Copilot, PowerShell 7, Windows PowerShell, Command Prompt, Git Bash, and platform-appropriate fallbacks.
-7. Keep the native host invisible when DevSpaces is not the active repository page without stopping its process.
-8. Keep the existing PR #7 Avalonia selection/copy/paste improvements because they remain the fallback implementation.
+1. Use the Windows Terminal native renderer/input stack for DevSpaces on Windows x64 and Windows ARM64.
+2. Keep `SourceGit.exe` on .NET 10, Avalonia 11.3.20, and NativeAOT in Release.
+3. Do not introduce a helper terminal process, WPF runtime dependency, WinUI dependency, or installed `wt.exe` dependency.
+4. Reuse Porta.Pty 1.0.7 for the PTY/process side so the native renderer does not introduce a second ConPTY implementation.
+5. Keep the current Iciclecreek/Avalonia terminal as the automatic fallback on macOS, Linux, unsupported Windows architectures, or any native initialization failure.
+6. Preserve the existing DevSpaces session lifecycle: adding terminals, changing layouts, switching History/Local Changes/Stashes, or changing active terminal must not restart an existing session.
+7. Preserve the existing terminal picker and `IDevSpaceSessionLauncher` as the authority for command/working-directory resolution.
+8. Package the correct Windows Terminal native DLL automatically in Windows release artifacts.
+9. Keep PR #7's existing Avalonia selection/copy/paste improvements because they remain the fallback implementation.
 
 ## Non-goals
 
-- Reparenting or embedding the installed `wt.exe` application window.
-- Disabling NativeAOT for SourceGit.
-- Migrating SourceGit to WPF, WinUI 3, or Avalonia 12.
+- Embedding or reparenting the installed `wt.exe` application.
+- Using WPF `HwndHost` or `EasyWindowsTerminalControl` at runtime.
+- Creating `SourceGit.WindowsTerminalHost.exe` or any terminal broker process.
+- Building/forking the entire Windows Terminal repository as part of normal SourceGit builds.
+- Migrating SourceGit to Avalonia 12, WPF, WinUI 3, or Windows App SDK.
 - Providing a native terminal renderer on macOS or Linux in this PR.
-- Providing Windows Terminal native rendering on Windows ARM64 in this PR.
-- Consolidating all native terminals into one broker process; one helper process per native DevSpaces terminal is intentionally simpler for the first implementation.
 - Copilot CLI session-ID persistence across SourceGit restarts.
-- Replacing the existing DevSpaces terminal picker or layout model.
+- Replacing the DevSpaces terminal picker, grid model, or worktree lifecycle.
+- Reimplementing Windows Terminal selection/keyboard semantics in Avalonia.
 
 ## Platform Matrix
 
 | Platform | Renderer |
 | --- | --- |
-| Windows x64 | Windows Terminal native host when available; Avalonia fallback on failure |
-| Windows ARM64 | Avalonia terminal |
+| Windows x64 | Native Windows Terminal control when available; Avalonia fallback on failure |
+| Windows ARM64 | Native Windows Terminal control when available; Avalonia fallback on failure |
+| Windows other architecture | Avalonia terminal |
 | macOS x64/ARM64 | Avalonia terminal |
 | Linux x64/ARM64 | Avalonia terminal |
 
-The renderer choice is internal. Users still create terminals through the same DevSpaces UI.
+Renderer selection is internal. Users create Copilot, PowerShell, Command Prompt, Git Bash, or other configured terminals through the same DevSpaces UI.
+
+## Dependency Strategy
+
+### Existing terminal fallback
+
+Keep:
+
+```xml
+<PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.12" />
+```
+
+This remains the cross-platform fallback and already depends on `Porta.Pty` 1.0.7.
+
+### Explicit PTY dependency
+
+Add an explicit SourceGit dependency on the same PTY version rather than relying on a transitive package contract:
+
+```xml
+<PackageReference Include="Porta.Pty" Version="1.0.7" />
+```
+
+The native Windows renderer uses Porta.Pty directly for process creation, input/output streams, resize, PID, exit code, wait, and kill.
+
+### Native Windows Terminal asset
+
+Use the reviewed Windows Terminal WPF CI package only as a **native asset source**, not as a managed runtime dependency:
+
+```xml
+<PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
+```
+
+Do not reference `Microsoft.Terminal.Wpf.dll` and do not enable WPF in `SourceGit.csproj`.
+
+The package version is pinned because the reusable native control ABI is not treated as stable. The package contains `Microsoft.Terminal.Control.dll` under RID-specific native paths for x86, x64, and ARM64. This PR uses only x64 and ARM64.
 
 ## Architecture
 
 ### SourceGit process
 
-`SourceGit.exe` remains `net10.0`, Avalonia 11.3.20, and NativeAOT in Release.
+`SourceGit.exe` remains:
 
-SourceGit owns:
+- `TargetFramework`: `net10.0`;
+- Avalonia 11.3.20;
+- NativeAOT + trimming in Release;
+- one cross-platform executable project.
 
-- DevSpaces session/view models;
-- terminal layout and persistent pane lifetime;
-- terminal picker and launch specification;
-- native-host process creation and termination;
-- the Avalonia `NativeControlHost` wrapper;
-- visibility, sizing, and fallback decisions.
+The Windows native renderer is ordinary managed code inside SourceGit plus static P/Invoke declarations. No WPF assembly is loaded.
 
-SourceGit does not reference WPF or `EasyWindowsTerminalControl` assemblies.
+### Terminal surface boundary
 
-### Windows native helper process
-
-Add the Windows-only project:
-
-`src/SourceGit.WindowsTerminalHost/SourceGit.WindowsTerminalHost.csproj`
-
-Properties:
-
-- `TargetFramework`: `net10.0-windows`
-- `RuntimeIdentifier`: `win-x64`
-- `PlatformTarget`: `x64`
-- `UseWPF`: `true`
-- self-contained normal .NET deployment; no NativeAOT
-- package: `EasyWindowsTerminalControl` version `1.0.38`
-
-The helper process hosts exactly one `EasyTerminalControl` / Windows Terminal surface. It does not show SourceGit chrome, tabs, menus, repository UI, or its own independent terminal picker.
-
-One helper process per DevSpaces native terminal keeps lifecycle ownership straightforward: closing one terminal terminates only that helper and its terminal process.
-
-The helper is intentionally not a normal `ProjectReference` of `SourceGit.csproj` and is not built by non-Windows jobs.
-
-### Native HWND embedding
-
-SourceGit adds a Windows-aware `NativeControlHost` implementation named `WindowsTerminalNativeHost`.
-
-When Avalonia calls `CreateNativeControlCore(parent)`, SourceGit:
-
-1. verifies `OperatingSystem.IsWindows()` and `RuntimeInformation.ProcessArchitecture == Architecture.X64`;
-2. resolves `native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe` relative to the SourceGit application directory;
-3. starts the helper with the parent HWND and an encoded launch payload;
-4. waits up to 5 seconds for a startup handshake containing the child terminal HWND;
-5. returns that HWND as the native control handle.
-
-The helper creates an `HwndSource` with `WS_CHILD` using the parent HWND supplied by Avalonia, places `EasyTerminalControl` as its root visual, starts the requested terminal command, then reports the child HWND only after initialization succeeds. The implementation must not create a normal top-level WPF window and later reparent it.
-
-`DestroyNativeControlCore` owns helper shutdown and must not call Win32 `DestroyWindow` against a foreign-process HWND. It requests normal helper shutdown first and uses `Process.Kill(entireProcessTree: true)` only as bounded cleanup if the helper does not exit.
-
-Repository subpage navigation must not call `DestroyNativeControlCore`.
-
-## Go/No-Go Embedding Gate
-
-Cross-process child-HWND hosting is the only remaining unproven part of the design. It must be proven on real Windows x64 before production integration is kept.
-
-The implementation plan must start with a disposable probe that contains only:
-
-- a tiny Avalonia `NativeControlHost` parent;
-- `SourceGit.WindowsTerminalHost` using `EasyWindowsTerminalControl` 1.0.38;
-- one `cmd.exe` session;
-- the startup HWND handshake.
-
-The probe must demonstrate all of the following on Windows x64:
-
-1. the terminal child HWND renders inside the Avalonia host;
-2. keyboard focus and typing work without manual focus hacks after every key;
-3. mouse selection works;
-4. resize follows the Avalonia host bounds;
-5. Avalonia/native hide-show does not stop the terminal process;
-6. destroying the DevSpaces terminal host terminates the helper cleanly;
-7. the child HWND does not paint over unrelated Avalonia content after it is hidden.
-
-If any of these fail in a way that requires unsupported global hooks, embedding `wt.exe`, disabling SourceGit NativeAOT, or creating/reparenting an unrelated top-level terminal window, stop the native-host work. Do not keep the probe code. PR #7 then remains the improved Avalonia terminal implementation only.
-
-If the probe passes, production integration proceeds using the architecture in this spec.
-
-## Startup Protocol
-
-Use a small deterministic protocol rather than scraping logs or constructing an unescaped command line.
-
-SourceGit starts the helper as:
-
-```text
-SourceGit.WindowsTerminalHost.exe --parent-hwnd <decimal-hwnd> --launch-payload <base64url-json>
-```
-
-The UTF-8 JSON payload contains exactly:
-
-```json
-{
-  "process": "...",
-  "arguments": ["..."],
-  "workingDirectory": "..."
-}
-```
-
-The payload is Base64URL encoded as one argument. Command/argument/path values are never concatenated into a shell command by SourceGit.
-
-The helper's first stdout line must be:
-
-```text
-SOURCEGIT_TERMINAL_READY <decimal-hwnd>
-```
-
-All diagnostics go to stderr. Nothing else may be emitted to stdout before the ready line.
-
-SourceGit waits at most 5 seconds. Failure cases include:
-
-- helper executable missing;
-- process exits before ready;
-- malformed payload or HWND;
-- startup timeout;
-- WPF/Windows Terminal initialization exception.
-
-Any startup failure disposes the partial helper and immediately falls back to `DevSpaceTerminalControl` using the same launch specification. There is no retry loop in the first implementation.
-
-After successful startup, normal helper lifetime is tied to the DevSpaces session. No general IPC channel, network socket, global named service, or persistent broker is introduced.
-
-## Command and Working Directory
-
-The existing `IDevSpaceSessionLauncher` remains the authority for translating a DevSpaces terminal choice into a launch specification.
-
-The Windows native helper receives the same process, argument array, and working directory used by the Avalonia backend. The helper starts that process through its ConPTY/Windows Terminal backend.
-
-Examples:
-
-- Copilot -> configured `copilot` launch command;
-- PowerShell 7 -> `pwsh.exe`;
-- Windows PowerShell -> `powershell.exe`;
-- Command Prompt -> `cmd.exe`;
-- Git Bash -> resolved Git Bash executable/arguments.
-
-No terminal selection or executable-resolution logic is duplicated inside the helper.
-
-## DevSpaces Backend Boundary
-
-Introduce a small DevSpaces terminal-surface boundary so `DevSpaceTerminal` does not contain two unrelated process implementations inline.
-
-Conceptually:
+Introduce a focused DevSpaces terminal-surface abstraction:
 
 ```csharp
-interface IDevSpaceTerminalSurface : IDisposable
+internal interface IDevSpaceTerminalSurface : IDisposable
 {
     Control View { get; }
     event EventHandler<int> Exited;
-    void Start(DevSpaceLaunchSpec spec);
-    void SetVisible(bool visible);
+    Task StartAsync(DevSpaceLaunchSpec spec);
+    void SetPageActive(bool active);
 }
 ```
 
 Two implementations:
 
 1. `AvaloniaDevSpaceTerminalSurface`
-   - wraps the existing `DevSpaceTerminalControl`;
-   - keeps PR #7 full-surface hit testing and Copy/Paste/Select All behavior;
-   - remains responsible for the existing embedded PTY path.
+   - wraps the existing `DevSpaceTerminalControl` from PR #7;
+   - keeps the existing Iciclecreek PTY/rendering path;
+   - preserves the full-surface hit testing and Copy/Paste/Select All menu already implemented.
 
-2. `WindowsNativeDevSpaceTerminalSurface`
-   - available only at runtime on Windows x64 when the helper exists;
-   - wraps `WindowsTerminalNativeHost` plus the helper process;
-   - does not recreate the native child window during layout changes or repository page switches.
+2. `WindowsTerminalDevSpaceSurface`
+   - available only on Windows x64/ARM64 when `Microsoft.Terminal.Control.dll` can be loaded;
+   - owns one `WindowsTerminalNativeHost` and one Porta.Pty connection;
+   - uses the native Windows Terminal HWND for rendering/input;
+   - contains no WPF types.
 
-`DevSpaceTerminal` chooses native first on Windows x64 and transparently falls back to Avalonia if native startup fails.
+`Views.DevSpaceTerminal` selects the Windows-native surface first on supported Windows platforms. If native startup fails before a usable session is established, it disposes the partial native surface and starts the Avalonia surface using the same `DevSpaceLaunchSpec`.
 
-## Selection, Copy, Paste, and Mouse Input
+After a native session has started successfully, a later PTY/process exit is reported as that session's exit. SourceGit must not silently restart it with the fallback because that would destroy terminal state.
+
+## Native Windows Terminal Interop
+
+Create a small interop layer, for example:
+
+`src/Native/WindowsTerminal.cs`
+
+It is responsible only for the native ABI and DLL resolution. It does not own DevSpaces state or PTY process lifetime.
+
+### Native library resolution
+
+Register a `NativeLibrary.SetDllImportResolver` for the SourceGit assembly before the first Windows Terminal call.
+
+For library name `Microsoft.Terminal.Control`, resolve:
+
+- x64 -> `<AppContext.BaseDirectory>/native-terminal/win-x64/Microsoft.Terminal.Control.dll`
+- ARM64 -> `<AppContext.BaseDirectory>/native-terminal/win-arm64/Microsoft.Terminal.Control.dll`
+
+Development builds may use the same directory layout under `bin/...`.
+
+If the architecture is unsupported, the file is missing, or `NativeLibrary.Load` fails, native terminal support is unavailable and DevSpaces uses the Avalonia fallback.
+
+Do not modify process-wide `PATH`, use `SetDllDirectory`, or search arbitrary system locations.
+
+### AOT-safe P/Invoke
+
+Use source-generated `LibraryImport` declarations rather than reflection or runtime-generated interop.
+
+Required native exports for the first implementation:
+
+- `AvoidBuggyTSFConsoleFlags`
+- `CreateTerminal`
+- `DestroyTerminal`
+- `TerminalRegisterWriteCallback`
+- `TerminalSendOutput`
+- `TerminalTriggerResize`
+- `TerminalDpiChanged`
+- `TerminalSetFocused`
+- `TerminalSendKeyEvent`
+- `TerminalSendCharEvent`
+- `TerminalIsSelectionActive`
+- `TerminalGetSelection`
+
+Functions that return HRESULT in the native ABI are declared as integer results and checked explicitly with `Marshal.ThrowExceptionForHR` when negative. Do not rely on `PreserveSig=false` magic in generated interop.
+
+Callback delegates use the exact StdCall signatures expected by the native control and are stored as fields for the full terminal lifetime so the GC cannot collect them while native code holds their function pointers.
+
+### Native handle lifetime
+
+`WindowsTerminalNativeHost : NativeControlHost` owns:
+
+- native terminal object pointer;
+- child terminal HWND returned by `CreateTerminal`;
+- native callback delegates;
+- a Win32 window subclass callback used for input/focus/resize forwarding.
+
+`CreateNativeControlCore(parent)`:
+
+1. verifies Windows x64/ARM64 support;
+2. ensures the native library is loaded;
+3. calls `AvoidBuggyTSFConsoleFlags()` once per process before terminal creation;
+4. calls `CreateTerminal(parent.Handle, out hwnd, out terminal)`;
+5. registers callbacks;
+6. installs the window subclass;
+7. returns `new PlatformHandle(hwnd, "HWND")`.
+
+`DestroyNativeControlCore`:
+
+1. removes the window subclass;
+2. clears managed callback references only after native registration is no longer reachable;
+3. calls `DestroyTerminal(terminal)` exactly once;
+4. zeros the terminal/HWND fields;
+5. does not call `DestroyWindow` separately.
+
+Creation/destruction is idempotent from SourceGit's perspective; duplicate cleanup paths must be harmless.
+
+## Windows Message Handling
+
+Microsoft's WPF wrapper demonstrates the required message forwarding. SourceGit reproduces only that native-control adapter behavior, not WPF itself.
+
+Use `SetWindowSubclass`/`RemoveWindowSubclass` from `comctl32` rather than replacing the WndProc with `SetWindowLongPtr`.
+
+The subclass handles:
+
+- `WM_SETFOCUS` -> `TerminalSetFocused(terminal, true)`;
+- `WM_KILLFOCUS` -> `TerminalSetFocused(terminal, false)`;
+- `WM_MOUSEACTIVATE` -> focus the child HWND;
+- `WM_KEYDOWN` / `WM_SYSKEYDOWN` -> unpack vkey/scan-code/flags and call `TerminalSendKeyEvent(..., keyDown: true)`;
+- `WM_KEYUP` / `WM_SYSKEYUP` -> call `TerminalSendKeyEvent(..., keyDown: false)`;
+- `WM_CHAR` -> call `TerminalSendCharEvent`;
+- `WM_WINDOWPOSCHANGED` -> when size is non-zero, call `TerminalTriggerResize` and resize the PTY to the returned columns/rows.
+
+After SourceGit's forwarding logic, call `DefSubclassProc` so the native terminal window still receives normal Win32 processing.
+
+Do not install global keyboard or mouse hooks.
+
+Mouse selection, terminal mouse-reporting mode, right-click behavior, renderer hit testing, and native accessibility remain owned by `Microsoft.Terminal.Control.dll`.
+
+## PTY Process and Data Flow
+
+`WindowsTerminalDevSpaceSurface` owns one `IPtyConnection` from Porta.Pty.
+
+### Start
+
+Use the existing `DevSpaceLaunchSpec` without duplicating shell-resolution logic.
+
+Create:
+
+```csharp
+new PtyOptions
+{
+    App = spec.Process,
+    CommandLine = spec.Arguments,
+    Cwd = spec.WorkingDirectory,
+    Cols = initialColumns,
+    Rows = initialRows,
+    UseAsyncIo = true,
+}
+```
+
+Then call:
+
+```csharp
+PtyProvider.SpawnAsync(options, cancellationToken)
+```
+
+The terminal picker and `LocalDevSpaceSessionLauncher` remain the authority for deciding the process path and arguments.
+
+### PTY -> renderer
+
+Read `IPtyConnection.ReaderStream` asynchronously with UTF-8 decoding that preserves split multibyte sequences. For each decoded text chunk:
+
+```csharp
+WindowsTerminal.TerminalSendOutput(terminal, text);
+```
+
+Only one reader loop exists per session. Cancellation and disposal must end it without surfacing expected shutdown exceptions as UI failures.
+
+### Renderer -> PTY
+
+Register `TerminalRegisterWriteCallback`.
+
+The callback receives UTF-16 terminal input from the native control. Encode it as UTF-8 and write it asynchronously to `IPtyConnection.WriterStream` through a serialized input channel so concurrent native callbacks cannot interleave writes.
+
+The native terminal itself owns bracketed paste, keyboard translation, selection-aware Ctrl+C behavior, and mouse reporting. SourceGit does not reinterpret these input sequences.
+
+### Resize
+
+When `TerminalTriggerResize` reports a new terminal cell size `(columns, rows)`, call:
+
+```csharp
+pty.Resize(columns, rows);
+```
+
+Ignore zero-size layout transitions. Resize failures during normal shutdown are ignored; unexpected resize failures are logged but do not recreate the session.
+
+### Exit
+
+Subscribe to `IPtyConnection.ProcessExited`.
+
+On exit:
+
+- stop input/output loops;
+- keep final native terminal content visible;
+- raise `IDevSpaceTerminalSurface.Exited` with the PTY exit code;
+- do not automatically destroy the pane until the existing DevSpaces close flow disposes it.
+
+This preserves the current DevSpaces behavior where an exited terminal remains visible until the user closes it.
+
+## Selection, Copy, Paste, and Clipboard
 
 ### Native Windows backend
 
-The Windows Terminal control owns selection, mouse handling, keyboard input, rendering, and clipboard behavior. SourceGit must not overlay a fake Avalonia selection layer or intercept normal terminal shortcuts.
+Normal terminal interaction belongs to Windows Terminal.
 
-The purpose of the native backend is to inherit Windows Terminal's interaction semantics rather than reproduce them.
+Do not show the SourceGit Avalonia Copy/Paste/Select All context menu over the native renderer. Do not intercept Ctrl+C/Ctrl+V/Ctrl+Shift+C/Ctrl+Shift+V in the outer Avalonia view.
+
+For any future SourceGit command that needs selected native text, `TerminalIsSelectionActive` and `TerminalGetSelection` are the supported native access points, but PR #7 does not add a second clipboard UX on top of the native renderer.
 
 ### Avalonia fallback
 
 Keep the already implemented PR #7 behavior:
 
-- whole terminal rectangle hit-testable;
-- `Ctrl+C`: copy selection or reach the process when there is no selection;
-- `Ctrl+Shift+C`: copy;
-- `Ctrl+Shift+V`: paste;
-- right-click Copy/Paste/Select All when terminal mouse reporting is inactive;
-- mouse-aware TUIs retain right-click ownership.
+- whole terminal rectangle is hit-testable;
+- Copy/Paste/Select All context menu outside TUI mouse-reporting mode;
+- terminal-owned keyboard shortcuts remain intact;
+- process/session lifetime remains persistent.
 
-## Layout and Navigation Lifetime
+## Page Visibility, Layout, and Airspace
 
-Avalonia `NativeControlHost` already tracks native-control bounds and effective visibility, but the current DevSpaces page-preservation strategy keeps the overall DevSpaces view mounted with opacity changes. The native surface therefore needs an explicit page-active signal.
+`NativeControlHost` tracks native child bounds and effective `IsVisible`, but DevSpaces currently keeps its overall page mounted and uses opacity to preserve terminal state. Native HWNDs are not hidden by Avalonia opacity.
 
-Required behavior:
+Therefore add explicit page-active propagation:
 
-- Adding another terminal: do not destroy/recreate existing native or Avalonia terminal surfaces.
-- Changing Auto / 1x2 / 2x2 / 3x3: resize/reposition existing terminal host controls only.
-- Switching History/Local Changes/Stashes: `WindowsNativeDevSpaceTerminalSurface.SetVisible(false)` sets the native host control `IsVisible=false`, allowing Avalonia's native-control attachment to hide the HWND while leaving the helper and ConPTY alive.
-- Returning to DevSpaces: set the native host control visible again; Avalonia moves/resizes it to the current pane bounds.
-- Closing one DevSpaces session: terminate only that session's terminal backend.
-- Closing the repository/worktree or disabling DevSpaces: stop all associated terminal backends.
+- DevSpaces active -> native host `IsVisible = true`;
+- History/Local Changes/Stashes active -> native host `IsVisible = false`;
+- returning to DevSpaces -> `IsVisible = true`;
+- never dispose the terminal merely because the repository page changed.
 
-The native host must never rely on `Opacity=0` to hide an HWND.
+Adding a second terminal or changing Auto / 1x2 / 2x2 / 3x3 must reposition/resize the existing `NativeControlHost` instance, not recreate it.
 
-## Airspace Rules
-
-A native terminal HWND is rendered outside Avalonia's normal composition layer.
-
-Therefore:
+Airspace rules:
 
 - do not place Avalonia controls over the native terminal rectangle;
-- terminal headers/tabs/layout controls remain outside the terminal HWND bounds;
-- error UI for native startup is shown only after the failed native host is removed and the Avalonia fallback is active;
-- clipping/visibility is controlled through `NativeControlHost` visibility/bounds rather than Avalonia opacity.
+- terminal header/close controls stay outside the native HWND area;
+- error/fallback UI is shown only after the failed native host has been removed;
+- never depend on `Opacity=0` to hide native terminal content.
 
-## Packaging and Build
+## Fallback and Error Handling
 
-Do not add the Windows WPF helper as a normal project reference of `SourceGit.csproj`.
+Native hosting is an optional enhancement, never a SourceGit startup dependency.
 
-The existing six-platform `dotnet build -c Release` for SourceGit must remain cross-platform.
+Before native session creation, fall back to the Avalonia renderer when any of these occur:
 
-For Windows x64 CI/publishing:
+- not Windows x64/ARM64;
+- native DLL missing;
+- native DLL load failure;
+- required export missing;
+- `CreateTerminal` failure;
+- window subclass installation failure;
+- PTY spawn failure before the session is marked running;
+- native callback registration failure.
 
-1. build/publish `src/SourceGit.WindowsTerminalHost/SourceGit.WindowsTerminalHost.csproj` separately as self-contained `win-x64`;
-2. copy its output into `publish/native-terminal/win-x64/` after the normal SourceGit publish;
-3. publish SourceGit normally with NativeAOT;
-4. assert `publish/native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe` exists.
+Fallback uses the **same** `DevSpaceLaunchSpec`.
 
-Windows ARM64 publishing must not include the x64 helper directory.
+Cleanup of a failed native attempt must remove any subclass, destroy any created native terminal, dispose any partial PTY, cancel reader/writer loops, and then create the Avalonia surface.
 
-macOS/Linux jobs must not restore or build the WPF helper project.
+After a native session is successfully running, later failures or process exit do not trigger fallback/restart because a new process would lose session state. Instead mark the session exited/failed through the existing DevSpaces state model.
 
-The PR Check must add an explicit Windows-x64 helper build/publish step so the helper cannot rot outside the normal gate. The Windows-x64 job also runs `dotnet format --verify-no-changes src/SourceGit.WindowsTerminalHost/SourceGit.WindowsTerminalHost.csproj` because the existing Linux format workflow formats only `src/SourceGit.csproj`.
+No native terminal error may crash SourceGit or close sibling terminals.
 
-Update `THIRD-PARTY-LICENSES.md` for the added Windows terminal helper dependencies before merge.
+## Packaging and Release
 
-## Error Handling
+### Source package
 
-Native hosting is an enhancement, not a startup dependency.
+`CI.Microsoft.Terminal.Wpf` 1.25.260303002 is restored only to obtain the native control binaries. SourceGit must not ship or reference `Microsoft.Terminal.Wpf.dll`.
 
-If any native-host startup step fails:
+### Staging
 
-1. log the native-host diagnostic through SourceGit logging;
-2. terminate/dispose any partial helper process/handle;
-3. start the existing Avalonia terminal backend with the same launch specification;
-4. keep the DevSpaces session alive.
+During build/publish, stage:
 
-A native-host failure must never crash SourceGit, close sibling terminals, or leave the DevSpaces pane permanently blank.
+```text
+native-terminal/win-x64/Microsoft.Terminal.Control.dll
+native-terminal/win-arm64/Microsoft.Terminal.Control.dll
+```
 
-If the native helper dies after successful startup, mark that terminal exited/failed using the same session state model used by the Avalonia backend. Do not silently create a new process because that would lose terminal state.
+The exact RID-specific DLL comes from the pinned package's `runtimes/<rid>/native/` directory.
 
-On normal session close, the helper disposes its terminal/ConPTY and exits. SourceGit waits briefly for normal exit, then uses `Kill(entireProcessTree: true)` only as cleanup.
+For a published artifact:
 
-## Security and Process Ownership
+- `win-x64` must contain only the x64 native terminal directory;
+- `win-arm64` must contain only the ARM64 native terminal directory;
+- macOS/Linux artifacts must contain no `native-terminal` directory.
 
-- Launch data uses the Base64URL-encoded JSON payload defined above; no shell-string concatenation.
-- The helper accepts only the parent HWND and one launch payload required for its session.
-- SourceGit owns the helper process handle and terminates it when the session closes.
-- The helper does not listen on a network socket.
-- No global named service or persistent broker is introduced.
+Development Windows builds may stage both x64 and ARM64 folders because the runtime resolver selects only the current architecture; release artifacts stay RID-minimal.
+
+### NativeAOT invariant
+
+The existing SourceGit publish command remains unchanged and must still show NativeAOT publishing.
+
+Do not:
+
+- set `<UseWPF>true</UseWPF>`;
+- change SourceGit to `net10.0-windows`;
+- disable `<PublishAot>true</PublishAot>`;
+- add a WPF project reference;
+- add a helper executable.
+
+### Licensing
+
+Update `THIRD-PARTY-LICENSES.md` for:
+
+- `CI.Microsoft.Terminal.Wpf` / Microsoft Terminal source;
+- `Microsoft.Terminal.Control.dll`;
+- explicit `Porta.Pty 1.0.7` dependency if the repository's existing attribution convention requires it.
+
+Record pinned versions and MIT license attribution without copying unnecessary full license bodies when the repository convention is attribution-only.
+
+## Cleanup of the Superseded Helper Spike
+
+The earlier helper-process spike is disposable and must not survive the new implementation.
+
+Remove before final PR verification:
+
+```text
+tools/WindowsTerminalHostProbe/
+tools/WindowsTerminalHostProbe.Helper/
+```
+
+Remove the temporary probe build/publish/upload steps from `.github/workflows/build.yml`.
+
+Do not create `SourceGit.WindowsTerminalHost`.
+
+The old helper-process implementation plan remains historical documentation only until the new plan is written; the new plan must explicitly mark it superseded or remove it to prevent accidental execution.
 
 ## Verification
 
-The existing DevSpaces test-project exception remains in effect; this feature is UI/native-host integration and the repository still has no dedicated DevSpaces test assembly. Approval of this spec also approves continuing that exception for the native-host integration rather than adding a new test project solely for it.
+The previously approved DevSpaces test-project exception continues: SourceGit still has no dedicated DevSpaces test project, and this change is dominated by native HWND integration. Verification therefore separates source/build/package evidence from interactive terminal evidence.
 
-Verification is split into compile/package evidence and runtime acceptance.
+### Source audit
+
+Required final invariants:
+
+- no WPF project or `UseWPF` in SourceGit;
+- no helper executable;
+- no `wt.exe` process launch;
+- no global input hooks;
+- `Microsoft.Terminal.Control.dll` is loaded only from SourceGit's staged native-terminal directory;
+- `Porta.Pty` version is 1.0.7;
+- native callbacks are strongly rooted for the terminal lifetime;
+- native terminal destruction happens once;
+- existing Avalonia fallback remains available.
 
 ### CI
 
-Required green checks on the final PR head:
+Required green checks on the exact final PR head:
 
-- existing SourceGit format check;
-- SourceGit Windows x64 build/publish;
-- SourceGit Windows ARM64 build/publish using Avalonia fallback only;
-- SourceGit macOS x64/ARM64 build/publish;
-- SourceGit Linux x64/ARM64 build/publish;
-- Windows-x64 format + build/publish of `SourceGit.WindowsTerminalHost`;
-- packaging assertion that the native helper exists in the Windows x64 artifact and is absent from non-x64 artifacts;
-- evidence from the publish log that SourceGit still performs NativeAOT publishing independently of the JIT helper.
+- existing format check;
+- SourceGit Windows x64 build + NativeAOT publish;
+- SourceGit Windows ARM64 build + NativeAOT publish;
+- macOS Intel build/publish;
+- macOS Apple Silicon build/publish;
+- Linux x64 build/publish;
+- Linux ARM64 build/publish;
+- win-x64 packaging assertion for x64 `Microsoft.Terminal.Control.dll`;
+- win-arm64 packaging assertion for ARM64 `Microsoft.Terminal.Control.dll`;
+- macOS/Linux assertion that no Windows native terminal payload is present.
+
+CI proves compilation, AOT compatibility, and package composition. It does not prove native terminal feel.
 
 ### Manual Windows x64 acceptance
 
-1. Start the SourceGit Release artifact.
-2. Open a worktree and DevSpaces.
-3. Create Copilot using the terminal picker.
-4. Confirm the native backend is active through a diagnostic/log marker, not visual guessing.
-5. Drag-select text and blank-space boundaries.
-6. Copy/paste using normal Windows Terminal interactions.
-7. Verify Ctrl+C reaches Copilot when appropriate.
-8. Open a second terminal and confirm the first terminal state does not reload.
-9. Change layouts and confirm both sessions persist.
-10. Switch to History/Stashes and back; terminal output/process state remains intact and the native HWND does not bleed over the repository page.
-11. Close one terminal; only that helper/process exits.
-12. Temporarily remove/rename the helper executable and confirm DevSpaces falls back to the Avalonia renderer instead of failing.
+Using the final `win-x64` artifact:
+
+1. Open a repository/worktree and DevSpaces.
+2. Start Copilot and confirm a diagnostic identifies the Windows-native renderer.
+3. Drag-select text and blank-space boundaries naturally.
+4. Copy and paste using normal Windows Terminal interactions.
+5. Verify Ctrl+C reaches Copilot/shell correctly when appropriate.
+6. Verify PowerShell 7, Windows PowerShell, Command Prompt, and Git Bash picker entries still launch with the expected working directory.
+7. Open a second terminal; the first process/output/selection state must not reload.
+8. Change Auto / 1x2 / 2x2 / 3x3; existing sessions remain alive.
+9. Switch to History/Stashes and back; the native HWND is completely hidden while inactive and session state remains intact.
+10. Close one terminal; only that PTY/session closes.
+11. Temporarily remove `native-terminal/win-x64/Microsoft.Terminal.Control.dll`; new sessions must fall back to the Avalonia renderer without crashing SourceGit.
+12. Verify no `SourceGit.WindowsTerminalHost` or `wt.exe` child process is created.
 
 ### Manual Windows ARM64 acceptance
 
-Confirm DevSpaces uses the Avalonia backend and continues to work exactly as PR #7 currently does.
+Using the final `win-arm64` artifact when ARM64 hardware is available:
+
+1. confirm native renderer activation through diagnostics;
+2. repeat basic typing, selection, copy/paste, resize, page hide/show, and close behavior;
+3. remove the ARM64 native DLL and confirm Avalonia fallback.
+
+Lack of ARM64 hardware does not allow claiming ARM64 UX manually verified; CI packaging/build evidence must be reported separately.
 
 ## Risks
 
-1. **Unofficial/beta Windows Terminal packaging.** `EasyWindowsTerminalControl` depends on unofficial/beta Windows Terminal packaging and may require maintenance when low-level APIs change. Version 1.0.38 is pinned for this PR.
-2. **x64 limitation.** The reviewed WPF package is x64-only. Windows ARM64 remains fallback in this PR.
-3. **HWND airspace.** Native terminal surfaces cannot participate in Avalonia composition like normal controls; explicit native visibility and bounds handling are mandatory.
-4. **Cross-process embedding.** The helper HWND/process handshake is a new boundary and must pass the explicit go/no-go probe before production integration.
-5. **Resource cost.** One helper process per native terminal uses more memory than an in-process control. This is accepted for the first implementation to keep failure and lifetime boundaries simple.
-6. **Dependency maturity.** The WPF wrapper itself documents that it relies on beta/unofficial Windows Terminal packaging. Native-host failure must therefore remain non-fatal and fall back to the Avalonia renderer.
+1. **Native control ABI stability.** The reusable Windows Terminal control is not treated as a stable public ABI. Mitigation: pin `CI.Microsoft.Terminal.Wpf` 1.25.260303002 and upgrade intentionally with CI + manual acceptance.
+2. **NativeAOT interop.** Dynamic/reflection-heavy interop could fail under trimming/AOT. Mitigation: source-generated `LibraryImport`, fixed delegate signatures, explicit DLL resolver, no managed WPF dependency.
+3. **Window message integration.** Keyboard/focus behavior depends on forwarding the same message set Microsoft's wrapper handles. Mitigation: reproduce the minimal documented wrapper behavior with `SetWindowSubclass` and test on real Windows.
+4. **HWND airspace.** Native windows do not obey Avalonia opacity/composition. Mitigation: explicit `IsVisible` page propagation and no Avalonia overlays over the terminal rectangle.
+5. **PTY/renderer synchronization.** Renderer cell-size changes and PTY size must stay synchronized. Mitigation: every non-zero native resize result calls `IPtyConnection.Resize(columns, rows)`.
+6. **Callback lifetime.** Native function pointers outlive a temporary managed delegate if it is not rooted. Mitigation: callback delegates are fields owned until after `DestroyTerminal`.
+7. **Native DLL availability.** Packaging mistakes could break only Windows native rendering. Mitigation: native startup is optional, package composition is asserted in CI, and missing DLL falls back to Avalonia.
 
 ## Acceptance Criteria
 
-PR #7 is ready to merge only when:
+PR #7's direct native Windows backend is ready for merge only when:
 
-- the Windows x64 embedding probe has passed all go/no-go criteria;
-- SourceGit itself still publishes with NativeAOT;
-- Windows x64 includes `native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe` and can fall back safely;
-- Windows ARM64/macOS/Linux continue using the Avalonia terminal;
-- existing DevSpaces terminal state is not restarted by add/layout/navigation;
-- the final PR Check is green across the existing matrix plus the Windows-native helper checks;
-- manual Windows x64 acceptance verifies the HWND/native terminal interaction;
-- CI evidence and manual runtime evidence are reported separately.
+- the superseded helper probe and temporary CI probe steps are removed;
+- SourceGit remains `net10.0`, Avalonia 11.3.20, and NativeAOT;
+- no WPF runtime or helper process is introduced;
+- Windows x64 and ARM64 artifacts include the correct pinned `Microsoft.Terminal.Control.dll`;
+- macOS/Linux artifacts remain free of Windows native terminal payloads;
+- Porta.Pty 1.0.7 drives native Windows sessions;
+- native HWND sessions survive terminal add/layout/page-navigation without restart;
+- native startup failure cleanly falls back to the existing Avalonia renderer;
+- final PR CI is green on the exact head;
+- manual Windows x64 acceptance passes;
+- manual ARM64 status is reported accurately as verified or not verified;
+- PR #7 is not merged until the user explicitly asks to merge.
