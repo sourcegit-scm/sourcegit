@@ -10,7 +10,7 @@
                               FontFamily="{DynamicResource Fonts.Monospace}"
                               BufferSize="3000"/>
     <Border Background="{DynamicResource Brush.Window}"
-            IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrEmpty}}">
+            IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}">
       <TextBlock Margin="16" Text="{Binding ErrorMessage}" TextWrapping="Wrap"/>
     </Border>
   </Grid>
