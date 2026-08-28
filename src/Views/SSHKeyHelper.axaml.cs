@@ -49,7 +49,10 @@ namespace SourceGit.Views
                 .Append("• ").Append(key.PrivateKeyPath).AppendLine()
                 .Append("• ").Append(key.PublicKeyPath);
 
-            var yes = await App.AskConfirmAsync(message.ToString(), Models.ConfirmButtonType.YesNo);
+            var confirm = new Confirm();
+            confirm.SetData(message.ToString(), Models.ConfirmButtonType.YesNo);
+
+            var yes = await confirm.ShowDialog<bool>(this);
             if (yes)
                 vm.DeleteSelected();
 
