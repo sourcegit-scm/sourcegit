@@ -1,0 +1,19 @@
+name: PR Check
+
+on:
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: pr-check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+
+  format-check:
+    name: Format Check
+    uses: ./.github/workflows/format-check.yml
