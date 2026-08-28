@@ -96,11 +96,18 @@ namespace SourceGit.ViewModels
         public DevSpaceTerminal CreateTerminalAt(int preferredSlot)
         {
             var command = Preferences.Instance.DevSpacesDefaultCommand;
+            return CreateTerminalAt(preferredSlot, command, GetTerminalDisplayName(command));
+        }
+
+        public DevSpaceTerminal CreateTerminalAt(int preferredSlot, string command, string displayName)
+        {
+            if (string.IsNullOrWhiteSpace(command))
+                command = Preferences.Instance.DevSpacesDefaultCommand;
+            if (string.IsNullOrWhiteSpace(displayName))
+                displayName = GetTerminalDisplayName(command);
+
             var number = _nextSessionNumber++;
-            var prefix = command.Trim().Equals("copilot", StringComparison.OrdinalIgnoreCase)
-                ? "Copilot"
-                : "Terminal";
-            var terminal = new DevSpaceTerminal($"{prefix} {number}", command, _workingDirectory);
+            var terminal = new DevSpaceTerminal($"{displayName} {number}", command, _workingDirectory);
 
             Sessions.Add(terminal);
             ActiveTerminal = terminal;
@@ -148,6 +155,21 @@ namespace SourceGit.ViewModels
         public void Dispose()
         {
             StopAll();
+        }
+
+        private static string GetTerminalDisplayName(string command)
+        {
+            var normalized = command?.Trim().ToLowerInvariant();
+            return normalized switch
+            {
+                "copilot" => "Copilot",
+                "pwsh" or "__devspaces_pwsh__" => "PowerShell 7",
+                "powershell" or "powershell.exe" or "__devspaces_powershell__" => "Windows PowerShell",
+                "cmd" or "cmd.exe" or "__devspaces_cmd__" => "Command Prompt",
+                "__devspaces_git_bash__" => "Git Bash",
+                "__devspaces_shell__" => "Shell",
+                _ => "Terminal",
+            };
         }
 
         private void RebuildSlots()

@@ -63,7 +63,9 @@ namespace SourceGit.Views
 
         private void OnCreateTerminal(object sender, RoutedEventArgs e)
         {
-            _owner?.CreateTerminal();
+            if (sender is Control control)
+                ShowTerminalPicker(control, -1);
+
             e.Handled = true;
         }
 
@@ -87,33 +89,62 @@ namespace SourceGit.Views
         {
             _owner?.CloseTerminal(session);
             if (_panes.Remove(session.Id, out var pane))
+            {
+                TerminalGrid.Children.Remove(pane.Root);
                 pane.TerminalView.Dispose();
+            }
 
             RebuildGrid();
         }
 
         private void RebuildGrid()
         {
-            TerminalGrid.Children.Clear();
+            ClearEmptySlots();
 
             if (_owner == null)
             {
-                TerminalGrid.Rows = 1;
-                TerminalGrid.Columns = 1;
+                TerminalGrid.RowDefinitions = new RowDefinitions("*");
+                TerminalGrid.ColumnDefinitions = new ColumnDefinitions("*");
                 return;
             }
 
-            TerminalGrid.Rows = _owner.GridRows;
-            TerminalGrid.Columns = _owner.GridColumns;
+            TerminalGrid.RowDefinitions = CreateRowDefinitions(_owner.GridRows);
+            TerminalGrid.ColumnDefinitions = CreateColumnDefinitions(_owner.GridColumns);
+
+            foreach (var session in _owner.Sessions)
+                GetOrCreatePane(session);
+
+            foreach (var pane in _panes.Values)
+            {
+                pane.Root.Opacity = 0;
+                pane.Root.IsHitTestVisible = false;
+                pane.Root.ZIndex = 0;
+                Grid.SetRow(pane.Root, 0);
+                Grid.SetColumn(pane.Root, 0);
+            }
 
             foreach (var slot in _owner.VisibleSlots)
             {
+                var row = slot.Index / _owner.GridColumns;
+                var column = slot.Index % _owner.GridColumns;
+
                 if (slot.Terminal != null)
-                    TerminalGrid.Children.Add(GetOrCreatePane(slot.Terminal));
-                else if (_owner.Layout == Models.DevSpaceLayout.Auto)
-                    TerminalGrid.Children.Add(new Border { Margin = new Thickness(2) });
-                else
-                    TerminalGrid.Children.Add(CreateEmptySlot(slot.Index));
+                {
+                    var pane = GetOrCreatePane(slot.Terminal);
+                    Grid.SetRow(pane, row);
+                    Grid.SetColumn(pane, column);
+                    pane.Opacity = 1;
+                    pane.IsHitTestVisible = true;
+                    pane.ZIndex = 1;
+                }
+                else if (_owner.Layout != Models.DevSpaceLayout.Auto)
+                {
+                    var empty = CreateEmptySlot(slot.Index);
+                    Grid.SetRow(empty, row);
+                    Grid.SetColumn(empty, column);
+                    TerminalGrid.Children.Add(empty);
+                    _emptySlots.Add(empty);
+                }
             }
         }
 
@@ -182,6 +213,7 @@ namespace SourceGit.Views
 
             var handle = new TerminalPaneHandle(root, terminalView);
             _panes.Add(session.Id, handle);
+            TerminalGrid.Children.Add(root);
             terminalView.Start(_owner.Launcher);
             return root;
         }
@@ -201,12 +233,76 @@ namespace SourceGit.Views
             button.Classes.Add("flat");
             button.Click += (_, e) =>
             {
-                if (_owner != null)
-                    _owner.CreateTerminalAt(slotIndex);
-
+                ShowTerminalPicker(button, slotIndex);
                 e.Handled = true;
             };
             return button;
+        }
+
+        private void ShowTerminalPicker(Control target, int preferredSlot)
+        {
+            if (_owner == null)
+                return;
+
+            var flyout = new MenuFlyout();
+            flyout.Items.Add(CreateTerminalMenuItem("Copilot", "copilot", "Copilot", preferredSlot));
+
+            if (OperatingSystem.IsWindows())
+            {
+                flyout.Items.Add(CreateTerminalMenuItem("PowerShell 7 (pwsh)", "__devspaces_pwsh__", "PowerShell 7", preferredSlot));
+                flyout.Items.Add(CreateTerminalMenuItem("Windows PowerShell", "__devspaces_powershell__", "Windows PowerShell", preferredSlot));
+                flyout.Items.Add(CreateTerminalMenuItem("Command Prompt", "__devspaces_cmd__", "Command Prompt", preferredSlot));
+                flyout.Items.Add(CreateTerminalMenuItem("Git Bash", "__devspaces_git_bash__", "Git Bash", preferredSlot));
+            }
+            else
+            {
+                flyout.Items.Add(CreateTerminalMenuItem("PowerShell 7 (pwsh)", "__devspaces_pwsh__", "PowerShell 7", preferredSlot));
+                flyout.Items.Add(CreateTerminalMenuItem("Default Shell", "__devspaces_shell__", "Shell", preferredSlot));
+            }
+
+            flyout.ShowAt(target);
+        }
+
+        private MenuItem CreateTerminalMenuItem(string header, string command, string displayName, int preferredSlot)
+        {
+            var item = new MenuItem
+            {
+                Header = header,
+            };
+            item.Click += (_, e) =>
+            {
+                _owner?.CreateTerminalAt(preferredSlot, command, displayName);
+                e.Handled = true;
+            };
+            return item;
+        }
+
+        private static RowDefinitions CreateRowDefinitions(int count)
+        {
+            return count switch
+            {
+                <= 1 => new RowDefinitions("*"),
+                2 => new RowDefinitions("*,*"),
+                _ => new RowDefinitions("*,*,*"),
+            };
+        }
+
+        private static ColumnDefinitions CreateColumnDefinitions(int count)
+        {
+            return count switch
+            {
+                <= 1 => new ColumnDefinitions("*"),
+                2 => new ColumnDefinitions("*,*"),
+                _ => new ColumnDefinitions("*,*,*"),
+            };
+        }
+
+        private void ClearEmptySlots()
+        {
+            foreach (var empty in _emptySlots)
+                TerminalGrid.Children.Remove(empty);
+
+            _emptySlots.Clear();
         }
 
         private void DisposePanes()
@@ -215,10 +311,12 @@ namespace SourceGit.Views
                 pane.TerminalView.Dispose();
 
             _panes.Clear();
+            _emptySlots.Clear();
             TerminalGrid.Children.Clear();
         }
 
         private readonly Dictionary<Guid, TerminalPaneHandle> _panes = [];
+        private readonly List<Button> _emptySlots = [];
         private ViewModels.DevSpaces _owner;
     }
 }
