@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls.Primitives;
-using Avalonia.Input;
+using Avalonia.Rendering;
 
 using Iciclecreek.Terminal;
 
