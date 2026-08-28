@@ -129,14 +129,8 @@
       </Border>
     </Grid>
 
-    <!-- Page -->
-    <ContentControl Grid.Row="1" Content="{Binding ActivePage}" Background="{DynamicResource Brush.Window}">
-      <ContentControl.DataTemplates>
-        <DataTemplate DataType="vm:LauncherPage">
-          <v:LauncherPage/>
-        </DataTemplate>
-      </ContentControl.DataTemplates>
-    </ContentControl>
+    <!-- Pages -->
+    <v:LauncherPages Grid.Row="1" Background="{DynamicResource Brush.Window}"/>
 
     <!-- Command Palette -->
     <Border Grid.Row="0" Grid.RowSpan="2"
