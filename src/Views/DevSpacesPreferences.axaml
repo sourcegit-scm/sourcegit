@@ -30,10 +30,9 @@
               Height="28"
               SelectedIndex="{Binding DevSpacesDefaultLayoutIndex, Mode=TwoWay}">
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.Auto}"/>
-      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.1x1}"/>
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.1x2}"/>
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.2x2}"/>
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.3x3}"/>
-      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.4x4}"/>
     </ComboBox>
   </Grid>
 </UserControl>
