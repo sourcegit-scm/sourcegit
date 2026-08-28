@@ -32,6 +32,8 @@ namespace SourceGit.Views
                 if (_editor.BlameData == null)
                     return;
 
+                _shaHitBoxes.Clear();
+
                 var view = TextView;
                 if (view is { VisualLinesValid: true })
                 {
@@ -51,8 +53,23 @@ namespace SourceGit.Views
 
                         var info = _editor.BlameData.LineInfos[lineNumber - 1];
                         var x = 8.0;
+                        var lineTop = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
                         var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineMiddle) - view.VerticalOffset;
-                        if (!info.IsFirstInGroup)
+
+                        var forceDrawFirstVisualLine = lineTop < 0;
+                        if (forceDrawFirstVisualLine)
+                        {
+                            // When there is enough space (the 2nd visual line is not a group leader),
+                            // move the line to make sure it is not cropped
+                            if (lineNumber < _editor.BlameData.LineInfos.Count)
+                            {
+                                var nextLineInfo = _editor.BlameData.LineInfos[lineNumber];
+                                if (!nextLineInfo.IsFirstInGroup)
+                                    y = lineHeight * 0.5;
+                            }
+                        }
+
+                        if (!info.IsFirstInGroup && !forceDrawFirstVisualLine)
                             continue;
 
                         var shaLink = new FormattedText(
@@ -62,9 +79,8 @@ namespace SourceGit.Views
                             typeface,
                             _editor.FontSize,
                             Brushes.DarkOrange);
-                        var shaLinkTop = y - shaLink.Height * 0.5;
-                        var underlineY = PixelSnapHelpers.PixelAlign(y + shaLink.Height * 0.5 + 0.5, pixelHeight);
-                        context.DrawText(shaLink, new Point(x, shaLinkTop));
+                        var shaLinkMiddle = y - shaLink.Height * 0.5;
+                        context.DrawText(shaLink, new Point(x, shaLinkMiddle));
                         x += shaLink.Width + 8;
 
                         var author = new FormattedText(
@@ -89,10 +105,10 @@ namespace SourceGit.Views
                         context.DrawText(time, new Point(width - time.Width - 8, timeTop));
 
                         if (lineNumber > 1)
-                        {
-                            var lineTop = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
                             context.DrawLine(new Pen(_editor.BorderBrush, 1), new Point(0, lineTop), new Point(Bounds.Width, lineTop));
-                        }
+
+                        var hitBox = new HitBox(new Rect(8, lineTop, shaLink.Width, lineHeight), info);
+                        _shaHitBoxes.Add(hitBox);
                     }
                 }
             }
@@ -152,95 +168,48 @@ namespace SourceGit.Views
             {
                 base.OnPointerMoved(e);
 
-                var view = TextView;
-                if (!e.Handled && view is { VisualLinesValid: true })
+                if (DataContext is not ViewModels.Blame blame)
+                    return;
+
+                var pos = e.GetPosition(this);
+                foreach (var box in _shaHitBoxes)
                 {
-                    var pos = e.GetPosition(this);
-                    var typeface = view.CreateTypeface();
-                    var lineHeight = view.DefaultLineHeight;
-
-                    foreach (var line in view.VisualLines)
+                    if (box.Rect.Contains(pos))
                     {
-                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
-                            continue;
-
-                        var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber > _editor.BlameData.LineInfos.Count)
-                            break;
-
-                        var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.LineTop) - view.VerticalOffset;
-                        var shaLink = new FormattedText(
-                            info.CommitSHA,
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            Brushes.DarkOrange);
-
-                        var rect = new Rect(8, y, shaLink.Width, lineHeight);
-                        if (rect.Contains(pos))
-                        {
-                            Cursor = Cursor.Parse("Hand");
-
-                            if (DataContext is ViewModels.Blame blame)
-                            {
-                                var msg = blame.GetCommitMessage(info.CommitSHA);
-                                ToolTip.SetTip(this, msg);
-                            }
-
-                            return;
-                        }
+                        Cursor = Cursor.Parse("Hand");
+                        var msg = blame.GetCommitMessage(box.LineInfo.CommitSHA);
+                        ToolTip.SetTip(this, msg);
+                        return;
                     }
-
-                    Cursor = Cursor.Default;
-                    ToolTip.SetTip(this, null);
                 }
+
+                Cursor = Cursor.Default;
+                ToolTip.SetTip(this, null);
             }
 
             protected override void OnPointerPressed(PointerPressedEventArgs e)
             {
                 base.OnPointerPressed(e);
 
-                var view = TextView;
-                if (!e.Handled && e.GetCurrentPoint(this).Properties.IsLeftButtonPressed && view is { VisualLinesValid: true })
+                if (DataContext is not ViewModels.Blame blame)
+                    return;
+
+                var pos = e.GetPosition(this);
+                foreach (var box in _shaHitBoxes)
                 {
-                    var pos = e.GetPosition(this);
-                    var typeface = view.CreateTypeface();
-
-                    foreach (var line in view.VisualLines)
+                    if (box.Rect.Contains(pos))
                     {
-                        if (line.IsDisposed || line.FirstDocumentLine == null || line.FirstDocumentLine.IsDeleted)
-                            continue;
-
-                        var lineNumber = line.FirstDocumentLine.LineNumber;
-                        if (lineNumber > _editor.BlameData.LineInfos.Count)
-                            break;
-
-                        var info = _editor.BlameData.LineInfos[lineNumber - 1];
-                        var y = line.GetTextLineVisualYPosition(line.TextLines[0], VisualYPosition.TextTop) - view.VerticalOffset;
-                        var shaLink = new FormattedText(
-                            info.CommitSHA,
-                            CultureInfo.CurrentCulture,
-                            FlowDirection.LeftToRight,
-                            typeface,
-                            _editor.FontSize,
-                            Brushes.DarkOrange);
-
-                        var rect = new Rect(8, y, shaLink.Width, shaLink.Height);
-                        if (rect.Contains(pos))
-                        {
-                            if (DataContext is ViewModels.Blame blame)
-                                blame.NavigateToCommit(info.File, info.CommitSHA);
-
-                            e.Handled = true;
-                            break;
-                        }
+                        blame.NavigateToCommit(box.LineInfo.File, box.LineInfo.CommitSHA);
+                        e.Handled = true;
+                        break;
                     }
                 }
             }
 
+            private record HitBox(Rect Rect, Models.BlameLineInfo LineInfo);
+
             private readonly BlameTextEditor _editor = null;
+            private List<HitBox> _shaHitBoxes = [];
         }
 
         public class VerticalSeparatorMargin : AbstractMargin
