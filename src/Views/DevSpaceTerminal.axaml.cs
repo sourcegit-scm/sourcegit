@@ -34,6 +34,14 @@ namespace SourceGit.Views
             try
             {
                 var spec = launcher.Create(session.Command, session.WorkingDirectory);
+
+                // Iciclecreek.Avalonia.Terminal 1.0.12 forwards LaunchProcess to its
+                // templated TerminalView. DevSpaces starts a pane immediately after it is
+                // added to the grid, before Avalonia has necessarily applied that template.
+                // Apply it explicitly so both regular shells and Copilot have a terminal
+                // view before the process launcher dereferences it.
+                Terminal.ApplyTemplate();
+
                 Terminal.ProcessExited += OnProcessExited;
                 Terminal.LaunchProcess(spec.WorkingDirectory, spec.Process, spec.Arguments);
                 session.MarkRunning();
