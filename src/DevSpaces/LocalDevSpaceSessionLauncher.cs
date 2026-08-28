@@ -13,8 +13,13 @@ namespace SourceGit.DevSpaces
 
             if (OperatingSystem.IsWindows())
             {
+                var powerShell = Models.ShellOrTerminal.Supported.Find(x => x.Type == "pwsh");
+                var process = Native.OS.FindTerminal(powerShell);
+                if (string.IsNullOrWhiteSpace(process))
+                    process = "powershell.exe";
+
                 return new DevSpaceLaunchSpec(
-                    "pwsh",
+                    process,
                     ["-NoLogo", "-NoProfile", "-Command", command],
                     workingDirectory);
             }
