@@ -1,14 +1,40 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:terminal="using:Iciclecreek.Terminal"
+             xmlns:local="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
              x:Class="SourceGit.Views.DevSpaceTerminal"
              x:DataType="vm:DevSpaceTerminal">
   <Grid>
-    <terminal:TerminalControl x:Name="Terminal"
-                              FontFamily="{DynamicResource Fonts.Monospace}"
-                              BufferSize="3000"/>
+    <local:DevSpaceTerminalControl x:Name="Terminal"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
+                                   BufferSize="3000">
+      <local:DevSpaceTerminalControl.Template>
+        <ControlTemplate>
+          <Grid ColumnDefinitions="*,Auto">
+            <local:DevSpaceTerminalView x:Name="PART_TerminalView"
+                                        FontFamily="{TemplateBinding FontFamily}"
+                                        FontSize="{TemplateBinding FontSize}"
+                                        FontStyle="{TemplateBinding FontStyle}"
+                                        FontWeight="{TemplateBinding FontWeight}"
+                                        TextDecorations="{TemplateBinding TextDecorations}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        Background="{TemplateBinding Background}"
+                                        SelectionBrush="{TemplateBinding SelectionBrush}"
+                                        Process="{TemplateBinding Process}"
+                                        StartingDirectory="{TemplateBinding StartingDirectory}"
+                                        Args="{TemplateBinding Args}"
+                                        BufferSize="{TemplateBinding BufferSize}"
+                                        Options="{TemplateBinding Options}"/>
+            <ScrollBar x:Name="PART_ScrollBar"
+                       Grid.Column="1"
+                       Orientation="Vertical"
+                       AllowAutoHide="False"/>
+          </Grid>
+        </ControlTemplate>
+      </local:DevSpaceTerminalControl.Template>
+    </local:DevSpaceTerminalControl>
+
     <Border Background="{DynamicResource Brush.Window}"
             IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}">
       <TextBlock Margin="16" Text="{Binding ErrorMessage}" TextWrapping="Wrap"/>
