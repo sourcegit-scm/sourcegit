@@ -60,9 +60,14 @@
     <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.12" />
     <PackageReference Include="OpenAI" Version="2.10.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
+    <PackageReference Include="Porta.Pty" Version="1.0.7" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
 
     <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
   </ItemGroup>
 
   <ItemGroup>
