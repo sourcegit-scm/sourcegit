@@ -4,82 +4,77 @@
 
 **Goal:** Add an opt-in DevSpaces repository page that launches multiple embedded GitHub Copilot CLI terminals in the current repository/worktree and displays them in Auto, 1x1, 2x2, 3x3, or 4x4 layouts without restarting running PTY sessions.
 
-**Architecture:** Each `Repository` lazily owns one `ViewModels.DevSpaces` session manager. Session state is independent from Avalonia presentation: `DevSpaces` owns terminal metadata and grid-slot selection, while `Views.DevSpaces` keeps one persistent terminal control per session and reparents those controls when the layout changes. Terminal startup goes through a small local-launch abstraction so a later container-backed launcher can be added without changing repository navigation or the DevSpaces UI model.
+**Architecture:** Each `Repository` lazily owns one `ViewModels.DevSpaces` session manager. Session state is independent from presentation: the view model owns terminal metadata and visible grid-slot selection, while `Views.DevSpaces` keeps one persistent pane wrapper per session and reparents those wrappers when the layout changes. Terminal startup is resolved through `IDevSpaceSessionLauncher`, with a local shell implementation in this milestone and a clean seam for a later container launcher.
 
-**Tech Stack:** .NET 10, Avalonia 11.3.20, CommunityToolkit.Mvvm 8.4.2, `Iciclecreek.Avalonia.Terminal` 1.0.11, Porta.Pty transitively, SourceGit JSON source generation and XAML localization resources.
+**Tech Stack:** .NET 10, Avalonia 11.3.20, CommunityToolkit.Mvvm 8.4.2, `Iciclecreek.Avalonia.Terminal` 1.0.11, Porta.Pty transitively, SourceGit JSON source generation, XAML localization resources.
 
 **Spec:** `docs/superpowers/specs/2026-08-28-devspaces-design.md`
 
 ## Global Constraints
 
-- `EnableDevSpaces` defaults to `false`; when false, existing SourceGit repository behavior and navigation remain unchanged.
+- `EnableDevSpaces` defaults to `false`; when false, existing SourceGit repository behavior remains unchanged.
 - `DevSpacesDefaultCommand` defaults to `"copilot"`.
 - `DevSpacesDefaultLayout` defaults to `Models.DevSpaceLayout.Auto`.
 - DevSpaces is repository view index `3`, directly after Stashes.
-- Every local terminal starts in the owning `Repository.FullPath`.
-- The first DevSpaces visit creates one terminal automatically.
-- Supported layouts are Auto, 1x1, 2x2, 3x3, and 4x4; grid capacity is at most 16 visible sessions.
-- Changing layouts must never restart or recreate a PTY process.
-- Closing one terminal must not stop any other terminal.
-- Closing a repository/worktree tab terminates all DevSpaces sessions owned by that repository.
-- Use `Iciclecreek.Avalonia.Terminal` exactly `1.0.11`; do not upgrade SourceGit to Avalonia 12.
-- Do not add Docker, Podman, WSLC, container lifecycle, image, or mount behavior in this milestone.
-- Do not add a new test framework solely for DevSpaces; use compile, publish, focused pure-logic verification, and manual functional checks described below.
-- Do not modify the existing CI branch-trigger problem as part of this feature.
+- Every terminal starts in the owning `Repository.FullPath`.
+- First DevSpaces selection automatically creates one terminal.
+- Supported layouts: Auto, 1x1, 2x2, 3x3, 4x4; at most 16 terminals are visible simultaneously.
+- Changing layout must not restart, recreate, or kill a PTY.
+- Closing one terminal must not affect any other terminal.
+- Closing the repository/worktree tab terminates all DevSpaces sessions owned by that repository.
+- Pin `Iciclecreek.Avalonia.Terminal` to exactly `1.0.11`; do not upgrade SourceGit to Avalonia 12.
+- Do not implement Docker, Podman, WSLC, images, mounts, or container lifecycle in this milestone.
+- Do not introduce a new test framework solely for this feature.
+- Do not change the fork's existing `develop`/`master` CI trigger mismatch in this feature.
 
 ---
 
 ## File Structure
 
-### New files
+**Create**
+- `src/Models/DevSpaceLayout.cs` — layout enum and dimension/capacity rules.
+- `src/DevSpaces/IDevSpaceSessionLauncher.cs` — launch contract and immutable launch spec.
+- `src/DevSpaces/LocalDevSpaceSessionLauncher.cs` — platform shell command resolution.
+- `src/ViewModels/DevSpaceTerminal.cs` — one terminal session's non-visual state/lifecycle.
+- `src/ViewModels/DevSpaces.cs` — per-repository sessions, active session, layout, visible slots.
+- `src/Views/DevSpaceTerminal.axaml` / `.axaml.cs` — one persistent PTY terminal control.
+- `src/Views/DevSpaces.axaml` / `.axaml.cs` — toolbar, session tabs, layout selector, persistent pane grid.
 
-- `src/Models/DevSpaceLayout.cs` — layout enum and display/capacity helpers only.
-- `src/DevSpaces/IDevSpaceSessionLauncher.cs` — terminal-launch contract and immutable launch specification.
-- `src/DevSpaces/LocalDevSpaceSessionLauncher.cs` — converts a configured command into the platform shell invocation rooted at the repository/worktree path.
-- `src/ViewModels/DevSpaceTerminal.cs` — one terminal session's state and lifecycle signals; no Avalonia terminal control dependency.
-- `src/ViewModels/DevSpaces.cs` — per-repository terminal collection, active session, layout state, visible grid slots, session creation/close/dispose.
-- `src/Views/DevSpaces.axaml` — DevSpaces toolbar and terminal-grid host.
-- `src/Views/DevSpaces.axaml.cs` — persistent terminal-view dictionary, grid reparenting, tab/layout/empty-cell interactions.
-- `src/Views/DevSpaceTerminal.axaml` — one embedded terminal pane/control.
-- `src/Views/DevSpaceTerminal.axaml.cs` — PTY start/exit/kill adapter around `Iciclecreek.Terminal.TerminalControl`.
-
-### Modified files
-
-- `src/SourceGit.csproj` — pin `Iciclecreek.Avalonia.Terminal` 1.0.11.
-- `src/ViewModels/Preferences.cs` — persisted DevSpaces feature, command, and default-layout properties.
+**Modify**
+- `src/SourceGit.csproj` — terminal package.
+- `src/ViewModels/Preferences.cs` — feature toggle, default command, default layout.
 - `src/Views/Preferences.axaml` — first-class DevSpaces Preferences tab.
-- `src/ViewModels/Repository.cs` — fourth repository page, lazy DevSpaces owner, preference-change handling, cleanup.
-- `src/Views/Repository.axaml` — DevSpaces navigation item under Stashes and main-content host.
-- `src/Resources/Locales/en_US.axaml` — canonical DevSpaces strings.
-- Any active locale that does not inherit `en_US.axaml` — add English fallback entries for the same DevSpaces keys so every configured locale resolves them.
+- `src/ViewModels/Repository.cs` — fourth page and lifecycle ownership.
+- `src/Views/Repository.axaml` — sidebar item and main-content host.
+- `src/Resources/Locales/en_US.axaml` and non-inheriting active locales — DevSpaces resources.
 
 ---
 
-### Task 1: Lock the PTY Dependency and Define the Launch Boundary
+### Task 1: Lock the PTY Dependency and Launch Boundary
 
 **Files:**
 - Modify: `src/SourceGit.csproj`
 - Create: `src/DevSpaces/IDevSpaceSessionLauncher.cs`
 - Create: `src/DevSpaces/LocalDevSpaceSessionLauncher.cs`
 
-**Interfaces:**
-- Produces: `DevSpaceLaunchSpec(string Process, string[] Arguments, string WorkingDirectory)`
-- Produces: `IDevSpaceSessionLauncher.Create(string command, string workingDirectory) -> DevSpaceLaunchSpec`
-- Produces: `LocalDevSpaceSessionLauncher : IDevSpaceSessionLauncher`
+**Produces:**
+```csharp
+DevSpaceLaunchSpec(string Process, string[] Arguments, string WorkingDirectory)
+IDevSpaceSessionLauncher.Create(string command, string workingDirectory)
+LocalDevSpaceSessionLauncher
+```
 
-- [ ] **Step 1: Add the exact terminal package version**
+- [ ] **Step 1: Pin the compatible terminal package**
 
-Add this package reference beside the existing Avalonia/UI package references in `src/SourceGit.csproj`:
+Add beside the existing UI package references:
 
 ```xml
 <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.11" />
 ```
 
-Do not change any existing Avalonia package version.
+Do not change any Avalonia version.
 
-- [ ] **Step 2: Restore and verify the dependency does not force Avalonia 12**
-
-Run from repository root after submodules are initialized:
+- [ ] **Step 2: Restore and inspect resolved packages**
 
 ```bash
 git submodule update --init --recursive
@@ -87,13 +82,11 @@ dotnet restore SourceGit.slnx
 dotnet list src/SourceGit.csproj package --include-transitive
 ```
 
-Expected: restore succeeds; `Iciclecreek.Avalonia.Terminal 1.0.11` is present; resolved Avalonia remains on the repository's 11.3.x line rather than 12.x.
+Expected: restore succeeds; terminal package is 1.0.11; Avalonia stays on 11.3.x. If the package forces Avalonia 12 or a package conflict, stop rather than upgrading Avalonia.
 
-If restore resolves Avalonia 12 or produces a package downgrade/conflict, stop this task and do not proceed with the package.
+- [ ] **Step 3: Create the launch contract**
 
-- [ ] **Step 3: Create the launcher contract**
-
-Create `src/DevSpaces/IDevSpaceSessionLauncher.cs`:
+`src/DevSpaces/IDevSpaceSessionLauncher.cs`:
 
 ```csharp
 namespace SourceGit.DevSpaces
@@ -110,9 +103,9 @@ namespace SourceGit.DevSpaces
 }
 ```
 
-- [ ] **Step 4: Implement the local shell launcher**
+- [ ] **Step 4: Implement the local launcher**
 
-Create `src/DevSpaces/LocalDevSpaceSessionLauncher.cs`:
+`src/DevSpaces/LocalDevSpaceSessionLauncher.cs`:
 
 ```csharp
 using System;
@@ -125,7 +118,6 @@ namespace SourceGit.DevSpaces
         {
             if (string.IsNullOrWhiteSpace(command))
                 throw new ArgumentException("DevSpaces command must not be empty.", nameof(command));
-
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 throw new ArgumentException("DevSpaces working directory must not be empty.", nameof(workingDirectory));
 
@@ -141,53 +133,43 @@ namespace SourceGit.DevSpaces
             if (string.IsNullOrWhiteSpace(shell))
                 shell = "/bin/sh";
 
-            return new DevSpaceLaunchSpec(
-                shell,
-                ["-lc", command],
-                workingDirectory);
+            return new DevSpaceLaunchSpec(shell, ["-lc", command], workingDirectory);
         }
     }
 }
 ```
 
-Use PowerShell on Windows so npm/WinGet command shims such as `copilot` resolve in the user's normal shell environment instead of attempting to execute a `.cmd` shim directly through `Process`.
+Windows uses PowerShell so npm/WinGet command shims such as `copilot` resolve through a normal shell.
 
-- [ ] **Step 5: Compile the new boundary**
-
-Run:
+- [ ] **Step 5: Compile**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
 ```
 
-Expected: build succeeds with the package pinned and the new launcher types compiled.
+Expected: PASS.
 
 - [ ] **Step 6: Commit**
 
 ```bash
-git add src/SourceGit.csproj src/DevSpaces/IDevSpaceSessionLauncher.cs src/DevSpaces/LocalDevSpaceSessionLauncher.cs
+git add src/SourceGit.csproj src/DevSpaces
 git commit -m "feat: add DevSpaces terminal launch boundary"
 ```
 
 ---
 
-### Task 2: Add DevSpace Layout Model and Persisted Preferences
+### Task 2: Add Layout Model and Persisted Preferences
 
 **Files:**
 - Create: `src/Models/DevSpaceLayout.cs`
 - Modify: `src/ViewModels/Preferences.cs`
 - Modify: `src/Views/Preferences.axaml`
 
-**Interfaces:**
-- Produces: `Models.DevSpaceLayout`
-- Produces: `Preferences.EnableDevSpaces : bool`
-- Produces: `Preferences.DevSpacesDefaultCommand : string`
-- Produces: `Preferences.DevSpacesDefaultLayout : Models.DevSpaceLayout`
-- Produces: `Preferences.DevSpacesDefaultLayoutIndex : int` for simple `ComboBox.SelectedIndex` binding
+**Produces:** `DevSpaceLayout`, `EnableDevSpaces`, `DevSpacesDefaultCommand`, `DevSpacesDefaultLayout`, `DevSpacesDefaultLayoutIndex`.
 
-- [ ] **Step 1: Create the layout enum and helpers**
+- [ ] **Step 1: Create layout rules**
 
-Create `src/Models/DevSpaceLayout.cs`:
+`src/Models/DevSpaceLayout.cs`:
 
 ```csharp
 namespace SourceGit.Models
@@ -207,7 +189,6 @@ namespace SourceGit.Models
         {
             if (layout != DevSpaceLayout.Auto)
                 return (int)layout;
-
             if (sessionCount <= 1)
                 return 1;
             if (sessionCount <= 4)
@@ -219,18 +200,16 @@ namespace SourceGit.Models
 
         public static int GetCapacity(this DevSpaceLayout layout, int sessionCount)
         {
-            var dimension = layout.GetDimension(sessionCount);
-            return dimension * dimension;
+            var d = layout.GetDimension(sessionCount);
+            return d * d;
         }
     }
 }
 ```
 
-The helper intentionally clamps Auto to 4x4 for any count greater than 9.
-
 - [ ] **Step 2: Add persisted Preferences properties**
 
-Add properties in `src/ViewModels/Preferences.cs`:
+Add to `ViewModels.Preferences`:
 
 ```csharp
 public bool EnableDevSpaces
@@ -267,7 +246,7 @@ public int DevSpacesDefaultLayoutIndex
 }
 ```
 
-Add backing fields with exact defaults near the other preference fields:
+Backing fields:
 
 ```csharp
 private bool _enableDevSpaces = false;
@@ -275,41 +254,28 @@ private string _devSpacesDefaultCommand = "copilot";
 private Models.DevSpaceLayout _devSpacesDefaultLayout = Models.DevSpaceLayout.Auto;
 ```
 
-`DevSpacesDefaultLayoutIndex` is ignored in JSON so only the typed enum is persisted.
+- [ ] **Step 3: Add Preferences → DevSpaces**
 
-- [ ] **Step 3: Add the top-level Preferences → DevSpaces tab**
-
-Add one `TabItem` to the existing Preferences `TabControl` in `src/Views/Preferences.axaml`:
+Add a top-level `TabItem` to the existing Preferences `TabControl`:
 
 ```xml
 <TabItem>
   <TabItem.Header>
     <TextBlock Classes="tab_header" Text="{DynamicResource Text.DevSpaces}"/>
   </TabItem.Header>
-
-  <Grid Margin="8"
-        RowDefinitions="32,32,32"
-        ColumnDefinitions="Auto,*">
+  <Grid Margin="8" RowDefinitions="32,32,32" ColumnDefinitions="Auto,*">
     <CheckBox Grid.Row="0" Grid.Column="1"
-              Height="32"
               Content="{DynamicResource Text.DevSpaces.Enable}"
               IsChecked="{Binding EnableDevSpaces, Mode=TwoWay}"/>
-
-    <TextBlock Grid.Row="1" Grid.Column="0"
-               Margin="0,0,16,0"
+    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,16,0"
                HorizontalAlignment="Right"
                Text="{DynamicResource Text.DevSpaces.DefaultCommand}"/>
-    <TextBox Grid.Row="1" Grid.Column="1"
-             Height="28"
-             CornerRadius="3"
+    <TextBox Grid.Row="1" Grid.Column="1" Height="28"
              Text="{Binding DevSpacesDefaultCommand, Mode=TwoWay}"/>
-
-    <TextBlock Grid.Row="2" Grid.Column="0"
-               Margin="0,0,16,0"
+    <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,16,0"
                HorizontalAlignment="Right"
                Text="{DynamicResource Text.DevSpaces.DefaultLayout}"/>
-    <ComboBox Grid.Row="2" Grid.Column="1"
-              Height="28"
+    <ComboBox Grid.Row="2" Grid.Column="1" Height="28"
               SelectedIndex="{Binding DevSpacesDefaultLayoutIndex, Mode=TwoWay}">
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.Auto}"/>
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.1x1}"/>
@@ -321,25 +287,17 @@ Add one `TabItem` to the existing Preferences `TabControl` in `src/Views/Prefere
 </TabItem>
 ```
 
-Do not put container/image/runtime fields on this page in this milestone.
+No container configuration is added now.
 
-- [ ] **Step 4: Compile preference bindings and JSON source generation**
-
-Run:
+- [ ] **Step 4: Compile and verify persistence**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
 ```
 
-Expected: no compiled-binding or JSON source-generation errors for the enum/index properties.
+Run SourceGit, verify defaults OFF / `copilot` / Auto, change the three settings, close Preferences, restart, and confirm they reload. Expected: only `DevSpacesDefaultLayout` is serialized, not the index helper.
 
-- [ ] **Step 5: Manually verify persistence**
-
-Run the app, open Preferences → DevSpaces, confirm defaults are OFF / `copilot` / Auto, change all three values, close Preferences, restart SourceGit, and reopen Preferences.
-
-Expected: saved values are restored from `preference.json`; `DevSpacesDefaultLayoutIndex` itself is not serialized.
-
-- [ ] **Step 6: Commit**
+- [ ] **Step 5: Commit**
 
 ```bash
 git add src/Models/DevSpaceLayout.cs src/ViewModels/Preferences.cs src/Views/Preferences.axaml
@@ -348,21 +306,17 @@ git commit -m "feat: add DevSpaces preferences"
 
 ---
 
-### Task 3: Implement Terminal Session and Grid-State View Models
+### Task 3: Implement Session and Grid-State View Models
 
 **Files:**
 - Create: `src/ViewModels/DevSpaceTerminal.cs`
 - Create: `src/ViewModels/DevSpaces.cs`
 
-**Interfaces:**
-- Produces: `DevSpaceTerminalState { Created, Running, Exited, Failed, Stopping }`
-- Produces: `DevSpaceTerminal` with `Id`, `Title`, `Command`, `WorkingDirectory`, `State`, `ExitCode`, `ErrorMessage`, `StopRequested`, and state-transition methods
-- Produces: `DevSpaceGridSlot(int Index, DevSpaceTerminal Terminal)` where `Terminal == null` represents an empty cell
-- Produces: `DevSpaces.Sessions`, `VisibleSlots`, `ActiveTerminal`, `Layout`, `LayoutIndex`, `GridDimension`, `EnsureFirstSession()`, `CreateTerminal()`, `CreateTerminalAt(int)`, `ActivateTerminal(...)`, `CloseTerminal(...)`, `StopAll()`, `Dispose()`
+**Produces:** terminal state/lifecycle, session collection, active session, deterministic titles, grid slots, layout selection, launcher ownership.
 
-- [ ] **Step 1: Create terminal session state**
+- [ ] **Step 1: Create terminal state**
 
-Create `src/ViewModels/DevSpaceTerminal.cs` with this public contract:
+`src/ViewModels/DevSpaceTerminal.cs`:
 
 ```csharp
 using System;
@@ -385,25 +339,9 @@ namespace SourceGit.ViewModels
         public string Title { get; }
         public string Command { get; }
         public string WorkingDirectory { get; }
-
-        public DevSpaceTerminalState State
-        {
-            get => _state;
-            private set => SetProperty(ref _state, value);
-        }
-
-        public int ExitCode
-        {
-            get => _exitCode;
-            private set => SetProperty(ref _exitCode, value);
-        }
-
-        public string ErrorMessage
-        {
-            get => _errorMessage;
-            private set => SetProperty(ref _errorMessage, value);
-        }
-
+        public DevSpaceTerminalState State { get => _state; private set => SetProperty(ref _state, value); }
+        public int ExitCode { get => _exitCode; private set => SetProperty(ref _exitCode, value); }
+        public string ErrorMessage { get => _errorMessage; private set => SetProperty(ref _errorMessage, value); }
         public event Action<DevSpaceTerminal> StopRequested;
 
         public DevSpaceTerminal(string title, string command, string workingDirectory)
@@ -414,24 +352,13 @@ namespace SourceGit.ViewModels
         }
 
         public void MarkRunning() => State = DevSpaceTerminalState.Running;
-
-        public void MarkExited(int exitCode)
-        {
-            ExitCode = exitCode;
-            State = DevSpaceTerminalState.Exited;
-        }
-
-        public void MarkFailed(string message)
-        {
-            ErrorMessage = message;
-            State = DevSpaceTerminalState.Failed;
-        }
+        public void MarkExited(int exitCode) { ExitCode = exitCode; State = DevSpaceTerminalState.Exited; }
+        public void MarkFailed(string message) { ErrorMessage = message; State = DevSpaceTerminalState.Failed; }
 
         public void Dispose()
         {
             if (_disposed)
                 return;
-
             _disposed = true;
             State = DevSpaceTerminalState.Stopping;
             StopRequested?.Invoke(this);
@@ -445,30 +372,47 @@ namespace SourceGit.ViewModels
 }
 ```
 
-Do not put `TerminalControl`, `Process`, or Avalonia visual objects in this view model.
+No `TerminalControl` or visual object belongs here.
 
-- [ ] **Step 2: Create the DevSpaces session manager**
+- [ ] **Step 2: Create `DevSpaces` with an injectable launcher**
 
-Create `src/ViewModels/DevSpaces.cs`. Use `AvaloniaList<T>` to match existing SourceGit collection patterns.
-
-The constructor must be:
+The constructor and launcher boundary are:
 
 ```csharp
-public DevSpaces(string workingDirectory)
+public DevSpaces(
+    string workingDirectory,
+    SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null)
 {
     _workingDirectory = workingDirectory;
+    Launcher = launcher ?? new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
     _layout = Preferences.Instance.DevSpacesDefaultLayout;
-    _launcher = new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
     RebuildSlots();
+}
+
+public SourceGit.DevSpaces.IDevSpaceSessionLauncher Launcher { get; }
+public AvaloniaList<DevSpaceTerminal> Sessions { get; } = [];
+public AvaloniaList<DevSpaceGridSlot> VisibleSlots { get; } = [];
+```
+
+Add:
+
+```csharp
+public sealed class DevSpaceGridSlot
+{
+    public int Index { get; }
+    public DevSpaceTerminal Terminal { get; set; }
+
+    public DevSpaceGridSlot(int index, DevSpaceTerminal terminal)
+    {
+        Index = index;
+        Terminal = terminal;
+    }
 }
 ```
 
-Expose:
+- [ ] **Step 3: Add active/layout properties**
 
 ```csharp
-public AvaloniaList<DevSpaceTerminal> Sessions { get; } = [];
-public AvaloniaList<DevSpaceGridSlot> VisibleSlots { get; } = [];
-
 public DevSpaceTerminal ActiveTerminal
 {
     get => _activeTerminal;
@@ -498,33 +442,12 @@ public int LayoutIndex
     }
 }
 
-public int GridDimension
-{
-    get => _layout.GetDimension(Sessions.Count);
-}
+public int GridDimension => _layout.GetDimension(Sessions.Count);
 ```
 
-Declare the slot type in the same file:
+- [ ] **Step 4: Implement deterministic creation**
 
-```csharp
-public sealed class DevSpaceGridSlot
-{
-    public int Index { get; }
-    public DevSpaceTerminal Terminal { get; set; }
-
-    public DevSpaceGridSlot(int index, DevSpaceTerminal terminal)
-    {
-        Index = index;
-        Terminal = terminal;
-    }
-}
-```
-
-- [ ] **Step 3: Implement deterministic session naming and creation**
-
-Use monotonically increasing `_nextSessionNumber`, never `Sessions.Count + 1`, so closing `Copilot 2` then adding another session produces `Copilot 3` or the next unused creation number rather than duplicate titles.
-
-Implement:
+Use `_nextSessionNumber = 1`; never derive titles from `Sessions.Count`.
 
 ```csharp
 public void EnsureFirstSession()
@@ -533,10 +456,7 @@ public void EnsureFirstSession()
         CreateTerminal();
 }
 
-public DevSpaceTerminal CreateTerminal()
-{
-    return CreateTerminalAt(-1);
-}
+public DevSpaceTerminal CreateTerminal() => CreateTerminalAt(-1);
 
 public DevSpaceTerminal CreateTerminalAt(int preferredSlot)
 {
@@ -545,90 +465,44 @@ public DevSpaceTerminal CreateTerminalAt(int preferredSlot)
     var prefix = command.Trim().Equals("copilot", StringComparison.OrdinalIgnoreCase)
         ? "Copilot"
         : "Terminal";
-
     var terminal = new DevSpaceTerminal($"{prefix} {number}", command, _workingDirectory);
     Sessions.Add(terminal);
     ActiveTerminal = terminal;
-
-    if (preferredSlot >= 0)
-        _preferredSlot = preferredSlot;
-
+    _preferredSlot = preferredSlot;
     RebuildSlots();
     return terminal;
 }
 ```
 
-Initialize `_nextSessionNumber = 1`.
+- [ ] **Step 5: Implement approved visibility rules**
 
-- [ ] **Step 4: Implement active-session selection and grid slot rebuilding**
+`RebuildSlots()` must always create `GridDimension * GridDimension` slot objects. Fill from the first sessions in creation order. If `ActiveTerminal` is outside capacity, replace the final visible entry with it. For 1x1, always show `ActiveTerminal`. If `_preferredSlot` is a valid empty slot, place the newly-created active terminal there. Never dispose a session from this method.
 
-`RebuildSlots()` must satisfy all approved behaviors:
-
-1. capacity is `GridDimension * GridDimension`;
-2. fixed layouts always expose exactly capacity slots, including null terminals for empty cells;
-3. Auto uses the calculated square capacity, also exposing empty cells within that square;
-4. first `capacity` sessions are visible by default;
-5. when `ActiveTerminal` is outside the first `capacity`, replace the final visible terminal with `ActiveTerminal`;
-6. 1x1 always shows `ActiveTerminal` when one exists;
-7. `preferredSlot` places a newly-created terminal in the clicked empty cell if valid;
-8. sessions are never disposed during `RebuildSlots()`.
-
-Use this shape:
+Use `List<DevSpaceTerminal>` plus `Contains`/`IndexOf`; after rebuilding call:
 
 ```csharp
-private void RebuildSlots()
-{
-    var dimension = _layout.GetDimension(Sessions.Count);
-    var capacity = dimension * dimension;
-    var visible = new List<DevSpaceTerminal>();
-
-    for (var i = 0; i < Sessions.Count && visible.Count < capacity; i++)
-        visible.Add(Sessions[i]);
-
-    if (ActiveTerminal != null && !visible.Contains(ActiveTerminal))
-    {
-        if (visible.Count == capacity && visible.Count > 0)
-            visible[visible.Count - 1] = ActiveTerminal;
-        else
-            visible.Add(ActiveTerminal);
-    }
-
-    if (capacity == 1 && ActiveTerminal != null)
-    {
-        visible.Clear();
-        visible.Add(ActiveTerminal);
-    }
-
-    VisibleSlots.Clear();
-    for (var i = 0; i < capacity; i++)
-        VisibleSlots.Add(new DevSpaceGridSlot(i, i < visible.Count ? visible[i] : null));
-
-    if (_preferredSlot >= 0 && _preferredSlot < VisibleSlots.Count && ActiveTerminal != null)
-    {
-        var current = VisibleSlots.FirstOrDefault(x => x.Terminal == ActiveTerminal);
-        if (current != null)
-            current.Terminal = VisibleSlots[_preferredSlot].Terminal;
-        VisibleSlots[_preferredSlot].Terminal = ActiveTerminal;
-        _preferredSlot = -1;
-    }
-
-    OnPropertyChanged(nameof(GridDimension));
-    OnPropertyChanged(nameof(VisibleSlots));
-}
+OnPropertyChanged(nameof(GridDimension));
+OnPropertyChanged(nameof(VisibleSlots));
 ```
 
-Add required `using System.Collections.Generic;` and `using System.Linq;`.
+Exact Auto expectations:
 
-- [ ] **Step 5: Implement close and dispose semantics**
+```text
+0-1 session  -> dimension 1
+2-4 sessions -> dimension 2
+5-9 sessions -> dimension 3
+10+ sessions -> dimension 4
+```
 
-Use:
+For 17+ sessions, capacity remains 16; activating a hidden session swaps it into the final visible slot without terminating the displaced session.
+
+- [ ] **Step 6: Implement activation/close/all-stop**
 
 ```csharp
 public void ActivateTerminal(DevSpaceTerminal terminal)
 {
     if (terminal == null || !Sessions.Contains(terminal))
         return;
-
     ActiveTerminal = terminal;
     RebuildSlots();
 }
@@ -637,12 +511,9 @@ public void CloseTerminal(DevSpaceTerminal terminal)
 {
     if (terminal == null || !Sessions.Remove(terminal))
         return;
-
     terminal.Dispose();
-
     if (ActiveTerminal == terminal)
         ActiveTerminal = Sessions.Count > 0 ? Sessions[^1] : null;
-
     RebuildSlots();
 }
 
@@ -650,86 +521,67 @@ public void StopAll()
 {
     foreach (var terminal in Sessions.ToArray())
         terminal.Dispose();
-
     Sessions.Clear();
     VisibleSlots.Clear();
     ActiveTerminal = null;
     OnPropertyChanged(nameof(GridDimension));
+    OnPropertyChanged(nameof(VisibleSlots));
 }
 
 public void Dispose() => StopAll();
 ```
 
-- [ ] **Step 6: Compile the pure state layer**
-
-Run:
+- [ ] **Step 7: Build and commit**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
-```
-
-Expected: build succeeds; no Avalonia terminal control is referenced by the two new view models.
-
-- [ ] **Step 7: Commit**
-
-```bash
 git add src/ViewModels/DevSpaceTerminal.cs src/ViewModels/DevSpaces.cs
 git commit -m "feat: add DevSpaces session and layout state"
 ```
 
+Expected build: PASS.
+
 ---
 
-### Task 4: Build the Persistent Embedded Terminal Adapter
+### Task 4: Build the Persistent PTY Terminal Adapter
 
 **Files:**
 - Create: `src/Views/DevSpaceTerminal.axaml`
 - Create: `src/Views/DevSpaceTerminal.axaml.cs`
 
-**Interfaces:**
-- Consumes: `ViewModels.DevSpaceTerminal`
-- Consumes: `DevSpaceLaunchSpec` from `IDevSpaceSessionLauncher`
-- Produces: `Views.DevSpaceTerminal.Start(IDevSpaceSessionLauncher launcher)`
-- Produces: `Views.DevSpaceTerminal.Stop()`
-- Requirement: one view/control instance per session for the lifetime of that session
+**Consumes:** `DevSpaceTerminal`, `IDevSpaceSessionLauncher`, `TerminalControl` 1.0.11.
 
-- [ ] **Step 1: Create the terminal pane XAML**
-
-Create `src/Views/DevSpaceTerminal.axaml`:
+- [ ] **Step 1: Create terminal XAML**
 
 ```xml
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:terminal="using:Iciclecreek.Terminal"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
              x:Class="SourceGit.Views.DevSpaceTerminal"
              x:DataType="vm:DevSpaceTerminal">
   <Grid>
     <terminal:TerminalControl x:Name="Terminal"
-                              FontFamily="{DynamicResource Fonts.Monospace}"/>
-
+                              FontFamily="{DynamicResource Fonts.Monospace}"
+                              BufferSize="3000"/>
     <Border Background="{DynamicResource Brush.Window}"
-            IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-      <TextBlock Margin="16"
-                 Text="{Binding ErrorMessage}"
-                 TextWrapping="Wrap"
-                 Foreground="{DynamicResource Brush.FG2}"/>
+            IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrEmpty}}">
+      <TextBlock Margin="16" Text="{Binding ErrorMessage}" TextWrapping="Wrap"/>
     </Border>
   </Grid>
 </UserControl>
 ```
 
-If the package's actual XAML namespace resolves to a different CLR namespace, use the namespace exported by 1.0.11 while keeping the control type `TerminalControl`; do not change package version to make the sample compile.
+- [ ] **Step 2: Implement start/stop with the verified package event API**
 
-- [ ] **Step 2: Implement one-time launch and explicit stop**
-
-Create `src/Views/DevSpaceTerminal.axaml.cs` with a `_started` guard. The view must never kill the PTY merely because it is detached/reparented in the visual tree.
-
-Use this structure:
+`src/Views/DevSpaceTerminal.axaml.cs`:
 
 ```csharp
 using System;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using Iciclecreek.Terminal;
 
 namespace SourceGit.Views
 {
@@ -747,7 +599,6 @@ namespace SourceGit.Views
 
             _started = true;
             session.StopRequested += OnStopRequested;
-
             try
             {
                 var spec = launcher.Create(session.Command, session.WorkingDirectory);
@@ -765,35 +616,26 @@ namespace SourceGit.Views
         {
             if (_stopped)
                 return;
-
             _stopped = true;
+
             if (DataContext is ViewModels.DevSpaceTerminal session)
                 session.StopRequested -= OnStopRequested;
-
             Terminal.ProcessExited -= OnProcessExited;
-            try
-            {
-                Terminal.Kill();
-            }
-            catch
-            {
-                // Process may already have exited.
-            }
+
+            try { Terminal.Kill(); }
+            catch { /* The PTY may already have exited. */ }
         }
 
         public void Dispose() => Stop();
 
-        private void OnStopRequested(ViewModels.DevSpaceTerminal _)
-        {
-            Stop();
-        }
+        private void OnStopRequested(ViewModels.DevSpaceTerminal _) => Stop();
 
-        private void OnProcessExited(object sender, EventArgs e)
+        private void OnProcessExited(object sender, ProcessExitedEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {
                 if (DataContext is ViewModels.DevSpaceTerminal session)
-                    session.MarkExited(Terminal.Process?.ExitCode ?? 0);
+                    session.MarkExited(e.ExitCode);
             });
         }
 
@@ -803,134 +645,67 @@ namespace SourceGit.Views
 }
 ```
 
-Compile against the exact 1.0.11 API. If `ProcessExited` supplies a different event-args type, adapt only the handler signature; keep the lifecycle semantics above unchanged.
+`ProcessExitedEventArgs.ExitCode` is the process exit source; `TerminalControl.Process` is an executable-name string and must not be treated as a `System.Diagnostics.Process`.
 
-- [ ] **Step 3: Verify detach/reparent does not call `Stop()`**
-
-Search the new code for visual-tree lifecycle hooks:
+- [ ] **Step 3: Guard against accidental kill-on-reparent**
 
 ```bash
 git grep -n "DetachedFromVisualTree\|OnUnloaded\|Unloaded" -- src/Views/DevSpaceTerminal*
 ```
 
-Expected: no handler kills the terminal because of visual detach/unload. PTY termination occurs only through `StopRequested`, explicit `Stop()`, or whole-page disposal.
+Expected: no detach/unload handler calls `Kill()` or `Stop()`. Layout reparenting is presentation-only.
 
-- [ ] **Step 4: Build**
-
-Run:
+- [ ] **Step 4: Build and commit**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
-```
-
-Expected: `TerminalControl`, `LaunchProcess`, `Kill`, and exit-event usage compile against 1.0.11.
-
-- [ ] **Step 5: Commit**
-
-```bash
 git add src/Views/DevSpaceTerminal.axaml src/Views/DevSpaceTerminal.axaml.cs
 git commit -m "feat: embed DevSpaces PTY terminal"
 ```
 
+Expected build: PASS against 1.0.11.
+
 ---
 
-### Task 5: Build the DevSpaces Tabs and Multi-Terminal Grid Page
+### Task 5: Build Tabs and the Persistent Multi-Terminal Grid
 
 **Files:**
 - Create: `src/Views/DevSpaces.axaml`
 - Create: `src/Views/DevSpaces.axaml.cs`
 
-**Interfaces:**
-- Consumes: `ViewModels.DevSpaces.Sessions`, `VisibleSlots`, `LayoutIndex`, `GridDimension`
-- Consumes: `Views.DevSpaceTerminal.Start(...)` and `Dispose()`
-- Produces: one persistent `Views.DevSpaceTerminal` instance per session id
-- Produces: empty-cell buttons that call `CreateTerminalAt(slot.Index)`
+**Key invariant:** cache and reparent the whole pane wrapper, not just `TerminalControl`; this prevents a cached terminal visual from remaining parented to an abandoned wrapper.
 
-- [ ] **Step 1: Create the toolbar and grid host**
+- [ ] **Step 1: Create toolbar and grid host**
 
-Create `src/Views/DevSpaces.axaml` with two rows. Keep the terminal grid itself in code-behind so controls can be reparented rather than recreated by a data template:
+Use a two-row page. Row 0 contains horizontal session tabs, layout `ComboBox`, and `Icons.Plus`; Row 1 contains:
 
 ```xml
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:SourceGit.ViewModels"
-             x:Class="SourceGit.Views.DevSpaces"
-             x:DataType="vm:DevSpaces">
-  <Grid RowDefinitions="36,*">
-    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto"
-          BorderThickness="0,0,0,1"
-          BorderBrush="{DynamicResource Brush.Border1}">
-      <ListBox Grid.Column="0"
-               Margin="4,0"
-               Background="Transparent"
-               ItemsSource="{Binding Sessions}"
-               SelectedItem="{Binding ActiveTerminal, Mode=OneWay}">
-        <ListBox.ItemsPanel>
-          <ItemsPanelTemplate>
-            <StackPanel Orientation="Horizontal"/>
-          </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-        <ListBox.ItemTemplate>
-          <DataTemplate x:DataType="vm:DevSpaceTerminal">
-            <Button Classes="icon_button"
-                    Padding="8,0"
-                    Click="OnSessionTabClicked">
-              <TextBlock Text="{Binding Title}"/>
-            </Button>
-          </DataTemplate>
-        </ListBox.ItemTemplate>
-      </ListBox>
-
-      <ComboBox Grid.Column="1"
-                Width="88"
-                Margin="4"
-                SelectedIndex="{Binding LayoutIndex, Mode=TwoWay}">
-        <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.Auto}"/>
-        <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.1x1}"/>
-        <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.2x2}"/>
-        <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.3x3}"/>
-        <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.4x4}"/>
-      </ComboBox>
-
-      <Button Grid.Column="2"
-              Classes="icon_button"
-              Width="32" Height="32"
-              Margin="0,2,4,2"
-              Click="OnCreateTerminal"
-              ToolTip.Tip="{DynamicResource Text.DevSpaces.NewTerminal}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
-      </Button>
-    </Grid>
-
-    <UniformGrid Grid.Row="1"
-                 x:Name="TerminalGrid"
-                 Margin="4"/>
-  </Grid>
-</UserControl>
+<UniformGrid x:Name="TerminalGrid" Margin="4"/>
 ```
 
-If SourceGit's icon resource for plus is named differently, use the existing plus/add geometry already used elsewhere; do not add a duplicate icon solely for DevSpaces.
+The layout selector binds `LayoutIndex` and uses `Text.DevSpaces.Layout.Auto`, `.1x1`, `.2x2`, `.3x3`, `.4x4`. The plus button calls `OnCreateTerminal` and uses `Text.DevSpaces.NewTerminal` as its tooltip.
 
-- [ ] **Step 2: Keep one terminal view per session**
+- [ ] **Step 2: Cache persistent pane handles**
 
-In `src/Views/DevSpaces.axaml.cs`, maintain:
+In code-behind:
 
 ```csharp
-private readonly Dictionary<Guid, DevSpaceTerminal> _terminalViews = [];
-private readonly SourceGit.DevSpaces.IDevSpaceSessionLauncher _launcher =
-    new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
+private sealed record TerminalPaneHandle(Border Root, DevSpaceTerminal TerminalView);
+private readonly Dictionary<Guid, TerminalPaneHandle> _panes = [];
 ```
 
-`GetOrCreateTerminalView(session)` must:
+`GetOrCreatePane(session)` must:
 
-1. return the cached view if it exists;
-2. otherwise create `new DevSpaceTerminal { DataContext = session }`;
-3. cache it by `session.Id`;
-4. call `view.Start(_launcher)` exactly once.
+1. return `_panes[session.Id].Root` when already present;
+2. create `var terminalView = new DevSpaceTerminal { DataContext = session };`;
+3. create one `Border`/`Grid` wrapper containing a compact header, title, close button, and `terminalView`;
+4. save both in `_panes`;
+5. call `terminalView.Start(vm.Launcher)` exactly once;
+6. return the cached wrapper.
 
-- [ ] **Step 3: Rebuild only presentation when slots/layout change**
+Never construct a second `DevSpaceTerminal` for the same `session.Id`.
 
-Implement `RebuildGrid()`:
+- [ ] **Step 3: Rebuild only grid placement**
 
 ```csharp
 private void RebuildGrid()
@@ -944,66 +719,53 @@ private void RebuildGrid()
 
     foreach (var slot in vm.VisibleSlots)
     {
-        if (slot.Terminal != null)
-        {
-            TerminalGrid.Children.Add(CreatePane(slot.Terminal));
-        }
-        else
-        {
-            TerminalGrid.Children.Add(CreateEmptySlot(slot.Index));
-        }
+        TerminalGrid.Children.Add(
+            slot.Terminal != null
+                ? GetOrCreatePane(slot.Terminal)
+                : CreateEmptySlot(slot.Index));
     }
 }
 ```
 
-`CreatePane` must place a compact header above the cached terminal view. The header must contain the terminal title and a close button. The terminal view itself is obtained only from `_terminalViews`, not constructed each rebuild.
+Because the cached **wrapper** is removed by `Children.Clear()`, it can be added to a new cell without its terminal child changing parent.
 
-`CreateEmptySlot(index)` must return a button with `Text.DevSpaces.NewTerminal` and an event handler that calls `vm.CreateTerminalAt(index)`.
+- [ ] **Step 4: Implement interactions**
 
-- [ ] **Step 4: Wire active-session and close interactions**
-
-`OnSessionTabClicked` activates the button's `DevSpaceTerminal` DataContext and rebuilds the grid.
-
-Pane pointer/click activation calls `vm.ActivateTerminal(session)`.
-
-Close calls:
+- Session-tab click: `vm.ActivateTerminal(session)` then `RebuildGrid()`.
+- Occupied pane click/focus: activate that session.
+- Empty cell: `vm.CreateTerminalAt(slotIndex)`; property change rebuilds grid.
+- Close button:
 
 ```csharp
 vm.CloseTerminal(session);
-if (_terminalViews.Remove(session.Id, out var view))
-    view.Dispose();
+if (_panes.Remove(session.Id, out var pane))
+    pane.TerminalView.Dispose();
 RebuildGrid();
 ```
 
-The close action must dispose only the selected session's cached control.
+Closing a pane never iterates over or disposes other entries in `_panes`.
 
-- [ ] **Step 5: Observe view-model changes without recreating sessions**
+- [ ] **Step 5: Subscribe to view-model changes**
 
-On `DataContextChanged`, detach from the old `DevSpaces.PropertyChanged`, attach to the new one, and call `RebuildGrid()`.
+On `DataContextChanged`, unsubscribe the old `INotifyPropertyChanged`, dispose old cached panes only when changing to a different DevSpaces owner/null, subscribe the new owner, and rebuild. Rebuild on `VisibleSlots`, `GridDimension`, `ActiveTerminal`, or `Layout` changes. Dispatch UI changes through `Dispatcher.UIThread` when needed.
 
-On view-model property changes for `VisibleSlots`, `GridDimension`, `ActiveTerminal`, or `Layout`, call `RebuildGrid()` on the UI thread.
+Ordinary right-page hiding does **not** dispose panes.
 
-When the DevSpaces view itself is disposed because the repository is closing, dispose every cached terminal view and clear the dictionary. Do not dispose cached views on ordinary layout changes or when the repository right page becomes hidden.
-
-- [ ] **Step 6: Build**
-
-Run:
+- [ ] **Step 6: Build and smoke-test reparenting**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
 ```
 
-Expected: compiled bindings and `UniformGrid` population code compile.
+Use a long-running interactive shell command as the temporary default command, create four sessions, enter recognizable text in each, then switch:
 
-- [ ] **Step 7: Manual grid smoke check using a shell command**
+```text
+Auto -> 1x1 -> 2x2 -> 3x3 -> 4x4 -> Auto
+```
 
-Before depending on Copilot authentication, temporarily set Preferences → DevSpaces → Default command to a long-running interactive shell command appropriate to the OS, open four sessions, and switch Auto → 1x1 → 2x2 → 3x3 → 4x4.
+Expected: no process restarts; history remains; empty fixed-grid cells show `+ New Terminal`.
 
-Expected: terminal output/history remains intact and process identities remain alive while the controls move between cells; fixed layouts show `+ New Terminal` in empty cells.
-
-Restore the preference to `copilot` after the check.
-
-- [ ] **Step 8: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add src/Views/DevSpaces.axaml src/Views/DevSpaces.axaml.cs
@@ -1018,70 +780,38 @@ git commit -m "feat: add DevSpaces terminal grid"
 - Modify: `src/ViewModels/Repository.cs`
 - Modify: `src/Views/Repository.axaml`
 
-**Interfaces:**
-- Produces: `Repository.DevSpaces : ViewModels.DevSpaces`
-- Produces: `Repository.IsDevSpacesEnabled : bool`
-- Produces: `Repository.IsDevSpacesVisible : bool`
-- Consumes: `Preferences.Instance.PropertyChanged`
-- Consumes: `DevSpaces.EnsureFirstSession()` and `Dispose()`
+- [ ] **Step 1: Add lazy repository ownership**
 
-- [ ] **Step 1: Add repository DevSpaces state**
-
-Add fields:
-
-```csharp
-private DevSpaces _devSpaces;
-```
-
-Add properties:
+Add:
 
 ```csharp
 public DevSpaces DevSpaces => _devSpaces;
-
 public bool IsDevSpacesEnabled => Preferences.Instance.EnableDevSpaces;
-
-public bool IsDevSpacesVisible =>
-    Preferences.Instance.EnableDevSpaces && SelectedViewIndex == 3;
+public bool IsDevSpacesVisible => Preferences.Instance.EnableDevSpaces && SelectedViewIndex == 3;
+private DevSpaces _devSpaces;
 ```
 
 - [ ] **Step 2: Extend `SelectedViewIndex`**
 
-Update its setter so index 3 is rejected when the feature is disabled, and selecting index 3 lazily creates the page model and first terminal:
+Coerce index 3 to 0 while disabled. When selecting 3 while enabled:
 
 ```csharp
-public int SelectedViewIndex
-{
-    get => _selectedViewIndex;
-    set
-    {
-        var next = value == 3 && !Preferences.Instance.EnableDevSpaces ? 0 : value;
-        if (SetProperty(ref _selectedViewIndex, next))
-        {
-            if (next == 3)
-            {
-                _devSpaces ??= new DevSpaces(FullPath);
-                _devSpaces.EnsureFirstSession();
-                OnPropertyChanged(nameof(DevSpaces));
-            }
-
-            OnPropertyChanged(nameof(IsHistoriesVisible));
-            OnPropertyChanged(nameof(IsWorkingCopyVisible));
-            OnPropertyChanged(nameof(IsStashesVisible));
-            OnPropertyChanged(nameof(IsDevSpacesVisible));
-        }
-    }
-}
+_devSpaces ??= new DevSpaces(FullPath);
+_devSpaces.EnsureFirstSession();
+OnPropertyChanged(nameof(DevSpaces));
 ```
 
-- [ ] **Step 3: React immediately when the preference is disabled**
+Also notify `IsDevSpacesVisible` alongside the existing Histories/WorkingCopy/Stashes visibility properties.
 
-At the end of `Open()`, subscribe:
+- [ ] **Step 3: React immediately to the Preferences toggle**
+
+In `Open()`:
 
 ```csharp
 Preferences.Instance.PropertyChanged += OnPreferencesPropertyChanged;
 ```
 
-Add:
+Handler:
 
 ```csharp
 private void OnPreferencesPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -1096,7 +826,6 @@ private void OnPreferencesPropertyChanged(object sender, PropertyChangedEventArg
     {
         if (_selectedViewIndex == 3)
             SelectedViewIndex = 0;
-
         _devSpaces?.Dispose();
         _devSpaces = null;
         OnPropertyChanged(nameof(DevSpaces));
@@ -1104,11 +833,11 @@ private void OnPreferencesPropertyChanged(object sender, PropertyChangedEventArg
 }
 ```
 
-Add `using System.ComponentModel;` if required.
+Import `System.ComponentModel` if required.
 
-- [ ] **Step 4: Clean up repository-owned terminals in `Close()`**
+- [ ] **Step 4: Make `Repository.Close()` the hard lifetime boundary**
 
-Before watcher/timer disposal completes, add:
+Before final watcher/timer disposal:
 
 ```csharp
 Preferences.Instance.PropertyChanged -= OnPreferencesPropertyChanged;
@@ -1116,11 +845,7 @@ _devSpaces?.Dispose();
 _devSpaces = null;
 ```
 
-This makes the outer repository/worktree tab the definitive lifetime boundary.
-
-- [ ] **Step 5: Add DevSpaces directly under Stashes in the left main-view list**
-
-In `src/Views/Repository.axaml`, add a fourth `ListBoxItem` immediately after Stashes:
+- [ ] **Step 5: Add sidebar item directly after Stashes**
 
 ```xml
 <ListBoxItem IsVisible="{Binding IsDevSpacesEnabled, Mode=OneWay}">
@@ -1132,11 +857,7 @@ In `src/Views/Repository.axaml`, add a fourth `ListBoxItem` immediately after St
 </ListBoxItem>
 ```
 
-Do not place DevSpaces in the branch/tag/worktree collapsible group.
-
-- [ ] **Step 6: Add the DevSpaces right-page host**
-
-After the Stashes right-page border add:
+- [ ] **Step 6: Add main-content page after Stashes**
 
 ```xml
 <Border IsVisible="{Binding IsDevSpacesVisible, Mode=OneWay}">
@@ -1144,29 +865,22 @@ After the Stashes right-page border add:
 </Border>
 ```
 
-Do not call `OnRightPagePropertyChanged` unless the DevSpaces page needs the existing diff-hotkey behavior; it does not contain a `DiffView`.
+Do not add diff hotkey behavior to this border.
 
-- [ ] **Step 7: Build**
-
-Run:
+- [ ] **Step 7: Build and verify toggle lifecycle**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
 ```
 
-Expected: repository compiled bindings resolve `DevSpaces`, `IsDevSpacesEnabled`, and `IsDevSpacesVisible`.
+Manual expected sequence:
+1. Disabled: no DevSpaces item.
+2. Enable: item appears without app restart.
+3. Select: `Copilot 1` auto-starts.
+4. Disable while selected: Histories becomes active, all DevSpaces PTYs stop, item disappears.
+5. Re-enable/reopen: a fresh session manager starts at `Copilot 1`.
 
-- [ ] **Step 8: Manually verify feature-toggle behavior**
-
-Check all of these in one run:
-
-1. Start with `Enable DevSpaces = false`: DevSpaces is absent under Stashes.
-2. Enable it in Preferences: DevSpaces appears without restarting SourceGit.
-3. Select it: first terminal is created automatically.
-4. Disable it while selected: view returns to Histories, all DevSpaces PTYs stop, and the sidebar item disappears.
-5. Re-enable and reopen: a fresh `Copilot 1` session is created.
-
-- [ ] **Step 9: Commit**
+- [ ] **Step 8: Commit**
 
 ```bash
 git add src/ViewModels/Repository.cs src/Views/Repository.axaml
@@ -1175,18 +889,13 @@ git commit -m "feat: integrate DevSpaces repository page"
 
 ---
 
-### Task 7: Add Complete DevSpaces Localization Fallbacks
+### Task 7: Add Localization Fallbacks
 
 **Files:**
 - Modify: `src/Resources/Locales/en_US.axaml`
-- Modify only locale files that do not merge `avares://SourceGit/Resources/Locales/en_US.axaml`
-
-**Interfaces:**
-- Produces resource keys consumed by Preferences, Repository, DevSpaces, and terminal error/status views.
+- Modify: each active locale that does not merge `avares://SourceGit/Resources/Locales/en_US.axaml`
 
 - [ ] **Step 1: Add canonical English keys**
-
-Add these exact entries to `src/Resources/Locales/en_US.axaml`:
 
 ```xml
 <x:String x:Key="Text.DevSpaces" xml:space="preserve">DevSpaces</x:String>
@@ -1204,9 +913,9 @@ Add these exact entries to `src/Resources/Locales/en_US.axaml`:
 <x:String x:Key="Text.DevSpaces.Exited" xml:space="preserve">Process exited with code {0}</x:String>
 ```
 
-- [ ] **Step 2: Determine which locales already inherit English**
+- [ ] **Step 2: Identify non-inheriting locales**
 
-Run:
+Bash:
 
 ```bash
 for f in src/Resources/Locales/*.axaml; do
@@ -1216,7 +925,7 @@ for f in src/Resources/Locales/*.axaml; do
 done
 ```
 
-On PowerShell use:
+PowerShell:
 
 ```powershell
 Get-ChildItem src/Resources/Locales/*.axaml |
@@ -1225,23 +934,17 @@ Get-ChildItem src/Resources/Locales/*.axaml |
   Select-Object -ExpandProperty FullName
 ```
 
-The output is the exact set of locale files that need fallback entries.
+- [ ] **Step 3: Add fallback keys to exactly those files**
 
-- [ ] **Step 3: Add English fallback keys only to non-inheriting locale files**
+Copy the English values from Step 1 into every file printed by Step 2. Do not overwrite an existing DevSpaces translation and do not duplicate resources in locale files already inheriting `en_US.axaml`.
 
-For every file printed by Step 2, add the same `Text.DevSpaces*` keys with the English values from Step 1. Do not overwrite existing translations and do not duplicate keys in locale files that already inherit `en_US.axaml`.
-
-- [ ] **Step 4: Verify every configured locale can resolve `Text.DevSpaces`**
-
-Run a Debug build:
+- [ ] **Step 4: Build and spot-check resources**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
 ```
 
-Then start the app and switch through at least `en_US` plus one inheriting locale and one non-inheriting locale found in Step 2.
-
-Expected: no `Text.DevSpaces...` resource-key placeholders appear in the UI.
+Switch the app through `en_US`, one locale that inherits English, and one locale from Step 2. Expected: no literal `Text.DevSpaces...` missing-resource labels.
 
 - [ ] **Step 5: Commit**
 
@@ -1252,18 +955,11 @@ git commit -m "feat: localize DevSpaces UI"
 
 ---
 
-### Task 8: Functional and Cross-Runtime Verification
+### Task 8: Full Functional and Runtime Verification
 
-**Files:**
-- No production files expected unless verification exposes a defect.
-- If a defect is found, fix it in the owning task's file and rerun the affected verification before this task can complete.
+**Files:** no planned production changes; any discovered defect is fixed in its owning file and its failed gate rerun.
 
-**Interfaces:**
-- Validates the complete spec and Release/AOT compatibility.
-
-- [ ] **Step 1: Start from a clean dependency state**
-
-Run:
+- [ ] **Step 1: Clean dependency setup**
 
 ```bash
 git submodule sync --recursive
@@ -1272,20 +968,20 @@ dotnet restore SourceGit.slnx
 git status --short
 ```
 
-Expected: restore succeeds; submodules are populated; no unintended generated files are staged.
+Expected: restore succeeds; submodules populated; no unintended generated files staged.
 
-- [ ] **Step 2: Run Debug and Release builds**
+- [ ] **Step 2: Debug and Release builds**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Debug --no-restore
 dotnet build src/SourceGit.csproj -c Release --no-restore
 ```
 
-Expected: both builds succeed with zero errors.
+Expected: both PASS.
 
-- [ ] **Step 3: Publish every runtime used by the existing build workflow**
+- [ ] **Step 3: Publish the existing six-RID matrix**
 
-Run each command separately so a failing RID is obvious:
+Run separately:
 
 ```bash
 dotnet publish src/SourceGit.csproj -c Release -r win-x64 -o .artifacts/devspaces/win-x64
@@ -1296,167 +992,129 @@ dotnet publish src/SourceGit.csproj -c Release -r linux-x64 -o .artifacts/devspa
 dotnet publish src/SourceGit.csproj -c Release -r linux-arm64 -o .artifacts/devspaces/linux-arm64
 ```
 
-Expected: every publish succeeds, including NativeAOT/trimming. If the host cannot cross-publish a platform/RID, record that RID explicitly as unverified and rely on a capable runner before merge; do not label the feature fully verified while any required RID remains unknown.
+Expected: all six PASS, including trimming/NativeAOT. If the current host cannot cross-publish a RID, mark that RID `UNVERIFIED: host cannot execute this publish` and do not call the feature fully verified until a capable environment runs it.
 
-- [ ] **Step 4: Verify worktree path isolation**
+- [ ] **Step 4: Verify worktree directory isolation**
 
-Create/open a Git worktree in SourceGit, enable DevSpaces, select DevSpaces, and in the first terminal print the current directory:
+Open a Git worktree in its SourceGit outer tab, enable/open DevSpaces, then print the current directory in the terminal. Expected: exact worktree `Repository.FullPath`, never the main repository path.
 
-Windows PowerShell:
+- [ ] **Step 5: Verify Copilot session behavior**
 
-```powershell
-(Get-Location).Path
-```
+Set Default command to `copilot`. Expected:
+- first selection starts `Copilot 1` automatically;
+- `+` creates independently interactive `Copilot 2`, `Copilot 3`, ...;
+- one terminal's input/output does not appear in another.
 
-Unix shell:
+- [ ] **Step 6: Verify layout preservation**
 
-```bash
-pwd
-```
-
-Expected: the printed directory is exactly that worktree's `Repository.FullPath`, not the main repository path.
-
-- [ ] **Step 5: Verify Copilot auto-start and independent sessions**
-
-Set default command back to `copilot`, open DevSpaces, and create at least four sessions.
-
-Expected:
-
-- first visit automatically starts `Copilot 1`;
-- `+` creates `Copilot 2`, `Copilot 3`, `Copilot 4`;
-- each session is an independent interactive Copilot CLI process;
-- input/output in one session does not appear in another.
-
-- [ ] **Step 6: Verify all layout transitions preserve PTYs**
-
-With four running sessions, enter recognizable text/history in each. Switch through:
+With four running sessions, leave recognizable terminal history in each and switch:
 
 ```text
 Auto -> 1x1 -> 2x2 -> 3x3 -> 4x4 -> Auto
 ```
 
-Expected: no terminal restarts, each session retains its own screen/history, and empty cells in 3x3/4x4 show `+ New Terminal`.
+Expected: no PTY restart; all histories survive; empty cells in larger fixed grids show `+ New Terminal`.
 
-- [ ] **Step 7: Verify 9, 16, and >16 behavior**
+- [ ] **Step 7: Verify capacity boundaries**
 
-Use a lightweight long-running shell command if opening 17 Copilot sessions is undesirable during the verification pass.
+A lightweight long-running shell command may be used instead of 17 authenticated Copilot processes.
 
 Expected:
+- 1 -> Auto 1x1;
+- 2-4 -> Auto 2x2;
+- 5-9 -> Auto 3x3;
+- 10-16 -> Auto 4x4;
+- 17th remains in the tab strip;
+- selecting the 17th swaps it into a visible slot without stopping the displaced session.
 
-- 9 sessions in Auto resolves to 3x3;
-- 10 sessions in Auto resolves to 4x4;
-- 16 sessions fit in 4x4;
-- the 17th session remains accessible from the session tabs;
-- selecting session 17 swaps it into the visible grid without killing the displaced session.
+- [ ] **Step 8: Verify close semantics**
 
-- [ ] **Step 8: Verify targeted close semantics**
+With at least three sessions running, close one pane. Expected: only that process stops. Close the outer repository/worktree tab. Expected: every remaining DevSpaces PTY owned by that repository stops.
 
-Close one visible terminal while at least three others are running.
+- [ ] **Step 9: Verify start failure containment**
 
-Expected: only the chosen PTY exits; all remaining sessions continue accepting input.
-
-Close the outer repository/worktree tab.
-
-Expected: every DevSpaces PTY owned by that repository exits.
-
-- [ ] **Step 9: Verify command-start failure is contained**
-
-Set Default command to a deliberately nonexistent command such as:
+Set Default command to:
 
 ```text
 sourcegit-devspaces-command-does-not-exist
 ```
 
-Open a new DevSpaces terminal.
+Create a terminal. Expected: in-pane `Failed to start terminal: ...`; SourceGit and other sessions remain responsive. Restore command to `copilot` afterward.
 
-Expected: the terminal pane shows `Text.DevSpaces.StartFailed` with the launch error; SourceGit remains responsive and other terminal sessions remain alive.
+- [ ] **Step 10: Verify disabling feature kills owned sessions**
 
-Restore Default command to `copilot` after the check.
+Disable DevSpaces while it is selected and sessions are running. Expected: switch to Histories, all owned PTYs stop, DevSpaces sidebar item disappears immediately.
 
-- [ ] **Step 10: Verify feature-toggle cleanup**
-
-While DevSpaces contains running sessions, disable `Enable DevSpaces` in Preferences.
-
-Expected: repository switches to Histories if necessary, all its DevSpaces processes terminate, and the DevSpaces item disappears immediately.
-
-- [ ] **Step 11: Inspect final diff for scope**
-
-Run:
+- [ ] **Step 11: Scope review**
 
 ```bash
 git status --short
 git diff master...HEAD --stat
-git diff master...HEAD -- . ':(exclude)docs/superpowers/specs/2026-08-28-devspaces-design.md' ':(exclude)docs/superpowers/plans/2026-08-28-devspaces.md'
+git diff master...HEAD -- . \
+  ':(exclude)docs/superpowers/specs/2026-08-28-devspaces-design.md' \
+  ':(exclude)docs/superpowers/plans/2026-08-28-devspaces.md'
 ```
 
-Expected: changes are limited to the approved DevSpaces feature, its dependency, Preferences, Repository integration, and localization. No Docker/Podman/WSLC/container implementation and no unrelated CI workflow changes are present.
+Expected: only DevSpaces, its pinned dependency, Preferences, Repository integration, and localization. No container implementation and no CI-trigger edits.
 
-- [ ] **Step 12: Commit any verification-driven fixes**
+- [ ] **Step 12: Commit verification-driven fixes only when needed**
 
-If verification required code changes, commit each coherent fix with a descriptive message, rerun its failed verification, then rerun Steps 2 and 3 before proceeding.
-
-If no fixes were needed, no empty verification commit is required.
+For each discovered defect: fix the owning file, rerun its focused check, rerun Steps 2-3, then commit with a message describing that defect. Do not create an empty verification commit.
 
 ---
 
 ### Task 9: Final Review and Pull Request
 
-**Files:**
-- No new production files expected.
-
-**Interfaces:**
-- Produces a reviewable PR from `feat/devspaces` to `master` only after the verification gates above are satisfied or any environment-limited RIDs are explicitly disclosed.
-
 - [ ] **Step 1: Verify branch state**
-
-Run:
 
 ```bash
 git status --short
 git log --oneline --decorate master..HEAD
 ```
 
-Expected: clean working tree and only DevSpaces/spec/plan commits on the feature branch.
+Expected: clean worktree and only DevSpaces/spec/plan commits.
 
-- [ ] **Step 2: Re-run the final build gate**
-
-At minimum:
+- [ ] **Step 2: Re-run final Release gate**
 
 ```bash
 dotnet build src/SourceGit.csproj -c Release --no-restore
 ```
 
-Also rerun any publish command that was previously fixed during Task 8.
+Expected: PASS. Rerun any RID publish that failed and was fixed in Task 8.
 
-Expected: all locally executable gates are green.
+- [ ] **Step 3: Prepare PR body from observed evidence**
 
-- [ ] **Step 3: Open the PR**
-
-Use:
+Use title:
 
 ```text
-Title: feat: add DevSpaces terminal workspace
-
-Body summary:
-- add opt-in DevSpaces repository page directly under Stashes
-- launch embedded Copilot CLI terminals in each repository/worktree path
-- support Auto/1x1/2x2/3x3/4x4 layouts with up to 16 visible terminals
-- preserve PTY sessions while changing layouts
-- terminate sessions with their owning repository tab
-- keep container-backed DevSpaces out of this milestone behind a launcher boundary
-
-Verification:
-- Debug build: <record actual result>
-- Release build: <record actual result>
-- RID publish matrix: <record actual results per RID>
-- manual DevSpaces/worktree/grid/lifecycle checks: <record actual result>
-
-Known repository CI limitation:
-- existing PR CI workflows target `develop` while this fork uses `master`; this feature does not change those triggers
+feat: add DevSpaces terminal workspace
 ```
 
-Replace the verification-result markers with actual observed results before creating the PR; never claim a check succeeded without evidence.
+Body must contain these six feature bullets:
 
-- [ ] **Step 4: Review PR diff and status**
+```text
+- add opt-in DevSpaces directly under Stashes
+- launch embedded Copilot CLI terminals in the current repository/worktree path
+- support Auto/1x1/2x2/3x3/4x4 layouts with up to 16 visible terminals
+- preserve PTY sessions when changing layouts
+- terminate sessions with their owning repository tab
+- keep container-backed DevSpaces out of this milestone behind a launcher boundary
+```
 
-Confirm the PR targets `master`, the feature branch is `feat/devspaces`, the spec and plan are included, and GitHub reports no merge conflict. If repository CI still does not trigger because of the pre-existing branch mismatch, state that explicitly rather than interpreting the absence of checks as success.
+Then add a verification section using **only actual Task 8 observations**. For every RID, write exactly one of `PASS`, `FAIL`, or `UNVERIFIED: <specific reason>`. Do not infer success from the absence of GitHub checks.
+
+If all six publish commands passed, the matrix line is exactly:
+
+```text
+RID publish: win-x64 PASS; win-arm64 PASS; osx-x64 PASS; osx-arm64 PASS; linux-x64 PASS; linux-arm64 PASS
+```
+
+Also state the existing repository limitation:
+
+```text
+Existing CI limitation: PR workflows target develop while this fork targets master; this feature does not change those triggers.
+```
+
+- [ ] **Step 4: Open and inspect the PR**
+
+Target `master` from `feat/devspaces`. Confirm no merge conflict, spec and plan are included, and the diff has no container or unrelated CI changes. If GitHub has no checks because of the existing trigger mismatch, report **no checks ran** rather than **CI passed**.
