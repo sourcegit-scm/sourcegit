@@ -10,6 +10,7 @@
         <ResourceInclude Source="/Resources/Icons.axaml"/>
         <ResourceInclude Source="/Resources/Fonts.axaml"/>
         <ResourceInclude Source="/Resources/Themes.axaml"/>
+        <ResourceInclude Source="/Resources/Locales/DevSpaces.axaml"/>
       </ResourceDictionary.MergedDictionaries>
 
       <ResourceInclude x:Key="de_DE" Source="/Resources/Locales/de_DE.axaml"/>
