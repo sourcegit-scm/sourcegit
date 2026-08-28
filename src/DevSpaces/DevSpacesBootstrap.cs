@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -23,7 +22,7 @@ namespace SourceGit.DevSpaces
             Control.LoadedEvent.AddClassHandler<Views.Preferences>(OnPreferencesLoaded);
         }
 
-        private static void OnRepositoryLoaded(Views.Repository view, RoutedEventArgs _)
+        private static void OnRepositoryLoaded(Views.Repository view, RoutedEventArgs e)
         {
             if (view.DataContext is not ViewModels.Repository repository)
                 return;
@@ -36,7 +35,7 @@ namespace SourceGit.DevSpaces
                 _repositoryViews.Add(view, integration);
         }
 
-        private static void OnRepositoryUnloaded(Views.Repository view, RoutedEventArgs _)
+        private static void OnRepositoryUnloaded(Views.Repository view, RoutedEventArgs e)
         {
             if (!_repositoryViews.TryGetValue(view, out var integration))
                 return;
@@ -45,7 +44,7 @@ namespace SourceGit.DevSpaces
             _repositoryViews.Remove(view);
         }
 
-        private static void OnPreferencesLoaded(Views.Preferences view, RoutedEventArgs _)
+        private static void OnPreferencesLoaded(Views.Preferences view, RoutedEventArgs e)
         {
             if (_preferencesViews.TryGetValue(view, out _))
                 return;
