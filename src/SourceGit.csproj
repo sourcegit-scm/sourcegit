@@ -57,6 +57,7 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.9.0-beta.1" />
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.11" />
     <PackageReference Include="OpenAI" Version="2.10.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
@@ -75,7 +76,7 @@
     </Exec>
 
     <ItemGroup>
-      <AssemblyMetadata Include="FriendlyVersion" Value="$([System.String]::Copy('$(FriendlyVersion)').Replace('g', '').Trim())" />
+      <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))" />
     </ItemGroup>
   </Target>
 </Project>
