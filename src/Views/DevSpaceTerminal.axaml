@@ -1,0 +1,17 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:terminal="using:Iciclecreek.Terminal"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             x:Class="SourceGit.Views.DevSpaceTerminal"
+             x:DataType="vm:DevSpaceTerminal">
+  <Grid>
+    <terminal:TerminalControl x:Name="Terminal"
+                              FontFamily="{DynamicResource Fonts.Monospace}"
+                              BufferSize="3000"/>
+    <Border Background="{DynamicResource Brush.Window}"
+            IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}">
+      <TextBlock Margin="16" Text="{Binding ErrorMessage}" TextWrapping="Wrap"/>
+    </Border>
+  </Grid>
+</UserControl>

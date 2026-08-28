@@ -216,6 +216,7 @@ namespace SourceGit.ViewModels
 
                     if (last.Node.IsUnmanaged)
                         last.Node.SaveMinimalInfo(repo.GitDir);
+                    SourceGit.DevSpaces.DevSpaceRegistry.Close(repo);
                     repo.Close();
 
                     Welcome.Instance.ClearSearchFilter();
@@ -441,6 +442,7 @@ namespace SourceGit.ViewModels
                 if (page.Node.IsUnmanaged)
                     page.Node.SaveMinimalInfo(repo.GitDir);
 
+                SourceGit.DevSpaces.DevSpaceRegistry.Close(repo);
                 repo.Close();
             }
 

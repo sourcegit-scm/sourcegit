@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:String x:Key="Text.DevSpaces" xml:space="preserve">DevSpaces</x:String>
+  <x:String x:Key="Text.DevSpaces.Enable" xml:space="preserve">Enable DevSpaces</x:String>
+  <x:String x:Key="Text.DevSpaces.DefaultCommand" xml:space="preserve">Default command:</x:String>
+  <x:String x:Key="Text.DevSpaces.DefaultLayout" xml:space="preserve">Default layout:</x:String>
+  <x:String x:Key="Text.DevSpaces.Layout.Auto" xml:space="preserve">Auto</x:String>
+  <x:String x:Key="Text.DevSpaces.Layout.1x1" xml:space="preserve">1x1</x:String>
+  <x:String x:Key="Text.DevSpaces.Layout.2x2" xml:space="preserve">2x2</x:String>
+  <x:String x:Key="Text.DevSpaces.Layout.3x3" xml:space="preserve">3x3</x:String>
+  <x:String x:Key="Text.DevSpaces.Layout.4x4" xml:space="preserve">4x4</x:String>
+  <x:String x:Key="Text.DevSpaces.NewTerminal" xml:space="preserve">New Terminal</x:String>
+  <x:String x:Key="Text.DevSpaces.CloseTerminal" xml:space="preserve">Close Terminal</x:String>
+  <x:String x:Key="Text.DevSpaces.StartFailed" xml:space="preserve">Failed to start terminal: {0}</x:String>
+</ResourceDictionary>
