@@ -71,7 +71,7 @@ namespace SourceGit.Views
             Stop();
         }
 
-        private void OnTerminalPointerPressed(object? sender, PointerPressedEventArgs e)
+        private void OnTerminalPointerPressed(object sender, PointerPressedEventArgs e)
         {
             if (!e.GetCurrentPoint(Terminal).Properties.IsRightButtonPressed ||
                 Terminal.IsMouseReportingActive)
