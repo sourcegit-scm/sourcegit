@@ -2,9 +2,9 @@
 
 ## Status
 
-Approved architecture, revised after the native-terminal feasibility spike.
+Proposed revised architecture after the native-terminal feasibility spike. Pending user review before implementation planning.
 
-PR #7 keeps the Avalonia 11 terminal improvements already implemented as the portable fallback and adds an optional Windows-native renderer for Windows x64. The native renderer is isolated in a separate helper process so SourceGit itself remains cross-platform and NativeAOT-compatible.
+PR #7 keeps the Avalonia 11 terminal improvements already implemented as the portable fallback and proposes an optional Windows-native renderer for Windows x64. The native renderer is isolated in a separate helper process so SourceGit itself remains cross-platform and NativeAOT-compatible.
 
 ## Problem
 
@@ -104,6 +104,31 @@ When Avalonia calls `CreateNativeControlCore(parent)`, SourceGit:
 The helper creates its terminal child HWND underneath the parent supplied by Avalonia and reports the HWND only after the terminal surface is initialized.
 
 `DestroyNativeControlCore` stops the helper only when that DevSpaces terminal session is actually closed/disposed. Repository subpage navigation must not dispose the host.
+
+## Go/No-Go Embedding Gate
+
+Cross-process child-HWND hosting is the only remaining unproven part of the design. It must be proven on real Windows x64 before production integration is kept.
+
+The implementation plan must start with a disposable probe that contains only:
+
+- a tiny Avalonia `NativeControlHost` parent;
+- the x64 WPF helper using `EasyWindowsTerminalControl`;
+- one simple shell such as `cmd.exe`;
+- the startup HWND handshake.
+
+The probe must demonstrate all of the following on Windows x64:
+
+1. the terminal child HWND renders inside the Avalonia host;
+2. keyboard focus and typing work without manual focus hacks after every key;
+3. mouse selection works;
+4. resize follows the Avalonia host bounds;
+5. hide/show does not stop the terminal process;
+6. destroying the host terminates the helper cleanly;
+7. the child HWND does not paint over unrelated Avalonia content after it is hidden.
+
+If any of these fail in a way that requires unsupported global hooks, embedding `wt.exe`, disabling SourceGit NativeAOT, or invasive window-reparent hacks, stop the native-host work. Do not keep the probe code. PR #7 then remains the improved Avalonia terminal implementation only.
+
+If the probe passes, production integration proceeds using the architecture in this spec.
 
 ## Startup Handshake
 
@@ -304,13 +329,14 @@ Confirm DevSpaces uses the Avalonia backend and continues to work exactly as PR 
 1. **Unofficial/beta Windows Terminal packaging.** `EasyWindowsTerminalControl` depends on unofficial/beta Windows Terminal packaging and may require maintenance when low-level APIs change. Pin versions and upgrade intentionally.
 2. **x64 limitation.** The reviewed WPF package is x64-only. Windows ARM64 remains fallback in this PR.
 3. **HWND airspace.** Native terminal surfaces cannot participate in Avalonia composition like normal controls; explicit native visibility/resize handling is mandatory.
-4. **Cross-process embedding.** The helper HWND/process handshake is a new boundary and must be tested on real Windows, not inferred from CI compilation.
+4. **Cross-process embedding.** The helper HWND/process handshake is a new boundary and must pass the explicit go/no-go probe before production integration.
 5. **Resource cost.** One helper process per native terminal uses more memory than an in-process control. This is accepted for the first implementation to keep failure and lifetime boundaries simple.
 
 ## Acceptance Criteria
 
 PR #7 is ready to merge only when:
 
+- the Windows x64 embedding probe has passed all go/no-go criteria;
 - SourceGit itself still publishes with NativeAOT;
 - Windows x64 includes the separate native terminal helper and can fall back safely;
 - Windows ARM64/macOS/Linux continue using the Avalonia terminal;
