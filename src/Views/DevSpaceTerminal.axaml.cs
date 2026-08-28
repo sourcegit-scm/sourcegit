@@ -31,19 +31,21 @@ namespace SourceGit.Views
             _started = true;
             session.StopRequested += OnStopRequested;
 
+            // Prevent the terminal control's default process from being launched if command
+            // resolution fails before the pane is attached to the visual tree.
+            Terminal.Process = string.Empty;
+
             try
             {
                 var spec = launcher.Create(session.Command, session.WorkingDirectory);
 
-                // Iciclecreek.Avalonia.Terminal 1.0.12 forwards LaunchProcess to its
-                // templated TerminalView. DevSpaces starts a pane immediately after it is
-                // added to the grid, before Avalonia has necessarily applied that template.
-                // Apply it explicitly so both regular shells and Copilot have a terminal
-                // view before the process launcher dereferences it.
-                Terminal.ApplyTemplate();
-
+                // Configure the terminal before the pane enters the visual tree. The inner
+                // TerminalView launches from Loaded, after OnInitialized has created the
+                // emulator used to size the PTY.
                 Terminal.ProcessExited += OnProcessExited;
-                Terminal.LaunchProcess(spec.WorkingDirectory, spec.Process, spec.Arguments);
+                Terminal.StartingDirectory = spec.WorkingDirectory;
+                Terminal.Process = spec.Process;
+                Terminal.Args = spec.Arguments;
                 session.MarkRunning();
             }
             catch (Exception ex)
