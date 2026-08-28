@@ -11,7 +11,7 @@ using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
-    public partial class DevSpaces : UserControl
+    public partial class DevSpaces : UserControl, IDisposable
     {
         private sealed record TerminalPaneHandle(Border Root, DevSpaceTerminal TerminalView);
 
@@ -19,6 +19,16 @@ namespace SourceGit.Views
         {
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
+        }
+
+        public void Dispose()
+        {
+            if (_owner != null)
+                _owner.PropertyChanged -= OnOwnerPropertyChanged;
+
+            DisposePanes();
+            _owner = null;
+            DataContext = null;
         }
 
         private void OnDataContextChanged(object sender, EventArgs e)
@@ -97,10 +107,12 @@ namespace SourceGit.Views
 
             foreach (var slot in _owner.VisibleSlots)
             {
-                TerminalGrid.Children.Add(
-                    slot.Terminal != null
-                        ? GetOrCreatePane(slot.Terminal)
-                        : CreateEmptySlot(slot.Index));
+                if (slot.Terminal != null)
+                    TerminalGrid.Children.Add(GetOrCreatePane(slot.Terminal));
+                else if (_owner.Layout == Models.DevSpaceLayout.Auto)
+                    TerminalGrid.Children.Add(new Border { Margin = new Thickness(2) });
+                else
+                    TerminalGrid.Children.Add(CreateEmptySlot(slot.Index));
             }
         }
 
@@ -202,8 +214,7 @@ namespace SourceGit.Views
                 pane.TerminalView.Dispose();
 
             _panes.Clear();
-            if (TerminalGrid != null)
-                TerminalGrid.Children.Clear();
+            TerminalGrid.Children.Clear();
         }
 
         private readonly Dictionary<Guid, TerminalPaneHandle> _panes = [];
