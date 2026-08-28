@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.70%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-97.61%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -30,6 +30,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -38,7 +39,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-97.22%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-97.13%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
@@ -66,6 +67,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -75,7 +77,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.18%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-98.09%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
@@ -94,6 +96,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -102,7 +105,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-93.40%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-93.31%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -166,6 +169,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -179,7 +183,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-93.40%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-93.31%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -243,6 +247,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -256,7 +261,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-97.61%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-97.51%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -280,6 +285,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -289,7 +295,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-87.08%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-87.00%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -412,6 +418,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -432,7 +439,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-97.22%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-97.13%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -460,6 +467,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -469,7 +477,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-94.83%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-94.74%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -518,6 +526,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -531,7 +540,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-61.44%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-61.38%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -873,6 +882,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -942,7 +952,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.18%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.09%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -961,6 +971,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -969,7 +980,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-63.06%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-63.00%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1297,6 +1308,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -1363,7 +1375,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-63.83%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-63.77%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1687,6 +1699,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
@@ -1751,7 +1764,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-98.56%25-yellow)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-98.47%25-yellow)
 
 <details>
 <summary>Missing keys in zh_TW.axaml</summary>
@@ -1767,6 +1780,7 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Generator.Name.Placeholder
 - Text.SSHKeyHelper.Generator.Passphrase
 - Text.SSHKeyHelper.Generator.Start
+- Text.SSHKeyHelper.Generator.Type
 - Text.SSHKeyHelper.Generator.UsePassphrase
 - Text.SSHKeyHelper.Path
 - Text.SSHKeyHelper.PublicKey
