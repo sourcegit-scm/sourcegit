@@ -8,6 +8,7 @@ namespace SourceGit.Views
         public DevSpacesPreferences()
         {
             InitializeComponent();
+            DataContextChanged += (_, _) => NormalizeLegacyLayout();
         }
 
         private void OnEnableChanged(object sender, RoutedEventArgs e)
@@ -20,6 +21,15 @@ namespace SourceGit.Views
                 SourceGit.DevSpaces.DevSpaceRegistry.DisableAll();
 
             e.Handled = true;
+        }
+
+        private void NormalizeLegacyLayout()
+        {
+            if (DataContext is ViewModels.Preferences preferences &&
+                preferences.DevSpacesDefaultLayout == Models.DevSpaceLayout.FourByFour)
+            {
+                preferences.DevSpacesDefaultLayout = Models.DevSpaceLayout.ThreeByThree;
+            }
         }
     }
 }

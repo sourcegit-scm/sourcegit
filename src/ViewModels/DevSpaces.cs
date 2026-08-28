@@ -37,6 +37,9 @@ namespace SourceGit.ViewModels
             get => _layout;
             set
             {
+                if (value == Models.DevSpaceLayout.FourByFour)
+                    value = Models.DevSpaceLayout.ThreeByThree;
+
                 if (SetProperty(ref _layout, value))
                 {
                     OnPropertyChanged(nameof(LayoutIndex));
@@ -50,12 +53,16 @@ namespace SourceGit.ViewModels
             get => (int)_layout;
             set
             {
-                if (value >= 0 && value <= 4)
+                if (value >= 0 && value <= 3)
                     Layout = (Models.DevSpaceLayout)value;
             }
         }
 
-        public int GridDimension => Models.DevSpaceLayoutExtensions.GetDimension(_layout, Sessions.Count);
+        public int GridRows => Models.DevSpaceLayoutExtensions.GetRows(_layout, Sessions.Count);
+
+        public int GridColumns => Models.DevSpaceLayoutExtensions.GetColumns(_layout, Sessions.Count);
+
+        public int GridCapacity => GridRows * GridColumns;
 
         public DevSpaces(
             string workingDirectory,
@@ -63,7 +70,15 @@ namespace SourceGit.ViewModels
         {
             _workingDirectory = workingDirectory;
             Launcher = launcher ?? new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
-            _layout = Preferences.Instance.DevSpacesDefaultLayout;
+
+            var savedLayout = Preferences.Instance.DevSpacesDefaultLayout;
+            if (savedLayout == Models.DevSpaceLayout.FourByFour)
+            {
+                savedLayout = Models.DevSpaceLayout.ThreeByThree;
+                Preferences.Instance.DevSpacesDefaultLayout = savedLayout;
+            }
+
+            _layout = savedLayout;
             RebuildSlots();
         }
 
@@ -124,7 +139,9 @@ namespace SourceGit.ViewModels
             VisibleSlots.Clear();
             ActiveTerminal = null;
             _preferredSlot = -1;
-            OnPropertyChanged(nameof(GridDimension));
+            OnPropertyChanged(nameof(GridRows));
+            OnPropertyChanged(nameof(GridColumns));
+            OnPropertyChanged(nameof(GridCapacity));
             OnPropertyChanged(nameof(VisibleSlots));
         }
 
@@ -135,8 +152,7 @@ namespace SourceGit.ViewModels
 
         private void RebuildSlots()
         {
-            var dimension = GridDimension;
-            var capacity = dimension * dimension;
+            var capacity = GridCapacity;
             var slots = new DevSpaceTerminal[capacity];
 
             if (capacity == 1)
@@ -179,7 +195,9 @@ namespace SourceGit.ViewModels
                 VisibleSlots.Add(new DevSpaceGridSlot(i, slots[i]));
 
             _preferredSlot = -1;
-            OnPropertyChanged(nameof(GridDimension));
+            OnPropertyChanged(nameof(GridRows));
+            OnPropertyChanged(nameof(GridColumns));
+            OnPropertyChanged(nameof(GridCapacity));
             OnPropertyChanged(nameof(VisibleSlots));
         }
 

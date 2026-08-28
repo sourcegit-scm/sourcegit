@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -94,29 +95,37 @@ namespace SourceGit.DevSpaces
                 if (pageSwitcher == null || rightPages == null || pageSwitcher.ItemsSource != null)
                     return null;
 
-                var item = CreateNavigationItem(view);
+                var item = CreateNavigationItem(view, out var label);
                 pageSwitcher.Items.Add(item);
 
                 var host = new Border
                 {
                     IsVisible = false,
+                    Opacity = 0,
+                    IsHitTestVisible = false,
                 };
                 rightPages.Children.Add(host);
 
-                return new RepositoryIntegration(repository, item, host);
+                return new RepositoryIntegration(repository, item, label, host);
             }
 
             private RepositoryIntegration(
                 ViewModels.Repository repository,
                 ListBoxItem navigationItem,
+                TextBlock navigationLabel,
                 Border host)
             {
                 _repository = repository;
                 _navigationItem = navigationItem;
+                _navigationLabel = navigationLabel;
                 _host = host;
 
                 _repository.PropertyChanged += OnRepositoryPropertyChanged;
                 ViewModels.Preferences.Instance.PropertyChanged += OnPreferencesPropertyChanged;
+
+                if (ViewModels.Preferences.Instance.EnableDevSpaces)
+                    AttachSpaces();
+
                 Update();
             }
 
@@ -124,6 +133,7 @@ namespace SourceGit.DevSpaces
             {
                 _repository.PropertyChanged -= OnRepositoryPropertyChanged;
                 ViewModels.Preferences.Instance.PropertyChanged -= OnPreferencesPropertyChanged;
+                DetachSpaces();
             }
 
             private void OnRepositoryPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -138,6 +148,32 @@ namespace SourceGit.DevSpaces
                     Update();
             }
 
+            private void OnSessionsChanged(object sender, NotifyCollectionChangedEventArgs e)
+            {
+                UpdateNavigationLabel();
+            }
+
+            private void AttachSpaces()
+            {
+                if (_spaces != null)
+                    return;
+
+                _spaces = DevSpaceRegistry.Attach(_repository, _host);
+                if (_spaces != null)
+                    _spaces.Sessions.CollectionChanged += OnSessionsChanged;
+
+                UpdateNavigationLabel();
+            }
+
+            private void DetachSpaces()
+            {
+                if (_spaces != null)
+                    _spaces.Sessions.CollectionChanged -= OnSessionsChanged;
+
+                _spaces = null;
+                UpdateNavigationLabel();
+            }
+
             private void Update()
             {
                 var enabled = ViewModels.Preferences.Instance.EnableDevSpaces;
@@ -146,21 +182,37 @@ namespace SourceGit.DevSpaces
                 if (!enabled)
                 {
                     _host.IsVisible = false;
+                    _host.Opacity = 0;
+                    _host.IsHitTestVisible = false;
+                    DetachSpaces();
+
                     if (_repository.SelectedViewIndex == 3)
                         _repository.SelectedViewIndex = 0;
                     return;
                 }
 
-                var active = _repository.SelectedViewIndex == 3;
-                _host.IsVisible = active;
-                if (!active)
-                    return;
+                AttachSpaces();
 
-                var spaces = DevSpaceRegistry.Attach(_repository, _host);
-                spaces?.EnsureFirstSession();
+                // Keep the terminal subtree mounted and measured while another repository page
+                // is active. Hiding with IsVisible would collapse the PTY and force the terminal
+                // TUI to resize/reload when returning to DevSpaces.
+                _host.IsVisible = true;
+                var active = _repository.SelectedViewIndex == 3;
+                _host.Opacity = active ? 1 : 0;
+                _host.IsHitTestVisible = active;
+
+                if (active)
+                    _spaces?.EnsureFirstSession();
             }
 
-            private static ListBoxItem CreateNavigationItem(Views.Repository view)
+            private void UpdateNavigationLabel()
+            {
+                var count = _spaces?.Sessions.Count ?? 0;
+                var title = App.Text("DevSpaces");
+                _navigationLabel.Text = count > 0 ? $"{title} ({count})" : title;
+            }
+
+            private static ListBoxItem CreateNavigationItem(Views.Repository view, out TextBlock label)
             {
                 var indicator = new Rectangle
                 {
@@ -180,7 +232,7 @@ namespace SourceGit.DevSpaces
                 if (view.TryFindResource("Icons.Terminal", out var iconResource) && iconResource is Geometry geometry)
                     icon.Data = geometry;
 
-                var label = new TextBlock
+                label = new TextBlock
                 {
                     Text = App.Text("DevSpaces"),
                     VerticalAlignment = VerticalAlignment.Center,
@@ -205,7 +257,9 @@ namespace SourceGit.DevSpaces
 
             private readonly ViewModels.Repository _repository;
             private readonly ListBoxItem _navigationItem;
+            private readonly TextBlock _navigationLabel;
             private readonly Border _host;
+            private ViewModels.DevSpaces _spaces;
         }
 
         private static readonly ConditionalWeakTable<Views.Repository, RepositoryIntegration> _repositoryViews = new();

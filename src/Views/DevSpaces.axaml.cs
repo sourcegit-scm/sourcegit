@@ -52,7 +52,8 @@ namespace SourceGit.Views
         private void OnOwnerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewModels.DevSpaces.VisibleSlots) ||
-                e.PropertyName == nameof(ViewModels.DevSpaces.GridDimension) ||
+                e.PropertyName == nameof(ViewModels.DevSpaces.GridRows) ||
+                e.PropertyName == nameof(ViewModels.DevSpaces.GridColumns) ||
                 e.PropertyName == nameof(ViewModels.DevSpaces.ActiveTerminal) ||
                 e.PropertyName == nameof(ViewModels.DevSpaces.Layout))
             {
@@ -102,8 +103,8 @@ namespace SourceGit.Views
                 return;
             }
 
-            TerminalGrid.Rows = _owner.GridDimension;
-            TerminalGrid.Columns = _owner.GridDimension;
+            TerminalGrid.Rows = _owner.GridRows;
+            TerminalGrid.Columns = _owner.GridColumns;
 
             foreach (var slot in _owner.VisibleSlots)
             {

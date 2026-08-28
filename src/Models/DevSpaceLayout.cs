@@ -3,7 +3,7 @@ namespace SourceGit.Models
     public enum DevSpaceLayout
     {
         Auto = 0,
-        OneByOne = 1,
+        OneByTwo = 1,
         TwoByTwo = 2,
         ThreeByThree = 3,
         FourByFour = 4,
@@ -11,23 +11,44 @@ namespace SourceGit.Models
 
     public static class DevSpaceLayoutExtensions
     {
-        public static int GetDimension(this DevSpaceLayout layout, int sessionCount)
+        public static int GetRows(this DevSpaceLayout layout, int sessionCount)
         {
-            if (layout != DevSpaceLayout.Auto)
-                return (int)layout;
-            if (sessionCount <= 1)
-                return 1;
-            if (sessionCount <= 4)
-                return 2;
-            if (sessionCount <= 9)
-                return 3;
-            return 4;
+            return layout switch
+            {
+                DevSpaceLayout.OneByTwo => 1,
+                DevSpaceLayout.TwoByTwo => 2,
+                DevSpaceLayout.ThreeByThree => 3,
+                DevSpaceLayout.FourByFour => 3,
+                _ => sessionCount switch
+                {
+                    <= 2 => 1,
+                    <= 4 => 2,
+                    _ => 3,
+                },
+            };
+        }
+
+        public static int GetColumns(this DevSpaceLayout layout, int sessionCount)
+        {
+            return layout switch
+            {
+                DevSpaceLayout.OneByTwo => 2,
+                DevSpaceLayout.TwoByTwo => 2,
+                DevSpaceLayout.ThreeByThree => 3,
+                DevSpaceLayout.FourByFour => 3,
+                _ => sessionCount switch
+                {
+                    <= 1 => 1,
+                    2 => 2,
+                    <= 4 => 2,
+                    _ => 3,
+                },
+            };
         }
 
         public static int GetCapacity(this DevSpaceLayout layout, int sessionCount)
         {
-            var dimension = layout.GetDimension(sessionCount);
-            return dimension * dimension;
+            return layout.GetRows(sessionCount) * layout.GetColumns(sessionCount);
         }
     }
 }
