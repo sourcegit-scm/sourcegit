@@ -13,13 +13,16 @@ namespace SourceGit.DevSpaces
                 throw new ArgumentException("DevSpaces working directory must not be empty.", nameof(workingDirectory));
 
             var normalized = command.Trim().ToLowerInvariant();
+            if (normalized is "pwsh" or "__devspaces_pwsh__")
+            {
+                var process = OperatingSystem.IsWindows() ? FindPowerShell7() : "pwsh";
+                return new DevSpaceLaunchSpec(process, ["-NoLogo"], workingDirectory);
+            }
+
             if (OperatingSystem.IsWindows())
             {
                 switch (normalized)
                 {
-                    case "pwsh":
-                    case "__devspaces_pwsh__":
-                        return new DevSpaceLaunchSpec(FindPowerShell7(), ["-NoLogo"], workingDirectory);
                     case "powershell":
                     case "powershell.exe":
                     case "__devspaces_powershell__":
