@@ -4,28 +4,28 @@
 
 **Goal:** Add an optional Windows Terminal-backed DevSpaces renderer on Windows x64 while preserving SourceGit NativeAOT and the existing Avalonia terminal as the automatic fallback everywhere else.
 
-**Architecture:** Keep `SourceGit.exe` cross-platform, `net10.0`, Avalonia 11.3.20, and NativeAOT. A separate x64-only WPF helper process hosts `EasyWindowsTerminalControl` 1.0.38 inside an `HwndSource` created directly as a child of Avalonia's `NativeControlHost` HWND. SourceGit communicates only the startup parent HWND and Base64URL JSON launch payload, receives one ready HWND line, and owns helper lifetime. A hard real-Windows probe must pass before production native-host wiring is kept.
+**Architecture:** Keep `SourceGit.exe` cross-platform, `net10.0`, Avalonia 11.3.20, and NativeAOT. A separate x64-only WPF helper process hosts `EasyWindowsTerminalControl` 1.0.38 inside an `HwndSource` created directly as a child of Avalonia's `NativeControlHost` HWND. SourceGit passes one Base64URL JSON launch payload, receives one ready HWND line, and owns helper lifetime. A disposable interactive Windows x64 probe is a hard go/no-go gate before any production native-host integration is kept.
 
-**Tech Stack:** .NET 10, Avalonia 11.3.20, NativeAOT for SourceGit, WPF helper on `net10.0-windows`, EasyWindowsTerminalControl 1.0.38, Windows Terminal WPF backend, ConPTY, GitHub Actions.
+**Tech Stack:** .NET 10, Avalonia 11.3.20, NativeAOT for SourceGit, WPF `net10.0-windows` helper, EasyWindowsTerminalControl 1.0.38, Windows Terminal WPF backend, ConPTY, GitHub Actions.
 
 **Spec:** `docs/superpowers/specs/2026-08-28-devspaces-native-terminal-input-design.md`
 
 ## Global Constraints
 
-- `SourceGit.exe` remains `net10.0`, Avalonia `11.3.20`, and NativeAOT in Release.
-- Pin `EasyWindowsTerminalControl` to `1.0.38` for this PR.
+- Keep `SourceGit.exe` on `net10.0`, Avalonia `11.3.20`, and NativeAOT in Release.
+- Pin `EasyWindowsTerminalControl` to `1.0.38`.
 - Native Windows Terminal rendering is Windows x64 only.
-- Windows ARM64, macOS x64/ARM64, and Linux x64/ARM64 continue using the existing `Iciclecreek.Avalonia.Terminal` 1.0.12 fallback.
-- Do not embed or reparent the installed `wt.exe` application window.
-- Do not add WPF, EasyWindowsTerminalControl, or Windows-only package references to `src/SourceGit.csproj`.
-- Do not add `SourceGit.WindowsTerminalHost` to `SourceGit.slnx`; non-Windows matrix jobs must never restore/build the WPF helper.
+- Windows ARM64, macOS x64/ARM64, and Linux x64/ARM64 keep the existing `Iciclecreek.Avalonia.Terminal` 1.0.12 renderer.
+- Do not embed or reparent installed `wt.exe`.
+- Do not reference WPF, EasyWindowsTerminalControl, or Windows-only packages from `src/SourceGit.csproj`.
+- Do not add `SourceGit.WindowsTerminalHost` to `SourceGit.slnx`; non-Windows matrix jobs must never restore/build it.
 - Do not disable SourceGit NativeAOT.
-- Do not introduce a network socket, persistent broker, global service, or global keyboard/mouse hook.
-- One native helper process owns exactly one DevSpaces terminal session.
-- Native startup failure falls back to the existing Avalonia terminal using the same `DevSpaceLaunchSpec`.
-- Adding terminals, changing layout, or switching repository pages must not restart existing terminals.
-- Existing PR #7 Avalonia selection/copy/paste behavior remains intact.
-- The previously approved DevSpaces test-project exception continues; verification is source audit, builds/package assertions, a disposable real-Windows probe, and manual Windows runtime acceptance.
+- Do not add a network socket, global service, persistent broker, or global input hook.
+- One native helper process owns one DevSpaces terminal session.
+- Native startup failure falls back to the existing Avalonia renderer with the same `DevSpaceLaunchSpec`.
+- Adding terminals, changing grid layout, and switching repository pages must not restart existing sessions.
+- Preserve the already implemented PR #7 Avalonia full-surface selection and Copy/Paste/Select All behavior.
+- Continue the previously approved DevSpaces test-project exception. Evidence comes from source audit, build/package checks, the disposable interactive probe, and manual runtime acceptance.
 
 ---
 
@@ -37,20 +37,20 @@
 - Create temporarily: `tools/WindowsTerminalHostProbe/ProbeNativeHost.cs`
 - Create temporarily: `tools/WindowsTerminalHostProbe.Helper/WindowsTerminalHostProbe.Helper.csproj`
 - Create temporarily: `tools/WindowsTerminalHostProbe.Helper/Program.cs`
-- Delete all five probe files after the gate passes; if the gate fails, delete them and stop native-host implementation.
+- Delete both probe directories after the gate.
 
 **Interfaces:**
-- Consumes: Avalonia `NativeControlHost.CreateNativeControlCore(IPlatformHandle)`, WPF `HwndSource`, `EasyWindowsTerminalControl.EasyTerminalControl`.
-- Produces: go/no-go evidence only. No probe type may become a production dependency.
+- Consumes: Avalonia `NativeControlHost`, `IPlatformHandle`, `PlatformHandle`; WPF `HwndSource`; `EasyTerminalControl`.
+- Produces: go/no-go evidence only. Probe code is never retained as production implementation.
 
-- [ ] **Step 1: Create the probe helper project**
+- [ ] **Step 1: Create the WPF probe helper**
 
 Create `tools/WindowsTerminalHostProbe.Helper/WindowsTerminalHostProbe.Helper.csproj`:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PlatformTarget>x64</PlatformTarget>
@@ -63,9 +63,9 @@ Create `tools/WindowsTerminalHostProbe.Helper/WindowsTerminalHostProbe.Helper.cs
 </Project>
 ```
 
-- [ ] **Step 2: Create a child `HwndSource` directly under the Avalonia parent**
+- [ ] **Step 2: Create the terminal child HWND directly under Avalonia's parent HWND**
 
-Create `tools/WindowsTerminalHostProbe.Helper/Program.cs` with this shape:
+Create `tools/WindowsTerminalHostProbe.Helper/Program.cs`:
 
 ```csharp
 using System;
@@ -84,6 +84,7 @@ internal static class Program
             !long.TryParse(args[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var parentValue))
             return 2;
 
+        var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
         var parameters = new HwndSourceParameters("SourceGit Windows Terminal Probe")
         {
             ParentWindow = new IntPtr(parentValue),
@@ -100,19 +101,17 @@ internal static class Program
         };
         source.RootVisual = terminal;
 
-        Console.WriteLine($"SOURCEGIT_TERMINAL_READY {source.Handle.ToInt64()}");
+        Console.Out.WriteLine($"SOURCEGIT_TERMINAL_READY {source.Handle.ToInt64()}");
         Console.Out.Flush();
-
-        var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
         app.Run();
         return 0;
     }
 }
 ```
 
-Do not create a top-level `Window` and call `SetParent` afterward. The child HWND must be born with `ParentWindow` set to Avalonia's native parent.
+Do not create a normal top-level WPF `Window` and reparent it later.
 
-- [ ] **Step 3: Create the Avalonia probe host**
+- [ ] **Step 3: Create the Avalonia probe**
 
 Create `tools/WindowsTerminalHostProbe/WindowsTerminalHostProbe.csproj`:
 
@@ -129,65 +128,76 @@ Create `tools/WindowsTerminalHostProbe/WindowsTerminalHostProbe.csproj`:
 </Project>
 ```
 
-Create `ProbeNativeHost : NativeControlHost`. `CreateNativeControlCore` must start the helper with redirected stdout, wait at most five seconds for exactly `SOURCEGIT_TERMINAL_READY <hwnd>`, and return:
+`ProbeNativeHost : NativeControlHost` starts the helper with:
+
+```csharp
+var psi = new ProcessStartInfo(helperPath)
+{
+    UseShellExecute = false,
+    RedirectStandardOutput = true,
+    RedirectStandardError = true,
+    CreateNoWindow = true,
+};
+psi.ArgumentList.Add(parent.Handle.ToInt64().ToString(CultureInfo.InvariantCulture));
+```
+
+It waits at most five seconds for one line matching `SOURCEGIT_TERMINAL_READY <decimal-hwnd>` and returns:
 
 ```csharp
 return new PlatformHandle(new IntPtr(hwndValue), "HWND");
 ```
 
-`DestroyNativeControlCore` must request helper termination and must not call `DestroyWindow` on the foreign-process HWND.
+`DestroyNativeControlCore` terminates/disposes the helper and never calls `DestroyWindow` on the foreign-process HWND.
 
-- [ ] **Step 4: Build both probes on Windows x64**
-
-Run:
+- [ ] **Step 4: Build both probe projects on Windows x64**
 
 ```powershell
  dotnet build tools/WindowsTerminalHostProbe.Helper/WindowsTerminalHostProbe.Helper.csproj -c Release
  dotnet build tools/WindowsTerminalHostProbe/WindowsTerminalHostProbe.csproj -c Release
 ```
 
-Expected: both exit 0.
+Expected: both commands exit 0.
 
-- [ ] **Step 5: Run the real Windows acceptance gate**
+- [ ] **Step 5: Run the interactive go/no-go gate**
 
-On an interactive Windows x64 desktop, start the Avalonia probe and verify all seven spec requirements:
+On a real interactive Windows x64 desktop verify:
 
 ```text
 1. cmd.exe renders inside the Avalonia host rectangle.
-2. Click/focus and keyboard typing work naturally.
+2. Click-to-focus and normal typing work.
 3. Mouse drag selection works.
-4. Resizing the Avalonia window resizes the native terminal.
-5. Hiding/showing the host does not terminate cmd.exe.
+4. Resizing the Avalonia window resizes the terminal.
+5. Hide/show preserves the cmd.exe process and terminal state.
 6. Closing the host terminates the helper cleanly.
 7. Hidden native content does not bleed over unrelated Avalonia content.
 ```
 
-This step cannot be replaced by GitHub Actions because hosted runners do not provide the interactive desktop evidence required by the spec.
+GitHub hosted runners cannot substitute for this interaction gate.
 
-- [ ] **Step 6: Apply the go/no-go rule**
+- [ ] **Step 6: Apply the hard gate**
 
-If any requirement needs a global hook, `wt.exe` reparenting, a top-level-window reparent hack, disabling NativeAOT, or an unbounded focus workaround, delete the probe files and stop. Keep PR #7 as the Avalonia-terminal improvement only.
+If any item requires `wt.exe` reparenting, a top-level-window reparent hack, global input hooks, disabling NativeAOT, or recurring focus hacks, delete the probe directories and stop this native-host plan. PR #7 remains the improved Avalonia terminal only.
 
-If all seven pass, record the result in the PR conversation and continue.
+If all seven pass, record the result on PR #7 and continue.
 
-- [ ] **Step 7: Remove the disposable probe**
+- [ ] **Step 7: Delete the probe directories**
 
-Delete both temporary `tools/WindowsTerminalHostProbe*` directories before production implementation is merged.
+Remove both temporary probe projects before production commits continue.
 
-**Deliverable:** explicit real-Windows proof that the helper HWND architecture is viable, or a clean no-go with no production native-host code retained.
+**Deliverable:** real Windows evidence that cross-process child-HWND hosting is viable, or a clean no-go with no native production code retained.
 
 ---
 
-### Task 2: Add the shared launch protocol and Windows command-line encoder
+### Task 2: Add the NativeAOT-safe launch protocol
 
 **Files:**
 - Create: `src/DevSpaces/WindowsTerminalHostProtocol.cs`
 
 **Interfaces:**
-- Produces: `WindowsTerminalLaunchPayload`, `WindowsTerminalHostProtocol.Encode(...)`, `TryDecode(...)`, `ReadyPrefix`, `BuildWindowsCommandLine(...)`.
-- Consumed by: `SourceGit.exe` and linked into `SourceGit.WindowsTerminalHost` without a project reference.
+- Produces: `WindowsTerminalLaunchPayload`, `WindowsTerminalHostProtocol.ReadyPrefix`, `StartupTimeoutMilliseconds`, `Encode`, `TryDecode`, `BuildWindowsCommandLine`.
+- Consumed by `SourceGit.exe` and linked as source into `SourceGit.WindowsTerminalHost`.
 
-- [ ] **Step 1: Define the payload and protocol constants**
+- [ ] **Step 1: Define the source-generated JSON contract**
 
 Create:
 
@@ -196,6 +206,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SourceGit.DevSpaces
 {
@@ -204,6 +215,11 @@ namespace SourceGit.DevSpaces
         string[] Arguments,
         string WorkingDirectory);
 
+    [JsonSerializable(typeof(WindowsTerminalLaunchPayload))]
+    internal partial class WindowsTerminalHostJsonContext : JsonSerializerContext
+    {
+    }
+
     public static class WindowsTerminalHostProtocol
     {
         public const string ReadyPrefix = "SOURCEGIT_TERMINAL_READY ";
@@ -211,7 +227,9 @@ namespace SourceGit.DevSpaces
 
         public static string Encode(WindowsTerminalLaunchPayload payload)
         {
-            var json = JsonSerializer.Serialize(payload);
+            var json = JsonSerializer.Serialize(
+                payload,
+                WindowsTerminalHostJsonContext.Default.WindowsTerminalLaunchPayload);
             var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
             return base64.TrimEnd('=').Replace('+', '-').Replace('/', '_');
         }
@@ -227,7 +245,9 @@ namespace SourceGit.DevSpaces
                 var value = encoded.Replace('-', '+').Replace('_', '/');
                 value = value.PadRight(value.Length + ((4 - value.Length % 4) % 4), '=');
                 var json = Encoding.UTF8.GetString(Convert.FromBase64String(value));
-                payload = JsonSerializer.Deserialize<WindowsTerminalLaunchPayload>(json);
+                payload = JsonSerializer.Deserialize(
+                    json,
+                    WindowsTerminalHostJsonContext.Default.WindowsTerminalLaunchPayload);
                 return payload != null &&
                     !string.IsNullOrWhiteSpace(payload.Process) &&
                     payload.Arguments != null &&
@@ -240,9 +260,11 @@ namespace SourceGit.DevSpaces
         }
 ```
 
-- [ ] **Step 2: Add a deterministic Windows command-line builder**
+Using a generated `JsonSerializerContext` is required because the same source is compiled into the NativeAOT SourceGit process.
 
-In the same class add:
+- [ ] **Step 2: Add deterministic CreateProcess-compatible command-line quoting**
+
+Add to the same class:
 
 ```csharp
         public static string BuildWindowsCommandLine(string process, IReadOnlyList<string> arguments)
@@ -266,47 +288,47 @@ In the same class add:
             }
 
             builder.Append('"');
-            var slashCount = 0;
+            var slashes = 0;
             foreach (var ch in value)
             {
                 if (ch == '\\')
                 {
-                    slashCount++;
+                    slashes++;
                     continue;
                 }
 
                 if (ch == '"')
                 {
-                    builder.Append('\\', slashCount * 2 + 1);
+                    builder.Append('\\', slashes * 2 + 1);
                     builder.Append('"');
-                    slashCount = 0;
+                    slashes = 0;
                     continue;
                 }
 
-                builder.Append('\\', slashCount);
-                slashCount = 0;
+                builder.Append('\\', slashes);
+                slashes = 0;
                 builder.Append(ch);
             }
 
-            builder.Append('\\', slashCount * 2);
+            builder.Append('\\', slashes * 2);
             builder.Append('"');
         }
     }
 }
 ```
 
-This is CreateProcess/CRT-compatible quoting. Do not join raw arguments with spaces.
+Do not join raw arguments with spaces.
 
-- [ ] **Step 3: Source-audit protocol behavior**
+- [ ] **Step 3: Audit the protocol before integration**
 
-Verify from the diff:
+Confirm from the source diff:
 
 ```text
-- only Process, Arguments, WorkingDirectory are serialized;
-- Base64URL is one command-line argument;
-- malformed payload returns false;
-- no shell executable is used to decode or launch;
-- argument quoting handles whitespace, embedded quotes, and trailing backslashes.
+- JSON contains only Process, Arguments, WorkingDirectory.
+- JSON serialization uses the generated context in both directions.
+- malformed Base64URL/JSON returns false.
+- no shell is involved in payload decoding.
+- command-line quoting handles spaces, embedded quotes, empty args, and trailing backslashes.
 ```
 
 - [ ] **Step 4: Commit**
@@ -315,11 +337,11 @@ Verify from the diff:
 feat: add Windows terminal host protocol
 ```
 
-**Deliverable:** one platform-neutral source file defines the exact cross-process startup contract.
+**Deliverable:** one AOT-safe neutral launch contract shared by both processes without an assembly reference.
 
 ---
 
-### Task 3: Add `SourceGit.WindowsTerminalHost`
+### Task 3: Add the standalone Windows Terminal helper
 
 **Files:**
 - Create: `src/SourceGit.WindowsTerminalHost/SourceGit.WindowsTerminalHost.csproj`
@@ -328,15 +350,15 @@ feat: add Windows terminal host protocol
 - Do not modify: `SourceGit.slnx`
 
 **Interfaces:**
-- Consumes: linked `../DevSpaces/WindowsTerminalHostProtocol.cs`, `EasyTerminalControl` 1.0.38.
-- Produces: executable `SourceGit.WindowsTerminalHost.exe`; stdout ready line; helper process lifetime equals one terminal lifetime.
+- Consumes linked `../DevSpaces/WindowsTerminalHostProtocol.cs` and EasyWindowsTerminalControl 1.0.38.
+- Produces `SourceGit.WindowsTerminalHost.exe`, one ready line on stdout, stderr diagnostics, and helper process exit matching the child terminal exit when available.
 
-- [ ] **Step 1: Create the x64-only WPF helper project**
+- [ ] **Step 1: Create the x64 WPF project**
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PlatformTarget>x64</PlatformTarget>
@@ -357,9 +379,7 @@ feat: add Windows terminal host protocol
 </Project>
 ```
 
-Do not add a `ProjectReference` from SourceGit.
-
-- [ ] **Step 2: Parse only the approved startup arguments**
+- [ ] **Step 2: Parse exactly the approved startup arguments**
 
 `Program.Main` accepts exactly:
 
@@ -367,11 +387,11 @@ Do not add a `ProjectReference` from SourceGit.
 --parent-hwnd <decimal-hwnd> --launch-payload <base64url-json>
 ```
 
-Reject missing/extra values with exit code 2 and stderr diagnostics. Decode using `WindowsTerminalHostProtocol.TryDecode`.
+Reject malformed or extra arguments with exit code 2 and a stderr message. Decode using `WindowsTerminalHostProtocol.TryDecode`.
 
-- [ ] **Step 3: Create the terminal HWND directly under Avalonia's parent**
+- [ ] **Step 3: Create the `HwndSource` and `EasyTerminalControl`**
 
-Implement `WindowsTerminalHost` so construction does:
+In `WindowsTerminalHost`:
 
 ```csharp
 var parameters = new HwndSourceParameters("SourceGit Windows Terminal")
@@ -382,7 +402,6 @@ var parameters = new HwndSourceParameters("SourceGit Windows Terminal")
     Height = 480,
 };
 _source = new HwndSource(parameters);
-
 _terminal = new EasyTerminalControl
 {
     StartupCommandLine = WindowsTerminalHostProtocol.BuildWindowsCommandLine(
@@ -393,22 +412,45 @@ _terminal = new EasyTerminalControl
 _source.RootVisual = _terminal;
 ```
 
-Then emit exactly:
+Only after the source/root visual exists emit:
 
 ```csharp
-Console.Out.WriteLine($"{WindowsTerminalHostProtocol.ReadyPrefix}{_source.Handle.ToInt64()}");
+Console.Out.WriteLine(
+    $"{WindowsTerminalHostProtocol.ReadyPrefix}{_source.Handle.ToInt64()}");
 Console.Out.Flush();
 ```
 
-All diagnostics use `Console.Error`.
+All other diagnostics go to stderr.
 
-- [ ] **Step 4: Tie helper shutdown to terminal process exit**
+- [ ] **Step 4: Exit the helper when the ConPTY child exits**
 
-After `EasyTerminalControl` is loaded and `ConPTYTerm.TermProcIsStarted` becomes true, poll `ConPTYTerm.Process.HasExited` on a background task at 250 ms intervals. When it becomes true, dispatch `Application.Current.Shutdown(0)`. If the package API at 1.0.38 does not expose `Process.HasExited` publicly at compile time, stop and inspect the exact public package API before changing lifecycle semantics; do not guess or silently leave the helper alive forever.
+The reviewed 1.0.38 source exposes `TermPTY.Process : IProcess`, where `IProcess.HasExited` is public, and the default implementation is public `ProcessFactory.WrappedProcess` with a public `System.Diagnostics.Process Process` property.
 
-- [ ] **Step 5: Dispose ConPTY before helper exit**
+After the terminal starts, monitor without blocking the WPF dispatcher:
 
-On normal shutdown:
+```csharp
+private async Task MonitorTerminalProcessAsync()
+{
+    while (_terminal.ConPTYTerm?.Process == null)
+        await Task.Delay(50);
+
+    var process = _terminal.ConPTYTerm.Process;
+    if (process is ProcessFactory.WrappedProcess wrapped)
+    {
+        await wrapped.Process.WaitForExitAsync();
+        var exitCode = wrapped.Process.ExitCode;
+        _application.Dispatcher.Invoke(() => _application.Shutdown(exitCode));
+        return;
+    }
+
+    await Task.Run(process.WaitForExit);
+    _application.Dispatcher.Invoke(() => _application.Shutdown(0));
+}
+```
+
+Start this monitor once. Do not poll forever after the process is known.
+
+- [ ] **Step 5: Dispose only this terminal session during helper shutdown**
 
 ```csharp
 try { _terminal?.ConPTYTerm?.CloseStdinToApp(); } catch { }
@@ -416,18 +458,14 @@ try { _terminal?.ConPTYTerm?.StopExternalTermOnly(); } catch { }
 try { _source?.Dispose(); } catch { }
 ```
 
-Do not kill unrelated processes.
-
-- [ ] **Step 6: Build the helper independently**
-
-On Windows x64:
+- [ ] **Step 6: Build and publish independently on Windows x64**
 
 ```powershell
  dotnet build src/SourceGit.WindowsTerminalHost/SourceGit.WindowsTerminalHost.csproj -c Release
  dotnet publish src/SourceGit.WindowsTerminalHost/SourceGit.WindowsTerminalHost.csproj -c Release -r win-x64 --self-contained true -o artifacts/windows-terminal-host
 ```
 
-Expected: exit 0 and `artifacts/windows-terminal-host/SourceGit.WindowsTerminalHost.exe` exists.
+Expected: both exit 0 and `artifacts/windows-terminal-host/SourceGit.WindowsTerminalHost.exe` exists.
 
 - [ ] **Step 7: Commit**
 
@@ -435,11 +473,11 @@ Expected: exit 0 and `artifacts/windows-terminal-host/SourceGit.WindowsTerminalH
 feat: add Windows Terminal helper process
 ```
 
-**Deliverable:** a standalone x64 WPF helper that hosts one Windows Terminal surface and does not affect SourceGit's target framework or AOT settings.
+**Deliverable:** an x64-only JIT/WPF helper hosting one Windows Terminal/ConPTY session, isolated from SourceGit's NativeAOT executable.
 
 ---
 
-### Task 4: Add the SourceGit native-host and terminal-surface boundary
+### Task 4: Introduce terminal surfaces and the Avalonia `NativeControlHost`
 
 **Files:**
 - Create: `src/DevSpaces/IDevSpaceTerminalSurface.cs`
@@ -450,15 +488,12 @@ feat: add Windows Terminal helper process
 - Modify: `src/Views/DevSpaceTerminal.axaml.cs`
 
 **Interfaces:**
-- Produces:
-  - `IDevSpaceTerminalSurface.View : Control`
-  - `IDevSpaceTerminalSurface.Exited : event EventHandler<int>`
-  - `Start(DevSpaceLaunchSpec spec)`
-  - `SetPageActive(bool active)`
-  - `Dispose()`
-- Consumes: existing `DevSpaceLaunchSpec`, existing `DevSpaceTerminalControl`, new helper executable.
+- Produces `IDevSpaceTerminalSurface.View`, `Exited`, `Start(DevSpaceLaunchSpec)`, `SetPageActive(bool)`, `Dispose()`.
+- `WindowsTerminalNativeHost` additionally produces `event EventHandler<int> HelperExited`.
 
-- [ ] **Step 1: Define the surface interface**
+- [ ] **Step 1: Define the shared surface boundary**
+
+Create:
 
 ```csharp
 using System;
@@ -476,51 +511,79 @@ namespace SourceGit.DevSpaces
 }
 ```
 
-- [ ] **Step 2: Move the current Avalonia terminal behavior behind the interface**
+- [ ] **Step 2: Move the existing fallback terminal behavior into `AvaloniaDevSpaceTerminalSurface`**
 
-`AvaloniaDevSpaceTerminalSurface` owns one existing `Views.DevSpaceTerminalControl`, subscribes to `ProcessExited`, calls `LaunchProcess(spec.WorkingDirectory, spec.Process, spec.Arguments)`, and keeps the current Copy/Paste/Select All tunneling handler behavior. `SetPageActive` must not destroy the control; it only keeps the Avalonia surface available for the current parent layout.
+The class owns one `Views.DevSpaceTerminalControl`, subscribes to its `ProcessExited`, and launches exactly as PR #7 does now:
 
-Do not change PR #7 keyboard semantics or TUI mouse-reporting gate.
+```csharp
+_terminal.LaunchProcess(spec.WorkingDirectory, spec.Process, spec.Arguments);
+```
+
+Move the existing tunneling right-click handler and `TryClipboardAsync` helper into this surface so native and Avalonia backends do not share clipboard logic.
+
+`SetPageActive(bool)` must not destroy/recreate the control. Preserve all existing PR #7 shortcut and TUI mouse-reporting behavior.
 
 - [ ] **Step 3: Implement `WindowsTerminalNativeHost`**
 
-Subclass `NativeControlHost`. It stores one `DevSpaceLaunchSpec`, one helper `Process`, and the returned child `PlatformHandle`.
+Subclass `NativeControlHost`. Keep one `DevSpaceLaunchSpec`, one `System.Diagnostics.Process`, and one stopped flag.
 
-`CreateNativeControlCore` must:
+`CreateNativeControlCore(IPlatformHandle parent)` must first enforce:
 
 ```csharp
-if (!OperatingSystem.IsWindows() || RuntimeInformation.ProcessArchitecture != Architecture.X64)
+if (!OperatingSystem.IsWindows() ||
+    RuntimeInformation.ProcessArchitecture != Architecture.X64)
     throw new PlatformNotSupportedException();
 ```
 
-Resolve:
-
-```text
-<AppContext.BaseDirectory>/native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe
-```
-
-Create payload:
+Resolve the helper from:
 
 ```csharp
-var payload = new WindowsTerminalLaunchPayload(
-    _spec.Process,
-    _spec.Arguments,
-    _spec.WorkingDirectory);
+Path.Combine(
+    AppContext.BaseDirectory,
+    "native-terminal",
+    "win-x64",
+    "SourceGit.WindowsTerminalHost.exe")
 ```
 
-Start helper with `UseShellExecute=false`, `RedirectStandardOutput=true`, `RedirectStandardError=true`, `CreateNoWindow=true`, and `ArgumentList` entries for `--parent-hwnd`, decimal parent handle, `--launch-payload`, and `WindowsTerminalHostProtocol.Encode(payload)`.
+Start it with:
 
-Read one stdout line with a 5-second timeout. Accept only `ReadyPrefix + decimal HWND`. On any failure, kill/dispose the helper and throw so the caller can fall back.
+```csharp
+var psi = new ProcessStartInfo(helperPath)
+{
+    UseShellExecute = false,
+    RedirectStandardOutput = true,
+    RedirectStandardError = true,
+    CreateNoWindow = true,
+};
+psi.ArgumentList.Add("--parent-hwnd");
+psi.ArgumentList.Add(parent.Handle.ToInt64().ToString(CultureInfo.InvariantCulture));
+psi.ArgumentList.Add("--launch-payload");
+psi.ArgumentList.Add(WindowsTerminalHostProtocol.Encode(payload));
+```
 
-Return `new PlatformHandle(childHwnd, "HWND")`.
+Wait at most `StartupTimeoutMilliseconds` for the first stdout line. Accept only `ReadyPrefix + decimal HWND`. Reject zero/malformed handles. On any startup failure, call one cleanup method that kills the helper process tree if still alive, disposes it, then throws.
 
-`DestroyNativeControlCore` must stop the helper process; it must not call Win32 `DestroyWindow(control.Handle)` because the HWND belongs to the helper process.
+After the ready line, subscribe to helper process exit and raise:
+
+```csharp
+public event EventHandler<int> HelperExited;
+```
+
+exactly once with `_helper.ExitCode`.
+
+Return:
+
+```csharp
+return new PlatformHandle(childHwnd, "HWND");
+```
+
+`DestroyNativeControlCore` calls helper cleanup only. Never call Win32 `DestroyWindow(control.Handle)` because the helper owns that HWND.
 
 - [ ] **Step 4: Implement `WindowsNativeDevSpaceTerminalSurface`**
 
-`View` returns one persistent `WindowsTerminalNativeHost`. `Start(spec)` assigns the spec before the host is attached. `SetPageActive(active)` sets `View.IsVisible = active`; it must not dispose the helper. Monitor the helper process exit and raise `Exited` once.
+`View` returns one persistent `WindowsTerminalNativeHost` instance. `Start(spec)` assigns the launch spec before the native host is attached and subscribes to `HelperExited`. `SetPageActive(active)` sets `View.IsVisible = active`; it does not dispose the helper.
 
-Provide:
+Availability is exactly:
 
 ```csharp
 public static bool IsSupported =>
@@ -533,25 +596,34 @@ public static bool IsSupported =>
         "SourceGit.WindowsTerminalHost.exe"));
 ```
 
-- [ ] **Step 5: Convert `DevSpaceTerminal.axaml` to a neutral surface host**
+Forward `HelperExited` to `Exited` once.
 
-Replace the hard-coded terminal control with:
+- [ ] **Step 5: Replace hard-coded terminal XAML with a neutral surface slot**
+
+`src/Views/DevSpaceTerminal.axaml` becomes:
 
 ```xml
-<Grid>
-  <Grid x:Name="SurfaceHost" />
-  <Border Background="{DynamicResource Brush.Window}"
-          IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}">
-    <TextBlock Margin="16" Text="{Binding ErrorMessage" TextWrapping="Wrap"/>
-  </Border>
-</Grid>
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             x:Class="SourceGit.Views.DevSpaceTerminal"
+             x:DataType="vm:DevSpaceTerminal">
+  <Grid>
+    <Grid x:Name="SurfaceHost" />
+    <Border Background="{DynamicResource Brush.Window}"
+            IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrWhitespace}}">
+      <TextBlock Margin="16"
+                 Text="{Binding ErrorMessage}"
+                 TextWrapping="Wrap"/>
+    </Border>
+  </Grid>
+</UserControl>
 ```
 
-Correct the binding syntax when editing; the intended existing expression is `Text="{Binding ErrorMessage}"`.
+- [ ] **Step 6: Make `DevSpaceTerminal` select native then fall back**
 
-- [ ] **Step 6: Make `DevSpaceTerminal` choose native then fall back**
-
-`Start(launcher)` does:
+`Start` obtains the existing launch spec once, then:
 
 ```csharp
 var spec = launcher.Create(session.Command, session.WorkingDirectory);
@@ -560,37 +632,50 @@ try
 {
     AttachAndStart(_surface, spec);
 }
-catch (Exception ex) when (_surface is WindowsNativeDevSpaceTerminalSurface)
+catch (Exception ex) when (_surface is DevSpaces.WindowsNativeDevSpaceTerminalSurface)
 {
     _surface.Dispose();
-    _surface = new AvaloniaDevSpaceTerminalSurface();
+    _surface = new DevSpaces.AvaloniaDevSpaceTerminalSurface();
     AttachAndStart(_surface, spec);
-    System.Diagnostics.Trace.WriteLine($"DevSpaces native terminal fallback: {ex}");
+    Trace.WriteLine($"[DevSpaces] native-terminal=fallback error={ex}");
 }
+
+Trace.WriteLine(
+    $"[DevSpaces] terminal-backend={(_surface is DevSpaces.WindowsNativeDevSpaceTerminalSurface ? "windows-terminal" : "avalonia")}");
 session.MarkRunning();
 ```
 
-`CreatePreferredSurface()` returns Windows native only when `WindowsNativeDevSpaceTerminalSurface.IsSupported`; otherwise Avalonia.
+`AttachAndStart` adds exactly one `surface.View` to `SurfaceHost`, subscribes to `surface.Exited`, applies the current page-active state, then calls `surface.Start(spec)`.
 
-`Stop()` unsubscribes `Exited`, removes/disposes the current surface, and remains idempotent.
+Add:
 
-If the native helper exits after successful startup, do not auto-create a fallback process; forward the exit to `session.MarkExited(...)` because restarting would lose terminal state.
+```csharp
+public void SetPageActive(bool active)
+{
+    _pageActive = active;
+    _surface?.SetPageActive(active);
+}
+```
 
-- [ ] **Step 7: Build SourceGit on all available platforms**
+`Stop` unsubscribes `Exited`, removes the view, disposes the surface, and remains idempotent.
 
-Run normal SourceGit build. The new main-project code must compile without referencing WPF types or EasyWindowsTerminalControl assemblies.
+If the native helper exits after successful startup, forward the exit to `session.MarkExited(exitCode)`. Do not auto-start another process after a live native session exits.
+
+- [ ] **Step 7: Verify SourceGit still compiles without Windows/WPF references**
+
+Run the normal SourceGit build on the current platform. Inspect `src/SourceGit.csproj` to confirm no WPF/EasyWindowsTerminalControl package or project reference was added.
 
 - [ ] **Step 8: Commit**
 
 ```text
-feat: add DevSpaces terminal backend abstraction
+feat: add DevSpaces native terminal backend
 ```
 
-**Deliverable:** SourceGit can select the native helper on supported packaged Windows x64 builds and cleanly fall back to the existing terminal without changing session commands.
+**Deliverable:** SourceGit can instantiate the helper-backed renderer when packaged/supported and transparently use the existing Avalonia renderer when native startup is unavailable.
 
 ---
 
-### Task 5: Propagate repository-page activity without destroying native terminals
+### Task 5: Propagate repository-page activity without destroying sessions
 
 **Files:**
 - Modify: `src/Views/DevSpaces.axaml.cs`
@@ -598,10 +683,10 @@ feat: add DevSpaces terminal backend abstraction
 - Modify: `src/DevSpaces/DevSpacesBootstrap.cs`
 
 **Interfaces:**
-- Produces: `Views.DevSpaces.SetPageActive(bool)` and `DevSpaceRegistry.SetPageActive(ViewModels.Repository, bool)`.
-- Consumes: `DevSpaceTerminal.SetPageActive(bool)` which forwards to the active surface.
+- Produces `Views.DevSpaces.SetPageActive(bool)` and `DevSpaceRegistry.SetPageActive(ViewModels.Repository, bool)`.
+- Consumes `DevSpaceTerminal.SetPageActive(bool)`.
 
-- [ ] **Step 1: Add page-active propagation to pane views**
+- [ ] **Step 1: Propagate activity through the cached panes**
 
 In `Views.DevSpaces` add:
 
@@ -614,13 +699,17 @@ public void SetPageActive(bool active)
 }
 ```
 
-When creating a pane, call `terminalView.SetPageActive(_pageActive)` after `Start`.
+After `terminalView.Start(_owner.Launcher)` in `GetOrCreatePane`, call:
+
+```csharp
+terminalView.SetPageActive(_pageActive);
+```
 
 Add `private bool _pageActive;`.
 
-- [ ] **Step 2: Expose registry forwarding**
+- [ ] **Step 2: Add registry forwarding**
 
-Add:
+In `DevSpaceRegistry` add:
 
 ```csharp
 public static void SetPageActive(ViewModels.Repository repository, bool active)
@@ -632,7 +721,7 @@ public static void SetPageActive(ViewModels.Repository repository, bool active)
 
 - [ ] **Step 3: Update bootstrap page switching**
 
-Keep the existing mounted/measured fallback behavior:
+Keep the existing fallback subtree mounted:
 
 ```csharp
 _host.IsVisible = true;
@@ -642,13 +731,13 @@ _host.IsHitTestVisible = active;
 DevSpaceRegistry.SetPageActive(_repository, active);
 ```
 
-When disabled, call `DevSpaceRegistry.SetPageActive(_repository, false)` before detaching.
+When DevSpaces is disabled, call `DevSpaceRegistry.SetPageActive(_repository, false)` before detaching.
 
-The key invariant is: Avalonia fallback remains mounted with opacity behavior; native child HWND visibility is controlled through its `NativeControlHost.IsVisible`, never opacity alone.
+Native child HWND visibility must come from its `NativeControlHost.IsVisible`; never rely on host opacity to hide a native HWND.
 
 - [ ] **Step 4: Verify persistence manually**
 
-With two terminal sessions, switch DevSpaces -> History -> Stashes -> DevSpaces and confirm process IDs/session output remain unchanged.
+With two terminals open, switch DevSpaces -> History -> Stashes -> DevSpaces. Confirm both process IDs and output state are unchanged.
 
 - [ ] **Step 5: Commit**
 
@@ -656,23 +745,23 @@ With two terminal sessions, switch DevSpaces -> History -> Stashes -> DevSpaces 
 fix: preserve native terminals across repository pages
 ```
 
-**Deliverable:** native HWNDs hide when DevSpaces is inactive without terminating helper/ConPTY sessions.
+**Deliverable:** repository navigation hides native child HWNDs without terminating or recreating helper/ConPTY sessions.
 
 ---
 
-### Task 6: Package the helper only in Windows x64 artifacts
+### Task 6: Package the helper only for Windows x64
 
 **Files:**
 - Modify: `.github/workflows/build.yml`
-- Modify: `build/scripts/package.win.ps1` only if the packaging script copies from a staged publish directory and otherwise drops nested helper content.
+- Inspect/modify only if required: `build/scripts/package.win.ps1`
 - Modify: `THIRD-PARTY-LICENSES.md`
 
 **Interfaces:**
-- Produces artifact path: `publish/native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe` for `win-x64` only.
+- Produces `publish/native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe` only for the `win-x64` matrix artifact.
 
-- [ ] **Step 1: Add Windows x64 helper format/build/publish steps before SourceGit artifact upload**
+- [ ] **Step 1: Format and publish the helper only in the Windows x64 job**
 
-In `.github/workflows/build.yml`, add steps conditioned on `matrix.runtime == 'win-x64'`:
+Add before artifact upload:
 
 ```yaml
       - name: Format Windows terminal host
@@ -689,11 +778,9 @@ In `.github/workflows/build.yml`, add steps conditioned on `matrix.runtime == 'w
           -o native-terminal-host
 ```
 
-Keep the existing SourceGit `dotnet publish` command unchanged so its NativeAOT evidence remains separate.
+Do not change the existing SourceGit publish command; it remains the independent NativeAOT publish evidence.
 
-- [ ] **Step 2: Stage the helper into the SourceGit publish output**
-
-After SourceGit publish and before artifact packaging/upload:
+- [ ] **Step 2: Stage helper output into the win-x64 SourceGit artifact**
 
 ```yaml
       - name: Stage Windows terminal host
@@ -708,31 +795,36 @@ After SourceGit publish and before artifact packaging/upload:
           }
 ```
 
-- [ ] **Step 3: Assert non-x64 artifacts do not contain the helper**
+- [ ] **Step 3: Add explicit helper absence checks to every other runtime**
 
-Add a cross-platform assertion before upload:
+For Windows ARM64 add a PowerShell assertion:
 
 ```yaml
-      - name: Assert native terminal packaging
+      - name: Assert Windows native terminal is x64-only
+        if: matrix.runtime == 'win-arm64'
         shell: pwsh
         run: |
-          $helper = 'publish/native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe'
-          if ('${{ matrix.runtime }}' -eq 'win-x64') {
-            if (-not (Test-Path $helper)) { throw 'Missing Windows x64 terminal helper.' }
-          } elseif (Test-Path 'publish/native-terminal') {
-            throw 'Native Windows terminal helper must not be included for this runtime.'
+          if (Test-Path 'publish/native-terminal') {
+            throw 'Windows ARM64 artifact must not contain the x64 terminal helper.'
           }
 ```
 
-If PowerShell is unavailable in Linux container jobs, make this assertion Windows-only plus add shell-native `test ! -e publish/native-terminal` assertions to macOS/Linux jobs. Do not remove the assertion.
+For macOS/Linux add a shell assertion:
 
-- [ ] **Step 4: Confirm Windows packaging preserves the nested helper directory**
+```yaml
+      - name: Assert Windows native terminal is absent
+        if: startsWith(matrix.runtime, 'osx-') || startsWith(matrix.runtime, 'linux-')
+        shell: bash
+        run: test ! -e publish/native-terminal
+```
 
-Inspect `build/scripts/package.win.ps1`. If it packages the complete `publish` tree unchanged, make no code change. If it enumerates only top-level files, update it to recursively include `native-terminal/win-x64/**`.
+- [ ] **Step 4: Verify Windows packaging preserves nested helper files**
+
+Inspect `build/scripts/package.win.ps1`. If it packages the complete staged publish directory recursively, make no change. If it enumerates top-level files, change that enumeration to include `native-terminal/win-x64/**`. Do not otherwise refactor packaging.
 
 - [ ] **Step 5: Add third-party attribution**
 
-Update `THIRD-PARTY-LICENSES.md` with `EasyWindowsTerminalControl` and the Windows Terminal WPF package chain used by 1.0.38. Record package names, pinned versions resolved by restore, upstream project URLs, and their licenses. Do not paste full license bodies if the repository's existing convention is attribution-only.
+Update `THIRD-PARTY-LICENSES.md` for `EasyWindowsTerminalControl` 1.0.38 and the Windows Terminal/ConPTY packages resolved by the helper restore. Follow the repository's existing attribution format and record exact resolved package versions from `dotnet list ... package --include-transitive` or `obj/project.assets.json` on the Windows helper build.
 
 - [ ] **Step 6: Commit**
 
@@ -740,23 +832,23 @@ Update `THIRD-PARTY-LICENSES.md` with `EasyWindowsTerminalControl` and the Windo
 build: package Windows terminal host on x64
 ```
 
-**Deliverable:** win-x64 artifacts contain the helper and its required runtime/native dependencies; every other artifact remains unchanged.
+**Deliverable:** the native helper and its dependencies exist only in win-x64 artifacts while SourceGit remains independently NativeAOT-published.
 
 ---
 
-### Task 7: Update PR #7 metadata and run the complete verification gate
+### Task 7: Update PR #7 and verify the exact final head
 
 **Files:**
 - Modify: PR #7 body
-- Audit: all files changed from `master` to `feat/devspaces-native-terminal-input`
+- Audit: branch diff from `master` to `feat/devspaces-native-terminal-input`
 
 **Interfaces:**
 - Consumes all previous tasks.
-- Produces merge-ready evidence only after CI plus manual Windows x64 acceptance.
+- Produces merge-ready evidence only after the final CI gate plus manual Windows x64 acceptance.
 
-- [ ] **Step 1: Audit branch scope**
+- [ ] **Step 1: Audit final branch scope**
 
-Expected production additions/modifications after removing the disposable probe:
+After the disposable probe is deleted, expected native-host production scope is:
 
 ```text
 src/DevSpaces/WindowsTerminalHostProtocol.cs
@@ -776,64 +868,65 @@ src/SourceGit.WindowsTerminalHost/WindowsTerminalHost.cs
 THIRD-PARTY-LICENSES.md
 ```
 
-Plus the existing PR #7 terminal-input files/spec/plans. `SourceGit.slnx` and SourceGit AOT settings must remain unchanged unless CI proves a separately justified packaging-only edit is required.
+Plus the existing PR #7 fallback terminal-input files and approved spec/plans. `SourceGit.slnx` and SourceGit AOT settings remain unchanged.
 
 - [ ] **Step 2: Update PR #7 body**
 
-Add a `Windows native backend` section stating:
+Add:
 
 ```text
+## Windows native backend
+
 - Windows x64 release artifacts include a separate WPF/Windows Terminal helper process.
-- SourceGit.exe remains Avalonia 11 + NativeAOT and does not reference WPF.
-- Windows ARM64/macOS/Linux remain on the Avalonia terminal fallback.
-- Native host startup is optional; failure falls back without restarting sibling terminals.
-- EasyWindowsTerminalControl is pinned to 1.0.38 and is an unofficial/beta packaging surface around Windows Terminal.
+- SourceGit.exe remains Avalonia 11 + NativeAOT and has no WPF dependency.
+- Windows ARM64/macOS/Linux continue using the Avalonia terminal fallback.
+- Native startup is optional; startup failure falls back with the same launch spec.
+- EasyWindowsTerminalControl is pinned to 1.0.38 and wraps unofficial/beta Windows Terminal packaging.
+- Interactive Windows x64 HWND hosting is a separately recorded manual verification gate.
 ```
 
-Keep the existing manual-vs-CI verification distinction.
+- [ ] **Step 3: Follow the final PR Check on the exact final head**
 
-- [ ] **Step 3: Run/follow the final PR Check on the exact final head**
-
-Required green evidence:
+Required successful evidence:
 
 ```text
 Format Check
-Build Windows x64 + SourceGit NativeAOT publish
-Build Windows ARM64
-Build macOS Intel
-Build macOS Apple Silicon
-Build Linux x64
-Build Linux arm64
+Windows x64 SourceGit build + NativeAOT publish
+Windows ARM64 SourceGit build/publish
+macOS Intel build/publish
+macOS Apple Silicon build/publish
+Linux x64 build/publish
+Linux arm64 build/publish
 Windows x64 helper format/build/publish
-win-x64 helper packaging assertion
-non-x64 absence assertions
+win-x64 helper staging assertion
+win-arm64/macOS/Linux helper-absence assertions
 ```
 
-If any job fails, invoke `superpowers:systematic-debugging`, inspect the exact failed job log, identify root cause, and rerun the complete gate after the fix.
+If any job fails, invoke `superpowers:systematic-debugging`, inspect the failing job logs, identify the root cause, make the smallest fix, and rerun the complete gate on the new final head.
 
-- [ ] **Step 4: Perform final manual Windows x64 acceptance**
+- [ ] **Step 4: Perform final Windows x64 runtime acceptance**
 
-Using the final win-x64 artifact, verify:
+Using the final win-x64 artifact:
 
 ```text
-1. Copilot uses the native backend; confirm via diagnostic marker/log.
-2. Mouse drag selection behaves like Windows Terminal.
-3. Native copy/paste shortcuts work.
-4. Ctrl+C reaches Copilot when no selection should be copied.
-5. A second terminal does not reload the first.
-6. Auto/1x2/2x2/3x3 layout changes preserve both sessions.
-7. History/Stashes hide the HWND completely and returning preserves output/process state.
-8. Closing one terminal exits only its helper/process.
-9. Renaming/removing native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe causes clean Avalonia fallback.
-10. SourceGit itself remains the NativeAOT executable from the standard publish step.
+1. Start Copilot and confirm `SourceGit.WindowsTerminalHost.exe` is the active child helper; capture the `[DevSpaces] terminal-backend=windows-terminal` diagnostic while running under the debugger/trace listener.
+2. Drag-select across text and blank-space boundaries.
+3. Copy/paste with normal Windows Terminal interactions.
+4. With no selected text, Ctrl+C reaches Copilot as expected.
+5. Open a second terminal; the first helper PID and state remain unchanged.
+6. Change Auto / 1x2 / 2x2 / 3x3 layouts; both sessions persist.
+7. Switch History/Stashes and back; HWNDs do not bleed over other pages and terminal state persists.
+8. Close one terminal; only its helper/ConPTY child exits.
+9. Temporarily remove `native-terminal/win-x64/SourceGit.WindowsTerminalHost.exe`; creating a new terminal uses the Avalonia fallback without crashing.
+10. Confirm the SourceGit publish step still reports NativeAOT and the app executable comes from that unchanged publish path.
 ```
 
-- [ ] **Step 5: Perform Windows ARM64 fallback acceptance when an ARM64 machine/artifact is available**
+- [ ] **Step 5: Keep ARM64 manual status separate**
 
-Confirm the helper is absent and DevSpaces uses the existing Avalonia terminal. Do not block x64 behavior claims on unavailable ARM64 hardware; CI package/build evidence is separate from manual ARM64 UX evidence.
+When Windows ARM64 hardware is available, confirm DevSpaces uses the Avalonia fallback. Do not claim ARM64 native-terminal runtime testing without that hardware; CI build/package evidence is separate.
 
 - [ ] **Step 6: Do not merge automatically**
 
-Report PR #7 head SHA, mergeability, full CI result, Windows x64 manual probe result, and any unverified manual items. Merge only after the user explicitly requests it.
+Report PR #7 head SHA, mergeability, complete CI result, disposable probe result, final Windows x64 runtime result, and any remaining unverified manual items. Merge only after an explicit user merge request.
 
-**Deliverable:** PR #7 contains the Windows-native x64 terminal backend only if the real HWND probe passes, has green cross-platform CI on its final head, and clearly separates automated and manual evidence.
+**Deliverable:** PR #7 contains the Windows-native x64 backend only if the interactive HWND gate passes, has green cross-platform CI on the exact final head, preserves SourceGit NativeAOT, and clearly separates automated from manual evidence.
