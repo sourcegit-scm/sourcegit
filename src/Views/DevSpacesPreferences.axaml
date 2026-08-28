@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SourceGit.ViewModels"
+             x:Class="SourceGit.Views.DevSpacesPreferences"
+             x:DataType="vm:Preferences">
+  <Grid Margin="16" RowDefinitions="36,36,36" ColumnDefinitions="Auto,*">
+    <CheckBox Grid.Row="0" Grid.Column="1"
+              VerticalAlignment="Center"
+              Content="{DynamicResource Text.DevSpaces.Enable}"
+              IsChecked="{Binding EnableDevSpaces, Mode=TwoWay}"
+              Checked="OnEnableChanged"
+              Unchecked="OnEnableChanged"/>
+
+    <TextBlock Grid.Row="1" Grid.Column="0"
+               Margin="0,0,16,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Text="{DynamicResource Text.DevSpaces.DefaultCommand}"/>
+    <TextBox Grid.Row="1" Grid.Column="1"
+             Height="28"
+             VerticalContentAlignment="Center"
+             Text="{Binding DevSpacesDefaultCommand, Mode=TwoWay}"/>
+
+    <TextBlock Grid.Row="2" Grid.Column="0"
+               Margin="0,0,16,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Text="{DynamicResource Text.DevSpaces.DefaultLayout}"/>
+    <ComboBox Grid.Row="2" Grid.Column="1"
+              Height="28"
+              SelectedIndex="{Binding DevSpacesDefaultLayoutIndex, Mode=TwoWay}">
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.Auto}"/>
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.1x1}"/>
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.2x2}"/>
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.3x3}"/>
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.4x4}"/>
+    </ComboBox>
+  </Grid>
+</UserControl>
