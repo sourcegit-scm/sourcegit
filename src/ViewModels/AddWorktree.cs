@@ -38,9 +38,14 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _createNewBranch, value, true))
                 {
                     if (value)
+                    {
                         SelectedBranch = null;
+                        AutoFillNewBranchNameFromTracking();
+                    }
                     else
+                    {
                         SelectedBranch = LocalBranches.Count > 0 ? LocalBranches[0] : null;
+                    }
                 }
             }
         }
@@ -60,7 +65,11 @@ namespace SourceGit.ViewModels
         public string NewBranchName
         {
             get => _newBranchName;
-            set => SetProperty(ref _newBranchName, value);
+            set
+            {
+                if (SetProperty(ref _newBranchName, value) && !_isUpdatingSuggestedBranchName)
+                    _isBranchNameManuallyEdited = !string.IsNullOrWhiteSpace(value);
+            }
         }
 
         public bool SetTrackingBranch
@@ -69,7 +78,10 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _setTrackingBranch, value))
+                {
                     AutoSelectTrackingBranch();
+                    AutoFillNewBranchNameFromTracking();
+                }
             }
         }
 
@@ -82,7 +94,11 @@ namespace SourceGit.ViewModels
         public Models.Branch SelectedTrackingBranch
         {
             get => _selectedTrackingBranch;
-            set => SetProperty(ref _selectedTrackingBranch, value);
+            set
+            {
+                if (SetProperty(ref _selectedTrackingBranch, value))
+                    AutoFillNewBranchNameFromTracking();
+            }
         }
 
         public bool OpenInNewTab
@@ -185,6 +201,22 @@ namespace SourceGit.ViewModels
             SelectedTrackingBranch = RemoteBranches[0];
         }
 
+        private void AutoFillNewBranchNameFromTracking()
+        {
+            if (!_createNewBranch || !_setTrackingBranch || _selectedTrackingBranch == null || _isBranchNameManuallyEdited)
+                return;
+
+            _isUpdatingSuggestedBranchName = true;
+            try
+            {
+                NewBranchName = _selectedTrackingBranch.Name;
+            }
+            finally
+            {
+                _isUpdatingSuggestedBranchName = false;
+            }
+        }
+
         private string GetBranchName(bool fallback)
         {
             do
@@ -225,6 +257,8 @@ namespace SourceGit.ViewModels
         private bool _createNewBranch = true;
         private Models.Branch _selectedBranch = null;
         private string _newBranchName = string.Empty;
+        private bool _isBranchNameManuallyEdited = false;
+        private bool _isUpdatingSuggestedBranchName = false;
         private bool _setTrackingBranch = false;
         private Models.Branch _selectedTrackingBranch = null;
         private bool _openInNewTab = true;
