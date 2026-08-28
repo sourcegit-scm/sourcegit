@@ -46,6 +46,28 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
+      - name: Build Windows terminal host probe helper
+        if: matrix.runtime == 'win-x64'
+        run: dotnet build tools/WindowsTerminalHostProbe.Helper/WindowsTerminalHostProbe.Helper.csproj -c Release
+      - name: Build Windows terminal host probe
+        if: matrix.runtime == 'win-x64'
+        run: dotnet build tools/WindowsTerminalHostProbe/WindowsTerminalHostProbe.csproj -c Release
+      - name: Publish Windows terminal host probe helper
+        if: matrix.runtime == 'win-x64'
+        run: >-
+          dotnet publish tools/WindowsTerminalHostProbe.Helper/WindowsTerminalHostProbe.Helper.csproj
+          -c Release -r win-x64 --self-contained true -o probe-artifact/helper
+      - name: Publish Windows terminal host probe
+        if: matrix.runtime == 'win-x64'
+        run: >-
+          dotnet publish tools/WindowsTerminalHostProbe/WindowsTerminalHostProbe.csproj
+          -c Release -r win-x64 --self-contained true -o probe-artifact/app
+      - name: Upload Windows terminal host probe
+        if: matrix.runtime == 'win-x64'
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-terminal-host-probe
+          path: probe-artifact/*
       - name: Configure arm64 packages
         if: matrix.runtime == 'linux-arm64'
         run: |
