@@ -55,7 +55,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public int GridDimension => _layout.GetDimension(Sessions.Count);
+        public int GridDimension => Models.DevSpaceLayoutExtensions.GetDimension(_layout, Sessions.Count);
 
         public DevSpaces(
             string workingDirectory,
