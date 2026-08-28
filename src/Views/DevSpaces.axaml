@@ -66,6 +66,6 @@
       </Grid>
     </Border>
 
-    <UniformGrid Grid.Row="1" x:Name="TerminalGrid" Margin="2"/>
+    <Grid Grid.Row="1" x:Name="TerminalGrid" Margin="2"/>
   </Grid>
 </UserControl>
