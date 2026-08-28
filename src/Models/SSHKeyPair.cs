@@ -1,9 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 
 namespace SourceGit.Models
 {
+    public record SSHKeyType(string Name, string Description, string Cmdline)
+    {
+        public static readonly List<SSHKeyType> Supported = [
+            new SSHKeyType("ED25519", "Recommended", "-t ed25519"),
+            new SSHKeyType("RSA", "4096 Bits", "-t rsa -b 4096"),
+        ];
+    }
+
     public class SSHKeyPair
     {
         public string PrivateKeyPath { get; set; }

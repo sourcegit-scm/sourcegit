@@ -150,7 +150,7 @@
       </ContentControl>
     </Grid>
   
-    <!-- Popup -->
+    <!-- Generator Popup -->
     <Border Grid.Row="1"
             IsVisible="{Binding Generator, Mode=OneWay, Converter={x:Static ObjectConverters.IsNotNull}}">
       <ContentControl Content="{Binding Generator}">
@@ -170,54 +170,83 @@
                                Classes="bold"
                                Text="{DynamicResource Text.SSHKeyHelper.Generator}"/>
 
-                    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto,Auto,32" ColumnDefinitions="160,*">
+                    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,32" ColumnDefinitions="160,*">
                       <TextBlock Grid.Row="0" Grid.Column="0"
                                  HorizontalAlignment="Right" VerticalAlignment="Center"
                                  Margin="0,0,8,0"
+                                 Text="{DynamicResource Text.SSHKeyHelper.Generator.Type}"/>
+                      <ComboBox Grid.Row="0" Grid.Column="1"
+                                Height="28" Padding="8,0"
+                                VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding Source={x:Static m:SSHKeyType.Supported}}"
+                                SelectedItem="{Binding Type, Mode=TwoWay}"
+                                Grid.IsSharedSizeScope="True">
+                        <ComboBox.ItemTemplate>
+                          <DataTemplate DataType="m:SSHKeyType">
+                            <Grid Height="20" VerticalAlignment="Center">
+                              <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" SharedSizeGroup="KeyTypeNameColumn"/>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="KeyTypeDescColumn"/>
+                              </Grid.ColumnDefinitions>
+
+                              <TextBlock Grid.Column="0" Text="{Binding Name, Mode=OneWay}"/>
+                              <TextBlock Grid.Column="1"
+                                         Text="{Binding Description, Mode=OneWay}"
+                                         Margin="8,0"
+                                         FontSize="11"
+                                         Foreground="{DynamicResource Brush.FG2}"/>
+                            </Grid>
+                          </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                      </ComboBox>
+
+                      <TextBlock Grid.Row="1" Grid.Column="0"
+                                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                                 Margin="0,0,8,0"
                                  Text="{DynamicResource Text.SSHKeyHelper.Generator.Name}"/>
-                      <TextBox Grid.Row="0" Grid.Column="1"
+                      <TextBox Grid.Row="1" Grid.Column="1"
                                Height="28"
                                CornerRadius="3"
                                VerticalAlignment="Center"
                                Watermark="{DynamicResource Text.SSHKeyHelper.Generator.Name.Placeholder}"
                                Text="{Binding Name, Mode=TwoWay}"/>
 
-                      <TextBlock Grid.Row="1" Grid.Column="0"
+                      <TextBlock Grid.Row="2" Grid.Column="0"
                                  HorizontalAlignment="Right" VerticalAlignment="Center"
                                  Margin="0,0,8,0"
                                  Text="{DynamicResource Text.SSHKeyHelper.Generator.Email}"/>
-                      <TextBox Grid.Row="1" Grid.Column="1"
+                      <TextBox Grid.Row="2" Grid.Column="1"
                                Height="28"
                                CornerRadius="3"
                                VerticalAlignment="Center"
                                Watermark="{DynamicResource Text.SSHKeyHelper.Generator.Email.Placeholder}"
                                Text="{Binding Email, Mode=TwoWay}"/>
 
-                      <TextBlock Grid.Row="2" Grid.Column="0"
+                      <TextBlock Grid.Row="3" Grid.Column="0"
                                  HorizontalAlignment="Right" VerticalAlignment="Center"
                                  Margin="0,0,8,0"
                                  Text="{DynamicResource Text.SSHKeyHelper.Generator.Passphrase}"
                                  IsVisible="{Binding UsePassphrase, Mode=OneWay}"/>
-                      <TextBox Grid.Row="2" Grid.Column="1"
+                      <TextBox Grid.Row="3" Grid.Column="1"
                                Height="28" Margin="0,2"
                                CornerRadius="3"
                                VerticalAlignment="Center"
                                Text="{Binding Passphrase, Mode=TwoWay}"
                                IsVisible="{Binding UsePassphrase, Mode=OneWay}"/>
 
-                      <TextBlock Grid.Row="3" Grid.Column="0"
+                      <TextBlock Grid.Row="4" Grid.Column="0"
                                  HorizontalAlignment="Right" VerticalAlignment="Center"
                                  Margin="0,0,8,0"
                                  Text="{DynamicResource Text.SSHKeyHelper.Generator.ConfirmPassphrase}"
                                  IsVisible="{Binding UsePassphrase, Mode=OneWay}"/>
-                      <TextBox Grid.Row="3" Grid.Column="1"
+                      <TextBox Grid.Row="4" Grid.Column="1"
                                Height="28" Margin="0,2"
                                CornerRadius="3"
                                VerticalAlignment="Center"
                                Text="{Binding ConfirmedPassphrase, Mode=TwoWay}"
                                IsVisible="{Binding UsePassphrase, Mode=OneWay}"/>
 
-                      <CheckBox Grid.Row="4" Grid.Column="1"
+                      <CheckBox Grid.Row="5" Grid.Column="1"
                                 Content="{DynamicResource Text.SSHKeyHelper.Generator.UsePassphrase}"
                                 IsChecked="{Binding UsePassphrase, Mode=TwoWay}"/>
                     </Grid>
