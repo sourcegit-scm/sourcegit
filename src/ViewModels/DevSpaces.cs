@@ -74,9 +74,11 @@ namespace SourceGit.ViewModels
 
         public DevSpaces(
             string workingDirectory,
-            SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null)
+            SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null,
+            SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
         {
             _workingDirectory = workingDirectory;
+            _terminalRegistry = terminalRegistry ?? SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry.Instance;
             Launcher = launcher ?? new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
             Files = new DevSpaceFiles(workingDirectory);
 
@@ -147,8 +149,10 @@ namespace SourceGit.ViewModels
                 $"{displayName} {number}",
                 terminal,
                 workingDirectory,
-                startupCommand);
+                startupCommand,
+                _workingDirectory);
 
+            _terminalRegistry.Register(created);
             Sessions.Add(created);
             ActiveTerminal = created;
             IsFilesActive = false;
@@ -201,6 +205,7 @@ namespace SourceGit.ViewModels
             if (terminal == null || !Sessions.Remove(terminal))
                 return;
 
+            _terminalRegistry.Unregister(terminal.Id);
             terminal.Dispose();
             if (ActiveTerminal == terminal)
                 ActiveTerminal = Sessions.Count > 0 ? Sessions[Sessions.Count - 1] : null;
@@ -211,7 +216,10 @@ namespace SourceGit.ViewModels
         public void StopAll()
         {
             for (var i = Sessions.Count - 1; i >= 0; i--)
+            {
+                _terminalRegistry.Unregister(Sessions[i].Id);
                 Sessions[i].Dispose();
+            }
 
             Sessions.Clear();
             VisibleSlots.Clear();
@@ -280,6 +288,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly string _workingDirectory;
+        private readonly SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry _terminalRegistry;
         private DevSpaceTerminal _activeTerminal;
         private Models.DevSpaceLayout _layout;
         private bool _isFilesActive;
