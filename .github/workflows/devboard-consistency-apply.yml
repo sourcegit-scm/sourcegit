@@ -1,0 +1,90 @@
+name: Apply DevBoard Text Consistency
+
+on:
+  push:
+    branches:
+      - refactor/devboard-identity
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/devboard-identity
+          submodules: true
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Normalize remaining current-product text
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          skip_files = {
+              Path('LICENSE'),
+              Path('THIRD-PARTY-LICENSES.md'),
+              Path('tests/DevBoard.Tests/Native/DataDirectoryResolverTests.cs'),
+          }
+          extensions = {'.cs','.axaml','.csproj','.slnx','.md','.ps1','.mjs','.json','.xml','.plist','.desktop','.sh','.svg'}
+          skip_dirs = {'.git','bin','obj','artifacts','node_modules','depends'}
+
+          for p in Path('.').rglob('*'):
+              if not p.is_file():
+                  continue
+              if any(part in skip_dirs for part in p.parts):
+                  continue
+              if p in skip_files:
+                  continue
+              if '.github' in p.parts and 'workflows' in p.parts:
+                  continue
+              if 'superpowers' in p.parts and ('specs' in p.parts or 'plans' in p.parts):
+                  continue
+              if p.suffix not in extensions and p.name not in {'README.md','TRANSLATION.md'}:
+                  continue
+              try:
+                  original = p.read_text(encoding='utf-8-sig')
+              except UnicodeDecodeError:
+                  continue
+
+              out = []
+              for line in original.splitlines(keepends=True):
+                  if 'sourcegit-scm/sourcegit' in line or 'legacy-migration' in line:
+                      out.append(line)
+                      continue
+                  out.append(line.replace('Dev Board', 'DevBoard').replace('SourceGit', 'DevBoard').replace('sourcegit', 'devboard'))
+              updated = ''.join(out)
+              if updated != original:
+                  p.write_text(updated, encoding='utf-8')
+          PY
+      - name: Verify repository identity
+        run: |
+          node --test tests/devboard-identity.test.mjs
+          node scripts/check-devboard-identity.mjs
+      - name: Run all Node contracts
+        run: node --test tests/*.test.mjs
+      - name: Build DevBoard
+        run: dotnet build DevBoard.slnx -c Debug
+      - name: Run DevBoard tests
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c Release
+      - name: Commit consistency cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git reset .github/workflows || true
+          if git diff --cached --quiet; then
+            echo 'No non-workflow consistency changes remain.'
+            exit 0
+          fi
+          git commit -m 'docs: standardize remaining product identity as DevBoard'
+          git push origin HEAD:refactor/devboard-identity
