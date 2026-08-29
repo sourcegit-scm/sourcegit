@@ -1,0 +1,16 @@
+name: Worktree Base Branch TDD
+
+on:
+  push:
+    branches: [feature/worktree-base-branch-tab]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj -p:DisableAOT=true
