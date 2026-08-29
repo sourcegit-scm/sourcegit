@@ -1,11 +1,15 @@
-name: MCP TDD
+name: MCP Verification
 on:
   push:
     branches: [feat/devspace-mcp-sse]
   workflow_dispatch:
+concurrency:
+  group: mcp-verification-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  test:
+  verify:
     runs-on: windows-2022
+    timeout-minutes: 30
     steps:
       - name: Checkout sources
         uses: actions/checkout@v6
@@ -17,3 +21,7 @@ jobs:
           dotnet-version: 10.0.x
       - name: Run SourceGit tests
         run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release
+      - name: Build SourceGit Release
+        run: dotnet build src/SourceGit.csproj --configuration Release -p:DisableAOT=true
+      - name: Publish SourceGit NativeAOT win-x64
+        run: dotnet publish src/SourceGit.csproj --configuration Release --runtime win-x64
