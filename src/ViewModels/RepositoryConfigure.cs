@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,16 +9,36 @@ namespace SourceGit.ViewModels
 {
     public class RepositoryConfigure : ObservableObject
     {
+        public AvaloniaList<Models.GitAccount> GitAccounts => GitAccountStore.Instance.Accounts;
+
+        public Models.GitAccount SelectedGitAccount
+        {
+            get => _selectedGitAccount;
+            set
+            {
+                if (SetProperty(ref _selectedGitAccount, value) && value != null)
+                    ApplyGitAccount(value);
+            }
+        }
+
         public string UserName
         {
-            get;
-            set;
+            get => _userName;
+            set
+            {
+                if (SetProperty(ref _userName, value) && !_applyingGitAccount)
+                    ClearSelectedGitAccount();
+            }
         }
 
         public string UserEmail
         {
-            get;
-            set;
+            get => _userEmail;
+            set
+            {
+                if (SetProperty(ref _userEmail, value) && !_applyingGitAccount)
+                    ClearSelectedGitAccount();
+            }
         }
 
         public List<string> Remotes
@@ -169,9 +189,9 @@ namespace SourceGit.ViewModels
 
             _cached = new Commands.Config(repo.FullPath).ReadAll();
             if (_cached.TryGetValue("user.name", out var name))
-                UserName = name;
+                _userName = name;
             if (_cached.TryGetValue("user.email", out var email))
-                UserEmail = email;
+                _userEmail = email;
             if (_cached.TryGetValue("commit.gpgsign", out var gpgCommitSign))
                 GPGCommitSigningEnabled = gpgCommitSign == "true";
             if (_cached.TryGetValue("tag.gpgsign", out var gpgTagSign))
@@ -183,6 +203,8 @@ namespace SourceGit.ViewModels
             if (_cached.TryGetValue("fetch.prune", out var prune))
                 EnablePruneOnFetch = (prune == "true");
 
+            ResolveSelectedGitAccount();
+
             foreach (var rule in _repo.IssueTrackers)
             {
                 IssueTrackers.Add(new()
@@ -193,6 +215,18 @@ namespace SourceGit.ViewModels
                     URLTemplate = rule.URLTemplate,
                 });
             }
+        }
+
+        public void RefreshGitAccounts()
+        {
+            if (_selectedGitAccount != null && GitAccounts.Contains(_selectedGitAccount))
+            {
+                ApplyGitAccount(_selectedGitAccount);
+                return;
+            }
+
+            ResolveSelectedGitAccount();
+            OnPropertyChanged(nameof(SelectedGitAccount));
         }
 
         public void ClearHttpProxy()
@@ -274,8 +308,24 @@ namespace SourceGit.ViewModels
         {
             _repo.Settings.Save();
 
-            await SetIfChangedAsync("user.name", UserName, "");
-            await SetIfChangedAsync("user.email", UserEmail, "");
+            if (_selectedGitAccount != null)
+            {
+                await new Commands.Config(_repo.FullPath).SetAsync("user.name", _selectedGitAccount.GitUserName);
+                await new Commands.Config(_repo.FullPath).SetAsync("user.email", _selectedGitAccount.GitEmail);
+
+                if (HasGitHubHttpsRemote())
+                {
+                    await new Commands.Config(_repo.FullPath).SetAsync(
+                        "credential.username",
+                        _selectedGitAccount.GitHubUserName);
+                }
+            }
+            else
+            {
+                await SetIfChangedAsync("user.name", UserName, "");
+                await SetIfChangedAsync("user.email", UserEmail, "");
+            }
+
             await SetIfChangedAsync("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
             await SetIfChangedAsync("tag.gpgsign", GPGTagSigningEnabled ? "true" : "false", "false");
             await SetIfChangedAsync("user.signingkey", GPGUserSigningKey, "");
@@ -283,6 +333,52 @@ namespace SourceGit.ViewModels
             await SetIfChangedAsync("fetch.prune", EnablePruneOnFetch ? "true" : "false", "false");
 
             await ApplyIssueTrackerChangesAsync();
+        }
+
+        private void ApplyGitAccount(Models.GitAccount account)
+        {
+            _applyingGitAccount = true;
+            UserName = account.GitUserName;
+            UserEmail = account.GitEmail;
+            _applyingGitAccount = false;
+        }
+
+        private void ClearSelectedGitAccount()
+        {
+            if (_selectedGitAccount == null)
+                return;
+
+            _selectedGitAccount = null;
+            OnPropertyChanged(nameof(SelectedGitAccount));
+        }
+
+        private void ResolveSelectedGitAccount()
+        {
+            _selectedGitAccount = null;
+            foreach (var account in GitAccounts)
+            {
+                if (account.MatchesIdentity(_userName, _userEmail))
+                {
+                    _selectedGitAccount = account;
+                    break;
+                }
+            }
+        }
+
+        private bool HasGitHubHttpsRemote()
+        {
+            foreach (var remote in _repo.Remotes)
+            {
+                if (!Uri.TryCreate(remote.URL, UriKind.Absolute, out var uri))
+                    continue;
+
+                if ((uri.Scheme.Equals("http", StringComparison.OrdinalIgnoreCase) ||
+                     uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase)) &&
+                    uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
         }
 
         private async Task SetIfChangedAsync(string key, string value, string defValue)
@@ -349,7 +445,11 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo;
         private readonly Dictionary<string, string> _cached;
+        private string _userName = string.Empty;
+        private string _userEmail = string.Empty;
         private string _httpProxy;
+        private bool _applyingGitAccount;
+        private Models.GitAccount _selectedGitAccount = null;
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTracker _selectedIssueTracker = null;
         private Models.CustomAction _selectedCustomAction = null;
