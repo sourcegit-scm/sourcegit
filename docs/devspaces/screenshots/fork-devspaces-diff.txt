@@ -23,6 +23,7 @@ src/ViewModels/Launcher.cs
 src/ViewModels/LauncherPage.cs
 src/ViewModels/Preferences.cs
 src/ViewModels/RepositoryConfigure.cs
+src/Views/About.axaml
 src/Views/AddWorktree.axaml
 src/Views/ConfirmClose.axaml
 src/Views/ConfirmClose.axaml.cs
