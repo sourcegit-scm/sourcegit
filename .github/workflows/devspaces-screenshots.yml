@@ -1,0 +1,67 @@
+name: DevSpaces Screenshots
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  screenshots:
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip devspaces-screenshots]')
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Capture DevSpaces screenshots
+        shell: pwsh
+        run: ./scripts/devspaces-screenshots.ps1
+
+      - name: Upload screenshot gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: devspaces-screenshots-${{ github.sha }}
+          path: artifacts/devspaces-screenshots
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Persist screenshots in repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        shell: pwsh
+        run: |
+          $source = Join-Path $PWD 'artifacts/devspaces-screenshots'
+          $target = Join-Path $PWD 'docs/devspaces/screenshots'
+
+          if (!(Test-Path $source)) {
+            throw "Screenshot output not found: $source"
+          }
+
+          New-Item -ItemType Directory -Force -Path $target | Out-Null
+          Get-ChildItem $target -Force | Remove-Item -Recurse -Force
+          Copy-Item (Join-Path $source '*') $target -Recurse -Force
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/devspaces/screenshots
+
+          if (git diff --cached --quiet) {
+            Write-Host 'Committed screenshots are already up to date.'
+            exit 0
+          }
+
+          git commit -m "docs: update DevSpaces screenshots [skip devspaces-screenshots]"
+          git push origin HEAD:master
