@@ -31,21 +31,21 @@ namespace SourceGit.Views
             _started = true;
             session.StopRequested += OnStopRequested;
 
-            // Prevent the terminal control's default process from being launched if command
-            // resolution fails before the pane is attached to the visual tree.
             Terminal.Process = string.Empty;
 
             try
             {
-                var spec = launcher.Create(session.Command, session.WorkingDirectory);
+                var spec = launcher.Create(session.Terminal, session.WorkingDirectory, session.StartupCommand);
 
-                // Configure the terminal before the pane enters the visual tree. The inner
-                // TerminalView launches from Loaded, after OnInitialized has created the
-                // emulator used to size the PTY.
                 Terminal.ProcessExited += OnProcessExited;
                 Terminal.StartingDirectory = spec.WorkingDirectory;
                 Terminal.Process = spec.Process;
                 Terminal.Args = spec.Arguments;
+
+                _startupCommand = spec.StartupCommand?.Trim() ?? string.Empty;
+                if (!string.IsNullOrEmpty(_startupCommand))
+                    Terminal.ShellReady += OnShellReady;
+
                 session.MarkRunning();
             }
             catch (Exception ex)
@@ -64,6 +64,7 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.DevSpaceTerminal session)
                 session.StopRequested -= OnStopRequested;
 
+            Terminal.ShellReady -= OnShellReady;
             Terminal.ProcessExited -= OnProcessExited;
 
             try
@@ -79,6 +80,25 @@ namespace SourceGit.Views
         public void Dispose()
         {
             Stop();
+        }
+
+        private async void OnShellReady(object sender, EventArgs e)
+        {
+            Terminal.ShellReady -= OnShellReady;
+
+            if (_startupCommandSent || string.IsNullOrWhiteSpace(_startupCommand))
+                return;
+
+            _startupCommandSent = true;
+            try
+            {
+                await Terminal.SendInputAsync(_startupCommand + "\r");
+            }
+            catch (Exception ex)
+            {
+                if (DataContext is ViewModels.DevSpaceTerminal session)
+                    session.MarkFailed(App.Text("DevSpaces.StartFailed", ex.Message));
+            }
         }
 
         private void OnTerminalPointerPressed(object sender, PointerPressedEventArgs e)
@@ -134,6 +154,8 @@ namespace SourceGit.Views
             });
         }
 
+        private string _startupCommand = string.Empty;
+        private bool _startupCommandSent;
         private bool _started;
         private bool _stopped;
     }
