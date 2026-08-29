@@ -78,10 +78,10 @@ The project uses the following third-party libraries or assets
 
 ### JetBrainsMono
 
-- **Source**: https://github.com/JetBrainsMono
+- **Source**: https://github.com/JetBrains/JetBrainsMono
 - **Commit**: v2.304
 - **License**: SIL Open Font License, Version 1.1
-- **License Link**: https://github.com/JetBrainsMono/blob/v2.304/OFL.txt
+- **License Link**: https://github.com/JetBrains/JetBrainsMono/blob/v2.304/OFL.txt
 
 ## Grammar Files
 
@@ -104,7 +104,7 @@ The project uses the following third-party libraries or assets
 - **Source**: https://github.com/eclipse/buildship
 - **Commit**: 6bb773e7692f913dec27105129ebe388de34e68b
 - **License**: Eclipse Public License 1.0
-- **License Link**: https://github.com/eclipse/buildship/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/README.md
+- **License Link**: https://github.com/eclipse-buildship/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/README.md
 
 ### vscode-jsp-lang
 
