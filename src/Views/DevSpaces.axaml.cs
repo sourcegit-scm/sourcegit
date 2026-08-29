@@ -213,8 +213,8 @@ namespace SourceGit.Views
 
             var handle = new TerminalPaneHandle(root, terminalView);
             _panes.Add(session.Id, handle);
-            TerminalGrid.Children.Add(root);
             terminalView.Start(_owner.Launcher);
+            TerminalGrid.Children.Add(root);
             return root;
         }
 

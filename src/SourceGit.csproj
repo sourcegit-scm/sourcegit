@@ -6,6 +6,7 @@
     <ApplicationIcon>App.ico</ApplicationIcon>
     <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\\..\\VERSION"))</Version>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
     <InvariantGlobalization>false</InvariantGlobalization>
 
@@ -57,12 +58,17 @@
     <PackageReference Include="Azure.AI.OpenAI" Version="2.9.0-beta.1" />
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.11" />
+    <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.12" />
     <PackageReference Include="OpenAI" Version="2.10.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
+    <PackageReference Include="Porta.Pty" Version="1.0.7" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
 
     <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
   </ItemGroup>
 
   <ItemGroup>
