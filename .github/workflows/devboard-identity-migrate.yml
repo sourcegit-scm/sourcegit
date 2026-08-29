@@ -25,6 +25,9 @@ jobs:
       - name: Run identity contract tests
         run: node --test tests/devboard-identity.test.mjs
 
+      - name: Scan repository identity
+        run: node scripts/check-devboard-identity.mjs
+
       - name: Build DevBoard
         run: dotnet build DevBoard.slnx -c Debug
 
