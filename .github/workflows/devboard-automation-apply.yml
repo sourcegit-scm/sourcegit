@@ -1,0 +1,56 @@
+name: Apply DevBoard Automation Identity
+
+on:
+  push:
+    branches:
+      - refactor/devboard-identity
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/devboard-identity
+          submodules: true
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Rename automation identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          roots = [Path('.github/workflows'), Path('scripts')]
+          for root in roots:
+              for p in root.rglob('*'):
+                  if not p.is_file(): continue
+                  if p.suffix not in {'.yml','.yaml','.ps1','.mjs','.js','.sh'}: continue
+                  if p.name.startswith('devboard-') and p.parent == Path('.github/workflows'):
+                      continue
+                  try: data = p.read_text(encoding='utf-8-sig')
+                  except UnicodeDecodeError: continue
+                  data = data.replace('SourceGit', 'DevBoard').replace('sourcegit', 'devboard').replace('Dev Board', 'DevBoard')
+                  p.write_text(data, encoding='utf-8')
+          PY
+      - name: Run Store contracts
+        run: node --test tests/store-submission.test.mjs tests/store-msix-script.test.mjs tests/store-assets.test.mjs tests/store-workflow.test.mjs
+      - name: Build DevBoard
+        run: dotnet build DevBoard.slnx -c Debug
+      - name: Run DevBoard tests
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c Release
+      - name: Commit automation rename
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows scripts
+          git reset .github/workflows/devboard-automation-apply.yml .github/workflows/devboard-identity-migrate.yml .github/workflows/devboard-store-contract.yml || true
+          git commit -m 'ci: publish DevBoard across release pipelines'
+          git push origin HEAD:refactor/devboard-identity
