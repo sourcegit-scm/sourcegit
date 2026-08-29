@@ -167,6 +167,11 @@ namespace SourceGit.ViewModels
                 _workingDirectory,
                 profile.Path);
 
+            if (string.Equals(profile.Command, "codex", StringComparison.OrdinalIgnoreCase))
+                SourceGit.DevSpaces.CodexWorkspaceTrust.EnsureTrusted(workingDirectory);
+            else if (string.Equals(profile.Command, "agy", StringComparison.OrdinalIgnoreCase))
+                SourceGit.DevSpaces.AntigravityWorkspaceTrust.EnsureTrusted(workingDirectory);
+
             return CreateTerminalAt(
                 preferredSlot,
                 settings.DefaultTerminal,
