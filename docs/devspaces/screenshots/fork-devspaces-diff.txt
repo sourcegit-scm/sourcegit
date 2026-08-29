@@ -1,11 +1,16 @@
 src/Models/DevSpaceLayout.cs
+src/Models/DevSpacePage.cs
+src/Models/DevSpaceTerminalDisplayMode.cs
 src/Models/DiffOption.cs
 src/Models/GitAccount.cs
 src/Models/GitAccountResolver.cs
 src/Models/GitHubCredentialConfig.cs
 src/Models/LauncherCloseController.cs
+src/Models/LauncherTabSettings.cs
 src/Models/WorktreeBaseBranch.cs
 src/ViewModels/AddWorktree.cs
+src/ViewModels/DevSpaceDashboard.cs
+src/ViewModels/DevSpaceDashboardModels.cs
 src/ViewModels/DevSpaceFileNode.cs
 src/ViewModels/DevSpaceFiles.cs
 src/ViewModels/DevSpaceTerminal.cs
@@ -19,9 +24,12 @@ src/ViewModels/Launcher.cs
 src/ViewModels/LauncherPage.cs
 src/ViewModels/Preferences.cs
 src/ViewModels/RepositoryConfigure.cs
+src/Views/About.axaml
 src/Views/AddWorktree.axaml
 src/Views/ConfirmClose.axaml
 src/Views/ConfirmClose.axaml.cs
+src/Views/DevSpaceDashboard.axaml
+src/Views/DevSpaceDashboard.axaml.cs
 src/Views/DevSpaceFiles.axaml
 src/Views/DevSpaceFiles.axaml.cs
 src/Views/DevSpaceProfileManager.cs
@@ -40,5 +48,7 @@ src/Views/Launcher.axaml
 src/Views/Launcher.axaml.cs
 src/Views/LauncherPages.cs
 src/Views/LauncherTabBar.axaml
+src/Views/LauncherTabBar.axaml.cs
+src/Views/Preferences.DevSpaces.cs
 src/Views/RepositoryConfigure.axaml.cs
 src/Views/WindowsTerminalNativeHost.cs

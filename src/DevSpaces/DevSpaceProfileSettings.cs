@@ -11,8 +11,12 @@ namespace SourceGit.DevSpaces
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("D");
         public string Name { get; set; } = string.Empty;
+        public string Icon { get; set; } = DevSpaceProfileSettings.DefaultProfileIcon;
         public string Path { get; set; } = string.Empty;
         public string Command { get; set; } = string.Empty;
+
+        [JsonIgnore]
+        public string DisplayName => $"{DevSpaceProfileSettings.NormalizeProfileIcon(Icon)} {Name}";
 
         public DevSpaceTerminalProfile Clone(bool createNewId = false)
         {
@@ -20,15 +24,18 @@ namespace SourceGit.DevSpaces
             {
                 Id = createNewId ? Guid.NewGuid().ToString("D") : Id,
                 Name = Name,
+                Icon = Icon,
                 Path = Path,
                 Command = Command,
             };
         }
 
-        public override string ToString() => Name;
+        public override string ToString() => DisplayName;
     }
 
     public sealed record DevSpaceTerminalChoice(string Name, string Value);
+
+    public sealed record DevSpaceProfileIconChoice(string Icon, string Name);
 
     public sealed class DevSpaceProfileSettings
     {
@@ -36,12 +43,37 @@ namespace SourceGit.DevSpaces
         public const string WindowsPowerShell = "__devspaces_powershell__";
         public const string CommandPrompt = "__devspaces_cmd__";
         public const string SystemShell = "__devspaces_shell__";
+        public const string DefaultProfileIcon = "🐱";
 
         public static DevSpaceProfileSettings Instance => _instance ??= Load();
 
         public string DefaultTerminal { get; set; }
 
         public List<DevSpaceTerminalProfile> Profiles { get; } = [];
+
+        public static IReadOnlyList<DevSpaceProfileIconChoice> ProfileIcons { get; } =
+        [
+            new("🐱", "Cat"),
+            new("🐶", "Dog"),
+            new("🦊", "Fox"),
+            new("🐺", "Wolf"),
+            new("🐻", "Bear"),
+            new("🐼", "Panda"),
+            new("🐨", "Koala"),
+            new("🐯", "Tiger"),
+            new("🦁", "Lion"),
+            new("🐸", "Frog"),
+            new("🐵", "Monkey"),
+            new("🐰", "Rabbit"),
+            new("🦝", "Raccoon"),
+            new("🦉", "Owl"),
+            new("🦅", "Eagle"),
+            new("🐧", "Penguin"),
+            new("🦄", "Unicorn"),
+            new("🐙", "Octopus"),
+            new("🦈", "Shark"),
+            new("🐲", "Dragon"),
+        ];
 
         public static IReadOnlyList<DevSpaceTerminalChoice> SupportedTerminals
         {
@@ -63,6 +95,12 @@ namespace SourceGit.DevSpaces
                     new DevSpaceTerminalChoice("PowerShell 7 (pwsh)", PowerShell7),
                 ];
             }
+        }
+
+        public static string NormalizeProfileIcon(string value)
+        {
+            var normalized = value?.Trim();
+            return string.IsNullOrWhiteSpace(normalized) ? DefaultProfileIcon : normalized;
         }
 
         public static string GetTerminalDisplayName(string value)
@@ -180,6 +218,8 @@ namespace SourceGit.DevSpaces
                 throw new ArgumentException("Terminal profile name must not be empty.");
             if (string.IsNullOrWhiteSpace(profile.Id))
                 profile.Id = Guid.NewGuid().ToString("D");
+
+            profile.Icon = NormalizeProfileIcon(profile.Icon);
         }
 
         private DevSpaceProfileSettings(string defaultTerminal)

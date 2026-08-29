@@ -44,7 +44,7 @@
 
       <StackPanel Orientation="Vertical" Margin="4,18,24,18">
         <StackPanel Height="40" Orientation="Horizontal">
-          <TextBlock Classes="bold" Text="SourceGit" FontSize="32" />
+          <TextBlock Classes="bold" Text="Dev Board" FontSize="32" />
           <Border Margin="12,0,0,0" Height="20"
                   CornerRadius="10"
                   Background="{DynamicResource Brush.Accent}"
