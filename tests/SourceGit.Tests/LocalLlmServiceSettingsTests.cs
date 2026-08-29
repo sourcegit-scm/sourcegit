@@ -21,6 +21,17 @@ public class LocalLlmServiceSettingsTests
     }
 
     [Fact]
+    public void LocalLlmRuntimeSettings_HaveAiStudioCompatibleDefaults()
+    {
+        using var service = new Service();
+
+        Assert.Equal(LocalLlmBackend.Auto, service.LocalBackend);
+        Assert.Equal(-1, service.GpuLayerCount);
+        Assert.True(service.LocalThreads >= 1);
+        Assert.Equal((uint)512, service.LocalBatchSize);
+    }
+
+    [Fact]
     public void LocalLlmSettings_RoundTripThroughJson()
     {
         using var service = new Service
@@ -41,6 +52,28 @@ public class LocalLlmServiceSettingsTests
         Assert.Equal(0.35f, restored.Temperature);
         Assert.Equal((uint)16384, restored.ContextWindow);
         Assert.False(restored.AutoLoadModel);
+    }
+
+    [Fact]
+    public void LocalLlmRuntimeSettings_RoundTripThroughJson()
+    {
+        using var service = new Service
+        {
+            Provider = ProviderType.LocalLlm,
+            LocalBackend = LocalLlmBackend.Cuda,
+            GpuLayerCount = 24,
+            LocalThreads = 6,
+            LocalBatchSize = 256,
+        };
+
+        var json = JsonSerializer.Serialize(service);
+        using var restored = JsonSerializer.Deserialize<Service>(json);
+
+        Assert.NotNull(restored);
+        Assert.Equal(LocalLlmBackend.Cuda, restored.LocalBackend);
+        Assert.Equal(24, restored.GpuLayerCount);
+        Assert.Equal(6, restored.LocalThreads);
+        Assert.Equal((uint)256, restored.LocalBatchSize);
     }
 
     [Fact]
