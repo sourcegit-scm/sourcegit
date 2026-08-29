@@ -9,6 +9,7 @@ src/Models/LauncherCloseController.cs
 src/Models/LauncherTabSettings.cs
 src/Models/WorktreeBaseBranch.cs
 src/ViewModels/AddWorktree.cs
+src/ViewModels/DevSpaceAIRouter.cs
 src/ViewModels/DevSpaceDashboard.cs
 src/ViewModels/DevSpaceDashboardModels.cs
 src/ViewModels/DevSpaceFileNode.cs
@@ -28,6 +29,8 @@ src/Views/About.axaml
 src/Views/AddWorktree.axaml
 src/Views/ConfirmClose.axaml
 src/Views/ConfirmClose.axaml.cs
+src/Views/DevSpaceAIRouter.axaml
+src/Views/DevSpaceAIRouter.axaml.cs
 src/Views/DevSpaceDashboard.axaml
 src/Views/DevSpaceDashboard.axaml.cs
 src/Views/DevSpaceFiles.axaml
