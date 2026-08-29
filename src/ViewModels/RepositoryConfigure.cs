@@ -324,15 +324,16 @@ namespace SourceGit.ViewModels
                 await config.SetAsync("user.name", _selectedGitAccount.GitUserName);
                 await config.SetAsync("user.email", _selectedGitAccount.GitEmail);
 
-                if (HasGitHubHttpsRemote())
+                var credentialKeys = GetGitHubCredentialUsernameKeys();
+                foreach (var key in credentialKeys)
+                    await config.SetAsync(key, _selectedGitAccount.GitHubUserName);
+
+                if (_hadManagedGitAccount)
                 {
-                    await config.SetAsync(
-                        "credential.username",
-                        _selectedGitAccount.GitHubUserName);
-                }
-                else if (_hadManagedGitAccount)
-                {
-                    await config.SetAsync("credential.username", string.Empty);
+                    if (!credentialKeys.Contains(Models.GitHubCredentialConfig.HttpsUsernameKey))
+                        await config.SetAsync(Models.GitHubCredentialConfig.HttpsUsernameKey, string.Empty);
+                    if (!credentialKeys.Contains(Models.GitHubCredentialConfig.HttpUsernameKey))
+                        await config.SetAsync(Models.GitHubCredentialConfig.HttpUsernameKey, string.Empty);
                 }
             }
             else
@@ -343,7 +344,8 @@ namespace SourceGit.ViewModels
                 if (_hadManagedGitAccount || _selectedGitAccountWasAppliedDuringSession)
                 {
                     await config.SetAsync(GitAccountConfigKey, string.Empty);
-                    await config.SetAsync("credential.username", string.Empty);
+                    await config.SetAsync(Models.GitHubCredentialConfig.HttpsUsernameKey, string.Empty);
+                    await config.SetAsync(Models.GitHubCredentialConfig.HttpUsernameKey, string.Empty);
                 }
             }
 
@@ -382,20 +384,13 @@ namespace SourceGit.ViewModels
                 _userEmail);
         }
 
-        private bool HasGitHubHttpsRemote()
+        private List<string> GetGitHubCredentialUsernameKeys()
         {
+            var urls = new List<string>();
             foreach (var remote in _repo.Remotes)
-            {
-                if (!Uri.TryCreate(remote.URL, UriKind.Absolute, out var uri))
-                    continue;
+                urls.Add(remote.URL);
 
-                if ((uri.Scheme.Equals("http", StringComparison.OrdinalIgnoreCase) ||
-                     uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase)) &&
-                    uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
-                    return true;
-            }
-
-            return false;
+            return Models.GitHubCredentialConfig.GetUsernameKeys(urls);
         }
 
         private async Task SetIfChangedAsync(string key, string value, string defValue)
