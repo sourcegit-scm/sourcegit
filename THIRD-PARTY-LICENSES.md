@@ -67,6 +67,13 @@ The project uses the following third-party libraries or assets
 - **Version**: 2.30.15
 - **License**: Public Domain
 
+### Microsoft Terminal
+
+- **Source**: https://github.com/microsoft/terminal
+- **Version**: 1.25.260303002
+- **License**: MIT License
+- **License Link**: https://github.com/microsoft/terminal/blob/main/LICENSE
+
 ## Fonts
 
 ### JetBrainsMono

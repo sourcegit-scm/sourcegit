@@ -76,6 +76,37 @@
     <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
   </ItemGroup>
 
+  <Target Name="StageWindowsTerminalNativeForDevelopment"
+          AfterTargets="Build"
+          Condition="$([MSBuild]::IsOSPlatform('Windows')) And '$(RuntimeIdentifier)' == ''">
+    <PropertyGroup>
+      <WindowsTerminalPackageRoot>$(NuGetPackageRoot)ci.microsoft.terminal.wpf\1.25.260303002</WindowsTerminalPackageRoot>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(TargetDir)native-terminal\win-x64;$(TargetDir)native-terminal\win-arm64" />
+    <Copy SourceFiles="$(WindowsTerminalPackageRoot)\runtimes\win-x64\native\Microsoft.Terminal.Control.dll"
+          DestinationFolder="$(TargetDir)native-terminal\win-x64"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(WindowsTerminalPackageRoot)\runtimes\win-arm64\native\Microsoft.Terminal.Control.dll"
+          DestinationFolder="$(TargetDir)native-terminal\win-arm64"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="StageWindowsTerminalNativeForPublish"
+          AfterTargets="Publish"
+          Condition="$([MSBuild]::IsOSPlatform('Windows')) And ('$(RuntimeIdentifier)' == 'win-x64' Or '$(RuntimeIdentifier)' == 'win-arm64')">
+    <PropertyGroup>
+      <WindowsTerminalPackageRoot>$(NuGetPackageRoot)ci.microsoft.terminal.wpf\1.25.260303002</WindowsTerminalPackageRoot>
+      <WindowsTerminalNativeSource>$(WindowsTerminalPackageRoot)\runtimes\$(RuntimeIdentifier)\native\Microsoft.Terminal.Control.dll</WindowsTerminalNativeSource>
+      <WindowsTerminalNativeDestination>$(PublishDir)native-terminal\$(RuntimeIdentifier)</WindowsTerminalNativeDestination>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(WindowsTerminalNativeDestination)" />
+    <Copy SourceFiles="$(WindowsTerminalNativeSource)"
+          DestinationFolder="$(WindowsTerminalNativeDestination)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
   <Target BeforeTargets="GetAssemblyAttributes" Name="GenVersionInfo">
     <Exec Command="git describe --abbrev=8 --dirty" ConsoleToMsBuild="True" IgnoreExitCode="true">
       <Output PropertyName="FriendlyVersion" TaskParameter="ConsoleOutput" />
