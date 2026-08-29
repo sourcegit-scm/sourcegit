@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Avalonia.Controls;
@@ -27,13 +28,14 @@ namespace SourceGit.DevSpaces
             if (!ReferenceEquals(host.Child, entry.View))
                 host.Child = entry.View;
 
+            entry.Repository = repository;
             entry.Host = host;
             return entry.Model;
         }
 
         public static void Close(ViewModels.Repository repository)
         {
-            if (repository == null || !_spaces.Remove(repository, out var entry))
+            if (repository == null || !_spaces.Remove(repository.FullPath, out var entry))
                 return;
 
             if (entry.Host != null && ReferenceEquals(entry.Host.Child, entry.View))
@@ -45,16 +47,16 @@ namespace SourceGit.DevSpaces
 
         public static void DisableAll()
         {
-            foreach (var pair in _spaces)
+            foreach (var entry in _spaces.Values)
             {
-                if (pair.Key.SelectedViewIndex == 3)
-                    pair.Key.SelectedViewIndex = 0;
+                if (entry.Repository?.SelectedViewIndex == 3)
+                    entry.Repository.SelectedViewIndex = 0;
 
-                if (pair.Value.Host != null && ReferenceEquals(pair.Value.Host.Child, pair.Value.View))
-                    pair.Value.Host.Child = null;
+                if (entry.Host != null && ReferenceEquals(entry.Host.Child, entry.View))
+                    entry.Host.Child = null;
 
-                pair.Value.Model.Dispose();
-                pair.Value.View.Dispose();
+                entry.Model.Dispose();
+                entry.View.Dispose();
             }
 
             _spaces.Clear();
@@ -62,35 +64,43 @@ namespace SourceGit.DevSpaces
 
         private static Entry GetOrCreateEntry(ViewModels.Repository repository)
         {
-            if (repository == null)
+            if (repository == null || string.IsNullOrEmpty(repository.FullPath))
                 return null;
 
-            if (_spaces.TryGetValue(repository, out var existing))
+            if (_spaces.TryGetValue(repository.FullPath, out var existing))
+            {
+                existing.Repository = repository;
                 return existing;
+            }
 
             var model = new ViewModels.DevSpaces(repository.FullPath);
             var view = new Views.DevSpaces
             {
                 DataContext = model,
             };
-            var created = new Entry(model, view);
-            _spaces.Add(repository, created);
+            var created = new Entry(repository, model, view);
+            _spaces.Add(repository.FullPath, created);
             return created;
         }
 
         private sealed class Entry
         {
+            public ViewModels.Repository Repository { get; set; }
             public ViewModels.DevSpaces Model { get; }
             public Views.DevSpaces View { get; }
             public Border Host { get; set; }
 
-            public Entry(ViewModels.DevSpaces model, Views.DevSpaces view)
+            public Entry(ViewModels.Repository repository, ViewModels.DevSpaces model, Views.DevSpaces view)
             {
+                Repository = repository;
                 Model = model;
                 View = view;
             }
         }
 
-        private static readonly Dictionary<ViewModels.Repository, Entry> _spaces = [];
+        private static readonly StringComparer _pathComparer = OperatingSystem.IsWindows()
+            ? StringComparer.OrdinalIgnoreCase
+            : StringComparer.Ordinal;
+        private static readonly Dictionary<string, Entry> _spaces = new(_pathComparer);
     }
 }
