@@ -8,7 +8,33 @@
   <x:String x:Key="Text.DevSpaces.Layout.1x2" xml:space="preserve">1x2</x:String>
   <x:String x:Key="Text.DevSpaces.Layout.2x2" xml:space="preserve">2x2</x:String>
   <x:String x:Key="Text.DevSpaces.Layout.3x3" xml:space="preserve">3x3</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout" xml:space="preserve">Workspace tabs:</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout.Vertical" xml:space="preserve">Vertical</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout.VerticalWidth" xml:space="preserve">Vertical tab width:</x:String>
   <x:String x:Key="Text.DevSpaces.NewTerminal" xml:space="preserve">New Terminal</x:String>
   <x:String x:Key="Text.DevSpaces.CloseTerminal" xml:space="preserve">Close Terminal</x:String>
   <x:String x:Key="Text.DevSpaces.StartFailed" xml:space="preserve">Failed to start terminal: {0}</x:String>
+  <x:String x:Key="Text.DevSpaces.Dashboard" xml:space="preserve">Dashboard</x:String>
+  <x:String x:Key="Text.DevSpaces.Files" xml:space="preserve">Files</x:String>
+  <x:String x:Key="Text.DevSpaces.Terminals" xml:space="preserve">Terminals</x:String>
+  <x:String x:Key="Text.DevSpaces.ActiveSpaces" xml:space="preserve">Active Spaces</x:String>
+  <x:String x:Key="Text.DevSpaces.QuickStart" xml:space="preserve">Quick Start</x:String>
+  <x:String x:Key="Text.DevSpaces.GitChanges" xml:space="preserve">Git Changes</x:String>
+  <x:String x:Key="Text.DevSpaces.RecentActivity" xml:space="preserve">Recent Activity</x:String>
+  <x:String x:Key="Text.DevSpaces.CloseAll" xml:space="preserve">Close All</x:String>
+  <x:String x:Key="Text.DevSpaces.CopyPath" xml:space="preserve">Copy Path</x:String>
+  <x:String x:Key="Text.DevSpaces.OpenFolder" xml:space="preserve">Open Folder</x:String>
+  <x:String x:Key="Text.DevSpaces.RoslynUnavailable" xml:space="preserve">Roslyn diagnostics are unavailable until the Roslyn DevSpace integration is present.</x:String>
+  <x:String x:Key="Text.DevSpaces.Branch" xml:space="preserve">Branch</x:String>
+  <x:String x:Key="Text.DevSpaces.BaseBranch" xml:space="preserve">Base</x:String>
+  <x:String x:Key="Text.DevSpaces.Changed" xml:space="preserve">Changed</x:String>
+  <x:String x:Key="Text.DevSpaces.Staged" xml:space="preserve">Staged</x:String>
+  <x:String x:Key="Text.DevSpaces.Unstaged" xml:space="preserve">Unstaged</x:String>
+  <x:String x:Key="Text.DevSpaces.Added" xml:space="preserve">Added</x:String>
+  <x:String x:Key="Text.DevSpaces.Modified" xml:space="preserve">Modified</x:String>
+  <x:String x:Key="Text.DevSpaces.Deleted" xml:space="preserve">Deleted</x:String>
+  <x:String x:Key="Text.DevSpaces.Renamed" xml:space="preserve">Renamed</x:String>
+  <x:String x:Key="Text.DevSpaces.WorkspaceHealth" xml:space="preserve">Workspace Health</x:String>
+  <x:String x:Key="Text.DevSpaces.WorkingCopy" xml:space="preserve">Working Copy</x:String>
 </ResourceDictionary>

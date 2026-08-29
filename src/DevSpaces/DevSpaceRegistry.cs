@@ -73,7 +73,7 @@ namespace SourceGit.DevSpaces
                 return existing;
             }
 
-            var model = new ViewModels.DevSpaces(repository.FullPath);
+            var model = new ViewModels.DevSpaces(repository, repository.FullPath);
             var view = new Views.DevSpaces
             {
                 DataContext = model,

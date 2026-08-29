@@ -1,9 +1,10 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:m="using:SourceGit.Models"
              x:Class="SourceGit.Views.DevSpacesPreferences"
              x:DataType="vm:Preferences">
-  <Grid Margin="16" RowDefinitions="36,36,36" ColumnDefinitions="Auto,*">
+  <Grid Margin="16" RowDefinitions="36,36,36,12,36,36" ColumnDefinitions="Auto,*">
     <CheckBox Grid.Row="0" Grid.Column="1"
               VerticalAlignment="Center"
               Content="{DynamicResource Text.DevSpaces.Enable}"
@@ -34,5 +35,36 @@
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.2x2}"/>
       <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.3x3}"/>
     </ComboBox>
+
+    <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+               Height="1" Margin="0,5"
+               Fill="{DynamicResource Brush.Border2}"/>
+
+    <TextBlock Grid.Row="4" Grid.Column="0"
+               Margin="0,0,16,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Text="{DynamicResource Text.DevSpaces.TabLayout}"/>
+    <ComboBox Grid.Row="4" Grid.Column="1"
+              Height="28"
+              SelectedIndex="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=LayoutIndex, Mode=TwoWay}">
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.TabLayout.Horizontal}"/>
+      <ComboBoxItem Content="{DynamicResource Text.DevSpaces.TabLayout.Vertical}"/>
+    </ComboBox>
+
+    <TextBlock Grid.Row="5" Grid.Column="0"
+               Margin="0,0,16,0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Text="{DynamicResource Text.DevSpaces.TabLayout.VerticalWidth}"
+               IsVisible="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=IsVertical}"/>
+    <NumericUpDown Grid.Row="5" Grid.Column="1"
+                   Minimum="160" Maximum="420" Increment="10"
+                   Height="28"
+                   Padding="4"
+                   BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                   CornerRadius="3"
+                   Value="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=VerticalWidth, Mode=TwoWay}"
+                   IsVisible="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=IsVertical}"/>
   </Grid>
 </UserControl>

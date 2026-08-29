@@ -4,14 +4,14 @@
     <TargetFramework>net10.0</TargetFramework>
     <ApplicationManifest>App.manifest</ApplicationManifest>
     <ApplicationIcon>App.ico</ApplicationIcon>
-    <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\\..\\VERSION"))</Version>
+    <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\..\VERSION"))</Version>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
     <InvariantGlobalization>false</InvariantGlobalization>
 
-    <Product>SourceGit</Product>
-    <Description>OpenSource GIT client</Description>
+    <Product>Dev Board</Product>
+    <Description>Open-source developer workspace for Git, terminals, files, worktrees, and AI-assisted development</Description>
     <Company>sourcegit-scm</Company>
     <Copyright>Copyright © $([System.DateTime]::Now.Year) sourcegit-scm.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -49,7 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Avalonia" Version="11.3.20" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
@@ -60,12 +59,22 @@
     <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.12" />
+    <PackageReference Include="LLamaSharp" Version="0.27.0" />
+    <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.27.0" />
     <PackageReference Include="OpenAI" Version="2.10.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
     <PackageReference Include="Porta.Pty" Version="1.0.7" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
 
     <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows')) And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'win-x64')">
+    <PackageReference Include="LLamaSharp.Backend.Vulkan.Windows" Version="0.27.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'linux-x64')">
+    <PackageReference Include="LLamaSharp.Backend.Vulkan.Linux" Version="0.27.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
@@ -118,3 +127,5 @@
     </ItemGroup>
   </Target>
 </Project>
+
+

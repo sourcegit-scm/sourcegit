@@ -60,6 +60,18 @@ namespace SourceGit.Views
             set => SetAndRaise(IsScrollButtonVisibleProperty, ref _isScrollButtonVisible, value);
         }
 
+        public static readonly DirectProperty<LauncherTabBar, bool> IsVerticalProperty =
+            AvaloniaProperty.RegisterDirect<LauncherTabBar, bool>(
+                nameof(IsVertical),
+                static o => o.IsVertical,
+                static (o, v) => o.IsVertical = v);
+
+        public bool IsVertical
+        {
+            get => _isVertical;
+            set => SetAndRaise(IsVerticalProperty, ref _isVertical, value);
+        }
+
         public LauncherTabBar()
         {
             InitializeComponent();
@@ -69,7 +81,7 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
-            if (LauncherTabsList == null || LauncherTabsList.SelectedIndex == -1)
+            if (_isVertical || LauncherTabsList == null || LauncherTabsList.SelectedIndex == -1)
                 return;
 
             var startX = LauncherTabsScroller.Offset.X;
@@ -171,6 +183,9 @@ namespace SourceGit.Views
 
         private void ScrollTabs(object _, PointerWheelEventArgs e)
         {
+            if (_isVertical)
+                return;
+
             if (Math.Abs(e.Delta.X) < Math.Abs(e.Delta.Y))
             {
                 var x = LauncherTabsScroller.Offset.X;
@@ -180,7 +195,7 @@ namespace SourceGit.Views
 
                 if (extent > viewport)
                 {
-                    x += -delta * 64; // Use the same logic with vertical scrolling in `ScrollContentPresenter`
+                    x += -delta * 64;
                     x = Math.Min(Math.Max(x, 0), extent - viewport);
                 }
 
@@ -203,7 +218,7 @@ namespace SourceGit.Views
 
         private void OnTabsLayoutUpdated(object _1, EventArgs _2)
         {
-            IsScrollButtonVisible = LauncherTabsScroller.Extent.Width > LauncherTabsScroller.Viewport.Width;
+            IsScrollButtonVisible = !_isVertical && LauncherTabsScroller.Extent.Width > LauncherTabsScroller.Viewport.Width;
             InvalidateVisual();
         }
 
@@ -413,6 +428,7 @@ namespace SourceGit.Views
         }
 
         private bool _isScrollButtonVisible = false;
+        private bool _isVertical = false;
         private readonly Vector _scrollStep = new(64, 0);
         private PointerPressedEventArgs _pressedTabEvent = null;
         private bool _startDragTab = false;

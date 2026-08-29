@@ -15,12 +15,13 @@ namespace SourceGit.Views
         {
             Title = "DevSpace Terminal Profiles";
             Width = 720;
-            Height = 520;
+            Height = 610;
             MinWidth = 620;
-            MinHeight = 440;
+            MinHeight = 520;
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             BuildDefaultTerminalPicker();
+            BuildIconPicker();
             BuildContent();
             RefreshProfiles();
         }
@@ -46,6 +47,28 @@ namespace SourceGit.Views
 
             if (_defaultTerminal.SelectedIndex < 0 && _defaultTerminal.ItemCount > 0)
                 _defaultTerminal.SelectedIndex = 0;
+        }
+
+        private void BuildIconPicker()
+        {
+            foreach (var choice in SourceGit.DevSpaces.DevSpaceProfileSettings.ProfileIcons)
+            {
+                var icon = new Button
+                {
+                    Content = choice.Icon,
+                    Tag = choice.Icon,
+                    FontSize = 20,
+                    MinWidth = 36,
+                    MinHeight = 36,
+                    Padding = new Thickness(4),
+                    Margin = new Thickness(0, 0, 6, 6),
+                };
+                ToolTip.SetTip(icon, choice.Name);
+                icon.Click += (_, _) => _icon.Text = choice.Icon;
+                _iconPicker.Children.Add(icon);
+            }
+
+            _icon.Text = SourceGit.DevSpaces.DevSpaceProfileSettings.DefaultProfileIcon;
         }
 
         private void BuildContent()
@@ -107,25 +130,45 @@ namespace SourceGit.Views
 
             var editor = new Grid
             {
-                RowDefinitions = new RowDefinitions("Auto,6,Auto,6,Auto,6,Auto,12,Auto,*"),
+                RowDefinitions = new RowDefinitions("Auto,6,Auto,6,Auto,8,Auto,12,Auto,6,Auto,6,Auto,6,Auto,12,Auto,*"),
             };
             Grid.SetColumn(editor, 2);
             body.Children.Add(editor);
 
-            editor.Children.Add(new TextBlock { Text = "Name" });
-            Grid.SetRow(_name, 2);
+            editor.Children.Add(new TextBlock { Text = "Icon" });
+            Grid.SetRow(_icon, 2);
+            editor.Children.Add(_icon);
+
+            var iconHint = new TextBlock
+            {
+                Text = OperatingSystem.IsWindows()
+                    ? "Press Win + . to choose any emoji, or use a quick pick below."
+                    : "Enter any emoji, or use a quick pick below.",
+                Opacity = 0.7,
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+            };
+            Grid.SetRow(iconHint, 4);
+            editor.Children.Add(iconHint);
+
+            Grid.SetRow(_iconPicker, 6);
+            editor.Children.Add(_iconPicker);
+
+            var nameLabel = new TextBlock { Text = "Name" };
+            Grid.SetRow(nameLabel, 8);
+            editor.Children.Add(nameLabel);
+            Grid.SetRow(_name, 10);
             editor.Children.Add(_name);
 
             var pathLabel = new TextBlock { Text = "Workspace-relative path" };
-            Grid.SetRow(pathLabel, 4);
+            Grid.SetRow(pathLabel, 12);
             editor.Children.Add(pathLabel);
-            Grid.SetRow(_path, 6);
+            Grid.SetRow(_path, 14);
             editor.Children.Add(_path);
 
             var commandLabel = new TextBlock { Text = "Startup command" };
-            Grid.SetRow(commandLabel, 8);
+            Grid.SetRow(commandLabel, 16);
             editor.Children.Add(commandLabel);
-            Grid.SetRow(_command, 9);
+            Grid.SetRow(_command, 17);
             editor.Children.Add(_command);
 
             _profiles.SelectionChanged += (_, _) => LoadSelectedProfile();
@@ -200,12 +243,14 @@ namespace SourceGit.Views
                 return true;
 
             profile.Name = _name.Text?.Trim() ?? string.Empty;
+            profile.Icon = _icon.Text;
             profile.Path = _path.Text?.Trim() ?? string.Empty;
             profile.Command = _command.Text?.Trim() ?? string.Empty;
 
             try
             {
                 SourceGit.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
+                _icon.Text = profile.Icon;
                 SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Save();
                 RefreshProfiles(profile.Id);
                 return true;
@@ -312,6 +357,7 @@ namespace SourceGit.Views
                 return;
             }
 
+            _icon.Text = SourceGit.DevSpaces.DevSpaceProfileSettings.NormalizeProfileIcon(profile.Icon);
             _name.Text = profile.Name;
             _path.Text = profile.Path;
             _command.Text = profile.Command;
@@ -319,6 +365,7 @@ namespace SourceGit.Views
 
         private void ClearEditor()
         {
+            _icon.Text = SourceGit.DevSpaces.DevSpaceProfileSettings.DefaultProfileIcon;
             _name.Text = string.Empty;
             _path.Text = string.Empty;
             _command.Text = string.Empty;
@@ -341,6 +388,20 @@ namespace SourceGit.Views
         {
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch,
+        };
+
+        private readonly TextBox _icon = new()
+        {
+            Width = 120,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            Watermark = "🐱",
+            FontSize = 22,
+        };
+
+        private readonly WrapPanel _iconPicker = new()
+        {
+            Orientation = Orientation.Horizontal,
+            HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
         private readonly TextBox _name = new();

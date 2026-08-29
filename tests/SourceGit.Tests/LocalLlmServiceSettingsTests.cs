@@ -1,0 +1,220 @@
+using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using SourceGit.AI;
+using Xunit;
+
+namespace SourceGit.Tests;
+
+public class LocalLlmServiceSettingsTests
+{
+    [Fact]
+    public void LocalLlmSettings_HaveApprovedDefaults()
+    {
+        using var service = new Service();
+
+        Assert.Equal(ProviderType.OpenAI, service.Provider);
+        Assert.Equal(0.2f, service.Temperature);
+        Assert.Equal((uint)10000, service.ContextWindow);
+        Assert.True(service.AutoLoadModel);
+        Assert.Equal(string.Empty, service.LocalModelPath);
+    }
+
+    [Fact]
+    public void LocalLlmRuntimeSettings_HaveAiStudioCompatibleDefaults()
+    {
+        using var service = new Service();
+
+        Assert.Equal(LocalLlmBackend.Auto, service.LocalBackend);
+        Assert.Equal(-1, service.GpuLayerCount);
+        Assert.True(service.LocalThreads >= 1);
+        Assert.Equal((uint)512, service.LocalBatchSize);
+    }
+
+    [Fact]
+    public void LocalLlmBackend_DefaultBundleStaysSlim()
+    {
+        Assert.Equal(["Auto", "Cpu", "Vulkan"], Enum.GetNames<LocalLlmBackend>());
+    }
+
+    [Fact]
+    public void LocalLlmBackend_VulkanIsOnlyBundledForSupportedX64Platforms()
+    {
+        var method = typeof(LocalLlmBackendCoordinator).GetMethod(
+            "SupportsBundledVulkan",
+            BindingFlags.Static | BindingFlags.NonPublic,
+            binder: null,
+            types: [typeof(Architecture), typeof(bool), typeof(bool)],
+            modifiers: null);
+
+        Assert.NotNull(method);
+        Assert.True((bool)method.Invoke(null, [Architecture.X64, true, false]));
+        Assert.True((bool)method.Invoke(null, [Architecture.X64, false, true]));
+        Assert.False((bool)method.Invoke(null, [Architecture.X64, false, false]));
+        Assert.False((bool)method.Invoke(null, [Architecture.Arm64, true, false]));
+        Assert.False((bool)method.Invoke(null, [Architecture.Arm64, false, true]));
+    }
+
+    [Fact]
+    public void LocalLlmSettings_RoundTripThroughJson()
+    {
+        using var service = new Service
+        {
+            Provider = ProviderType.LocalLlm,
+            LocalModelPath = "/models/qwen.gguf",
+            Temperature = 0.35f,
+            ContextWindow = 16384,
+            AutoLoadModel = false,
+        };
+
+        var json = JsonSerializer.Serialize(service);
+        using var restored = JsonSerializer.Deserialize<Service>(json);
+
+        Assert.NotNull(restored);
+        Assert.Equal(ProviderType.LocalLlm, restored.Provider);
+        Assert.Equal("/models/qwen.gguf", restored.LocalModelPath);
+        Assert.Equal(0.35f, restored.Temperature);
+        Assert.Equal((uint)16384, restored.ContextWindow);
+        Assert.False(restored.AutoLoadModel);
+    }
+
+    [Fact]
+    public void LocalLlmRuntimeSettings_RoundTripThroughJson()
+    {
+        using var service = new Service
+        {
+            Provider = ProviderType.LocalLlm,
+            LocalBackend = LocalLlmBackend.Vulkan,
+            GpuLayerCount = 24,
+            LocalThreads = 6,
+            LocalBatchSize = 256,
+        };
+
+        var json = JsonSerializer.Serialize(service);
+        using var restored = JsonSerializer.Deserialize<Service>(json);
+
+        Assert.NotNull(restored);
+        Assert.Equal(LocalLlmBackend.Vulkan, restored.LocalBackend);
+        Assert.Equal(24, restored.GpuLayerCount);
+        Assert.Equal(6, restored.LocalThreads);
+        Assert.Equal((uint)256, restored.LocalBatchSize);
+    }
+
+    [Fact]
+    public void Temperature_IsClampedToSupportedRange()
+    {
+        using var service = new Service { Temperature = 3.5f };
+        Assert.Equal(2.0f, service.Temperature);
+
+        service.Temperature = -1.0f;
+        Assert.Equal(0.0f, service.Temperature);
+    }
+
+    [Fact]
+    public void ContextWindow_HasSafeMinimum()
+    {
+        using var service = new Service { ContextWindow = 1 };
+        Assert.Equal((uint)512, service.ContextWindow);
+    }
+
+    [Fact]
+    public void MissingLocalModel_ReportsModelNotFoundWithoutLoading()
+    {
+        using var service = new Service
+        {
+            Provider = ProviderType.LocalLlm,
+            LocalModelPath = Path.Combine(Path.GetTempPath(), $"missing-{Guid.NewGuid():N}.gguf"),
+            AutoLoadModel = true,
+        };
+
+        service.FetchAvailableModels();
+
+        Assert.Equal("Model not found", service.LocalModelStatus);
+        Assert.Equal("Model not found", service.GetLocalModelValidationError());
+    }
+
+    [Fact]
+    public void LocalModelList_UsesConfiguredDefaultModel()
+    {
+        using var service = new Service
+        {
+            Provider = ProviderType.LocalLlm,
+            LocalModelPath = Path.Combine(Path.GetTempPath(), "sourcegit-default.gguf"),
+            AutoLoadModel = false,
+        };
+
+        service.FetchAvailableModels();
+
+        Assert.Equal(["sourcegit-default.gguf"], service.AvailableModels);
+    }
+
+    [Fact]
+    public async Task AsyncLoadCoordinator_SharesConcurrentLoad()
+    {
+        using var gate = new ManualResetEventSlim(false);
+        using var coordinator = new AsyncLoadCoordinator<FakeDisposable>();
+        var calls = 0;
+
+        FakeDisposable Load()
+        {
+            Interlocked.Increment(ref calls);
+            gate.Wait();
+            return new FakeDisposable();
+        }
+
+        var first = coordinator.GetOrLoadAsync(Load, CancellationToken.None);
+        var second = coordinator.GetOrLoadAsync(Load, CancellationToken.None);
+
+        Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref calls) == 1, TimeSpan.FromSeconds(5)));
+        Assert.Equal(1, Volatile.Read(ref calls));
+
+        gate.Set();
+        var firstResult = await first;
+        var secondResult = await second;
+
+        Assert.Same(firstResult, secondResult);
+        Assert.Equal(1, Volatile.Read(ref calls));
+    }
+
+    [Fact]
+    public async Task AsyncLoadCoordinator_ResetInvalidatesStaleLoad()
+    {
+        using var gate = new ManualResetEventSlim(false);
+        using var coordinator = new AsyncLoadCoordinator<FakeDisposable>();
+        FakeDisposable stale = null;
+
+        FakeDisposable LoadStale()
+        {
+            stale = new FakeDisposable();
+            gate.Wait();
+            return stale;
+        }
+
+        var first = coordinator.GetOrLoadAsync(LoadStale, CancellationToken.None);
+        Assert.True(SpinWait.SpinUntil(() => stale != null, TimeSpan.FromSeconds(5)));
+
+        coordinator.Reset();
+        gate.Set();
+
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await first);
+        Assert.True(stale.IsDisposed);
+
+        var fresh = await coordinator.GetOrLoadAsync(() => new FakeDisposable(), CancellationToken.None);
+        Assert.False(fresh.IsDisposed);
+        Assert.NotSame(stale, fresh);
+    }
+
+    private sealed class FakeDisposable : IDisposable
+    {
+        public bool IsDisposed { get; private set; }
+
+        public void Dispose()
+        {
+            IsDisposed = true;
+        }
+    }
+}
