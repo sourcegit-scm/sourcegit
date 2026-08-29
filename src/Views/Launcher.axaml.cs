@@ -1,10 +1,12 @@
 using System;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Platform;
 
 namespace SourceGit.Views
 {
@@ -71,6 +73,9 @@ namespace SourceGit.Views
 
         public void BringToTop()
         {
+            if (!IsVisible)
+                Show();
+
             if (WindowState == WindowState.Minimized)
                 WindowState = _lastWindowState;
             else
@@ -163,7 +168,8 @@ namespace SourceGit.Views
 
                 if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
                 {
-                    App.Quit(0);
+                    Close();
+                    e.Handled = true;
                     return;
                 }
             }
@@ -324,9 +330,23 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
+            if (Design.IsDesignMode)
+            {
+                base.OnClosing(e);
+                return;
+            }
+
+            if (_closeController.OnCloseRequested() != Models.LauncherCloseAction.Exit)
+            {
+                e.Cancel = true;
+                if (!_isCloseConfirmationVisible)
+                    _ = ConfirmCloseAsync();
+                return;
+            }
+
             base.OnClosing(e);
 
-            if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
+            if (DataContext is ViewModels.Launcher launcher)
                 launcher.CloseAll();
         }
 
@@ -334,10 +354,70 @@ namespace SourceGit.Views
         {
             base.OnClosed(e);
 
+            _trayIcon?.Dispose();
+            _trayIcon = null;
+
             if (!Design.IsDesignMode)
                 ViewModels.Preferences.Instance.Save();
 
             App.Quit(0);
+        }
+
+        private async Task ConfirmCloseAsync()
+        {
+            _isCloseConfirmationVisible = true;
+            try
+            {
+                var dialog = new ConfirmClose();
+                var decision = await dialog.ShowDialog<Models.CloseAppDecision>(this);
+                var action = _closeController.Apply(decision);
+                switch (action)
+                {
+                    case Models.LauncherCloseAction.Exit:
+                        Close();
+                        break;
+                    case Models.LauncherCloseAction.HideToTray:
+                        EnsureTrayIcon();
+                        Hide();
+                        break;
+                }
+            }
+            finally
+            {
+                _isCloseConfirmationVisible = false;
+            }
+        }
+
+        private void EnsureTrayIcon()
+        {
+            if (_trayIcon != null)
+            {
+                _trayIcon.IsVisible = true;
+                return;
+            }
+
+            var menu = new NativeMenu();
+            var open = new NativeMenuItem("Open SourceGit");
+            open.Click += (_, _) => BringToTop();
+            menu.Items.Add(open);
+            menu.Items.Add(new NativeMenuItemSeparator());
+
+            var exit = new NativeMenuItem("Exit");
+            exit.Click += (_, _) =>
+            {
+                _closeController.Apply(Models.CloseAppDecision.Yes);
+                Close();
+            };
+            menu.Items.Add(exit);
+
+            _trayIcon = new TrayIcon
+            {
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://SourceGit/App.ico"))),
+                ToolTipText = "SourceGit",
+                Menu = menu,
+                IsVisible = true,
+            };
+            _trayIcon.Clicked += (_, _) => BringToTop();
         }
 
         private void OnPositionChanged(object sender, PixelPointEventArgs e)
@@ -438,8 +518,10 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private readonly Models.LauncherCloseController _closeController = new();
         private GridLength _captionHeight = new(32);
         private WindowState _lastWindowState = WindowState.Normal;
+        private TrayIcon _trayIcon;
+        private bool _isCloseConfirmationVisible;
     }
 }
-
