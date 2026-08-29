@@ -39,6 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AvaloniaResource Include="App.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
     <AvaloniaResource Include="Resources/Grammars/*" />
@@ -127,5 +131,3 @@
     </ItemGroup>
   </Target>
 </Project>
-
-
