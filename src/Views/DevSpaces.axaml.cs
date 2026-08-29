@@ -21,6 +21,12 @@ namespace SourceGit.Views
             DataContextChanged += OnDataContextChanged;
         }
 
+        public void SetPageActive(bool active)
+        {
+            _pageActive = active;
+            UpdateSurfaceVisibility();
+        }
+
         public void Dispose()
         {
             if (_owner != null)
@@ -90,6 +96,7 @@ namespace SourceGit.Views
             _owner?.CloseTerminal(session);
             if (_panes.Remove(session.Id, out var pane))
             {
+                pane.TerminalView.SetPageActive(false);
                 TerminalGrid.Children.Remove(pane.Root);
                 pane.TerminalView.Dispose();
             }
@@ -105,6 +112,7 @@ namespace SourceGit.Views
             {
                 TerminalGrid.RowDefinitions = new RowDefinitions("*");
                 TerminalGrid.ColumnDefinitions = new ColumnDefinitions("*");
+                UpdateSurfaceVisibility();
                 return;
             }
 
@@ -145,6 +153,23 @@ namespace SourceGit.Views
                     TerminalGrid.Children.Add(empty);
                     _emptySlots.Add(empty);
                 }
+            }
+
+            UpdateSurfaceVisibility();
+        }
+
+        private void UpdateSurfaceVisibility()
+        {
+            foreach (var pane in _panes.Values)
+                pane.TerminalView.SetPageActive(false);
+
+            if (!_pageActive || _owner == null)
+                return;
+
+            foreach (var slot in _owner.VisibleSlots)
+            {
+                if (slot.Terminal != null && _panes.TryGetValue(slot.Terminal.Id, out var pane))
+                    pane.TerminalView.SetPageActive(true);
             }
         }
 
@@ -308,7 +333,10 @@ namespace SourceGit.Views
         private void DisposePanes()
         {
             foreach (var pane in _panes.Values)
+            {
+                pane.TerminalView.SetPageActive(false);
                 pane.TerminalView.Dispose();
+            }
 
             _panes.Clear();
             _emptySlots.Clear();
@@ -318,5 +346,6 @@ namespace SourceGit.Views
         private readonly Dictionary<Guid, TerminalPaneHandle> _panes = [];
         private readonly List<Button> _emptySlots = [];
         private ViewModels.DevSpaces _owner;
+        private bool _pageActive;
     }
 }

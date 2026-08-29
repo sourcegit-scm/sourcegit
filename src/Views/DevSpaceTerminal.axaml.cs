@@ -2,11 +2,8 @@ using System;
 using System.Threading.Tasks;
 
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
+using Avalonia.Controls.Templates;
 using Avalonia.Threading;
-
-using Iciclecreek.Terminal;
 
 namespace SourceGit.Views
 {
@@ -15,12 +12,6 @@ namespace SourceGit.Views
         public DevSpaceTerminal()
         {
             InitializeComponent();
-
-            Terminal.AddHandler(
-                PointerPressedEvent,
-                OnTerminalPointerPressed,
-                RoutingStrategies.Tunnel,
-                handledEventsToo: true);
         }
 
         public void Start(SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher)
@@ -31,27 +22,23 @@ namespace SourceGit.Views
             _started = true;
             session.StopRequested += OnStopRequested;
 
-            // Prevent the terminal control's default process from being launched if command
-            // resolution fails before the pane is attached to the visual tree.
-            Terminal.Process = string.Empty;
-
             try
             {
                 var spec = launcher.Create(session.Command, session.WorkingDirectory);
-
-                // Configure the terminal before the pane enters the visual tree. The inner
-                // TerminalView launches from Loaded, after OnInitialized has created the
-                // emulator used to size the PTY.
-                Terminal.ProcessExited += OnProcessExited;
-                Terminal.StartingDirectory = spec.WorkingDirectory;
-                Terminal.Process = spec.Process;
-                Terminal.Args = spec.Arguments;
-                session.MarkRunning();
+                var surface = CreatePreferredSurface();
+                AttachSurface(surface);
+                _ = StartSurfaceAsync(surface, spec, session);
             }
             catch (Exception ex)
             {
                 session.MarkFailed(App.Text("DevSpaces.StartFailed", ex.Message));
             }
+        }
+
+        public void SetPageActive(bool active)
+        {
+            _pageActive = active;
+            _surface?.SetPageActive(active);
         }
 
         public void Stop()
@@ -64,16 +51,19 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.DevSpaceTerminal session)
                 session.StopRequested -= OnStopRequested;
 
-            Terminal.ProcessExited -= OnProcessExited;
+            if (_surface == null)
+                return;
 
-            try
-            {
-                Terminal.Kill();
-            }
-            catch
-            {
-                // The PTY may already have exited.
-            }
+            var surface = _surface;
+            _surface = null;
+            surface.Exited -= OnSurfaceExited;
+            surface.SetPageActive(false);
+            surface.Stop();
+
+            if (ReferenceEquals(SurfaceHost.Child, surface.View))
+                SurfaceHost.Child = null;
+
+            surface.Dispose();
         }
 
         public void Dispose()
@@ -81,42 +71,104 @@ namespace SourceGit.Views
             Stop();
         }
 
-        private void OnTerminalPointerPressed(object sender, PointerPressedEventArgs e)
+        private SourceGit.DevSpaces.IDevSpaceTerminalSurface CreatePreferredSurface()
         {
-            if (!e.GetCurrentPoint(Terminal).Properties.IsRightButtonPressed ||
-                Terminal.IsMouseReportingActive)
-                return;
+            if (Native.WindowsTerminal.IsSupported)
+                return new SourceGit.DevSpaces.WindowsTerminalDevSpaceSurface();
 
-            var copy = new MenuItem
-            {
-                Header = "Copy",
-                IsEnabled = Terminal.HasSelection,
-            };
-            var paste = new MenuItem { Header = "Paste" };
-            var selectAll = new MenuItem { Header = "Select All" };
-
-            copy.Click += async (_, _) => await TryClipboardAsync(async () => await Terminal.CopyAsync());
-            paste.Click += async (_, _) => await TryClipboardAsync(Terminal.PasteAsync);
-            selectAll.Click += (_, _) => Terminal.SelectAll();
-
-            var menu = new ContextMenu
-            {
-                ItemsSource = new[] { copy, paste, selectAll },
-            };
-
-            menu.Open(Terminal);
-            e.Handled = true;
+            return CreateFallbackSurface();
         }
 
-        private static async Task TryClipboardAsync(Func<Task> action)
+        private SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface CreateFallbackSurface()
+        {
+            if (!TryFindResource("DevSpaces.FallbackTerminalTemplate", out var resource) ||
+                resource is not ControlTemplate template)
+            {
+                throw new InvalidOperationException("DevSpaces fallback terminal template was not found.");
+            }
+
+            return new SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface(template, FontFamily);
+        }
+
+        private void AttachSurface(SourceGit.DevSpaces.IDevSpaceTerminalSurface surface)
+        {
+            _surface = surface;
+            surface.Exited += OnSurfaceExited;
+            surface.SetPageActive(_pageActive);
+            SurfaceHost.Child = surface.View;
+        }
+
+        private async Task StartSurfaceAsync(
+            SourceGit.DevSpaces.IDevSpaceTerminalSurface surface,
+            SourceGit.DevSpaces.DevSpaceLaunchSpec spec,
+            ViewModels.DevSpaceTerminal session)
         {
             try
             {
-                await action();
+                await surface.StartAsync(spec);
             }
-            catch
+            catch (Exception ex)
             {
-                // Clipboard access may be unavailable on the current platform/session.
+                if (_stopped || !ReferenceEquals(_surface, surface))
+                    return;
+
+                if (surface is SourceGit.DevSpaces.WindowsTerminalDevSpaceSurface)
+                {
+                    await TryFallbackAsync(surface, spec, session, ex);
+                    return;
+                }
+
+                session.MarkFailed(App.Text("DevSpaces.StartFailed", ex.Message));
+                return;
+            }
+
+            if (!_stopped && ReferenceEquals(_surface, surface))
+                session.MarkRunning(surface.BackendName);
+        }
+
+        private async Task TryFallbackAsync(
+            SourceGit.DevSpaces.IDevSpaceTerminalSurface failedSurface,
+            SourceGit.DevSpaces.DevSpaceLaunchSpec spec,
+            ViewModels.DevSpaceTerminal session,
+            Exception nativeError)
+        {
+            SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface fallback;
+            try
+            {
+                fallback = CreateFallbackSurface();
+            }
+            catch (Exception fallbackCreationError)
+            {
+                session.MarkFailed(App.Text("DevSpaces.StartFailed", fallbackCreationError.Message));
+                return;
+            }
+
+            failedSurface.Exited -= OnSurfaceExited;
+            failedSurface.SetPageActive(false);
+            failedSurface.Stop();
+            if (ReferenceEquals(SurfaceHost.Child, failedSurface.View))
+                SurfaceHost.Child = null;
+            failedSurface.Dispose();
+
+            if (_stopped)
+            {
+                fallback.Dispose();
+                return;
+            }
+
+            AttachSurface(fallback);
+
+            try
+            {
+                await fallback.StartAsync(spec);
+                if (!_stopped && ReferenceEquals(_surface, fallback))
+                    session.MarkRunning(fallback.BackendName);
+            }
+            catch (Exception fallbackError)
+            {
+                session.MarkFailed(App.Text("DevSpaces.StartFailed", fallbackError.Message));
+                System.Diagnostics.Trace.WriteLine(
+                    $"DevSpaces native terminal startup failed before fallback: {nativeError.Message}");
             }
         }
 
@@ -125,16 +177,18 @@ namespace SourceGit.Views
             Stop();
         }
 
-        private void OnProcessExited(object sender, ProcessExitedEventArgs e)
+        private void OnSurfaceExited(object sender, SourceGit.DevSpaces.DevSpaceTerminalExitedEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                if (DataContext is ViewModels.DevSpaceTerminal session)
+                if (ReferenceEquals(sender, _surface) && DataContext is ViewModels.DevSpaceTerminal session)
                     session.MarkExited(e.ExitCode);
             });
         }
 
+        private SourceGit.DevSpaces.IDevSpaceTerminalSurface _surface;
         private bool _started;
         private bool _stopped;
+        private bool _pageActive;
     }
 }

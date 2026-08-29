@@ -131,6 +131,9 @@ namespace SourceGit.DevSpaces
 
             public void Detach()
             {
+                if (_host.Child is Views.DevSpaces spacesView)
+                    spacesView.SetPageActive(false);
+
                 _repository.PropertyChanged -= OnRepositoryPropertyChanged;
                 ViewModels.Preferences.Instance.PropertyChanged -= OnPreferencesPropertyChanged;
                 DetachSpaces();
@@ -181,6 +184,9 @@ namespace SourceGit.DevSpaces
 
                 if (!enabled)
                 {
+                    if (_host.Child is Views.DevSpaces spacesView)
+                        spacesView.SetPageActive(false);
+
                     _host.IsVisible = false;
                     _host.Opacity = 0;
                     _host.IsHitTestVisible = false;
@@ -194,12 +200,16 @@ namespace SourceGit.DevSpaces
                 AttachSpaces();
 
                 // Keep the terminal subtree mounted and measured while another repository page
-                // is active. Hiding with IsVisible would collapse the PTY and force the terminal
-                // TUI to resize/reload when returning to DevSpaces.
+                // is active. Hiding with IsVisible would collapse the Avalonia fallback and
+                // force its TUI to resize/reload when returning to DevSpaces. Native HWNDs are
+                // hidden separately by DevSpaces.SetPageActive.
                 _host.IsVisible = true;
                 var active = _repository.SelectedViewIndex == 3;
                 _host.Opacity = active ? 1 : 0;
                 _host.IsHitTestVisible = active;
+
+                if (_host.Child is Views.DevSpaces spacesView)
+                    spacesView.SetPageActive(active);
 
                 if (active)
                     _spaces?.EnsureFirstSession();

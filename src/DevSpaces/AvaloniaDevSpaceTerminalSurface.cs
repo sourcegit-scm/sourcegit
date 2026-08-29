@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 
 using Iciclecreek.Terminal;
@@ -21,6 +23,11 @@ namespace SourceGit.DevSpaces
                 Process = string.Empty,
             };
             _terminal.ProcessExited += OnProcessExited;
+            _terminal.AddHandler(
+                InputElement.PointerPressedEvent,
+                OnTerminalPointerPressed,
+                RoutingStrategies.Tunnel,
+                handledEventsToo: true);
         }
 
         public Control View => _terminal;
@@ -54,6 +61,7 @@ namespace SourceGit.DevSpaces
 
             _stopped = true;
             _terminal.ProcessExited -= OnProcessExited;
+            _terminal.RemoveHandler(InputElement.PointerPressedEvent, OnTerminalPointerPressed);
             try
             {
                 _terminal.Kill();
@@ -67,6 +75,45 @@ namespace SourceGit.DevSpaces
         public void Dispose()
         {
             Stop();
+        }
+
+        private void OnTerminalPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            if (!e.GetCurrentPoint(_terminal).Properties.IsRightButtonPressed ||
+                _terminal.IsMouseReportingActive)
+                return;
+
+            var copy = new MenuItem
+            {
+                Header = "Copy",
+                IsEnabled = _terminal.HasSelection,
+            };
+            var paste = new MenuItem { Header = "Paste" };
+            var selectAll = new MenuItem { Header = "Select All" };
+
+            copy.Click += async (_, _) => await TryClipboardAsync(async () => await _terminal.CopyAsync());
+            paste.Click += async (_, _) => await TryClipboardAsync(_terminal.PasteAsync);
+            selectAll.Click += (_, _) => _terminal.SelectAll();
+
+            var menu = new ContextMenu
+            {
+                ItemsSource = new[] { copy, paste, selectAll },
+            };
+
+            menu.Open(_terminal);
+            e.Handled = true;
+        }
+
+        private static async Task TryClipboardAsync(Func<Task> action)
+        {
+            try
+            {
+                await action();
+            }
+            catch
+            {
+                // Clipboard access may be unavailable on the current platform/session.
+            }
         }
 
         private void OnProcessExited(object sender, ProcessExitedEventArgs e)
