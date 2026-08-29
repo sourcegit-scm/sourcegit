@@ -1,7 +1,10 @@
 ﻿using System;
 using System.ClientModel;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Serialization;
+using System.Threading;
+using System.Threading.Tasks;
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
@@ -9,13 +12,47 @@ using OpenAI.Chat;
 
 namespace SourceGit.AI
 {
-    public class Service : ObservableObject
+    public enum ProviderType
+    {
+        OpenAI = 0,
+        LocalLlm = 1,
+    }
+
+    public class Service : ObservableObject, IDisposable
     {
         public string Name
         {
             get => _name;
             set => SetProperty(ref _name, value);
         }
+
+        public ProviderType Provider
+        {
+            get => _provider;
+            set
+            {
+                if (SetProperty(ref _provider, value))
+                {
+                    OnPropertyChanged(nameof(ProviderIndex));
+                    OnPropertyChanged(nameof(IsOpenAI));
+                    OnPropertyChanged(nameof(IsLocalLlm));
+                    DisposeLocalLlmRuntime();
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public int ProviderIndex
+        {
+            get => (int)_provider;
+            set => Provider = value == (int)ProviderType.LocalLlm ? ProviderType.LocalLlm : ProviderType.OpenAI;
+        }
+
+        [JsonIgnore]
+        public bool IsOpenAI => Provider == ProviderType.OpenAI;
+
+        [JsonIgnore]
+        public bool IsLocalLlm => Provider == ProviderType.LocalLlm;
 
         public string Server
         {
@@ -48,6 +85,50 @@ namespace SourceGit.AI
             set => SetProperty(ref _model, value);
         }
 
+        public string LocalModelPath
+        {
+            get => _localModelPath;
+            set
+            {
+                value ??= string.Empty;
+                if (SetProperty(ref _localModelPath, value))
+                {
+                    DisposeLocalLlmRuntime();
+                    UpdateLocalModelStatus();
+                }
+            }
+        }
+
+        public float Temperature
+        {
+            get => _temperature;
+            set => SetProperty(ref _temperature, Math.Clamp(value, 0.0f, 2.0f));
+        }
+
+        public uint ContextWindow
+        {
+            get => _contextWindow;
+            set
+            {
+                var normalized = Math.Max(512u, value);
+                if (SetProperty(ref _contextWindow, normalized))
+                    DisposeLocalLlmRuntime();
+            }
+        }
+
+        public bool AutoLoadModel
+        {
+            get => _autoLoadModel;
+            set => SetProperty(ref _autoLoadModel, value);
+        }
+
+        [JsonIgnore]
+        public string LocalModelStatus
+        {
+            get => _localModelStatus;
+            private set => SetProperty(ref _localModelStatus, value);
+        }
+
         public bool AutoFetchAvailableModels
         {
             get => _autoFetchAvailableModels;
@@ -68,6 +149,15 @@ namespace SourceGit.AI
 
         public void FetchAvailableModels()
         {
+            if (IsLocalLlm)
+            {
+                AvailableModels = string.IsNullOrWhiteSpace(LocalModelPath) ? [] : [Path.GetFileName(LocalModelPath)];
+                UpdateLocalModelStatus();
+                if (AutoLoadModel && IsLocalModelAvailable())
+                    _ = PreloadLocalModelAsync(CancellationToken.None);
+                return;
+            }
+
             if (!_autoFetchAvailableModels)
             {
                 if (!string.IsNullOrEmpty(Model))
@@ -86,7 +176,43 @@ namespace SourceGit.AI
 
         public ChatClient GetChatClient()
         {
+            if (IsLocalLlm)
+                return null;
+
             return !string.IsNullOrEmpty(Model) ? GetOpenAIClient().GetChatClient(Model) : null;
+        }
+
+        public bool IsLocalModelAvailable()
+        {
+            return !string.IsNullOrWhiteSpace(LocalModelPath) && File.Exists(LocalModelPath);
+        }
+
+        public string GetLocalModelValidationError()
+        {
+            if (string.IsNullOrWhiteSpace(LocalModelPath) || !File.Exists(LocalModelPath))
+                return "Model not found";
+
+            return string.Empty;
+        }
+
+        internal async Task PreloadLocalModelAsync(CancellationToken cancellationToken)
+        {
+            if (!IsLocalLlm)
+                return;
+
+            await GetLocalLlmRuntimeAsync(cancellationToken);
+        }
+
+        internal async Task StreamLocalLlmAsync(string prompt, Action<string> onUpdate, CancellationToken cancellationToken)
+        {
+            var runtime = await GetLocalLlmRuntimeAsync(cancellationToken);
+            await runtime.StreamAsync(prompt, Temperature, onUpdate, cancellationToken);
+        }
+
+        public void Dispose()
+        {
+            DisposeLocalLlmRuntime();
+            GC.SuppressFinalize(this);
         }
 
         private OpenAIClient GetOpenAIClient()
@@ -97,9 +223,74 @@ namespace SourceGit.AI
                 : new OpenAIClient(credential, new() { Endpoint = new Uri(Server) });
         }
 
+        private Task<LocalLlmRuntime> GetLocalLlmRuntimeAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var error = GetLocalModelValidationError();
+            if (!string.IsNullOrEmpty(error))
+            {
+                LocalModelStatus = error;
+                throw new FileNotFoundException(error, LocalModelPath);
+            }
+
+            lock (_localLlmLock)
+            {
+                if (_localLlmRuntime != null)
+                    return Task.FromResult(_localLlmRuntime);
+
+                LocalModelStatus = "Loading model...";
+                return Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var runtime = LocalLlmRuntime.Load(LocalModelPath, ContextWindow);
+                    lock (_localLlmLock)
+                    {
+                        _localLlmRuntime ??= runtime;
+                        if (!ReferenceEquals(_localLlmRuntime, runtime))
+                            runtime.Dispose();
+                        LocalModelStatus = "Loaded";
+                        return _localLlmRuntime;
+                    }
+                }, cancellationToken);
+            }
+        }
+
+        private void UpdateLocalModelStatus()
+        {
+            if (!IsLocalLlm)
+                LocalModelStatus = string.Empty;
+            else if (string.IsNullOrWhiteSpace(LocalModelPath))
+                LocalModelStatus = "No model selected";
+            else if (!File.Exists(LocalModelPath))
+                LocalModelStatus = "Model not found";
+            else if (_localLlmRuntime != null)
+                LocalModelStatus = "Loaded";
+            else
+                LocalModelStatus = "Ready";
+        }
+
+        private void DisposeLocalLlmRuntime()
+        {
+            lock (_localLlmLock)
+            {
+                _localLlmRuntime?.Dispose();
+                _localLlmRuntime = null;
+            }
+
+            UpdateLocalModelStatus();
+        }
+
+        private readonly object _localLlmLock = new();
         private string _name = string.Empty;
+        private ProviderType _provider = ProviderType.OpenAI;
         private string _model = string.Empty;
+        private string _localModelPath = string.Empty;
+        private float _temperature = 0.2f;
+        private uint _contextWindow = 10000;
+        private bool _autoLoadModel = true;
+        private string _localModelStatus = string.Empty;
         private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;
+        private LocalLlmRuntime _localLlmRuntime;
     }
 }
