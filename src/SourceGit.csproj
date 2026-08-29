@@ -70,13 +70,11 @@
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <PackageReference Include="LLamaSharp.Backend.Cuda12.Windows" Version="0.27.0" />
     <PackageReference Include="LLamaSharp.Backend.Vulkan.Windows" Version="0.27.0" />
     <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-    <PackageReference Include="LLamaSharp.Backend.Cuda12.Linux" Version="0.27.0" />
     <PackageReference Include="LLamaSharp.Backend.Vulkan.Linux" Version="0.27.0" />
   </ItemGroup>
 
