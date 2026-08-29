@@ -13,7 +13,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public record CommitMessageTextBoxSuggestion(TextBox Target, string Text, int ReplaceStart, int ReplaceLen)
     {

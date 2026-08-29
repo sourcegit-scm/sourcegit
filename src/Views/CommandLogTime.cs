@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Threading;
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class CommandLogTime : TextBlock
     {

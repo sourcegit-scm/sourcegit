@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:m="using:SourceGit.Models"
-             xmlns:mcp="using:SourceGit.Mcp"
-             x:Class="SourceGit.Views.DevSpacesPreferences"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:m="using:DevBoard.Models"
+             xmlns:mcp="using:DevBoard.Mcp"
+             x:Class="DevBoard.Views.DevSpacesPreferences"
              x:DataType="vm:Preferences">
   <ScrollViewer HorizontalScrollBarVisibility="Disabled"
                 VerticalScrollBarVisibility="Auto">
@@ -76,7 +76,7 @@
       <Grid x:Name="McpSettingsPanel"
             Grid.Row="7"
             Grid.ColumnSpan="2"
-            x:DataType="mcp:SourceGitMcpSettings"
+            x:DataType="mcp:DevBoardMcpSettings"
             RowDefinitions="32,36,36,36,36,36,36,Auto,Auto"
             ColumnDefinitions="Auto,*">
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2"

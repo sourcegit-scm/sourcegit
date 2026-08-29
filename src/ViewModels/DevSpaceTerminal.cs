@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics;
 
 using CommunityToolkit.Mvvm.ComponentModel;
-using SourceGit.DevSpaces.Terminal;
+using DevBoard.DevSpaces.Terminal;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public enum DevSpaceTerminalState
     {

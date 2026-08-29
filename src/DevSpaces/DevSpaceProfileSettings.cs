@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     public sealed class DevSpaceTerminalProfile
     {
@@ -172,7 +172,7 @@ namespace SourceGit.DevSpaces
             }
             catch
             {
-                // Preferences persistence should never prevent SourceGit from running.
+                // Preferences persistence should never prevent DevBoard from running.
             }
         }
 

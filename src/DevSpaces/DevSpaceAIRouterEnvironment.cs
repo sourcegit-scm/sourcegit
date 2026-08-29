@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SourceGit.DevSpaces;
+namespace DevBoard.DevSpaces;
 
 public static class DevSpaceAIRouterEnvironment
 {

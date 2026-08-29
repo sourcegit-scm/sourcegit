@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class Version
     {

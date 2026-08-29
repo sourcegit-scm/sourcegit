@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Security.Cryptography;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class IpcChannel : IDisposable
     {
@@ -71,11 +71,11 @@ namespace SourceGit.Models
 
         private static string GetPipeName()
         {
-            // SourceGit does not support multiple instances on macOS, so we can use a fixed pipe name for macOS.
+            // DevBoard does not support multiple instances on macOS, so we can use a fixed pipe name for macOS.
             if (OperatingSystem.IsMacOS())
-                return "SourceGit";
+                return "DevBoard";
 
-            // Windows and Linux can have multiple instances of SourceGit running (portable-mode), so we need to generate a unique pipe name based on the data directory.
+            // Windows and Linux can have multiple instances of DevBoard running (portable-mode), so we need to generate a unique pipe name based on the data directory.
             var dataDir = Native.OS.DataDir.Replace('\\', '/').TrimEnd('/');
             var hashStr = $"{Environment.UserName}_{dataDir}";
             var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(hashStr))).Substring(0, 10);

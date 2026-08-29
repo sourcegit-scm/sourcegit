@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class RevisionFileTreeNodeToggleButton : ToggleButton
     {

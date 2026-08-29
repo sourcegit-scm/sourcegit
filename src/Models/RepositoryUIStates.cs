@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
 using Avalonia.Collections;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class RepositoryUIStates
     {

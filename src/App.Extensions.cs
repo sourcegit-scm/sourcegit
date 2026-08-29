@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
 using Avalonia.Media;
 
-namespace SourceGit
+namespace DevBoard
 {
     public static class StringExtensions
     {

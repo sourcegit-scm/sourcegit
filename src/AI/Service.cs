@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
 using OpenAI.Chat;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     public enum ProviderType
     {

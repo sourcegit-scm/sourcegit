@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">情報</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">SourceGit について</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">DevBoard について</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">リリース日: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">リリースノート</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">オープンソース &amp; フリーな Git GUI クライアント</x:String>
@@ -26,7 +26,7 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">再生成</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI を使用してコミットメッセージを生成</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">使用</x:String>
-  <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit を隠す</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">DevBoard を隠す</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">他を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3 分割マージ</x:String>
@@ -46,7 +46,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">アーカイブファイルへのパスを選択</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">リビジョン:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">アーカイブ化</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">パスフレーズを入力:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">未変更と見なしたファイル</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">未変更と見なしたファイルはありません</x:String>

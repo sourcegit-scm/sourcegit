@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Avalonia.Controls;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     internal sealed class DevSpaceTerminalExitedEventArgs : EventArgs
     {

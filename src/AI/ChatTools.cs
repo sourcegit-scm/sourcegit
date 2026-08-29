@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using OpenAI.Chat;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     public static class ChatTools
     {

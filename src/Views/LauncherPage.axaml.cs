@@ -4,7 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class LauncherPage : UserControl
     {

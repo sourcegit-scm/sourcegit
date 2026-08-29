@@ -1,4 +1,4 @@
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     public static partial class OS
     {

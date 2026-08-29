@@ -1,7 +1,7 @@
-﻿using Avalonia.Collections;
+using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class ConfigureCustomActionControls : ObservableObject
     {

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public record GitIgnoreFile(string DisplayName, string FullPath, string Pattern, bool IsLocalOnly)
     {

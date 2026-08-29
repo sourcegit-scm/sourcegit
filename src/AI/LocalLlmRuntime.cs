@@ -5,7 +5,7 @@ using LLama;
 using LLama.Common;
 using LLama.Sampling;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     internal sealed class LocalLlmRuntime : IDisposable
     {

@@ -8,7 +8,7 @@ using Avalonia.Collections;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public sealed class DevSpaceFiles : ObservableObject
     {

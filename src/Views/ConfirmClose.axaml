@@ -2,12 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:v="using:SourceGit.Views"
+                    xmlns:v="using:DevBoard.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                    x:Class="SourceGit.Views.ConfirmClose"
+                    x:Class="DevBoard.Views.ConfirmClose"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="Close SourceGit?"
+                    Title="Close DevBoard?"
                     SizeToContent="WidthAndHeight"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
@@ -22,7 +22,7 @@
             Data="{StaticResource Icons.Error}"
             IsVisible="{OnPlatform True, macOS=False}"/>
       <TextBlock Classes="bold"
-                 Text="Close SourceGit?"
+                 Text="Close DevBoard?"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
                  IsHitTestVisible="False"/>
       <v:CaptionButtons HorizontalAlignment="Right"
@@ -32,7 +32,7 @@
 
     <Border Grid.Row="1" Margin="16">
       <TextBlock MaxWidth="520" MinWidth="280"
-                 Text="Do you want to close SourceGit?"
+                 Text="Do you want to close DevBoard?"
                  TextWrapping="Wrap"/>
     </Border>
 

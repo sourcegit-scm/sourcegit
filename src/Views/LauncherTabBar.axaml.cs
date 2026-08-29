@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 
 using Avalonia;
@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Styling;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class LauncherTabSizeBox : Border
     {

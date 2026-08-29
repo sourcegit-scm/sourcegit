@@ -7,7 +7,7 @@ using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class Launcher : ObservableObject
     {
@@ -216,7 +216,7 @@ namespace SourceGit.ViewModels
                 return;
 
             CloseGoToFile();
-            var devSpaces = SourceGit.DevSpaces.DevSpaceRegistry.GetOrCreate(repo);
+            var devSpaces = DevBoard.DevSpaces.DevSpaceRegistry.GetOrCreate(repo);
             if (devSpaces != null)
                 GoToFileSearch = new GoToFileSearch(repo.FullPath, devSpaces);
         }
@@ -239,7 +239,7 @@ namespace SourceGit.ViewModels
 
                     if (last.Node.IsUnmanaged)
                         last.Node.SaveMinimalInfo(repo.GitDir);
-                    SourceGit.DevSpaces.DevSpaceRegistry.Close(repo);
+                    DevBoard.DevSpaces.DevSpaceRegistry.Close(repo);
                     repo.Close();
 
                     Welcome.Instance.ClearSearchFilter();
@@ -465,7 +465,7 @@ namespace SourceGit.ViewModels
                 if (page.Node.IsUnmanaged)
                     page.Node.SaveMinimalInfo(repo.GitDir);
 
-                SourceGit.DevSpaces.DevSpaceRegistry.Close(repo);
+                DevBoard.DevSpaces.DevSpaceRegistry.Close(repo);
                 repo.Close();
             }
 

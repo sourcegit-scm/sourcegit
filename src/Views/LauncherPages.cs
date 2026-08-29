@@ -6,7 +6,7 @@ using System.ComponentModel;
 using Avalonia.Collections;
 using Avalonia.Controls;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public sealed class LauncherPages : Grid
     {

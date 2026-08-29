@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class DeleteBranch : Popup
     {

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class DiffOption
     {

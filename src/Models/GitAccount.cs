@@ -2,7 +2,7 @@ using System;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class GitAccount : ObservableObject
     {

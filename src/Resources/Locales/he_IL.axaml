@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">אודות</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">אודות SourceGit</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">אודות DevBoard</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">תאריך שחרור: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">הערות שחרור</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">לקוח Git גרפי, חופשי ובקוד פתוח</x:String>
@@ -26,7 +26,7 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">צור מחדש</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">שימוש ב־AI ליצירת הודעת commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">שימוש</x:String>
-  <x:String x:Key="Text.App.Hide" xml:space="preserve">הסתר SourceGit</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">הסתר DevBoard</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">הסתר אחרים</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">הצג הכול</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
@@ -43,7 +43,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">בחר נתיב לקובץ הארכיון</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">ארכב</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">הזן passphrase:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">קבצים בהנחת assume-unchanged</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">אין קבצים בהנחת assume-unchanged</x:String>
@@ -262,7 +262,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">השתמש ב־$1, $2 לגישה לערכי קבוצות ה־regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">שירות מועדף:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">אם מוגדר 'שירות מועדף', SourceGit ישתמש רק בו במאגר זה. אחרת, אם זמינים מספר שירותים, יוצג תפריט הקשר לבחירת אחד מהם.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">אם מוגדר 'שירות מועדף', DevBoard ישתמש רק בו במאגר זה. אחרת, אם זמינים מספר שירותים, יוצג תפריט הקשר לבחירת אחד מהם.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy לשימוש המאגר הזה</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">שם משתמש</x:String>

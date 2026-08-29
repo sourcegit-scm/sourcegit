@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.IO;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class BinaryFile : IDisposable
     {

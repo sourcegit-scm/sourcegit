@@ -1,6 +1,6 @@
 using System;
 
-namespace SourceGit.AI.Hosting;
+namespace DevBoard.AI.Hosting;
 
 public sealed class AIRouterHostOptions
 {

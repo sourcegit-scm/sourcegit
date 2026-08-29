@@ -1,14 +1,14 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class DevSpacesPreferences : UserControl
     {
         public DevSpacesPreferences()
         {
             InitializeComponent();
-            McpSettingsPanel.DataContext = Mcp.SourceGitMcpSettings.Instance;
+            McpSettingsPanel.DataContext = Mcp.DevBoardMcpSettings.Instance;
             DataContextChanged += (_, _) => NormalizeLegacyLayout();
         }
 
@@ -19,14 +19,14 @@ namespace SourceGit.Views
 
             preferences.EnableDevSpaces = checkBox.IsChecked == true;
             if (!preferences.EnableDevSpaces)
-                SourceGit.DevSpaces.DevSpaceRegistry.DisableAll();
+                DevBoard.DevSpaces.DevSpaceRegistry.DisableAll();
 
             e.Handled = true;
         }
 
         private void OnRegenerateMcpToken(object sender, RoutedEventArgs e)
         {
-            Mcp.SourceGitMcpSettings.Instance.RegenerateAuthToken();
+            Mcp.DevBoardMcpSettings.Instance.RegenerateAuthToken();
             e.Handled = true;
         }
 

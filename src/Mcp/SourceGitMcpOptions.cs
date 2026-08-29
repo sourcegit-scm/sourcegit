@@ -1,6 +1,6 @@
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
-    public sealed class SourceGitMcpOptions
+    public sealed class DevBoardMcpOptions
     {
         public const int DefaultPort = 53921;
         public const int DefaultMaxConcurrentToolCalls = 6;

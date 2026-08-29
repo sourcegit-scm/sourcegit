@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     internal static partial class WindowsTerminal
     {

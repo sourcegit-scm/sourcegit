@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class Archive : Popup
     {

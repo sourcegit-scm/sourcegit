@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum WorktreeBaseBranchKind
     {

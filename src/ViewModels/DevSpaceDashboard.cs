@@ -7,7 +7,7 @@ using System.Linq;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public sealed class DevSpaceDashboard : ObservableObject, IDisposable
     {
@@ -19,8 +19,8 @@ namespace SourceGit.ViewModels
         public DevSpaceCapabilityState AntigravityCapability { get; }
         public DevSpaceCapabilityState RoslynCapability { get; } = DevSpaceCapabilityState.Unavailable;
 
-        public IReadOnlyList<SourceGit.DevSpaces.DevSpaceTerminalProfile> Profiles =>
-            SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Profiles;
+        public IReadOnlyList<DevBoard.DevSpaces.DevSpaceTerminalProfile> Profiles =>
+            DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.Profiles;
 
         public string CurrentBranch
         {
@@ -64,9 +64,9 @@ namespace SourceGit.ViewModels
             _repository = repository;
             WorkspacePath = workspacePath;
             WorkspaceName = GetWorkspaceName(workspacePath);
-            CopilotCapability = SourceGit.DevSpaces.DevSpaceToolHealth.CheckCommand("copilot");
-            CodexCapability = SourceGit.DevSpaces.DevSpaceToolHealth.CheckCommand("codex");
-            AntigravityCapability = SourceGit.DevSpaces.DevSpaceToolHealth.CheckCommand("agy");
+            CopilotCapability = DevBoard.DevSpaces.DevSpaceToolHealth.CheckCommand("copilot");
+            CodexCapability = DevBoard.DevSpaces.DevSpaceToolHealth.CheckCommand("codex");
+            AntigravityCapability = DevBoard.DevSpaces.DevSpaceToolHealth.CheckCommand("agy");
             _owner.Sessions.CollectionChanged += OnSessionsChanged;
 
             if (_repository != null)
@@ -164,8 +164,8 @@ namespace SourceGit.ViewModels
         }
 
         public DevSpaceTerminal StartDefaultTerminal() => _owner.CreateTerminal();
-        public DevSpaceTerminal StartProfile(SourceGit.DevSpaces.DevSpaceTerminalProfile profile) => _owner.CreateProfileTerminalAt(-1, profile);
-        public DevSpaceTerminal StartAgent(SourceGit.DevSpaces.DevSpaceAgent agent) => _owner.CreateAgentTerminalAt(-1, agent);
+        public DevSpaceTerminal StartProfile(DevBoard.DevSpaces.DevSpaceTerminalProfile profile) => _owner.CreateProfileTerminalAt(-1, profile);
+        public DevSpaceTerminal StartAgent(DevBoard.DevSpaces.DevSpaceAgent agent) => _owner.CreateAgentTerminalAt(-1, agent);
         public void CloseAllSessions() => _owner.StopAll();
 
         public void Dispose()

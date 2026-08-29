@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:ai="using:SourceGit.AI.Routing"
-             x:Class="SourceGit.Views.DevSpaceAIRouter"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:ai="using:DevBoard.AI.Routing"
+             x:Class="DevBoard.Views.DevSpaceAIRouter"
              x:DataType="vm:DevSpaceAIRouter">
   <Grid RowDefinitions="Auto,*">
     <Border Grid.Row="0"

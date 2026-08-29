@@ -1,6 +1,6 @@
-﻿using Avalonia.Data.Converters;
+using Avalonia.Data.Converters;
 
-namespace SourceGit.Converters
+namespace DevBoard.Converters
 {
     public static class LongConverters
     {

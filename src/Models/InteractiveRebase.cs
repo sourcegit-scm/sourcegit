@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum InteractiveRebaseAction
     {

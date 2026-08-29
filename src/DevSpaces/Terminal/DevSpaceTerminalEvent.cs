@@ -1,6 +1,6 @@
 using System;
 
-namespace SourceGit.DevSpaces.Terminal
+namespace DevBoard.DevSpaces.Terminal
 {
     public enum TerminalEventKind
     {

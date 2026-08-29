@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:vm="using:DevBoard.ViewModels"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
-             x:Class="SourceGit.Views.Cleanup"
+             x:Class="DevBoard.Views.Cleanup"
              x:DataType="vm:Cleanup">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <StackPanel Orientation="Horizontal">

@@ -3,11 +3,11 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-using SourceGit.DevSpaces.Terminal;
+using DevBoard.DevSpaces.Terminal;
 
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
-    public static class SourceGitMcpService
+    public static class DevBoardMcpService
     {
         public static bool IsRunning => _host?.IsRunning == true;
 
@@ -15,29 +15,29 @@ namespace SourceGit.Mcp
 
         public static string SseEndpoint => _host?.SseEndpoint ?? string.Empty;
 
-        public static SourceGitMcpOptions CreateOptions(SourceGitMcpSettings settings)
+        public static DevBoardMcpOptions CreateOptions(DevBoardMcpSettings settings)
         {
             ArgumentNullException.ThrowIfNull(settings);
-            return new SourceGitMcpOptions
+            return new DevBoardMcpOptions
             {
                 Port = settings.Port,
                 ShareDevSpaceTerminalOutput = settings.ShareDevSpaceTerminalOutput,
                 AuthToken = settings.AuthToken,
-                MaxConcurrentToolCalls = SourceGitMcpOptions.DefaultMaxConcurrentToolCalls,
+                MaxConcurrentToolCalls = DevBoardMcpOptions.DefaultMaxConcurrentToolCalls,
             };
         }
 
         public static bool IsConfigurationProperty(string propertyName)
         {
-            return propertyName is nameof(SourceGitMcpSettings.Enabled) or
-                nameof(SourceGitMcpSettings.Port) or
-                nameof(SourceGitMcpSettings.ShareDevSpaceTerminalOutput) or
-                nameof(SourceGitMcpSettings.AuthToken);
+            return propertyName is nameof(DevBoardMcpSettings.Enabled) or
+                nameof(DevBoardMcpSettings.Port) or
+                nameof(DevBoardMcpSettings.ShareDevSpaceTerminalOutput) or
+                nameof(DevBoardMcpSettings.AuthToken);
         }
 
-        public static void Initialize(SourceGitMcpSettings settings = null)
+        public static void Initialize(DevBoardMcpSettings settings = null)
         {
-            settings ??= SourceGitMcpSettings.Instance;
+            settings ??= DevBoardMcpSettings.Instance;
 
             lock (_sync)
             {
@@ -49,7 +49,7 @@ namespace SourceGit.Mcp
 
                 _settings = settings;
                 _settings.PropertyChanged += OnSettingsChanged;
-                _host ??= new SourceGitMcpHost(DevSpaceTerminalRegistry.Instance);
+                _host ??= new DevBoardMcpHost(DevSpaceTerminalRegistry.Instance);
             }
 
             _ = ApplyAsync();
@@ -57,8 +57,8 @@ namespace SourceGit.Mcp
 
         public static async Task ShutdownAsync()
         {
-            SourceGitMcpHost host;
-            SourceGitMcpSettings settings;
+            DevBoardMcpHost host;
+            DevBoardMcpSettings settings;
             lock (_sync)
             {
                 settings = _settings;
@@ -91,11 +91,11 @@ namespace SourceGit.Mcp
 
         private static async Task ApplyAsync()
         {
-            SourceGitMcpSettings settings = null;
+            DevBoardMcpSettings settings = null;
             await _applyGate.WaitAsync().ConfigureAwait(false);
             try
             {
-                SourceGitMcpHost host;
+                DevBoardMcpHost host;
                 lock (_sync)
                 {
                     settings = _settings;
@@ -134,7 +134,7 @@ namespace SourceGit.Mcp
 
         private static readonly object _sync = new();
         private static readonly SemaphoreSlim _applyGate = new(1, 1);
-        private static SourceGitMcpSettings _settings;
-        private static SourceGitMcpHost _host;
+        private static DevBoardMcpSettings _settings;
+        private static DevBoardMcpHost _host;
     }
 }

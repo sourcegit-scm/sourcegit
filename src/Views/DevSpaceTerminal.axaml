@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:SourceGit.Views"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:c="using:SourceGit.Converters"
-             x:Class="SourceGit.Views.DevSpaceTerminal"
+             xmlns:local="using:DevBoard.Views"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:c="using:DevBoard.Converters"
+             x:Class="DevBoard.Views.DevSpaceTerminal"
              x:DataType="vm:DevSpaceTerminal"
              FontFamily="{DynamicResource Fonts.Monospace}">
   <UserControl.Resources>

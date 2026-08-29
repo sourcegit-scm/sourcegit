@@ -3,10 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:m="using:SourceGit.Models"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
-             x:Class="SourceGit.Views.SetUpstream"
+             xmlns:m="using:DevBoard.Models"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:v="using:DevBoard.Views"
+             x:Class="DevBoard.Views.SetUpstream"
              x:DataType="vm:SetUpstream">
   <StackPanel Orientation="Vertical" Margin="8,0">
     <StackPanel Orientation="Horizontal">

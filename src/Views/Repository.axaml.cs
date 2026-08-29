@@ -6,7 +6,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class Repository : UserControl
     {

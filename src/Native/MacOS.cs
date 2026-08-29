@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -10,7 +10,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
@@ -51,7 +51,7 @@ namespace SourceGit.Native
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit");
+                "DevBoard");
         }
 
         public string FindGitExecutable()

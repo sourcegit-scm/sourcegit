@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:ds="using:SourceGit.DevSpaces"
-             x:Class="SourceGit.Views.DevSpaceDashboard"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:ds="using:DevBoard.DevSpaces"
+             x:Class="DevBoard.Views.DevSpaceDashboard"
              x:DataType="vm:DevSpaceDashboard">
   <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
     <StackPanel Margin="16" Spacing="12">

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -13,7 +13,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class Avatar : Control, Models.IAvatarHost
     {
@@ -69,7 +69,7 @@ namespace SourceGit.Views
             else if (!_useGitHubStyleAvatar)
             {
                 var fallback = GetFallbackString(_user.Name);
-                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono NL");
+                var typeface = new Typeface("fonts:DevBoard#JetBrains Mono NL");
                 var label = new FormattedText(
                     fallback,
                     CultureInfo.CurrentCulture,

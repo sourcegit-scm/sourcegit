@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">Про програму</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">Про SourceGit</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Про DevBoard</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Безкоштовний Git GUI клієнт з відкритим кодом</x:String>
   <x:String x:Key="Text.AddWorktree" xml:space="preserve">Додати робоче дерево</x:String>
   <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Розташування:</x:String>
@@ -33,7 +33,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Виберіть шлях до файлу архіву</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Ревізія:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">Архівувати</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ФАЙЛИ, ЩО ВВАЖАЮТЬСЯ НЕЗМІНЕНИМИ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">НЕМАЄ ФАЙЛІВ, ЩО ВВАЖАЮТЬСЯ НЕЗМІНЕНИМИ</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Оновити</x:String>
@@ -147,7 +147,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Використовуйте $1, $2 для доступу до значень груп регулярного виразу.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Бажаний сервіс:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Якщо 'Бажаний сервіс' встановлено, SourceGit буде використовувати лише його у цьому сховищі. Інакше, якщо доступно більше одного сервісу, буде показано контекстне меню для вибору.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Якщо 'Бажаний сервіс' встановлено, DevBoard буде використовувати лише його у цьому сховищі. Інакше, якщо доступно більше одного сервісу, буде показано контекстне меню для вибору.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Проксі</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP проксі, що використовується цим сховищем</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Ім'я користувача</x:String>

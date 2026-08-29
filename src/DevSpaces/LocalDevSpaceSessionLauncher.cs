@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     public sealed class LocalDevSpaceSessionLauncher : IDevSpaceSessionLauncher
     {

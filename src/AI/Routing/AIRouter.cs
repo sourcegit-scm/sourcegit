@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SourceGit.AI.Routing;
+namespace DevBoard.AI.Routing;
 
 public sealed record AIRouterRequest(string Model, string Payload, string Path = null);
 

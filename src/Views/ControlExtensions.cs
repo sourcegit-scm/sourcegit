@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public static class ControlExtensions
     {

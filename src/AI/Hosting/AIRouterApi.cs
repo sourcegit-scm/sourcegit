@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 
-namespace SourceGit.AI.Hosting;
+namespace DevBoard.AI.Hosting;
 
 public static class AIRouterApi
 {

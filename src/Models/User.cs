@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class User
     {

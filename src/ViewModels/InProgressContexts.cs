@@ -1,7 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public abstract class InProgressContext
     {

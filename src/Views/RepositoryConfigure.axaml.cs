@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Platform.Storage;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class RepositoryConfigure : ChromelessWindow
     {

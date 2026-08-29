@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -6,7 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class RemoteProtocolSwitcher : UserControl
     {

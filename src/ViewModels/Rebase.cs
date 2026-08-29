@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public enum RebaseTestingState
     {

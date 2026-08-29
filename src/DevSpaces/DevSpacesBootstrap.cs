@@ -11,7 +11,7 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     internal static class DevSpacesBootstrap
     {

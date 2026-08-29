@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class LoadingIcon : UserControl
     {

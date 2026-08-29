@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
 
 using Avalonia.Input.Platform;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class Apply : Popup
     {

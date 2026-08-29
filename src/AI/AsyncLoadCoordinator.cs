@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     internal sealed class AsyncLoadCoordinator<T> : IDisposable where T : class, IDisposable
     {

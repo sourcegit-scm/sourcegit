@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">Σχετικά</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">Σχετικά με το SourceGit</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Σχετικά με το DevBoard</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Ημερομηνία έκδοσης: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Σημειώσεις έκδοσης</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Ελεύθερο &amp; ανοιχτού κώδικα γραφικό περιβάλλον για το Git</x:String>
@@ -26,7 +26,7 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">ΕΠΑΝΑΔΗΜΙΟΥΡΓΙΑ</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Χρήση AI για δημιουργία μηνύματος commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Χρήση</x:String>
-  <x:String x:Key="Text.App.Hide" xml:space="preserve">Απόκρυψη SourceGit</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Απόκρυψη DevBoard</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Απόκρυψη άλλων</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Εμφάνιση όλων</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Τριμερής συγχώνευση (3-Way)</x:String>
@@ -46,7 +46,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Επιλέξτε διαδρομή για το αρχείο</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Αναθεώρηση:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">Αρχειοθέτηση</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Εισαγωγή κωδικής φράσης:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ΑΡΧΕΙΑ ΠΟΥ ΘΕΩΡΟΥΝΤΑΙ ΑΜΕΤΑΒΛΗΤΑ</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">ΚΑΝΕΝΑ ΑΡΧΕΙΟ ΔΕΝ ΘΕΩΡΕΙΤΑΙ ΑΜΕΤΑΒΛΗΤΟ</x:String>
@@ -273,7 +273,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Χρησιμοποιήστε $1, $2 για πρόσβαση στις τιμές των ομάδων της κανονικής έκφρασης.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Προτιμώμενη υπηρεσία:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Αν οριστεί η «Προτιμώμενη υπηρεσία», το SourceGit θα τη χρησιμοποιεί μόνο σε αυτό το αποθετήριο. Διαφορετικά, αν υπάρχουν περισσότερες από μία διαθέσιμες υπηρεσίες, θα εμφανίζεται μενού για να επιλέξετε μία.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Αν οριστεί η «Προτιμώμενη υπηρεσία», το DevBoard θα τη χρησιμοποιεί μόνο σε αυτό το αποθετήριο. Διαφορετικά, αν υπάρχουν περισσότερες από μία διαθέσιμες υπηρεσίες, θα εμφανίζεται μενού για να επιλέξετε μία.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP Proxy</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">HTTP proxy που χρησιμοποιεί αυτό το αποθετήριο</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Όνομα χρήστη</x:String>

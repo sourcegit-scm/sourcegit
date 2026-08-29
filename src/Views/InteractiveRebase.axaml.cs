@@ -10,7 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class InteractiveRebaseListBox : ListBox
     {

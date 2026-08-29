@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace SourceGit.AI.Routing;
+namespace DevBoard.AI.Routing;
 
 public sealed class AIRouterProviderSettings
 {
@@ -85,7 +85,7 @@ public sealed class AIRouterSettings
         }
         catch
         {
-            // Router settings persistence must not prevent SourceGit from running.
+            // Router settings persistence must not prevent DevBoard from running.
         }
     }
 

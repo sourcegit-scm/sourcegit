@@ -15,7 +15,7 @@ using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
-namespace SourceGit
+namespace DevBoard
 {
     public partial class App : Application
     {
@@ -63,8 +63,8 @@ namespace SourceGit
             builder.ConfigureFonts(manager =>
             {
                 var monospace = new EmbeddedFontCollection(
-                    new Uri("fonts:SourceGit", UriKind.Absolute),
-                    new Uri("avares://SourceGit/Resources/Fonts", UriKind.Absolute));
+                    new Uri("fonts:DevBoard", UriKind.Absolute),
+                    new Uri("avares://DevBoard/Resources/Fonts", UriKind.Absolute));
                 manager.AddFontCollection(monospace);
             });
 
@@ -191,7 +191,7 @@ namespace SourceGit
             {
                 if (!string.IsNullOrEmpty(defaultFont))
                 {
-                    monospaceFont = $"fonts:SourceGit#JetBrains Mono NL,{defaultFont}";
+                    monospaceFont = $"fonts:DevBoard#JetBrains Mono NL,{defaultFont}";
                     resDic.Add("Fonts.Monospace", FontFamily.Parse(monospaceFont));
                 }
             }

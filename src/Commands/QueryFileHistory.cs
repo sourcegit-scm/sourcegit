@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public partial class QueryFileHistory : Command
     {

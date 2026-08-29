@@ -1,8 +1,8 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public enum MergeTestingState
     {

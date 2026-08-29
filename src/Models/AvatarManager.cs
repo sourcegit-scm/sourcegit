@@ -13,7 +13,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public interface IAvatarHost
     {
@@ -216,7 +216,7 @@ namespace SourceGit.Models
 
         private void LoadDefaultAvatar(string key, string img)
         {
-            var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/{img}", UriKind.RelativeOrAbsolute));
+            var icon = AssetLoader.Open(new Uri($"avares://DevBoard/Resources/Images/{img}", UriKind.RelativeOrAbsolute));
             _resources.Add(key, new Bitmap(icon));
             _defaultAvatars.Add(key);
         }

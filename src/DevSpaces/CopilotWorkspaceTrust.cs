@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     public static class CopilotWorkspaceTrust
     {

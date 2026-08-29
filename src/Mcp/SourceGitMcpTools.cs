@@ -6,22 +6,22 @@ using System.Text.Json;
 
 using ModelContextProtocol.Server;
 
-using SourceGit.DevSpaces.Terminal;
-using SourceGit.ViewModels;
+using DevBoard.DevSpaces.Terminal;
+using DevBoard.ViewModels;
 
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
     [McpServerToolType]
-    public sealed class SourceGitMcpTools
+    public sealed class DevBoardMcpTools
     {
-        public SourceGitMcpTools(DevSpaceTerminalRegistry registry, SourceGitMcpOptions options)
+        public DevBoardMcpTools(DevSpaceTerminalRegistry registry, DevBoardMcpOptions options)
         {
             _registry = registry ?? throw new ArgumentNullException(nameof(registry));
             _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         [McpServerTool(Name = "sourcegit_list_devspaces")]
-        [Description("Lists SourceGit DevSpaces that currently have registered terminal sessions.")]
+        [Description("Lists DevBoard DevSpaces that currently have registered terminal sessions.")]
         public string ListDevSpaces()
         {
             return WriteJson(writer =>
@@ -44,7 +44,7 @@ namespace SourceGit.Mcp
         }
 
         [McpServerTool(Name = "sourcegit_list_terminals")]
-        [Description("Lists SourceGit DevSpace terminal sessions, optionally filtered by DevSpace path.")]
+        [Description("Lists DevBoard DevSpace terminal sessions, optionally filtered by DevSpace path.")]
         public string ListTerminals(
             [Description("Optional DevSpace/worktree path to filter by.")] string devSpaceId = null)
         {
@@ -63,9 +63,9 @@ namespace SourceGit.Mcp
         }
 
         [McpServerTool(Name = "sourcegit_terminal_status")]
-        [Description("Returns status and retained transcript sequence information for a SourceGit DevSpace terminal.")]
+        [Description("Returns status and retained transcript sequence information for a DevBoard DevSpace terminal.")]
         public string TerminalStatus(
-            [Description("SourceGit terminal session ID.")] string terminalId)
+            [Description("DevBoard terminal session ID.")] string terminalId)
         {
             if (!TryGetTerminal(terminalId, out var session))
                 return TerminalNotFound(terminalId);
@@ -92,9 +92,9 @@ namespace SourceGit.Mcp
         }
 
         [McpServerTool(Name = "sourcegit_terminal_tail")]
-        [Description("Returns recent output retained for a SourceGit DevSpace terminal without exposing terminal input.")]
+        [Description("Returns recent output retained for a DevBoard DevSpace terminal without exposing terminal input.")]
         public string TerminalTail(
-            [Description("SourceGit terminal session ID.")] string terminalId,
+            [Description("DevBoard terminal session ID.")] string terminalId,
             [Description("Maximum number of recent transcript events to read.")] int lines = 200)
         {
             if (!_options.ShareDevSpaceTerminalOutput)
@@ -109,9 +109,9 @@ namespace SourceGit.Mcp
         }
 
         [McpServerTool(Name = "sourcegit_terminal_read")]
-        [Description("Incrementally reads retained SourceGit DevSpace terminal output after an optional sequence cursor.")]
+        [Description("Incrementally reads retained DevBoard DevSpace terminal output after an optional sequence cursor.")]
         public string TerminalRead(
-            [Description("SourceGit terminal session ID.")] string terminalId,
+            [Description("DevBoard terminal session ID.")] string terminalId,
             [Description("Only return transcript events newer than this sequence number.")] long? afterSequence = null,
             [Description("Maximum UTF-8 output bytes to return, capped at 65536.")] int maxBytes = TerminalTranscriptStore.MaximumReadBytes)
         {
@@ -208,6 +208,6 @@ namespace SourceGit.Mcp
         }
 
         private readonly DevSpaceTerminalRegistry _registry;
-        private readonly SourceGitMcpOptions _options;
+        private readonly DevBoardMcpOptions _options;
     }
 }

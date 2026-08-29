@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 using Avalonia.Collections;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public sealed class GitAccountStore
     {

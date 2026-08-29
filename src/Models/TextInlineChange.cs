@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class TextInlineChange(int dp, int dc, int ap, int ac)
     {

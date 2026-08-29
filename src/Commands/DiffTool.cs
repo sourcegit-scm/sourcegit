@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public class DiffTool : Command
     {

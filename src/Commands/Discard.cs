@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public static class Discard
     {

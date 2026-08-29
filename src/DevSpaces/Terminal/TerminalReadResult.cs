@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SourceGit.DevSpaces.Terminal
+namespace DevBoard.DevSpaces.Terminal
 {
     public sealed record TerminalReadResult(
         IReadOnlyList<DevSpaceTerminalEvent> Events,

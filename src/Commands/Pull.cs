@@ -1,7 +1,7 @@
-﻿using System.Text;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public class Pull : Command
     {

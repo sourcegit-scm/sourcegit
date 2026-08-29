@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-using SourceGit.AI.Routing;
+using DevBoard.AI.Routing;
 
-namespace SourceGit.AI.Hosting;
+namespace DevBoard.AI.Hosting;
 
 public static class AIRouterHost
 {

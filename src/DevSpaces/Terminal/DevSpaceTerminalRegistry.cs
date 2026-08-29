@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using SourceGit.ViewModels;
+using DevBoard.ViewModels;
 
-namespace SourceGit.DevSpaces.Terminal
+namespace DevBoard.DevSpaces.Terminal
 {
     public sealed class DevSpaceTerminalRegistry
     {

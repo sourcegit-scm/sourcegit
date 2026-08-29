@@ -2,7 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class MacOSTrafficLightsSpacer : Control
     {

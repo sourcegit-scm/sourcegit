@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">Tentang</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">Tentang SourceGit</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Tentang DevBoard</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Tanggal Rilis: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Catatan Rilis</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Klien Git GUI Opensource &amp; Gratis</x:String>
@@ -26,7 +26,7 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">BUAT ULANG</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Gunakan AI untuk membuat pesan commit</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Gunakan</x:String>
-  <x:String x:Key="Text.App.Hide" xml:space="preserve">Sembunyikan SourceGit</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Sembunyikan DevBoard</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Sembunyikan Lainnya</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Tampilkan Semua</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Merge 3 Arah</x:String>
@@ -46,7 +46,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Pilih jalur berkas arsip</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revisi:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">Arsip</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Masukkan passphrase:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">BERKAS DIASUMSIKAN TIDAK BERUBAH</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">TIDAK ADA BERKAS YANG DIASUMSIKAN TIDAK BERUBAH</x:String>
@@ -273,7 +273,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Gunakan $1, $2 untuk mengakses nilai grup regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Layanan Pilihan:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Jika 'Layanan Pilihan' diatur, SourceGit hanya akan menggunakannya di repositori ini. Jika tidak, jika ada lebih dari satu layanan yang tersedia, menu konteks untuk memilih salah satunya akan ditampilkan.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Jika 'Layanan Pilihan' diatur, DevBoard hanya akan menggunakannya di repositori ini. Jika tidak, jika ada lebih dari satu layanan yang tersedia, menu konteks untuk memilih salah satunya akan ditampilkan.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proksi HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proksi HTTP yang digunakan oleh repositori ini</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nama Pengguna</x:String>

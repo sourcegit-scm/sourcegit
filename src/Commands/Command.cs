@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public partial class Command
     {

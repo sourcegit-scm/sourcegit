@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class DeleteSubmodule : Popup
     {

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Globalization;
 
 using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Avalonia.Styling;
 
-namespace SourceGit.Converters
+namespace DevBoard.Converters
 {
     public static class StringConverters
     {

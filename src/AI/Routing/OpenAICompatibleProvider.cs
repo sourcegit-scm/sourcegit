@@ -6,7 +6,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SourceGit.AI.Routing;
+namespace DevBoard.AI.Routing;
 
 public sealed class OpenAICompatibleProvider : IAIProvider
 {

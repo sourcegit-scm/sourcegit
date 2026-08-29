@@ -1,7 +1,7 @@
 using Avalonia.Data.Converters;
 using Avalonia.Media;
 
-namespace SourceGit.Converters
+namespace DevBoard.Converters
 {
     public static class WorktreeBaseBranchConverters
     {

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public partial class Blame : Command
     {

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public partial class Remote
     {

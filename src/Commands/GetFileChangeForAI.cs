@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public class GetFileChangeForAI : Command
     {
