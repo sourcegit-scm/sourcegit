@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const workflowUrl = new URL('../.github/workflows/store-msix.yml', import.meta.url);
+const dashboardTestsUrl = new URL('./DevBoard.Tests/DevSpacesDashboardTests.cs', import.meta.url);
 
 test('Store workflow contains required build and submission contracts', async () => {
   const workflow = await readFile(workflowUrl, 'utf8');
@@ -50,6 +51,11 @@ test('Store unit tests exclude UI integration tests that lock temp workspaces on
   assert.match(unitTestJob, /--filter "Category!=UIIntegration"/);
 });
 
+test('DevSpaces dashboard tests are tagged as UI integration tests', async () => {
+  const source = await readFile(dashboardTestsUrl, 'utf8');
+  assert.match(source, /\[Trait\("Category",\s*"UIIntegration"\)\]\s*public sealed class DevSpacesDashboardTests/);
+});
+
 test('Store unit tests expose hangs quickly without rebuilding during test execution', async () => {
   const workflow = await readFile(workflowUrl, 'utf8');
   const unitTestJob = workflow.split('  unit-tests:')[1]?.split('  build-msix:')[0] ?? '';
@@ -57,7 +63,7 @@ test('Store unit tests expose hangs quickly without rebuilding during test execu
   assert.match(unitTestJob, /timeout-minutes: 10/);
   assert.match(unitTestJob, /dotnet restore tests\/DevBoard\.Tests\/DevBoard\.Tests\.csproj/);
   assert.match(unitTestJob, /dotnet build tests\/DevBoard\.Tests\/DevBoard\.Tests\.csproj --configuration Release --no-restore/);
-  assert.match(unitTestJob, /--blame-hang --blame-hang-timeout 2m --logger "console;verbosity=normal"/);
+  assert.match(unitTestJob, /dotnet test tests\/DevBoard\.Tests\/DevBoard\.Tests\.csproj --configuration Release --no-build --no-restore --filter "Category!=UIIntegration" --blame-hang --blame-hang-timeout 2m --logger "console;verbosity=normal"/);
 });
 
 test('Store workflow cancels superseded runs and caps long jobs', async () => {
