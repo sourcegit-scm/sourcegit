@@ -60,7 +60,8 @@ public static class AIRouterHost
             return;
         }
 
-        var result = await router.RouteAsync(new AIRouterRequest(model, payload), context.RequestAborted);
+        var path = context.Request.Path.Value;
+        var result = await router.RouteAsync(new AIRouterRequest(model, payload, path), context.RequestAborted);
         context.Response.StatusCode = result.StatusCode;
         context.Response.ContentType = "application/json";
 
