@@ -11,6 +11,7 @@
           <StackPanel Orientation="Horizontal">
             <Border Height="32" Margin="2,2,0,2" Padding="10,0" CornerRadius="4" Background="{DynamicResource Brush.Contents}" PointerPressed="OnDashboardTabPressed"><TextBlock VerticalAlignment="Center" Text="{DynamicResource Text.DevSpaces.Dashboard}"/></Border>
             <Border Height="32" Margin="2,2,0,2" Padding="10,0" CornerRadius="4" Background="{DynamicResource Brush.Contents}" PointerPressed="OnFilesTabPressed"><StackPanel Orientation="Horizontal" Spacing="6"><Path Width="13" Height="13" VerticalAlignment="Center" Data="{StaticResource Icons.Folder}"/><TextBlock VerticalAlignment="Center" Text="{DynamicResource Text.DevSpaces.Files}"/></StackPanel></Border>
+            <Border Height="32" Margin="2,2,0,2" Padding="10,0" CornerRadius="4" Background="{DynamicResource Brush.Contents}" PointerPressed="OnAIRouterTabPressed"><StackPanel Orientation="Horizontal" Spacing="6"><Path Width="13" Height="13" VerticalAlignment="Center" Data="{StaticResource Icons.AIAssist}"/><TextBlock VerticalAlignment="Center" Text="AI Router"/></StackPanel></Border>
             <Border Height="32" Margin="2,2,0,2" Padding="10,0" CornerRadius="4" Background="{DynamicResource Brush.Contents}" PointerPressed="OnTerminalsTabPressed"><StackPanel Orientation="Horizontal" Spacing="6"><Path Width="13" Height="13" VerticalAlignment="Center" Data="{StaticResource Icons.Terminal}"/><TextBlock VerticalAlignment="Center" Text="{DynamicResource Text.DevSpaces.Terminals}"/></StackPanel></Border>
             <ItemsControl ItemsSource="{Binding Sessions}" IsVisible="{Binding IsTerminalsActive}">
               <ItemsControl.ItemsPanel><ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
@@ -23,6 +24,6 @@
         <Button Grid.Column="3" Classes="icon_button" Width="30" Height="30" Margin="4,3,6,3" IsVisible="{Binding IsTerminalsActive}" Click="OnCreateTerminal" ToolTip.Tip="{DynamicResource Text.DevSpaces.NewTerminal}"><Path Width="13" Height="13" Data="{StaticResource Icons.Plus}"/></Button>
       </Grid>
     </Border>
-    <Grid Grid.Row="1"><v:DevSpaceDashboard x:Name="DashboardView" DataContext="{Binding Dashboard}"/><v:DevSpaceFiles x:Name="FilesView" DataContext="{Binding Files}"/><Grid x:Name="TerminalGrid" Margin="2"/></Grid>
+    <Grid Grid.Row="1"><v:DevSpaceDashboard x:Name="DashboardView" DataContext="{Binding Dashboard}"/><v:DevSpaceFiles x:Name="FilesView" DataContext="{Binding Files}"/><v:DevSpaceAIRouter x:Name="AIRouterView" IsVisible="False"/><Grid x:Name="TerminalGrid" Margin="2"/></Grid>
   </Grid>
 </UserControl>
