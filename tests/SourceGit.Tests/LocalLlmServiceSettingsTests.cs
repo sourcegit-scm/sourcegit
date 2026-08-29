@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +39,18 @@ public class LocalLlmServiceSettingsTests
     public void LocalLlmBackend_DefaultBundleStaysSlim()
     {
         Assert.Equal(["Auto", "Cpu", "Vulkan"], Enum.GetNames<LocalLlmBackend>());
+    }
+
+    [Fact]
+    public void LocalLlmBackend_VulkanIsOnlyBundledForX64()
+    {
+        var method = typeof(LocalLlmBackendCoordinator).GetMethod(
+            "SupportsBundledVulkan",
+            BindingFlags.Static | BindingFlags.NonPublic);
+
+        Assert.NotNull(method);
+        Assert.True((bool)method.Invoke(null, [Architecture.X64]));
+        Assert.False((bool)method.Invoke(null, [Architecture.Arm64]));
     }
 
     [Fact]
