@@ -19,7 +19,7 @@ $diff = git diff --name-only upstream/master...HEAD -- src/Views src/ViewModels 
 $diff | Set-Content -Encoding utf8 (Join-Path $Output "fork-devspaces-diff.txt")
 
 $env:SOURCEGIT_SCREENSHOT_OUTPUT = (Resolve-Path $Output).Path
-dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj -c $Configuration -p:DisableAOT=true --filter "FullyQualifiedName~DevSpacesScreenshot"
+dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c $Configuration -p:DisableAOT=true --filter "FullyQualifiedName~DevSpacesScreenshot"
 
 $pngs = Get-ChildItem -Path $Output -Recurse -Filter *.png | Sort-Object FullName
 $manifest = $pngs | ForEach-Object {
