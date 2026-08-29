@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SourceGit.Models
 {
@@ -15,6 +16,8 @@ namespace SourceGit.Models
 
     public static class WorktreeBaseBranch
     {
+        private const string MetadataFile = "sourcegit.worktree-base";
+
         public static string Normalize(string branch)
         {
             if (string.IsNullOrWhiteSpace(branch))
@@ -59,6 +62,39 @@ namespace SourceGit.Models
                 WorktreeBaseBranchKind.Release => "#F76B15",
                 _ => "Transparent",
             };
+        }
+
+        public static string ReadPersisted(string gitDir)
+        {
+            if (string.IsNullOrEmpty(gitDir))
+                return string.Empty;
+
+            try
+            {
+                var path = Path.Combine(gitDir, MetadataFile);
+                return File.Exists(path) ? Normalize(File.ReadAllText(path)) : string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
+        public static void WritePersisted(string gitDir, string branch)
+        {
+            var normalized = Normalize(branch);
+            if (string.IsNullOrEmpty(gitDir) || GetKind(normalized) == WorktreeBaseBranchKind.None)
+                return;
+
+            try
+            {
+                Directory.CreateDirectory(gitDir);
+                File.WriteAllText(Path.Combine(gitDir, MetadataFile), normalized);
+            }
+            catch
+            {
+                // Metadata is optional. Inference will be used on the next open.
+            }
         }
 
         public static string SelectBestCandidate(IEnumerable<WorktreeBaseBranchCandidate> candidates)
