@@ -1,7 +1,8 @@
 {
-  "processId": 6608,
-  "windowTitle": "dev-board",
+  "processId": 8592,
+  "windowTitle": "Repositories",
   "width": 1044,
   "height": 720,
-  "executable": "D:\\a\\dev-board\\dev-board\\artifacts\\devboard-screenshot-app\\DevBoard.exe"
+  "executable": "D:\\a\\dev-board\\dev-board\\artifacts\\devboard-screenshot-app\\DevBoard.exe",
+  "startupMode": "launcher"
 }
