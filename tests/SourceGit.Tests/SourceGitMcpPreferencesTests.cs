@@ -94,12 +94,29 @@ public class SourceGitMcpPreferencesTests
         Assert.Equal("Address already in use", settings.RuntimeError);
     }
 
+    [Fact]
+    public void DisplayEndpoint_uses_resolved_runtime_endpoint_while_running()
+    {
+        var settings = new SourceGitMcpSettings { Port = 0 };
+
+        Assert.Equal("http://127.0.0.1:0/sse", settings.DisplayEndpoint);
+
+        settings.UpdateRuntimeState(true, "http://127.0.0.1:54321/sse", string.Empty);
+
+        Assert.Equal("http://127.0.0.1:54321/sse", settings.DisplayEndpoint);
+
+        settings.UpdateRuntimeState(false, string.Empty, string.Empty);
+
+        Assert.Equal("http://127.0.0.1:0/sse", settings.DisplayEndpoint);
+    }
+
     [Theory]
     [InlineData(nameof(SourceGitMcpSettings.Enabled), true)]
     [InlineData(nameof(SourceGitMcpSettings.Port), true)]
     [InlineData(nameof(SourceGitMcpSettings.ShareDevSpaceTerminalOutput), true)]
     [InlineData(nameof(SourceGitMcpSettings.AuthToken), true)]
     [InlineData(nameof(SourceGitMcpSettings.Endpoint), false)]
+    [InlineData("DisplayEndpoint", false)]
     [InlineData(nameof(SourceGitMcpSettings.RuntimeStatus), false)]
     [InlineData(nameof(SourceGitMcpSettings.RuntimeEndpoint), false)]
     [InlineData(nameof(SourceGitMcpSettings.RuntimeError), false)]
