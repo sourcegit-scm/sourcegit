@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
@@ -99,7 +100,7 @@ public class LocalLlmServiceSettingsTests
         using var service = new Service
         {
             Provider = ProviderType.LocalLlm,
-            LocalModelPath = Path.Combine(Path.GetTempPath(), $"missing-{System.Guid.NewGuid():N}.gguf"),
+            LocalModelPath = Path.Combine(Path.GetTempPath(), $"missing-{Guid.NewGuid():N}.gguf"),
             AutoLoadModel = true,
         };
 
@@ -137,7 +138,7 @@ public class LocalLlmServiceSettingsTests
         Assert.NotNull(property);
 
         var converted = property.PropertyType.IsEnum && value is string text
-            ? System.Enum.Parse(property.PropertyType, text)
+            ? Enum.Parse(property.PropertyType, text)
             : value;
         property.SetValue(instance, converted);
     }
