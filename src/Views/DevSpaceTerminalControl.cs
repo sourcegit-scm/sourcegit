@@ -27,6 +27,9 @@ namespace SourceGit.Views
         public Task PasteAsync() =>
             _view?.PasteAsync() ?? Task.CompletedTask;
 
+        public Task SendInputAsync(string text) =>
+            _view?.SendInputAsync(text) ?? Task.CompletedTask;
+
         public void SelectAll()
         {
             if (_view == null)
