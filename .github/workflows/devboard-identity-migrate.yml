@@ -1,4 +1,4 @@
-name: DevBoard Identity Migration
+name: DevBoard Identity Verification
 
 on:
   push:
@@ -6,78 +6,27 @@ on:
       - refactor/devboard-identity
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  migrate:
-    if: github.actor != 'github-actions[bot]'
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
         with:
-          ref: refactor/devboard-identity
           submodules: true
-          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
-      - name: Verify identity scanner tests before rename
+      - name: Run identity contract tests
         run: node --test tests/devboard-identity.test.mjs
 
-      - name: Rename .NET identity
-        shell: bash
-        run: |
-          set -euo pipefail
-          git mv SourceGit.slnx DevBoard.slnx
-          git mv src/SourceGit.csproj src/DevBoard.csproj
-          git mv tests/SourceGit.Tests tests/DevBoard.Tests
-          git mv tests/DevBoard.Tests/SourceGit.Tests.csproj tests/DevBoard.Tests/DevBoard.Tests.csproj
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          roots = [Path('src'), Path('tests/DevBoard.Tests')]
-          allowed = {'.cs', '.axaml', '.csproj'}
-          for root in roots:
-              for p in root.rglob('*'):
-                  if not p.is_file() or p.suffix not in allowed:
-                      continue
-                  data = p.read_text(encoding='utf-8-sig')
-                  data = data.replace('SourceGit', 'DevBoard')
-                  p.write_text(data, encoding='utf-8')
-
-          solution = Path('DevBoard.slnx')
-          data = solution.read_text(encoding='utf-8-sig')
-          data = data.replace('src/SourceGit.csproj', 'src/DevBoard.csproj')
-          data = data.replace('tests/SourceGit.Tests/SourceGit.Tests.csproj', 'tests/DevBoard.Tests/DevBoard.Tests.csproj')
-          solution.write_text(data, encoding='utf-8')
-
-          project = Path('src/DevBoard.csproj')
-          data = project.read_text(encoding='utf-8')
-          data = data.replace('<TargetFramework>net10.0</TargetFramework>', '<TargetFramework>net10.0</TargetFramework>\n    <AssemblyName>DevBoard</AssemblyName>\n    <RootNamespace>DevBoard</RootNamespace>')
-          data = data.replace('<Product>Dev Board</Product>', '<Product>DevBoard</Product>')
-          data = data.replace('<Company>sourcegit-scm</Company>', '<Company>DevBoard</Company>')
-          data = data.replace('Copyright © $([System.DateTime]::Now.Year) sourcegit-scm.', 'Copyright © $([System.DateTime]::Now.Year) DevBoard contributors.')
-          data = data.replace('https://github.com/sourcegit-scm/sourcegit.git', 'https://github.com/dhhieu113pro/dev-board.git')
-          project.write_text(data, encoding='utf-8')
-          PY
-
-      - name: Build renamed solution
+      - name: Build DevBoard
         run: dotnet build DevBoard.slnx -c Debug
 
-      - name: Run renamed tests
+      - name: Run DevBoard tests
         run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c Release
-
-      - name: Commit mechanical rename
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'refactor: rename application identity to DevBoard'
-          git push origin HEAD:refactor/devboard-identity
