@@ -347,7 +347,8 @@ namespace SourceGit.Views
                             Name = agent.Name,
                             Path = ".",
                             Command = agent.Command,
-                        });
+                        },
+                        showProfileIcon: false);
                 }
 
                 e.Handled = true;
@@ -362,7 +363,7 @@ namespace SourceGit.Views
             var path = string.IsNullOrWhiteSpace(profile.Path) ? "." : profile.Path;
             var item = new MenuItem
             {
-                Header = $"{profile.Name}  ·  {path}",
+                Header = $"{profile.DisplayName}  ·  {path}",
             };
             item.Click += async (_, e) =>
             {

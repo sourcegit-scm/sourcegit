@@ -159,7 +159,8 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateProfileTerminalAt(
             int preferredSlot,
-            SourceGit.DevSpaces.DevSpaceTerminalProfile profile)
+            SourceGit.DevSpaces.DevSpaceTerminalProfile profile,
+            bool showProfileIcon = true)
         {
             SourceGit.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
             var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
@@ -175,7 +176,7 @@ namespace SourceGit.ViewModels
             return CreateTerminalAt(
                 preferredSlot,
                 settings.DefaultTerminal,
-                profile.Name,
+                showProfileIcon ? profile.DisplayName : profile.Name,
                 workingDirectory,
                 profile.Command);
         }
