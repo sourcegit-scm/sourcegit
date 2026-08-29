@@ -138,7 +138,7 @@ jobs:
         run: dotnet restore src/DevBoard.csproj -r ${{ matrix.rid }}
       - name: Publish DevBoard
         shell: pwsh
-        run: dotnet publish src/DevBoard.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --no-restore --output "store/publish/${{ matrix.rid }}" -p:Version=${{ needs.preflight.outputs.version }}
+        run: dotnet publish src/DevBoard.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output "store/publish/${{ matrix.rid }}" -p:Version=${{ needs.preflight.outputs.version }}
       - name: Validate Store assets
         shell: pwsh
         run: ./scripts/validate-store-assets.ps1
