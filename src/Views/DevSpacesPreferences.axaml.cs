@@ -8,6 +8,7 @@ namespace SourceGit.Views
         public DevSpacesPreferences()
         {
             InitializeComponent();
+            McpSettingsPanel.DataContext = Mcp.SourceGitMcpSettings.Instance;
             DataContextChanged += (_, _) => NormalizeLegacyLayout();
         }
 
@@ -20,6 +21,12 @@ namespace SourceGit.Views
             if (!preferences.EnableDevSpaces)
                 SourceGit.DevSpaces.DevSpaceRegistry.DisableAll();
 
+            e.Handled = true;
+        }
+
+        private void OnRegenerateMcpToken(object sender, RoutedEventArgs e)
+        {
+            Mcp.SourceGitMcpSettings.Instance.RegenerateAuthToken();
             e.Handled = true;
         }
 
