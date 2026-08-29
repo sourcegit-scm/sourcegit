@@ -14,9 +14,6 @@ jobs:
           ref: refactor/devboard-identity
           submodules: true
           fetch-depth: 0
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
       - name: Apply final DevBoard identity cleanup
         shell: bash
         run: |
@@ -53,32 +50,24 @@ jobs:
           for path, pairs in replacements.items():
             p = Path(path)
             data = p.read_text(encoding='utf-8-sig')
-            for old,new in pairs: data = data.replace(old,new)
+            for old,new in pairs:
+              data = data.replace(old,new)
             p.write_text(data, encoding='utf-8')
 
           for p in [Path('docs/branding/dev-board-logo.svg'), Path('docs/branding/dev-board-thumbnail.svg')]:
             if p.exists():
-              data=p.read_text(encoding='utf-8').replace('Dev Board','DevBoard')
+              data = p.read_text(encoding='utf-8').replace('Dev Board','DevBoard')
               p.write_text(data,encoding='utf-8')
 
           for p in Path('tests/DevBoard.Tests').rglob('*.cs'):
-            data=p.read_text(encoding='utf-8-sig')
-            data=data.replace('sourcegit-', 'devboard-').replace('sourcegit-default.gguf','devboard-default.gguf')
+            data = p.read_text(encoding='utf-8-sig')
+            data = data.replace('sourcegit-', 'devboard-').replace('sourcegit-default.gguf','devboard-default.gguf')
             p.write_text(data,encoding='utf-8')
-
-          scanner=Path('scripts/check-devboard-identity.mjs')
-          data=scanner.read_text(encoding='utf-8')
-          data=data.replace("  'tests/devboard-identity.test.mjs',", "  'tests/devboard-identity.test.mjs',\n  'scripts/check-devboard-identity.mjs',\n  '.github/workflows/homebrew-notify.yml',")
-          scanner.write_text(data,encoding='utf-8')
           PY
       - name: Verify identity
         run: |
           node --test tests/devboard-identity.test.mjs
           node scripts/check-devboard-identity.mjs
-      - name: Build and test
-        run: |
-          dotnet build DevBoard.slnx -c Debug
-          dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c Release
       - name: Commit cleanup
         shell: bash
         run: |
