@@ -10,11 +10,12 @@ namespace SourceGit.DevSpaces
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 throw new ArgumentException("DevSpaces working directory must not be empty.", nameof(workingDirectory));
 
+            var command = startupCommand?.Trim();
             var normalized = terminal?.Trim().ToLowerInvariant();
             if (normalized is "pwsh" or DevSpaceProfileSettings.PowerShell7)
             {
                 var process = OperatingSystem.IsWindows() ? FindPowerShell7() : "pwsh";
-                return new DevSpaceLaunchSpec(process, ["-NoLogo"], workingDirectory, startupCommand);
+                return new DevSpaceLaunchSpec(process, BuildPowerShellArguments(command), workingDirectory);
             }
 
             if (OperatingSystem.IsWindows())
@@ -24,13 +25,22 @@ namespace SourceGit.DevSpaces
                     case "powershell":
                     case "powershell.exe":
                     case DevSpaceProfileSettings.WindowsPowerShell:
-                        return new DevSpaceLaunchSpec(FindWindowsPowerShell(), ["-NoLogo"], workingDirectory, startupCommand);
+                        return new DevSpaceLaunchSpec(
+                            FindWindowsPowerShell(),
+                            BuildPowerShellArguments(command),
+                            workingDirectory);
                     case "cmd":
                     case "cmd.exe":
                     case DevSpaceProfileSettings.CommandPrompt:
-                        return new DevSpaceLaunchSpec(FindCommandPrompt(), [], workingDirectory, startupCommand);
+                        return new DevSpaceLaunchSpec(
+                            FindCommandPrompt(),
+                            string.IsNullOrWhiteSpace(command) ? [] : ["/K", command],
+                            workingDirectory);
                     default:
-                        return new DevSpaceLaunchSpec(FindPowerShell7(), ["-NoLogo"], workingDirectory, startupCommand);
+                        return new DevSpaceLaunchSpec(
+                            FindWindowsPowerShell(),
+                            BuildPowerShellArguments(command),
+                            workingDirectory);
                 }
             }
 
@@ -38,7 +48,18 @@ namespace SourceGit.DevSpaces
             if (string.IsNullOrWhiteSpace(shell))
                 shell = "/bin/sh";
 
-            return new DevSpaceLaunchSpec(shell, [], workingDirectory, startupCommand);
+            if (string.IsNullOrWhiteSpace(command))
+                return new DevSpaceLaunchSpec(shell, [], workingDirectory);
+
+            var keepOpen = $"{command}; exec \"$SHELL\" -i";
+            return new DevSpaceLaunchSpec(shell, ["-i", "-c", keepOpen], workingDirectory);
+        }
+
+        private static string[] BuildPowerShellArguments(string command)
+        {
+            return string.IsNullOrWhiteSpace(command)
+                ? ["-NoLogo"]
+                : ["-NoLogo", "-NoExit", "-Command", command];
         }
 
         private static string FindPowerShell7()
