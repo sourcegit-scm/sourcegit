@@ -1,3 +1,7 @@
+using System;
+using System.IO;
+using System.Reflection;
+
 using SourceGit.Mcp;
 using Xunit;
 
@@ -44,6 +48,32 @@ public class SourceGitMcpPreferencesTests
 
         Assert.NotEqual(first, settings.AuthToken);
         Assert.True(settings.AuthToken.Length >= 32);
+    }
+
+    [Fact]
+    public void Secure_settings_temp_file_is_owner_only_on_unix()
+    {
+        if (OperatingSystem.IsWindows())
+            return;
+
+        var path = Path.Combine(Path.GetTempPath(), $"sourcegit-mcp-{Guid.NewGuid():N}.tmp");
+        try
+        {
+            var method = typeof(SourceGitMcpSettings).GetMethod(
+                "CreateSecureSettingsFile",
+                BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.NotNull(method);
+
+            using var stream = Assert.IsType<FileStream>(method.Invoke(null, [path]));
+            Assert.Equal(
+                UnixFileMode.UserRead | UnixFileMode.UserWrite,
+                File.GetUnixFileMode(path));
+        }
+        finally
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+        }
     }
 
     [Fact]
