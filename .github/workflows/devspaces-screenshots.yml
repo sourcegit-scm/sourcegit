@@ -26,6 +26,9 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Verify real-app screenshot contract
+        run: node --test tests/devspaces-screenshot-workflow.test.mjs
+
       - name: Capture DevSpaces screenshots
         shell: pwsh
         run: ./scripts/devspaces-screenshots.ps1

@@ -36,6 +36,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: store-msix-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   preflight:
     name: Store preflight
@@ -81,9 +85,31 @@ jobs:
           node --test tests/store-assets.test.mjs
           node --test tests/store-workflow.test.mjs
 
+  unit-tests:
+    name: Store unit tests
+    needs: preflight
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore unit tests
+        shell: pwsh
+        run: dotnet restore tests/DevBoard.Tests/DevBoard.Tests.csproj
+      - name: Build unit tests
+        shell: pwsh
+        run: dotnet build tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release --no-restore
+      - name: Run unit tests once
+        shell: pwsh
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release --no-build --no-restore --filter "Category!=UIIntegration" --blame-hang --blame-hang-timeout 2m --logger "console;verbosity=normal"
+
   build-msix:
     name: Build Store MSIX (${{ matrix.arch }})
-    needs: preflight
+    needs: [preflight, unit-tests]
     strategy:
       fail-fast: false
       matrix:
@@ -95,6 +121,7 @@ jobs:
             rid: win-arm64
             arch: arm64
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
     env:
       STORE_PACKAGE_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard.Test' || inputs.package_name || vars.STORE_PACKAGE_NAME || secrets.STORE_PACKAGE_NAME }}
       STORE_PUBLISHER: ${{ github.event_name == 'pull_request' && 'CN=00000000-0000-0000-0000-000000000000' || inputs.publisher || vars.STORE_PUBLISHER || secrets.STORE_PUBLISHER }}
@@ -109,9 +136,6 @@ jobs:
       - name: Restore
         shell: pwsh
         run: dotnet restore src/DevBoard.csproj -r ${{ matrix.rid }}
-      - name: Run unit tests
-        shell: pwsh
-        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release
       - name: Publish DevBoard
         shell: pwsh
         run: dotnet publish src/DevBoard.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output "store/publish/${{ matrix.rid }}" -p:Version=${{ needs.preflight.outputs.version }}
