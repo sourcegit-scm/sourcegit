@@ -61,8 +61,6 @@
     <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.12" />
     <PackageReference Include="LLamaSharp" Version="0.27.0" />
     <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.27.0" />
-    <PackageReference Include="LLamaSharp.Backend.Cuda12" Version="0.27.0" />
-    <PackageReference Include="LLamaSharp.Backend.Vulkan" Version="0.27.0" />
     <PackageReference Include="OpenAI" Version="2.10.0" />
     <PackageReference Include="Pfim" Version="0.11.4" />
     <PackageReference Include="Porta.Pty" Version="1.0.7" />
@@ -72,7 +70,14 @@
   </ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <PackageReference Include="LLamaSharp.Backend.Cuda12.Windows" Version="0.27.0" />
+    <PackageReference Include="LLamaSharp.Backend.Vulkan.Windows" Version="0.27.0" />
     <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <PackageReference Include="LLamaSharp.Backend.Cuda12.Linux" Version="0.27.0" />
+    <PackageReference Include="LLamaSharp.Backend.Vulkan.Linux" Version="0.27.0" />
   </ItemGroup>
 
   <ItemGroup>
