@@ -15,8 +15,19 @@ namespace SourceGit.Models
         HideToTray,
     }
 
+    public enum AppQuitAction
+    {
+        RequestLauncherClose,
+        ExitImmediately,
+    }
+
     public sealed class LauncherCloseController
     {
+        public static AppQuitAction ResolveAppQuit(bool hasLauncher)
+        {
+            return hasLauncher ? AppQuitAction.RequestLauncherClose : AppQuitAction.ExitImmediately;
+        }
+
         public LauncherCloseAction OnCloseRequested()
         {
             return _exitRequested ? LauncherCloseAction.Exit : LauncherCloseAction.Confirm;
