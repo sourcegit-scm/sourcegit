@@ -69,13 +69,16 @@
     <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows')) And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'win-x64')">
     <PackageReference Include="LLamaSharp.Backend.Vulkan.Windows" Version="0.27.0" />
-    <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
   </ItemGroup>
 
-  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'linux-x64')">
     <PackageReference Include="LLamaSharp.Backend.Vulkan.Linux" Version="0.27.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
   </ItemGroup>
 
   <ItemGroup>
