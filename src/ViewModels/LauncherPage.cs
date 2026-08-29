@@ -1,6 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -16,7 +19,25 @@ namespace SourceGit.ViewModels
         public object Data
         {
             get => _data;
-            set => SetProperty(ref _data, value);
+            set
+            {
+                if (ReferenceEquals(_data, value))
+                    return;
+
+                if (_data is Repository oldRepo)
+                    oldRepo.PropertyChanged -= OnRepositoryPropertyChanged;
+
+                if (SetProperty(ref _data, value) && value is Repository repo)
+                {
+                    repo.PropertyChanged += OnRepositoryPropertyChanged;
+                    RefreshBaseBranch(repo);
+                }
+                else if (value is not Repository)
+                {
+                    Interlocked.Increment(ref _baseBranchRefreshVersion);
+                    BaseBranch = string.Empty;
+                }
+            }
         }
 
         public Models.DirtyState DirtyState
@@ -24,6 +45,23 @@ namespace SourceGit.ViewModels
             get => _dirtyState;
             private set => SetProperty(ref _dirtyState, value);
         }
+
+        public string BaseBranch
+        {
+            get => _baseBranch;
+            private set
+            {
+                if (SetProperty(ref _baseBranch, value))
+                {
+                    OnPropertyChanged(nameof(HasBaseBranch));
+                    OnPropertyChanged(nameof(BaseBranchKind));
+                }
+            }
+        }
+
+        public bool HasBaseBranch => !string.IsNullOrEmpty(_baseBranch);
+
+        public Models.WorktreeBaseBranchKind BaseBranchKind => Models.WorktreeBaseBranch.GetKind(_baseBranch);
 
         public Popup Popup
         {
@@ -49,7 +87,13 @@ namespace SourceGit.ViewModels
         public LauncherPage(RepositoryNode node, Repository repo)
         {
             _node = node;
-            _data = repo;
+            Data = repo;
+        }
+
+        public void RefreshBaseBranch(Repository repo)
+        {
+            var version = Interlocked.Increment(ref _baseBranchRefreshVersion);
+            _ = RefreshBaseBranchAsync(repo, version);
         }
 
         public void ClearNotifications()
@@ -114,9 +158,34 @@ namespace SourceGit.ViewModels
             Popup = null;
         }
 
+        private async Task RefreshBaseBranchAsync(Repository repo, int version)
+        {
+            var query = new Commands.QueryWorktreeBaseBranch(repo.FullPath);
+            var gitDir = await query.GetGitDirAsync().ConfigureAwait(false);
+            var currentBranch = repo.CurrentBranch?.Name ?? string.Empty;
+            var branch = Models.WorktreeBaseBranch.ReadPersisted(gitDir, currentBranch);
+            if (string.IsNullOrEmpty(branch))
+                branch = await query.GetResultAsync().ConfigureAwait(false);
+
+            branch = Models.WorktreeBaseBranch.Normalize(branch);
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (version == _baseBranchRefreshVersion && ReferenceEquals(_data, repo))
+                    BaseBranch = branch;
+            });
+        }
+
+        private void OnRepositoryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Repository.CurrentBranch) && sender is Repository repo)
+                RefreshBaseBranch(repo);
+        }
+
         private RepositoryNode _node = null;
         private object _data = null;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;
+        private string _baseBranch = string.Empty;
+        private int _baseBranchRefreshVersion = 0;
         private Popup _popup = null;
     }
 }
