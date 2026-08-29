@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 using DevBoard.DevSpaces;
 using DevBoard.Models;
@@ -82,7 +83,7 @@ namespace DevBoard.Tests
         }
 
         [Fact]
-        public void OpenFileSelectsFilesWithoutChangingSessions()
+        public async Task OpenFileSelectsFilesWithoutChangingSessions()
         {
             var root = CreateTempDirectory();
             try
@@ -95,6 +96,7 @@ namespace DevBoard.Tests
                 Assert.False(opened);
                 Assert.Equal(DevSpacePage.Files, spaces.ActivePage);
                 Assert.Equal(before, spaces.Sessions.Count);
+                await spaces.Files.InitialRefreshTask;
             }
             finally
             {
