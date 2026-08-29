@@ -296,13 +296,17 @@ namespace SourceGit.AI
             {
                 await PreloadLocalModelAsync(CancellationToken.None);
             }
+            catch (OperationCanceledException)
+            {
+                UpdateLocalModelStatus();
+            }
             catch (Exception ex)
             {
                 LocalModelStatus = $"Failed: {ex.Message}";
             }
         }
 
-        private Task<LocalLlmRuntime> GetLocalLlmRuntimeAsync(CancellationToken cancellationToken)
+        private async Task<LocalLlmRuntime> GetLocalLlmRuntimeAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var error = GetLocalModelValidationError();
@@ -312,40 +316,42 @@ namespace SourceGit.AI
                 throw new FileNotFoundException(error, LocalModelPath);
             }
 
-            lock (_localLlmLock)
-            {
-                if (_localLlmRuntime != null)
-                    return Task.FromResult(_localLlmRuntime);
+            var current = _localLlmRuntime.Current;
+            if (current != null)
+                return current;
 
+            var modelPath = LocalModelPath;
+            var backend = LocalBackend;
+            var contextWindow = ContextWindow;
+            var gpuLayerCount = GpuLayerCount;
+            var threads = LocalThreads;
+            var batchSize = LocalBatchSize;
+
+            if (!_localLlmRuntime.IsLoading)
                 LocalModelStatus = "Loading model...";
-                return Task.Run(() =>
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    try
-                    {
-                        var runtime = LocalLlmRuntime.Load(
-                            LocalModelPath,
-                            LocalBackend,
-                            ContextWindow,
-                            GpuLayerCount,
-                            LocalThreads,
-                            LocalBatchSize);
 
-                        lock (_localLlmLock)
-                        {
-                            _localLlmRuntime ??= runtime;
-                            if (!ReferenceEquals(_localLlmRuntime, runtime))
-                                runtime.Dispose();
-                            LocalModelStatus = $"Loaded ({_localLlmRuntime.Backend})";
-                            return _localLlmRuntime;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        LocalModelStatus = $"Failed: {ex.Message}";
-                        throw;
-                    }
-                }, cancellationToken);
+            try
+            {
+                var runtime = await _localLlmRuntime.GetOrLoadAsync(
+                    () => LocalLlmRuntime.Load(modelPath, backend, contextWindow, gpuLayerCount, threads, batchSize),
+                    cancellationToken);
+                LocalModelStatus = $"Loaded ({runtime.Backend})";
+                return runtime;
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                UpdateLocalModelStatus();
+                throw;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                if (_localLlmRuntime.Current == null)
+                    LocalModelStatus = $"Failed: {ex.Message}";
+                throw;
             }
         }
 
@@ -357,24 +363,20 @@ namespace SourceGit.AI
                 LocalModelStatus = "No model selected";
             else if (!File.Exists(LocalModelPath))
                 LocalModelStatus = "Model not found";
-            else if (_localLlmRuntime != null)
-                LocalModelStatus = $"Loaded ({_localLlmRuntime.Backend})";
+            else if (_localLlmRuntime.Current is { } runtime)
+                LocalModelStatus = $"Loaded ({runtime.Backend})";
+            else if (_localLlmRuntime.IsLoading)
+                LocalModelStatus = "Loading model...";
             else
                 LocalModelStatus = "Ready";
         }
 
         private void DisposeLocalLlmRuntime()
         {
-            lock (_localLlmLock)
-            {
-                _localLlmRuntime?.Dispose();
-                _localLlmRuntime = null;
-            }
-
+            _localLlmRuntime.Reset();
             UpdateLocalModelStatus();
         }
 
-        private readonly object _localLlmLock = new();
         private string _name = string.Empty;
         private ProviderType _provider = ProviderType.OpenAI;
         private string _model = string.Empty;
@@ -389,6 +391,6 @@ namespace SourceGit.AI
         private string _localModelStatus = string.Empty;
         private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;
-        private LocalLlmRuntime _localLlmRuntime;
+        private readonly AsyncLoadCoordinator<LocalLlmRuntime> _localLlmRuntime = new();
     }
 }
