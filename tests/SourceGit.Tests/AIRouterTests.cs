@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SourceGit.AI.Routing;
@@ -39,6 +38,17 @@ public class AIRouterTests
     }
 
     [Fact]
+    public async Task RouteAsync_PreservesRequestedApiPath()
+    {
+        var provider = new StubProvider("openrouter", true, 200);
+        var router = new AIRouter([provider]);
+
+        await router.RouteAsync(new AIRouterRequest("openrouter/model", "{}", "/v1/responses"));
+
+        Assert.Equal("/v1/responses", provider.LastPath);
+    }
+
+    [Fact]
     public async Task RouteAsync_DoesNotFallbackForClientErrors()
     {
         var first = new StubProvider("first", false, 400);
@@ -67,11 +77,13 @@ public class AIRouterTests
         public string Id { get; }
         public int Calls { get; private set; }
         public string LastModel { get; private set; } = string.Empty;
+        public string LastPath { get; private set; }
 
         public Task<AIRouterResult> SendAsync(AIRouterRequest request, CancellationToken cancellationToken = default)
         {
             Calls++;
             LastModel = request.Model;
+            LastPath = request.Path;
             return Task.FromResult(new AIRouterResult(_success, _statusCode, Id, request.Model, _success ? "{}" : null));
         }
     }
