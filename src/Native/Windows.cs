@@ -42,16 +42,24 @@ namespace DevBoard.Native
             window.Padding = new Thickness(0);
         }
 
-        public string GetDataDir()
+        public string GetPortableDataDir()
         {
             var execFile = Environment.ProcessPath;
-            var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
-            if (Directory.Exists(portableDir))
-                return portableDir;
+            return Path.Combine(Path.GetDirectoryName(execFile)!, "data");
+        }
 
+        public string GetDataDir()
+        {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "DevBoard");
+        }
+
+        public string GetLegacyDataDir()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit"); // legacy-migration
         }
 
         public string FindGitExecutable()

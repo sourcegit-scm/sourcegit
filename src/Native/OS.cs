@@ -19,7 +19,9 @@ namespace DevBoard.Native
             void SetupApp(AppBuilder builder);
             void SetupWindow(Window window);
 
+            string GetPortableDataDir();
             string GetDataDir();
+            string GetLegacyDataDir();
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
@@ -135,7 +137,12 @@ namespace DevBoard.Native
 
         public static void SetupDataDir()
         {
-            DataDir = _backend.GetDataDir();
+            DataDir = DataDirectoryResolver.Resolve(
+                _backend.GetPortableDataDir(),
+                _backend.GetDataDir(),
+                _backend.GetLegacyDataDir(),
+                message => Debug.WriteLine(message));
+
             if (!Directory.Exists(DataDir))
                 Directory.CreateDirectory(DataDir);
         }
