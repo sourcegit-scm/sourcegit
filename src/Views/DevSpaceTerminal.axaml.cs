@@ -24,7 +24,7 @@ namespace SourceGit.Views
 
             try
             {
-                var spec = launcher.Create(session.Command, session.WorkingDirectory);
+                var spec = launcher.Create(session.Terminal, session.WorkingDirectory, session.StartupCommand);
                 var surface = CreatePreferredSurface();
                 AttachSurface(surface);
                 _ = StartSurfaceAsync(surface, spec, session);

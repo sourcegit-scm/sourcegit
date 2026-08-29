@@ -20,7 +20,9 @@ namespace SourceGit.ViewModels
 
         public string Title { get; }
 
-        public string Command { get; }
+        public string Terminal { get; }
+
+        public string StartupCommand { get; }
 
         public string WorkingDirectory { get; }
 
@@ -50,11 +52,12 @@ namespace SourceGit.ViewModels
 
         public event Action<DevSpaceTerminal> StopRequested;
 
-        public DevSpaceTerminal(string title, string command, string workingDirectory)
+        public DevSpaceTerminal(string title, string terminal, string workingDirectory, string startupCommand = null)
         {
             Title = title;
-            Command = command;
+            Terminal = terminal;
             WorkingDirectory = workingDirectory;
+            StartupCommand = startupCommand ?? string.Empty;
         }
 
         public void MarkRunning(string backendName)

@@ -7,6 +7,6 @@ namespace SourceGit.DevSpaces
 
     public interface IDevSpaceSessionLauncher
     {
-        DevSpaceLaunchSpec Create(string command, string workingDirectory);
+        DevSpaceLaunchSpec Create(string terminal, string workingDirectory, string startupCommand = null);
     }
 }
