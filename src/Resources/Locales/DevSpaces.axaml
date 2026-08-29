@@ -8,6 +8,10 @@
   <x:String x:Key="Text.DevSpaces.Layout.1x2" xml:space="preserve">1x2</x:String>
   <x:String x:Key="Text.DevSpaces.Layout.2x2" xml:space="preserve">2x2</x:String>
   <x:String x:Key="Text.DevSpaces.Layout.3x3" xml:space="preserve">3x3</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout" xml:space="preserve">Workspace tabs:</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout.Vertical" xml:space="preserve">Vertical</x:String>
+  <x:String x:Key="Text.DevSpaces.TabLayout.VerticalWidth" xml:space="preserve">Vertical tab width:</x:String>
   <x:String x:Key="Text.DevSpaces.NewTerminal" xml:space="preserve">New Terminal</x:String>
   <x:String x:Key="Text.DevSpaces.CloseTerminal" xml:space="preserve">Close Terminal</x:String>
   <x:String x:Key="Text.DevSpaces.StartFailed" xml:space="preserve">Failed to start terminal: {0}</x:String>
