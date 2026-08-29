@@ -50,5 +50,6 @@ src/Views/LauncherPages.cs
 src/Views/LauncherTabBar.axaml
 src/Views/LauncherTabBar.axaml.cs
 src/Views/Preferences.DevSpaces.cs
+src/Views/Preferences.axaml
 src/Views/RepositoryConfigure.axaml.cs
 src/Views/WindowsTerminalNativeHost.cs
