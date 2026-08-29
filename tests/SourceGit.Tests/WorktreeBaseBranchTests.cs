@@ -47,6 +47,25 @@ public class WorktreeBaseBranchTests
     }
 
     [Fact]
+    public void Persisted_base_is_returned_only_for_the_branch_it_was_created_for()
+    {
+        var dir = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"sourcegit-worktree-base-{Guid.NewGuid():N}");
+        try
+        {
+            System.IO.Directory.CreateDirectory(dir);
+            WorktreeBaseBranch.WritePersisted(dir, "feature/foo", "develop");
+
+            Assert.Equal("develop", WorktreeBaseBranch.ReadPersisted(dir, "feature/foo"));
+            Assert.Equal(string.Empty, WorktreeBaseBranch.ReadPersisted(dir, "feature/bar"));
+        }
+        finally
+        {
+            if (System.IO.Directory.Exists(dir))
+                System.IO.Directory.Delete(dir, true);
+        }
+    }
+
+    [Fact]
     public void SelectBestCandidate_prefers_nearest_supported_ancestor()
     {
         var candidates = new[]
