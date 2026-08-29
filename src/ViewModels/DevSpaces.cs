@@ -102,6 +102,12 @@ namespace SourceGit.ViewModels
             IsFilesActive = true;
         }
 
+        public bool OpenFile(string relativePath)
+        {
+            ActivateFiles();
+            return Files.OpenFile(relativePath);
+        }
+
         public DevSpaceTerminal CreateTerminal()
         {
             return CreateTerminalAt(-1);

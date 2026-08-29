@@ -124,6 +124,40 @@ namespace SourceGit.ViewModels
             Filter = string.Empty;
         }
 
+        public IReadOnlyList<string> GetSearchableFilePaths()
+        {
+            return _nodesByPath.Values
+                .Where(x => !x.IsDirectory)
+                .Select(x => x.RelativePath)
+                .OrderBy(x => x, Comparer<string>.Create(Models.NumericSort.Compare))
+                .ToArray();
+        }
+
+        public bool OpenFile(string relativePath)
+        {
+            var normalized = NormalizePath(relativePath);
+            if (!_nodesByPath.TryGetValue(normalized, out var node) || node.IsDirectory)
+                return false;
+
+            Filter = string.Empty;
+
+            var current = normalized;
+            while (true)
+            {
+                var slash = current.LastIndexOf('/');
+                if (slash <= 0)
+                    break;
+
+                current = current[..slash];
+                if (_nodesByPath.TryGetValue(current, out var parent) && parent.IsDirectory)
+                    parent.IsExpanded = true;
+            }
+
+            RebuildVisibleItems();
+            SelectedNode = node;
+            return true;
+        }
+
         private async Task LoadDetailAsync(DevSpaceFileNode node)
         {
             if (node.Change != null)

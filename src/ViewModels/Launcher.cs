@@ -45,6 +45,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commandPalette, value);
         }
 
+        public GoToFileSearch GoToFileSearch
+        {
+            get => _goToFileSearch;
+            set => SetProperty(ref _goToFileSearch, value);
+        }
+
         public Models.Version NewVersion
         {
             get => _newVersion;
@@ -202,6 +208,23 @@ namespace SourceGit.ViewModels
             var activeIdx = Pages.IndexOf(_activePage);
             var prevIdx = activeIdx == 0 ? Pages.Count - 1 : activeIdx - 1;
             ActivePage = Pages[prevIdx];
+        }
+
+        public void OpenGoToFile(Repository repo)
+        {
+            if (repo == null)
+                return;
+
+            CloseGoToFile();
+            var devSpaces = SourceGit.DevSpaces.DevSpaceRegistry.GetOrCreate(repo);
+            if (devSpaces != null)
+                GoToFileSearch = new GoToFileSearch(repo.FullPath, devSpaces);
+        }
+
+        public void CloseGoToFile()
+        {
+            _goToFileSearch?.Dispose();
+            GoToFileSearch = null;
         }
 
         public void CloseTab(LauncherPage page)
@@ -456,6 +479,11 @@ namespace SourceGit.ViewModels
             if (_ignoreIndexChange)
                 return;
 
+            if (_goToFileSearch != null &&
+                (_activePage?.Data is not Repository activeRepo ||
+                 !string.Equals(_goToFileSearch.WorkingDirectory, activeRepo.FullPath, StringComparison.Ordinal)))
+                CloseGoToFile();
+
             if (_activePage is { Data: Repository repo })
                 _activeWorkspace.ActiveIdx = _activeWorkspace.Repositories.IndexOf(repo.FullPath);
 
@@ -475,6 +503,7 @@ namespace SourceGit.ViewModels
         private bool _ignoreIndexChange;
         private string _title = string.Empty;
         private ICommandPalette _commandPalette;
+        private GoToFileSearch _goToFileSearch;
         private Models.Version _newVersion = null;
     }
 }

@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="680" d:DesignHeight="500"
+             x:Class="SourceGit.Views.GoToFileSearch"
+             x:DataType="vm:GoToFileSearch">
+  <Grid RowDefinitions="Auto,*,Auto">
+    <TextBox x:Name="SearchBox"
+             Margin="0,0,0,10"
+             Text="{Binding Query, Mode=TwoWay}"
+             Watermark="Search files and content..."/>
+
+    <ListBox x:Name="ResultsList"
+             Grid.Row="1"
+             MinHeight="120"
+             MaxHeight="420"
+             ItemsSource="{Binding Results}"
+             SelectedItem="{Binding SelectedResult, Mode=TwoWay}"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+             ScrollViewer.VerticalScrollBarVisibility="Auto">
+      <ListBox.ItemTemplate>
+        <DataTemplate x:DataType="vm:GoToFileSearchResult">
+          <Grid RowDefinitions="Auto,Auto" Margin="4,5">
+            <Grid ColumnDefinitions="Auto,*">
+              <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+              <TextBlock Grid.Column="1"
+                         Margin="10,0,0,0"
+                         Text="{Binding RelativePath}"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         TextTrimming="CharacterEllipsis"/>
+            </Grid>
+            <TextBlock Grid.Row="1"
+                       Margin="0,3,0,0"
+                       Text="{Binding PreviewText}"
+                       FontFamily="{DynamicResource Fonts.Monospace}"
+                       Foreground="{DynamicResource Brush.FG2}"
+                       TextTrimming="CharacterEllipsis"/>
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+      <TextBlock Text="Search current worktree" Foreground="{DynamicResource Brush.FG2}"/>
+      <TextBlock Grid.Column="1" Text="↑↓ Navigate    Enter Open    Esc Close" Foreground="{DynamicResource Brush.FG2}"/>
+    </Grid>
+  </Grid>
+</UserControl>
