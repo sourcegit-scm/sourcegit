@@ -9,21 +9,33 @@ namespace SourceGit.AI
 {
     internal sealed class LocalLlmRuntime : IDisposable
     {
-        private LocalLlmRuntime(LLamaWeights weights, ModelParams modelParams)
+        private LocalLlmRuntime(LLamaWeights weights, ModelParams modelParams, LocalLlmBackend backend)
         {
             _weights = weights;
             _modelParams = modelParams;
+            Backend = backend;
         }
 
-        public static LocalLlmRuntime Load(string modelPath, uint contextWindow)
+        public LocalLlmBackend Backend { get; }
+
+        public static LocalLlmRuntime Load(
+            string modelPath,
+            LocalLlmBackend backend,
+            uint contextWindow,
+            int gpuLayerCount,
+            int threads,
+            uint batchSize)
         {
+            var selectedBackend = LocalLlmBackendCoordinator.ConfigureAndLock(backend);
             var parameters = new ModelParams(modelPath)
             {
                 ContextSize = contextWindow,
-                GpuLayerCount = 0,
+                GpuLayerCount = selectedBackend == LocalLlmBackend.Cpu ? 0 : gpuLayerCount,
+                Threads = threads,
+                BatchSize = batchSize,
             };
             var weights = LLamaWeights.LoadFromFile(parameters);
-            return new LocalLlmRuntime(weights, parameters);
+            return new LocalLlmRuntime(weights, parameters, selectedBackend);
         }
 
         public async Task StreamAsync(string prompt, float temperature, Action<string> onUpdate, CancellationToken cancellationToken)
