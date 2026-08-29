@@ -10,4 +10,4 @@ foreach ($relativePath in $assets) {
   if (-not (Test-Path $path -PathType Leaf)) { throw "Store asset missing: $path" }
   if ((Get-Item $path).Length -le 0) { throw "Store asset is empty: $path" }
 }
-Write-Host 'Dev Board Store assets are present and non-empty.'
+Write-Host 'DevBoard Store assets are present and non-empty.'
