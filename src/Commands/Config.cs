@@ -71,6 +71,12 @@ namespace SourceGit.Commands
             return ReadToEnd().StdOut.Trim();
         }
 
+        public string GetLocal(string key)
+        {
+            Args = $"config --local {key}";
+            return ReadToEnd().StdOut.Trim();
+        }
+
         public async Task<string> GetAsync(string key)
         {
             Args = $"config {key}";
