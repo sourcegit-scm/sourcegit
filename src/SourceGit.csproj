@@ -114,7 +114,6 @@
     </Exec>
 
     <ItemGroup>
-      <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))" />
       <AssemblyMetadata Include="FriendlyVersion" Value="$([System.String]::Copy('$(FriendlyVersion)').Replace('g', '').Trim())" />
     </ItemGroup>
   </Target>
