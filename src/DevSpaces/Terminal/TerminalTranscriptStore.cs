@@ -52,7 +52,15 @@ namespace SourceGit.DevSpaces.Terminal
 
                     var eventBytes = Encoding.UTF8.GetByteCount(item.Text);
                     if (usedBytes + eventBytes > maxBytes)
+                    {
+                        if (result.Count == 0)
+                        {
+                            result.Add(item with { Text = TruncateUtf8(item.Text, maxBytes) });
+                            truncated = true;
+                        }
+
                         break;
+                    }
 
                     result.Add(item);
                     usedBytes += eventBytes;
@@ -80,20 +88,29 @@ namespace SourceGit.DevSpaces.Terminal
                 var start = Math.Max(0, _events.Count - maxEvents);
                 var result = new List<DevSpaceTerminalEvent>();
                 var usedBytes = 0;
+                var truncated = false;
 
                 for (var i = start; i < _events.Count; i++)
                 {
                     var item = _events[i];
                     var eventBytes = Encoding.UTF8.GetByteCount(item.Text);
                     if (usedBytes + eventBytes > maxBytes)
+                    {
+                        if (result.Count == 0)
+                        {
+                            result.Add(item with { Text = TruncateUtf8(item.Text, maxBytes) });
+                            truncated = true;
+                        }
+
                         break;
+                    }
 
                     result.Add(item);
                     usedBytes += eventBytes;
                 }
 
                 var nextSequence = result.Count > 0 ? result[^1].Sequence : 0;
-                return new TerminalReadResult(result.ToArray(), _events[0].Sequence, nextSequence, false);
+                return new TerminalReadResult(result.ToArray(), _events[0].Sequence, nextSequence, truncated);
             }
         }
 
@@ -114,6 +131,27 @@ namespace SourceGit.DevSpaces.Terminal
 
                 return sequence;
             }
+        }
+
+        private static string TruncateUtf8(string text, int maxBytes)
+        {
+            if (string.IsNullOrEmpty(text))
+                return string.Empty;
+
+            var charIndex = 0;
+            var usedBytes = 0;
+            while (charIndex < text.Length)
+            {
+                var rune = Rune.GetRuneAt(text, charIndex);
+                var runeBytes = rune.Utf8SequenceLength;
+                if (usedBytes + runeBytes > maxBytes)
+                    break;
+
+                usedBytes += runeBytes;
+                charIndex += rune.Utf16SequenceLength;
+            }
+
+            return charIndex == text.Length ? text : text[..charIndex];
         }
 
         private readonly object _gate = new();
