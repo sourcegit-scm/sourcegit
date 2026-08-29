@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SourceGit.DevSpaces.Terminal;
 
 namespace SourceGit.ViewModels
 {
@@ -18,6 +19,8 @@ namespace SourceGit.ViewModels
     {
         public Guid Id { get; } = Guid.NewGuid();
 
+        public string DevSpaceId { get; }
+
         public string Title { get; }
 
         public string Terminal { get; }
@@ -25,6 +28,8 @@ namespace SourceGit.ViewModels
         public string StartupCommand { get; }
 
         public string WorkingDirectory { get; }
+
+        public TerminalTranscriptStore Transcript { get; } = new();
 
         public DevSpaceTerminalState State
         {
@@ -52,12 +57,18 @@ namespace SourceGit.ViewModels
 
         public event Action<DevSpaceTerminal> StopRequested;
 
-        public DevSpaceTerminal(string title, string terminal, string workingDirectory, string startupCommand = null)
+        public DevSpaceTerminal(
+            string title,
+            string terminal,
+            string workingDirectory,
+            string startupCommand = null,
+            string devSpaceId = null)
         {
             Title = title;
             Terminal = terminal;
             WorkingDirectory = workingDirectory;
             StartupCommand = startupCommand ?? string.Empty;
+            DevSpaceId = string.IsNullOrWhiteSpace(devSpaceId) ? workingDirectory : devSpaceId;
         }
 
         public void MarkRunning(string backendName)

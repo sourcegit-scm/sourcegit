@@ -25,7 +25,7 @@ namespace SourceGit.Views
             try
             {
                 var spec = launcher.Create(session.Terminal, session.WorkingDirectory, session.StartupCommand);
-                var surface = CreatePreferredSurface();
+                var surface = CreatePreferredSurface(session);
                 AttachSurface(surface);
                 _ = StartSurfaceAsync(surface, spec, session);
             }
@@ -71,10 +71,11 @@ namespace SourceGit.Views
             Stop();
         }
 
-        private SourceGit.DevSpaces.IDevSpaceTerminalSurface CreatePreferredSurface()
+        private SourceGit.DevSpaces.IDevSpaceTerminalSurface CreatePreferredSurface(
+            ViewModels.DevSpaceTerminal session)
         {
             if (Native.WindowsTerminal.IsSupported)
-                return new SourceGit.DevSpaces.WindowsTerminalDevSpaceSurface();
+                return new SourceGit.DevSpaces.WindowsTerminalDevSpaceSurface(session.Transcript);
 
             return CreateFallbackSurface();
         }

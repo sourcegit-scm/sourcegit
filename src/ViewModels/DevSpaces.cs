@@ -95,14 +95,22 @@ namespace SourceGit.ViewModels
         public int GridColumns => IsListLayout ? 1 : Models.DevSpaceLayoutExtensions.GetColumns(_layout, Sessions.Count);
         public int GridCapacity => IsListLayout ? Sessions.Count : GridRows * GridColumns;
 
-        public DevSpaces(string workingDirectory, SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null)
-            : this(null, workingDirectory, launcher)
+        public DevSpaces(
+            string workingDirectory,
+            SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null,
+            SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
+            : this(null, workingDirectory, launcher, terminalRegistry)
         {
         }
 
-        public DevSpaces(Repository repository, string workingDirectory, SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null)
+        public DevSpaces(
+            Repository repository,
+            string workingDirectory,
+            SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null,
+            SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
         {
             _workingDirectory = workingDirectory;
+            _terminalRegistry = terminalRegistry ?? SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry.Instance;
             Launcher = launcher ?? new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
             Files = new DevSpaceFiles(workingDirectory);
             Dashboard = new DevSpaceDashboard(this, workingDirectory, repository);
@@ -164,7 +172,13 @@ namespace SourceGit.ViewModels
                 workingDirectory = _workingDirectory;
 
             var number = _nextSessionNumber++;
-            var created = new DevSpaceTerminal($"{displayName} {number}", terminal, workingDirectory, startupCommand);
+            var created = new DevSpaceTerminal(
+                $"{displayName} {number}",
+                terminal,
+                workingDirectory,
+                startupCommand,
+                _workingDirectory);
+            _terminalRegistry.Register(created);
             Sessions.Add(created);
             ActiveTerminal = created;
             ActivateTerminals();
@@ -230,6 +244,7 @@ namespace SourceGit.ViewModels
         {
             if (terminal == null || !Sessions.Remove(terminal))
                 return;
+            _terminalRegistry.Unregister(terminal.Id);
             Dashboard.AddActivity(DevSpaceActivityKind.SessionClosed, $"{terminal.Title} closed");
             terminal.Dispose();
             if (ActiveTerminal == terminal)
@@ -240,7 +255,10 @@ namespace SourceGit.ViewModels
         public void StopAll()
         {
             for (var i = Sessions.Count - 1; i >= 0; i--)
+            {
+                _terminalRegistry.Unregister(Sessions[i].Id);
                 Sessions[i].Dispose();
+            }
             Sessions.Clear();
             VisibleSlots.Clear();
             ActiveTerminal = null;
@@ -310,6 +328,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly string _workingDirectory;
+        private readonly SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry _terminalRegistry;
         private DevSpaceTerminal _activeTerminal;
         private Models.DevSpaceLayout _layout;
         private Models.DevSpacePage _activePage = Models.DevSpacePage.Dashboard;
