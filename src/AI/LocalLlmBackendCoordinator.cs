@@ -45,9 +45,10 @@ namespace SourceGit.AI
 
         private static LocalLlmBackendCapabilities ProbeCapabilities()
         {
-            return new LocalLlmBackendCapabilities(
-                CommandExists("nvidia-smi"),
-                CommandExists("vulkaninfo") || OperatingSystem.IsWindows());
+            var cudaAvailable = CommandExists("nvidia-smi") ||
+                                !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("CUDA_PATH"));
+            var vulkanAvailable = CommandExists("vulkaninfo") || OperatingSystem.IsWindows();
+            return new LocalLlmBackendCapabilities(cudaAvailable, vulkanAvailable);
         }
 
         private static bool CommandExists(string command)
