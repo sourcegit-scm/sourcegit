@@ -244,26 +244,78 @@ namespace SourceGit.Views
             if (_owner == null)
                 return;
 
+            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
             var flyout = new MenuFlyout();
-            flyout.Items.Add(CreateTerminalMenuItem("Copilot", "copilot", "Copilot", preferredSlot));
 
-            if (OperatingSystem.IsWindows())
+            var defaultName = SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal);
+            flyout.Items.Add(CreateTerminalMenuItem($"New {defaultName}", settings.DefaultTerminal, defaultName, preferredSlot));
+
+            var copilot = new MenuItem { Header = "Copilot" };
+            copilot.Click += (_, e) =>
             {
-                flyout.Items.Add(CreateTerminalMenuItem("PowerShell 7 (pwsh)", "__devspaces_pwsh__", "PowerShell 7", preferredSlot));
-                flyout.Items.Add(CreateTerminalMenuItem("Windows PowerShell", "__devspaces_powershell__", "Windows PowerShell", preferredSlot));
-                flyout.Items.Add(CreateTerminalMenuItem("Command Prompt", "__devspaces_cmd__", "Command Prompt", preferredSlot));
-                flyout.Items.Add(CreateTerminalMenuItem("Git Bash", "__devspaces_git_bash__", "Git Bash", preferredSlot));
-            }
-            else
+                _owner?.CreateCopilotTerminalAt(preferredSlot);
+                e.Handled = true;
+            };
+            flyout.Items.Add(copilot);
+
+            if (settings.Profiles.Count > 0)
             {
-                flyout.Items.Add(CreateTerminalMenuItem("PowerShell 7 (pwsh)", "__devspaces_pwsh__", "PowerShell 7", preferredSlot));
-                flyout.Items.Add(CreateTerminalMenuItem("Default Shell", "__devspaces_shell__", "Shell", preferredSlot));
+                flyout.Items.Add(new Separator());
+                foreach (var profile in settings.Profiles)
+                    flyout.Items.Add(CreateProfileMenuItem(profile, preferredSlot));
             }
+
+            flyout.Items.Add(new Separator());
+
+            var terminals = new MenuItem { Header = "Terminal" };
+            foreach (var choice in SourceGit.DevSpaces.DevSpaceProfileSettings.SupportedTerminals)
+            {
+                terminals.Items.Add(CreateTerminalMenuItem(
+                    choice.Name,
+                    choice.Value,
+                    SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(choice.Value),
+                    preferredSlot));
+            }
+            flyout.Items.Add(terminals);
+
+            var manage = new MenuItem { Header = "Manage Profiles…" };
+            manage.Click += async (_, e) =>
+            {
+                e.Handled = true;
+                if (TopLevel.GetTopLevel(this) is Window owner)
+                    await new DevSpaceProfileManager().ShowDialog(owner);
+            };
+            flyout.Items.Add(manage);
 
             flyout.ShowAt(target);
         }
 
-        private MenuItem CreateTerminalMenuItem(string header, string command, string displayName, int preferredSlot)
+        private MenuItem CreateProfileMenuItem(
+            SourceGit.DevSpaces.DevSpaceTerminalProfile profile,
+            int preferredSlot)
+        {
+            var path = string.IsNullOrWhiteSpace(profile.Path) ? "." : profile.Path;
+            var item = new MenuItem
+            {
+                Header = $"{profile.Name}  ·  {path}",
+            };
+            item.Click += async (_, e) =>
+            {
+                e.Handled = true;
+                try
+                {
+                    _owner?.CreateProfileTerminalAt(preferredSlot, profile);
+                }
+                catch (Exception ex)
+                {
+                    if (TopLevel.GetTopLevel(this) is Window owner)
+                        await new Alert().ShowAsync(owner, ex.Message, true);
+                }
+            };
+            return item;
+        }
+
+        private MenuItem CreateTerminalMenuItem(string header, string terminal, string displayName, int preferredSlot)
         {
             var item = new MenuItem
             {
@@ -271,7 +323,7 @@ namespace SourceGit.Views
             };
             item.Click += (_, e) =>
             {
-                _owner?.CreateTerminalAt(preferredSlot, command, displayName);
+                _owner?.CreateTerminalAt(preferredSlot, terminal, displayName);
                 e.Handled = true;
             };
             return item;
