@@ -1,1 +1,0 @@
-Store CI excludes tests tagged Category=UIIntegration. This file exists only to force a fresh PR workflow event after the dashboard trait update.
