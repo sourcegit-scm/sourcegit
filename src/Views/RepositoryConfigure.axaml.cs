@@ -1,6 +1,11 @@
 using System;
+using System.Linq;
+
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Platform.Storage;
 
 namespace SourceGit.Views
@@ -11,6 +16,7 @@ namespace SourceGit.Views
         {
             CloseOnESC = true;
             InitializeComponent();
+            AddGitAccountSelector();
         }
 
         protected override async void OnClosing(WindowClosingEventArgs e)
@@ -19,6 +25,78 @@ namespace SourceGit.Views
 
             if (!Design.IsDesignMode && DataContext is ViewModels.RepositoryConfigure configure)
                 await configure.SaveAsync();
+        }
+
+        private void AddGitAccountSelector()
+        {
+            if (Content is not Grid root)
+                return;
+
+            var tabs = root.Children.OfType<TabControl>().FirstOrDefault();
+            if (tabs?.Items.Count == 0 || tabs?.Items[0] is not TabItem { Content: Grid gitGrid })
+                return;
+
+            foreach (var child in gitGrid.Children)
+                Grid.SetRow(child, Grid.GetRow(child) + 1);
+
+            gitGrid.RowDefinitions.Insert(0, new RowDefinition { Height = new GridLength(32) });
+
+            var label = new TextBlock
+            {
+                Text = "Account",
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(0, 0, 8, 0),
+            };
+            Grid.SetRow(label, 0);
+            Grid.SetColumn(label, 0);
+            gitGrid.Children.Add(label);
+
+            var selectorGrid = new Grid();
+            selectorGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            selectorGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            Grid.SetRow(selectorGrid, 0);
+            Grid.SetColumn(selectorGrid, 1);
+
+            var accountCombo = new ComboBox
+            {
+                Height = 28,
+                Padding = new Thickness(8, 0),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                DisplayMemberBinding = new Binding(nameof(Models.GitAccount.Name)),
+                PlaceholderText = "Custom",
+            };
+            accountCombo.Bind(ItemsControl.ItemsSourceProperty, new Binding(nameof(ViewModels.RepositoryConfigure.GitAccounts)));
+            accountCombo.Bind(ComboBox.SelectedItemProperty, new Binding(nameof(ViewModels.RepositoryConfigure.SelectedGitAccount))
+            {
+                Mode = BindingMode.TwoWay,
+            });
+            Grid.SetColumn(accountCombo, 0);
+            selectorGrid.Children.Add(accountCombo);
+
+            var manage = new Button
+            {
+                Content = "Manage...",
+                Height = 28,
+                Margin = new Thickness(8, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Center,
+            };
+            manage.Click += OpenGitAccountManager;
+            Grid.SetColumn(manage, 1);
+            selectorGrid.Children.Add(manage);
+
+            gitGrid.Children.Add(selectorGrid);
+        }
+
+        private async void OpenGitAccountManager(object sender, RoutedEventArgs e)
+        {
+            var manager = new GitAccountManager();
+            await manager.ShowDialog(this);
+
+            if (DataContext is ViewModels.RepositoryConfigure configure)
+                configure.RefreshGitAccounts();
+
+            e.Handled = true;
         }
 
         private async void SelectConventionalTypesFile(object sender, RoutedEventArgs e)

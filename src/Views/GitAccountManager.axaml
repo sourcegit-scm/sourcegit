@@ -1,0 +1,92 @@
+<v:ChromelessWindow xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:m="using:SourceGit.Models"
+                    xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:v="using:SourceGit.Views"
+                    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="360"
+                    x:Class="SourceGit.Views.GitAccountManager"
+                    x:DataType="vm:GitAccountManager"
+                    x:Name="ThisControl"
+                    Icon="/App.ico"
+                    Title="Git Accounts"
+                    Width="640" Height="360"
+                    CanResize="False"
+                    WindowStartupLocation="CenterOwner">
+  <Grid RowDefinitions="Auto,*">
+    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+      <Border Background="{DynamicResource Brush.TitleBar}"
+              BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              PointerPressed="BeginMoveWindow"/>
+      <Path Width="14" Height="14" Margin="10,0,0,0"
+            HorizontalAlignment="Left"
+            Data="{StaticResource Icons.Settings}"
+            IsVisible="{OnPlatform True, macOS=False}"/>
+      <TextBlock Classes="bold" Text="Git Accounts"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 IsHitTestVisible="False"/>
+      <v:CaptionButtons HorizontalAlignment="Right"
+                        IsCloseButtonOnly="True"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+    </Grid>
+
+    <Grid Grid.Row="1" ColumnDefinitions="210,*" Margin="12">
+      <Border Grid.Column="0"
+              BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+              Background="{DynamicResource Brush.Contents}">
+        <Grid RowDefinitions="*,1,Auto">
+          <ListBox Grid.Row="0"
+                   Background="Transparent"
+                   ItemsSource="{Binding Accounts}"
+                   SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
+                   SelectionMode="Single">
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="m:GitAccount">
+                <Grid ColumnDefinitions="Auto,*">
+                  <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
+                  <TextBlock Grid.Column="1" Margin="8,0,0,0"
+                             Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Rectangle Grid.Row="1" Height="1" Fill="{DynamicResource Brush.Border2}"/>
+          <StackPanel Grid.Row="2" Orientation="Horizontal" Background="{DynamicResource Brush.ToolBar}">
+            <Button Classes="icon_button" Command="{Binding AddAccount}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+            </Button>
+            <Button Classes="icon_button" Command="{Binding RemoveSelectedAccount}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
+            </Button>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <ContentControl Grid.Column="1" Margin="16,0,0,0" Content="{Binding SelectedAccount}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="m:GitAccount">
+            <Grid RowDefinitions="Auto,32,Auto,32,Auto,32,Auto,32" ColumnDefinitions="Auto,*">
+              <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Classes="bold" Text="Account profile" Margin="0,0,0,8"/>
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,12,0" Text="Name"/>
+              <TextBox Grid.Row="1" Grid.Column="1" Height="28" CornerRadius="3" Text="{Binding Name, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,0,12,0" Text="Git user name"/>
+              <TextBox Grid.Row="3" Grid.Column="1" Height="28" CornerRadius="3" Text="{Binding GitUserName, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="5" Grid.Column="0" Margin="0,0,12,0" Text="Git email"/>
+              <TextBox Grid.Row="5" Grid.Column="1" Height="28" CornerRadius="3" Text="{Binding GitEmail, Mode=TwoWay}"/>
+
+              <TextBlock Grid.Row="7" Grid.Column="0" Margin="0,0,12,0" Text="GitHub user name"/>
+              <TextBox Grid.Row="7" Grid.Column="1" Height="28" CornerRadius="3"
+                       Watermark="Optional; used for HTTPS credentials"
+                       Text="{Binding GitHubUserName, Mode=TwoWay}"/>
+            </Grid>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </Grid>
+</v:ChromelessWindow>
