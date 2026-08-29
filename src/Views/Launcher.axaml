@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:s="using:SourceGit"
+                    xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -20,20 +21,17 @@
 
     <!-- Custom TitleBar -->
     <Grid Grid.Row="0" ColumnDefinitions="Auto,32,32,*,Auto,Auto">
-      <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="6"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               Background="{DynamicResource Brush.TitleBar}"
               DoubleTapped="MaximizeOrRestoreWindow"
               PointerPressed="BeginMoveWindow"/>
 
-      <!-- Caption Buttons (macOS) -->
       <v:MacOSTrafficLightsSpacer Grid.Column="0"
                                   Zoom="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
                                   IsFullScreen="{Binding #ThisControl.WindowState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static WindowState.FullScreen}}"
                                   IsVisible="{OnPlatform False, macOS=True}"/>
 
-      <!-- Menu (Windows/Linux) -->
       <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,0,3" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-6">
@@ -74,7 +72,6 @@
         <Path Width="12" Height="12" Data="{StaticResource Icons.Menu}"/>
       </Button>
 
-      <!-- Workspace Dropdown Menu -->
       <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenWorkspaceMenu" HotKey="{OnPlatform Ctrl+Alt+P, macOS=⌘+Alt+P}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
@@ -92,7 +89,6 @@
               Fill="{Binding ActiveWorkspace.Brush}"/>
       </Button>
 
-      <!-- Pages Switcher Toggle Button -->
       <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenPagesCommandPalette">
         <ToolTip.Tip>
           <TextBlock Text="{DynamicResource Text.Launcher.Pages}" VerticalAlignment="Center"/>
@@ -100,10 +96,12 @@
         <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Tabs}"/>
       </Button>
 
-      <!-- Pages Tabs -->
-      <v:LauncherTabBar Grid.Column="3" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="3"
+                        Height="30"
+                        Margin="0,0,16,0"
+                        VerticalAlignment="Bottom"
+                        IsVisible="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=!IsVertical}"/>
 
-      <!-- Update Available Button -->
       <Button Grid.Column="4"
               Classes="icon_button"
               Height="30"
@@ -115,14 +113,24 @@
         <Path Width="15" Height="15" Margin="0,4,0,0" Data="{StaticResource Icons.SoftwareUpdate}" Fill="{DynamicResource Brush.Accent}"/>
       </Button>
 
-      <!-- Caption Buttons (Windows/Linux) -->
       <Border Grid.Column="5" IsVisible="{Binding #ThisControl.HasRightCaptionButton}">
         <v:CaptionButtons Height="30" VerticalAlignment="Top"/>
       </Border>
     </Grid>
 
-    <!-- Pages -->
-    <v:LauncherPages Grid.Row="1" Background="{DynamicResource Brush.Window}"/>
+    <!-- Main content. The vertical rail reuses the same launcher Pages/ActivePage state. -->
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*">
+      <Border Grid.Column="0"
+              BorderThickness="0,0,1,0"
+              BorderBrush="{DynamicResource Brush.Border0}"
+              Background="{DynamicResource Brush.ToolBar}"
+              IsVisible="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=IsVertical}">
+        <v:LauncherTabBar IsVertical="True"
+                          Width="{Binding Source={x:Static m:LauncherTabSettings.Instance}, Path=VerticalWidth}"/>
+      </Border>
+
+      <v:LauncherPages Grid.Column="1" Background="{DynamicResource Brush.Window}"/>
+    </Grid>
 
     <!-- Command Palette -->
     <Border Grid.Row="0" Grid.RowSpan="2"
