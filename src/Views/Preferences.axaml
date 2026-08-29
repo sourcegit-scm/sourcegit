@@ -927,7 +927,6 @@
                       <ComboBox Margin="0,4,0,0" Height="28" SelectedIndex="{Binding LocalBackendIndex, Mode=TwoWay}">
                         <ComboBoxItem Content="Auto"/>
                         <ComboBoxItem Content="CPU / Metal"/>
-                        <ComboBoxItem Content="CUDA"/>
                         <ComboBoxItem Content="Vulkan"/>
                       </ComboBox>
 
