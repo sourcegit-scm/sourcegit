@@ -12,9 +12,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/dhhieu113pro/sourcegit/stargazers"><img src="https://img.shields.io/github/stars/dhhieu113pro/sourcegit.svg" alt="Stars" /></a>
-  <a href="https://github.com/dhhieu113pro/sourcegit/forks"><img src="https://img.shields.io/github/forks/dhhieu113pro/sourcegit.svg" alt="Forks" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/dhhieu113pro/sourcegit.svg" alt="License" /></a>
+  <a href="https://github.com/dhhieu113pro/dev-board/stargazers"><img src="https://img.shields.io/github/stars/dhhieu113pro/dev-board.svg" alt="Stars" /></a>
+  <a href="https://github.com/dhhieu113pro/dev-board/forks"><img src="https://img.shields.io/github/forks/dhhieu113pro/dev-board.svg" alt="Forks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/dhhieu113pro/dev-board.svg" alt="License" /></a>
 </p>
 
 # Dev Board
@@ -24,7 +24,7 @@
 Instead of jumping between a Git client, terminal windows, file explorers, worktree folders, and AI CLIs, Dev Board gives each workspace its own persistent development board.
 
 > [!NOTE]
-> The repository and executable are still named **SourceGit** during the rebrand. The product name is now **Dev Board**. Repository/package identifiers will be renamed separately so existing builds and installation flows keep working during the transition.
+> The repository is now **Dev Board**. The executable, project file, namespaces, and existing application-data paths still use **SourceGit** during the technical migration so existing builds and installations keep working.
 
 ## Why Dev Board?
 
@@ -95,7 +95,7 @@ The repository contains automatically maintained screenshots under [`screenshots
 
 ## Getting started
 
-Dev Board currently uses the existing **SourceGit** build and application identifiers.
+The repository and product are now **Dev Board**. Some technical identifiers still remain **SourceGit** during the migration.
 
 ### Requirements
 
@@ -105,8 +105,8 @@ Dev Board currently uses the existing **SourceGit** build and application identi
 ### Build from source
 
 ```sh
-git clone --recurse-submodules https://github.com/dhhieu113pro/sourcegit.git
-cd sourcegit
+git clone --recurse-submodules https://github.com/dhhieu113pro/dev-board.git
+cd dev-board
 
 dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 dotnet restore
