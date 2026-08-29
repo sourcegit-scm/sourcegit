@@ -186,7 +186,7 @@ namespace SourceGit.ViewModels
                     if (Models.WorktreeBaseBranch.GetKind(baseBranch) != Models.WorktreeBaseBranchKind.None)
                     {
                         var gitDir = await new Commands.QueryWorktreeBaseBranch(fullPath).GetGitDirAsync();
-                        Models.WorktreeBaseBranch.WritePersisted(gitDir, baseBranch);
+                        Models.WorktreeBaseBranch.WritePersisted(gitDir, branchName, baseBranch);
                     }
                 }
 
