@@ -1,4 +1,5 @@
 using SourceGit.Models;
+using Xunit;
 
 namespace SourceGit.Tests;
 
@@ -38,7 +39,7 @@ public class GitAccountTests
     [InlineData("Hieu Dam", "other@example.com")]
     [InlineData(null, "hieu@example.com")]
     [InlineData("Hieu Dam", null)]
-    public void MatchesIdentity_ReturnsFalse_WhenIdentityDoesNotMatch(string? userName, string? email)
+    public void MatchesIdentity_ReturnsFalse_WhenIdentityDoesNotMatch(string userName, string email)
     {
         var account = new GitAccount
         {
