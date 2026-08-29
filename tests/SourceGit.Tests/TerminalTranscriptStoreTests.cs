@@ -66,6 +66,22 @@ public class TerminalTranscriptStoreTests
     }
 
     [Fact]
+    public void Tail_returns_newest_events_when_byte_limit_excludes_older_output()
+    {
+        var store = new TerminalTranscriptStore(10);
+        store.AppendOutput(new string('a', 40 * 1024));
+        store.AppendOutput(new string('b', 40 * 1024));
+
+        var result = store.Tail(2, maxBytes: 64 * 1024);
+
+        var item = Assert.Single(result.Events);
+        Assert.Equal(new string('b', 40 * 1024), item.Text);
+        Assert.Equal(2, item.Sequence);
+        Assert.Equal(2, result.NextSequence);
+        Assert.True(result.Truncated);
+    }
+
+    [Fact]
     public void Read_honors_utf8_byte_limit_without_splitting_event_text()
     {
         var store = new TerminalTranscriptStore(10);
