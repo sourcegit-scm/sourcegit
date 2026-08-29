@@ -11,9 +11,9 @@ param(
 $ErrorActionPreference = 'Stop'
 function XmlEscape([string]$Value) { return [System.Security.SecurityElement]::Escape($Value) }
 
-if (-not (Test-Path $PublishDir -PathType Container)) { throw "Dev Board publish directory not found: $PublishDir" }
-$exe = Join-Path $PublishDir 'SourceGit.exe'
-if (-not (Test-Path $exe -PathType Leaf)) { throw "SourceGit.exe was not found in Dev Board publish directory: $PublishDir" }
+if (-not (Test-Path $PublishDir -PathType Container)) { throw "DevBoard publish directory not found: $PublishDir" }
+$exe = Join-Path $PublishDir 'DevBoard.exe'
+if (-not (Test-Path $exe -PathType Leaf)) { throw "DevBoard.exe was not found in DevBoard publish directory: $PublishDir" }
 if ($Version -notmatch '^(\d+)\.(\d+)\.(\d+)$') { throw "Version '$Version' must be a numeric three-part version such as 1.2.3" }
 $msixVersion = "$($Matches[1]).$($Matches[2]).$($Matches[3]).0"
 
@@ -40,7 +40,7 @@ $manifest = @"
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap uap10 rescap">
   <Identity Name="$(XmlEscape $PackageName)" Publisher="$(XmlEscape $Publisher)" Version="$msixVersion" ProcessorArchitecture="$Architecture" />
   <Properties>
-    <DisplayName>Dev Board</DisplayName>
+    <DisplayName>DevBoard</DisplayName>
     <PublisherDisplayName>$(XmlEscape $PublisherDisplayName)</PublisherDisplayName>
     <Description>Git, worktrees, terminals, files, and AI agents in one development workspace.</Description>
     <Logo>Assets\StoreLogo.png</Logo>
@@ -48,8 +48,8 @@ $manifest = @"
   <Resources><Resource Language="en-us" /></Resources>
   <Dependencies><TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.26100.0" /></Dependencies>
   <Applications>
-    <Application Id="DevBoard" Executable="SourceGit.exe" uap10:RuntimeBehavior="packagedClassicApp" uap10:TrustLevel="mediumIL">
-      <uap:VisualElements DisplayName="Dev Board" Description="Your development workspace." BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" />
+    <Application Id="DevBoard" Executable="DevBoard.exe" uap10:RuntimeBehavior="packagedClassicApp" uap10:TrustLevel="mediumIL">
+      <uap:VisualElements DisplayName="DevBoard" Description="Your development workspace." BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" />
     </Application>
   </Applications>
   <Capabilities><rescap:Capability Name="runFullTrust" /></Capabilities>
