@@ -77,6 +77,7 @@
                       <TextBlock Text="{Binding Node.Id}"/>
                       <TextBlock Text="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToDesc}}"
                                  Foreground="{DynamicResource Brush.FG2}"/>
+                      <TextBlock Margin="8,0,0,0" Text="{Binding BaseBranch, StringFormat='Based on {0}'}" IsVisible="{Binding HasBaseBranch}"/>
                     </StackPanel>
                   </Grid>
                 </ToolTip.Tip>
@@ -96,7 +97,7 @@
 
                   <Grid Grid.Column="1"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
-                        ColumnDefinitions="Auto,*"
+                        ColumnDefinitions="Auto,Auto,Auto"
                         IsHitTestVisible="False"
                         IsVisible="{Binding Node.IsRepository}">
                     <Ellipse Grid.Column="0"
@@ -112,6 +113,21 @@
                                TextAlignment="Center"
                                Text="{Binding Node.Name}"
                                IsHitTestVisible="False"/>
+
+                    <Border Grid.Column="2"
+                            Margin="8,0,0,0"
+                            Padding="5,1"
+                            CornerRadius="5"
+                            VerticalAlignment="Center"
+                            Background="{Binding BaseBranchBadgeColor}"
+                            IsVisible="{Binding HasBaseBranch}">
+                      <TextBlock Text="{Binding BaseBranch}"
+                                 FontSize="10"
+                                 FontWeight="SemiBold"
+                                 Foreground="White"
+                                 MaxWidth="120"
+                                 TextTrimming="CharacterEllipsis"/>
+                    </Border>
                   </Grid>
 
                   <TextBlock Grid.Column="1"
@@ -155,9 +171,9 @@
               <TextBlock Margin="16,0,0,0"
                          Text="{OnPlatform Ctrl+T, macOS=⌘+T}"
                          FontSize="11"
-                         VerticalAlignment="Center"
-                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-            </StackPanel>
+                         Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                         VerticalAlignment="Center"/>
+          </StackPanel>
           </ToolTip.Tip>
 
           <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
@@ -177,8 +193,8 @@
             <TextBlock Margin="16,0,0,0"
                        Text="{OnPlatform Ctrl+T, macOS=⌘+T}"
                        FontSize="11"
-                       VerticalAlignment="Center"
-                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
+                       VerticalAlignment="Center"/>
           </StackPanel>
         </ToolTip.Tip>
 
