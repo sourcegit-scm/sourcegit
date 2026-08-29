@@ -25,3 +25,6 @@ jobs:
 
       - name: Format
         run: dotnet format --verify-no-changes src/SourceGit.csproj
+
+  build:
+    uses: ./.github/workflows/build.yml
