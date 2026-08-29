@@ -2,8 +2,8 @@ namespace SourceGit.Models
 {
     public enum CloseAppDecision
     {
-        Yes,
         No,
+        Yes,
         AddToTray,
     }
 
