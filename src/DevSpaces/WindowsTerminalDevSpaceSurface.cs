@@ -10,7 +10,7 @@ using Porta.Pty;
 
 namespace SourceGit.DevSpaces
 {
-    internal sealed class WindowsTerminalDevSpaceSurface : IDisposable
+    internal sealed class WindowsTerminalDevSpaceSurface : IDevSpaceTerminalSurface
     {
         internal WindowsTerminalDevSpaceSurface()
         {
@@ -18,11 +18,13 @@ namespace SourceGit.DevSpaces
             _host.TerminalResized += OnTerminalResized;
         }
 
-        internal Control View => _host;
+        public Control View => _host;
 
-        internal event Action<int> Exited;
+        public string BackendName => "Windows Terminal";
 
-        internal async Task StartAsync(DevSpaceLaunchSpec spec)
+        public event EventHandler<DevSpaceTerminalExitedEventArgs> Exited;
+
+        public async Task StartAsync(DevSpaceLaunchSpec spec)
         {
             if (Interlocked.Exchange(ref _started, 1) != 0)
                 throw new InvalidOperationException("The terminal surface has already been started.");
@@ -47,7 +49,15 @@ namespace SourceGit.DevSpaces
             _writerTask = WriteInputAsync(_cts.Token);
         }
 
-        internal void Stop()
+        public void SetPageActive(bool active)
+        {
+            // Native HWNDs ignore Avalonia opacity. Toggle the NativeControlHost itself so
+            // inactive repository pages/overflow panes cannot bleed over adjacent content.
+            _host.IsVisible = active;
+            _host.IsHitTestVisible = active;
+        }
+
+        public void Stop()
         {
             if (Interlocked.Exchange(ref _stopped, 1) != 0)
                 return;
@@ -186,7 +196,7 @@ namespace SourceGit.DevSpaces
         private void RaiseExited(int exitCode)
         {
             if (Interlocked.Exchange(ref _exitRaised, 1) == 0)
-                Exited?.Invoke(exitCode);
+                Exited?.Invoke(this, new DevSpaceTerminalExitedEventArgs(exitCode));
         }
 
         private readonly Views.WindowsTerminalNativeHost _host = new();
