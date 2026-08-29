@@ -5,6 +5,9 @@ namespace SourceGit.Models
 {
     public static class GitHubCredentialConfig
     {
+        public const string HttpsUsernameKey = "credential.https://github.com.username";
+        public const string HttpUsernameKey = "credential.http://github.com.username";
+
         public static List<string> GetUsernameKeys(IEnumerable<string> remoteUrls)
         {
             var keys = new List<string>();
@@ -18,11 +21,14 @@ namespace SourceGit.Models
                 if (!uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase))
                     continue;
 
-                if (!uri.Scheme.Equals("http", StringComparison.OrdinalIgnoreCase) &&
-                    !uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                string key;
+                if (uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                    key = HttpsUsernameKey;
+                else if (uri.Scheme.Equals("http", StringComparison.OrdinalIgnoreCase))
+                    key = HttpUsernameKey;
+                else
                     continue;
 
-                var key = $"credential.{uri.Scheme.ToLowerInvariant()}://github.com.username";
                 if (seen.Add(key))
                     keys.Add(key);
             }
