@@ -1,0 +1,17 @@
+name: DevBoard Store Contract
+
+on:
+  push:
+    branches:
+      - refactor/devboard-identity
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Store workflow contract
+        run: node --test tests/store-workflow.test.mjs
