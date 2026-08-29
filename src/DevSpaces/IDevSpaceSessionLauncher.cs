@@ -3,8 +3,7 @@ namespace SourceGit.DevSpaces
     public readonly record struct DevSpaceLaunchSpec(
         string Process,
         string[] Arguments,
-        string WorkingDirectory,
-        string StartupCommand);
+        string WorkingDirectory);
 
     public interface IDevSpaceSessionLauncher
     {
