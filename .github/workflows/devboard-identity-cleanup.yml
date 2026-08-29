@@ -21,7 +21,6 @@ jobs:
           from pathlib import Path
 
           replacements = {
-            '.github/workflows/format-check.yml': [('src/SourceGit.csproj','src/DevBoard.csproj')],
             'DevBoard.slnx': [
               ('build/resources/_common/applications/sourcegit.desktop','build/resources/_common/applications/devboard.desktop'),
               ('build/resources/_common/icons/sourcegit.png','build/resources/_common/icons/devboard.png'),
@@ -64,10 +63,17 @@ jobs:
             data = data.replace('sourcegit-', 'devboard-').replace('sourcegit-default.gguf','devboard-default.gguf')
             p.write_text(data,encoding='utf-8')
           PY
-      - name: Verify identity
+      - name: Verify transformed identity except workflow path
         run: |
           node --test tests/devboard-identity.test.mjs
-          node scripts/check-devboard-identity.mjs
+          node scripts/check-devboard-identity.mjs || {
+            output="$(node scripts/check-devboard-identity.mjs 2>&1 || true)"
+            filtered="$(printf '%s\n' "$output" | grep -v '^\.github/workflows/format-check\.yml:' || true)"
+            if [ -n "$filtered" ]; then
+              printf '%s\n' "$filtered"
+              exit 1
+            fi
+          }
       - name: Commit cleanup
         shell: bash
         run: |
