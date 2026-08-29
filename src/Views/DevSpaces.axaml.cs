@@ -18,6 +18,7 @@ namespace SourceGit.Views
         public DevSpaces()
         {
             InitializeComponent();
+            AIRouterView.DataContext = new ViewModels.DevSpaceAIRouter();
             DataContextChanged += OnDataContextChanged;
         }
 
@@ -73,6 +74,8 @@ namespace SourceGit.Views
 
         private void OnCreateTerminal(object sender, RoutedEventArgs e)
         {
+            _aiRouterActive = false;
+            UpdatePageVisibility();
             if (sender is Control control)
                 ShowTerminalPicker(control, -1);
 
@@ -81,15 +84,27 @@ namespace SourceGit.Views
 
         private void OnFilesTabPressed(object sender, PointerPressedEventArgs e)
         {
+            _aiRouterActive = false;
             _owner?.ActivateFiles();
+            UpdatePageVisibility();
+            e.Handled = true;
+        }
+
+        private void OnAIRouterTabPressed(object sender, PointerPressedEventArgs e)
+        {
+            _aiRouterActive = true;
+            UpdatePageVisibility();
+            UpdateSurfaceVisibility();
             e.Handled = true;
         }
 
         private void OnTerminalTabPressed(object sender, PointerPressedEventArgs e)
         {
+            _aiRouterActive = false;
             if (_owner != null && sender is Border { DataContext: ViewModels.DevSpaceTerminal session })
                 _owner.ActivateTerminal(session);
 
+            UpdatePageVisibility();
             e.Handled = true;
         }
 
@@ -116,11 +131,19 @@ namespace SourceGit.Views
 
         private void UpdatePageVisibility()
         {
-            var showFiles = _owner?.IsFilesActive == true;
+            var showFiles = !_aiRouterActive && _owner?.IsFilesActive == true;
+            var showTerminals = !_aiRouterActive && !showFiles;
+
             FilesView.IsVisible = showFiles;
             FilesView.IsHitTestVisible = showFiles;
-            TerminalGrid.IsVisible = !showFiles;
-            TerminalGrid.IsHitTestVisible = !showFiles;
+            AIRouterView.IsVisible = _aiRouterActive;
+            AIRouterView.IsHitTestVisible = _aiRouterActive;
+            TerminalGrid.IsVisible = showTerminals;
+            TerminalGrid.IsHitTestVisible = showTerminals;
+            TerminalLayoutPicker.IsVisible = showTerminals;
+            NewTerminalButton.IsVisible = showTerminals;
+
+            UpdateSurfaceVisibility();
         }
 
         private void RebuildGrid()
@@ -182,7 +205,7 @@ namespace SourceGit.Views
             foreach (var pane in _panes.Values)
                 pane.TerminalView.SetPageActive(false);
 
-            if (!_pageActive || _owner == null)
+            if (!_pageActive || _owner == null || _aiRouterActive || _owner.IsFilesActive)
                 return;
 
             foreach (var slot in _owner.VisibleSlots)
@@ -235,7 +258,9 @@ namespace SourceGit.Views
             header.Children.Add(close);
             header.PointerPressed += (_, e) =>
             {
+                _aiRouterActive = false;
                 _owner?.ActivateTerminal(session);
+                UpdatePageVisibility();
                 e.Handled = true;
             };
 
@@ -439,5 +464,6 @@ namespace SourceGit.Views
         private readonly List<Button> _emptySlots = [];
         private ViewModels.DevSpaces _owner;
         private bool _pageActive;
+        private bool _aiRouterActive;
     }
 }
