@@ -229,11 +229,11 @@
             <Setter Property="Opacity" Value=".72"/>
           </Style>
           <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource Brush.Hovered}"/>
+            <Setter Property="Background" Value="{DynamicResource Brush.FlatButton.BackgroundHovered}"/>
             <Setter Property="Opacity" Value="1"/>
           </Style>
           <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{DynamicResource Brush.Selected}"/>
+            <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
             <Setter Property="Opacity" Value="1"/>
           </Style>
         </ListBox.Styles>
