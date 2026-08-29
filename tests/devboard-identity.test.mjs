@@ -8,6 +8,11 @@ test('rejects stale current-product identity', () => {
   assert.equal(hits.length, 2);
 });
 
+test('rejects generic SourceGit and spaced Dev Board current-product copy', () => {
+  const hits = scanText('README.md', 'Run SourceGit to open your workspace.\n# Dev Board');
+  assert.equal(hits.length, 2);
+});
+
 test('rejects old fork repository and spaced product name', () => {
   const hits = scanText('README.md', 'https://github.com/dhhieu113pro/sourcegit\n<Product>Dev Board</Product>');
   assert.equal(hits.length, 2);
