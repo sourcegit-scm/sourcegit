@@ -8,12 +8,15 @@ using Avalonia.Controls;
 
 using Porta.Pty;
 
+using SourceGit.DevSpaces.Terminal;
+
 namespace SourceGit.DevSpaces
 {
     internal sealed class WindowsTerminalDevSpaceSurface : IDevSpaceTerminalSurface
     {
-        internal WindowsTerminalDevSpaceSurface()
+        internal WindowsTerminalDevSpaceSurface(TerminalTranscriptStore transcript)
         {
+            _transcriptSink = new TerminalTranscriptSink(transcript);
             _host.InputGenerated += OnInputGenerated;
             _host.TerminalResized += OnTerminalResized;
         }
@@ -122,7 +125,11 @@ namespace SourceGit.DevSpaces
 
                     var charCount = decoder.GetChars(buffer, 0, read, chars, 0, flush: false);
                     if (charCount > 0)
-                        _host.SendOutput(new string(chars, 0, charCount));
+                    {
+                        var output = new string(chars, 0, charCount);
+                        _transcriptSink.WriteOutput(output);
+                        _host.SendOutput(output);
+                    }
                 }
             }
             catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -195,11 +202,15 @@ namespace SourceGit.DevSpaces
 
         private void RaiseExited(int exitCode)
         {
-            if (Interlocked.Exchange(ref _exitRaised, 1) == 0)
-                Exited?.Invoke(this, new DevSpaceTerminalExitedEventArgs(exitCode));
+            if (Interlocked.Exchange(ref _exitRaised, 1) != 0)
+                return;
+
+            _transcriptSink.RecordExit(exitCode);
+            Exited?.Invoke(this, new DevSpaceTerminalExitedEventArgs(exitCode));
         }
 
         private readonly Views.WindowsTerminalNativeHost _host = new();
+        private readonly TerminalTranscriptSink _transcriptSink;
         private readonly CancellationTokenSource _cts = new();
         private readonly Channel<string> _input = Channel.CreateUnbounded<string>(new UnboundedChannelOptions
         {
