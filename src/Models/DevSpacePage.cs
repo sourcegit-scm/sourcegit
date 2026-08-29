@@ -4,6 +4,7 @@ namespace SourceGit.Models
     {
         Dashboard,
         Files,
+        AIRouter,
         Terminals,
         Roslyn,
     }

@@ -18,6 +18,7 @@ namespace SourceGit.Views
         public DevSpaces()
         {
             InitializeComponent();
+            AIRouterView.DataContext = new ViewModels.DevSpaceAIRouter();
             DataContextChanged += OnDataContextChanged;
         }
 
@@ -56,7 +57,9 @@ namespace SourceGit.Views
             if (e.PropertyName == nameof(ViewModels.DevSpaces.ActivePage) ||
                 e.PropertyName == nameof(ViewModels.DevSpaces.IsDashboardActive) ||
                 e.PropertyName == nameof(ViewModels.DevSpaces.IsFilesActive) ||
-                e.PropertyName == nameof(ViewModels.DevSpaces.IsTerminalsActive))
+                e.PropertyName == nameof(ViewModels.DevSpaces.IsAIRouterActive) ||
+                e.PropertyName == nameof(ViewModels.DevSpaces.IsTerminalsActive) ||
+                e.PropertyName == nameof(ViewModels.DevSpaces.IsRoslynActive))
                 Dispatcher.UIThread.Post(UpdatePageVisibility);
 
             if (e.PropertyName == nameof(ViewModels.DevSpaces.VisibleSlots) ||
@@ -101,6 +104,12 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnAIRouterTabPressed(object sender, PointerPressedEventArgs e)
+        {
+            _owner?.ActivateAIRouter();
+            e.Handled = true;
+        }
+
         private void OnTerminalsTabPressed(object sender, PointerPressedEventArgs e)
         {
             _owner?.ActivateTerminals();
@@ -137,11 +146,14 @@ namespace SourceGit.Views
         {
             var showDashboard = _owner?.IsDashboardActive == true;
             var showFiles = _owner?.IsFilesActive == true;
+            var showAIRouter = _owner?.IsAIRouterActive == true;
             var showTerminals = _owner?.IsTerminalsActive == true;
             DashboardView.IsVisible = showDashboard;
             DashboardView.IsHitTestVisible = showDashboard;
             FilesView.IsVisible = showFiles;
             FilesView.IsHitTestVisible = showFiles;
+            AIRouterView.IsVisible = showAIRouter;
+            AIRouterView.IsHitTestVisible = showAIRouter;
             TerminalGrid.IsVisible = true;
             TerminalGrid.Opacity = showTerminals ? 1 : 0;
             TerminalGrid.IsHitTestVisible = showTerminals;

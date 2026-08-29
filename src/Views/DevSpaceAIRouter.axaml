@@ -1,0 +1,135 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:ai="using:SourceGit.AI.Routing"
+             x:Class="SourceGit.Views.DevSpaceAIRouter"
+             x:DataType="vm:DevSpaceAIRouter">
+  <Grid RowDefinitions="Auto,*">
+    <Border Grid.Row="0"
+            Padding="16,12"
+            BorderThickness="0,0,0,1"
+            BorderBrush="{DynamicResource Brush.Border2}">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="3">
+          <TextBlock FontSize="16" FontWeight="SemiBold" Text="AI Router"/>
+          <TextBlock Foreground="{DynamicResource Brush.FG2}" Text="{Binding Endpoint}"/>
+        </StackPanel>
+        <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   Text="{Binding StatusText}"/>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="300,*">
+      <Border Grid.Column="0"
+              BorderThickness="0,0,1,0"
+              BorderBrush="{DynamicResource Brush.Border2}">
+        <Grid RowDefinitions="Auto,*,Auto">
+          <Grid Grid.Row="0" Margin="12" ColumnDefinitions="*,Auto">
+            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold" Text="Providers"/>
+            <Button Grid.Column="1" Classes="flat" Click="OnAddProvider">
+              <StackPanel Orientation="Horizontal" Spacing="5">
+                <Path Width="11" Height="11" Data="{StaticResource Icons.Plus}"/>
+                <TextBlock Text="Add"/>
+              </StackPanel>
+            </Button>
+          </Grid>
+
+          <ListBox Grid.Row="1"
+                   Margin="8,0"
+                   ItemsSource="{Binding Providers}"
+                   SelectedItem="{Binding SelectedProvider, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="ai:AIRouterProviderSettings">
+                <Grid Margin="8,6" ColumnDefinitions="Auto,*,Auto">
+                  <Ellipse Width="8" Height="8"
+                           VerticalAlignment="Center"
+                           Fill="{DynamicResource Brush.Accent}"/>
+                  <StackPanel Grid.Column="1" Margin="8,0" Spacing="2">
+                    <TextBlock FontWeight="SemiBold" Text="{Binding Name}"/>
+                    <TextBlock FontSize="11"
+                               Foreground="{DynamicResource Brush.FG2}"
+                               Text="{Binding Id}"/>
+                  </StackPanel>
+                  <TextBlock Grid.Column="2"
+                             VerticalAlignment="Center"
+                             FontSize="11"
+                             Foreground="{DynamicResource Brush.FG2}"
+                             Text="{Binding IsActive, StringFormat='{}{0}'}"/>
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <StackPanel Grid.Row="2" Margin="12" Orientation="Horizontal" Spacing="6">
+            <Button Classes="flat" Content="Import" Click="OnImport"/>
+            <Button Classes="flat" Content="Export" Click="OnExport"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="20"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="*" MinWidth="220" MaxWidth="520"/>
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                     Margin="0,0,0,16"
+                     FontSize="15" FontWeight="SemiBold"
+                     Text="Provider Details"/>
+
+          <TextBlock Grid.Row="1" VerticalAlignment="Center" Text="Name"/>
+          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding SelectedProvider.Name, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="2" Margin="0,10,0,0" VerticalAlignment="Center" Text="Provider ID"/>
+          <TextBox Grid.Row="2" Grid.Column="1" Margin="0,10,0,0" Text="{Binding SelectedProvider.Id, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="3" Margin="0,10,0,0" VerticalAlignment="Center" Text="Base URL"/>
+          <TextBox Grid.Row="3" Grid.Column="1" Margin="0,10,0,0" Text="{Binding SelectedProvider.BaseUrl, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="4" Margin="0,10,0,0" VerticalAlignment="Center" Text="API Key"/>
+          <TextBox Grid.Row="4" Grid.Column="1" Margin="0,10,0,0"
+                   PasswordChar="●"
+                   Text="{Binding SelectedProvider.ApiKey, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="5" Margin="0,10,0,0" VerticalAlignment="Center" Text="API Key Env"/>
+          <TextBox Grid.Row="5" Grid.Column="1" Margin="0,10,0,0" Text="{Binding SelectedProvider.ApiKeyEnvironment, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="6" Margin="0,10,0,0" VerticalAlignment="Center" Text="Default Model"/>
+          <TextBox Grid.Row="6" Grid.Column="1" Margin="0,10,0,0" Text="{Binding SelectedProvider.DefaultModel, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="7" Margin="0,10,0,0" VerticalAlignment="Center" Text="Priority"/>
+          <NumericUpDown Grid.Row="7" Grid.Column="1" Margin="0,10,0,0"
+                         Minimum="0" Maximum="10000"
+                         Value="{Binding SelectedProvider.Priority, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="8" Margin="0,10,0,0" VerticalAlignment="Center" Text="Retries"/>
+          <NumericUpDown Grid.Row="8" Grid.Column="1" Margin="0,10,0,0"
+                         Minimum="0" Maximum="20"
+                         Value="{Binding SelectedProvider.MaxRetries, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="9" Margin="0,10,0,0" VerticalAlignment="Center" Text="Timeout (sec)"/>
+          <NumericUpDown Grid.Row="9" Grid.Column="1" Margin="0,10,0,0"
+                         Minimum="1" Maximum="3600"
+                         Value="{Binding SelectedProvider.TimeoutSeconds, Mode=TwoWay}"/>
+
+          <TextBlock Grid.Row="10" Margin="0,10,0,0" VerticalAlignment="Center" Text="Active"/>
+          <CheckBox Grid.Row="10" Grid.Column="1" Margin="0,10,0,0"
+                    IsChecked="{Binding SelectedProvider.IsActive, Mode=TwoWay}"/>
+
+          <StackPanel Grid.Row="11" Grid.Column="1" Margin="0,20,0,0"
+                      Orientation="Horizontal" Spacing="8">
+            <Button Content="Test Connection" Click="OnTestConnection"/>
+            <Button Content="Save" Click="OnSave"/>
+            <Button Classes="flat" Content="Duplicate" Click="OnDuplicate"/>
+            <Button Classes="flat" Content="Delete" Click="OnDelete"/>
+          </StackPanel>
+        </Grid>
+      </ScrollViewer>
+    </Grid>
+  </Grid>
+</UserControl>

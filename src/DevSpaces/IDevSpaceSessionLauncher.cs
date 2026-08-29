@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+
 namespace SourceGit.DevSpaces
 {
     public readonly record struct DevSpaceLaunchSpec(
         string Process,
         string[] Arguments,
-        string WorkingDirectory);
+        string WorkingDirectory,
+        IReadOnlyDictionary<string, string> Environment = null);
 
     public interface IDevSpaceSessionLauncher
     {
