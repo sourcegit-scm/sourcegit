@@ -112,7 +112,7 @@
   </Target>
 
   <Target BeforeTargets="GetAssemblyAttributes" Name="GenVersionInfo">
-    <Exec Command="git describe --abbrev=8 --dirty" ConsoleToMSBuild="True" IgnoreExitCode="true">
+    <Exec Command="git describe --abbrev=8 --dirty" ConsoleToMsBuild="True" IgnoreExitCode="true">
       <Output PropertyName="FriendlyVersion" TaskParameter="ConsoleOutput" />
     </Exec>
 
