@@ -14,14 +14,14 @@ namespace SourceGit.Commands
             RaiseError = false;
         }
 
-        public async Task<string> GetResultAsync()
+        public async Task<string> GetResultAsync(string currentBranch = null)
         {
             if (!await IsLinkedWorktreeAsync().ConfigureAwait(false))
                 return string.Empty;
 
-            Args = "symbolic-ref --quiet --short HEAD";
-            var currentResult = await ReadToEndAsync().ConfigureAwait(false);
-            var currentBranch = currentResult.IsSuccess ? Models.WorktreeBaseBranch.Normalize(currentResult.StdOut.Trim()) : string.Empty;
+            currentBranch = string.IsNullOrEmpty(currentBranch)
+                ? await GetCurrentBranchAsync().ConfigureAwait(false)
+                : Models.WorktreeBaseBranch.Normalize(currentBranch);
 
             Args = "for-each-ref --format=\"%(refname:short)\" refs/heads";
             var refs = await ReadToEndAsync().ConfigureAwait(false);
@@ -48,6 +48,13 @@ namespace SourceGit.Commands
             }
 
             return Models.WorktreeBaseBranch.SelectBestCandidate(candidates);
+        }
+
+        public async Task<string> GetCurrentBranchAsync()
+        {
+            Args = "symbolic-ref --quiet --short HEAD";
+            var result = await ReadToEndAsync().ConfigureAwait(false);
+            return result.IsSuccess ? Models.WorktreeBaseBranch.Normalize(result.StdOut.Trim()) : string.Empty;
         }
 
         public async Task<string> GetGitDirAsync()
