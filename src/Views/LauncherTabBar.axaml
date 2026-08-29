@@ -119,7 +119,7 @@
                             Padding="5,1"
                             CornerRadius="5"
                             VerticalAlignment="Center"
-                            Background="{Binding BaseBranchBadgeColor}"
+                            Background="{Binding BaseBranchKind, Converter={x:Static c:WorktreeBaseBranchConverters.ToBrush}}"
                             IsVisible="{Binding HasBaseBranch}">
                       <TextBlock Text="{Binding BaseBranch}"
                                  FontSize="10"
@@ -173,7 +173,7 @@
                          FontSize="11"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
                          VerticalAlignment="Center"/>
-          </StackPanel>
+            </StackPanel>
           </ToolTip.Tip>
 
           <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
