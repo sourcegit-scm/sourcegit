@@ -177,6 +177,8 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateCopilotTerminalAt(int preferredSlot)
         {
+            SourceGit.DevSpaces.CopilotWorkspaceTrust.EnsureTrusted(_workingDirectory);
+
             var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
             return CreateTerminalAt(
                 preferredSlot,
