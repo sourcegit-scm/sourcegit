@@ -29,9 +29,6 @@ jobs:
       - name: Test
         run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release --disable-build-servers
 
-      - name: Publish Linux x64 NativeAOT
-        run: dotnet publish src/SourceGit.csproj --configuration Release --runtime linux-x64 --output publish
-
       - name: Commit validated UI
         if: success()
         shell: bash
