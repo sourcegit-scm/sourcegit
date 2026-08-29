@@ -65,6 +65,27 @@ jobs:
         run: dotnet build -c Release
       - name: Publish
         run: dotnet publish src/SourceGit.csproj -c Release -o publish -r ${{ matrix.runtime }}
+      - name: Verify Windows terminal native payload
+        if: startsWith(matrix.runtime, 'win-')
+        shell: pwsh
+        run: |
+          $expected = "publish/native-terminal/${{ matrix.runtime }}/Microsoft.Terminal.Control.dll"
+          if (-not (Test-Path $expected -PathType Leaf)) {
+            throw "Missing native Windows Terminal payload: $expected"
+          }
+
+          $wrongRid = if ('${{ matrix.runtime }}' -eq 'win-x64') { 'win-arm64' } else { 'win-x64' }
+          if (Test-Path "publish/native-terminal/$wrongRid") {
+            throw "Unexpected native Windows Terminal payload for $wrongRid"
+          }
+
+          $dlls = @(Get-ChildItem publish/native-terminal -Recurse -Filter Microsoft.Terminal.Control.dll)
+          if ($dlls.Count -ne 1) {
+            throw "Expected exactly one Microsoft.Terminal.Control.dll, found $($dlls.Count)"
+          }
+      - name: Verify non-Windows publish excludes Windows terminal
+        if: ${{ !startsWith(matrix.runtime, 'win-') }}
+        run: test ! -d publish/native-terminal
       - name: Rename executable file
         if: startsWith(matrix.runtime, 'linux-')
         run: mv publish/SourceGit publish/sourcegit
