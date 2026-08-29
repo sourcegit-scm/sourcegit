@@ -1,0 +1,23 @@
+name: LocalLLM Branch Check
+
+on:
+  push:
+    branches: [feature/local-llm-provider]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Test
+        run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release --disable-build-servers
