@@ -1,3 +1,5 @@
+using System;
+
 using SourceGit.Mcp;
 using Xunit;
 
