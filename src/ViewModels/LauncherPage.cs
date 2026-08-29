@@ -162,7 +162,8 @@ namespace SourceGit.ViewModels
         {
             var query = new Commands.QueryWorktreeBaseBranch(repo.FullPath);
             var gitDir = await query.GetGitDirAsync().ConfigureAwait(false);
-            var branch = Models.WorktreeBaseBranch.ReadPersisted(gitDir);
+            var currentBranch = repo.CurrentBranch?.Name ?? string.Empty;
+            var branch = Models.WorktreeBaseBranch.ReadPersisted(gitDir, currentBranch);
             if (string.IsNullOrEmpty(branch))
                 branch = await query.GetResultAsync().ConfigureAwait(false);
 
