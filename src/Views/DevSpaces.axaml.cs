@@ -21,6 +21,12 @@ namespace SourceGit.Views
             DataContextChanged += OnDataContextChanged;
         }
 
+        public void SetPageActive(bool active)
+        {
+            _pageActive = active;
+            UpdateSurfaceVisibility();
+        }
+
         public void Dispose()
         {
             if (_owner != null)
@@ -46,11 +52,15 @@ namespace SourceGit.Views
             if (_owner != null)
                 _owner.PropertyChanged += OnOwnerPropertyChanged;
 
+            UpdatePageVisibility();
             RebuildGrid();
         }
 
         private void OnOwnerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(ViewModels.DevSpaces.IsFilesActive))
+                Dispatcher.UIThread.Post(UpdatePageVisibility);
+
             if (e.PropertyName == nameof(ViewModels.DevSpaces.VisibleSlots) ||
                 e.PropertyName == nameof(ViewModels.DevSpaces.GridRows) ||
                 e.PropertyName == nameof(ViewModels.DevSpaces.GridColumns) ||
@@ -66,6 +76,12 @@ namespace SourceGit.Views
             if (sender is Control control)
                 ShowTerminalPicker(control, -1);
 
+            e.Handled = true;
+        }
+
+        private void OnFilesTabPressed(object sender, PointerPressedEventArgs e)
+        {
+            _owner?.ActivateFiles();
             e.Handled = true;
         }
 
@@ -90,11 +106,21 @@ namespace SourceGit.Views
             _owner?.CloseTerminal(session);
             if (_panes.Remove(session.Id, out var pane))
             {
+                pane.TerminalView.SetPageActive(false);
                 TerminalGrid.Children.Remove(pane.Root);
                 pane.TerminalView.Dispose();
             }
 
             RebuildGrid();
+        }
+
+        private void UpdatePageVisibility()
+        {
+            var showFiles = _owner?.IsFilesActive == true;
+            FilesView.IsVisible = showFiles;
+            FilesView.IsHitTestVisible = showFiles;
+            TerminalGrid.IsVisible = !showFiles;
+            TerminalGrid.IsHitTestVisible = !showFiles;
         }
 
         private void RebuildGrid()
@@ -105,6 +131,7 @@ namespace SourceGit.Views
             {
                 TerminalGrid.RowDefinitions = new RowDefinitions("*");
                 TerminalGrid.ColumnDefinitions = new ColumnDefinitions("*");
+                UpdateSurfaceVisibility();
                 return;
             }
 
@@ -145,6 +172,23 @@ namespace SourceGit.Views
                     TerminalGrid.Children.Add(empty);
                     _emptySlots.Add(empty);
                 }
+            }
+
+            UpdateSurfaceVisibility();
+        }
+
+        private void UpdateSurfaceVisibility()
+        {
+            foreach (var pane in _panes.Values)
+                pane.TerminalView.SetPageActive(false);
+
+            if (!_pageActive || _owner == null)
+                return;
+
+            foreach (var slot in _owner.VisibleSlots)
+            {
+                if (slot.Terminal != null && _panes.TryGetValue(slot.Terminal.Id, out var pane))
+                    pane.TerminalView.SetPageActive(true);
             }
         }
 
@@ -360,7 +404,10 @@ namespace SourceGit.Views
         private void DisposePanes()
         {
             foreach (var pane in _panes.Values)
+            {
+                pane.TerminalView.SetPageActive(false);
                 pane.TerminalView.Dispose();
+            }
 
             _panes.Clear();
             _emptySlots.Clear();
@@ -370,5 +417,6 @@ namespace SourceGit.Views
         private readonly Dictionary<Guid, TerminalPaneHandle> _panes = [];
         private readonly List<Button> _emptySlots = [];
         private ViewModels.DevSpaces _owner;
+        private bool _pageActive;
     }
 }

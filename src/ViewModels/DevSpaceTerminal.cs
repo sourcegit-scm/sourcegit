@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -43,6 +44,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _errorMessage, value);
         }
 
+        public string BackendName
+        {
+            get => _backendName;
+            private set => SetProperty(ref _backendName, value);
+        }
+
         public event Action<DevSpaceTerminal> StopRequested;
 
         public DevSpaceTerminal(string title, string terminal, string workingDirectory, string startupCommand = null)
@@ -53,9 +60,12 @@ namespace SourceGit.ViewModels
             StartupCommand = startupCommand ?? string.Empty;
         }
 
-        public void MarkRunning()
+        public void MarkRunning(string backendName)
         {
+            BackendName = backendName ?? string.Empty;
+            ErrorMessage = string.Empty;
             State = DevSpaceTerminalState.Running;
+            Trace.WriteLine($"DevSpaces terminal backend: {BackendName}");
         }
 
         public void MarkExited(int exitCode)
@@ -83,6 +93,7 @@ namespace SourceGit.ViewModels
         private DevSpaceTerminalState _state = DevSpaceTerminalState.Created;
         private int _exitCode;
         private string _errorMessage = string.Empty;
+        private string _backendName = string.Empty;
         private bool _disposed;
     }
 }

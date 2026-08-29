@@ -14,6 +14,23 @@ jobs:
     name: Build
     uses: ./.github/workflows/build.yml
 
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Run tests
+        run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release
+
   format-check:
     name: Format Check
     uses: ./.github/workflows/format-check.yml

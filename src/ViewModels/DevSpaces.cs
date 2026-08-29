@@ -22,9 +22,17 @@ namespace SourceGit.ViewModels
     {
         public SourceGit.DevSpaces.IDevSpaceSessionLauncher Launcher { get; }
 
+        public DevSpaceFiles Files { get; }
+
         public AvaloniaList<DevSpaceTerminal> Sessions { get; } = [];
 
         public AvaloniaList<DevSpaceGridSlot> VisibleSlots { get; } = [];
+
+        public bool IsFilesActive
+        {
+            get => _isFilesActive;
+            private set => SetProperty(ref _isFilesActive, value);
+        }
 
         public DevSpaceTerminal ActiveTerminal
         {
@@ -70,6 +78,7 @@ namespace SourceGit.ViewModels
         {
             _workingDirectory = workingDirectory;
             Launcher = launcher ?? new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
+            Files = new DevSpaceFiles(workingDirectory);
 
             var savedLayout = Preferences.Instance.DevSpacesDefaultLayout;
             if (savedLayout == Models.DevSpaceLayout.FourByFour)
@@ -86,6 +95,17 @@ namespace SourceGit.ViewModels
         {
             if (Sessions.Count == 0)
                 CreateTerminal();
+        }
+
+        public void ActivateFiles()
+        {
+            IsFilesActive = true;
+        }
+
+        public bool OpenFile(string relativePath)
+        {
+            ActivateFiles();
+            return Files.OpenFile(relativePath);
         }
 
         public DevSpaceTerminal CreateTerminal()
@@ -131,6 +151,7 @@ namespace SourceGit.ViewModels
 
             Sessions.Add(created);
             ActiveTerminal = created;
+            IsFilesActive = false;
             _preferredSlot = preferredSlot;
             RebuildSlots();
             return created;
@@ -171,6 +192,7 @@ namespace SourceGit.ViewModels
                 return;
 
             ActiveTerminal = terminal;
+            IsFilesActive = false;
             RebuildSlots();
         }
 
@@ -260,6 +282,7 @@ namespace SourceGit.ViewModels
         private readonly string _workingDirectory;
         private DevSpaceTerminal _activeTerminal;
         private Models.DevSpaceLayout _layout;
+        private bool _isFilesActive;
         private int _nextSessionNumber = 1;
         private int _preferredSlot = -1;
     }

@@ -1,10 +1,12 @@
 using System;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Platform;
 
 namespace SourceGit.Views
 {
@@ -71,6 +73,9 @@ namespace SourceGit.Views
 
         public void BringToTop()
         {
+            if (!IsVisible)
+                Show();
+
             if (WindowState == WindowState.Minimized)
                 WindowState = _lastWindowState;
             else
@@ -101,8 +106,11 @@ namespace SourceGit.Views
             }
             else if (change.Property == IsActiveProperty)
             {
-                if (!IsActive && DataContext is ViewModels.Launcher { CommandPalette: { } } vm)
+                if (!IsActive && DataContext is ViewModels.Launcher vm)
+                {
                     vm.CommandPalette = null;
+                    vm.CloseGoToFile();
+                }
             }
 
             if (OperatingSystem.IsMacOS() && WindowState != WindowState.FullScreen)
@@ -131,20 +139,45 @@ namespace SourceGit.Views
             if (DataContext is not ViewModels.Launcher vm)
                 return;
 
-            // Check for AltGr (which is detected as Ctrl+Alt)
             bool isAltGr = e.KeyModifiers.HasFlag(KeyModifiers.Control) &&
                            e.KeyModifiers.HasFlag(KeyModifiers.Alt);
 
-            // Skip hotkey processing if AltGr is pressed
             if (isAltGr)
             {
                 base.OnKeyDown(e);
                 return;
             }
 
-            // Register hotkeys for Windows/Linux (macOS has registered these keys in system menu bar)
             var isMacOS = OperatingSystem.IsMacOS();
             var cmdKey = isMacOS ? KeyModifiers.Meta : KeyModifiers.Control;
+
+            if (vm.GoToFileSearch != null)
+            {
+                switch (e.Key)
+                {
+                    case Key.Escape:
+                        vm.CloseGoToFile();
+                        e.Handled = true;
+                        return;
+                    case Key.Down:
+                        vm.GoToFileSearch.MoveSelection(1);
+                        e.Handled = true;
+                        return;
+                    case Key.Up:
+                        vm.GoToFileSearch.MoveSelection(-1);
+                        e.Handled = true;
+                        return;
+                    case Key.Enter:
+                        if (vm.GoToFileSearch.OpenSelected())
+                            vm.CloseGoToFile();
+                        e.Handled = true;
+                        return;
+                }
+
+                base.OnKeyDown(e);
+                return;
+            }
+
             if (!isMacOS)
             {
                 if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.OemComma })
@@ -163,12 +196,12 @@ namespace SourceGit.Views
 
                 if (e is { KeyModifiers: KeyModifiers.Control, Key: Key.Q })
                 {
-                    App.Quit(0);
+                    Close();
+                    e.Handled = true;
                     return;
                 }
             }
 
-            // Ctrl+` to open terminal. On macOS, Cmd+` is used to switch between windows
             if (e is { Key: Key.OemTilde, KeyModifiers: KeyModifiers.Control })
             {
                 if (vm.ActivePage.Data is ViewModels.Repository repo)
@@ -224,6 +257,14 @@ namespace SourceGit.Views
                         vm.AddNewTab();
 
                     ViewModels.Welcome.Instance.OpenLocalRepository();
+                    e.Handled = true;
+                    return;
+                }
+
+                if (e.Key == Key.P && e.KeyModifiers == cmdKey && vm.ActivePage.Data is ViewModels.Repository activeRepo)
+                {
+                    vm.CommandPalette = null;
+                    vm.OpenGoToFile(activeRepo);
                     e.Handled = true;
                     return;
                 }
@@ -324,9 +365,23 @@ namespace SourceGit.Views
 
         protected override void OnClosing(WindowClosingEventArgs e)
         {
+            if (Design.IsDesignMode)
+            {
+                base.OnClosing(e);
+                return;
+            }
+
+            if (_closeController.OnCloseRequested() != Models.LauncherCloseAction.Exit)
+            {
+                e.Cancel = true;
+                if (!_isCloseConfirmationVisible)
+                    _ = ConfirmCloseAsync();
+                return;
+            }
+
             base.OnClosing(e);
 
-            if (!Design.IsDesignMode && DataContext is ViewModels.Launcher launcher)
+            if (DataContext is ViewModels.Launcher launcher)
                 launcher.CloseAll();
         }
 
@@ -334,10 +389,70 @@ namespace SourceGit.Views
         {
             base.OnClosed(e);
 
+            _trayIcon?.Dispose();
+            _trayIcon = null;
+
             if (!Design.IsDesignMode)
                 ViewModels.Preferences.Instance.Save();
 
             App.Quit(0);
+        }
+
+        private async Task ConfirmCloseAsync()
+        {
+            _isCloseConfirmationVisible = true;
+            try
+            {
+                var dialog = new ConfirmClose();
+                var decision = await dialog.ShowDialog<Models.CloseAppDecision>(this);
+                var action = _closeController.Apply(decision);
+                switch (action)
+                {
+                    case Models.LauncherCloseAction.Exit:
+                        Close();
+                        break;
+                    case Models.LauncherCloseAction.HideToTray:
+                        EnsureTrayIcon();
+                        Hide();
+                        break;
+                }
+            }
+            finally
+            {
+                _isCloseConfirmationVisible = false;
+            }
+        }
+
+        private void EnsureTrayIcon()
+        {
+            if (_trayIcon != null)
+            {
+                _trayIcon.IsVisible = true;
+                return;
+            }
+
+            var menu = new NativeMenu();
+            var open = new NativeMenuItem("Open SourceGit");
+            open.Click += (_, _) => BringToTop();
+            menu.Items.Add(open);
+            menu.Items.Add(new NativeMenuItemSeparator());
+
+            var exit = new NativeMenuItem("Exit");
+            exit.Click += (_, _) =>
+            {
+                _closeController.Apply(Models.CloseAppDecision.Yes);
+                Close();
+            };
+            menu.Items.Add(exit);
+
+            _trayIcon = new TrayIcon
+            {
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://SourceGit/App.ico"))),
+                ToolTipText = "SourceGit",
+                Menu = menu,
+                IsVisible = true,
+            };
+            _trayIcon.Clicked += (_, _) => BringToTop();
         }
 
         private void OnPositionChanged(object sender, PixelPointEventArgs e)
@@ -356,6 +471,7 @@ namespace SourceGit.Views
             {
                 if (launcher.CommandPalette != null)
                     launcher.CommandPalette = null;
+                launcher.CloseGoToFile();
 
                 var pref = ViewModels.Preferences.Instance;
                 var menu = new ContextMenu();
@@ -413,7 +529,10 @@ namespace SourceGit.Views
         private void OnOpenPagesCommandPalette(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Launcher vm)
+            {
+                vm.CloseGoToFile();
                 vm.CommandPalette = new ViewModels.LauncherPagesCommandPalette(vm);
+            }
             e.Handled = true;
         }
 
@@ -421,6 +540,13 @@ namespace SourceGit.Views
         {
             if (e.Source == sender && DataContext is ViewModels.Launcher vm)
                 vm.CommandPalette = null;
+            e.Handled = true;
+        }
+
+        private void OnCloseGoToFile(object sender, PointerPressedEventArgs e)
+        {
+            if (e.Source == sender && DataContext is ViewModels.Launcher vm)
+                vm.CloseGoToFile();
             e.Handled = true;
         }
 
@@ -438,8 +564,10 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private readonly Models.LauncherCloseController _closeController = new();
         private GridLength _captionHeight = new(32);
         private WindowState _lastWindowState = WindowState.Normal;
+        private TrayIcon _trayIcon;
+        private bool _isCloseConfirmationVisible;
     }
 }
-

@@ -93,17 +93,9 @@
       </Button>
 
       <!-- Pages Switcher Toggle Button -->
-      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenPagesCommandPalette" HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}">
+      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenPagesCommandPalette">
         <ToolTip.Tip>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{DynamicResource Text.Launcher.Pages}"
-                       VerticalAlignment="Center"/>
-            <TextBlock Margin="8,0,0,0"
-                       Text="{OnPlatform Ctrl+P, macOS=⌘+P}"
-                       FontSize="11"
-                       Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
-                       VerticalAlignment="Center"/>
-          </StackPanel>
+          <TextBlock Text="{DynamicResource Text.Launcher.Pages}" VerticalAlignment="Center"/>
         </ToolTip.Tip>
         <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Tabs}"/>
       </Button>
@@ -146,6 +138,25 @@
               <v:CommandPaletteDataTemplates/>
             </ContentControl.DataTemplates>
           </ContentControl>
+        </Border>
+      </Border>
+    </Border>
+
+    <!-- Go to File -->
+    <Border Grid.Row="0" Grid.RowSpan="2"
+            Background="#40000000"
+            IsVisible="{Binding GoToFileSearch, Converter={x:Static ObjectConverters.IsNotNull}}"
+            PointerPressed="OnCloseGoToFile">
+      <Border Width="680"
+              MaxHeight="520"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Effect="drop-shadow(0 0 12 #60000000)">
+        <Border Background="{DynamicResource Brush.Popup}"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Brush.PopupBorder}"
+                CornerRadius="8">
+          <v:GoToFileSearch Margin="16,14,16,12" DataContext="{Binding GoToFileSearch}"/>
         </Border>
       </Border>
     </Border>

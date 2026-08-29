@@ -95,7 +95,7 @@ namespace SourceGit.DevSpaces
                 if (pageSwitcher == null || rightPages == null || pageSwitcher.ItemsSource != null)
                     return null;
 
-                var item = CreateNavigationItem(view, out var label);
+                var item = CreateNavigationItem(view, out var label, out var badge, out var badgeLabel);
                 pageSwitcher.Items.Add(item);
 
                 var host = new Border
@@ -106,18 +106,22 @@ namespace SourceGit.DevSpaces
                 };
                 rightPages.Children.Add(host);
 
-                return new RepositoryIntegration(repository, item, label, host);
+                return new RepositoryIntegration(repository, item, label, badge, badgeLabel, host);
             }
 
             private RepositoryIntegration(
                 ViewModels.Repository repository,
                 ListBoxItem navigationItem,
                 TextBlock navigationLabel,
+                Border navigationBadge,
+                TextBlock navigationBadgeLabel,
                 Border host)
             {
                 _repository = repository;
                 _navigationItem = navigationItem;
                 _navigationLabel = navigationLabel;
+                _navigationBadge = navigationBadge;
+                _navigationBadgeLabel = navigationBadgeLabel;
                 _host = host;
 
                 _repository.PropertyChanged += OnRepositoryPropertyChanged;
@@ -131,6 +135,9 @@ namespace SourceGit.DevSpaces
 
             public void Detach()
             {
+                if (_host.Child is Views.DevSpaces spacesView)
+                    spacesView.SetPageActive(false);
+
                 _repository.PropertyChanged -= OnRepositoryPropertyChanged;
                 ViewModels.Preferences.Instance.PropertyChanged -= OnPreferencesPropertyChanged;
                 DetachSpaces();
@@ -181,6 +188,9 @@ namespace SourceGit.DevSpaces
 
                 if (!enabled)
                 {
+                    if (_host.Child is Views.DevSpaces spacesView)
+                        spacesView.SetPageActive(false);
+
                     _host.IsVisible = false;
                     _host.Opacity = 0;
                     _host.IsHitTestVisible = false;
@@ -194,12 +204,16 @@ namespace SourceGit.DevSpaces
                 AttachSpaces();
 
                 // Keep the terminal subtree mounted and measured while another repository page
-                // is active. Hiding with IsVisible would collapse the PTY and force the terminal
-                // TUI to resize/reload when returning to DevSpaces.
+                // is active. Hiding with IsVisible would collapse the Avalonia fallback and
+                // force its TUI to resize/reload when returning to DevSpaces. Native HWNDs are
+                // hidden separately by DevSpaces.SetPageActive.
                 _host.IsVisible = true;
                 var active = _repository.SelectedViewIndex == 3;
                 _host.Opacity = active ? 1 : 0;
                 _host.IsHitTestVisible = active;
+
+                if (_host.Child is Views.DevSpaces activeSpacesView)
+                    activeSpacesView.SetPageActive(active);
 
                 if (active)
                     _spaces?.EnsureFirstSession();
@@ -208,11 +222,16 @@ namespace SourceGit.DevSpaces
             private void UpdateNavigationLabel()
             {
                 var count = _spaces?.Sessions.Count ?? 0;
-                var title = App.Text("DevSpaces");
-                _navigationLabel.Text = count > 0 ? $"{title} ({count})" : title;
+                _navigationLabel.Text = App.Text("DevSpaces");
+                _navigationBadge.IsVisible = count > 0;
+                _navigationBadgeLabel.Text = count.ToString();
             }
 
-            private static ListBoxItem CreateNavigationItem(Views.Repository view, out TextBlock label)
+            private static ListBoxItem CreateNavigationItem(
+                Views.Repository view,
+                out TextBlock label,
+                out Border badge,
+                out TextBlock badgeLabel)
             {
                 var indicator = new Rectangle
                 {
@@ -239,15 +258,37 @@ namespace SourceGit.DevSpaces
                 };
                 label.Classes.Add("header");
 
+                badgeLabel = new TextBlock
+                {
+                    Text = "0",
+                    FontSize = 10,
+                };
+                badgeLabel.Bind(TextBlock.ForegroundProperty, view.GetResourceObservable("Brush.BadgeFG"));
+                badgeLabel.Bind(TextBlock.FontFamilyProperty, view.GetResourceObservable("Fonts.Monospace"));
+
+                badge = new Border
+                {
+                    Height = 18,
+                    Margin = new Thickness(6, 0),
+                    Padding = new Thickness(9, 0),
+                    CornerRadius = new CornerRadius(9),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    IsVisible = false,
+                    Child = badgeLabel,
+                };
+                badge.Bind(Border.BackgroundProperty, view.GetResourceObservable("Brush.Badge"));
+
                 var content = new Grid
                 {
-                    ColumnDefinitions = new ColumnDefinitions("4,Auto,*"),
+                    ColumnDefinitions = new ColumnDefinitions("4,Auto,*,Auto"),
                 };
                 content.Children.Add(indicator);
                 Grid.SetColumn(icon, 1);
                 content.Children.Add(icon);
                 Grid.SetColumn(label, 2);
                 content.Children.Add(label);
+                Grid.SetColumn(badge, 3);
+                content.Children.Add(badge);
 
                 return new ListBoxItem
                 {
@@ -258,6 +299,8 @@ namespace SourceGit.DevSpaces
             private readonly ViewModels.Repository _repository;
             private readonly ListBoxItem _navigationItem;
             private readonly TextBlock _navigationLabel;
+            private readonly Border _navigationBadge;
+            private readonly TextBlock _navigationBadgeLabel;
             private readonly Border _host;
             private ViewModels.DevSpaces _spaces;
         }

@@ -76,6 +76,14 @@ namespace SourceGit
 
         public static readonly Command QuitCommand = new Command(_ =>
         {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &&
+                Models.LauncherCloseController.ResolveAppQuit(desktop.MainWindow is Views.Launcher) == Models.AppQuitAction.RequestLauncherClose &&
+                desktop.MainWindow is Views.Launcher launcher)
+            {
+                launcher.Close();
+                return;
+            }
+
             Quit(0);
         });
 

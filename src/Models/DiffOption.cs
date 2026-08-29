@@ -13,6 +13,25 @@ namespace SourceGit.Models
         public string OrgPath => _orgPath;
 
         /// <summary>
+        ///     Used by workspace file explorers to compare HEAD with the current worktree.
+        /// </summary>
+        public DiffOption(Change change)
+        {
+            _path = change.Path;
+            _orgPath = change.OriginalPath;
+
+            if (change.WorkTree == ChangeState.Untracked)
+            {
+                _extra = "--no-index";
+                _orgPath = "/dev/null";
+            }
+            else
+            {
+                _extra = "HEAD";
+            }
+        }
+
+        /// <summary>
         ///     Only used for working copy changes
         /// </summary>
         /// <param name="change"></param>
