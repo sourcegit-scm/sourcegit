@@ -170,12 +170,28 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
-            if (succ && _openInNewTab)
+            if (succ)
             {
                 var fullPath = System.IO.Path.IsPathRooted(_path)
                     ? System.IO.Path.GetFullPath(_path)
                     : System.IO.Path.GetFullPath(System.IO.Path.Combine(_repo.FullPath, _path));
-                App.GetLauncher()?.OpenRepositoryInTab(fullPath, null);
+
+                if (_createNewBranch)
+                {
+                    var baseBranch = _setTrackingBranch && _selectedTrackingBranch != null
+                        ? _selectedTrackingBranch.Name
+                        : _repo.CurrentBranch?.Name ?? string.Empty;
+                    baseBranch = Models.WorktreeBaseBranch.Normalize(baseBranch);
+
+                    if (Models.WorktreeBaseBranch.GetKind(baseBranch) != Models.WorktreeBaseBranchKind.None)
+                    {
+                        var gitDir = await new Commands.QueryWorktreeBaseBranch(fullPath).GetGitDirAsync();
+                        Models.WorktreeBaseBranch.WritePersisted(gitDir, baseBranch);
+                    }
+                }
+
+                if (_openInNewTab)
+                    App.GetLauncher()?.OpenRepositoryInTab(fullPath, null);
             }
 
             return succ;
