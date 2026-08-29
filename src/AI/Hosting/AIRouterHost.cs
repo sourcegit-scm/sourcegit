@@ -1,8 +1,10 @@
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
 using SourceGit.AI.Routing;
@@ -38,7 +40,7 @@ public static class AIRouterHost
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
-            await context.Response.WriteAsync("{\"error\":{\"message\":\"Unauthorized\"}}");
+            await context.Response.WriteAsync("{\"error\":{\"message\":\"Unauthorized\"}}", context.RequestAborted);
             return;
         }
 
@@ -50,7 +52,7 @@ public static class AIRouterHost
         {
             model = AIRouterApi.GetModel(payload);
         }
-        catch (System.Text.Json.JsonException)
+        catch (JsonException)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             context.Response.ContentType = "application/json";
@@ -69,6 +71,7 @@ public static class AIRouterHost
         }
 
         var message = string.IsNullOrWhiteSpace(result.Error) ? "AI Router request failed." : result.Error;
-        await context.Response.WriteAsync($"{{\"error\":{{\"message\":{System.Text.Json.JsonSerializer.Serialize(message)}}}}}", context.RequestAborted);
+        var encoded = JsonEncodedText.Encode(message).ToString();
+        await context.Response.WriteAsync($"{{\"error\":{{\"message\":\"{encoded}\"}}}}", context.RequestAborted);
     }
 }
