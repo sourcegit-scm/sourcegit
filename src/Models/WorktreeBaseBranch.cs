@@ -64,15 +64,28 @@ namespace SourceGit.Models
             };
         }
 
-        public static string ReadPersisted(string gitDir)
+        public static string ReadPersisted(string gitDir, string currentBranch)
         {
-            if (string.IsNullOrEmpty(gitDir))
+            if (string.IsNullOrEmpty(gitDir) || string.IsNullOrWhiteSpace(currentBranch))
                 return string.Empty;
 
             try
             {
                 var path = Path.Combine(gitDir, MetadataFile);
-                return File.Exists(path) ? Normalize(File.ReadAllText(path)) : string.Empty;
+                if (!File.Exists(path))
+                    return string.Empty;
+
+                var lines = File.ReadAllLines(path);
+                if (lines.Length < 2)
+                    return string.Empty;
+
+                var persistedBranch = Normalize(lines[0]);
+                var normalizedCurrent = Normalize(currentBranch);
+                if (!persistedBranch.Equals(normalizedCurrent, StringComparison.OrdinalIgnoreCase))
+                    return string.Empty;
+
+                var baseBranch = Normalize(lines[1]);
+                return GetKind(baseBranch) != WorktreeBaseBranchKind.None ? baseBranch : string.Empty;
             }
             catch
             {
@@ -80,16 +93,19 @@ namespace SourceGit.Models
             }
         }
 
-        public static void WritePersisted(string gitDir, string branch)
+        public static void WritePersisted(string gitDir, string worktreeBranch, string baseBranch)
         {
-            var normalized = Normalize(branch);
-            if (string.IsNullOrEmpty(gitDir) || GetKind(normalized) == WorktreeBaseBranchKind.None)
+            var normalizedWorktreeBranch = Normalize(worktreeBranch);
+            var normalizedBaseBranch = Normalize(baseBranch);
+            if (string.IsNullOrEmpty(gitDir) ||
+                string.IsNullOrEmpty(normalizedWorktreeBranch) ||
+                GetKind(normalizedBaseBranch) == WorktreeBaseBranchKind.None)
                 return;
 
             try
             {
                 Directory.CreateDirectory(gitDir);
-                File.WriteAllText(Path.Combine(gitDir, MetadataFile), normalized);
+                File.WriteAllLines(Path.Combine(gitDir, MetadataFile), [normalizedWorktreeBranch, normalizedBaseBranch]);
             }
             catch
             {
