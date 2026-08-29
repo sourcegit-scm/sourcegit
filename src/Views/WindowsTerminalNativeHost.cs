@@ -188,7 +188,5 @@ namespace SourceGit.Views
         private int _viewTop;
         private int _viewHeight;
         private int _bufferSize;
-        private int _cols = 80;
-        private int _rows = 25;
     }
 }
