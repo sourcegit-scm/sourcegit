@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using Avalonia.Media.Imaging;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum TextDiffLineType
     {

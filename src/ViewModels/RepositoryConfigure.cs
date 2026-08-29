@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class RepositoryConfigure : ObservableObject
     {
@@ -455,7 +455,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private const string GitAccountConfigKey = "sourcegit.account";
+        private const string GitAccountConfigKey = "devboard.account";
 
         private readonly Repository _repo;
         private readonly Dictionary<string, string> _cached;

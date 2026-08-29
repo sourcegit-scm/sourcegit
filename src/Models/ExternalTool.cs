@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class ExternalTool
     {
@@ -39,7 +39,7 @@ namespace SourceGit.Models
 
             try
             {
-                var asset = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/ExternalToolIcons/{icon}.png",
+                var asset = AssetLoader.Open(new Uri($"avares://DevBoard/Resources/Images/ExternalToolIcons/{icon}.png",
                     UriKind.RelativeOrAbsolute));
                 IconImage = new Bitmap(asset);
             }

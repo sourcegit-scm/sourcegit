@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     public static partial class OS
     {
@@ -19,7 +19,9 @@ namespace SourceGit.Native
             void SetupApp(AppBuilder builder);
             void SetupWindow(Window window);
 
+            string GetPortableDataDir();
             string GetDataDir();
+            string GetLegacyDataDir();
             string FindGitExecutable();
             string FindTerminal(Models.ShellOrTerminal shell);
             List<Models.ExternalTool> FindExternalTools();
@@ -135,7 +137,12 @@ namespace SourceGit.Native
 
         public static void SetupDataDir()
         {
-            DataDir = _backend.GetDataDir();
+            DataDir = DataDirectoryResolver.Resolve(
+                _backend.GetPortableDataDir(),
+                _backend.GetDataDir(),
+                _backend.GetLegacyDataDir(),
+                message => Debug.WriteLine(message));
+
             if (!Directory.Exists(DataDir))
                 Directory.CreateDirectory(DataDir);
         }

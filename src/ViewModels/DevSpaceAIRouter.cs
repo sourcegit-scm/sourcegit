@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-using SourceGit.AI.Routing;
+using DevBoard.AI.Routing;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public sealed class DevSpaceAIRouter : ObservableObject
     {

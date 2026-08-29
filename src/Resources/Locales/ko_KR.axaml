@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">정보</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">SourceGit 정보</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">DevBoard 정보</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">배포일: {0}</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">릴리스 노트</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">오픈소스 &amp; 무료 Git GUI 클라이언트</x:String>
@@ -26,7 +26,7 @@
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">재생성</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">AI를 사용하여 커밋 메시지 생성</x:String>
   <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">사용</x:String>
-  <x:String x:Key="Text.App.Hide" xml:space="preserve">SourceGit 숨기기</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">DevBoard 숨기기</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">다른 항목 숨기기</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">모두 보기</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3방향 병합</x:String>
@@ -46,7 +46,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">아카이브 파일 경로 선택</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">리비전:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">아카이브</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">암호 입력:</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">변경되지 않음으로 간주된 파일</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">변경되지 않음으로 간주된 파일 없음</x:String>
@@ -260,7 +260,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">정규식 그룹 값에 접근하려면 $1, $2를 사용하세요.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">선호하는 서비스:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">'선호하는 서비스'가 설정되면, SourceGit은 이 저장소에서 해당 서비스만 사용합니다. 그렇지 않고 사용 가능한 서비스가 두 개 이상인 경우, 하나를 선택할 수 있는 컨텍스트 메뉴가 표시됩니다.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">'선호하는 서비스'가 설정되면, DevBoard은 이 저장소에서 해당 서비스만 사용합니다. 그렇지 않고 사용 가능한 서비스가 두 개 이상인 경우, 하나를 선택할 수 있는 컨텍스트 메뉴가 표시됩니다.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">HTTP 프록시</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">이 저장소에서 사용하는 HTTP 프록시</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">사용자 이름</x:String>

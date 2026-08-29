@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class CheckoutBranchFromStash : Popup
     {

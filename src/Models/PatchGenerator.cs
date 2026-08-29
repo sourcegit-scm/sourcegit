@@ -1,7 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public partial class PatchGenerator
     {

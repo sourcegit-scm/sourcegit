@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +8,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     [SupportedOSPlatform("linux")]
     internal class Linux : OS.IBackend
@@ -35,20 +35,25 @@ namespace SourceGit.Native
             }
         }
 
-        public string GetDataDir()
+        public string GetPortableDataDir()
         {
-            // AppImage supports portable mode
             var appImage = Environment.GetEnvironmentVariable("APPIMAGE");
             if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))
-            {
-                var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");
-                if (Directory.Exists(portableDir))
-                    return portableDir;
-            }
+                return Path.Combine(Path.GetDirectoryName(appImage)!, "data");
 
-            // Runtime data dir: ~/.sourcegit
+            return string.Empty;
+        }
+
+        public string GetDataDir()
+        {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(home, ".sourcegit");
+            return Path.Combine(home, ".devboard");
+        }
+
+        public string GetLegacyDataDir()
+        {
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            return Path.Combine(home, ".sourcegit"); // legacy-migration
         }
 
         public string FindGitExecutable()

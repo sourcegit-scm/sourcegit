@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class About : ChromelessWindow
     {

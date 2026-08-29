@@ -14,8 +14,11 @@ test('Store workflow contains required build and submission contracts', async ()
     'node --test tests/store-msix-script.test.mjs',
     'node --test tests/store-assets.test.mjs',
     'node --test tests/store-workflow.test.mjs',
-    'dotnet publish src/SourceGit.csproj', 'actions/upload-artifact@v4', 'actions/download-artifact@v4',
+    'dotnet publish src/DevBoard.csproj', 'tests/DevBoard.Tests/DevBoard.Tests.csproj',
+    'actions/upload-artifact@v4', 'actions/download-artifact@v4',
   ]) assert.ok(workflow.includes(expected), `missing ${expected}`);
+  assert.equal(workflow.includes('src/SourceGit.csproj'), false);
+  assert.equal(workflow.includes('tests/SourceGit.Tests'), false);
   assert.match(workflow, /github\.ref_type == 'tag'/);
   assert.match(workflow, /endsWith\(github\.ref_name, '-store'\)/);
   assert.match(workflow, /windows-11-arm/);

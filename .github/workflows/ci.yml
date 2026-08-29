@@ -1,12 +1,22 @@
 name: Continuous Integration
 on:
   push:
-    branches: [develop]
+    branches: [master, develop]
   pull_request:
-    branches: [develop]
+    branches: [master, develop]
   workflow_dispatch:
   workflow_call:
 jobs:
+  identity:
+    name: DevBoard identity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+      - name: Verify DevBoard identity
+        run: |
+          node --test tests/devboard-identity.test.mjs
+          node scripts/check-devboard-identity.mjs
   build:
     name: Build
     uses: ./.github/workflows/build.yml

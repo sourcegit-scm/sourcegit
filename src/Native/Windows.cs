@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +12,7 @@ using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.Threading;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     [SupportedOSPlatform("windows")]
     internal class Windows : OS.IBackend
@@ -42,16 +42,24 @@ namespace SourceGit.Native
             window.Padding = new Thickness(0);
         }
 
-        public string GetDataDir()
+        public string GetPortableDataDir()
         {
             var execFile = Environment.ProcessPath;
-            var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");
-            if (Directory.Exists(portableDir))
-                return portableDir;
+            return Path.Combine(Path.GetDirectoryName(execFile)!, "data");
+        }
 
+        public string GetDataDir()
+        {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit");
+                "DevBoard");
+        }
+
+        public string GetLegacyDataDir()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit"); // legacy-migration
         }
 
         public string FindGitExecutable()

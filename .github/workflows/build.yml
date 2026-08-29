@@ -64,7 +64,7 @@ jobs:
       - name: Build
         run: dotnet build -c Release
       - name: Publish
-        run: dotnet publish src/SourceGit.csproj -c Release -o publish -r ${{ matrix.runtime }}
+        run: dotnet publish src/DevBoard.csproj -c Release -o publish -r ${{ matrix.runtime }}
       - name: Verify Windows terminal native payload
         if: startsWith(matrix.runtime, 'win-')
         shell: pwsh
@@ -88,15 +88,15 @@ jobs:
         run: test ! -d publish/native-terminal
       - name: Rename executable file
         if: startsWith(matrix.runtime, 'linux-')
-        run: mv publish/SourceGit publish/sourcegit
+        run: mv publish/DevBoard publish/devboard
       - name: Tar artifact
         if: startsWith(matrix.runtime, 'linux-') || startsWith(matrix.runtime, 'osx-')
         run: |
-          tar -cvf "sourcegit.${{ matrix.runtime }}.tar" -C publish .
+          tar -cvf "devboard.${{ matrix.runtime }}.tar" -C publish .
           rm -r publish/*
-          mv "sourcegit.${{ matrix.runtime }}.tar" publish
+          mv "devboard.${{ matrix.runtime }}.tar" publish
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: sourcegit.${{ matrix.runtime }}
+          name: devboard.${{ matrix.runtime }}
           path: publish/*

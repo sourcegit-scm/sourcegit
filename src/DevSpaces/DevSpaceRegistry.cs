@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Avalonia.Controls;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     public static class DevSpaceRegistry
     {

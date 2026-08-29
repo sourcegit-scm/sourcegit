@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -10,7 +10,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Platform;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
@@ -47,11 +47,23 @@ namespace SourceGit.Native
             window.BorderThickness = new Thickness(0);
         }
 
+        public string GetPortableDataDir()
+        {
+            return string.Empty;
+        }
+
         public string GetDataDir()
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "SourceGit");
+                "DevBoard");
+        }
+
+        public string GetLegacyDataDir()
+        {
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SourceGit"); // legacy-migration
         }
 
         public string FindGitExecutable()

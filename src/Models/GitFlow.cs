@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum GitFlowVersion
     {

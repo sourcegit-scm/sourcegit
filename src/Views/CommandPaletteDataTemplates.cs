@@ -1,7 +1,7 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class CommandPaletteDataTemplates : IDataTemplate
     {

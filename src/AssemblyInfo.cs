@@ -1,3 +1,3 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("SourceGit.Tests")]
+[assembly: InternalsVisibleTo("DevBoard.Tests")]

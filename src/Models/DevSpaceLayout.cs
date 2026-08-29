@@ -1,4 +1,4 @@
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum DevSpaceLayout
     {

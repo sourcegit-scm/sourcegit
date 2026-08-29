@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.Json;
@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace SourceGit
+namespace DevBoard
 {
     public class DateTimeConverter : JsonConverter<DateTime>
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace SourceGit.Native
+namespace DevBoard.Native
 {
     internal sealed class WindowsTerminalSubclass : IDisposable
     {

@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
-             x:Class="SourceGit.Views.DevSpaceFiles"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:v="using:DevBoard.Views"
+             x:Class="DevBoard.Views.DevSpaceFiles"
              x:DataType="vm:DevSpaceFiles">
   <Grid ColumnDefinitions="300,1,*">
     <Grid Grid.Column="0" RowDefinitions="38,*">

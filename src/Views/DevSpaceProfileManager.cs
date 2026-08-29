@@ -7,7 +7,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Platform.Storage;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public sealed class DevSpaceProfileManager : Window
     {
@@ -28,7 +28,7 @@ namespace SourceGit.Views
 
         private void BuildDefaultTerminalPicker()
         {
-            foreach (var choice in SourceGit.DevSpaces.DevSpaceProfileSettings.SupportedTerminals)
+            foreach (var choice in DevBoard.DevSpaces.DevSpaceProfileSettings.SupportedTerminals)
             {
                 var item = new ComboBoxItem
                 {
@@ -38,7 +38,7 @@ namespace SourceGit.Views
                 _defaultTerminal.Items.Add(item);
                 if (string.Equals(
                     choice.Value,
-                    SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.DefaultTerminal,
+                    DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.DefaultTerminal,
                     StringComparison.OrdinalIgnoreCase))
                 {
                     _defaultTerminal.SelectedItem = item;
@@ -51,7 +51,7 @@ namespace SourceGit.Views
 
         private void BuildIconPicker()
         {
-            foreach (var choice in SourceGit.DevSpaces.DevSpaceProfileSettings.ProfileIcons)
+            foreach (var choice in DevBoard.DevSpaces.DevSpaceProfileSettings.ProfileIcons)
             {
                 var icon = new Button
                 {
@@ -68,7 +68,7 @@ namespace SourceGit.Views
                 _iconPicker.Children.Add(icon);
             }
 
-            _icon.Text = SourceGit.DevSpaces.DevSpaceProfileSettings.DefaultProfileIcon;
+            _icon.Text = DevBoard.DevSpaces.DevSpaceProfileSettings.DefaultProfileIcon;
         }
 
         private void BuildContent()
@@ -204,13 +204,13 @@ namespace SourceGit.Views
 
         private void AddProfile()
         {
-            var profile = new SourceGit.DevSpaces.DevSpaceTerminalProfile
+            var profile = new DevBoard.DevSpaces.DevSpaceTerminalProfile
             {
                 Name = "New Profile",
                 Path = ".",
                 Command = string.Empty,
             };
-            SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Profiles.Add(profile);
+            DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.Profiles.Add(profile);
             RefreshProfiles(profile.Id);
         }
 
@@ -222,7 +222,7 @@ namespace SourceGit.Views
 
             var copy = source.Clone(createNewId: true);
             copy.Name += " Copy";
-            SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Profiles.Add(copy);
+            DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.Profiles.Add(copy);
             RefreshProfiles(copy.Id);
         }
 
@@ -232,7 +232,7 @@ namespace SourceGit.Views
             if (profile == null)
                 return;
 
-            SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Profiles.Remove(profile);
+            DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.Profiles.Remove(profile);
             RefreshProfiles();
         }
 
@@ -249,9 +249,9 @@ namespace SourceGit.Views
 
             try
             {
-                SourceGit.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
+                DevBoard.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
                 _icon.Text = profile.Icon;
-                SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Save();
+                DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.Save();
                 RefreshProfiles(profile.Id);
                 return true;
             }
@@ -268,9 +268,9 @@ namespace SourceGit.Views
                 return;
 
             if (_defaultTerminal.SelectedItem is ComboBoxItem { Tag: string terminal })
-                SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.DefaultTerminal = terminal;
+                DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.DefaultTerminal = terminal;
 
-            SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Save();
+            DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.Save();
             Close();
         }
 
@@ -292,7 +292,7 @@ namespace SourceGit.Views
                     return;
 
                 await using var stream = await file.OpenReadAsync();
-                await SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.ImportProfilesAsync(stream);
+                await DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.ImportProfilesAsync(stream);
                 RefreshProfiles();
             }
             catch (Exception ex)
@@ -320,7 +320,7 @@ namespace SourceGit.Views
 
                 await using var stream = await file.OpenWriteAsync();
                 stream.SetLength(0);
-                await SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.ExportProfilesAsync(stream);
+                await DevBoard.DevSpaces.DevSpaceProfileSettings.Instance.ExportProfilesAsync(stream);
             }
             catch (Exception ex)
             {
@@ -330,7 +330,7 @@ namespace SourceGit.Views
 
         private void RefreshProfiles(string selectedId = null)
         {
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
             _profiles.ItemsSource = null;
             _profiles.ItemsSource = settings.Profiles;
 
@@ -357,7 +357,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            _icon.Text = SourceGit.DevSpaces.DevSpaceProfileSettings.NormalizeProfileIcon(profile.Icon);
+            _icon.Text = DevBoard.DevSpaces.DevSpaceProfileSettings.NormalizeProfileIcon(profile.Icon);
             _name.Text = profile.Name;
             _path.Text = profile.Path;
             _command.Text = profile.Command;
@@ -365,7 +365,7 @@ namespace SourceGit.Views
 
         private void ClearEditor()
         {
-            _icon.Text = SourceGit.DevSpaces.DevSpaceProfileSettings.DefaultProfileIcon;
+            _icon.Text = DevBoard.DevSpaces.DevSpaceProfileSettings.DefaultProfileIcon;
             _name.Text = string.Empty;
             _path.Text = string.Empty;
             _command.Text = string.Empty;
@@ -376,8 +376,8 @@ namespace SourceGit.Views
             return new Alert().ShowAsync(this, message, true);
         }
 
-        private SourceGit.DevSpaces.DevSpaceTerminalProfile SelectedProfile =>
-            _profiles.SelectedItem as SourceGit.DevSpaces.DevSpaceTerminalProfile;
+        private DevBoard.DevSpaces.DevSpaceTerminalProfile SelectedProfile =>
+            _profiles.SelectedItem as DevBoard.DevSpaces.DevSpaceTerminalProfile;
 
         private readonly ComboBox _defaultTerminal = new()
         {

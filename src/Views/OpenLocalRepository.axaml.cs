@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO;
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class OpenLocalRepository : UserControl
     {

@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="using:SourceGit.Models"
+             xmlns:m="using:DevBoard.Models"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SourceGit.Views.FilterModeSwitchButton"
+             x:Class="DevBoard.Views.FilterModeSwitchButton"
              x:Name="ThisControl">
   <Button Classes="icon_button"
           Width="12" Height="12"

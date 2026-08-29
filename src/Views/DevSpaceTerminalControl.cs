@@ -7,7 +7,7 @@ using Avalonia.Rendering;
 
 using Iciclecreek.Terminal;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public sealed class DevSpaceTerminalView : TerminalView, ICustomHitTest
     {

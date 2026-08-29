@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 
@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class StashesPage : UserControl
     {

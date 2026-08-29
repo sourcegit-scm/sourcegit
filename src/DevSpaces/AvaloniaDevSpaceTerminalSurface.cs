@@ -9,7 +9,7 @@ using Avalonia.Media;
 
 using Iciclecreek.Terminal;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     internal sealed class AvaloniaDevSpaceTerminalSurface : IDevSpaceTerminalSurface
     {

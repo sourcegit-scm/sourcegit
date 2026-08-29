@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class DevSpaceDashboard : UserControl
     {
@@ -38,7 +38,7 @@ namespace SourceGit.Views
         {
             if (sender is Button { Tag: string command })
             {
-                var agent = SourceGit.DevSpaces.DevSpaceAgent.BuiltIn.FirstOrDefault(x => x.Command == command);
+                var agent = DevBoard.DevSpaces.DevSpaceAgent.BuiltIn.FirstOrDefault(x => x.Command == command);
                 if (agent != null)
                     Model?.StartAgent(agent);
             }
@@ -47,7 +47,7 @@ namespace SourceGit.Views
 
         private void OnStartProfile(object sender, RoutedEventArgs e)
         {
-            if (sender is Button { DataContext: SourceGit.DevSpaces.DevSpaceTerminalProfile profile })
+            if (sender is Button { DataContext: DevBoard.DevSpaces.DevSpaceTerminalProfile profile })
                 Model?.StartProfile(profile);
             e.Handled = true;
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -6,7 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Threading;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class CommitTimeTextBlock : TextBlock
     {

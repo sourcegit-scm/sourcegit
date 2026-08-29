@@ -1,8 +1,8 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class BinaryFileViewer : ObservableObject
     {

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=DevBoard
+Comment=Open-source & Free Git GUI Client
+Exec=devboard.sh
+Icon=io.github.devboard_scm.devboard
+Terminal=false
+Type=Application
+Categories=Development
+MimeType=inode/directory;

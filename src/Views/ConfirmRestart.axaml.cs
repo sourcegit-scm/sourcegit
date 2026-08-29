@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class ConfirmRestart : ChromelessWindow
     {

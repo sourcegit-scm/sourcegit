@@ -9,7 +9,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Threading;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class DevSpaces : UserControl, IDisposable
     {
@@ -304,11 +304,11 @@ namespace SourceGit.Views
         {
             if (_owner == null)
                 return;
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
             var flyout = new MenuFlyout();
-            var defaultName = SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal);
+            var defaultName = DevBoard.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal);
             flyout.Items.Add(CreateTerminalMenuItem($"New {defaultName}", settings.DefaultTerminal, defaultName, preferredSlot));
-            foreach (var agent in SourceGit.DevSpaces.DevSpaceAgent.BuiltIn)
+            foreach (var agent in DevBoard.DevSpaces.DevSpaceAgent.BuiltIn)
                 flyout.Items.Add(CreateAgentMenuItem(agent, preferredSlot));
             if (settings.Profiles.Count > 0)
             {
@@ -318,12 +318,12 @@ namespace SourceGit.Views
             }
             flyout.Items.Add(new Separator());
             var terminals = new MenuItem { Header = "Terminal" };
-            foreach (var choice in SourceGit.DevSpaces.DevSpaceProfileSettings.SupportedTerminals)
+            foreach (var choice in DevBoard.DevSpaces.DevSpaceProfileSettings.SupportedTerminals)
             {
                 terminals.Items.Add(CreateTerminalMenuItem(
                     choice.Name,
                     choice.Value,
-                    SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(choice.Value),
+                    DevBoard.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(choice.Value),
                     preferredSlot));
             }
             flyout.Items.Add(terminals);
@@ -338,7 +338,7 @@ namespace SourceGit.Views
             flyout.ShowAt(target);
         }
 
-        private MenuItem CreateAgentMenuItem(SourceGit.DevSpaces.DevSpaceAgent agent, int preferredSlot)
+        private MenuItem CreateAgentMenuItem(DevBoard.DevSpaces.DevSpaceAgent agent, int preferredSlot)
         {
             var item = new MenuItem { Header = agent.Name };
             item.Click += (_, e) =>
@@ -349,7 +349,7 @@ namespace SourceGit.Views
             return item;
         }
 
-        private MenuItem CreateProfileMenuItem(SourceGit.DevSpaces.DevSpaceTerminalProfile profile, int preferredSlot)
+        private MenuItem CreateProfileMenuItem(DevBoard.DevSpaces.DevSpaceTerminalProfile profile, int preferredSlot)
         {
             var path = string.IsNullOrWhiteSpace(profile.Path) ? "." : profile.Path;
             var item = new MenuItem { Header = $"{profile.DisplayName}  ·  {path}" };

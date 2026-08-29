@@ -3,7 +3,7 @@ using System;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public sealed class DevSpaceGridSlot
     {
@@ -19,7 +19,7 @@ namespace SourceGit.ViewModels
 
     public sealed class DevSpaces : ObservableObject, IDisposable
     {
-        public SourceGit.DevSpaces.IDevSpaceSessionLauncher Launcher { get; }
+        public DevBoard.DevSpaces.IDevSpaceSessionLauncher Launcher { get; }
         public DevSpaceFiles Files { get; }
         public DevSpaceDashboard Dashboard { get; }
         public AvaloniaList<DevSpaceTerminal> Sessions { get; } = [];
@@ -99,8 +99,8 @@ namespace SourceGit.ViewModels
 
         public DevSpaces(
             string workingDirectory,
-            SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null,
-            SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
+            DevBoard.DevSpaces.IDevSpaceSessionLauncher launcher = null,
+            DevBoard.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
             : this(null, workingDirectory, launcher, terminalRegistry)
         {
         }
@@ -108,12 +108,12 @@ namespace SourceGit.ViewModels
         public DevSpaces(
             Repository repository,
             string workingDirectory,
-            SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher = null,
-            SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
+            DevBoard.DevSpaces.IDevSpaceSessionLauncher launcher = null,
+            DevBoard.DevSpaces.Terminal.DevSpaceTerminalRegistry terminalRegistry = null)
         {
             _workingDirectory = workingDirectory;
-            _terminalRegistry = terminalRegistry ?? SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry.Instance;
-            Launcher = launcher ?? new SourceGit.DevSpaces.LocalDevSpaceSessionLauncher();
+            _terminalRegistry = terminalRegistry ?? DevBoard.DevSpaces.Terminal.DevSpaceTerminalRegistry.Instance;
+            Launcher = launcher ?? new DevBoard.DevSpaces.LocalDevSpaceSessionLauncher();
             Files = new DevSpaceFiles(workingDirectory);
             Dashboard = new DevSpaceDashboard(this, workingDirectory, repository);
 
@@ -156,9 +156,9 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateTerminalAt(int preferredSlot)
         {
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
             return CreateTerminalAt(preferredSlot, settings.DefaultTerminal,
-                SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal));
+                DevBoard.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal));
         }
 
         public DevSpaceTerminal CreateTerminalAt(int preferredSlot, string terminal, string displayName) =>
@@ -166,11 +166,11 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateTerminalAt(int preferredSlot, string terminal, string displayName, string workingDirectory, string startupCommand)
         {
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
             if (string.IsNullOrWhiteSpace(terminal))
                 terminal = settings.DefaultTerminal;
             if (string.IsNullOrWhiteSpace(displayName))
-                displayName = SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(terminal);
+                displayName = DevBoard.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(terminal);
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 workingDirectory = _workingDirectory;
 
@@ -193,17 +193,17 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateProfileTerminalAt(
             int preferredSlot,
-            SourceGit.DevSpaces.DevSpaceTerminalProfile profile,
+            DevBoard.DevSpaces.DevSpaceTerminalProfile profile,
             bool showProfileIcon = true)
         {
-            SourceGit.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
-            var workingDirectory = SourceGit.DevSpaces.DevSpaceProfileSettings.ResolveWorkingDirectory(_workingDirectory, profile.Path);
+            DevBoard.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
+            var workingDirectory = DevBoard.DevSpaces.DevSpaceProfileSettings.ResolveWorkingDirectory(_workingDirectory, profile.Path);
 
             if (string.Equals(profile.Command, "codex", StringComparison.OrdinalIgnoreCase))
-                SourceGit.DevSpaces.CodexWorkspaceTrust.EnsureTrusted(workingDirectory);
+                DevBoard.DevSpaces.CodexWorkspaceTrust.EnsureTrusted(workingDirectory);
             else if (string.Equals(profile.Command, "agy", StringComparison.OrdinalIgnoreCase))
-                SourceGit.DevSpaces.AntigravityWorkspaceTrust.EnsureTrusted(workingDirectory);
+                DevBoard.DevSpaces.AntigravityWorkspaceTrust.EnsureTrusted(workingDirectory);
 
             return CreateTerminalAt(
                 preferredSlot,
@@ -215,22 +215,22 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateCopilotTerminalAt(int preferredSlot)
         {
-            SourceGit.DevSpaces.CopilotWorkspaceTrust.EnsureTrusted(_workingDirectory);
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            DevBoard.DevSpaces.CopilotWorkspaceTrust.EnsureTrusted(_workingDirectory);
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
             return CreateTerminalAt(preferredSlot, settings.DefaultTerminal, "Copilot", _workingDirectory, "copilot");
         }
 
-        public DevSpaceTerminal CreateAgentTerminalAt(int preferredSlot, SourceGit.DevSpaces.DevSpaceAgent agent)
+        public DevSpaceTerminal CreateAgentTerminalAt(int preferredSlot, DevBoard.DevSpaces.DevSpaceAgent agent)
         {
             ArgumentNullException.ThrowIfNull(agent);
             if (string.Equals(agent.Command, "copilot", StringComparison.OrdinalIgnoreCase))
                 return CreateCopilotTerminalAt(preferredSlot);
             if (string.Equals(agent.Command, "codex", StringComparison.OrdinalIgnoreCase))
-                SourceGit.DevSpaces.CodexWorkspaceTrust.EnsureTrusted(_workingDirectory);
+                DevBoard.DevSpaces.CodexWorkspaceTrust.EnsureTrusted(_workingDirectory);
             else if (string.Equals(agent.Command, "agy", StringComparison.OrdinalIgnoreCase))
-                SourceGit.DevSpaces.AntigravityWorkspaceTrust.EnsureTrusted(_workingDirectory);
+                DevBoard.DevSpaces.AntigravityWorkspaceTrust.EnsureTrusted(_workingDirectory);
 
-            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            var settings = DevBoard.DevSpaces.DevSpaceProfileSettings.Instance;
             return CreateTerminalAt(preferredSlot, settings.DefaultTerminal, agent.Name, _workingDirectory, agent.Command);
         }
 
@@ -331,7 +331,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly string _workingDirectory;
-        private readonly SourceGit.DevSpaces.Terminal.DevSpaceTerminalRegistry _terminalRegistry;
+        private readonly DevBoard.DevSpaces.Terminal.DevSpaceTerminalRegistry _terminalRegistry;
         private DevSpaceTerminal _activeTerminal;
         private Models.DevSpaceLayout _layout;
         private Models.DevSpacePage _activePage = Models.DevSpacePage.Dashboard;

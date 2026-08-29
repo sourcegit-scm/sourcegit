@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     public readonly record struct DevSpaceLaunchSpec(
         string Process,

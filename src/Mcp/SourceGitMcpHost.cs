@@ -16,13 +16,13 @@ using Microsoft.Extensions.Logging;
 using ModelContextProtocol.AspNetCore;
 using ModelContextProtocol.Server;
 
-using SourceGit.DevSpaces.Terminal;
+using DevBoard.DevSpaces.Terminal;
 
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
-    public sealed class SourceGitMcpHost : IAsyncDisposable
+    public sealed class DevBoardMcpHost : IAsyncDisposable
     {
-        public SourceGitMcpHost(DevSpaceTerminalRegistry registry)
+        public DevBoardMcpHost(DevSpaceTerminalRegistry registry)
         {
             _registry = registry ?? throw new ArgumentNullException(nameof(registry));
         }
@@ -37,13 +37,13 @@ namespace SourceGit.Mcp
             ? string.Empty
             : $"{BaseAddress.TrimEnd('/')}/sse";
 
-        public static string GetBaseAddress(SourceGitMcpOptions options)
+        public static string GetBaseAddress(DevBoardMcpOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
             return $"http://127.0.0.1:{options.Port}";
         }
 
-        public static string GetSseEndpoint(SourceGitMcpOptions options)
+        public static string GetSseEndpoint(DevBoardMcpOptions options)
         {
             return $"{GetBaseAddress(options)}/sse";
         }
@@ -52,12 +52,12 @@ namespace SourceGit.Mcp
         {
             ArgumentNullException.ThrowIfNull(options);
             options.SessionMode = HttpServerSessionMode.Stateful;
-#pragma warning disable MCP9004 // Legacy SSE is intentionally required by the SourceGit MCP feature.
+#pragma warning disable MCP9004 // Legacy SSE is intentionally required by the DevBoard MCP feature.
             options.EnableLegacySse = true;
 #pragma warning restore MCP9004
         }
 
-        public static bool IsAuthorized(SourceGitMcpOptions options, string authorization)
+        public static bool IsAuthorized(DevBoardMcpOptions options, string authorization)
         {
             if (options == null || string.IsNullOrEmpty(options.AuthToken) || string.IsNullOrEmpty(authorization))
                 return false;
@@ -77,7 +77,7 @@ namespace SourceGit.Mcp
         }
 
         public async Task<bool> StartAsync(
-            SourceGitMcpOptions options,
+            DevBoardMcpOptions options,
             CancellationToken cancellationToken = default)
         {
             ArgumentNullException.ThrowIfNull(options);
@@ -110,7 +110,7 @@ namespace SourceGit.Mcp
                     return false;
                 }
 
-                var requestLimiter = new SourceGitMcpRequestLimiter(options.MaxConcurrentToolCalls);
+                var requestLimiter = new DevBoardMcpRequestLimiter(options.MaxConcurrentToolCalls);
                 var builder = WebApplication.CreateSlimBuilder();
                 builder.Logging.ClearProviders();
                 builder.WebHost.UseSetting(WebHostDefaults.PreventHostingStartupKey, "true");
@@ -121,7 +121,7 @@ namespace SourceGit.Mcp
                 builder.Services
                     .AddMcpServer()
                     .WithHttpTransport(ConfigureTransport)
-                    .WithTools<SourceGitMcpTools>();
+                    .WithTools<DevBoardMcpTools>();
 
                 app = builder.Build();
                 app.Use(async (context, next) =>
@@ -186,7 +186,7 @@ namespace SourceGit.Mcp
                     }
                     catch
                     {
-                        // A failed optional MCP host must never bring down SourceGit.
+                        // A failed optional MCP host must never bring down DevBoard.
                     }
                 }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -11,7 +11,7 @@ using BitMiracle.LibTiff.Classic;
 using Pfim;
 using StbImageSharp;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class ImageSource
     {

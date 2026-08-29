@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 using Avalonia.Controls;
@@ -6,7 +6,7 @@ using Avalonia.Input;
 using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class BranchOrTagNameTextBox : TextBox
     {

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class ShellOrTerminal
     {
@@ -17,7 +17,7 @@ namespace SourceGit.Models
         {
             get
             {
-                var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/ShellIcons/{Type}.png", UriKind.RelativeOrAbsolute));
+                var icon = AssetLoader.Open(new Uri($"avares://DevBoard/Resources/Images/ShellIcons/{Type}.png", UriKind.RelativeOrAbsolute));
                 return new Bitmap(icon);
             }
         }

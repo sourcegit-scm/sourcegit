@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace SourceGit.Converters
+namespace DevBoard.Converters
 {
     public static class ObjectConverters
     {

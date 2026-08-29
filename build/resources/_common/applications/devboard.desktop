@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=DevBoard
+Comment=Open-source & Free Git GUI Client
+Exec=/opt/devboard/devboard %u
+Icon=/usr/share/icons/devboard.png
+Terminal=false
+Type=Application
+Categories=Development
+MimeType=inode/directory;

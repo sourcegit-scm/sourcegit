@@ -4,7 +4,7 @@ using System.Text.Json;
 
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class CommitMessageEditor : ChromelessWindow
     {
@@ -24,7 +24,7 @@ namespace SourceGit.Views
             var gitDir = new Commands.QueryGitDir(Path.GetDirectoryName(file)).GetResult();
             if (!string.IsNullOrEmpty(gitDir))
             {
-                var settingsFile = Path.Combine(gitDir, "sourcegit.settings");
+                var settingsFile = Path.Combine(gitDir, "devboard.settings");
                 if (File.Exists(settingsFile))
                 {
                     try

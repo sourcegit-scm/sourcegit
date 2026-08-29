@@ -1,2 +1,2 @@
-Remove-Item -Path build\SourceGit\*.pdb -Force
-Compress-Archive -Path build\SourceGit -DestinationPath "build\sourcegit_${env:VERSION}.${env:RUNTIME}.zip" -Force
+Remove-Item -Path build\DevBoard\*.pdb -Force
+Compress-Archive -Path build\DevBoard -DestinationPath "build\devboard_${env:VERSION}.${env:RUNTIME}.zip" -Force

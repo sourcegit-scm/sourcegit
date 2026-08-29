@@ -1,4 +1,4 @@
-Package: sourcegit
+Package: devboard
 Version: 2025.10
 Priority: optional
 Depends: libx11-6, libice6, libsm6, @ICU_DEPS@, xdg-utils

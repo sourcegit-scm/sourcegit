@@ -10,7 +10,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class InteractiveRebaseListBox : ListBox
     {
@@ -509,6 +509,6 @@ namespace SourceGit.Views
         }
 
         private bool _firstSelectionChangedHandled;
-        private readonly DataFormat<string> _dndItemFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-ir-item");
+        private readonly DataFormat<string> _dndItemFormat = DataFormat.CreateStringApplicationFormat("devboard-dnd-ir-item");
     }
 }

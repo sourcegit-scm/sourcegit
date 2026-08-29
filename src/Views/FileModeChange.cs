@@ -1,10 +1,10 @@
-﻿using System.Globalization;
+using System.Globalization;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class FileModeChange : Control
     {

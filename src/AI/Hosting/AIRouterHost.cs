@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
-using SourceGit.AI.Routing;
+using DevBoard.AI.Routing;
 
-namespace SourceGit.AI.Hosting;
+namespace DevBoard.AI.Hosting;
 
 public static class AIRouterHost
 {
@@ -24,7 +24,7 @@ public static class AIRouterHost
 
         app.MapGet("/health", () => Results.Text("{\"status\":\"ok\"}", "application/json"));
         app.MapGet("/v1/models", () => Results.Text(
-            "{\"object\":\"list\",\"data\":[{\"id\":\"all\",\"object\":\"model\",\"owned_by\":\"sourcegit\"}]}",
+            "{\"object\":\"list\",\"data\":[{\"id\":\"all\",\"object\":\"model\",\"owned_by\":\"devboard\"}]}",
             "application/json"));
 
         app.MapPost(AIRouterApi.ChatCompletionsPath, context => ForwardAsync(context, router, options));

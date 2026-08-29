@@ -5,11 +5,11 @@ using System.Text.Json;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
-    public sealed class SourceGitMcpSettings : ObservableObject
+    public sealed class DevBoardMcpSettings : ObservableObject
     {
-        public static SourceGitMcpSettings Instance
+        public static DevBoardMcpSettings Instance
         {
             get
             {
@@ -111,10 +111,10 @@ namespace SourceGit.Mcp
                 OnPropertyChanged(nameof(RuntimeError));
         }
 
-        private static SourceGitMcpSettings Load()
+        private static DevBoardMcpSettings Load()
         {
             var path = GetStoragePath();
-            var settings = new SourceGitMcpSettings();
+            var settings = new DevBoardMcpSettings();
 
             try
             {
@@ -151,7 +151,7 @@ namespace SourceGit.Mcp
             settings._storagePath = path;
 
             if (settings._port is < 1 or > 65535)
-                settings._port = SourceGitMcpOptions.DefaultPort;
+                settings._port = DevBoardMcpOptions.DefaultPort;
 
             if (settings._enabled && string.IsNullOrWhiteSpace(settings._authToken))
             {
@@ -241,10 +241,10 @@ namespace SourceGit.Mcp
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
         }
 
-        private static SourceGitMcpSettings _instance;
+        private static DevBoardMcpSettings _instance;
 
         private bool _enabled;
-        private int _port = SourceGitMcpOptions.DefaultPort;
+        private int _port = DevBoardMcpOptions.DefaultPort;
         private bool _shareDevSpaceTerminalOutput = true;
         private string _authToken = string.Empty;
         private string _storagePath = string.Empty;

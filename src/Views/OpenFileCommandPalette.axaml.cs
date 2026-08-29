@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class OpenFileCommandPalette : UserControl
     {

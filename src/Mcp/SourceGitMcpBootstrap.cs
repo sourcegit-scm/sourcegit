@@ -4,9 +4,9 @@ using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
-    internal static class SourceGitMcpBootstrap
+    internal static class DevBoardMcpBootstrap
     {
         [ModuleInitializer]
         public static void Initialize()
@@ -17,18 +17,18 @@ namespace SourceGit.Mcp
 
         private static void OnLauncherLoaded(Views.Launcher view, RoutedEventArgs e)
         {
-            SourceGitMcpService.Initialize(SourceGitMcpSettings.Instance);
+            DevBoardMcpService.Initialize(DevBoardMcpSettings.Instance);
         }
 
         private static void OnProcessExit(object sender, EventArgs e)
         {
             try
             {
-                SourceGitMcpService.ShutdownAsync().GetAwaiter().GetResult();
+                DevBoardMcpService.ShutdownAsync().GetAwaiter().GetResult();
             }
             catch
             {
-                // MCP is optional and must never block SourceGit process shutdown.
+                // MCP is optional and must never block DevBoard process shutdown.
             }
         }
     }

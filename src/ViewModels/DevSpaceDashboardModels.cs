@@ -1,6 +1,6 @@
 using System;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public enum DevSpaceCapabilityState
     {

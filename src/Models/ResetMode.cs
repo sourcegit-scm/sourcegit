@@ -1,6 +1,6 @@
-﻿using Avalonia.Media;
+using Avalonia.Media;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class ResetMode(string n, string d, string a, string k, IBrush b)
     {

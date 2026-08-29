@@ -1,10 +1,10 @@
 # Microsoft Store publishing
 
-Dev Board has an isolated Microsoft Store pipeline in `.github/workflows/store-msix.yml`. It builds Store-targeted MSIX packages for Windows x64 and ARM64 without changing the normal SourceGit/Dev Board release workflows.
+DevBoard has an isolated Microsoft Store pipeline in `.github/workflows/store-msix.yml`. It builds Store-targeted MSIX packages for Windows x64 and ARM64 without changing the normal DevBoard release workflows.
 
 ## Partner Center product reservation
 
-Reserve **Dev Board** in Microsoft Partner Center before configuring the repository. After the product exists, open its product identity page and copy the exact identity values shown by Partner Center.
+Reserve **DevBoard** in Microsoft Partner Center before configuring the repository. After the product exists, open its product identity page and copy the exact identity values shown by Partner Center.
 
 ## Product identity values
 
@@ -35,7 +35,7 @@ A manual run performs these steps:
 
 1. Validates Store identity and resolves a three-part version.
 2. Runs Store contract tests.
-3. Publishes Dev Board for `win-x64` and `win-arm64` using the Release NativeAOT path.
+3. Publishes DevBoard for `win-x64` and `win-arm64` using the Release NativeAOT path.
 4. Packages the complete publish directories as unsigned MSIX files.
 5. Verifies that both architecture packages exist.
 6. Uploads the packages as workflow artifacts.
@@ -77,7 +77,7 @@ Store packages produced by this repository are intentionally **unsigned**. Micro
 A package can be produced on a Windows machine with the Windows SDK installed:
 
 ```powershell
-dotnet publish src/SourceGit.csproj -c Release -r win-x64 -o store/publish/win-x64
+dotnet publish src/DevBoard.csproj -c Release -r win-x64 -o store/publish/win-x64
 ./scripts/validate-store-assets.ps1
 ./scripts/build-store-msix.ps1 `
   -PackageName 'TEST.IDENTITY' `
@@ -102,4 +102,4 @@ Use real Partner Center identity values for a package intended for Store ingesti
 
 ## License attribution
 
-Dev Board is based on SourceGit and remains distributed under the MIT License. Keep the upstream license/copyright notice and the repository's third-party license notices in distributed copies.
+DevBoard is based on [SourceGit](https://github.com/sourcegit-scm/sourcegit) and remains distributed under the MIT License. Keep the upstream license/copyright notice and the repository's third-party license notices in distributed copies.

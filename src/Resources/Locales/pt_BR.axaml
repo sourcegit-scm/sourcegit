@@ -1,10 +1,10 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+    <ResourceInclude Source="avares://DevBoard/Resources/Locales/en_US.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <x:String x:Key="Text.About" xml:space="preserve">Sobre</x:String>
-  <x:String x:Key="Text.About.Menu" xml:space="preserve">Sobre o SourceGit</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Sobre o DevBoard</x:String>
   <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Data de Lançamento</x:String>
   <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Notas de Lançamento</x:String>
   <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Cliente Git GUI Livre e de Código Aberto</x:String>
@@ -25,7 +25,7 @@
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">Gerar novamente</x:String>
   <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilizar IA para gerar mensagem de commit</x:String>
-  <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder SourceGit</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Esconder DevBoard</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostrar Todos</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Selecione o arquivo .patch para aplicar</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignorar mudanças de espaço em branco</x:String>
@@ -40,7 +40,7 @@
   <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Selecione o caminho do arquivo de arquivo</x:String>
   <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revisão:</x:String>
   <x:String x:Key="Text.Archive.Title" xml:space="preserve">Arquivar</x:String>
-  <x:String x:Key="Text.Askpass" xml:space="preserve">SourceGit Askpass</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">DevBoard Askpass</x:String>
   <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Entre com a senha</x:String>
   <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">ARQUIVOS CONSIDERADOS SEM ALTERAÇÕES</x:String>
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">NENHUM ARQUIVO CONSIDERADO SEM ALTERAÇÕES</x:String>
@@ -168,7 +168,7 @@
   <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Por favor, use $1, $2 para acessar os valores de grupos do regex.</x:String>
   <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">IA</x:String>
   <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Serviço desejado:</x:String>
-  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Se o 'Serviço desejado' for definido, SourceGit usará ele neste Repositório. Senão, caso haja mais de um serviço disponível, será exibido um menu para seleção.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Se o 'Serviço desejado' for definido, DevBoard usará ele neste Repositório. Senão, caso haja mais de um serviço disponível, será exibido um menu para seleção.</x:String>
   <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Proxy HTTP</x:String>
   <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Proxy HTTP usado por este repositório</x:String>
   <x:String x:Key="Text.Configure.User" xml:space="preserve">Nome de Usuário</x:String>

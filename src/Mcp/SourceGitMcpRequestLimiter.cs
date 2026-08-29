@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
 
-namespace SourceGit.Mcp
+namespace DevBoard.Mcp
 {
-    public sealed class SourceGitMcpRequestLimiter
+    public sealed class DevBoardMcpRequestLimiter
     {
-        public SourceGitMcpRequestLimiter(int limit)
+        public DevBoardMcpRequestLimiter(int limit)
         {
             if (limit <= 0)
                 throw new ArgumentOutOfRangeException(nameof(limit));
@@ -33,7 +33,7 @@ namespace SourceGit.Mcp
 
         private sealed class Lease : IDisposable
         {
-            public Lease(SourceGitMcpRequestLimiter owner)
+            public Lease(DevBoardMcpRequestLimiter owner)
             {
                 _owner = owner;
             }
@@ -43,7 +43,7 @@ namespace SourceGit.Mcp
                 Interlocked.Exchange(ref _owner, null)?.Release();
             }
 
-            private SourceGitMcpRequestLimiter _owner;
+            private DevBoardMcpRequestLimiter _owner;
         }
 
         private readonly int _limit;

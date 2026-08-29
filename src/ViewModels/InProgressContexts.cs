@@ -1,7 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public abstract class InProgressContext
     {
@@ -163,7 +163,7 @@ namespace SourceGit.ViewModels
             if (Directory.Exists(rebaseApplyDir))
                 Directory.Delete(rebaseApplyDir, true);
 
-            var jobFile = Path.Combine(_gitDir, "sourcegit.interactive_rebase");
+            var jobFile = Path.Combine(_gitDir, "devboard.interactive_rebase");
             if (File.Exists(jobFile))
                 File.Delete(jobFile);
         }

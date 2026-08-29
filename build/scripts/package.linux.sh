@@ -35,30 +35,30 @@ if [[ ! -f "appimagetool" ]]; then
     chmod +x appimagetool
 fi
 
-rm -f SourceGit/*.dbg
-rm -f SourceGit/*.pdb
+rm -f DevBoard/*.dbg
+rm -f DevBoard/*.pdb
 
-mkdir -p SourceGit.AppDir/opt
-mkdir -p SourceGit.AppDir/usr/share/metainfo
-mkdir -p SourceGit.AppDir/usr/share/applications
+mkdir -p DevBoard.AppDir/opt
+mkdir -p DevBoard.AppDir/usr/share/metainfo
+mkdir -p DevBoard.AppDir/usr/share/applications
 
-cp -r SourceGit SourceGit.AppDir/opt/sourcegit
-desktop-file-install resources/_common/applications/sourcegit.desktop --dir SourceGit.AppDir/usr/share/applications \
-    --set-icon com.sourcegit_scm.SourceGit --set-key=Exec --set-value=AppRun
-mv SourceGit.AppDir/usr/share/applications/{sourcegit,com.sourcegit_scm.SourceGit}.desktop
-cp resources/_common/icons/sourcegit.png SourceGit.AppDir/com.sourcegit_scm.SourceGit.png
-ln -rsf SourceGit.AppDir/opt/sourcegit/sourcegit SourceGit.AppDir/AppRun
-ln -rsf SourceGit.AppDir/usr/share/applications/com.sourcegit_scm.SourceGit.desktop SourceGit.AppDir
-cp resources/appimage/sourcegit.appdata.xml SourceGit.AppDir/usr/share/metainfo/com.sourcegit_scm.SourceGit.appdata.xml
+cp -r DevBoard DevBoard.AppDir/opt/devboard
+desktop-file-install resources/_common/applications/devboard.desktop --dir DevBoard.AppDir/usr/share/applications \
+    --set-icon com.devboard_scm.DevBoard --set-key=Exec --set-value=AppRun
+mv DevBoard.AppDir/usr/share/applications/{devboard,com.devboard_scm.DevBoard}.desktop
+cp resources/_common/icons/devboard.png DevBoard.AppDir/com.devboard_scm.DevBoard.png
+ln -rsf DevBoard.AppDir/opt/devboard/devboard DevBoard.AppDir/AppRun
+ln -rsf DevBoard.AppDir/usr/share/applications/com.devboard_scm.DevBoard.desktop DevBoard.AppDir
+cp resources/appimage/devboard.appdata.xml DevBoard.AppDir/usr/share/metainfo/com.devboard_scm.DevBoard.appdata.xml
 
-ARCH="$appimage_arch" ./appimagetool -v SourceGit.AppDir "sourcegit-$VERSION.linux.$arch.AppImage"
+ARCH="$appimage_arch" ./appimagetool -v DevBoard.AppDir "devboard-$VERSION.linux.$arch.AppImage"
 
-mkdir -p resources/deb/opt/sourcegit/
+mkdir -p resources/deb/opt/devboard/
 mkdir -p resources/deb/usr/bin
 mkdir -p resources/deb/usr/share/applications
 mkdir -p resources/deb/usr/share/icons
-cp -f SourceGit/* resources/deb/opt/sourcegit
-ln -rsf resources/deb/opt/sourcegit/sourcegit resources/deb/usr/bin
+cp -a DevBoard/. resources/deb/opt/devboard/
+ln -rsf resources/deb/opt/devboard/devboard resources/deb/usr/bin
 cp -r resources/_common/applications resources/deb/usr/share
 cp -r resources/_common/icons resources/deb/usr/share
 
@@ -80,7 +80,7 @@ sed -i -e "s/^Version:.*/Version: $VERSION/" \
     resources/deb/DEBIAN/control
 
 # Build deb package with gzip compression
-dpkg-deb -Zgzip --root-owner-group --build resources/deb "sourcegit_$VERSION-1_$arch.deb"
+dpkg-deb -Zgzip --root-owner-group --build resources/deb "devboard_$VERSION-1_$arch.deb"
 
 rpmbuild -bb --target="$target" resources/rpm/SPECS/build.spec --define "_topdir $(pwd)/resources/rpm" --define "_version $VERSION"
-mv "resources/rpm/RPMS/$target/sourcegit-$VERSION-1.$target.rpm" ./
+mv "resources/rpm/RPMS/$target/devboard-$VERSION-1.$target.rpm" ./

@@ -1,4 +1,4 @@
-﻿namespace SourceGit.Commands
+namespace DevBoard.Commands
 {
     public class Reset : Command
     {

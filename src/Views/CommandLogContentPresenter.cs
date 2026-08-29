@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Avalonia;
@@ -11,7 +11,7 @@ using AvaloniaEdit.Editing;
 using AvaloniaEdit.Rendering;
 using AvaloniaEdit.TextMate;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class CommandLogContentPresenter : TextEditor, Models.ICommandLogReceiver
     {

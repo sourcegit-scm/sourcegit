@@ -15,9 +15,9 @@ set -e
 
 case "$1" in
     remove|upgrade|deconfigure)
-        if pgrep -f '/opt/sourcegit/sourcegit' > /dev/null; then
-            echo "Stopping running SourceGit instance..."
-            pkill -f '/opt/sourcegit/sourcegit' || true
+        if pgrep -f '/opt/devboard/devboard' > /dev/null; then
+            echo "Stopping running DevBoard instance..."
+            pkill -f '/opt/devboard/devboard' || true
             # Give the process a moment to terminate
             sleep 1
         fi

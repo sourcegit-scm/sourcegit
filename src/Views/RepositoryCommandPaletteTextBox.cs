@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public class RepositoryCommandPaletteTextBox : TextBox
     {

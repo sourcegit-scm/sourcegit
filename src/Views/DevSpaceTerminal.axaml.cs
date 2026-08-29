@@ -5,7 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Threading;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class DevSpaceTerminal : UserControl, IDisposable
     {
@@ -14,7 +14,7 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        public void Start(SourceGit.DevSpaces.IDevSpaceSessionLauncher launcher)
+        public void Start(DevBoard.DevSpaces.IDevSpaceSessionLauncher launcher)
         {
             if (_started || DataContext is not ViewModels.DevSpaceTerminal session)
                 return;
@@ -71,16 +71,16 @@ namespace SourceGit.Views
             Stop();
         }
 
-        private SourceGit.DevSpaces.IDevSpaceTerminalSurface CreatePreferredSurface(
+        private DevBoard.DevSpaces.IDevSpaceTerminalSurface CreatePreferredSurface(
             ViewModels.DevSpaceTerminal session)
         {
             if (Native.WindowsTerminal.IsSupported)
-                return new SourceGit.DevSpaces.WindowsTerminalDevSpaceSurface(session.Transcript);
+                return new DevBoard.DevSpaces.WindowsTerminalDevSpaceSurface(session.Transcript);
 
             return CreateFallbackSurface();
         }
 
-        private SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface CreateFallbackSurface()
+        private DevBoard.DevSpaces.AvaloniaDevSpaceTerminalSurface CreateFallbackSurface()
         {
             if (!Resources.TryGetValue("DevSpaces.FallbackTerminalTemplate", out var resource) ||
                 resource is not IControlTemplate template)
@@ -88,10 +88,10 @@ namespace SourceGit.Views
                 throw new InvalidOperationException("DevSpaces fallback terminal template was not found.");
             }
 
-            return new SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface(template, FontFamily);
+            return new DevBoard.DevSpaces.AvaloniaDevSpaceTerminalSurface(template, FontFamily);
         }
 
-        private void AttachSurface(SourceGit.DevSpaces.IDevSpaceTerminalSurface surface)
+        private void AttachSurface(DevBoard.DevSpaces.IDevSpaceTerminalSurface surface)
         {
             _surface = surface;
             surface.Exited += OnSurfaceExited;
@@ -100,8 +100,8 @@ namespace SourceGit.Views
         }
 
         private async Task StartSurfaceAsync(
-            SourceGit.DevSpaces.IDevSpaceTerminalSurface surface,
-            SourceGit.DevSpaces.DevSpaceLaunchSpec spec,
+            DevBoard.DevSpaces.IDevSpaceTerminalSurface surface,
+            DevBoard.DevSpaces.DevSpaceLaunchSpec spec,
             ViewModels.DevSpaceTerminal session)
         {
             try
@@ -113,7 +113,7 @@ namespace SourceGit.Views
                 if (_stopped || !ReferenceEquals(_surface, surface))
                     return;
 
-                if (surface is SourceGit.DevSpaces.WindowsTerminalDevSpaceSurface)
+                if (surface is DevBoard.DevSpaces.WindowsTerminalDevSpaceSurface)
                 {
                     await TryFallbackAsync(surface, spec, session, ex);
                     return;
@@ -128,12 +128,12 @@ namespace SourceGit.Views
         }
 
         private async Task TryFallbackAsync(
-            SourceGit.DevSpaces.IDevSpaceTerminalSurface failedSurface,
-            SourceGit.DevSpaces.DevSpaceLaunchSpec spec,
+            DevBoard.DevSpaces.IDevSpaceTerminalSurface failedSurface,
+            DevBoard.DevSpaces.DevSpaceLaunchSpec spec,
             ViewModels.DevSpaceTerminal session,
             Exception nativeError)
         {
-            SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface fallback;
+            DevBoard.DevSpaces.AvaloniaDevSpaceTerminalSurface fallback;
             try
             {
                 fallback = CreateFallbackSurface();
@@ -178,7 +178,7 @@ namespace SourceGit.Views
             Stop();
         }
 
-        private void OnSurfaceExited(object sender, SourceGit.DevSpaces.DevSpaceTerminalExitedEventArgs e)
+        private void OnSurfaceExited(object sender, DevBoard.DevSpaces.DevSpaceTerminalExitedEventArgs e)
         {
             Dispatcher.UIThread.Post(() =>
             {
@@ -187,7 +187,7 @@ namespace SourceGit.Views
             });
         }
 
-        private SourceGit.DevSpaces.IDevSpaceTerminalSurface _surface;
+        private DevBoard.DevSpaces.IDevSpaceTerminalSurface _surface;
         private bool _started;
         private bool _stopped;
         private bool _pageActive;

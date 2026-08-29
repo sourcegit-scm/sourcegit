@@ -9,7 +9,7 @@ using Avalonia.Controls;
 using Avalonia.Platform;
 using Avalonia.Threading;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     internal sealed class WindowsTerminalNativeHost : NativeControlHost
     {

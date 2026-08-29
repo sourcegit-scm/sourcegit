@@ -1,8 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:SourceGit.ViewModels"
-             xmlns:v="using:SourceGit.Views"
-             x:Class="SourceGit.Views.DevSpaces"
+             xmlns:vm="using:DevBoard.ViewModels"
+             xmlns:v="using:DevBoard.Views"
+             x:Class="DevBoard.Views.DevSpaces"
              x:DataType="vm:DevSpaces">
   <Grid RowDefinitions="36,*">
     <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.ToolBar}">

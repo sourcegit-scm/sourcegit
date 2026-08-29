@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public class RepositoryCommandPaletteCmd
     {

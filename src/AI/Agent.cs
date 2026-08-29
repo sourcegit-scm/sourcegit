@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenAI.Chat;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     public class Agent
     {

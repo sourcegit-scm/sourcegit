@@ -1,12 +1,12 @@
 using System;
 
-namespace SourceGit.AI.Hosting;
+namespace DevBoard.AI.Hosting;
 
 public sealed class AIRouterHostOptions
 {
     public bool Enabled { get; set; } = true;
     public string ListenUrl { get; set; } = "http://127.0.0.1:11435";
-    public string ApiKey { get; set; } = "sourcegit-local";
+    public string ApiKey { get; set; } = "devboard-local";
 
     public void Validate()
     {

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     public static class Options
     {

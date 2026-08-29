@@ -13,7 +13,7 @@ test('storeVersionFromTag accepts strict Store tags', () => {
   assert.throws(() => storeVersionFromTag('1.2.3-store'), /vX\.Y\.Z-store/);
 });
 
-test('selectStorePackages requires x64 and arm64 Dev Board packages', () => {
+test('selectStorePackages requires x64 and arm64 DevBoard packages', () => {
   assert.deepEqual(
     selectStorePackages(['notes.txt','DevBoard_1.2.3_arm64.msix','DevBoard_1.2.3_x64.msix'], '1.2.3'),
     ['DevBoard_1.2.3_x64.msix','DevBoard_1.2.3_arm64.msix'],

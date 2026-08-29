@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform;
 
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class Launcher : ChromelessWindow
     {
@@ -432,7 +432,7 @@ namespace SourceGit.Views
             }
 
             var menu = new NativeMenu();
-            var open = new NativeMenuItem("Open SourceGit");
+            var open = new NativeMenuItem("Open DevBoard");
             open.Click += (_, _) => BringToTop();
             menu.Items.Add(open);
             menu.Items.Add(new NativeMenuItemSeparator());
@@ -447,8 +447,8 @@ namespace SourceGit.Views
 
             _trayIcon = new TrayIcon
             {
-                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://SourceGit/App.ico"))),
-                ToolTipText = "SourceGit",
+                Icon = new WindowIcon(AssetLoader.Open(new Uri("avares://DevBoard/App.ico"))),
+                ToolTipText = "DevBoard",
                 Menu = menu,
                 IsVisible = true,
             };

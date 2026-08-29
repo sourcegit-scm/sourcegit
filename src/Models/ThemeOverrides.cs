@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Avalonia.Media;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class ThemeOverrides
     {

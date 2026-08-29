@@ -1,0 +1,136 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>DevBoard</AssemblyName>
+    <RootNamespace>DevBoard</RootNamespace>
+    <ApplicationManifest>App.manifest</ApplicationManifest>
+    <ApplicationIcon>App.ico</ApplicationIcon>
+    <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\..\VERSION"))</Version>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+
+    <Product>DevBoard</Product>
+    <Description>Open-source developer workspace for Git, terminals, files, worktrees, and AI-assisted development</Description>
+    <Company>DevBoard</Company>
+    <Copyright>Copyright © $([System.DateTime]::Now.Year) DevBoard contributors.</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dhhieu113pro/dev-board.git</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dhhieu113pro/dev-board.git</RepositoryUrl>
+    <RepositoryType>Public</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(DisableAOT)' != 'true'">
+    <PublishAot>true</PublishAot>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>link</TrimMode>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(DisableUpdateDetection)' == 'true'">
+    <DefineConstants>$(DefineConstants);DISABLE_UPDATE_DETECTION</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="BuildDate" Value="$([System.DateTime]::Now.ToString('o'))" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="App.ico" />
+    <AvaloniaResource Include="Resources/Fonts/*" />
+    <AvaloniaResource Include="Resources/Grammars/*" />
+    <AvaloniaResource Include="Resources/Images/*" />
+    <AvaloniaResource Include="Resources/Images/ExternalToolIcons/*" />
+    <AvaloniaResource Include="Resources/Images/ExternalToolIcons/JetBrains/*" />
+    <AvaloniaResource Include="Resources/Images/ShellIcons/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.20" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.20" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="2.9.0-beta.1" />
+    <PackageReference Include="BitMiracle.LibTiff.NET" Version="2.4.660" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Iciclecreek.Avalonia.Terminal" Version="1.0.12" />
+    <PackageReference Include="LLamaSharp" Version="0.27.0" />
+    <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.27.0" />
+    <PackageReference Include="ModelContextProtocol.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="OpenAI" Version="2.10.0" />
+    <PackageReference Include="Pfim" Version="0.11.4" />
+    <PackageReference Include="Porta.Pty" Version="1.0.7" />
+    <PackageReference Include="StbImageSharp" Version="2.30.15" />
+
+    <ProjectReference Include="../depends/AvaloniaEdit/src/AvaloniaEdit.TextMate/AvaloniaEdit.TextMate.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows')) And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'win-x64')">
+    <PackageReference Include="LLamaSharp.Backend.Vulkan.Windows" Version="0.27.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Linux')) And ('$(RuntimeIdentifier)' == '' Or '$(RuntimeIdentifier)' == 'linux-x64')">
+    <PackageReference Include="LLamaSharp.Backend.Vulkan.Linux" Version="0.27.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <PackageDownload Include="CI.Microsoft.Terminal.Wpf" Version="[1.25.260303002]" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="DevBoard" />
+    <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
+
+  <Target Name="StageWindowsTerminalNativeForDevelopment"
+          AfterTargets="Build"
+          Condition="$([MSBuild]::IsOSPlatform('Windows')) And '$(RuntimeIdentifier)' == ''">
+    <PropertyGroup>
+      <WindowsTerminalPackageRoot>$(NuGetPackageRoot)ci.microsoft.terminal.wpf\1.25.260303002</WindowsTerminalPackageRoot>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(TargetDir)native-terminal\win-x64;$(TargetDir)native-terminal\win-arm64" />
+    <Copy SourceFiles="$(WindowsTerminalPackageRoot)\runtimes\win-x64\native\Microsoft.Terminal.Control.dll"
+          DestinationFolder="$(TargetDir)native-terminal\win-x64"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(WindowsTerminalPackageRoot)\runtimes\win-arm64\native\Microsoft.Terminal.Control.dll"
+          DestinationFolder="$(TargetDir)native-terminal\win-arm64"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="StageWindowsTerminalNativeForPublish"
+          AfterTargets="Publish"
+          Condition="$([MSBuild]::IsOSPlatform('Windows')) And ('$(RuntimeIdentifier)' == 'win-x64' Or '$(RuntimeIdentifier)' == 'win-arm64')">
+    <PropertyGroup>
+      <WindowsTerminalPackageRoot>$(NuGetPackageRoot)ci.microsoft.terminal.wpf\1.25.260303002</WindowsTerminalPackageRoot>
+      <WindowsTerminalNativeSource>$(WindowsTerminalPackageRoot)\runtimes\$(RuntimeIdentifier)\native\Microsoft.Terminal.Control.dll</WindowsTerminalNativeSource>
+      <WindowsTerminalNativeDestination>$(PublishDir)native-terminal\$(RuntimeIdentifier)</WindowsTerminalNativeDestination>
+    </PropertyGroup>
+
+    <MakeDir Directories="$(WindowsTerminalNativeDestination)" />
+    <Copy SourceFiles="$(WindowsTerminalNativeSource)"
+          DestinationFolder="$(WindowsTerminalNativeDestination)"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target BeforeTargets="GetAssemblyAttributes" Name="GenVersionInfo">
+    <Exec Command="git describe --abbrev=8 --dirty" ConsoleToMsBuild="True" IgnoreExitCode="true">
+      <Output PropertyName="FriendlyVersion" TaskParameter="ConsoleOutput" />
+    </Exec>
+
+    <ItemGroup>
+      <AssemblyMetadata Include="FriendlyVersion" Value="$([System.String]::Copy('$(FriendlyVersion)').Replace('g', '').Trim())" />
+    </ItemGroup>
+  </Target>
+</Project>

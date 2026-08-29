@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using LLama.Native;
 
-namespace SourceGit.AI
+namespace DevBoard.AI
 {
     internal readonly record struct LocalLlmBackendCapabilities(bool VulkanAvailable);
 
@@ -16,7 +16,7 @@ namespace SourceGit.AI
                 if (_isLocked)
                 {
                     if (_requested != requested)
-                        throw new InvalidOperationException($"Local LLM native backend is already locked to {_selected}; restart SourceGit to change it.");
+                        throw new InvalidOperationException($"Local LLM native backend is already locked to {_selected}; restart DevBoard to change it.");
 
                     return _selected!.Value;
                 }

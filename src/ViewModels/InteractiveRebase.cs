@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -10,7 +10,7 @@ using Avalonia.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public record InteractiveRebasePrefill(string SHA, Models.InteractiveRebaseAction Action);
     public record InteractiveRebaseReorderItem(string Key, InteractiveRebaseItem Item);
@@ -356,7 +356,7 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
-            var saveFile = Path.Combine(_repo.GitDir, "sourcegit.interactive_rebase");
+            var saveFile = Path.Combine(_repo.GitDir, "devboard.interactive_rebase");
             var collection = new Models.InteractiveRebaseJobCollection();
             collection.OrigHead = _repo.CurrentBranch.Head;
             collection.Onto = On.SHA;

@@ -1,4 +1,4 @@
-namespace SourceGit.Views
+namespace DevBoard.Views
 {
     public partial class RevisionCompareStandalone : ChromelessWindow
     {

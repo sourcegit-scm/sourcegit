@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     public sealed record DevSpaceAgent(string Name, string Command)
     {

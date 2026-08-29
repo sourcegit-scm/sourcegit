@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum WorktreeBaseBranchKind
     {
@@ -16,7 +16,7 @@ namespace SourceGit.Models
 
     public static class WorktreeBaseBranch
     {
-        private const string MetadataFile = "sourcegit.worktree-base";
+        private const string MetadataFile = "devboard.worktree-base";
 
         public static string Normalize(string branch)
         {

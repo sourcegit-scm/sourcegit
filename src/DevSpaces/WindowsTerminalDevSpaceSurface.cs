@@ -8,9 +8,9 @@ using Avalonia.Controls;
 
 using Porta.Pty;
 
-using SourceGit.DevSpaces.Terminal;
+using DevBoard.DevSpaces.Terminal;
 
-namespace SourceGit.DevSpaces
+namespace DevBoard.DevSpaces
 {
     internal sealed class WindowsTerminalDevSpaceSurface : IDevSpaceTerminalSurface
     {

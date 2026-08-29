@@ -45,7 +45,7 @@ jobs:
     env:
       STORE_PACKAGE_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard.Test' || inputs.package_name || vars.STORE_PACKAGE_NAME || secrets.STORE_PACKAGE_NAME }}
       STORE_PUBLISHER: ${{ github.event_name == 'pull_request' && 'CN=00000000-0000-0000-0000-000000000000' || inputs.publisher || vars.STORE_PUBLISHER || secrets.STORE_PUBLISHER }}
-      STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'pull_request' && 'Dev Board Test' || inputs.publisher_display_name || vars.STORE_PUBLISHER_DISPLAY_NAME || secrets.STORE_PUBLISHER_DISPLAY_NAME }}
+      STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard Test' || inputs.publisher_display_name || vars.STORE_PUBLISHER_DISPLAY_NAME || secrets.STORE_PUBLISHER_DISPLAY_NAME }}
       REQUESTED_VERSION: ${{ inputs.version }}
     steps:
       - uses: actions/checkout@v4
@@ -98,7 +98,7 @@ jobs:
     env:
       STORE_PACKAGE_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard.Test' || inputs.package_name || vars.STORE_PACKAGE_NAME || secrets.STORE_PACKAGE_NAME }}
       STORE_PUBLISHER: ${{ github.event_name == 'pull_request' && 'CN=00000000-0000-0000-0000-000000000000' || inputs.publisher || vars.STORE_PUBLISHER || secrets.STORE_PUBLISHER }}
-      STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'pull_request' && 'Dev Board Test' || inputs.publisher_display_name || vars.STORE_PUBLISHER_DISPLAY_NAME || secrets.STORE_PUBLISHER_DISPLAY_NAME }}
+      STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard Test' || inputs.publisher_display_name || vars.STORE_PUBLISHER_DISPLAY_NAME || secrets.STORE_PUBLISHER_DISPLAY_NAME }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -108,13 +108,13 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Restore
         shell: pwsh
-        run: dotnet restore src/SourceGit.csproj -r ${{ matrix.rid }}
+        run: dotnet restore src/DevBoard.csproj -r ${{ matrix.rid }}
       - name: Run unit tests
         shell: pwsh
-        run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release
-      - name: Publish Dev Board
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release
+      - name: Publish DevBoard
         shell: pwsh
-        run: dotnet publish src/SourceGit.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output "store/publish/${{ matrix.rid }}" -p:Version=${{ needs.preflight.outputs.version }}
+        run: dotnet publish src/DevBoard.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output "store/publish/${{ matrix.rid }}" -p:Version=${{ needs.preflight.outputs.version }}
       - name: Validate Store assets
         shell: pwsh
         run: ./scripts/validate-store-assets.ps1

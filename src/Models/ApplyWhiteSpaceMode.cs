@@ -1,4 +1,4 @@
-﻿namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public class ApplyWhiteSpaceMode(string n, string d, string a)
     {

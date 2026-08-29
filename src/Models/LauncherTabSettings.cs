@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum LauncherTabLayout
     {

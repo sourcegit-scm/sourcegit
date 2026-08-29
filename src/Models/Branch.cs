@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace SourceGit.Models
+namespace DevBoard.Models
 {
     public enum BranchSortMode
     {

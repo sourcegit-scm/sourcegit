@@ -8,11 +8,13 @@ using Avalonia.Collections;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace SourceGit.ViewModels
+namespace DevBoard.ViewModels
 {
     public sealed class DevSpaceFiles : ObservableObject
     {
         public AvaloniaList<DevSpaceFileNode> VisibleItems { get; } = [];
+
+        internal Task InitialRefreshTask { get; }
 
         public string Filter
         {
@@ -58,7 +60,7 @@ namespace SourceGit.ViewModels
         public DevSpaceFiles(string workingDirectory)
         {
             _workingDirectory = workingDirectory;
-            _ = RefreshAsync();
+            InitialRefreshTask = RefreshAsync();
         }
 
         public async Task RefreshAsync()
