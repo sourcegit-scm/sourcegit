@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./docs/branding/dev-board-logo.svg" alt="Dev Board — Your development workspace" width="720" />
+  <img src="./docs/branding/dev-board-logo.svg" alt="DevBoard — Your development workspace" width="720" />
 </p>
 
 <p align="center">
@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="./docs/branding/dev-board-thumbnail.svg" alt="Dev Board development workspace" width="100%" />
+  <img src="./docs/branding/dev-board-thumbnail.svg" alt="DevBoard development workspace" width="100%" />
 </p>
 
 <p align="center">
@@ -17,20 +17,17 @@
   <a href="LICENSE"><img src="https://img.shields.io/github/license/dhhieu113pro/dev-board.svg" alt="License" /></a>
 </p>
 
-# Dev Board
+# DevBoard
 
-**Dev Board** is a cross-platform development workspace built around your repositories and worktrees. Git is still a first-class part of the app, but Dev Board goes further: it keeps your terminals, files, DevSpaces, AI coding agents, repository state, and development tools together in the context of the workspace you are actually working in.
+**DevBoard** is a cross-platform development workspace built around your repositories and worktrees. Git is still a first-class part of the app, but DevBoard goes further: it keeps your terminals, files, DevSpaces, AI coding agents, repository state, and development tools together in the context of the workspace you are actually working in.
 
-Instead of jumping between a Git client, terminal windows, file explorers, worktree folders, and AI CLIs, Dev Board gives each workspace its own persistent development board.
+Instead of jumping between a Git client, terminal windows, file explorers, worktree folders, and AI CLIs, DevBoard gives each workspace its own persistent development board.
 
-> [!NOTE]
-> The repository is now **Dev Board**. The executable, project file, namespaces, and existing application-data paths still use **SourceGit** during the technical migration so existing builds and installations keep working.
-
-## Why Dev Board?
+## Why DevBoard?
 
 A repository is more than its Git history. Modern development usually means multiple worktrees, several terminal sessions, code navigation, local tools, and one or more AI agents running against the same workspace.
 
-Dev Board treats the **workspace path** as the center of that experience. Switch worktrees or repository tabs and each workspace can keep its own development state rather than forcing everything into one global terminal or Git view.
+DevBoard treats the **workspace path** as the center of that experience. Switch worktrees or repository tabs and each workspace can keep its own development state rather than forcing everything into one global terminal or Git view.
 
 ## DevSpaces
 
@@ -47,7 +44,7 @@ Current built-in AI CLI integrations include **GitHub Copilot CLI**, **Codex CLI
 
 ## Files
 
-Dev Board includes a workspace file experience alongside Git and terminals.
+DevBoard includes a workspace file experience alongside Git and terminals.
 
 - Explore files and folders in the active workspace.
 - Search workspace files quickly.
@@ -58,7 +55,7 @@ Dev Board includes a workspace file experience alongside Git and terminals.
 
 ## Git & Worktrees
 
-The Git capabilities inherited from SourceGit remain a core strength of Dev Board:
+The mature Git foundation remains a core strength of DevBoard:
 
 - Clone, fetch, pull, push, merge, rebase, reset, revert, and cherry-pick.
 - Branches, remotes, tags, stashes, submodules, and worktrees.
@@ -71,13 +68,13 @@ The Git capabilities inherited from SourceGit remain a core strength of Dev Boar
 
 ## AI-assisted development
 
-Dev Board is moving from a small AI helper inside a Git client toward AI as part of the development workspace itself.
+DevBoard is evolving AI from a small helper inside a Git client into part of the development workspace itself.
 
 Today this includes AI-assisted commit messages plus DevSpace integrations for coding-agent CLIs. The longer-term direction is to make agents aware of the same workspace, terminals, files, repository state, and developer context shown in the board.
 
 ## Highlights
 
-| Area | What Dev Board provides |
+| Area | What DevBoard provides |
 | --- | --- |
 | **Workspaces** | Repository and worktree-focused development context |
 | **DevSpaces** | Persistent terminal and agent sessions scoped by workspace path |
@@ -87,15 +84,13 @@ Today this includes AI-assisted commit messages plus DevSpace integrations for c
 | **AI Agents** | Copilot CLI, Codex CLI, Antigravity CLI, and future providers |
 | **Terminal** | Integrated profiles and workspace-aware shell sessions |
 | **Cross-platform** | Windows, macOS, and Linux via Avalonia |
-| **Open source** | Built in the open and based on the SourceGit project |
+| **Open source** | Built in the open on an established Git GUI foundation |
 
 ## Screenshots
 
-The repository contains automatically maintained screenshots under [`screenshots/`](./screenshots). The original SourceGit dark/light theme screenshots are still useful for the Git experience while Dev Board-specific screenshots continue to be added as the workspace features evolve.
+The repository contains automatically maintained screenshots under [`screenshots/`](./screenshots) and DevSpaces-specific captures under [`docs/devspaces/screenshots/`](./docs/devspaces/screenshots) as workspace features evolve.
 
 ## Getting started
-
-The repository and product are now **Dev Board**. Some technical identifiers still remain **SourceGit** during the migration.
 
 ### Requirements
 
@@ -110,8 +105,8 @@ cd dev-board
 
 dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 dotnet restore
-dotnet build
-dotnet run --project src/SourceGit.csproj
+dotnet build DevBoard.slnx
+dotnet run --project src/DevBoard.csproj
 ```
 
 If you cloned without submodules:
@@ -126,29 +121,29 @@ The Windows Store path is isolated from normal releases and produces x64 + ARM64
 
 ## Application data
 
-Until the executable/package rename is completed, existing SourceGit storage locations remain in use:
+DevBoard uses these application-data locations:
 
 | OS | Path |
 | --- | --- |
-| Windows | `%APPDATA%\\SourceGit` |
-| Linux | `~/.sourcegit` |
-| macOS | `~/Library/Application Support/SourceGit` |
+| Windows | `%APPDATA%\\DevBoard` |
+| Linux | `~/.devboard` |
+| macOS | `~/Library/Application Support/DevBoard` |
 
-You can also create a `data` folder next to the executable on supported portable packages to keep settings, avatars, and crash logs beside the app.
+On first run after upgrading, existing legacy application data is copied into the DevBoard location when the new location is empty. The legacy directory is preserved for rollback. A `data` folder beside the executable continues to enable portable storage and takes precedence over roaming application data.
 
 ## Command-line arguments
 
-The current executable remains `SourceGit` during the transition:
+The executable is `DevBoard` (`DevBoard.exe` on Windows):
 
 ```text
-<SOURCEGIT_EXEC> <DIR>                    # Open repository/workspace
-<SOURCEGIT_EXEC> --history <FILE_OR_DIR>  # Show file/directory history
-<SOURCEGIT_EXEC> --blame <FILE_PATH>      # Blame the HEAD version of a file
+DevBoard <DIR>                    # Open repository/workspace
+DevBoard --history <FILE_OR_DIR>  # Show file/directory history
+DevBoard --blame <FILE_PATH>      # Blame the HEAD version of a file
 ```
 
 ## External editors
 
-Dev Board can open repositories in popular external editors and IDEs, including Visual Studio Code, VS Code Insiders, VSCodium, Cursor, Sublime Text, Zed, Visual Studio on Windows, and supported JetBrains IDEs.
+DevBoard can open repositories in popular external editors and IDEs, including Visual Studio Code, VS Code Insiders, VSCodium, Cursor, Sublime Text, Zed, Visual Studio on Windows, and supported JetBrains IDEs.
 
 Portable editors can be configured with `external_editors.json` in the application data directory.
 
@@ -171,15 +166,15 @@ This is separate from the newer **DevSpace AI CLI integrations**, which launch c
 
 ## Contributing
 
-Contributions are welcome. This repository continues to track and build on the excellent work from the upstream [SourceGit](https://github.com/sourcegit-scm/sourcegit) project while evolving the fork into the broader **Dev Board** development workspace.
+Contributions are welcome. DevBoard continues to track and build on the excellent work from upstream [SourceGit](https://github.com/sourcegit-scm/sourcegit) while evolving this fork into a broader development workspace.
 
 The project includes a custom AvaloniaEdit submodule under `depends/AvaloniaEdit`, so initialize submodules before building.
 
 ## Credits
 
-Dev Board is based on [SourceGit](https://github.com/sourcegit-scm/sourcegit), the open-source cross-platform Git GUI that provides the mature Git foundation used by this project.
+DevBoard is based on [SourceGit](https://github.com/sourcegit-scm/sourcegit), the open-source cross-platform Git GUI that provides the mature Git foundation used by this project.
 
-Thanks to the SourceGit maintainers and contributors whose work made this evolution possible.
+Thanks to the upstream maintainers and contributors whose work made this evolution possible.
 
 ## Third-party components
 
