@@ -1,301 +1,182 @@
-# SourceGit - Opensource Git GUI client.
+<p align="center">
+  <img src="./docs/branding/dev-board-logo.svg" alt="Dev Board — Your development workspace" width="720" />
+</p>
 
-[![stars](https://img.shields.io/github/stars/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/stargazers)
-[![forks](https://img.shields.io/github/forks/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/forks)
-[![license](https://img.shields.io/github/license/sourcegit-scm/sourcegit.svg)](LICENSE)
-[![latest](https://img.shields.io/github/v/release/sourcegit-scm/sourcegit.svg)](https://github.com/sourcegit-scm/sourcegit/releases/latest)
-[![downloads](https://img.shields.io/github/downloads/sourcegit-scm/sourcegit/total)](https://github.com/sourcegit-scm/sourcegit/releases)
+<p align="center">
+  <strong>Workspaces · Git · Worktrees · Terminals · Files · AI Agents</strong><br/>
+  Everything you need for day-to-day development, in one board.
+</p>
 
-## Screenshots
+<p align="center">
+  <img src="./docs/branding/dev-board-thumbnail.svg" alt="Dev Board development workspace" width="100%" />
+</p>
 
-* Dark Theme
+<p align="center">
+  <a href="https://github.com/dhhieu113pro/sourcegit/stargazers"><img src="https://img.shields.io/github/stars/dhhieu113pro/sourcegit.svg" alt="Stars" /></a>
+  <a href="https://github.com/dhhieu113pro/sourcegit/forks"><img src="https://img.shields.io/github/forks/dhhieu113pro/sourcegit.svg" alt="Forks" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/dhhieu113pro/sourcegit.svg" alt="License" /></a>
+</p>
 
-  ![Theme Dark](./screenshots/theme_dark.png)
+# Dev Board
 
-* Light Theme
+**Dev Board** is a cross-platform development workspace built around your repositories and worktrees. Git is still a first-class part of the app, but Dev Board goes further: it keeps your terminals, files, DevSpaces, AI coding agents, repository state, and development tools together in the context of the workspace you are actually working in.
 
-  ![Theme Light](./screenshots/theme_light.png)
+Instead of jumping between a Git client, terminal windows, file explorers, worktree folders, and AI CLIs, Dev Board gives each workspace its own persistent development board.
 
-* Custom
+> [!NOTE]
+> The repository and executable are still named **SourceGit** during the rebrand. The product name is now **Dev Board**. Repository/package identifiers will be renamed separately so existing builds and installation flows keep working during the transition.
 
-  You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git). And welcome to share your own themes.
+## Why Dev Board?
+
+A repository is more than its Git history. Modern development usually means multiple worktrees, several terminal sessions, code navigation, local tools, and one or more AI agents running against the same workspace.
+
+Dev Board treats the **workspace path** as the center of that experience. Switch worktrees or repository tabs and each workspace can keep its own development state rather than forcing everything into one global terminal or Git view.
+
+## DevSpaces
+
+DevSpaces are persistent, workspace-scoped development sessions.
+
+- **Workspace-aware terminals** — terminals belong to the current repository/worktree path.
+- **Persistent state per tab** — move between worktrees without losing the DevSpace you were using.
+- **Terminal profiles** — launch the shell or development environment you prefer.
+- **AI CLI agents** — launch coding agents directly in the correct workspace.
+- **Workspace trust automation** — supported AI CLIs can start against the selected workspace without repetitive trust prompts.
+- **Multiple worktrees** — work on several branches in parallel while keeping their development environments separate.
+
+Current built-in AI CLI integrations include **GitHub Copilot CLI**, **Codex CLI**, and **Antigravity CLI**, with the DevSpace architecture designed to grow beyond them.
+
+## Files
+
+Dev Board includes a workspace file experience alongside Git and terminals.
+
+- Explore files and folders in the active workspace.
+- Search workspace files quickly.
+- Open a file and inspect its contents without leaving the app.
+- See Git-aware file state such as added, modified, deleted, and renamed files.
+- Inspect added/deleted lines with familiar diff highlighting.
+- Keep file/search state scoped to the current worktree tab.
+
+## Git & Worktrees
+
+The Git capabilities inherited from SourceGit remain a core strength of Dev Board:
+
+- Clone, fetch, pull, push, merge, rebase, reset, revert, and cherry-pick.
+- Branches, remotes, tags, stashes, submodules, and worktrees.
+- Visual commit graph and repository history.
+- Interactive rebase, amend, reword, and squash workflows.
+- File history, blame, branch diff, revision diff, and image diff.
+- Git LFS, GitFlow, bisect, patches, archive, and custom actions.
+- Create pull requests for GitHub, GitLab, Gitea, Gitee, Bitbucket, and compatible workflows.
+- Repository-scoped Git account profiles for machines using multiple GitHub identities.
+
+## AI-assisted development
+
+Dev Board is moving from a small AI helper inside a Git client toward AI as part of the development workspace itself.
+
+Today this includes AI-assisted commit messages plus DevSpace integrations for coding-agent CLIs. The longer-term direction is to make agents aware of the same workspace, terminals, files, repository state, and developer context shown in the board.
 
 ## Highlights
 
-* Supports Windows/macOS/Linux
-* Opensource/Free
-* Fast
-* Deutsch/English/Español/Bahasa Indonesia/Français/Italiano/Português/Русский/Українська/简体中文/繁體中文/日本語/தமிழ் (Tamil)/한국어
-* Built-in light/dark themes
-* Customize theme
-* Visual commit graph
-* Supports SSH access with each remote
-* GIT commands with GUI
-  * Clone/Fetch/Pull/Push...
-  * Merge/Rebase/Reset/Revert/Cherry-pick...
-  * Amend/Reword/Squash
-  * Interactive rebase
-  * Branches
-  * Remotes
-  * Tags
-  * Stashes
-  * Submodules
-  * Worktrees
-  * Archive
-  * Diff
-  * Save as patch/apply
-  * File histories
-  * Blame
-  * Revision Diffs
-  * Branch Diff
-  * Image Diff - Side-By-Side/Swipe/Blend
-* Git command logs
-* Search commits
-* GitFlow
-* Git LFS
-* Bisect
-* Issue Link
-* Workspace
-* Custom Action
-* Create PR on GitHub/Gitlab/Gitea/Gitee/Bitbucket...
-* Using AI to generate commit message
-* Built-in conventional commit message helper.
+| Area | What Dev Board provides |
+| --- | --- |
+| **Workspaces** | Repository and worktree-focused development context |
+| **DevSpaces** | Persistent terminal and agent sessions scoped by workspace path |
+| **Git** | Mature visual Git workflows and commit graph |
+| **Worktrees** | Parallel branch workflows without losing per-worktree state |
+| **Files** | Workspace tree, search, content view, and Git-aware status |
+| **AI Agents** | Copilot CLI, Codex CLI, Antigravity CLI, and future providers |
+| **Terminal** | Integrated profiles and workspace-aware shell sessions |
+| **Cross-platform** | Windows, macOS, and Linux via Avalonia |
+| **Open source** | Built in the open and based on the SourceGit project |
 
-> [!WARNING]
-> **Linux** only tested on **Debian 12** on both **X11** & **Wayland**.
+## Screenshots
 
-## How to Use
+The repository contains automatically maintained screenshots under [`screenshots/`](./screenshots). The original SourceGit dark/light theme screenshots are still useful for the Git experience while Dev Board-specific screenshots continue to be added as the workspace features evolve.
 
-**To use this tool, you need to install Git(>=2.25.1) first.**
+## Getting started
 
-You can download the latest stable from [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest) or download workflow artifacts from [GitHub Actions](https://github.com/sourcegit-scm/sourcegit/actions) to try this app based on latest commits.
+Dev Board currently uses the existing **SourceGit** build and application identifiers.
 
-This software creates a folder, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
+### Requirements
 
-| OS      | PATH                                      |
-|---------|-------------------------------------------|
-| Windows | `%APPDATA%\SourceGit`                     |
-| Linux   | `~/.sourcegit`                            |
-| macOS   | `~/Library/Application Support/SourceGit` |
+- Git **2.25.1 or newer**.
+- .NET SDK matching [`global.json`](./global.json) when building from source.
 
-> [!TIP]
-> * You can open this data storage directory from the main menu `Open Data Storage Directory`.
-> * You can create a `data` folder next to the `SourceGit` executable to force this app to store data (user settings, downloaded avatars and crash logs) into it (Portable-Mode). Only works with Windows packages and Linux AppImages.
-
-For **Windows** users:
-
-* **MSYS Git is NOT supported**. Please use official [Git for Windows](https://git-scm.com/download/win) instead.
-* You can install the latest stable by `scoop` with follow commands:
-  ```shell
-  scoop bucket add extras
-  scoop install sourcegit
-  ```
-* Pre-built binaries can be found in [Releases](https://github.com/sourcegit-scm/sourcegit/releases/latest)
-
-> [!NOTE]
-> `git-flow` is no longer shipped with **Git for Windows** since `2.51.1`. You can use it by following these steps:
->  * Download [git-flow-next](https://github.com/gittower/git-flow-next/releases)
->  * Unzip & Rename the `git-flow-next` to `git-flow`
->  * Copy to `$GIT_INSTALL_DIR/cmd` or just add its path to you `PATH` directly
-
-For **macOS** users:
-
-* Thanks [@ybeapps](https://github.com/ybeapps) for making `SourceGit` available on `Homebrew`:
-  ```shell
-  brew install --cask sourcegit
-  ```
-* If you want to install `SourceGit.app` from GitHub Release manually, you need run following command to make sure it works:
-  ```shell
-  sudo xattr -cr /Applications/SourceGit.app
-  ```
-> [!NOTE]
-> macOS packages in the `Release` page of this project are all unsigned. If you are worried about potential security issues with the above command, you can download the signed package from the [distribution repository](https://github.com/ybeapps/homebrew-sourcegit/releases) provided by [@ybeapps](https://github.com/ybeapps) (there is no need to execute the above command while installing `SourceGit`).
-
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) is installed on your mac.
-* You can run `echo $PATH > ~/Library/Application\ Support/SourceGit/PATH` to generate a custom PATH env file to introduce `PATH` env to SourceGit.
-
-For **Linux** users:
-
-* Thanks [@aikawayataro](https://github.com/aikawayataro) for providing `rpm` and `deb` repositories, hosted on [Codeberg](https://codeberg.org/yataro/-/packages).
-
-  `deb` how to:
-  ```shell
-  sudo mkdir -p /etc/apt/keyrings
-  curl https://codeberg.org/api/packages/yataro/debian/repository.key | sudo tee /etc/apt/keyrings/sourcegit.asc
-  echo "deb [signed-by=/etc/apt/keyrings/sourcegit.asc, arch=amd64,arm64] https://codeberg.org/api/packages/yataro/debian generic main" | sudo tee /etc/apt/sources.list.d/sourcegit.list
-  sudo apt update
-  sudo apt install sourcegit
-  ```
-
-  `rpm` how to:
-  ```shell
-  curl https://codeberg.org/api/packages/yataro/rpm.repo | sed -e 's/gpgcheck=1/gpgcheck=0/' > sourcegit.repo
-
-  # Fedora 41 and newer
-  sudo dnf config-manager addrepo --from-repofile=./sourcegit.repo
-  # Fedora 40 and earlier
-  sudo dnf config-manager --add-repo ./sourcegit.repo
-
-  sudo dnf install sourcegit
-  ```
-
-  If your distribution isn't using `dnf`, please refer to the documentation of your distribution on how to add an `rpm` repository.
-
-* Thanks [@gadfly3173](https://github.com/gadfly3173) for providing `deb` repository, hosted on https://deb-repo.gadfly.vip
-
-  ```shell
-  # Import GPG key
-  curl -fsSL https://deb-repo.gadfly.vip/public.key | sudo gpg --dearmor -o /usr/share/keyrings/deb-repo.gpg
-
-  # Add repository (DEB822 format, recommended for Bookworm+ / 22.04+)
-  echo "Types: deb
-  URIs: https://deb-repo.gadfly.vip
-  Suites: stable
-  Components: main
-  Architectures: $(dpkg --print-architecture)
-  Signed-By: /usr/share/keyrings/deb-repo.gpg" | sudo tee /etc/apt/sources.list.d/deb-repo.sources
-  
-  # Or use one‑line format for older releases:
-  # echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/deb-repo.gpg] https://deb-repo.gadfly.vip stable main" | sudo tee /  etc/apt/sources.list.d/deb-repo.list
-  
-  # Update and install
-  sudo apt update
-  sudo apt install sourcegit
-  ```
-
-* `AOSC OS`: In addition to AMD64 and ARM64, support for LoongArch and RISC-V has been added.
-  ```shell
-  sudo oma install sourcegit
-  ```
-  
-> [!NOTE]
-> RISC-V support is untested.
-
-* `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
-* Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) or [git-credential-libsecret](https://pkgs.org/search/?q=git-credential-libsecret) is installed on your Linux.
-* Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
-* If you can NOT type accented characters, such as `ê`, `ó`, try to set the environment variable `AVALONIA_IM_MODULE` to `none`.
-
-## Commandline arguments
-
-Users can also launcher `SourceGit` from commandline. Usage:
-
-```
-<SOURCEGIT_EXEC> <DIR>                       // Open repository in existing `SourceGit` instance or a new one
-<SOURCEGIT_EXEC> --history <FILE_OR_DIR>     // Launch `SourceGit` to see the history of a file or dir
-<SOURCEGIT_EXEC> --blame <FILE_PATH>         // Launch `SourceGit` to blame a file (HEAD version only) 
-```
-
-## OpenAI
-
-This software supports using OpenAI or other AI service that has an OpenAI compatible HTTP API to generate commit message. You need configurate the service in `Preference` window.
-
-For `OpenAI`:
-
-* `Server` must be `https://api.openai.com/v1`
-
-For other AI service:
-
-* The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
-* The `API Key` is optional that depends on the service
-
-## External Tools
-
-This app supports open repository in external tools listed in the table below.
-
-| Tool                          | Windows | macOS | Linux |
-|-------------------------------|---------|-------|-------|
-| Visual Studio Code            | YES     | YES   | YES   |
-| Visual Studio Code - Insiders | YES     | YES   | YES   |
-| VSCodium                      | YES     | YES   | YES   |
-| Cursor                        | YES     | YES   | YES   |
-| Sublime Text                  | YES     | YES   | YES   |
-| Zed                           | YES     | YES   | YES   |
-| Visual Studio                 | YES     | NO    | NO    |
-
-> [!NOTE]
-> This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.  
-> To solve this problem you can add a file named `external_editors.json` in app data storage directory and provide the path directly.  
-> User can also exclude some editors by using `external_editors.json`.
-
-The format of `external_editors.json`:
-```json
-{
-    "tools": {
-        "Visual Studio Code": "D:\\VSCode\\Code.exe"
-    },
-    "excludes": [
-        "Visual Studio Community 2019"
-    ]
-}
-```
-
-> [!NOTE]
-> This app also supports a lot of `JetBrains` IDEs, installing `JetBrains Toolbox` will help this app to find them.
-
-## Conventional Commit Helper
-
-You can define your own conventional commit types (per-repository) by following steps:
-
-1. Create a json file with your own conventional commit type definitions. For example:
-```json
-[
-  {
-    "Name": "New Feature",
-    "Type": "Feature",
-    "Description": "Adding a new feature",
-    "PrefillShortDesc": "this is a test"
-  },
-  {
-    "Name": "Bug Fixes",
-    "Type": "Fix",
-    "Description": "Fixing a bug"
-  }
-]
-```
-2. Configure the `Conventional Commit Types` in repository configuration window.  
-
-## Contributing
-
-Everyone is welcome to submit a PR. Please make sure your PR is based on the latest `develop` branch and the target branch of PR is `develop`.
-
-This project has a submodule in `depends/AvaloniaEdit` which is a custom fork of [Official AvaloniaEdit](https://github.com/AvaloniaUI/AvaloniaEdit). 
-Please make sure it is initialized - enable `--recurse-submodules` option while cloning or run `git submodule update --init` after cloned.
-
-In short, here are the commands to get started once [.NET tools are installed](https://dotnet.microsoft.com/en-us/download):
+### Build from source
 
 ```sh
+git clone --recurse-submodules https://github.com/dhhieu113pro/sourcegit.git
+cd sourcegit
+
 dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 dotnet restore
 dotnet build
 dotnet run --project src/SourceGit.csproj
 ```
 
-Thanks to all the people who contribute.
+If you cloned without submodules:
 
-[![Contributors](https://contrib.rocks/image?repo=sourcegit-scm/sourcegit&columns=20)](https://github.com/sourcegit-scm/sourcegit/graphs/contributors)
-
-## Translation Status
-
-You can find the current translation status in [TRANSLATION.md](https://github.com/sourcegit-scm/sourcegit/blob/develop/TRANSLATION.md)
-
-### Translate Utility Script
-
-A script that assists with translations by reading the target language, comparing it with the base language, and going through missing keys one by one, so the translator can provide the translations interactively without needing to check each key manually.
-
-#### Usage
-
-Check for a given language (e.g., `pt_BR`) and optionally check for missing translations:
-
-```bash
-python translate_helper.py pt_BR [--check]
+```sh
+git submodule update --init --recursive
 ```
 
-- `pt_BR` is the target language code (change as needed), it should correspond to a file named `pt_BR.axaml` in the `src/Resources/Locales/` directory, so you can replace it with any other language code you want to translate, e.g., `de_DE`, `es_ES`, etc.
-- `--check` is an optional flag used to only check for missing keys without prompting for translations, useful for getting a list of missing translations.
+## Application data
 
-The script will read the base language file (`en_US.axaml`) and the target language file (e.g., `pt_BR.axaml`), identify missing keys, and prompt you to provide translations for those keys. If the `--check` flag is used, it will only list the missing keys without prompting for translations.
+Until the executable/package rename is completed, existing SourceGit storage locations remain in use:
 
-## Third-Party Components
+| OS | Path |
+| --- | --- |
+| Windows | `%APPDATA%\\SourceGit` |
+| Linux | `~/.sourcegit` |
+| macOS | `~/Library/Application Support/SourceGit` |
 
-For detailed license information, see [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
+You can also create a `data` folder next to the executable on supported portable packages to keep settings, avatars, and crash logs beside the app.
+
+## Command-line arguments
+
+The current executable remains `SourceGit` during the transition:
+
+```text
+<SOURCEGIT_EXEC> <DIR>                    # Open repository/workspace
+<SOURCEGIT_EXEC> --history <FILE_OR_DIR>  # Show file/directory history
+<SOURCEGIT_EXEC> --blame <FILE_PATH>      # Blame the HEAD version of a file
+```
+
+## External editors
+
+Dev Board can open repositories in popular external editors and IDEs, including Visual Studio Code, VS Code Insiders, VSCodium, Cursor, Sublime Text, Zed, Visual Studio on Windows, and supported JetBrains IDEs.
+
+Portable editors can be configured with `external_editors.json` in the application data directory.
+
+```json
+{
+  "tools": {
+    "Visual Studio Code": "D:\\VSCode\\Code.exe"
+  },
+  "excludes": [
+    "Visual Studio Community 2019"
+  ]
+}
+```
+
+## OpenAI-compatible services
+
+The existing commit-message AI integration supports OpenAI and OpenAI-compatible HTTP APIs. Configure it from Preferences using an OpenAI-compatible `/v1` server URL and, where required, an API key.
+
+This is separate from the newer **DevSpace AI CLI integrations**, which launch coding agents directly inside the selected workspace.
+
+## Contributing
+
+Contributions are welcome. This repository continues to track and build on the excellent work from the upstream [SourceGit](https://github.com/sourcegit-scm/sourcegit) project while evolving the fork into the broader **Dev Board** development workspace.
+
+The project includes a custom AvaloniaEdit submodule under `depends/AvaloniaEdit`, so initialize submodules before building.
+
+## Credits
+
+Dev Board is based on [SourceGit](https://github.com/sourcegit-scm/sourcegit), the open-source cross-platform Git GUI that provides the mature Git foundation used by this project.
+
+Thanks to the SourceGit maintainers and contributors whose work made this evolution possible.
+
+## Third-party components
+
+For detailed license information, see [`THIRD-PARTY-LICENSES.md`](./THIRD-PARTY-LICENSES.md).
