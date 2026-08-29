@@ -294,13 +294,8 @@ namespace SourceGit.Views
             var defaultName = SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal);
             flyout.Items.Add(CreateTerminalMenuItem($"New {defaultName}", settings.DefaultTerminal, defaultName, preferredSlot));
 
-            var copilot = new MenuItem { Header = "Copilot" };
-            copilot.Click += (_, e) =>
-            {
-                _owner?.CreateCopilotTerminalAt(preferredSlot);
-                e.Handled = true;
-            };
-            flyout.Items.Add(copilot);
+            foreach (var agent in SourceGit.DevSpaces.DevSpaceAgent.BuiltIn)
+                flyout.Items.Add(CreateAgentMenuItem(agent, preferredSlot));
 
             if (settings.Profiles.Count > 0)
             {
@@ -332,6 +327,32 @@ namespace SourceGit.Views
             flyout.Items.Add(manage);
 
             flyout.ShowAt(target);
+        }
+
+        private MenuItem CreateAgentMenuItem(SourceGit.DevSpaces.DevSpaceAgent agent, int preferredSlot)
+        {
+            var item = new MenuItem { Header = agent.Name };
+            item.Click += (_, e) =>
+            {
+                if (string.Equals(agent.Command, "copilot", StringComparison.OrdinalIgnoreCase))
+                {
+                    _owner?.CreateCopilotTerminalAt(preferredSlot);
+                }
+                else if (_owner != null)
+                {
+                    _owner.CreateProfileTerminalAt(
+                        preferredSlot,
+                        new SourceGit.DevSpaces.DevSpaceTerminalProfile
+                        {
+                            Name = agent.Name,
+                            Path = ".",
+                            Command = agent.Command,
+                        });
+                }
+
+                e.Handled = true;
+            };
+            return item;
         }
 
         private MenuItem CreateProfileMenuItem(
