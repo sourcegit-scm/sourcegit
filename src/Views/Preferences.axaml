@@ -896,33 +896,41 @@
                     <TextBlock Text="{DynamicResource Text.Preferences.AI.Name}"/>
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Server}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Server, Mode=TwoWay}"/>
+                    <TextBlock Margin="0,12,0,0" Text="Provider"/>
+                    <ComboBox Margin="0,4,0,0" Height="28" SelectedIndex="{Binding ProviderIndex, Mode=TwoWay}">
+                      <ComboBoxItem Content="OpenAI"/>
+                      <ComboBoxItem Content="LocalLLM"/>
+                    </ComboBox>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
-                    <CheckBox Margin="0,4,0,0"
-                              Height="28"
-                              Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
-                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
+                    <StackPanel IsVisible="{Binding IsOpenAI}">
+                      <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Server}"/>
+                      <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Server, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
-                    <TextBox Margin="0,4,0,0"
-                             CornerRadius="3"
-                             Height="28"
-                             Text="{Binding Model, Mode=TwoWay}"
-                             IsEnabled="{Binding !AutoFetchAvailableModels, Mode=OneWay}"/>
-                    <CheckBox Margin="0,4,0,0"
-                              Height="28"
-                              Content="{DynamicResource Text.Preferences.AI.Model.AutoFetchAvailableModels}"
-                              IsChecked="{Binding AutoFetchAvailableModels, Mode=TwoWay}"/>
+                      <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
+                      <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
+                      <CheckBox Margin="0,4,0,0" Height="28" Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}" IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.ReasoningEffortLevel}"/>
-                    <ComboBox Margin="0,4,0,0"
-                              Height="28"
-                              HorizontalAlignment="Stretch"
-                              ItemsSource="{Binding Source={x:Static ai:Options.ReasoningEffortLevels}}"
-                              SelectedItem="{Binding ReasoningEffortLevel, Mode=TwoWay}"/>
+                      <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
+                      <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Model, Mode=TwoWay}" IsEnabled="{Binding !AutoFetchAvailableModels, Mode=OneWay}"/>
+                      <CheckBox Margin="0,4,0,0" Height="28" Content="{DynamicResource Text.Preferences.AI.Model.AutoFetchAvailableModels}" IsChecked="{Binding AutoFetchAvailableModels, Mode=TwoWay}"/>
+
+                      <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.ReasoningEffortLevel}"/>
+                      <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" ItemsSource="{Binding Source={x:Static ai:Options.ReasoningEffortLevels}}" SelectedItem="{Binding ReasoningEffortLevel, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <StackPanel IsVisible="{Binding IsLocalLlm}">
+                      <TextBlock Margin="0,12,0,0" Text="Default Model (.gguf)"/>
+                      <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding LocalModelPath, Mode=TwoWay}" Watermark="/path/to/model.gguf"/>
+                      <TextBlock Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" Text="{Binding LocalModelStatus}"/>
+
+                      <TextBlock Margin="0,12,0,0" Text="Temperature"/>
+                      <NumericUpDown Margin="0,4,0,0" Height="28" Minimum="0" Maximum="2" Increment="0.1" Value="{Binding Temperature, Mode=TwoWay}"/>
+
+                      <TextBlock Margin="0,12,0,0" Text="Context Window"/>
+                      <NumericUpDown Margin="0,4,0,0" Height="28" Minimum="512" Maximum="131072" Increment="512" Value="{Binding ContextWindow, Mode=TwoWay}"/>
+
+                      <CheckBox Margin="0,8,0,0" Height="28" Content="Auto-load model" IsChecked="{Binding AutoLoadModel, Mode=TwoWay}"/>
+                    </StackPanel>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.AdditionalPrompt}"/>
                     <TextBox Height="120"
