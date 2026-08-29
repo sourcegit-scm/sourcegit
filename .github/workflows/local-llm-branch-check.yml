@@ -6,9 +6,6 @@ on:
       - feature/local-llm-provider
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -18,9 +15,6 @@ jobs:
         with:
           submodules: true
 
-      - name: Apply LocalLLM settings UI
-        run: python3 .github/scripts/apply-local-llm-ui.py
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
@@ -29,15 +23,8 @@ jobs:
       - name: Test
         run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release --disable-build-servers
 
-      - name: Commit validated UI
-        if: success()
-        shell: bash
-        run: |
-          if git diff --quiet -- src/Views/Preferences.axaml; then
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/Views/Preferences.axaml
-          git commit -m "feat: expose LocalLLM runtime controls"
-          git push origin HEAD:feature/local-llm-provider
+      - name: Format
+        run: dotnet format --verify-no-changes src/SourceGit.csproj
+
+  build:
+    uses: ./.github/workflows/build.yml
