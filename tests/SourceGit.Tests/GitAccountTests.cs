@@ -50,4 +50,57 @@ public class GitAccountTests
 
         Assert.False(account.MatchesIdentity(userName, email));
     }
+
+    [Fact]
+    public void Accounts_HaveStableUniqueIds()
+    {
+        var first = new GitAccount();
+        var second = new GitAccount();
+
+        Assert.False(string.IsNullOrWhiteSpace(first.Id));
+        Assert.NotEqual(first.Id, second.Id);
+    }
+
+    [Fact]
+    public void Resolver_PrefersConfiguredId_WhenCommitIdentityIsShared()
+    {
+        var personal = new GitAccount
+        {
+            GitUserName = "Hieu Dam",
+            GitEmail = "shared@example.com",
+            GitHubUserName = "personal-user",
+        };
+        var work = new GitAccount
+        {
+            GitUserName = "Hieu Dam",
+            GitEmail = "shared@example.com",
+            GitHubUserName = "work-user",
+        };
+
+        var resolved = GitAccountResolver.Resolve(
+            [personal, work],
+            work.Id,
+            "Hieu Dam",
+            "shared@example.com");
+
+        Assert.Same(work, resolved);
+    }
+
+    [Fact]
+    public void Resolver_FallsBackToIdentity_WhenRepositoryHasNoAccountId()
+    {
+        var account = new GitAccount
+        {
+            GitUserName = "Hieu Dam",
+            GitEmail = "hieu@example.com",
+        };
+
+        var resolved = GitAccountResolver.Resolve(
+            [account],
+            null,
+            "Hieu Dam",
+            "hieu@example.com");
+
+        Assert.Same(account, resolved);
+    }
 }
