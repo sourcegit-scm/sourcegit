@@ -5,18 +5,16 @@ namespace SourceGit.DevSpaces
 {
     public sealed class LocalDevSpaceSessionLauncher : IDevSpaceSessionLauncher
     {
-        public DevSpaceLaunchSpec Create(string command, string workingDirectory)
+        public DevSpaceLaunchSpec Create(string terminal, string workingDirectory, string startupCommand = null)
         {
-            if (string.IsNullOrWhiteSpace(command))
-                throw new ArgumentException("DevSpaces command must not be empty.", nameof(command));
             if (string.IsNullOrWhiteSpace(workingDirectory))
                 throw new ArgumentException("DevSpaces working directory must not be empty.", nameof(workingDirectory));
 
-            var normalized = command.Trim().ToLowerInvariant();
-            if (normalized is "pwsh" or "__devspaces_pwsh__")
+            var normalized = terminal?.Trim().ToLowerInvariant();
+            if (normalized is "pwsh" or DevSpaceProfileSettings.PowerShell7)
             {
                 var process = OperatingSystem.IsWindows() ? FindPowerShell7() : "pwsh";
-                return new DevSpaceLaunchSpec(process, ["-NoLogo"], workingDirectory);
+                return new DevSpaceLaunchSpec(process, ["-NoLogo"], workingDirectory, startupCommand);
             }
 
             if (OperatingSystem.IsWindows())
@@ -25,35 +23,22 @@ namespace SourceGit.DevSpaces
                 {
                     case "powershell":
                     case "powershell.exe":
-                    case "__devspaces_powershell__":
-                        return new DevSpaceLaunchSpec(FindWindowsPowerShell(), ["-NoLogo"], workingDirectory);
+                    case DevSpaceProfileSettings.WindowsPowerShell:
+                        return new DevSpaceLaunchSpec(FindWindowsPowerShell(), ["-NoLogo"], workingDirectory, startupCommand);
                     case "cmd":
                     case "cmd.exe":
-                    case "__devspaces_cmd__":
-                        return new DevSpaceLaunchSpec(FindCommandPrompt(), [], workingDirectory);
-                    case "__devspaces_git_bash__":
-                        return new DevSpaceLaunchSpec(FindGitBash(), ["--login", "-i"], workingDirectory);
+                    case DevSpaceProfileSettings.CommandPrompt:
+                        return new DevSpaceLaunchSpec(FindCommandPrompt(), [], workingDirectory, startupCommand);
+                    default:
+                        return new DevSpaceLaunchSpec(FindPowerShell7(), ["-NoLogo"], workingDirectory, startupCommand);
                 }
-
-                var powerShell = Models.ShellOrTerminal.Supported.Find(x => x.Type == "pwsh");
-                var process = Native.OS.FindTerminal(powerShell);
-                if (string.IsNullOrWhiteSpace(process))
-                    process = FindWindowsPowerShell();
-
-                return new DevSpaceLaunchSpec(
-                    process,
-                    ["-NoLogo", "-NoProfile", "-Command", command],
-                    workingDirectory);
             }
 
             var shell = Environment.GetEnvironmentVariable("SHELL");
             if (string.IsNullOrWhiteSpace(shell))
                 shell = "/bin/sh";
 
-            if (normalized == "__devspaces_shell__")
-                return new DevSpaceLaunchSpec(shell, [], workingDirectory);
-
-            return new DevSpaceLaunchSpec(shell, ["-lc", command], workingDirectory);
+            return new DevSpaceLaunchSpec(shell, [], workingDirectory, startupCommand);
         }
 
         private static string FindPowerShell7()
@@ -93,27 +78,6 @@ namespace SourceGit.DevSpaces
             }
 
             return "cmd.exe";
-        }
-
-        private static string FindGitBash()
-        {
-            var git = Native.OS.GitExecutable;
-            if (!string.IsNullOrWhiteSpace(git))
-            {
-                var gitDir = Path.GetDirectoryName(git);
-                if (!string.IsNullOrWhiteSpace(gitDir))
-                {
-                    var sameDir = Path.Combine(gitDir, "bash.exe");
-                    if (File.Exists(sameDir))
-                        return sameDir;
-
-                    var siblingBin = Path.GetFullPath(Path.Combine(gitDir, "..", "bin", "bash.exe"));
-                    if (File.Exists(siblingBin))
-                        return siblingBin;
-                }
-            }
-
-            return "bash.exe";
         }
     }
 }
