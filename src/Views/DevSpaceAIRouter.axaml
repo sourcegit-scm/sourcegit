@@ -70,8 +70,13 @@
       </Border>
 
       <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Disabled">
-        <Grid Margin="20" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-              ColumnDefinitions="140,MinMax(220,520)">
+        <Grid Margin="20"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="140"/>
+            <ColumnDefinition Width="*" MinWidth="220" MaxWidth="520"/>
+          </Grid.ColumnDefinitions>
+
           <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
                      Margin="0,0,0,16"
                      FontSize="15" FontWeight="SemiBold"
