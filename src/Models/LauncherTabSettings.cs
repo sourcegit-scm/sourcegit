@@ -1,5 +1,7 @@
 using System;
 
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace SourceGit.Models
 {
     public enum LauncherTabLayout
@@ -8,19 +10,25 @@ namespace SourceGit.Models
         Vertical = 1,
     }
 
-    public class LauncherTabSettings
+    public class LauncherTabSettings : ObservableObject
     {
         public LauncherTabLayout Layout
         {
             get => _layout;
-            set => _layout = value;
+            set
+            {
+                if (SetProperty(ref _layout, value))
+                    OnPropertyChanged(nameof(IsVertical));
+            }
         }
 
         public double VerticalWidth
         {
             get => _verticalWidth;
-            set => _verticalWidth = Math.Clamp(value, 160, 420);
+            set => SetProperty(ref _verticalWidth, Math.Clamp(value, 160, 420));
         }
+
+        public bool IsVertical => _layout == LauncherTabLayout.Vertical;
 
         private LauncherTabLayout _layout = LauncherTabLayout.Horizontal;
         private double _verticalWidth = 220;
