@@ -208,8 +208,8 @@ namespace SourceGit.DevSpaces
                 _host.Opacity = active ? 1 : 0;
                 _host.IsHitTestVisible = active;
 
-                if (_host.Child is Views.DevSpaces spacesView)
-                    spacesView.SetPageActive(active);
+                if (_host.Child is Views.DevSpaces activeSpacesView)
+                    activeSpacesView.SetPageActive(active);
 
                 if (active)
                     _spaces?.EnsureFirstSession();
