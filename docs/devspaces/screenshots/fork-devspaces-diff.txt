@@ -6,6 +6,7 @@ src/Models/GitAccount.cs
 src/Models/GitAccountResolver.cs
 src/Models/GitHubCredentialConfig.cs
 src/Models/LauncherCloseController.cs
+src/Models/LauncherTabSettings.cs
 src/Models/WorktreeBaseBranch.cs
 src/ViewModels/AddWorktree.cs
 src/ViewModels/DevSpaceDashboard.cs
@@ -47,5 +48,7 @@ src/Views/Launcher.axaml
 src/Views/Launcher.axaml.cs
 src/Views/LauncherPages.cs
 src/Views/LauncherTabBar.axaml
+src/Views/LauncherTabBar.axaml.cs
+src/Views/Preferences.DevSpaces.cs
 src/Views/RepositoryConfigure.axaml.cs
 src/Views/WindowsTerminalNativeHost.cs
