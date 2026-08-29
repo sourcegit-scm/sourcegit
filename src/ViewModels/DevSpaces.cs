@@ -95,25 +95,74 @@ namespace SourceGit.ViewModels
 
         public DevSpaceTerminal CreateTerminalAt(int preferredSlot)
         {
-            var command = Preferences.Instance.DevSpacesDefaultCommand;
-            return CreateTerminalAt(preferredSlot, command, GetTerminalDisplayName(command));
+            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            return CreateTerminalAt(
+                preferredSlot,
+                settings.DefaultTerminal,
+                SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(settings.DefaultTerminal));
         }
 
-        public DevSpaceTerminal CreateTerminalAt(int preferredSlot, string command, string displayName)
+        public DevSpaceTerminal CreateTerminalAt(int preferredSlot, string terminal, string displayName)
         {
-            if (string.IsNullOrWhiteSpace(command))
-                command = Preferences.Instance.DevSpacesDefaultCommand;
+            return CreateTerminalAt(preferredSlot, terminal, displayName, _workingDirectory, null);
+        }
+
+        public DevSpaceTerminal CreateTerminalAt(
+            int preferredSlot,
+            string terminal,
+            string displayName,
+            string workingDirectory,
+            string startupCommand)
+        {
+            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            if (string.IsNullOrWhiteSpace(terminal))
+                terminal = settings.DefaultTerminal;
             if (string.IsNullOrWhiteSpace(displayName))
-                displayName = GetTerminalDisplayName(command);
+                displayName = SourceGit.DevSpaces.DevSpaceProfileSettings.GetTerminalDisplayName(terminal);
+            if (string.IsNullOrWhiteSpace(workingDirectory))
+                workingDirectory = _workingDirectory;
 
             var number = _nextSessionNumber++;
-            var terminal = new DevSpaceTerminal($"{displayName} {number}", command, _workingDirectory);
+            var created = new DevSpaceTerminal(
+                $"{displayName} {number}",
+                terminal,
+                workingDirectory,
+                startupCommand);
 
-            Sessions.Add(terminal);
-            ActiveTerminal = terminal;
+            Sessions.Add(created);
+            ActiveTerminal = created;
             _preferredSlot = preferredSlot;
             RebuildSlots();
-            return terminal;
+            return created;
+        }
+
+        public DevSpaceTerminal CreateProfileTerminalAt(
+            int preferredSlot,
+            SourceGit.DevSpaces.DevSpaceTerminalProfile profile)
+        {
+            SourceGit.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
+            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            var workingDirectory = SourceGit.DevSpaces.DevSpaceProfileSettings.ResolveWorkingDirectory(
+                _workingDirectory,
+                profile.Path);
+
+            return CreateTerminalAt(
+                preferredSlot,
+                settings.DefaultTerminal,
+                profile.Name,
+                workingDirectory,
+                profile.Command);
+        }
+
+        public DevSpaceTerminal CreateCopilotTerminalAt(int preferredSlot)
+        {
+            var settings = SourceGit.DevSpaces.DevSpaceProfileSettings.Instance;
+            return CreateTerminalAt(
+                preferredSlot,
+                settings.DefaultTerminal,
+                "Copilot",
+                _workingDirectory,
+                "copilot");
         }
 
         public void ActivateTerminal(DevSpaceTerminal terminal)
@@ -155,21 +204,6 @@ namespace SourceGit.ViewModels
         public void Dispose()
         {
             StopAll();
-        }
-
-        private static string GetTerminalDisplayName(string command)
-        {
-            var normalized = command?.Trim().ToLowerInvariant();
-            return normalized switch
-            {
-                "copilot" => "Copilot",
-                "pwsh" or "__devspaces_pwsh__" => "PowerShell 7",
-                "powershell" or "powershell.exe" or "__devspaces_powershell__" => "Windows PowerShell",
-                "cmd" or "cmd.exe" or "__devspaces_cmd__" => "Command Prompt",
-                "__devspaces_git_bash__" => "Git Bash",
-                "__devspaces_shell__" => "Shell",
-                _ => "Terminal",
-            };
         }
 
         private void RebuildSlots()
