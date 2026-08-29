@@ -1,5 +1,4 @@
 using SourceGit.Mcp;
-using SourceGit.ViewModels;
 using Xunit;
 
 namespace SourceGit.Tests;
@@ -9,53 +8,53 @@ public class SourceGitMcpPreferencesTests
     [Fact]
     public void Mcp_defaults_are_safe()
     {
-        var preferences = new Preferences();
+        var settings = new SourceGitMcpSettings();
 
-        Assert.False(preferences.EnableMcpServer);
-        Assert.Equal(SourceGitMcpOptions.DefaultPort, preferences.McpPort);
-        Assert.True(preferences.McpShareDevSpaceTerminalOutput);
+        Assert.False(settings.Enabled);
+        Assert.Equal(SourceGitMcpOptions.DefaultPort, settings.Port);
+        Assert.True(settings.ShareDevSpaceTerminalOutput);
         Assert.Equal(
             $"http://127.0.0.1:{SourceGitMcpOptions.DefaultPort}/sse",
-            preferences.McpEndpoint);
-        Assert.Equal(string.Empty, preferences.McpAuthToken);
+            settings.Endpoint);
+        Assert.Equal(string.Empty, settings.AuthToken);
     }
 
     [Fact]
     public void Enabling_mcp_generates_auth_token_when_missing()
     {
-        var preferences = new Preferences();
+        var settings = new SourceGitMcpSettings();
 
-        preferences.EnableMcpServer = true;
+        settings.Enabled = true;
 
-        Assert.True(preferences.EnableMcpServer);
-        Assert.False(string.IsNullOrWhiteSpace(preferences.McpAuthToken));
-        Assert.True(preferences.McpAuthToken.Length >= 32);
+        Assert.True(settings.Enabled);
+        Assert.False(string.IsNullOrWhiteSpace(settings.AuthToken));
+        Assert.True(settings.AuthToken.Length >= 32);
     }
 
     [Fact]
-    public void RegenerateMcpAuthToken_replaces_existing_token()
+    public void RegenerateAuthToken_replaces_existing_token()
     {
-        var preferences = new Preferences();
-        preferences.EnableMcpServer = true;
-        var first = preferences.McpAuthToken;
+        var settings = new SourceGitMcpSettings();
+        settings.Enabled = true;
+        var first = settings.AuthToken;
 
-        preferences.RegenerateMcpAuthToken();
+        settings.RegenerateAuthToken();
 
-        Assert.NotEqual(first, preferences.McpAuthToken);
-        Assert.True(preferences.McpAuthToken.Length >= 32);
+        Assert.NotEqual(first, settings.AuthToken);
+        Assert.True(settings.AuthToken.Length >= 32);
     }
 
     [Fact]
-    public void Service_maps_preferences_to_host_options()
+    public void Service_maps_settings_to_host_options()
     {
-        var preferences = new Preferences
+        var settings = new SourceGitMcpSettings
         {
-            McpPort = 54321,
-            McpShareDevSpaceTerminalOutput = false,
-            McpAuthToken = "token",
+            Port = 54321,
+            ShareDevSpaceTerminalOutput = false,
+            AuthToken = "token",
         };
 
-        var options = SourceGitMcpService.CreateOptions(preferences);
+        var options = SourceGitMcpService.CreateOptions(settings);
 
         Assert.Equal(54321, options.Port);
         Assert.False(options.ShareDevSpaceTerminalOutput);
