@@ -67,14 +67,21 @@ The project uses the following third-party libraries or assets
 - **Version**: 2.30.15
 - **License**: Public Domain
 
+### Microsoft Terminal
+
+- **Source**: https://github.com/microsoft/terminal
+- **Version**: 1.25.260303002
+- **License**: MIT License
+- **License Link**: https://github.com/microsoft/terminal/blob/main/LICENSE
+
 ## Fonts
 
 ### JetBrainsMono
 
-- **Source**: https://github.com/JetBrains/JetBrainsMono
+- **Source**: https://github.com/JetBrainsMono
 - **Commit**: v2.304
 - **License**: SIL Open Font License, Version 1.1
-- **License Link**: https://github.com/JetBrains/JetBrainsMono/blob/v2.304/OFL.txt
+- **License Link**: https://github.com/JetBrainsMono/blob/v2.304/OFL.txt
 
 ## Grammar Files
 
@@ -95,16 +102,16 @@ The project uses the following third-party libraries or assets
 ### eclipse-buildship
 
 - **Source**: https://github.com/eclipse/buildship
-- **Commit**: 6bb773e7692f913dec27105129ebe388de34e68b
+- **Commit**: 6bb773e7692ac20be0481174ec1be772c5da5/LICENSE.md
 - **License**: Eclipse Public License 1.0
-- **License Link**: https://github.com/eclipse-buildship/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/README.md
+- **License Link**: https://github.com/eclipse/buildship/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/README.md
 
 ### vscode-jsp-lang
 
 - **Source**: https://github.com/samuel-weinhardt/vscode-jsp-lang
-- **Commit**: 0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355
+- **Commit**: 0e89ecdb13650dbf46e469a987e4bb21f7c50c20
 - **License**: MIT License
-- **License Link**: https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355/LICENSE
+- **License Link**: https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/main/LICENSE.md
 
 ### vuejs-language-tools
 
