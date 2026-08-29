@@ -1,0 +1,19 @@
+name: MCP TDD
+on:
+  push:
+    branches: [feat/devspace-mcp-sse]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+      - name: Run SourceGit tests
+        run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release
