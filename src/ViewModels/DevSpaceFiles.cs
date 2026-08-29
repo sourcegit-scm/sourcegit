@@ -14,6 +14,8 @@ namespace DevBoard.ViewModels
     {
         public AvaloniaList<DevSpaceFileNode> VisibleItems { get; } = [];
 
+        internal Task InitialRefreshTask { get; }
+
         public string Filter
         {
             get => _filter;
@@ -58,7 +60,7 @@ namespace DevBoard.ViewModels
         public DevSpaceFiles(string workingDirectory)
         {
             _workingDirectory = workingDirectory;
-            _ = RefreshAsync();
+            InitialRefreshTask = RefreshAsync();
         }
 
         public async Task RefreshAsync()
