@@ -1,0 +1,92 @@
+name: Apply DevBoard Data Migration
+
+on:
+  push:
+    branches:
+      - refactor/devboard-identity
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: refactor/devboard-identity
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Wire DevBoard data migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          resolver = Path('src/Native/DataDirectoryResolver.cs')
+          data = resolver.read_text(encoding='utf-8')
+          if 'using System.Linq;' not in data:
+              data = data.replace('using System.IO;\n', 'using System.IO;\nusing System.Linq;\n')
+          resolver.write_text(data, encoding='utf-8')
+
+          os_file = Path('src/Native/OS.cs')
+          data = os_file.read_text(encoding='utf-8')
+          data = data.replace(
+              '            string GetDataDir();\n',
+              '            string GetPortableDataDir();\n            string GetDataDir();\n            string GetLegacyDataDir();\n')
+          old = '''        public static void SetupDataDir()\n        {\n            DataDir = _backend.GetDataDir();\n            if (!Directory.Exists(DataDir))\n                Directory.CreateDirectory(DataDir);\n        }'''
+          new = '''        public static void SetupDataDir()\n        {\n            DataDir = DataDirectoryResolver.Resolve(\n                _backend.GetPortableDataDir(),\n                _backend.GetDataDir(),\n                _backend.GetLegacyDataDir(),\n                message => Debug.WriteLine(message));\n\n            if (!Directory.Exists(DataDir))\n                Directory.CreateDirectory(DataDir);\n        }'''
+          if old not in data:
+              raise SystemExit('OS.SetupDataDir block not found')
+          data = data.replace(old, new)
+          os_file.write_text(data, encoding='utf-8')
+
+          windows = Path('src/Native/Windows.cs')
+          data = windows.read_text(encoding='utf-8')
+          old = '''        public string GetDataDir()\n        {\n            var execFile = Environment.ProcessPath;\n            var portableDir = Path.Combine(Path.GetDirectoryName(execFile)!, "data");\n            if (Directory.Exists(portableDir))\n                return portableDir;\n\n            return Path.Combine(\n                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),\n                "DevBoard");\n        }'''
+          new = '''        public string GetPortableDataDir()\n        {\n            var execFile = Environment.ProcessPath;\n            return Path.Combine(Path.GetDirectoryName(execFile)!, "data");\n        }\n\n        public string GetDataDir()\n        {\n            return Path.Combine(\n                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),\n                "DevBoard");\n        }\n\n        public string GetLegacyDataDir()\n        {\n            return Path.Combine(\n                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),\n                "SourceGit"); // legacy-migration\n        }'''
+          if old not in data:
+              raise SystemExit('Windows GetDataDir block not found')
+          windows.write_text(data.replace(old, new), encoding='utf-8')
+
+          linux = Path('src/Native/Linux.cs')
+          data = linux.read_text(encoding='utf-8')
+          old = '''        public string GetDataDir()\n        {\n            // AppImage supports portable mode\n            var appImage = Environment.GetEnvironmentVariable("APPIMAGE");\n            if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))\n            {\n                var portableDir = Path.Combine(Path.GetDirectoryName(appImage)!, "data");\n                if (Directory.Exists(portableDir))\n                    return portableDir;\n            }\n\n            // Runtime data dir: ~/.sourcegit\n            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);\n            return Path.Combine(home, ".sourcegit");\n        }'''
+          new = '''        public string GetPortableDataDir()\n        {\n            var appImage = Environment.GetEnvironmentVariable("APPIMAGE");\n            if (!string.IsNullOrEmpty(appImage) && File.Exists(appImage))\n                return Path.Combine(Path.GetDirectoryName(appImage)!, "data");\n\n            return string.Empty;\n        }\n\n        public string GetDataDir()\n        {\n            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);\n            return Path.Combine(home, ".devboard");\n        }\n\n        public string GetLegacyDataDir()\n        {\n            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);\n            return Path.Combine(home, ".sourcegit"); // legacy-migration\n        }'''
+          if old not in data:
+              raise SystemExit('Linux GetDataDir block not found')
+          linux.write_text(data.replace(old, new), encoding='utf-8')
+
+          mac = Path('src/Native/MacOS.cs')
+          data = mac.read_text(encoding='utf-8')
+          old = '''        public string GetDataDir()\n        {\n            return Path.Combine(\n                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),\n                "DevBoard");\n        }'''
+          new = '''        public string GetPortableDataDir()\n        {\n            return string.Empty;\n        }\n\n        public string GetDataDir()\n        {\n            return Path.Combine(\n                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),\n                "DevBoard");\n        }\n\n        public string GetLegacyDataDir()\n        {\n            return Path.Combine(\n                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),\n                "SourceGit"); // legacy-migration\n        }'''
+          if old not in data:
+              raise SystemExit('MacOS GetDataDir block not found')
+          mac.write_text(data.replace(old, new), encoding='utf-8')
+          PY
+
+      - name: Run focused migration tests
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c Release --filter DataDirectoryResolverTests
+
+      - name: Run full DevBoard tests
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj -c Release
+
+      - name: Commit data migration
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/Native tests/DevBoard.Tests/Native
+          git commit -m 'feat: migrate legacy SourceGit data to DevBoard'
+          git push origin HEAD:refactor/devboard-identity
