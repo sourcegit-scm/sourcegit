@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import test from 'node:test';
 import { scanText } from '../scripts/check-devboard-identity.mjs';
 
@@ -24,4 +25,30 @@ test('allows explicit legacy migration references', () => {
     scanText('src/Native/DataDirectoryResolver.cs', 'const string LegacyProductName = "SourceGit"; // legacy-migration'),
     [],
   );
+});
+
+test('uses DevBoard Linux package resource filenames', () => {
+  const required = [
+    'build/resources/_common/applications/devboard.desktop',
+    'build/resources/_common/icons/devboard.png',
+    'build/resources/appimage/devboard.appdata.xml',
+    'build/resources/flatpak/devboard.desktop',
+  ];
+
+  for (const path of required) assert.equal(fs.existsSync(path), true, `${path} should exist`);
+});
+
+test('package metadata uses DevBoard identity', () => {
+  const files = [
+    'build/resources/_common/applications/devboard.desktop',
+    'build/resources/appimage/devboard.appdata.xml',
+    'build/resources/flatpak/devboard.desktop',
+    'build/resources/deb/DEBIAN/control',
+    'build/resources/app/App.plist',
+  ];
+
+  for (const path of files) {
+    const content = fs.readFileSync(path, 'utf8');
+    assert.equal(/\bSourceGit\b|\bsourcegit\b/.test(content), false, `${path} should use DevBoard/devboard identity`);
+  }
 });
