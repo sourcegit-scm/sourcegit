@@ -28,6 +28,20 @@
               </StackPanel>
             </Border>
 
+            <Border Height="32"
+                    Margin="2,2,0,2"
+                    Padding="10,0"
+                    CornerRadius="4"
+                    Background="{DynamicResource Brush.Contents}"
+                    PointerPressed="OnAIRouterTabPressed">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <Path Width="13" Height="13"
+                      VerticalAlignment="Center"
+                      Data="{StaticResource Icons.AIAssist}"/>
+                <TextBlock VerticalAlignment="Center" Text="AI Router"/>
+              </StackPanel>
+            </Border>
+
             <ItemsControl ItemsSource="{Binding Sessions}">
               <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -62,7 +76,8 @@
           </StackPanel>
         </ScrollViewer>
 
-        <ComboBox Grid.Column="1"
+        <ComboBox x:Name="TerminalLayoutPicker"
+                  Grid.Column="1"
                   Width="92" Height="28"
                   Margin="8,4,0,4"
                   IsVisible="{Binding IsFilesActive, Converter={x:Static BoolConverters.Not}}"
@@ -73,7 +88,8 @@
           <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.3x3}"/>
         </ComboBox>
 
-        <Button Grid.Column="2"
+        <Button x:Name="NewTerminalButton"
+                Grid.Column="2"
                 Classes="icon_button"
                 Width="30" Height="30"
                 Margin="4,3,6,3"
@@ -88,6 +104,8 @@
     <Grid Grid.Row="1">
       <v:DevSpaceFiles x:Name="FilesView"
                        DataContext="{Binding Files}"/>
+      <v:DevSpaceAIRouter x:Name="AIRouterView"
+                          IsVisible="False"/>
       <Grid x:Name="TerminalGrid" Margin="2"/>
     </Grid>
   </Grid>
