@@ -39,4 +39,16 @@ public class LauncherCloseControllerTests
         Assert.Equal(LauncherCloseAction.HideToTray, controller.Apply(CloseAppDecision.AddToTray));
         Assert.Equal(LauncherCloseAction.Confirm, controller.OnCloseRequested());
     }
+
+    [Fact]
+    public void Normal_app_quit_routes_through_launcher_close()
+    {
+        Assert.Equal(AppQuitAction.RequestLauncherClose, LauncherCloseController.ResolveAppQuit(true));
+    }
+
+    [Fact]
+    public void Standalone_mode_quit_exits_directly()
+    {
+        Assert.Equal(AppQuitAction.ExitImmediately, LauncherCloseController.ResolveAppQuit(false));
+    }
 }
