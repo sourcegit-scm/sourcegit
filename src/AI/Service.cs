@@ -22,8 +22,7 @@ namespace SourceGit.AI
     {
         Auto = 0,
         Cpu = 1,
-        Cuda = 2,
-        Vulkan = 3,
+        Vulkan = 2,
     }
 
     public class Service : ObservableObject, IDisposable
@@ -127,7 +126,6 @@ namespace SourceGit.AI
             set => LocalBackend = value switch
             {
                 (int)LocalLlmBackend.Cpu => LocalLlmBackend.Cpu,
-                (int)LocalLlmBackend.Cuda => LocalLlmBackend.Cuda,
                 (int)LocalLlmBackend.Vulkan => LocalLlmBackend.Vulkan,
                 _ => LocalLlmBackend.Auto,
             };
