@@ -108,7 +108,7 @@
                  Height="28"
                  IsReadOnly="True"
                  VerticalContentAlignment="Center"
-                 Text="{Binding Endpoint}"/>
+                 Text="{Binding DisplayEndpoint}"/>
 
         <CheckBox Grid.Row="4" Grid.Column="1"
                   VerticalAlignment="Center"
