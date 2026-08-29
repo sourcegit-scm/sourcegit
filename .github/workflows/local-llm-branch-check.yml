@@ -25,12 +25,8 @@ jobs:
 
           path = Path("src/Views/Preferences.axaml")
           text = path.read_text(encoding="utf-8-sig")
-          marker = '''                      <TextBlock Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" Text="{Binding LocalModelStatus}"/>
-
-                      <TextBlock Margin="0,12,0,0" Text="Temperature"/>'''
-          replacement = '''                      <TextBlock Margin="0,4,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" Text="{Binding LocalModelStatus}"/>
-
-                      <TextBlock Margin="0,12,0,0" Text="Backend"/>
+          anchor = '                      <TextBlock Margin="0,12,0,0" Text="Temperature"/>'
+          controls = '''                      <TextBlock Margin="0,12,0,0" Text="Backend"/>
                       <ComboBox Margin="0,4,0,0" Height="28" SelectedIndex="{Binding LocalBackendIndex, Mode=TwoWay}">
                         <ComboBoxItem Content="Auto"/>
                         <ComboBoxItem Content="CPU / Metal"/>
@@ -47,12 +43,12 @@ jobs:
                       <TextBlock Margin="0,12,0,0" Text="Batch Size"/>
                       <NumericUpDown Margin="0,4,0,0" Height="28" Minimum="1" Maximum="4096" Increment="64" Value="{Binding LocalBatchSize, Mode=TwoWay}"/>
 
-                      <TextBlock Margin="0,12,0,0" Text="Temperature"/>'''
+'''
 
           if 'Text="Backend"' not in text:
-              if marker not in text:
-                  raise SystemExit("LocalLLM settings marker not found")
-              path.write_text(text.replace(marker, replacement, 1), encoding="utf-8")
+              if anchor not in text:
+                  raise SystemExit("LocalLLM temperature anchor not found")
+              path.write_text(text.replace(anchor, controls + anchor, 1), encoding="utf-8")
           PY
 
       - name: Setup .NET
@@ -62,6 +58,9 @@ jobs:
 
       - name: Test
         run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release --disable-build-servers
+
+      - name: Publish Linux x64 NativeAOT
+        run: dotnet publish src/SourceGit.csproj --configuration Release --runtime linux-x64 --output publish
 
       - name: Commit runtime controls
         if: success()
