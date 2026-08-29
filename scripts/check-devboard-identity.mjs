@@ -10,7 +10,7 @@ const forbidden = [
 ];
 
 const skippedDirectories = new Set(['.git', 'bin', 'obj', 'artifacts', 'node_modules']);
-const scannedExtensions = new Set(['.cs', '.axaml', '.csproj', '.slnx', '.md', '.yml', '.yaml', '.ps1', '.mjs', '.json', '.xml', '.plist', '.desktop', '.sh']);
+const scannedExtensions = new Set(['.cs', '.axaml', '.csproj', '.slnx', '.md', '.yml', '.yaml', '.ps1', '.mjs', '.json', '.xml', '.plist', '.desktop', '.sh', '.svg']);
 
 function isAllowed(pathname, line) {
   if (pathname === 'LICENSE' || pathname === 'THIRD-PARTY-LICENSES.md') return true;
