@@ -16,6 +16,9 @@ const allowedFixtureFiles = new Set([
   'tests/store-msix-script.test.mjs',
   'tests/store-workflow.test.mjs',
   'tests/DevBoard.Tests/Native/DataDirectoryResolverTests.cs',
+  'scripts/check-devboard-identity.mjs',
+  '.github/workflows/homebrew-notify.yml',
+  '.github/workflows/devboard-identity-cleanup.yml',
 ]);
 
 function isAllowed(pathname, line) {
@@ -23,6 +26,7 @@ function isAllowed(pathname, line) {
   if (pathname.includes('/superpowers/specs/') || pathname.includes('/superpowers/plans/')) return true;
   if (allowedFixtureFiles.has(pathname)) return true;
   if (line.includes('sourcegit-scm/sourcegit')) return true;
+  if (line.includes('sourcegit-scm.github.io')) return true;
   if (line.includes('legacy-migration')) return true;
   return false;
 }
