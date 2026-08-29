@@ -82,7 +82,7 @@ namespace SourceGit.Views
         private SourceGit.DevSpaces.AvaloniaDevSpaceTerminalSurface CreateFallbackSurface()
         {
             if (!TryFindResource("DevSpaces.FallbackTerminalTemplate", out var resource) ||
-                resource is not ControlTemplate template)
+                resource is not IControlTemplate template)
             {
                 throw new InvalidOperationException("DevSpaces fallback terminal template was not found.");
             }
