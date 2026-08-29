@@ -25,10 +25,18 @@ namespace SourceGit.Models
             {
                 if (SetProperty(ref _layout, value))
                 {
+                    OnPropertyChanged(nameof(LayoutIndex));
                     OnPropertyChanged(nameof(IsVertical));
                     Save();
                 }
             }
+        }
+
+        [JsonIgnore]
+        public int LayoutIndex
+        {
+            get => (int)_layout;
+            set => Layout = value == (int)LauncherTabLayout.Vertical ? LauncherTabLayout.Vertical : LauncherTabLayout.Horizontal;
         }
 
         public double VerticalWidth
