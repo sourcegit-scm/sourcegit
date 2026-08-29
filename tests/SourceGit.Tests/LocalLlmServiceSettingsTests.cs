@@ -42,15 +42,21 @@ public class LocalLlmServiceSettingsTests
     }
 
     [Fact]
-    public void LocalLlmBackend_VulkanIsOnlyBundledForX64()
+    public void LocalLlmBackend_VulkanIsOnlyBundledForSupportedX64Platforms()
     {
         var method = typeof(LocalLlmBackendCoordinator).GetMethod(
             "SupportsBundledVulkan",
-            BindingFlags.Static | BindingFlags.NonPublic);
+            BindingFlags.Static | BindingFlags.NonPublic,
+            binder: null,
+            types: [typeof(Architecture), typeof(bool), typeof(bool)],
+            modifiers: null);
 
         Assert.NotNull(method);
-        Assert.True((bool)method.Invoke(null, [Architecture.X64]));
-        Assert.False((bool)method.Invoke(null, [Architecture.Arm64]));
+        Assert.True((bool)method.Invoke(null, [Architecture.X64, true, false]));
+        Assert.True((bool)method.Invoke(null, [Architecture.X64, false, true]));
+        Assert.False((bool)method.Invoke(null, [Architecture.X64, false, false]));
+        Assert.False((bool)method.Invoke(null, [Architecture.Arm64, true, false]));
+        Assert.False((bool)method.Invoke(null, [Architecture.Arm64, false, true]));
     }
 
     [Fact]
