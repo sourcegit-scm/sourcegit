@@ -1,3 +1,4 @@
+using System;
 using SourceGit.Models;
 using Xunit;
 
