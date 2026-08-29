@@ -31,3 +31,24 @@ test('Store build checkout includes the required AvaloniaEdit submodule', async 
   const buildJob = workflow.split('  build-msix:')[1]?.split('  verify-store-packages:')[0] ?? '';
   assert.match(buildJob, /uses: actions\/checkout@v4\s+with:\s+submodules: (?:true|recursive)/m);
 });
+
+test('Store workflow runs unit tests once and reuses RID restore for publish', async () => {
+  const workflow = await readFile(workflowUrl, 'utf8');
+  const unitTestJob = workflow.split('  unit-tests:')[1]?.split('  build-msix:')[0] ?? '';
+  const buildJob = workflow.split('  build-msix:')[1]?.split('  verify-store-packages:')[0] ?? '';
+
+  assert.match(unitTestJob, /dotnet test tests\/DevBoard\.Tests\/DevBoard\.Tests\.csproj --configuration Release/);
+  assert.match(buildJob, /needs: \[preflight, unit-tests\]/);
+  assert.doesNotMatch(buildJob, /dotnet test /);
+  assert.match(buildJob, /dotnet publish src\/DevBoard\.csproj .*--no-restore/);
+});
+
+test('Store workflow cancels superseded runs and caps long jobs', async () => {
+  const workflow = await readFile(workflowUrl, 'utf8');
+  assert.match(workflow, /concurrency:\s+group: store-msix-/m);
+  assert.match(workflow, /cancel-in-progress: true/);
+  const unitTestJob = workflow.split('  unit-tests:')[1]?.split('  build-msix:')[0] ?? '';
+  const buildJob = workflow.split('  build-msix:')[1]?.split('  verify-store-packages:')[0] ?? '';
+  assert.match(unitTestJob, /timeout-minutes: 20/);
+  assert.match(buildJob, /timeout-minutes: 30/);
+});
