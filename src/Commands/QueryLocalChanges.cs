@@ -181,8 +181,6 @@ namespace SourceGit.Commands
                         outs.Add(change);
                 }
 
-                await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
-
                 lock (capturedLock)
                 {
                     captured.Process = null;
