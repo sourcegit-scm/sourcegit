@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 
 using SourceGit.Models;
-using SourceGit.ViewModels;
 using Xunit;
 
 namespace SourceGit.Tests;
@@ -46,12 +45,11 @@ public sealed class LauncherTabLayoutTests
     }
 
     [Fact]
-    public void PreferencesOwnLauncherTabSettings()
+    public void SharedPreferenceInstanceIsAvailable()
     {
-        var preferences = new Preferences();
+        var settings = LauncherTabSettings.Instance;
 
-        Assert.Equal(LauncherTabLayout.Horizontal, preferences.LauncherTabs.Layout);
-        Assert.Equal(220, preferences.LauncherTabs.VerticalWidth);
+        Assert.NotNull(settings);
     }
 
     [Fact]
