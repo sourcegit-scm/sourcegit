@@ -89,7 +89,7 @@ jobs:
     name: Store unit tests
     needs: preflight
     runs-on: windows-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -97,9 +97,15 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - name: Restore unit tests
+        shell: pwsh
+        run: dotnet restore tests/DevBoard.Tests/DevBoard.Tests.csproj
+      - name: Build unit tests
+        shell: pwsh
+        run: dotnet build tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release --no-restore
       - name: Run unit tests once
         shell: pwsh
-        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release
+        run: dotnet test tests/DevBoard.Tests/DevBoard.Tests.csproj --configuration Release --no-build --no-restore --blame-hang --blame-hang-timeout 2m --logger "console;verbosity=normal"
 
   build-msix:
     name: Build Store MSIX (${{ matrix.arch }})
