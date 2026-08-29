@@ -67,7 +67,10 @@ public static class DevBoardScreenshotNative
 }
 "@
 
-$process = Start-Process -FilePath $exe -ArgumentList @($root) -WorkingDirectory $appDir -PassThru
+# Do not pass a repository path here. A single directory argument is interpreted by
+# DevBoard as startupRepo and immediately opens the inherited repository/worktree UI.
+# Screenshots for DevBoard must start from the product launcher/Welcome surface.
+$process = Start-Process -FilePath $exe -WorkingDirectory $appDir -PassThru
 $windowProcess = $null
 $deadline = [DateTime]::UtcNow.AddSeconds(60)
 
@@ -146,6 +149,7 @@ try {
         width = $width
         height = $height
         executable = $exe
+        startupMode = "launcher"
     } | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $Output "capture.json")
 }
 finally {
