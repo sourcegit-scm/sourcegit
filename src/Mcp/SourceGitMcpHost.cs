@@ -104,6 +104,13 @@ namespace SourceGit.Mcp
                     return false;
                 }
 
+                if (options.MaxConcurrentToolCalls <= 0)
+                {
+                    LastError = "MCP concurrent tool call limit must be greater than zero.";
+                    return false;
+                }
+
+                var requestLimiter = new SourceGitMcpRequestLimiter(options.MaxConcurrentToolCalls);
                 var builder = WebApplication.CreateSlimBuilder();
                 builder.Logging.ClearProviders();
                 builder.WebHost.UseSetting(WebHostDefaults.PreventHostingStartupKey, "true");
@@ -128,6 +135,19 @@ namespace SourceGit.Mcp
                     if (!IsAuthorized(options, context.Request.Headers.Authorization.ToString()))
                     {
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return;
+                    }
+
+                    if (HttpMethods.IsPost(context.Request.Method))
+                    {
+                        if (!requestLimiter.TryEnter(out var lease))
+                        {
+                            context.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+                            return;
+                        }
+
+                        using (lease)
+                            await next().ConfigureAwait(false);
                         return;
                     }
 

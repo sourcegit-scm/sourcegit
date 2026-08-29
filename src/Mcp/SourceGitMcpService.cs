@@ -50,8 +50,10 @@ namespace SourceGit.Mcp
         public static async Task ShutdownAsync()
         {
             SourceGitMcpHost host;
+            SourceGitMcpSettings settings;
             lock (_sync)
             {
+                settings = _settings;
                 if (_settings != null)
                     _settings.PropertyChanged -= OnSettingsChanged;
 
@@ -65,10 +67,11 @@ namespace SourceGit.Mcp
             try
             {
                 await host.StopAsync().ConfigureAwait(false);
+                settings?.UpdateRuntimeState(false, string.Empty, string.Empty);
             }
-            catch
+            catch (Exception ex)
             {
-                // MCP is optional and must never interfere with SourceGit shutdown.
+                settings?.UpdateRuntimeState(false, string.Empty, ex.Message);
             }
         }
 
@@ -79,10 +82,10 @@ namespace SourceGit.Mcp
 
         private static async Task ApplyAsync()
         {
+            SourceGitMcpSettings settings = null;
             await _applyGate.WaitAsync().ConfigureAwait(false);
             try
             {
-                SourceGitMcpSettings settings;
                 SourceGitMcpHost host;
                 lock (_sync)
                 {
@@ -96,6 +99,7 @@ namespace SourceGit.Mcp
                 if (!settings.Enabled)
                 {
                     await host.StopAsync().ConfigureAwait(false);
+                    settings.UpdateRuntimeState(false, string.Empty, string.Empty);
                     return;
                 }
 
@@ -103,11 +107,15 @@ namespace SourceGit.Mcp
                     settings.RegenerateAuthToken();
 
                 await host.StopAsync().ConfigureAwait(false);
-                await host.StartAsync(CreateOptions(settings)).ConfigureAwait(false);
+                var started = await host.StartAsync(CreateOptions(settings)).ConfigureAwait(false);
+                settings.UpdateRuntimeState(
+                    started,
+                    started ? host.SseEndpoint : string.Empty,
+                    started ? string.Empty : host.LastError);
             }
-            catch
+            catch (Exception ex)
             {
-                // Start/stop failures remain visible through SourceGitMcpHost.LastError.
+                settings?.UpdateRuntimeState(false, string.Empty, ex.Message);
             }
             finally
             {

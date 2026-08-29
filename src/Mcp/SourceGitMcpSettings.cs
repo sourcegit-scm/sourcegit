@@ -72,9 +72,35 @@ namespace SourceGit.Mcp
 
         public string Endpoint => $"http://127.0.0.1:{_port}/sse";
 
+        public string RuntimeStatus => _runtimeRunning
+            ? "Running"
+            : string.IsNullOrWhiteSpace(_runtimeError) ? "Stopped" : "Error";
+
+        public string RuntimeEndpoint => _runtimeEndpoint;
+
+        public string RuntimeError => _runtimeError;
+
         public void RegenerateAuthToken()
         {
             AuthToken = GenerateToken();
+        }
+
+        public void UpdateRuntimeState(bool running, string endpoint, string error)
+        {
+            var oldStatus = RuntimeStatus;
+            var oldEndpoint = _runtimeEndpoint;
+            var oldError = _runtimeError;
+
+            _runtimeRunning = running;
+            _runtimeEndpoint = endpoint ?? string.Empty;
+            _runtimeError = error ?? string.Empty;
+
+            if (!string.Equals(oldStatus, RuntimeStatus, StringComparison.Ordinal))
+                OnPropertyChanged(nameof(RuntimeStatus));
+            if (!string.Equals(oldEndpoint, _runtimeEndpoint, StringComparison.Ordinal))
+                OnPropertyChanged(nameof(RuntimeEndpoint));
+            if (!string.Equals(oldError, _runtimeError, StringComparison.Ordinal))
+                OnPropertyChanged(nameof(RuntimeError));
         }
 
         private static SourceGitMcpSettings Load()
@@ -195,5 +221,8 @@ namespace SourceGit.Mcp
         private bool _shareDevSpaceTerminalOutput = true;
         private string _authToken = string.Empty;
         private string _storagePath = string.Empty;
+        private bool _runtimeRunning;
+        private string _runtimeEndpoint = string.Empty;
+        private string _runtimeError = string.Empty;
     }
 }

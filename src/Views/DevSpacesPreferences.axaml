@@ -45,7 +45,7 @@
             Grid.Row="4"
             Grid.ColumnSpan="2"
             x:DataType="mcp:SourceGitMcpSettings"
-            RowDefinitions="32,36,36,36,36,36,Auto"
+            RowDefinitions="32,36,36,36,36,36,36,Auto,Auto"
             ColumnDefinitions="Auto,*">
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
                    VerticalAlignment="Center"
@@ -102,7 +102,21 @@
                   Click="OnRegenerateMcpToken"/>
         </Grid>
 
+        <TextBlock Grid.Row="6" Grid.Column="0"
+                   Margin="0,0,16,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Text="Status"/>
         <TextBlock Grid.Row="6" Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Text="{Binding RuntimeStatus}"/>
+
+        <TextBlock Grid.Row="7" Grid.Column="1"
+                   Margin="0,4,0,0"
+                   TextWrapping="Wrap"
+                   Text="{Binding RuntimeError}"/>
+
+        <TextBlock Grid.Row="8" Grid.Column="1"
                    Margin="0,8,0,0"
                    Opacity="0.7"
                    TextWrapping="Wrap"
