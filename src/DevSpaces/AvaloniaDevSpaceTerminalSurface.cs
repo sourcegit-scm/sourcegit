@@ -13,7 +13,7 @@ namespace SourceGit.DevSpaces
 {
     internal sealed class AvaloniaDevSpaceTerminalSurface : IDevSpaceTerminalSurface
     {
-        internal AvaloniaDevSpaceTerminalSurface(ControlTemplate template, FontFamily fontFamily)
+        internal AvaloniaDevSpaceTerminalSurface(IControlTemplate template, FontFamily fontFamily)
         {
             _terminal = new Views.DevSpaceTerminalControl
             {
