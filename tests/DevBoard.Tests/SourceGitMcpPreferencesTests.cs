@@ -56,7 +56,7 @@ public class DevBoardMcpPreferencesTests
         if (OperatingSystem.IsWindows())
             return;
 
-        var path = Path.Combine(Path.GetTempPath(), $"sourcegit-mcp-{Guid.NewGuid():N}.tmp");
+        var path = Path.Combine(Path.GetTempPath(), $"devboard-mcp-{Guid.NewGuid():N}.tmp");
         try
         {
             var method = typeof(DevBoardMcpSettings).GetMethod(

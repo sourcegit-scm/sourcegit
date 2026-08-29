@@ -143,13 +143,13 @@ public class LocalLlmServiceSettingsTests
         using var service = new Service
         {
             Provider = ProviderType.LocalLlm,
-            LocalModelPath = Path.Combine(Path.GetTempPath(), "sourcegit-default.gguf"),
+            LocalModelPath = Path.Combine(Path.GetTempPath(), "devboard-default.gguf"),
             AutoLoadModel = false,
         };
 
         service.FetchAvailableModels();
 
-        Assert.Equal(["sourcegit-default.gguf"], service.AvailableModels);
+        Assert.Equal(["devboard-default.gguf"], service.AvailableModels);
     }
 
     [Fact]

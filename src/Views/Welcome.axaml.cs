@@ -425,7 +425,7 @@ namespace DevBoard.Views
 
         private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
-        private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
+        private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("devboard-dnd-repo-node");
         private CancellationTokenSource _cancellation = new CancellationTokenSource();
     }
 }

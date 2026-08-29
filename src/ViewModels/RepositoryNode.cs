@@ -185,7 +185,7 @@ namespace DevBoard.ViewModels
 
         public void LoadMinimalInfo(string gitDir)
         {
-            var savedTo = Path.Combine(gitDir, "sourcegit.node");
+            var savedTo = Path.Combine(gitDir, "devboard.node");
             if (!File.Exists(savedTo))
                 return;
 
@@ -207,7 +207,7 @@ namespace DevBoard.ViewModels
             if (!Directory.Exists(gitDir))
                 return;
 
-            var savedTo = Path.Combine(gitDir, "sourcegit.node");
+            var savedTo = Path.Combine(gitDir, "devboard.node");
             var minimalInfo = new RepositoryNodeMinimalInfo
             {
                 FriendlyName = Name,

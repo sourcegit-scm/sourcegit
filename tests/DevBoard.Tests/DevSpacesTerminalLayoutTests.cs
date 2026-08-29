@@ -64,7 +64,7 @@ namespace DevBoard.Tests
 
         private static string CreateTempDirectory()
         {
-            var path = Path.Combine(Path.GetTempPath(), $"sourcegit-terminal-layout-{System.Guid.NewGuid():N}");
+            var path = Path.Combine(Path.GetTempPath(), $"devboard-terminal-layout-{System.Guid.NewGuid():N}");
             Directory.CreateDirectory(path);
             return path;
         }

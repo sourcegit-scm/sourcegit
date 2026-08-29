@@ -36,7 +36,7 @@ namespace DevBoard.Tests
         [Fact]
         public void ActivityIsNewestFirstAndCappedAtTwenty()
         {
-            var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"sourcegit-dashboard-summary-{System.Guid.NewGuid():N}");
+            var root = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"devboard-dashboard-summary-{System.Guid.NewGuid():N}");
             System.IO.Directory.CreateDirectory(root);
             try
             {

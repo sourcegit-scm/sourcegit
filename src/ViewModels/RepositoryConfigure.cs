@@ -455,7 +455,7 @@ namespace DevBoard.ViewModels
             }
         }
 
-        private const string GitAccountConfigKey = "sourcegit.account";
+        private const string GitAccountConfigKey = "devboard.account";
 
         private readonly Repository _repo;
         private readonly Dictionary<string, string> _cached;

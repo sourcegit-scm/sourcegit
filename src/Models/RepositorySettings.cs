@@ -62,7 +62,7 @@ namespace DevBoard.Models
 
         public static RepositorySettings Get(string gitCommonDir)
         {
-            var fileInfo = new FileInfo(Path.Combine(gitCommonDir, "sourcegit.settings"));
+            var fileInfo = new FileInfo(Path.Combine(gitCommonDir, "devboard.settings"));
             var fullpath = fileInfo.FullName;
             if (_cache.TryGetValue(fullpath, out var setting))
                 return setting;

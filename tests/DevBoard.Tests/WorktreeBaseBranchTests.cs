@@ -50,7 +50,7 @@ public class WorktreeBaseBranchTests
     [Fact]
     public void Persisted_base_is_returned_only_for_the_branch_it_was_created_for()
     {
-        var dir = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"sourcegit-worktree-base-{Guid.NewGuid():N}");
+        var dir = System.IO.Path.Combine(System.IO.Path.GetTempPath(), $"devboard-worktree-base-{Guid.NewGuid():N}");
         try
         {
             System.IO.Directory.CreateDirectory(dir);

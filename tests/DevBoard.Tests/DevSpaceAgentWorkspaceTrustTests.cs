@@ -126,7 +126,7 @@ public sealed class DevSpaceAgentWorkspaceTrustTests
 
     private static string CreateTempDirectory()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"sourcegit-agent-trust-{Guid.NewGuid():N}");
+        var path = Path.Combine(Path.GetTempPath(), $"devboard-agent-trust-{Guid.NewGuid():N}");
         Directory.CreateDirectory(path);
         return path;
     }

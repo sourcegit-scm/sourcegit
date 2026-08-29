@@ -31,7 +31,7 @@ namespace DevBoard.Commands
             else
             {
                 var cmd = $"{tool.Exec.Quoted()} {tool.Cmd}";
-                Args = $"-c difftool.sourcegit.cmd={cmd.Quoted()} difftool --tool=sourcegit --no-prompt {_option}";
+                Args = $"-c difftool.devboard.cmd={cmd.Quoted()} difftool --tool=devboard --no-prompt {_option}";
             }
 
             try

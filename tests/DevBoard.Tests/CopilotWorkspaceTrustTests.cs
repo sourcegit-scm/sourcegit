@@ -13,7 +13,7 @@ public class CopilotWorkspaceTrustTests
     [Fact]
     public void EnsureTrusted_AddsWorkspaceAndPreservesExistingConfig()
     {
-        var root = Path.Combine(Path.GetTempPath(), $"sourcegit-copilot-trust-{Guid.NewGuid():N}");
+        var root = Path.Combine(Path.GetTempPath(), $"devboard-copilot-trust-{Guid.NewGuid():N}");
         var workspace = Path.Combine(root, "workspace");
         var existingTrusted = Path.Combine(root, "existing");
         var copilotHome = Path.Combine(root, ".copilot");
@@ -58,7 +58,7 @@ public class CopilotWorkspaceTrustTests
     [Fact]
     public void EnsureTrusted_DoesNotDuplicateWorkspace()
     {
-        var root = Path.Combine(Path.GetTempPath(), $"sourcegit-copilot-trust-{Guid.NewGuid():N}");
+        var root = Path.Combine(Path.GetTempPath(), $"devboard-copilot-trust-{Guid.NewGuid():N}");
         var workspace = Path.Combine(root, "workspace");
         var copilotHome = Path.Combine(root, ".copilot");
 

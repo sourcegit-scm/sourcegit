@@ -356,7 +356,7 @@ namespace DevBoard.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
-            var saveFile = Path.Combine(_repo.GitDir, "sourcegit.interactive_rebase");
+            var saveFile = Path.Combine(_repo.GitDir, "devboard.interactive_rebase");
             var collection = new Models.InteractiveRebaseJobCollection();
             collection.OrigHead = _repo.CurrentBranch.Head;
             collection.Onto = On.SHA;

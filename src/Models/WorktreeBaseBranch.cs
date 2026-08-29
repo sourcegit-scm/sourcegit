@@ -16,7 +16,7 @@ namespace DevBoard.Models
 
     public static class WorktreeBaseBranch
     {
-        private const string MetadataFile = "sourcegit.worktree-base";
+        private const string MetadataFile = "devboard.worktree-base";
 
         public static string Normalize(string branch)
         {

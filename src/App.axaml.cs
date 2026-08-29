@@ -295,7 +295,7 @@ namespace DevBoard
             if (!dirInfo.Exists || !dirInfo.Name.Equals("rebase-merge", StringComparison.Ordinal))
                 return true;
 
-            var jobsFile = Path.Combine(dirInfo.Parent!.FullName, "sourcegit.interactive_rebase");
+            var jobsFile = Path.Combine(dirInfo.Parent!.FullName, "devboard.interactive_rebase");
             if (!File.Exists(jobsFile))
                 return true;
 
@@ -324,7 +324,7 @@ namespace DevBoard
             var origHeadFile = Path.Combine(gitDir, "rebase-merge", "orig-head");
             var ontoFile = Path.Combine(gitDir, "rebase-merge", "onto");
             var doneFile = Path.Combine(gitDir, "rebase-merge", "done");
-            var jobsFile = Path.Combine(gitDir, "sourcegit.interactive_rebase");
+            var jobsFile = Path.Combine(gitDir, "devboard.interactive_rebase");
             if (!File.Exists(ontoFile) || !File.Exists(origHeadFile) || !File.Exists(doneFile) || !File.Exists(jobsFile))
                 return true;
 
