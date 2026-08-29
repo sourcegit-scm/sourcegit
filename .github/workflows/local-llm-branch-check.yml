@@ -3,6 +3,8 @@ name: LocalLLM Branch Check
 on:
   push:
     branches: [feature/local-llm-provider]
+  pull_request:
+    branches: [feature/local-llm-provider]
   workflow_dispatch:
 
 permissions:
