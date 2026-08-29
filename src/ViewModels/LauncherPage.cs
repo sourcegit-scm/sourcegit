@@ -54,14 +54,14 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _baseBranch, value))
                 {
                     OnPropertyChanged(nameof(HasBaseBranch));
-                    OnPropertyChanged(nameof(BaseBranchBadgeColor));
+                    OnPropertyChanged(nameof(BaseBranchKind));
                 }
             }
         }
 
         public bool HasBaseBranch => !string.IsNullOrEmpty(_baseBranch);
 
-        public string BaseBranchBadgeColor => Models.WorktreeBaseBranch.GetBadgeColor(Models.WorktreeBaseBranch.GetKind(_baseBranch));
+        public Models.WorktreeBaseBranchKind BaseBranchKind => Models.WorktreeBaseBranch.GetKind(_baseBranch);
 
         public Popup Popup
         {
