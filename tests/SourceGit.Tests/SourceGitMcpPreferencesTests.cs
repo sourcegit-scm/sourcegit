@@ -17,6 +17,8 @@ public class SourceGitMcpPreferencesTests
             $"http://127.0.0.1:{SourceGitMcpOptions.DefaultPort}/sse",
             settings.Endpoint);
         Assert.Equal(string.Empty, settings.AuthToken);
+        Assert.Equal("Stopped", settings.RuntimeStatus);
+        Assert.Equal(string.Empty, settings.RuntimeError);
     }
 
     [Fact]
@@ -42,6 +44,24 @@ public class SourceGitMcpPreferencesTests
 
         Assert.NotEqual(first, settings.AuthToken);
         Assert.True(settings.AuthToken.Length >= 32);
+    }
+
+    [Fact]
+    public void Runtime_state_exposes_running_endpoint_and_startup_errors()
+    {
+        var settings = new SourceGitMcpSettings();
+
+        settings.UpdateRuntimeState(true, "http://127.0.0.1:54321/sse", string.Empty);
+
+        Assert.Equal("Running", settings.RuntimeStatus);
+        Assert.Equal("http://127.0.0.1:54321/sse", settings.RuntimeEndpoint);
+        Assert.Equal(string.Empty, settings.RuntimeError);
+
+        settings.UpdateRuntimeState(false, string.Empty, "Address already in use");
+
+        Assert.Equal("Error", settings.RuntimeStatus);
+        Assert.Equal(string.Empty, settings.RuntimeEndpoint);
+        Assert.Equal("Address already in use", settings.RuntimeError);
     }
 
     [Fact]
