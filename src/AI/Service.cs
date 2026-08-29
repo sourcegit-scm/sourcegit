@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ClientModel;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +16,14 @@ namespace SourceGit.AI
     {
         OpenAI = 0,
         LocalLlm = 1,
+    }
+
+    public enum LocalLlmBackend
+    {
+        Auto = 0,
+        Cpu = 1,
+        Cuda = 2,
+        Vulkan = 3,
     }
 
     public class Service : ObservableObject, IDisposable
@@ -99,6 +107,65 @@ namespace SourceGit.AI
             }
         }
 
+        public LocalLlmBackend LocalBackend
+        {
+            get => _localBackend;
+            set
+            {
+                if (SetProperty(ref _localBackend, value))
+                {
+                    OnPropertyChanged(nameof(LocalBackendIndex));
+                    DisposeLocalLlmRuntime();
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public int LocalBackendIndex
+        {
+            get => (int)_localBackend;
+            set => LocalBackend = value switch
+            {
+                (int)LocalLlmBackend.Cpu => LocalLlmBackend.Cpu,
+                (int)LocalLlmBackend.Cuda => LocalLlmBackend.Cuda,
+                (int)LocalLlmBackend.Vulkan => LocalLlmBackend.Vulkan,
+                _ => LocalLlmBackend.Auto,
+            };
+        }
+
+        public int GpuLayerCount
+        {
+            get => _gpuLayerCount;
+            set
+            {
+                var normalized = Math.Max(-1, value);
+                if (SetProperty(ref _gpuLayerCount, normalized))
+                    DisposeLocalLlmRuntime();
+            }
+        }
+
+        public int LocalThreads
+        {
+            get => _localThreads;
+            set
+            {
+                var normalized = Math.Max(1, value);
+                if (SetProperty(ref _localThreads, normalized))
+                    DisposeLocalLlmRuntime();
+            }
+        }
+
+        public uint LocalBatchSize
+        {
+            get => _localBatchSize;
+            set
+            {
+                var normalized = Math.Max(1u, value);
+                if (SetProperty(ref _localBatchSize, normalized))
+                    DisposeLocalLlmRuntime();
+            }
+        }
+
         public float Temperature
         {
             get => _temperature;
@@ -154,7 +221,7 @@ namespace SourceGit.AI
                 AvailableModels = string.IsNullOrWhiteSpace(LocalModelPath) ? [] : [Path.GetFileName(LocalModelPath)];
                 UpdateLocalModelStatus();
                 if (AutoLoadModel && IsLocalModelAvailable())
-                    _ = PreloadLocalModelAsync(CancellationToken.None);
+                    _ = PreloadLocalModelSafelyAsync();
                 return;
             }
 
@@ -223,6 +290,18 @@ namespace SourceGit.AI
                 : new OpenAIClient(credential, new() { Endpoint = new Uri(Server) });
         }
 
+        private async Task PreloadLocalModelSafelyAsync()
+        {
+            try
+            {
+                await PreloadLocalModelAsync(CancellationToken.None);
+            }
+            catch (Exception ex)
+            {
+                LocalModelStatus = $"Failed: {ex.Message}";
+            }
+        }
+
         private Task<LocalLlmRuntime> GetLocalLlmRuntimeAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -242,14 +321,29 @@ namespace SourceGit.AI
                 return Task.Run(() =>
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-                    var runtime = LocalLlmRuntime.Load(LocalModelPath, ContextWindow);
-                    lock (_localLlmLock)
+                    try
                     {
-                        _localLlmRuntime ??= runtime;
-                        if (!ReferenceEquals(_localLlmRuntime, runtime))
-                            runtime.Dispose();
-                        LocalModelStatus = "Loaded";
-                        return _localLlmRuntime;
+                        var runtime = LocalLlmRuntime.Load(
+                            LocalModelPath,
+                            LocalBackend,
+                            ContextWindow,
+                            GpuLayerCount,
+                            LocalThreads,
+                            LocalBatchSize);
+
+                        lock (_localLlmLock)
+                        {
+                            _localLlmRuntime ??= runtime;
+                            if (!ReferenceEquals(_localLlmRuntime, runtime))
+                                runtime.Dispose();
+                            LocalModelStatus = $"Loaded ({_localLlmRuntime.Backend})";
+                            return _localLlmRuntime;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LocalModelStatus = $"Failed: {ex.Message}";
+                        throw;
                     }
                 }, cancellationToken);
             }
@@ -264,7 +358,7 @@ namespace SourceGit.AI
             else if (!File.Exists(LocalModelPath))
                 LocalModelStatus = "Model not found";
             else if (_localLlmRuntime != null)
-                LocalModelStatus = "Loaded";
+                LocalModelStatus = $"Loaded ({_localLlmRuntime.Backend})";
             else
                 LocalModelStatus = "Ready";
         }
@@ -285,6 +379,10 @@ namespace SourceGit.AI
         private ProviderType _provider = ProviderType.OpenAI;
         private string _model = string.Empty;
         private string _localModelPath = string.Empty;
+        private LocalLlmBackend _localBackend = LocalLlmBackend.Auto;
+        private int _gpuLayerCount = -1;
+        private int _localThreads = Math.Max(1, Environment.ProcessorCount / 2);
+        private uint _localBatchSize = 512;
         private float _temperature = 0.2f;
         private uint _contextWindow = 10000;
         private bool _autoLoadModel = true;
