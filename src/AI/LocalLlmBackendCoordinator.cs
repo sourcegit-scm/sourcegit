@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using LLama.Native;
 
 namespace SourceGit.AI
@@ -25,7 +26,7 @@ namespace SourceGit.AI
                 {
                     LocalLlmBackend.Auto when capabilities.VulkanAvailable => LocalLlmBackend.Vulkan,
                     LocalLlmBackend.Auto => LocalLlmBackend.Cpu,
-                    LocalLlmBackend.Vulkan when !capabilities.VulkanAvailable => throw new InvalidOperationException("Vulkan backend was explicitly requested but Vulkan is not available."),
+                    LocalLlmBackend.Vulkan when !capabilities.VulkanAvailable => throw new InvalidOperationException("Vulkan backend was explicitly requested but Vulkan is not available for this platform/architecture."),
                     _ => requested,
                 };
 
@@ -43,8 +44,16 @@ namespace SourceGit.AI
 
         private static LocalLlmBackendCapabilities ProbeCapabilities()
         {
+            if (!SupportsBundledVulkan(RuntimeInformation.ProcessArchitecture))
+                return new LocalLlmBackendCapabilities(false);
+
             var vulkanAvailable = CommandExists("vulkaninfo") || OperatingSystem.IsWindows();
             return new LocalLlmBackendCapabilities(vulkanAvailable);
+        }
+
+        private static bool SupportsBundledVulkan(Architecture architecture)
+        {
+            return architecture == Architecture.X64;
         }
 
         private static bool CommandExists(string command)
