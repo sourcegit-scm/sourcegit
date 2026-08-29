@@ -1,0 +1,128 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             x:Class="SourceGit.Views.DevSpaceFiles"
+             x:DataType="vm:DevSpaceFiles">
+  <Grid ColumnDefinitions="300,1,*">
+    <Grid Grid.Column="0" RowDefinitions="38,*">
+      <Border Grid.Row="0"
+              BorderThickness="0,0,0,1"
+              BorderBrush="{DynamicResource Brush.Border2}">
+        <Grid ColumnDefinitions="*,32" Margin="6,4">
+          <TextBox Grid.Column="0"
+                   Height="28"
+                   Watermark="Search files..."
+                   Text="{Binding Filter, Mode=TwoWay}"/>
+          <Button Grid.Column="1"
+                  Classes="icon_button"
+                  Width="28" Height="28"
+                  Margin="4,0,0,0"
+                  Click="OnRefresh"
+                  ToolTip.Tip="Refresh files">
+            <TextBlock Text="↻" FontSize="16"/>
+          </Button>
+        </Grid>
+      </Border>
+
+      <ListBox Grid.Row="1"
+               Margin="2"
+               ItemsSource="{Binding VisibleItems}"
+               SelectedItem="{Binding SelectedNode, Mode=TwoWay}">
+        <ListBox.ItemTemplate>
+          <DataTemplate x:DataType="vm:DevSpaceFileNode">
+            <Grid Height="26"
+                  Margin="{Binding Indent}"
+                  ColumnDefinitions="20,18,*,24">
+              <Button Grid.Column="0"
+                      Classes="icon_button"
+                      Width="20" Height="22"
+                      Padding="0"
+                      IsVisible="{Binding IsDirectory}"
+                      Click="OnToggleExpanded">
+                <TextBlock Text="›" FontSize="16" HorizontalAlignment="Center"/>
+              </Button>
+
+              <Path Grid.Column="1"
+                    Width="13" Height="13"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Data="{StaticResource Icons.Folder}"
+                    IsVisible="{Binding IsDirectory}"/>
+              <Path Grid.Column="1"
+                    Width="12" Height="12"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Data="{StaticResource Icons.File.Empty}"
+                    IsVisible="{Binding IsDirectory, Converter={x:Static BoolConverters.Not}}"/>
+
+              <TextBlock Grid.Column="2"
+                         Margin="4,0,4,0"
+                         VerticalAlignment="Center"
+                         Text="{Binding Name}"
+                         TextTrimming="CharacterEllipsis"
+                         ToolTip.Tip="{Binding RelativePath}"/>
+
+              <TextBlock Grid.Column="3"
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center"
+                         FontWeight="SemiBold"
+                         Text="{Binding StatusText}"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+
+    <Border Grid.Column="1" Background="{DynamicResource Brush.Border2}"/>
+
+    <Grid Grid.Column="2">
+      <TextBlock HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 Text="Select a file to preview"/>
+
+      <ContentControl Content="{Binding DetailContext}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:DiffContext">
+            <v:DiffView/>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:DevSpaceWorkspaceFile">
+            <Grid RowDefinitions="30,*">
+              <Border Grid.Row="0"
+                      BorderThickness="0,0,0,1"
+                      BorderBrush="{DynamicResource Brush.Border2}">
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Grid.Column="0"
+                             Margin="8,0"
+                             VerticalAlignment="Center"
+                             Text="{Binding Path}"
+                             TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1"
+                             Margin="8,0"
+                             VerticalAlignment="Center"
+                             Foreground="{DynamicResource Brush.FG2}"
+                             Text="{Binding Message}"/>
+                </Grid>
+              </Border>
+
+              <TextBox Grid.Row="1"
+                       Margin="0"
+                       Padding="8"
+                       BorderThickness="0"
+                       AcceptsReturn="True"
+                       AcceptsTab="True"
+                       IsReadOnly="True"
+                       TextWrapping="NoWrap"
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                       ScrollViewer.VerticalScrollBarVisibility="Auto"
+                       FontFamily="{DynamicResource Fonts.Monospace}"
+                       Text="{Binding Content}"/>
+            </Grid>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
+  </Grid>
+</UserControl>

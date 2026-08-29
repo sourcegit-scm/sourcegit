@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
              x:Class="SourceGit.Views.DevSpaces"
              x:DataType="vm:DevSpaces">
   <Grid RowDefinitions="36,*">
@@ -12,42 +13,59 @@
         <ScrollViewer Grid.Column="0"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Disabled">
-          <ItemsControl ItemsSource="{Binding Sessions}">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"/>
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate x:DataType="vm:DevSpaceTerminal">
-                <Border Height="32"
-                        Margin="2,2,0,2"
-                        Padding="8,0,2,0"
-                        CornerRadius="4"
-                        Background="{DynamicResource Brush.Contents}"
-                        PointerPressed="OnTerminalTabPressed">
-                  <Grid ColumnDefinitions="Auto,Auto">
-                    <TextBlock Grid.Column="0"
-                               VerticalAlignment="Center"
-                               Text="{Binding Title}"/>
-                    <Button Grid.Column="1"
-                            Classes="icon_button"
-                            Width="24" Height="24"
-                            Margin="4,0,0,0"
-                            Click="OnCloseTerminal"
-                            ToolTip.Tip="{DynamicResource Text.DevSpaces.CloseTerminal}">
-                      <Path Width="10" Height="10" Data="{StaticResource Icons.Clear}"/>
-                    </Button>
-                  </Grid>
-                </Border>
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
+          <StackPanel Orientation="Horizontal">
+            <Border Height="32"
+                    Margin="2,2,0,2"
+                    Padding="10,0"
+                    CornerRadius="4"
+                    Background="{DynamicResource Brush.Contents}"
+                    PointerPressed="OnFilesTabPressed">
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <Path Width="13" Height="13"
+                      VerticalAlignment="Center"
+                      Data="{StaticResource Icons.Folder}"/>
+                <TextBlock VerticalAlignment="Center" Text="Files"/>
+              </StackPanel>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding Sessions}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:DevSpaceTerminal">
+                  <Border Height="32"
+                          Margin="2,2,0,2"
+                          Padding="8,0,2,0"
+                          CornerRadius="4"
+                          Background="{DynamicResource Brush.Contents}"
+                          PointerPressed="OnTerminalTabPressed">
+                    <Grid ColumnDefinitions="Auto,Auto">
+                      <TextBlock Grid.Column="0"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding Title}"/>
+                      <Button Grid.Column="1"
+                              Classes="icon_button"
+                              Width="24" Height="24"
+                              Margin="4,0,0,0"
+                              Click="OnCloseTerminal"
+                              ToolTip.Tip="{DynamicResource Text.DevSpaces.CloseTerminal}">
+                        <Path Width="10" Height="10" Data="{StaticResource Icons.Clear}"/>
+                      </Button>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
         </ScrollViewer>
 
         <ComboBox Grid.Column="1"
                   Width="92" Height="28"
                   Margin="8,4,0,4"
+                  IsVisible="{Binding IsFilesActive, Converter={x:Static BoolConverters.Not}}"
                   SelectedIndex="{Binding LayoutIndex, Mode=TwoWay}">
           <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.Auto}"/>
           <ComboBoxItem Content="{DynamicResource Text.DevSpaces.Layout.1x2}"/>
@@ -59,6 +77,7 @@
                 Classes="icon_button"
                 Width="30" Height="30"
                 Margin="4,3,6,3"
+                IsVisible="{Binding IsFilesActive, Converter={x:Static BoolConverters.Not}}"
                 Click="OnCreateTerminal"
                 ToolTip.Tip="{DynamicResource Text.DevSpaces.NewTerminal}">
           <Path Width="13" Height="13" Data="{StaticResource Icons.Plus}"/>
@@ -66,6 +85,10 @@
       </Grid>
     </Border>
 
-    <Grid Grid.Row="1" x:Name="TerminalGrid" Margin="2"/>
+    <Grid Grid.Row="1">
+      <v:DevSpaceFiles x:Name="FilesView"
+                       DataContext="{Binding Files}"/>
+      <Grid x:Name="TerminalGrid" Margin="2"/>
+    </Grid>
   </Grid>
 </UserControl>
