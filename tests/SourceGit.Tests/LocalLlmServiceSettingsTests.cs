@@ -22,6 +22,18 @@ public class LocalLlmServiceSettingsTests
     }
 
     [Fact]
+    public void LocalLlmRuntimeSettings_HaveAiStudioCompatibleDefaults()
+    {
+        using var service = new Service();
+        var type = typeof(Service);
+
+        Assert.Equal("Auto", Read(type, service, "LocalBackend")?.ToString());
+        Assert.Equal(-1, Assert.IsType<int>(Read(type, service, "GpuLayerCount")));
+        Assert.True(Assert.IsType<int>(Read(type, service, "LocalThreads")) >= 1);
+        Assert.Equal((uint)512, Assert.IsType<uint>(Read(type, service, "LocalBatchSize")));
+    }
+
+    [Fact]
     public void LocalLlmSettings_RoundTripThroughJson()
     {
         var service = new Service
@@ -42,6 +54,26 @@ public class LocalLlmServiceSettingsTests
         Assert.Equal(0.35f, restored.Temperature);
         Assert.Equal((uint)16384, restored.ContextWindow);
         Assert.False(restored.AutoLoadModel);
+    }
+
+    [Fact]
+    public void LocalLlmRuntimeSettings_RoundTripThroughJson()
+    {
+        using var service = new Service { Provider = ProviderType.LocalLlm };
+        var type = typeof(Service);
+        Write(type, service, "LocalBackend", "Cuda");
+        Write(type, service, "GpuLayerCount", 24);
+        Write(type, service, "LocalThreads", 6);
+        Write(type, service, "LocalBatchSize", (uint)256);
+
+        var json = JsonSerializer.Serialize(service);
+        using var restored = JsonSerializer.Deserialize<Service>(json);
+
+        Assert.NotNull(restored);
+        Assert.Equal("Cuda", Read(type, restored, "LocalBackend")?.ToString());
+        Assert.Equal(24, Assert.IsType<int>(Read(type, restored, "GpuLayerCount")));
+        Assert.Equal(6, Assert.IsType<int>(Read(type, restored, "LocalThreads")));
+        Assert.Equal((uint)256, Assert.IsType<uint>(Read(type, restored, "LocalBatchSize")));
     }
 
     [Fact]
@@ -97,5 +129,16 @@ public class LocalLlmServiceSettingsTests
         var property = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
         Assert.NotNull(property);
         return property.GetValue(instance);
+    }
+
+    private static void Write(Type type, object instance, string propertyName, object value)
+    {
+        var property = type.GetProperty(propertyName, BindingFlags.Instance | BindingFlags.Public);
+        Assert.NotNull(property);
+
+        var converted = property.PropertyType.IsEnum && value is string text
+            ? System.Enum.Parse(property.PropertyType, text)
+            : value;
+        property.SetValue(instance, converted);
     }
 }
