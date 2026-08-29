@@ -44,16 +44,18 @@ namespace SourceGit.AI
 
         private static LocalLlmBackendCapabilities ProbeCapabilities()
         {
-            if (!SupportsBundledVulkan(RuntimeInformation.ProcessArchitecture))
+            var isWindows = OperatingSystem.IsWindows();
+            var isLinux = OperatingSystem.IsLinux();
+            if (!SupportsBundledVulkan(RuntimeInformation.ProcessArchitecture, isWindows, isLinux))
                 return new LocalLlmBackendCapabilities(false);
 
-            var vulkanAvailable = CommandExists("vulkaninfo") || OperatingSystem.IsWindows();
+            var vulkanAvailable = CommandExists("vulkaninfo") || isWindows;
             return new LocalLlmBackendCapabilities(vulkanAvailable);
         }
 
-        private static bool SupportsBundledVulkan(Architecture architecture)
+        private static bool SupportsBundledVulkan(Architecture architecture, bool isWindows, bool isLinux)
         {
-            return architecture == Architecture.X64;
+            return architecture == Architecture.X64 && (isWindows || isLinux);
         }
 
         private static bool CommandExists(string command)
