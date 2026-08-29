@@ -45,6 +45,7 @@ namespace SourceGit.Mcp
                 if (SetProperty(ref _port, value))
                 {
                     OnPropertyChanged(nameof(Endpoint));
+                    OnPropertyChanged(nameof(DisplayEndpoint));
                     Save();
                 }
             }
@@ -72,6 +73,10 @@ namespace SourceGit.Mcp
 
         public string Endpoint => $"http://127.0.0.1:{_port}/sse";
 
+        public string DisplayEndpoint => _runtimeRunning && !string.IsNullOrWhiteSpace(_runtimeEndpoint)
+            ? _runtimeEndpoint
+            : Endpoint;
+
         public string RuntimeStatus => _runtimeRunning
             ? "Running"
             : string.IsNullOrWhiteSpace(_runtimeError) ? "Stopped" : "Error";
@@ -89,6 +94,7 @@ namespace SourceGit.Mcp
         {
             var oldStatus = RuntimeStatus;
             var oldEndpoint = _runtimeEndpoint;
+            var oldDisplayEndpoint = DisplayEndpoint;
             var oldError = _runtimeError;
 
             _runtimeRunning = running;
@@ -99,6 +105,8 @@ namespace SourceGit.Mcp
                 OnPropertyChanged(nameof(RuntimeStatus));
             if (!string.Equals(oldEndpoint, _runtimeEndpoint, StringComparison.Ordinal))
                 OnPropertyChanged(nameof(RuntimeEndpoint));
+            if (!string.Equals(oldDisplayEndpoint, DisplayEndpoint, StringComparison.Ordinal))
+                OnPropertyChanged(nameof(DisplayEndpoint));
             if (!string.Equals(oldError, _runtimeError, StringComparison.Ordinal))
                 OnPropertyChanged(nameof(RuntimeError));
         }
