@@ -90,18 +90,16 @@ namespace SourceGit.DevSpaces.Terminal
                 var usedBytes = 0;
                 var truncated = false;
 
-                for (var i = start; i < _events.Count; i++)
+                for (var i = _events.Count - 1; i >= start; i--)
                 {
                     var item = _events[i];
                     var eventBytes = Encoding.UTF8.GetByteCount(item.Text);
                     if (usedBytes + eventBytes > maxBytes)
                     {
                         if (result.Count == 0)
-                        {
                             result.Add(item with { Text = TruncateUtf8(item.Text, maxBytes) });
-                            truncated = true;
-                        }
 
+                        truncated = true;
                         break;
                     }
 
@@ -109,6 +107,7 @@ namespace SourceGit.DevSpaces.Terminal
                     usedBytes += eventBytes;
                 }
 
+                result.Reverse();
                 var nextSequence = result.Count > 0 ? result[^1].Sequence : 0;
                 return new TerminalReadResult(result.ToArray(), _events[0].Sequence, nextSequence, truncated);
             }
