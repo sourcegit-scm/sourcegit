@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -25,6 +26,23 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _dirtyState, value);
         }
 
+        public string BaseBranch
+        {
+            get => _baseBranch;
+            private set
+            {
+                if (SetProperty(ref _baseBranch, value))
+                {
+                    OnPropertyChanged(nameof(HasBaseBranch));
+                    OnPropertyChanged(nameof(BaseBranchBadgeColor));
+                }
+            }
+        }
+
+        public bool HasBaseBranch => !string.IsNullOrEmpty(_baseBranch);
+
+        public string BaseBranchBadgeColor => Models.WorktreeBaseBranch.GetBadgeColor(Models.WorktreeBaseBranch.GetKind(_baseBranch));
+
         public Popup Popup
         {
             get => _popup;
@@ -50,6 +68,22 @@ namespace SourceGit.ViewModels
         {
             _node = node;
             _data = repo;
+            RefreshBaseBranch(repo);
+        }
+
+        public void RefreshBaseBranch(Repository repo)
+        {
+            if (repo == null || !File.Exists(Path.Combine(repo.FullPath, ".git")))
+            {
+                BaseBranch = string.Empty;
+                return;
+            }
+
+            var branch = Models.WorktreeBaseBranch.ReadPersisted(repo.GitDir);
+            if (string.IsNullOrEmpty(branch))
+                branch = new Commands.QueryWorktreeBaseBranch(repo.FullPath).GetResult();
+
+            BaseBranch = Models.WorktreeBaseBranch.Normalize(branch);
         }
 
         public void ClearNotifications()
@@ -117,6 +151,7 @@ namespace SourceGit.ViewModels
         private RepositoryNode _node = null;
         private object _data = null;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;
+        private string _baseBranch = string.Empty;
         private Popup _popup = null;
     }
 }
