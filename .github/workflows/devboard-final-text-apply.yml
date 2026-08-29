@@ -31,10 +31,9 @@ jobs:
           skip_files = {
               Path('LICENSE'),
               Path('THIRD-PARTY-LICENSES.md'),
-              Path('tests/DevBoard.Tests/Native/DataDirectoryResolverTests.cs'),
           }
           extensions = {'.cs','.axaml','.csproj','.slnx','.md','.ps1','.mjs','.json','.xml','.plist','.desktop','.sh','.svg'}
-          skip_dirs = {'.git','bin','obj','artifacts','node_modules','depends'}
+          skip_dirs = {'.git','bin','obj','artifacts','node_modules','depends','tests'}
 
           for p in Path('.').rglob('*'):
               if not p.is_file() or p in skip_files:
