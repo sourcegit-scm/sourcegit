@@ -20,7 +20,7 @@ mkdir -p %{buildroot}/opt/devboard
 mkdir -p %{buildroot}/%{_bindir}
 mkdir -p %{buildroot}/usr/share/applications
 mkdir -p %{buildroot}/usr/share/icons
-cp -f %{_topdir}/../../DevBoard/* %{buildroot}/opt/devboard/
+cp -a %{_topdir}/../../DevBoard/. %{buildroot}/opt/devboard/
 ln -rsf %{buildroot}/opt/devboard/devboard %{buildroot}/%{_bindir}
 cp -r %{_topdir}/../_common/applications %{buildroot}/%{_datadir}
 cp -r %{_topdir}/../_common/icons %{buildroot}/%{_datadir}
