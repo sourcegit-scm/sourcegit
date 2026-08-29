@@ -26,6 +26,26 @@ public class WorktreeBaseBranchTests
         Assert.Equal(WorktreeBaseBranchKind.None, WorktreeBaseBranch.GetKind(branch));
     }
 
+    [Theory]
+    [InlineData("develop", "develop")]
+    [InlineData("origin/develop", "develop")]
+    [InlineData("refs/heads/master", "master")]
+    [InlineData("refs/remotes/origin/release/2.4", "release/2.4")]
+    public void Normalize_removes_git_ref_and_remote_prefixes(string branch, string expected)
+    {
+        Assert.Equal(expected, WorktreeBaseBranch.Normalize(branch));
+    }
+
+    [Theory]
+    [InlineData(WorktreeBaseBranchKind.Develop, "#E5484D")]
+    [InlineData(WorktreeBaseBranchKind.Master, "#D6409F")]
+    [InlineData(WorktreeBaseBranchKind.Release, "#F76B15")]
+    [InlineData(WorktreeBaseBranchKind.None, "Transparent")]
+    public void GetBadgeColor_returns_requested_branch_family_color(WorktreeBaseBranchKind kind, string expected)
+    {
+        Assert.Equal(expected, WorktreeBaseBranch.GetBadgeColor(kind));
+    }
+
     [Fact]
     public void SelectBestCandidate_prefers_nearest_supported_ancestor()
     {
