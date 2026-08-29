@@ -1,0 +1,193 @@
+name: Store MSIX
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/store-msix.yml'
+      - 'scripts/build-store-msix.ps1'
+      - 'scripts/store-submission.mjs'
+      - 'scripts/validate-store-assets.ps1'
+      - 'store/assets/**'
+      - 'src/**'
+      - 'tests/**'
+      - 'VERSION'
+  workflow_dispatch:
+    inputs:
+      package_name:
+        description: 'Partner Center Package/Identity/Name'
+        required: false
+        type: string
+      publisher:
+        description: 'Partner Center Package/Identity/Publisher'
+        required: false
+        type: string
+      publisher_display_name:
+        description: 'Partner Center PublisherDisplayName'
+        required: false
+        type: string
+      version:
+        description: 'Store version X.Y.Z; blank uses VERSION'
+        required: false
+        type: string
+  push:
+    tags:
+      - 'v*-store'
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    name: Store preflight
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    env:
+      STORE_PACKAGE_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard.Test' || inputs.package_name || vars.STORE_PACKAGE_NAME || secrets.STORE_PACKAGE_NAME }}
+      STORE_PUBLISHER: ${{ github.event_name == 'pull_request' && 'CN=00000000-0000-0000-0000-000000000000' || inputs.publisher || vars.STORE_PUBLISHER || secrets.STORE_PUBLISHER }}
+      STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'pull_request' && 'Dev Board Test' || inputs.publisher_display_name || vars.STORE_PUBLISHER_DISPLAY_NAME || secrets.STORE_PUBLISHER_DISPLAY_NAME }}
+      REQUESTED_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Resolve Store identity and version
+        id: version
+        shell: pwsh
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:STORE_PACKAGE_NAME)) { throw 'Missing STORE_PACKAGE_NAME. Copy Package/Identity/Name from Partner Center or provide workflow input package_name.' }
+          if ([string]::IsNullOrWhiteSpace($env:STORE_PUBLISHER)) { throw 'Missing STORE_PUBLISHER. Copy Package/Identity/Publisher from Partner Center or provide workflow input publisher.' }
+          if ([string]::IsNullOrWhiteSpace($env:STORE_PUBLISHER_DISPLAY_NAME)) { throw 'Missing STORE_PUBLISHER_DISPLAY_NAME or workflow input publisher_display_name.' }
+
+          $version = $env:REQUESTED_VERSION
+          if ('${{ github.ref_type }}' -eq 'tag') {
+            if ('${{ github.ref_name }}' -notmatch '^v(\d+\.\d+\.\d+)-store$') { throw "Store tag '${{ github.ref_name }}' must match vX.Y.Z-store" }
+            $version = $Matches[1]
+          } elseif (-not [string]::IsNullOrWhiteSpace($version)) {
+            if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Store version '$version' must be X.Y.Z" }
+          } else {
+            $projectVersion = (Get-Content VERSION -Raw).Trim()
+            if ($projectVersion -match '^(\d+)\.(\d+)$') { $version = "$($Matches[1]).$($Matches[2]).0" }
+            elseif ($projectVersion -match '^\d+\.\d+\.\d+$') { $version = $projectVersion }
+            else { throw "VERSION '$projectVersion' must be X.Y or X.Y.Z" }
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Store package version: $version"
+      - name: Run Store contract tests
+        run: |
+          node --test tests/store-submission.test.mjs
+          node --test tests/store-msix-script.test.mjs
+          node --test tests/store-assets.test.mjs
+          node --test tests/store-workflow.test.mjs
+
+  build-msix:
+    name: Build Store MSIX (${{ matrix.arch }})
+    needs: preflight
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            rid: win-x64
+            arch: x64
+          - os: windows-11-arm
+            rid: win-arm64
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    env:
+      STORE_PACKAGE_NAME: ${{ github.event_name == 'pull_request' && 'DevBoard.Test' || inputs.package_name || vars.STORE_PACKAGE_NAME || secrets.STORE_PACKAGE_NAME }}
+      STORE_PUBLISHER: ${{ github.event_name == 'pull_request' && 'CN=00000000-0000-0000-0000-000000000000' || inputs.publisher || vars.STORE_PUBLISHER || secrets.STORE_PUBLISHER }}
+      STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'pull_request' && 'Dev Board Test' || inputs.publisher_display_name || vars.STORE_PUBLISHER_DISPLAY_NAME || secrets.STORE_PUBLISHER_DISPLAY_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore src/SourceGit.csproj -r ${{ matrix.rid }}
+      - name: Run unit tests
+        shell: pwsh
+        run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj --configuration Release
+      - name: Publish Dev Board
+        shell: pwsh
+        run: dotnet publish src/SourceGit.csproj --configuration Release --runtime ${{ matrix.rid }} --self-contained true --output "store/publish/${{ matrix.rid }}" -p:Version=${{ needs.preflight.outputs.version }}
+      - name: Validate Store assets
+        shell: pwsh
+        run: ./scripts/validate-store-assets.ps1
+      - name: Package unsigned Store MSIX
+        shell: pwsh
+        run: |
+          ./scripts/build-store-msix.ps1 `
+            -PackageName "$env:STORE_PACKAGE_NAME" `
+            -Publisher "$env:STORE_PUBLISHER" `
+            -PublisherDisplayName "$env:STORE_PUBLISHER_DISPLAY_NAME" `
+            -Version "${{ needs.preflight.outputs.version }}" `
+            -Architecture "${{ matrix.arch }}" `
+            -PublishDir "store/publish/${{ matrix.rid }}" `
+            -OutputPath "store/msix/DevBoard_${{ needs.preflight.outputs.version }}_${{ matrix.arch }}.msix"
+      - name: Upload Store package
+        uses: actions/upload-artifact@v4
+        with:
+          name: store-msix-${{ matrix.arch }}
+          path: store/msix/DevBoard_${{ needs.preflight.outputs.version }}_${{ matrix.arch }}.msix
+          if-no-files-found: error
+          retention-days: 30
+
+  verify-store-packages:
+    name: Verify Store packages
+    needs: [preflight, build-msix]
+    runs-on: windows-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: store-msix-*
+          path: store-packages
+          merge-multiple: true
+      - name: Verify x64 and ARM64 packages
+        shell: pwsh
+        run: |
+          $expected = @(
+            'DevBoard_${{ needs.preflight.outputs.version }}_x64.msix',
+            'DevBoard_${{ needs.preflight.outputs.version }}_arm64.msix'
+          )
+          foreach ($name in $expected) {
+            $path = Join-Path 'store-packages' $name
+            if (-not (Test-Path $path -PathType Leaf)) { throw "Missing expected Store package: $name" }
+            $file = Get-Item $path
+            Write-Host "$($file.Name): $([math]::Round($file.Length / 1MB, 2)) MB"
+          }
+          $actual = @(Get-ChildItem store-packages -Filter '*.msix')
+          if ($actual.Count -ne 2) { throw "Expected exactly two Store MSIX packages, found $($actual.Count)" }
+
+  submit-store:
+    name: Submit to Microsoft Store
+    needs: [preflight, verify-store-packages]
+    if: github.ref_type == 'tag' && endsWith(github.ref_name, '-store')
+    runs-on: ubuntu-latest
+    env:
+      STORE_TENANT_ID: ${{ vars.STORE_TENANT_ID || secrets.STORE_TENANT_ID }}
+      STORE_CLIENT_ID: ${{ vars.STORE_CLIENT_ID || secrets.STORE_CLIENT_ID }}
+      STORE_CLIENT_SECRET: ${{ secrets.STORE_CLIENT_SECRET }}
+      STORE_APPLICATION_ID: ${{ vars.STORE_APPLICATION_ID || secrets.STORE_APPLICATION_ID }}
+      STORE_TAG: ${{ github.ref_name }}
+      STORE_PACKAGE_DIR: store-packages
+      STORE_UPLOAD_ZIP: store-upload.zip
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: store-msix-*
+          path: store-packages
+          merge-multiple: true
+      - name: Create Partner Center upload archive
+        shell: bash
+        run: zip -j "$STORE_UPLOAD_ZIP" store-packages/*.msix
+      - name: Submit packages through Partner Center API
+        run: node scripts/store-submission.mjs

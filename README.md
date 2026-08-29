@@ -120,6 +120,10 @@ If you cloned without submodules:
 git submodule update --init --recursive
 ```
 
+### Microsoft Store
+
+The Windows Store path is isolated from normal releases and produces x64 + ARM64 MSIX packages. See [`docs/store-publishing.md`](./docs/store-publishing.md) for Partner Center identity setup, manual package builds, and `vX.Y.Z-store` release-tag publishing.
+
 ## Application data
 
 Until the executable/package rename is completed, existing SourceGit storage locations remain in use:
