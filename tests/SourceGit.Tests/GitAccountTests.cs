@@ -103,4 +103,35 @@ public class GitAccountTests
 
         Assert.Same(account, resolved);
     }
+
+    [Fact]
+    public void CredentialConfig_ScopesUsernameToGitHubHttpsUrl()
+    {
+        var keys = GitHubCredentialConfig.GetUsernameKeys(
+            [
+                "https://github.com/owner/repository.git",
+                "https://gitlab.com/owner/repository.git",
+                "git@github.com:owner/repository.git",
+            ]);
+
+        Assert.Equal(["credential.https://github.com.username"], keys);
+    }
+
+    [Fact]
+    public void CredentialConfig_ReturnsDistinctKeysForGitHubHttpProtocols()
+    {
+        var keys = GitHubCredentialConfig.GetUsernameKeys(
+            [
+                "https://github.com/owner/repository.git",
+                "http://github.com/owner/other.git",
+                "https://github.com/owner/second.git",
+            ]);
+
+        Assert.Equal(
+            [
+                "credential.https://github.com.username",
+                "credential.http://github.com.username",
+            ],
+            keys);
+    }
 }
