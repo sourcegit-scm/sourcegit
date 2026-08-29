@@ -27,6 +27,14 @@ namespace SourceGit.Mcp
             };
         }
 
+        public static bool IsConfigurationProperty(string propertyName)
+        {
+            return propertyName is nameof(SourceGitMcpSettings.Enabled) or
+                nameof(SourceGitMcpSettings.Port) or
+                nameof(SourceGitMcpSettings.ShareDevSpaceTerminalOutput) or
+                nameof(SourceGitMcpSettings.AuthToken);
+        }
+
         public static void Initialize(SourceGitMcpSettings settings = null)
         {
             settings ??= SourceGitMcpSettings.Instance;
@@ -77,7 +85,8 @@ namespace SourceGit.Mcp
 
         private static void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            _ = ApplyAsync();
+            if (IsConfigurationProperty(e.PropertyName))
+                _ = ApplyAsync();
         }
 
         private static async Task ApplyAsync()
