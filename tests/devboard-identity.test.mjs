@@ -57,3 +57,11 @@ test('package metadata uses DevBoard identity', () => {
     assert.equal(/\bSourceGit\b|\bsourcegit\b/.test(content), false, `${path} should use DevBoard/devboard identity`);
   }
 });
+
+test('temporary identity cleanup workflow is removed after migration', () => {
+  assert.equal(
+    fs.existsSync('.github/workflows/devboard-identity-cleanup.yml'),
+    false,
+    'self-pushing cleanup workflow must not remain because GITHUB_TOKEN commits suppress downstream PR CI',
+  );
+});
