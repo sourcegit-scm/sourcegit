@@ -15,21 +15,50 @@ namespace SourceGit.Models
 
     public static class WorktreeBaseBranch
     {
-        public static WorktreeBaseBranchKind GetKind(string branch)
+        public static string Normalize(string branch)
         {
             if (string.IsNullOrWhiteSpace(branch))
+                return string.Empty;
+
+            var normalized = branch.Trim();
+            if (normalized.StartsWith("refs/heads/", StringComparison.OrdinalIgnoreCase))
+                normalized = normalized.Substring("refs/heads/".Length);
+            else if (normalized.StartsWith("refs/remotes/", StringComparison.OrdinalIgnoreCase))
+                normalized = normalized.Substring("refs/remotes/".Length);
+
+            if (normalized.StartsWith("origin/", StringComparison.OrdinalIgnoreCase))
+                normalized = normalized.Substring("origin/".Length);
+
+            return normalized;
+        }
+
+        public static WorktreeBaseBranchKind GetKind(string branch)
+        {
+            var normalized = Normalize(branch);
+            if (string.IsNullOrEmpty(normalized))
                 return WorktreeBaseBranchKind.None;
 
-            if (branch.Equals("develop", StringComparison.OrdinalIgnoreCase))
+            if (normalized.Equals("develop", StringComparison.OrdinalIgnoreCase))
                 return WorktreeBaseBranchKind.Develop;
 
-            if (branch.Equals("master", StringComparison.OrdinalIgnoreCase))
+            if (normalized.Equals("master", StringComparison.OrdinalIgnoreCase))
                 return WorktreeBaseBranchKind.Master;
 
-            if (branch.StartsWith("release/", StringComparison.OrdinalIgnoreCase))
+            if (normalized.StartsWith("release/", StringComparison.OrdinalIgnoreCase))
                 return WorktreeBaseBranchKind.Release;
 
             return WorktreeBaseBranchKind.None;
+        }
+
+        public static string GetBadgeColor(WorktreeBaseBranchKind kind)
+        {
+            return kind switch
+            {
+                WorktreeBaseBranchKind.Develop => "#E5484D",
+                WorktreeBaseBranchKind.Master => "#D6409F",
+                WorktreeBaseBranchKind.Release => "#F76B15",
+                _ => "Transparent",
+            };
         }
 
         public static string SelectBestCandidate(IEnumerable<WorktreeBaseBranchCandidate> candidates)
@@ -39,12 +68,13 @@ namespace SourceGit.Models
 
             foreach (var candidate in candidates)
             {
-                if (GetKind(candidate.Branch) == WorktreeBaseBranchKind.None)
+                var branch = Normalize(candidate.Branch);
+                if (GetKind(branch) == WorktreeBaseBranchKind.None)
                     continue;
 
                 if (candidate.Distance < bestDistance)
                 {
-                    bestBranch = candidate.Branch;
+                    bestBranch = branch;
                     bestDistance = candidate.Distance;
                 }
             }
