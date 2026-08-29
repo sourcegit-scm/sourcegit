@@ -12,6 +12,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Avalonia.Headless.XUnit" Version="11.3.20" />
   </ItemGroup>
 
   <ItemGroup>
