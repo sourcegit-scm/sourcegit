@@ -102,16 +102,16 @@ The project uses the following third-party libraries or assets
 ### eclipse-buildship
 
 - **Source**: https://github.com/eclipse/buildship
-- **Commit**: 6bb773e7692ac20be0481174ec1be772c5da5/LICENSE.md
+- **Commit**: 6bb773e7692f913dec27105129ebe388de34e68b
 - **License**: Eclipse Public License 1.0
 - **License Link**: https://github.com/eclipse/buildship/buildship/blob/6bb773e7692f913dec27105129ebe388de34e68b/README.md
 
 ### vscode-jsp-lang
 
 - **Source**: https://github.com/samuel-weinhardt/vscode-jsp-lang
-- **Commit**: 0e89ecdb13650dbf46e469a987e4bb21f7c50c20
+- **Commit**: 0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355
 - **License**: MIT License
-- **License Link**: https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/main/LICENSE.md
+- **License Link**: https://github.com/samuel-weinhardt/vscode-jsp-lang/blob/0e89ecdb13650dbbe5a1e85b47b2e1530bf2f355/LICENSE
 
 ### vuejs-language-tools
 
