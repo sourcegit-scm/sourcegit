@@ -64,6 +64,20 @@ public class SourceGitMcpPreferencesTests
         Assert.Equal("Address already in use", settings.RuntimeError);
     }
 
+    [Theory]
+    [InlineData(nameof(SourceGitMcpSettings.Enabled), true)]
+    [InlineData(nameof(SourceGitMcpSettings.Port), true)]
+    [InlineData(nameof(SourceGitMcpSettings.ShareDevSpaceTerminalOutput), true)]
+    [InlineData(nameof(SourceGitMcpSettings.AuthToken), true)]
+    [InlineData(nameof(SourceGitMcpSettings.Endpoint), false)]
+    [InlineData(nameof(SourceGitMcpSettings.RuntimeStatus), false)]
+    [InlineData(nameof(SourceGitMcpSettings.RuntimeEndpoint), false)]
+    [InlineData(nameof(SourceGitMcpSettings.RuntimeError), false)]
+    public void Service_only_reapplies_for_configuration_properties(string propertyName, bool expected)
+    {
+        Assert.Equal(expected, SourceGitMcpService.IsConfigurationProperty(propertyName));
+    }
+
     [Fact]
     public void Service_maps_settings_to_host_options()
     {
