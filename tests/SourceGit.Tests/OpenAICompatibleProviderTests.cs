@@ -28,6 +28,18 @@ public class OpenAICompatibleProviderTests
         Assert.Equal("secret", handler.LastAuthParameter);
     }
 
+    [Fact]
+    public async Task SendAsync_UsesProviderDefaultModelForAllRoute()
+    {
+        var handler = new RecordingHandler();
+        using var http = new HttpClient(handler);
+        var provider = new OpenAICompatibleProvider("local", "http://127.0.0.1:5032/v1", "", http, "qwen3-coder");
+
+        await provider.SendAsync(new AIRouterRequest("all", "{\"model\":\"all\",\"messages\":[]}", "/v1/chat/completions"));
+
+        Assert.Contains("\"model\":\"qwen3-coder\"", handler.LastBody);
+    }
+
     private sealed class RecordingHandler : HttpMessageHandler
     {
         public string LastUrl { get; private set; }
