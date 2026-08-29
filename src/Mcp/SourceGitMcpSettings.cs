@@ -166,7 +166,7 @@ namespace SourceGit.Mcp
                 if (!string.IsNullOrWhiteSpace(directory))
                     Directory.CreateDirectory(directory);
 
-                using (var stream = File.Create(temporaryPath))
+                using (var stream = CreateSecureSettingsFile(temporaryPath))
                 using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = true }))
                 {
                     writer.WriteStartObject();
@@ -198,6 +198,25 @@ namespace SourceGit.Mcp
                     // Ignore cleanup failures for optional settings persistence.
                 }
             }
+        }
+
+        private static FileStream CreateSecureSettingsFile(string path)
+        {
+            if (File.Exists(path))
+                File.Delete(path);
+
+            var options = new FileStreamOptions
+            {
+                Access = FileAccess.Write,
+                Mode = FileMode.CreateNew,
+                Share = FileShare.None,
+                Options = FileOptions.WriteThrough,
+            };
+
+            if (!OperatingSystem.IsWindows())
+                options.UnixCreateMode = UnixFileMode.UserRead | UnixFileMode.UserWrite;
+
+            return new FileStream(path, options);
         }
 
         private static string GetStoragePath()
