@@ -333,15 +333,61 @@ namespace SourceGit.Views
                     copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
                     copyPath.Click += async (_, ev) =>
                     {
-                        await App.CopyTextAsync(repo.FullPath);
+                        var dir = new DirectoryInfo(repo.FullPath);
+                        await this.CopyTextAsync(dir.FullName);
                         ev.Handled = true;
                     };
                     menu.Items.Add(copyPath);
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                    var edit = new MenuItem();
+                    edit.Header = App.Text("PageTabBar.Tab.Edit");
+                    edit.Icon = this.CreateMenuIcon("Icons.Edit");
+                    edit.Click += (_, ev) =>
+                    {
+                        page.Node.Edit();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(edit);
+
+                    var workspaces = ViewModels.Preferences.Instance.Workspaces;
+                    if (workspaces.Count > 1)
+                    {
+                        var moveTo = new MenuItem();
+                        moveTo.Header = App.Text("PageTabBar.Tab.MoveToWorkspace");
+                        moveTo.Icon = this.CreateMenuIcon("Icons.MoveTo");
+
+                        foreach (var ws in workspaces)
+                        {
+                            var dupWs = ws;
+                            var isCurrent = dupWs == vm.ActiveWorkspace;
+                            var icon = this.CreateMenuIcon(isCurrent ? "Icons.Check" : "Icons.Workspace");
+                            icon.Fill = dupWs.Brush;
+
+                            var target = new MenuItem();
+                            target.Header = ws.Name;
+                            target.Icon = icon;
+                            target.Click += (_, ev) =>
+                            {
+                                if (!isCurrent)
+                                {
+                                    vm.CloseTab(page);
+                                    dupWs.Repositories.Add(repo.FullPath);
+                                }
+
+                                ev.Handled = true;
+                            };
+                            moveTo.Items.Add(target);
+                        }
+
+                        menu.Items.Add(moveTo);
+                    }
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
                 }
 
                 var close = new MenuItem();
                 close.Header = App.Text("PageTabBar.Tab.Close");
-                close.Icon = this.CreateMenuIcon("Icons.Close");
                 close.Tag = OperatingSystem.IsMacOS() ? "⌘+W" : "Ctrl+W";
                 close.Click += (_, ev) =>
                 {
@@ -352,33 +398,40 @@ namespace SourceGit.Views
 
                 var closeOthers = new MenuItem();
                 closeOthers.Header = App.Text("PageTabBar.Tab.CloseOther");
-                closeOthers.Icon = this.CreateMenuIcon("Icons.Close");
                 closeOthers.Click += (_, ev) =>
                 {
-                    vm.CloseOtherTabs(page);
+                    vm.CloseOtherTabs();
                     ev.Handled = true;
                 };
                 menu.Items.Add(closeOthers);
 
+                var closeRight = new MenuItem();
+                closeRight.Header = App.Text("PageTabBar.Tab.CloseRight");
+                closeRight.Click += (_, ev) =>
+                {
+                    vm.CloseRightTabs();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(closeRight);
                 menu.Open(border);
-                e.Handled = true;
             }
+
+            e.Handled = true;
         }
 
         private void OnCloseTab(object sender, RoutedEventArgs e)
         {
-            if (sender is Button { DataContext: ViewModels.LauncherPage page })
-            {
-                (DataContext as ViewModels.Launcher)?.CloseTab(page);
-                e.Handled = true;
-            }
+            if (sender is Button btn && DataContext is ViewModels.Launcher vm)
+                vm.CloseTab(btn.DataContext as ViewModels.LauncherPage);
+
+            e.Handled = true;
         }
 
         private bool _isScrollButtonVisible = false;
         private bool _isVertical = false;
+        private readonly Vector _scrollStep = new(64, 0);
         private PointerPressedEventArgs _pressedTabEvent = null;
         private bool _startDragTab = false;
-        private static readonly Vector _scrollStep = new(64, 0);
-        private static readonly DataFormat<string> _dndMainTabFormat = DataFormat.CreateStringApplicationFormat("sourcegit.launcher.tab");
+        private readonly DataFormat<string> _dndMainTabFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-main-tab");
     }
 }
