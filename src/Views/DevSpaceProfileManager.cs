@@ -193,11 +193,11 @@ namespace SourceGit.Views
             RefreshProfiles();
         }
 
-        private async Task ApplyProfileAsync()
+        private async Task<bool> ApplyProfileAsync()
         {
             var profile = SelectedProfile;
             if (profile == null)
-                return;
+                return true;
 
             profile.Name = _name.Text?.Trim() ?? string.Empty;
             profile.Path = _path.Text?.Trim() ?? string.Empty;
@@ -208,17 +208,19 @@ namespace SourceGit.Views
                 SourceGit.DevSpaces.DevSpaceProfileSettings.ValidateProfile(profile);
                 SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.Save();
                 RefreshProfiles(profile.Id);
+                return true;
             }
             catch (Exception ex)
             {
                 await ShowErrorAsync(ex.Message);
+                return false;
             }
         }
 
         private async Task SaveAndCloseAsync()
         {
-            if (SelectedProfile != null)
-                await ApplyProfileAsync();
+            if (!await ApplyProfileAsync())
+                return;
 
             if (_defaultTerminal.SelectedItem is ComboBoxItem { Tag: string terminal })
                 SourceGit.DevSpaces.DevSpaceProfileSettings.Instance.DefaultTerminal = terminal;
