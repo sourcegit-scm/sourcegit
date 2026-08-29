@@ -24,6 +24,8 @@ namespace SourceGit.DevSpaces
                 Command = Command,
             };
         }
+
+        public override string ToString() => Name;
     }
 
     public sealed record DevSpaceTerminalChoice(string Name, string Value);
