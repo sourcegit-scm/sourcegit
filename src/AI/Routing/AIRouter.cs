@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SourceGit.AI.Routing;
 
-public sealed record AIRouterRequest(string Model, string Payload);
+public sealed record AIRouterRequest(string Model, string Payload, string Path = null);
 
 public sealed record AIRouterResult(
     bool Success,
