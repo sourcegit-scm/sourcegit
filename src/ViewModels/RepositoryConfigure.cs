@@ -16,8 +16,14 @@ namespace SourceGit.ViewModels
             get => _selectedGitAccount;
             set
             {
-                if (SetProperty(ref _selectedGitAccount, value) && value != null)
+                if (!SetProperty(ref _selectedGitAccount, value))
+                    return;
+
+                if (value != null)
+                {
+                    _selectedGitAccountWasAppliedDuringSession = true;
                     ApplyGitAccount(value);
+                }
             }
         }
 
@@ -187,7 +193,8 @@ namespace SourceGit.ViewModels
             if (!AvailableOpenAIServices.Contains(PreferredOpenAIService))
                 PreferredOpenAIService = "---";
 
-            _cached = new Commands.Config(repo.FullPath).ReadAll();
+            var config = new Commands.Config(repo.FullPath);
+            _cached = config.ReadAll();
             if (_cached.TryGetValue("user.name", out var name))
                 _userName = name;
             if (_cached.TryGetValue("user.email", out var email))
@@ -203,7 +210,9 @@ namespace SourceGit.ViewModels
             if (_cached.TryGetValue("fetch.prune", out var prune))
                 EnablePruneOnFetch = (prune == "true");
 
-            ResolveSelectedGitAccount();
+            var configuredGitAccountId = config.GetLocal(GitAccountConfigKey);
+            _hadManagedGitAccount = !string.IsNullOrWhiteSpace(configuredGitAccountId);
+            ResolveSelectedGitAccount(configuredGitAccountId);
 
             foreach (var rule in _repo.IssueTrackers)
             {
@@ -225,7 +234,7 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            ResolveSelectedGitAccount();
+            ResolveSelectedGitAccount(null);
             OnPropertyChanged(nameof(SelectedGitAccount));
         }
 
@@ -308,22 +317,34 @@ namespace SourceGit.ViewModels
         {
             _repo.Settings.Save();
 
+            var config = new Commands.Config(_repo.FullPath);
             if (_selectedGitAccount != null)
             {
-                await new Commands.Config(_repo.FullPath).SetAsync("user.name", _selectedGitAccount.GitUserName);
-                await new Commands.Config(_repo.FullPath).SetAsync("user.email", _selectedGitAccount.GitEmail);
+                await config.SetAsync(GitAccountConfigKey, _selectedGitAccount.Id);
+                await config.SetAsync("user.name", _selectedGitAccount.GitUserName);
+                await config.SetAsync("user.email", _selectedGitAccount.GitEmail);
 
                 if (HasGitHubHttpsRemote())
                 {
-                    await new Commands.Config(_repo.FullPath).SetAsync(
+                    await config.SetAsync(
                         "credential.username",
                         _selectedGitAccount.GitHubUserName);
+                }
+                else if (_hadManagedGitAccount)
+                {
+                    await config.SetAsync("credential.username", string.Empty);
                 }
             }
             else
             {
                 await SetIfChangedAsync("user.name", UserName, "");
                 await SetIfChangedAsync("user.email", UserEmail, "");
+
+                if (_hadManagedGitAccount || _selectedGitAccountWasAppliedDuringSession)
+                {
+                    await config.SetAsync(GitAccountConfigKey, string.Empty);
+                    await config.SetAsync("credential.username", string.Empty);
+                }
             }
 
             await SetIfChangedAsync("commit.gpgsign", GPGCommitSigningEnabled ? "true" : "false", "false");
@@ -352,17 +373,13 @@ namespace SourceGit.ViewModels
             OnPropertyChanged(nameof(SelectedGitAccount));
         }
 
-        private void ResolveSelectedGitAccount()
+        private void ResolveSelectedGitAccount(string configuredId)
         {
-            _selectedGitAccount = null;
-            foreach (var account in GitAccounts)
-            {
-                if (account.MatchesIdentity(_userName, _userEmail))
-                {
-                    _selectedGitAccount = account;
-                    break;
-                }
-            }
+            _selectedGitAccount = Models.GitAccountResolver.Resolve(
+                GitAccounts,
+                configuredId,
+                _userName,
+                _userEmail);
         }
 
         private bool HasGitHubHttpsRemote()
@@ -443,12 +460,16 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private const string GitAccountConfigKey = "sourcegit.account";
+
         private readonly Repository _repo;
         private readonly Dictionary<string, string> _cached;
         private string _userName = string.Empty;
         private string _userEmail = string.Empty;
         private string _httpProxy;
         private bool _applyingGitAccount;
+        private bool _hadManagedGitAccount;
+        private bool _selectedGitAccountWasAppliedDuringSession;
         private Models.GitAccount _selectedGitAccount = null;
         private Models.CommitTemplate _selectedCommitTemplate = null;
         private Models.IssueTracker _selectedIssueTracker = null;
