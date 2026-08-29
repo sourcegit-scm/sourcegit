@@ -34,6 +34,12 @@ public class LocalLlmServiceSettingsTests
     }
 
     [Fact]
+    public void LocalLlmBackend_DefaultBundleStaysSlim()
+    {
+        Assert.Equal(["Auto", "Cpu", "Vulkan"], Enum.GetNames<LocalLlmBackend>());
+    }
+
+    [Fact]
     public void LocalLlmSettings_RoundTripThroughJson()
     {
         using var service = new Service
@@ -62,7 +68,7 @@ public class LocalLlmServiceSettingsTests
         using var service = new Service
         {
             Provider = ProviderType.LocalLlm,
-            LocalBackend = LocalLlmBackend.Cuda,
+            LocalBackend = LocalLlmBackend.Vulkan,
             GpuLayerCount = 24,
             LocalThreads = 6,
             LocalBatchSize = 256,
@@ -72,7 +78,7 @@ public class LocalLlmServiceSettingsTests
         using var restored = JsonSerializer.Deserialize<Service>(json);
 
         Assert.NotNull(restored);
-        Assert.Equal(LocalLlmBackend.Cuda, restored.LocalBackend);
+        Assert.Equal(LocalLlmBackend.Vulkan, restored.LocalBackend);
         Assert.Equal(24, restored.GpuLayerCount);
         Assert.Equal(6, restored.LocalThreads);
         Assert.Equal((uint)256, restored.LocalBatchSize);
