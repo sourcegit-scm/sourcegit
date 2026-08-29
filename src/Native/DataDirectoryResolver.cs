@@ -21,19 +21,27 @@ internal static class DataDirectoryResolver
         if (!Directory.Exists(legacySourceGitPath))
             return devBoardPath;
 
+        var stagingPath = $"{devBoardPath}.migration-{Guid.NewGuid():N}";
         try
         {
-            CopyDirectory(legacySourceGitPath, devBoardPath);
+            CopyDirectory(legacySourceGitPath, stagingPath);
+
+            if (Directory.Exists(devBoardPath))
+                Directory.Delete(devBoardPath, false);
+
+            Directory.Move(stagingPath, devBoardPath);
             log?.Invoke("Migrated legacy SourceGit data to DevBoard."); // legacy-migration
             return devBoardPath;
         }
         catch (IOException)
         {
+            CleanupStaging(stagingPath);
             log?.Invoke("Failed to migrate legacy SourceGit data; using legacy data for this run."); // legacy-migration
             return legacySourceGitPath;
         }
         catch (UnauthorizedAccessException)
         {
+            CleanupStaging(stagingPath);
             log?.Invoke("Failed to migrate legacy SourceGit data; using legacy data for this run."); // legacy-migration
             return legacySourceGitPath;
         }
@@ -60,6 +68,19 @@ internal static class DataDirectoryResolver
             var target = Path.Combine(destination, relative);
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             File.Copy(file, target, overwrite: false);
+        }
+    }
+
+    private static void CleanupStaging(string path)
+    {
+        try
+        {
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+        }
+        catch
+        {
+            // Best effort only. The incomplete staging directory is never treated as live data.
         }
     }
 }
