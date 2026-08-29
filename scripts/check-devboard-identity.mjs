@@ -11,11 +11,17 @@ const forbidden = [
 
 const skippedDirectories = new Set(['.git', 'bin', 'obj', 'artifacts', 'node_modules']);
 const scannedExtensions = new Set(['.cs', '.axaml', '.csproj', '.slnx', '.md', '.yml', '.yaml', '.ps1', '.mjs', '.json', '.xml', '.plist', '.desktop', '.sh', '.svg']);
+const allowedFixtureFiles = new Set([
+  'tests/devboard-identity.test.mjs',
+  'tests/store-msix-script.test.mjs',
+  'tests/store-workflow.test.mjs',
+  'tests/DevBoard.Tests/Native/DataDirectoryResolverTests.cs',
+]);
 
 function isAllowed(pathname, line) {
   if (pathname === 'LICENSE' || pathname === 'THIRD-PARTY-LICENSES.md') return true;
   if (pathname.includes('/superpowers/specs/') || pathname.includes('/superpowers/plans/')) return true;
-  if (pathname === 'tests/DevBoard.Tests/Native/DataDirectoryResolverTests.cs') return true;
+  if (allowedFixtureFiles.has(pathname)) return true;
   if (line.includes('sourcegit-scm/sourcegit')) return true;
   if (line.includes('legacy-migration')) return true;
   return false;
