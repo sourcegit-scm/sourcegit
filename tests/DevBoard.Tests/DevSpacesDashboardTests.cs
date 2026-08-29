@@ -10,6 +10,7 @@ using Xunit;
 
 namespace DevBoard.Tests
 {
+    [Trait("Category", "UIIntegration")]
     public sealed class DevSpacesDashboardTests
     {
         [Fact]
