@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using SourceGit.AI;
 using Xunit;
 
@@ -122,5 +124,71 @@ public class LocalLlmServiceSettingsTests
         service.FetchAvailableModels();
 
         Assert.Equal(["sourcegit-default.gguf"], service.AvailableModels);
+    }
+
+    [Fact]
+    public async Task AsyncLoadCoordinator_SharesConcurrentLoad()
+    {
+        using var gate = new ManualResetEventSlim(false);
+        using var coordinator = new AsyncLoadCoordinator<FakeDisposable>();
+        var calls = 0;
+
+        FakeDisposable Load()
+        {
+            Interlocked.Increment(ref calls);
+            gate.Wait();
+            return new FakeDisposable();
+        }
+
+        var first = coordinator.GetOrLoadAsync(Load, CancellationToken.None);
+        var second = coordinator.GetOrLoadAsync(Load, CancellationToken.None);
+
+        Assert.True(SpinWait.SpinUntil(() => Volatile.Read(ref calls) == 1, TimeSpan.FromSeconds(5)));
+        Assert.Equal(1, Volatile.Read(ref calls));
+
+        gate.Set();
+        var firstResult = await first;
+        var secondResult = await second;
+
+        Assert.Same(firstResult, secondResult);
+        Assert.Equal(1, Volatile.Read(ref calls));
+    }
+
+    [Fact]
+    public async Task AsyncLoadCoordinator_ResetInvalidatesStaleLoad()
+    {
+        using var gate = new ManualResetEventSlim(false);
+        using var coordinator = new AsyncLoadCoordinator<FakeDisposable>();
+        FakeDisposable stale = null;
+
+        FakeDisposable LoadStale()
+        {
+            stale = new FakeDisposable();
+            gate.Wait();
+            return stale;
+        }
+
+        var first = coordinator.GetOrLoadAsync(LoadStale, CancellationToken.None);
+        Assert.True(SpinWait.SpinUntil(() => stale != null, TimeSpan.FromSeconds(5)));
+
+        coordinator.Reset();
+        gate.Set();
+
+        await Assert.ThrowsAsync<OperationCanceledException>(async () => await first);
+        Assert.True(stale.IsDisposed);
+
+        var fresh = await coordinator.GetOrLoadAsync(() => new FakeDisposable(), CancellationToken.None);
+        Assert.False(fresh.IsDisposed);
+        Assert.NotSame(stale, fresh);
+    }
+
+    private sealed class FakeDisposable : IDisposable
+    {
+        public bool IsDisposed { get; private set; }
+
+        public void Dispose()
+        {
+            IsDisposed = true;
+        }
     }
 }
