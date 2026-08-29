@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>io.github.sourcegit_scm.sourcegit</id>
+    <id>io.github.devboard_scm.devboard</id>
     <metadata_license>MIT</metadata_license>
     <project_license>MIT</project_license>
-    <name>SourceGit</name>
+    <name>DevBoard</name>
     <summary>Open-source and Free Git GUI Client</summary>
     <description>
         <p>Highlights</p>
@@ -47,13 +47,13 @@
             <li>Using AI to generate commit message using commitollama</li>
         </ul>
     </description>
-    <url type="bugtracker">https://github.com/sourcegit-scm/sourcegit/issues</url>
-    <url type="help">https://github.com/sourcegit-scm/sourcegit/issues</url>
-    <url type="homepage">https://sourcegit-scm.github.io</url>
-    <url type="vcs-browser">https://github.com/sourcegit-scm/sourcegit</url>
-    <launchable type="desktop-id">io.github.sourcegit_scm.sourcegit.desktop</launchable>
+    <url type="bugtracker">https://github.com/devboard-scm/devboard/issues</url>
+    <url type="help">https://github.com/devboard-scm/devboard/issues</url>
+    <url type="homepage">https://devboard-scm.github.io</url>
+    <url type="vcs-browser">https://github.com/devboard-scm/devboard</url>
+    <launchable type="desktop-id">io.github.devboard_scm.devboard.desktop</launchable>
     <developer id="io.github">
-        <name>sourcegit-scm</name>
+        <name>devboard-scm</name>
     </developer>
     <branding>
         <color type="primary" scheme_preference="light">#f15336</color>
@@ -61,11 +61,11 @@
     </branding>
     <screenshots>
         <screenshot type="default">
-            <image>https://sourcegit-scm.github.io/images/theme_dark.png</image>
+            <image>https://devboard-scm.github.io/images/theme_dark.png</image>
             <caption>Dark Theme</caption>
         </screenshot>
         <screenshot>
-            <image>https://sourcegit-scm.github.io/images/theme_light.png</image>
+            <image>https://devboard-scm.github.io/images/theme_light.png</image>
             <caption>Light Theme</caption>
         </screenshot>
     </screenshots>

@@ -5,15 +5,15 @@
 	<key>CFBundleIconFile</key>
 	<string>App.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.sourcegit-scm.sourcegit</string>
+	<string>com.devboard-scm.devboard</string>
 	<key>CFBundleName</key>
-	<string>SourceGit</string>
+	<string>DevBoard</string>
 	<key>CFBundleVersion</key>
 	<string>SOURCE_GIT_VERSION.0</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>11.0</string>
 	<key>CFBundleExecutable</key>
-	<string>SourceGit</string>
+	<string>DevBoard</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
