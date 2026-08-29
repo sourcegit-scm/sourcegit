@@ -6,6 +6,12 @@ namespace SourceGit.Models
 {
     public class GitAccount : ObservableObject
     {
+        public string Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value);
+        }
+
         public string Name
         {
             get => _name;
@@ -39,6 +45,7 @@ namespace SourceGit.Models
                 string.Equals(GitEmail, email, StringComparison.OrdinalIgnoreCase);
         }
 
+        private string _id = Guid.NewGuid().ToString("N");
         private string _name = string.Empty;
         private string _gitUserName = string.Empty;
         private string _gitEmail = string.Empty;
