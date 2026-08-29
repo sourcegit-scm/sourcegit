@@ -1,4 +1,5 @@
 using SourceGit.Models;
+using Xunit;
 
 namespace SourceGit.Tests;
 
