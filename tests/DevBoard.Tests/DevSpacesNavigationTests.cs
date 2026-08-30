@@ -3,7 +3,6 @@ using System.Reflection;
 
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
-using Avalonia.VisualTree;
 
 using Xunit;
 
@@ -25,7 +24,13 @@ namespace DevBoard.Tests
             var arguments = new object[] { new Views.Repository(), null, null, null };
             var item = Assert.IsType<ListBoxItem>(factory.Invoke(null, arguments));
             var root = Assert.IsType<StackPanel>(item.Content);
-            var labels = root.GetVisualDescendants().OfType<TextBlock>().Select(x => x.Text).ToArray();
+            var tools = Assert.IsType<StackPanel>(root.Children[1]);
+            var labels = tools.Children
+                .OfType<Button>()
+                .Select(x => Assert.IsType<StackPanel>(x.Content))
+                .SelectMany(x => x.Children.OfType<TextBlock>())
+                .Select(x => x.Text)
+                .ToArray();
 
             Assert.Contains(App.Text("DevSpaces.Files"), labels);
             Assert.Contains("AI Router", labels);
