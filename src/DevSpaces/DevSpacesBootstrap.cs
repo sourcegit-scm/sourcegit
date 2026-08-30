@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -5,6 +6,7 @@ using System.Runtime.CompilerServices;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -127,6 +129,8 @@ namespace DevBoard.DevSpaces
                 _repository.PropertyChanged += OnRepositoryPropertyChanged;
                 ViewModels.Preferences.Instance.PropertyChanged += OnPreferencesPropertyChanged;
 
+                WireToolNavigation();
+
                 if (ViewModels.Preferences.Instance.EnableDevSpaces)
                     AttachSpaces();
 
@@ -179,6 +183,55 @@ namespace DevBoard.DevSpaces
 
                 _spaces = null;
                 UpdateNavigationLabel();
+            }
+
+            private void ActivateFiles()
+            {
+                ActivateTool(spaces => spaces.ActivateFiles());
+            }
+
+            private void ActivateAIRouter()
+            {
+                ActivateTool(spaces => spaces.ActivateAIRouter());
+            }
+
+            private void ActivateTool(Action<ViewModels.DevSpaces> activate)
+            {
+                if (!ViewModels.Preferences.Instance.EnableDevSpaces)
+                    return;
+
+                AttachSpaces();
+                _repository.SelectedViewIndex = 3;
+
+                if (_spaces != null)
+                    activate(_spaces);
+
+                Update();
+            }
+
+            private void WireToolNavigation()
+            {
+                if (_navigationItem.Content is not StackPanel root || root.Children.Count < 2 || root.Children[1] is not StackPanel tools)
+                    return;
+
+                foreach (var button in tools.Children.OfType<Button>())
+                {
+                    if (button.Tag is not string target)
+                        continue;
+
+                    if (target == "Files")
+                        button.Click += (_, e) =>
+                        {
+                            ActivateFiles();
+                            e.Handled = true;
+                        };
+                    else if (target == "AIRouter")
+                        button.Click += (_, e) =>
+                        {
+                            ActivateAIRouter();
+                            e.Handled = true;
+                        };
+                }
             }
 
             private void Update()
@@ -278,22 +331,98 @@ namespace DevBoard.DevSpaces
                 };
                 badge.Bind(Border.BackgroundProperty, view.GetResourceObservable("Brush.Badge"));
 
-                var content = new Grid
+                var tools = new StackPanel
                 {
-                    ColumnDefinitions = new ColumnDefinitions("4,Auto,*,Auto"),
+                    Margin = new Thickness(20, 0, 0, 2),
+                    IsVisible = true,
                 };
-                content.Children.Add(indicator);
+                tools.Children.Add(CreateToolButton(view, "Icons.Folder", App.Text("DevSpaces.Files"), "Files"));
+                tools.Children.Add(CreateToolButton(view, "Icons.AIAssist", "AI Router", "AIRouter"));
+
+                var expanderLabel = new TextBlock
+                {
+                    Text = "▾",
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                };
+                var expander = new ToggleButton
+                {
+                    Width = 24,
+                    Height = 24,
+                    Margin = new Thickness(2, 0, 2, 0),
+                    IsChecked = true,
+                    Content = expanderLabel,
+                    ToolTip = App.Text("DevSpaces"),
+                };
+                expander.Classes.Add("icon_button");
+                expander.Click += (_, _) =>
+                {
+                    tools.IsVisible = expander.IsChecked != false;
+                    expanderLabel.Text = tools.IsVisible ? "▾" : "▸";
+                };
+
+                var header = new Grid
+                {
+                    Height = 28,
+                    ColumnDefinitions = new ColumnDefinitions("4,Auto,*,Auto,Auto"),
+                };
+                header.Children.Add(indicator);
                 Grid.SetColumn(icon, 1);
-                content.Children.Add(icon);
+                header.Children.Add(icon);
                 Grid.SetColumn(label, 2);
-                content.Children.Add(label);
+                header.Children.Add(label);
                 Grid.SetColumn(badge, 3);
-                content.Children.Add(badge);
+                header.Children.Add(badge);
+                Grid.SetColumn(expander, 4);
+                header.Children.Add(expander);
+
+                var content = new StackPanel();
+                content.Children.Add(header);
+                content.Children.Add(tools);
 
                 return new ListBoxItem
                 {
+                    Height = double.NaN,
                     Content = content,
                 };
+            }
+
+            private static Button CreateToolButton(Views.Repository view, string iconKey, string text, string tag)
+            {
+                var icon = new Path
+                {
+                    Width = 12,
+                    Height = 12,
+                    Margin = new Thickness(6, 0, 8, 0),
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+                if (view.TryFindResource(iconKey, out var iconResource) && iconResource is Geometry geometry)
+                    icon.Data = geometry;
+
+                var label = new TextBlock
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                };
+
+                var content = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal,
+                };
+                content.Children.Add(icon);
+                content.Children.Add(label);
+
+                var button = new Button
+                {
+                    Height = 26,
+                    Padding = new Thickness(0),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    HorizontalContentAlignment = HorizontalAlignment.Left,
+                    Tag = tag,
+                    Content = content,
+                };
+                button.Classes.Add("flat");
+                return button;
             }
 
             private readonly ViewModels.Repository _repository;
