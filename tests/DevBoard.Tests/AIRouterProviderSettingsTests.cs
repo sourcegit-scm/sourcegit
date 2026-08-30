@@ -83,6 +83,39 @@ public class AIRouterProviderSettingsTests
     }
 
     [Fact]
+    public async Task ImportAsync_ReadsAIStudioProviderArray()
+    {
+        const string json = """
+        [
+          {
+            "providerId": "opencode",
+            "name": "OpenCode",
+            "baseUrl": "https://opencode.ai/zen/v1",
+            "apiKey": "",
+            "priority": 10,
+            "mode": "fallback",
+            "models": "[\"deepseek-v4-flash-free\"]",
+            "isActive": true,
+            "extraHeaders": ""
+          }
+        ]
+        """;
+
+        await using var stream = new MemoryStream(Encoding.UTF8.GetBytes(json));
+        var providers = await AIRouterProviderExchange.ImportAsync(stream);
+
+        var provider = Assert.Single(providers);
+        Assert.Equal("opencode", provider.Id);
+        Assert.Equal("OpenCode", provider.Name);
+        Assert.Equal("https://opencode.ai/zen/v1", provider.BaseUrl);
+        Assert.Equal(["deepseek-v4-flash-free"], provider.Models);
+        Assert.Equal("deepseek-v4-flash-free", provider.DefaultModel);
+        Assert.Equal(10, provider.Priority);
+        Assert.True(provider.IsActive);
+        Assert.Empty(provider.ExtraHeaders);
+    }
+
+    [Fact]
     public async Task ImportAsync_RejectsUnsupportedVersion()
     {
         const string json = "{\"version\":2,\"providers\":[]}";
