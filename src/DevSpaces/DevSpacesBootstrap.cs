@@ -352,9 +352,9 @@ namespace DevBoard.DevSpaces
                     Margin = new Thickness(2, 0, 2, 0),
                     IsChecked = true,
                     Content = expanderLabel,
-                    ToolTip = App.Text("DevSpaces"),
                 };
                 expander.Classes.Add("icon_button");
+                ToolTip.SetTip(expander, App.Text("DevSpaces"));
                 expander.Click += (_, _) =>
                 {
                     tools.IsVisible = expander.IsChecked != false;
