@@ -229,6 +229,10 @@ namespace SourceGit.ViewModels
 
                     created.Upstream = basedOn.FullName;
                 }
+                else
+                {
+                    created.Upstream = string.Empty;
+                }
 
                 _repo.RefreshAfterCreateBranch(created, CheckoutAfterCreated);
             }

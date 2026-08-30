@@ -704,7 +704,7 @@ namespace SourceGit.Views
         {
             var current = repo.CurrentBranch;
             var menu = new ContextMenu();
-            var upstream = repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal));
+            var upstream = !string.IsNullOrEmpty(branch.Upstream) ? repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal)) : null;
 
             var push = new MenuItem();
             push.Header = App.Text("BranchCM.Push", branch.Name);

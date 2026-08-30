@@ -136,22 +136,22 @@ namespace SourceGit.ViewModels
             }
 
             // Find preferred remote if selected local branch has upstream.
-            if (!string.IsNullOrEmpty(_selectedLocalBranch?.Upstream) && !_selectedLocalBranch.IsUpstreamGone)
+            if (_selectedLocalBranch != null)
             {
-                _tracking = false;
-
-                foreach (var branch in repo.Branches)
+                var upstream = _selectedLocalBranch.Upstream;
+                if (!string.IsNullOrEmpty(upstream) && !_selectedLocalBranch.IsUpstreamGone)
                 {
-                    if (!branch.IsLocal && _selectedLocalBranch.Upstream == branch.FullName)
+                    _tracking = false;
+
+                    foreach (var branch in repo.Branches)
                     {
-                        _selectedRemote = repo.Remotes.Find(x => x.Name == branch.Remote);
-                        break;
+                        if (!branch.IsLocal && upstream.Equals(branch.FullName, StringComparison.Ordinal))
+                        {
+                            _selectedRemote = repo.Remotes.Find(x => x.Name == branch.Remote);
+                            break;
+                        }
                     }
                 }
-            }
-            else
-            {
-                _tracking = true;
             }
 
             // Set default remote to the first if it has not been set.

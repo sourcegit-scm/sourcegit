@@ -1451,6 +1451,7 @@ namespace SourceGit.ViewModels
                 foreach (var b in _branches)
                 {
                     if (b.IsLocal &&
+                        !string.IsNullOrEmpty(b.Upstream) &&
                         b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
                         b.Ahead.Count == 0)
                     {
