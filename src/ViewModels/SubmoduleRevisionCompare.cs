@@ -38,15 +38,15 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _visibleChanges, value);
         }
 
-        public List<Models.Change> SelectedChanges
+        public ChangeSelection ChangeSelection
         {
-            get => _selectedChanges;
+            get => _changeSelection;
             set
             {
-                if (SetProperty(ref _selectedChanges, value))
+                if (SetProperty(ref _changeSelection, value))
                 {
-                    if (value is { Count: 1 })
-                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_base.SHA, _to.SHA, value[0]), _diffContext);
+                    if (value is { Count: 1, IsSingleFolder: false })
+                        DiffContext = new DiffContext(_repo, new Models.DiffOption(_base.SHA, _to.SHA, value.Changes[0]), _diffContext);
                     else
                         DiffContext = null;
                 }
@@ -108,7 +108,7 @@ namespace SourceGit.ViewModels
         {
             IsLoading = true;
             VisibleChanges = [];
-            SelectedChanges = [];
+            ChangeSelection = new(null);
 
             Task.Run(async () =>
             {
@@ -134,9 +134,7 @@ namespace SourceGit.ViewModels
                     IsLoading = false;
 
                     if (VisibleChanges.Count > 0)
-                        SelectedChanges = [VisibleChanges[0]];
-                    else
-                        SelectedChanges = [];
+                        ChangeSelection = new(VisibleChanges.GetRange(0, 1));
                 });
             });
         }
@@ -170,7 +168,7 @@ namespace SourceGit.ViewModels
         private int _totalChanges = 0;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
-        private List<Models.Change> _selectedChanges = null;
+        private ChangeSelection _changeSelection = new(null);
         private string _searchFilter = string.Empty;
         private DiffContext _diffContext = null;
     }

@@ -65,22 +65,17 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _visibleChanges, value);
         }
 
-        public List<Models.Change> SelectedChanges
+        public ChangeSelection ChangeSelection
         {
-            get => _selectedChanges;
+            get => _changeSelection;
             set
             {
-                if (SetProperty(ref _selectedChanges, value))
+                if (SetProperty(ref _changeSelection, value))
                 {
-                    if (value is { Count: 1 })
-                    {
-                        var option = new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value[0]);
-                        DiffContext = new DiffContext(_repo.FullPath, option, _diffContext);
-                    }
+                    if (value is { Count: 1, IsSingleFolder: false })
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value.Changes[0]), _diffContext);
                     else
-                    {
                         DiffContext = null;
-                    }
                 }
             }
         }
@@ -146,7 +141,7 @@ namespace SourceGit.ViewModels
         {
             (StartPoint, EndPoint) = (_endPoint, _startPoint);
             VisibleChanges = [];
-            SelectedChanges = [];
+            ChangeSelection = new(null);
             IsLoading = true;
             Refresh();
         }
@@ -372,9 +367,9 @@ namespace SourceGit.ViewModels
                     IsLoading = false;
 
                     if (VisibleChanges.Count > 0)
-                        SelectedChanges = [VisibleChanges[0]];
+                        ChangeSelection = new(VisibleChanges.GetRange(0, 1));
                     else
-                        SelectedChanges = [];
+                        ChangeSelection = new(null);
                 });
             });
         }
@@ -396,7 +391,7 @@ namespace SourceGit.ViewModels
         private int _totalChanges = 0;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _visibleChanges = null;
-        private List<Models.Change> _selectedChanges = null;
+        private ChangeSelection _changeSelection = new(null);
         private string _searchFilter = string.Empty;
         private DiffContext _diffContext = null;
     }

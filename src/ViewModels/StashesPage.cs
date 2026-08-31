@@ -93,23 +93,23 @@ namespace SourceGit.ViewModels
             private set
             {
                 if (SetProperty(ref _changes, value))
-                    SelectedChanges = value is { Count: > 0 } ? [value[0]] : [];
+                    ChangeSelection = new(value is { Count: > 0 } ? value.GetRange(0, 1) : null);
             }
         }
 
-        public List<Models.Change> SelectedChanges
+        public ChangeSelection ChangeSelection
         {
-            get => _selectedChanges;
+            get => _changeSelection;
             set
             {
-                if (SetProperty(ref _selectedChanges, value))
+                if (SetProperty(ref _changeSelection, value))
                 {
-                    if (value is not { Count: 1 })
+                    if (value is not { Count: 1, IsSingleFolder: false })
                         DiffContext = null;
-                    else if (_untracked.Contains(value[0]))
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.UntrackedParent, _selectedStash.Parents[2], value[0]), _diffContext);
+                    else if (_untracked.Contains(value.Changes[0]))
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.UntrackedParent, _selectedStash.Parents[2], value.Changes[0]), _diffContext);
                     else
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value[0]), _diffContext);
+                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.Parents[0], _selectedStash.SHA, value.Changes[0]), _diffContext);
                 }
             }
         }
@@ -281,7 +281,7 @@ namespace SourceGit.ViewModels
         private Models.Stash _selectedStash = null;
         private List<Models.Change> _changes = null;
         private List<Models.Change> _untracked = [];
-        private List<Models.Change> _selectedChanges = [];
+        private ChangeSelection _changeSelection = new(null);
         private DiffContext _diffContext = null;
     }
 }

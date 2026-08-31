@@ -131,8 +131,8 @@
       <Border Grid.Row="4" Background="{DynamicResource Brush.Contents}">
         <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=OneWay}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
-                                Changes="{Binding Changes}"
-                                SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                Changes="{Binding Changes, Mode=OneWay}"
+                                Selection="{Binding ChangeSelection, Mode=TwoWay}"
                                 ContextRequested="OnChangeContextRequested"
                                 KeyDown="OnChangeCollectionViewKeyDown"/>
       </Border>

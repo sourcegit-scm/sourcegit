@@ -108,7 +108,7 @@ namespace SourceGit.ViewModels
 
                     Staged = GetStagedChanges(_cached);
                     VisibleStaged = GetVisibleChanges(_staged);
-                    SelectedStaged = [];
+                    SelectedStaged = new(null);
                 }
             }
         }
@@ -131,7 +131,8 @@ namespace SourceGit.ViewModels
 
                     VisibleUnstaged = GetVisibleChanges(_unstaged);
                     VisibleStaged = GetVisibleChanges(_staged);
-                    SelectedUnstaged = [];
+                    SelectedUnstaged = new(null);
+                    SelectedStaged = new(null);
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _visibleStaged, value);
         }
 
-        public List<Models.Change> SelectedUnstaged
+        public ChangeSelection SelectedUnstaged
         {
             get => _selectedUnstaged;
             set
@@ -175,10 +176,10 @@ namespace SourceGit.ViewModels
                     else
                     {
                         if (_selectedStaged is { Count: > 0 })
-                            SelectedStaged = [];
+                            SelectedStaged = new(null);
 
-                        if (value.Count == 1)
-                            SetDetail(value[0], true);
+                        if (value.Count == 1 && !value.IsSingleFolder)
+                            SetDetail(value.Changes[0], true);
                         else
                             SetDetail(null, true);
                     }
@@ -186,7 +187,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public List<Models.Change> SelectedStaged
+        public ChangeSelection SelectedStaged
         {
             get => _selectedStaged;
             set
@@ -201,10 +202,10 @@ namespace SourceGit.ViewModels
                     else
                     {
                         if (_selectedUnstaged is { Count: > 0 })
-                            SelectedUnstaged = [];
+                            SelectedUnstaged = new(null);
 
-                        if (value.Count == 1)
-                            SetDetail(value[0], false);
+                        if (value.Count == 1 && !value.IsSingleFolder)
+                            SetDetail(value.Changes[0], false);
                         else
                             SetDetail(null, false);
                     }
@@ -244,7 +245,7 @@ namespace SourceGit.ViewModels
                         if (_selectedStaged is { Count: > 0 })
                         {
                             var set = new HashSet<string>();
-                            foreach (var c in _selectedStaged)
+                            foreach (var c in _selectedStaged.Changes)
                                 set.Add(c.Path);
 
                             foreach (var c in visibleStagedNew)
@@ -257,7 +258,7 @@ namespace SourceGit.ViewModels
                         _isLoadingData = true;
                         Staged = testStaged;
                         VisibleStaged = visibleStagedNew;
-                        SelectedStaged = selectedStagedNew;
+                        SelectedStaged = new(selectedStagedNew);
                         _isLoadingData = false;
                     }
                 }
@@ -271,7 +272,7 @@ namespace SourceGit.ViewModels
             var lastSelectedUnstaged = new HashSet<string>();
             if (_selectedUnstaged is { Count: > 0 })
             {
-                foreach (var c in _selectedUnstaged)
+                foreach (var c in _selectedUnstaged.Changes)
                     lastSelectedUnstaged.Add(c.Path);
             }
 
@@ -311,7 +312,7 @@ namespace SourceGit.ViewModels
             if (_selectedStaged is { Count: > 0 })
             {
                 var set = new HashSet<string>();
-                foreach (var c in _selectedStaged)
+                foreach (var c in _selectedStaged.Changes)
                     set.Add(c.Path);
 
                 foreach (var c in visibleStaged)
@@ -335,8 +336,8 @@ namespace SourceGit.ViewModels
             VisibleStaged = visibleStaged;
             Unstaged = unstaged;
             Staged = staged;
-            SelectedUnstaged = selectedUnstaged;
-            SelectedStaged = selectedStaged;
+            SelectedUnstaged = new(selectedUnstaged);
+            SelectedStaged = new(selectedStaged);
             _isLoadingData = false;
 
             UpdateInProgressState();
@@ -351,7 +352,7 @@ namespace SourceGit.ViewModels
                 return;
 
             IsStaging = true;
-            _selectedUnstaged = next != null ? [next] : [];
+            _selectedUnstaged = new(next != null ? new List<Models.Change> { next } : null);
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -378,7 +379,7 @@ namespace SourceGit.ViewModels
                 return;
 
             IsUnstaging = true;
-            _selectedStaged = next != null ? [next] : [];
+            _selectedStaged = new(next != null ? new List<Models.Change> { next } : null);
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -650,7 +651,7 @@ namespace SourceGit.ViewModels
                     if (rs == Models.ConfirmEmptyCommitResult.StageAllAndCommit)
                         autoStage = true;
                     else if (rs == Models.ConfirmEmptyCommitResult.StageSelectedAndCommit)
-                        await StageChangesAsync(_selectedUnstaged, null);
+                        await StageChangesAsync(_selectedUnstaged.Changes, null);
                 }
             }
 
@@ -756,10 +757,10 @@ namespace SourceGit.ViewModels
 
         private void UpdateDetail()
         {
-            if (_selectedUnstaged.Count == 1)
-                SetDetail(_selectedUnstaged[0], true);
-            else if (_selectedStaged.Count == 1)
-                SetDetail(_selectedStaged[0], false);
+            if (_selectedUnstaged is { Count: 1, IsSingleFolder: false })
+                SetDetail(_selectedUnstaged.Changes[0], true);
+            else if (_selectedStaged is { Count: 1, IsSingleFolder: false })
+                SetDetail(_selectedStaged.Changes[0], false);
             else
                 SetDetail(null, false);
         }
@@ -849,8 +850,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleUnstaged = [];
         private List<Models.Change> _staged = [];
         private List<Models.Change> _visibleStaged = [];
-        private List<Models.Change> _selectedUnstaged = [];
-        private List<Models.Change> _selectedStaged = [];
+        private ChangeSelection _selectedUnstaged = new(null);
+        private ChangeSelection _selectedStaged = new(null);
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;
