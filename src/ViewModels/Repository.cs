@@ -158,7 +158,14 @@ namespace SourceGit.ViewModels
         public List<Models.Remote> Remotes
         {
             get => _remotes;
-            private set => SetProperty(ref _remotes, value);
+            private set
+            {
+                if (SetProperty(ref _remotes, value))
+                {
+                    if (_histories != null)
+                        _histories.HasSingleRemote = value != null && value.Count == 1;
+                }
+            }
         }
 
         public List<Models.Branch> Branches
@@ -175,7 +182,9 @@ namespace SourceGit.ViewModels
                 var oldHead = _currentBranch?.Head;
                 if (SetProperty(ref _currentBranch, value))
                 {
-                    _histories?.NotifyCurrentBranchChanged();
+                    if (_histories != null)
+                        _histories.CurrentBranch = value;
+
                     if (value != null && !value.Head.Equals(oldHead, StringComparison.Ordinal) && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
                 }
@@ -570,7 +579,7 @@ namespace SourceGit.ViewModels
 
         public bool IsLFSEnabled()
         {
-            var path = Path.Combine(FullPath, ".git", "hooks", "pre-push");
+            var path = Path.Combine(GitDir, "hooks", "pre-push");
             if (!File.Exists(path))
                 return false;
 
@@ -1169,6 +1178,8 @@ namespace SourceGit.ViewModels
                     LocalBranchTrees = builder.Locals;
                     RemoteBranchTrees = builder.Remotes;
 
+                    ValidateHistoryFilters(true);
+
                     var localBranchesCount = 0;
                     foreach (var b in branches)
                     {
@@ -1214,6 +1225,7 @@ namespace SourceGit.ViewModels
 
                     Tags = tags;
                     VisibleTags = BuildVisibleTags();
+                    ValidateHistoryFilters(false);
                 });
             }, token);
         }
@@ -1238,6 +1250,19 @@ namespace SourceGit.ViewModels
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
                     .GetResultAsync()
                     .ConfigureAwait(false);
+
+                var merged = new HashSet<string>();
+                foreach (var c in commits)
+                {
+                    if (merged.Remove(c.SHA))
+                        c.IsMerged = true;
+
+                    if (c.IsMerged)
+                    {
+                        foreach (var p in c.Parents)
+                            merged.Add(p);
+                    }
+                }
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
@@ -1426,6 +1451,7 @@ namespace SourceGit.ViewModels
                 foreach (var b in _branches)
                 {
                     if (b.IsLocal &&
+                        !string.IsNullOrEmpty(b.Upstream) &&
                         b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
                         b.Ahead.Count == 0)
                     {
@@ -1551,9 +1577,8 @@ namespace SourceGit.ViewModels
             if (selfPage == null)
                 return;
 
-            var root = Path.GetFullPath(Path.Combine(FullPath, submodule));
-            var normalizedPath = root.Replace('\\', '/').TrimEnd('/');
-            App.GetLauncher().OpenRepositoryInTab(normalizedPath, null);
+            var fullpath = Path.GetFullPath(Path.Combine(FullPath, submodule));
+            App.GetLauncher().OpenSubRepository(selfPage, fullpath);
         }
 
         public void AddWorktree()
@@ -1838,6 +1863,37 @@ namespace SourceGit.ViewModels
             {
                 foreach (var item in list.TagItems)
                     item.FilterMode = Models.FilterMode.None;
+            }
+        }
+
+        private void ValidateHistoryFilters(bool forBranch)
+        {
+            if (_historyFilterMode == Models.FilterMode.None)
+                return;
+
+            var set = new HashSet<string>();
+
+            if (forBranch)
+            {
+                foreach (var b in _branches)
+                    set.Add(b.FullName);
+
+                foreach (var f in _uiStates.HistoryFilters)
+                {
+                    if (f.Type is Models.FilterType.LocalBranch or Models.FilterType.RemoteBranch)
+                        f.IsValid = set.Contains(f.Pattern);
+                }
+            }
+            else
+            {
+                foreach (var t in _tags)
+                    set.Add(t.Name);
+
+                foreach (var f in _uiStates.HistoryFilters)
+                {
+                    if (f.Type is Models.FilterType.Tag)
+                        f.IsValid = set.Contains(f.Pattern);
+                }
             }
         }
 

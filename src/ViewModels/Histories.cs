@@ -75,7 +75,7 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                GenerateGraph(value, true);
+                GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
             }
@@ -129,7 +129,14 @@ namespace SourceGit.ViewModels
 
         public Models.Branch CurrentBranch
         {
-            get => _repo.CurrentBranch;
+            get => _currentBranch;
+            set => SetProperty(ref _currentBranch, value);
+        }
+
+        public bool HasSingleRemote
+        {
+            get => _hasSingleRemote;
+            set => SetProperty(ref _hasSingleRemote, value);
         }
 
         public AvaloniaList<Models.IssueTracker> IssueTrackers
@@ -193,11 +200,6 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _commitDetailSharedData = new CommitDetailSharedData();
-        }
-
-        public void NotifyCurrentBranchChanged()
-        {
-            OnPropertyChanged(nameof(CurrentBranch));
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -510,7 +512,7 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
-        private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
+        private void GenerateGraph(List<Models.Commit> commits)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
             var highlighting = _repo.UIStates.GraphHighlighting;
@@ -522,10 +524,12 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, commitsChanged, firstParentOnly, highlighting, extraHeads);
+            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         private Repository _repo = null;
+        private Models.Branch _currentBranch = null;
+        private bool _hasSingleRemote = false;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];

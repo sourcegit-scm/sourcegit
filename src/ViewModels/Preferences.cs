@@ -639,17 +639,17 @@ namespace SourceGit.ViewModels
             if (_isLoading || _isReadonly)
                 return;
 
-            var tmpfile = Path.Combine(Native.OS.DataDir, "preference_tmp.json");
+            var tmpfile = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "preference_tmp.json");
             var content = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);
             File.WriteAllText(tmpfile, content);
 
-            var finalFile = Path.Combine(Native.OS.DataDir, "preference.json");
+            var finalFile = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "preference.json");
             File.Move(tmpfile, finalFile, true);
         }
 
         private static Preferences Load()
         {
-            var path = Path.Combine(Native.OS.DataDir, "preference.json");
+            var path = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "preference.json");
             if (!File.Exists(path))
                 return new Preferences();
 

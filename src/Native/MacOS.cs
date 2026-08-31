@@ -15,6 +15,14 @@ namespace SourceGit.Native
     [SupportedOSPlatform("macOS")]
     internal class MacOS : OS.IBackend
     {
+        [DllImport("/usr/lib/libSystem.B.dylib", SetLastError = true)]
+        private static extern int kill(int pid, int sig);
+
+        public MacOS()
+        {
+            _setsidExecutable = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath), "setsid");
+        }
+
         public void SetupApp(AppBuilder builder)
         {
             builder.With(new MacOSPlatformOptions()
@@ -29,7 +37,7 @@ namespace SourceGit.Native
             else if (!path.Contains("/opt/homebrew/", StringComparison.Ordinal))
                 path = "/opt/homebrew/bin:/opt/homebrew/sbin:" + path;
 
-            var customPathFile = Path.Combine(OS.DataDir, "PATH");
+            var customPathFile = Path.Combine(OS.BasicDirectories.ConfigDir, "PATH");
             if (File.Exists(customPathFile))
             {
                 var env = File.ReadAllText(customPathFile).Trim();
@@ -47,11 +55,19 @@ namespace SourceGit.Native
             window.BorderThickness = new Thickness(0);
         }
 
-        public string GetDataDir()
+        public OS.Directories GetOrCreateDirectories()
         {
-            return Path.Combine(
+            var dirs = new OS.Directories();
+            var appDataDir = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "SourceGit");
+
+            if (!Directory.Exists(appDataDir))
+                Directory.CreateDirectory(appDataDir);
+
+            dirs.ConfigDir = appDataDir;
+            dirs.CacheDir = appDataDir;
+            return dirs;
         }
 
         public string FindGitExecutable()
@@ -113,6 +129,47 @@ namespace SourceGit.Native
         {
             Process.Start("open", file.Quoted());
         }
+
+        public bool SupportSetSid()
+        {
+            return File.Exists(_setsidExecutable);
+        }
+
+        public string GetSetSidExecutable()
+        {
+            return _setsidExecutable;
+        }
+
+        public void TerminateProcess(Process proc)
+        {
+            if (!SupportSetSid())
+            {
+                proc.Kill(true);
+                return;
+            }
+
+            if (kill(-proc.Id, 15) != 0)
+            {
+                // If the process already exited, we can just ignore the error.
+                if (Marshal.GetLastPInvokeError() == 3 /* ESRCH */)
+                    return;
+
+                // Actually, this will not be called since the process is
+                // spawned by us (EPERM will not happen), and SIGTERM (15)
+                // is a valid signal (EINVAL will not happen).
+                // See https://www.man7.org/linux/man-pages/man2/kill.2.html
+                try
+                {
+                    proc.Kill(true);
+                }
+                catch
+                {
+                    // Ignore any errors when trying to kill the process
+                }
+            }
+        }
+
+        private string _setsidExecutable = null;
     }
 
     [SupportedOSPlatform("macOS")]

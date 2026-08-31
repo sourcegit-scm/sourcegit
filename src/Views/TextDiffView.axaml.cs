@@ -662,7 +662,7 @@ namespace SourceGit.Views
         {
             if (e.KeyModifiers.Equals(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.Key == Key.C)
+                if (e.Key is Key.C or Key.Insert)
                 {
                     e.Handled = true;
 

@@ -740,6 +740,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">強制的にプッシュ</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">ローカルブランチ:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">新規</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">プッシュ前のフックを実行しない</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">リモート:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">リビジョン:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">リビジョンをリモートにプッシュ</x:String>

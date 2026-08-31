@@ -960,8 +960,11 @@
                       <ColumnDefinition Width="Auto" MaxWidth="480"/>
                       <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Path Grid.Column="0" Width="10" Height="10" Data="{StaticResource Icons.Branch}" IsVisible="{Binding IsBranch}"/>
-                    <Path Grid.Column="0" Width="10" Height="10" Data="{StaticResource Icons.Tag}" IsVisible="{Binding !IsBranch}"/>
+                    <v:HistoryFilterIcon Grid.Column="0"
+                                         Width="12" Height="12"
+                                         VerticalAlignment="Center"
+                                         Filter="{Binding Mode=OneWay}"
+                                         IsFilterValid="{Binding IsValid, Mode=OneWay}"/>
                     
                     <TextBlock Grid.Column="1"
                                Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}"
@@ -1010,6 +1013,7 @@
           <v:Histories DataContext="{Binding Histories, Mode=OneWay}"
                        CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                        Bisect="{Binding Bisect, Mode=OneWay}"
+                       HasSingleRemote="{Binding HasSingleRemote, Mode=OneWay}"
                        IssueTrackers="{Binding IssueTrackers, Mode=OneWay}">
             <v:Histories.IsDetailsPanelExpanded>
               <MultiBinding Converter="{x:Static BoolConverters.Or}">

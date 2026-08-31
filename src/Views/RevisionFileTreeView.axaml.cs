@@ -325,6 +325,14 @@ namespace SourceGit.Views
             }
 
             Rows.AddRange(rows);
+
+            if (_searchResult.Count > 0)
+            {
+                var lastNode = Rows[^1];
+                RowsList.SelectedItem = lastNode;
+                RowsList.ScrollIntoView(lastNode);
+            }
+
             GC.Collect();
         }
 

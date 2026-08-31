@@ -322,6 +322,19 @@ namespace SourceGit.Views
             base.OnKeyDown(e);
         }
 
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+
+            if (!e.Handled)
+            {
+                if (e.Properties.PointerUpdateKind == PointerUpdateKind.XButton1Pressed)
+                    (DataContext as ViewModels.Launcher)?.GotoPrevTab();
+                else if (e.Properties.PointerUpdateKind == PointerUpdateKind.XButton2Pressed)
+                    (DataContext as ViewModels.Launcher)?.GotoNextTab();
+            }
+        }
+
         protected override void OnClosing(WindowClosingEventArgs e)
         {
             base.OnClosing(e);

@@ -24,15 +24,6 @@ namespace SourceGit.Views
             set => SetValue(TabWidthProperty, value);
         }
 
-        public static readonly StyledProperty<bool> UseSyntaxHighlightingProperty =
-            AvaloniaProperty.Register<RevisionTextFileView, bool>(nameof(UseSyntaxHighlighting));
-
-        public bool UseSyntaxHighlighting
-        {
-            get => GetValue(UseSyntaxHighlightingProperty);
-            set => SetValue(UseSyntaxHighlightingProperty, value);
-        }
-
         protected override Type StyleKeyOverride => typeof(TextEditor);
 
         public RevisionTextFileView() : base(new TextArea(), new TextDocument())
@@ -57,7 +48,10 @@ namespace SourceGit.Views
             base.OnLoaded(e);
 
             TextArea.TextView.ContextRequested += OnTextViewContextRequested;
-            UpdateTextMate();
+
+            _textMate ??= Models.TextMateHelper.CreateForEditor(this);
+            if (DataContext is Models.RevisionTextFile file)
+                Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
@@ -97,8 +91,6 @@ namespace SourceGit.Views
 
             if (change.Property == TabWidthProperty)
                 Options.IndentationSize = TabWidth;
-            else if (change.Property == UseSyntaxHighlightingProperty)
-                UpdateTextMate();
             else if (change.Property.Name == nameof(ActualThemeVariant) && change.NewValue != null)
                 Models.TextMateHelper.SetThemeByApp(_textMate);
         }
@@ -132,25 +124,6 @@ namespace SourceGit.Views
             menu.Open(TextArea.TextView);
 
             e.Handled = true;
-        }
-
-        private void UpdateTextMate()
-        {
-            if (UseSyntaxHighlighting)
-            {
-                _textMate ??= Models.TextMateHelper.CreateForEditor(this);
-
-                if (DataContext is Models.RevisionTextFile file)
-                    Models.TextMateHelper.SetGrammarByFileName(_textMate, file.FileName);
-            }
-            else if (_textMate != null)
-            {
-                _textMate.Dispose();
-                _textMate = null;
-                GC.Collect();
-
-                TextArea.TextView.Redraw();
-            }
         }
 
         private TextMate.Installation _textMate = null;

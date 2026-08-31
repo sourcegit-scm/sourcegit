@@ -3,12 +3,14 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:vm="using:SourceGit.ViewModels"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.PushToNewBranch"
                     x:Name="ThisControl"
+                    x:DataType="vm:PushToNewBranch"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.PushToNewBranch}"
-                    SizeToContent="WidthAndHeight"
+                    Width="400" SizeToContent="Height"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,*">
@@ -39,17 +41,18 @@
         <TextBlock Text="{DynamicResource Text.PushToNewBranch.Title}"/>
       </Border>
 
-      <TextBox x:Name="TxtName"
-               MinWidth="300" Height="32"
-               Margin="16,8,16,0"
-               CornerRadius="3"
-               Focusable="True">
+      <v:BranchOrTagNameTextBox x:Name="TxtName"
+                                Height="32"
+                                Text="{Binding BranchName, Mode=TwoWay}"
+                                Margin="16,8,16,0"
+                                CornerRadius="3"
+                                Focusable="True">
         <TextBox.InnerLeftContent>
           <Border Height="22" CornerRadius="10" Margin="4,0,0,0" Background="Green">
-            <TextBlock x:Name="TxtPrefix" Text="REMOTE" Foreground="White" Margin="8,0"/>
+            <TextBlock x:Name="TxtPrefix" Text="{Binding Remote, Mode=OneWay}" Foreground="White" Margin="8,0"/>
           </Border>
         </TextBox.InnerLeftContent>
-      </TextBox>
+      </v:BranchOrTagNameTextBox>
 
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,16,0,0">
         <Button Classes="flat primary"

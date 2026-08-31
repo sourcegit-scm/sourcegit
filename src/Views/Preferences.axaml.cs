@@ -341,7 +341,11 @@ namespace SourceGit.Views
             {
                 options = new FilePickerOpenOptions()
                 {
-                    FileTypeFilter = [new FilePickerFileType(shell.Name) { Patterns = [shell.Exec] }],
+                    FileTypeFilter = [new FilePickerFileType(shell.Name)
+                    {
+                        Patterns = shell.Exec.Split('|',
+                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    }],
                     AllowMultiple = false,
                 };
             }

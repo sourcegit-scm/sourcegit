@@ -5,7 +5,7 @@ namespace SourceGit.Commands
 {
     public class Push : Command
     {
-        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force)
+        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, bool noVerify)
         {
             _remote = remote;
 
@@ -22,6 +22,8 @@ namespace SourceGit.Commands
                 builder.Append("-u ");
             if (force)
                 builder.Append("--force-with-lease ");
+            if (noVerify)
+                builder.Append("--no-verify ");
 
             builder.Append(remote).Append(' ').Append(local).Append(':').Append(remoteBranch);
             Args = builder.ToString();

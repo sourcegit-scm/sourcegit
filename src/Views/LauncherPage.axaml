@@ -115,6 +115,21 @@
                                           Description="{Binding ProgressDescription}"
                                           IsVisible="{Binding InProgress}"
                                           IsHitTestVisible="False"/>
+
+                    <!-- Terminate -->
+                    <Button Classes="flat"
+                            Width="100" Height="28"
+                            Margin="0,0,0,8"
+                            HorizontalAlignment="Center"
+                            Content="{DynamicResource Text.Terminate}"
+                            Click="OnPopupTerminate">
+                      <Button.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                          <Binding Path="InProgress" Mode="OneWay"/>
+                          <Binding Path="CanTerminate" Mode="OneWay"/>
+                        </MultiBinding>
+                      </Button.IsVisible>
+                    </Button>      
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>

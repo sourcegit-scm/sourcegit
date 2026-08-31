@@ -17,14 +17,10 @@ namespace SourceGit.Views
             TxtName.Focus(NavigationMethod.Directional);
         }
 
-        public void SetRemote(string remote)
-        {
-            TxtPrefix.Text = remote;
-        }
-
         private void OnSure(object _1, RoutedEventArgs _2)
         {
-            Close(TxtName.Text);
+            if (DataContext is ViewModels.PushToNewBranch { HasErrors: false } vm && vm.Check())
+                Close(vm.BranchName);
         }
 
         private void OnCancel(object _1, RoutedEventArgs _2)

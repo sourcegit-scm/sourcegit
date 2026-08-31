@@ -514,7 +514,6 @@ namespace SourceGit.ViewModels
             Task.Run(async () =>
             {
                 var changes = await new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
-                    .WithCancellation(token)
                     .ReadAsync()
                     .ConfigureAwait(false);
 

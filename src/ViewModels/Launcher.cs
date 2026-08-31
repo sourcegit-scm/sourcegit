@@ -373,6 +373,72 @@ namespace SourceGit.ViewModels
                 ActivePage = page;
         }
 
+        public void OpenSubRepository(LauncherPage ownerPage, string fullpath)
+        {
+            var normalizedPath = fullpath.Replace('\\', '/').TrimEnd('/');
+
+            // Check if the sub-repository is already open in any of the tabs
+            foreach (var one in Pages)
+            {
+                if (one.Node.Id.Equals(normalizedPath, StringComparison.Ordinal))
+                {
+                    ActivePage = one;
+                    return;
+                }
+            }
+
+            // Make sure the target directory exists
+            if (!Directory.Exists(normalizedPath))
+            {
+                ownerPage.Notifications.Add(new Models.Notification
+                {
+                    Group = ownerPage.Node.Id,
+                    Message = "Repository path does NOT exist. Please check the path.",
+                    IsError = true,
+                });
+
+                return;
+            }
+
+            // Check if the target directory is a valid git repository
+            var gitDir = GetRepositoryGitDir(normalizedPath);
+            if (string.IsNullOrEmpty(gitDir))
+            {
+                ownerPage.Notifications.Add(new Models.Notification
+                {
+                    Group = ownerPage.Node.Id,
+                    Message = "Given path is not a valid git repository!",
+                    IsError = true,
+                });
+                return;
+            }
+
+            // Get the owner repository's name and extract the pure owner name (without any prefix)
+            var ownerName = ownerPage.Node.Name;
+            var colonIdx = ownerName.LastIndexOf(':');
+            var pureOwnerName = (colonIdx >= 0 && colonIdx < ownerName.Length - 1) ? ownerName.Substring(colonIdx + 1).Trim() : ownerName;
+
+            // Find the sub-repository node in the preferences or create a new one if it doesn't exist
+            var node = Preferences.Instance.FindNode(normalizedPath) ?? new RepositoryNode
+            {
+                Id = normalizedPath,
+                Name = $"{pureOwnerName}: {Path.GetFileName(normalizedPath)}",
+                Bookmark = 0,
+                IsRepository = true,
+                IsUnmanaged = true
+            };
+            node.LoadMinimalInfo(gitDir);
+
+            var repo = new Repository(false, node.Id, gitDir);
+            repo.Open();
+
+            var page = new LauncherPage(node, repo);
+            var idxOfOwner = Pages.IndexOf(ownerPage);
+            Pages.Insert(idxOfOwner + 1, page);
+            _activeWorkspace.Repositories.Insert(idxOfOwner + 1, normalizedPath);
+            ActivePage = page;
+        }
+
         private void DispatchNotification(Models.Notification notification)
         {
             if (!Dispatcher.UIThread.CheckAccess())
