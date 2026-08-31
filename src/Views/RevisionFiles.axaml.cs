@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -31,7 +32,7 @@ namespace SourceGit.Views
             {
                 if (vm.RevisionFileSearchSuggestion?.Count > 0)
                 {
-                    SearchSuggestionBox.Focus(NavigationMethod.Tab);
+                    SearchSuggestionBox.Focus(NavigationMethod.Directional);
                     SearchSuggestionBox.SelectedIndex = 0;
                 }
 
@@ -48,6 +49,15 @@ namespace SourceGit.Views
         {
             if (string.IsNullOrEmpty(TxtSearchRevisionFiles.Text))
                 await FileTree.SetSearchResultAsync(null);
+        }
+
+        private void OnSearchBoxLayoutUpdated(object sender, EventArgs e)
+        {
+            if (DataContext is not ViewModels.CommitDetail vm)
+                return;
+
+            if (sender is TextBox { IsEffectivelyVisible: false })
+                vm.CancelRevisionFileSuggestions();
         }
 
         private async void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)

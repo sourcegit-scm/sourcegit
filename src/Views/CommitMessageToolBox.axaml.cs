@@ -379,7 +379,7 @@ namespace SourceGit.Views
 
         private void OnLayoutUpdated(object sender, EventArgs e)
         {
-            if (_textPresenter == null)
+            if (_textPresenter == null || !IsEffectivelyVisible)
             {
                 SubjectEndY = 0;
                 SuggestionPopupY = 0;

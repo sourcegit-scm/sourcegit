@@ -28,7 +28,8 @@
                  Watermark="{DynamicResource Text.CommitDetail.Files.Search}"
                  Text="{Binding RevisionFileSearchFilter, Mode=TwoWay}"
                  KeyDown="OnSearchBoxKeyDown"
-                 TextChanged="OnSearchBoxTextChanged">
+                 TextChanged="OnSearchBoxTextChanged"
+                 LayoutUpdated="OnSearchBoxLayoutUpdated">
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
           </TextBox.InnerLeftContent>
