@@ -25,10 +25,10 @@ namespace SourceGit.Views
 
             var layout = ViewModels.Preferences.Instance.Layout;
             var width = grid.Bounds.Width;
-            var maxLeft = width - 304;
+            var leftWidth = Math.Max(width - 304, 300);
 
-            if (layout.WorkingCopyLeftWidth.Value - maxLeft > 1.0)
-                layout.WorkingCopyLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
+            if (layout.WorkingCopyLeftWidth.Value - leftWidth > 1.0)
+                layout.WorkingCopyLeftWidth = new GridLength(leftWidth, GridUnitType.Pixel);
         }
 
         private async void OnOpenAssumeUnchanged(object sender, RoutedEventArgs e)

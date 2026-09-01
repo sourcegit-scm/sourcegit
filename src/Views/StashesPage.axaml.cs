@@ -22,10 +22,10 @@ namespace SourceGit.Views
 
             var layout = ViewModels.Preferences.Instance.Layout;
             var width = grid.Bounds.Width;
-            var maxLeft = width - 304;
+            var leftWidth = Math.Max(width - 304, 300);
 
-            if (layout.StashesLeftWidth.Value - maxLeft > 1.0)
-                layout.StashesLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
+            if (layout.StashesLeftWidth.Value - leftWidth > 1.0)
+                layout.StashesLeftWidth = new GridLength(leftWidth, GridUnitType.Pixel);
         }
 
         private async void OnStashListKeyDown(object sender, KeyEventArgs e)
