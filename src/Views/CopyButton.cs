@@ -13,13 +13,16 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(Button);
 
-        public static readonly StyledProperty<string> CopyTextProperty =
-            AvaloniaProperty.Register<CopyButton, string>(nameof(CopyText), string.Empty);
+        public static readonly DirectProperty<CopyButton, string> CopyTextProperty =
+            AvaloniaProperty.RegisterDirect<CopyButton, string>(
+                nameof(CopyText),
+                static o => o.CopyText,
+                static (o, v) => o.CopyText = v);
 
         public string CopyText
         {
-            get => GetValue(CopyTextProperty);
-            set => SetValue(CopyTextProperty, value);
+            get => _copyText;
+            set => SetAndRaise(CopyTextProperty, ref _copyText, value);
         }
 
         public static readonly DirectProperty<CopyButton, bool> IsCopiedProperty =
@@ -115,6 +118,7 @@ namespace SourceGit.Views
 
         private readonly Path _copyIcon;
         private readonly Path _checkIcon;
+        private string _copyText = string.Empty;
         private bool _isCopied = false;
         private DispatcherTimer _resetTimer = null;
     }
