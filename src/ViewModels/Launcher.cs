@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -244,6 +245,7 @@ namespace SourceGit.ViewModels
 
             CloseRepositoryInTab(page);
             Pages.RemoveAt(removeIdx);
+            RefreshTabDisplayNames();
             GC.Collect();
         }
 
@@ -266,6 +268,7 @@ namespace SourceGit.ViewModels
 
             _activeWorkspace.ActiveIdx = 0;
             _ignoreIndexChange = false;
+            RefreshTabDisplayNames();
             GC.Collect();
         }
 
@@ -281,6 +284,7 @@ namespace SourceGit.ViewModels
             }
 
             _ignoreIndexChange = false;
+            RefreshTabDisplayNames();
             GC.Collect();
         }
 
@@ -371,6 +375,8 @@ namespace SourceGit.ViewModels
                 PostActivePageChanged();
             else
                 ActivePage = page;
+
+            RefreshTabDisplayNames();
         }
 
         public void OpenSubRepository(LauncherPage ownerPage, string fullpath)
@@ -437,6 +443,50 @@ namespace SourceGit.ViewModels
             Pages.Insert(idxOfOwner + 1, page);
             _activeWorkspace.Repositories.Insert(idxOfOwner + 1, normalizedPath);
             ActivePage = page;
+
+            RefreshTabDisplayNames();
+        }
+
+        public void RefreshTabDisplayNames()
+        {
+            var nameUsages = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            foreach (var page in Pages)
+            {
+                if (page.Node is not { IsRepository: true })
+                    continue;
+
+                nameUsages.TryGetValue(page.Node.Name, out var count);
+                nameUsages[page.Node.Name] = count + 1;
+            }
+
+            foreach (var page in Pages)
+            {
+                if (page.Node is not { IsRepository: true } node)
+                    continue;
+
+                nameUsages.TryGetValue(node.Name, out var count);
+                if (count > 1)
+                {
+                    var parent = GetParentFolderName(node.Id);
+                    page.DisplayName = string.IsNullOrEmpty(parent) ? node.Name : $"{node.Name} ({parent})";
+                }
+                else
+                {
+                    page.DisplayName = node.Name;
+                }
+            }
+        }
+
+        private static string GetParentFolderName(string repoPath)
+        {
+            var normalized = repoPath.Replace('\\', '/').TrimEnd('/');
+            var idx = normalized.LastIndexOf('/');
+            if (idx < 0)
+                return string.Empty;
+
+            var parent = normalized.Substring(0, idx).TrimEnd('/');
+            idx = parent.LastIndexOf('/');
+            return idx < 0 ? parent : parent.Substring(idx + 1);
         }
 
         private void DispatchNotification(Models.Notification notification)
