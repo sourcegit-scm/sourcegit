@@ -522,6 +522,7 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Solo la Rama Actual</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Rama Actual y los Commits Seleccionados</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Solo los Commits Seleccionados</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Commits seleccionados (Solamente el primer padre)</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SELECCIONADOS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">MOSTRAR COLUMNAS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Mantén 'Ctrl' o 'Shift' para seleccionar múltiples commits.</x:String>
@@ -630,6 +631,8 @@
   <x:String x:Key="Text.Open" xml:space="preserve">Abrir</x:String>
   <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Editor por defecto (Sistema)</x:String>
   <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Abrir Directorio de Datos de la App</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Cache" xml:space="preserve">Cache</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Config" xml:space="preserve">Configuración</x:String>
   <x:String x:Key="Text.OpenFile" xml:space="preserve">Abrir Archivo</x:String>
   <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Abrir en Herramienta de Merge</x:String>
   <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Abrir Repositorio Local</x:String>
@@ -901,6 +904,22 @@
   <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Ir a</x:String>
   <x:String x:Key="Text.SSHKey" xml:space="preserve">Clave Privada SSH:</x:String>
   <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Ruta de almacenamiento de la clave privada SSH</x:String>
+  <x:String x:Key="Text.SSHKeyHelper" xml:space="preserve">Abrir el Asistente para Claves SSH</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.ConfirmDeletion" xml:space="preserve">¿De verdad deseas borrar las siguientes claves?</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Fingerprint" xml:space="preserve">Fingerprint</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator" xml:space="preserve">Generar Clave SSH</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.ConfirmPassphrase" xml:space="preserve">Confirmar Contraseña:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Email" xml:space="preserve">Email:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Email.Placeholder" xml:space="preserve">Requerido.</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Name" xml:space="preserve">Nombre de la Clave:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Name.Placeholder" xml:space="preserve">Requerido. Por ejemplo: id_github</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Passphrase" xml:space="preserve">Contraseña:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Start" xml:space="preserve">GENERAR</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Type" xml:space="preserve">Tipo:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.UsePassphrase" xml:space="preserve">Usar contraseña para la clave privada</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Path" xml:space="preserve">Ruta</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.PublicKey" xml:space="preserve">Clave Pública</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Title" xml:space="preserve">Asistente para Claves SSH</x:String>
   <x:String x:Key="Text.Start" xml:space="preserve">INICIAR</x:String>
   <x:String x:Key="Text.Stash" xml:space="preserve">Stash</x:String>
   <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Incluir archivos sin rastrear</x:String>
@@ -967,6 +986,7 @@
   <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Eliminar {0} etiquetas seleccionadas...</x:String>
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Hacer merge de ${0}$ a ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Hacer push a ${0}$...</x:String>
+  <x:String x:Key="Text.Terminate" xml:space="preserve">FINALIZAR</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualizar Submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Todos los submódulos</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inicializar según sea necesario</x:String>
