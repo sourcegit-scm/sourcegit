@@ -677,6 +677,7 @@
                 <v:DateTimePresenter Grid.Column="2"
                                      Margin="4,0"
                                      ShowDateOnly="True"
+                                     FontFeatures="+tnum"
                                      Timestamp="{Binding CommitterTime}"
                                      Foreground="{DynamicResource Brush.FG2}"
                                      HorizontalAlignment="Right" VerticalAlignment="Center"/>
