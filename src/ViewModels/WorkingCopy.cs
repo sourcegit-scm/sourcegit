@@ -168,21 +168,16 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedUnstaged, value))
                 {
-                    if (value == null || value.Count == 0)
+                    if (value is { Count: > 0 })
                     {
-                        if (_selectedStaged == null || _selectedStaged.Count == 0)
-                            SetDetail(null, true);
-                    }
-                    else
-                    {
+                        _isLoadingData = true;
                         if (_selectedStaged is { Count: > 0 })
                             SelectedStaged = new(null);
-
-                        if (value.Count == 1 && !value.IsSingleFolder)
-                            SetDetail(value.Changes[0], true);
-                        else
-                            SetDetail(null, true);
+                        _isLoadingData = false;
                     }
+
+                    if (!_isLoadingData)
+                        UpdateDetail();
                 }
             }
         }
@@ -194,21 +189,16 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedStaged, value))
                 {
-                    if (value == null || value.Count == 0)
+                    if (value is { Count: > 0 })
                     {
-                        if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
-                            SetDetail(null, false);
-                    }
-                    else
-                    {
+                        _isLoadingData = true;
                         if (_selectedUnstaged is { Count: > 0 })
                             SelectedUnstaged = new(null);
-
-                        if (value.Count == 1 && !value.IsSingleFolder)
-                            SetDetail(value.Changes[0], false);
-                        else
-                            SetDetail(null, false);
+                        _isLoadingData = false;
                     }
+
+                    if (!_isLoadingData)
+                        UpdateDetail();
                 }
             }
         }
@@ -757,9 +747,9 @@ namespace SourceGit.ViewModels
 
         private void UpdateDetail()
         {
-            if (_selectedUnstaged is { Count: 1, IsSingleFolder: false })
+            if (_selectedUnstaged is { Count: 1, HasFolder: false })
                 SetDetail(_selectedUnstaged.Changes[0], true);
-            else if (_selectedStaged is { Count: 1, IsSingleFolder: false })
+            else if (_selectedStaged is { Count: 1, HasFolder: false })
                 SetDetail(_selectedStaged.Changes[0], false);
             else
                 SetDetail(null, false);

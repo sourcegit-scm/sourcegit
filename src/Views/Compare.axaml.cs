@@ -53,9 +53,9 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
 
-                var selectedFolder = selection.IsSingleFolder;
-                var fullPathOfFolder = selectedFolder ? vm.GetAbsPath(selection.SingleFolderPath) : null;
-                var relativePathOfFolder = selectedFolder ? selection.SingleFolderPath : null;
+                var selectedSingleFolder = selection.IsSingleFolder;
+                var fullPathOfFolder = selectedSingleFolder ? vm.GetAbsPath(selection.SingleFolderPath) : null;
+                var relativePathOfFolder = selectedSingleFolder ? selection.SingleFolderPath : null;
 
                 var menu = new ContextMenu();
                 if (selection.Count == 1)
@@ -63,30 +63,37 @@ namespace SourceGit.Views
                     var change = selection.Changes[0];
                     var changeFullPath = vm.GetAbsPath(change.Path);
 
-                    var openWithMerger = new MenuItem();
-                    openWithMerger.Header = App.Text("OpenInExternalMergeTool");
-                    openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
-                    openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                    openWithMerger.IsVisible = !selectedFolder;
-                    openWithMerger.Click += (_, ev) =>
+                    if (!selection.HasFolder)
                     {
-                        vm.OpenInExternalDiffTool(change);
-                        ev.Handled = true;
-                    };
+                        var openWithMerger = new MenuItem();
+                        openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                        openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
+                        openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                        openWithMerger.Click += (_, ev) =>
+                        {
+                            vm.OpenInExternalDiffTool(change);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(openWithMerger);
+                    }
 
-                    var explore = new MenuItem();
-                    explore.Header = App.Text("RevealFile");
-                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
-                    explore.IsEnabled = selectedFolder ? Directory.Exists(fullPathOfFolder) : File.Exists(changeFullPath);
-                    explore.Click += (_, ev) =>
+                    if (!selection.HasFolder || selectedSingleFolder)
                     {
-                        Native.OS.OpenInFileManager(selectedFolder ? fullPathOfFolder : changeFullPath);
-                        ev.Handled = true;
-                    };
+                        var explore = new MenuItem();
+                        explore.Header = App.Text("RevealFile");
+                        explore.Icon = this.CreateMenuIcon("Icons.Explore");
+                        explore.IsEnabled = selectedSingleFolder ? Directory.Exists(fullPathOfFolder) : File.Exists(changeFullPath);
+                        explore.Click += (_, ev) =>
+                        {
+                            Native.OS.OpenInFileManager(selectedSingleFolder ? fullPathOfFolder : changeFullPath);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(explore);
+                    }
 
-                    menu.Items.Add(openWithMerger);
-                    menu.Items.Add(explore);
-                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    if (menu.Items.Count > 0)
+                        menu.Items.Add(new MenuItem() { Header = "-" });
+
                     menu.Items.Add(patch);
 
                     if (vm.CanResetFiles)
@@ -120,7 +127,7 @@ namespace SourceGit.Views
                     copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copyPath.Click += async (_, ev) =>
                     {
-                        await this.CopyTextAsync(selectedFolder ? relativePathOfFolder : change.Path);
+                        await this.CopyTextAsync(selectedSingleFolder ? relativePathOfFolder : change.Path);
                         ev.Handled = true;
                     };
 
@@ -130,7 +137,7 @@ namespace SourceGit.Views
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, ev) =>
                     {
-                        await this.CopyTextAsync(selectedFolder ? fullPathOfFolder : changeFullPath);
+                        await this.CopyTextAsync(selectedSingleFolder ? fullPathOfFolder : changeFullPath);
                         ev.Handled = true;
                     };
 
@@ -140,7 +147,7 @@ namespace SourceGit.Views
                 }
                 else
                 {
-                    if (selectedFolder)
+                    if (selectedSingleFolder)
                     {
                         var explore = new MenuItem();
                         explore.Header = App.Text("RevealFile");
@@ -189,7 +196,7 @@ namespace SourceGit.Views
                     copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                     copyPath.Click += async (_, ev) =>
                     {
-                        if (selectedFolder)
+                        if (selectedSingleFolder)
                         {
                             await this.CopyTextAsync(relativePathOfFolder);
                         }
@@ -211,7 +218,7 @@ namespace SourceGit.Views
                     copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                     copyFullPath.Click += async (_, ev) =>
                     {
-                        if (selectedFolder)
+                        if (selectedSingleFolder)
                         {
                             await this.CopyTextAsync(fullPathOfFolder);
                         }

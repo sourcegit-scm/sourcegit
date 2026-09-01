@@ -104,7 +104,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _changeSelection, value))
                 {
-                    if (value is not { Count: 1, IsSingleFolder: false })
+                    if (value is not { Count: 1, HasFolder: false })
                         DiffContext = null;
                     else if (_untracked.Contains(value.Changes[0]))
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_selectedStash.UntrackedParent, _selectedStash.Parents[2], value.Changes[0]), _diffContext);

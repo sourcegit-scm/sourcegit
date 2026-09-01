@@ -45,7 +45,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _changeSelection, value))
                 {
-                    if (value is { Count: 1, IsSingleFolder: false })
+                    if (value is { Count: 1, HasFolder: false })
                         DiffContext = new DiffContext(_repo, new Models.DiffOption(_base.SHA, _to.SHA, value.Changes[0]), _diffContext);
                     else
                         DiffContext = null;

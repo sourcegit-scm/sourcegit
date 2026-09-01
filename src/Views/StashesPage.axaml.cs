@@ -153,30 +153,36 @@ namespace SourceGit.Views
                     var change = selection.Changes[0];
                     var changeFullPath = vm.GetAbsPath(change.Path);
 
-                    var openWithMerger = new MenuItem();
-                    openWithMerger.Header = App.Text("OpenInExternalMergeTool");
-                    openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
-                    openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                    openWithMerger.IsVisible = !selectedSingleFolder;
-                    openWithMerger.Click += (_, ev) =>
+                    if (!selection.HasFolder)
                     {
-                        vm.OpenChangeWithExternalDiffTool(change);
-                        ev.Handled = true;
-                    };
+                        var openWithMerger = new MenuItem();
+                        openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                        openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
+                        openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                        openWithMerger.Click += (_, ev) =>
+                        {
+                            vm.OpenChangeWithExternalDiffTool(change);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(openWithMerger);
+                    }
 
-                    var explore = new MenuItem();
-                    explore.Header = App.Text("RevealFile");
-                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
-                    explore.IsEnabled = selectedSingleFolder ? Directory.Exists(fullPathOfFolder) : File.Exists(changeFullPath);
-                    explore.Click += (_, ev) =>
+                    if (!selection.HasFolder || selectedSingleFolder)
                     {
-                        Native.OS.OpenInFileManager(selectedSingleFolder ? fullPathOfFolder : changeFullPath);
-                        ev.Handled = true;
-                    };
+                        var explore = new MenuItem();
+                        explore.Header = App.Text("RevealFile");
+                        explore.Icon = this.CreateMenuIcon("Icons.Explore");
+                        explore.IsEnabled = selectedSingleFolder ? Directory.Exists(fullPathOfFolder) : File.Exists(changeFullPath);
+                        explore.Click += (_, ev) =>
+                        {
+                            Native.OS.OpenInFileManager(selectedSingleFolder ? fullPathOfFolder : changeFullPath);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(explore);
+                    }
 
-                    menu.Items.Add(openWithMerger);
-                    menu.Items.Add(explore);
-                    menu.Items.Add(new MenuItem { Header = "-" });
+                    if (menu.Items.Count > 0)
+                        menu.Items.Add(new MenuItem { Header = "-" });
                 }
 
                 var applyChanges = new MenuItem();

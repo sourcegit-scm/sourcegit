@@ -27,6 +27,8 @@ namespace SourceGit.Views
                 CreateChangeContextMenuByFolder(selection.SingleFolderPath, selection.Changes)?.Open(view);
             else if (selection.Changes.Count > 1)
                 CreateMultipleChangesContextMenu(selection.Changes)?.Open(view);
+            else if (selection.HasFolder)
+                CreateChangeContextMenuByMultipleFolders(selection.Changes[0])?.Open(view);
             else
                 this.FindAncestorOfType<CommitDetail>()?.CreateChangeContextMenu(selection.Changes[0])?.Open(view);
         }
@@ -148,6 +150,71 @@ namespace SourceGit.Views
             menu.Items.Add(explore);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(history);
+            menu.Items.Add(patch);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            menu.Items.Add(copyPath);
+            menu.Items.Add(copyFullPath);
+
+            return menu;
+        }
+
+        private ContextMenu CreateChangeContextMenuByMultipleFolders(Models.Change change)
+        {
+            if (DataContext is not ViewModels.CommitDetail { Repository: { } repo, Commit: { } commit } vm)
+                return null;
+
+            var patch = new MenuItem();
+            patch.Header = App.Text("FileCM.SaveAsPatch");
+            patch.Icon = this.CreateMenuIcon("Icons.Save");
+            patch.Click += async (_, e) =>
+            {
+                var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
+                if (storageProvider == null)
+                    return;
+
+                var options = new FilePickerSaveOptions();
+                options.Title = App.Text("FileCM.SaveAsPatch");
+                options.DefaultExtension = ".patch";
+                options.FileTypeChoices = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }];
+
+                try
+                {
+                    var storageFile = await storageProvider.SaveFilePickerAsync(options);
+                    if (storageFile != null)
+                    {
+                        var saveTo = storageFile.Path.LocalPath;
+                        await vm.SaveChangesAsPatchAsync([change], saveTo);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    repo.SendNotification($"Failed to save as patch: {exception.Message}", true);
+                }
+
+                e.Handled = true;
+            };
+
+            var copyPath = new MenuItem();
+            copyPath.Header = App.Text("CopyPath");
+            copyPath.Icon = this.CreateMenuIcon("Icons.Copy");
+            copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
+            copyPath.Click += async (_, ev) =>
+            {
+                await this.CopyTextAsync(change.Path);
+                ev.Handled = true;
+            };
+
+            var copyFullPath = new MenuItem();
+            copyFullPath.Header = App.Text("CopyFullPath");
+            copyFullPath.Icon = this.CreateMenuIcon("Icons.Copy");
+            copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
+            copyFullPath.Click += async (_, e) =>
+            {
+                await this.CopyTextAsync(vm.GetAbsPath(change.Path));
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
             menu.Items.Add(patch);
             menu.Items.Add(new MenuItem { Header = "-" });
             menu.Items.Add(copyPath);
