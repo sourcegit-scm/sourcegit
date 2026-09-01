@@ -78,12 +78,8 @@ namespace SourceGit.Views
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
-            if (_resetTimer != null)
-            {
-                _resetTimer.Tag = null;
-                _resetTimer.IsEnabled = false;
-            }
-
+            _resetTimer.Tag = null;
+            _resetTimer.IsEnabled = false;
             base.OnUnloaded(e);
         }
 
@@ -109,9 +105,10 @@ namespace SourceGit.Views
             base.OnClick();
 
             var text = CopyText;
-            if (!string.IsNullOrEmpty(text))
-                await this.CopyTextAsync(text);
+            if (string.IsNullOrEmpty(text))
+                return;
 
+            await this.CopyTextAsync(text);
             IsCopied = true;
             _resetTimer?.Start();
         }
