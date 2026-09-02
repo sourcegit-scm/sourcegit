@@ -1363,6 +1363,7 @@
   </Style>
 
   <Style Selector="Slider">
+    <Setter Property="MinHeight" Value="0"/>
     <Style.Resources>
       <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>
       <GridLength x:Key="SliderPreContentMargin">0</GridLength>
@@ -1370,7 +1371,13 @@
       <CornerRadius x:Key="SliderThumbCornerRadius">8</CornerRadius>
       <x:Double x:Key="SliderHorizontalThumbWidth">16</x:Double>
       <x:Double x:Key="SliderHorizontalThumbHeight">16</x:Double>
+      <x:Double x:Key="SliderHorizontalHeight">0</x:Double>
     </Style.Resources>
+
+    <Style Selector="^ /template/ Grid#HorizontalTemplate">
+      <Setter Property="MinHeight" Value="0"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
   </Style>
 
   <Style Selector="TabItem">

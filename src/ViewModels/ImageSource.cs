@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -58,6 +58,12 @@ namespace SourceGit.ViewModels
                 return new ImageSource(null, 0);
 
             await using var stream = await Commands.QueryFileContent.RunAsync(repo, revision, file).ConfigureAwait(false);
+            return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
+        }
+
+        public static async Task<ImageSource> FromStagedAsync(string repo, string file, Models.ImageDecoder decoder)
+        {
+            await using var stream = await Commands.QueryFileContent.FromStagedAsync(repo, file).ConfigureAwait(false);
             return await Task.Run(() => LoadFromStream(stream, decoder)).ConfigureAwait(false);
         }
 

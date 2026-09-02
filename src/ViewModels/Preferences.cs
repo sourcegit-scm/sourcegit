@@ -295,6 +295,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _imageDiffActiveIdx, value);
         }
 
+        public bool HighlightImageDiffChanges
+        {
+            get => _highlightImageDiffChanges;
+            set => SetProperty(ref _highlightImageDiffChanges, value);
+        }
+
         public bool EnableCompactFoldersInChangesTree
         {
             get => _enableCompactFoldersInChangesTree;
@@ -859,6 +865,7 @@ namespace SourceGit.ViewModels
         private bool _useFullTextDiff = false;
         private int _lfsImageActiveIdx = 0;
         private int _imageDiffActiveIdx = 0;
+        private bool _highlightImageDiffChanges = false;
         private bool _enableCompactFoldersInChangesTree = false;
 
         private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
