@@ -49,10 +49,6 @@ namespace SourceGit.ViewModels
 
         public static async Task<ImageSource> FromRevisionAsync(string repo, string revision, string file, Models.ImageDecoder decoder)
         {
-            // If revision is empty, it means we are reading file in worktree.
-            if (string.IsNullOrEmpty(revision))
-                return await FromFileAsync(Path.Combine(repo, file), decoder).ConfigureAwait(false);
-
             var emptyTreeHash = Models.EmptyTreeHash.Guess(revision);
             if (emptyTreeHash.Equals(revision, StringComparison.Ordinal))
                 return new ImageSource(null, 0);
