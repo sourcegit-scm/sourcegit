@@ -77,33 +77,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.09%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
-- Text.OpenAppDataDir.Cache
-- Text.OpenAppDataDir.Config
-- Text.SSHKeyHelper
-- Text.SSHKeyHelper.ConfirmDeletion
-- Text.SSHKeyHelper.Fingerprint
-- Text.SSHKeyHelper.Generator
-- Text.SSHKeyHelper.Generator.ConfirmPassphrase
-- Text.SSHKeyHelper.Generator.Email
-- Text.SSHKeyHelper.Generator.Email.Placeholder
-- Text.SSHKeyHelper.Generator.Name
-- Text.SSHKeyHelper.Generator.Name.Placeholder
-- Text.SSHKeyHelper.Generator.Passphrase
-- Text.SSHKeyHelper.Generator.Start
-- Text.SSHKeyHelper.Generator.Type
-- Text.SSHKeyHelper.Generator.UsePassphrase
-- Text.SSHKeyHelper.Path
-- Text.SSHKeyHelper.PublicKey
-- Text.SSHKeyHelper.Title
-- Text.Terminate
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-93.31%25-yellow)
 
