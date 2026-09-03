@@ -10,6 +10,11 @@ namespace SourceGit.Views
 {
     public partial class Repository : UserControl
     {
+        private const double CompactLayoutThreshold = 1100;
+        private bool _isCompactLayout;
+        private bool _isCompactSidebarOpen;
+        private GridLength _expandedSidebarWidth = new(260, GridUnitType.Pixel);
+
         public Repository()
         {
             InitializeComponent();
@@ -19,6 +24,124 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
             UpdateLeftSidebarLayout();
+            UpdateResponsiveLayout(Bounds.Width);
+        }
+
+        private void OnRepositorySizeChanged(object _, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+                UpdateResponsiveLayout(e.NewSize.Width);
+        }
+
+        private void UpdateResponsiveLayout(double width)
+        {
+            if (width <= 0)
+                return;
+
+            var sidebarColumn = RootLayout.ColumnDefinitions[0];
+            var sidebarSplitterColumn = RootLayout.ColumnDefinitions[1];
+            var useCompactLayout = width < CompactLayoutThreshold;
+            if (useCompactLayout == _isCompactLayout)
+            {
+                if (_isCompactSidebarOpen)
+                    FullSidebar.Width = Math.Min(340, Math.Max(240, width - 48));
+                return;
+            }
+
+            if (useCompactLayout)
+            {
+                var current = ViewModels.Preferences.Instance.Layout.RepositorySidebarWidth;
+                if (current.IsAbsolute && current.Value >= 200)
+                    _expandedSidebarWidth = current;
+
+                _isCompactLayout = true;
+                _isCompactSidebarOpen = false;
+                sidebarColumn.MinWidth = 0;
+                sidebarColumn.MaxWidth = 48;
+                sidebarColumn.SetCurrentValue(ColumnDefinition.WidthProperty, new GridLength(48, GridUnitType.Pixel));
+                sidebarSplitterColumn.Width = new GridLength(0);
+                SidebarSplitter.IsVisible = false;
+                CompactNavigationRail.IsVisible = true;
+                FullSidebar.IsVisible = false;
+            }
+            else
+            {
+                _isCompactLayout = false;
+                _isCompactSidebarOpen = false;
+                CompactSidebarBackdrop.IsVisible = false;
+                CompactNavigationRail.IsVisible = false;
+                CompactSidebarCloseButton.IsVisible = false;
+                FullSidebar.IsVisible = true;
+                FullSidebar.Width = double.NaN;
+                FullSidebar.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
+                Grid.SetColumnSpan(FullSidebar, 1);
+                sidebarColumn.MinWidth = 200;
+                sidebarColumn.MaxWidth = 500;
+                sidebarColumn.SetCurrentValue(ColumnDefinition.WidthProperty, _expandedSidebarWidth);
+                sidebarSplitterColumn.Width = new GridLength(3, GridUnitType.Pixel);
+                SidebarSplitter.IsVisible = true;
+                ViewModels.Preferences.Instance.Layout.RepositorySidebarWidth = _expandedSidebarWidth;
+            }
+        }
+
+        private void OnOpenCompactSidebar(object _, RoutedEventArgs e)
+        {
+            if (_isCompactLayout)
+            {
+                _isCompactSidebarOpen = true;
+                CompactSidebarBackdrop.IsVisible = true;
+                CompactNavigationRail.IsVisible = false;
+                CompactSidebarCloseButton.IsVisible = true;
+                FullSidebar.IsVisible = true;
+                FullSidebar.Width = Math.Min(340, Math.Max(240, Bounds.Width - 48));
+                FullSidebar.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left;
+                Grid.SetColumnSpan(FullSidebar, 3);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnCloseCompactSidebar(object _, RoutedEventArgs e)
+        {
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        private void OnCompactSidebarBackdropPressed(object _, PointerPressedEventArgs e)
+        {
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        private void OnCompactViewSelected(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { Tag: string tag } &&
+                int.TryParse(tag, out var selectedView) &&
+                DataContext is ViewModels.Repository repo)
+                repo.SelectedViewIndex = selectedView;
+
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        private void OnRepositoryViewSelectionChanged(object _, SelectionChangedEventArgs e)
+        {
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        private void CloseCompactSidebar()
+        {
+            if (!_isCompactLayout || !_isCompactSidebarOpen)
+                return;
+
+            _isCompactSidebarOpen = false;
+            CompactSidebarBackdrop.IsVisible = false;
+            CompactSidebarCloseButton.IsVisible = false;
+            FullSidebar.IsVisible = false;
+            FullSidebar.Width = double.NaN;
+            Grid.SetColumnSpan(FullSidebar, 1);
+            CompactNavigationRail.IsVisible = true;
         }
 
         private void OnToggleFilter(object _, RoutedEventArgs e)

@@ -22,7 +22,7 @@ namespace SourceGit.Views
 
             var layout = ViewModels.Preferences.Instance.Layout;
             var width = grid.Bounds.Width;
-            var leftWidth = Math.Max(width - 304, 300);
+            var leftWidth = Math.Max(220, width - 264);
 
             if (layout.StashesLeftWidth.Value - leftWidth > 1.0)
                 layout.StashesLeftWidth = new GridLength(leftWidth, GridUnitType.Pixel);

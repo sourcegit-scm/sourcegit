@@ -9,17 +9,58 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Repository"
              x:DataType="vm:Repository">
-  <Grid>
+  <Grid x:Name="RootLayout" SizeChanged="OnRepositorySizeChanged">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200"/>
       <ColumnDefinition Width="3"/>
       <ColumnDefinition Width="*" MinWidth="200"/>
     </Grid.ColumnDefinitions>
 
+    <!-- Compact navigation rail. At tiled widths the full repository tree becomes a drawer. -->
+    <Border x:Name="CompactSidebarBackdrop"
+            Grid.Column="0" Grid.ColumnSpan="3"
+            ZIndex="90"
+            Background="#66000000"
+            IsVisible="False"
+            PointerPressed="OnCompactSidebarBackdropPressed"/>
+
+    <Border x:Name="CompactNavigationRail"
+            Grid.Column="0"
+            ZIndex="80"
+            BorderThickness="0,0,1,0"
+            BorderBrush="{DynamicResource Brush.Border0}"
+            Background="{DynamicResource Brush.Window}"
+            IsVisible="False">
+      <StackPanel Margin="0,6" Spacing="4">
+        <Button Classes="icon_button" Width="40" Height="34" Click="OnOpenCompactSidebar" ToolTip.Tip="Repository navigation">
+          <Path Width="16" Height="16" Data="{StaticResource Icons.Menu}"/>
+        </Button>
+        <Button Classes="icon_button" Width="40" Height="34" Tag="0" Click="OnCompactViewSelected" ToolTip.Tip="{DynamicResource Text.Histories}">
+          <Path Width="16" Height="16" Data="{StaticResource Icons.Histories}"/>
+        </Button>
+        <Button Classes="icon_button" Width="40" Height="34" Tag="1" Click="OnCompactViewSelected" ToolTip.Tip="{DynamicResource Text.WorkingCopy}">
+          <Grid>
+            <Path Width="16" Height="16" Data="{StaticResource Icons.Changes}"/>
+            <Border MinWidth="16" Height="16" Padding="4,0" Margin="17,-12,-12,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                    CornerRadius="8" Background="{DynamicResource Brush.Badge}"
+                    IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+              <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}" FontSize="9"
+                         Foreground="{DynamicResource Brush.BadgeFG}" HorizontalAlignment="Center"/>
+            </Border>
+          </Grid>
+        </Button>
+        <Button Classes="icon_button" Width="40" Height="34" Tag="2" Click="OnCompactViewSelected" ToolTip.Tip="{DynamicResource Text.Stashes}">
+          <Path Width="16" Height="16" Data="{StaticResource Icons.Stashes}"/>
+        </Button>
+      </StackPanel>
+    </Border>
+
     <!-- Left Panel -->
-    <Grid Grid.Column="0" RowDefinitions="Auto,*">
+    <Grid x:Name="FullSidebar" Grid.Column="0" RowDefinitions="Auto,*" ZIndex="100" Background="{DynamicResource Brush.Window}">
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
-      <StackPanel Grid.Row="0" Margin="0,6" Height="24" HorizontalAlignment="Center" Orientation="Horizontal">
+      <Grid Grid.Row="0" Margin="0,6" Height="24">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
@@ -47,13 +88,26 @@
           </ToolTip.Tip>
           <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
         </RadioButton>
-      </StackPanel>
+        </StackPanel>
+        <Button x:Name="CompactSidebarCloseButton"
+                Classes="icon_button"
+                Width="28" Height="24" Margin="0,0,6,0"
+                HorizontalAlignment="Right"
+                Click="OnCloseCompactSidebar"
+                ToolTip.Tip="Close navigation"
+                IsVisible="False">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Close}"/>
+        </Button>
+      </Grid>
 
       <!-- Dashboard -->
       <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearchingCommits}">
         <!-- Page Switcher for Right Panel -->
         <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
-          <ListBox Background="Transparent" Padding="4" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
+          <ListBox Background="Transparent" Padding="4"
+                   SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}"
+                   SelectionMode="AlwaysSelected"
+                   SelectionChanged="OnRepositoryViewSelectionChanged">
             <ListBox.Styles>
               <Style Selector="Path.icon">
                 <Setter Property="Width" Value="12"/>
@@ -707,7 +761,7 @@
     </Grid>
 
     <!-- Splitter -->
-    <GridSplitter Grid.Column="1"
+    <GridSplitter x:Name="SidebarSplitter" Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
