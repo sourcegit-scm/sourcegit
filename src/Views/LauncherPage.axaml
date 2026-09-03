@@ -118,8 +118,8 @@
 
                     <!-- Terminate -->
                     <Button Classes="flat"
-                            Width="100" Height="28"
-                            Margin="0,0,0,8"
+                            Height="28"
+                            Margin="0,0,0,8" Padding="16,0"
                             HorizontalAlignment="Center"
                             Content="{DynamicResource Text.Terminate}"
                             Click="OnPopupTerminate">
