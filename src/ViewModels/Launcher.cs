@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Threading;
@@ -120,6 +122,26 @@ namespace SourceGit.ViewModels
                 CloseRepositoryInTab(one, false);
 
             _ignoreIndexChange = false;
+        }
+
+        public async Task FetchAllRepositoriesAsync()
+        {
+            // avoid collection was modified while enumerating.
+            var pages = new List<LauncherPage>();
+            pages.AddRange(Pages);
+
+            var count = 0;
+            foreach (var page in pages)
+            {
+                if (page.Data is Repository repo)
+                {
+                    if (await repo.FetchAllRemotesAsync())
+                        count++;
+                }
+            }
+
+            if (count > 0)
+                Models.Notification.Send(null, $"Fetched {count} repositories");
         }
 
         public void SwitchWorkspace(Workspace to)
