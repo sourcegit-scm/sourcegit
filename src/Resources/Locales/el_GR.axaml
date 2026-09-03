@@ -684,8 +684,12 @@
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">ΓΕΝΙΚΑ</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Έλεγχος για ενημερώσεις κατά την εκκίνηση</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Μορφή ημερομηνίας</x:String>
+  <x:String x:Key="Text.Preferences.General.DayOfWeek.None" xml:space="preserve">Χωρίς ημέρα</x:String>
+  <x:String x:Key="Text.Preferences.General.DayOfWeek.Short" xml:space="preserve">Σύντομη ημέρα</x:String>
+  <x:String x:Key="Text.Preferences.General.DayOfWeek.Full" xml:space="preserve">Πλήρης ημέρα</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Ενεργοποίηση συμπαγών φακέλων στο δέντρο αλλαγών</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Γλώσσα</x:String>
+  <x:String x:Key="Text.Preferences.General.LocalizedDates" xml:space="preserve">Τοπικές ημερομηνίες</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits ιστορικού</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Εμφάνιση της σελίδας `ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ` από προεπιλογή</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Εμφάνιση της καρτέλας `ΑΛΛΑΓΕΣ` στις λεπτομέρειες commit από προεπιλογή</x:String>

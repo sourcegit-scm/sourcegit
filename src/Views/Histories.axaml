@@ -207,6 +207,8 @@
                                          Timestamp="{Binding AuthorTime, Mode=OneWay}"
                                          ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories, Mode=OneWay}"
                                          DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat, Mode=OneWay}"
+                                         DayOfWeekStyle="{Binding Source={x:Static vm:Preferences.Instance}, Path=DayOfWeekStyle, Mode=OneWay}"
+                                         UseLocalizedCulture="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeUseLocalizedCulture, Mode=OneWay}"
                                          Use24Hours="{Binding Source={x:Static vm:Preferences.Instance}, Path=Use24Hours, Mode=OneWay}"/>
                 </Border>
               </DataTemplate>
@@ -227,6 +229,8 @@
                                          Timestamp="{Binding CommitterTime, Mode=OneWay}"
                                          ShowAsDateTime="{Binding Source={x:Static vm:Preferences.Instance}, Path=!DisplayTimeAsPeriodInHistories, Mode=OneWay}"
                                          DateTimeFormat="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeFormat, Mode=OneWay}"
+                                         DayOfWeekStyle="{Binding Source={x:Static vm:Preferences.Instance}, Path=DayOfWeekStyle, Mode=OneWay}"
+                                         UseLocalizedCulture="{Binding Source={x:Static vm:Preferences.Instance}, Path=DateTimeUseLocalizedCulture, Mode=OneWay}"
                                          Use24Hours="{Binding Source={x:Static vm:Preferences.Instance}, Path=Use24Hours, Mode=OneWay}"/>
                 </Border>
               </DataTemplate>
