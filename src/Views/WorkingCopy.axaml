@@ -8,15 +8,20 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="SourceGit.Views.WorkingCopy"
              x:DataType="vm:WorkingCopy">
-  <Grid SizeChanged="OnMainLayoutSizeChanged">
+  <Grid x:Name="MainLayout" SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="220"/>
       <ColumnDefinition Width="4"/>
       <ColumnDefinition Width="*" MinWidth="260"/>
     </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="0"/>
+      <RowDefinition Height="0"/>
+    </Grid.RowDefinitions>
 
     <!-- Left -->
-    <Grid Grid.Column="0">
+    <Grid x:Name="ChangesPanel" Grid.Column="0" Grid.Row="0">
       <Grid.RowDefinitions>
         <RowDefinition Height="36"/>
         <RowDefinition Height="*" MinHeight="100"/>
@@ -194,7 +199,7 @@
       </Grid>
     </Grid>
 
-    <GridSplitter Grid.Column="1"
+    <GridSplitter x:Name="LayoutSplitter" Grid.Column="1" Grid.Row="0"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
@@ -203,7 +208,7 @@
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
+    <Grid x:Name="DetailsPanel" Grid.Column="2" Grid.Row="0" Margin="0,4,4,4">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" MinHeight="160"/>
         <RowDefinition Height="4"/>

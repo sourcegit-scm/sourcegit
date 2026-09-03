@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
@@ -10,6 +11,10 @@ namespace SourceGit.Views
 {
     public partial class StashesPage : UserControl
     {
+        private const double SingleColumnThreshold = 720;
+        private bool _isSingleColumn;
+        private GridLength _expandedLeftWidth = new(300, GridUnitType.Pixel);
+
         public StashesPage()
         {
             InitializeComponent();
@@ -22,10 +27,73 @@ namespace SourceGit.Views
 
             var layout = ViewModels.Preferences.Instance.Layout;
             var width = grid.Bounds.Width;
+            if (width <= 0)
+                return;
+
+            var useSingleColumn = width < SingleColumnThreshold;
+            if (useSingleColumn != _isSingleColumn)
+                SetSingleColumnLayout(useSingleColumn);
+
+            if (useSingleColumn)
+                return;
+
             var leftWidth = Math.Max(220, width - 264);
 
             if (layout.StashesLeftWidth.Value - leftWidth > 1.0)
                 layout.StashesLeftWidth = new GridLength(leftWidth, GridUnitType.Pixel);
+        }
+
+        private void SetSingleColumnLayout(bool enabled)
+        {
+            var columns = MainLayout.ColumnDefinitions;
+            var rows = MainLayout.RowDefinitions;
+            var layout = ViewModels.Preferences.Instance.Layout;
+
+            _isSingleColumn = enabled;
+            if (enabled)
+            {
+                if (layout.StashesLeftWidth.IsAbsolute && layout.StashesLeftWidth.Value >= 220)
+                    _expandedLeftWidth = layout.StashesLeftWidth;
+
+                columns[0].MinWidth = 0;
+                columns[0].SetCurrentValue(ColumnDefinition.WidthProperty, new GridLength(1, GridUnitType.Star));
+                columns[1].Width = new GridLength(0);
+                columns[2].MinWidth = 0;
+                columns[2].Width = new GridLength(0);
+                rows[0].Height = new GridLength(2, GridUnitType.Star);
+                rows[1].Height = new GridLength(4, GridUnitType.Pixel);
+                rows[2].Height = new GridLength(3, GridUnitType.Star);
+
+                Grid.SetColumn(StashListPanel, 0);
+                Grid.SetRow(StashListPanel, 0);
+                Grid.SetColumn(LayoutSplitter, 0);
+                Grid.SetRow(LayoutSplitter, 1);
+                Grid.SetColumn(DetailsPanel, 0);
+                Grid.SetRow(DetailsPanel, 2);
+                LayoutSplitter.BorderThickness = new Thickness(0, 1, 0, 0);
+                DetailsPanel.Margin = new Thickness(4, 0, 4, 4);
+            }
+            else
+            {
+                columns[0].MinWidth = 220;
+                columns[0].SetCurrentValue(ColumnDefinition.WidthProperty, _expandedLeftWidth);
+                columns[1].Width = new GridLength(4, GridUnitType.Pixel);
+                columns[2].MinWidth = 260;
+                columns[2].Width = new GridLength(1, GridUnitType.Star);
+                rows[0].Height = new GridLength(1, GridUnitType.Star);
+                rows[1].Height = new GridLength(0);
+                rows[2].Height = new GridLength(0);
+
+                Grid.SetColumn(StashListPanel, 0);
+                Grid.SetRow(StashListPanel, 0);
+                Grid.SetColumn(LayoutSplitter, 1);
+                Grid.SetRow(LayoutSplitter, 0);
+                Grid.SetColumn(DetailsPanel, 2);
+                Grid.SetRow(DetailsPanel, 0);
+                LayoutSplitter.BorderThickness = new Thickness(1, 0, 0, 0);
+                DetailsPanel.Margin = new Thickness(0, 4, 4, 4);
+                layout.StashesLeftWidth = _expandedLeftWidth;
+            }
         }
 
         private async void OnStashListKeyDown(object sender, KeyEventArgs e)

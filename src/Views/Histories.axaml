@@ -10,7 +10,8 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}"
+                     SizeChanged="OnHistoriesSizeChanged">
     <v:HistoriesLayout.RowDefinitions>
       <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>

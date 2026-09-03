@@ -36,19 +36,26 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == UseHorizontalProperty && IsLoaded)
+            if ((change.Property == UseHorizontalProperty || change.Property == BoundsProperty) && IsLoaded)
                 RefreshLayout();
         }
 
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            RefreshLayout();
+            RefreshLayout(true);
         }
 
-        private void RefreshLayout()
+        private void RefreshLayout(bool force = false)
         {
-            if (UseHorizontal)
+            var useHorizontal = UseHorizontal && Bounds.Width >= 720;
+            if (!force && _hasAppliedLayout && useHorizontal == _lastUseHorizontal)
+                return;
+
+            _hasAppliedLayout = true;
+            _lastUseHorizontal = useHorizontal;
+
+            if (useHorizontal)
             {
                 var rowSpan = RowDefinitions.Count;
                 for (int i = 0; i < Children.Count; i++)
@@ -81,6 +88,8 @@ namespace SourceGit.Views
         }
 
         private bool _useHorizontal = false;
+        private bool _hasAppliedLayout;
+        private bool _lastUseHorizontal;
     }
 
     public class HistoriesCommitList : DataGrid
@@ -372,6 +381,19 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+        }
+
+        private void OnHistoriesSizeChanged(object _, SizeChangedEventArgs e)
+        {
+            if (!e.WidthChanged || DataContext is not ViewModels.Histories vm || CommitListContainer.Columns.Count < 5)
+                return;
+
+            var compact = e.NewSize.Width < 720;
+            var medium = e.NewSize.Width < 980;
+            CommitListContainer.Columns[1].SetCurrentValue(DataGridColumn.IsVisibleProperty, !compact && vm.IsAuthorColumnVisible);
+            CommitListContainer.Columns[2].SetCurrentValue(DataGridColumn.IsVisibleProperty, !compact && vm.IsSHAColumnVisible);
+            CommitListContainer.Columns[3].SetCurrentValue(DataGridColumn.IsVisibleProperty, !medium && vm.IsAuthorTimeColumnVisible);
+            CommitListContainer.Columns[4].SetCurrentValue(DataGridColumn.IsVisibleProperty, !medium && vm.IsCommitTimeColumnVisible);
         }
 
         public async Task GotoParent()
