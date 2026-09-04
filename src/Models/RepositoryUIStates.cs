@@ -13,6 +13,12 @@ namespace SourceGit.Models
         Stacked,
     }
 
+    public enum RepositoryNavigationPlacement
+    {
+        Sidebar,
+        Top,
+    }
+
     public class RepositoryUIStates
     {
         public HistoryShowFlags HistoryShowFlags
@@ -74,6 +80,12 @@ namespace SourceGit.Models
             get;
             set;
         } = 0.5;
+
+        public RepositoryNavigationPlacement NavigationPlacement
+        {
+            get;
+            set;
+        } = RepositoryNavigationPlacement.Sidebar;
 
         public bool EnableTopoOrderInHistory
         {

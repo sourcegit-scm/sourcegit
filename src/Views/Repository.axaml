@@ -32,27 +32,30 @@
             Background="{DynamicResource Brush.Window}"
             IsVisible="False">
       <StackPanel Margin="0,6" Spacing="4">
-        <Button Classes="icon_button" Width="40" Height="34" Click="OnOpenCompactSidebar" ToolTip.Tip="Repository navigation">
+        <Button Classes="icon_button" Width="40" Height="34" Click="OnOpenCompactSidebar" ToolTip.Tip="{DynamicResource Text.Repository.Navigation}">
           <Path Width="16" Height="16" Data="{StaticResource Icons.Menu}"/>
         </Button>
-        <Button Classes="icon_button" Width="40" Height="34" Tag="0" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.Histories}">
-          <Path Width="16" Height="16" Data="{StaticResource Icons.Histories}"/>
-        </Button>
-        <Button Classes="icon_button" Width="40" Height="34" Tag="1" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.WorkingCopy}">
-          <Grid>
-            <Path Width="16" Height="16" Data="{StaticResource Icons.Changes}"/>
-            <Border MinWidth="16" Height="16" Padding="4,0" Margin="17,-12,-12,0"
-                    HorizontalAlignment="Right" VerticalAlignment="Top"
-                    CornerRadius="8" Background="{DynamicResource Brush.Badge}"
-                    IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-              <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}" FontSize="9"
-                         Foreground="{DynamicResource Brush.BadgeFG}" HorizontalAlignment="Center"/>
-            </Border>
-          </Grid>
-        </Button>
-        <Button Classes="icon_button" Width="40" Height="34" Tag="2" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.Stashes}">
-          <Path Width="16" Height="16" Data="{StaticResource Icons.Stashes}"/>
-        </Button>
+        <StackPanel Spacing="4"
+                    IsVisible="{Binding NavigationPlacement, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:RepositoryNavigationPlacement.Sidebar}}">
+          <Button Classes="icon_button" Width="40" Height="34" Tag="0" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.Histories}">
+            <Path Width="16" Height="16" Data="{StaticResource Icons.Histories}"/>
+          </Button>
+          <Button Classes="icon_button" Width="40" Height="34" Tag="1" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.WorkingCopy}" IsVisible="{Binding !IsBare}">
+            <Grid>
+              <Path Width="16" Height="16" Data="{StaticResource Icons.Changes}"/>
+              <Border MinWidth="16" Height="16" Padding="4,0" Margin="17,-12,-12,0"
+                      HorizontalAlignment="Right" VerticalAlignment="Top"
+                      CornerRadius="8" Background="{DynamicResource Brush.Badge}"
+                      IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}" FontSize="9"
+                           Foreground="{DynamicResource Brush.BadgeFG}" HorizontalAlignment="Center"/>
+              </Border>
+            </Grid>
+          </Button>
+          <Button Classes="icon_button" Width="40" Height="34" Tag="2" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.Stashes}" IsVisible="{Binding !IsBare}">
+            <Path Width="16" Height="16" Data="{StaticResource Icons.Stashes}"/>
+          </Button>
+        </StackPanel>
       </StackPanel>
     </Border>
 
@@ -61,40 +64,40 @@
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
       <Grid Grid.Row="0" Margin="0,6" Height="24">
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-        <RadioButton Classes="switch_button"
-                     Width="48"
-                     GroupName="SearchGroup"
-                     IsChecked="{Binding !IsSearchingCommits, Mode=OneWay}">
-          <ToolTip.Tip>
-            <TextBlock>
-              <Run Text="{DynamicResource Text.Repository.Dashboard}" Foreground="{DynamicResource Brush.FG1}"/>
-              <Run Text=" "/>
-              <Run Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-            </TextBlock>
-          </ToolTip.Tip>
-          <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
-        </RadioButton>
+          <RadioButton Classes="switch_button"
+                       Width="48"
+                       GroupName="SearchGroup"
+                       IsChecked="{Binding !IsSearchingCommits, Mode=OneWay}">
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.Repository.Dashboard}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
+            <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
+          </RadioButton>
 
-        <RadioButton Classes="switch_button"
-                     Width="48"
-                     GroupName="SearchGroup"
-                     IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
-          <ToolTip.Tip>
-            <TextBlock>
-              <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
-              <Run Text=" "/>
-              <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-            </TextBlock>
-          </ToolTip.Tip>
-          <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
-        </RadioButton>
+          <RadioButton Classes="switch_button"
+                       Width="48"
+                       GroupName="SearchGroup"
+                       IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
+            <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
+          </RadioButton>
         </StackPanel>
         <Button x:Name="CompactSidebarCloseButton"
                 Classes="icon_button"
                 Width="28" Height="24" Margin="0,0,6,0"
                 HorizontalAlignment="Right"
                 Click="OnCloseCompactSidebar"
-                ToolTip.Tip="Close navigation"
+                ToolTip.Tip="{DynamicResource Text.Close}"
                 IsVisible="False">
           <Path Width="12" Height="12" Data="{StaticResource Icons.Close}"/>
         </Button>
@@ -103,127 +106,13 @@
       <!-- Dashboard -->
       <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearchingCommits}">
         <!-- Page Switcher for Right Panel -->
-        <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
-          <ListBox Background="Transparent" Padding="4"
-                   SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}"
-                   SelectionMode="AlwaysSelected"
-                   SelectionChanged="OnRepositoryViewSelectionChanged">
-            <ListBox.Styles>
-              <Style Selector="Path.icon">
-                <Setter Property="Width" Value="12"/>
-                <Setter Property="Height" Value="12"/>
-                <Setter Property="Margin" Value="6,0"/>
-                <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
-              </Style>
-              <Style Selector="TextBlock.header">
-                <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-              </Style>
-              <Style Selector="ListBoxItem">
-                <Setter Property="Height" Value="28"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="CornerRadius" Value="0"/>
-              </Style>
-              <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-              </Style>
-              <Style Selector="ListBoxItem:selected">
-                <Setter Property="BorderBrush" Value="{DynamicResource Brush.FG1}"/>
-              </Style>
-              <Style Selector="ListBoxItem:selected Rectangle.indicator">
-                <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
-              </Style>
-              <Style Selector="ListBoxItem:selected TextBlock.header">
-                <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
-              </Style>
-              <Style Selector="ListBoxItem:selected Path.icon">
-                <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
-              </Style>
-            </ListBox.Styles>
-
-            <ListBox.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Vertical"/>
-              </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-
-            <ListBoxItem Tag="0" ContextRequested="OnRepositoryViewContextRequested">
-              <Grid ColumnDefinitions="4,Auto,*,Auto">
-                <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
-                <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Histories}"/>
-                <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.Histories}"/>
-                <Button Grid.Column="3"
-                        Classes="icon_button"
-                        Width="26" Height="26"
-                        Click="OnOpenAdvancedHistoriesOption"
-                        ToolTip.Tip="{DynamicResource Text.Repository.MoreOptions}">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
-                </Button>
-              </Grid>
-            </ListBoxItem>
-
-            <ListBoxItem Tag="1" ContextRequested="OnRepositoryViewContextRequested" IsVisible="{Binding !IsBare}">
-              <Grid ColumnDefinitions="4,Auto,*,Auto,Auto,Auto">
-                <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
-                <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Changes}"/>
-                <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
-                <Border Grid.Column="3"
-                        Height="18"
-                        Margin="6,0" Padding="9,0"
-                        CornerRadius="9"
-                        VerticalAlignment="Center"
-                        Background="{DynamicResource Brush.Badge}"
-                        IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                  <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}"
-                             Foreground="{DynamicResource Brush.BadgeFG}"
-                             FontFamily="{DynamicResource Fonts.Monospace}"
-                             FontSize="10"/>
-                </Border>
-                <Path Grid.Column="4"
-                      Width="12" Height="12"
-                      Margin="0,0,6,0"
-                      Data="{StaticResource Icons.Info}"
-                      Fill="DarkOrange"
-                      IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                <Button Grid.Column="5"
-                        Classes="icon_button"
-                        Width="26" Height="26"
-                        Command="{Binding DiscardAllChanges}"
-                        ToolTip.Tip="{DynamicResource Text.Repository.DiscardAll}">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
-                </Button>
-              </Grid>
-            </ListBoxItem>
-
-            <ListBoxItem Tag="2" ContextRequested="OnRepositoryViewContextRequested" IsVisible="{Binding !IsBare}">
-              <Grid ColumnDefinitions="4,Auto,*,Auto,Auto">
-                <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
-                <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
-                <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.Stashes}"/>
-                <Border Grid.Column="3"
-                        Height="18"
-                        Margin="6,0" Padding="9,0"
-                        CornerRadius="9"
-                        VerticalAlignment="Center"
-                        Background="{DynamicResource Brush.Badge}"
-                        IsVisible="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                  <TextBlock Text="{Binding StashesCount, Mode=OneWay}"
-                             Foreground="{DynamicResource Brush.BadgeFG}"
-                             FontFamily="{DynamicResource Fonts.Monospace}"
-                             FontSize="10"/>
-                </Border>
-                <Button Grid.Column="4"
-                        Classes="icon_button"
-                        Width="26" Height="26"
-                        Command="{Binding ClearStashes}"
-                        ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
-                </Button>
-              </Grid>
-            </ListBoxItem>
-          </ListBox>
+        <Border Grid.Row="0"
+                Margin="8,0,4,0"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Brush.Border2}"
+                CornerRadius="6"
+                IsVisible="{Binding NavigationPlacement, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:RepositoryNavigationPlacement.Sidebar}}">
+          <v:RepositoryViewSwitcher Orientation="Vertical" ShowInlineActions="True"/>
         </Border>
 
         <!-- Filter Branches/Tags/Submodules -->
@@ -770,8 +659,19 @@
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
-      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto,*">
+      <Border Grid.Row="0"
+              BorderThickness="0,0,0,1"
+              BorderBrush="{DynamicResource Brush.Border0}"
+              Background="{DynamicResource Brush.ToolBar}"
+              IsVisible="{Binding NavigationPlacement, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:RepositoryNavigationPlacement.Top}}">
+        <v:RepositoryViewSwitcher Orientation="Horizontal"
+                                  ShowInlineActions="False"
+                                  ItemMinWidth="140"
+                                  HorizontalAlignment="Left"/>
+      </Border>
+
+      <Grid Grid.Row="1" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
         <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="m:Commit">
@@ -875,7 +775,7 @@
                 Click="OnAbortInProgress"/>
       </Grid>
 
-      <Grid Grid.Row="1"
+      <Grid Grid.Row="2"
             Height="28"
             ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto"
             Background="{DynamicResource Brush.Conflict}"
@@ -969,7 +869,7 @@
                 Tag="reset"/>
       </Grid>
 
-      <Border Grid.Row="2" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
+      <Border Grid.Row="3" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
         <Border.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
@@ -1020,7 +920,7 @@
                                          VerticalAlignment="Center"
                                          Filter="{Binding Mode=OneWay}"
                                          IsFilterValid="{Binding IsValid, Mode=OneWay}"/>
-                    
+
                     <TextBlock Grid.Column="1"
                                Text="{Binding Pattern, Converter={x:Static c:StringConverters.TrimRefsPrefix}}"
                                Margin="4,0,8,0"
@@ -1051,7 +951,7 @@
                         Margin="16,0,0,0"
                         Background="Transparent"
                         IsChecked="{Binding IsHistoryFiltersCollapsed, Mode=TwoWay}"/>
-          
+
           <Button Grid.Column="3"
                   Width="20"
                   Margin="0,0,12,0"
@@ -1063,7 +963,7 @@
         </Grid>
       </Border>
 
-      <Grid x:Name="WorkspaceHost" Grid.Row="3" SizeChanged="OnWorkspaceHostSizeChanged">
+      <Grid x:Name="WorkspaceHost" Grid.Row="4" SizeChanged="OnWorkspaceHostSizeChanged">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="0"/>

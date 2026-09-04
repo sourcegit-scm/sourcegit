@@ -158,13 +158,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRepositoryViewSelectionChanged(object _, SelectionChangedEventArgs e)
-        {
-            CloseCompactSidebar();
-            e.Handled = true;
-        }
-
-        private void CloseCompactSidebar()
+        internal void CloseCompactSidebar()
         {
             if (!_isCompactLayout || !_isCompactSidebarOpen)
                 return;
@@ -377,89 +371,153 @@ namespace SourceGit.Views
 
         private void OnRepositoryViewContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is not ViewModels.Repository { IsBare: false } repo ||
+            OpenRepositoryViewContextMenu(sender, e, false);
+        }
+
+        internal void OpenRepositoryViewContextMenu(object sender, ContextRequestedEventArgs e, bool includeViewAction)
+        {
+            if (DataContext is not ViewModels.Repository repo ||
                 sender is not Control control ||
                 !int.TryParse(control.Tag?.ToString(), out var viewIndex))
                 return;
 
             var menu = new ContextMenu();
-            var openSecondary = new MenuItem
+            if (!repo.IsBare)
             {
-                Header = App.Text("Repository.OpenInSecondary"),
-                Icon = this.CreateMenuIcon("Icons.Layout"),
-                IsEnabled = viewIndex != repo.SelectedViewIndex && viewIndex != repo.SecondaryViewIndex,
-            };
-            openSecondary.Click += (_, ev) =>
-            {
-                repo.OpenViewInSecondary(viewIndex, repo.WorkspaceOrientation);
-                ev.Handled = true;
-            };
-            menu.Items.Add(openSecondary);
-            menu.Items.Add(new MenuItem { Header = "-" });
+                var openSecondary = new MenuItem
+                {
+                    Header = App.Text("Repository.OpenInSecondary"),
+                    Icon = this.CreateMenuIcon("Icons.Layout"),
+                    IsEnabled = viewIndex != repo.SelectedViewIndex && viewIndex != repo.SecondaryViewIndex,
+                };
+                openSecondary.Click += (_, ev) =>
+                {
+                    repo.OpenViewInSecondary(viewIndex, repo.WorkspaceOrientation);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(openSecondary);
+                menu.Items.Add(new MenuItem { Header = "-" });
 
-            var canOpenSplit = repo.IsSplitViewEnabled || viewIndex != repo.SelectedViewIndex;
-            var sideBySide = new MenuItem
+                var canOpenSplit = repo.IsSplitViewEnabled || viewIndex != repo.SelectedViewIndex;
+                var sideBySide = new MenuItem
+                {
+                    Header = App.Text("Repository.SplitSideBySide"),
+                    Icon = repo.IsSplitViewEnabled && repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.SideBySide
+                        ? this.CreateMenuIcon("Icons.Check")
+                        : null,
+                    IsEnabled = canOpenSplit,
+                };
+                sideBySide.Click += (_, ev) =>
+                {
+                    if (repo.IsSplitViewEnabled)
+                        repo.SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation.SideBySide);
+                    else
+                        repo.OpenViewInSecondary(viewIndex, Models.RepositoryWorkspaceOrientation.SideBySide);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(sideBySide);
+
+                var stacked = new MenuItem
+                {
+                    Header = App.Text("Repository.SplitStacked"),
+                    Icon = repo.IsSplitViewEnabled && repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.Stacked
+                        ? this.CreateMenuIcon("Icons.Check")
+                        : null,
+                    IsEnabled = canOpenSplit,
+                };
+                stacked.Click += (_, ev) =>
+                {
+                    if (repo.IsSplitViewEnabled)
+                        repo.SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation.Stacked);
+                    else
+                        repo.OpenViewInSecondary(viewIndex, Models.RepositoryWorkspaceOrientation.Stacked);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(stacked);
+                menu.Items.Add(new MenuItem { Header = "-" });
+
+                var swap = new MenuItem
+                {
+                    Header = App.Text("Repository.SwapViews"),
+                    Icon = this.CreateMenuIcon("Icons.Layout"),
+                    IsEnabled = repo.IsSplitViewEnabled,
+                };
+                swap.Click += (_, ev) =>
+                {
+                    repo.SwapWorkspaceViews();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(swap);
+
+                var close = new MenuItem
+                {
+                    Header = App.Text("Repository.CloseSecondaryView"),
+                    Icon = this.CreateMenuIcon("Icons.Close"),
+                    IsEnabled = repo.IsSplitViewEnabled,
+                };
+                close.Click += (_, ev) =>
+                {
+                    repo.CloseSecondaryView();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(close);
+
+                if (includeViewAction && viewIndex is 1 or 2)
+                {
+                    menu.Items.Add(new MenuItem { Header = "-" });
+                    var action = new MenuItem
+                    {
+                        Header = App.Text(viewIndex == 1 ? "Repository.DiscardAll" : "Repository.ClearStashes"),
+                        Icon = this.CreateMenuIcon(viewIndex == 1 ? "Icons.Undo" : "Icons.RemoveAll"),
+                    };
+                    action.Click += (_, ev) =>
+                    {
+                        if (viewIndex == 1)
+                            repo.DiscardAllChanges();
+                        else
+                            repo.ClearStashes();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(action);
+                }
+
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
+
+            var navigation = new MenuItem
             {
-                Header = App.Text("Repository.SplitSideBySide"),
-                Icon = repo.IsSplitViewEnabled && repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.SideBySide
+                Header = App.Text("Repository.NavigationPlacement"),
+                IsEnabled = false,
+            };
+            menu.Items.Add(navigation);
+
+            var sidebarNavigation = new MenuItem
+            {
+                Header = App.Text("Repository.NavigationPlacement.Sidebar"),
+                Icon = repo.NavigationPlacement == Models.RepositoryNavigationPlacement.Sidebar
                     ? this.CreateMenuIcon("Icons.Check")
                     : null,
-                IsEnabled = canOpenSplit,
             };
-            sideBySide.Click += (_, ev) =>
+            sidebarNavigation.Click += (_, ev) =>
             {
-                if (repo.IsSplitViewEnabled)
-                    repo.SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation.SideBySide);
-                else
-                    repo.OpenViewInSecondary(viewIndex, Models.RepositoryWorkspaceOrientation.SideBySide);
+                repo.SetNavigationPlacement(Models.RepositoryNavigationPlacement.Sidebar);
                 ev.Handled = true;
             };
-            menu.Items.Add(sideBySide);
+            menu.Items.Add(sidebarNavigation);
 
-            var stacked = new MenuItem
+            var topNavigation = new MenuItem
             {
-                Header = App.Text("Repository.SplitStacked"),
-                Icon = repo.IsSplitViewEnabled && repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.Stacked
+                Header = App.Text("Repository.NavigationPlacement.Top"),
+                Icon = repo.NavigationPlacement == Models.RepositoryNavigationPlacement.Top
                     ? this.CreateMenuIcon("Icons.Check")
                     : null,
-                IsEnabled = canOpenSplit,
             };
-            stacked.Click += (_, ev) =>
+            topNavigation.Click += (_, ev) =>
             {
-                if (repo.IsSplitViewEnabled)
-                    repo.SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation.Stacked);
-                else
-                    repo.OpenViewInSecondary(viewIndex, Models.RepositoryWorkspaceOrientation.Stacked);
+                repo.SetNavigationPlacement(Models.RepositoryNavigationPlacement.Top);
                 ev.Handled = true;
             };
-            menu.Items.Add(stacked);
-            menu.Items.Add(new MenuItem { Header = "-" });
-
-            var swap = new MenuItem
-            {
-                Header = App.Text("Repository.SwapViews"),
-                Icon = this.CreateMenuIcon("Icons.Layout"),
-                IsEnabled = repo.IsSplitViewEnabled,
-            };
-            swap.Click += (_, ev) =>
-            {
-                repo.SwapWorkspaceViews();
-                ev.Handled = true;
-            };
-            menu.Items.Add(swap);
-
-            var close = new MenuItem
-            {
-                Header = App.Text("Repository.CloseSecondaryView"),
-                Icon = this.CreateMenuIcon("Icons.Close"),
-                IsEnabled = repo.IsSplitViewEnabled,
-            };
-            close.Click += (_, ev) =>
-            {
-                repo.CloseSecondaryView();
-                ev.Handled = true;
-            };
-            menu.Items.Add(close);
+            menu.Items.Add(topNavigation);
             menu.Open(control);
             e.Handled = true;
         }
@@ -802,7 +860,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
+        internal void OpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository { Histories: { } histories } repo)
             {

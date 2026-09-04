@@ -139,6 +139,24 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public Models.RepositoryNavigationPlacement NavigationPlacement
+        {
+            get => _uiStates.NavigationPlacement;
+            private set
+            {
+                if (_uiStates.NavigationPlacement != value)
+                {
+                    _uiStates.NavigationPlacement = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public void SetNavigationPlacement(Models.RepositoryNavigationPlacement placement)
+        {
+            NavigationPlacement = placement;
+        }
+
         public Histories Histories
         {
             get => _histories;
@@ -630,6 +648,9 @@ namespace SourceGit.ViewModels
 
             if (!Enum.IsDefined(_uiStates.WorkspaceOrientation))
                 _uiStates.WorkspaceOrientation = Models.RepositoryWorkspaceOrientation.SideBySide;
+
+            if (!Enum.IsDefined(_uiStates.NavigationPlacement))
+                _uiStates.NavigationPlacement = Models.RepositoryNavigationPlacement.Sidebar;
 
             _uiStates.WorkspaceSplitRatio = double.IsFinite(_uiStates.WorkspaceSplitRatio)
                 ? Math.Clamp(_uiStates.WorkspaceSplitRatio, 0.2, 0.8)

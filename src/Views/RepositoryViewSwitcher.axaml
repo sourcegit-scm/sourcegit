@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="40"
+             x:Class="SourceGit.Views.RepositoryViewSwitcher"
+             x:DataType="vm:Repository"
+             x:Name="ThisControl">
+  <ListBox x:Name="ViewSelector"
+           Background="Transparent"
+           Padding="4"
+           SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}"
+           SelectionMode="AlwaysSelected"
+           SelectionChanged="OnSelectionChanged">
+    <ListBox.Styles>
+      <Style Selector="Path.icon">
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Margin" Value="6,0"/>
+        <Setter Property="Fill" Value="{DynamicResource Brush.FG2}"/>
+      </Style>
+      <Style Selector="TextBlock.header">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.FG2}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style>
+      <Style Selector="ListBoxItem">
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="0"/>
+      </Style>
+      <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+      </Style>
+      <Style Selector="ListBoxItem:selected">
+        <Setter Property="BorderBrush" Value="{DynamicResource Brush.FG1}"/>
+      </Style>
+      <Style Selector="ListBoxItem:selected Rectangle.indicator">
+        <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+      </Style>
+      <Style Selector="ListBoxItem:selected TextBlock.header">
+        <Setter Property="Foreground" Value="{DynamicResource Brush.FG1}"/>
+      </Style>
+      <Style Selector="ListBoxItem:selected Path.icon">
+        <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+      </Style>
+    </ListBox.Styles>
+
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="{Binding #ThisControl.Orientation}"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+
+    <ListBoxItem Tag="0"
+                 MinWidth="{Binding #ThisControl.ItemMinWidth}"
+                 ContextRequested="OnRepositoryViewContextRequested">
+      <Grid ColumnDefinitions="4,Auto,*,Auto">
+        <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
+        <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Histories}"/>
+        <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.Histories}"/>
+        <Button Grid.Column="3"
+                Classes="icon_button"
+                Width="26" Height="26"
+                Click="OnOpenAdvancedHistoriesOption"
+                ToolTip.Tip="{DynamicResource Text.Repository.MoreOptions}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
+        </Button>
+      </Grid>
+    </ListBoxItem>
+
+    <ListBoxItem Tag="1"
+                 MinWidth="{Binding #ThisControl.ItemMinWidth}"
+                 ContextRequested="OnRepositoryViewContextRequested"
+                 IsVisible="{Binding !IsBare}">
+      <Grid ColumnDefinitions="4,Auto,*,Auto,Auto,Auto">
+        <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
+        <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Changes}"/>
+        <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
+        <Border Grid.Column="3"
+                Height="18"
+                Margin="6,0" Padding="9,0"
+                CornerRadius="9"
+                VerticalAlignment="Center"
+                Background="{DynamicResource Brush.Badge}"
+                IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+          <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay}"
+                     Foreground="{DynamicResource Brush.BadgeFG}"
+                     FontFamily="{DynamicResource Fonts.Monospace}"
+                     FontSize="10"/>
+        </Border>
+        <Path Grid.Column="4"
+              Width="12" Height="12"
+              Margin="0,0,6,0"
+              Data="{StaticResource Icons.Info}"
+              Fill="DarkOrange"
+              IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+        <Button Grid.Column="5"
+                Classes="icon_button"
+                Width="26" Height="26"
+                Command="{Binding DiscardAllChanges}"
+                IsVisible="{Binding #ThisControl.ShowInlineActions}"
+                ToolTip.Tip="{DynamicResource Text.Repository.DiscardAll}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
+        </Button>
+      </Grid>
+    </ListBoxItem>
+
+    <ListBoxItem Tag="2"
+                 MinWidth="{Binding #ThisControl.ItemMinWidth}"
+                 ContextRequested="OnRepositoryViewContextRequested"
+                 IsVisible="{Binding !IsBare}">
+      <Grid ColumnDefinitions="4,Auto,*,Auto,Auto">
+        <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
+        <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
+        <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.Stashes}"/>
+        <Border Grid.Column="3"
+                Height="18"
+                Margin="6,0" Padding="9,0"
+                CornerRadius="9"
+                VerticalAlignment="Center"
+                Background="{DynamicResource Brush.Badge}"
+                IsVisible="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+          <TextBlock Text="{Binding StashesCount, Mode=OneWay}"
+                     Foreground="{DynamicResource Brush.BadgeFG}"
+                     FontFamily="{DynamicResource Fonts.Monospace}"
+                     FontSize="10"/>
+        </Border>
+        <Button Grid.Column="4"
+                Classes="icon_button"
+                Width="26" Height="26"
+                Command="{Binding ClearStashes}"
+                IsVisible="{Binding #ThisControl.ShowInlineActions}"
+                ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
+        </Button>
+      </Grid>
+    </ListBoxItem>
+  </ListBox>
+</UserControl>
