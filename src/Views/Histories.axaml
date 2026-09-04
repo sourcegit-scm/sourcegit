@@ -10,8 +10,7 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}"
-                     SizeChanged="OnHistoriesSizeChanged">
+  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
     <v:HistoriesLayout.RowDefinitions>
       <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>
@@ -34,6 +33,7 @@
                              SelectedCommits="{Binding SelectedCommits, Mode=TwoWay}"
                              ColumnHeaderHeight="24"
                              RowHeight="26"
+                             SizeChanged="OnCommitListSizeChanged"
                              LayoutUpdated="OnCommitListLayoutUpdated"
                              ContextRequested="OnCommitListContextRequested"
                              DoubleTapped="OnCommitListDoubleTapped">
@@ -100,7 +100,7 @@
         </DataGrid.Styles>
 
         <DataGrid.Columns>
-          <DataGridTemplateColumn Width="*" IsReadOnly="True">
+          <v:HistoriesDataGridColumn Name="GraphAndSubjectColumn" Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -147,9 +147,9 @@
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+          </v:HistoriesDataGridColumn>
 
-          <DataGridTemplateColumn MinWidth="80" IsReadOnly="True" IsVisible="{Binding IsAuthorColumnVisible, Mode=OneWay}">
+          <v:HistoriesDataGridColumn Name="AuthorColumn" MinWidth="80" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Author}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -175,9 +175,9 @@
                 </Grid>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+          </v:HistoriesDataGridColumn>
 
-          <DataGridTemplateColumn MinWidth="100" IsReadOnly="True" IsVisible="{Binding IsSHAColumnVisible, Mode=OneWay}">
+          <v:HistoriesDataGridColumn Name="SHAColumn" MinWidth="100" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.SHA}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -192,9 +192,9 @@
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+          </v:HistoriesDataGridColumn>
 
-          <DataGridTemplateColumn MinWidth="160" IsReadOnly="True" IsVisible="{Binding IsAuthorTimeColumnVisible, Mode=OneWay}">
+          <v:HistoriesDataGridColumn Name="AuthorTimeColumn" MinWidth="160" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.AuthorTime}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -212,9 +212,9 @@
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+          </v:HistoriesDataGridColumn>
 
-          <DataGridTemplateColumn MinWidth="160" IsReadOnly="True" IsVisible="{Binding IsCommitTimeColumnVisible, Mode=OneWay}">
+          <v:HistoriesDataGridColumn Name="CommitTimeColumn" MinWidth="160" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.CommitTime}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
@@ -232,7 +232,7 @@
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
+          </v:HistoriesDataGridColumn>
         </DataGrid.Columns>
       </v:HistoriesCommitList>
 
