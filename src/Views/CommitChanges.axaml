@@ -56,12 +56,32 @@
 
       <!-- Summary -->
       <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1,0,1,1" Background="Transparent">
-        <TextBlock Margin="4,0,0,0"
-                   Foreground="{DynamicResource Brush.FG2}"
-                   HorizontalAlignment="Left" VerticalAlignment="Center">
-          <Run Text="{Binding Changes.Count, Mode=OneWay}" FontWeight="Bold"/>
-          <Run Text="{DynamicResource Text.CommitDetail.Changes.Count}"/>
-        </TextBlock>
+        <Grid Margin="4,0,0,0" VerticalAlignment="Center">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.Column="0"
+                     Foreground="{DynamicResource Brush.FG2}"
+                     HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Run Text="{Binding Changes.Count, Mode=OneWay}" FontWeight="Bold"/>
+            <Run Text="{DynamicResource Text.CommitDetail.Changes.Count}"/>
+          </TextBlock>
+
+          <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="4,0,4,0" Spacing="6">
+            <TextBlock Foreground="Green" VerticalAlignment="Center">
+              <Run Text="+" FontWeight="Bold"/>
+              <Run Text="{Binding TotalAddedLines}" FontWeight="Bold"/>
+              <Run Text="{DynamicResource Text.CommitDetail.Changes.Added}"/>
+            </TextBlock>
+            <TextBlock Foreground="Red" VerticalAlignment="Center">
+              <Run Text="-" FontWeight="Bold"/>
+              <Run Text="{Binding TotalDeletedLines}" FontWeight="Bold"/>
+              <Run Text="{DynamicResource Text.CommitDetail.Changes.Deleted}"/>
+            </TextBlock>
+          </StackPanel>
+        </Grid>
       </Border>
     </Grid>
 
