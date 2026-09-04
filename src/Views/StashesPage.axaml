@@ -9,15 +9,20 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.StashesPage"
              x:DataType="vm:StashesPage">
-  <Grid SizeChanged="OnMainLayoutSizeChanged">
+  <Grid x:Name="MainLayout" SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.StashesLeftWidth, Mode=TwoWay}" MinWidth="300"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.StashesLeftWidth, Mode=TwoWay}" MinWidth="220"/>
       <ColumnDefinition Width="4"/>
-      <ColumnDefinition Width="*" MinWidth="300"/>
+      <ColumnDefinition Width="*" MinWidth="260"/>
     </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="0"/>
+      <RowDefinition Height="0"/>
+    </Grid.RowDefinitions>
 
     <!-- Left -->
-    <Grid Grid.Column="0" RowDefinitions="28,36,*,28,*">
+    <Grid x:Name="StashListPanel" Grid.Column="0" Grid.Row="0" RowDefinitions="28,36,*,28,*">
       <!-- Stash Bar -->
       <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
         <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
@@ -138,7 +143,7 @@
       </Border>
     </Grid>
 
-    <GridSplitter Grid.Column="1"
+    <GridSplitter x:Name="LayoutSplitter" Grid.Column="1" Grid.Row="0"
                   MinWidth=".5"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
@@ -147,7 +152,7 @@
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
+    <Grid x:Name="DetailsPanel" Grid.Column="2" Grid.Row="0" Margin="0,4,4,4">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
           <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>

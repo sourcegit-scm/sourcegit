@@ -8,15 +8,20 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="SourceGit.Views.WorkingCopy"
              x:DataType="vm:WorkingCopy">
-  <Grid SizeChanged="OnMainLayoutSizeChanged">
+  <Grid x:Name="MainLayout" SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="220"/>
       <ColumnDefinition Width="4"/>
-      <ColumnDefinition Width="*" MinWidth="300"/>
+      <ColumnDefinition Width="*" MinWidth="260"/>
     </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="0"/>
+      <RowDefinition Height="0"/>
+    </Grid.RowDefinitions>
 
     <!-- Left -->
-    <Grid Grid.Column="0">
+    <Grid x:Name="ChangesPanel" Grid.Column="0" Grid.Row="0">
       <Grid.RowDefinitions>
         <RowDefinition Height="36"/>
         <RowDefinition Height="*" MinHeight="100"/>
@@ -194,7 +199,7 @@
       </Grid>
     </Grid>
 
-    <GridSplitter Grid.Column="1"
+    <GridSplitter x:Name="LayoutSplitter" Grid.Column="1" Grid.Row="0"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
@@ -203,12 +208,12 @@
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
+    <Grid x:Name="DetailsPanel" Grid.Column="2" Grid.Row="0" Margin="0,4,4,4">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*" MinHeight="400"/>
+        <RowDefinition Height="*" MinHeight="160"/>
         <RowDefinition Height="4"/>
-        <RowDefinition Height="128" MinHeight="100"/>
-        <RowDefinition Height="36"/>
+        <RowDefinition Height="112" MinHeight="72"/>
+        <RowDefinition Height="Auto" MinHeight="36"/>
       </Grid.RowDefinitions>
 
       <!-- Select Change Detail -->
@@ -247,7 +252,7 @@
       <v:CommitMessageToolBox Grid.Row="2" ShowAdvancedOptions="True" CommitMessage="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <WrapPanel Grid.Row="3" Margin="0,6,0,0" Orientation="Horizontal" HorizontalAlignment="Right">
         <CheckBox Grid.Column="0"
                   Height="24"
                   Margin="1,0,0,0"
@@ -444,7 +449,7 @@
             </MultiBinding>
           </Button.IsVisible>
         </Button>
-      </Grid>
+      </WrapPanel>
     </Grid>
   </Grid>
 </UserControl>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,19 +38,26 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == UseHorizontalProperty && IsLoaded)
+            if ((change.Property == UseHorizontalProperty || change.Property == BoundsProperty) && IsLoaded)
                 RefreshLayout();
         }
 
         protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
         {
             base.OnAttachedToVisualTree(e);
-            RefreshLayout();
+            RefreshLayout(true);
         }
 
-        private void RefreshLayout()
+        private void RefreshLayout(bool force = false)
         {
-            if (UseHorizontal)
+            var useHorizontal = UseHorizontal && Bounds.Width >= 720;
+            if (!force && _hasAppliedLayout && useHorizontal == _lastUseHorizontal)
+                return;
+
+            _hasAppliedLayout = true;
+            _lastUseHorizontal = useHorizontal;
+
+            if (useHorizontal)
             {
                 var rowSpan = RowDefinitions.Count;
                 for (int i = 0; i < Children.Count; i++)
@@ -81,6 +90,8 @@ namespace SourceGit.Views
         }
 
         private bool _useHorizontal = false;
+        private bool _hasAppliedLayout;
+        private bool _lastUseHorizontal;
     }
 
     public class HistoriesCommitList : DataGrid
@@ -295,8 +306,19 @@ namespace SourceGit.Views
         private List<Models.Commit> _selectedCommits = [];
     }
 
+    public class HistoriesDataGridColumn : DataGridTemplateColumn
+    {
+        public string Name
+        {
+            get;
+            set;
+        } = string.Empty;
+    }
+
     public partial class Histories : UserControl
     {
+        private const double GraphAndSubjectMinWidth = 320;
+
         public static readonly DirectProperty<Histories, Models.Branch> CurrentBranchProperty =
             AvaloniaProperty.RegisterDirect<Histories, Models.Branch>(
                 nameof(CurrentBranch),
@@ -372,6 +394,101 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+            GraphAndSubjectColumn = FindColumn(nameof(GraphAndSubjectColumn));
+            AuthorColumn = FindColumn(nameof(AuthorColumn));
+            SHAColumn = FindColumn(nameof(SHAColumn));
+            AuthorTimeColumn = FindColumn(nameof(AuthorTimeColumn));
+            CommitTimeColumn = FindColumn(nameof(CommitTimeColumn));
+            GraphAndSubjectColumn.MinWidth = GraphAndSubjectMinWidth;
+        }
+
+        private HistoriesDataGridColumn FindColumn(string name)
+        {
+            return CommitListContainer.Columns.OfType<HistoriesDataGridColumn>().Single(x => x.Name == name);
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (DataContext is ViewModels.Histories vm)
+                SubscribeToViewModel(vm);
+
+            ApplyResponsiveCommitColumns();
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            UnsubscribeFromViewModel();
+            base.OnUnloaded(e);
+        }
+
+        private void OnCommitListSizeChanged(object _, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+                ApplyResponsiveCommitColumns();
+        }
+
+        private void ApplyResponsiveCommitColumns()
+        {
+            if (DataContext is not ViewModels.Histories vm || CommitListContainer.Bounds.Width <= 0)
+                return;
+
+            var authorWidth = Math.Max(AuthorColumn.MinWidth, vm.AuthorColumnWidth);
+            AuthorColumn.Width = new DataGridLength(authorWidth, DataGridLengthUnitType.Pixel);
+
+            var remaining = Math.Max(0, CommitListContainer.Bounds.Width - GraphAndSubjectMinWidth);
+            bool AdmitColumn(DataGridColumn column, bool requested, double width)
+            {
+                var visible = requested && remaining >= width;
+                if (visible)
+                    remaining -= width;
+
+                column.SetCurrentValue(DataGridColumn.IsVisibleProperty, visible);
+                return visible;
+            }
+
+            AdmitColumn(AuthorColumn, vm.IsAuthorColumnVisible, authorWidth);
+
+            if (vm.IsCommitTimeColumnVisible)
+                AdmitColumn(CommitTimeColumn, true, CommitTimeColumn.MinWidth);
+            else
+                AdmitColumn(AuthorTimeColumn, vm.IsAuthorTimeColumnVisible, AuthorTimeColumn.MinWidth);
+
+            AdmitColumn(SHAColumn, vm.IsSHAColumnVisible, SHAColumn.MinWidth);
+
+            if (vm.IsCommitTimeColumnVisible)
+                AdmitColumn(AuthorTimeColumn, vm.IsAuthorTimeColumnVisible, AuthorTimeColumn.MinWidth);
+            else
+                CommitTimeColumn.SetCurrentValue(DataGridColumn.IsVisibleProperty, false);
+        }
+
+        private void SubscribeToViewModel(ViewModels.Histories vm)
+        {
+            if (_subscribedViewModel == vm)
+                return;
+
+            UnsubscribeFromViewModel();
+            _subscribedViewModel = vm;
+            _subscribedViewModel.PropertyChanged += OnHistoriesViewModelPropertyChanged;
+        }
+
+        private void UnsubscribeFromViewModel()
+        {
+            if (_subscribedViewModel == null)
+                return;
+
+            _subscribedViewModel.PropertyChanged -= OnHistoriesViewModelPropertyChanged;
+            _subscribedViewModel = null;
+        }
+
+        private void OnHistoriesViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(ViewModels.Histories.IsAuthorColumnVisible) or
+                nameof(ViewModels.Histories.IsSHAColumnVisible) or
+                nameof(ViewModels.Histories.IsAuthorTimeColumnVisible) or
+                nameof(ViewModels.Histories.IsCommitTimeColumnVisible))
+                ApplyResponsiveCommitColumns();
         }
 
         public async Task GotoParent()
@@ -465,7 +582,17 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.Histories vm)
-                CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+            {
+                if (IsLoaded)
+                    SubscribeToViewModel(vm);
+                AuthorColumn.Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+            }
+            else
+            {
+                UnsubscribeFromViewModel();
+            }
+
+            ApplyResponsiveCommitColumns();
         }
 
         private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
@@ -473,22 +600,26 @@ namespace SourceGit.Views
             if (sender is not Border border)
                 return;
 
-            if (DataContext is not ViewModels.Histories { IsAuthorColumnVisible: true } vm)
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            if (!AuthorColumn.IsVisible)
                 return;
 
             var pos = e.GetPosition(border);
             if (_resizingAuthorColumn)
             {
-                var posX = CommitListContainer.Columns[0].ActualWidth;
-                var maxW = posX + CommitListContainer.Columns[1].ActualWidth - 100;
+                var posX = GraphAndSubjectColumn.ActualWidth;
+                var otherColumnsWidth = GetVisibleMetadataWidthExceptAuthor();
+                var maxW = Math.Max(AuthorColumn.MinWidth, CommitListContainer.Bounds.Width - GraphAndSubjectMinWidth - otherColumnsWidth);
                 var delta = posX - pos.X;
-                var w = Math.Max(Math.Min(vm.AuthorColumnWidth + delta, maxW), 80);
-                CommitListContainer.Columns[1].Width = new(w, DataGridLengthUnitType.Pixel);
+                var w = Math.Clamp(vm.AuthorColumnWidth + delta, AuthorColumn.MinWidth, maxW);
+                AuthorColumn.Width = new(w, DataGridLengthUnitType.Pixel);
                 vm.AuthorColumnWidth = w;
             }
             else
             {
-                var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
+                var dis = GraphAndSubjectColumn.ActualWidth - 4 - pos.X;
                 if (dis < 4 && dis > -4)
                 {
                     if (border.Cursor != _resizingCursor)
@@ -506,8 +637,11 @@ namespace SourceGit.Views
             if (sender is not Border border)
                 return;
 
+            if (!AuthorColumn.IsVisible)
+                return;
+
             var pos = e.GetPosition(border);
-            var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
+            var dis = GraphAndSubjectColumn.ActualWidth - 4 - pos.X;
             if (dis > 4 || dis < -4)
                 return;
 
@@ -521,6 +655,18 @@ namespace SourceGit.Views
         private void OnCommitListHeaderPointerReleased(object sender, PointerReleasedEventArgs e)
         {
             _resizingAuthorColumn = false;
+        }
+
+        private double GetVisibleMetadataWidthExceptAuthor()
+        {
+            var width = 0.0;
+            if (SHAColumn.IsVisible)
+                width += SHAColumn.ActualWidth;
+            if (AuthorTimeColumn.IsVisible)
+                width += AuthorTimeColumn.ActualWidth;
+            if (CommitTimeColumn.IsVisible)
+                width += CommitTimeColumn.ActualWidth;
+            return width;
         }
 
         private void OnCommitListHeaderContextRequested(object sender, ContextRequestedEventArgs e)
@@ -614,7 +760,7 @@ namespace SourceGit.Views
 
             IsScrollToTopVisible = startY >= rowHeight;
 
-            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
+            var clipWidth = GraphAndSubjectColumn.ActualWidth - 4;
             var lastLayout = CommitGraph.Layout;
             if (lastLayout == null ||
                 Math.Abs(lastLayout.StartY - startY) > 0.01 ||
@@ -1754,5 +1900,11 @@ namespace SourceGit.Views
         private bool _isDetailsPanelExpanded = true;
         private bool _resizingAuthorColumn = false;
         private Cursor _resizingCursor = new(StandardCursorType.SizeWestEast);
+        private ViewModels.Histories _subscribedViewModel = null;
+        private HistoriesDataGridColumn GraphAndSubjectColumn { get; }
+        private HistoriesDataGridColumn AuthorColumn { get; }
+        private HistoriesDataGridColumn SHAColumn { get; }
+        private HistoriesDataGridColumn AuthorTimeColumn { get; }
+        private HistoriesDataGridColumn CommitTimeColumn { get; }
     }
 }
