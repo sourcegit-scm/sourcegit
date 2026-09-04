@@ -926,33 +926,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.09%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
-- Text.OpenAppDataDir.Cache
-- Text.OpenAppDataDir.Config
-- Text.SSHKeyHelper
-- Text.SSHKeyHelper.ConfirmDeletion
-- Text.SSHKeyHelper.Fingerprint
-- Text.SSHKeyHelper.Generator
-- Text.SSHKeyHelper.Generator.ConfirmPassphrase
-- Text.SSHKeyHelper.Generator.Email
-- Text.SSHKeyHelper.Generator.Email.Placeholder
-- Text.SSHKeyHelper.Generator.Name
-- Text.SSHKeyHelper.Generator.Name.Placeholder
-- Text.SSHKeyHelper.Generator.Passphrase
-- Text.SSHKeyHelper.Generator.Start
-- Text.SSHKeyHelper.Generator.Type
-- Text.SSHKeyHelper.Generator.UsePassphrase
-- Text.SSHKeyHelper.Path
-- Text.SSHKeyHelper.PublicKey
-- Text.SSHKeyHelper.Title
-- Text.Terminate
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-63.00%25-red)
 
