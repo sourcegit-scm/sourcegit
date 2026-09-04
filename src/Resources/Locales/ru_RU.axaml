@@ -912,7 +912,7 @@
   <x:String x:Key="Text.SSHKeyHelper.Generator.Email" xml:space="preserve">Почта:</x:String>
   <x:String x:Key="Text.SSHKeyHelper.Generator.Email.Placeholder" xml:space="preserve">Требуется.</x:String>
   <x:String x:Key="Text.SSHKeyHelper.Generator.Name" xml:space="preserve">Имя ключа:</x:String>
-  <x:String x:Key="Text.SSHKeyHelper.Generator.Name.Placeholder" xml:space="preserve">Требууется. К примеру: id_github</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Name.Placeholder" xml:space="preserve">Требуется. К примеру: id_github</x:String>
   <x:String x:Key="Text.SSHKeyHelper.Generator.Passphrase" xml:space="preserve">Парольная фраза:</x:String>
   <x:String x:Key="Text.SSHKeyHelper.Generator.Start" xml:space="preserve">СОЗДАТЬ</x:String>
   <x:String x:Key="Text.SSHKeyHelper.Generator.Type" xml:space="preserve">Тип:</x:String>
