@@ -19,6 +19,9 @@ namespace SourceGit.Models
             public void Dispose()
             {
                 Interlocked.Decrement(ref _target._lockCount);
+
+                if(_target._wsl.IsWSLPath()) // Notify WSL model that File Watcher lock was released to force refresh
+                    _target._wsl.ReleaseFileWatcherLock(_target, _target._repo);
             }
 
             private Watcher _target;
@@ -76,6 +79,7 @@ namespace SourceGit.Models
             }
 
             _timer = new Timer(Tick, null, 100, 100);
+            _wsl = new WSL() { Path = fullpath, GitDir = gitDir };
 
             // Starts filesystem watchers in another thread to avoid UI blocking
             Task.Run(() =>
@@ -140,6 +144,16 @@ namespace SourceGit.Models
         {
             if (Interlocked.Read(ref _lockCount) > 0)
                 return;
+
+            // Refresh on timed interval for WSL repos, as File Watcher isn't supported in WSL
+            if (_wsl.ShouldWSLRefresh()) 
+            {
+                _wsl.RefreshWorkingCopy(this, _repo);
+                foreach (var file in _wsl.GetModifiedGitFiles())
+                {
+                    HandleGitDirFileChanged(file);
+                }
+            }
 
             var now = DateTime.Now.ToFileTime();
             var refreshCommits = false;
@@ -353,6 +367,7 @@ namespace SourceGit.Models
         private readonly string _root;
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;
+        private WSL _wsl;
 
         private long _lockCount;
         private long _updateWC;

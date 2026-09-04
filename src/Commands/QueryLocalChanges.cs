@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -35,9 +36,19 @@ namespace SourceGit.Commands
             {
                 using var proc = new Process();
                 proc.StartInfo = CreateGitStartInfo(true);
-                proc.Start();
 
-                while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
+                TextReader lineReader;
+                if (WSL.IsWSLPath())
+                {
+                    lineReader = new StringReader(WSL.ReadFromPersistentShell(this, proc.StartInfo).StdOut);
+                }
+                else
+                {
+                    proc.Start();
+                    lineReader = proc.StandardOutput;
+                }
+
+                while (await lineReader.ReadLineAsync().ConfigureAwait(false) is { } line)
                 {
                     var match = REG_FORMAT().Match(line);
                     if (!match.Success)

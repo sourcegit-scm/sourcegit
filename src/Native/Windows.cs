@@ -189,6 +189,15 @@ namespace SourceGit.Native
             startInfo.WorkingDirectory = cwd;
             startInfo.FileName = terminal;
             startInfo.Arguments = args;
+
+            // For WSL paths override shell choice, and just open WSL session in current distro
+            var wsl = new Models.WSL() { Path = workdir };
+            if (wsl.IsWSLPath())
+            {
+                startInfo.FileName = "wsl.exe";
+                startInfo.Arguments = $"-d {wsl.DistroName}";
+            }
+
             Process.Start(startInfo);
         }
 

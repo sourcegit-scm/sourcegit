@@ -45,10 +45,18 @@ namespace SourceGit.Commands
             {
                 using var proc = new Process();
                 proc.StartInfo = CreateGitStartInfo(true);
-                proc.Start();
 
                 using var ms = new MemoryStream();
-                await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
+                if (WSL.IsWSLPath())
+                {
+                    var text = WSL.ReadFromPersistentShell(this, proc.StartInfo).StdOut;
+                    ms.Write(Encoding.UTF8.GetBytes(text));
+                }
+                else
+                {
+                    proc.Start();
+                    await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
+                }
 
                 var bytes = ms.ToArray();
                 var start = 0;
@@ -68,7 +76,8 @@ namespace SourceGit.Commands
                     start = end + 1;
                 }
 
-                await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
+                if (!WSL.IsWSLPath())
+                    await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
             }
             catch
             {

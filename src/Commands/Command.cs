@@ -31,6 +31,7 @@ namespace SourceGit.Commands
         public EditorType Editor { get; set; } = EditorType.CoreEditor;
         public string SSHKey { get; set; } = string.Empty;
         public string Args { get; set; } = string.Empty;
+        protected Models.WSL WSL { get; private set; }
 
         // Only used in `ExecAsync` mode.
         public CancellationToken CancellationToken { get; set; } = CancellationToken.None;
@@ -195,6 +196,18 @@ namespace SourceGit.Commands
                 .Append("--no-pager -c core.quotepath=off -c credential.helper=")
                 .Append(Native.OS.CredentialHelper)
                 .Append(' ');
+
+            // Use WSL git for WSL paths on Windows
+            WSL = new Models.WSL() { Path = WorkingDirectory };
+            if (WSL.IsWSLPath())
+            {
+                start.FileName = "wsl";
+                builder.Insert(0, "git ");
+
+                WSL.SetEnvironmentForProcess(start);
+                Args = WSL.ConvertArgumentPaths(Args);
+                selfExecFile = start.Environment["SSH_ASKPASS"];
+            }
 
             switch (Editor)
             {
