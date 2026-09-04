@@ -7,6 +7,12 @@ using Avalonia.Collections;
 
 namespace SourceGit.Models
 {
+    public enum RepositoryWorkspaceOrientation
+    {
+        SideBySide,
+        Stacked,
+    }
+
     public class RepositoryUIStates
     {
         public HistoryShowFlags HistoryShowFlags
@@ -44,6 +50,30 @@ namespace SourceGit.Models
             get;
             set;
         } = 120;
+
+        public int SplitPrimaryViewIndex
+        {
+            get;
+            set;
+        } = -1;
+
+        public int SecondaryViewIndex
+        {
+            get;
+            set;
+        } = -1;
+
+        public RepositoryWorkspaceOrientation WorkspaceOrientation
+        {
+            get;
+            set;
+        } = RepositoryWorkspaceOrientation.SideBySide;
+
+        public double WorkspaceSplitRatio
+        {
+            get;
+            set;
+        } = 0.5;
 
         public bool EnableTopoOrderInHistory
         {

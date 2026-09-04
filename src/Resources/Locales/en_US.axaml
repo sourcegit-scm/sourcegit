@@ -797,6 +797,7 @@
   <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Cleanup (GC &amp; Prune)</x:String>
   <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Run `git gc` command for this repository.</x:String>
   <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Clear all</x:String>
+  <x:String x:Key="Text.Repository.CloseSecondaryView" xml:space="preserve">Close Secondary View</x:String>
   <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Clear</x:String>
   <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configure this repository</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUE</x:String>
@@ -826,6 +827,7 @@
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">CLEAR NOTIFICATIONS</x:String>
   <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Open as Folder</x:String>
   <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Open in {0}</x:String>
+  <x:String x:Key="Text.Repository.OpenInSecondary" xml:space="preserve">Open in Secondary Pane</x:String>
   <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Open in External Tools</x:String>
   <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTES</x:String>
   <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">Add Remote</x:String>
@@ -834,6 +836,9 @@
   <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Author</x:String>
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Content</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
+  <x:String x:Key="Text.Repository.SplitSideBySide" xml:space="preserve">Split Side by Side</x:String>
+  <x:String x:Key="Text.Repository.SplitStacked" xml:space="preserve">Split Stacked</x:String>
+  <x:String x:Key="Text.Repository.SwapViews" xml:space="preserve">Swap Views</x:String>
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Path</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>

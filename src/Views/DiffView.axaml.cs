@@ -43,7 +43,11 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.DiffContext vm)
                 vm.CheckSettings();
 
-            ToggleHotkeyBindings(IsEffectivelyVisible);
+            var repository = this.FindAncestorOfType<Repository>();
+            if (repository != null)
+                repository.UpdateWorkspaceHotkeys();
+            else
+                ToggleHotkeyBindings(IsEffectivelyVisible);
         }
 
         private void OnGotoFirstChange(object _, RoutedEventArgs e)

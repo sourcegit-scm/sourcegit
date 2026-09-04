@@ -35,10 +35,10 @@
         <Button Classes="icon_button" Width="40" Height="34" Click="OnOpenCompactSidebar" ToolTip.Tip="Repository navigation">
           <Path Width="16" Height="16" Data="{StaticResource Icons.Menu}"/>
         </Button>
-        <Button Classes="icon_button" Width="40" Height="34" Tag="0" Click="OnCompactViewSelected" ToolTip.Tip="{DynamicResource Text.Histories}">
+        <Button Classes="icon_button" Width="40" Height="34" Tag="0" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.Histories}">
           <Path Width="16" Height="16" Data="{StaticResource Icons.Histories}"/>
         </Button>
-        <Button Classes="icon_button" Width="40" Height="34" Tag="1" Click="OnCompactViewSelected" ToolTip.Tip="{DynamicResource Text.WorkingCopy}">
+        <Button Classes="icon_button" Width="40" Height="34" Tag="1" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.WorkingCopy}">
           <Grid>
             <Path Width="16" Height="16" Data="{StaticResource Icons.Changes}"/>
             <Border MinWidth="16" Height="16" Padding="4,0" Margin="17,-12,-12,0"
@@ -50,7 +50,7 @@
             </Border>
           </Grid>
         </Button>
-        <Button Classes="icon_button" Width="40" Height="34" Tag="2" Click="OnCompactViewSelected" ToolTip.Tip="{DynamicResource Text.Stashes}">
+        <Button Classes="icon_button" Width="40" Height="34" Tag="2" Click="OnCompactViewSelected" ContextRequested="OnRepositoryViewContextRequested" ToolTip.Tip="{DynamicResource Text.Stashes}">
           <Path Width="16" Height="16" Data="{StaticResource Icons.Stashes}"/>
         </Button>
       </StackPanel>
@@ -149,7 +149,7 @@
               </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
-            <ListBoxItem>
+            <ListBoxItem Tag="0" ContextRequested="OnRepositoryViewContextRequested">
               <Grid ColumnDefinitions="4,Auto,*,Auto">
                 <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
                 <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Histories}"/>
@@ -164,7 +164,7 @@
               </Grid>
             </ListBoxItem>
 
-            <ListBoxItem IsVisible="{Binding !IsBare}">
+            <ListBoxItem Tag="1" ContextRequested="OnRepositoryViewContextRequested" IsVisible="{Binding !IsBare}">
               <Grid ColumnDefinitions="4,Auto,*,Auto,Auto,Auto">
                 <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
                 <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Changes}"/>
@@ -197,7 +197,7 @@
               </Grid>
             </ListBoxItem>
 
-            <ListBoxItem IsVisible="{Binding !IsBare}">
+            <ListBoxItem Tag="2" ContextRequested="OnRepositoryViewContextRequested" IsVisible="{Binding !IsBare}">
               <Grid ColumnDefinitions="4,Auto,*,Auto,Auto">
                 <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
                 <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
@@ -1063,8 +1063,22 @@
         </Grid>
       </Border>
 
-      <Grid Grid.Row="3">
-        <Border Background="{DynamicResource Brush.HistoryBG}" IsVisible="{Binding IsHistoriesVisible, Mode=OneWay}" PropertyChanged="OnRightPagePropertyChanged">
+      <Grid x:Name="WorkspaceHost" Grid.Row="3" SizeChanged="OnWorkspaceHostSizeChanged">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="0"/>
+          <ColumnDefinition Width="0"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="0"/>
+          <RowDefinition Height="0"/>
+        </Grid.RowDefinitions>
+
+        <Border x:Name="HistoriesPage"
+                Background="{DynamicResource Brush.HistoryBG}"
+                PointerEntered="OnWorkspacePagePointerEntered"
+                GotFocus="OnWorkspacePageGotFocus">
           <v:Histories DataContext="{Binding Histories, Mode=OneWay}"
                        CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                        Bisect="{Binding Bisect, Mode=OneWay}"
@@ -1079,13 +1093,31 @@
           </v:Histories>
         </Border>
 
-        <Border IsVisible="{Binding IsWorkingCopyVisible, Mode=OneWay}" PropertyChanged="OnRightPagePropertyChanged">
+        <Border x:Name="WorkingCopyPage"
+                IsVisible="False"
+                PointerEntered="OnWorkspacePagePointerEntered"
+                GotFocus="OnWorkspacePageGotFocus">
           <v:WorkingCopy DataContext="{Binding WorkingCopy, Mode=OneWay}"/>
         </Border>
 
-        <Border IsVisible="{Binding IsStashesVisible, Mode=OneWay}" PropertyChanged="OnRightPagePropertyChanged">
+        <Border x:Name="StashesPage"
+                IsVisible="False"
+                PointerEntered="OnWorkspacePagePointerEntered"
+                GotFocus="OnWorkspacePageGotFocus">
           <v:StashesPage DataContext="{Binding StashesPage, Mode=OneWay}"/>
         </Border>
+
+        <GridSplitter x:Name="WorkspaceSplitter"
+                      Grid.Column="1"
+                      Width="4"
+                      MinWidth="1" MinHeight="1"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Background="Transparent"
+                      BorderBrush="{DynamicResource Brush.Border0}"
+                      Focusable="False"
+                      ResizeBehavior="PreviousAndNext"
+                      DragCompleted="OnWorkspaceSplitterDragCompleted"
+                      IsVisible="False"/>
       </Grid>
     </Grid>
 

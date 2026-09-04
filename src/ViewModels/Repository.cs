@@ -74,11 +74,67 @@ namespace SourceGit.ViewModels
             get => _selectedViewIndex;
             set
             {
+                if (!IsValidWorkspaceView(value))
+                    return;
+
+                if (IsSplitViewEnabled && value == SecondaryViewIndex)
+                {
+                    SwapWorkspaceViews();
+                    return;
+                }
+
                 if (SetProperty(ref _selectedViewIndex, value))
                 {
-                    OnPropertyChanged(nameof(IsHistoriesVisible));
-                    OnPropertyChanged(nameof(IsWorkingCopyVisible));
-                    OnPropertyChanged(nameof(IsStashesVisible));
+                    if (IsSplitViewEnabled)
+                        _uiStates.SplitPrimaryViewIndex = value;
+                    NotifyWorkspaceVisibilityChanged();
+                }
+            }
+        }
+
+        public int SecondaryViewIndex
+        {
+            get => _uiStates.SecondaryViewIndex;
+            private set
+            {
+                if (_uiStates.SecondaryViewIndex != value)
+                {
+                    _uiStates.SecondaryViewIndex = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsSplitViewEnabled));
+                    NotifyWorkspaceVisibilityChanged();
+                }
+            }
+        }
+
+        public bool IsSplitViewEnabled
+        {
+            get => SecondaryViewIndex >= 0;
+        }
+
+        public Models.RepositoryWorkspaceOrientation WorkspaceOrientation
+        {
+            get => _uiStates.WorkspaceOrientation;
+            private set
+            {
+                if (_uiStates.WorkspaceOrientation != value)
+                {
+                    _uiStates.WorkspaceOrientation = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public double WorkspaceSplitRatio
+        {
+            get => double.IsFinite(_uiStates.WorkspaceSplitRatio) ? Math.Clamp(_uiStates.WorkspaceSplitRatio, 0.2, 0.8) : 0.5;
+            set
+            {
+                var ratio = double.IsFinite(value) ? Math.Clamp(value, 0.2, 0.8) : 0.5;
+                if (Math.Abs(_uiStates.WorkspaceSplitRatio - ratio) > 0.001)
+                {
+                    _uiStates.WorkspaceSplitRatio = ratio;
+                    OnPropertyChanged();
                 }
             }
         }
@@ -100,17 +156,70 @@ namespace SourceGit.ViewModels
 
         public bool IsHistoriesVisible
         {
-            get => SelectedViewIndex == 0;
+            get => SelectedViewIndex == 0 || SecondaryViewIndex == 0;
         }
 
         public bool IsWorkingCopyVisible
         {
-            get => SelectedViewIndex == 1;
+            get => SelectedViewIndex == 1 || SecondaryViewIndex == 1;
         }
 
         public bool IsStashesVisible
         {
-            get => SelectedViewIndex == 2;
+            get => SelectedViewIndex == 2 || SecondaryViewIndex == 2;
+        }
+
+        public void OpenViewInSecondary(int viewIndex, Models.RepositoryWorkspaceOrientation orientation)
+        {
+            if (!IsValidWorkspaceView(viewIndex) || viewIndex == SelectedViewIndex)
+                return;
+
+            if (!IsSplitViewEnabled)
+                _uiStates.SplitPrimaryViewIndex = SelectedViewIndex;
+
+            WorkspaceOrientation = orientation;
+            SecondaryViewIndex = viewIndex;
+        }
+
+        public void SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation orientation)
+        {
+            if (IsSplitViewEnabled)
+                WorkspaceOrientation = orientation;
+        }
+
+        public void CloseSecondaryView()
+        {
+            if (!IsSplitViewEnabled)
+                return;
+
+            SecondaryViewIndex = -1;
+            _uiStates.SplitPrimaryViewIndex = -1;
+        }
+
+        public void SwapWorkspaceViews()
+        {
+            if (!IsSplitViewEnabled)
+                return;
+
+            var primary = SelectedViewIndex;
+            _selectedViewIndex = SecondaryViewIndex;
+            _uiStates.SecondaryViewIndex = primary;
+            _uiStates.SplitPrimaryViewIndex = _selectedViewIndex;
+            OnPropertyChanged(nameof(SelectedViewIndex));
+            OnPropertyChanged(nameof(SecondaryViewIndex));
+            NotifyWorkspaceVisibilityChanged();
+        }
+
+        private bool IsValidWorkspaceView(int viewIndex)
+        {
+            return viewIndex == 0 || (!IsBare && viewIndex is 1 or 2);
+        }
+
+        private void NotifyWorkspaceVisibilityChanged()
+        {
+            OnPropertyChanged(nameof(IsHistoriesVisible));
+            OnPropertyChanged(nameof(IsWorkingCopyVisible));
+            OnPropertyChanged(nameof(IsStashesVisible));
         }
 
         public bool EnableTopoOrderInHistory
@@ -495,10 +604,36 @@ namespace SourceGit.ViewModels
             _workingCopy = new WorkingCopy(this) { CommitMessage = _uiStates.LastCommitMessage };
             _stashesPage = new StashesPage(this);
             _searchCommitContext = new SearchCommitContext(this);
-            _selectedViewIndex = Preferences.Instance.ShowLocalChangesByDefault ? 1 : 0;
+            RestoreWorkspaceState();
             _lastFetchTime = DateTime.Now;
             _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);
             RefreshAll();
+        }
+
+        private void RestoreWorkspaceState()
+        {
+            var defaultView = Preferences.Instance.ShowLocalChangesByDefault && !IsBare ? 1 : 0;
+            var primary = _uiStates.SplitPrimaryViewIndex;
+            var secondary = _uiStates.SecondaryViewIndex;
+            if (!IsValidWorkspaceView(primary) ||
+                !IsValidWorkspaceView(secondary) ||
+                primary == secondary)
+            {
+                _selectedViewIndex = defaultView;
+                _uiStates.SplitPrimaryViewIndex = -1;
+                _uiStates.SecondaryViewIndex = -1;
+            }
+            else
+            {
+                _selectedViewIndex = primary;
+            }
+
+            if (!Enum.IsDefined(_uiStates.WorkspaceOrientation))
+                _uiStates.WorkspaceOrientation = Models.RepositoryWorkspaceOrientation.SideBySide;
+
+            _uiStates.WorkspaceSplitRatio = double.IsFinite(_uiStates.WorkspaceSplitRatio)
+                ? Math.Clamp(_uiStates.WorkspaceSplitRatio, 0.2, 0.8)
+                : 0.5;
         }
 
         public void Close()
