@@ -617,6 +617,7 @@
                     BorderThickness="0"
                     SelectedIndex="{Binding SearchCommitContext.Method, Mode=TwoWay}">
             <ComboBox.Items>
+              <TextBlock Text="{DynamicResource Text.Repository.Search.ByAll}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
               <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
@@ -628,7 +629,7 @@
           <CheckBox Height="24"
                     Margin="4,0,0,0"
                     IsChecked="{Binding SearchCommitContext.OnlySearchCurrentBranch, Mode=TwoWay}"
-                    IsVisible="{Binding SearchCommitContext.Method, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                    IsVisible="{Binding SearchCommitContext.Method, Converter={x:Static c:IntConverters.IsNotOne}}">
             <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}"/>
           </CheckBox>
         </StackPanel>
