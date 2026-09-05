@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using System.Linq;
+
+using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.VisualTree;
@@ -32,6 +34,22 @@ namespace SourceGit.Views
                         focusable.Focus(NavigationMethod.Directional);
                         if (input is TextBox box)
                             box.CaretIndex = box.CaretIndex = box.Text?.Length ?? 0;
+                        return;
+                    }
+                }
+
+                var host = ctl.GetVisualAncestors().OfType<Control>().FirstOrDefault(c => c.Name == "PopupPanel");
+                if (host == null)
+                    return;
+
+                foreach (var input in host.GetVisualDescendants())
+                {
+                    if (input is SelectableTextBlock)
+                        continue;
+
+                    if (input is Control { Focusable: true, IsVisible: true, IsEffectivelyVisible: true, IsEffectivelyEnabled: true } focusable)
+                    {
+                        focusable.Focus(NavigationMethod.Directional);
                         return;
                     }
                 }
