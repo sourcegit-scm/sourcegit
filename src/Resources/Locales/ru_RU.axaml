@@ -227,7 +227,7 @@
   <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Встроенные параметры:
 
   ${REPO} Путь репозитория
-  ${REMOTE} Выбранная удаённая ветка
+  ${REMOTE} Выбранная удалённая ветка
   ${BRANCH} Выбранная ветка, без ${REMOTE} удалённых веток
   ${BRANCH_FRIENDLY_NAME} Понятное имя выбранной ветки, содержащую ${REMOTE} удалённые ветки
   ${SHA} Хеш выбранной ревизии
