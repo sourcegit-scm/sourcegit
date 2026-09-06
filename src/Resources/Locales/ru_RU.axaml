@@ -451,7 +451,7 @@
   <x:String x:Key="Text.FileModeChange.New" xml:space="preserve">Новый режим файла: </x:String>
   <x:String x:Key="Text.FileModeChange.Normal" xml:space="preserve">Обычный</x:String>
   <x:String x:Key="Text.FileModeChange.Submodule" xml:space="preserve">Подмодуль</x:String>
-  <x:String x:Key="Text.FileModeChange.Symlink" xml:space="preserve">Символическая сскла</x:String>
+  <x:String x:Key="Text.FileModeChange.Symlink" xml:space="preserve">Символическая ссылка</x:String>
   <x:String x:Key="Text.FileModeChange.Unknown" xml:space="preserve">Неизвестно</x:String>
   <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-процесс</x:String>
   <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Ветка разработчика:</x:String>
