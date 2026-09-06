@@ -540,7 +540,7 @@
   <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Создать новую вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">Открыть локальный репозиторий</x:String>
   <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Открыть диалоговое окно настроек</x:String>
-  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Показать рабочее пространство в выпадющем меню</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Показать рабочее пространство в выпадающем меню</x:String>
   <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Переключиться на вкладку</x:String>
   <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">Масштабирование</x:String>
   <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">РЕПОЗИТОРИЙ</x:String>
