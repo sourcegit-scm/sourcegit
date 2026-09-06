@@ -388,7 +388,7 @@
   <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">ПОДМОДУЛЬ</x:String>
   <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">УДАЛЁН</x:String>
   <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">НОВЫЙ</x:String>
-  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} Незафиксированных изменний</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} Незафиксированных изменений</x:String>
   <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Обмен</x:String>
   <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Подсветка синтаксиса </x:String>
   <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Перенос слов в строке</x:String>
