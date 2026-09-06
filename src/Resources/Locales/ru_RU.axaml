@@ -849,7 +849,7 @@
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Показывать подмодули как дерево</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показывать метки как катлог</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">ПРОПУСТИТЬ</x:String>
-  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Статистикa </x:String>
+  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Статистика</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">ПОДМОДУЛИ</x:String>
   <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">ДОБАВИТЬ ПОДМОДУЛЬ</x:String>
   <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">ОБНОВИТЬ ПОДМОДУЛЬ</x:String>
