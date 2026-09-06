@@ -763,7 +763,7 @@
   <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Внешний репозиторий:</x:String>
   <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Метка:</x:String>
   <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">Отправить к НОВОЙ ветке</x:String>
-  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Введитте имя для новой удалённой ветки:</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Введите имя для новой удалённой ветки:</x:String>
   <x:String x:Key="Text.Quit" xml:space="preserve">Выйти</x:String>
   <x:String x:Key="Text.Rebase" xml:space="preserve">Перемещение текущей ветки</x:String>
   <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Отложить и применить повторно локальные изменения</x:String>
