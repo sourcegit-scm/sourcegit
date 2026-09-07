@@ -129,22 +129,21 @@ namespace SourceGit.ViewModels
                         result.Add(commit);
                     }
                 }
-                else if (_onlySearchCurrentBranch)
-                {
-                    result = await new Commands.QueryCommits(repoPath, _filter, method, true)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-
-                    foreach (var c in result)
-                        c.IsMerged = true;
-                }
                 else
                 {
-                    result = await new Commands.QueryCommits(repoPath, _filter, method, false)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
+                    if (method == Models.CommitSearchMethod.All)
+                        result = await SearchAllFieldsAsync(repoPath).ConfigureAwait(false);
+                    else
+                        result = await new Commands.QueryCommits(repoPath, _filter, method, _onlySearchCurrentBranch)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
 
-                    if (result.Count > 0)
+                    if (_onlySearchCurrentBranch)
+                    {
+                        foreach (var c in result)
+                            c.IsMerged = true;
+                    }
+                    else if (result.Count > 0)
                     {
                         var set = await new Commands.QueryCurrentBranchCommitHashes(repoPath, result[^1].CommitterTime)
                             .GetResultAsync()
@@ -169,6 +168,55 @@ namespace SourceGit.ViewModels
                     }
                 });
             }, token);
+        }
+
+        private async Task<List<Models.Commit>> SearchAllFieldsAsync(string repoPath)
+        {
+            var result = new List<Models.Commit>();
+            var seen = new HashSet<string>();
+
+            var isCommitSHA = await new Commands.IsCommitSHA(repoPath, _filter)
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            if (isCommitSHA)
+            {
+                var commit = await new Commands.QuerySingleCommit(repoPath, _filter)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                var matchesScope = commit != null;
+                if (matchesScope && _onlySearchCurrentBranch)
+                    matchesScope = await new Commands.IsAncestor(repoPath, commit.SHA, "HEAD")
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                if (matchesScope && seen.Add(commit.SHA))
+                    result.Add(commit);
+            }
+
+            var fields = new[]
+            {
+                Models.CommitSearchMethod.ByMessage,
+                Models.CommitSearchMethod.ByAuthor,
+                Models.CommitSearchMethod.ByCommitter,
+            };
+
+            foreach (var field in fields)
+            {
+                var matched = await new Commands.QueryCommits(repoPath, _filter, field, _onlySearchCurrentBranch)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                foreach (var c in matched)
+                {
+                    if (seen.Add(c.SHA))
+                        result.Add(c);
+                }
+            }
+
+            result.Sort((l, r) => r.CommitterTime.CompareTo(l.CommitterTime));
+            return result;
         }
 
         public void EndSearch()
@@ -287,7 +335,7 @@ namespace SourceGit.ViewModels
 
         private Repository _repo = null;
         private CancellationTokenSource _cancellation = null;
-        private int _method = (int)Models.CommitSearchMethod.ByMessage;
+        private int _method = (int)Models.CommitSearchMethod.All;
         private string _filter = string.Empty;
         private bool _onlySearchCurrentBranch = false;
         private bool _isQuerying = false;
