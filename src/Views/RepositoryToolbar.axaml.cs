@@ -18,6 +18,72 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnToolbarSizeChanged(object _, SizeChangedEventArgs e)
+        {
+            if (!e.WidthChanged)
+                return;
+
+            var compact = e.NewSize.Width < 760;
+            FullToolbar.IsVisible = !compact;
+            CompactToolbar.IsVisible = compact;
+        }
+
+        private void OpenCompactOperations(object sender, RoutedEventArgs ev)
+        {
+            if (sender is not Button button || DataContext is not ViewModels.Repository repo)
+                return;
+
+            var logs = new MenuItem { Header = App.Text("Repository.ViewLogs"), Icon = this.CreateMenuIcon("Icons.Logs") };
+            logs.Click += (_, e) => OpenGitLogs(button, e);
+            var statistics = new MenuItem { Header = App.Text("Repository.Statistics"), Icon = this.CreateMenuIcon("Icons.Statistics") };
+            statistics.Click += (_, e) => OpenStatistics(button, e);
+            var configure = new MenuItem { Header = App.Text("Repository.Configure"), Icon = this.CreateMenuIcon("Icons.Settings") };
+            configure.Click += (_, e) => OpenConfigure(button, e);
+
+            var stash = new MenuItem { Header = App.Text("Stash"), Icon = this.CreateMenuIcon("Icons.Stashes.Add") };
+            stash.Click += async (_, e) =>
+            {
+                await repo.StashAllAsync(false);
+                e.Handled = true;
+            };
+            var applyPatch = new MenuItem { Header = App.Text("Apply.Title"), Icon = this.CreateMenuIcon("Icons.ApplyPatch") };
+            applyPatch.Click += (_, e) =>
+            {
+                repo.ApplyPatch();
+                e.Handled = true;
+            };
+
+            var gitFlow = new MenuItem { Header = App.Text("GitFlow"), Icon = this.CreateMenuIcon("Icons.GitFlow") };
+            gitFlow.Click += (_, e) => OpenGitFlowMenu(button, e);
+            var gitLfs = new MenuItem { Header = App.Text("GitLFS"), Icon = this.CreateMenuIcon("Icons.LFS") };
+            gitLfs.Click += (_, e) => OpenGitLFSMenu(button, e);
+            var bisect = new MenuItem { Header = App.Text("Bisect"), Icon = this.CreateMenuIcon("Icons.Bisect") };
+            bisect.Click += (_, e) => StartBisect(button, e);
+            var customActions = new MenuItem { Header = App.Text("Repository.CustomActions"), Icon = this.CreateMenuIcon("Icons.Action") };
+            customActions.Click += (_, e) => OpenCustomActionMenu(button, e);
+            var cleanup = new MenuItem { Header = App.Text("Repository.Clean"), Icon = this.CreateMenuIcon("Icons.Clean") };
+            cleanup.Click += (_, e) => Cleanup(button, e);
+
+            var menu = new ContextMenu { Placement = PlacementMode.BottomEdgeAlignedLeft };
+            menu.Items.Add(logs);
+            menu.Items.Add(statistics);
+            menu.Items.Add(configure);
+            menu.Items.Add(new MenuItem { Header = "-" });
+            if (!repo.IsBare)
+            {
+                menu.Items.Add(stash);
+                menu.Items.Add(applyPatch);
+                menu.Items.Add(new MenuItem { Header = "-" });
+                menu.Items.Add(gitFlow);
+                menu.Items.Add(gitLfs);
+                menu.Items.Add(bisect);
+            }
+            menu.Items.Add(customActions);
+            menu.Items.Add(cleanup);
+            menu.Open(button);
+            ev.Handled = true;
+        }
+
         private void OpenWithExternalTools(object sender, RoutedEventArgs ev)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)

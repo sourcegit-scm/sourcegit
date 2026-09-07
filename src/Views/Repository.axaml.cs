@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -10,6 +11,16 @@ namespace SourceGit.Views
 {
     public partial class Repository : UserControl
     {
+        private const double CompactLayoutThreshold = 1100;
+        private const double WorkspacePaneMinWidth = 300;
+        private const double WorkspacePaneMinHeight = 160;
+        private const double WorkspaceSplitterSize = 4;
+        private bool _isCompactLayout;
+        private bool _isCompactSidebarOpen;
+        private GridLength _expandedSidebarWidth = new(260, GridUnitType.Pixel);
+        private ViewModels.Repository _subscribedRepository;
+        private int _activeWorkspaceViewIndex = -1;
+
         public Repository()
         {
             InitializeComponent();
@@ -19,6 +30,496 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
             UpdateLeftSidebarLayout();
+            UpdateResponsiveLayout(Bounds.Width);
+
+            if (DataContext is ViewModels.Repository repo)
+            {
+                SubscribeToRepository(repo);
+                _activeWorkspaceViewIndex = repo.SelectedViewIndex;
+            }
+
+            ApplyWorkspaceLayout();
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            UnsubscribeFromRepository();
+            base.OnUnloaded(e);
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+            UnsubscribeFromRepository();
+
+            if (IsLoaded && DataContext is ViewModels.Repository repo)
+            {
+                SubscribeToRepository(repo);
+                _activeWorkspaceViewIndex = repo.SelectedViewIndex;
+            }
+
+            ApplyWorkspaceLayout();
+        }
+
+        private void OnRepositorySizeChanged(object _, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+                UpdateResponsiveLayout(e.NewSize.Width);
+        }
+
+        private void UpdateResponsiveLayout(double width)
+        {
+            if (width <= 0)
+                return;
+
+            var sidebarColumn = RootLayout.ColumnDefinitions[0];
+            var sidebarSplitterColumn = RootLayout.ColumnDefinitions[1];
+            var useCompactLayout = width < CompactLayoutThreshold;
+            if (useCompactLayout == _isCompactLayout)
+            {
+                if (_isCompactSidebarOpen)
+                    FullSidebar.Width = Math.Min(340, Math.Max(240, width - 48));
+                return;
+            }
+
+            if (useCompactLayout)
+            {
+                var current = ViewModels.Preferences.Instance.Layout.RepositorySidebarWidth;
+                if (current.IsAbsolute && current.Value >= 200)
+                    _expandedSidebarWidth = current;
+
+                _isCompactLayout = true;
+                _isCompactSidebarOpen = false;
+                sidebarColumn.MinWidth = 0;
+                sidebarColumn.MaxWidth = 48;
+                sidebarColumn.SetCurrentValue(ColumnDefinition.WidthProperty, new GridLength(48, GridUnitType.Pixel));
+                sidebarSplitterColumn.Width = new GridLength(0);
+                SidebarSplitter.IsVisible = false;
+                CompactNavigationRail.IsVisible = true;
+                FullSidebar.IsVisible = false;
+            }
+            else
+            {
+                _isCompactLayout = false;
+                _isCompactSidebarOpen = false;
+                CompactSidebarBackdrop.IsVisible = false;
+                CompactNavigationRail.IsVisible = false;
+                CompactSidebarCloseButton.IsVisible = false;
+                FullSidebar.IsVisible = true;
+                FullSidebar.Width = double.NaN;
+                FullSidebar.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
+                Grid.SetColumnSpan(FullSidebar, 1);
+                sidebarColumn.MinWidth = 200;
+                sidebarColumn.MaxWidth = 500;
+                sidebarColumn.SetCurrentValue(ColumnDefinition.WidthProperty, _expandedSidebarWidth);
+                sidebarSplitterColumn.Width = new GridLength(3, GridUnitType.Pixel);
+                SidebarSplitter.IsVisible = true;
+                ViewModels.Preferences.Instance.Layout.RepositorySidebarWidth = _expandedSidebarWidth;
+            }
+        }
+
+        private void OnOpenCompactSidebar(object _, RoutedEventArgs e)
+        {
+            if (_isCompactLayout)
+            {
+                _isCompactSidebarOpen = true;
+                CompactSidebarBackdrop.IsVisible = true;
+                CompactNavigationRail.IsVisible = false;
+                CompactSidebarCloseButton.IsVisible = true;
+                FullSidebar.IsVisible = true;
+                FullSidebar.Width = Math.Min(340, Math.Max(240, Bounds.Width - 48));
+                FullSidebar.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left;
+                Grid.SetColumnSpan(FullSidebar, 3);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnCloseCompactSidebar(object _, RoutedEventArgs e)
+        {
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        private void OnCompactSidebarBackdropPressed(object _, PointerPressedEventArgs e)
+        {
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        private void OnCompactViewSelected(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { Tag: string tag } &&
+                int.TryParse(tag, out var selectedView) &&
+                DataContext is ViewModels.Repository repo)
+                repo.SelectedViewIndex = selectedView;
+
+            CloseCompactSidebar();
+            e.Handled = true;
+        }
+
+        internal void CloseCompactSidebar()
+        {
+            if (!_isCompactLayout || !_isCompactSidebarOpen)
+                return;
+
+            _isCompactSidebarOpen = false;
+            CompactSidebarBackdrop.IsVisible = false;
+            CompactSidebarCloseButton.IsVisible = false;
+            FullSidebar.IsVisible = false;
+            FullSidebar.Width = double.NaN;
+            Grid.SetColumnSpan(FullSidebar, 1);
+            CompactNavigationRail.IsVisible = true;
+        }
+
+        private void SubscribeToRepository(ViewModels.Repository repo)
+        {
+            if (_subscribedRepository == repo)
+                return;
+
+            UnsubscribeFromRepository();
+            _subscribedRepository = repo;
+            _subscribedRepository.PropertyChanged += OnRepositoryPropertyChanged;
+        }
+
+        private void UnsubscribeFromRepository()
+        {
+            if (_subscribedRepository == null)
+                return;
+
+            _subscribedRepository.PropertyChanged -= OnRepositoryPropertyChanged;
+            _subscribedRepository = null;
+        }
+
+        private void OnRepositoryPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Repository repo)
+                return;
+
+            if (e.PropertyName == nameof(ViewModels.Repository.SelectedViewIndex))
+                _activeWorkspaceViewIndex = repo.SelectedViewIndex;
+
+            if (e.PropertyName is nameof(ViewModels.Repository.SelectedViewIndex) or
+                nameof(ViewModels.Repository.SecondaryViewIndex) or
+                nameof(ViewModels.Repository.IsSplitViewEnabled) or
+                nameof(ViewModels.Repository.WorkspaceOrientation) or
+                nameof(ViewModels.Repository.WorkspaceSplitRatio))
+                ApplyWorkspaceLayout();
+        }
+
+        private void OnWorkspaceHostSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+                ApplyWorkspaceLayout();
+        }
+
+        private void ApplyWorkspaceLayout()
+        {
+            if (DataContext is not ViewModels.Repository repo || WorkspaceHost.Bounds.Width <= 0)
+                return;
+
+            var pages = new[] { HistoriesPage, WorkingCopyPage, StashesPage };
+            foreach (var page in pages)
+            {
+                page.IsVisible = false;
+                Grid.SetColumn(page, 0);
+                Grid.SetColumnSpan(page, 1);
+                Grid.SetRow(page, 0);
+                Grid.SetRowSpan(page, 1);
+            }
+
+            var columns = WorkspaceHost.ColumnDefinitions;
+            var rows = WorkspaceHost.RowDefinitions;
+            for (var i = 0; i < columns.Count; i++)
+            {
+                columns[i].MinWidth = 0;
+                columns[i].Width = new GridLength(0);
+            }
+            for (var i = 0; i < rows.Count; i++)
+            {
+                rows[i].MinHeight = 0;
+                rows[i].Height = new GridLength(0);
+            }
+
+            var primaryPage = GetWorkspacePage(repo.SelectedViewIndex);
+            primaryPage.IsVisible = true;
+            columns[0].Width = new GridLength(1, GridUnitType.Star);
+            rows[0].Height = new GridLength(1, GridUnitType.Star);
+            WorkspaceSplitter.IsVisible = false;
+
+            if (repo.IsSplitViewEnabled)
+            {
+                var secondaryPage = GetWorkspacePage(repo.SecondaryViewIndex);
+                secondaryPage.IsVisible = true;
+                var ratio = repo.WorkspaceSplitRatio;
+                var useSideBySide = repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.SideBySide &&
+                    WorkspaceHost.Bounds.Width >= WorkspacePaneMinWidth * 2 + WorkspaceSplitterSize;
+
+                WorkspaceSplitter.IsVisible = true;
+                if (useSideBySide)
+                {
+                    columns[0].MinWidth = WorkspacePaneMinWidth;
+                    columns[0].Width = new GridLength(ratio, GridUnitType.Star);
+                    columns[1].Width = new GridLength(WorkspaceSplitterSize, GridUnitType.Pixel);
+                    columns[2].MinWidth = WorkspacePaneMinWidth;
+                    columns[2].Width = new GridLength(1 - ratio, GridUnitType.Star);
+
+                    Grid.SetColumn(secondaryPage, 2);
+                    Grid.SetColumn(WorkspaceSplitter, 1);
+                    Grid.SetRow(WorkspaceSplitter, 0);
+                    WorkspaceSplitter.Width = WorkspaceSplitterSize;
+                    WorkspaceSplitter.Height = double.NaN;
+                    WorkspaceSplitter.ResizeDirection = GridResizeDirection.Columns;
+                    WorkspaceSplitter.BorderThickness = new Thickness(1, 0, 0, 0);
+                }
+                else
+                {
+                    rows[0].MinHeight = WorkspacePaneMinHeight;
+                    rows[0].Height = new GridLength(ratio, GridUnitType.Star);
+                    rows[1].Height = new GridLength(WorkspaceSplitterSize, GridUnitType.Pixel);
+                    rows[2].MinHeight = WorkspacePaneMinHeight;
+                    rows[2].Height = new GridLength(1 - ratio, GridUnitType.Star);
+
+                    Grid.SetRow(secondaryPage, 2);
+                    Grid.SetColumn(WorkspaceSplitter, 0);
+                    Grid.SetRow(WorkspaceSplitter, 1);
+                    WorkspaceSplitter.Width = double.NaN;
+                    WorkspaceSplitter.Height = WorkspaceSplitterSize;
+                    WorkspaceSplitter.ResizeDirection = GridResizeDirection.Rows;
+                    WorkspaceSplitter.BorderThickness = new Thickness(0, 1, 0, 0);
+                }
+            }
+
+            if (_activeWorkspaceViewIndex != repo.SelectedViewIndex &&
+                _activeWorkspaceViewIndex != repo.SecondaryViewIndex)
+                _activeWorkspaceViewIndex = repo.SelectedViewIndex;
+
+            UpdateWorkspaceHotkeys();
+        }
+
+        private Border GetWorkspacePage(int viewIndex)
+        {
+            return viewIndex switch
+            {
+                1 => WorkingCopyPage,
+                2 => StashesPage,
+                _ => HistoriesPage,
+            };
+        }
+
+        private int GetWorkspaceViewIndex(object page)
+        {
+            if (page == WorkingCopyPage)
+                return 1;
+            if (page == StashesPage)
+                return 2;
+            return 0;
+        }
+
+        private void OnWorkspacePagePointerEntered(object sender, PointerEventArgs e)
+        {
+            ActivateWorkspacePage(sender);
+        }
+
+        private void OnWorkspacePageGotFocus(object sender, GotFocusEventArgs e)
+        {
+            ActivateWorkspacePage(sender);
+        }
+
+        private void ActivateWorkspacePage(object page)
+        {
+            if (page is not Border { IsVisible: true } border)
+                return;
+
+            _activeWorkspaceViewIndex = GetWorkspaceViewIndex(border);
+            UpdateWorkspaceHotkeys();
+        }
+
+        internal void UpdateWorkspaceHotkeys()
+        {
+            var pages = new[] { HistoriesPage, WorkingCopyPage, StashesPage };
+            for (var i = 0; i < pages.Length; i++)
+            {
+                var diffViewer = pages[i].FindDescendantOfType<DiffView>();
+                diffViewer?.ToggleHotkeyBindings(pages[i].IsVisible && i == _activeWorkspaceViewIndex);
+            }
+        }
+
+        private void OnWorkspaceSplitterDragCompleted(object sender, VectorEventArgs e)
+        {
+            if (DataContext is not ViewModels.Repository { IsSplitViewEnabled: true } repo)
+                return;
+
+            var columns = WorkspaceHost.ColumnDefinitions;
+            var rows = WorkspaceHost.RowDefinitions;
+            double first;
+            double second;
+            if (WorkspaceSplitter.ResizeDirection == GridResizeDirection.Columns)
+            {
+                first = columns[0].ActualWidth;
+                second = columns[2].ActualWidth;
+            }
+            else
+            {
+                first = rows[0].ActualHeight;
+                second = rows[2].ActualHeight;
+            }
+
+            if (first + second > 0)
+                repo.WorkspaceSplitRatio = first / (first + second);
+        }
+
+        private void OnRepositoryViewContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            OpenRepositoryViewContextMenu(sender, e, false);
+        }
+
+        internal void OpenRepositoryViewContextMenu(object sender, ContextRequestedEventArgs e, bool includeViewAction)
+        {
+            if (DataContext is not ViewModels.Repository repo ||
+                sender is not Control control ||
+                !int.TryParse(control.Tag?.ToString(), out var viewIndex))
+                return;
+
+            var menu = new ContextMenu();
+            if (!repo.IsBare)
+            {
+                var openSecondary = new MenuItem
+                {
+                    Header = App.Text("Repository.OpenInSecondary"),
+                    Icon = this.CreateMenuIcon("Icons.Layout"),
+                    IsEnabled = viewIndex != repo.SelectedViewIndex && viewIndex != repo.SecondaryViewIndex,
+                };
+                openSecondary.Click += (_, ev) =>
+                {
+                    repo.OpenViewInSecondary(viewIndex, repo.WorkspaceOrientation);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(openSecondary);
+                menu.Items.Add(new MenuItem { Header = "-" });
+
+                var canOpenSplit = repo.IsSplitViewEnabled || viewIndex != repo.SelectedViewIndex;
+                var sideBySide = new MenuItem
+                {
+                    Header = App.Text("Repository.SplitSideBySide"),
+                    Icon = repo.IsSplitViewEnabled && repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.SideBySide
+                        ? this.CreateMenuIcon("Icons.Check")
+                        : null,
+                    IsEnabled = canOpenSplit,
+                };
+                sideBySide.Click += (_, ev) =>
+                {
+                    if (repo.IsSplitViewEnabled)
+                        repo.SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation.SideBySide);
+                    else
+                        repo.OpenViewInSecondary(viewIndex, Models.RepositoryWorkspaceOrientation.SideBySide);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(sideBySide);
+
+                var stacked = new MenuItem
+                {
+                    Header = App.Text("Repository.SplitStacked"),
+                    Icon = repo.IsSplitViewEnabled && repo.WorkspaceOrientation == Models.RepositoryWorkspaceOrientation.Stacked
+                        ? this.CreateMenuIcon("Icons.Check")
+                        : null,
+                    IsEnabled = canOpenSplit,
+                };
+                stacked.Click += (_, ev) =>
+                {
+                    if (repo.IsSplitViewEnabled)
+                        repo.SetWorkspaceOrientation(Models.RepositoryWorkspaceOrientation.Stacked);
+                    else
+                        repo.OpenViewInSecondary(viewIndex, Models.RepositoryWorkspaceOrientation.Stacked);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(stacked);
+                menu.Items.Add(new MenuItem { Header = "-" });
+
+                var swap = new MenuItem
+                {
+                    Header = App.Text("Repository.SwapViews"),
+                    Icon = this.CreateMenuIcon("Icons.Layout"),
+                    IsEnabled = repo.IsSplitViewEnabled,
+                };
+                swap.Click += (_, ev) =>
+                {
+                    repo.SwapWorkspaceViews();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(swap);
+
+                var close = new MenuItem
+                {
+                    Header = App.Text("Repository.CloseSecondaryView"),
+                    Icon = this.CreateMenuIcon("Icons.Close"),
+                    IsEnabled = repo.IsSplitViewEnabled,
+                };
+                close.Click += (_, ev) =>
+                {
+                    repo.CloseSecondaryView();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(close);
+
+                if (includeViewAction && viewIndex is 1 or 2)
+                {
+                    menu.Items.Add(new MenuItem { Header = "-" });
+                    var action = new MenuItem
+                    {
+                        Header = App.Text(viewIndex == 1 ? "Repository.DiscardAll" : "Repository.ClearStashes"),
+                        Icon = this.CreateMenuIcon(viewIndex == 1 ? "Icons.Undo" : "Icons.RemoveAll"),
+                    };
+                    action.Click += (_, ev) =>
+                    {
+                        if (viewIndex == 1)
+                            repo.DiscardAllChanges();
+                        else
+                            repo.ClearStashes();
+                        ev.Handled = true;
+                    };
+                    menu.Items.Add(action);
+                }
+
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
+
+            var navigation = new MenuItem
+            {
+                Header = App.Text("Repository.NavigationPlacement"),
+                IsEnabled = false,
+            };
+            menu.Items.Add(navigation);
+
+            var sidebarNavigation = new MenuItem
+            {
+                Header = App.Text("Repository.NavigationPlacement.Sidebar"),
+                Icon = repo.NavigationPlacement == Models.RepositoryNavigationPlacement.Sidebar
+                    ? this.CreateMenuIcon("Icons.Check")
+                    : null,
+            };
+            sidebarNavigation.Click += (_, ev) =>
+            {
+                repo.SetNavigationPlacement(Models.RepositoryNavigationPlacement.Sidebar);
+                ev.Handled = true;
+            };
+            menu.Items.Add(sidebarNavigation);
+
+            var topNavigation = new MenuItem
+            {
+                Header = App.Text("Repository.NavigationPlacement.Top"),
+                Icon = repo.NavigationPlacement == Models.RepositoryNavigationPlacement.Top
+                    ? this.CreateMenuIcon("Icons.Check")
+                    : null,
+            };
+            topNavigation.Click += (_, ev) =>
+            {
+                repo.SetNavigationPlacement(Models.RepositoryNavigationPlacement.Top);
+                ev.Handled = true;
+            };
+            menu.Items.Add(topNavigation);
+            menu.Open(control);
+            e.Handled = true;
         }
 
         private void OnToggleFilter(object _, RoutedEventArgs e)
@@ -359,7 +860,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnOpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
+        internal void OpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository { Histories: { } histories } repo)
             {
@@ -695,13 +1196,5 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRightPagePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if (e.Property == Border.IsVisibleProperty && sender is Border page)
-            {
-                var diffViewer = page.FindDescendantOfType<DiffView>();
-                diffViewer?.ToggleHotkeyBindings(page.IsVisible);
-            }
-        }
     }
 }
