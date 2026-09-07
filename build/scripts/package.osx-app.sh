@@ -13,6 +13,6 @@ cp resources/app/App.icns SourceGit.app/Contents/Resources/App.icns
 sed "s/SOURCE_GIT_VERSION/$VERSION/g" resources/app/App.plist > SourceGit.app/Contents/Info.plist
 rm -rf SourceGit.app/Contents/MacOS/SourceGit.dsym
 rm -f SourceGit.app/Contents/MacOS/*.pdb
-clang ../tools/setsid-macos/setsid.c -o SourceGit.app/Contents/MacOS/setsid -mmacosx-version-min=13.0
+clang ../tools/setsid-macos/setsid.c -o SourceGit.app/Contents/MacOS/setsid -mmacosx-version-min=13.0 -arch x86_64 -arch arm64
 
 zip "sourcegit_$VERSION.$RUNTIME.zip" -r SourceGit.app
