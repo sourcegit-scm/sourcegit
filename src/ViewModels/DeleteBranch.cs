@@ -94,14 +94,20 @@ namespace SourceGit.ViewModels
 
         private async Task<bool> DeleteRemoteBranchAsync(Models.Branch branch, CommandLog log)
         {
-            var exists = await new Commands.Remote(_repo.FullPath)
-                .HasBranchAsync(branch.Remote, branch.Name)
-                .ConfigureAwait(false);
+            var exists = false;
+            var remote = _repo.Remotes.Find(x => x.Name.Equals(branch.Remote, StringComparison.Ordinal));
+            if (remote != null)
+            {
+                exists = await new Commands.DoesBranchExistOnRemote(_repo.FullPath, remote, branch)
+                    .Use(log)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+            }
 
             if (exists)
-                return await new Commands.Push(_repo.FullPath, branch.Remote, $"refs/heads/{branch.Name}", true)
+                return await new Commands.Push(_repo.FullPath, remote, $"refs/heads/{branch.Name}", true)
                     .Use(log)
-                    .RunAsync()
+                    .ExecAsync()
                     .ConfigureAwait(false);
             else
                 return await new Commands.Branch(_repo.FullPath, branch.Name)

@@ -47,14 +47,5 @@ namespace SourceGit.Commands
             Args = "remote set-url" + (isPush ? " --push " : " ") + $"{name} {url}";
             return await ExecAsync();
         }
-
-        public async Task<bool> HasBranchAsync(string remote, string branch)
-        {
-            SSHKey = await new Config(WorkingDirectory).GetAsync($"remote.{remote}.sshkey");
-            Args = $"ls-remote {remote} {branch}";
-
-            var rs = await ReadToEndAsync();
-            return rs.IsSuccess && rs.StdOut.Trim().Length > 0;
-        }
     }
 }

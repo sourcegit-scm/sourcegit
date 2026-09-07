@@ -1,73 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
-    public partial class QueryRemotes : Command
+    public class QueryRemotes
     {
-        [GeneratedRegex(@"^([\w\.\-]+)\s*(\S+).*$")]
-        private static partial Regex REG_REMOTE();
-
         public QueryRemotes(string repo)
         {
-            WorkingDirectory = repo;
-            Context = repo;
-            Args = "remote -v";
+            _repo = repo;
         }
 
         public async Task<List<Models.Remote>> GetResultAsync()
         {
-            var outs = new List<Models.Remote>();
-            var rs = await ReadToEndAsync().ConfigureAwait(false);
-            if (!rs.IsSuccess)
-                return outs;
-
-            var config = await new Config(WorkingDirectory).ReadAllAsync().ConfigureAwait(false);
+            var names = new HashSet<string>();
+            var urls = new Dictionary<string, string>();
+            var privateSSHKeys = new Dictionary<string, string>();
             var disableAutoFetchRemotes = new HashSet<string>();
+
+            var config = await new Config(_repo).ReadAllAsync().ConfigureAwait(false);
             foreach (var (k, v) in config)
             {
-                if (k.StartsWith("remote.", StringComparison.Ordinal) &&
-                    k.EndsWith(".disableautofetch", StringComparison.Ordinal) &&
-                    v.Equals("true", StringComparison.OrdinalIgnoreCase))
+                if (!k.StartsWith("remote.", StringComparison.Ordinal))
+                    continue;
+
+                if (k.EndsWith(".url", StringComparison.Ordinal))
                 {
-                    var remoteName = k.Substring(7, k.Length - 24).Trim('"');
-                    disableAutoFetchRemotes.Add(remoteName);
+                    var name = k.Substring(7, k.Length - 11).Trim('"');
+                    names.Add(name);
+                    urls[name] = v;
+                }
+                else if (k.EndsWith(".sshkey", StringComparison.OrdinalIgnoreCase))
+                {
+                    var name = k.Substring(7, k.Length - 14).Trim('"');
+                    names.Add(name);
+                    privateSSHKeys[name] = v;
+                }
+                else if (k.EndsWith(".disableautofetch", StringComparison.OrdinalIgnoreCase) &&
+                         v.Equals("true", StringComparison.OrdinalIgnoreCase))
+                {
+                    var name = k.Substring(7, k.Length - 24).Trim('"');
+                    disableAutoFetchRemotes.Add(name);
                 }
             }
 
-            var lines = rs.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
+            var remotes = new List<Models.Remote>();
+            foreach (var name in names)
             {
-                var match = REG_REMOTE().Match(line);
-                if (!match.Success)
+                if (!urls.TryGetValue(name, out var url))
                     continue;
 
-                var remote = new Models.Remote()
+                var r = new Models.Remote()
                 {
-                    Name = match.Groups[1].Value,
-                    URL = match.Groups[2].Value,
-                    DisableAutoFetch = disableAutoFetchRemotes.Contains(match.Groups[1].Value)
+                    Name = name,
+                    URL = url,
+                    PrivateSSHKey = privateSSHKeys.TryGetValue(name, out var privateSSHKey) ? privateSSHKey : null,
+                    DisableAutoFetch = disableAutoFetchRemotes.Contains(name)
                 };
 
-                if (outs.Find(x => x.Name == remote.Name) != null)
-                    continue;
-
-                if (remote.URL.StartsWith("git@", StringComparison.Ordinal))
-                {
-                    var hostEnd = remote.URL.IndexOf(':', 4);
-                    if (hostEnd > 4)
-                    {
-                        var host = remote.URL.Substring(4, hostEnd - 4);
-                        Models.HTTPSValidator.Add(host);
-                    }
-                }
-
-                outs.Add(remote);
+                remotes.Add(r);
             }
 
-            return outs;
+            remotes.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.Ordinal));
+            return remotes;
         }
+
+        private readonly string _repo;
     }
 }

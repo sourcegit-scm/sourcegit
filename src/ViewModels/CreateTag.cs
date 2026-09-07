@@ -101,12 +101,13 @@ namespace SourceGit.ViewModels
             else
                 succ = await cmd.AddAsync(_basedOn);
 
-            if (succ && remotes != null)
+            if (succ && remotes is { Count: > 0 })
             {
+                var fullname = $"refs/tags/{_tagName}";
                 foreach (var remote in remotes)
-                    await new Commands.Push(_repo.FullPath, remote.Name, $"refs/tags/{_tagName}", false)
+                    await new Commands.Push(_repo.FullPath, remote, fullname, false)
                         .Use(log)
-                        .RunAsync();
+                        .ExecAsync();
             }
 
             log.Complete();

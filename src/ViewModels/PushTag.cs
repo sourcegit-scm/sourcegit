@@ -48,18 +48,18 @@ namespace SourceGit.ViewModels
             {
                 foreach (var remote in _repo.Remotes)
                 {
-                    succ = await new Commands.Push(_repo.FullPath, remote.Name, tag, false)
+                    succ = await new Commands.Push(_repo.FullPath, remote, tag, false)
                         .Use(log)
-                        .RunAsync();
+                        .ExecAsync();
                     if (!succ)
                         break;
                 }
             }
             else
             {
-                succ = await new Commands.Push(_repo.FullPath, SelectedRemote.Name, tag, false)
+                succ = await new Commands.Push(_repo.FullPath, SelectedRemote, tag, false)
                     .Use(log)
-                    .RunAsync();
+                    .ExecAsync();
             }
 
             log.Complete();

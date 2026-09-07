@@ -51,9 +51,7 @@ namespace SourceGit.ViewModels
             _name = remote.Name;
             _url = remote.URL;
             _useSSH = Models.Remote.IsSSH(remote.URL);
-
-            if (_useSSH)
-                _sshkey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
+            _sshkey = remote.PrivateSSHKey;
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)
@@ -121,7 +119,14 @@ namespace SourceGit.ViewModels
             if (pushURL != _url)
                 await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
 
-            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+            // Update SSH key
+            {
+                var key = _useSSH ? SSHKey : null;
+                var succ = await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", key);
+                if (succ)
+                    _remote.PrivateSSHKey = key;
+            }
+
             return true;
         }
 

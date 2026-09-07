@@ -86,10 +86,10 @@ namespace SourceGit.ViewModels
             {
                 foreach (var remote in _repo.Remotes)
                 {
-                    await new Commands.Fetch(_repo.FullPath, remote.Name, notags, force)
+                    await new Commands.Fetch(_repo.FullPath, remote, notags, force)
                         .WithCancellation(token)
                         .Use(log)
-                        .RunAsync();
+                        .ExecAsync();
 
                     if (token.IsCancellationRequested)
                         break;
@@ -97,10 +97,10 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote.Name, notags, force)
+                await new Commands.Fetch(_repo.FullPath, SelectedRemote, notags, force)
                     .WithCancellation(token)
                     .Use(log)
-                    .RunAsync();
+                    .ExecAsync();
             }
 
             log.Complete();

@@ -171,9 +171,7 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
-
-            var remoteBranchName = _selectedRemoteBranch.Name;
-            ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemote.Name}/{remoteBranchName} ...";
+            ProgressDescription = $"Push {_selectedLocalBranch.Name} -> {_selectedRemoteBranch.FriendlyName} ...";
 
             var log = _repo.CreateLog("Push");
             Use(log);
@@ -183,14 +181,14 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Push(
                 _repo.FullPath,
-                _selectedLocalBranch.Name,
-                _selectedRemote.Name,
-                remoteBranchName,
+                _selectedLocalBranch,
+                _selectedRemote,
+                _selectedRemoteBranch,
                 PushAllTags,
                 _repo.Submodules.Count > 0 && CheckSubmodules,
                 _isSetTrackOptionVisible && _tracking,
                 ForcePush,
-                NoVerify).WithCancellation(token).Use(log).RunAsync();
+                NoVerify).WithCancellation(token).Use(log).ExecAsync();
 
             log.Complete();
 
