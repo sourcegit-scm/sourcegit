@@ -186,11 +186,10 @@ namespace SourceGit.Views
 
         private void UpdateLeftSidebarLayout()
         {
-            var vm = DataContext as ViewModels.Repository;
-            if (vm?.Settings == null)
+            if (!IsLoaded)
                 return;
 
-            if (!IsLoaded)
+            if (DataContext is not ViewModels.Repository { UIStates: { } } vm)
                 return;
 
             var leftHeight = LeftSidebarGroups.Bounds.Height - 28.0 * 5 - 4;

@@ -11,13 +11,16 @@
              x:DataType="vm:Repository">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200"/>
+      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarDisplayWidth, Mode=TwoWay}"
+                        MinWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarMinWidth, Mode=OneWay}"/>
       <ColumnDefinition Width="3"/>
       <ColumnDefinition Width="*" MinWidth="200"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left Panel -->
-    <Grid Grid.Column="0" RowDefinitions="Auto,*">
+    <Grid Grid.Column="0"
+          RowDefinitions="Auto,*"
+          IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarCollapsed, Mode=OneWay, Converter={x:Static BoolConverters.Not}}">      
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
       <StackPanel Grid.Row="0" Margin="0,6" Height="24" HorizontalAlignment="Center" Orientation="Horizontal">
         <RadioButton Classes="switch_button"
@@ -706,6 +709,56 @@
       </Grid>
     </Grid>
 
+    <!-- Left Collapsed Sidebar -->
+    <Grid Grid.Column="0"
+          IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarCollapsed, Mode=OneWay}">
+      <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
+        <ListBox.Styles>
+          <Style Selector="Path.icon">
+            <Setter Property="Width" Value="16"/>
+            <Setter Property="Height" Value="16"/>
+            <Setter Property="Fill" Value="{DynamicResource Brush.FG1}"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+          </Style>
+          <Style Selector="ListBoxItem">
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+          </Style>
+          <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent"/>
+          </Style>
+          <Style Selector="ListBoxItem:selected">
+            <Setter Property="BorderBrush" Value="{DynamicResource Brush.FG1}"/>
+          </Style>
+          <Style Selector="ListBoxItem:selected Path.icon">
+            <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+          </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+
+        <ListBoxItem>
+          <Path Classes="icon" Data="{StaticResource Icons.Histories}"/>
+        </ListBoxItem>
+
+        <ListBoxItem IsVisible="{Binding !IsBare}">
+          <Path Classes="icon" Margin="2,0,0,0" Data="{StaticResource Icons.Changes}"/>
+        </ListBoxItem>
+
+        <ListBoxItem IsVisible="{Binding !IsBare}">
+          <Path Classes="icon" Data="{StaticResource Icons.Stashes}"/>
+        </ListBoxItem>
+      </ListBox>
+    </Grid>
+    
     <!-- Splitter -->
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
@@ -713,7 +766,8 @@
                   Background="Transparent"
                   BorderThickness="0,0,1,0"
                   BorderBrush="{DynamicResource Brush.Border0}"
-                  Focusable="False"/>
+                  Focusable="False"
+                  IsEnabled="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarCollapsed, Mode=OneWay, Converter={x:Static BoolConverters.Not}}"/>
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
