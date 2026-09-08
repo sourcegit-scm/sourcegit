@@ -6,11 +6,12 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-97.52%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.87%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.BranchTree.PushURL
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
 - Text.File.HexViewer
@@ -19,7 +20,13 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -40,11 +47,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-97.04%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-96.39%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
 
+- Text.BranchTree.PushURL
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
 - Text.File.HexViewer
@@ -54,10 +62,16 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -79,16 +93,23 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.90%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.24%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
+- Text.BranchTree.PushURL
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-93.22%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-92.60%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -98,6 +119,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Apply.Source.Clipboard
 - Text.Bisect.WaitingForCheckoutAnother
 - Text.Bisect.WaitingForFirstBad
+- Text.BranchTree.PushURL
 - Text.CheckoutDetached
 - Text.CheckoutDetached.Target
 - Text.CheckoutDetached.Warning
@@ -138,10 +160,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
 - Text.Rebase.Test.WillCauseConflicts
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -167,7 +195,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-93.22%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-92.60%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -177,6 +205,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Apply.Source.Clipboard
 - Text.Bisect.WaitingForCheckoutAnother
 - Text.Bisect.WaitingForFirstBad
+- Text.BranchTree.PushURL
 - Text.CheckoutDetached
 - Text.CheckoutDetached.Target
 - Text.CheckoutDetached.Warning
@@ -217,10 +246,16 @@ This document shows the translation status of each locale file in the repository
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
 - Text.Rebase.Test.WillCauseConflicts
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -246,11 +281,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-97.42%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-96.77%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
+- Text.BranchTree.PushURL
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
 - Text.File.HexViewer
@@ -259,7 +295,13 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -281,7 +323,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-86.91%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-86.34%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -295,6 +337,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Bisect.WaitingForCheckoutAnother
 - Text.Bisect.WaitingForFirstBad
 - Text.BranchCM.CompareWithSpecial
+- Text.BranchTree.PushURL
 - Text.ChangeCM.ResetFileTo
 - Text.CheckoutBranchFromStash
 - Text.CheckoutBranchFromStash.Branch
@@ -387,13 +430,19 @@ This document shows the translation status of each locale file in the repository
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
 - Text.Rebase.Test.WillCauseConflicts
+- Text.Remote.ResetPushURL
 - Text.RemoteCM.EnableAutoFetch
+- Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
 - Text.Repository.ToggleSidebar
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -426,11 +475,12 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-97.04%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-96.39%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.BranchTree.PushURL
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
 - Text.File.HexViewer
@@ -440,10 +490,16 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -465,13 +521,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-94.65%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-94.02%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
 
 - Text.Bisect.WaitingForCheckoutAnother
 - Text.Bisect.WaitingForFirstBad
+- Text.BranchTree.PushURL
 - Text.CheckoutDetached
 - Text.CheckoutDetached.Target
 - Text.CheckoutDetached.Warning
@@ -500,10 +557,16 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
 - Text.Repository.FilterCommits.Expand
 - Text.Repository.FilterCommits.Summary
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
@@ -529,7 +592,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-61.32%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-60.91%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -547,6 +610,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchCM.InteractiveRebase.Manually
 - Text.BranchTree.AheadBehind
 - Text.BranchTree.Behind
+- Text.BranchTree.PushURL
 - Text.BranchTree.Tracking
 - Text.BranchTree.URL
 - Text.BranchTree.Worktree
@@ -812,8 +876,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
 - Text.Rebase.Test.WillCauseConflicts
+- Text.Remote.ResetPushURL
 - Text.RemoteCM.CustomAction
 - Text.RemoteCM.EnableAutoFetch
+- Text.RemoteCM.SetPushURL
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
@@ -851,6 +917,10 @@ This document shows the translation status of each locale file in the repository
 - Text.ScanRepositories.UseCustomDir
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -942,16 +1012,23 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.90%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.24%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.BranchTree.PushURL
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-62.94%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-62.52%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -996,6 +1073,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.AheadBehind
 - Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
+- Text.BranchTree.PushURL
 - Text.BranchTree.Remote
 - Text.BranchTree.Status
 - Text.BranchTree.Tracking
@@ -1235,8 +1313,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
 - Text.Rebase.Test.WillCauseConflicts
+- Text.Remote.ResetPushURL
 - Text.RemoteCM.CustomAction
 - Text.RemoteCM.EnableAutoFetch
+- Text.RemoteCM.SetPushURL
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
@@ -1264,6 +1344,10 @@ This document shows the translation status of each locale file in the repository
 - Text.ScanRepositories.UseCustomDir
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -1347,7 +1431,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-63.71%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-63.28%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1392,6 +1476,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.AheadBehind
 - Text.BranchTree.Behind
 - Text.BranchTree.InvalidUpstream
+- Text.BranchTree.PushURL
 - Text.BranchTree.Remote
 - Text.BranchTree.Status
 - Text.BranchTree.Tracking
@@ -1627,8 +1712,10 @@ This document shows the translation status of each locale file in the repository
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
 - Text.Rebase.Test.WillCauseConflicts
+- Text.Remote.ResetPushURL
 - Text.RemoteCM.CustomAction
 - Text.RemoteCM.EnableAutoFetch
+- Text.RemoteCM.SetPushURL
 - Text.Repository.BranchSort
 - Text.Repository.BranchSort.ByCommitterDate
 - Text.Repository.BranchSort.ByName
@@ -1656,6 +1743,10 @@ This document shows the translation status of each locale file in the repository
 - Text.ScanRepositories.UseCustomDir
 - Text.SelfUpdate.CurrentVersion
 - Text.SelfUpdate.ReleaseDate
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SetSubmoduleBranch
 - Text.SetSubmoduleBranch.Submodule
 - Text.SetSubmoduleBranch.Current
@@ -1737,12 +1828,19 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-98.38%25-yellow)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-97.72%25-yellow)
 
 <details>
 <summary>Missing keys in zh_TW.axaml</summary>
 
+- Text.BranchTree.PushURL
+- Text.Remote.ResetPushURL
+- Text.RemoteCM.SetPushURL
 - Text.Repository.ToggleSidebar
+- Text.SetPushUrl
+- Text.SetPushUrl.PushURL
+- Text.SetPushUrl.Remote
+- Text.SetPushUrl.URL
 - Text.SSHKeyHelper
 - Text.SSHKeyHelper.ConfirmDeletion
 - Text.SSHKeyHelper.Fingerprint
