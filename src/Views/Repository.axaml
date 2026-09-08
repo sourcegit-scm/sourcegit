@@ -721,11 +721,11 @@
           </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
 
-        <ListBoxItem>
+        <ListBoxItem ToolTip.Tip="{DynamicResource Text.Histories}">
           <Path Classes="icon" Data="{StaticResource Icons.Histories}"/>
         </ListBoxItem>
 
-        <ListBoxItem IsVisible="{Binding !IsBare}">
+        <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.WorkingCopy}">
           <Grid>
             <Path Classes="icon" Data="{StaticResource Icons.Changes}"/>
             <Border Height="14"
@@ -742,7 +742,7 @@
           </Grid>
         </ListBoxItem>
 
-        <ListBoxItem IsVisible="{Binding !IsBare}">
+        <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Stashes}">
           <Grid>
             <Path Classes="icon" Data="{StaticResource Icons.Stashes}"/>
             <Border Height="14"
