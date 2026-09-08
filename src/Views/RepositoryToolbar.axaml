@@ -14,11 +14,6 @@
                     IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarCollapsed, Mode=TwoWay}"
                     ToolTip.Tip="{DynamicResource Text.Repository.ToggleSidebar}"/>
       
-      <Rectangle Width="1" Height="16"
-                 Margin="4,0"
-                 VerticalAlignment="Center"
-                 Fill="{DynamicResource Brush.Border2}"/>
-      
       <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.OpenWith}"/>
       </Button>
