@@ -776,7 +776,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">תאריך Commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">טופולוגי</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES מקומיים</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">אפשרויות נוספות...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">ניווט אל HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">צור Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">נקה התראות</x:String>

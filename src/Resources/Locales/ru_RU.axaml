@@ -825,7 +825,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Дата ревизии</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Топологически</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ЛОКАЛЬНЫЕ ВЕТКИ</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Больше опций...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Навигация по ГОЛОВЕ (HEAD)</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Создать ветку</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ОЧИСТКА УВЕДОМЛЕНИЙ</x:String>

@@ -816,7 +816,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Commit-Zeitpunkt</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologisch</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">LOKALE BRANCHES</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Mehr Optionen…</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Zum HEAD wechseln</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Erstelle Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BENACHRICHTIGUNGEN LÖSCHEN</x:String>

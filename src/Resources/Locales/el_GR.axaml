@@ -812,7 +812,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Ημερομηνία commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Τοπολογικά</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ΤΟΠΙΚΟΙ ΚΛΑΔΟΙ</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Περισσότερες επιλογές...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Μετάβαση στο HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Δημιουργία κλάδου</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ΕΚΚΑΘΑΡΙΣΗ ΕΙΔΟΠΟΙΗΣΕΩΝ</x:String>

@@ -812,7 +812,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">コミット日時</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">トポロジカル</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">ローカルブランチ</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">その他のオプション...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD に移動</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">ブランチを作成</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">通知を消去</x:String>

@@ -824,7 +824,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Fecha de Commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topológicamente</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">RAMAS LOCALES</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Más opciones...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navegar a HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Crear Rama</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">LIMPIAR NOTIFICACIONES</x:String>

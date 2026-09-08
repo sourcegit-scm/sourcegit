@@ -816,7 +816,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Tanggal Commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologis</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCH LOKAL</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Opsi lainnya...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Navigasi ke HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Buat Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">BERSIHKAN NOTIFIKASI</x:String>

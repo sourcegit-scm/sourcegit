@@ -784,7 +784,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">커밋 날짜</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">위상 정렬</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">로컬 브랜치</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">추가 옵션...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">HEAD로 이동</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">브랜치 생성</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">알림 지우기</x:String>

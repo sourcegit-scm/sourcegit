@@ -719,7 +719,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Per data del commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Topologicamente</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCH LOCALI</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">Altre opzioni...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Vai a HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Crea Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">CANCELLA LE NOTIFICHE</x:String>
