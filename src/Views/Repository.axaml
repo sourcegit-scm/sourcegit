@@ -99,22 +99,15 @@
             </ListBox.ItemsPanel>
 
             <ListBoxItem>
-              <Grid ColumnDefinitions="4,Auto,*,Auto">
+              <Grid ColumnDefinitions="4,Auto,*">
                 <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
                 <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Histories}"/>
                 <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.Histories}"/>
-                <Button Grid.Column="3"
-                        Classes="icon_button"
-                        Width="26" Height="26"
-                        Click="OnOpenAdvancedHistoriesOption"
-                        ToolTip.Tip="{DynamicResource Text.Repository.MoreOptions}">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
-                </Button>
               </Grid>
             </ListBoxItem>
 
             <ListBoxItem IsVisible="{Binding !IsBare}">
-              <Grid ColumnDefinitions="4,Auto,*,Auto,Auto,Auto">
+              <Grid ColumnDefinitions="4,Auto,*,Auto,Auto">
                 <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
                 <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Changes}"/>
                 <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
@@ -136,18 +129,11 @@
                       Data="{StaticResource Icons.Info}"
                       Fill="DarkOrange"
                       IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-                <Button Grid.Column="5"
-                        Classes="icon_button"
-                        Width="26" Height="26"
-                        Command="{Binding DiscardAllChanges}"
-                        ToolTip.Tip="{DynamicResource Text.Repository.DiscardAll}">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
-                </Button>
               </Grid>
             </ListBoxItem>
 
             <ListBoxItem IsVisible="{Binding !IsBare}">
-              <Grid ColumnDefinitions="4,Auto,*,Auto,Auto">
+              <Grid ColumnDefinitions="4,Auto,*,Auto">
                 <Rectangle Grid.Column="0" Classes="indicator" Width="4" Height="20" VerticalAlignment="Center"/>
                 <Path Grid.Column="1" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                 <TextBlock Grid.Column="2" Classes="header" Text="{DynamicResource Text.Stashes}"/>
@@ -163,13 +149,6 @@
                              FontFamily="{DynamicResource Fonts.Monospace}"
                              FontSize="10"/>
                 </Border>
-                <Button Grid.Column="4"
-                        Classes="icon_button"
-                        Width="26" Height="26"
-                        Command="{Binding ClearStashes}"
-                        ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
-                </Button>
               </Grid>
             </ListBoxItem>
           </ListBox>

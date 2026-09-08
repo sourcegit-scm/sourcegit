@@ -18,6 +18,19 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        public bool EnableTopoOrder
+        {
+            get => _repo.UIStates.EnableTopoOrderInHistory;
+            set
+            {
+                if (value != _repo.UIStates.EnableTopoOrderInHistory)
+                {
+                    _repo.UIStates.EnableTopoOrderInHistory = value;
+                    _repo.RefreshCommits();
+                }
+            }
+        }
+
         public bool IsAuthorColumnVisible
         {
             get => _repo.UIStates.IsAuthorColumnVisibleInHistory;
@@ -200,6 +213,20 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _commitDetailSharedData = new CommitDetailSharedData();
+        }
+
+        public bool HasShowFlag(Models.HistoryShowFlags flag)
+        {
+            return _repo.UIStates.HistoryShowFlags.HasFlag(flag);
+        }
+
+        public void ToggleShowFlag(Models.HistoryShowFlags flag)
+        {
+            if (HasShowFlag(flag))
+                _repo.UIStates.HistoryShowFlags -= flag;
+            else
+                _repo.UIStates.HistoryShowFlags |= flag;
+            _repo.RefreshCommits();
         }
 
         public Models.BisectState UpdateBisectInfo()

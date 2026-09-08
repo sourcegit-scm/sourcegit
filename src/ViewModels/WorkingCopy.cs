@@ -408,6 +408,12 @@ namespace SourceGit.ViewModels
                 _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
+        public void DiscardAllChanges()
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new Discard(_repo));
+        }
+
         public void Discard(List<Models.Change> changes)
         {
             if (_repo.CanCreatePopup())

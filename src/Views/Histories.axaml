@@ -240,8 +240,16 @@
               HorizontalAlignment="Stretch" VerticalAlignment="Top"
               PointerMoved="OnCommitListHeaderPointerMoved"
               PointerPressed="OnCommitListHeaderPointerPressed"
-              PointerReleased="OnCommitListHeaderPointerReleased"
-              ContextRequested="OnCommitListHeaderContextRequested"/>
+              PointerReleased="OnCommitListHeaderPointerReleased">
+        <Button Classes="icon_button"
+                Width="18" Height="18"
+                Margin="4,0,0,0"
+                HorizontalAlignment="Left" VerticalAlignment="Center"
+                Click="OnOpenConfiguration">
+          <Path Width="14" Height="14"
+                Data="{StaticResource Icons.Settings2}"/>
+        </Button>
+      </Border>
 
       <v:CommitGraph x:Name="CommitGraph"
                      Margin="0,24,0,0"

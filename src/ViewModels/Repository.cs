@@ -113,32 +113,6 @@ namespace SourceGit.ViewModels
             get => SelectedViewIndex == 2;
         }
 
-        public bool EnableTopoOrderInHistory
-        {
-            get => _uiStates.EnableTopoOrderInHistory;
-            set
-            {
-                if (value != _uiStates.EnableTopoOrderInHistory)
-                {
-                    _uiStates.EnableTopoOrderInHistory = value;
-                    RefreshCommits();
-                }
-            }
-        }
-
-        public Models.HistoryShowFlags HistoryShowFlags
-        {
-            get => _uiStates.HistoryShowFlags;
-            private set
-            {
-                if (value != _uiStates.HistoryShowFlags)
-                {
-                    _uiStates.HistoryShowFlags = value;
-                    RefreshCommits();
-                }
-            }
-        }
-
         public string Filter
         {
             get => _filter;
@@ -1401,14 +1375,6 @@ namespace SourceGit.ViewModels
             }, token);
         }
 
-        public void ToggleHistoryShowFlag(Models.HistoryShowFlags flag)
-        {
-            if (_uiStates.HistoryShowFlags.HasFlag(flag))
-                HistoryShowFlags -= flag;
-            else
-                HistoryShowFlags |= flag;
-        }
-
         public void CreateNewBranch()
         {
             if (_currentBranch == null)
@@ -1642,18 +1608,6 @@ namespace SourceGit.ViewModels
             }
 
             return all;
-        }
-
-        public void DiscardAllChanges()
-        {
-            if (CanCreatePopup())
-                ShowPopup(new Discard(this));
-        }
-
-        public void ClearStashes()
-        {
-            if (CanCreatePopup())
-                ShowPopup(new ClearStashes(this));
         }
 
         public async Task<bool> SaveCommitAsPatchAsync(Models.Commit commit, string folder, int index = 0)
