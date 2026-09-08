@@ -558,7 +558,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">強制重新載入存放庫</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">在歷史頁面中展開/收合詳細面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">在歷史紀錄中展開/收合詳細面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">顯示本機變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">顯示歷史紀錄</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">顯示擱置變更列表</x:String>
@@ -860,7 +860,7 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">依名稱</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端機中開啟</x:String>
-  <x:String x:Key="Text.Repository.ToggleSidebar" xml:space="preserve">摺疊或展開側邊欄</x:String>
+  <x:String x:Key="Text.Repository.ToggleSidebar" xml:space="preserve">展開/收合側邊欄</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 Git 指令紀錄</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">檢視遠端存放庫 '{0}'</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作樹列表</x:String>
