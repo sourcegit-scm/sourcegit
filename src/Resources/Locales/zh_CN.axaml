@@ -64,6 +64,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行追溯(blame)</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">对当前版本的前一版本执行逐行追溯操作</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">忽略空白符变化</x:String>
+  <x:String x:Key="Text.Blame.Tips" xml:space="preserve">按住 Ctrl (Windows及Linux平台) 或 ⌘ (macOS平台) 键并点击提交哈希将基于所选的提交重新计算逐行追溯</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比较选中的 2 个分支</x:String>
