@@ -723,19 +723,16 @@
           </Style>
           <Style Selector="ListBoxItem">
             <Setter Property="Height" Value="42"/>
-            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Margin" Value="4,4,2,4"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="CornerRadius" Value="4"/>
           </Style>
-          <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter, ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="Transparent"/>
+          <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#18888888"/>
           </Style>
-          <Style Selector="ListBoxItem:selected">
-            <Setter Property="BorderBrush" Value="{DynamicResource Brush.FG1}"/>
-          </Style>
-          <Style Selector="ListBoxItem:selected Path.icon">
-            <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+          <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
           </Style>
         </ListBox.Styles>
 
