@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
@@ -34,17 +35,17 @@ namespace SourceGit.Commands
             return await ExecAsync();
         }
 
-        public async Task<string> GetURLAsync(string name, bool isPush)
+        public async Task<bool> SetURLAsync(string name, string url, bool isDelete, bool isPush)
         {
-            Args = "remote get-url" + (isPush ? " --push " : " ") + name;
+            var builder = new StringBuilder();
+            builder.Append("remote set-url ");
+            if (isDelete)
+                builder.Append("--delete ");
+            if (isPush)
+                builder.Append("--push ");
+            builder.Append(name).Append(' ').Append(url);
 
-            var rs = await ReadToEndAsync();
-            return rs.IsSuccess ? rs.StdOut.Trim() : string.Empty;
-        }
-
-        public async Task<bool> SetURLAsync(string name, string url, bool isPush)
-        {
-            Args = "remote set-url" + (isPush ? " --push " : " ") + $"{name} {url}";
+            Args = builder.ToString();
             return await ExecAsync();
         }
     }

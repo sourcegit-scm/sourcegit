@@ -91,6 +91,7 @@
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit(s) ahead, {1} commit(s) behind</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit(s) behind</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Invalid</x:String>
+  <x:String x:Key="Text.BranchTree.PushURL" xml:space="preserve">PUSH URL</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTE</x:String>
   <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">STATUS</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">TRACKING</x:String>
@@ -772,6 +773,7 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Edit Remote</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Remote name</x:String>
+  <x:String x:Key="Text.Remote.ResetPushURL" xml:space="preserve">Reset push URL to this repository URL</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">Repository URL:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Remote git repository URL</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copy URL</x:String>
@@ -782,6 +784,7 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Open In Browser</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Prune</x:String>
+  <x:String x:Key="Text.RemoteCM.SetPushURL" xml:space="preserve">Set Push URL...</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirm to Remove Worktree</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Enable `--force` Option</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Target:</x:String>
@@ -888,6 +891,10 @@
   <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">New Version Release Date: </x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Software Update</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">There are currently no updates available.</x:String>
+  <x:String x:Key="Text.SetPushUrl" xml:space="preserve">Set Push URL for Remote</x:String>
+  <x:String x:Key="Text.SetPushUrl.PushURL" xml:space="preserve">Push URL:</x:String>
+  <x:String x:Key="Text.SetPushUrl.Remote" xml:space="preserve">Remote:</x:String>
+  <x:String x:Key="Text.SetPushUrl.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Set Submodule's Branch</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Current:</x:String>

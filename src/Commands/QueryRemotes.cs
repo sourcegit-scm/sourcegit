@@ -15,6 +15,7 @@ namespace SourceGit.Commands
         {
             var names = new HashSet<string>();
             var urls = new Dictionary<string, string>();
+            var pushUrls = new Dictionary<string, string>();
             var privateSSHKeys = new Dictionary<string, string>();
             var disableAutoFetchRemotes = new HashSet<string>();
 
@@ -29,6 +30,12 @@ namespace SourceGit.Commands
                     var name = k.Substring(7, k.Length - 11).Trim('"');
                     names.Add(name);
                     urls[name] = v;
+                }
+                else if (k.EndsWith(".pushurl", StringComparison.OrdinalIgnoreCase))
+                {
+                    var name = k.Substring(7, k.Length - 15).Trim('"');
+                    names.Add(name);
+                    pushUrls[name] = v;
                 }
                 else if (k.EndsWith(".sshkey", StringComparison.OrdinalIgnoreCase))
                 {
@@ -54,6 +61,7 @@ namespace SourceGit.Commands
                 {
                     Name = name,
                     URL = url,
+                    PushURL = pushUrls.TryGetValue(name, out var pushURL) ? pushURL : null,
                     PrivateSSHKey = privateSSHKeys.TryGetValue(name, out var privateSSHKey) ? privateSSHKey : null,
                     DisableAutoFetch = disableAutoFetchRemotes.Contains(name)
                 };

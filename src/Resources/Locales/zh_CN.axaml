@@ -95,6 +95,7 @@
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">领先 {0} 个提交，落后 {1} 个提交</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">落后 {0} 个提交</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">不存在</x:String>
+  <x:String x:Key="Text.BranchTree.PushURL" xml:space="preserve">推送地址</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">远程</x:String>
   <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">状态</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">上游分支</x:String>
@@ -776,6 +777,7 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">编辑远程仓库</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">远程名 ：</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">唯一远程名</x:String>
+  <x:String x:Key="Text.Remote.ResetPushURL" xml:space="preserve">重置推送地址为相同地址</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">仓库地址 ：</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">远程仓库的地址</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">复制远程地址</x:String>
@@ -786,6 +788,7 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">拉取(fetch)更新</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">在浏览器中打开</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">清理远程已删除分支</x:String>
+  <x:String x:Key="Text.RemoteCM.SetPushURL" xml:space="preserve">设置独立推送地址...</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">移除工作树操作确认</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">启用`--force`选项</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">目标工作树 ：</x:String>
@@ -892,6 +895,10 @@
   <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">新版发布时间 ：</x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">软件更新</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">当前已是最新版本。</x:String>
+  <x:String x:Key="Text.SetPushUrl" xml:space="preserve">设置远程推送地址</x:String>
+  <x:String x:Key="Text.SetPushUrl.PushURL" xml:space="preserve">推送地址 ：</x:String>
+  <x:String x:Key="Text.SetPushUrl.Remote" xml:space="preserve">远程 ：</x:String>
+  <x:String x:Key="Text.SetPushUrl.URL" xml:space="preserve">拉取地址 ：</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">修改子模块追踪分支</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">当前追踪分支 ：</x:String>
