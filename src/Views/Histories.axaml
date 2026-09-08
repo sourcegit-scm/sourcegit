@@ -246,7 +246,7 @@
                 Margin="4,0,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Center"
                 Click="OnOpenConfiguration">
-          <Path Width="14" Height="14"
+          <Path Width="12" Height="12"
                 Data="{StaticResource Icons.Settings2}"/>
         </Button>
       </Border>

@@ -64,7 +64,7 @@
                   Width="26" Height="26"
                   Command="{Binding DiscardAllChanges}"
                   ToolTip.Tip="{DynamicResource Text.Repository.DiscardAll}">
-            <Path Width="12" Height="12" Margin="0,1,0,0" Data="{StaticResource Icons.Undo}"/>
+            <Path Width="13" Height="13" Margin="0,1,0,0" Data="{StaticResource Icons.Undo}"/>
           </Button>
         </Grid>
       </Border>
