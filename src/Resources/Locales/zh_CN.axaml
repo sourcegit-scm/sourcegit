@@ -951,6 +951,7 @@
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">总览</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本周</x:String>
+  <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit 仅会按所选分支最多取出 200000 条提交记录进行分析</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">贡献者人数: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次数: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模块</x:String>

@@ -25,5 +25,8 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<int, string> ToBadgeWithLimit =
             new(v => v > 999 ? "999+" : v.ToString());
+
+        public static readonly FuncValueConverter<int, bool> IsMaxCountOfStatistics =
+            new(v => v >= 200000);
     }
 }
