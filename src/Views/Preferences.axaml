@@ -938,7 +938,7 @@
                              Margin="0,4,0,0"
                              CornerRadius="3"
                              VerticalContentAlignment="Top"
-                             Text="{Binding ExtraHeadersText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                             Text="{Binding ExtraHeaders, Mode=TwoWay}"
                              AcceptsReturn="true"
                              TextWrapping="Wrap"/>
                   </StackPanel>
