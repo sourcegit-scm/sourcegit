@@ -64,6 +64,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行溯源 (blame)</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">對上一次提交執行逐行溯源</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">忽略空白符號變化</x:String>
+  <x:String x:Key="Text.Blame.Tips" xml:space="preserve">按住 Ctrl 鍵 (Windows/Linux) 或 ⌘ 鍵 (macOS) 並點擊提交編號，將依據該次提交重新執行逐行溯源</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">所選擇的檔案不支援該操作!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">簽出 (checkout) ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比較所選的 2 個分支</x:String>
@@ -951,6 +952,7 @@
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">總覽</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本週</x:String>
+  <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit 僅會依所選分支取出最多 200,000 筆提交紀錄進行分析</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">貢獻者人數:</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次數:</x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
