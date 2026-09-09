@@ -1861,14 +1861,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![zh__CN](https://img.shields.io/badge/zh__CN-99.91%25-yellow)
-
-<details>
-<summary>Missing keys in zh_CN.axaml</summary>
-
-- Text.Preferences.AI.ExtraHeaders
-
-</details>
+### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
 ### ![zh__TW](https://img.shields.io/badge/zh__TW-97.44%25-yellow)
 
