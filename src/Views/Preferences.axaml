@@ -932,6 +932,15 @@
                              Text="{Binding AdditionalPrompt, Mode=TwoWay}"
                              AcceptsReturn="true"
                              TextWrapping="Wrap"/>
+
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ExtraHeaders}"/>
+                    <TextBox Height="60"
+                             Margin="0,4,0,0"
+                             CornerRadius="3"
+                             VerticalContentAlignment="Top"
+                             Text="{Binding ExtraHeadersText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                             AcceptsReturn="true"
+                             TextWrapping="Wrap"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>

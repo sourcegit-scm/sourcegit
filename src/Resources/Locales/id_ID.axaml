@@ -657,6 +657,7 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt Tambahan (Gunakan `-` untuk mencantumkan kebutuhan Anda)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">API Key</x:String>
+  <x:String x:Key="Text.Preferences.AI.ExtraHeaders" xml:space="preserve">Header Tambahan (satu `Nama: Nilai` per baris)</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Ambil model-id yang tersedia secara otomatis</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nama</x:String>
