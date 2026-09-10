@@ -201,7 +201,6 @@ namespace SourceGit.Views
                     {
                         var modifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
                         blame.NavigateToCommit(box.LineInfo.File, box.LineInfo.CommitSHA, e.KeyModifiers == modifier);
-                        e.Handled = true;
                         break;
                     }
                 }
