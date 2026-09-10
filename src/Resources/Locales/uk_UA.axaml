@@ -339,8 +339,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Закомітити та надіслати проіндексовані зміни</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Індексувати всі зміни та закомітити</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, запускається без діалогу</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим панелі керування (за замовчуванням)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим пошуку комітів</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, запускається без діалогу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, запускається без діалогу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Примусово перезавантажити це сховище</x:String>

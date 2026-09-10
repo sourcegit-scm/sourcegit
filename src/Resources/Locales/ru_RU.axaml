@@ -549,11 +549,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Сформировать все изменения и зафиксировать</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Создать новую ветку</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Извлечь (fetch), запускается сразу</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Режим доски (по умолчанию)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">К дочернему выбранной ревизии</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">К родительскому выбранной ревизии</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Открыть палитру команд</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Режим поиска ревизий</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Загрузить (pull), запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Выложить (push), запускается сразу</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Принудительно перечитать репозиторий</x:String>
@@ -806,7 +804,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ПРОДОЛЖИТЬ</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Изменить действия</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Не изменять действия</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Панель</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Отклонить все изменения.</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Открыть в файловом менеджере</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Поиск веток, меток и подмодулей</x:String>

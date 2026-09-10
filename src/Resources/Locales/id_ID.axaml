@@ -544,11 +544,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage semua perubahan dan commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Buat branch baru</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, langsung dimulai</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Mode dashboard (Default)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Ke turunan commit yang dipilih</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Ke induk commit yang dipilih</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Buka palet perintah</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Mode pencarian commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, langsung dimulai</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, langsung dimulai</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Paksa muat ulang repositori ini</x:String>
@@ -799,7 +797,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">LANJUTKAN</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Aksi Kustom</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Tidak Ada Aksi Kustom</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Buang semua perubahan</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Buka di File Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Cari Branch/Tag/Submodule</x:String>

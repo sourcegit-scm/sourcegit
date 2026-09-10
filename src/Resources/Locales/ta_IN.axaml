@@ -335,8 +335,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">நிலைபடுத்திய மாற்றங்களை உறுதிமொழி மற்றும் தள்ளு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">அனைத்து மாற்றங்களையும் நிலைபடுத்தி உறுதிமொழி</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">எடு, நேரடியாகத் தொடங்குகிறது</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">முகப்பலகை பயன்முறை (இயல்புநிலை)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">உறுதிமொழி தேடல் பயன்முறை</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">இழு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">தள்ளு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">இந்த களஞ்சியத்தை மீண்டும் ஏற்ற கட்டாயப்படுத்து</x:String>

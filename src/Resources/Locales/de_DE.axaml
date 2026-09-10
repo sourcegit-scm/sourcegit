@@ -544,11 +544,9 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Alle Änderungen stagen und committen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Neuen Branch erstellen</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, wird direkt ausgeführt</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Dashboard-Modus (Standard)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Springe zum Nachfolger des ausgewählten Commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Springe zum Vorgänger des ausgewählten Commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Befehlspalette öffnen</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Commit-Suchmodus</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, wird direkt ausgeführt</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Erzwinge Neuladen des Repositorys</x:String>
@@ -798,7 +796,6 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">WEITER</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Benutzerdefinierte Aktionen</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Keine benutzerdefinierten Aktionen</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Alle Änderungen verwerfen</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Öffne im Datei-Browser</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Suche Branches / Tags / Submodule</x:String>

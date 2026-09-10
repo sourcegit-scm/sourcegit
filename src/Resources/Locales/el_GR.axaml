@@ -544,11 +544,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Προσθήκη όλων των αλλαγών στο ευρετήριο και commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Δημιουργία νέου κλάδου</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, ξεκινά άμεσα</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Λειτουργία πίνακα ελέγχου (Προεπιλογή)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Μετάβαση στον απόγονο του επιλεγμένου commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Μετάβαση στον γονέα του επιλεγμένου commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Άνοιγμα παλέτας εντολών</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Λειτουργία αναζήτησης commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, ξεκινά άμεσα</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, ξεκινά άμεσα</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Εξαναγκασμός επαναφόρτωσης αυτού του αποθετηρίου</x:String>
@@ -797,7 +795,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ΣΥΝΕΧΕΙΑ</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Προσαρμοσμένες ενέργειες</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Καμία προσαρμοσμένη ενέργεια</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Πίνακας ελέγχου</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Απόρριψη όλων των αλλαγών</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Άνοιγμα στον περιηγητή αρχείων</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Αναζήτηση κλάδων/ετικετών/υπομονάδων</x:String>

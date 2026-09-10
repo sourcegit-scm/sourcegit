@@ -549,11 +549,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage todos los cambios y commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Crear nueva rama</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, empieza directamente</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modo Dashboard (Por Defecto)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Ir al hijo del commit seleccionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Ir al padre del commit seleccionado</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Abrir paleta de comandos</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Modo de búsqueda de commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forzar a recargar este repositorio</x:String>
@@ -806,7 +804,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUAR</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Acciones Personalizadas</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No hay ninguna Acción Personalizada</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Descartar todos los cambios</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Abrir en el Explorador</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Buscar Ramas/Etiquetas/Submódulos</x:String>

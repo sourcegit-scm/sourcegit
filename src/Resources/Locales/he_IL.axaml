@@ -517,11 +517,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage לכל השינויים ו־commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">צור branch חדש</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, מתחיל מיידית</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">מצב Dashboard (ברירת מחדל)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">עבור לצאצא של ה־commit שנבחר</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">עבור להורה של ה־commit שנבחר</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">פתח command palette</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">מצב חיפוש commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, מתחיל מיידית</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, מתחיל מיידית</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">טען את המאגר מחדש בכוח</x:String>
@@ -761,7 +759,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">המשך</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">פעולות מותאמות אישית</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">אין פעולות מותאמות אישית</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">השלך כל השינויים</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">פתח בסייר הקבצים</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">חיפוש Branches/Tags/Submodules</x:String>

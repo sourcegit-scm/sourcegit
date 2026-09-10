@@ -349,8 +349,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Commitar e enviar mudanças preparadas</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Preparar todas as mudanças e commitar</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Buscar, imediatamente</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Modo de Dashboard (Padrão)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Modo de busca de commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Puxar, imediatamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Enviar, imediatamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forçar recarregamento deste repositório</x:String>

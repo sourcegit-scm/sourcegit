@@ -544,11 +544,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">すべての変更をステージに上げてコミット</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">新しいブランチを作成</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">フェッチ (直接実行)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">ダッシュボードモード (既定)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">選択したコミットの子コミットに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">選択したコミットの親コミットに移動</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">コマンドパレットを開く</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">コミット検索モード</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">プル (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">プッシュ (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">現在のリポジトリを強制的に再読み込み</x:String>
@@ -797,7 +795,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">続行</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">カスタムアクション</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">カスタムアクションがありません</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">ダッシュボード</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">すべての変更を破棄</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">ファイルブラウザーで開く</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">ブランチ/タグ/サブモジュールを検索</x:String>

@@ -549,11 +549,9 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">新增分支</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">前往所選提交的子提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">前往所選提交的父提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">開啟命令面板</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">強制重新載入存放庫</x:String>
@@ -806,7 +804,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">沒有自訂的動作</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">首頁</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">捨棄所有變更</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速搜尋分支/標籤/子模組</x:String>
