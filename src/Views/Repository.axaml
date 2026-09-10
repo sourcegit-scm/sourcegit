@@ -739,6 +739,12 @@
                          FontFamily="{DynamicResource Fonts.Monospace}"
                          FontSize="10"/>
             </Border>
+            <Path Width="12" Height="12"
+                  Margin="0,0,4,4"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                  Data="{StaticResource Icons.Info}"
+                  Fill="DarkOrange"
+                  IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
           </Grid>
         </ListBoxItem>
 
