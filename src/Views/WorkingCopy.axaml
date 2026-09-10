@@ -205,9 +205,9 @@
     <!-- Right -->
     <Grid Grid.Column="2" Margin="0,4,4,4">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*" MinHeight="400"/>
+        <RowDefinition Height="3*" MinHeight="100"/>
         <RowDefinition Height="4"/>
-        <RowDefinition Height="128" MinHeight="100"/>
+        <RowDefinition Height="1*" MinHeight="100"/>
         <RowDefinition Height="36"/>
       </Grid.RowDefinitions>
 
@@ -239,6 +239,7 @@
 
       <!-- Splitter -->
       <GridSplitter Grid.Row="1" MinHeight="1"
+                    ResizeBehavior="PreviousAndNext"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="Transparent"
                     Focusable="False"/>
