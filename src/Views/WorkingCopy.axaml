@@ -216,7 +216,7 @@
     <!-- Right -->
     <Grid Grid.Column="2" Margin="0,4,4,4">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*" MinHeight="400"/>
+        <RowDefinition Height="*" MinHeight="100"/>
         <RowDefinition Height="4"/>
         <RowDefinition Height="128" MinHeight="100"/>
         <RowDefinition Height="36"/>
