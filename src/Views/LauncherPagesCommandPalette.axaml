@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
@@ -84,7 +85,17 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:LauncherPage">
-          <Grid ColumnDefinitions="Auto,6,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,6,Auto,6,*" Background="Transparent" Tapped="OnItemTapped">
+            <ToolTip.Tip>
+              <Grid>
+                <TextBlock Text="{DynamicResource Text.Welcome}" IsVisible="{Binding !Node.IsRepository}"/>
+                <StackPanel Orientation="Horizontal" IsVisible="{Binding Node.IsRepository}">
+                  <TextBlock Text="{Binding Node.Id}"/>
+                  <TextBlock Text="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToDesc}}"
+                             Foreground="{DynamicResource Brush.FG2}"/>
+                </StackPanel>
+              </Grid>
+            </ToolTip.Tip>
             <v:Bookmark Grid.Column="0"
                         Width="12" Height="12"
                         Value="{Binding Node.Bookmark, Mode=OneWay}"
@@ -95,12 +106,17 @@
                   Data="{StaticResource Icons.Repositories}"
                   IsVisible="{Binding !Node.IsRepository}"
                   IsHitTestVisible="False"/>
-            <TextBlock Grid.Column="2"
+            <Ellipse Grid.Column="2"
+                     Width="8" Height="8"
+                     VerticalAlignment="Center"
+                     IsVisible="{Binding DirtyState, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:DirtyState.None}}"
+                     Fill="{Binding DirtyState, Converter={x:Static c:DirtyStateConverters.ToBrush}}"/>
+            <TextBlock Grid.Column="4"
                        VerticalAlignment="Center"
                        Text="{Binding Node.Name}"
                        IsVisible="{Binding Node.IsRepository}"
                        IsHitTestVisible="False"/>
-            <TextBlock Grid.Column="2"
+            <TextBlock Grid.Column="4"
                        VerticalAlignment="Center"
                        Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                        IsVisible="{Binding !Node.IsRepository}"
