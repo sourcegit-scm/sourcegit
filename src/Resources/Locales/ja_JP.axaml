@@ -30,7 +30,7 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">他を隠す</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">すべて表示</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3 分割マージ</x:String>
-  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patch ファイルを選択</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">適用する .patch/.diff ファイルを選択</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">空白文字の変更を無視</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">適用元:</x:String>
   <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">ファイル</x:String>
