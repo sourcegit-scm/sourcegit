@@ -84,7 +84,7 @@
 
       <ListBox.ItemTemplate>
         <DataTemplate DataType="vm:LauncherPage">
-          <Grid ColumnDefinitions="Auto,6,*" Background="Transparent" Tapped="OnItemTapped">
+          <Grid ColumnDefinitions="Auto,6,*,Auto" Background="Transparent" Tapped="OnItemTapped">
             <v:Bookmark Grid.Column="0"
                         Width="12" Height="12"
                         Value="{Binding Node.Bookmark, Mode=OneWay}"
@@ -105,6 +105,38 @@
                        Text="{DynamicResource Text.PageTabBar.Welcome.Title}"
                        IsVisible="{Binding !Node.IsRepository}"
                        IsHitTestVisible="False"/>
+            <Border Grid.Column="3"
+                    IsVisible="{Binding Node.IsRepository}">
+              <ContentControl Content="{Binding Data, Mode=OneWay}">
+                <ContentControl.DataTemplates>
+                  <DataTemplate DataType="vm:Repository">
+                    <StackPanel Orientation="Horizontal">
+                      <Border Margin="6,0,0,0"
+                              Height="18"
+                              CornerRadius="9"
+                              Padding="6,0"
+                              Background="{DynamicResource Brush.FG1}"
+                              VerticalAlignment="Center"
+                              IsVisible="{Binding LocalChangesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                        <TextBlock Text="{Binding LocalChangesCount}"
+                                   FontFamily="{DynamicResource Fonts.Monospace}"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource Brush.Window}"/>
+                      </Border>
+
+                      <v:LauncherPagesCommandPalettePageStatus Margin="6,0,0,0"
+                                                               FontFamily="{DynamicResource Fonts.Monospace}"
+                                                               FontSize="12"
+                                                               Branch="{Binding CurrentBranch, Mode=OneWay}"/>
+                    </StackPanel>
+                  </DataTemplate>
+
+                  <DataTemplate DataType="vm:Welcome">
+                    <Border/>
+                  </DataTemplate>
+                </ContentControl.DataTemplates>
+              </ContentControl>
+            </Border>
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
