@@ -9,12 +9,6 @@
              x:DataType="vm:Repository">
   <Grid ColumnDefinitions="*,Auto,0,*">
     <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="4,0,0,0">
-      <ToggleButton Classes="sidebar_expander"
-                    Width="32"
-                    IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarCollapsed, Mode=TwoWay}"
-                    Click="OnToggleSidebar"
-                    ToolTip.Tip="{DynamicResource Text.Repository.ToggleSidebar}"/>
-      
       <Button Classes="icon_button" Width="32" Click="OpenWithExternalTools" ToolTip.Tip="{DynamicResource Text.Repository.OpenWithExternalTools}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.OpenWith}"/>
       </Button>

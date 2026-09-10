@@ -1289,9 +1289,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
-                Width="14" Height="14"
-                Margin="0,1,0,0"
-                Data="{StaticResource Icons.Sidebar.Expanded}"
+                Width="18" Height="18"
+                Data="{StaticResource Icons.Sidebar.Collapsed}"
                 Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"/>
@@ -1300,7 +1299,7 @@
     </Setter>
 
     <Style Selector="^:checked /template/ Path#ChevronPath">
-      <Setter Property="Data" Value="{StaticResource Icons.Sidebar.Collapsed}" />
+      <Setter Property="Data" Value="{StaticResource Icons.Sidebar.Expanded}" />
     </Style>
     <Style Selector="^ Path">
       <Setter Property="Opacity" Value="0.8"/>

@@ -9,6 +9,12 @@ namespace SourceGit.Models
 {
     public class RepositoryUIStates
     {
+        public bool IsDashboardVisible
+        {
+            get;
+            set;
+        } = true;
+
         public HistoryShowFlags HistoryShowFlags
         {
             get;

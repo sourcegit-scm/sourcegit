@@ -268,12 +268,7 @@ namespace SourceGit.Views
                             e.Handled = true;
                             return;
                         case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            ViewModels.Preferences.Instance.Layout.RepositorySidebarCollapsed = false;
-                            repo.IsSearchingCommits = true;
-                            e.Handled = true;
-                            return;
-                        case Key.H when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            repo.IsSearchingCommits = false;
+                            repo.IsSearchingCommits = !repo.IsSearchingCommits;
                             e.Handled = true;
                             return;
                         case Key.P when e.KeyModifiers.HasFlag(KeyModifiers.Shift):

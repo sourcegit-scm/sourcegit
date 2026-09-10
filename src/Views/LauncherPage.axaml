@@ -38,7 +38,8 @@
           </DataTemplate>
 
           <DataTemplate DataType="vm:Repository">
-            <v:Repository/>
+            <v:Repository IsDashboardVisible="{Binding IsDashboardVisible, Mode=OneWay}"
+                          IsCommitSearchVisible="{Binding IsSearchingCommits, Mode=OneWay}"/>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -17,19 +16,6 @@ namespace SourceGit.Views
         public RepositoryToolbar()
         {
             InitializeComponent();
-        }
-
-        private void OnToggleSidebar(object sender, RoutedEventArgs e)
-        {
-            if (sender is ToggleButton { IsChecked: true } button)
-            {
-                var launcher = App.GetLauncher();
-                foreach (var page in launcher.Pages)
-                {
-                    if (page.Data is ViewModels.Repository repo)
-                        repo.IsSearchingCommits = false;
-                }
-            }
         }
 
         private void OpenWithExternalTools(object sender, RoutedEventArgs ev)

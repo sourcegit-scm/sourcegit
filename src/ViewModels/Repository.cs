@@ -76,6 +76,9 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedViewIndex, value))
                 {
+                    if (_isSearchingCommits && value != 0)
+                        IsSearchingCommits = false;
+
                     OnPropertyChanged(nameof(IsHistoriesVisible));
                     OnPropertyChanged(nameof(IsWorkingCopyVisible));
                     OnPropertyChanged(nameof(IsStashesVisible));
@@ -96,6 +99,19 @@ namespace SourceGit.ViewModels
         public StashesPage StashesPage
         {
             get => _stashesPage;
+        }
+
+        public bool IsDashboardVisible
+        {
+            get => _uiStates.IsDashboardVisible;
+            set
+            {
+                if (value != _uiStates.IsDashboardVisible)
+                {
+                    _uiStates.IsDashboardVisible = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public bool IsHistoriesVisible
