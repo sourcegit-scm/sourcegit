@@ -509,7 +509,7 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Track files named '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Select Commit</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">HISTORY</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">History</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT TIME</x:String>
@@ -554,10 +554,10 @@
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, starts directly</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Force to reload this repository</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">Toggle commit search panel</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Expand/Collapse details panel in `HISTORY`</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'LOCAL CHANGES'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'HISTORY'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'STASHES'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Expand/Collapse details panel in `History`</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Switch to 'Local Changes'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Switch to 'History'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Switch to 'Stashes'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Discard</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Unstage</x:String>
@@ -840,6 +840,7 @@
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
   <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">SEARCH BY</x:String>
+  <x:String x:Key="Text.Repository.Search.ToolTip" xml:space="preserve">Search Commits</x:String>
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Decorated commits only</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">First-parent only</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">SHOW FLAGS</x:String>
@@ -857,7 +858,7 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">By Name</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Sort</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Open in Terminal</x:String>
-  <x:String x:Key="Text.Repository.ToggleSidebar" xml:space="preserve">Toggle sidebar</x:String>
+  <x:String x:Key="Text.Repository.ToggleSidebar" xml:space="preserve">Toggle Sidebar</x:String>
   <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">View Logs</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visit '{0}' in Browser</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">WORKTREES</x:String>
@@ -941,7 +942,7 @@
   <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Save as Patch...</x:String>
   <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Drop Stash</x:String>
   <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Drop:</x:String>
-  <x:String x:Key="Text.Stashes" xml:space="preserve">STASHES</x:String>
+  <x:String x:Key="Text.Stashes" xml:space="preserve">Stashes</x:String>
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">CHANGES</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASHES</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">Statistics</x:String>
@@ -1017,7 +1018,7 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
-  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">LOCAL CHANGES</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Local Changes</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignore *{0} files in the same folder</x:String>

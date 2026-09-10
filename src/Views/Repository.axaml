@@ -54,11 +54,25 @@
             </ItemsPanelTemplate>
           </ListBox.ItemsPanel>
 
-          <ListBoxItem ToolTip.Tip="{DynamicResource Text.Histories}">
+          <ListBoxItem>
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.Histories}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+1, macOS=⌘+1}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
             <Path Classes="icon" Data="{StaticResource Icons.Histories}"/>
           </ListBoxItem>
 
-          <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.WorkingCopy}">
+          <ListBoxItem IsVisible="{Binding !IsBare}">
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.WorkingCopy}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+2, macOS=⌘+2}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
             <Grid>
               <Path Classes="icon" Data="{StaticResource Icons.Changes}"/>
               <Border Height="14"
@@ -81,7 +95,14 @@
             </Grid>
           </ListBoxItem>
 
-          <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Stashes}">
+          <ListBoxItem IsVisible="{Binding !IsBare}">
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.Stashes}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+3, macOS=⌘+3}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
             <Grid>
               <Path Classes="icon" Data="{StaticResource Icons.Stashes}"/>
               <Border Height="14"
@@ -105,15 +126,24 @@
                       Margin="4,0"
                       IsChecked="{Binding IsDashboardVisible, Mode=TwoWay}"
                       IsVisible="{Binding !IsSearchingCommits, Mode=OneWay}"
-                      ToolTip.Tip="{DynamicResource Text.Repository.ToggleSidebar}"/>
+                      HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
+          <ToolTip.Tip>
+            <TextBlock>
+              <Run Text="{DynamicResource Text.Repository.ToggleSidebar}" Foreground="{DynamicResource Brush.FG1}"/>
+              <Run Text=" "/>
+              <Run Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+            </TextBlock>
+          </ToolTip.Tip>
+        </ToggleButton>
         <ToggleButton Grid.Row="3"
                       Classes="line_path"
                       Height="40"
                       Margin="4,8"
+                      HotKey="{OnPlatform Ctrl+Shift+F, macOS=⌘+Shift+F}"
                       IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
           <ToolTip.Tip>
             <TextBlock>
-              <Run Text="{DynamicResource Text.Repository.Search}" Foreground="{DynamicResource Brush.FG1}"/>
+              <Run Text="{DynamicResource Text.Repository.Search.ToolTip}" Foreground="{DynamicResource Brush.FG1}"/>
               <Run Text=" "/>
               <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </TextBlock>
