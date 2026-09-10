@@ -24,6 +24,17 @@
       <Button Classes="icon_button" Width="32" Click="OpenConfigure" ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Settings}"/>
       </Button>
+
+      <ToggleButton Classes="line_path" Width="32" HotKey="{OnPlatform Ctrl+Shift+F, macOS=⌘+Shift+F}" IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
+        <ToolTip.Tip>
+          <TextBlock>
+            <Run Text="{DynamicResource Text.Repository.Search.ToolTip}" Foreground="{DynamicResource Brush.FG1}"/>
+            <Run Text=" "/>
+            <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+          </TextBlock>
+        </ToolTip.Tip>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
+      </ToggleButton>
     </StackPanel>
 
     <StackPanel Grid.Column="1" Orientation="Horizontal">

@@ -23,7 +23,7 @@
             Background="{DynamicResource Brush.ToolBar}"
             BorderThickness="0,0,1,0"
             BorderBrush="{DynamicResource Brush.Border0}">
-      <Grid RowDefinitions="Auto,*,Auto,Auto">
+      <Grid RowDefinitions="Auto,*,Auto">
         <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
           <ListBox.Styles>
             <Style Selector="Path.icon">
@@ -123,7 +123,7 @@
         <ToggleButton Grid.Row="2"
                       Classes="sidebar_expander"
                       Width="40" Height="40"
-                      Margin="4,0"
+                      Margin="4,8"
                       IsChecked="{Binding IsDashboardVisible, Mode=TwoWay}"
                       IsVisible="{Binding !IsSearchingCommits, Mode=OneWay}"
                       HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
@@ -134,21 +134,6 @@
               <Run Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </TextBlock>
           </ToolTip.Tip>
-        </ToggleButton>
-        <ToggleButton Grid.Row="3"
-                      Classes="line_path"
-                      Height="40"
-                      Margin="4,8"
-                      HotKey="{OnPlatform Ctrl+Shift+F, macOS=⌘+Shift+F}"
-                      IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
-          <ToolTip.Tip>
-            <TextBlock>
-              <Run Text="{DynamicResource Text.Repository.Search.ToolTip}" Foreground="{DynamicResource Brush.FG1}"/>
-              <Run Text=" "/>
-              <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-            </TextBlock>
-          </ToolTip.Tip>
-          <Path Width="18" Height="18" Margin="2,0,0,0" Data="{StaticResource Icons.Search}"/>
         </ToggleButton>
       </Grid>
     </Border>

@@ -808,7 +808,7 @@
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No Custom Actions</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Discard all changes</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Open in File Browser</x:String>
-  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Search Branches/Tags/Submodules</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Filter Branches/Tags/Submodules</x:String>
   <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibility in Graph</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Collapse" xml:space="preserve">Collapse Filters</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Unset</x:String>
