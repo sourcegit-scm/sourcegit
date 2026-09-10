@@ -101,19 +101,6 @@ namespace SourceGit.ViewModels
             get => _stashesPage;
         }
 
-        public bool IsDashboardVisible
-        {
-            get => _uiStates.IsDashboardVisible;
-            set
-            {
-                if (value != _uiStates.IsDashboardVisible)
-                {
-                    _uiStates.IsDashboardVisible = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public bool IsHistoriesVisible
         {
             get => SelectedViewIndex == 0;

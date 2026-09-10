@@ -162,15 +162,6 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OpenConfigure(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                await this.ShowDialogAsync(new ViewModels.RepositoryConfigure(repo));
-                e.Handled = true;
-            }
-        }
-
         private async void Fetch(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)

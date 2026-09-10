@@ -10,50 +10,26 @@ namespace SourceGit.Views
 {
     public partial class Repository : UserControl
     {
-        public static readonly DirectProperty<Repository, GridLength> SidebarWidthProperty =
+        public static readonly DirectProperty<Repository, GridLength> HistorySidebarWidthProperty =
             AvaloniaProperty.RegisterDirect<Repository, GridLength>(
-                nameof(SidebarWidth),
-                static o => o.SidebarWidth,
-                static (o, v) => o.SidebarWidth = v);
+                nameof(HistorySidebarWidth),
+                static o => o.HistorySidebarWidth,
+                static (o, v) => o.HistorySidebarWidth = v);
 
-        public GridLength SidebarWidth
+        public GridLength HistorySidebarWidth
         {
-            get => _sidebarWidth;
+            get => _historySidebarWidth;
             set
             {
-                if (SetAndRaise(SidebarWidthProperty, ref _sidebarWidth, value))
+                if (SetAndRaise(HistorySidebarWidthProperty, ref _historySidebarWidth, value))
                 {
                     var layout = ViewModels.Preferences.Instance.Layout;
                     if (_isCommitSearchVisible)
                         layout.RepositorySearchCommitWidth = value.Value;
-                    else if (_isDashboardVisible)
+                    else
                         layout.RepositoryDashboardWidth = value.Value;
                 }
             }
-        }
-
-        public static readonly DirectProperty<Repository, GridLength> MinSidebarWidthProperty =
-            AvaloniaProperty.RegisterDirect<Repository, GridLength>(
-                nameof(MinSidebarWidth),
-                static o => o.MinSidebarWidth,
-                static (o, v) => o.MinSidebarWidth = v);
-
-        public GridLength MinSidebarWidth
-        {
-            get => _minSidebarWidth;
-            set => SetAndRaise(MinSidebarWidthProperty, ref _minSidebarWidth, value);
-        }
-
-        public static readonly DirectProperty<Repository, bool> IsDashboardVisibleProperty =
-            AvaloniaProperty.RegisterDirect<Repository, bool>(
-                nameof(IsDashboardVisible),
-                static o => o.IsDashboardVisible,
-                static (o, v) => o.IsDashboardVisible = v);
-
-        public bool IsDashboardVisible
-        {
-            get => _isDashboardVisible;
-            set => SetAndRaise(IsDashboardVisibleProperty, ref _isDashboardVisible, value);
         }
 
         public static readonly DirectProperty<Repository, bool> IsCommitSearchVisibleProperty =
@@ -65,11 +41,27 @@ namespace SourceGit.Views
         public bool IsCommitSearchVisible
         {
             get => _isCommitSearchVisible;
-            set => SetAndRaise(IsCommitSearchVisibleProperty, ref _isCommitSearchVisible, value);
+            set
+            {
+                if (SetAndRaise(IsCommitSearchVisibleProperty, ref _isCommitSearchVisible, value))
+                {
+                    var layout = ViewModels.Preferences.Instance.Layout;
+                    if (value)
+                    {
+                        HistorySidebarWidth = new GridLength(layout.RepositorySearchCommitWidth, GridUnitType.Pixel);
+                    }
+                    else
+                    {
+                        HistorySidebarWidth = new GridLength(layout.RepositoryDashboardWidth, GridUnitType.Pixel);
+                        UpdateLeftSidebarLayout();
+                    }
+                }
+            }
         }
 
         public Repository()
         {
+            _historySidebarWidth = new GridLength(ViewModels.Preferences.Instance.Layout.RepositoryDashboardWidth, GridUnitType.Pixel);
             InitializeComponent();
         }
 
@@ -79,28 +71,12 @@ namespace SourceGit.Views
             UpdateLeftSidebarLayout();
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        private async void OnOpenConfigure(object sender, RoutedEventArgs e)
         {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == IsDashboardVisibleProperty || change.Property == IsCommitSearchVisibleProperty)
+            if (DataContext is ViewModels.Repository repo)
             {
-                if (_isCommitSearchVisible)
-                {
-                    MinSidebarWidth = new GridLength(200, GridUnitType.Pixel);
-                    SidebarWidth = new GridLength(ViewModels.Preferences.Instance.Layout.RepositorySearchCommitWidth, GridUnitType.Pixel);
-                }
-                else if (_isDashboardVisible)
-                {
-                    MinSidebarWidth = new GridLength(200, GridUnitType.Pixel);
-                    SidebarWidth = new GridLength(ViewModels.Preferences.Instance.Layout.RepositoryDashboardWidth, GridUnitType.Pixel);
-                    UpdateLeftSidebarLayout();
-                }
-                else
-                {
-                    MinSidebarWidth = new GridLength(0, GridUnitType.Pixel);
-                    SidebarWidth = new GridLength(0, GridUnitType.Pixel);
-                }
+                await this.ShowDialogAsync(new ViewModels.RepositoryConfigure(repo));
+                e.Handled = true;
             }
         }
 
@@ -269,7 +245,7 @@ namespace SourceGit.Views
 
         private void UpdateLeftSidebarLayout()
         {
-            if (!IsLoaded || !_isDashboardVisible || _isCommitSearchVisible)
+            if (!IsLoaded || _isCommitSearchVisible)
                 return;
 
             if (DataContext is not ViewModels.Repository { UIStates: { } } vm)
@@ -604,16 +580,14 @@ namespace SourceGit.Views
 
         private void OnRightPagePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == Border.IsVisibleProperty && sender is Border page)
+            if (e.Property == Control.IsVisibleProperty && sender is Control page)
             {
                 var diffViewer = page.FindDescendantOfType<DiffView>();
                 diffViewer?.ToggleHotkeyBindings(page.IsVisible);
             }
         }
 
-        private bool _isDashboardVisible = false;
         private bool _isCommitSearchVisible = false;
-        private GridLength _sidebarWidth = new GridLength(0, GridUnitType.Pixel);
-        private GridLength _minSidebarWidth = new GridLength(0, GridUnitType.Pixel);
+        private GridLength _historySidebarWidth = GridLength.Auto;
     }
 }
