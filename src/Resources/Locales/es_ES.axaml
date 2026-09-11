@@ -64,6 +64,7 @@
   <x:String x:Key="Text.Blame" xml:space="preserve">Blame</x:String>
   <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">Blame sobre la Revisión Previa</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">Ignorar cambios de espacios en blanco</x:String>
+  <x:String x:Key="Text.Blame.Tips" xml:space="preserve">Mantener presionado Ctrl (en Windows/Linux) o ⌘ (en macOS) cuando se hace click en el SHA del commit reconstruirá lo datos del blame basados en esa revisión.</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">¡BLAME EN ESTE ARCHIVO NO SOPORTADO!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Comparar las 2 ramas seleccionadas</x:String>
@@ -95,6 +96,7 @@
   <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} commit(s) adelante, {1} commit(s) detrás</x:String>
   <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} commit(s) detrás</x:String>
   <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">Inválido</x:String>
+  <x:String x:Key="Text.BranchTree.PushURL" xml:space="preserve">PUSH URL</x:String>
   <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOTO</x:String>
   <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">ESTADO</x:String>
   <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">SEGUIMIENTO</x:String>
@@ -125,7 +127,7 @@
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Nueva Rama:</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Stash:</x:String>
   <x:String x:Key="Text.CheckoutDetached" xml:space="preserve">Hacer checkout a Commit o Etiqueta</x:String>
-  <x:String x:Key="Text.CheckoutDetached.Target" xml:space="preserve">Objetivo:</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.CheckoutDetached.Warning" xml:space="preserve">Advertencia: Después de hacer esto, se deprenderá/separará de HEAD</x:String>
   <x:String x:Key="Text.CherryPick" xml:space="preserve">Cherry Pick</x:String>
   <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Añadir fuente al mensaje de commit</x:String>
@@ -555,6 +557,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forzar a recargar este repositorio</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Expandir/Colapsar el panel de detalles en el `HISTORIAL`/`HISTORY`</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">Alternar panel de búsqueda del commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Cambiar a 'Cambios'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Cambiar a 'Stashes'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descartar</x:String>
@@ -577,7 +580,7 @@
   <x:String x:Key="Text.InteractiveRebase.NoVerify" xml:space="preserve">Saltar el hook de pre-rebase</x:String>
   <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">En:</x:String>
   <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">Arrastrar y soltar para reordenar commits</x:String>
-  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Rama Objetivo:</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Rama Destino:</x:String>
   <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copiar Enlace</x:String>
   <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Abrir en el Navegador</x:String>
   <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">Comandos</x:String>
@@ -660,6 +663,7 @@
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">OPEN AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Prompt adicional (Usa `-` para listar tus requerimientos)</x:String>
   <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clave API</x:String>
+  <x:String x:Key="Text.Preferences.AI.ExtraHeaders" xml:space="preserve">Encabezados adicionales (un `Nombre: Valor` por línea)</x:String>
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Traer automáticamente los model-ids disponibles</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nombre</x:String>
@@ -772,6 +776,7 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Editar Remoto</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nombre:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Nombre remoto</x:String>
+  <x:String x:Key="Text.Remote.ResetPushURL" xml:space="preserve">Resetear la "push URL" a la URL de este repositorio</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">URL del Repositorio:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">URL del repositorio git remoto</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copiar URL</x:String>
@@ -782,6 +787,7 @@
   <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Fetch</x:String>
   <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Abrir En Navegador</x:String>
   <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Podar (Prune)</x:String>
+  <x:String x:Key="Text.RemoteCM.SetPushURL" xml:space="preserve">Establecer Push URL...</x:String>
   <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirmar para Eliminar Worktree</x:String>
   <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Utilizar Opción `--force`</x:String>
   <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Destino:</x:String>
@@ -835,6 +841,8 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Ruta</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Rama Actual</x:String>
+  <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">BUSCAR POR</x:String>
+  <x:String x:Key="Text.Repository.Search.ToolTip" xml:space="preserve">Buscar Commits</x:String>
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Sólo los commits decorados</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Mostrar sólo el primer padre</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">MOSTRAR FLAGS</x:String>
@@ -885,6 +893,10 @@
   <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">Fecha de Release de la Nueva Versión: </x:String>
   <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Actualización de Software</x:String>
   <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Actualmente no hay actualizaciones disponibles.</x:String>
+  <x:String x:Key="Text.SetPushUrl" xml:space="preserve">Establecer Push URL para el Remoto</x:String>
+  <x:String x:Key="Text.SetPushUrl.PushURL" xml:space="preserve">Push URL:</x:String>
+  <x:String x:Key="Text.SetPushUrl.Remote" xml:space="preserve">Remoto:</x:String>
+  <x:String x:Key="Text.SetPushUrl.URL" xml:space="preserve">URL:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Establecer Rama del Submódulo</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Submódulo:</x:String>
   <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Actual:</x:String>
@@ -938,6 +950,7 @@
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MES</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">SEMANA</x:String>
+  <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit solamente obtendrá un máximo de 200,000 commits de acuerdo a la rama destino para su análisis.</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTORES: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÓDULOS</x:String>
