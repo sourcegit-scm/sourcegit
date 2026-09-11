@@ -109,27 +109,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.48%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.72%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.Blame.Tips
-- Text.BranchTree.PushURL
 - Text.Dashboard
 - Text.Histories.AdvancedOptions
-- Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
-- Text.Preferences.AI.ExtraHeaders
-- Text.Remote.ResetPushURL
-- Text.RemoteCM.SetPushURL
-- Text.Repository.Search.Method
-- Text.Repository.Search.ToolTip
-- Text.SetPushUrl
-- Text.SetPushUrl.PushURL
-- Text.SetPushUrl.Remote
-- Text.SetPushUrl.URL
-- Text.Statistics.Tips
 
 </details>
 

@@ -556,8 +556,8 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forzar a recargar este repositorio</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Expandir/Colapsar el panel de detalles en el `HISTORIAL`/`HISTORY`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">Alternar panel de búsqueda del commit</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Expandir/Colapsar el panel de detalles en el `HISTORIAL`/`HISTORY`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Cambiar a 'Cambios'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Cambiar a 'Stashes'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descartar</x:String>
