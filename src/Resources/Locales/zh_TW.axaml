@@ -62,7 +62,7 @@
   <x:String x:Key="Text.Bisect.WaitingForFirstGood">二分搜尋進行中。請標記目前的提交為「良好」或「錯誤」，然後簽出另一個提交。</x:String>
   <x:String x:Key="Text.Bisect.WaitingForMark">二分搜尋進行中。目前的提交是「良好」還是「錯誤」?</x:String>
   <x:String x:Key="Text.Blame" xml:space="preserve">逐行溯源 (blame)</x:String>
-  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">對上一次提交執行逐行溯源</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">對上一個版本執行逐行溯源</x:String>
   <x:String x:Key="Text.Blame.IgnoreWhitespace">忽略空白符號變化</x:String>
   <x:String x:Key="Text.Blame.Tips" xml:space="preserve">按住 Ctrl 鍵 (Windows/Linux) 或 ⌘ 鍵 (macOS) 並點擊提交編號，將依據該次提交重新執行逐行溯源</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">所選擇的檔案不支援該操作!</x:String>
@@ -103,8 +103,8 @@
   <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">遠端網址</x:String>
   <x:String x:Key="Text.BranchTree.Worktree" xml:space="preserve">工作樹</x:String>
   <x:String x:Key="Text.Cancel" xml:space="preserve">取  消</x:String>
-  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重設檔案到父提交</x:String>
-  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">重設檔案為此次提交</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">重設檔案到上一版本</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">重設檔案為此版本</x:String>
   <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">產生提交訊息</x:String>
   <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">解決衝突 (內建工具)</x:String>
   <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">解決衝突 (外部工具)</x:String>
@@ -198,7 +198,7 @@
   <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">僅顯示前 100 項變更。請前往 [變更對比] 頁面以瀏覽所有變更。</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">簽章金鑰:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">提交訊息</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">父提交</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">前次提交</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">相關參照</x:String>
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
@@ -513,7 +513,7 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">追蹤名稱為「{0}」的檔案</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">追蹤所有 *{0} 檔案</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">選取要前往的提交</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">歷史紀錄</x:String>
+  <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改時間</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交時間</x:String>
@@ -551,18 +551,17 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">新增分支</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">提取 (fetch) 遠端的變更</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">切換左邊欄為分支/標籤等顯示模式 (預設)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">前往所選提交的子提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">前往所選提交的父提交</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">開啟命令面板</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">切換左邊欄為歷史搜尋模式</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">強制重新載入存放庫</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">在歷史紀錄中展開/收合詳細面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">開啟/關閉搜尋提交面板</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">在歷史記錄中展開/收合詳細面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">顯示本機變更</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">顯示歷史紀錄</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">顯示擱置變更列表</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">顯示歷史記錄</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">顯示擱置變更</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">捨棄</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暫存</x:String>
   <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">取消暫存</x:String>
@@ -811,7 +810,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">下一步</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">自訂動作</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">沒有自訂的動作</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">首頁</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">捨棄所有變更</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">在檔案瀏覽器中開啟</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">快速搜尋分支/標籤/子模組</x:String>
@@ -845,6 +843,8 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">路徑</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">僅搜尋目前分支</x:String>
+  <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">搜尋方式</x:String>
+  <x:String x:Key="Text.Repository.Search.ToolTip" xml:space="preserve">搜尋提交</x:String>
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">只顯示分支和標籤引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">只顯示合併提交的第一父提交</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">顯示內容</x:String>
@@ -862,8 +862,7 @@
   <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">依名稱</x:String>
   <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">排序</x:String>
   <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">在終端機中開啟</x:String>
-  <x:String x:Key="Text.Repository.ToggleSidebar" xml:space="preserve">展開/收合側邊欄</x:String>
-  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 Git 指令紀錄</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">檢視 Git 指令記錄</x:String>
   <x:String x:Key="Text.Repository.Visit" xml:space="preserve">檢視遠端存放庫 '{0}'</x:String>
   <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">工作樹列表</x:String>
   <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">新增工作樹</x:String>
@@ -953,7 +952,7 @@
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">總覽</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本週</x:String>
-  <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit 僅會依所選分支取出最多 200,000 筆提交紀錄進行分析</x:String>
+  <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit 僅會依所選分支取出最多 200,000 筆提交記錄進行分析</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">貢獻者人數:</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次數:</x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
@@ -1004,8 +1003,8 @@
   <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">遞迴更新子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">更新至子模組的遠端追蹤分支</x:String>
   <x:String x:Key="Text.URL" xml:space="preserve">存放庫網址:</x:String>
-  <x:String x:Key="Text.ViewLogs" xml:space="preserve">紀錄</x:String>
-  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清除所有紀錄</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">記錄</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">清除所有記錄</x:String>
   <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">複製</x:String>
   <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">刪除</x:String>
   <x:String x:Key="Text.Warn" xml:space="preserve">警告</x:String>
@@ -1031,11 +1030,11 @@
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder" xml:space="preserve">忽略同路徑下所有新增檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">修補</x:String>
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
-  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">清除提交訊息紀錄</x:String>
-  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">您確定要清除所有提交訊息紀錄嗎 (執行後無法復原)?</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">清除提交訊息記錄</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">您確定要清除所有提交訊息記錄嗎 (執行後無法復原)?</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提  交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交並推送</x:String>
-  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">提交訊息歷史/範本</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">提交訊息記錄/範本</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">觸發點擊事件</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">提交 (修改原始提交)</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">自動暫存全部變更並提交</x:String>
@@ -1050,7 +1049,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.WorkingCopy.FilterChanges" xml:space="preserve">搜尋變更...</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>
-  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交訊息紀錄</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交訊息記錄</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">沒有可套用的提交訊息範本</x:String>
   <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">繞過 Hooks 檢查</x:String>
   <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">重設作者</x:String>
