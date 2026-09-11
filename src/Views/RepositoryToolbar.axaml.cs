@@ -524,12 +524,13 @@ namespace SourceGit.Views
 
         private void NavigateToHead(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository { CurrentBranch: not null } repo)
+            if (DataContext is ViewModels.Repository { CurrentBranch: { } head } repo)
             {
                 var repoView = TopLevel.GetTopLevel(this)?.FindDescendantOfType<Repository>();
-                repoView?.LocalBranchTree?.Select(repo.CurrentBranch);
+                var dashboard = repoView?.FindDescendantOfType<Dashboard>();
+                dashboard?.LocalBranchTree?.Select(head);
 
-                repo.NavigateToCommit(repo.CurrentBranch.Head);
+                repo.NavigateToCommit(head.Head);
                 e.Handled = true;
             }
         }

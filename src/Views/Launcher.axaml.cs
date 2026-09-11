@@ -271,6 +271,10 @@ namespace SourceGit.Views
                             vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                             e.Handled = true;
                             return;
+                        case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
+                            repo.Histories.IsSearchingCommits = true;
+                            e.Handled = true;
+                            return;
                         case Key.B when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
                             if (repo.CanCreatePopup() && repo.GetSelectedCommitInHistory() is { } bc)
                                 repo.ShowPopup(new ViewModels.CreateBranch(repo, bc));

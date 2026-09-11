@@ -523,7 +523,7 @@ namespace SourceGit.Views
             _resizingAuthorColumn = false;
         }
 
-        private void OnOpenConfiguration(object sender, RoutedEventArgs e)
+        private void OnOpenAdvancedOptions(object sender, RoutedEventArgs e)
         {
             if (sender is not Button button)
                 return;

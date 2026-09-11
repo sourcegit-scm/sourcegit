@@ -339,6 +339,7 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">轻量标签</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住Ctrl键点击将以默认参数运行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪切</x:String>
+  <x:String x:Key="Text.Dashboard" xml:space="preserve">仪表板</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">丢弃更改</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">不做处理</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">贮藏并自动恢复</x:String>
@@ -514,6 +515,7 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">跟踪所有 *{0} 文件</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">选择前往的提交</x:String>
   <x:String x:Key="Text.Histories" xml:space="preserve">历史记录</x:String>
+  <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">高级设置</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改时间</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交时间</x:String>
@@ -560,7 +562,7 @@
   <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">打开/关闭搜索提交面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">展开/折叠历史提交中的详情面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">显示本地更改</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">显示历史记录</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewDashboard" xml:space="preserve">显示仪表盘</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">显示贮藏列表</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">丢弃</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暂存</x:String>

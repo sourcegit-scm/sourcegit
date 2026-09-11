@@ -76,10 +76,7 @@ namespace SourceGit.ViewModels
             {
                 if (SetProperty(ref _selectedViewIndex, value))
                 {
-                    if (_isSearchingCommits && value != 0)
-                        IsSearchingCommits = false;
-
-                    OnPropertyChanged(nameof(IsHistoriesVisible));
+                    OnPropertyChanged(nameof(IsDashboardVisible));
                     OnPropertyChanged(nameof(IsWorkingCopyVisible));
                     OnPropertyChanged(nameof(IsStashesVisible));
                 }
@@ -101,7 +98,7 @@ namespace SourceGit.ViewModels
             get => _stashesPage;
         }
 
-        public bool IsHistoriesVisible
+        public bool IsDashboardVisible
         {
             get => SelectedViewIndex == 0;
         }
@@ -268,26 +265,6 @@ namespace SourceGit.ViewModels
                     RefreshWorkingCopyChanges();
                 }
             }
-        }
-
-        public bool IsSearchingCommits
-        {
-            get => _isSearchingCommits;
-            set
-            {
-                if (SetProperty(ref _isSearchingCommits, value))
-                {
-                    if (value)
-                        SelectedViewIndex = 0;
-                    else
-                        _searchCommitContext.EndSearch();
-                }
-            }
-        }
-
-        public SearchCommitContext SearchCommitContext
-        {
-            get => _searchCommitContext;
         }
 
         public bool IsLocalBranchGroupExpanded
@@ -471,7 +448,6 @@ namespace SourceGit.ViewModels
             _histories = new Histories(this);
             _workingCopy = new WorkingCopy(this) { CommitMessage = _uiStates.LastCommitMessage };
             _stashesPage = new StashesPage(this);
-            _searchCommitContext = new SearchCommitContext(this);
             _selectedViewIndex = Preferences.Instance.ShowLocalChangesByDefault ? 1 : 0;
             _lastFetchTime = DateTime.Now;
             _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);
@@ -1954,9 +1930,6 @@ namespace SourceGit.ViewModels
         private int _localBranchesCount = 0;
         private int _localChangesCount = 0;
         private int _stashesCount = 0;
-
-        private bool _isSearchingCommits = false;
-        private SearchCommitContext _searchCommitContext = null;
 
         private string _filter = string.Empty;
         private List<Models.Remote> _remotes = [];

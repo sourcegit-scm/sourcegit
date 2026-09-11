@@ -38,7 +38,7 @@
           </DataTemplate>
 
           <DataTemplate DataType="vm:Repository">
-            <v:Repository IsCommitSearchVisible="{Binding IsSearchingCommits, Mode=OneWay}"/>
+            <v:Repository/>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
