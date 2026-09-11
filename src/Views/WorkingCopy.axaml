@@ -8,7 +8,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="SourceGit.Views.WorkingCopy"
              x:DataType="vm:WorkingCopy">
-  <Grid SizeChanged="OnMainLayoutSizeChanged">
+  <Grid SizeChanged="OnMainLayoutSizeChanged" Background="{DynamicResource Brush.SubPanel}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="4"/>
@@ -16,7 +16,7 @@
     </Grid.ColumnDefinitions>
 
     <!-- Left -->
-    <Grid Grid.Column="0">
+    <Grid Grid.Column="0" Background="{DynamicResource Brush.Window}">
       <Grid.RowDefinitions>
         <RowDefinition Height="36" MinHeight="36" MaxHeight="36"/>
         <RowDefinition Height="*" MinHeight="100"/>
@@ -206,13 +206,13 @@
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="{DynamicResource Brush.SubPanel}"
+                  Background="Transparent"
                   BorderThickness="1,0,0,0"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Background="{DynamicResource Brush.SubPanel}">
+    <Grid Grid.Column="2" Margin="4,4,6,0">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" MinHeight="100"/>
         <RowDefinition Height="4"/>
@@ -221,17 +221,15 @@
       </Grid.RowDefinitions>
 
       <!-- Select Change Detail -->
-      <Grid Grid.Row="0" Margin="0,4,4,0">
-        <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-          <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
-            <TextBlock Margin="0,16,0,0"
-                       Text="{DynamicResource Text.Diff.Welcome}"
-                       FontSize="18" FontWeight="Bold"
-                       Foreground="{DynamicResource Brush.FG2}"
-                       HorizontalAlignment="Center"/>
-          </StackPanel>
-        </Border>
+      <Grid Grid.Row="0">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+          <TextBlock Margin="0,16,0,0"
+                     Text="{DynamicResource Text.Diff.Welcome}"
+                     FontSize="18" FontWeight="Bold"
+                     Foreground="{DynamicResource Brush.FG2}"
+                     HorizontalAlignment="Center"/>
+        </StackPanel>
 
         <ContentControl Content="{Binding DetailContext}">
           <ContentControl.DataTemplates>
@@ -254,12 +252,11 @@
 
       <!-- Commit Message -->
       <v:CommitMessageToolBox Grid.Row="2"
-                              Margin="0,0,4,0"
                               ShowAdvancedOptions="True"
                               CommitMessage="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,4,4" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" VerticalAlignment="Center" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <CheckBox Grid.Column="0"
                   Height="24"
                   Margin="1,0,0,0"
