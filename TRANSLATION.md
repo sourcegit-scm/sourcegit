@@ -1921,43 +1921,4 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-96.88%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.Blame.Tips
-- Text.BranchTree.PushURL
-- Text.Dashboard
-- Text.Histories.AdvancedOptions
-- Text.Hotkeys.Repo.ToggleCommitDetailPanel
-- Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ViewDashboard
-- Text.Preferences.AI.ExtraHeaders
-- Text.Remote.ResetPushURL
-- Text.RemoteCM.SetPushURL
-- Text.Repository.Search.Method
-- Text.Repository.Search.ToolTip
-- Text.SetPushUrl
-- Text.SetPushUrl.PushURL
-- Text.SetPushUrl.Remote
-- Text.SetPushUrl.URL
-- Text.SSHKeyHelper
-- Text.SSHKeyHelper.ConfirmDeletion
-- Text.SSHKeyHelper.Fingerprint
-- Text.SSHKeyHelper.Generator
-- Text.SSHKeyHelper.Generator.ConfirmPassphrase
-- Text.SSHKeyHelper.Generator.Email
-- Text.SSHKeyHelper.Generator.Email.Placeholder
-- Text.SSHKeyHelper.Generator.Name
-- Text.SSHKeyHelper.Generator.Name.Placeholder
-- Text.SSHKeyHelper.Generator.Passphrase
-- Text.SSHKeyHelper.Generator.Start
-- Text.SSHKeyHelper.Generator.Type
-- Text.SSHKeyHelper.Generator.UsePassphrase
-- Text.SSHKeyHelper.Path
-- Text.SSHKeyHelper.PublicKey
-- Text.SSHKeyHelper.Title
-- Text.Statistics.Tips
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
