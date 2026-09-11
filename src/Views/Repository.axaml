@@ -21,7 +21,7 @@
             Background="{DynamicResource Brush.ToolBar}"
             BorderThickness="0,0,1,0"
             BorderBrush="{DynamicResource Brush.Border0}">
-      <Grid RowDefinitions="Auto,*,Auto">
+      <Grid RowDefinitions="Auto,*,Auto,Auto,8">
         <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
           <ListBox.Styles>
             <Style Selector="Path.icon">
@@ -121,7 +121,15 @@
         <Button Grid.Row="2"
                 Classes="icon_button"
                 Width="40" Height="40"
-                Margin="4,8"
+                Margin="4,0"
+                Click="Cleanup"
+                ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
+          <Path Width="18" Height="18" Data="{StaticResource Icons.Clean}"/>
+        </Button>
+        <Button Grid.Row="3"
+                Classes="icon_button"
+                Width="40" Height="40"
+                Margin="4,0"
                 Click="OnOpenConfigure"
                 ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
           <Path Width="18" Height="18" Data="{StaticResource Icons.Settings}"/>

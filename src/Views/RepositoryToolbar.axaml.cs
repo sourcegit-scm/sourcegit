@@ -468,15 +468,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void Cleanup(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                await repo.CleanupAsync();
-                e.Handled = true;
-            }
-        }
-
         private void OpenCustomActionMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)

@@ -12,6 +12,15 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private async void Cleanup(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.CleanupAsync();
+                e.Handled = true;
+            }
+        }
+
         private async void OnOpenConfigure(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
