@@ -558,8 +558,8 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉回 (pull) 远程变更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送本地变更到远程</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">重新加载仓库状态</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleCommitDetailPanel" xml:space="preserve">展开/折叠提交的详情面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">打开/关闭搜索提交面板</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">展开/折叠历史提交中的详情面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">显示本地更改</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewDashboard" xml:space="preserve">显示仪表盘</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">显示贮藏列表</x:String>
