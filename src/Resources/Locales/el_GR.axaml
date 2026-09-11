@@ -549,7 +549,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, ξεκινά άμεσα</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, ξεκινά άμεσα</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Εξαναγκασμός επαναφόρτωσης αυτού του αποθετηρίου</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Ανάπτυξη/σύμπτυξη πίνακα λεπτομερειών στο `ΙΣΤΟΡΙΚΟ`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Μετάβαση στις 'ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Μετάβαση στα 'STASHES'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Απόρριψη</x:String>

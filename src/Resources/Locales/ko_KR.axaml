@@ -521,7 +521,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">푸시 (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">이 저장소 강제 새로고침</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">히스토리에서 세부 정보 패널 펼치기/접기</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'변경 사항'으로 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'스태시'로 전환</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">폐기</x:String>

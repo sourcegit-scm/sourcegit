@@ -549,7 +549,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">プル (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">プッシュ (直接実行)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">現在のリポジトリを強制的に再読み込み</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">`履歴` の詳細パネルを広げる/折りたたむ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'ローカルの変更' に切り替え</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'スタッシュ' に切り替え</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">破棄</x:String>

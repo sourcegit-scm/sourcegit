@@ -522,7 +522,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, מתחיל מיידית</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, מתחיל מיידית</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">טען את המאגר מחדש בכוח</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">הרחבה/כיווץ של חלונית הפרטים ב־`HISTORY`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">עבור ל־'LOCAL CHANGES'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">עבור ל־'STASHES'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">השלך</x:String>

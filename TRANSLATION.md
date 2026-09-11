@@ -6,7 +6,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-96.12%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-96.02%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -20,6 +20,7 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.OpenAppDataDir.Cache
@@ -55,7 +56,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-95.64%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-95.55%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
@@ -69,6 +70,7 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Launcher.NewVersion
@@ -109,18 +111,19 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.72%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.62%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
 - Text.Dashboard
 - Text.Histories.AdvancedOptions
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ViewDashboard
 
 </details>
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.86%25-yellow)
+### ![fr__FR](https://img.shields.io/badge/fr__FR-91.76%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -161,6 +164,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.StartName
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Launcher.NewVersion
@@ -214,7 +218,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-91.86%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-91.76%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -255,6 +259,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.StartName
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Launcher.NewVersion
@@ -308,7 +313,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-96.12%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-96.02%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -322,6 +327,7 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.OpenAppDataDir.Cache
@@ -439,8 +445,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.CreateBranch
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ToggleHistoriesDetailPanel
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
@@ -517,7 +523,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-95.64%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-95.55%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -531,6 +537,7 @@ This document shows the translation status of each locale file in the repository
 - Text.File.HexViewer.GotoAddress
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Launcher.NewVersion
@@ -571,7 +578,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-93.28%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-93.18%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -606,6 +613,7 @@ This document shows the translation status of each locale file in the repository
 - Text.GitFlow.StartName
 - Text.Histories.AdvancedOptions
 - Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Launcher.NewVersion
@@ -846,8 +854,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ToggleHistoriesDetailPanel
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
@@ -1076,7 +1084,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.48%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.39%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
@@ -1085,6 +1093,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.PushURL
 - Text.Dashboard
 - Text.Histories.AdvancedOptions
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Preferences.AI.ExtraHeaders
@@ -1310,8 +1319,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ToggleHistoriesDetailPanel
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
@@ -1715,8 +1724,8 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.GoToChild
 - Text.Hotkeys.Repo.GoToParent
 - Text.Hotkeys.Repo.OpenCommandPalette
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ToggleHistoriesDetailPanel
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
@@ -1912,7 +1921,7 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-96.97%25-yellow)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-96.88%25-yellow)
 
 <details>
 <summary>Missing keys in zh_TW.axaml</summary>
@@ -1921,6 +1930,7 @@ This document shows the translation status of each locale file in the repository
 - Text.BranchTree.PushURL
 - Text.Dashboard
 - Text.Histories.AdvancedOptions
+- Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Preferences.AI.ExtraHeaders
