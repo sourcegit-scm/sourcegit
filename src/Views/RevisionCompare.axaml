@@ -106,13 +106,15 @@
         </Grid>
 
         <!-- Changes -->
-        <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-          <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
-                                  EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
-                                  Changes="{Binding VisibleChanges, Mode=OneWay}"
-                                  Selection="{Binding ChangeSelection, Mode=TwoWay}"
-                                  ContextRequested="OnChangeContextRequested"
-                                  KeyDown="OnChangeCollectionViewKeyDown"/>
+        <Border Grid.Row="1" CornerRadius="4,4,0,0" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1">
+          <Border CornerRadius="4,4,0,0" Background="{DynamicResource Brush.Contents}" ClipToBounds="True">
+            <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
+                                    EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
+                                    Changes="{Binding VisibleChanges, Mode=OneWay}"
+                                    Selection="{Binding ChangeSelection, Mode=TwoWay}"
+                                    ContextRequested="OnChangeContextRequested"
+                                    KeyDown="OnChangeCollectionViewKeyDown"/>            
+          </Border>
         </Border>
 
         <!-- Loading Status Icon -->
@@ -122,7 +124,7 @@
                        IsVisible="{Binding IsLoading}"/>
 
         <!-- Summary -->
-        <Border Grid.Row="2" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1,0,1,1" Background="Transparent">
+        <Border Grid.Row="2" CornerRadius="0,0,4,4" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1,0,1,1" Background="Transparent">
           <TextBlock Margin="4,0,0,0"
                      Foreground="{DynamicResource Brush.FG2}"
                      HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -139,7 +141,7 @@
                     Focusable="False"/>
 
       <Grid Grid.Column="2">
-        <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+        <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
             <TextBlock Margin="0,16,0,0"

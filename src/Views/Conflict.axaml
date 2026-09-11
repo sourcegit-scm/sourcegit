@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Conflict"
              x:DataType="vm:Conflict">
-  <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+  <Border CornerRadius="4" Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
     <Grid VerticalAlignment="Center">
       <StackPanel Orientation="Vertical" IsVisible="{Binding State, Mode=OneWay, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:ConflictFileState.Resolved}}">
         <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>

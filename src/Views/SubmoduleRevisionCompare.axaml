@@ -171,7 +171,7 @@
                       Focusable="False"/>
 
         <Grid Grid.Column="2">
-          <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+          <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
               <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Margin="0,16,0,0"

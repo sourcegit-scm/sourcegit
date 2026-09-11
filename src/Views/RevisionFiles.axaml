@@ -109,8 +109,10 @@
       </Grid>
 
       <!-- File Tree -->
-      <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
-        <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA, FallbackValue={x:Null}}" SearchRequested="OnToggleSearch"/>
+      <Border Grid.Row="1" Margin="0,4,0,0" CornerRadius="4" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1">
+        <Border CornerRadius="4" Background="{DynamicResource Brush.Contents}" ClipToBounds="True">
+          <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA, FallbackValue={x:Null}}" SearchRequested="OnToggleSearch"/>          
+        </Border>
       </Border>
     </Grid>
 
@@ -121,8 +123,8 @@
                   Focusable="False"/>
 
     <!-- Right: File Content Viewer -->
-    <Grid Grid.Column="2">
-      <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+    <Border Grid.Column="2" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+      <Border CornerRadius="4" ClipToBounds="True">
         <Grid RowDefinitions="Auto,*">
           <Border Grid.Row="0"
                   Height="26"
@@ -157,6 +159,6 @@
           <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding ViewRevisionFileContent}"/>
         </Grid>
       </Border>
-    </Grid>
+    </Border>
   </Grid>
 </UserControl>

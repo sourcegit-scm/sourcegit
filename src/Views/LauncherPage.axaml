@@ -9,12 +9,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherPage"
              x:DataType="vm:LauncherPage">
-  <Grid RowDefinitions="36,*">
+  <Grid RowDefinitions="36,*" Background="{DynamicResource Brush.ToolBar}">
     <!-- ToolBar -->
     <Border Grid.Row="0"
-            BorderBrush="{DynamicResource Brush.Border0}"
-            BorderThickness="0,0,0,1"
-            Background="{DynamicResource Brush.ToolBar}"
+            Background="Transparent"
             PointerPressed="OnToolBarPointerPressed">
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
@@ -34,7 +32,13 @@
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
-            <v:Welcome/>
+            <Border Margin="4,0,4,4"
+                    CornerRadius="4"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource Brush.Border0}"
+                    Background="{DynamicResource Brush.Window}">
+              <v:Welcome/>
+            </Border>
           </DataTemplate>
 
           <DataTemplate DataType="vm:Repository">
@@ -59,84 +63,88 @@
 
       <Grid RowDefinitions="Auto,Auto,*" Width="560" HorizontalAlignment="Center">
         <!-- Popup -->
-        <Border Grid.Row="0"
-                Padding="6,0,6,6"
-                Background="Transparent"
-                Effect="drop-shadow(0 0 8 #8F000000)"
-                IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
-          <Border Background="{DynamicResource Brush.Popup}"
-                  BorderThickness="1,0,1,1" BorderBrush="{DynamicResource Brush.PopupBorder}"
-                  CornerRadius="0,0,8,8">
-            <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" KeyboardNavigation.TabNavigation="Cycle">
-              <ContentControl.DataTemplates>
-                <DataTemplate DataType="vm:Popup">
-                  <StackPanel Orientation="Vertical">
-                    <!-- Popup Widget -->
-                    <ContentControl Margin="8,16,8,8"
-                                    Content="{Binding}"
-                                    IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                      <ContentControl.DataTemplates>
-                        <v:PopupDataTemplates/>
-                      </ContentControl.DataTemplates>
-                    </ContentControl>
+        <Grid Grid.Row="0" Margin="6,0,6,6">
+          <Border Background="Transparent"
+                  Effect="drop-shadow(0 0 8 #8F000000)"
+                  IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Border Background="{DynamicResource Brush.Popup}"
+                    BorderThickness="1,0,1,1" BorderBrush="{DynamicResource Brush.PopupBorder}"
+                    CornerRadius="0,0,8,8">
+              <ContentControl x:Name="PopupPanel" Content="{Binding Popup}" KeyboardNavigation.TabNavigation="Cycle">
+                <ContentControl.DataTemplates>
+                  <DataTemplate DataType="vm:Popup">
+                    <StackPanel Orientation="Vertical">
+                      <!-- Popup Widget -->
+                      <ContentControl Margin="8,16,8,8"
+                                      Content="{Binding}"
+                                      IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                        <ContentControl.DataTemplates>
+                          <v:PopupDataTemplates/>
+                        </ContentControl.DataTemplates>
+                      </ContentControl>
 
-                    <!-- Options -->
-                    <StackPanel Margin="8,4,8,8"
-                                Height="32"
-                                Orientation="Horizontal"
-                                HorizontalAlignment="Right"
-                                IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                      <Button Width="0" Height="0"
-                              Click="OnPopupSureByHotKey"
-                              HotKey="Enter"
-                              Focusable="False"/>
-                      <Button Classes="flat primary"
-                              Width="100" Height="28"
-                              Padding="0"
-                              HorizontalContentAlignment="Center"
-                              VerticalContentAlignment="Center"
-                              Content="{DynamicResource Text.Sure}"
-                              Click="OnPopupSure"
-                              ToolTip.Tip="Enter"/>
+                      <!-- Options -->
+                      <StackPanel Margin="8,4,8,8"
+                                  Height="32"
+                                  Orientation="Horizontal"
+                                  HorizontalAlignment="Right"
+                                  IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                        <Button Width="0" Height="0"
+                                Click="OnPopupSureByHotKey"
+                                HotKey="Enter"
+                                Focusable="False"/>
+                        <Button Classes="flat primary"
+                                Width="100" Height="28"
+                                Padding="0"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="{DynamicResource Text.Sure}"
+                                Click="OnPopupSure"
+                                ToolTip.Tip="Enter"/>
+                        <Button Classes="flat"
+                                Width="100" Height="28"
+                                Margin="8,0,0,0"
+                                Padding="0"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="{DynamicResource Text.Cancel}"
+                                Click="OnPopupCancel"
+                                ToolTip.Tip="ESC"/>
+                      </StackPanel>
+
+                      <!-- Running -->
+                      <v:PopupRunningStatus Margin="12,8"
+                                            Focusable="False"
+                                            Description="{Binding ProgressDescription}"
+                                            IsVisible="{Binding InProgress}"
+                                            IsHitTestVisible="False"/>
+
+                      <!-- Terminate -->
                       <Button Classes="flat"
-                              Width="100" Height="28"
-                              Margin="8,0,0,0"
-                              Padding="0"
-                              HorizontalContentAlignment="Center"
-                              VerticalContentAlignment="Center"
-                              Content="{DynamicResource Text.Cancel}"
-                              Click="OnPopupCancel"
-                              ToolTip.Tip="ESC"/>
+                              Height="28"
+                              Margin="0,0,0,8" Padding="16,0"
+                              HorizontalAlignment="Center"
+                              Content="{DynamicResource Text.Terminate}"
+                              Click="OnPopupTerminate">
+                        <Button.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="InProgress" Mode="OneWay"/>
+                            <Binding Path="CanTerminate" Mode="OneWay"/>
+                          </MultiBinding>
+                        </Button.IsVisible>
+                      </Button>
                     </StackPanel>
-
-                    <!-- Running -->
-                    <v:PopupRunningStatus Margin="12,8"
-                                          Focusable="False"
-                                          Description="{Binding ProgressDescription}"
-                                          IsVisible="{Binding InProgress}"
-                                          IsHitTestVisible="False"/>
-
-                    <!-- Terminate -->
-                    <Button Classes="flat"
-                            Height="28"
-                            Margin="0,0,0,8" Padding="16,0"
-                            HorizontalAlignment="Center"
-                            Content="{DynamicResource Text.Terminate}"
-                            Click="OnPopupTerminate">
-                      <Button.IsVisible>
-                        <MultiBinding Converter="{x:Static BoolConverters.And}">
-                          <Binding Path="InProgress" Mode="OneWay"/>
-                          <Binding Path="CanTerminate" Mode="OneWay"/>
-                        </MultiBinding>
-                      </Button.IsVisible>
-                    </Button>      
-                  </StackPanel>
-                </DataTemplate>
-              </ContentControl.DataTemplates>
-            </ContentControl>
+                  </DataTemplate>
+                </ContentControl.DataTemplates>
+              </ContentControl>
+            </Border>
           </Border>
-        </Border>
 
+          <Rectangle Height="1"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                     Fill="{DynamicResource Brush.Border0}"/>
+        </Grid>
+        
         <!-- Notifications Clear Button -->
         <Button Grid.Row="1"
                 Classes="flat primary"

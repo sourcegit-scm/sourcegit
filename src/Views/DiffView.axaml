@@ -8,8 +8,11 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DiffView"
-             x:DataType="vm:DiffContext">
-  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}">
+             x:DataType="vm:DiffContext"
+             CornerRadius="4"
+             BorderThickness="1"
+             BorderBrush="{DynamicResource Brush.Border2}">
+  <Border CornerRadius="4" Background="{DynamicResource Brush.Window}" ClipToBounds="True">
     <Grid RowDefinitions="26,*">
       <!-- Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
