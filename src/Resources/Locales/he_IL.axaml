@@ -480,7 +480,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">מעקב אחר קבצים בשם '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">מעקב אחר כל הקבצים *{0}</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">בחר Commit</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">היסטוריה</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">זמן AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">זמן COMMIT</x:String>
@@ -525,7 +524,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">טען את המאגר מחדש בכוח</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">הרחבה/כיווץ של חלונית הפרטים ב־`HISTORY`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">עבור ל־'LOCAL CHANGES'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">עבור ל־'HISTORY'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">עבור ל־'STASHES'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">השלך</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>

@@ -591,7 +591,6 @@ namespace SourceGit.ViewModels
 
         private bool _isSearchingCommits = false;
         private SearchCommitContext _searchCommitContext = null;
-        private string _lastSearchFilter = string.Empty;
 
         private GridLength _leftArea = new(1, GridUnitType.Star);
         private GridLength _rightArea = new(1, GridUnitType.Star);

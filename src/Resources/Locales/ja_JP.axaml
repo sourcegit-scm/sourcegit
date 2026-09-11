@@ -507,7 +507,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">'{0}' という名前のファイルを追跡</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">*{0} ファイルをすべて追跡</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">コミットを選択</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">履歴</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">著者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">著者の日時</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">コミット日時</x:String>
@@ -552,7 +551,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">現在のリポジトリを強制的に再読み込み</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">`履歴` の詳細パネルを広げる/折りたたむ</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'ローカルの変更' に切り替え</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'履歴' に切り替え</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'スタッシュ' に切り替え</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">破棄</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">ステージに上げる</x:String>

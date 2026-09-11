@@ -507,7 +507,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Παρακολούθηση αρχείων με όνομα '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Παρακολούθηση όλων των αρχείων *{0}</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Επιλογή commit</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">ΙΣΤΟΡΙΚΟ</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">ΣΥΓΓΡΑΦΕΑΣ</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ΩΡΑ ΣΥΓΓΡΑΦΕΑ</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ΩΡΑ COMMIT</x:String>
@@ -552,7 +551,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Εξαναγκασμός επαναφόρτωσης αυτού του αποθετηρίου</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Ανάπτυξη/σύμπτυξη πίνακα λεπτομερειών στο `ΙΣΤΟΡΙΚΟ`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Μετάβαση στις 'ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Μετάβαση στο 'ΙΣΤΟΡΙΚΟ'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Μετάβαση στα 'STASHES'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Απόρριψη</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Προσθήκη στο ευρετήριο</x:String>

@@ -312,7 +312,6 @@
   <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">தொலை:</x:String>
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">'{0}' என பெயரிடப்பட்ட கோப்புகளைக் கண்காணி</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">அனைத்து *{0} கோப்புகளையும் கண்காணி</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">வரலாறு</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">ஆசிரியர்</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ஆசிரியர் நேரம்</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">உறுதிமொழி நேரம்</x:String>
@@ -339,7 +338,6 @@
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">தள்ளு, நேரடியாகத் தொடங்குகிறது</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">இந்த களஞ்சியத்தை மீண்டும் ஏற்ற கட்டாயப்படுத்து</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'மாற்றங்கள்' என்பதற்கு மாறு</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'வரலாறுகள்' என்பதற்கு மாறு</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'பதுகிவைத்தவை' என்பதற்கு மாறு</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">நிராகரி</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">நிலைபடுத்து</x:String>
