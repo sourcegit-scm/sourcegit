@@ -339,6 +339,7 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">輕量標籤</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">按住 Ctrl 鍵將直接以預設參數執行</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">剪下</x:String>
+  <x:String x:Key="Text.Dashboard" xml:space="preserve">儀表板</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">捨棄變更</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">不做處理</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">擱置變更並自動復原</x:String>
@@ -513,7 +514,7 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">追蹤名稱為「{0}」的檔案</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">追蹤所有 *{0} 檔案</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">選取要前往的提交</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">歷史記錄</x:String>
+  <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">進階選項</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">修改時間</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">提交時間</x:String>
@@ -557,10 +558,10 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">拉取 (pull) 遠端的變更</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">推送 (push) 本機變更到遠端存放庫</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">強制重新載入存放庫</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleCommitDetailPanel" xml:space="preserve">展開/收合提交詳細面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">開啟/關閉搜尋提交面板</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">在歷史記錄中展開/收合詳細面板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">顯示本機變更</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">顯示歷史記錄</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewDashboard" xml:space="preserve">顯示儀表板</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">顯示擱置變更</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">捨棄</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">暫存</x:String>
