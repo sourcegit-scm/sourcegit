@@ -137,9 +137,10 @@
                  VerticalAlignment="Center"
                  Margin="0,0,8,0"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
-                MinHeight="24" Height="24"
-                Padding="4,0"
+                Height="24"
+                MinHeight="24"
                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                HorizontalContentAlignment="Left"
                 BorderBrush="{DynamicResource Brush.Border2}"
                 SelectedIndex="{Binding Method, Mode=TwoWay}">
         <ComboBox.Items>
