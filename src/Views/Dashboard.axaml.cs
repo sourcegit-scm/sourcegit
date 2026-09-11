@@ -432,6 +432,24 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnRemoveSelectedHistoryFilter(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.HistoryFilter filter })
+                repo.RemoveHistoryFilter(filter);
+
+            e.Handled = true;
+        }
+
+        private async void OnBisectCommand(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button &&
+                DataContext is ViewModels.Repository { IsBisectCommandRunning: false } repo &&
+                repo.CanCreatePopup())
+                await repo.ExecBisectCommandAsync(button.Tag as string);
+
+            e.Handled = true;
+        }
+
         private bool _isCommitSearchVisible = false;
         private GridLength _historySidebarWidth = GridLength.Auto;
     }
