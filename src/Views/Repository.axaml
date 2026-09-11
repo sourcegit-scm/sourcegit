@@ -73,7 +73,7 @@
                     Margin="0,4,4,0" Padding="5,0"
                     CornerRadius="7"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Background="Red"
+                    Background="{DynamicResource Brush.Accent}"
                     IsVisible="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
               <TextBlock Text="{Binding LocalChangesCount, Mode=OneWay, Converter={x:Static c:IntConverters.ToBadgeWithLimit}}"
                          Foreground="White"
@@ -103,7 +103,7 @@
                     Margin="0,4,4,0" Padding="5,0"
                     CornerRadius="7"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Background="Red"
+                    Background="{DynamicResource Brush.Accent}"
                     IsVisible="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
               <TextBlock Text="{Binding StashesCount, Mode=OneWay, Converter={x:Static c:IntConverters.ToBadgeWithLimit}}"
                          Foreground="White"
