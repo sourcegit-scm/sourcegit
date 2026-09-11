@@ -124,10 +124,11 @@
                                    Foreground="{DynamicResource Brush.Window}"/>
                       </Border>
 
-                      <v:LauncherPagesCommandPalettePageStatus Margin="6,0,0,0"
-                                                               FontFamily="{DynamicResource Fonts.Monospace}"
-                                                               FontSize="12"
-                                                               Branch="{Binding CurrentBranch, Mode=OneWay}"/>
+                      <TextBlock Margin="6,0,0,0"
+                                 FontFamily="{DynamicResource Fonts.Monospace}"
+                                 FontSize="12"
+                                 Text="{Binding CurrentBranch?.TrackStatusDescription, Mode=OneWay}"
+                                 IsVisible="{Binding CurrentBranch?.IsTrackStatusVisible, TargetNullValue=False, Mode=OneWay}"/>
                     </StackPanel>
                   </DataTemplate>
 

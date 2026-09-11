@@ -1,55 +1,9 @@
-using System;
-
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
 namespace SourceGit.Views
 {
-    public class LauncherPagesCommandPalettePageStatus : TextBlock
-    {
-        public static readonly DirectProperty<LauncherPagesCommandPalettePageStatus, Models.Branch> BranchProperty =
-            AvaloniaProperty.RegisterDirect<LauncherPagesCommandPalettePageStatus, Models.Branch>(
-                nameof(Branch),
-                static o => o.Branch,
-                static (o, v) => o.Branch = v);
-
-        public Models.Branch Branch
-        {
-            get => _branch;
-            set => SetAndRaise(BranchProperty, ref _branch, value);
-        }
-
-        protected override Type StyleKeyOverride => typeof(TextBlock);
-
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == BranchProperty)
-            {
-                if (_branch != null)
-                {
-                    var track = string.Empty;
-                    if (_branch.Ahead.Count > 0)
-                        track = _branch.Behind.Count > 0 ? $"{_branch.Ahead.Count}↑ {_branch.Behind.Count}↓" : $"{_branch.Ahead.Count}↑";
-                    else if (_branch.Behind.Count > 0)
-                        track = $"{_branch.Behind.Count}↓";
-
-                    SetCurrentValue(TextProperty, track);
-                    SetCurrentValue(IsVisibleProperty, !string.IsNullOrEmpty(track));
-                }
-                else
-                {
-                    SetCurrentValue(IsVisibleProperty, false);
-                }
-            }
-        }
-
-        private Models.Branch _branch = null;
-    }
-
     public partial class LauncherPagesCommandPalette : UserControl
     {
         public LauncherPagesCommandPalette()
