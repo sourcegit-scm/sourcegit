@@ -32,13 +32,11 @@
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
-            <Border Margin="4,0,4,4"
-                    CornerRadius="4"
-                    BorderThickness="1"
-                    BorderBrush="{DynamicResource Brush.Border0}"
-                    Background="{DynamicResource Brush.Window}">
-              <v:Welcome/>
-            </Border>
+            <v:Welcome Margin="4,0,4,4"
+                       CornerRadius="4"
+                       BorderThickness="1"
+                       BorderBrush="{DynamicResource Brush.Border0}"
+                       Background="{DynamicResource Brush.Window}"/>
           </DataTemplate>
 
           <DataTemplate DataType="vm:Repository">
