@@ -12,12 +12,13 @@
              x:Name="ThisControl">
   <Grid>
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="49" MinWidth="49"/>
-      <ColumnDefinition Width="*" MinWidth="200"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
     <!-- Page Switcher -->
     <Border Grid.Column="0"
+            Width="49"
             Background="{DynamicResource Brush.ToolBar}"
             BorderThickness="0,0,1,0"
             BorderBrush="{DynamicResource Brush.Border0}">
