@@ -10,6 +10,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
@@ -522,7 +523,7 @@ namespace SourceGit.Views
             _resizingAuthorColumn = false;
         }
 
-        private void OnOpenConfiguration(object sender, RoutedEventArgs e)
+        private void OnOpenAdvancedOptions(object sender, RoutedEventArgs e)
         {
             if (sender is not Button button)
                 return;
@@ -533,7 +534,7 @@ namespace SourceGit.Views
             var pref = ViewModels.Preferences.Instance;
 
             var layout = new MenuItem();
-            layout.Header = App.Text("Repository.HistoriesLayout");
+            layout.Header = new TextBlock() { Text = App.Text("Repository.HistoriesLayout"), FontWeight = FontWeight.Bold };
             layout.IsEnabled = false;
 
             var isHorizontal = pref.UseTwoColumnsLayoutInHistories;
@@ -558,7 +559,7 @@ namespace SourceGit.Views
             };
 
             var showFlags = new MenuItem();
-            showFlags.Header = App.Text("Repository.ShowFlags");
+            showFlags.Header = new TextBlock() { Text = App.Text("Repository.ShowFlags"), FontWeight = FontWeight.Bold };
             showFlags.IsEnabled = false;
 
             var reflog = new MenuItem();
@@ -595,7 +596,7 @@ namespace SourceGit.Views
             };
 
             var order = new MenuItem();
-            order.Header = App.Text("Repository.HistoriesOrder");
+            order.Header = new TextBlock() { Text = App.Text("Repository.HistoriesOrder"), FontWeight = FontWeight.Bold };
             order.IsEnabled = false;
 
             var dateOrder = new MenuItem();
@@ -621,7 +622,7 @@ namespace SourceGit.Views
             };
 
             var highlights = new MenuItem();
-            highlights.Header = App.Text("Histories.HighlightsInGraph");
+            highlights.Header = new TextBlock() { Text = App.Text("Histories.HighlightsInGraph"), FontWeight = FontWeight.Bold };
             highlights.IsEnabled = false;
 
             var all = new MenuItem();
@@ -675,7 +676,7 @@ namespace SourceGit.Views
             };
 
             var columnsHeader = new MenuItem();
-            columnsHeader.Header = App.Text("Histories.ShowColumns");
+            columnsHeader.Header = new TextBlock() { Text = App.Text("Histories.ShowColumns"), FontWeight = FontWeight.Bold };
             columnsHeader.IsEnabled = false;
 
             var authorColumn = new MenuItem();

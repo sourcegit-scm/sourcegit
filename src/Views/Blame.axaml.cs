@@ -199,8 +199,8 @@ namespace SourceGit.Views
                 {
                     if (box.Rect.Contains(pos))
                     {
-                        blame.NavigateToCommit(box.LineInfo.File, box.LineInfo.CommitSHA);
-                        e.Handled = true;
+                        var modifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+                        blame.NavigateToCommit(box.LineInfo.File, box.LineInfo.CommitSHA, e.KeyModifiers == modifier);
                         break;
                     }
                 }

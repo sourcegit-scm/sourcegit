@@ -30,7 +30,7 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">다른 항목 숨기기</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">모두 보기</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3방향 병합</x:String>
-  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">적용할 .patch 파일을 선택하세요</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">적용할 패치 파일을 선택하세요</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">공백 변경 사항 무시</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">원본:</x:String>
   <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">파일</x:String>
@@ -479,7 +479,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">'{0}' 이름의 파일 추적</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">모든 *{0} 파일 추적</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">커밋 선택</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">히스토리</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">작성자</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">작성 시간</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">커밋 시간</x:String>
@@ -516,17 +515,13 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">모든 변경 사항 스테이징 후 커밋</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">브랜치 생성</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch (바로 시작)</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">대시보드 모드 (기본)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">선택한 커밋의 자식으로 이동</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">선택한 커밋의 부모로 이동</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">명령 팔레트 열기</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">커밋 검색 모드 열기</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">푸시 (바로 시작)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">이 저장소 강제 새로고침</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">히스토리에서 세부 정보 패널 펼치기/접기</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">'변경 사항'으로 전환</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">'히스토리'로 전환</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">'스태시'로 전환</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">폐기</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">스테이지</x:String>
@@ -769,7 +764,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">계속</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">사용자 지정 작업</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">사용자 지정 작업 없음</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">대시보드</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">모든 변경 사항 폐기</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">파일 탐색기에서 열기</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">브랜치/태그/서브모듈 검색</x:String>

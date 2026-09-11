@@ -70,7 +70,7 @@ namespace SourceGit.ViewModels
         {
             using var lockWatcher = _repo.LockWatcher();
 
-            var navigateToUpstreamHEAD = _repo.IsHistoriesVisible &&
+            var navigateToUpstreamHEAD = _repo.IsDashboardVisible &&
                 _repo.Histories.SelectedCommits.Count == 1 &&
                 _repo.Histories.SelectedCommits[0].IsCurrentHead;
 

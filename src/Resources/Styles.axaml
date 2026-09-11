@@ -1278,37 +1278,6 @@
       <Setter Property="Data" Value="M 0 4 L 8 4 L 4 8 Z" />
     </Style>
   </Style>
-  
-  <Style Selector="ToggleButton.sidebar_expander">
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="Template">
-      <ControlTemplate>
-        <Border Background="Transparent"
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-          <Path x:Name="ChevronPath"
-                Width="14" Height="14"
-                Margin="0,1,0,0"
-                Data="{StaticResource Icons.Sidebar.Expanded}"
-                Fill="{DynamicResource Brush.FG1}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"/>
-        </Border>
-      </ControlTemplate>
-    </Setter>
-
-    <Style Selector="^:checked /template/ Path#ChevronPath">
-      <Setter Property="Data" Value="{StaticResource Icons.Sidebar.Collapsed}" />
-    </Style>
-    <Style Selector="^ Path">
-      <Setter Property="Opacity" Value="0.8"/>
-    </Style>
-    <Style Selector="^:pointerover Path">
-      <Setter Property="Opacity" Value="1"/>
-    </Style>
-  </Style>
 
   <Style Selector="ToggleButton.folder">
     <Setter Property="Margin" Value="0" />

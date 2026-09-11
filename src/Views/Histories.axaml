@@ -101,7 +101,9 @@
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
+              <Border Padding="48,0">
+                <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
+              </Border>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
@@ -241,14 +243,31 @@
               PointerMoved="OnCommitListHeaderPointerMoved"
               PointerPressed="OnCommitListHeaderPointerPressed"
               PointerReleased="OnCommitListHeaderPointerReleased">
-        <Button Classes="icon_button"
-                Width="18" Height="18"
-                Margin="4,0,0,0"
-                HorizontalAlignment="Left" VerticalAlignment="Center"
-                Click="OnOpenConfiguration">
-          <Path Width="14" Height="14"
-                Data="{StaticResource Icons.Settings2}"/>
-        </Button>
+        <StackPanel Orientation="Horizontal"
+                    Height="18"
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Center"
+                    Spacing="6">
+          <ToggleButton Classes="line_path" Width="18" IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.Repository.Search.ToolTip}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
+          </ToggleButton>
+          
+          <Button Classes="icon_button"
+                  Width="18" Height="18"
+                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                  Click="OnOpenAdvancedOptions"
+                  ToolTip.Tip="{DynamicResource Text.Histories.AdvancedOptions}">
+            <Path Width="12" Height="12"
+                  Data="{StaticResource Icons.Settings2}"/>
+          </Button>
+        </StackPanel>
       </Border>
 
       <v:CommitGraph x:Name="CommitGraph"

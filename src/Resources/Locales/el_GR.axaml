@@ -30,7 +30,7 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Απόκρυψη άλλων</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Εμφάνιση όλων</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Τριμερής συγχώνευση (3-Way)</x:String>
-  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Επιλέξτε αρχείο .patch για εφαρμογή</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Επιλέξτε αρχείο patch για εφαρμογή</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Αγνόηση αλλαγών κενών χαρακτήρων</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">Πηγή:</x:String>
   <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">Αρχείο</x:String>
@@ -507,7 +507,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Παρακολούθηση αρχείων με όνομα '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Παρακολούθηση όλων των αρχείων *{0}</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Επιλογή commit</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">ΙΣΤΟΡΙΚΟ</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">ΣΥΓΓΡΑΦΕΑΣ</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">ΩΡΑ ΣΥΓΓΡΑΦΕΑ</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">ΩΡΑ COMMIT</x:String>
@@ -544,17 +543,13 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Προσθήκη όλων των αλλαγών στο ευρετήριο και commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Δημιουργία νέου κλάδου</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, ξεκινά άμεσα</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">Λειτουργία πίνακα ελέγχου (Προεπιλογή)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Μετάβαση στον απόγονο του επιλεγμένου commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Μετάβαση στον γονέα του επιλεγμένου commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Άνοιγμα παλέτας εντολών</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">Λειτουργία αναζήτησης commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, ξεκινά άμεσα</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, ξεκινά άμεσα</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Εξαναγκασμός επαναφόρτωσης αυτού του αποθετηρίου</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">Ανάπτυξη/σύμπτυξη πίνακα λεπτομερειών στο `ΙΣΤΟΡΙΚΟ`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Μετάβαση στις 'ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">Μετάβαση στο 'ΙΣΤΟΡΙΚΟ'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Μετάβαση στα 'STASHES'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Απόρριψη</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Προσθήκη στο ευρετήριο</x:String>
@@ -797,7 +792,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">ΣΥΝΕΧΕΙΑ</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Προσαρμοσμένες ενέργειες</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">Καμία προσαρμοσμένη ενέργεια</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Πίνακας ελέγχου</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Απόρριψη όλων των αλλαγών</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Άνοιγμα στον περιηγητή αρχείων</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Αναζήτηση κλάδων/ετικετών/υπομονάδων</x:String>

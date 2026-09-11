@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -36,44 +35,17 @@ namespace SourceGit.ViewModels
             set;
         } = WindowState.Normal;
 
-        public bool RepositorySidebarCollapsed
-        {
-            get => _repositorySidebarCollapsed;
-            set
-            {
-                if (SetProperty(ref _repositorySidebarCollapsed, value))
-                {
-                    OnPropertyChanged(nameof(RepositorySidebarMinWidth));
-                    OnPropertyChanged(nameof(RepositorySidebarDisplayWidth));
-                }
-            }
-        }
-
-        public GridLength RepositorySidebarWidth
+        public double RepositoryDashboardWidth
         {
             get;
             set;
-        }
+        } = 250;
 
-        [JsonIgnore]
-        public double RepositorySidebarMinWidth
+        public double RepositorySearchCommitWidth
         {
-            get => _repositorySidebarCollapsed ? 48 : 200;
-        }
-
-        [JsonIgnore]
-        public GridLength RepositorySidebarDisplayWidth
-        {
-            get => _repositorySidebarCollapsed ? new GridLength(48, GridUnitType.Pixel) : RepositorySidebarWidth;
-            set
-            {
-                if (!_repositorySidebarCollapsed)
-                {
-                    RepositorySidebarWidth = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+            get;
+            set;
+        } = 250;
 
         public GridLength WorkingCopyLeftWidth
         {
@@ -99,7 +71,6 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commitDetailFilesLeftWidth, value);
         }
 
-        private bool _repositorySidebarCollapsed = false;
         private GridLength _workingCopyLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _stashesLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _commitDetailChangesLeftWidth = new GridLength(256, GridUnitType.Pixel);
