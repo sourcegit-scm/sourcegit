@@ -206,22 +206,22 @@
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="Transparent"
+                  Background="{DynamicResource Brush.SubPanel}"
                   BorderThickness="1,0,0,0"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
+    <Grid Grid.Column="2" Background="{DynamicResource Brush.SubPanel}">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" MinHeight="100"/>
         <RowDefinition Height="4"/>
         <RowDefinition Height="128" MinHeight="100"/>
-        <RowDefinition Height="36"/>
+        <RowDefinition Height="40"/>
       </Grid.RowDefinitions>
 
       <!-- Select Change Detail -->
-      <Grid Grid.Row="0">
+      <Grid Grid.Row="0" Margin="0,4,4,0">
         <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
@@ -253,10 +253,13 @@
                     Focusable="False"/>
 
       <!-- Commit Message -->
-      <v:CommitMessageToolBox Grid.Row="2" ShowAdvancedOptions="True" CommitMessage="{Binding CommitMessage, Mode=TwoWay}"/>
+      <v:CommitMessageToolBox Grid.Row="2"
+                              Margin="0,0,4,0"
+                              ShowAdvancedOptions="True"
+                              CommitMessage="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="0,6,4,4" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <CheckBox Grid.Column="0"
                   Height="24"
                   Margin="1,0,0,0"

@@ -350,7 +350,7 @@
     <!-- History -->
     <Grid Grid.Column="2"
           RowDefinitions="Auto,Auto,*"
-          Background="{DynamicResource Brush.HistoryBG}">
+          Background="{DynamicResource Brush.SubPanel}">
       <!-- Bisect Information Bar -->
       <Grid Grid.Row="0"
             Height="28"

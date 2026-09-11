@@ -148,14 +148,14 @@
     <GridSplitter Grid.Column="1"
                   MinWidth=".5"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  Background="Transparent"
+                  Background="{DynamicResource Brush.SubPanel}"
                   BorderThickness="1,0,0,0"
                   BorderBrush="{DynamicResource Brush.Border0}"
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
-      <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+    <Grid Grid.Column="2" Background="{DynamicResource Brush.SubPanel}">
+      <Border Margin="0,4,4,4" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
           <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
           <TextBlock Margin="0,16,0,0"
@@ -166,7 +166,7 @@
         </StackPanel>
       </Border>
 
-      <ContentControl Content="{Binding DiffContext}">
+      <ContentControl Margin="0,4,4,4" Content="{Binding DiffContext}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:DiffContext">
             <v:DiffView/>
