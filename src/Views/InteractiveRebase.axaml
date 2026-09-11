@@ -71,200 +71,202 @@
     </Grid>
 
     <!-- Body -->
-    <Border Grid.Row="2" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-      <Grid RowDefinitions="*,3,*">
-        <v:InteractiveRebaseListBox Grid.Row="0"
-                                    x:Name="ItemListBox"
-                                    Focusable="True"
-                                    Background="{DynamicResource Brush.Contents}"
-                                    ItemsSource="{Binding Items}"
-                                    SelectionMode="Multiple"
-                                    SelectedItem="{Binding PreSelected, Mode=OneWay}"
-                                    SelectionChanged="OnRowsSelectionChanged"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                    Grid.IsSharedSizeScope="True">
-          <v:InteractiveRebaseListBox.Styles>
-            <Style Selector="ListBoxItem">
-              <Setter Property="Margin" Value="0"/>
-              <Setter Property="Padding" Value="0"/>
-              <Setter Property="Height" Value="28"/>
-              <Setter Property="HorizontalAlignment" Value="Stretch"/>
-              <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            </Style>
-          </v:InteractiveRebaseListBox.Styles>
+    <Border Grid.Row="2" CornerRadius="4" Margin="8,0,8,8" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+      <Border CornerRadius="4" ClipToBounds="True">
+        <Grid RowDefinitions="*,3,*">
+          <v:InteractiveRebaseListBox Grid.Row="0"
+                                      x:Name="ItemListBox"
+                                      Focusable="True"
+                                      Background="{DynamicResource Brush.Contents}"
+                                      ItemsSource="{Binding Items}"
+                                      SelectionMode="Multiple"
+                                      SelectedItem="{Binding PreSelected, Mode=OneWay}"
+                                      SelectionChanged="OnRowsSelectionChanged"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                      Grid.IsSharedSizeScope="True">
+            <v:InteractiveRebaseListBox.Styles>
+              <Style Selector="ListBoxItem">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Height" Value="28"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+              </Style>
+            </v:InteractiveRebaseListBox.Styles>
 
-          <v:InteractiveRebaseListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-              <VirtualizingStackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-          </v:InteractiveRebaseListBox.ItemsPanel>
+            <v:InteractiveRebaseListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel Orientation="Vertical"/>
+              </ItemsPanelTemplate>
+            </v:InteractiveRebaseListBox.ItemsPanel>
 
-          <v:InteractiveRebaseListBox.ItemTemplate>
-            <DataTemplate DataType="vm:InteractiveRebaseItem">
-              <Grid Height="28"
-                    Margin="8,0"
-                    Background="Transparent"
-                    ClipToBounds="True"
-                    PointerPressed="OnRowPointerPressed"
-                    DragDrop.AllowDrop="True"
-                    DragDrop.DragOver="OnRowDragOver"
-                    DragDrop.DragLeave="OnRowDragLeave"
-                    DragDrop.Drop="OnRowDrop">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="Auto" SharedSizeGroup="CommitOrderColumn"/>
-                  <ColumnDefinition Width="110"/>
-                  <ColumnDefinition Width="24"/>
-                  <ColumnDefinition Width="*"/>
-                  <ColumnDefinition Width="32"/>
-                  <ColumnDefinition Width="108"/>
-                  <ColumnDefinition Width="Auto" SharedSizeGroup="CommitHashColumn"/>
-                  <ColumnDefinition Width="Auto" SharedSizeGroup="CommitTimeColumn"/>
-                </Grid.ColumnDefinitions>
+            <v:InteractiveRebaseListBox.ItemTemplate>
+              <DataTemplate DataType="vm:InteractiveRebaseItem">
+                <Grid Height="28"
+                      Margin="8,0"
+                      Background="Transparent"
+                      ClipToBounds="True"
+                      PointerPressed="OnRowPointerPressed"
+                      DragDrop.AllowDrop="True"
+                      DragDrop.DragOver="OnRowDragOver"
+                      DragDrop.DragLeave="OnRowDragLeave"
+                      DragDrop.Drop="OnRowDrop">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="CommitOrderColumn"/>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="108"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="CommitHashColumn"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="CommitTimeColumn"/>
+                  </Grid.ColumnDefinitions>
 
-                <!-- Drop Direction Indicator -->
-                <Border Grid.Column="0" Grid.ColumnSpan="8"
-                        Background="Transparent"
-                        BorderThickness="{Binding DropDirectionIndicator, Mode=OneWay}"
-                        BorderBrush="{DynamicResource Brush.Accent}"/>
+                  <!-- Drop Direction Indicator -->
+                  <Border Grid.Column="0" Grid.ColumnSpan="8"
+                          Background="Transparent"
+                          BorderThickness="{Binding DropDirectionIndicator, Mode=OneWay}"
+                          BorderBrush="{DynamicResource Brush.Accent}"/>
 
-                <!-- Original Order -->
-                <TextBlock Grid.Column="0"
-                           Margin="4,0,0,0"
-                           FontFamily="{DynamicResource Fonts.Monospace}"
-                           Text="{Binding OriginalOrder, StringFormat='#{0}'}"
-                           HorizontalAlignment="Center"/>
+                  <!-- Original Order -->
+                  <TextBlock Grid.Column="0"
+                             Margin="4,0,0,0"
+                             FontFamily="{DynamicResource Fonts.Monospace}"
+                             Text="{Binding OriginalOrder, StringFormat='#{0}'}"
+                             HorizontalAlignment="Center"/>
 
-                <!-- Action -->
-                <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnShowActionsDropdownMenu">
-                  <StackPanel Orientation="Horizontal">
-                    <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
-                    <TextBlock Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
-                  </StackPanel>
-                </Button>
-
-                <!-- Indicator -->
-                <v:InteractiveRebaseIndicator Grid.Column="2"
-                                              Fill="{DynamicResource Brush.FG1}"
-                                              PendingType="{Binding PendingType, Mode=OneWay}"/>
-
-                <!-- Subject -->
-                <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
-                  <Button Grid.Column="0"
-                          Classes="icon_button"
-                          Margin="0,0,6,0" Padding="0"
-                          IsVisible="{Binding ShowEditMessageButton, Mode=OneWay}"
-                          Click="OnOpenCommitMessageEditor">
-                    <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
+                  <!-- Action -->
+                  <Button Grid.Column="1" Opacity="1" Margin="4,0,0,0" Padding="8,2" Background="Transparent" Click="OnShowActionsDropdownMenu">
+                    <StackPanel Orientation="Horizontal">
+                      <Ellipse Width="14" Height="14" Fill="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToIconBrush}}"/>
+                      <TextBlock Margin="8,0" Text="{Binding Action, Converter={x:Static c:InteractiveRebaseActionConverters.ToName}}"/>
+                    </StackPanel>
                   </Button>
 
-                  <v:CommitSubjectPresenter Grid.Column="1"
-                                            Height="28"
-                                            Margin="0,0,4,0"
-                                            FontFamily="{DynamicResource Fonts.Default}"
-                                            CodeFontFamily="{DynamicResource Fonts.Monospace}"
-                                            InlineCodeBackground="{DynamicResource Brush.InlineCode}"
-                                            InlineCodeForeground="{DynamicResource Brush.InlineCodeFG}"
-                                            Foreground="{DynamicResource Brush.FG1}"
-                                            LinkForeground="{DynamicResource Brush.Link}"
-                                            Subject="{Binding Subject}"
-                                            IssueTrackers="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).IssueTrackers}"
-                                            FontWeight="Normal"
-                                            Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
-                                            ShowStrikethrough="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
+                  <!-- Indicator -->
+                  <v:InteractiveRebaseIndicator Grid.Column="2"
+                                                Fill="{DynamicResource Brush.FG1}"
+                                                PendingType="{Binding PendingType, Mode=OneWay}"/>
+
+                  <!-- Subject -->
+                  <Grid Grid.Column="3" ColumnDefinitions="Auto,*" ClipToBounds="True">
+                    <Button Grid.Column="0"
+                            Classes="icon_button"
+                            Margin="0,0,6,0" Padding="0"
+                            IsVisible="{Binding ShowEditMessageButton, Mode=OneWay}"
+                            Click="OnOpenCommitMessageEditor">
+                      <Path Width="14" Height="14" Margin="0,4,0,0" Data="{StaticResource Icons.Edit}"/>
+                    </Button>
+
+                    <v:CommitSubjectPresenter Grid.Column="1"
+                                              Height="28"
+                                              Margin="0,0,4,0"
+                                              FontFamily="{DynamicResource Fonts.Default}"
+                                              CodeFontFamily="{DynamicResource Fonts.Monospace}"
+                                              InlineCodeBackground="{DynamicResource Brush.InlineCode}"
+                                              InlineCodeForeground="{DynamicResource Brush.InlineCodeFG}"
+                                              Foreground="{DynamicResource Brush.FG1}"
+                                              LinkForeground="{DynamicResource Brush.Link}"
+                                              Subject="{Binding Subject}"
+                                              IssueTrackers="{Binding $parent[v:InteractiveRebase].((vm:InteractiveRebase)DataContext).IssueTrackers}"
+                                              FontWeight="Normal"
+                                              Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
+                                              ShowStrikethrough="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
+                  </Grid>
+
+                  <!-- Author Avatar -->
+                  <v:Avatar Grid.Column="4"
+                            Width="16" Height="16"
+                            Margin="8,0,0,0"
+                            VerticalAlignment="Center"
+                            User="{Binding Commit.Author}"/>
+
+                  <!-- Author Name -->
+                  <Border Grid.Column="5" ClipToBounds="True">
+                    <TextBlock Margin="6,0,12,0"
+                               Text="{Binding Commit.Author.Name}"
+                               Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
+                               Classes.dropped="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
+                  </Border>
+
+                  <!-- Commit SHA -->
+                  <Border Grid.Column="6" ClipToBounds="True">
+                    <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"
+                               Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
+                               Classes.dropped="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
+                  </Border>
+
+                  <!-- Commit Time -->
+                  <Border Grid.Column="7">
+                    <v:DateTimePresenter Margin="16,0,8,0"
+                                         FontFeatures="+tnum"
+                                         Timestamp="{Binding Commit.CommitterTime}"
+                                         Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
+                                         Classes.dropped="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
+                  </Border>
                 </Grid>
+              </DataTemplate>
+            </v:InteractiveRebaseListBox.ItemTemplate>
+          </v:InteractiveRebaseListBox>
 
-                <!-- Author Avatar -->
-                <v:Avatar Grid.Column="4"
-                          Width="16" Height="16"
-                          Margin="8,0,0,0"
-                          VerticalAlignment="Center"
-                          User="{Binding Commit.Author}"/>
+          <v:LoadingIcon Grid.Row="0" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
 
-                <!-- Author Name -->
-                <Border Grid.Column="5" ClipToBounds="True">
-                  <TextBlock Margin="6,0,12,0"
-                             Text="{Binding Commit.Author.Name}"
-                             Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
-                             Classes.dropped="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
-                </Border>
+          <GridSplitter Grid.Row="1"
+                        MinHeight="1"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                        Background="Transparent"
+                        BorderThickness="0,1,0,0"
+                        BorderBrush="{DynamicResource Brush.Border2}"
+                        Focusable="False"/>
 
-                <!-- Commit SHA -->
-                <Border Grid.Column="6" ClipToBounds="True">
-                  <TextBlock Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
-                             FontFamily="{DynamicResource Fonts.Monospace}"
-                             Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
-                             Classes.dropped="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
-                </Border>
+          <ContentControl Grid.Row="2">
+            <ContentControl.Content>
+              <Binding Path="Detail">
+                <Binding.TargetNullValue>
+                  <Path Width="128" Height="128"
+                        Data="{StaticResource Icons.Detail}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Fill="{DynamicResource Brush.FG2}"/>
+                </Binding.TargetNullValue>
+              </Binding>
+            </ContentControl.Content>
 
-                <!-- Commit Time -->
-                <Border Grid.Column="7">
-                  <v:DateTimePresenter Margin="16,0,8,0"
-                                       FontFeatures="+tnum"
-                                       Timestamp="{Binding Commit.CommitterTime}"
-                                       Opacity="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.ToOpacity}}"
-                                       Classes.dropped="{Binding Action, Mode=OneWay, Converter={x:Static c:InteractiveRebaseActionConverters.IsDrop}}"/>
-                </Border>
-              </Grid>
-            </DataTemplate>
-          </v:InteractiveRebaseListBox.ItemTemplate>
-        </v:InteractiveRebaseListBox>
+            <ContentControl.DataTemplates>
+              <DataTemplate DataType="m:Count">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <Path Width="128" Height="128"
+                        Data="{StaticResource Icons.Detail}"
+                        HorizontalAlignment="Center"
+                        Fill="{DynamicResource Brush.FG2}"/>
 
-        <v:LoadingIcon Grid.Row="0" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+                  <TextBlock HorizontalAlignment="Center"
+                             Margin="0,16"
+                             FontSize="24" FontWeight="Bold"
+                             Foreground="{DynamicResource Brush.FG2}"
+                             Text="{Binding Value, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
+                </StackPanel>
+              </DataTemplate>
 
-        <GridSplitter Grid.Row="1"
-                      MinHeight="1"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      Background="Transparent"
-                      BorderThickness="0,1,0,0"
-                      BorderBrush="{DynamicResource Brush.Border2}"
-                      Focusable="False"/>
+              <DataTemplate DataType="vm:CommitDetail">
+                <Grid>
+                  <v:CommitDetail IsDetailsPanelExpanded="True"/>
 
-        <ContentControl Grid.Row="2">
-          <ContentControl.Content>
-            <Binding Path="Detail">
-              <Binding.TargetNullValue>
-                <Path Width="128" Height="128"
-                      Data="{StaticResource Icons.Detail}"
-                      HorizontalAlignment="Center" VerticalAlignment="Center"
-                      Fill="{DynamicResource Brush.FG2}"/>
-              </Binding.TargetNullValue>
-            </Binding>
-          </ContentControl.Content>
-
-          <ContentControl.DataTemplates>
-            <DataTemplate DataType="m:Count">
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Path Width="128" Height="128"
-                      Data="{StaticResource Icons.Detail}"
-                      HorizontalAlignment="Center"
-                      Fill="{DynamicResource Brush.FG2}"/>
-
-                <TextBlock HorizontalAlignment="Center"
-                           Margin="0,16"
-                           FontSize="24" FontWeight="Bold"
-                           Foreground="{DynamicResource Brush.FG2}"
-                           Text="{Binding Value, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
-              </StackPanel>
-            </DataTemplate>
-
-            <DataTemplate DataType="vm:CommitDetail">
-              <Grid>
-                <v:CommitDetail IsDetailsPanelExpanded="True"/>
-
-                <Button Classes="icon_button"
-                        Width="28" Height="28"
-                        Margin="0,0,4,0" Padding="0"
-                        HorizontalAlignment="Right" VerticalAlignment="Top"
-                        Click="OnOpenDetailsAsStandalone"
-                        ToolTip.Tip="{DynamicResource Text.HistoriesDetailsStandalone}">
-                  <Path Width="15" Height="15" Margin="0,1,0,0" Data="{StaticResource Icons.OpenAsStandalone}"/>
-                </Button>
-              </Grid>
-            </DataTemplate>
-          </ContentControl.DataTemplates>
-        </ContentControl>
-      </Grid>
+                  <Button Classes="icon_button"
+                          Width="28" Height="28"
+                          Margin="0,0,4,0" Padding="0"
+                          HorizontalAlignment="Right" VerticalAlignment="Top"
+                          Click="OnOpenDetailsAsStandalone"
+                          ToolTip.Tip="{DynamicResource Text.HistoriesDetailsStandalone}">
+                    <Path Width="15" Height="15" Margin="0,1,0,0" Data="{StaticResource Icons.OpenAsStandalone}"/>
+                  </Button>
+                </Grid>
+              </DataTemplate>
+            </ContentControl.DataTemplates>
+          </ContentControl>
+        </Grid>
+      </Border>
     </Border>
 
     <!-- Options -->
