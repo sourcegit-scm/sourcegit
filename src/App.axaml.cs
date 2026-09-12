@@ -1,9 +1,9 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -14,12 +14,14 @@ using Avalonia.Media.Fonts;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using SourceGit.Models;
 
 namespace SourceGit
 {
     public partial class App : Application
     {
         #region App Entry Point
+
         [STAThread]
         public static void Main(string[] args)
         {
@@ -56,10 +58,7 @@ namespace SourceGit
             builder.UsePlatformDetect();
             builder.LogToTrace();
             builder.WithInterFont();
-            builder.With(new FontManagerOptions()
-            {
-                DefaultFamilyName = "fonts:Inter#Inter"
-            });
+            builder.With(new FontManagerOptions() { DefaultFamilyName = "fonts:Inter#Inter" });
             builder.ConfigureFonts(manager =>
             {
                 var monospace = new EmbeddedFontCollection(
@@ -71,9 +70,11 @@ namespace SourceGit
             Native.OS.SetupApp(builder);
             return builder;
         }
+
         #endregion
 
         #region Utility Functions
+
         public static async Task<bool> AskConfirmAsync(string message, Models.ConfirmButtonType buttonType = Models.ConfirmButtonType.OkCancel)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
@@ -117,17 +118,21 @@ namespace SourceGit
             app._activeLocale = targetLocale;
         }
 
-        public static void SetTheme(string theme, string themeOverridesFile)
+        public static void SetTheme(ThemeOverrides theme)
         {
             if (Current is not App app)
                 return;
 
-            if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
+            string themeOverridesFile = string.Empty;
+
+            if (theme.Name.Equals("Light", StringComparison.OrdinalIgnoreCase))
                 app.RequestedThemeVariant = ThemeVariant.Light;
-            else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
+            else if (theme.Name.Equals("Dark", StringComparison.OrdinalIgnoreCase))
                 app.RequestedThemeVariant = ThemeVariant.Dark;
-            else
+            else if (theme.Name.Equals("Default", StringComparison.OrdinalIgnoreCase))
                 app.RequestedThemeVariant = ThemeVariant.Default;
+            else
+                themeOverridesFile = theme.FilePath;
 
             if (app._themeOverrides != null)
             {
@@ -234,16 +239,18 @@ namespace SourceGit
             else
                 Environment.Exit(exitCode);
         }
+
         #endregion
 
         #region Overrides
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
 
             var pref = ViewModels.Preferences.Instance;
             SetLocale(pref.Locale);
-            SetTheme(pref.Theme, pref.ThemeOverrides);
+            SetTheme(pref.Themes.FirstOrDefault(m => m.Name == pref.Theme) ?? new ThemeOverrides("Default"));
             SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily);
         }
 
@@ -276,9 +283,11 @@ namespace SourceGit
                 TryLaunchAsNormal(desktop);
             }
         }
+
         #endregion
 
         #region Launch Ways
+
         private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
@@ -362,17 +371,11 @@ namespace SourceGit
             var relativePath = Path.GetRelativePath(repo, fullPath).Replace('\\', '/');
             if (File.Exists(fullPath))
             {
-                desktop.MainWindow = new Views.FileHistories()
-                {
-                    DataContext = new ViewModels.FileHistories(repo, relativePath)
-                };
+                desktop.MainWindow = new Views.FileHistories() { DataContext = new ViewModels.FileHistories(repo, relativePath) };
             }
             else if (Directory.Exists(fullPath))
             {
-                desktop.MainWindow = new Views.DirHistories()
-                {
-                    DataContext = new ViewModels.DirHistories(repo, relativePath.TrimEnd('/'))
-                };
+                desktop.MainWindow = new Views.DirHistories() { DataContext = new ViewModels.DirHistories(repo, relativePath.TrimEnd('/')) };
             }
             else
             {
@@ -410,10 +413,7 @@ namespace SourceGit
             }
 
             var relFile = Path.GetRelativePath(repo, file);
-            var viewer = new Views.Blame()
-            {
-                DataContext = new ViewModels.Blame(repo, relFile, head)
-            };
+            var viewer = new Views.Blame() { DataContext = new ViewModels.Blame(repo, relFile, head) };
             desktop.MainWindow = viewer;
             return true;
         }
@@ -532,9 +532,11 @@ namespace SourceGit
                 Check4Update();
 #endif
         }
+
         #endregion
 
         #region Check for Updates
+
         private void Check4Update(bool manually = false)
         {
             if (_launcher != null)
@@ -595,6 +597,7 @@ namespace SourceGit
                 // Ignore exceptions.
             }
         }
+
         #endregion
 
         private Models.IpcChannel _ipcChannel = null;
