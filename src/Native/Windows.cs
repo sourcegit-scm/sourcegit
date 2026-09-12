@@ -185,7 +185,39 @@ namespace SourceGit.Native
             startInfo.WorkingDirectory = cwd;
             startInfo.FileName = terminal;
             startInfo.Arguments = args;
+            RefreshEnvFromRegistry(startInfo);
             Process.Start(startInfo);
+        }
+
+        private static void RefreshEnvFromRegistry(ProcessStartInfo startInfo)
+        {
+            // Read latest machine and user environment from registry, so that
+            // environment changes made after SourceGit started are picked up.
+            var machine = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Machine);
+            var user = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.User);
+
+            foreach (System.Collections.DictionaryEntry kv in machine)
+                startInfo.Environment[kv.Key.ToString()] = kv.Value?.ToString() ?? "";
+
+            foreach (System.Collections.DictionaryEntry kv in user)
+            {
+                var key = kv.Key.ToString();
+                var value = kv.Value?.ToString() ?? "";
+                if (string.Equals(key, "Path", StringComparison.OrdinalIgnoreCase) && startInfo.Environment.TryGetValue(key, out var existing))
+                    startInfo.Environment[key] = existing + ";" + value;
+                else
+                    startInfo.Environment[key] = value;
+            }
+
+            // Preserve dynamic process-only variables not stored in registry
+            // (e.g. TEMP, USERNAME, COMPUTERNAME, PROCESSOR_*)
+            var proc = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process);
+            foreach (System.Collections.DictionaryEntry kv in proc)
+            {
+                var key = kv.Key.ToString();
+                if (!startInfo.Environment.ContainsKey(key))
+                    startInfo.Environment[key] = kv.Value?.ToString() ?? "";
+            }
         }
 
         public void OpenInFileManager(string path)
