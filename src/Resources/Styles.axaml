@@ -1180,7 +1180,7 @@
           <Path Grid.Column="0"
                 x:Name="PART_IndicatorIcon"
                 Width="10"
-                Margin="0,0,4,0"
+                Margin="0,0,6,0"
                 Data="{StaticResource Icons.Down}"
                 Fill="{DynamicResource Brush.FG2}"
                 VerticalAlignment="Center"

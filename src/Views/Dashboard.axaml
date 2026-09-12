@@ -77,7 +77,7 @@
         <v:BranchTree Grid.Row="1"
                       x:Name="LocalBranchTree"
                       Height="0"
-                      Margin="8,0,4,0"
+                      Margin="6,0,4,0"
                       Nodes="{Binding LocalBranchTrees}"
                       IsVisible="{Binding IsLocalBranchGroupExpanded}"
                       SelectionChanged="OnLocalBranchTreeSelectionChanged"
@@ -87,7 +87,7 @@
         <!-- Remotes -->
         <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="16,*,Auto,Auto">
-            <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
+            <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
               <TextBlock Classes="group_header_label" Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
@@ -111,7 +111,7 @@
         <v:BranchTree Grid.Row="3"
                       x:Name="RemoteBranchTree"
                       Height="0"
-                      Margin="8,0,4,0"
+                      Margin="6,0,4,0"
                       Nodes="{Binding RemoteBranchTrees}"
                       IsVisible="{Binding IsRemoteGroupExpanded}"
                       SelectionChanged="OnRemoteBranchTreeSelectionChanged"
@@ -121,7 +121,7 @@
         <!-- Tags -->
         <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
-            <Path Grid.Column="0" Width="11" Height="11" Margin="2,1,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
+            <Path Grid.Column="0" Width="11" Height="11" Margin="0,1,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Tags}"/>
               <TextBlock Classes="group_header_label" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
@@ -157,7 +157,7 @@
         <v:TagsView Grid.Row="5"
                     x:Name="TagsList"
                     Height="0"
-                    Margin="8,0,4,0"
+                    Margin="6,0,4,0"
                     Background="Transparent"
                     Content="{Binding VisibleTags}"
                     Focusable="False"
@@ -169,7 +169,7 @@
         <!-- Submodules -->
         <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
-            <Path Grid.Column="0" Width="10" Height="10" Margin="2,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
+            <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Submodules}"/>
               <TextBlock Classes="group_header_label" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
@@ -204,7 +204,7 @@
         <v:SubmodulesView Grid.Row="7"
                           x:Name="SubmoduleList"
                           Height="0"
-                          Margin="8,0,4,0"
+                          Margin="6,0,4,0"
                           Content="{Binding VisibleSubmodules}"
                           RowsChanged="OnLeftSidebarRowsChanged"
                           Focusable="False"
@@ -214,7 +214,7 @@
         <!-- Worktrees -->
         <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
           <Grid ColumnDefinitions="16,*,Auto,Auto">
-            <Path Grid.Column="0" Width="11" Height="11" Margin="1,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
+            <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
               <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Worktrees}"/>
               <TextBlock Classes="group_header_label" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
@@ -241,7 +241,7 @@
         <ListBox Grid.Row="9"
                  x:Name="WorktreeList"
                  Height="0"
-                 Margin="12,0,4,0"
+                 Margin="6,0,4,0"
                  Classes="repo_left_content_list"
                  ItemsSource="{Binding Worktrees, Mode=OneWay}"
                  SelectionMode="Single"
@@ -304,12 +304,12 @@
                     </Grid>
                   </StackPanel>
                 </ToolTip.Tip>
-                <Grid ColumnDefinitions="Auto,Auto,*,22" VerticalAlignment="Center">
-                  <v:WorktreeDepthIcon Grid.Column="0" Brush="{DynamicResource Brush.Border1}"/>
-                  <v:WorktreeIcon Grid.Column="1"
+                <Grid ColumnDefinitions="9,Auto,Auto,*,22" VerticalAlignment="Center">
+                  <v:WorktreeDepthIcon Grid.Column="1" Brush="{DynamicResource Brush.Border1}"/>
+                  <v:WorktreeIcon Grid.Column="2"
                                   Width="10" Height="10"
                                   Margin="8,0,0,0"/>
-                  <TextBlock Grid.Column="2"
+                  <TextBlock Grid.Column="3"
                              Margin="8,0,0,0"
                              Foreground="{DynamicResource Brush.FG2}"
                              TextTrimming="CharacterEllipsis">
@@ -318,7 +318,7 @@
                          Foreground="{DynamicResource Brush.FG1}"/>
                     <Run Text="{Binding DisplayPath, Mode=OneWay}"/>
                   </TextBlock>
-                  <Path Grid.Column="3"
+                  <Path Grid.Column="4"
                         Width="10" Height="10"
                         Margin="4,0,0,0"
                         Data="{StaticResource Icons.Lock}"
