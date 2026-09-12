@@ -47,7 +47,7 @@
           <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
           <Ellipse Width="8" Height="8"
                    HorizontalAlignment="Right" VerticalAlignment="Top"
-                   Fill="{DynamicResource Brush.Badge}"
+                   Fill="Green"
                    IsVisible="{Binding CurrentBranch?.Behind, Mode=OneWay, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
         </Grid>
       </Button>
@@ -64,7 +64,7 @@
           <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
           <Ellipse Width="8" Height="8"
                    HorizontalAlignment="Right" VerticalAlignment="Top"
-                   Fill="{DynamicResource Brush.Badge}"
+                   Fill="Green"
                    IsVisible="{Binding CurrentBranch?.Ahead, Mode=OneWay, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
         </Grid>
       </Button>
