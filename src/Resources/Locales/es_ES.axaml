@@ -339,6 +339,7 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">ligera</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Mantenga Ctrl para iniciar directamente</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Cortar</x:String>
+  <x:String x:Key="Text.Dashboard" xml:space="preserve">Tablero</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Descartar</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">No Hacer Nada</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Stash y Volver a aplicar</x:String>
@@ -513,6 +514,7 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Seguir archivos llamados '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Seguir todos los archivos *{0}</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Seleccionar Commit</x:String>
+  <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">Opciones Avanzadas</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">HORA DEL AUTOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">FECHA DE COMMIT</x:String>
@@ -556,8 +558,10 @@
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, empieza directamente</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Forzar a recargar este repositorio</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleCommitDetailPanel" xml:space="preserve">Expandir/Colapsar panel detallado del commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">Alternar panel de búsqueda del commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Cambiar a 'Cambios'</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewDashboard" xml:space="preserve">Cambiar a 'Tablero'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Cambiar a 'Stashes'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descartar</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
@@ -1044,6 +1048,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">LOS CONFLICTOS DE ARCHIVOS ESTÁN RESUELTOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USAR MÍOS</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">USAR SUYOS</x:String>
+  <x:String x:Key="Text.WorkingCopy.DiscardAll" xml:space="preserve">DESCARTAR TODO</x:String>
   <x:String x:Key="Text.WorkingCopy.FilterChanges" xml:space="preserve">Cambios de Filtro...</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUIR ARCHIVOS SIN RASTREAR</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO HAY MENSAJES DE ENTRADA RECIENTES</x:String>
