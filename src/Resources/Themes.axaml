@@ -4,7 +4,7 @@
     <ResourceDictionary x:Key="Light">
       <Color x:Key="Color.Window">#FFF4F4F4</Color>
       <Color x:Key="Color.WindowBorder">#FF999999</Color>
-      <Color x:Key="Color.TitleBar">#FFF4F4F4</Color>
+      <Color x:Key="Color.TitleBar">#FFFCFAFA</Color>
       <Color x:Key="Color.ToolBar">#FFEEEEEE</Color>
       <Color x:Key="Color.Popup">#FFF4F4F4</Color>
       <Color x:Key="Color.PopupBorder">#FFFFFFFF</Color>
