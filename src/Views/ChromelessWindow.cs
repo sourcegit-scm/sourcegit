@@ -26,6 +26,11 @@ namespace SourceGit.Views
         {
             Focusable = true;
             Native.OS.SetupForWindow(this);
+
+            if (OperatingSystem.IsLinux() && !UseSystemWindowFrame)
+            {
+                PositionChanged += (_, _) => Native.LinuxUtilities.UpdateCustomWindowFrameStyle(this);
+            }
         }
 
         public void BeginMoveWindow(object _, PointerPressedEventArgs e)
@@ -81,6 +86,16 @@ namespace SourceGit.Views
 
             if (OperatingSystem.IsWindows())
                 Native.Win64Utilities.FixWindowFrame(this);
+            else if (OperatingSystem.IsLinux())
+                Native.LinuxUtilities.UpdateCustomWindowFrameStyle(this);
+        }
+
+        protected override void OnSizeChanged(SizeChangedEventArgs e)
+        {
+            base.OnSizeChanged(e);
+
+            if (OperatingSystem.IsLinux())
+                Native.LinuxUtilities.UpdateCustomWindowFrameStyle(this);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -89,6 +104,15 @@ namespace SourceGit.Views
 
             if (OperatingSystem.IsWindows() && change.Property == WindowStateProperty)
                 Native.Win64Utilities.FixWindowFrame(this);
+            else if (OperatingSystem.IsLinux() &&
+                     Classes.Contains("custom_window_frame") &&
+                     (change.Property == WindowStateProperty ||
+                      change.Property == BoundsProperty ||
+                      change.Property == WidthProperty ||
+                      change.Property == HeightProperty))
+            {
+                Native.LinuxUtilities.UpdateCustomWindowFrameStyle(this);
+            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

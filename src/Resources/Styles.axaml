@@ -126,7 +126,7 @@
                   Cursor="BottomRightCorner"
                   Tag="{x:Static WindowEdge.SouthEast}"/>
 
-          <Grid Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #60000000)">
+          <Grid x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" Effect="drop-shadow(0 0 12 #60000000)">
             <Border x:Name="PART_ContentRoot"
                     Background="{DynamicResource Brush.Window}"
                     BorderBrush="{DynamicResource Brush.WindowBorder}"
@@ -155,7 +155,15 @@
     </Setter>
   </Style>
 
-  <Style Selector="Window.custom_window_frame[WindowState=Maximized]">
+  <Style Selector="Window.custom_window_frame.window_frame_tiled /template/ Grid#PART_ContentHost">
+    <Setter Property="Effect" Value="{x:Null}"/>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame.window_frame_tiled /template/ Border.resize_border">
+    <Setter Property="ZIndex" Value="1"/>
+  </Style>
+
+  <Style Selector="Window.custom_window_frame[WindowState=Maximized], Window.custom_window_frame.window_frame_tiled">
     <Setter Property="Padding" Value="0"/>
     <Setter Property="CornerRadius" Value="0"/>
   </Style>
