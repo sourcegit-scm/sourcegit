@@ -106,7 +106,7 @@
                     ContextRequested="OnItemContextRequested"
                     ToolTip.Tip="{Binding Module}"
                     ToolTip.Placement="Right">
-              <Grid ColumnDefinitions="16,Auto,*,24"
+              <Grid ColumnDefinitions="16,18,*,24"
                     Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
                     VerticalAlignment="Center">
                 <v:SubmoduleTreeNodeToggleButton Grid.Column="0"
@@ -117,19 +117,17 @@
                                                  IsVisible="{Binding IsFolder}"/>
 
                 <v:SubmoduleTreeNodeIcon Grid.Column="1"
-                                         Width="12"
+                                         Width="18" Height="18"
+                                         VerticalAlignment="Center"
                                          IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-                <TextBlock Grid.Column="2"
-                           Margin="8,0,0,0"
-                           TextTrimming="CharacterEllipsis">
+                <TextBlock Grid.Column="2" TextTrimming="CharacterEllipsis">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
                   <Run Text="{Binding ChildCounter}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
 
                 <Path Grid.Column="3"
                       Width="8" Height="8"
-                      Margin="8,0"
                       Fill="Goldenrod"
                       Data="{StaticResource Icons.Modified}"
                       IsVisible="{Binding IsDirty}"/>
@@ -141,7 +139,7 @@
     </DataTemplate>
 
     <DataTemplate DataType="vm:SubmoduleCollectionAsList">
-      <ListBox Classes="repo_left_content_list" ItemsSource="{Binding Submodules}" SelectionMode="Single" KeyDown="OnKeyDown">
+      <ListBox Classes="repo_left_content_list" Padding="0,0,2,0" ItemsSource="{Binding Submodules}" SelectionMode="Single" KeyDown="OnKeyDown">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
             <Setter Property="CornerRadius" Value="4"/>
@@ -151,7 +149,6 @@
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Submodule">
             <Border Height="24"
-                    Padding="8,0,0,0"
                     Background="Transparent"
                     DoubleTapped="OnItemDoubleTapped"
                     ContextRequested="OnItemContextRequested"
@@ -234,14 +231,16 @@
                   </Grid>
                 </StackPanel>
               </ToolTip.Tip>
-              <Grid ColumnDefinitions="26,*,24" VerticalAlignment="Center">
-                <Path Grid.Column="0" Width="10" Margin="8,0" Data="{StaticResource Icons.Submodule}"/>
-                <Border Grid.Column="1" ClipToBounds="True">
+              <Grid ColumnDefinitions="16,18,*,24" VerticalAlignment="Center">
+                <Path Grid.Column="1"
+                      Width="12" Height="12"
+                      HorizontalAlignment="Left"
+                      Data="{StaticResource Icons.Submodule}"/>
+                <Border Grid.Column="2" ClipToBounds="True">
                   <TextBlock Text="{Binding Path}" TextTrimming="CharacterEllipsis"/>
                 </Border>
-                <Path Grid.Column="2"
+                <Path Grid.Column="3"
                       Width="8" Height="8"
-                      Margin="8,0"
                       Fill="Goldenrod"
                       Data="{StaticResource Icons.Modified}"
                       IsVisible="{Binding IsDirty}"/>

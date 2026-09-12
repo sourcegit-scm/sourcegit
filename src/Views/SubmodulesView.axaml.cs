@@ -81,7 +81,7 @@ namespace SourceGit.Views
             {
                 Width = 12,
                 Height = 12,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = margin,
                 Data = geo,
