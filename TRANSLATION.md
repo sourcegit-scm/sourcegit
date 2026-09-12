@@ -113,18 +113,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.53%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Dashboard
-- Text.Histories.AdvancedOptions
-- Text.Hotkeys.Repo.ToggleCommitDetailPanel
-- Text.Hotkeys.Repo.ViewDashboard
-- Text.WorkingCopy.DiscardAll
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-91.67%25-yellow)
 
