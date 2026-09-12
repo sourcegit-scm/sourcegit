@@ -640,7 +640,7 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
-            AutoScrollToFirstChange();
+            _execSizeChanged = false;
         }
 
         protected override void OnSizeChanged(SizeChangedEventArgs e)
@@ -857,18 +857,38 @@ namespace SourceGit.Views
             if (curBlock == null)
                 return;
 
-            var lineHeight = TextArea.TextView.DefaultLineHeight;
-            var vOffset = lineHeight * (curBlock.Start - 1) - Bounds.Height * 0.5;
+            ApplyTemplate();
+            var scroller = this.FindDescendantOfType<ScrollViewer>();
+            if (scroller == null)
+            {
+                _execSizeChanged = false;
+                return;
+            }
+
+            var target = Math.Min(curBlock.Start, Document.LineCount);
+            if (target < 1)
+                return;
+
+            var textView = TextArea.TextView;
+            for (var i = 1; i < target; i++)
+                textView.GetOrConstructVisualLine(Document.GetLineByNumber(i));
+
+            var visualLine = textView.GetOrConstructVisualLine(Document.GetLineByNumber(target));
+            var vOffset = visualLine.VisualTop - scroller.Viewport.Height * 0.5;
             if (vOffset >= 0)
             {
-                var scroller = this.FindDescendantOfType<ScrollViewer>();
-                if (scroller != null)
-                {
-                    var scrollOffset = new Vector(0, vOffset);
-                    scroller.Offset = scrollOffset;
-                    ctx.ScrollOffset = scrollOffset;
-                }
+                var scrollOffset = new Vector(0, vOffset);
+                scroller.Offset = scrollOffset;
+                ctx.ScrollOffset = scrollOffset;
             }
+        }
+
+        protected void ScheduleAutoScrollToFirstChange()
+        {
+            if (DataContext is not ViewModels.TextDiffContext)
+                return;
+
+            Dispatcher.UIThread.Post(AutoScrollToFirstChange, DispatcherPriority.Background);
         }
 
         private bool CanCopyText()
@@ -1061,6 +1081,8 @@ namespace SourceGit.Views
                 Text = string.Empty;
             }
 
+            ScheduleAutoScrollToFirstChange();
+
             GC.Collect();
         }
 
@@ -1252,6 +1274,8 @@ namespace SourceGit.Views
             {
                 Text = string.Empty;
             }
+
+            ScheduleAutoScrollToFirstChange();
         }
 
         protected override void UpdateSelectedChunk(double y)
