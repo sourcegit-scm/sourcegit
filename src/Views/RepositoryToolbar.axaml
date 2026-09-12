@@ -123,10 +123,13 @@
       <Button Width="0" Height="0" Click="FetchDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"/>
     </StackPanel>
 
-    <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,4,0">
-      <Path Width="13" Height="13" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+    <Grid Grid.Column="3" HorizontalAlignment="Right" ColumnDefinitions="Auto,*,Auto,32">
+      <Path Grid.Column="0"
+            Width="13" Height="13"
+            Margin="18,0,0,0"
+            Data="{StaticResource Icons.Branch}"/>
 
-      <ContentControl Margin="6,0,0,0">
+      <ContentControl Grid.Column="1" Margin="6,0,0,0">
         <ContentControl.Content>
           <Binding Path="CurrentBranch">
             <Binding.TargetNullValue>
@@ -138,15 +141,35 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <Border Background="Transparent" ToolTip.Tip="{Binding FriendlyName}">
-              <TextBlock Text="{Binding FriendlyName}" MaxWidth="250" TextTrimming="CharacterEllipsis"/>
+              <TextBlock Text="{Binding FriendlyName}" TextTrimming="CharacterEllipsis"/>
             </Border>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
 
-      <Button Classes="icon_button" Width="32" Click="NavigateToHead" ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-        <Path Width="13" Height="13" Margin="0,2,0,0" Data="{StaticResource Icons.Target}" Fill="{DynamicResource Brush.FG1}"/>
+      <Border Grid.Column="2"
+              Margin="4,0,0,0"
+              Height="18"
+              Padding="6,0"
+              CornerRadius="9"
+              Background="{DynamicResource Brush.Badge}"
+              VerticalAlignment="Center"
+              IsVisible="{Binding CurrentBranch?.IsTrackStatusVisible, TargetNullValue=False, Mode=OneWay}">
+        <TextBlock Text="{Binding CurrentBranch?.TrackStatusDescription, Mode=OneWay}"
+                   FontFamily="{DynamicResource Fonts.Monospace}"
+                   FontSize="11"
+                   Foreground="{DynamicResource Brush.BadgeFG}"/>
+      </Border>
+
+      <Button Grid.Column="3"
+              Classes="icon_button"
+              Width="32"
+              Click="NavigateToHead"
+              ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
+        <Path Width="13" Height="13"
+              Margin="0,2,0,0"
+              Data="{StaticResource Icons.Target}"/>
       </Button>
-    </StackPanel>
+    </Grid>
   </Grid>
 </UserControl>
