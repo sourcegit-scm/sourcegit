@@ -23,7 +23,7 @@
       <TextBox Grid.Row="0"
                x:Name="FilterBox"
                Height="24"
-               Margin="8,6,4,0"
+               Margin="6,6,4,0"
                BorderThickness="1"
                CornerRadius="13"
                BorderBrush="{DynamicResource Brush.Border2}"
