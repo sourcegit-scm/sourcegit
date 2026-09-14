@@ -194,6 +194,12 @@ For `OpenAI`:
 
 * `Server` must be `https://api.openai.com/v1`
 
+For `OrcaRouter`:
+
+* `Server` should be `https://api.orcarouter.ai/v1`
+* `API Key` should be an OrcaRouter API key (prefixed with `sk-orca-`)
+* A good starting `Model` is `orcarouter/auto`, which routes each request to the best available model
+
 For other AI service:
 
 * The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
