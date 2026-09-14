@@ -140,25 +140,51 @@ namespace SourceGit.ViewModels
         public List<Models.Change> Unstaged
         {
             get => _unstaged;
-            private set => SetProperty(ref _unstaged, value);
+            private set
+            {
+                if (SetProperty(ref _unstaged, value))
+                    OnPropertyChanged(nameof(UnstagedCountInfo));
+            }
         }
 
         public List<Models.Change> VisibleUnstaged
         {
             get => _visibleUnstaged;
-            private set => SetProperty(ref _visibleUnstaged, value);
+            private set
+            {
+                if (SetProperty(ref _visibleUnstaged, value))
+                    OnPropertyChanged(nameof(UnstagedCountInfo));
+            }
         }
 
         public List<Models.Change> Staged
         {
             get => _staged;
-            private set => SetProperty(ref _staged, value);
+            private set
+            {
+                if (SetProperty(ref _staged, value))
+                    OnPropertyChanged(nameof(StagedCountInfo));
+            }
         }
 
         public List<Models.Change> VisibleStaged
         {
             get => _visibleStaged;
-            private set => SetProperty(ref _visibleStaged, value);
+            private set
+            {
+                if (SetProperty(ref _visibleStaged, value))
+                    OnPropertyChanged(nameof(StagedCountInfo));
+            }
+        }
+
+        public string UnstagedCountInfo
+        {
+            get => string.IsNullOrEmpty(_filter) ? $"({_unstaged.Count})" : $"({_visibleUnstaged.Count}/{_unstaged.Count})";
+        }
+
+        public string StagedCountInfo
+        {
+            get => string.IsNullOrEmpty(_filter) ? $"({_staged.Count})" : $"({_visibleStaged.Count}/{_staged.Count})";
         }
 
         public ChangeSelection SelectedUnstaged
