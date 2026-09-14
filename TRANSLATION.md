@@ -519,61 +519,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-95.46%25-yellow)
-
-<details>
-<summary>Missing keys in ja_JP.axaml</summary>
-
-- Text.Blame.Tips
-- Text.BranchTree.PushURL
-- Text.Dashboard
-- Text.Diff.Binary.ViewContentOfNew
-- Text.File.Binary
-- Text.File.HexViewer
-- Text.File.HexViewer.GotoAddress
-- Text.Histories.AdvancedOptions
-- Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent
-- Text.Hotkeys.Repo.ToggleCommitDetailPanel
-- Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ViewDashboard
-- Text.Launcher.NewVersion
-- Text.OpenAppDataDir.Cache
-- Text.OpenAppDataDir.Config
-- Text.Preferences.AI.ExtraHeaders
-- Text.Preferences.AI.ReasoningEffortLevel
-- Text.Remote.ResetPushURL
-- Text.RemoteCM.SetPushURL
-- Text.Repository.FilterCommits.Collapse
-- Text.Repository.FilterCommits.Expand
-- Text.Repository.FilterCommits.Summary
-- Text.Repository.Search.Method
-- Text.Repository.Search.ToolTip
-- Text.SetPushUrl
-- Text.SetPushUrl.PushURL
-- Text.SetPushUrl.Remote
-- Text.SetPushUrl.URL
-- Text.SSHKeyHelper
-- Text.SSHKeyHelper.ConfirmDeletion
-- Text.SSHKeyHelper.Fingerprint
-- Text.SSHKeyHelper.Generator
-- Text.SSHKeyHelper.Generator.ConfirmPassphrase
-- Text.SSHKeyHelper.Generator.Email
-- Text.SSHKeyHelper.Generator.Email.Placeholder
-- Text.SSHKeyHelper.Generator.Name
-- Text.SSHKeyHelper.Generator.Name.Placeholder
-- Text.SSHKeyHelper.Generator.Passphrase
-- Text.SSHKeyHelper.Generator.Start
-- Text.SSHKeyHelper.Generator.Type
-- Text.SSHKeyHelper.Generator.UsePassphrase
-- Text.SSHKeyHelper.Path
-- Text.SSHKeyHelper.PublicKey
-- Text.SSHKeyHelper.Title
-- Text.Statistics.Tips
-- Text.Terminate
-- Text.WorkingCopy.DiscardAll
-- Text.WorkingCopy.FilterChanges
-
-</details>
+### ![ja__JP](https://img.shields.io/badge/ja__JP-%E2%88%9A-brightgreen)
 
 ### ![ko__KR](https://img.shields.io/badge/ko__KR-93.09%25-yellow)
 
