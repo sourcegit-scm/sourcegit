@@ -103,7 +103,8 @@
                   <v:DateTimePresenter Grid.Column="1"
                                        Margin="8,0,0,0"
                                        Timestamp="{Binding Time}"
-                                       Foreground="{DynamicResource Brush.FG2}"/>
+                                       Foreground="{DynamicResource Brush.FG2}"
+                                       FontFeatures="+tnum"/>
                 </Grid>
 
                 <v:StashSubjectPresenter Grid.Row="1"
