@@ -52,19 +52,27 @@
                        Text="{DynamicResource Text.Preferences.General.Locale}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="0" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
-                      DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
-                      SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverters.ToLocale}}"/>
+            <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="*,Auto">
+              <ComboBox Grid.Column="0"
+                        MinHeight="28"
+                        Padding="8,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding Source={x:Static m:Locale.Supported}}"
+                        DisplayMemberBinding="{Binding Name, x:DataType=m:Locale}"
+                        SelectedItem="{Binding Locale, Mode=TwoWay, Converter={x:Static c:StringConverters.ToLocale}}"/>
+
+              <CheckBox Grid.Column="1"
+                        Height="32"
+                        Margin="8,0,0,0"
+                        Content="{DynamicResource Text.Preferences.General.LocalizedDates}"
+                        IsChecked="{Binding DateTimeUseLocalizedCulture, Mode=TwoWay}"/>
+            </Grid>
 
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.General.DateFormat}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto">
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="*,Auto,Auto">
               <ComboBox Grid.Column="0"
                         MinHeight="28"
                         Padding="8,0"
@@ -81,7 +89,17 @@
                 </ComboBox.ItemTemplate>
               </ComboBox>
 
-              <CheckBox Grid.Column="1"
+              <ComboBox Grid.Column="1"
+                        MinHeight="28"
+                        Margin="8,0,0,0"
+                        Padding="8,0"
+                        SelectedIndex="{Binding DayOfWeekStyle, Mode=TwoWay}">
+                <ComboBoxItem Content="{DynamicResource Text.Preferences.General.DayOfWeek.None}"/>
+                <ComboBoxItem Content="{DynamicResource Text.Preferences.General.DayOfWeek.Short}"/>
+                <ComboBoxItem Content="{DynamicResource Text.Preferences.General.DayOfWeek.Full}"/>
+              </ComboBox>
+
+              <CheckBox Grid.Column="2"
                         Height="32"
                         Margin="8,0,0,0"
                         Content="{DynamicResource Text.Preferences.General.Use24Hours}"
