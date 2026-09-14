@@ -414,10 +414,10 @@ namespace SourceGit.ViewModels
                 _repo.ShowPopup(new Discard(_repo));
         }
 
-        public void Discard(List<Models.Change> changes)
+        public void Discard(List<Models.Change> changes, Models.Change next)
         {
             if (_repo.CanCreatePopup())
-                _repo.ShowPopup(new Discard(_repo, changes));
+                _repo.ShowPopup(new Discard(_repo, changes, next));
         }
 
         public void ClearFilter()
