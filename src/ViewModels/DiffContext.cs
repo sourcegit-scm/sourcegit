@@ -209,9 +209,9 @@ namespace SourceGit.ViewModels
             var imgDiff = new Models.ImageDiff();
             var fullPath = Path.Combine(_repo, _option.Path);
 
-            if (_option.Revisions.Count == 2)
+            if (_option.Revisions.Count == 2) // Two revisions are specified, compare them
             {
-                if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal))
+                if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal)) // `-R` means the old side is the working tree
                 {
                     var oldImage = await ImageSource.FromFileAsync(fullPath, imgDecoder).ConfigureAwait(false);
                     imgDiff.Old = oldImage.Bitmap;
@@ -224,20 +224,39 @@ namespace SourceGit.ViewModels
                     imgDiff.OldFileSize = oldImage.Size;
                 }
 
-                var newImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[1], _option.Path, imgDecoder).ConfigureAwait(false);
-                imgDiff.New = newImage.Bitmap;
-                imgDiff.NewFileSize = newImage.Size;
+                if (string.IsNullOrEmpty(_option.Revisions[1])) // Empty string in the second revision means the new side is the working tree
+                {
+                    var newImage = await ImageSource.FromFileAsync(fullPath, imgDecoder).ConfigureAwait(false);
+                    imgDiff.New = newImage.Bitmap;
+                    imgDiff.NewFileSize = newImage.Size;
+                }
+                else
+                {
+                    var newImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[1], _option.Path, imgDecoder).ConfigureAwait(false);
+                    imgDiff.New = newImage.Bitmap;
+                    imgDiff.NewFileSize = newImage.Size;
+                }
             }
-            else
+            else if (_option.IsUnstaged) // Unstaged change compared to staged or HEAD
             {
                 if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
                 {
-                    var oldImage = await ImageSource.FromRevisionAsync(_repo, "HEAD", oldPath, imgDecoder).ConfigureAwait(false);
+                    var oldImage = await ImageSource.FromRevisionAsync(_repo, string.Empty, oldPath, imgDecoder).ConfigureAwait(false);
                     imgDiff.Old = oldImage.Bitmap;
                     imgDiff.OldFileSize = oldImage.Size;
                 }
 
                 var newImage = await ImageSource.FromFileAsync(fullPath, imgDecoder).ConfigureAwait(false);
+                imgDiff.New = newImage.Bitmap;
+                imgDiff.NewFileSize = newImage.Size;
+            }
+            else // Staged change compared to the last commit (HEAD)
+            {
+                var oldImage = await ImageSource.FromRevisionAsync(_repo, "HEAD", oldPath, imgDecoder).ConfigureAwait(false);
+                imgDiff.Old = oldImage.Bitmap;
+                imgDiff.OldFileSize = oldImage.Size;
+
+                var newImage = await ImageSource.FromRevisionAsync(_repo, string.Empty, oldPath, imgDecoder).ConfigureAwait(false);
                 imgDiff.New = newImage.Bitmap;
                 imgDiff.NewFileSize = newImage.Size;
             }
@@ -254,44 +273,37 @@ namespace SourceGit.ViewModels
             binaryDiff.Repository = _repo;
             binaryDiff.FilePath = _option.Path;
 
-            if (_option.Revisions.Count == 2)
+            if (_option.Revisions.Count == 2) // Two revisions are specified, compare them
             {
-                if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal))
-                {
+                if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal)) // `-R` means the old side is the working tree
                     binaryDiff.OldSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
-                    binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
-                    binaryDiff.NewRevision = _option.Revisions[1];
-                }
                 else
-                {
                     binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).GetResultAsync().ConfigureAwait(false);
-                    if (string.IsNullOrEmpty(_option.Revisions[1]))
-                    {
-                        binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
-                        binaryDiff.NewRevision = null;
-                    }
-                    else
-                    {
-                        binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
-                        binaryDiff.NewRevision = _option.Revisions[1];
-                    }
-                }
-            }
-            else
-            {
-                if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
-                    binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, "HEAD").GetResultAsync().ConfigureAwait(false);
 
-                if (_option.IsUnstaged)
+                if (string.IsNullOrEmpty(_option.Revisions[1])) // Empty string in the second revision means the new side is the working tree
                 {
                     binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                     binaryDiff.NewRevision = null;
                 }
                 else
                 {
-                    binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, string.Empty).GetResultAsync().ConfigureAwait(false);
-                    binaryDiff.NewRevision = string.Empty;
+                    binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
+                    binaryDiff.NewRevision = _option.Revisions[1];
                 }
+            }
+            else if (_option.IsUnstaged) // Unstaged change compared to staged or HEAD
+            {
+                if (!oldPath.Equals("/dev/null", StringComparison.Ordinal))
+                    binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, string.Empty).GetResultAsync().ConfigureAwait(false);
+
+                binaryDiff.NewSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
+                binaryDiff.NewRevision = null;
+            }
+            else // Staged change compared to the last commit (HEAD)
+            {
+                binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, "HEAD").GetResultAsync().ConfigureAwait(false);
+                binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, string.Empty).GetResultAsync().ConfigureAwait(false);
+                binaryDiff.NewRevision = string.Empty;
             }
 
             return binaryDiff;

@@ -557,6 +557,20 @@ namespace SourceGit.ViewModels
             return FindNodeRecursive(id, RepositoryNodes);
         }
 
+        public RepositoryNode FindOrCreateGroupRecursive(string path)
+        {
+            List<RepositoryNode> collection = RepositoryNodes;
+            RepositoryNode node = null;
+
+            foreach (var name in path.Split('/'))
+            {
+                node = FindOrCreateGroupInCollection(collection, name);
+                collection = node.SubNodes;
+            }
+
+            return node;
+        }
+
         public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode, bool save = true)
         {
             var normalized = repo.Replace('\\', '/').TrimEnd('/');
@@ -731,6 +745,27 @@ namespace SourceGit.ViewModels
             }
 
             return null;
+        }
+
+        private RepositoryNode FindOrCreateGroupInCollection(List<RepositoryNode> collection, string name)
+        {
+            foreach (var node in collection)
+            {
+                if (!node.IsRepository && node.Name.Equals(name, StringComparison.Ordinal))
+                    return node;
+            }
+
+            var added = new RepositoryNode()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                IsRepository = false,
+                IsExpanded = true,
+            };
+            collection.Add(added);
+
+            SortNodes(collection);
+            return added;
         }
 
         private List<RepositoryNode> FindNodeContainer(RepositoryNode node, List<RepositoryNode> collection)

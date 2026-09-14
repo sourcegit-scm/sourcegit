@@ -22,10 +22,10 @@ namespace SourceGit.Views
 
             var layout = ViewModels.Preferences.Instance.Layout;
             var width = grid.Bounds.Width;
-            var maxLeft = width - 304;
+            var leftWidth = Math.Max(width - 304, 300);
 
-            if (layout.StashesLeftWidth.Value - maxLeft > 1.0)
-                layout.StashesLeftWidth = new GridLength(maxLeft, GridUnitType.Pixel);
+            if (layout.StashesLeftWidth.Value - leftWidth > 1.0)
+                layout.StashesLeftWidth = new GridLength(leftWidth, GridUnitType.Pixel);
         }
 
         private async void OnStashListKeyDown(object sender, KeyEventArgs e)
@@ -141,39 +141,48 @@ namespace SourceGit.Views
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (DataContext is ViewModels.StashesPage { SelectedChanges: { Count: > 0 } selected } vm &&
-                sender is ChangeCollectionView view)
+            if (DataContext is ViewModels.StashesPage { ChangeSelection: { Count: > 0 } selection } vm)
             {
+                var selectedSingleFolder = selection.IsSingleFolder;
+                var fullPathOfFolder = selectedSingleFolder ? vm.GetAbsPath(selection.SingleFolderPath) : null;
+                var relativePathOfFolder = selectedSingleFolder ? selection.SingleFolderPath : null;
+
                 var menu = new ContextMenu();
-
-                if (selected.Count == 1)
+                if (selection.Count == 1)
                 {
-                    var change = selected[0];
-                    var fullPath = vm.GetAbsPath(change.Path);
+                    var change = selection.Changes[0];
+                    var changeFullPath = vm.GetAbsPath(change.Path);
 
-                    var openWithMerger = new MenuItem();
-                    openWithMerger.Header = App.Text("OpenInExternalMergeTool");
-                    openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
-                    openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
-                    openWithMerger.Click += (_, ev) =>
+                    if (!selection.HasFolder)
                     {
-                        vm.OpenChangeWithExternalDiffTool(change);
-                        ev.Handled = true;
-                    };
+                        var openWithMerger = new MenuItem();
+                        openWithMerger.Header = App.Text("OpenInExternalMergeTool");
+                        openWithMerger.Icon = this.CreateMenuIcon("Icons.OpenWith");
+                        openWithMerger.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+D" : "Ctrl+Shift+D";
+                        openWithMerger.Click += (_, ev) =>
+                        {
+                            vm.OpenChangeWithExternalDiffTool(change);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(openWithMerger);
+                    }
 
-                    var explore = new MenuItem();
-                    explore.Header = App.Text("RevealFile");
-                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
-                    explore.IsEnabled = File.Exists(fullPath);
-                    explore.Click += (_, ev) =>
+                    if (!selection.HasFolder || selectedSingleFolder)
                     {
-                        Native.OS.OpenInFileManager(fullPath);
-                        ev.Handled = true;
-                    };
+                        var explore = new MenuItem();
+                        explore.Header = App.Text("RevealFile");
+                        explore.Icon = this.CreateMenuIcon("Icons.Explore");
+                        explore.IsEnabled = selectedSingleFolder ? Directory.Exists(fullPathOfFolder) : File.Exists(changeFullPath);
+                        explore.Click += (_, ev) =>
+                        {
+                            Native.OS.OpenInFileManager(selectedSingleFolder ? fullPathOfFolder : changeFullPath);
+                            ev.Handled = true;
+                        };
+                        menu.Items.Add(explore);
+                    }
 
-                    menu.Items.Add(openWithMerger);
-                    menu.Items.Add(explore);
-                    menu.Items.Add(new MenuItem { Header = "-" });
+                    if (menu.Items.Count > 0)
+                        menu.Items.Add(new MenuItem { Header = "-" });
                 }
 
                 var applyChanges = new MenuItem();
@@ -181,7 +190,7 @@ namespace SourceGit.Views
                 applyChanges.Icon = this.CreateMenuIcon("Icons.Diff");
                 applyChanges.Click += async (_, ev) =>
                 {
-                    await vm.ApplySelectedChanges(selected);
+                    await vm.ApplySelectedChanges(selection.Changes);
                     ev.Handled = true;
                 };
 
@@ -190,7 +199,7 @@ namespace SourceGit.Views
                 checkoutFiles.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                 checkoutFiles.Click += async (_, ev) =>
                 {
-                    await vm.CheckoutFilesAsync(selected);
+                    await vm.CheckoutFilesAsync(selection.Changes);
                     ev.Handled = true;
                 };
 
@@ -200,14 +209,18 @@ namespace SourceGit.Views
                 copyPath.Tag = OperatingSystem.IsMacOS() ? "⌘+C" : "Ctrl+C";
                 copyPath.Click += async (_, ev) =>
                 {
-                    if (selected.Count == 1)
+                    if (selectedSingleFolder)
                     {
-                        await this.CopyTextAsync(selected[0].Path);
+                        await this.CopyTextAsync(relativePathOfFolder);
+                    }
+                    else if (selection.Changes.Count == 1)
+                    {
+                        await this.CopyTextAsync(selection.Changes[0].Path);
                     }
                     else
                     {
                         var builder = new StringBuilder();
-                        foreach (var c in selected)
+                        foreach (var c in selection.Changes)
                             builder.AppendLine(c.Path);
 
                         await this.CopyTextAsync(builder.ToString());
@@ -222,14 +235,18 @@ namespace SourceGit.Views
                 copyFullPath.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+C" : "Ctrl+Shift+C";
                 copyFullPath.Click += async (_, ev) =>
                 {
-                    if (selected.Count == 1)
+                    if (selectedSingleFolder)
                     {
-                        await this.CopyTextAsync(vm.GetAbsPath(selected[0].Path));
+                        await this.CopyTextAsync(fullPathOfFolder);
+                    }
+                    else if (selection.Changes.Count == 1)
+                    {
+                        await this.CopyTextAsync(vm.GetAbsPath(selection.Changes[0].Path));
                     }
                     else
                     {
                         var builder = new StringBuilder();
-                        foreach (var c in selected)
+                        foreach (var c in selection.Changes)
                             builder.AppendLine(vm.GetAbsPath(c.Path));
 
                         await this.CopyTextAsync(builder.ToString());
@@ -243,7 +260,7 @@ namespace SourceGit.Views
                 menu.Items.Add(new MenuItem { Header = "-" });
                 menu.Items.Add(copyPath);
                 menu.Items.Add(copyFullPath);
-                menu.Open(view);
+                menu.Open(sender as Control);
             }
 
             e.Handled = true;
@@ -251,23 +268,24 @@ namespace SourceGit.Views
 
         private async void OnChangeCollectionViewKeyDown(object sender, KeyEventArgs e)
         {
-            if (DataContext is not ViewModels.StashesPage vm)
-                return;
-
-            if (sender is not ChangeCollectionView { SelectedChanges: { Count: > 0 } selectedChanges })
+            if (DataContext is not ViewModels.StashesPage { ChangeSelection: { Count: > 0 } selection } vm)
                 return;
 
             if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) && e.Key == Key.C)
             {
                 var builder = new StringBuilder();
                 var copyAbsPath = e.KeyModifiers.HasFlag(KeyModifiers.Shift);
-                if (selectedChanges.Count == 1)
+                if (selection.IsSingleFolder)
                 {
-                    builder.Append(copyAbsPath ? vm.GetAbsPath(selectedChanges[0].Path) : selectedChanges[0].Path);
+                    builder.Append(copyAbsPath ? vm.GetAbsPath(selection.SingleFolderPath) : selection.SingleFolderPath);
+                }
+                else if (selection.Changes.Count == 1)
+                {
+                    builder.Append(copyAbsPath ? vm.GetAbsPath(selection.Changes[0].Path) : selection.Changes[0].Path);
                 }
                 else
                 {
-                    foreach (var c in selectedChanges)
+                    foreach (var c in selection.Changes)
                         builder.AppendLine(copyAbsPath ? vm.GetAbsPath(c.Path) : c.Path);
                 }
 

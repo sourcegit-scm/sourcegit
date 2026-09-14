@@ -1,16 +1,14 @@
 ﻿using System.Text;
-using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public class Push : Command
     {
-        public Push(string repo, string local, string remote, string remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, bool noVerify)
+        public Push(string repo, Models.Branch local, Models.Remote remote, Models.Branch remoteBranch, bool withTags, bool checkSubmodules, bool track, bool force, bool noVerify)
         {
-            _remote = remote;
-
             WorkingDirectory = repo;
             Context = repo;
+            SSHKey = remote.PrivateSSHKey;
 
             var builder = new StringBuilder(1024);
             builder.Append("push --progress --verbose ");
@@ -25,32 +23,38 @@ namespace SourceGit.Commands
             if (noVerify)
                 builder.Append("--no-verify ");
 
-            builder.Append(remote).Append(' ').Append(local).Append(':').Append(remoteBranch);
+            builder.Append(remote.Name).Append(' ').Append(local.Name).Append(':').Append(remoteBranch.Name);
             Args = builder.ToString();
         }
 
-        public Push(string repo, string remote, string refname, bool isDelete)
+        public Push(string repo, Models.Commit revision, Models.Remote remote, Models.Branch remoteBranch, bool force)
         {
-            _remote = remote;
-
             WorkingDirectory = repo;
             Context = repo;
+            SSHKey = remote.PrivateSSHKey;
+
+            var builder = new StringBuilder(1024);
+            builder.Append("push --progress --verbose ");
+            if (force)
+                builder.Append("--force-with-lease ");
+
+            builder.Append(remote.Name).Append(' ').Append(revision.SHA).Append(':').Append(remoteBranch.Name);
+            Args = builder.ToString();
+        }
+
+        public Push(string repo, Models.Remote remote, string refname, bool isDelete)
+        {
+            WorkingDirectory = repo;
+            Context = repo;
+            SSHKey = remote.PrivateSSHKey;
 
             var builder = new StringBuilder(512);
             builder.Append("push ");
             if (isDelete)
                 builder.Append("--delete ");
-            builder.Append(remote).Append(' ').Append(refname);
+            builder.Append(remote.Name).Append(' ').Append(refname);
 
             Args = builder.ToString();
         }
-
-        public async Task<bool> RunAsync()
-        {
-            SSHKey = await new Config(WorkingDirectory).GetAsync($"remote.{_remote}.sshkey").ConfigureAwait(false);
-            return await ExecAsync().ConfigureAwait(false);
-        }
-
-        private readonly string _remote;
     }
 }

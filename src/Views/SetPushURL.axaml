@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="SourceGit.Views.SetPushURL"
+             x:DataType="vm:SetPushURL">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Link}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.SetPushUrl}"/>
+    </StackPanel>
+
+    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.SetPushUrl.Remote}"/>
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+        <Path Width="12" Height="12"
+              Data="{StaticResource Icons.Remote}"
+              Fill="{DynamicResource Brush.FG1}"/>
+
+        <TextBlock Margin="4,0,0,0"
+                   VerticalAlignment="Center"
+                   Text="{Binding Remote.Name, Mode=OneWay}"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.SetPushUrl.URL}"/>
+      <TextBlock Grid.Row="1" Grid.Column="1"
+                 VerticalAlignment="Center"
+                 Text="{Binding Remote.URL, Mode=OneWay}"/>
+
+      <TextBlock Grid.Row="2" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.SetPushUrl.PushURL}"/>
+      <TextBox Grid.Row="2" Grid.Column="1"
+               Height="26"
+               VerticalAlignment="Center"
+               CornerRadius="3"
+               Text="{Binding PushURL, Mode=TwoWay}">
+        <TextBox.InnerLeftContent>
+          <Path Width="12" Height="12"
+                Margin="4,0,2,0"
+                Data="{StaticResource Icons.Link}"
+                Fill="{DynamicResource Brush.FG1}"/>
+        </TextBox.InnerLeftContent>
+
+        <TextBox.InnerRightContent>
+          <v:RemoteProtocolSwitcher Url="{Binding PushURL, Mode=TwoWay}"/>
+        </TextBox.InnerRightContent>
+      </TextBox>
+    </Grid>
+  </StackPanel>
+</UserControl>

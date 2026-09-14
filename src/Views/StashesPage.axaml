@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.StashesPage"
              x:DataType="vm:StashesPage">
-  <Grid SizeChanged="OnMainLayoutSizeChanged">
+  <Grid SizeChanged="OnMainLayoutSizeChanged" Background="{DynamicResource Brush.SubPanel}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.StashesLeftWidth, Mode=TwoWay}" MinWidth="300"/>
       <ColumnDefinition Width="4"/>
@@ -17,14 +17,21 @@
     </Grid.ColumnDefinitions>
 
     <!-- Left -->
-    <Grid Grid.Column="0" RowDefinitions="28,36,*,28,*">
+    <Grid Grid.Column="0" RowDefinitions="28,36,*,28,*" Background="{DynamicResource Brush.Window}">
       <!-- Stash Bar -->
-      <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
+      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
         <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Stashes}"/>
         <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
           <Run Text="{DynamicResource Text.Stashes.Stashes}"/>
           <Run Text="{Binding Stashes, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
         </TextBlock>
+        <Button Grid.Column="3"
+                Classes="icon_button"
+                Width="26" Height="26"
+                Command="{Binding ClearStashes}"
+                ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.RemoveAll}"/>
+        </Button>
       </Grid>
 
       <!-- Search Bar -->
@@ -96,7 +103,8 @@
                   <v:DateTimePresenter Grid.Column="1"
                                        Margin="8,0,0,0"
                                        Timestamp="{Binding Time}"
-                                       Foreground="{DynamicResource Brush.FG2}"/>
+                                       Foreground="{DynamicResource Brush.FG2}"
+                                       FontFeatures="+tnum"/>
                 </Grid>
 
                 <v:StashSubjectPresenter Grid.Row="1"
@@ -131,8 +139,8 @@
       <Border Grid.Row="4" Background="{DynamicResource Brush.Contents}">
         <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StashChangeViewMode, Mode=OneWay}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
-                                Changes="{Binding Changes}"
-                                SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                Changes="{Binding Changes, Mode=OneWay}"
+                                Selection="{Binding ChangeSelection, Mode=TwoWay}"
                                 ContextRequested="OnChangeContextRequested"
                                 KeyDown="OnChangeCollectionViewKeyDown"/>
       </Border>
@@ -147,17 +155,15 @@
                   Focusable="False"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
-      <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-          <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
-          <TextBlock Margin="0,16,0,0"
-                     Text="{DynamicResource Text.Diff.Welcome}"
-                     FontSize="18" FontWeight="Bold"
-                     Foreground="{DynamicResource Brush.FG2}"
-                     HorizontalAlignment="Center"/>
-        </StackPanel>
-      </Border>
+    <Grid Grid.Column="2" Margin="4,4,6,4">
+      <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+        <TextBlock Margin="0,16,0,0"
+                   Text="{DynamicResource Text.Diff.Welcome}"
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
 
       <ContentControl Content="{Binding DiffContext}">
         <ContentControl.DataTemplates>

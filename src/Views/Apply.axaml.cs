@@ -29,7 +29,7 @@ namespace SourceGit.Views
             var options = new FilePickerOpenOptions()
             {
                 AllowMultiple = false,
-                FileTypeFilter = [new FilePickerFileType("Patch File") { Patterns = ["*.patch"] }]
+                FileTypeFilter = [new FilePickerFileType("Patch File") { Patterns = ["*.patch", "*.diff"] }]
             };
 
             var selected = await topLevel.StorageProvider.OpenFilePickerAsync(options);

@@ -65,37 +65,28 @@ namespace SourceGit.Views
                 return;
             }
 
-            if (node.Tag != null)
-                CreateContent(new Thickness(0, 0, 0, 0), "Icons.Tag", node.ToolTip is { IsAnnotated: false });
+            if (node.Tag is { } tag)
+                CreateContent(new Thickness(0, 0, 0, 0), tag.IsAnnotated ? "Icons.Tag" : "Icons.Tag.LinePath");
             else if (node.IsExpanded)
-                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open", false);
+                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder.Open");
             else
-                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder", false);
+                CreateContent(new Thickness(0, 2, 0, 0), "Icons.Folder");
         }
 
-        private void CreateContent(Thickness margin, string iconKey, bool stroke)
+        private void CreateContent(Thickness margin, string iconKey)
         {
             if (this.FindResource(iconKey) is not StreamGeometry geo)
                 return;
 
-            var path = new Avalonia.Controls.Shapes.Path()
+            Content = new Avalonia.Controls.Shapes.Path()
             {
                 Width = 12,
                 Height = 12,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = margin,
                 Data = geo,
             };
-
-            if (stroke)
-            {
-                path.Fill = Brushes.Transparent;
-                path.Stroke = this.FindResource("Brush.FG1") as IBrush;
-                path.StrokeThickness = 1;
-            }
-
-            Content = path;
         }
 
         private bool _isExpanded = false;

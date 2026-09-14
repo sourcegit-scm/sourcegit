@@ -141,8 +141,8 @@
           <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
             <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
                                     EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
-                                    Changes="{Binding VisibleChanges}"
-                                    SelectedChanges="{Binding SelectedChanges, Mode=TwoWay}"
+                                    Changes="{Binding VisibleChanges, Mode=OneWay}"
+                                    Selection="{Binding ChangeSelection, Mode=TwoWay}"
                                     ContextRequested="OnChangeContextRequested"
                                     KeyDown="OnChangeCollectionViewKeyDown"/>
           </Border>
@@ -171,7 +171,7 @@
                       Focusable="False"/>
 
         <Grid Grid.Column="2">
-          <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+          <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
               <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
               <TextBlock Margin="0,16,0,0"

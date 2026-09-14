@@ -37,7 +37,7 @@ namespace SourceGit.Commands
                 ParseLine(line);
 
                 if (_result.IsBinary)
-                    break;
+                    return _result;
             }
 
             if (_needUnifyCommitSHA)
@@ -48,6 +48,9 @@ namespace SourceGit.Commands
                         line.CommitSHA = line.CommitSHA.Substring(0, _minSHALen);
                 }
             }
+
+            if (_content.Length > 0)
+                _content.Length--; // Remove the last newline character
 
             _result.Content = _content.ToString();
             return _result;
@@ -66,9 +69,8 @@ namespace SourceGit.Commands
             if (!match.Success)
                 return;
 
-            if (_content.Length > 0)
-                _content.Append('\n');
-            _content.Append(match.Groups[5].Value);
+            // Force using `\n` as line-ending
+            _content.Append(match.Groups[5].Value).Append('\n');
 
             var commit = match.Groups[1].Value;
             var file = match.Groups[2].Value.Trim();

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
+    public record TargetGroup(string Id, string Name, string Description);
+
     public class Clone : Popup
     {
         [Required(ErrorMessage = "Remote URL is required")]
@@ -47,15 +49,21 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _local, value);
         }
 
-        public List<RepositoryNode> Groups
+        public List<TargetGroup> Groups
         {
             get;
         }
 
-        public RepositoryNode SelectedGroup
+        public int SelectedGroupIndex
         {
-            get => _selectedGroup;
-            set => SetProperty(ref _selectedGroup, value);
+            get => _selectedGroupIndex;
+            set => SetProperty(ref _selectedGroupIndex, value);
+        }
+
+        public bool CanAutoSelectGroup
+        {
+            get => _canAutoSelectGroup;
+            private set => SetProperty(ref _canAutoSelectGroup, value);
         }
 
         public int Bookmark
@@ -81,15 +89,17 @@ namespace SourceGit.ViewModels
             _pageId = pageId;
             CanTerminate = true;
 
-            Groups = new List<RepositoryNode>();
-            Groups.Add(new RepositoryNode { Name = "No Group (Uncategorized)", Id = string.Empty });
-            SelectedGroup = Groups[0];
+            Groups = new List<TargetGroup>();
+            Groups.Add(new TargetGroup(string.Empty, "Auto", "Based-on Default Clone Dir"));
+            Groups.Add(new TargetGroup(string.Empty, "No Group", "Uncategorized"));
             CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
 
             var activeWorkspace = Preferences.Instance.GetActiveWorkspace();
-            _parentFolder = activeWorkspace?.DefaultCloneDir;
-            if (string.IsNullOrEmpty(ParentFolder))
-                _parentFolder = Preferences.Instance.GitDefaultCloneDir;
+            _defaultCloneDir = activeWorkspace?.DefaultCloneDir;
+            if (string.IsNullOrEmpty(_defaultCloneDir))
+                _defaultCloneDir = Preferences.Instance.GitDefaultCloneDir;
+
+            ParentFolder = _defaultCloneDir;
         }
 
         public static ValidationResult ValidateRemote(string remote, ValidationContext _)
@@ -164,7 +174,26 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
-            var parent = _selectedGroup is { Id: not "" } ? _selectedGroup : null;
+            RepositoryNode parent = null;
+            if (_selectedGroupIndex == 0) // Auto (Based-on Default Clone Dir)
+            {
+                if (!string.IsNullOrEmpty(_defaultCloneDir))
+                {
+                    var normalizedDefaultCloneDir = _defaultCloneDir.Replace('\\', '/').TrimEnd('/') + "/";
+                    var normalizedParentFolder = _parentFolder.Replace('\\', '/').TrimEnd('/') + "/";
+                    if (normalizedParentFolder.Length > normalizedDefaultCloneDir.Length &&
+                        normalizedParentFolder.StartsWith(normalizedDefaultCloneDir, StringComparison.Ordinal))
+                    {
+                        var relativePath = normalizedParentFolder.Substring(normalizedDefaultCloneDir.Length);
+                        parent = Preferences.Instance.FindOrCreateGroupRecursive(relativePath.TrimEnd('/'));
+                    }
+                }
+            }
+            else if (_selectedGroupIndex > 0 && _selectedGroupIndex < Groups.Count) // Existing group
+            {
+                parent = Preferences.Instance.FindNode(Groups[_selectedGroupIndex].Id);
+            }
+
             var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(path, parent, true);
             node.Bookmark = _bookmark;
             await node.UpdateStatusAsync(false, null);
@@ -193,14 +222,15 @@ namespace SourceGit.ViewModels
             var _ = _cancellation?.CancelAsync();
         }
 
-        private void CollectGroups(List<RepositoryNode> outs, List<RepositoryNode> collections)
+        private void CollectGroups(List<TargetGroup> outs, List<RepositoryNode> collections, string prefix = null)
         {
             foreach (var node in collections)
             {
                 if (!node.IsRepository)
                 {
-                    outs.Add(node);
-                    CollectGroups(outs, node.SubNodes);
+                    var displayName = prefix != null ? $"{prefix}/{node.Name}" : node.Name;
+                    outs.Add(new(node.Id, displayName, string.Empty));
+                    CollectGroups(outs, node.SubNodes, displayName);
                 }
             }
         }
@@ -210,9 +240,11 @@ namespace SourceGit.ViewModels
         private bool _useSSH = false;
         private string _sshKey = string.Empty;
         private string _parentFolder = string.Empty;
+        private string _defaultCloneDir = string.Empty;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;
-        private RepositoryNode _selectedGroup = null;
+        private int _selectedGroupIndex = 0;
+        private bool _canAutoSelectGroup = false;
         private int _bookmark = 0;
         private CancellationTokenSource _cancellation = null;
     }

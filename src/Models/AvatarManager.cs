@@ -38,7 +38,7 @@ namespace SourceGit.Models
         private readonly Lock _synclock = new();
         private string _storePath;
         private List<IAvatarHost> _avatars = new List<IAvatarHost>();
-        private Dictionary<string, Bitmap> _resources = new Dictionary<string, Bitmap>();
+        private Cache _cache = new Cache(256);
         private HashSet<string> _requesting = new HashSet<string>();
         private HashSet<string> _defaultAvatars = new HashSet<string>();
 
@@ -120,7 +120,7 @@ namespace SourceGit.Models
 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        _resources[email] = img;
+                        _cache.AddOrUpdate(email, img);
                         NotifyResourceChanged(email, img);
                     });
                 }
@@ -146,7 +146,7 @@ namespace SourceGit.Models
                 if (_defaultAvatars.Contains(email))
                     return null;
 
-                _resources.Remove(email);
+                _cache.Remove(email);
 
                 var localFile = Path.Combine(_storePath, GetEmailHash(email));
                 if (File.Exists(localFile))
@@ -156,7 +156,7 @@ namespace SourceGit.Models
             }
             else
             {
-                if (_resources.TryGetValue(email, out var value))
+                if (_cache.TryGet(email, out var value))
                     return value;
 
                 var localFile = Path.Combine(_storePath, GetEmailHash(email));
@@ -167,7 +167,7 @@ namespace SourceGit.Models
                         using (var stream = File.OpenRead(localFile))
                         {
                             var img = Bitmap.DecodeToWidth(stream, 128);
-                            _resources.Add(email, img);
+                            _cache.AddOrUpdate(email, img);
                             return img;
                         }
                     }
@@ -197,7 +197,7 @@ namespace SourceGit.Models
                     image = Bitmap.DecodeToWidth(stream, 128);
                 }
 
-                _resources[email] = image;
+                _cache.AddOrUpdate(email, image);
 
                 lock (_synclock)
                 {
@@ -217,7 +217,7 @@ namespace SourceGit.Models
         private void LoadDefaultAvatar(string key, string img)
         {
             var icon = AssetLoader.Open(new Uri($"avares://SourceGit/Resources/Images/{img}", UriKind.RelativeOrAbsolute));
-            _resources.Add(key, new Bitmap(icon));
+            _cache.AddOrUpdate(key, new Bitmap(icon));
             _defaultAvatars.Add(key);
         }
 
@@ -232,6 +232,77 @@ namespace SourceGit.Models
         {
             foreach (var avatar in _avatars)
                 avatar.OnAvatarResourceChanged(email, image);
+        }
+
+        private class Cache
+        {
+            private readonly int _capacity;
+            private readonly LinkedList<Item> _imgList;
+            private readonly Dictionary<string, LinkedListNode<Item>> _key2img;
+
+            private class Item
+            {
+                public string Key { get; }
+                public Bitmap Image { get; set; }
+
+                public Item(string key, Bitmap image)
+                {
+                    Key = key;
+                    Image = image;
+                }
+            }
+
+            public Cache(int capacity)
+            {
+                _capacity = capacity;
+                _key2img = new Dictionary<string, LinkedListNode<Item>>();
+                _imgList = new LinkedList<Item>();
+            }
+
+            public bool TryGet(string key, out Bitmap bitmap)
+            {
+                if (_key2img.TryGetValue(key, out var node))
+                {
+                    _imgList.Remove(node);
+                    _imgList.AddFirst(node);
+                    bitmap = node.Value.Image;
+                    return true;
+                }
+
+                bitmap = null;
+                return false;
+            }
+
+            public void AddOrUpdate(string key, Bitmap bitmap)
+            {
+                if (_key2img.TryGetValue(key, out var node))
+                {
+                    _imgList.Remove(node);
+                    _imgList.AddFirst(node);
+                    node.Value.Image = bitmap;
+                    return;
+                }
+
+                if (_key2img.Count >= _capacity)
+                {
+                    var lastNode = _imgList.Last;
+                    _imgList.RemoveLast();
+                    _key2img.Remove(lastNode.Value.Key);
+                }
+
+                var newNode = new LinkedListNode<Item>(new Item(key, bitmap));
+                _imgList.AddFirst(newNode);
+                _key2img[key] = newNode;
+            }
+
+            public void Remove(string key)
+            {
+                if (_key2img.TryGetValue(key, out var node))
+                {
+                    _imgList.Remove(node);
+                    _key2img.Remove(key);
+                }
+            }
         }
     }
 }
