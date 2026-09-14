@@ -211,13 +211,13 @@ namespace SourceGit.ViewModels
             remotes.AddRange(_repo.Remotes);
 
             // Respect the `branch.<name>.pushRemote` settings.
-            var pushRemote = new Commands.Config(_repo.FullPath).Get($"branch.\"{_selectedLocalBranch.Name}\".pushRemote");
-            if (!string.IsNullOrEmpty(pushRemote))
+            _preferredPushRemote = new Commands.Config(_repo.FullPath).Get($"branch.\"{_selectedLocalBranch.Name}\".pushRemote");
+            if (!string.IsNullOrEmpty(_preferredPushRemote))
             {
-                var remote = remotes.Find(x => x.URL.Equals(pushRemote, StringComparison.Ordinal));
+                var remote = remotes.Find(IsPreferredPushRemote);
                 if (remote == null)
                 {
-                    var extra = new Models.Remote() { Name = pushRemote };
+                    var extra = new Models.Remote() { Name = _preferredPushRemote };
                     remotes.Add(extra);
 
                     Remotes = remotes;
@@ -283,18 +283,24 @@ namespace SourceGit.ViewModels
             }
 
             // Check `branch.<name>.merge` configuration if selected remote comes from an extra `branch.<name>.pushRemote`
-            if (string.IsNullOrEmpty(_selectedRemote.URL))
+            if (!string.IsNullOrEmpty(_preferredPushRemote) && IsPreferredPushRemote(_selectedRemote))
             {
                 var mergeTarget = new Commands.Config(_repo.FullPath).Get($"branch.\"{_selectedLocalBranch.Name}\".merge");
                 if (!string.IsNullOrEmpty(mergeTarget))
                 {
-                    var target = new Models.Branch()
+                    var target = branches.Find(x => x.FullName.Equals(mergeTarget, StringComparison.Ordinal));
+                    if (target == null)
                     {
-                        Name = mergeTarget.StartsWith("refs/heads/") ? mergeTarget.Substring(11) : mergeTarget,
-                        Remote = _selectedRemote.Name,
-                        Head = "Unknown (but used in View)",
-                    };
-                    branches.Add(target);
+                        target = new Models.Branch()
+                        {
+                            Name = mergeTarget,
+                            Remote = _selectedRemote.Name,
+                            Head = "---", // Not used by `git push` command but used by Views
+                        };
+
+                        branches.Add(target);
+                    }
+
                     RemoteBranches = branches;
                     SelectedRemoteBranch = target;
                     return;
@@ -337,10 +343,17 @@ namespace SourceGit.ViewModels
             SelectedRemoteBranch = fake;
         }
 
+        private bool IsPreferredPushRemote(Models.Remote remote)
+        {
+            return remote.Name.Equals(_preferredPushRemote, StringComparison.Ordinal) ||
+                remote.URL.Equals(_preferredPushRemote, StringComparison.Ordinal);
+        }
+
         private readonly Repository _repo = null;
         private List<Models.Remote> _remotes = null;
         private Models.Branch _selectedLocalBranch = null;
         private Models.Remote _selectedRemote = null;
+        private string _preferredPushRemote = null;
         private List<Models.Branch> _remoteBranches = [];
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
