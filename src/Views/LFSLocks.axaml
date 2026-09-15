@@ -65,6 +65,7 @@
           <DataTemplate DataType="m:LFSLock">
             <Grid ColumnDefinitions="26,*,100,32,32">
               <Path Grid.Column="0" Width="14" Height="14" Margin="8,0,4,0" Data="{StaticResource Icons.File}"/>
+              <Image Grid.Column="0" Width="14" Height="14" Margin="8,0,4,0" Source="{Binding Path, Converter={x:Static c:PathConverters.FileExtensionToSystemIcon}}"/>
               <Border Grid.Column="1" Margin="4,0" ClipToBounds="True">
                 <TextBlock Text="{Binding Path}" HorizontalAlignment="Left"/>
               </Border>

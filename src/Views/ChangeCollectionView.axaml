@@ -65,6 +65,11 @@
                                   Change="{Binding Change}"
                                   IsVisible="{Binding !IsFolder}"/>
 
+              <Image Width="14" Height="14"
+                     Margin="1,0"
+                     IsVisible="{Binding !IsFolder}"
+                     Source="{Binding Change.Path, Converter={x:Static c:PathConverters.FileExtensionToSystemIcon}}"/>
+
               <TextBlock Text="{Binding ConflictMarker, Mode=OneWay}"
                          Foreground="DarkOrange"
                          FontWeight="Bold"
@@ -96,6 +101,10 @@
                                   Margin="4,0,0,0"
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
+
+              <Image Width="14" Height="14"
+                     Margin="4,0,0,0"
+                     Source="{Binding Path, Converter={x:Static c:PathConverters.FileExtensionToSystemIcon}}"/>
 
               <TextBlock Text="{Binding ConflictMarker}"
                          Foreground="DarkOrange"
@@ -131,6 +140,10 @@
                                   Margin="4,0,0,0"
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
+
+              <Image Width="14" Height="14"
+                     Margin="4,0,0,0"
+                     Source="{Binding Path, Converter={x:Static c:PathConverters.FileExtensionToSystemIcon}}"/>
 
               <TextBlock Text="{Binding ConflictMarker}"
                          Foreground="DarkOrange"

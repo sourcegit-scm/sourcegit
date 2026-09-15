@@ -12,7 +12,9 @@
                     Icon="/App.ico"
                     Title="{Binding Title}"
                     MinWidth="1024" MinHeight="600">
-  <Grid>
+  <Grid DragDrop.AllowDrop="True"
+        DragDrop.DragOver="DragOverWindow"
+        DragDrop.Drop="DropOnWindow">
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #ThisControl.CaptionHeight}"/>
       <RowDefinition Height="*"/>
