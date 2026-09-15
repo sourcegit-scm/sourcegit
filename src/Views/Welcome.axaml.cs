@@ -510,6 +510,18 @@ namespace SourceGit.Views
 
             menu.Items.Add(explore);
             menu.Items.Add(terminal);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+
+            var scan = new MenuItem();
+            scan.Header = App.Text("Welcome.DirectoryTree.Refresh");
+            scan.Icon = this.CreateMenuIcon("Icons.Scan");
+            scan.Click += (_, ev) =>
+            {
+                _ = ViewModels.DirectoryTree.Instance.ScanAsync();
+                ev.Handled = true;
+            };
+
+            menu.Items.Add(scan);
             menu.Open(grid);
             e.Handled = true;
         }

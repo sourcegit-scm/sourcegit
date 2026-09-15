@@ -11,7 +11,7 @@
              x:DataType="vm:Welcome">
   <Grid RowDefinitions="*,Auto" Margin="8">
     <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="250"/>
+      <ColumnDefinition Width="320"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="2*" MinWidth="600"/>
       <ColumnDefinition Width="1*"/>
