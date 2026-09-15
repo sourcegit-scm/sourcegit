@@ -120,6 +120,9 @@ namespace SourceGit.ViewModels
                     Rows.Clear();
                     Rows.AddRange(rows);
                     UpdateEmptyState();
+
+                    if (rows.Count > 0)
+                        SaveCache();
                 });
             }
             catch (Exception ex)
@@ -183,6 +186,70 @@ namespace SourceGit.ViewModels
             foreach (var repo in RecentRepos)
                 Preferences.Instance.RecentRepositories.Add(repo.Path);
             Preferences.Instance.Save();
+        }
+
+        public void LoadFromCache()
+        {
+            var cache = Preferences.Instance.DirectoryTreeCache;
+            if (cache == null || cache.Nodes.Count == 0)
+                return;
+
+            var rows = new List<DirectoryTreeNode>();
+            foreach (var cacheNode in cache.Nodes)
+            {
+                var node = ConvertCacheToNode(cacheNode);
+                if (cache.ExpandedPaths.Contains(node.Path))
+                    node.IsExpanded = true;
+                MakeTreeRows(rows, node, 0);
+            }
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                Rows.Clear();
+                Rows.AddRange(rows);
+                UpdateEmptyState();
+            });
+        }
+
+        private void SaveCache()
+        {
+            var cache = new Models.DirectoryTreeCacheData
+            {
+                SourceDirectories = [Preferences.Instance.GitDefaultCloneDir],
+                ScanDepth = 5,
+            };
+
+            foreach (var row in Rows)
+            {
+                if (row.Depth == 0)
+                    cache.Nodes.Add(ConvertNodeToCache(row));
+                if (row.IsExpanded)
+                    cache.ExpandedPaths.Add(row.Path);
+            }
+
+            Preferences.Instance.DirectoryTreeCache = cache;
+            Preferences.Instance.Save();
+        }
+
+        private DirectoryTreeNode ConvertCacheToNode(Models.DirectoryTreeCacheNode cacheNode)
+        {
+            var node = new DirectoryTreeNode(cacheNode.Path, cacheNode.Name, cacheNode.IsRepository);
+            foreach (var child in cacheNode.Children)
+                node.Children.Add(ConvertCacheToNode(child));
+            return node;
+        }
+
+        private Models.DirectoryTreeCacheNode ConvertNodeToCache(DirectoryTreeNode node)
+        {
+            var cacheNode = new Models.DirectoryTreeCacheNode
+            {
+                Path = node.Path,
+                Name = node.Name,
+                IsRepository = node.IsRepository,
+            };
+            foreach (var child in node.Children)
+                cacheNode.Children.Add(ConvertNodeToCache(child));
+            return cacheNode;
         }
 
         private void MakeTreeRows(List<DirectoryTreeNode> rows, DirectoryTreeNode node, int depth)

@@ -98,6 +98,7 @@ namespace SourceGit.Views
         protected override async void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+            ViewModels.DirectoryTree.Instance.LoadFromCache();
             SearchBox.Focus(NavigationMethod.Directional);
             await ViewModels.Welcome.Instance.UpdateStatusAsync(false, _cancellation.Token);
         }

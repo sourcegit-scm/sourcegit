@@ -474,6 +474,12 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public Models.DirectoryTreeCacheData DirectoryTreeCache
+        {
+            get;
+            set;
+        } = new();
+
         public List<Workspace> Workspaces
         {
             get;
