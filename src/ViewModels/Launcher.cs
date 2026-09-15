@@ -130,18 +130,21 @@ namespace SourceGit.ViewModels
             var pages = new List<LauncherPage>();
             pages.AddRange(Pages);
 
-            var count = 0;
+            var total = 0;
+            var succeeded = 0;
+
             foreach (var page in pages)
             {
-                if (page.Data is Repository repo)
-                {
-                    if (await repo.FetchAllRemotesAsync())
-                        count++;
-                }
+                if (page.Data is not Repository repo)
+                    continue;
+
+                total++;
+                if (await repo.FetchAllRemotesAsync())
+                    succeeded++;
             }
 
-            if (count > 0)
-                Models.Notification.Send(null, $"Fetched {count} repositories");
+            if (total > 0)
+                Models.Notification.Send(null, $"Fetched {succeeded}/{total} repositories", succeeded < total);
         }
 
         public void SwitchWorkspace(Workspace to)
