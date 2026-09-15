@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -12,6 +13,33 @@ namespace SourceGit.ViewModels
 {
     public class DirectoryTree : ObservableObject
     {
+        private static readonly Regex NaturalSortRegex = new(@"\d+|\D+", RegexOptions.Compiled);
+
+        private static int NaturalCompare(string a, string b)
+        {
+            var partsA = NaturalSortRegex.Matches(a);
+            var partsB = NaturalSortRegex.Matches(b);
+            var len = Math.Min(partsA.Count, partsB.Count);
+            for (int i = 0; i < len; i++)
+            {
+                var sa = partsA[i].Value;
+                var sb = partsB[i].Value;
+                if (char.IsDigit(sa[0]) && char.IsDigit(sb[0]))
+                {
+                    if (sa.Length != sb.Length)
+                        return sa.Length.CompareTo(sb.Length);
+                    var cmp = string.Compare(sa, sb, StringComparison.Ordinal);
+                    if (cmp != 0) return cmp;
+                }
+                else
+                {
+                    var cmp = string.Compare(sa, sb, StringComparison.OrdinalIgnoreCase);
+                    if (cmp != 0) return cmp;
+                }
+            }
+            return partsA.Count.CompareTo(partsB.Count);
+        }
+
         private static DirectoryTree _instance;
         public static DirectoryTree Instance => _instance ??= new DirectoryTree();
 
@@ -291,6 +319,7 @@ namespace SourceGit.ViewModels
                     AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
                     IgnoreInaccessible = true,
                 }).Select(d => d.FullName).ToArray();
+                Array.Sort(subdirs, (a, b) => NaturalCompare(Path.GetFileName(a), Path.GetFileName(b)));
             }
             catch (Exception ex)
             {
