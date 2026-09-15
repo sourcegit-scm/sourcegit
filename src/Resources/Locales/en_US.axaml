@@ -1022,6 +1022,10 @@
   <x:String x:Key="Text.Welcome.DirectoryTree" xml:space="preserve">Clone Directory</x:String>
   <x:String x:Key="Text.Welcome.DirectoryTree.Refresh" xml:space="preserve">Refresh</x:String>
   <x:String x:Key="Text.Welcome.DirectoryTree.Empty" xml:space="preserve">Right-click to scan clone directory</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.ScanError" xml:space="preserve">Error scanning directory "{0}": {1} Continue scanning?</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.Continue" xml:space="preserve">Continue</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.Stop" xml:space="preserve">Stop</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.OpenPath" xml:space="preserve">Open Path</x:String>
   <x:String x:Key="Text.Welcome.Recent" xml:space="preserve">Recent</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Local Changes</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>

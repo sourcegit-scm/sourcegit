@@ -1026,6 +1026,10 @@
   <x:String x:Key="Text.Welcome.DirectoryTree" xml:space="preserve">克隆目录</x:String>
   <x:String x:Key="Text.Welcome.DirectoryTree.Refresh" xml:space="preserve">刷新</x:String>
   <x:String x:Key="Text.Welcome.DirectoryTree.Empty" xml:space="preserve">右键点击扫描克隆目录</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.ScanError" xml:space="preserve">扫描目录 "{0}" 时出错: {1} 是否继续扫描？</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.Continue" xml:space="preserve">继续</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.Stop" xml:space="preserve">停止</x:String>
+  <x:String x:Key="Text.Welcome.DirectoryTree.OpenPath" xml:space="preserve">打开路径</x:String>
   <x:String x:Key="Text.Welcome.Recent" xml:space="preserve">最近</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">本地更改</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">添加至 .gitignore 忽略列表</x:String>

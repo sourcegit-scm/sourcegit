@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -40,6 +41,7 @@ namespace SourceGit.ViewModels
         }
 
         private bool _recentLoaded;
+        private bool _stopRequested;
 
         private DirectoryTree() { }
 
@@ -100,6 +102,7 @@ namespace SourceGit.ViewModels
             }
 
             _isScanning = true;
+            _stopRequested = false;
 
             try
             {
@@ -118,6 +121,10 @@ namespace SourceGit.ViewModels
                     Rows.AddRange(rows);
                     UpdateEmptyState();
                 });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DirectoryTree] ScanAsync failed: {ex}");
             }
             finally
             {
@@ -206,37 +213,75 @@ namespace SourceGit.ViewModels
 
         private async Task BuildTreeAsync(DirectoryTreeNode node, DirectoryInfo dir, int depth)
         {
-            if (depth > 5)
+            if (depth > 5 || _stopRequested)
                 return;
 
-            var subdirs = dir.GetDirectories("*", new EnumerationOptions()
+            string[] subdirs;
+            try
             {
-                AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
-                IgnoreInaccessible = true,
-            });
+                subdirs = dir.GetDirectories("*", new EnumerationOptions()
+                {
+                    AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
+                    IgnoreInaccessible = true,
+                }).Select(d => d.FullName).ToArray();
+            }
+            catch (Exception ex)
+            {
+                var result = await AskScanErrorAsync(dir.FullName, ex.Message);
+                if (result == Views.ScanErrorResult.Stop)
+                    _stopRequested = true;
+                return;
+            }
 
-            foreach (var subdir in subdirs)
+            foreach (var subdirPath in subdirs)
             {
-                if (subdir.Name.StartsWith(".", StringComparison.Ordinal) ||
-                    subdir.Name.Equals("node_modules", StringComparison.Ordinal))
+                if (_stopRequested)
+                    break;
+
+                var subdirName = Path.GetFileName(subdirPath);
+                if (subdirName.StartsWith(".", StringComparison.Ordinal) ||
+                    subdirName.Equals("node_modules", StringComparison.Ordinal))
                     continue;
 
-                var gitDir = Path.Combine(subdir.FullName, ".git");
-                var isRepo = Directory.Exists(gitDir) || File.Exists(gitDir);
-
-                if (!isRepo)
+                try
                 {
-                    isRepo = await new Commands.IsBareRepository(subdir.FullName).GetResultAsync();
+                    var gitDir = Path.Combine(subdirPath, ".git");
+                    var isRepo = Directory.Exists(gitDir) || File.Exists(gitDir);
+
+                    if (!isRepo)
+                    {
+                        isRepo = await new Commands.IsBareRepository(subdirPath).GetResultAsync();
+                    }
+
+                    var childNode = new DirectoryTreeNode(subdirPath, subdirName, isRepo);
+                    node.Children.Add(childNode);
+
+                    if (!isRepo)
+                    {
+                        await BuildTreeAsync(childNode, new DirectoryInfo(subdirPath), depth + 1);
+                    }
                 }
-
-                var childNode = new DirectoryTreeNode(subdir.FullName, subdir.Name, isRepo);
-                node.Children.Add(childNode);
-
-                if (!isRepo)
+                catch (Exception ex)
                 {
-                    await BuildTreeAsync(childNode, subdir, depth + 1);
+                    var result = await AskScanErrorAsync(subdirPath, ex.Message);
+                    if (result == Views.ScanErrorResult.Stop)
+                    {
+                        _stopRequested = true;
+                        break;
+                    }
                 }
             }
+        }
+
+        private async Task<Views.ScanErrorResult> AskScanErrorAsync(string path, string errorMessage)
+        {
+            return await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                var dialog = new Views.ScanError();
+                dialog.SetData(path, errorMessage);
+                return dialog.ShowDialog<Views.ScanErrorResult>(
+                    (App.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow);
+            });
         }
     }
 }
