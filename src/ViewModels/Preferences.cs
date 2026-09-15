@@ -468,6 +468,12 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public List<string> RecentRepositories
+        {
+            get;
+            set;
+        } = [];
+
         public List<Workspace> Workspaces
         {
             get;

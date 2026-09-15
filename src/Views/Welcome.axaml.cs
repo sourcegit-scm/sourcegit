@@ -25,6 +25,20 @@ namespace SourceGit.Views
         }
     }
 
+    public class DirectoryTreeNodeToggleButton : ToggleButton
+    {
+        protected override Type StyleKeyOverride => typeof(ToggleButton);
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
+                DataContext is ViewModels.DirectoryTreeNode { IsRepository: false } node)
+                ViewModels.DirectoryTree.Instance.ToggleNodeIsExpanded(node);
+
+            e.Handled = true;
+        }
+    }
+
     public class RepositoryListBox : ListBoxEx
     {
         protected override Type StyleKeyOverride => typeof(ListBox);
@@ -419,6 +433,156 @@ namespace SourceGit.Views
                 else
                     ViewModels.Welcome.Instance.ToggleNodeIsExpanded(node);
 
+                e.Handled = true;
+            }
+        }
+
+        private void OnRefreshDirectoryTree(object sender, RoutedEventArgs e)
+        {
+            _ = ViewModels.DirectoryTree.Instance.ScanAsync();
+        }
+
+        private void OnDirectoryTreeContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            // Only show the panel-level context menu if the click was not on a node
+            if (sender is not Grid || (sender as Grid).DataContext is not ViewModels.DirectoryTreeNode)
+            {
+                var menu = new ContextMenu();
+
+                var scan = new MenuItem();
+                scan.Header = App.Text("Welcome.DirectoryTree.Refresh");
+                scan.Icon = this.CreateMenuIcon("Icons.Scan");
+                scan.Click += (_, ev) =>
+                {
+                    _ = ViewModels.DirectoryTree.Instance.ScanAsync();
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(scan);
+                menu.Open(sender as Control);
+            }
+
+            e.Handled = true;
+        }
+
+        private void OnDirectoryTreeNodeContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is not Grid { DataContext: ViewModels.DirectoryTreeNode node } grid)
+                return;
+
+            var menu = new ContextMenu();
+
+            if (node.IsRepository)
+            {
+                var open = new MenuItem();
+                open.Header = App.Text("Welcome.OpenOrInit");
+                open.Icon = this.CreateMenuIcon("Icons.Folder.Open");
+                open.Click += (_, ev) =>
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher != null)
+                        launcher.TryOpenRepositoryFromPath(node.Path);
+                    ev.Handled = true;
+                };
+
+                menu.Items.Add(open);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
+            var explore = new MenuItem();
+            explore.Header = App.Text("Repository.Explore");
+            explore.Icon = this.CreateMenuIcon("Icons.Explore");
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(node.Path);
+                ev.Handled = true;
+            };
+
+            var terminal = new MenuItem();
+            terminal.Header = App.Text("Repository.Terminal");
+            terminal.Icon = this.CreateMenuIcon("Icons.Terminal");
+            terminal.Click += (_, ev) =>
+            {
+                Native.OS.OpenTerminal(node.Path);
+                ev.Handled = true;
+            };
+
+            menu.Items.Add(explore);
+            menu.Items.Add(terminal);
+            menu.Open(grid);
+            e.Handled = true;
+        }
+
+        private void OnDoubleTappedDirectoryTreeNode(object sender, TappedEventArgs e)
+        {
+            if (sender is Grid { DataContext: ViewModels.DirectoryTreeNode node })
+            {
+                if (node.IsRepository)
+                {
+                    var launcher = App.GetLauncher();
+                    if (launcher != null)
+                        launcher.TryOpenRepositoryFromPath(node.Path);
+                }
+                else
+                {
+                    ViewModels.DirectoryTree.Instance.ToggleNodeIsExpanded(node);
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void OnRecentRepoContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is not Grid { DataContext: ViewModels.RecentRepo repo } grid)
+                return;
+
+            var menu = new ContextMenu();
+
+            var open = new MenuItem();
+            open.Header = App.Text("Welcome.OpenOrInit");
+            open.Icon = this.CreateMenuIcon("Icons.Folder.Open");
+            open.Click += (_, ev) =>
+            {
+                var launcher = App.GetLauncher();
+                if (launcher != null)
+                    launcher.TryOpenRepositoryFromPath(repo.Path);
+                ev.Handled = true;
+            };
+
+            var explore = new MenuItem();
+            explore.Header = App.Text("Repository.Explore");
+            explore.Icon = this.CreateMenuIcon("Icons.Explore");
+            explore.Click += (_, ev) =>
+            {
+                Native.OS.OpenInFileManager(repo.Path);
+                ev.Handled = true;
+            };
+
+            var terminal = new MenuItem();
+            terminal.Header = App.Text("Repository.Terminal");
+            terminal.Icon = this.CreateMenuIcon("Icons.Terminal");
+            terminal.Click += (_, ev) =>
+            {
+                Native.OS.OpenTerminal(repo.Path);
+                ev.Handled = true;
+            };
+
+            menu.Items.Add(open);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(explore);
+            menu.Items.Add(terminal);
+            menu.Open(grid);
+            e.Handled = true;
+        }
+
+        private void OnDoubleTappedRecentRepo(object sender, TappedEventArgs e)
+        {
+            if (sender is Grid { DataContext: ViewModels.RecentRepo repo })
+            {
+                var launcher = App.GetLauncher();
+                if (launcher != null)
+                    launcher.TryOpenRepositoryFromPath(repo.Path);
                 e.Handled = true;
             }
         }

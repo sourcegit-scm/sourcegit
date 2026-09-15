@@ -11,13 +11,179 @@
              x:DataType="vm:Welcome">
   <Grid RowDefinitions="*,Auto" Margin="8">
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="250"/>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="2*" MinWidth="600"/>
       <ColumnDefinition Width="1*"/>
     </Grid.ColumnDefinitions>
 
+    <!-- Repository Manager -->
+    <Grid Grid.Row="0" Grid.Column="0" RowDefinitions="Auto,Auto,Auto,*"
+          ContextRequested="OnDirectoryTreeContextRequested">
+      <TextBlock Grid.Row="0"
+                 Margin="0,0,0,8"
+                 FontSize="13"
+                 FontWeight="SemiBold"
+                 Foreground="{DynamicResource Brush.FG1}"
+                 Text="{DynamicResource Text.Welcome.RepositoryManager}"/>
+
+      <!-- Recent Repositories -->
+      <StackPanel Grid.Row="1" Margin="0,0,0,8"
+                  IsVisible="{Binding Source={x:Static vm:DirectoryTree.Instance}, Path=HasRecentRepos}">
+        <TextBlock Margin="0,0,0,4"
+                   FontSize="11"
+                   FontWeight="SemiBold"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   Text="{DynamicResource Text.Welcome.Recent}"/>
+        <ListBox x:Name="RecentRepoContainer"
+                 Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                 ItemsSource="{Binding Source={x:Static vm:DirectoryTree.Instance}, Path=RecentRepos}"
+                 SelectionMode="Single">
+          <ListBox.Styles>
+            <Style Selector="ListBox">
+              <Setter Property="FocusAdorner">
+                <FocusAdornerTemplate>
+                  <Border Background="Transparent" BorderThickness="0"/>
+                </FocusAdornerTemplate>
+              </Setter>
+            </Style>
+            <Style Selector="ListBoxItem" x:DataType="vm:RecentRepo">
+              <Setter Property="Margin" Value="0"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Height" Value="26"/>
+              <Setter Property="CornerRadius" Value="4"/>
+              <Setter Property="FocusAdorner">
+                <FocusAdornerTemplate>
+                  <Border Background="Transparent" BorderThickness="0"/>
+                </FocusAdornerTemplate>
+              </Setter>
+            </Style>
+          </ListBox.Styles>
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="vm:RecentRepo">
+              <Grid Background="Transparent"
+                    Height="26"
+                    ColumnDefinitions="18,*"
+                    ClipToBounds="True"
+                    ContextRequested="OnRecentRepoContextRequested"
+                    DoubleTapped="OnDoubleTappedRecentRepo">
+                <Path Grid.Column="0"
+                      Width="14" Height="14"
+                      HorizontalAlignment="Center"
+                      Data="{DynamicResource Icons.Repositories}"
+                      Fill="{DynamicResource Brush.FG1}"/>
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}"
+                           TextTrimming="CharacterEllipsis"/>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </StackPanel>
+
+      <!-- Clone Directory Header -->
+      <TextBlock Grid.Row="2"
+                 Margin="0,0,0,4"
+                 FontSize="11"
+                 FontWeight="SemiBold"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 Text="{DynamicResource Text.Welcome.DirectoryTree}"/>
+
+      <Grid Grid.Row="3">
+        <TextBlock HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   FontSize="12"
+                   Text="{DynamicResource Text.Welcome.DirectoryTree.Empty}"
+                   IsVisible="{Binding Source={x:Static vm:DirectoryTree.Instance}, Path=IsEmpty}"/>
+
+        <ListBox x:Name="DirectoryTreeContainer"
+                 Background="Transparent"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ItemsSource="{Binding Source={x:Static vm:DirectoryTree.Instance}, Path=Rows}"
+                 SelectionMode="Single">
+          <ListBox.Styles>
+            <Style Selector="ListBox">
+              <Setter Property="FocusAdorner">
+                <FocusAdornerTemplate>
+                  <Border Background="Transparent" BorderThickness="0"/>
+                </FocusAdornerTemplate>
+              </Setter>
+            </Style>
+
+            <Style Selector="ListBoxItem" x:DataType="vm:DirectoryTreeNode">
+              <Setter Property="Margin" Value="0"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Height" Value="28"/>
+              <Setter Property="CornerRadius" Value="4"/>
+              <Setter Property="FocusAdorner">
+                <FocusAdornerTemplate>
+                  <Border Background="Transparent" BorderThickness="0"/>
+                </FocusAdornerTemplate>
+              </Setter>
+            </Style>
+          </ListBox.Styles>
+
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="vm:DirectoryTreeNode">
+              <Grid Background="Transparent"
+                    Height="28"
+                    ColumnDefinitions="16,18,*"
+                    Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                    ClipToBounds="True"
+                    ContextRequested="OnDirectoryTreeNodeContextRequested"
+                    DoubleTapped="OnDoubleTappedDirectoryTreeNode">
+                <v:DirectoryTreeNodeToggleButton Grid.Column="0"
+                                                 Classes="tree_expander"
+                                                 Focusable="False"
+                                                 HorizontalAlignment="Center"
+                                                 IsChecked="{Binding IsExpanded, Mode=OneWay}"
+                                                 IsVisible="{Binding !IsRepository}"/>
+
+                <Path Grid.Column="1"
+                      Width="14" Height="14"
+                      HorizontalAlignment="Center"
+                      Data="{DynamicResource Icons.Repositories}"
+                      Fill="{DynamicResource Brush.FG1}"
+                      IsVisible="{Binding IsRepository}"/>
+
+                <ToggleButton Grid.Column="1"
+                              Classes="folder"
+                              Focusable="False"
+                              Width="14" Height="14"
+                              HorizontalAlignment="Left"
+                              Foreground="{DynamicResource Brush.FG1}"
+                              IsChecked="{Binding IsExpanded}"
+                              IsVisible="{Binding !IsRepository}"/>
+
+                <TextBlock Grid.Column="2"
+                           VerticalAlignment="Center"
+                           Text="{Binding Name}"
+                           TextTrimming="CharacterEllipsis"/>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </Grid>
+
     <!-- Managed Repositories -->
-    <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,*">
+    <Grid Grid.Row="0" Grid.Column="2" RowDefinitions="Auto,*">
       <!-- Search Box -->
       <TextBox Grid.Row="0"
                x:Name="SearchBox"
@@ -212,7 +378,7 @@
     </Grid>
 
     <!-- Tips -->
-    <Border Grid.Row="1" Grid.Column="1"
+    <Border Grid.Row="1" Grid.Column="2"
             Margin="0,8,0,0"
             HorizontalAlignment="Center" VerticalAlignment="Center"
             IsVisible="{OnPlatform True, Linux=False}">

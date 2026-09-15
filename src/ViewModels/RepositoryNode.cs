@@ -99,6 +99,7 @@ namespace SourceGit.ViewModels
             }
             else if (Directory.Exists(_id))
             {
+                DirectoryTree.Instance.RecordRecentRepo(_id);
                 App.GetLauncher().OpenRepositoryInTab(this, null);
             }
         }
