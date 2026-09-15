@@ -656,6 +656,7 @@ namespace SourceGit.ViewModels
                 return false;
 
             CommandLog log = null;
+            var succeeded = true;
 
             try
             {
@@ -670,18 +671,23 @@ namespace SourceGit.ViewModels
                 log = CreateLog("Fetch");
 
                 foreach (var remote in _remotes)
-                    await new Commands.Fetch(FullPath, remote).Use(log).ExecAsync();
+                {
+                    var succ = await new Commands.Fetch(FullPath, remote).Use(log).ExecAsync();
+                    if (!succ)
+                        succeeded = false;
+                }
 
                 _lastFetchTime = DateTime.Now;
             }
             catch
             {
                 // Ignore all exceptions.
+                succeeded = false;
             }
 
             IsAutoFetching = false;
             log?.Complete();
-            return true;
+            return succeeded;
         }
 
         public async Task PullAsync(bool autoStart)
