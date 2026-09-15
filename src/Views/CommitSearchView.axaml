@@ -137,8 +137,8 @@
                  VerticalAlignment="Center"
                  Margin="0,0,8,0"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
-                Height="24"
-                MinHeight="24"
+                Height="24" MinHeight="24"
+                Padding="12,0,0,0"
                 HorizontalAlignment="Stretch" VerticalAlignment="Center"
                 HorizontalContentAlignment="Left"
                 BorderBrush="{DynamicResource Brush.Border2}"
