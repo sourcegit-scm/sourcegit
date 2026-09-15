@@ -229,6 +229,8 @@ namespace SourceGit.ViewModels
 
         public void LoadFromCache()
         {
+            EnsureRecentLoaded();
+
             var cache = Preferences.Instance.DirectoryTreeCache;
             if (cache == null || cache.Nodes.Count == 0)
                 return;
