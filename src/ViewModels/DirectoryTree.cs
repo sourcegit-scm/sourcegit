@@ -192,6 +192,17 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public List<DirectoryTreeNode> GetAllRepositories()
+        {
+            var repos = new List<DirectoryTreeNode>();
+            foreach (var row in Rows)
+            {
+                if (row.IsRepository)
+                    repos.Add(row);
+            }
+            return repos;
+        }
+
         private void UpdateEmptyState()
         {
             HasRecentRepos = RecentRepos.Count > 0;
