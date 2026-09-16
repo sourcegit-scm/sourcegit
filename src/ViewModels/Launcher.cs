@@ -132,19 +132,30 @@ namespace SourceGit.ViewModels
 
             var total = 0;
             var succeeded = 0;
+            var noRemoteNames = new List<string>();
 
             foreach (var page in pages)
             {
                 if (page.Data is not Repository repo)
                     continue;
 
+                if (repo.Remotes.Count == 0)
+                {
+                    noRemoteNames.Add(page.Node.Name);
+                    continue;
+                }
+
                 total++;
                 if (await repo.FetchAllRemotesAsync())
                     succeeded++;
             }
 
-            if (total > 0)
-                Models.Notification.Send(null, $"Fetched {succeeded}/{total} repositories", succeeded < total);
+            var message = $"Fetched {succeeded}/{total} repositories";
+
+            if (noRemoteNames.Count > 0)
+                message += $"\n{noRemoteNames.Count} repositories skipped (no remote):\n    {string.Join("\n    ", noRemoteNames)}";
+
+            Models.Notification.Send(null, message, succeeded < total);
         }
 
         public void SwitchWorkspace(Workspace to)
