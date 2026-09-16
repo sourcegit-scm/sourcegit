@@ -69,6 +69,7 @@
                                     PointerReleased="OnPointerReleasedTab"
                                     ContextRequested="OnTabContextRequested"
                                     DragDrop.AllowDrop="True"
+                                    DragDrop.DragOver="DragOverTab"
                                     DragDrop.Drop="DropTab">
                 <ToolTip.Tip>
                   <Grid>

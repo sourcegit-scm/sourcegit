@@ -259,6 +259,15 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void DragOverTab(object sender, DragEventArgs e)
+        {
+            if (e.DataTransfer.Contains(_dndMainTabFormat))
+            {
+                e.DragEffects = DragDropEffects.Move;
+                e.Handled = true;
+            }
+        }
+
         private void DropTab(object sender, DragEventArgs e)
         {
             if (e.DataTransfer.TryGetValue(_dndMainTabFormat) is not { Length: > 0 } id)
