@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Avalonia.Collections;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -60,6 +62,8 @@ namespace SourceGit.ViewModels
                     App.SetTheme(_theme, value);
             }
         }
+
+        public IEnumerable<string> Fonts => FontManager.Current.SystemFonts.Select(f => f.FamilyNames.FirstOrDefault());
 
         public string DefaultFontFamily
         {
