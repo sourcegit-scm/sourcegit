@@ -35,7 +35,7 @@ namespace SourceGit.ViewModels
             set;
         } = WindowState.Normal;
 
-        public double RepositoryDashboardWidth
+        public double RepositorySidebarWidth
         {
             get;
             set;

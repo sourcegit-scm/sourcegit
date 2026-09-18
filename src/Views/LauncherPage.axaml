@@ -40,7 +40,14 @@
           </DataTemplate>
 
           <DataTemplate DataType="vm:Repository">
-            <v:Repository/>
+            <v:Repository>
+              <v:Repository.IsCommitSearchPanelVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
+                  <Binding Path="Histories.IsSearchingCommits"/>
+                </MultiBinding>
+              </v:Repository.IsCommitSearchPanelVisible>
+            </v:Repository>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>
