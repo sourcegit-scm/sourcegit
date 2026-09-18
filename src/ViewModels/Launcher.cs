@@ -133,6 +133,7 @@ namespace SourceGit.ViewModels
             var total = 0;
             var succeeded = 0;
             var noRemoteNames = new List<string>();
+            var failedNames = new List<string>();
 
             foreach (var page in pages)
             {
@@ -148,12 +149,17 @@ namespace SourceGit.ViewModels
                 total++;
                 if (await repo.FetchAllRemotesAsync())
                     succeeded++;
+                else
+                    failedNames.Add(page.Node.Name);
             }
 
             var message = $"Fetched {succeeded}/{total} repositories";
 
             if (noRemoteNames.Count > 0)
                 message += $"\n{noRemoteNames.Count} repositories skipped (no remote):\n    {string.Join("\n    ", noRemoteNames)}";
+
+            if (failedNames.Count > 0)
+                message += $"\n{failedNames.Count} repositories failed:\n    {string.Join("\n    ", failedNames)}";
 
             Models.Notification.Send(null, message, succeeded < total);
         }
