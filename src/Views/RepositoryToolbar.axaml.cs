@@ -513,6 +513,15 @@ namespace SourceGit.Views
             }
         }
 
+        private async void Cleanup(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.CleanupAsync();
+                e.Handled = true;
+            }
+        }
+
         private void NavigateToHead(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository { CurrentBranch: { } head } repo)

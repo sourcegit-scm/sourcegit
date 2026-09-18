@@ -17,7 +17,7 @@
     </Grid.ColumnDefinitions>
 
     <!-- Page Switcher -->
-    <Grid Grid.Column="0" Width="49" RowDefinitions="Auto,*,Auto,Auto,8">
+    <Grid Grid.Column="0" Width="49" RowDefinitions="Auto,*,Auto,12">
       <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
         <ListBox.Styles>
           <Style Selector="Path.icon">
@@ -113,16 +113,8 @@
           </Grid>
         </ListBoxItem>
       </ListBox>
-
+      
       <Button Grid.Row="2"
-              Classes="icon_button"
-              Width="40" Height="40"
-              Margin="4,0"
-              Click="Cleanup"
-              ToolTip.Tip="{DynamicResource Text.Repository.Clean}">
-        <Path Width="18" Height="18" Data="{StaticResource Icons.Clean}"/>
-      </Button>
-      <Button Grid.Row="3"
               Classes="icon_button"
               Width="40" Height="40"
               Margin="4,0"
