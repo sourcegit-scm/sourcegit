@@ -33,7 +33,7 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
             <v:Welcome Margin="4,0,4,4"
-                       CornerRadius="4"
+                       CornerRadius="8"
                        BorderThickness="1"
                        BorderBrush="{DynamicResource Brush.Border0}"
                        Background="{DynamicResource Brush.Window}"/>
