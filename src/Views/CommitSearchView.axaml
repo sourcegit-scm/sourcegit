@@ -102,6 +102,7 @@
                         <DataTemplate DataType="x:String">
                           <Grid ColumnDefinitions="Auto,*">
                             <Path Width="24" Height="24" Data="{StaticResource Icons.File}"/>
+                            <Image Width="24" Height="24" Source="{Binding Converter={x:Static c:PathConverters.FileExtensionToSystemIcon}}"/>
                             <StackPanel Grid.Column="1" Margin="6,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
                               <TextBlock Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                               <TextBlock FontSize="12" Margin="0,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>

@@ -81,7 +81,7 @@ namespace SourceGit.Views
             switch (obj.Type)
             {
                 case Models.ObjectType.Blob:
-                    CreateContent("Icons.File", new Thickness(0, 0, 0, 0));
+                    Content = CreateFileIconContent(obj.Path);
                     break;
                 case Models.ObjectType.Commit:
                     CreateContent("Icons.Submodule", new Thickness(0, 0, 0, 0));
@@ -90,6 +90,38 @@ namespace SourceGit.Views
                     CreateContent(node.IsExpanded ? "Icons.Folder.Open" : "Icons.Folder", new Thickness(0, 2, 0, 0), Brushes.Goldenrod);
                     break;
             }
+        }
+
+        private object CreateFileIconContent(string filePath)
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                var systemIcon = Native.SystemFileIcon.GetIcon(filePath);
+                if (systemIcon != null)
+                {
+                    return new Image
+                    {
+                        Width = 14,
+                        Height = 14,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Source = systemIcon,
+                    };
+                }
+            }
+
+            if (this.FindResource("Icons.File") is not StreamGeometry geo)
+                return null;
+
+            return new Avalonia.Controls.Shapes.Path()
+            {
+                Width = 14,
+                Height = 14,
+                Stretch = Stretch.Uniform,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Center,
+                Data = geo,
+            };
         }
 
         private void CreateContent(string iconKey, Thickness margin, IBrush fill = null)

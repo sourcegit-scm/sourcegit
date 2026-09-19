@@ -92,6 +92,7 @@
                     <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" Tapped="OnSearchSuggestionTapped">
                       <StackPanel Orientation="Horizontal" IsHitTestVisible="False">
                         <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                        <Image Width="12" Height="12" Margin="1,0,0,0" Source="{Binding Converter={x:Static c:PathConverters.FileExtensionToSystemIcon}}"/>
                         <TextBlock Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                       </StackPanel>
                       <TextBlock FontSize="12"

@@ -468,6 +468,18 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public List<string> RecentRepositories
+        {
+            get;
+            set;
+        } = [];
+
+        public Models.DirectoryTreeCacheData DirectoryTreeCache
+        {
+            get;
+            set;
+        } = new();
+
         public List<Workspace> Workspaces
         {
             get;

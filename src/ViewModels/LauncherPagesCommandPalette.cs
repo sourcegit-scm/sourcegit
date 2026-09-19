@@ -85,6 +85,7 @@ namespace SourceGit.ViewModels
 
             var repos = new List<RepositoryNode>();
             CollectVisibleRepository(repos, Preferences.Instance.RepositoryNodes);
+            CollectVisibleDirectoryTreeRepos(repos);
 
             var autoSelectPage = _selectedPage;
             var autoSelectRepo = _selectedRepo;
@@ -182,6 +183,29 @@ namespace SourceGit.ViewModels
                     node.Id.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
                     node.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
                     outs.Add(node);
+            }
+        }
+
+        private void CollectVisibleDirectoryTreeRepos(List<RepositoryNode> outs)
+        {
+            var dirTreeRepos = DirectoryTree.Instance.GetAllRepositories();
+            foreach (var dirNode in dirTreeRepos)
+            {
+                if (_opened.Contains(dirNode.Path))
+                    continue;
+
+                if (string.IsNullOrEmpty(_searchFilter) ||
+                    dirNode.Path.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
+                    dirNode.Name.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase))
+                {
+                    outs.Add(new RepositoryNode
+                    {
+                        Id = dirNode.Path,
+                        Name = dirNode.Name,
+                        IsRepository = true,
+                        IsUnmanaged = true,
+                    });
+                }
             }
         }
 
