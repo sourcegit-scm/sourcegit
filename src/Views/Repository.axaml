@@ -48,7 +48,7 @@
           </ItemsPanelTemplate>
         </ListBox.ItemsPanel>
 
-        <ListBoxItem>
+        <ListBoxItem ToolTip.Placement="Right">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.Dashboard}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -59,7 +59,7 @@
           <Path Classes="icon" Data="{StaticResource Icons.Dashboard}"/>
         </ListBoxItem>
 
-        <ListBoxItem IsVisible="{Binding !IsBare}">
+        <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Placement="Right">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.WorkingCopy}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -89,7 +89,7 @@
           </Grid>
         </ListBoxItem>
 
-        <ListBoxItem IsVisible="{Binding !IsBare}">
+        <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Placement="Right">
           <ToolTip.Tip>
             <TextBlock>
               <Run Text="{DynamicResource Text.Stashes}" Foreground="{DynamicResource Brush.FG1}"/>
@@ -119,7 +119,8 @@
               Width="40" Height="40"
               Margin="4,0"
               Click="OnOpenConfigure"
-              ToolTip.Tip="{DynamicResource Text.Repository.Configure}">
+              ToolTip.Tip="{DynamicResource Text.Repository.Configure}"
+              ToolTip.Placement="Right">
         <Path Width="18" Height="18" Data="{StaticResource Icons.Settings}"/>
       </Button>
     </Grid>
