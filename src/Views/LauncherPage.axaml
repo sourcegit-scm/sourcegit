@@ -47,6 +47,19 @@
                   <Binding Path="Histories.IsSearchingCommits"/>
                 </MultiBinding>
               </v:Repository.IsCommitSearchPanelVisible>
+
+              <v:Repository.IsNormalSidebarVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
+                    <Binding Path="Histories.IsSearchingCommits" Converter="{x:Static BoolConverters.Not}"/>
+                  </MultiBinding>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsOne}"/>
+                    <Binding Source="{x:Static vm:Preferences.Instance}" Path="Layout.IsSidebarCollapsedInLocalChanges" Converter="{x:Static BoolConverters.Not}"/>
+                  </MultiBinding>
+                </MultiBinding>
+              </v:Repository.IsNormalSidebarVisible>
             </v:Repository>
           </DataTemplate>
         </ContentControl.DataTemplates>

@@ -196,10 +196,20 @@
 
       <!-- Bottom -->
       <Border Grid.Row="4" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Brush.Border0}">
-        <Button Classes="flat"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Content="{DynamicResource Text.WorkingCopy.DiscardAll}"
-                Command="{Binding DiscardAllChanges}"/>
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <ToggleButton Grid.Column="0"
+                        Classes="sidebar_expander"
+                        Width="32" Height="32"
+                        IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsSidebarCollapsedInLocalChanges, Mode=TwoWay}"
+                        ToolTip.Placement="RightEdgeAlignedBottom"/>
+          
+          <Button Grid.Column="2"
+                  Classes="flat"
+                  Margin="0,0,8,0"
+                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  Content="{DynamicResource Text.WorkingCopy.DiscardAll}"
+                  Command="{Binding DiscardAllChanges}"/>
+        </Grid>
       </Border>
     </Grid>
 
