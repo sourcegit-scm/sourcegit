@@ -22,19 +22,36 @@ namespace SourceGit.Views
             set
             {
                 if (SetAndRaise(IsCommitSearchPanelVisibleProperty, ref _isCommitSearchPanelVisible, value))
-                {
-                    var layout = ViewModels.Preferences.Instance.Layout;
-                    if (value)
-                    {
-                        SidebarWidth = new GridLength(layout.RepositorySearchCommitWidth, GridUnitType.Pixel);
-                    }
-                    else
-                    {
-                        SidebarWidth = new GridLength(layout.RepositorySidebarWidth, GridUnitType.Pixel);
-                        UpdateLeftSidebarLayout();
-                    }
-                }
+                    CalculateSidebarWidth();
             }
+        }
+
+        public static readonly DirectProperty<Repository, bool> IsNormalSidebarVisibleProperty =
+            AvaloniaProperty.RegisterDirect<Repository, bool>(
+                nameof(IsNormalSidebarVisible),
+                static o => o.IsNormalSidebarVisible,
+                static (o, v) => o.IsNormalSidebarVisible = v);
+
+        public bool IsNormalSidebarVisible
+        {
+            get => _isNormalSidebarVisible;
+            set
+            {
+                if (SetAndRaise(IsNormalSidebarVisibleProperty, ref _isNormalSidebarVisible, value))
+                    CalculateSidebarWidth();
+            }
+        }
+
+        public static readonly DirectProperty<Repository, double> SidebarMinWidthProperty =
+            AvaloniaProperty.RegisterDirect<Repository, double>(
+                nameof(SidebarMinWidth),
+                static o => o.SidebarMinWidth,
+                static (o, v) => o.SidebarMinWidth = v);
+
+        public double SidebarMinWidth
+        {
+            get => _sidebarMinWidth;
+            set => SetAndRaise(SidebarMinWidthProperty, ref _sidebarMinWidth, value);
         }
 
         public static readonly DirectProperty<Repository, GridLength> SidebarWidthProperty =
@@ -53,7 +70,7 @@ namespace SourceGit.Views
                     var layout = ViewModels.Preferences.Instance.Layout;
                     if (_isCommitSearchPanelVisible)
                         layout.RepositorySearchCommitWidth = value.Value;
-                    else
+                    else if (_isNormalSidebarVisible)
                         layout.RepositorySidebarWidth = value.Value;
                 }
             }
@@ -493,7 +510,29 @@ namespace SourceGit.Views
             }
         }
 
+        private void CalculateSidebarWidth()
+        {
+            var layout = ViewModels.Preferences.Instance.Layout;
+            if (_isCommitSearchPanelVisible)
+            {
+                SidebarMinWidth = 200;
+                SidebarWidth = new GridLength(layout.RepositorySearchCommitWidth, GridUnitType.Pixel);
+            }
+            else if (_isNormalSidebarVisible)
+            {
+                SidebarMinWidth = 200;
+                SidebarWidth = new GridLength(layout.RepositorySidebarWidth, GridUnitType.Pixel);
+            }
+            else
+            {
+                SidebarMinWidth = 0;
+                SidebarWidth = new GridLength(0, GridUnitType.Pixel);
+            }
+        }
+
+        private bool _isNormalSidebarVisible = true;
         private bool _isCommitSearchPanelVisible = false;
+        private double _sidebarMinWidth = 100;
         private GridLength _sidebarWidth;
     }
 }

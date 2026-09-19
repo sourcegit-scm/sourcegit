@@ -240,15 +240,13 @@
           <!-- Main Body -->
           <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="{Binding #ThisControl.SidebarWidth, Mode=TwoWay}" MinWidth="200"/>
-              <ColumnDefinition Width="3"/>
+              <ColumnDefinition Width="{Binding #ThisControl.SidebarWidth, Mode=TwoWay}"/>
+              <ColumnDefinition Width="Auto"/>
               <ColumnDefinition Width="*" MinWidth="100"/>
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar (Branches/Remotes/Tags/Submodules/Worktrees) -->
-            <Grid Grid.Column="0"
-                  RowDefinitions="Auto,*"
-                  IsVisible="{Binding !#ThisControl.IsCommitSearchPanelVisible, Mode=OneWay}">
+            <Grid Grid.Column="0" RowDefinitions="Auto,*" IsVisible="{Binding #ThisControl.IsNormalSidebarVisible, Mode=OneWay}">              
               <!-- Filter Branches/Tags/Submodules -->
               <TextBox Grid.Row="0"
                        x:Name="FilterBox"
@@ -570,12 +568,19 @@
 
             <!-- Splitter -->
             <GridSplitter Grid.Column="1"
-                          MinWidth="1"
+                          Width="3" MinWidth="3" MaxWidth="3"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                           Background="Transparent"
                           BorderThickness="0,0,1,0"
                           BorderBrush="{DynamicResource Brush.Border0}"
-                          Focusable="False"/>
+                          Focusable="False">
+              <GridSplitter.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                  <Binding ElementName="ThisControl" Path="IsCommitSearchPanelVisible"/>
+                  <Binding ElementName="ThisControl" Path="IsNormalSidebarVisible"/>
+                </MultiBinding>
+              </GridSplitter.IsVisible>
+            </GridSplitter>
 
             <!-- Right Page -->
             <Grid Grid.Column="2">
