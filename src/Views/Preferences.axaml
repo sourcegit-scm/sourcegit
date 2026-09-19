@@ -210,19 +210,25 @@
                        Text="{DynamicResource Text.Preferences.Appearance.DefaultFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="1" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding DefaultFontFamily, Mode=TwoWay}"/>
+            <ComboBox Grid.Row="1" Grid.Column="1"
+                      Height="28"
+                      HorizontalAlignment="Stretch"
+                      Padding="8,0"
+                      CornerRadius="3"
+                      ItemsSource="{Binding Fonts, Mode=OneWay}"
+                      SelectedItem="{Binding DefaultFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="2" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.MonospaceFont}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <TextBox Grid.Row="2" Grid.Column="1"
+            <ComboBox Grid.Row="2" Grid.Column="1"
                      Height="28"
+                     HorizontalAlignment="Stretch"
+                     Padding="8,0"
                      CornerRadius="3"
-                     Text="{Binding MonospaceFontFamily, Mode=TwoWay}"/>
+                     ItemsSource="{Binding Fonts, Mode=OneWay}"
+                     SelectedItem="{Binding MonospaceFontFamily, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="3" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.FontSize}"
