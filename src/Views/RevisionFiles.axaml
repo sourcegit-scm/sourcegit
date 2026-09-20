@@ -156,22 +156,8 @@
             </Grid>
           </Border>
 
-          <v:RevisionFileContentViewer Grid.Row="1">
-            <v:RevisionFileContentViewer.Content>
-              <Binding Path="ViewRevisionFileContent" Mode="OneWay">
-                <Binding.TargetNullValue>
-                  <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <Path Width="64" Height="64" Data="{StaticResource Icons.File.Preview}" Fill="{DynamicResource Brush.FG2}"/>
-                    <TextBlock Margin="0,16,0,0"
-                               Text="{DynamicResource Text.CommitDetail.Files.Tips}"
-                               FontSize="18" FontWeight="Bold"
-                               Foreground="{DynamicResource Brush.FG2}"
-                               HorizontalAlignment="Center"/>
-                  </StackPanel>
-                </Binding.TargetNullValue>
-              </Binding>
-            </v:RevisionFileContentViewer.Content>
-          </v:RevisionFileContentViewer>
+          <v:RevisionFileContentViewer Grid.Row="1"
+                                       Content="{Binding ViewRevisionFileContent, TargetNullValue={x:Static m:Null.Instance}, Mode=OneWay}"/>
         </Grid>
       </Border>
     </Border>
