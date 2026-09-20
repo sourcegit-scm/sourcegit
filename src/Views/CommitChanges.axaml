@@ -41,7 +41,7 @@
         <v:ChangeViewModeSwitcher Grid.Column="1"
                                   Width="18" Height="18"
                                   Margin="4,0,0,0"
-                                  ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
+                                  ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=ChangeViewMode, Mode=TwoWay}"/>
       </Grid>
 
       <!-- Changes -->
@@ -53,7 +53,7 @@
         <Border CornerRadius="4,4,0,0"
                 Background="{DynamicResource Brush.Contents}"
                 ClipToBounds="True">
-          <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
+          <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=ChangeViewMode}"
                                   EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                   Changes="{Binding VisibleChanges, Mode=OneWay}"
                                   Selection="{Binding ChangeSelection, Mode=TwoWay}"

@@ -1373,7 +1373,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
           <Path x:Name="ChevronPath"
-                Width="16" Height="16"
+                Width="15" Height="15"
                 Data="{StaticResource Icons.Sidebar.Expanded}"
                 Fill="{DynamicResource Brush.FG1}"
                 HorizontalAlignment="Center"
