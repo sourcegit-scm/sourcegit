@@ -899,9 +899,9 @@ namespace SourceGit.Views
                 if (c.IsMerged)
                 {
                     canMerge = false;
-                    canCherryPick = false;
                 }
-                else if (c.Parents.Count > 1)
+
+                if (c.Parents.Count > 1)
                 {
                     canCherryPick = false;
                 }
@@ -1204,17 +1204,17 @@ namespace SourceGit.Views
                         e.Handled = true;
                     };
                     menu.Items.Add(merge);
-
-                    var cherryPick = new MenuItem();
-                    cherryPick.Header = App.Text("CommitCM.CherryPick");
-                    cherryPick.Icon = this.CreateMenuIcon("Icons.CherryPick");
-                    cherryPick.Click += async (_, e) =>
-                    {
-                        await vm.CherryPickAsync(commit);
-                        e.Handled = true;
-                    };
-                    menu.Items.Add(cherryPick);
                 }
+
+                var cherryPick = new MenuItem();
+                cherryPick.Header = App.Text("CommitCM.CherryPick");
+                cherryPick.Icon = this.CreateMenuIcon("Icons.CherryPick");
+                cherryPick.Click += async (_, e) =>
+                {
+                    await vm.CherryPickAsync(commit);
+                    e.Handled = true;
+                };
+                menu.Items.Add(cherryPick);
 
                 var revert = new MenuItem();
                 revert.Header = App.Text("CommitCM.Revert");
