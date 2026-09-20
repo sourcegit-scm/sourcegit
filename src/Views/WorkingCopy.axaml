@@ -31,8 +31,7 @@
                         Classes="sidebar_expander"
                         Width="32"
                         VerticalAlignment="Center"
-                        IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsSidebarCollapsedInLocalChanges, Mode=TwoWay}"
-                        ToolTip.Placement="RightEdgeAlignedBottom"/>
+                        IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsSidebarCollapsedInLocalChanges, Mode=TwoWay}"/>
           
           <TextBox Grid.Column="1"
                    x:Name="LocalChangesSearchBox"
