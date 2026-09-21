@@ -1,5 +1,7 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -8,6 +10,14 @@ namespace SourceGit.Views
         public CommitSearchView()
         {
             InitializeComponent();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == IsVisibleProperty && IsVisible)
+                Dispatcher.UIThread.Post(() => TxtSearchCommitsBox.Focus(NavigationMethod.Directional), DispatcherPriority.Background);
         }
 
         private void OnSearchBoxKeyDown(object _, KeyEventArgs e)

@@ -304,9 +304,10 @@ namespace SourceGit.Native
                     return;
             }
 
-            objc_msgSend_Void_Point(nsCloseBtn, s_selSetFrameOrigin, new(14, 2));
-            objc_msgSend_Void_Point(nsMinBtn, s_selSetFrameOrigin, new(14 + 20, 2));
-            objc_msgSend_Void_Point(nsZoomBtn, s_selSetFrameOrigin, new(14 + 40, 2));
+            var yOffset = OperatingSystem.IsMacOSVersionAtLeast(26) ? 6 : 2;
+            objc_msgSend_Void_Point(nsCloseBtn, s_selSetFrameOrigin, new(14, yOffset));
+            objc_msgSend_Void_Point(nsMinBtn, s_selSetFrameOrigin, new(14 + 20, yOffset));
+            objc_msgSend_Void_Point(nsZoomBtn, s_selSetFrameOrigin, new(14 + 40, yOffset));
         }
 
         public static void HideSelf()

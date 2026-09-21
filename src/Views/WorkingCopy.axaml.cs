@@ -99,7 +99,8 @@ namespace SourceGit.Views
                 }
                 else if (e.Key is Key.Delete or Key.Back)
                 {
-                    vm.Discard(changes);
+                    var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                    vm.Discard(changes, next);
                     e.Handled = true;
                 }
                 else if (e.Key is Key.O && e.KeyModifiers == cmdKey && changes.Count == 1)
@@ -413,7 +414,8 @@ namespace SourceGit.Views
                     stage.Tag = "Enter/Space";
                     stage.Click += async (_, e) =>
                     {
-                        await vm.StageChangesAsync(changes, null);
+                        var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                        await vm.StageChangesAsync(changes, next);
                         e.Handled = true;
                     };
 
@@ -423,7 +425,8 @@ namespace SourceGit.Views
                     discard.Tag = "Back/Delete";
                     discard.Click += (_, e) =>
                     {
-                        vm.Discard(changes);
+                        var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                        vm.Discard(changes, next);
                         e.Handled = true;
                     };
 
@@ -818,7 +821,8 @@ namespace SourceGit.Views
                 stage.Tag = "Enter/Space";
                 stage.Click += async (_, e) =>
                 {
-                    await vm.StageChangesAsync(changes, null);
+                    var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                    await vm.StageChangesAsync(changes, next);
                     e.Handled = true;
                 };
 
@@ -828,7 +832,8 @@ namespace SourceGit.Views
                 discard.Tag = "Back/Delete";
                 discard.Click += (_, e) =>
                 {
-                    vm.Discard(changes);
+                    var next = UnstagedChangesView.GetNextChangeWithoutSelection();
+                    vm.Discard(changes, next);
                     e.Handled = true;
                 };
 
@@ -1020,7 +1025,8 @@ namespace SourceGit.Views
                 unstage.Tag = "Enter/Space";
                 unstage.Click += async (_, e) =>
                 {
-                    await vm.UnstageChangesAsync(changes, null);
+                    var next = StagedChangesView.GetNextChangeWithoutSelection();
+                    await vm.UnstageChangesAsync(changes, next);
                     e.Handled = true;
                 };
 
@@ -1234,7 +1240,8 @@ namespace SourceGit.Views
                 unstage.Tag = "Enter/Space";
                 unstage.Click += async (_, e) =>
                 {
-                    await vm.UnstageChangesAsync(changes, null);
+                    var next = StagedChangesView.GetNextChangeWithoutSelection();
+                    await vm.UnstageChangesAsync(changes, next);
                     e.Handled = true;
                 };
 
