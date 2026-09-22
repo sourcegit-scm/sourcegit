@@ -1150,6 +1150,16 @@ namespace SourceGit.Views
                 e.Handled = true;
             };
 
+            var setPushURL = new MenuItem();
+            setPushURL.Header = App.Text("RemoteCM.SetPushURL");
+            setPushURL.Icon = this.CreateMenuIcon("Icons.Link");
+            setPushURL.Click += (_, e) =>
+            {
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.SetPushURL(repo, remote));
+                e.Handled = true;
+            };
+
             var delete = new MenuItem();
             delete.Header = App.Text("RemoteCM.Delete");
             delete.Icon = this.CreateMenuIcon("Icons.Clear");
@@ -1170,6 +1180,7 @@ namespace SourceGit.Views
             };
 
             menu.Items.Add(edit);
+            menu.Items.Add(setPushURL);
             menu.Items.Add(delete);
             menu.Items.Add(new MenuItem() { Header = "-" });
             TryToAddCustomActionsToRemoteContextMenu(repo, menu, remote);

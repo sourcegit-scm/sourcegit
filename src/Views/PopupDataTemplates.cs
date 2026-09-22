@@ -35,6 +35,9 @@ namespace SourceGit.Views
                         return;
                     }
                 }
+
+                // Although this control may not be focusable, we only want to change the window's previous focus after the call.
+                ctl.Focus(NavigationMethod.Directional);
             };
 
             return control;

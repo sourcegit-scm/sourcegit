@@ -10,8 +10,75 @@ namespace SourceGit.Views
 {
     public partial class Repository : UserControl
     {
+        public static readonly DirectProperty<Repository, bool> IsCommitSearchPanelVisibleProperty =
+            AvaloniaProperty.RegisterDirect<Repository, bool>(
+                nameof(IsCommitSearchPanelVisible),
+                static o => o.IsCommitSearchPanelVisible,
+                static (o, v) => o.IsCommitSearchPanelVisible = v);
+
+        public bool IsCommitSearchPanelVisible
+        {
+            get => _isCommitSearchPanelVisible;
+            set
+            {
+                if (SetAndRaise(IsCommitSearchPanelVisibleProperty, ref _isCommitSearchPanelVisible, value))
+                    CalculateSidebarWidth();
+            }
+        }
+
+        public static readonly DirectProperty<Repository, bool> IsNormalSidebarVisibleProperty =
+            AvaloniaProperty.RegisterDirect<Repository, bool>(
+                nameof(IsNormalSidebarVisible),
+                static o => o.IsNormalSidebarVisible,
+                static (o, v) => o.IsNormalSidebarVisible = v);
+
+        public bool IsNormalSidebarVisible
+        {
+            get => _isNormalSidebarVisible;
+            set
+            {
+                if (SetAndRaise(IsNormalSidebarVisibleProperty, ref _isNormalSidebarVisible, value))
+                    CalculateSidebarWidth();
+            }
+        }
+
+        public static readonly DirectProperty<Repository, double> SidebarMinWidthProperty =
+            AvaloniaProperty.RegisterDirect<Repository, double>(
+                nameof(SidebarMinWidth),
+                static o => o.SidebarMinWidth,
+                static (o, v) => o.SidebarMinWidth = v);
+
+        public double SidebarMinWidth
+        {
+            get => _sidebarMinWidth;
+            set => SetAndRaise(SidebarMinWidthProperty, ref _sidebarMinWidth, value);
+        }
+
+        public static readonly DirectProperty<Repository, GridLength> SidebarWidthProperty =
+            AvaloniaProperty.RegisterDirect<Repository, GridLength>(
+                nameof(SidebarWidth),
+                static o => o.SidebarWidth,
+                static (o, v) => o.SidebarWidth = v);
+
+        public GridLength SidebarWidth
+        {
+            get => _sidebarWidth;
+            set
+            {
+                if (SetAndRaise(SidebarWidthProperty, ref _sidebarWidth, value))
+                {
+                    var layout = ViewModels.Preferences.Instance.Layout;
+                    if (_isCommitSearchPanelVisible)
+                        layout.RepositorySearchCommitWidth = value.Value;
+                    else if (_isNormalSidebarVisible)
+                        layout.RepositorySidebarWidth = value.Value;
+                }
+            }
+        }
+
         public Repository()
         {
+            _sidebarWidth = new GridLength(ViewModels.Preferences.Instance.Layout.RepositorySidebarWidth);
             InitializeComponent();
         }
 
@@ -21,51 +88,42 @@ namespace SourceGit.Views
             UpdateLeftSidebarLayout();
         }
 
-        private void OnToggleFilter(object _, RoutedEventArgs e)
+        private async void OnOpenConfigure(object sender, RoutedEventArgs e)
         {
-            FilterBox.Focus();
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await this.ShowDialogAsync(new ViewModels.RepositoryConfigure(repo));
+                e.Handled = true;
+            }
+        }
+
+        private async void OnSkipInProgress(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                await repo.SkipMergeAsync();
+
             e.Handled = true;
         }
 
-        private void OnSearchCommitPanelPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        private void OnResolveInProgress(object sender, RoutedEventArgs e)
         {
-            if (e.Property == IsVisibleProperty && sender is Grid { IsVisible: true })
-                TxtSearchCommitsBox.Focus();
+            if (DataContext is ViewModels.Repository repo)
+                repo.SelectedViewIndex = 1;
+
+            e.Handled = true;
         }
 
-        private void OnSearchKeyDown(object _, KeyEventArgs e)
+        private async void OnAbortInProgress(object sender, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.Repository repo)
-                return;
+            if (DataContext is ViewModels.Repository repo)
+                await repo.AbortMergeAsync();
 
-            if (e.Key == Key.Enter)
-            {
-                repo.SearchCommitContext.StartSearch();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Down)
-            {
-                if (repo.SearchCommitContext.Suggestions is { Count: > 0 })
-                {
-                    SearchSuggestionBox.Focus(NavigationMethod.Tab);
-                    SearchSuggestionBox.SelectedIndex = 0;
-                }
-
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Escape)
-            {
-                repo.SearchCommitContext.ClearSuggestions();
-                e.Handled = true;
-            }
+            e.Handled = true;
         }
 
-        private void OnClearSearchCommitFilter(object _, RoutedEventArgs e)
+        private void OnToggleSidebarFilter(object _, RoutedEventArgs e)
         {
-            if (DataContext is not ViewModels.Repository repo)
-                return;
-
-            repo.SearchCommitContext.ClearFilter();
+            FilterBox.Focus();
             e.Handled = true;
         }
 
@@ -186,11 +244,10 @@ namespace SourceGit.Views
 
         private void UpdateLeftSidebarLayout()
         {
-            var vm = DataContext as ViewModels.Repository;
-            if (vm?.Settings == null)
+            if (!IsLoaded || _isCommitSearchPanelVisible)
                 return;
 
-            if (!IsLoaded)
+            if (DataContext is not ViewModels.Repository { UIStates: { } } vm)
                 return;
 
             var leftHeight = LeftSidebarGroups.Bounds.Height - 28.0 * 5 - 4;
@@ -305,233 +362,6 @@ namespace SourceGit.Views
                     RemoteBranchTree.Height = height;
                 }
             }
-        }
-
-        private void OnSearchSuggestionBoxKeyDown(object _, KeyEventArgs e)
-        {
-            if (DataContext is not ViewModels.Repository repo)
-                return;
-
-            if (e.Key == Key.Escape)
-            {
-                repo.SearchCommitContext.ClearSuggestions();
-                e.Handled = true;
-            }
-            else if (e.Key == Key.Enter)
-            {
-                var selected = SearchSuggestionBox.SelectedItem;
-                if (selected is string content)
-                {
-                    repo.SearchCommitContext.Filter = content;
-                    TxtSearchCommitsBox.CaretIndex = content.Length;
-                }
-                else if (selected is Models.User user)
-                {
-                    var apply = user.ToString().EscapeForBRE();
-                    repo.SearchCommitContext.Filter = apply;
-                    TxtSearchCommitsBox.CaretIndex = apply.Length;
-                }
-
-                repo.SearchCommitContext.StartSearch();
-                e.Handled = true;
-            }
-        }
-
-        private void OnSearchSuggestionTapped(object sender, TappedEventArgs e)
-        {
-            if (DataContext is not ViewModels.Repository repo)
-                return;
-
-            var ctx = (sender as Control)?.DataContext;
-            if (ctx is string content)
-            {
-                repo.SearchCommitContext.Filter = content;
-                TxtSearchCommitsBox.CaretIndex = content.Length;
-            }
-            else if (ctx is Models.User user)
-            {
-                var apply = user.ToString().EscapeForBRE();
-                repo.SearchCommitContext.Filter = apply;
-                TxtSearchCommitsBox.CaretIndex = apply.Length;
-            }
-
-            repo.SearchCommitContext.StartSearch();
-            e.Handled = true;
-        }
-
-        private void OnOpenAdvancedHistoriesOption(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && DataContext is ViewModels.Repository { Histories: { } histories } repo)
-            {
-                var pref = ViewModels.Preferences.Instance;
-
-                var layout = new MenuItem();
-                layout.Header = App.Text("Repository.HistoriesLayout");
-                layout.IsEnabled = false;
-
-                var isHorizontal = pref.UseTwoColumnsLayoutInHistories;
-                var horizontal = new MenuItem();
-                horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
-                if (isHorizontal)
-                    horizontal.Icon = this.CreateMenuIcon("Icons.Check");
-                horizontal.Click += (_, ev) =>
-                {
-                    pref.UseTwoColumnsLayoutInHistories = true;
-                    ev.Handled = true;
-                };
-
-                var vertical = new MenuItem();
-                vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
-                if (!isHorizontal)
-                    vertical.Icon = this.CreateMenuIcon("Icons.Check");
-                vertical.Click += (_, ev) =>
-                {
-                    pref.UseTwoColumnsLayoutInHistories = false;
-                    ev.Handled = true;
-                };
-
-                var showFlags = new MenuItem();
-                showFlags.Header = App.Text("Repository.ShowFlags");
-                showFlags.IsEnabled = false;
-
-                var reflog = new MenuItem();
-                reflog.Header = App.Text("Repository.ShowLostCommits");
-                reflog.Tag = "--reflog";
-                if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.Reflog))
-                    reflog.Icon = this.CreateMenuIcon("Icons.Check");
-                reflog.Click += (_, ev) =>
-                {
-                    repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.Reflog);
-                    ev.Handled = true;
-                };
-
-                var firstParentOnly = new MenuItem();
-                firstParentOnly.Header = App.Text("Repository.ShowFirstParentOnly");
-                firstParentOnly.Tag = "--first-parent";
-                if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly))
-                    firstParentOnly.Icon = this.CreateMenuIcon("Icons.Check");
-                firstParentOnly.Click += (_, ev) =>
-                {
-                    repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.FirstParentOnly);
-                    ev.Handled = true;
-                };
-
-                var simplifyByDecoration = new MenuItem();
-                simplifyByDecoration.Header = App.Text("Repository.ShowDecoratedCommitsOnly");
-                simplifyByDecoration.Tag = "--simplify-by-decoration";
-                if (repo.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.SimplifyByDecoration))
-                    simplifyByDecoration.Icon = this.CreateMenuIcon("Icons.Check");
-                simplifyByDecoration.Click += (_, ev) =>
-                {
-                    repo.ToggleHistoryShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
-                    ev.Handled = true;
-                };
-
-                var order = new MenuItem();
-                order.Header = App.Text("Repository.HistoriesOrder");
-                order.IsEnabled = false;
-
-                var dateOrder = new MenuItem();
-                dateOrder.Header = App.Text("Repository.HistoriesOrder.ByDate");
-                dateOrder.Tag = "--date-order";
-                if (!repo.EnableTopoOrderInHistory)
-                    dateOrder.Icon = this.CreateMenuIcon("Icons.Check");
-                dateOrder.Click += (_, ev) =>
-                {
-                    repo.EnableTopoOrderInHistory = false;
-                    ev.Handled = true;
-                };
-
-                var topoOrder = new MenuItem();
-                topoOrder.Header = App.Text("Repository.HistoriesOrder.Topo");
-                topoOrder.Tag = "--topo-order";
-                if (repo.EnableTopoOrderInHistory)
-                    topoOrder.Icon = this.CreateMenuIcon("Icons.Check");
-                topoOrder.Click += (_, ev) =>
-                {
-                    repo.EnableTopoOrderInHistory = true;
-                    ev.Handled = true;
-                };
-
-                var highlights = new MenuItem();
-                highlights.Header = App.Text("Histories.HighlightsInGraph");
-                highlights.IsEnabled = false;
-
-                var all = new MenuItem();
-                all.Header = App.Text("Histories.HighlightsInGraph.All");
-                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.All)
-                    all.Icon = this.CreateMenuIcon("Icons.Check");
-                all.Click += (_, ev) =>
-                {
-                    histories.GraphHighlighting = Models.CommitGraphHighlighting.All;
-                    ev.Handled = true;
-                };
-
-                var currentBranchOnly = new MenuItem();
-                currentBranchOnly.Header = App.Text("Histories.HighlightsInGraph.CurrentBranchOnly");
-                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchOnly)
-                    currentBranchOnly.Icon = this.CreateMenuIcon("Icons.Check");
-                currentBranchOnly.Click += (_, ev) =>
-                {
-                    histories.GraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchOnly;
-                    ev.Handled = true;
-                };
-
-                var selectedCommitsOnly = new MenuItem();
-                selectedCommitsOnly.Header = App.Text("Histories.HighlightsInGraph.SelectedCommitsOnly");
-                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.SelectedCommitsOnly)
-                    selectedCommitsOnly.Icon = this.CreateMenuIcon("Icons.Check");
-                selectedCommitsOnly.Click += (_, ev) =>
-                {
-                    histories.GraphHighlighting = Models.CommitGraphHighlighting.SelectedCommitsOnly;
-                    ev.Handled = true;
-                };
-
-                var selectedCommitsOnlyFirstParent = new MenuItem();
-                selectedCommitsOnlyFirstParent.Header = App.Text("Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent");
-                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
-                    selectedCommitsOnlyFirstParent.Icon = this.CreateMenuIcon("Icons.Check");
-                selectedCommitsOnlyFirstParent.Click += (_, ev) =>
-                {
-                    histories.GraphHighlighting = Models.CommitGraphHighlighting.SelectedCommitsOnlyFirstParent;
-                    ev.Handled = true;
-                };
-
-                var currentBranchAndSelectedCommits = new MenuItem();
-                currentBranchAndSelectedCommits.Header = App.Text("Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits");
-                if (histories.GraphHighlighting == Models.CommitGraphHighlighting.CurrentBranchAndSelectedCommits)
-                    currentBranchAndSelectedCommits.Icon = this.CreateMenuIcon("Icons.Check");
-                currentBranchAndSelectedCommits.Click += (_, ev) =>
-                {
-                    histories.GraphHighlighting = Models.CommitGraphHighlighting.CurrentBranchAndSelectedCommits;
-                    ev.Handled = true;
-                };
-
-                var menu = new ContextMenu();
-                menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
-                menu.Items.Add(layout);
-                menu.Items.Add(horizontal);
-                menu.Items.Add(vertical);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(showFlags);
-                menu.Items.Add(reflog);
-                menu.Items.Add(firstParentOnly);
-                menu.Items.Add(simplifyByDecoration);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(order);
-                menu.Items.Add(dateOrder);
-                menu.Items.Add(topoOrder);
-                menu.Items.Add(new MenuItem() { Header = "-" });
-                menu.Items.Add(highlights);
-                menu.Items.Add(all);
-                menu.Items.Add(currentBranchOnly);
-                menu.Items.Add(selectedCommitsOnly);
-                menu.Items.Add(selectedCommitsOnlyFirstParent);
-                menu.Items.Add(currentBranchAndSelectedCommits);
-                menu.Open(button);
-            }
-
-            e.Handled = true;
         }
 
         private void OnOpenSortLocalBranchMenu(object sender, RoutedEventArgs e)
@@ -653,30 +483,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void OnSkipInProgress(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-                await repo.SkipMergeAsync();
-
-            e.Handled = true;
-        }
-
-        private void OnResolveInProgress(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-                repo.SelectedViewIndex = 1;
-
-            e.Handled = true;
-        }
-
-        private async void OnAbortInProgress(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-                await repo.AbortMergeAsync();
-
-            e.Handled = true;
-        }
-
         private void OnRemoveSelectedHistoryFilter(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo && sender is Button { DataContext: Models.HistoryFilter filter })
@@ -697,11 +503,36 @@ namespace SourceGit.Views
 
         private void OnRightPagePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == Border.IsVisibleProperty && sender is Border page)
+            if (e.Property == Control.IsVisibleProperty && sender is Control page)
             {
                 var diffViewer = page.FindDescendantOfType<DiffView>();
                 diffViewer?.ToggleHotkeyBindings(page.IsVisible);
             }
         }
+
+        private void CalculateSidebarWidth()
+        {
+            var layout = ViewModels.Preferences.Instance.Layout;
+            if (_isCommitSearchPanelVisible)
+            {
+                SidebarMinWidth = 200;
+                SidebarWidth = new GridLength(layout.RepositorySearchCommitWidth, GridUnitType.Pixel);
+            }
+            else if (_isNormalSidebarVisible)
+            {
+                SidebarMinWidth = 200;
+                SidebarWidth = new GridLength(layout.RepositorySidebarWidth, GridUnitType.Pixel);
+            }
+            else
+            {
+                SidebarMinWidth = 0;
+                SidebarWidth = new GridLength(0, GridUnitType.Pixel);
+            }
+        }
+
+        private bool _isNormalSidebarVisible = true;
+        private bool _isCommitSearchPanelVisible = false;
+        private double _sidebarMinWidth = 200;
+        private GridLength _sidebarWidth;
     }
 }

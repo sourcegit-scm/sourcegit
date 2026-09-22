@@ -36,7 +36,7 @@
                     DoubleTapped="OnItemDoubleTapped"
                     ToolTip.Tip="{Binding ToolTip}"
                     ToolTip.Placement="Right">
-              <Grid ColumnDefinitions="16,16,*,Auto" Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}">
+              <Grid ColumnDefinitions="16,18,*,Auto" Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}">
                 <v:TagTreeNodeToggleButton Grid.Column="0"
                                            Classes="tree_expander"
                                            Focusable="False"
@@ -46,7 +46,7 @@
 
                 <v:TagTreeNodeIcon Grid.Column="1" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
 
-                <TextBlock Grid.Column="2" Margin="4,0,0,0">
+                <TextBlock Grid.Column="2">
                   <Run Text="{Binding FullPath, Converter={x:Static c:PathConverters.PureFileName}, Mode=OneWay}"/>
                   <Run Text="{Binding TagsCount}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
@@ -82,22 +82,20 @@
                     DoubleTapped="OnItemDoubleTapped"
                     ToolTip.Tip="{Binding ToolTip}"
                     ToolTip.Placement="Right">
-              <Grid ColumnDefinitions="16,16,*,Auto">
+              <Grid ColumnDefinitions="16,18,*,Auto">
                 <Path Grid.Column="1"
                       Width="12" Height="12"
+                      HorizontalAlignment="Left"
                       Data="{StaticResource Icons.Tag}"
                       IsVisible="{Binding Tag.IsAnnotated}"/>
 
                 <Path Grid.Column="1"
                       Width="12" Height="12"
-                      Data="{StaticResource Icons.Tag}"
-                      Fill="Transparent"
-                      Stroke="{DynamicResource Brush.FG1}"
-                      StrokeThickness="1"
+                      HorizontalAlignment="Left"
+                      Data="{StaticResource Icons.Tag.LinePath}"
                       IsVisible="{Binding !Tag.IsAnnotated}"/>
 
                 <TextBlock Grid.Column="2"
-                           Margin="4,0,0,0"
                            Text="{Binding Tag.Name}"
                            TextTrimming="CharacterEllipsis"/>
 
@@ -116,10 +114,7 @@
                 Data="{StaticResource Icons.Tag}"
                 IsVisible="{Binding IsAnnotated}"/>
           <Path Width="12" Height="12"
-                Data="{StaticResource Icons.Tag}"
-                Fill="Transparent"
-                Stroke="{DynamicResource Brush.FG1}"
-                StrokeThickness="1"
+                Data="{StaticResource Icons.Tag.LinePath}"
                 IsVisible="{Binding !IsAnnotated}"/>
           <TextBlock FontWeight="Bold" Margin="6,0,0,0" Text="{Binding Name}"/>
           <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" IsVisible="{Binding IsAnnotated}">

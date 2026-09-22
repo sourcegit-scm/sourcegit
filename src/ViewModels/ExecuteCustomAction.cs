@@ -181,7 +181,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             CustomAction = action;
-            Target = scopeTarget ?? new Models.Null();
+            Target = scopeTarget ?? Models.Null.Instance;
 
             foreach (var ctl in CustomAction.Controls)
             {

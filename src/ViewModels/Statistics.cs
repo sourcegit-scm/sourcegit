@@ -85,7 +85,7 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                var result = await new Commands.Statistics(_repo, Preferences.Instance.MaxHistoryCommits, _selectedBranch)
+                var result = await new Commands.Statistics(_repo, 200000, _selectedBranch)
                     .ReadAsync()
                     .ConfigureAwait(false);
 

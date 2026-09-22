@@ -66,13 +66,14 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _selected, value) && value != null)
-                    _repo.NavigateToCommit(value.SHA);
+                    _histories.NavigateTo(value.SHA);
             }
         }
 
-        public SearchCommitContext(Repository repo)
+        public SearchCommitContext(string repo, Histories histories)
         {
             _repo = repo;
+            _histories = histories;
         }
 
         public void ClearFilter()
@@ -108,21 +109,20 @@ namespace SourceGit.ViewModels
             {
                 var result = new List<Models.Commit>();
                 var method = (Models.CommitSearchMethod)_method;
-                var repoPath = _repo.FullPath;
 
                 if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    var isCommitSHA = await new Commands.IsCommitSHA(repoPath, _filter)
+                    var isCommitSHA = await new Commands.IsCommitSHA(_repo, _filter)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
                     if (isCommitSHA)
                     {
-                        var commit = await new Commands.QuerySingleCommit(repoPath, _filter)
+                        var commit = await new Commands.QuerySingleCommit(_repo, _filter)
                             .GetResultAsync()
                             .ConfigureAwait(false);
 
-                        commit.IsMerged = await new Commands.IsAncestor(repoPath, commit.SHA, "HEAD")
+                        commit.IsMerged = await new Commands.IsAncestor(_repo, commit.SHA, "HEAD")
                             .GetResultAsync()
                             .ConfigureAwait(false);
 
@@ -131,7 +131,7 @@ namespace SourceGit.ViewModels
                 }
                 else if (_onlySearchCurrentBranch)
                 {
-                    result = await new Commands.QueryCommits(repoPath, _filter, method, true)
+                    result = await new Commands.QueryCommits(_repo, _filter, method, true)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
@@ -140,13 +140,13 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    result = await new Commands.QueryCommits(repoPath, _filter, method, false)
+                    result = await new Commands.QueryCommits(_repo, _filter, method, false)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
                     if (result.Count > 0)
                     {
-                        var set = await new Commands.QueryCurrentBranchCommitHashes(repoPath, result[^1].CommitterTime)
+                        var set = await new Commands.QueryCurrentBranchCommitHashes(_repo, result[^1].CommitterTime)
                             .GetResultAsync()
                             .ConfigureAwait(false);
 
@@ -161,7 +161,7 @@ namespace SourceGit.ViewModels
                         return;
 
                     IsQuerying = false;
-                    if (_repo.IsSearchingCommits)
+                    if (_histories.IsSearchingCommits)
                     {
                         Results = result;
                         if (method == Models.CommitSearchMethod.BySHA && result.Count == 1)
@@ -198,7 +198,7 @@ namespace SourceGit.ViewModels
 
                     Task.Run(async () =>
                     {
-                        var authors = await new Commands.QueryAuthors(_repo.FullPath)
+                        var authors = await new Commands.QueryAuthors(_repo)
                             .GetResultAsync()
                             .ConfigureAwait(false);
 
@@ -206,7 +206,7 @@ namespace SourceGit.ViewModels
                         {
                             _requestingAuthors = false;
 
-                            if (_repo.IsSearchingCommits)
+                            if (_histories.IsSearchingCommits)
                             {
                                 _authors = authors;
                                 UpdateSuggestions();
@@ -244,7 +244,7 @@ namespace SourceGit.ViewModels
 
                     Task.Run(async () =>
                     {
-                        var files = await new Commands.QueryRevisionFileNames(_repo.FullPath, "HEAD")
+                        var files = await new Commands.QueryRevisionFileNames(_repo, "HEAD")
                             .GetResultAsync()
                             .ConfigureAwait(false);
 
@@ -252,7 +252,7 @@ namespace SourceGit.ViewModels
                         {
                             _requestingWorktreeFiles = false;
 
-                            if (_repo.IsSearchingCommits)
+                            if (_histories.IsSearchingCommits)
                             {
                                 _worktreeFiles = files;
                                 UpdateSuggestions();
@@ -285,7 +285,8 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private Repository _repo = null;
+        private string _repo = null;
+        private Histories _histories = null;
         private CancellationTokenSource _cancellation = null;
         private int _method = (int)Models.CommitSearchMethod.ByMessage;
         private string _filter = string.Empty;

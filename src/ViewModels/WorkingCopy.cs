@@ -108,7 +108,7 @@ namespace SourceGit.ViewModels
 
                     Staged = GetStagedChanges(_cached);
                     VisibleStaged = GetVisibleChanges(_staged);
-                    SelectedStaged = [];
+                    SelectedStaged = new(null);
                 }
             }
         }
@@ -131,7 +131,8 @@ namespace SourceGit.ViewModels
 
                     VisibleUnstaged = GetVisibleChanges(_unstaged);
                     VisibleStaged = GetVisibleChanges(_staged);
-                    SelectedUnstaged = [];
+                    SelectedUnstaged = new(null);
+                    SelectedStaged = new(null);
                 }
             }
         }
@@ -139,75 +140,91 @@ namespace SourceGit.ViewModels
         public List<Models.Change> Unstaged
         {
             get => _unstaged;
-            private set => SetProperty(ref _unstaged, value);
+            private set
+            {
+                if (SetProperty(ref _unstaged, value))
+                    OnPropertyChanged(nameof(UnstagedCountInfo));
+            }
         }
 
         public List<Models.Change> VisibleUnstaged
         {
             get => _visibleUnstaged;
-            private set => SetProperty(ref _visibleUnstaged, value);
+            private set
+            {
+                if (SetProperty(ref _visibleUnstaged, value))
+                    OnPropertyChanged(nameof(UnstagedCountInfo));
+            }
         }
 
         public List<Models.Change> Staged
         {
             get => _staged;
-            private set => SetProperty(ref _staged, value);
+            private set
+            {
+                if (SetProperty(ref _staged, value))
+                    OnPropertyChanged(nameof(StagedCountInfo));
+            }
         }
 
         public List<Models.Change> VisibleStaged
         {
             get => _visibleStaged;
-            private set => SetProperty(ref _visibleStaged, value);
+            private set
+            {
+                if (SetProperty(ref _visibleStaged, value))
+                    OnPropertyChanged(nameof(StagedCountInfo));
+            }
         }
 
-        public List<Models.Change> SelectedUnstaged
+        public string UnstagedCountInfo
+        {
+            get => string.IsNullOrEmpty(_filter) ? $"({_unstaged.Count})" : $"({_visibleUnstaged.Count}/{_unstaged.Count})";
+        }
+
+        public string StagedCountInfo
+        {
+            get => string.IsNullOrEmpty(_filter) ? $"({_staged.Count})" : $"({_visibleStaged.Count}/{_staged.Count})";
+        }
+
+        public ChangeSelection SelectedUnstaged
         {
             get => _selectedUnstaged;
             set
             {
                 if (SetProperty(ref _selectedUnstaged, value))
                 {
-                    if (value == null || value.Count == 0)
+                    if (value is { Count: > 0 })
                     {
-                        if (_selectedStaged == null || _selectedStaged.Count == 0)
-                            SetDetail(null, true);
-                    }
-                    else
-                    {
+                        _isLoadingData = true;
                         if (_selectedStaged is { Count: > 0 })
-                            SelectedStaged = [];
-
-                        if (value.Count == 1)
-                            SetDetail(value[0], true);
-                        else
-                            SetDetail(null, true);
+                            SelectedStaged = new(null);
+                        _isLoadingData = false;
                     }
+
+                    if (!_isLoadingData)
+                        UpdateDetail();
                 }
             }
         }
 
-        public List<Models.Change> SelectedStaged
+        public ChangeSelection SelectedStaged
         {
             get => _selectedStaged;
             set
             {
                 if (SetProperty(ref _selectedStaged, value))
                 {
-                    if (value == null || value.Count == 0)
+                    if (value is { Count: > 0 })
                     {
-                        if (_selectedUnstaged == null || _selectedUnstaged.Count == 0)
-                            SetDetail(null, false);
-                    }
-                    else
-                    {
+                        _isLoadingData = true;
                         if (_selectedUnstaged is { Count: > 0 })
-                            SelectedUnstaged = [];
-
-                        if (value.Count == 1)
-                            SetDetail(value[0], false);
-                        else
-                            SetDetail(null, false);
+                            SelectedUnstaged = new(null);
+                        _isLoadingData = false;
                     }
+
+                    if (!_isLoadingData)
+                        UpdateDetail();
                 }
             }
         }
@@ -244,7 +261,7 @@ namespace SourceGit.ViewModels
                         if (_selectedStaged is { Count: > 0 })
                         {
                             var set = new HashSet<string>();
-                            foreach (var c in _selectedStaged)
+                            foreach (var c in _selectedStaged.Changes)
                                 set.Add(c.Path);
 
                             foreach (var c in visibleStagedNew)
@@ -257,7 +274,7 @@ namespace SourceGit.ViewModels
                         _isLoadingData = true;
                         Staged = testStaged;
                         VisibleStaged = visibleStagedNew;
-                        SelectedStaged = selectedStagedNew;
+                        SelectedStaged = new(selectedStagedNew);
                         _isLoadingData = false;
                     }
                 }
@@ -271,7 +288,7 @@ namespace SourceGit.ViewModels
             var lastSelectedUnstaged = new HashSet<string>();
             if (_selectedUnstaged is { Count: > 0 })
             {
-                foreach (var c in _selectedUnstaged)
+                foreach (var c in _selectedUnstaged.Changes)
                     lastSelectedUnstaged.Add(c.Path);
             }
 
@@ -279,14 +296,16 @@ namespace SourceGit.ViewModels
             var visibleUnstaged = new List<Models.Change>();
             var selectedUnstaged = new List<Models.Change>();
             var noFilter = string.IsNullOrEmpty(_filter);
-            var hasConflict = false;
+            var conflicts = new List<Models.Change>();
             var canSwitchDirectly = true;
             foreach (var c in changes)
             {
                 if (c.WorkTree != Models.ChangeState.None)
                 {
                     unstaged.Add(c);
-                    hasConflict |= c.IsConflicted;
+
+                    if (c.IsConflicted)
+                        conflicts.Add(c);
 
                     if (noFilter || c.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                     {
@@ -311,7 +330,7 @@ namespace SourceGit.ViewModels
             if (_selectedStaged is { Count: > 0 })
             {
                 var set = new HashSet<string>();
-                foreach (var c in _selectedStaged)
+                foreach (var c in _selectedStaged.Changes)
                     set.Add(c.Path);
 
                 foreach (var c in visibleStaged)
@@ -321,22 +340,22 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && hasConflict)
+            if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && conflicts.Count > 0)
             {
-                var firstConflict = visibleUnstaged.Find(x => x.IsConflicted);
+                var firstConflict = FindFirstConflict(conflicts);
                 selectedUnstaged.Add(firstConflict);
             }
 
             _isLoadingData = true;
             _cached = changes;
-            HasUnsolvedConflicts = hasConflict;
+            HasUnsolvedConflicts = conflicts.Count > 0;
             CanSwitchBranchDirectly = canSwitchDirectly;
             VisibleUnstaged = visibleUnstaged;
             VisibleStaged = visibleStaged;
             Unstaged = unstaged;
             Staged = staged;
-            SelectedUnstaged = selectedUnstaged;
-            SelectedStaged = selectedStaged;
+            SelectedUnstaged = new(selectedUnstaged);
+            SelectedStaged = new(selectedStaged);
             _isLoadingData = false;
 
             UpdateInProgressState();
@@ -351,7 +370,7 @@ namespace SourceGit.ViewModels
                 return;
 
             IsStaging = true;
-            _selectedUnstaged = next != null ? [next] : [];
+            _selectedUnstaged = new(next != null ? new List<Models.Change> { next } : null);
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -378,7 +397,7 @@ namespace SourceGit.ViewModels
                 return;
 
             IsUnstaging = true;
-            _selectedStaged = next != null ? [next] : [];
+            _selectedStaged = new(next != null ? new List<Models.Change> { next } : null);
 
             using var lockWatcher = _repo.LockWatcher();
 
@@ -417,10 +436,16 @@ namespace SourceGit.ViewModels
                 _repo.SendNotification(App.Text("SaveAsPatchSuccess"));
         }
 
-        public void Discard(List<Models.Change> changes)
+        public void DiscardAllChanges()
         {
             if (_repo.CanCreatePopup())
-                _repo.ShowPopup(new Discard(_repo, changes));
+                _repo.ShowPopup(new Discard(_repo));
+        }
+
+        public void Discard(List<Models.Change> changes, Models.Change next)
+        {
+            if (_repo.CanCreatePopup())
+                _repo.ShowPopup(new Discard(_repo, changes, next));
         }
 
         public void ClearFilter()
@@ -650,7 +675,7 @@ namespace SourceGit.ViewModels
                     if (rs == Models.ConfirmEmptyCommitResult.StageAllAndCommit)
                         autoStage = true;
                     else if (rs == Models.ConfirmEmptyCommitResult.StageSelectedAndCommit)
-                        await StageChangesAsync(_selectedUnstaged, null);
+                        await StageChangesAsync(_selectedUnstaged.Changes, null);
                 }
             }
 
@@ -756,10 +781,10 @@ namespace SourceGit.ViewModels
 
         private void UpdateDetail()
         {
-            if (_selectedUnstaged.Count == 1)
-                SetDetail(_selectedUnstaged[0], true);
-            else if (_selectedStaged.Count == 1)
-                SetDetail(_selectedStaged[0], false);
+            if (_selectedUnstaged is { Count: 1, HasFolder: false })
+                SetDetail(_selectedUnstaged.Changes[0], true);
+            else if (_selectedStaged is { Count: 1, HasFolder: false })
+                SetDetail(_selectedStaged.Changes[0], false);
             else
                 SetDetail(null, false);
         }
@@ -836,6 +861,66 @@ namespace SourceGit.ViewModels
             return false;
         }
 
+        private Models.Change FindFirstConflict(List<Models.Change> conflicts)
+        {
+            if (conflicts.Count == 1 || Preferences.Instance.ChangeViewMode != Models.ChangeViewMode.Tree)
+                return conflicts[0];
+
+            var finder = (ChangeInTree l, ChangeInTree r) =>
+            {
+                var lDirs = l.PathSegments.Length - 1;
+                var rDirs = r.PathSegments.Length - 1;
+                if (lDirs == 0)
+                {
+                    if (rDirs == 0)
+                        return Models.NumericSort.Compare(l.PathSegments[0], r.PathSegments[0]) <= 0 ? l : r;
+                    else
+                        return r;
+                }
+                else if (rDirs == 0)
+                {
+                    return l;
+                }
+
+                var min = Math.Min(lDirs, rDirs);
+                for (var idx = 0; idx < min; idx++)
+                {
+                    var cmp = Models.NumericSort.Compare(l.PathSegments[idx], r.PathSegments[idx]);
+                    if (cmp < 0)
+                        return l;
+                    else if (cmp > 0)
+                        return r;
+                }
+
+                if (lDirs == rDirs)
+                    return Models.NumericSort.Compare(l.PathSegments[^1], r.PathSegments[^1]) <= 0 ? l : r;
+
+                return lDirs < rDirs ? r : l;
+            };
+
+            var collection = new List<ChangeInTree>();
+            foreach (var c in conflicts)
+                collection.Add(new ChangeInTree(c));
+
+            var first = collection[0];
+            for (var idx = 1; idx < collection.Count; idx++)
+                first = finder(first, collection[idx]);
+
+            return first.Change;
+        }
+
+        private class ChangeInTree
+        {
+            public Models.Change Change { get; set; }
+            public string[] PathSegments { get; set; }
+
+            public ChangeInTree(Models.Change change)
+            {
+                Change = change;
+                PathSegments = change.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+
         private Repository _repo = null;
         private bool _isLoadingData = false;
         private bool _isStaging = false;
@@ -849,8 +934,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleUnstaged = [];
         private List<Models.Change> _staged = [];
         private List<Models.Change> _visibleStaged = [];
-        private List<Models.Change> _selectedUnstaged = [];
-        private List<Models.Change> _selectedStaged = [];
+        private ChangeSelection _selectedUnstaged = new(null);
+        private ChangeSelection _selectedStaged = new(null);
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;

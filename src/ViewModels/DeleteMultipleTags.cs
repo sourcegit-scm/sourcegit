@@ -36,12 +36,13 @@ namespace SourceGit.ViewModels
                 .Use(log)
                 .DeleteAsync();
 
-                if (succ && DeleteFromRemote)
+                if (succ && DeleteFromRemote && _repo.Remotes is { Count: > 0 } remotes)
                 {
-                    foreach (var r in _repo.Remotes)
-                        await new Commands.Push(_repo.FullPath, r.Name, $"refs/tags/{tag.Name}", true)
+                    var fullname = $"refs/tags/{tag.Name}";
+                    foreach (var r in remotes)
+                        await new Commands.Push(_repo.FullPath, r, fullname, true)
                             .Use(log)
-                            .RunAsync();
+                            .ExecAsync();
                 }
             }
 

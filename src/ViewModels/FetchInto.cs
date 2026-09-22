@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -18,6 +19,8 @@ namespace SourceGit.ViewModels
         public FetchInto(Repository repo, Models.Branch local, Models.Branch upstream)
         {
             _repo = repo;
+            _remote = repo.Remotes.Find(x => x.Name.Equals(upstream.Remote, StringComparison.Ordinal));
+
             Local = local;
             Upstream = upstream;
             CanTerminate = true;
@@ -34,10 +37,10 @@ namespace SourceGit.ViewModels
             _cancellation = new CancellationTokenSource();
             var token = _cancellation.Token;
 
-            await new Commands.Fetch(_repo.FullPath, Local, Upstream)
+            await new Commands.Fetch(_repo.FullPath, _remote, Upstream, Local)
                 .WithCancellation(token)
                 .Use(log)
-                .RunAsync();
+                .ExecAsync();
 
             log.Complete();
 
@@ -58,6 +61,7 @@ namespace SourceGit.ViewModels
         }
 
         private readonly Repository _repo = null;
+        private readonly Models.Remote _remote = null;
         private CancellationTokenSource _cancellation = null;
     }
 }

@@ -42,16 +42,13 @@ namespace SourceGit.ViewModels
             _cancellation = new CancellationTokenSource();
             var token = _cancellation.Token;
 
+            var remote = _repo.Remotes.Find(x => x.Name.Equals(RemoteBranch.Name, StringComparison.Ordinal));
             var succ = await new Commands.Push(
                 _repo.FullPath,
-                Revision.SHA,
-                RemoteBranch.Remote,
-                RemoteBranch.Name,
-                false,
-                false,
-                false,
-                Force,
-                false).WithCancellation(token).Use(log).RunAsync();
+                Revision,
+                remote,
+                RemoteBranch,
+                Force).WithCancellation(token).Use(log).ExecAsync();
 
             log.Complete();
 

@@ -301,28 +301,10 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _enableCompactFoldersInChangesTree, value);
         }
 
-        public Models.ChangeViewMode UnstagedChangeViewMode
+        public Models.ChangeViewMode ChangeViewMode
         {
-            get => _unstagedChangeViewMode;
-            set => SetProperty(ref _unstagedChangeViewMode, value);
-        }
-
-        public Models.ChangeViewMode StagedChangeViewMode
-        {
-            get => _stagedChangeViewMode;
-            set => SetProperty(ref _stagedChangeViewMode, value);
-        }
-
-        public Models.ChangeViewMode CommitChangeViewMode
-        {
-            get => _commitChangeViewMode;
-            set => SetProperty(ref _commitChangeViewMode, value);
-        }
-
-        public Models.ChangeViewMode StashChangeViewMode
-        {
-            get => _stashChangeViewMode;
-            set => SetProperty(ref _stashChangeViewMode, value);
+            get => _changeViewMode;
+            set => SetProperty(ref _changeViewMode, value);
         }
 
         public string GitInstallPath
@@ -557,6 +539,20 @@ namespace SourceGit.ViewModels
             return FindNodeRecursive(id, RepositoryNodes);
         }
 
+        public RepositoryNode FindOrCreateGroupRecursive(string path)
+        {
+            List<RepositoryNode> collection = RepositoryNodes;
+            RepositoryNode node = null;
+
+            foreach (var name in path.Split('/'))
+            {
+                node = FindOrCreateGroupInCollection(collection, name);
+                collection = node.SubNodes;
+            }
+
+            return node;
+        }
+
         public RepositoryNode FindOrAddNodeByRepositoryPath(string repo, RepositoryNode parent, bool shouldMoveNode, bool save = true)
         {
             var normalized = repo.Replace('\\', '/').TrimEnd('/');
@@ -733,6 +729,27 @@ namespace SourceGit.ViewModels
             return null;
         }
 
+        private RepositoryNode FindOrCreateGroupInCollection(List<RepositoryNode> collection, string name)
+        {
+            foreach (var node in collection)
+            {
+                if (!node.IsRepository && node.Name.Equals(name, StringComparison.Ordinal))
+                    return node;
+            }
+
+            var added = new RepositoryNode()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                IsRepository = false,
+                IsExpanded = true,
+            };
+            collection.Add(added);
+
+            SortNodes(collection);
+            return added;
+        }
+
         private List<RepositoryNode> FindNodeContainer(RepositoryNode node, List<RepositoryNode> collection)
         {
             foreach (var sub in collection)
@@ -825,11 +842,7 @@ namespace SourceGit.ViewModels
         private int _lfsImageActiveIdx = 0;
         private int _imageDiffActiveIdx = 0;
         private bool _enableCompactFoldersInChangesTree = false;
-
-        private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
-        private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
-        private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
-        private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
+        private Models.ChangeViewMode _changeViewMode = Models.ChangeViewMode.List;
 
         private string _gitDefaultCloneDir = string.Empty;
         private int _shellOrTerminalType = -1;

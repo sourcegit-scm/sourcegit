@@ -27,7 +27,6 @@ namespace SourceGit.ViewModels
             using var lockWatcher = _repo.LockWatcher();
             ProgressDescription = $"Deleting tag '{Target.Name}' ...";
 
-            var remotes = PushToRemotes ? _repo.Remotes : [];
             var log = _repo.CreateLog("Delete Tag");
             Use(log);
 
@@ -35,12 +34,13 @@ namespace SourceGit.ViewModels
                 .Use(log)
                 .DeleteAsync();
 
-            if (succ)
+            if (succ && PushToRemotes && _repo.Remotes is { Count: > 0 } remotes)
             {
+                var fullname = $"refs/tags/{Target.Name}";
                 foreach (var r in remotes)
-                    await new Commands.Push(_repo.FullPath, r.Name, $"refs/tags/{Target.Name}", true)
+                    await new Commands.Push(_repo.FullPath, r, fullname, true)
                         .Use(log)
-                        .RunAsync();
+                        .ExecAsync();
             }
 
             log.Complete();
