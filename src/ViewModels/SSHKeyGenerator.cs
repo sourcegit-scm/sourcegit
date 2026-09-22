@@ -104,8 +104,21 @@ namespace SourceGit.ViewModels
             if (HasErrors)
                 return null;
 
-            var type = _type?.Cmdline ?? "-t ed25519";
             var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
+            if (!Directory.Exists(dir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(dir);
+                }
+                catch (Exception e)
+                {
+                    ErrorMessage = $"Failed to create .ssh directory: {e.Message}";
+                    return null;
+                }
+            }
+
+            var type = _type?.Cmdline ?? "-t ed25519";
             var passphrase = _usePassphrase ? _passphrase : string.Empty;
             var keyFile = Path.Combine(dir, _name);
             var start = new ProcessStartInfo();

@@ -6,13 +6,14 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-95.93%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-95.66%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
 - Text.Blame.Tips
 - Text.BranchTree.PushURL
+- Text.CommitDetail.Files.Tips
 - Text.Dashboard
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
@@ -53,17 +54,20 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Title
 - Text.Statistics.Tips
 - Text.Terminate
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-95.46%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-95.19%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
 
 - Text.Blame.Tips
 - Text.BranchTree.PushURL
+- Text.CommitDetail.Files.Tips
 - Text.Dashboard
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
@@ -108,14 +112,25 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Title
 - Text.Statistics.Tips
 - Text.Terminate
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.72%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-91.67%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.CommitDetail.Files.Tips
+- Text.WorkingCopy.CollapseSidebar
+- Text.WorkingCopy.ExpandSidebar
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-91.42%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -132,6 +147,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CheckoutDetached.Warning
 - Text.CommitCM.CopyAuthorTime
 - Text.CommitCM.CopyCommitterTime
+- Text.CommitDetail.Files.Tips
 - Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules
 - Text.CopyAsPatch
 - Text.Dashboard
@@ -206,12 +222,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Terminate
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-91.67%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-91.42%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -228,6 +246,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CheckoutDetached.Warning
 - Text.CommitCM.CopyAuthorTime
 - Text.CommitCM.CopyCommitterTime
+- Text.CommitDetail.Files.Tips
 - Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules
 - Text.CopyAsPatch
 - Text.Dashboard
@@ -302,18 +321,21 @@ This document shows the translation status of each locale file in the repository
 - Text.Terminate
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-95.93%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-95.66%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
 - Text.Blame.Tips
 - Text.BranchTree.PushURL
+- Text.CommitDetail.Files.Tips
 - Text.Dashboard
 - Text.Diff.Binary.ViewContentOfNew
 - Text.File.Binary
@@ -353,12 +375,14 @@ This document shows the translation status of each locale file in the repository
 - Text.SSHKeyHelper.Title
 - Text.Statistics.Tips
 - Text.Terminate
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-85.53%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-85.28%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -390,6 +414,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.CopyAuthorTime
 - Text.CommitCM.CopyCommitterTime
 - Text.CommitDetail.CollapseToBottom
+- Text.CommitDetail.Files.Tips
 - Text.CommitMessageTextBox.Column
 - Text.Compare.Changes
 - Text.Compare.Commits
@@ -511,7 +536,9 @@ This document shows the translation status of each locale file in the repository
 - Text.Terminate
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 - Text.Worktree.Branch
 - Text.Worktree.Head
@@ -519,9 +546,18 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-%E2%88%9A-brightgreen)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-99.72%25-yellow)
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-93.09%25-yellow)
+<details>
+<summary>Missing keys in ja_JP.axaml</summary>
+
+- Text.CommitDetail.Files.Tips
+- Text.WorkingCopy.CollapseSidebar
+- Text.WorkingCopy.ExpandSidebar
+
+</details>
+
+### ![ko__KR](https://img.shields.io/badge/ko__KR-92.83%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -533,6 +569,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CheckoutDetached
 - Text.CheckoutDetached.Target
 - Text.CheckoutDetached.Warning
+- Text.CommitDetail.Files.Tips
 - Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules
 - Text.Dashboard
 - Text.DeleteBranch.Force
@@ -597,12 +634,14 @@ This document shows the translation status of each locale file in the repository
 - Text.Terminate
 - Text.UpdateSubmodules.Recursive
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-60.36%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-60.19%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -668,6 +707,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.CollapseToBottom
 - Text.CommitDetail.Files.Search
+- Text.CommitDetail.Files.Tips
 - Text.CommitDetail.Info.CopyEmail
 - Text.CommitDetail.Info.CopyName
 - Text.CommitDetail.Info.CopyNameAndEmail
@@ -1008,6 +1048,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.CommitToEdit
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
 - Text.WorkingCopy.ConfirmCommitWithFilter
@@ -1017,6 +1058,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
@@ -1029,13 +1071,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.30%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.02%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
 - Text.Blame.Tips
 - Text.BranchTree.PushURL
+- Text.CommitDetail.Files.Tips
 - Text.Dashboard
 - Text.Histories.AdvancedOptions
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
@@ -1051,11 +1094,13 @@ This document shows the translation status of each locale file in the repository
 - Text.SetPushUrl.Remote
 - Text.SetPushUrl.URL
 - Text.Statistics.Tips
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-61.97%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-61.79%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1147,6 +1192,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.Reset
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.CollapseToBottom
+- Text.CommitDetail.Files.Tips
 - Text.CommitDetail.Info.CopyEmail
 - Text.CommitDetail.Info.CopyName
 - Text.CommitDetail.Info.CopyNameAndEmail
@@ -1447,6 +1493,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
 - Text.WorkingCopy.Conflicts.Merge
 - Text.WorkingCopy.Conflicts.MergeExternal
@@ -1454,6 +1501,7 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.Conflicts.UseMine
 - Text.WorkingCopy.Conflicts.UseTheirs
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
@@ -1465,7 +1513,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-62.72%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-62.55%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1557,6 +1605,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CommitCM.Reset
 - Text.CommitDetail.Changes.Count
 - Text.CommitDetail.CollapseToBottom
+- Text.CommitDetail.Files.Tips
 - Text.CommitDetail.Info.CopyEmail
 - Text.CommitDetail.Info.CopyName
 - Text.CommitDetail.Info.CopyNameAndEmail
@@ -1852,10 +1901,12 @@ This document shows the translation status of each locale file in the repository
 - Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder
 - Text.WorkingCopy.ClearCommitHistories
 - Text.WorkingCopy.ClearCommitHistories.Confirm
+- Text.WorkingCopy.CollapseSidebar
 - Text.WorkingCopy.ConfirmCommitWithDetachedHead
 - Text.WorkingCopy.Conflicts.Merge
 - Text.WorkingCopy.Conflicts.MergeExternal
 - Text.WorkingCopy.DiscardAll
+- Text.WorkingCopy.ExpandSidebar
 - Text.WorkingCopy.FilterChanges
 - Text.WorkingCopy.NoVerify
 - Text.WorkingCopy.ResetAuthor
@@ -1869,4 +1920,13 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.72%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.CommitDetail.Files.Tips
+- Text.WorkingCopy.CollapseSidebar
+- Text.WorkingCopy.ExpandSidebar
+
+</details>

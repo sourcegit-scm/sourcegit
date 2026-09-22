@@ -296,14 +296,16 @@ namespace SourceGit.ViewModels
             var visibleUnstaged = new List<Models.Change>();
             var selectedUnstaged = new List<Models.Change>();
             var noFilter = string.IsNullOrEmpty(_filter);
-            var hasConflict = false;
+            var conflicts = new List<Models.Change>();
             var canSwitchDirectly = true;
             foreach (var c in changes)
             {
                 if (c.WorkTree != Models.ChangeState.None)
                 {
                     unstaged.Add(c);
-                    hasConflict |= c.IsConflicted;
+
+                    if (c.IsConflicted)
+                        conflicts.Add(c);
 
                     if (noFilter || c.Path.Contains(_filter, StringComparison.OrdinalIgnoreCase))
                     {
@@ -338,15 +340,15 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && hasConflict)
+            if (selectedUnstaged.Count == 0 && selectedStaged.Count == 0 && conflicts.Count > 0)
             {
-                var firstConflict = visibleUnstaged.Find(x => x.IsConflicted);
+                var firstConflict = FindFirstConflict(conflicts);
                 selectedUnstaged.Add(firstConflict);
             }
 
             _isLoadingData = true;
             _cached = changes;
-            HasUnsolvedConflicts = hasConflict;
+            HasUnsolvedConflicts = conflicts.Count > 0;
             CanSwitchBranchDirectly = canSwitchDirectly;
             VisibleUnstaged = visibleUnstaged;
             VisibleStaged = visibleStaged;
@@ -857,6 +859,66 @@ namespace SourceGit.ViewModels
             }
 
             return false;
+        }
+
+        private Models.Change FindFirstConflict(List<Models.Change> conflicts)
+        {
+            if (conflicts.Count == 1 || Preferences.Instance.ChangeViewMode != Models.ChangeViewMode.Tree)
+                return conflicts[0];
+
+            var finder = (ChangeInTree l, ChangeInTree r) =>
+            {
+                var lDirs = l.PathSegments.Length - 1;
+                var rDirs = r.PathSegments.Length - 1;
+                if (lDirs == 0)
+                {
+                    if (rDirs == 0)
+                        return Models.NumericSort.Compare(l.PathSegments[0], r.PathSegments[0]) <= 0 ? l : r;
+                    else
+                        return r;
+                }
+                else if (rDirs == 0)
+                {
+                    return l;
+                }
+
+                var min = Math.Min(lDirs, rDirs);
+                for (var idx = 0; idx < min; idx++)
+                {
+                    var cmp = Models.NumericSort.Compare(l.PathSegments[idx], r.PathSegments[idx]);
+                    if (cmp < 0)
+                        return l;
+                    else if (cmp > 0)
+                        return r;
+                }
+
+                if (lDirs == rDirs)
+                    return Models.NumericSort.Compare(l.PathSegments[^1], r.PathSegments[^1]) <= 0 ? l : r;
+
+                return lDirs < rDirs ? r : l;
+            };
+
+            var collection = new List<ChangeInTree>();
+            foreach (var c in conflicts)
+                collection.Add(new ChangeInTree(c));
+
+            var first = collection[0];
+            for (var idx = 1; idx < collection.Count; idx++)
+                first = finder(first, collection[idx]);
+
+            return first.Change;
+        }
+
+        private class ChangeInTree
+        {
+            public Models.Change Change { get; set; }
+            public string[] PathSegments { get; set; }
+
+            public ChangeInTree(Models.Change change)
+            {
+                Change = change;
+                PathSegments = change.Path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            }
         }
 
         private Repository _repo = null;

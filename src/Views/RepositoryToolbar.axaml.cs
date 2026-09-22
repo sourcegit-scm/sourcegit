@@ -513,13 +513,21 @@ namespace SourceGit.Views
             }
         }
 
+        private async void Cleanup(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.CleanupAsync();
+                e.Handled = true;
+            }
+        }
+
         private void NavigateToHead(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository { CurrentBranch: { } head } repo)
             {
                 var repoView = TopLevel.GetTopLevel(this)?.FindDescendantOfType<Repository>();
-                var dashboard = repoView?.FindDescendantOfType<Dashboard>();
-                dashboard?.LocalBranchTree?.Select(head);
+                repoView?.LocalBranchTree?.Select(head);
 
                 repo.NavigateToCommit(head.Head);
                 e.Handled = true;

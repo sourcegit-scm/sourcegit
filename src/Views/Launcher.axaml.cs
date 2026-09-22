@@ -272,7 +272,7 @@ namespace SourceGit.Views
                             e.Handled = true;
                             return;
                         case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
-                            repo.Histories.IsSearchingCommits = true;
+                            repo.Histories.IsSearchingCommits = !repo.Histories.IsSearchingCommits;
                             e.Handled = true;
                             return;
                         case Key.B when e.KeyModifiers.HasFlag(KeyModifiers.Shift):

@@ -157,7 +157,8 @@
             </Grid>
           </Border>
 
-          <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding ViewRevisionFileContent}"/>
+          <v:RevisionFileContentViewer Grid.Row="1"
+                                       Content="{Binding ViewRevisionFileContent, TargetNullValue={x:Static m:Null.Instance}, Mode=OneWay}"/>
         </Grid>
       </Border>
     </Border>

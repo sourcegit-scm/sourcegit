@@ -815,6 +815,7 @@ namespace SourceGit.ViewModels
             var builder = BuildBranchTree(locals, [], false);
             LocalBranchTrees = builder.Locals;
             CurrentBranch = checkouted;
+            GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasPendingPullOrPush, !checkouted.IsTrackStatusVisible);
 
             RefreshCommits();
             RefreshWorkingCopyChanges();

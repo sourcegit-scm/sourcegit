@@ -290,7 +290,7 @@ namespace SourceGit.Models
             {
                 Interlocked.Exchange(ref _updateTags, DateTime.Now.AddSeconds(.5).ToFileTime());
             }
-            else if (name.StartsWith("refs/stash", StringComparison.Ordinal))
+            else if (name.StartsWith("refs/stash", StringComparison.Ordinal) || name.Equals("logs/refs/stash", StringComparison.Ordinal))
             {
                 Interlocked.Exchange(ref _updateStashes, DateTime.Now.AddSeconds(.5).ToFileTime());
             }

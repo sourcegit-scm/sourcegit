@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
@@ -46,7 +45,7 @@ namespace SourceGit.Commands
             Args = "config -l";
 
             var output = await ReadToEndAsync().ConfigureAwait(false);
-            var rs = new Dictionary<string, string>();
+            var rs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             if (output.IsSuccess)
             {
                 var lines = output.StdOut.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
@@ -55,7 +54,7 @@ namespace SourceGit.Commands
                     var parts = line.Split('=', 2);
                     if (parts.Length == 2)
                     {
-                        var key = parts[0].ToLower(CultureInfo.CurrentCulture); // Always use lower case for key
+                        var key = parts[0];
                         var value = parts[1];
                         rs[key] = value;
                     }

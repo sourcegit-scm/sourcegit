@@ -33,14 +33,34 @@
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:Welcome">
             <v:Welcome Margin="4,0,4,4"
-                       CornerRadius="4"
+                       CornerRadius="8"
                        BorderThickness="1"
                        BorderBrush="{DynamicResource Brush.Border0}"
                        Background="{DynamicResource Brush.Window}"/>
           </DataTemplate>
 
           <DataTemplate DataType="vm:Repository">
-            <v:Repository/>
+            <v:Repository>
+              <v:Repository.IsCommitSearchPanelVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="IsDashboardVisible"/>
+                  <Binding Path="Histories.IsSearchingCommits"/>
+                </MultiBinding>
+              </v:Repository.IsCommitSearchPanelVisible>
+
+              <v:Repository.IsNormalSidebarVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="IsDashboardVisible"/>
+                    <Binding Path="Histories.IsSearchingCommits" Converter="{x:Static BoolConverters.Not}"/>
+                  </MultiBinding>
+                  <MultiBinding Converter="{x:Static BoolConverters.And}">
+                    <Binding Path="IsWorkingCopyVisible"/>
+                    <Binding Source="{x:Static vm:Preferences.Instance}" Path="Layout.IsSidebarCollapsedInLocalChanges" Converter="{x:Static BoolConverters.Not}"/>
+                  </MultiBinding>
+                </MultiBinding>
+              </v:Repository.IsNormalSidebarVisible>
+            </v:Repository>
           </DataTemplate>
         </ContentControl.DataTemplates>
       </ContentControl>

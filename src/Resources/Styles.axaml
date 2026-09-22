@@ -1362,6 +1362,40 @@
     <Setter Property="Opacity" Value="1"/>
   </Style>
 
+  <Style Selector="ToggleButton.sidebar_expander">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.WorkingCopy.CollapseSidebar}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+          <Path x:Name="ChevronPath"
+                Width="15" Height="15"
+                Data="{StaticResource Icons.Sidebar.Expanded}"
+                Fill="{DynamicResource Brush.FG1}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked">
+      <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.WorkingCopy.ExpandSidebar}"/>
+    </Style>
+    <Style Selector="^:checked /template/ Path#ChevronPath">
+      <Setter Property="Data" Value="{StaticResource Icons.Sidebar.Collapsed}" />
+    </Style>
+    <Style Selector="^ Path">
+      <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    <Style Selector="^:pointerover Path">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
+  </Style>
+
   <Style Selector="Slider">
     <Style.Resources>
       <Thickness x:Key="SliderTopHeaderMargin">0,0,0,4</Thickness>
