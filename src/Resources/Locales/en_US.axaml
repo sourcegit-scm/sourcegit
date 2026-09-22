@@ -381,6 +381,7 @@
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Next Difference</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NO CHANGES OR ONLY EOL CHANGES</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">OLD</x:String>
+  <x:String x:Key="Text.Diff.OverscrollFileNavigation" xml:space="preserve">Scroll Past Edges to Switch Files</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Previous Difference</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Save as Patch</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Show hidden symbols</x:String>

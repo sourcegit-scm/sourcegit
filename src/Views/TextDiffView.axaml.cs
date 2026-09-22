@@ -647,6 +647,33 @@ namespace SourceGit.Views
             if (ctx.IsSideBySide() && !IsOld)
                 return;
 
+            // Diffs loading in other windows must not end the wait of the window that switched files.
+            var isSwitchedWindow = TopLevel.GetTopLevel(this) == s_overscroll.Window;
+
+            if (s_overscroll.WaitingForNewDiff && isSwitchedWindow)
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    s_overscroll.WaitingForNewDiff = false;
+                    s_overscroll.Window = null;
+                    s_overscroll.IgnoreUntil = ExtentHeight > ViewportHeight + 1 ? 0 : Environment.TickCount64 + 150;
+                }, DispatcherPriority.Background);
+            }
+
+            // Navigated upwards: show the previous file from its end instead of the first change.
+            if (s_overscroll.PendingScrollToEndPath != null && isSwitchedWindow)
+            {
+                var scrollToEnd = Environment.TickCount64 - s_overscroll.SwitchTime < 1000 &&
+                    s_overscroll.PendingScrollToEndPath.Equals(ctx.Option.Path, StringComparison.Ordinal);
+                s_overscroll.PendingScrollToEndPath = null;
+
+                if (scrollToEnd)
+                {
+                    Dispatcher.UIThread.Post(ScrollToEnd, DispatcherPriority.Background);
+                    return;
+                }
+            }
+
             var line = ctx.BlockNavigation.GetCurrentBlock()?.Start ?? 0;
             if (line == 0)
                 return;
@@ -756,6 +783,8 @@ namespace SourceGit.Views
 
         private void OnTextViewPointerWheelChanged(object sender, PointerWheelEventArgs e)
         {
+            TryNavigateToAdjacentChange(e);
+
             if (DataContext is not ViewModels.TextDiffContext { Option: { IsLocalChange: true } })
                 return;
 
@@ -764,6 +793,87 @@ namespace SourceGit.Views
 
             var y = e.GetPosition(view).Y + view.VerticalOffset;
             Dispatcher.UIThread.Post(() => UpdateSelectedChunk(y));
+        }
+
+        private void TryNavigateToAdjacentChange(PointerWheelEventArgs e)
+        {
+            if (!ViewModels.Preferences.Instance.EnableOverscrollFileNavigation)
+                return;
+
+            if (DataContext is not ViewModels.TextDiffContext ctx)
+                return;
+
+            // Horizontal-only scrolling (e.g. touchpad) never switches files.
+            if (e.Delta.Y == 0)
+                return;
+
+            // Shift + wheel scrolls horizontally; any modifier means the user is not just scrolling down/up.
+            if (e.KeyModifiers != KeyModifiers.None)
+                return;
+
+            var now = Environment.TickCount64;
+            var elapsed = now - s_overscroll.LastWheelTime;
+            s_overscroll.LastWheelTime = now;
+
+            // Ignore wheel events until the new file is shown (1s fallback for non-text diffs), otherwise they skip it.
+            if (s_overscroll.WaitingForNewDiff)
+            {
+                if (now - s_overscroll.SwitchTime < 1000)
+                    return;
+
+                s_overscroll.WaitingForNewDiff = false;
+                s_overscroll.PendingScrollToEndPath = null;
+                s_overscroll.Window = null;
+            }
+
+            // Give a short file that fits the viewport a moment on screen before a fast wheel spin moves past it.
+            if (now < s_overscroll.IgnoreUntil)
+                return;
+
+            var down = e.Delta.Y < 0;
+            var atEdge = down ? VerticalOffset + ViewportHeight >= ExtentHeight - 1 : VerticalOffset <= 1;
+            if (!atEdge || down != s_overscroll.IsDown || elapsed > 800)
+                s_overscroll.Amount = 0;
+
+            s_overscroll.IsDown = down;
+            if (!atEdge)
+                return;
+
+            // Diffs that need scrolling require a bit more overscroll, so the end of a long file is not skipped by accident.
+            var threshold = ExtentHeight > ViewportHeight + 1 ? 2 : 1;
+            s_overscroll.Amount += Math.Abs(e.Delta.Y);
+            if (s_overscroll.Amount < threshold)
+                return;
+
+            s_overscroll.Amount = 0;
+
+            var target = FindChangeCollectionViewOf(ctx.Option.Path)?.SelectAdjacentChange(down);
+            if (target == null)
+                return;
+
+            s_overscroll.PendingScrollToEndPath = down ? null : target.Path;
+            s_overscroll.WaitingForNewDiff = true;
+            s_overscroll.SwitchTime = now;
+            s_overscroll.Window = TopLevel.GetTopLevel(this);
+            e.Handled = true;
+        }
+
+        private ChangeCollectionView FindChangeCollectionViewOf(string path)
+        {
+            for (var parent = this.GetVisualParent(); parent != null; parent = parent.GetVisualParent())
+            {
+                foreach (var child in parent.GetVisualDescendants())
+                {
+                    if (child is ChangeCollectionView { IsEffectivelyVisible: true, Selection: { Count: 1 } selection } view &&
+                        selection.Changes[0].Path.Equals(path, StringComparison.Ordinal))
+                        return view;
+                }
+
+                if (parent is TopLevel)
+                    break;
+            }
+
+            return null;
         }
 
         private void OnTextViewVisualLinesChanged(object sender, EventArgs e)
@@ -970,6 +1080,21 @@ namespace SourceGit.Views
         private TextLocation _lastSelectStart = TextLocation.Empty;
         private TextLocation _lastSelectEnd = TextLocation.Empty;
         private LineStyleTransformer _lineStyleTransformer;
+
+        private class OverscrollState
+        {
+            public long LastWheelTime { get; set; }
+            public double Amount { get; set; }
+            public bool IsDown { get; set; }
+            public bool WaitingForNewDiff { get; set; }
+            public long SwitchTime { get; set; }
+            public long IgnoreUntil { get; set; }
+            public TopLevel Window { get; set; }
+            public string PendingScrollToEndPath { get; set; }
+        }
+
+        // Shared across presenters, so both sides of a side-by-side diff count as one gesture.
+        private static readonly OverscrollState s_overscroll = new();
     }
 
     public class CombinedTextDiffPresenter : ThemedTextDiffPresenter
