@@ -227,7 +227,7 @@
                     Content="{DynamicResource Text.Repository.Resolve}"
                     Padding="8,2" Margin="0,0,8,0"
                     Click="OnResolveInProgress"
-                    IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsNotOne}}"/>
+                    IsVisible="{Binding !IsWorkingCopyVisible}"/>
 
             <Button Grid.Column="2"
                     Classes="flat"
@@ -684,14 +684,10 @@
                   </Grid>
 
                   <!-- History Filter Bar -->
-                  <Border Grid.Row="1" Background="{DynamicResource Brush.Popup}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-                    <Border.IsVisible>
-                      <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-                        <Binding Path="UIStates.HistoryFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
-                      </MultiBinding>
-                    </Border.IsVisible>
-
+                  <Border Grid.Row="1"
+                          Background="{DynamicResource Brush.Popup}"
+                          BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+                          IsVisible="{Binding UIStates.HistoryFilters.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                       <Path Grid.Column="0"
                             Margin="8,0,0,0"
