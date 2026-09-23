@@ -650,23 +650,33 @@ namespace SourceGit.ViewModels
                 ShowPopup(new Fetch(this));
         }
 
-        public async Task<bool> FetchAllRemotesAsync()
+        public enum FetchAllStatus
         {
+            Succeeded,
+            Failed,
+            Skipped,
+        }
+
+        public class FetchAllRemotesResult
+        {
+            public FetchAllStatus Status { get; set; } = FetchAllStatus.Succeeded;
+            public List<string> FailedRemotes { get; } = new List<string>();
+        }
+
+        public async Task<FetchAllRemotesResult> FetchAllRemotesAsync()
+        {
+            var result = new FetchAllRemotesResult();
+
             if (IsAutoFetching)
-                return false;
+            {
+                result.Status = FetchAllStatus.Skipped;
+                return result;
+            }
 
             CommandLog log = null;
-            var succeeded = true;
 
             try
             {
-                var lockFile = Path.Combine(GitDir, "index.lock");
-                if (File.Exists(lockFile))
-                    return false;
-
-                if (_remotes.Count == 0)
-                    return false;
-
                 IsAutoFetching = true;
                 log = CreateLog("Fetch");
 
@@ -674,7 +684,7 @@ namespace SourceGit.ViewModels
                 {
                     var succ = await new Commands.Fetch(FullPath, remote).Use(log).ExecAsync();
                     if (!succ)
-                        succeeded = false;
+                        result.FailedRemotes.Add(remote.Name);
                 }
 
                 _lastFetchTime = DateTime.Now;
@@ -682,12 +692,14 @@ namespace SourceGit.ViewModels
             catch
             {
                 // Ignore all exceptions.
-                succeeded = false;
+                result.FailedRemotes.Add("*");
             }
 
             IsAutoFetching = false;
             log?.Complete();
-            return succeeded;
+
+            result.Status = result.FailedRemotes.Count == 0 ? FetchAllStatus.Succeeded : FetchAllStatus.Failed;
+            return result;
         }
 
         public async Task PullAsync(bool autoStart)
