@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,20 +62,33 @@ namespace SourceGit.Commands
             return worktrees;
         }
 
-        public async Task<bool> AddAsync(string fullpath, string name, bool createNew, string tracking)
+        public async Task<bool> AddAsync(string fullpath, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                Args = $"worktree add {fullpath.Quoted()}";
+            else
+                Args = $"worktree add -b {name} {fullpath.Quoted()}";
+
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> AddWithLocalBranchAsync(string fullpath, string localBranch)
+        {
+            Args = $"worktree add -B {localBranch} {fullpath.Quoted()} {localBranch}";
+            return await ExecAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> AddWithRemoteBranchAsync(string fullpath, string name, string remoteBranch, bool tracking)
         {
             var builder = new StringBuilder(1024);
             builder.Append("worktree add ");
-            if (!string.IsNullOrEmpty(tracking))
-                builder.Append("--track ");
-            if (!string.IsNullOrEmpty(name))
-                builder.Append(createNew ? "-b " : "-B ").Append(name).Append(' ');
-            builder.Append(fullpath.Quoted()).Append(' ');
 
-            if (!string.IsNullOrEmpty(tracking))
-                builder.Append(tracking);
-            else if (!string.IsNullOrEmpty(name) && !createNew)
-                builder.Append(name);
+            if (tracking)
+                builder.Append("--track -b ").Append(string.IsNullOrEmpty(name) ? Path.GetFileName(fullpath) : name).Append(' ');
+            else if (!string.IsNullOrEmpty(name))
+                builder.Append("-b ").Append(name).Append(' ');
+
+            builder.Append(fullpath.Quoted()).Append(' ').Append(remoteBranch);
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);

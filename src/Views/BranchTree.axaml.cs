@@ -814,16 +814,7 @@ namespace SourceGit.Views
                     checkoutAsWorktree.Click += (_, e) =>
                     {
                         if (repo.CanCreatePopup())
-                        {
-                            var worktreeFolder = $"{System.IO.Path.GetFileName(repo.FullPath)}-worktrees";
-                            var recommandName = branch.Name.Replace('/', '-').Replace('\\', '-');
-                            var recommandPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(repo.FullPath, "..", worktreeFolder, recommandName));
-                            var addWorktree = new ViewModels.AddWorktree(repo);
-                            addWorktree.Path = recommandPath;
-                            addWorktree.CreateNewBranch = false;
-                            addWorktree.SelectedBranch = branch;
-                            repo.ShowPopup(addWorktree);
-                        }
+                            repo.ShowPopup(new ViewModels.CheckoutAsWorktree(repo, branch));
 
                         e.Handled = true;
                     };
@@ -1220,12 +1211,25 @@ namespace SourceGit.Views
             var checkout = new MenuItem();
             checkout.Header = App.Text("BranchCM.Checkout", name);
             checkout.Icon = this.CreateMenuIcon("Icons.Check");
+            checkout.IsEnabled = !repo.IsBare;
             checkout.Click += async (_, e) =>
             {
                 await repo.CheckoutBranchAsync(branch);
                 e.Handled = true;
             };
             menu.Items.Add(checkout);
+
+            var checkoutAsWorktree = new MenuItem();
+            checkoutAsWorktree.Header = App.Text("BranchCM.CheckoutAsWorktree", name);
+            checkoutAsWorktree.Icon = this.CreateMenuIcon("Icons.Worktree.Add");
+            checkoutAsWorktree.Click += (_, e) =>
+            {
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.CheckoutRemoteBranchAsWorktree(repo, branch));
+
+                e.Handled = true;
+            };
+            menu.Items.Add(checkoutAsWorktree);
             menu.Items.Add(new MenuItem() { Header = "-" });
 
             if (repo.CurrentBranch is { } current)

@@ -5,32 +5,45 @@ using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
-    public class AddWorktree : Popup
+    public class CheckoutRemoteBranchAsWorktree : Popup
     {
-        [CustomValidation(typeof(AddWorktree), nameof(ValidateWorktreePath))]
+        public Models.Branch RemoteBranch
+        {
+            get => _remoteBranch;
+        }
+
+        [CustomValidation(typeof(CheckoutRemoteBranchAsWorktree), nameof(ValidateWorktreePath))]
         public string WorktreePath
         {
             get => _worktreePath;
             set => SetProperty(ref _worktreePath, value, true);
         }
 
-        [CustomValidation(typeof(AddWorktree), nameof(ValidateBranchName))]
+        [CustomValidation(typeof(CheckoutRemoteBranchAsWorktree), nameof(ValidateBranchName))]
         public string BranchName
         {
             get => _branchName;
             set => SetProperty(ref _branchName, value, true);
         }
 
-        public AddWorktree(Repository repo)
+        public bool Tracking
+        {
+            get => _tracking;
+            set => SetProperty(ref _tracking, value);
+        }
+
+        public CheckoutRemoteBranchAsWorktree(Repository repo, Models.Branch remoteBranch)
         {
             _repo = repo;
-            _worktreePath = Path.Combine(repo.GetRecommandedWorktreeDir(), "new-worktree");
+            _remoteBranch = remoteBranch;
+            _worktreePath = Path.Combine(repo.GetRecommandedWorktreeDir(), remoteBranch.Name.Replace('/', '-').Replace('\\', '-'));
+            _tracking = true;
         }
 
         public static ValidationResult ValidateWorktreePath(string path, ValidationContext ctx)
         {
-            if (ctx.ObjectInstance is not AddWorktree creator)
-                return new ValidationResult("Missing runtime context to add worktree!");
+            if (ctx.ObjectInstance is not CheckoutRemoteBranchAsWorktree creator)
+                return new ValidationResult("Missing runtime context to checkout branch as worktree!");
 
             if (string.IsNullOrEmpty(path))
                 return new ValidationResult("Worktree path is required!");
@@ -53,8 +66,8 @@ namespace SourceGit.ViewModels
 
         public static ValidationResult ValidateBranchName(string name, ValidationContext ctx)
         {
-            if (ctx.ObjectInstance is not AddWorktree creator)
-                return new ValidationResult("Missing runtime context to add worktree!");
+            if (ctx.ObjectInstance is not CheckoutRemoteBranchAsWorktree creator)
+                return new ValidationResult("Missing runtime context to checkout branch as worktree!");
 
             var test = !string.IsNullOrEmpty(name) ? name : Path.GetFileName(creator._worktreePath.TrimEnd('/').TrimEnd('\\'));
             if (!Models.RefName.IsValidBranchName(test))
@@ -72,21 +85,23 @@ namespace SourceGit.ViewModels
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
-            ProgressDescription = $"Adding a new worktree ...";
+            ProgressDescription = $"Checkout branch '{_remoteBranch.FriendlyName}' as worktree ...";
 
             var log = _repo.CreateLog("Add Worktree");
             Use(log);
 
             var succ = await new Commands.Worktree(_repo.FullPath)
                 .Use(log)
-                .AddAsync(_worktreePath, _branchName);
+                .AddWithRemoteBranchAsync(_worktreePath, _branchName, _remoteBranch.FriendlyName, _tracking);
 
             log.Complete();
             return succ;
         }
 
-        private readonly Repository _repo = null;
-        private string _worktreePath = string.Empty;
-        private string _branchName = string.Empty;
+        private readonly Repository _repo;
+        private readonly Models.Branch _remoteBranch;
+        private string _worktreePath;
+        private string _branchName;
+        private bool _tracking;
     }
 }

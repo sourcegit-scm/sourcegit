@@ -124,6 +124,14 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模块需要更新：{0}是否立即更新？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">检出分支并快进</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree" xml:space="preserve">检出分支为新的工作树</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.LocalBranch" xml:space="preserve">本地分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName" xml:space="preserve">新分支名称 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName.Placeholder" xml:space="preserve">选填。默认使用目标文件夹名称。</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.RemoteBranch" xml:space="preserve">远程分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.Tracking" xml:space="preserve">新分支跟踪此远程分支</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath" xml:space="preserve">工作树路径 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath.Placeholder" xml:space="preserve">必填。可填写相对路径。</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">从所选贮藏检出分支</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">新分支 ：</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">所选贮藏 ：</x:String>
