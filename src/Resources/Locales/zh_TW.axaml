@@ -175,6 +175,7 @@
   <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">合併至父提交...</x:String>
   <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">合併 (merge)...</x:String>
   <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">推送 (push) ${0}$ 至 ${1}$...</x:String>
+  <x:String x:Key="Text.CommitCM.QuickReword" xml:space="preserve">快速修改提交訊息...</x:String>
   <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">重定基底 (rebase) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">重設 (reset) ${0}$ 至 ${1}$...</x:String>
   <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">復原此提交...</x:String>
@@ -880,6 +881,9 @@
   <x:String x:Key="Text.Revert" xml:space="preserve">復原操作確認</x:String>
   <x:String x:Key="Text.Revert.Commit" xml:space="preserve">目標提交:</x:String>
   <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">復原後提交變更</x:String>
+  <x:String x:Key="Text.Reword" xml:space="preserve">修改提交訊息</x:String>
+  <x:String x:Key="Text.Reword.Commit" xml:space="preserve">目標提交:</x:String>
+  <x:String x:Key="Text.Reword.Message" xml:space="preserve">提交訊息：</x:String>
   <x:String x:Key="Text.Running" xml:space="preserve">正在執行操作，請耐心等待...</x:String>
   <x:String x:Key="Text.Save" xml:space="preserve">儲存</x:String>
   <x:String x:Key="Text.SaveAs" xml:space="preserve">另存新檔...</x:String>
