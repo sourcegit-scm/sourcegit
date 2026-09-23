@@ -121,7 +121,7 @@ namespace SourceGit.ViewModels
             ProgressDescription = "Adding worktree ...";
 
             var branchName = GetBranchName(false);
-            var tracking = (_setTrackingBranch && _selectedTrackingBranch != null) ? _selectedTrackingBranch.FriendlyName : string.Empty;
+            var tracking = (_createNewBranch && _setTrackingBranch && _selectedTrackingBranch != null) ? _selectedTrackingBranch.FriendlyName : string.Empty;
             var log = _repo.CreateLog("Add Worktree");
 
             Use(log);

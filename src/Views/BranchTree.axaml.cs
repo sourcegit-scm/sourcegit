@@ -805,6 +805,30 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
                 menu.Items.Add(checkout);
+
+                if (hasNoWorktree)
+                {
+                    var checkoutAsWorktree = new MenuItem();
+                    checkoutAsWorktree.Header = App.Text("BranchCM.CheckoutAsWorktree", branch.Name);
+                    checkoutAsWorktree.Icon = this.CreateMenuIcon("Icons.Worktree.Add");
+                    checkoutAsWorktree.Click += (_, e) =>
+                    {
+                        if (repo.CanCreatePopup())
+                        {
+                            var worktreeFolder = $"{System.IO.Path.GetFileName(repo.FullPath)}-worktrees";
+                            var recommandName = branch.Name.Replace('/', '-').Replace('\\', '-');
+                            var recommandPath = System.IO.Path.GetFullPath(System.IO.Path.Combine(repo.FullPath, "..", worktreeFolder, recommandName));
+                            var addWorktree = new ViewModels.AddWorktree(repo);
+                            addWorktree.Path = recommandPath;
+                            addWorktree.CreateNewBranch = false;
+                            addWorktree.SelectedBranch = branch;
+                            repo.ShowPopup(addWorktree);
+                        }
+
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(checkoutAsWorktree);
+                }
                 menu.Items.Add(new MenuItem() { Header = "-" });
 
                 if (upstream != null && hasNoWorktree)

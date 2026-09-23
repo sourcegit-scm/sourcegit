@@ -47,6 +47,7 @@
                      IsChecked="{Binding CreateNewBranch, Mode=TwoWay}"/>
         <RadioButton Content="{DynamicResource Text.AddWorktree.WhatToCheckout.Existing}"
                      GroupName="WhatToCheckout"
+                     IsChecked="{Binding !CreateNewBranch, Mode=TwoWay}"
                      Margin="8,0,0,0"/>
       </StackPanel>
 
@@ -86,8 +87,14 @@
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Height="32"
                 Content="{DynamicResource Text.AddWorktree.Tracking.Toggle}"
-                IsChecked="{Binding SetTrackingBranch, Mode=TwoWay}"
-                IsVisible="{Binding RemoteBranches, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+                IsChecked="{Binding SetTrackingBranch, Mode=TwoWay}">
+        <CheckBox.IsVisible>
+          <MultiBinding Converter="{x:Static BoolConverters.And}">
+            <Binding Path="RemoteBranches" Converter="{x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+            <Binding Path="CreateNewBranch"/>
+          </MultiBinding>
+        </CheckBox.IsVisible>
+      </CheckBox>
     </Grid>
   </StackPanel>
 </UserControl>

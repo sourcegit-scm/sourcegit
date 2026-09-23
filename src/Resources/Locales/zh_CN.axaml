@@ -67,6 +67,7 @@
   <x:String x:Key="Text.Blame.Tips" xml:space="preserve">按住 Ctrl (Windows及Linux平台) 或 ⌘ (macOS平台) 键并点击提交哈希将基于所选的提交重新计算逐行追溯</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CheckoutAsWorktree" xml:space="preserve">检出 ${0}$ 为新工作树...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比较选中的 2 个分支</x:String>
   <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">与其他分支或标签比较...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">与当前 HEAD 比较</x:String>

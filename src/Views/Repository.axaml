@@ -462,7 +462,8 @@
                             Width="14"
                             Margin="0,0,9,0"
                             Command="{Binding AddWorktree}"
-                            ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}">
+                            ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}"
+                            ToolTip.Placement="Right">
                       <Path Width="11" Height="11" Data="{StaticResource Icons.Worktree.Add}"/>
                     </Button>
                   </Grid>
