@@ -198,6 +198,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交編號</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">簽署人:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">在瀏覽器中檢視</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.DescriptionCount" xml:space="preserve">描述</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">請輸入提交訊息，標題與詳細描述之間請使用單行空白區隔。</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">標題</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>
@@ -690,6 +691,7 @@
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">一般設定</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢查軟體更新</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">日期時間格式</x:String>
+  <x:String x:Key="Text.Preferences.General.DescriptionGuideLength" xml:space="preserve">提交描述字數偵測</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">在樹狀變更目錄中啟用密集資料夾模式</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">顯示語言</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
