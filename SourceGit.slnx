@@ -60,6 +60,10 @@
 		<Project Path="src/SourceGit.csproj" />
 	</Folder>
 
+	<Folder Name="/tests/">
+		<Project Path="tests/SourceGit.Tests/SourceGit.Tests.csproj" />
+	</Folder>
+
 	<Folder Name="/files/">
 		<File Path=".editorconfig"/>
 		<File Path=".gitattributes"/>
