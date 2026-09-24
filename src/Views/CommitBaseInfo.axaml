@@ -161,6 +161,7 @@
           <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
           <v:CommitMessagePresenter Grid.Row="3" Grid.Column="1"
                                     Margin="12,4,0,0"
+                                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
                                     Foreground="{DynamicResource Brush.FG1}"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
