@@ -37,6 +37,7 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _remoteBranch = remoteBranch;
             _worktreePath = Path.Combine(repo.GetRecommandedWorktreeDir(), remoteBranch.Name.Replace('/', '-').Replace('\\', '-'));
+            _branchName = remoteBranch.Name;
             _tracking = true;
         }
 
