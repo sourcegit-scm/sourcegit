@@ -234,4 +234,58 @@ namespace SourceGit.Native
             return Path.Combine(fallback, subDirName);
         }
     }
+
+    [SupportedOSPlatform("linux")]
+    public static class LinuxUtilities
+    {
+        public const string TiledFrameClass = "window_frame_tiled";
+
+        private const int EdgeTolerance = 2;
+
+        public static void UpdateCustomWindowFrameStyle(Window window)
+        {
+            if (OS.UseSystemWindowFrame || !window.Classes.Contains("custom_window_frame"))
+                return;
+
+            var tiled = IsWindowTiledOrSnapped(window);
+            if (tiled)
+            {
+                if (!window.Classes.Contains(TiledFrameClass))
+                    window.Classes.Add(TiledFrameClass);
+            }
+            else if (window.Classes.Contains(TiledFrameClass))
+            {
+                window.Classes.Remove(TiledFrameClass);
+            }
+        }
+
+        private static bool IsWindowTiledOrSnapped(Window window)
+        {
+            if (window.WindowState is WindowState.Maximized or WindowState.FullScreen)
+                return false;
+
+            if (window.Screens is not { } screens)
+                return false;
+
+            var screen = screens.ScreenFromWindow(window);
+            if (screen == null)
+                return false;
+
+            var workArea = screen.WorkingArea;
+            var size = PixelSize.FromSize(new Size(window.Width, window.Height), window.DesktopScaling);
+            var frame = new PixelRect(window.Position, size);
+
+            var edgeCount = 0;
+            if (Math.Abs(frame.X - workArea.X) <= EdgeTolerance)
+                edgeCount++;
+            if (Math.Abs(frame.Right - workArea.Right) <= EdgeTolerance)
+                edgeCount++;
+            if (Math.Abs(frame.Y - workArea.Y) <= EdgeTolerance)
+                edgeCount++;
+            if (Math.Abs(frame.Bottom - workArea.Bottom) <= EdgeTolerance)
+                edgeCount++;
+
+            return edgeCount >= 2;
+        }
+    }
 }
