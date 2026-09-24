@@ -235,6 +235,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useSyntaxHighlighting, value);
         }
 
+        public bool EnableOverscrollFileNavigation
+        {
+            get => _enableOverscrollFileNavigation;
+            set => SetProperty(ref _enableOverscrollFileNavigation, value);
+        }
+
         public bool IgnoreCRAtEOLInDiff
         {
             get => _ignoreCRAtEOLInDiff;
@@ -836,6 +842,7 @@ namespace SourceGit.ViewModels
         private bool _ignoreWhitespaceChangesInDiff = false;
         private bool _ignoreCRAtEOLInDiff = true;
         private bool _useSyntaxHighlighting = false;
+        private bool _enableOverscrollFileNavigation = true;
         private bool _enableDiffViewWordWrap = false;
         private bool _showHiddenSymbolsInDiffView = false;
         private bool _useFullTextDiff = false;
