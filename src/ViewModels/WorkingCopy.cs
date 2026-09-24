@@ -65,7 +65,11 @@ namespace SourceGit.ViewModels
         public bool IsCommitting
         {
             get => _isCommitting;
-            private set => SetProperty(ref _isCommitting, value);
+            private set
+            {
+                if (SetProperty(ref _isCommitting, value))
+                    _repo.NotifyIsSkippingOrAbortingMergeChanged();
+            }
         }
 
         public bool EnableSignOff

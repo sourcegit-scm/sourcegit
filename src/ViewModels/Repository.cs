@@ -376,6 +376,11 @@ namespace SourceGit.ViewModels
             get => _workingCopy?.InProgressContext;
         }
 
+        public bool IsSkippingOrAbortingMerge
+        {
+            get => _workingCopy is { InProgressContext: { }, IsCommitting: true };
+        }
+
         public Models.BisectState BisectState
         {
             get => _bisectState;
@@ -746,7 +751,6 @@ namespace SourceGit.ViewModels
         public void RefreshAfterCreateBranch(Models.Branch created, bool checkout)
         {
             _watcher?.MarkBranchUpdated();
-            _watcher?.MarkWorkingCopyUpdated();
 
             _branches.RemoveAll(b => b.IsLocal && b.Name.Equals(created.Name, StringComparison.Ordinal));
             _branches.Add(created);
@@ -800,7 +804,6 @@ namespace SourceGit.ViewModels
         public void RefreshAfterCheckoutBranch(Models.Branch checkouted)
         {
             _watcher?.MarkBranchUpdated();
-            _watcher?.MarkWorkingCopyUpdated();
 
             if (_currentBranch.IsDetachedHead)
             {
@@ -1060,16 +1063,25 @@ namespace SourceGit.ViewModels
                 ShowPopup(popup);
         }
 
+        public void NotifyIsSkippingOrAbortingMergeChanged()
+        {
+            OnPropertyChanged(nameof(IsSkippingOrAbortingMerge));
+        }
+
         public async Task SkipMergeAsync()
         {
-            if (_workingCopy != null)
-                await _workingCopy.SkipMergeAsync();
+            if (_workingCopy is not { IsCommitting: false } wc)
+                return;
+
+            await wc.SkipMergeAsync();
         }
 
         public async Task AbortMergeAsync()
         {
-            if (_workingCopy != null)
-                await _workingCopy.AbortMergeAsync();
+            if (_workingCopy is not { IsCommitting: false } wc)
+                return;
+
+            await wc.AbortMergeAsync();
         }
 
         public List<(Models.CustomAction, CustomActionContextMenuLabel)> GetCustomActions(Models.CustomActionScope scope)
