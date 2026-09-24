@@ -198,7 +198,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">署名者:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">ブラウザーで開く</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">列</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">コミットメッセージを入力してください。タイトルと説明は、空行で分けて記述してください！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">タイトル</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比較</x:String>

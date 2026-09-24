@@ -191,7 +191,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">서명자:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">브라우저에서 열기</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">열</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">커밋 메시지를 입력하세요. 제목과 설명은 빈 줄로 구분하세요!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">제목</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">비교</x:String>

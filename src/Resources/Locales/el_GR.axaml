@@ -196,7 +196,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Υπογράφων:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Άνοιγμα στον περιηγητή</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">ΣΤΗΛΗ</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Εισαγάγετε το μήνυμα commit. Χρησιμοποιήστε μια κενή γραμμή για να διαχωρίσετε το θέμα από την περιγραφή!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">ΘΕΜΑ</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Σύγκριση</x:String>

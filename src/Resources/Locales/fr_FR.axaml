@@ -186,7 +186,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signataire :</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Ouvrir dans le navigateur</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">COL</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Saisissez le message de commit. Utilisez une ligne vide pour séparer le sujet et la description !</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUJET</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Comparer</x:String>
