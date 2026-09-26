@@ -783,7 +783,7 @@
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Редактировать внешний репозиторий</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Имя:</x:String>
   <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Имя внешнего репозитория</x:String>
-  <x:String x:Key="Text.Remote.ResetPushURL" xml:space="preserve">Сбросить адрес выгрузки на этот адрес репозитория</x:String>
+  <x:String x:Key="Text.Remote.ResetPushURL" xml:space="preserve">Установить адрес выгрузки равным адресу этого репозитория</x:String>
   <x:String x:Key="Text.Remote.URL" xml:space="preserve">Адрес:</x:String>
   <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">Адрес внешнего репозитория git</x:String>
   <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Копировать адрес</x:String>
