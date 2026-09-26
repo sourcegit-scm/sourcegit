@@ -343,7 +343,7 @@
   <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">Простой</x:String>
   <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Удерживайте Ctrl, чтобы сразу начать</x:String>
   <x:String x:Key="Text.Cut" xml:space="preserve">Вырезать</x:String>
-  <x:String x:Key="Text.Dashboard" xml:space="preserve">Доска</x:String>
+  <x:String x:Key="Text.Dashboard" xml:space="preserve">Обзор</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Отклонить</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">Ничего не делать</x:String>
   <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Отложить и применить повторно</x:String>
