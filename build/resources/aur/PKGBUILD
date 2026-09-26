@@ -1,0 +1,47 @@
+# Modified for for sourcegit repo relase builds.
+# Special thanks to the AUR package maintainer: Aikawa Yataro <aikawayataro at protonmail dot com>
+
+pkgname=sourcegit-bin
+_name="${pkgname%-bin}"
+pkgver=$VERSION
+pkgrel=1
+pkgdesc="GUI client for GIT users"
+arch=('x86_64')
+url='https://github.com/sourcegit-scm/sourcegit'
+license=('MIT')
+provides=('sourcegit')
+conflicts=('sourcegit')
+depends=('git' 'xdg-utils')
+optdepends=('git-credential-manager: third-party authentication support')
+makedepends=('desktop-file-utils')
+options=('!debug')
+
+prepare() {
+    local _desktop_file="${startdir}/usr/share/applications/${_name}.desktop"
+
+# desktop-file-install
+
+    if [[ -f "$_desktop_file" ]]; then
+        desktop-file-edit "$_desktop_file" \
+            --set-icon="${_name}" \
+            --set-key=Exec \
+            --set-value="${_name}"
+    fi
+}
+
+package() {
+    install -d "$pkgdir/opt/$_name/"
+    install -d "$pkgdir/usr/bin/"
+
+    cp -ra "${startdir}/opt/"* "${pkgdir}/opt/"
+    cp -ra "${startdir}/usr/"* "${pkgdir}/usr/"
+
+    install -Dm644 "${startdir}/usr/share/applications/${_name}.desktop" \
+                   "${pkgdir}/usr/share/applications/${_name}.desktop"
+
+    install -Dm644 "${startdir}/usr/share/icons/${_name}.png" \
+                   "${pkgdir}/usr/share/icons/hicolor/256x256/apps/${_name}.png"
+
+    install -Dm644 "${startdir}/LICENSE" \
+                    "${pkgdir}/usr/share/licenses/${_realname}/LICENSE"
+}
