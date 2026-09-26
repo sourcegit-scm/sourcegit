@@ -848,7 +848,7 @@
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Путь</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Текущая ветка</x:String>
-  <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">ПОИСК ПО</x:String>
+  <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">ИСКАТЬ В</x:String>
   <x:String x:Key="Text.Repository.Search.ToolTip" xml:space="preserve">Поиск ревизий</x:String>
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Только оформленные ревизии</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Показывать только первый родительский</x:String>
