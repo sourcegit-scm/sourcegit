@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Threading;
@@ -120,6 +122,61 @@ namespace SourceGit.ViewModels
                 CloseRepositoryInTab(one, false);
 
             _ignoreIndexChange = false;
+        }
+
+        public async Task FetchAllRepositoriesAsync()
+        {
+            // avoid collection was modified while enumerating.
+            var pages = new List<LauncherPage>();
+            pages.AddRange(Pages);
+
+            var total = 0;
+            var succeeded = 0;
+            var noRemoteNames = new List<string>();
+            var skippedNames = new List<string>();
+            var failedNames = new List<string>();
+
+            foreach (var page in pages)
+            {
+                if (page.Data is not Repository repo)
+                    continue;
+
+                if (repo.Remotes.Count == 0)
+                {
+                    noRemoteNames.Add(page.Node.Name);
+                    continue;
+                }
+
+                total++;
+                var result = await repo.FetchAllRemotesAsync();
+                switch (result.Status)
+                {
+                    case Repository.FetchAllStatus.Succeeded:
+                        succeeded++;
+                        break;
+                    case Repository.FetchAllStatus.Skipped:
+                        skippedNames.Add(page.Node.Name);
+                        total--;
+                        break;
+                    case Repository.FetchAllStatus.Failed:
+                        var remotesInfo = string.Join(", ", result.FailedRemotes);
+                        failedNames.Add($"{page.Node.Name} (remote: {remotesInfo})");
+                        break;
+                }
+            }
+
+            var message = $"Fetched {succeeded}/{total} repositories";
+
+            if (noRemoteNames.Count > 0)
+                message += $"\n{noRemoteNames.Count} repositories skipped (no remote):\n    {string.Join("\n    ", noRemoteNames)}";
+
+            if (skippedNames.Count > 0)
+                message += $"\n{skippedNames.Count} repositories skipped:\n    {string.Join("\n    ", skippedNames)}";
+
+            if (failedNames.Count > 0)
+                message += $"\n{failedNames.Count} repositories failed:\n    {string.Join("\n    ", failedNames)}";
+
+            Models.Notification.Send(null, message, succeeded < total);
         }
 
         public void SwitchWorkspace(Workspace to)

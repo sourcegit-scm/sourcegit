@@ -667,6 +667,58 @@ namespace SourceGit.ViewModels
                 ShowPopup(new Fetch(this));
         }
 
+        public enum FetchAllStatus
+        {
+            Succeeded,
+            Failed,
+            Skipped,
+        }
+
+        public class FetchAllRemotesResult
+        {
+            public FetchAllStatus Status { get; set; } = FetchAllStatus.Succeeded;
+            public List<string> FailedRemotes { get; } = new List<string>();
+        }
+
+        public async Task<FetchAllRemotesResult> FetchAllRemotesAsync()
+        {
+            var result = new FetchAllRemotesResult();
+
+            if (IsAutoFetching)
+            {
+                result.Status = FetchAllStatus.Skipped;
+                return result;
+            }
+
+            CommandLog log = null;
+
+            try
+            {
+                IsAutoFetching = true;
+                log = CreateLog("Fetch");
+
+                foreach (var remote in _remotes)
+                {
+                    var succ = await new Commands.Fetch(FullPath, remote).Use(log).ExecAsync();
+                    if (!succ)
+                        result.FailedRemotes.Add(remote.Name);
+                }
+
+                _lastFetchTime = DateTime.Now;
+            }
+            catch
+            {
+                // Ignore all exceptions.
+                result.FailedRemotes.Add("*");
+            }
+
+            IsAutoFetching = false;
+            log?.Complete();
+
+            result.Status = result.FailedRemotes.Count == 0 ? FetchAllStatus.Succeeded : FetchAllStatus.Failed;
+            return result;
+        }
+
         public async Task PullAsync(bool autoStart)
         {
             if (IsBare || !CanCreatePopup())
