@@ -115,6 +115,10 @@ namespace SourceGit.ViewModels
             Preferences.Instance.AutoRemoveInvalidNode();
             Preferences.Instance.Save();
             Welcome.Instance.Refresh();
+
+            if (_untrusted > 0)
+                Models.Notification.Send(null, App.Text("TrustRepository.ScanSkipped", _untrusted));
+
             return true;
         }
 
@@ -154,6 +158,10 @@ namespace SourceGit.ViewModels
                         if (!IsManaged(normalized))
                             outs.Add(normalized);
                     }
+                    else if (Models.SafeDirectories.IsUntrustedRepository(test.StdErr))
+                    {
+                        _untrusted++;
+                    }
 
                     continue;
                 }
@@ -182,5 +190,6 @@ namespace SourceGit.ViewModels
         private bool _useCustomDir = false;
         private string _customDir = string.Empty;
         private Models.ScanDir _selected = null;
+        private int _untrusted = 0;
     }
 }

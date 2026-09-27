@@ -350,7 +350,7 @@ namespace SourceGit
             var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
             if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                Console.Out.WriteLine(string.IsNullOrWhiteSpace(test.StdErr) ? $"'{args[1]}' is not in a valid git repository" : test.StdErr.Trim());
                 desktop.Shutdown(-1);
                 return true;
             }
@@ -395,7 +395,7 @@ namespace SourceGit
             var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
             if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                Console.Out.WriteLine(string.IsNullOrWhiteSpace(test.StdErr) ? $"'{args[1]}' is not in a valid git repository" : test.StdErr.Trim());
                 desktop.Shutdown(-1);
                 return true;
             }

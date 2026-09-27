@@ -1001,6 +1001,15 @@
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">终止运行</x:String>
+  <x:String x:Key="Text.TrustRepository" xml:space="preserve">不受信任的仓库</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">将执行：</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git 拒绝访问该仓库：  </x:String>
+  <x:String x:Key="Text.TrustRepository.Mode" xml:space="preserve">信任方式：</x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">路径 ：</x:String>
+  <x:String x:Key="Text.TrustRepository.Permanent" xml:space="preserve">永久信任</x:String>
+  <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">有 {0} 个仓库因 git 的信任检查被跳过，请手动打开它们并确认是否信任。</x:String>
+  <x:String x:Key="Text.TrustRepository.SessionOnly" xml:space="preserve">仅本次信任</x:String>
+  <x:String x:Key="Text.TrustRepository.SessionUnsupported" xml:space="preserve">当前 git 版本不支持仅本次信任（需要 git 2.38 或更高版本）。</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">如未初始化子模块，先初始化</x:String>

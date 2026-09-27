@@ -18,6 +18,12 @@
         public static readonly System.Version STASH_PUSH_ONLY_STAGED = new(2, 35, 0);
 
         /// <summary>
+        ///     The minimal version of Git that respects the `safe.directory` exception passed with the `-c`
+        ///     command line option. Older versions can only read the exception from the system/global config.
+        /// </summary>
+        public static readonly System.Version SAFE_DIRECTORY_COMMAND_LINE = new(2, 38, 0);
+
+        /// <summary>
         ///     The minimal version of Git that supports the `git merge-tree --write-tree` command, which is used for testing merge results without actually performing a merge.
         /// </summary>
         public static readonly System.Version TESTING_MERGE = new(2, 38, 0);
