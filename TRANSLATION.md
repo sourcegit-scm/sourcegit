@@ -1159,43 +1159,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-97.18%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Blame.Tips
-- Text.BranchCM.CheckoutAsWorktree
-- Text.BranchTree.PushURL
-- Text.CheckoutAsWorktree
-- Text.CheckoutAsWorktree.LocalBranch
-- Text.CheckoutAsWorktree.NewBranchName
-- Text.CheckoutAsWorktree.NewBranchName.Placeholder
-- Text.CheckoutAsWorktree.RemoteBranch
-- Text.CheckoutAsWorktree.Tracking
-- Text.CheckoutAsWorktree.WorktreePath
-- Text.CheckoutAsWorktree.WorktreePath.Placeholder
-- Text.CommitDetail.Files.Tips
-- Text.Dashboard
-- Text.Histories.AdvancedOptions
-- Text.Hotkeys.Repo.ToggleCommitDetailPanel
-- Text.Hotkeys.Repo.ToggleSearchCommits
-- Text.Hotkeys.Repo.ViewDashboard
-- Text.Preferences.AI.ExtraHeaders
-- Text.Remote.ResetPushURL
-- Text.RemoteCM.SetPushURL
-- Text.Repository.Search.Method
-- Text.Repository.Search.ToolTip
-- Text.SetPushUrl
-- Text.SetPushUrl.PushURL
-- Text.SetPushUrl.Remote
-- Text.SetPushUrl.URL
-- Text.Statistics.Tips
-- Text.WorkingCopy.CollapseSidebar
-- Text.WorkingCopy.DiscardAll
-- Text.WorkingCopy.ExpandSidebar
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-61.15%25-red)
 
