@@ -23,7 +23,6 @@
       <Color x:Key="Color.FlatButton.FloatingBorder">#FF898989</Color>
       <Color x:Key="Color.FG1">#FF1F1F1F</Color>
       <Color x:Key="Color.FG2">#FF6F6F6F</Color>
-      <Color x:Key="Color.Warn">#FFB36B00</Color>
       <Color x:Key="Color.Diff.EmptyBG">#10000000</Color>
       <Color x:Key="Color.Diff.AddedBG">#80BFE6C1</Color>
       <Color x:Key="Color.Diff.DeletedBG">#80FF9797</Color>
@@ -58,7 +57,6 @@
       <Color x:Key="Color.FlatButton.FloatingBorder">#FF4F4F4F</Color>
       <Color x:Key="Color.FG1">#FFDFDFDF</Color>
       <Color x:Key="Color.FG2">#FF9F9F9F</Color>
-      <Color x:Key="Color.Warn">#FFE0A050</Color>
       <Color x:Key="Color.Diff.EmptyBG">#3C000000</Color>
       <Color x:Key="Color.Diff.AddedBG">#C03A5C3F</Color>
       <Color x:Key="Color.Diff.DeletedBG">#C0633F3E</Color>
@@ -93,7 +91,6 @@
   <SolidColorBrush x:Key="Brush.FlatButton.FloatingBorder" Color="{DynamicResource Color.FlatButton.FloatingBorder}"/>
   <SolidColorBrush x:Key="Brush.FG1" Color="{DynamicResource Color.FG1}"/>
   <SolidColorBrush x:Key="Brush.FG2" Color="{DynamicResource Color.FG2}"/>
-  <SolidColorBrush x:Key="Brush.Warn" Color="{DynamicResource Color.Warn}"/>
   <SolidColorBrush x:Key="Brush.Accent" Color="{DynamicResource SystemAccentColor}"/>
   <SolidColorBrush x:Key="Brush.AccentHovered" Color="{DynamicResource SystemListLowColor}"/>
   <SolidColorBrush x:Key="Brush.Diff.EmptyBG" Color="{DynamicResource Color.Diff.EmptyBG}"/>

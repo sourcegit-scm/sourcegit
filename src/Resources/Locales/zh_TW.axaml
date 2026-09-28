@@ -994,12 +994,9 @@
   <x:String x:Key="Text.TrustRepository" xml:space="preserve">不受信任的存放庫</x:String>
   <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">將執行：</x:String>
   <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git 拒絕存取該存放庫：  </x:String>
-  <x:String x:Key="Text.TrustRepository.Mode" xml:space="preserve">信任方式：</x:String>
   <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">路徑 ：</x:String>
-  <x:String x:Key="Text.TrustRepository.Permanent" xml:space="preserve">永久信任</x:String>
+  <x:String x:Key="Text.TrustRepository.Permanent" xml:space="preserve">信任此存放庫</x:String>
   <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">有 {0} 個存放庫因 git 的信任檢查而被略過，請手動開啟並確認是否信任。</x:String>
-  <x:String x:Key="Text.TrustRepository.SessionOnly" xml:space="preserve">僅本次信任</x:String>
-  <x:String x:Key="Text.TrustRepository.SessionUnsupported" xml:space="preserve">目前的 git 版本不支援僅本次信任（需要 git 2.38 或更新版本）。</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">如果子模組尚未初始化，則將其初始化</x:String>

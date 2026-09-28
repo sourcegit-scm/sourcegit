@@ -53,7 +53,7 @@ namespace SourceGit.Commands
             var starter = new ProcessStartInfo();
             starter.WorkingDirectory = _repo;
             starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = Models.SafeDirectories.GetSessionSafeDirectoryArgs(_repo) + "-c core.editor=true update-index --index-info";
+            starter.Arguments = "-c core.editor=true update-index --index-info";
             starter.UseShellExecute = false;
             starter.CreateNoWindow = true;
             starter.WindowStyle = ProcessWindowStyle.Hidden;

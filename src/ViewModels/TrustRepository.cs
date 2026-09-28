@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -24,27 +24,26 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        /// <summary>
+        ///     Whether the exception should be added into the user's global git config. Disabled by default,
+        ///     so the user has to opt in explicitly.
+        /// </summary>
         public bool Permanent
         {
             get => _permanent;
-            set => SetProperty(ref _permanent, value);
+            set
+            {
+                if (SetProperty(ref _permanent, value))
+                    OnPropertyChanged(nameof(CanSure));
+            }
         }
 
-        /// <summary>
-        ///     `-c safe.directory=` (used by the session-only mode) is only respected by git 2.38 and later.
-        ///     Older versions can only read the exception from the system/global config.
-        /// </summary>
-        public bool SupportsSessionTrust
-        {
-            get;
-        }
+        public override bool CanSure => Permanent;
 
         public TrustRepository(string pageId, string path, string reason, string safeDirectory, RepositoryNode parent, bool moveNode, bool open, int bookmark)
         {
             _pageId = pageId;
             _parent = parent;
-            SupportsSessionTrust = Models.SafeDirectories.SupportsSessionTrust();
-            _permanent = !SupportsSessionTrust;
             _moveNode = moveNode;
             _open = open;
             _bookmark = bookmark;
@@ -57,23 +56,19 @@ namespace SourceGit.ViewModels
 
         public override async Task<bool> Sure()
         {
+            if (!Permanent)
+                return false;
+
             var log = new CommandLog("Trust Repository");
             Use(log);
 
-            if (Permanent)
+            ProgressDescription = $"Adding '{SafeDirectory}' into git global `safe.directory` ...";
+            var added = await new Commands.AddSafeDirectory(_pageId, SafeDirectory).Use(log).ExecAsync();
+            if (!added)
             {
-                ProgressDescription = $"Adding '{SafeDirectory}' into git global `safe.directory` ...";
-                var added = await new Commands.AddSafeDirectory(_pageId, SafeDirectory).Use(log).ExecAsync();
-                if (!added)
-                {
-                    log.Complete();
-                    return false;
-                }
+                log.Complete();
+                return false;
             }
-
-            // Always keep the exception in memory for this session, so the following commands
-            // can be executed without restarting the application.
-            Models.SafeDirectories.AddSessionTrust(TargetPath, SafeDirectory);
 
             ProgressDescription = $"Opening '{TargetPath}' ...";
 
@@ -93,7 +88,6 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
-            Models.SafeDirectories.AddSessionTrust(root, SafeDirectory);
 
             var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(root, _parent, _moveNode);
             node.Bookmark = _bookmark;

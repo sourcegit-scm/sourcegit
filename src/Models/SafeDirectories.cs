@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -22,15 +21,6 @@ namespace SourceGit.Models
         }
 
         /// <summary>
-        ///     `-c safe.directory=` is only respected by git 2.38 and later. Older versions (2.35.2 - 2.37.x)
-        ///     can only read the exception from the system/global config.
-        /// </summary>
-        public static bool SupportsSessionTrust()
-        {
-            return Native.OS.GitVersion >= GitVersions.SAFE_DIRECTORY_COMMAND_LINE;
-        }
-
-        /// <summary>
         ///     Tries to get the value that should be written into the `safe.directory` config.
         ///     Prefers the value suggested by git itself (which knows the correct form for the current platform),
         ///     and falls back to building a value from the given path.
@@ -48,74 +38,6 @@ namespace SourceGit.Models
             // Git for Windows uses the `%(prefix)/` prefix for UNC paths.
             value = OperatingSystem.IsWindows() && normalized.StartsWith("//", StringComparison.Ordinal) ? $"%(prefix)/{normalized}" : normalized;
             return true;
-        }
-
-        /// <summary>
-        ///     Trusts a directory only for the current session. The exception will be passed to git with
-        ///     `-c safe.directory=<value>` for every command executed under that directory, but it will
-        ///     NOT be persisted into the user's git config.
-        /// </summary>
-        public static void AddSessionTrust(string workingDirectory, string safeDirectory)
-        {
-            var normalized = Normalize(workingDirectory);
-            if (string.IsNullOrEmpty(normalized) || string.IsNullOrEmpty(safeDirectory))
-                return;
-
-            lock (s_sessionTrusted)
-            {
-                foreach (var one in s_sessionTrusted)
-                {
-                    if (one.WorkingDirectory.Equals(normalized, s_comparison) && one.Value.Equals(safeDirectory, StringComparison.Ordinal))
-                        return;
-                }
-
-                s_sessionTrusted.Add(new TrustEntry(normalized, safeDirectory));
-            }
-        }
-
-        public static List<string> GetSessionSafeDirectories(string workingDirectory)
-        {
-            var outs = new List<string>();
-            var normalized = Normalize(workingDirectory);
-            if (string.IsNullOrEmpty(normalized))
-                return outs;
-
-            var seen = new HashSet<string>(StringComparer.Ordinal);
-            lock (s_sessionTrusted)
-            {
-                foreach (var one in s_sessionTrusted)
-                {
-                    if (seen.Contains(one.Value))
-                        continue;
-
-                    if (normalized.Equals(one.WorkingDirectory, s_comparison) ||
-                        normalized.StartsWith(one.WorkingDirectory + "/", s_comparison))
-                    {
-                        seen.Add(one.Value);
-                        outs.Add(one.Value);
-                    }
-                }
-            }
-
-            return outs;
-        }
-
-        /// <summary>
-        ///     Builds the `-c safe.directory=` arguments for the given working directory. Commands that do not
-        ///     inherit `Commands.Command` should prepend the result to their own arguments, so that repositories
-        ///     trusted for this session work there too.
-        /// </summary>
-        public static string GetSessionSafeDirectoryArgs(string workingDirectory)
-        {
-            var values = GetSessionSafeDirectories(workingDirectory);
-            if (values.Count == 0)
-                return string.Empty;
-
-            var builder = new StringBuilder();
-            foreach (var one in values)
-                builder.Append("-c safe.directory=").Append(one.Quoted()).Append(' ');
-
-            return builder.ToString();
         }
 
         private static string Normalize(string path)
@@ -174,11 +96,6 @@ namespace SourceGit.Models
 
             return value;
         }
-
-        private record TrustEntry(string WorkingDirectory, string Value);
-
-        private static readonly StringComparison s_comparison = OperatingSystem.IsLinux() ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-        private static readonly List<TrustEntry> s_sessionTrusted = [];
 
         [GeneratedRegex(@"--add\s+safe\.directory\s+(?<value>[^\r\n]+)", RegexOptions.Multiline)]
         private static partial Regex REG_SAFE_DIRECTORY_HINT();

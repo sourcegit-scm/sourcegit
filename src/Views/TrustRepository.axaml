@@ -35,27 +35,11 @@
         <Run Text="{Binding Reason, Mode=OneWay}"/>
       </TextBlock>
 
-      <TextBlock Grid.Row="2" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,16,8,0"
-                 Text="{DynamicResource Text.TrustRepository.Mode}"/>
       <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" Margin="0,16,0,0">
-        <RadioButton GroupName="TrustMode"
-                     Content="{DynamicResource Text.TrustRepository.SessionOnly}"
-                     IsEnabled="{Binding SupportsSessionTrust}"
-                     IsChecked="{Binding !Permanent, Mode=TwoWay}"/>
-        <TextBlock Margin="0,2,0,0"
-                   Foreground="{DynamicResource Brush.FG2}"
-                   TextWrapping="Wrap"
-                   IsVisible="{Binding !SupportsSessionTrust}"
-                   Text="{DynamicResource Text.TrustRepository.SessionUnsupported}"/>
-        <RadioButton GroupName="TrustMode"
-                     Margin="0,4,0,0"
-                     IsChecked="{Binding Permanent, Mode=TwoWay}">
-          <TextBlock Foreground="{DynamicResource Brush.Warn}"
-                     TextWrapping="Wrap"
+        <CheckBox IsChecked="{Binding Permanent, Mode=TwoWay}">
+          <TextBlock TextWrapping="Wrap"
                      Text="{DynamicResource Text.TrustRepository.Permanent}"/>
-        </RadioButton>
+        </CheckBox>
 
         <TextBlock Margin="0,2,0,0"
                    Foreground="{DynamicResource Brush.FG2}"

@@ -183,9 +183,6 @@ namespace SourceGit.Commands
                     break;
             }
 
-            // Session-only `safe.directory` exceptions. See `Models.SafeDirectories` for details.
-            builder.Append(Models.SafeDirectories.GetSessionSafeDirectoryArgs(WorkingDirectory));
-
             builder.Append(Args);
 
             var start = new ProcessStartInfo();
