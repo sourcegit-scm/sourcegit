@@ -720,7 +720,7 @@ namespace SourceGit.ViewModels
         private List<Models.Change> GetVisibleChanges(List<Models.Change> changes)
         {
             if (string.IsNullOrEmpty(_filter))
-                return changes;
+                return [.. changes];
 
             var visible = new List<Models.Change>();
 
