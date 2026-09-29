@@ -135,7 +135,7 @@
                 <!-- Table of author -->
                 <ListBox Grid.Column="0"
                          ItemsSource="{Binding Authors}"
-                         SelectionMode="Single"
+                         SelectionMode="Toggle"
                          BorderThickness="1"
                          BorderBrush="{DynamicResource Brush.Border2}"
                          Background="{DynamicResource Brush.Contents}"
