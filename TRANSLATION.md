@@ -147,28 +147,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-98.41%25-yellow)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.53%25-yellow)
 
 <details>
 <summary>Missing keys in es_ES.axaml</summary>
 
-- Text.BranchCM.CheckoutAsWorktree
-- Text.CheckoutAsWorktree
-- Text.CheckoutAsWorktree.LocalBranch
-- Text.CheckoutAsWorktree.NewBranchName
-- Text.CheckoutAsWorktree.NewBranchName.Placeholder
-- Text.CheckoutAsWorktree.RemoteBranch
-- Text.CheckoutAsWorktree.Tracking
-- Text.CheckoutAsWorktree.WorktreePath
-- Text.CheckoutAsWorktree.WorktreePath.Placeholder
-- Text.CommitDetail.Files.Tips
 - Text.TrustRepository
 - Text.TrustRepository.CommandTip
 - Text.TrustRepository.Description
 - Text.TrustRepository.Path
 - Text.TrustRepository.ScanSkipped
-- Text.WorkingCopy.CollapseSidebar
-- Text.WorkingCopy.ExpandSidebar
 
 </details>
 
