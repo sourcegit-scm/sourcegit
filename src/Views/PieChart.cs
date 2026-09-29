@@ -77,9 +77,6 @@ namespace SourceGit.Views
             _arcs.Clear();
             _lastHoverred = null;
 
-            if (_report == null || _report.Authors.Count == 0)
-                return;
-
             var w = Bounds.Width;
             var h = Bounds.Height;
             var foreground = Foreground;
@@ -90,7 +87,14 @@ namespace SourceGit.Views
             _center = new Point(w / 2, h / 2);
             _radius = Math.Min(w, h) / 2 - 48;
 
-            if (_report.Authors.Count == 1)
+            if (_report == null || _report.Authors.Count == 0)
+            {
+                var label = new FormattedText("0", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 14, Brushes.White);
+                context.DrawEllipse(null, new Pen(s_brushes[0]), _center, _radius, _radius);
+                context.DrawText(label, new Point(_center.X - label.Width / 2, _center.Y - label.Height / 2));
+                return;
+            }
+            else if (_report.Authors.Count == 1)
             {
                 var single = _report.Authors[0];
                 var label = new FormattedText(
