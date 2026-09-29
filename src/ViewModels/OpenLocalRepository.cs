@@ -89,12 +89,27 @@ namespace SourceGit.ViewModels
                 else
                 {
                     var launcher = App.GetLauncher();
-                    foreach (var page in launcher.Pages)
+                    if (Models.SafeDirectories.IsUntrustedRepository(test.StdErr) &&
+                        Models.SafeDirectories.TryGetSafeDirectoryValue(_repoPath, test.StdErr, out var safeDirectory))
                     {
-                        if (page.Node.Id.Equals(_pageId, StringComparison.Ordinal))
+                        foreach (var page in launcher.Pages)
                         {
-                            page.Popup = new Init(page.Node.Id, _repoPath, parent, _bookmark, test.StdErr);
-                            break;
+                            if (page.Node.Id.Equals(_pageId, StringComparison.Ordinal))
+                            {
+                                page.Popup = new TrustRepository(page.Node.Id, _repoPath, test.StdErr, safeDirectory, parent, true, true, _bookmark);
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (var page in launcher.Pages)
+                        {
+                            if (page.Node.Id.Equals(_pageId, StringComparison.Ordinal))
+                            {
+                                page.Popup = new Init(page.Node.Id, _repoPath, parent, _bookmark, test.StdErr);
+                                break;
+                            }
                         }
                     }
 

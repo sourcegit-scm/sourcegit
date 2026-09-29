@@ -80,7 +80,7 @@ namespace SourceGit.ViewModels
 
         public async Task ProcessPopupAsync()
         {
-            if (_popup is { InProgress: false } dump)
+            if (_popup is { InProgress: false } dump && dump.CanSure)
             {
                 if (!dump.Check())
                     return;

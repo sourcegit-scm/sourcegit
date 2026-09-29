@@ -210,8 +210,8 @@ namespace SourceGit.Commands
             if (!start.Environment.ContainsKey("GIT_SSH_COMMAND") && !string.IsNullOrEmpty(SSHKey))
                 start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}' -o AddKeysToAgent=yes");
 
-            // Force using en_US.UTF-8 locale
-            if (OperatingSystem.IsLinux())
+            // Force the C locale on Unix, so that git's output (including fatal errors) can always be parsed.
+            if (!OperatingSystem.IsWindows())
             {
                 start.Environment.Add("LANG", "C");
                 start.Environment.Add("LC_ALL", "C");

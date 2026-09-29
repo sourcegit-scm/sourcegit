@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.TrustRepository"
+             x:DataType="vm:TrustRepository">
+  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Lock}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.TrustRepository}"/>
+    </StackPanel>
+
+    <Grid Margin="8,16,0,0" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.TrustRepository.Path}"/>
+      <SelectableTextBlock Grid.Row="0" Grid.Column="1"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           Text="{Binding TargetPath}"/>
+
+      <TextBlock Grid.Row="1" Grid.Column="1"
+                 Margin="0,16,0,0"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 TextWrapping="Wrap">
+        <Run Text="{DynamicResource Text.TrustRepository.Description}"/>
+        <Run Text="{Binding Reason, Mode=OneWay}"/>
+      </TextBlock>
+
+      <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" Margin="0,16,0,0">
+        <CheckBox IsChecked="{Binding Permanent, Mode=TwoWay}">
+          <TextBlock TextWrapping="Wrap"
+                     Text="{DynamicResource Text.TrustRepository.Permanent}"/>
+        </CheckBox>
+
+        <TextBlock Margin="0,2,0,0"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   TextWrapping="Wrap"
+                   IsVisible="{Binding Permanent}">
+          <Run Text="{DynamicResource Text.TrustRepository.CommandTip}"/>
+          <Run Text="{Binding Command, Mode=OneWay}"/>
+        </TextBlock>
+      </StackPanel>
+    </Grid>
+  </StackPanel>
+</UserControl>

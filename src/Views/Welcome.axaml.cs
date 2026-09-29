@@ -394,7 +394,7 @@ namespace SourceGit.Views
 
                 foreach (var item in items)
                 {
-                    var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
+                    var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath, to);
                     if (!string.IsNullOrEmpty(path))
                     {
                         await ViewModels.Welcome.Instance.AddRepositoryAsync(path, to, true, false);

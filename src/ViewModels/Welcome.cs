@@ -100,7 +100,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task<string> GetRepositoryRootAsync(string path)
+        public async Task<string> GetRepositoryRootAsync(string path, RepositoryNode parent = null)
         {
             if (!Preferences.Instance.IsGitConfigured())
             {
@@ -122,10 +122,18 @@ namespace SourceGit.ViewModels
                 return root;
 
             var rs = await new Commands.QueryRepositoryRootPath(root).GetResultAsync();
-            if (!rs.IsSuccess || string.IsNullOrWhiteSpace(rs.StdOut))
-                return null;
+            if (rs.IsSuccess && !string.IsNullOrWhiteSpace(rs.StdOut))
+                return rs.StdOut.Trim();
 
-            return rs.StdOut.Trim();
+            if (Models.SafeDirectories.IsUntrustedRepository(rs.StdErr) &&
+                Models.SafeDirectories.TryGetSafeDirectoryValue(root, rs.StdErr, out var safeDirectory))
+            {
+                var launcher = App.GetLauncher();
+                if (launcher?.ActivePage is { } page && page.CanCreatePopup())
+                    page.Popup = new TrustRepository(page.Node.Id, root, rs.StdErr, safeDirectory, parent, true, false, 0);
+            }
+
+            return null;
         }
 
         public async Task AddRepositoryAsync(string path, RepositoryNode parent, bool moveNode, bool open)
