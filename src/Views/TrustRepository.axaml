@@ -28,27 +28,16 @@
                            Text="{Binding TargetPath}"/>
 
       <TextBlock Grid.Row="1" Grid.Column="1"
-                 Margin="0,16,0,0"
+                 Margin="0,12"
                  Foreground="{DynamicResource Brush.FG2}"
                  TextWrapping="Wrap">
         <Run Text="{DynamicResource Text.TrustRepository.Description}"/>
         <Run Text="{Binding Reason, Mode=OneWay}"/>
       </TextBlock>
-
-      <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" Margin="0,16,0,0">
-        <CheckBox IsChecked="{Binding Permanent, Mode=TwoWay}">
-          <TextBlock TextWrapping="Wrap"
-                     Text="{DynamicResource Text.TrustRepository.Permanent}"/>
-        </CheckBox>
-
-        <TextBlock Margin="0,2,0,0"
-                   Foreground="{DynamicResource Brush.FG2}"
-                   TextWrapping="Wrap"
-                   IsVisible="{Binding Permanent}">
-          <Run Text="{DynamicResource Text.TrustRepository.CommandTip}"/>
-          <Run Text="{Binding Command, Mode=OneWay}"/>
-        </TextBlock>
-      </StackPanel>
+      
+      <TextBlock Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Command, Mode=OneWay}"
+                 TextWrapping="Wrap"/>
     </Grid>
   </StackPanel>
 </UserControl>
