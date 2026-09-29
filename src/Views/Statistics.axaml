@@ -218,16 +218,26 @@
                    Foreground="{DynamicResource Brush.FG2}"/>
         
         <v:PieChart Grid.Row="1"
+                    x:Name="Pie"
                     Margin="8,0"
                     Report="{Binding SelectedReport, Mode=OneWay}"
                     FontFamily="{DynamicResource Fonts.Default}"
                     SecondaryFontFamily="{DynamicResource Fonts.Monospace}"
                     Foreground="{DynamicResource Brush.FG1}"
-                    SecondaryForeground="{DynamicResource Brush.FG2}">
-          <v:PieChart.DataTemplates>
+                    SecondaryForeground="{DynamicResource Brush.FG2}"/>
+
+        <ContentControl Grid.Row="1"
+                        HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Content="{Binding #Pie.HoveringTip, Mode=OneWay}"
+                        ClipToBounds="False">
+          <ContentControl.DataTemplates>
             <DataTemplate DataType="v:PieChartToolTip">
-              <Border>
-                <StackPanel Orientation="Vertical">
+              <Border BorderThickness="1"
+                      BorderBrush="{DynamicResource Brush.PopupBorder}"
+                      Background="{DynamicResource Brush.Popup}"
+                      Effect="drop-shadow(0 0 12 #80000000)"
+                      CornerRadius="4">
+                <StackPanel Margin="8" Orientation="Vertical">
                   <StackPanel Orientation="Horizontal">
                     <Border Background="{Binding Brush, Mode=OneWay}"
                             Width="12" Height="12"
@@ -261,8 +271,8 @@
                 </StackPanel>
               </Border>
             </DataTemplate>
-          </v:PieChart.DataTemplates>
-        </v:PieChart>
+          </ContentControl.DataTemplates>
+        </ContentControl>
 
         <TextBlock Grid.Row="2"
                    Margin="16,0,0,0"

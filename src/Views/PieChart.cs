@@ -4,7 +4,6 @@ using System.Globalization;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.VisualTree;
@@ -25,6 +24,17 @@ namespace SourceGit.Views
         {
             get => _report;
             set => SetAndRaise(ReportProperty, ref _report, value);
+        }
+
+        public static readonly DirectProperty<PieChart, PieChartToolTip> HoveringTipProperty =
+            AvaloniaProperty.RegisterDirect<PieChart, PieChartToolTip>(
+                nameof(HoveringTip),
+                o => o.HoveringTip);
+
+        public PieChartToolTip HoveringTip
+        {
+            get => _hoveringTip;
+            private set => SetAndRaise(HoveringTipProperty, ref _hoveringTip, value);
         }
 
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
@@ -63,13 +73,6 @@ namespace SourceGit.Views
             set => SetValue(SecondaryForegroundProperty, value);
         }
 
-        public PieChart()
-        {
-            ToolTip.SetShowDelay(this, 0);
-            ToolTip.SetPlacement(this, PlacementMode.Custom);
-            ToolTip.SetCustomPopupPlacementCallback(this, PlaceToolTip);
-        }
-
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -86,6 +89,7 @@ namespace SourceGit.Views
 
             _center = new Point(w / 2, h / 2);
             _radius = Math.Min(w, h) / 2 - 48;
+            context.FillRectangle(Brushes.Transparent, new Rect(0, 0, w, h));
 
             if (_report == null || _report.Authors.Count == 0)
             {
@@ -255,7 +259,8 @@ namespace SourceGit.Views
 
             if (_report == null || _report.Authors.Count == 0)
             {
-                ToolTip.SetTip(this, null);
+                _lastHoverred = null;
+                HoveringTip = null;
                 return;
             }
 
@@ -263,7 +268,8 @@ namespace SourceGit.Views
             var distance = Math.Sqrt(Math.Pow(pos.X - _center.X, 2) + Math.Pow(pos.Y - _center.Y, 2));
             if (distance > _radius)
             {
-                ToolTip.SetTip(this, null);
+                _lastHoverred = null;
+                HoveringTip = null;
                 return;
             }
 
@@ -279,11 +285,13 @@ namespace SourceGit.Views
                         return;
 
                     _lastHoverred = arc;
-                    ToolTip.SetTip(this, arc.Tip);
-                    ToolTip.SetIsOpen(this, true);
+                    HoveringTip = arc.Tip;
                     return;
                 }
             }
+
+            _lastHoverred = null;
+            HoveringTip = null;
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -317,20 +325,6 @@ namespace SourceGit.Views
                 ctx.LineTo(_center);
             }
             context.DrawGeometry(brush, null, geometry);
-        }
-
-        private void PlaceToolTip(CustomPopupPlacement placement)
-        {
-            if (_lastHoverred == null)
-                return;
-
-            var angle = (_lastHoverred.StartAngle + _lastHoverred.EndAngle) / 2;
-            var x = _center.X + (_radius * 0.5) * Math.Cos(angle);
-            var y = _center.Y + (_radius * 0.5) * Math.Sin(angle);
-
-            placement.Anchor = PopupAnchor.TopLeft;
-            placement.Gravity = PopupGravity.Bottom;
-            placement.Offset = new Point(x, y);
         }
 
         private class Arc
@@ -371,5 +365,6 @@ namespace SourceGit.Views
         private double _radius = 0;
         private List<Arc> _arcs = new List<Arc>();
         private Arc _lastHoverred = null;
+        private PieChartToolTip _hoveringTip = null;
     }
 }
