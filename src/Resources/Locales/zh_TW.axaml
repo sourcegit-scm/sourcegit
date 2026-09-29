@@ -62,6 +62,7 @@
   <x:String x:Key="Text.Blame.Tips" xml:space="preserve">按住 Ctrl 鍵 (Windows/Linux) 或 ⌘ 鍵 (macOS) 並點擊提交編號，將依據該次提交重新執行逐行溯源</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">所選擇的檔案不支援該操作!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">簽出 (checkout) ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CheckoutAsWorktree" xml:space="preserve">簽出 (checkout) ${0}$ 為工作樹...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比較所選的 2 個分支</x:String>
   <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">與其他分支或標籤比較...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">與目前 HEAD 比較</x:String>
@@ -118,6 +119,14 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模組需要更新: {0}，您要立即更新嗎?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">簽出分支並快轉</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支: </x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree" xml:space="preserve">簽出分支為工作樹</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.LocalBranch" xml:space="preserve">本機分支:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName" xml:space="preserve">新分支名稱:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName.Placeholder" xml:space="preserve">選填。預設使用目標資料夾名稱。</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.RemoteBranch" xml:space="preserve">遠端分支:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.Tracking" xml:space="preserve">追蹤此遠端分支</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath" xml:space="preserve">工作樹路徑:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath.Placeholder" xml:space="preserve">填寫該工作樹的路徑。支援相對路徑。</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">從所選擱置簽出分支</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">新分支:</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">所選擱置:</x:String>
@@ -182,6 +191,7 @@
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS 檔案</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">搜尋檔案...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模組</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Tips" xml:space="preserve">請選擇要檢視內容的檔案</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本資訊</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">作者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
@@ -364,7 +374,7 @@
   <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">標籤名稱:</x:String>
   <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">同時刪除遠端存放庫中的此標籤</x:String>
   <x:String x:Key="Text.Diff.Binary" xml:space="preserve">二進位檔案</x:String>
-  <x:String x:Key="Text.Diff.Binary.ViewContentOfNew" xml:space="preserve">查看新內容</x:String>
+  <x:String x:Key="Text.Diff.Binary.ViewContentOfNew" xml:space="preserve">檢視新內容</x:String>
   <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">空檔案</x:String>
   <x:String x:Key="Text.Diff.First" xml:space="preserve">第一個差異</x:String>
   <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">忽略空白符號變化</x:String>
@@ -944,10 +954,14 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">檢視變更</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">擱置變更列表</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">提交統計</x:String>
+  <x:String x:Key="Text.Statistics.Commits" xml:space="preserve">提交統計圖</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">總覽</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本週</x:String>
   <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit 僅會依所選分支取出最多 200,000 筆提交記錄進行分析</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">主要貢獻者</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">提交次數</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">百分比</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">貢獻者人數:</x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次數:</x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模組</x:String>
@@ -992,9 +1006,9 @@
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">終止執行</x:String>
   <x:String x:Key="Text.TrustRepository" xml:space="preserve">不受信任的存放庫</x:String>
-  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">您是否要在該路徑執行 `git config --global --add safe.directory {0}` 命令以信任該存放庫?</x:String>
-  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git 拒絕存取該存放庫：  </x:String>
-  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">路徑 ：</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">您是否要執行 `git config --global --add safe.directory {0}` 命令以信任該存放庫?</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git 拒絕存取該存放庫:</x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">路徑:</x:String>
   <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">有 {0} 個存放庫因 git 的信任檢查而被略過，請手動開啟並確認是否信任。</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模組</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模組</x:String>
@@ -1032,6 +1046,7 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">現在您已可將其加入暫存區中</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">清除提交訊息記錄</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">您確定要清除所有提交訊息記錄嗎 (執行後無法復原)?</x:String>
+  <x:String x:Key="Text.WorkingCopy.CollapseSidebar" xml:space="preserve">收合側邊欄</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提  交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交並推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">提交訊息記錄/範本</x:String>
@@ -1048,6 +1063,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用我方版本 (ours)</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用對方版本 (theirs)</x:String>
   <x:String x:Key="Text.WorkingCopy.DiscardAll" xml:space="preserve">捨棄所有變更</x:String>
+  <x:String x:Key="Text.WorkingCopy.ExpandSidebar" xml:space="preserve">展開側邊欄</x:String>
   <x:String x:Key="Text.WorkingCopy.FilterChanges" xml:space="preserve">搜尋變更...</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">顯示未追蹤檔案</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">沒有提交訊息記錄</x:String>
