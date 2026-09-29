@@ -11,9 +11,10 @@
                     x:DataType="vm:Statistics"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.Statistics}"
-                    Width="800" Height="500"
+                    Width="1080" Height="720"
+                    MinWidth="1080" MinHeight="720"
                     WindowStartupLocation="CenterOwner"
-                    CanResize="False">
+                    CanResize="True">
   <Grid RowDefinitions="Auto,Auto,*">
     <!-- Title bar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
@@ -33,7 +34,7 @@
                  IsHitTestVisible="False"/>
 
       <v:CaptionButtons HorizontalAlignment="Right"
-                        IsCloseButtonOnly="True"
+                        IsCloseButtonOnly="False"
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
@@ -208,49 +209,112 @@
       </Grid>
 
       <!-- Right -->
-      <v:Chart Grid.Column="1"
-               Margin="8,0"
-               Samples="{Binding Samples, Mode=OneWay}"
-               SampleBrush="{DynamicResource Brush.Accent}"
-               LabelFontFamily="{DynamicResource Fonts.Monospace}">
-        <v:Chart.DataTemplates>
-          <DataTemplate DataType="v:ChartToolTip">
-            <Border>
-              <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding Title, Mode=OneWay}" FontWeight="Bold"/>
+      <Grid Grid.Column="1" RowDefinitions="32,*,32,*">
+        <TextBlock Grid.Row="0"
+                   Margin="16,0,0,0"
+                   Text="{DynamicResource Text.Statistics.TopAuthors}"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource Brush.FG2}"/>
+        
+        <v:PieChart Grid.Row="1"
+                    Margin="8,0"
+                    Report="{Binding SelectedReport, Mode=OneWay}"
+                    FontFamily="{DynamicResource Fonts.Default}"
+                    SecondaryFontFamily="{DynamicResource Fonts.Monospace}"
+                    Foreground="{DynamicResource Brush.FG1}"
+                    SecondaryForeground="{DynamicResource Brush.FG2}">
+          <v:PieChart.DataTemplates>
+            <DataTemplate DataType="v:PieChartToolTip">
+              <Border>
+                <StackPanel Orientation="Vertical">
+                  <StackPanel Orientation="Horizontal">
+                    <Border Background="{Binding Brush, Mode=OneWay}"
+                            Width="12" Height="12"
+                            CornerRadius="4"/>
+                    <TextBlock Text="{Binding Title, Mode=OneWay}"
+                               FontWeight="Bold"
+                               Margin="6,0,0,0"/>
+                  </StackPanel>
 
-                <Grid Margin="0,8,0,0"
-                      RowDefinitions="Auto,4,Auto" ColumnDefinitions="Auto,Auto"
-                      IsVisible="{Binding HasUser, Mode=OneWay}">
-                  <Ellipse Grid.Row="0" Grid.Column="0"
-                           Width="12" Height="12"
-                           Fill="{DynamicResource Brush.Accent}"
-                           Opacity="0.2"/>
+                  <Grid Margin="0,8,0,0" RowDefinitions="Auto,4,Auto" ColumnDefinitions="Auto,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource Brush.FG2}"
+                               Text="{DynamicResource Text.Statistics.TopAuthors.Count}"/>
 
-                  <TextBlock Grid.Row="0" Grid.Column="1"
-                             Margin="12,0,0,0"
-                             Text="{Binding All, Mode=OneWay}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding Count, Mode=OneWay}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"/>
 
-                  <Ellipse Grid.Row="2" Grid.Column="0"
-                           Width="12" Height="12"
-                           Fill="{DynamicResource Brush.Accent}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource Brush.FG2}"
+                               Text="{DynamicResource Text.Statistics.TopAuthors.Percentage}"/>
 
-                  <TextBlock Grid.Row="2" Grid.Column="1"
-                             Margin="12,0,0,0"
-                             Text="{Binding User, Mode=OneWay}"/>
-                </Grid>
-
-                <StackPanel Margin="0,8,0,0"
-                            Orientation="Horizontal"
-                            IsVisible="{Binding !HasUser, Mode=OneWay}">
-                  <Ellipse Width="12" Height="12" Fill="{DynamicResource Brush.Accent}"/>
-                  <TextBlock Margin="12,0,0,0" Text="{Binding All, Mode=OneWay}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding Percentage, StringFormat='{}{0:P1}', Mode=OneWay}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"/>
+                  </Grid>
                 </StackPanel>
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </v:Chart.DataTemplates>
-      </v:Chart>
+              </Border>
+            </DataTemplate>
+          </v:PieChart.DataTemplates>
+        </v:PieChart>
+
+        <TextBlock Grid.Row="2"
+                   Margin="16,0,0,0"
+                   Text="{DynamicResource Text.Statistics.Commits}"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource Brush.FG2}"/>
+        
+        <v:Chart Grid.Row="3"
+                 Margin="8,0"
+                 Samples="{Binding Samples, Mode=OneWay}"
+                 SampleBrush="{DynamicResource Brush.Accent}"
+                 LabelFontFamily="{DynamicResource Fonts.Monospace}">
+          <v:Chart.DataTemplates>
+            <DataTemplate DataType="v:ChartToolTip">
+              <Border>
+                <StackPanel Orientation="Vertical">
+                  <TextBlock Text="{Binding Title, Mode=OneWay}" FontWeight="Bold"/>
+
+                  <Grid Margin="0,8,0,0"
+                        RowDefinitions="Auto,4,Auto" ColumnDefinitions="Auto,Auto"
+                        IsVisible="{Binding HasUser, Mode=OneWay}">
+                    <Ellipse Grid.Row="0" Grid.Column="0"
+                             Width="12" Height="12"
+                             Fill="{DynamicResource Brush.Accent}"
+                             Opacity="0.2"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding All, Mode=OneWay}"/>
+
+                    <Ellipse Grid.Row="2" Grid.Column="0"
+                             Width="12" Height="12"
+                             Fill="{DynamicResource Brush.Accent}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding User, Mode=OneWay}"/>
+                  </Grid>
+
+                  <StackPanel Margin="0,8,0,0"
+                              Orientation="Horizontal"
+                              IsVisible="{Binding !HasUser, Mode=OneWay}">
+                    <Ellipse Width="12" Height="12" Fill="{DynamicResource Brush.Accent}"/>
+                    <TextBlock Margin="12,0,0,0" Text="{Binding All, Mode=OneWay}"/>
+                  </StackPanel>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </v:Chart.DataTemplates>
+        </v:Chart>
+      </Grid>
     </Grid>
 
     <!-- Loading Mask -->

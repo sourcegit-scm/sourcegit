@@ -45,6 +45,11 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _selectedReport, value);
         }
 
+        public Models.StatisticsAuthor SelectedAuthor
+        {
+            get => _selectedAuthor;
+        }
+
         public Models.StatisticsSamples Samples
         {
             get => _samples;
@@ -60,9 +65,10 @@ namespace SourceGit.ViewModels
 
         public void ChangeAuthor(Models.StatisticsAuthor author)
         {
-            if (SelectedReport == null)
+            if (SelectedReport == null || author == _selectedAuthor)
                 return;
 
+            _selectedAuthor = author;
             Samples = SelectedReport.GetSamples(author);
         }
 
@@ -120,6 +126,7 @@ namespace SourceGit.ViewModels
         private Models.Statistics _data = null;
         private Models.StatisticsMode _viewMode = Models.StatisticsMode.All;
         private Models.StatisticsReport _selectedReport = null;
+        private Models.StatisticsAuthor _selectedAuthor = null;
         private Models.StatisticsSamples _samples = null;
     }
 }
