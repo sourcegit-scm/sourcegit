@@ -246,6 +246,12 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
+            if (change.Property == ReportProperty)
+            {
+                _lastHoverred = null;
+                HoveringTip = null;
+            }
+
             if (change.Property == ReportProperty ||
                 change.Property == FontFamilyProperty ||
                 change.Property == ForegroundProperty ||

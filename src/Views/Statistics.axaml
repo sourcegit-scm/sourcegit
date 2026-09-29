@@ -229,6 +229,7 @@
         <ContentControl Grid.Row="1"
                         HorizontalAlignment="Center" VerticalAlignment="Top"
                         Content="{Binding #Pie.HoveringTip, Mode=OneWay}"
+                        IsHitTestVisible="False"
                         ClipToBounds="False">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="v:PieChartToolTip">
