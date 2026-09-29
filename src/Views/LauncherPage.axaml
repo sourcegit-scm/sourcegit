@@ -116,7 +116,6 @@
                                 Padding="0"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
-                                IsEnabled="{Binding CanSure}"
                                 Content="{DynamicResource Text.Sure}"
                                 Click="OnPopupSure"
                                 ToolTip.Tip="Enter"/>

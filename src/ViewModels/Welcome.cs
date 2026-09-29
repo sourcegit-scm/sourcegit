@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -100,40 +99,16 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public async Task<string> GetRepositoryRootAsync(string path, RepositoryNode parent = null)
+        public async Task<Commands.Command.Result> GetRepositoryRootAsync(string path)
         {
             if (!Preferences.Instance.IsGitConfigured())
-            {
-                Models.Notification.Send(null, App.Text("NotConfigured"), true);
-                return null;
-            }
+                return Commands.Command.Result.Failed(App.Text("NotConfigured"));
 
-            var root = path;
-            if (!Directory.Exists(root))
-            {
-                if (File.Exists(root))
-                    root = Path.GetDirectoryName(root);
-                else
-                    return null;
-            }
-
-            var isBare = await new Commands.IsBareRepository(root).GetResultAsync();
+            var isBare = await new Commands.IsBareRepository(path).GetResultAsync();
             if (isBare)
-                return root;
+                return new Commands.Command.Result { IsSuccess = true, StdOut = path };
 
-            var rs = await new Commands.QueryRepositoryRootPath(root).GetResultAsync();
-            if (rs.IsSuccess && !string.IsNullOrWhiteSpace(rs.StdOut))
-                return rs.StdOut.Trim();
-
-            if (Models.SafeDirectories.IsUntrustedRepository(rs.StdErr) &&
-                Models.SafeDirectories.TryGetSafeDirectoryValue(root, rs.StdErr, out var safeDirectory))
-            {
-                var launcher = App.GetLauncher();
-                if (launcher?.ActivePage is { } page && page.CanCreatePopup())
-                    page.Popup = new TrustRepository(page.Node.Id, root, rs.StdErr, safeDirectory, parent, true, false, 0);
-            }
-
-            return null;
+            return await new Commands.QueryRepositoryRootPath(path).GetResultAsync();
         }
 
         public async Task AddRepositoryAsync(string path, RepositoryNode parent, bool moveNode, bool open)

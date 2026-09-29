@@ -335,10 +335,32 @@ namespace SourceGit.Views
 
                 foreach (var item in items)
                 {
-                    var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath);
-                    if (!string.IsNullOrEmpty(path))
+                    var root = item.Path.LocalPath;
+                    if (!Directory.Exists(root))
                     {
-                        await ViewModels.Welcome.Instance.AddRepositoryAsync(path, null, true, false);
+                        if (File.Exists(root))
+                            root = Path.GetDirectoryName(root);
+                        else
+                            continue;
+                    }
+
+                    var rs = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(root);
+                    if (!rs.IsSuccess)
+                    {
+                        if (Models.SafeDirectories.IsUntrustedRepository(rs.StdErr) &&
+                            Models.SafeDirectories.TryGetSafeDirectoryValue(root, rs.StdErr, out var safeDirectory))
+                        {
+                            var pageView = this.FindAncestorOfType<LauncherPage>();
+                            if (pageView is { DataContext: ViewModels.LauncherPage page })
+                            {
+                                page.Popup = new ViewModels.TrustRepository(page.Node.Id, root, rs.StdErr, safeDirectory, null, false, false, 0);
+                                break; // Stop processing further because `SourceGit` only supports processing one popup at a time.
+                            }
+                        }
+                    }
+                    else
+                    {
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(rs.StdOut.Trim(), null, true, false);
                         refresh = true;
                     }
                 }
@@ -394,10 +416,32 @@ namespace SourceGit.Views
 
                 foreach (var item in items)
                 {
-                    var path = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(item.Path.LocalPath, to);
-                    if (!string.IsNullOrEmpty(path))
+                    var root = item.Path.LocalPath;
+                    if (!Directory.Exists(root))
                     {
-                        await ViewModels.Welcome.Instance.AddRepositoryAsync(path, to, true, false);
+                        if (File.Exists(root))
+                            root = Path.GetDirectoryName(root);
+                        else
+                            continue;
+                    }
+
+                    var rs = await ViewModels.Welcome.Instance.GetRepositoryRootAsync(root);
+                    if (!rs.IsSuccess)
+                    {
+                        if (Models.SafeDirectories.IsUntrustedRepository(rs.StdErr) &&
+                            Models.SafeDirectories.TryGetSafeDirectoryValue(root, rs.StdErr, out var safeDirectory))
+                        {
+                            var pageView = this.FindAncestorOfType<LauncherPage>();
+                            if (pageView is { DataContext: ViewModels.LauncherPage page })
+                            {
+                                page.Popup = new ViewModels.TrustRepository(page.Node.Id, root, rs.StdErr, safeDirectory, to, false, false, 0);
+                                break; // Stop processing further because `SourceGit` only supports processing one popup at a time.
+                            }
+                        }
+                    }
+                    else
+                    {
+                        await ViewModels.Welcome.Instance.AddRepositoryAsync(rs.StdOut.Trim(), to, true, false);
                         refresh = true;
                     }
                 }

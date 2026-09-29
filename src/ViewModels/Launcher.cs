@@ -330,9 +330,6 @@ namespace SourceGit.ViewModels
             var gitDir = isBare ? node.Id : GetRepositoryGitDir(node.Id);
             if (string.IsNullOrEmpty(gitDir))
             {
-                if (TryShowTrustRepositoryPopup(node.Id, ActivePage))
-                    return;
-
                 ActivePage.Notifications.Add(new Models.Notification
                 {
                     Group = node.Id,
@@ -412,9 +409,6 @@ namespace SourceGit.ViewModels
             var gitDir = GetRepositoryGitDir(normalizedPath);
             if (string.IsNullOrEmpty(gitDir))
             {
-                if (TryShowTrustRepositoryPopup(normalizedPath, ownerPage))
-                    return;
-
                 ownerPage.Notifications.Add(new Models.Notification
                 {
                     Group = ownerPage.Node.Id,
@@ -448,21 +442,6 @@ namespace SourceGit.ViewModels
             Pages.Insert(idxOfOwner + 1, page);
             _activeWorkspace.Repositories.Insert(idxOfOwner + 1, normalizedPath);
             ActivePage = page;
-        }
-
-        private bool TryShowTrustRepositoryPopup(string path, LauncherPage page)
-        {
-            if (page == null || !page.CanCreatePopup())
-                return false;
-
-            var test = new Commands.QueryRepositoryRootPath(path).GetResult();
-            if (test.IsSuccess ||
-                !Models.SafeDirectories.IsUntrustedRepository(test.StdErr) ||
-                !Models.SafeDirectories.TryGetSafeDirectoryValue(path, test.StdErr, out var safeDirectory))
-                return false;
-
-            page.Popup = new TrustRepository(page.Node.Id, path, test.StdErr, safeDirectory, null, false, true, 0);
-            return true;
         }
 
         private void DispatchNotification(Models.Notification notification)

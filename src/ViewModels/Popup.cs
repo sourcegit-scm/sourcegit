@@ -55,12 +55,6 @@ namespace SourceGit.ViewModels
             return true;
         }
 
-        /// <summary>
-        ///     Whether the `Sure` action is currently allowed. Views should bind the confirm button's
-        ///     `IsEnabled` to this property.
-        /// </summary>
-        public virtual bool CanSure => true;
-
         public virtual Task<bool> Sure()
         {
             return null;

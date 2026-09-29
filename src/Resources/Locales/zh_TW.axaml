@@ -992,7 +992,7 @@
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">終止執行</x:String>
   <x:String x:Key="Text.TrustRepository" xml:space="preserve">不受信任的存放庫</x:String>
-  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">將執行：</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">您是否要在該路徑執行 `git config --global --add safe.directory {0}` 命令以信任該存放庫?</x:String>
   <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git 拒絕存取該存放庫：  </x:String>
   <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">路徑 ：</x:String>
   <x:String x:Key="Text.TrustRepository.Permanent" xml:space="preserve">信任此存放庫</x:String>

@@ -24,22 +24,6 @@ namespace SourceGit.ViewModels
             get;
         }
 
-        /// <summary>
-        ///     Whether the exception should be added into the user's global git config. Disabled by default,
-        ///     so the user has to opt in explicitly.
-        /// </summary>
-        public bool Permanent
-        {
-            get => _permanent;
-            set
-            {
-                if (SetProperty(ref _permanent, value))
-                    OnPropertyChanged(nameof(CanSure));
-            }
-        }
-
-        public override bool CanSure => Permanent;
-
         public TrustRepository(string pageId, string path, string reason, string safeDirectory, RepositoryNode parent, bool moveNode, bool open, int bookmark)
         {
             _pageId = pageId;
@@ -50,15 +34,12 @@ namespace SourceGit.ViewModels
 
             TargetPath = path;
             SafeDirectory = safeDirectory;
-            Command = $"git config --global --add safe.directory {safeDirectory.Quoted()}";
+            Command = App.Text("TrustRepository.CommandTip", safeDirectory);
             Reason = GetReason(reason);
         }
 
         public override async Task<bool> Sure()
         {
-            if (!Permanent)
-                return false;
-
             var log = new CommandLog("Trust Repository");
             Use(log);
 
@@ -120,6 +101,5 @@ namespace SourceGit.ViewModels
         private readonly bool _moveNode;
         private readonly bool _open;
         private readonly int _bookmark;
-        private bool _permanent = false;
     }
 }
