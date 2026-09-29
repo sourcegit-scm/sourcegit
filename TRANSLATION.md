@@ -2108,26 +2108,4 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-98.51%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.BranchCM.CheckoutAsWorktree
-- Text.CheckoutAsWorktree
-- Text.CheckoutAsWorktree.LocalBranch
-- Text.CheckoutAsWorktree.NewBranchName
-- Text.CheckoutAsWorktree.NewBranchName.Placeholder
-- Text.CheckoutAsWorktree.RemoteBranch
-- Text.CheckoutAsWorktree.Tracking
-- Text.CheckoutAsWorktree.WorktreePath
-- Text.CheckoutAsWorktree.WorktreePath.Placeholder
-- Text.CommitDetail.Files.Tips
-- Text.Statistics.Commits
-- Text.Statistics.TopAuthors
-- Text.Statistics.TopAuthors.Count
-- Text.Statistics.TopAuthors.Percentage
-- Text.WorkingCopy.CollapseSidebar
-- Text.WorkingCopy.ExpandSidebar
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
