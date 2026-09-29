@@ -89,7 +89,7 @@ namespace SourceGit.Views
 
             if (_report == null || _report.Authors.Count == 0)
             {
-                var label = new FormattedText("0", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 14, Brushes.White);
+                var label = new FormattedText("0", CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, 14, foreground);
                 context.DrawEllipse(null, new Pen(s_brushes[0]), _center, _radius, _radius);
                 context.DrawText(label, new Point(_center.X - label.Width / 2, _center.Y - label.Height / 2));
                 return;
