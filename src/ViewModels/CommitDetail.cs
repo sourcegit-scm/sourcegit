@@ -91,6 +91,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _visibleChanges, value);
         }
 
+        public int TotalAddedLines
+        {
+            get => _totalAddedLines;
+            private set => SetProperty(ref _totalAddedLines, value);
+        }
+
+        public int TotalDeletedLines
+        {
+            get => _totalDeletedLines;
+            private set => SetProperty(ref _totalDeletedLines, value);
+        }
+
         public ChangeSelection ChangeSelection
         {
             get => _changeSelection;
@@ -512,6 +524,16 @@ namespace SourceGit.ViewModels
                     .ReadAsync()
                     .ConfigureAwait(false);
 
+                var pref = Preferences.Instance;
+                var stats = await new Commands.QueryDiffLineStats(
+                        _repo.FullPath,
+                        _commit.FirstParentToCompare,
+                        _commit.SHA,
+                        pref.IgnoreWhitespaceChangesInDiff,
+                        pref.IgnoreCRAtEOLInDiff)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
                 {
@@ -529,6 +551,8 @@ namespace SourceGit.ViewModels
                     {
                         Changes = changes;
                         VisibleChanges = visible;
+                        TotalAddedLines = stats.added;
+                        TotalDeletedLines = stats.deleted;
 
                         if (visible.Count == 0)
                             ChangeSelection = new(null);
@@ -736,6 +760,8 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
         private ChangeSelection _changeSelection = new(null);
+        private int _totalAddedLines = 0;
+        private int _totalDeletedLines = 0;
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
         private string _viewRevisionFilePath = string.Empty;
