@@ -1312,7 +1312,31 @@ namespace SourceGit.Views
                     interactiveRebase.Items.Add(fixup);
                     interactiveRebase.Items.Add(drop);
 
+                    var quickReword = new MenuItem();
+                    quickReword.Header = App.Text("CommitCM.QuickReword");
+                    quickReword.Icon = this.CreateMenuIcon("Icons.Rename");
+                    quickReword.Click += async (_, e) =>
+                    {
+                        e.Handled = true;
+
+                        if (!repo.CanCreatePopup() || TopLevel.GetTopLevel(this) is not Window owner)
+                            return;
+
+                        var message = await new Commands.QueryCommitFullMessage(repo.FullPath, commit.SHA).GetResultAsync();
+                        var editor = new CommitMessageEditor();
+                        editor.AsBuiltin(repo.Settings.ConventionalTypesOverride, message, msg =>
+                        {
+                            if (string.IsNullOrWhiteSpace(msg) || msg.Equals(message, StringComparison.Ordinal))
+                                return;
+
+                            if (repo.CanCreatePopup())
+                                _ = repo.ShowAndStartPopupAsync(new ViewModels.Reword(repo, commit, msg));
+                        });
+                        await editor.ShowDialog(owner);
+                    };
+
                     menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(quickReword);
                     menu.Items.Add(interactiveRebase);
                 }
                 else
