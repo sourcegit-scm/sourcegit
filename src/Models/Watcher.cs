@@ -43,6 +43,7 @@ namespace SourceGit.Models
                 combined.Renamed += OnRepositoryChanged;
                 combined.Changed += OnRepositoryChanged;
                 combined.Deleted += OnRepositoryChanged;
+                combined.Error += OnWatcherError;
                 combined.EnableRaisingEvents = false;
 
                 _watchers.Add(combined);
@@ -58,6 +59,7 @@ namespace SourceGit.Models
                 wc.Renamed += OnWorkingCopyChanged;
                 wc.Changed += OnWorkingCopyChanged;
                 wc.Deleted += OnWorkingCopyChanged;
+                wc.Error += OnWatcherError;
                 wc.EnableRaisingEvents = false;
 
                 var git = new FileSystemWatcher();
@@ -69,6 +71,7 @@ namespace SourceGit.Models
                 git.Renamed += OnGitDirChanged;
                 git.Changed += OnGitDirChanged;
                 git.Deleted += OnGitDirChanged;
+                git.Error += OnWatcherError;
                 git.EnableRaisingEvents = false;
 
                 _watchers.Add(wc);
@@ -240,6 +243,21 @@ namespace SourceGit.Models
                 HandleWorkingCopyFileChanged(name, e.FullPath);
         }
 
+        /// <summary>
+        ///     The internal buffer overflowed (a large fetch or checkout writes thousands of files), so
+        ///     some events were dropped and we cannot know which. Reload everything once things settle.
+        /// </summary>
+        private void OnWatcherError(object o, ErrorEventArgs e)
+        {
+            var desired = DateTime.Now.AddSeconds(1).ToFileTime();
+            Interlocked.Exchange(ref _updateBranch, desired);
+            Interlocked.Exchange(ref _updateTags, desired);
+            Interlocked.Exchange(ref _updateStashes, desired);
+            Interlocked.Exchange(ref _updateWC, desired);
+            if (_repo.MayHaveSubmodules())
+                Interlocked.Exchange(ref _updateSubmodules, desired);
+        }
+
         private void OnGitDirChanged(object o, FileSystemEventArgs e)
         {
             if (string.IsNullOrEmpty(e.Name))
@@ -301,6 +319,12 @@ namespace SourceGit.Models
                 (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
                 Interlocked.Exchange(ref _updateBranch, DateTime.Now.AddSeconds(.5).ToFileTime());
+            }
+            else if (name.Equals("packed-refs", StringComparison.Ordinal))
+            {
+                var desired = DateTime.Now.AddSeconds(.5).ToFileTime();
+                Interlocked.Exchange(ref _updateBranch, desired);
+                Interlocked.Exchange(ref _updateTags, desired);
             }
             else if (name.StartsWith("reftable/", StringComparison.Ordinal))
             {

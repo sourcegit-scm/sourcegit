@@ -105,6 +105,10 @@ namespace SourceGit.ViewModels
 
             log.Complete();
 
+            _repo.MarkBranchesDirtyManually();
+            if (!notags)
+                _repo.MarkTagsDirtyManually();
+
             if (navigateToUpstreamHEAD && !token.IsCancellationRequested)
             {
                 var upstream = _repo.CurrentBranch?.Upstream;

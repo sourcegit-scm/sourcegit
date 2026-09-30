@@ -1929,6 +1929,8 @@ namespace SourceGit.ViewModels
                     await new Commands.Fetch(FullPath, remote).Use(log).ExecAsync();
 
                 _lastFetchTime = DateTime.Now;
+                MarkBranchesDirtyManually();
+                MarkTagsDirtyManually();
             }
             catch
             {
