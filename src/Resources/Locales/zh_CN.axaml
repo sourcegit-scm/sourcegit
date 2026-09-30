@@ -962,6 +962,7 @@
   <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">主要贡献者</x:String>
   <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">提交数量</x:String>
   <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">百分比</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">提交占比小于1%的作者会被统计入Others分组</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">贡献者人数: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次数: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模块</x:String>

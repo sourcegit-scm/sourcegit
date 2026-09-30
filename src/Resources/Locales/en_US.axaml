@@ -958,6 +958,7 @@
   <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">TOP AUTHORS</x:String>
   <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">COMMITS</x:String>
   <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">PERCENTAGE</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">Authors with less than 1% commits will be grouped under Others.</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHORS: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>

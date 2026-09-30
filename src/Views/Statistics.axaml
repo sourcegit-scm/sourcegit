@@ -211,13 +211,19 @@
 
       <!-- Right -->
       <Grid Grid.Column="1" RowDefinitions="32,*,32,*">
-        <TextBlock Grid.Row="0"
-                   Margin="16,0,0,0"
-                   Text="{DynamicResource Text.Statistics.TopAuthors}"
-                   FontSize="14"
-                   FontWeight="Bold"
-                   Foreground="{DynamicResource Brush.FG2}"/>
-        
+        <StackPanel Grid.Row="0" Margin="16,0,0,0" Orientation="Horizontal">
+          <TextBlock Text="{DynamicResource Text.Statistics.TopAuthors}"
+                     FontSize="14"
+                     FontWeight="Bold"
+                     Foreground="{DynamicResource Brush.FG2}"/>
+          <Border Background="Transparent"
+                  Width="24" Height="24"
+                  Margin="4,2,0,0"
+                  ToolTip.Tip="{DynamicResource Text.Statistics.TopAuthors.Tip}">
+            <Path Width="14" Height="14" Data="{DynamicResource Icons.Info}"/>
+          </Border>
+        </StackPanel>
+
         <v:PieChart Grid.Row="1"
                     x:Name="Pie"
                     Margin="8,0"
