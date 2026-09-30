@@ -43,6 +43,7 @@ namespace SourceGit.ViewModels
                 .ExecAsync();
 
             log.Complete();
+            _repo.MarkBranchesDirtyManually();
 
             if (_repo.SelectedViewIndex == 0 && !token.IsCancellationRequested)
             {
