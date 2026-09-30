@@ -204,6 +204,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signer:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.DescriptionCount" xml:space="preserve">DESCRIPTION</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Enter commit message. Please use an empty-line to separate subject and description!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJECT</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Compare</x:String>
@@ -696,6 +697,7 @@
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Date Format</x:String>
+  <x:String x:Key="Text.Preferences.General.DescriptionGuideLength" xml:space="preserve">Description Guide Length</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Enable compact folders in changes tree</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
