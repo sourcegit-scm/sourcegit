@@ -10,6 +10,28 @@ jobs:
   build:
     name: Build
     uses: ./.github/workflows/build.yml
+  test:
+    name: Test
+    needs: build
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+        with:
+          submodules: true
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore dependencies
+        run: dotnet restore tests/SourceGit.Tests/SourceGit.Tests.csproj
+      - name: Build tests
+        run: dotnet build tests/SourceGit.Tests/SourceGit.Tests.csproj -c Release --no-restore
+      - name: Run tests
+        run: dotnet test tests/SourceGit.Tests/SourceGit.Tests.csproj -c Release --no-build --verbosity normal
   version:
     name: Prepare version string
     runs-on: ubuntu-latest
@@ -22,7 +44,7 @@ jobs:
         id: version
         run: echo "version=$(cat VERSION)" >> "$GITHUB_OUTPUT"
   package:
-    needs: [build, version]
+    needs: [build, test, version]
     name: Package
     uses: ./.github/workflows/package.yml
     with:
