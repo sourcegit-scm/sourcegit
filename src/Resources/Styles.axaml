@@ -21,6 +21,8 @@
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
     <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
+    <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
+    <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -174,9 +176,9 @@
     <Setter Property="IsHitTestVisible" Value="False"/>
   </Style>
 
-  <Style Selector="ContentPresenter">
-    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
+  <Style Selector="PopupRoot">
+    <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
+    <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
   <Style Selector="AdornerLayer">
@@ -1180,7 +1182,7 @@
           <Path Grid.Column="0"
                 x:Name="PART_IndicatorIcon"
                 Width="10"
-                Margin="0,0,2,0"
+                Margin="0,0,6,0"
                 Data="{StaticResource Icons.Down}"
                 Fill="{DynamicResource Brush.FG2}"
                 VerticalAlignment="Center"
@@ -1213,6 +1215,44 @@
   </Style>
   <Style Selector="ToggleButton.group_expander:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="Transparent"/>
+  </Style>
+
+  <Style Selector="ToggleButton.filter_expander">
+    <Setter Property="Height" Value="28"/>
+    <Setter Property="Margin" Value="6,0,0,0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.Repository.FilterCommits.Collapse}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid ColumnDefinitions="Auto,*" Background="Transparent">
+          <Path Grid.Column="0"
+                x:Name="PART_IndicatorIcon"
+                Width="12" Height="12"
+                Data="{StaticResource Icons.DoubleUp}"
+                Fill="{DynamicResource Brush.FG1}"
+                Opacity="0.8"
+                VerticalAlignment="Center"/>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="ToggleButton.filter_expander:pressed">
+    <Setter Property="RenderTransform" Value="scale(1)"/>
+  </Style>
+  <Style Selector="ToggleButton.filter_expander:checked">
+    <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.Repository.FilterCommits.Expand}"/>
+  </Style>
+  <Style Selector="ToggleButton.filter_expander:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="ToggleButton.filter_expander:checked /template/ Path#PART_IndicatorIcon">
+    <Setter Property="Data" Value="{StaticResource Icons.DoubleDown}"/>
+  </Style>
+  <Style Selector="ToggleButton.filter_expander:pointerover /template/ Path#PART_IndicatorIcon">
+    <Setter Property="Opacity" Value="1"/>
   </Style>
 
   <Style Selector="ToggleButton.tree_expander">
@@ -1322,6 +1362,40 @@
   </Style>
   <Style Selector="ToggleButton.toggle_untracked:pointerover /template/ Path#PART_IndicatorIcon">
     <Setter Property="Opacity" Value="1"/>
+  </Style>
+
+  <Style Selector="ToggleButton.sidebar_expander">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.WorkingCopy.CollapseSidebar}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+          <Path x:Name="ChevronPath"
+                Width="15" Height="15"
+                Data="{StaticResource Icons.Sidebar.Expanded}"
+                Fill="{DynamicResource Brush.FG1}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked">
+      <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.WorkingCopy.ExpandSidebar}"/>
+    </Style>
+    <Style Selector="^:checked /template/ Path#ChevronPath">
+      <Setter Property="Data" Value="{StaticResource Icons.Sidebar.Collapsed}" />
+    </Style>
+    <Style Selector="^ Path">
+      <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    <Style Selector="^:pointerover Path">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
   </Style>
 
   <Style Selector="Slider">

@@ -1,9 +1,11 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Threading;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Conflict
+    public class Conflict : ObservableObject
     {
         public string Marker
         {
@@ -15,29 +17,23 @@ namespace SourceGit.ViewModels
             get => _change.ConflictDesc;
         }
 
+        public Models.ConflictFileState State
+        {
+            get => _state;
+            private set => SetProperty(ref _state, value);
+        }
+
         public object Theirs
         {
-            get;
-            private set;
+            get => _theirs;
+            private set => SetProperty(ref _theirs, value);
         }
 
         public object Mine
         {
-            get;
-            private set;
+            get => _mine;
+            private set => SetProperty(ref _mine, value);
         }
-
-        public bool IsResolved
-        {
-            get;
-            private set;
-        } = false;
-
-        public bool CanMerge
-        {
-            get;
-            private set;
-        } = false;
 
         public Conflict(Repository repo, WorkingCopy wc, Models.Change change)
         {
@@ -45,22 +41,32 @@ namespace SourceGit.ViewModels
             _wc = wc;
             _change = change;
 
-            CanMerge = _change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified;
-            if (CanMerge)
-                CanMerge = !Directory.Exists(Path.Combine(repo.FullPath, change.Path)); // Cannot merge directories (submodules)
-
-            if (CanMerge)
-                IsResolved = new Commands.IsConflictResolved(repo.FullPath, change).GetResult();
-
-            _head = new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResult();
-            (Mine, Theirs) = wc.InProgressContext switch
+            Task.Run(async () =>
             {
-                CherryPickInProgress cherryPick => (_head, cherryPick.Head),
-                RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
-                RevertInProgress revert => (_head, revert.Head),
-                MergeInProgress merge => (_head, merge.Source),
-                _ => (_head, (object)"Stash or Patch"),
-            };
+                _head = new Commands.QuerySingleCommit(repo.FullPath, "HEAD").GetResult();
+
+                var (mine, theirs) = wc.InProgressContext switch
+                {
+                    CherryPickInProgress cherryPick => (_head, cherryPick.Head),
+                    RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
+                    RevertInProgress revert => (_head, revert.Head),
+                    MergeInProgress merge => (_head, merge.Source),
+                    _ => (_head, (object)"Stash or Patch"),
+                };
+
+                var state = Models.ConflictFileState.Unknown;
+                if ((_change.ConflictReason is Models.ConflictReason.BothAdded or Models.ConflictReason.BothModified) && !Directory.Exists(Path.Combine(_repo.FullPath, _change.Path)))
+                    state = await new Commands.QueryConflictFileState(repo.FullPath, change)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    State = state;
+                    Mine = mine;
+                    Theirs = theirs;
+                });
+            });
         }
 
         public async Task UseTheirsAsync()
@@ -75,18 +81,21 @@ namespace SourceGit.ViewModels
 
         public MergeConflictEditor CreateOpenMergeEditorRequest()
         {
-            return CanMerge ? new MergeConflictEditor(_repo, _head, _change.Path) : null;
+            return _state == Models.ConflictFileState.UnmergedText ? new MergeConflictEditor(_repo, _head, _change.Path) : null;
         }
 
         public async Task MergeExternalAsync()
         {
-            if (CanMerge)
+            if (_state == Models.ConflictFileState.UnmergedText)
                 await _wc.UseExternalMergeToolAsync(_change);
         }
 
         private Repository _repo = null;
         private WorkingCopy _wc = null;
-        private Models.Commit _head = null;
         private Models.Change _change = null;
+        private Models.Commit _head = null;
+        private Models.ConflictFileState _state = Models.ConflictFileState.Unknown;
+        private object _mine = null;
+        private object _theirs = null;
     }
 }

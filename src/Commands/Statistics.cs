@@ -1,15 +1,28 @@
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SourceGit.Commands
 {
     public class Statistics : Command
     {
-        public Statistics(string repo, int max)
+        public Statistics(string repo, int max, Models.Branch specBranch)
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"log --date-order --branches --remotes -{max} --format=%ct$%aN±%aE";
+
+            var builder = new StringBuilder();
+            builder
+                .Append("log --date-order -")
+                .Append(max)
+                .Append(" --format=%ct$%aN±%aE ");
+
+            if (specBranch == null || string.IsNullOrEmpty(specBranch.FullName))
+                builder.Append("--branches --remotes");
+            else
+                builder.Append(specBranch.FullName);
+
+            Args = builder.ToString();
         }
 
         public async Task<Models.Statistics> ReadAsync()

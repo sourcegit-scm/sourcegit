@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ClientModel;
+using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
 using OpenAI;
@@ -54,7 +56,19 @@ namespace SourceGit.AI
             set => SetProperty(ref _autoFetchAvailableModels, value);
         }
 
+        public string ReasoningEffortLevel
+        {
+            get => _reasoningEffortLevel;
+            set => SetProperty(ref _reasoningEffortLevel, value);
+        }
+
         public string AdditionalPrompt
+        {
+            get;
+            set;
+        } = string.Empty;
+
+        public string ExtraHeaders
         {
             get;
             set;
@@ -86,13 +100,26 @@ namespace SourceGit.AI
         private OpenAIClient GetOpenAIClient()
         {
             var credential = new ApiKeyCredential(ReadApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
-            return Server.Contains("openai.azure.com/", StringComparison.Ordinal)
-                ? new AzureOpenAIClient(new Uri(Server), credential)
-                : new OpenAIClient(credential, new() { Endpoint = new Uri(Server) });
+
+            if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
+            {
+                if (string.IsNullOrEmpty(ExtraHeaders))
+                    return new AzureOpenAIClient(new Uri(Server), credential);
+
+                var azureOptions = new AzureOpenAIClientOptions();
+                azureOptions.AddPolicy(new ExtraHeadersPolicy(ExtraHeaders), PipelinePosition.PerCall);
+                return new AzureOpenAIClient(new Uri(Server), credential, azureOptions);
+            }
+
+            var options = new OpenAIClientOptions() { Endpoint = new Uri(Server) };
+            if (!string.IsNullOrEmpty(ExtraHeaders))
+                options.AddPolicy(new ExtraHeadersPolicy(ExtraHeaders), PipelinePosition.PerCall);
+            return new OpenAIClient(credential, options);
         }
 
         private string _name = string.Empty;
         private string _model = string.Empty;
+        private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;
     }
 }

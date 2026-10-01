@@ -44,10 +44,17 @@
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Groups}"
-                SelectedItem="{Binding Group, Mode=TwoWay}">
+                SelectedIndex="{Binding SelectedGroupIndex, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
-          <DataTemplate DataType="vm:RepositoryNode">
-            <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+          <DataTemplate DataType="vm:TargetGroup">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Grid.Column="0"
+                         Text="{Binding Name, Mode=OneWay}"/>
+              <TextBlock Grid.Column="1"
+                         Text="{Binding Description, Mode=OneWay}"
+                         Margin="8,0,0,0"
+                         Foreground="{DynamicResource Brush.FG2}"/>
+            </Grid>
           </DataTemplate>
         </ComboBox.ItemTemplate>
       </ComboBox>

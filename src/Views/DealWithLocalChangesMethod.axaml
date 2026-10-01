@@ -3,23 +3,48 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
+             xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DealWithLocalChangesMethod"
              x:Name="ThisControl">
+  <UserControl.Styles>
+    <Style Selector="v|DealWithLocalChangesMethod">
+      <Setter Property="FocusAdorner">
+        <FocusAdornerTemplate>
+          <Border/>
+        </FocusAdornerTemplate>
+      </Setter>
+
+      <Style Selector="^:focus-visible RadioButton:checked">
+        <Style Selector="^ /template/ Ellipse#Border">
+          <Setter Property="Stroke" Value="{DynamicResource Brush.Accent}"/>
+          <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+        </Style>
+        <Style Selector="^:checked /template/ Ellipse#Dot">
+          <Setter Property="Stroke" Value="White"/>
+          <Setter Property="Fill" Value="{DynamicResource Brush.Accent}"/>
+        </Style>
+      </Style>
+    </Style>
+  </UserControl.Styles>
+  
   <StackPanel Orientation="Vertical" Margin="0,4,0,2">
     <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.DoNothing}"
+                 Focusable="False"
                  x:Name="RadioDoNothing"
                  Height="24"
                  IsChecked="True"
                  Click="OnRadioButtonClicked"
                  Tag="{Binding Source={x:Static m:DealWithLocalChanges.DoNothing}}"/>
     <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.StashAndReapply}"
+                 Focusable="False"
                  x:Name="RadioStashAndReapply"
                  Height="24"
                  IsChecked="False"
                  Click="OnRadioButtonClicked"
                  Tag="{Binding Source={x:Static m:DealWithLocalChanges.StashAndReapply}}"/>
     <RadioButton Content="{DynamicResource Text.DealWithLocalChanges.Discard}"
+                 Focusable="False"
                  x:Name="RadioDiscard"
                  Height="24"
                  IsChecked="False"

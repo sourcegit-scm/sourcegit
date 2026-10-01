@@ -44,7 +44,10 @@ namespace SourceGit.Models
                     new ShellOrTerminal("iterm2", "iTerm", "iTerm"),
                     new ShellOrTerminal("warp", "Warp", "Warp"),
                     new ShellOrTerminal("ghostty", "Ghostty", "Ghostty"),
-                    new ShellOrTerminal("kitty", "kitty", "kitty")
+                    new ShellOrTerminal("kitty", "kitty", "kitty"),
+                    new ShellOrTerminal("otty", "Otty", "Otty"),
+                    new ShellOrTerminal("cmux", "cmux", "cmux"),
+                    new ShellOrTerminal("mux0", "mux0", "mux0"),
                 };
             }
             else

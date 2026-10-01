@@ -162,15 +162,6 @@ namespace SourceGit.Views
             }
         }
 
-        private async void OpenConfigure(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                await this.ShowDialogAsync(new ViewModels.RepositoryConfigure(repo));
-                e.Handled = true;
-            }
-        }
-
         private async void Fetch(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
@@ -477,15 +468,6 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private async void Cleanup(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ViewModels.Repository repo)
-            {
-                await repo.CleanupAsync();
-                e.Handled = true;
-            }
-        }
-
         private void OpenCustomActionMenu(object sender, RoutedEventArgs ev)
         {
             if (DataContext is ViewModels.Repository repo && sender is Control control)
@@ -531,14 +513,23 @@ namespace SourceGit.Views
             }
         }
 
+        private async void Cleanup(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.CleanupAsync();
+                e.Handled = true;
+            }
+        }
+
         private void NavigateToHead(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.Repository { CurrentBranch: not null } repo)
+            if (DataContext is ViewModels.Repository { CurrentBranch: { } head } repo)
             {
                 var repoView = TopLevel.GetTopLevel(this)?.FindDescendantOfType<Repository>();
-                repoView?.LocalBranchTree?.Select(repo.CurrentBranch);
+                repoView?.LocalBranchTree?.Select(head);
 
-                repo.NavigateToCommit(repo.CurrentBranch.Head);
+                repo.NavigateToCommit(head.Head);
                 e.Handled = true;
             }
         }

@@ -127,11 +127,11 @@ namespace SourceGit.ViewModels
                     }
 
                     var size = await new Commands.QueryFileSize(_repo, _file, _revision.SHA).GetResultAsync().ConfigureAwait(false);
-                    var binaryFile = new Models.RevisionBinaryFile() { Size = size };
+                    var binaryFile = new Models.RevisionBinaryFile(_repo, _file, _revision.SHA, size);
                     return new FileHistoriesRevisionFile(_file, binaryFile, true);
                 }
 
-                var contentStream = await Commands.QueryFileContent.RunAsync(_repo, _revision.SHA, _file).ConfigureAwait(false);
+                await using var contentStream = await Commands.QueryFileContent.RunAsync(_repo, _revision.SHA, _file).ConfigureAwait(false);
                 var content = await new StreamReader(contentStream).ReadToEndAsync();
                 var lfs = Models.LFSObject.Parse(content);
                 if (lfs != null)
@@ -153,15 +153,8 @@ namespace SourceGit.ViewModels
 
             if (obj.Type == Models.ObjectType.Commit)
             {
-                var submoduleRoot = Path.Combine(_repo, _file);
-                var commit = await new Commands.QuerySingleCommit(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false);
-                var message = commit != null ? await new Commands.QueryCommitFullMessage(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false) : null;
-                var module = new Models.RevisionSubmodule()
-                {
-                    Commit = commit ?? new Models.Commit() { SHA = obj.SHA },
-                    FullMessage = new Models.CommitFullMessage { Message = message }
-                };
-
+                var submoduleRoot = Path.Combine(_repo, _file).Replace('\\', '/').TrimEnd('/');
+                var module = await new Commands.QuerySubmoduleRevision(submoduleRoot, obj.SHA).GetResultAsync().ConfigureAwait(false);
                 return new FileHistoriesRevisionFile(_file, module);
             }
 

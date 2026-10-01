@@ -18,6 +18,11 @@ namespace SourceGit.Converters
             return $"{(bytes / GB):G3} GB ({bytes:N0})";
         });
 
+        public static readonly FuncValueConverter<long, bool> IsGreaterThanZero = new(bytes =>
+        {
+            return bytes > 0;
+        });
+
         private const double KB = 1024;
         private const double MB = 1024 * 1024;
         private const double GB = 1024 * 1024 * 1024;

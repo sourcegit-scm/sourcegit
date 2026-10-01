@@ -123,13 +123,27 @@ namespace SourceGit.ViewModels
                 if (chunkStart > block.End)
                     continue;
 
-                if (chunkEnd < block.Start)
+                var hasChangeAfter = false;
+                for (var j = i; j < _blocks.Count; j++)
                 {
-                    _current = i - 1;
-                    break;
+                    var test = _blocks[j];
+                    if (chunkEnd < test.End)
+                    {
+                        _current = i;
+                        hasChangeAfter = true;
+                        break;
+                    }
                 }
 
-                _current = i;
+                if (!hasChangeAfter)
+                {
+                    if (chunkStart > block.Start)
+                        _current = i;
+                    else
+                        _current = i - 1;
+                }
+
+                break;
             }
         }
 

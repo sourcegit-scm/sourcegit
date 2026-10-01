@@ -5,19 +5,22 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Statistics"
                     x:DataType="vm:Statistics"
                     x:Name="ThisControl"
                     Title="{DynamicResource Text.Statistics}"
-                    Width="800" Height="500"
+                    Width="1080" Height="720"
+                    MinWidth="1080" MinHeight="720"
                     WindowStartupLocation="CenterOwner"
-                    CanResize="False">
+                    CanResize="True">
   <Grid RowDefinitions="Auto,Auto,*">
     <!-- Title bar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+              DoubleTapped="MaximizeOrRestoreWindow"
               PointerPressed="BeginMoveWindow"/>
 
       <Path Width="14" Height="14"
@@ -32,7 +35,7 @@
                  IsHitTestVisible="False"/>
 
       <v:CaptionButtons HorizontalAlignment="Right"
-                        IsCloseButtonOnly="True"
+                        IsCloseButtonOnly="False"
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
@@ -117,119 +120,219 @@
     <!-- Contents -->
     <Grid Grid.Row="2" Margin="8" ColumnDefinitions="256,*">
       <!-- Left -->
-      <ContentControl Grid.Column="0" Content="{Binding SelectedReport, Mode=OneWay}">
-        <ContentControl.DataTemplates>
-          <DataTemplate DataType="m:StatisticsReport">
-            <Grid RowDefinitions="*,16">
-              <!-- Table of author -->
-              <ListBox Grid.Column="0"
-                       ItemsSource="{Binding Authors}"
-                       SelectionMode="Single"
-                       BorderThickness="1"
-                       BorderBrush="{DynamicResource Brush.Border2}"
-                       Background="{DynamicResource Brush.Contents}"
-                       SelectionChanged="OnAuthorSelectionChanged"
-                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                       ScrollViewer.VerticalScrollBarVisibility="Auto">
-                <ListBox.Styles>
-                  <Style Selector="ListBoxItem">
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Height" Value="26"/>
-                  </Style>
-                </ListBox.Styles>
+      <Grid Grid.Column="0" RowDefinitions="36,*">
+        <v:BranchSelector Grid.Row="0"
+                          Height="28"
+                          VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                          BorderBrush="{DynamicResource Brush.Border2}"
+                          Branches="{Binding Branches, Mode=OneWay}"
+                          SelectedBranch="{Binding SelectedBranch, Mode=TwoWay}"
+                          UsePureName="False"/>
+        
+        <ContentControl Grid.Row="1" Content="{Binding SelectedReport, Mode=OneWay}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:StatisticsReport">
+              <Grid RowDefinitions="*,24">
+                <!-- Table of author -->
+                <ListBox Grid.Column="0"
+                         ItemsSource="{Binding Authors}"
+                         SelectionMode="Toggle"
+                         BorderThickness="1"
+                         BorderBrush="{DynamicResource Brush.Border2}"
+                         Background="{DynamicResource Brush.Contents}"
+                         CornerRadius="3"
+                         SelectionChanged="OnAuthorSelectionChanged"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                  <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                      <Setter Property="Margin" Value="0"/>
+                      <Setter Property="Padding" Value="0"/>
+                      <Setter Property="Height" Value="26"/>
+                    </Style>
+                  </ListBox.Styles>
 
-                <ListBox.ItemsPanel>
-                  <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Vertical"/>
-                  </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <VirtualizingStackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
 
-                <ListBox.ItemTemplate>
-                  <DataTemplate DataType="m:StatisticsAuthor">
-                    <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+                  <ListBox.ItemTemplate>
+                    <DataTemplate DataType="m:StatisticsAuthor">
+                      <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
+                              Background="Transparent"
+                              ToolTip.Tip="{Binding User}">
+                        <Grid ColumnDefinitions="26,*,72">
+                          <v:Avatar Grid.Column="0"
+                                    Width="16" Height="16"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    User="{Binding User}"/>
+                          <Border Grid.Column="1" Padding="4,0,8,0" ClipToBounds="True">
+                            <TextBlock Text="{Binding User.Name}" HorizontalAlignment="Left"/>
+                          </Border>
+                          <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
+                            <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
+                          </Border>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- Summary -->
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" Margin="0,2,0,0">
+                  <!-- Total Authors -->
+                  <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  </StackPanel>
+
+                  <!-- Total Commits -->
+                  <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                    <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
+                    <Border Width="14" Height="14"
+                            Margin="6,0,0,0"
                             Background="Transparent"
-                            ToolTip.Tip="{Binding User}">
-                      <Grid ColumnDefinitions="26,*,72">
-                        <v:Avatar Grid.Column="0"
-                                  Width="16" Height="16"
-                                  HorizontalAlignment="Center" VerticalAlignment="Center"
-                                  User="{Binding User}"/>
-                        <Border Grid.Column="1" Padding="4,0,8,0" ClipToBounds="True">
-                          <TextBlock Text="{Binding User.Name}" HorizontalAlignment="Left"/>
-                        </Border>
-                        <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
-                          <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
-                        </Border>
-                      </Grid>
+                            IsVisible="{Binding Total, Mode=OneWay, Converter={x:Static c:IntConverters.IsMaxCountOfStatistics}}"
+                            ToolTip.Tip="{DynamicResource Text.Statistics.Tips}">
+                      <Path Width="14" Height="14"
+                            Data="{StaticResource Icons.Info}"
+                            Fill="DarkOrange"/>
                     </Border>
-                  </DataTemplate>
-                </ListBox.ItemTemplate>
-              </ListBox>
-
-              <!-- Summary -->
-              <Grid Grid.Row="1" ColumnDefinitions="*,*">
-                <!-- Total Authors -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
-                  <TextBlock Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
-                </StackPanel>
-
-                <!-- Total Commits -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                  <TextBlock Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
-                </StackPanel>
+                  </StackPanel>
+                </Grid>
               </Grid>
-            </Grid>
-          </DataTemplate>
-        </ContentControl.DataTemplates>
-      </ContentControl>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
 
       <!-- Right -->
-      <v:Chart Grid.Column="1"
-               Margin="8,0"
-               Samples="{Binding Samples, Mode=OneWay}"
-               SampleBrush="{DynamicResource Brush.Accent}"
-               LabelFontFamily="{DynamicResource Fonts.Default}">
-        <v:Chart.DataTemplates>
-          <DataTemplate DataType="v:ChartToolTip">
-            <Border>
-              <StackPanel Orientation="Vertical">
-                <TextBlock Text="{Binding Title, Mode=OneWay}" FontWeight="Bold"/>
+      <Grid Grid.Column="1" RowDefinitions="32,*,32,*">
+        <StackPanel Grid.Row="0" Margin="16,0,0,0" Orientation="Horizontal">
+          <TextBlock Text="{DynamicResource Text.Statistics.TopAuthors}"
+                     FontSize="14"
+                     FontWeight="Bold"
+                     Foreground="{DynamicResource Brush.FG2}"/>
+          <Border Background="Transparent"
+                  Width="24" Height="24"
+                  Margin="4,2,0,0"
+                  ToolTip.Tip="{DynamicResource Text.Statistics.TopAuthors.Tip}">
+            <Path Width="14" Height="14" Data="{DynamicResource Icons.Info}"/>
+          </Border>
+        </StackPanel>
 
-                <Grid Margin="0,8,0,0"
-                      RowDefinitions="Auto,4,Auto" ColumnDefinitions="Auto,Auto"
-                      IsVisible="{Binding HasUser, Mode=OneWay}">
-                  <Ellipse Grid.Row="0" Grid.Column="0"
-                           Width="12" Height="12"
-                           Fill="{DynamicResource Brush.Accent}"
-                           Opacity="0.2"/>
+        <v:PieChart Grid.Row="1"
+                    x:Name="Pie"
+                    Margin="8,0"
+                    Report="{Binding SelectedReport, Mode=OneWay}"
+                    FontFamily="{DynamicResource Fonts.Default}"
+                    SecondaryFontFamily="{DynamicResource Fonts.Monospace}"
+                    Foreground="{DynamicResource Brush.FG1}"
+                    SecondaryForeground="{DynamicResource Brush.FG2}"/>
 
-                  <TextBlock Grid.Row="0" Grid.Column="1"
-                             Margin="12,0,0,0"
-                             Text="{Binding All, Mode=OneWay}"/>
+        <ContentControl Grid.Row="1"
+                        HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Content="{Binding #Pie.HoveringTip, Mode=OneWay}"
+                        IsHitTestVisible="False"
+                        ClipToBounds="False">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="v:PieChartToolTip">
+              <Border BorderThickness="1"
+                      BorderBrush="{DynamicResource Brush.PopupBorder}"
+                      Background="{DynamicResource Brush.Popup}"
+                      Effect="drop-shadow(0 0 12 #80000000)"
+                      CornerRadius="4">
+                <StackPanel Margin="8" Orientation="Vertical">
+                  <StackPanel Orientation="Horizontal">
+                    <Border Background="{Binding Brush, Mode=OneWay}"
+                            Width="12" Height="12"
+                            CornerRadius="4"/>
+                    <TextBlock Text="{Binding Title, Mode=OneWay}"
+                               FontWeight="Bold"
+                               Margin="6,0,0,0"/>
+                  </StackPanel>
 
-                  <Ellipse Grid.Row="2" Grid.Column="0"
-                           Width="12" Height="12"
-                           Fill="{DynamicResource Brush.Accent}"/>
+                  <Grid Margin="0,8,0,0" RowDefinitions="Auto,4,Auto" ColumnDefinitions="Auto,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource Brush.FG2}"
+                               Text="{DynamicResource Text.Statistics.TopAuthors.Count}"/>
 
-                  <TextBlock Grid.Row="2" Grid.Column="1"
-                             Margin="12,0,0,0"
-                             Text="{Binding User, Mode=OneWay}"/>
-                </Grid>
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding Count, Mode=OneWay}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"/>
 
-                <StackPanel Margin="0,8,0,0"
-                            Orientation="Horizontal"
-                            IsVisible="{Binding !HasUser, Mode=OneWay}">
-                  <Ellipse Width="12" Height="12" Fill="{DynamicResource Brush.Accent}"/>
-                  <TextBlock Margin="12,0,0,0" Text="{Binding All, Mode=OneWay}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource Brush.FG2}"
+                               Text="{DynamicResource Text.Statistics.TopAuthors.Percentage}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding Percentage, StringFormat='{}{0:P1}', Mode=OneWay}"
+                               FontFamily="{DynamicResource Fonts.Monospace}"/>
+                  </Grid>
                 </StackPanel>
-              </StackPanel>
-            </Border>
-          </DataTemplate>
-        </v:Chart.DataTemplates>
-      </v:Chart>
+              </Border>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+
+        <TextBlock Grid.Row="2"
+                   Margin="16,0,0,0"
+                   Text="{DynamicResource Text.Statistics.Commits}"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource Brush.FG2}"/>
+        
+        <v:Chart Grid.Row="3"
+                 Margin="8,0"
+                 Samples="{Binding Samples, Mode=OneWay}"
+                 SampleBrush="{DynamicResource Brush.Accent}"
+                 LabelFontFamily="{DynamicResource Fonts.Monospace}">
+          <v:Chart.DataTemplates>
+            <DataTemplate DataType="v:ChartToolTip">
+              <Border>
+                <StackPanel Orientation="Vertical">
+                  <TextBlock Text="{Binding Title, Mode=OneWay}" FontWeight="Bold"/>
+
+                  <Grid Margin="0,8,0,0"
+                        RowDefinitions="Auto,4,Auto" ColumnDefinitions="Auto,Auto"
+                        IsVisible="{Binding HasUser, Mode=OneWay}">
+                    <Ellipse Grid.Row="0" Grid.Column="0"
+                             Width="12" Height="12"
+                             Fill="{DynamicResource Brush.Accent}"
+                             Opacity="0.2"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding All, Mode=OneWay}"/>
+
+                    <Ellipse Grid.Row="2" Grid.Column="0"
+                             Width="12" Height="12"
+                             Fill="{DynamicResource Brush.Accent}"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="1"
+                               Margin="12,0,0,0"
+                               Text="{Binding User, Mode=OneWay}"/>
+                  </Grid>
+
+                  <StackPanel Margin="0,8,0,0"
+                              Orientation="Horizontal"
+                              IsVisible="{Binding !HasUser, Mode=OneWay}">
+                    <Ellipse Width="12" Height="12" Fill="{DynamicResource Brush.Accent}"/>
+                    <TextBlock Margin="12,0,0,0" Text="{Binding All, Mode=OneWay}"/>
+                  </StackPanel>
+                </StackPanel>
+              </Border>
+            </DataTemplate>
+          </v:Chart.DataTemplates>
+        </v:Chart>
+      </Grid>
     </Grid>
 
     <!-- Loading Mask -->

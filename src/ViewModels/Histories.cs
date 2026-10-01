@@ -18,6 +18,38 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        public bool IsSearchingCommits
+        {
+            get => _isSearchingCommits;
+            set
+            {
+                if (value)
+                    _repo.SelectedViewIndex = 0;
+                else
+                    _searchCommitContext.EndSearch();
+
+                SetProperty(ref _isSearchingCommits, value);
+            }
+        }
+
+        public SearchCommitContext SearchCommitContext
+        {
+            get => _searchCommitContext;
+        }
+
+        public bool EnableTopoOrder
+        {
+            get => _repo.UIStates.EnableTopoOrderInHistory;
+            set
+            {
+                if (value != _repo.UIStates.EnableTopoOrderInHistory)
+                {
+                    _repo.UIStates.EnableTopoOrderInHistory = value;
+                    _repo.RefreshCommits();
+                }
+            }
+        }
+
         public bool IsAuthorColumnVisible
         {
             get => _repo.UIStates.IsAuthorColumnVisibleInHistory;
@@ -75,7 +107,7 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                GenerateGraph(value, true);
+                GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
             }
@@ -129,7 +161,14 @@ namespace SourceGit.ViewModels
 
         public Models.Branch CurrentBranch
         {
-            get => _repo.CurrentBranch;
+            get => _currentBranch;
+            set => SetProperty(ref _currentBranch, value);
+        }
+
+        public bool HasSingleRemote
+        {
+            get => _hasSingleRemote;
+            set => SetProperty(ref _hasSingleRemote, value);
         }
 
         public AvaloniaList<Models.IssueTracker> IssueTrackers
@@ -193,11 +232,21 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _commitDetailSharedData = new CommitDetailSharedData();
+            _searchCommitContext = new SearchCommitContext(repo.FullPath, this);
         }
 
-        public void NotifyCurrentBranchChanged()
+        public bool HasShowFlag(Models.HistoryShowFlags flag)
         {
-            OnPropertyChanged(nameof(CurrentBranch));
+            return _repo.UIStates.HistoryShowFlags.HasFlag(flag);
+        }
+
+        public void ToggleShowFlag(Models.HistoryShowFlags flag)
+        {
+            if (HasShowFlag(flag))
+                _repo.UIStates.HistoryShowFlags -= flag;
+            else
+                _repo.UIStates.HistoryShowFlags |= flag;
+            _repo.RefreshCommits();
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -424,7 +473,7 @@ namespace SourceGit.ViewModels
             var head = _commits.Find(x => x.IsCurrentHead);
             if (head == null)
             {
-                _repo.SearchCommitContext.Selected = null;
+                _searchCommitContext.Selected = null;
                 head = await new Commands.QuerySingleCommit(_repo.FullPath, "HEAD").GetResultAsync();
                 if (head != null)
                     DetailContext = new RevisionCompare(_repo, commit, head);
@@ -477,14 +526,17 @@ namespace SourceGit.ViewModels
 
             if (_selectedCommits.Count == 0)
             {
-                _repo.SearchCommitContext.Selected = null;
-                DetailContext = new Models.Null();
+                _searchCommitContext.Selected = null;
+                DetailContext = Models.Null.Instance;
             }
             else if (_selectedCommits.Count == 1)
             {
                 var c = _selectedCommits[0];
-                if (_repo.SearchCommitContext.Selected == null || !_repo.SearchCommitContext.Selected.SHA.Equals(c.SHA, StringComparison.Ordinal))
-                    _repo.SearchCommitContext.Selected = _repo.SearchCommitContext.Results?.Find(x => x.SHA.Equals(c.SHA, StringComparison.Ordinal));
+                if (_isSearchingCommits)
+                {
+                    if (_searchCommitContext.Selected == null || !_searchCommitContext.Selected.SHA.Equals(c.SHA, StringComparison.Ordinal))
+                        _searchCommitContext.Selected = _searchCommitContext.Results?.Find(x => x.SHA.Equals(c.SHA, StringComparison.Ordinal));
+                }
 
                 if (_detailContext is CommitDetail detail)
                     detail.Commit = c;
@@ -493,7 +545,7 @@ namespace SourceGit.ViewModels
             }
             else if (_selectedCommits.Count == 2)
             {
-                _repo.SearchCommitContext.Selected = null;
+                _searchCommitContext.Selected = null;
 
                 if (_detailContext is RevisionCompare compare)
                     compare.SetTargets(_selectedCommits[1], _selectedCommits[0]);
@@ -502,7 +554,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                _repo.SearchCommitContext.Selected = null;
+                _searchCommitContext.Selected = null;
                 DetailContext = new Models.Count(_selectedCommits.Count);
             }
 
@@ -510,7 +562,7 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
-        private void GenerateGraph(List<Models.Commit> commits, bool commitsChanged = false)
+        private void GenerateGraph(List<Models.Commit> commits)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
             var highlighting = _repo.UIStates.GraphHighlighting;
@@ -522,18 +574,23 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, commitsChanged, firstParentOnly, highlighting, extraHeads);
+            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         private Repository _repo = null;
+        private Models.Branch _currentBranch = null;
+        private bool _hasSingleRemote = false;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
-        private object _detailContext = new Models.Null();
+        private object _detailContext = Models.Null.Instance;
         private bool _ignoreSelectionChange = false;
+
+        private bool _isSearchingCommits = false;
+        private SearchCommitContext _searchCommitContext = null;
 
         private GridLength _leftArea = new(1, GridUnitType.Star);
         private GridLength _rightArea = new(1, GridUnitType.Star);

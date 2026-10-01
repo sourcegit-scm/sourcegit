@@ -121,6 +121,15 @@ namespace SourceGit.Views
             set => SetValue(UseCompactBranchNamesProperty, value);
         }
 
+        public static readonly StyledProperty<bool> HasSingleRemoteProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(HasSingleRemote));
+
+        public bool HasSingleRemote
+        {
+            get => GetValue(HasSingleRemoteProperty);
+            set => SetValue(HasSingleRemoteProperty, value);
+        }
+
         public static readonly StyledProperty<bool> UseGraphColorProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(UseGraphColor));
 
@@ -172,6 +181,8 @@ namespace SourceGit.Views
             var allowWrap = AllowWrap;
             var x = 1.5;
             var y = 0.5;
+            var remoteIcon = CommitRefsIconCache.Instance.GetIcon(Models.DecoratorType.RemoteBranchHead);
+            var hasSingleRemote = HasSingleRemote;
 
             context.FillRectangle(Brushes.Transparent, Bounds);
 
@@ -211,22 +222,31 @@ namespace SourceGit.Views
                 if (item.Remotes.Count > 0)
                 {
                     var rx = x + 20 + item.Label.WidthIncludingTrailingWhitespace + 4;
-                    foreach (var remote in item.Remotes)
+
+                    if (hasSingleRemote)
                     {
                         context.DrawLine(new Pen(item.Brush), new Point(rx, y), new Point(rx, y + 16));
-                        context.DrawText(remote, new Point(rx + 4, y + 8.0 - remote.Height * 0.5));
-                        rx += remote.WidthIncludingTrailingWhitespace + 9;
+                        using (context.PushTransform(Matrix.CreateTranslation(rx + 4, y + 4)))
+                            context.DrawGeometry(fg, null, remoteIcon);
+                    }
+                    else
+                    {
+                        foreach (var remote in item.Remotes)
+                        {
+                            context.DrawLine(new Pen(item.Brush), new Point(rx, y), new Point(rx, y + 16));
+                            using (context.PushTransform(Matrix.CreateTranslation(rx + 4, y + 4)))
+                                context.DrawGeometry(fg, null, remoteIcon);
+                            context.DrawText(remote, new Point(rx + 16, y + 8.0 - remote.Height * 0.5));
+                            rx += remote.WidthIncludingTrailingWhitespace + 22;
+                        }
                     }
                 }
 
                 context.DrawRectangle(null, new Pen(item.Brush), entireRect);
 
                 var icon = CommitRefsIconCache.Instance.GetIcon(item.Decorator.Type);
-                if (icon != null)
-                {
-                    using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
-                        context.DrawGeometry(fg, null, icon);
-                }
+                using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
+                    context.DrawGeometry(fg, null, icon);
 
                 x += item.Width + 4;
             }
@@ -241,6 +261,7 @@ namespace SourceGit.Views
                 change.Property == ForegroundProperty ||
                 change.Property == UseGraphColorProperty ||
                 change.Property == UseCompactBranchNamesProperty ||
+                change.Property == HasSingleRemoteProperty ||
                 change.Property == BackgroundProperty ||
                 change.Property == ShowTagsProperty)
                 InvalidateMeasure();
@@ -268,6 +289,7 @@ namespace SourceGit.Views
             }
 
             var useCompactBranchNames = UseCompactBranchNames;
+            var hasSingleRemote = HasSingleRemote;
             var typeface = new Typeface(FontFamily);
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
@@ -337,7 +359,7 @@ namespace SourceGit.Views
                         if (decorator.Name.Equals(name, StringComparison.Ordinal))
                         {
                             var remote = new FormattedText(
-                                $"+{test.Name.Substring(0, idxOfSlash)}",
+                                test.Name.Substring(0, idxOfSlash),
                                 CultureInfo.CurrentCulture,
                                 FlowDirection.LeftToRight,
                                 typefaceRemote,
@@ -345,7 +367,12 @@ namespace SourceGit.Views
                                 fg);
 
                             item.Remotes.Add(remote);
-                            item.Width += remote.Width + 9;
+
+                            if (hasSingleRemote)
+                                item.Width += 18;
+                            else
+                                item.Width += remote.WidthIncludingTrailingWhitespace + 22;
+
                             skippedIdx.Add(j);
                         }
                     }

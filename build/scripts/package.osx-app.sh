@@ -14,4 +14,14 @@ sed "s/SOURCE_GIT_VERSION/$VERSION/g" resources/app/App.plist > SourceGit.app/Co
 rm -rf SourceGit.app/Contents/MacOS/SourceGit.dsym
 rm -f SourceGit.app/Contents/MacOS/*.pdb
 
+case "$RUNTIME" in
+  osx-arm64) ARCH=arm64 ;;
+  osx-x64)   ARCH=x86_64 ;;
+  *) echo "Unsupported RUNTIME: $RUNTIME" >&2; exit 1 ;;
+esac
+
+clang -arch "$ARCH" ../tools/setsid-macos/setsid.c -o SourceGit.app/Contents/MacOS/setsid -mmacosx-version-min=13.0
+codesign --force --deep --sign - SourceGit.app
+codesign --verify --deep --strict --verbose=2 SourceGit.app
+
 zip "sourcegit_$VERSION.$RUNTIME.zip" -r SourceGit.app

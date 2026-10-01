@@ -16,11 +16,6 @@
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">נתיב ל־worktree זה. נתיב יחסי נתמך.</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">שם Branch:</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">לא חובה. ברירת המחדל היא שם תיקיית היעד.</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Branch למעקב:</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">מעקב אחר branch מרוחק</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">מה לבצע לו checkout:</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">צור Branch חדש</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch קיים</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">עוזר AI</x:String>
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">מודל</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">צור מחדש</x:String>
@@ -30,7 +25,7 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">הסתר אחרים</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">הצג הכול</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
-  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">בחר קובץ .patch להחלה</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">בחר קובץ patch להחלה</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">התעלמות משינויי whitespace</x:String>
   <x:String x:Key="Text.Apply.Title" xml:space="preserve">החל Patch</x:String>
   <x:String x:Key="Text.Apply.WS" xml:space="preserve">Whitespace:</x:String>
@@ -49,7 +44,6 @@
   <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">אין קבצים בהנחת assume-unchanged</x:String>
   <x:String x:Key="Text.Avatar.Load" xml:space="preserve">טען תמונה...</x:String>
   <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">רענן</x:String>
-  <x:String x:Key="Text.BinaryNotSupported" xml:space="preserve">קובץ בינארי אינו נתמך!!!</x:String>
   <x:String x:Key="Text.Bisect">Bisect</x:String>
   <x:String x:Key="Text.Bisect.Abort">ביטול</x:String>
   <x:String x:Key="Text.Bisect.Bad">פגום (Bad)</x:String>
@@ -178,7 +172,6 @@
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">מידע</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>
-  <x:String x:Key="Text.CommitDetail.Info.Children" xml:space="preserve">צאצאים</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">בדוק refs המכילים את ה־commit הזה</x:String>
   <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">ה־COMMIT כלול ב־</x:String>
@@ -193,7 +186,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">חותם:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">פתח בדפדפן</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">עמודה</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">הזן הודעת commit. יש להפריד בין subject לתיאור באמצעות שורה ריקה!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJECT</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">השווה</x:String>
@@ -336,6 +328,7 @@
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">מחק Branch</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branch:</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">פעולה זו תמחק branch מרוחק!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">למחוק גם את ה־branch המרוחק ${0}$</x:String>
   <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">מחק מספר Branches</x:String>
   <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">פעולה זו תמחק מספר branches בו זמנית. בדוק היטב לפני הביצוע!</x:String>
   <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">מחק מספר Tags</x:String>
@@ -481,7 +474,6 @@
   <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">מעקב אחר קבצים בשם '{0}'</x:String>
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">מעקב אחר כל הקבצים *{0}</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">בחר Commit</x:String>
-  <x:String x:Key="Text.Histories" xml:space="preserve">היסטוריה</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">זמן AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">זמן COMMIT</x:String>
@@ -518,17 +510,13 @@
   <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Stage לכל השינויים ו־commit</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">צור branch חדש</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Fetch, מתחיל מיידית</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.GoHome" xml:space="preserve">מצב Dashboard (ברירת מחדל)</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">עבור לצאצא של ה־commit שנבחר</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">עבור להורה של ה־commit שנבחר</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">פתח command palette</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.OpenSearchCommits" xml:space="preserve">מצב חיפוש commits</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Pull, מתחיל מיידית</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Push, מתחיל מיידית</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">טען את המאגר מחדש בכוח</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ToggleHistoriesDetailPanel" xml:space="preserve">הרחבה/כיווץ של חלונית הפרטים ב־`HISTORY`</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">עבור ל־'LOCAL CHANGES'</x:String>
-  <x:String x:Key="Text.Hotkeys.Repo.ViewHistories" xml:space="preserve">עבור ל־'HISTORY'</x:String>
   <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">עבור ל־'STASHES'</x:String>
   <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">השלך</x:String>
   <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Stage</x:String>
@@ -659,7 +647,6 @@
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Commits בהיסטוריה</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">הצג דף `LOCAL CHANGES` כברירת מחדל</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">הצג לשונית `CHANGES` בפרטי ה־commit כברירת מחדל</x:String>
-  <x:String x:Key="Text.Preferences.General.ShowChildren" xml:space="preserve">הצג צאצאים בפרטי ה־commit</x:String>
   <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">הצג זמן יחסי בגרף ה־commits</x:String>
   <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">הצג tags בגרף ה־commits</x:String>
   <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">אורך מנחה ל־Subject</x:String>
@@ -710,6 +697,7 @@
   <x:String x:Key="Text.Push.Force" xml:space="preserve">Force push</x:String>
   <x:String x:Key="Text.Push.Local" xml:space="preserve">Branch מקומי:</x:String>
   <x:String x:Key="Text.Push.New" xml:space="preserve">חדש</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">דלג על pre-push hook</x:String>
   <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remote:</x:String>
   <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revision:</x:String>
   <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Push של Revision ל־Remote</x:String>
@@ -762,7 +750,6 @@
   <x:String x:Key="Text.Repository.Continue" xml:space="preserve">המשך</x:String>
   <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">פעולות מותאמות אישית</x:String>
   <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">אין פעולות מותאמות אישית</x:String>
-  <x:String x:Key="Text.Repository.Dashboard" xml:space="preserve">Dashboard</x:String>
   <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">השלך כל השינויים</x:String>
   <x:String x:Key="Text.Repository.Explore" xml:space="preserve">פתח בסייר הקבצים</x:String>
   <x:String x:Key="Text.Repository.Filter" xml:space="preserve">חיפוש Branches/Tags/Submodules</x:String>
@@ -777,7 +764,6 @@
   <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">תאריך Commit</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">טופולוגי</x:String>
   <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANCHES מקומיים</x:String>
-  <x:String x:Key="Text.Repository.MoreOptions" xml:space="preserve">אפשרויות נוספות...</x:String>
   <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">ניווט אל HEAD</x:String>
   <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">צור Branch</x:String>
   <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">נקה התראות</x:String>

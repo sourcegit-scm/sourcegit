@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
 
             var succ = await new Commands.Remote(_repo.FullPath)
                 .Use(log)
-                .PruneAsync(Remote.Name);
+                .PruneAsync(Remote.Name, Remote.PrivateSSHKey);
 
             log.Complete();
             return succ;

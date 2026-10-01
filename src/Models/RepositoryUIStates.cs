@@ -231,6 +231,12 @@ namespace SourceGit.Models
             set;
         } = [];
 
+        public bool IsHistoryFiltersCollapsed
+        {
+            get;
+            set;
+        } = false;
+
         public List<string> RecentCommitMessages
         {
             get;
@@ -370,7 +376,7 @@ namespace SourceGit.Models
                 if (filter.Type == FilterType.LocalBranch &&
                     filter.Pattern.Equals(oldName, StringComparison.Ordinal))
                 {
-                    filter.Pattern = $"refs/heads/{newName}";
+                    filter.Pattern = newName;
                     break;
                 }
             }

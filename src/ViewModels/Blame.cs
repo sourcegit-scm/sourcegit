@@ -106,10 +106,10 @@ namespace SourceGit.ViewModels
         public void GotoPrevRevision()
         {
             if (_prevRevision != null)
-                NavigateToCommit(_file, _prevRevision.SHA.Substring(0, 10));
+                NavigateToCommit(_file, _prevRevision.SHA.Substring(0, 10), true);
         }
 
-        public void NavigateToCommit(string file, string sha)
+        public void NavigateToCommit(string file, string sha, bool changeBlame)
         {
             if (App.GetLauncher() is { Pages: { } pages })
             {
@@ -123,7 +123,7 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            if (Revision.SHA.StartsWith(sha, StringComparison.Ordinal))
+            if (!changeBlame || Revision.SHA.StartsWith(sha, StringComparison.Ordinal))
                 return;
 
             var count = _navigationHistory.Count;

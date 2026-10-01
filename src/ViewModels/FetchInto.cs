@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
 {
@@ -17,8 +19,11 @@ namespace SourceGit.ViewModels
         public FetchInto(Repository repo, Models.Branch local, Models.Branch upstream)
         {
             _repo = repo;
+            _remote = repo.Remotes.Find(x => x.Name.Equals(upstream.Remote, StringComparison.Ordinal));
+
             Local = local;
             Upstream = upstream;
+            CanTerminate = true;
         }
 
         public override async Task<bool> Sure()
@@ -29,21 +34,34 @@ namespace SourceGit.ViewModels
             var log = _repo.CreateLog($"Fetch Into '{Local.FriendlyName}'");
             Use(log);
 
-            await new Commands.Fetch(_repo.FullPath, Local, Upstream)
+            _cancellation = new CancellationTokenSource();
+            var token = _cancellation.Token;
+
+            await new Commands.Fetch(_repo.FullPath, _remote, Upstream, Local)
+                .WithCancellation(token)
                 .Use(log)
-                .RunAsync();
+                .ExecAsync();
 
             log.Complete();
 
-            if (_repo.SelectedViewIndex == 0)
+            if (_repo.SelectedViewIndex == 0 && !token.IsCancellationRequested)
             {
                 var newHead = await new Commands.QueryRevisionByRefName(_repo.FullPath, Local.Name).GetResultAsync();
                 _repo.NavigateToCommit(newHead, true);
             }
 
+            _cancellation = null;
             return true;
         }
 
+        public override void Terminate()
+        {
+            // Just fire cancel event and UI will auto wait the `Sure` complete
+            var _ = _cancellation?.CancelAsync();
+        }
+
         private readonly Repository _repo = null;
+        private readonly Models.Remote _remote = null;
+        private CancellationTokenSource _cancellation = null;
     }
 }

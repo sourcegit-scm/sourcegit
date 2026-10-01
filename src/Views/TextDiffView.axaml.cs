@@ -640,18 +640,18 @@ namespace SourceGit.Views
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
-            AutoScrollToFirstChange();
-        }
 
-        protected override void OnSizeChanged(SizeChangedEventArgs e)
-        {
-            base.OnSizeChanged(e);
+            if (DataContext is not ViewModels.TextDiffContext ctx)
+                return;
 
-            if (!_execSizeChanged)
-            {
-                _execSizeChanged = true;
-                AutoScrollToFirstChange();
-            }
+            if (ctx.IsSideBySide() && !IsOld)
+                return;
+
+            var line = ctx.BlockNavigation.GetCurrentBlock()?.Start ?? 0;
+            if (line == 0)
+                return;
+
+            Dispatcher.UIThread.Post(() => ScrollToLine(line), DispatcherPriority.Background);
         }
 
         protected virtual void UpdateSelectedChunk(double y)
@@ -662,7 +662,7 @@ namespace SourceGit.Views
         {
             if (e.KeyModifiers.Equals(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
             {
-                if (e.Key == Key.C)
+                if (e.Key is Key.C or Key.Insert)
                 {
                     e.Handled = true;
 
@@ -845,32 +845,6 @@ namespace SourceGit.Views
             }
         }
 
-        private void AutoScrollToFirstChange()
-        {
-            if (Bounds.Height < 0.1)
-                return;
-
-            if (DataContext is not ViewModels.TextDiffContext ctx)
-                return;
-
-            var curBlock = ctx.BlockNavigation.GetCurrentBlock();
-            if (curBlock == null)
-                return;
-
-            var lineHeight = TextArea.TextView.DefaultLineHeight;
-            var vOffset = lineHeight * (curBlock.Start - 1) - Bounds.Height * 0.5;
-            if (vOffset >= 0)
-            {
-                var scroller = this.FindDescendantOfType<ScrollViewer>();
-                if (scroller != null)
-                {
-                    var scrollOffset = new Vector(0, vOffset);
-                    scroller.Offset = scrollOffset;
-                    ctx.ScrollOffset = scrollOffset;
-                }
-            }
-        }
-
         private bool CanCopyText()
         {
             var selection = TextArea.Selection;
@@ -992,7 +966,6 @@ namespace SourceGit.Views
         private bool _isOld = false;
         private ViewModels.TextDiffSelectedChunk _selectedChunk = null;
         private ViewModels.BlockNavigation _blockNavigation = null;
-        private bool _execSizeChanged;
         private TextMate.Installation _textMate;
         private TextLocation _lastSelectStart = TextLocation.Empty;
         private TextLocation _lastSelectEnd = TextLocation.Empty;
@@ -1013,6 +986,8 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+
+            ApplyTemplate();
 
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
@@ -1052,7 +1027,6 @@ namespace SourceGit.Views
                     builder.Append('\n');
                 }
 
-                builder.Length--;
                 Text = builder.ToString();
             }
             else
@@ -1200,6 +1174,8 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
+            ApplyTemplate();
+
             _scrollViewer = this.FindDescendantOfType<ScrollViewer>();
             if (_scrollViewer != null)
             {
@@ -1243,7 +1219,6 @@ namespace SourceGit.Views
                     builder.Append('\n');
                 }
 
-                builder.Length--;
                 Text = builder.ToString();
             }
             else

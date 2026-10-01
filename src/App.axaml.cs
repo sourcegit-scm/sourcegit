@@ -11,6 +11,7 @@ using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Fonts;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
 
@@ -22,7 +23,7 @@ namespace SourceGit
         [STAThread]
         public static void Main(string[] args)
         {
-            Native.OS.SetupDataDir();
+            Native.OS.SetupBasicDirectories();
 
             AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
@@ -101,8 +102,11 @@ namespace SourceGit
 
         public static void SetLocale(string localeKey)
         {
+            var locale = Models.Locale.Supported.Find(x => x.Key.Equals(localeKey, StringComparison.OrdinalIgnoreCase));
+            var finalLocaleKey = locale?.Key ?? "en_US";
+
             if (Current is not App app ||
-                app.Resources[localeKey] is not ResourceDictionary targetLocale ||
+                app.Resources[finalLocaleKey] is not ResourceDictionary targetLocale ||
                 targetLocale == app._activeLocale)
                 return;
 
@@ -346,7 +350,7 @@ namespace SourceGit
             var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
             if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                Console.Out.WriteLine(string.IsNullOrWhiteSpace(test.StdErr) ? $"'{args[1]}' is not in a valid git repository" : test.StdErr.Trim());
                 desktop.Shutdown(-1);
                 return true;
             }
@@ -391,7 +395,7 @@ namespace SourceGit
             var test = new Commands.QueryRepositoryRootPath(dir).GetResult();
             if (!test.IsSuccess || string.IsNullOrEmpty(test.StdOut))
             {
-                Console.Out.WriteLine($"'{args[1]}' is not in a valid git repository");
+                Console.Out.WriteLine(string.IsNullOrWhiteSpace(test.StdErr) ? $"'{args[1]}' is not in a valid git repository" : test.StdErr.Trim());
                 desktop.Shutdown(-1);
                 return true;
             }
@@ -472,6 +476,15 @@ namespace SourceGit
             Native.OS.SetupExternalTools();
             Models.AvatarManager.Instance.Start();
 
+            if (this.TryGetFeature<IActivatableLifetime>() is { } activatable)
+            {
+                activatable.Activated += (_, e) =>
+                {
+                    if (e is FileActivatedEventArgs { Files: { Count: > 0 } } fileArgs)
+                        _launcher?.TryOpenRepositoryFromPath(fileArgs.Files[0].Path.LocalPath);
+                };
+            }
+
             string startupRepo = null;
             if (desktop.Args is { Length: 1 })
             {
@@ -524,6 +537,9 @@ namespace SourceGit
         #region Check for Updates
         private void Check4Update(bool manually = false)
         {
+            if (_launcher != null)
+                _launcher.NewVersion = null;
+
             Task.Run(async () =>
             {
                 try
@@ -537,23 +553,20 @@ namespace SourceGit
                     if (ver == null)
                         return;
 
-                    // Check if already up-to-date.
-                    if (!ver.IsNewVersion)
+                    if (manually)
                     {
-                        if (manually)
+                        if (ver.IsNewVersion)
+                            ShowSelfUpdateResult(ver);
+                        else
                             ShowSelfUpdateResult(new Models.AlreadyUpToDate());
-                        return;
                     }
-
-                    // Should not check ignored tag if this is called manually.
-                    if (!manually)
+                    else if (_launcher != null)
                     {
-                        var pref = ViewModels.Preferences.Instance;
-                        if (ver.TagName == pref.IgnoreUpdateTag)
+                        if (!ver.IsNewVersion || ver.TagName == ViewModels.Preferences.Instance.IgnoreUpdateTag)
                             return;
-                    }
 
-                    ShowSelfUpdateResult(ver);
+                        _launcher.NewVersion = ver;
+                    }
                 }
                 catch (Exception e)
                 {

@@ -102,13 +102,29 @@
                   <TextBlock FontWeight="Bold" VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                  <TextBlock Classes="info_label"
+                <Grid Margin="0,8,0,0" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto">
+                  <TextBlock Grid.Row="0" Grid.Column="0"
+                             Classes="info_label"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
                              Text="{DynamicResource Text.BranchTree.URL}"/>
 
-                  <TextBlock Margin="6,0,0,0" Foreground="{DynamicResource Brush.Link}" Text="{Binding URL, Mode=OneWay}"/>
-                </StackPanel>
+                  <TextBlock Grid.Row="0" Grid.Column="1"
+                             Margin="6,0,0,0"
+                             Foreground="{DynamicResource Brush.Link}"
+                             Text="{Binding URL, Mode=OneWay}"/>
+
+                  <TextBlock Grid.Row="1" Grid.Column="0"
+                             Classes="info_label"
+                             HorizontalAlignment="Left" VerticalAlignment="Center"
+                             Text="{DynamicResource Text.BranchTree.PushURL}"
+                             IsVisible="{Binding PushURL, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                  <TextBlock Grid.Row="1" Grid.Column="1"
+                             Margin="6,0,0,0"
+                             Foreground="{DynamicResource Brush.Link}"
+                             Text="{Binding PushURL, Mode=OneWay}"
+                             IsVisible="{Binding PushURL, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                </Grid>
               </StackPanel>
             </DataTemplate>
           </Border.DataTemplates>

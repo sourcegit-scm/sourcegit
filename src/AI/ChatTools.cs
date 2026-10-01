@@ -15,10 +15,6 @@ namespace SourceGit.AI
             {
                 "type": "object",
                 "properties": {
-                    "repo": {
-                        "type": "string",
-                        "description": "The path to the repository."
-                    },
                     "file": {
                         "type": "string",
                         "description": "The path to the file."
@@ -28,28 +24,25 @@ namespace SourceGit.AI
                         "description": "The path to the original file when it has been renamed or copied."
                     }
                  },
-                 "required": ["repo", "file"]
+                 "required": ["file"]
             }
             """)), false);
 
-        public static async Task<ToolChatMessage> ProcessAsync(ChatToolCall call, Action<string> output)
+        public static async Task<ToolChatMessage> ProcessAsync(ChatToolCall call, string repo, string amendParent, Action<string> output)
         {
             using var doc = JsonDocument.Parse(call.FunctionArguments);
 
             if (call.FunctionName.Equals(GetDetailChangesInFile.FunctionName))
             {
-                var hasRepo = doc.RootElement.TryGetProperty("repo", out var repoPath);
                 var hasFile = doc.RootElement.TryGetProperty("file", out var filePath);
                 var hasOriginalFile = doc.RootElement.TryGetProperty("originalFile", out var originalFilePath);
-                if (!hasRepo)
-                    throw new ArgumentException("repo", "The repo argument is required");
                 if (!hasFile)
                     throw new ArgumentException("file", "The file argument is required");
 
                 output?.Invoke($"Read changes in file: {filePath.GetString()}");
 
                 var orgFilePath = hasOriginalFile ? originalFilePath.GetString() : string.Empty;
-                var rs = await new Commands.GetFileChangeForAI(repoPath.GetString(), filePath.GetString(), orgFilePath).ReadAsync();
+                var rs = await new Commands.GetFileChangeForAI(repo, filePath.GetString(), orgFilePath, amendParent).ReadAsync();
                 var message = rs.IsSuccess ? rs.StdOut : string.Empty;
                 return new ToolChatMessage(call.Id, message);
             }

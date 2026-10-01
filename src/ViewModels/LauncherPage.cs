@@ -114,6 +114,14 @@ namespace SourceGit.ViewModels
             Popup = null;
         }
 
+        public void TerminatePopup()
+        {
+            if (_popup is not { CanTerminate: true, InProgress: true })
+                return;
+
+            _popup.Terminate();
+        }
+
         private RepositoryNode _node = null;
         private object _data = null;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;

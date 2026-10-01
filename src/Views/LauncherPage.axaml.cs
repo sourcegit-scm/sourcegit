@@ -59,17 +59,17 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnPopupTerminate(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.LauncherPage page)
+                page.TerminatePopup();
+
+            e.Handled = true;
+        }
+
         private void OnMaskClicked(object sender, PointerPressedEventArgs e)
         {
             OnPopupCancel(sender, e);
-        }
-
-        private async void OnCopyNotification(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button { DataContext: Models.Notification notice })
-                await this.CopyTextAsync(notice.Message);
-
-            e.Handled = true;
         }
 
         private void OnDismissNotification(object sender, RoutedEventArgs e)

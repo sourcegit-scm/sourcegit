@@ -55,10 +55,11 @@ namespace SourceGit.ViewModels
             Mode = new DiscardAllMode();
         }
 
-        public Discard(Repository repo, List<Models.Change> changes)
+        public Discard(Repository repo, List<Models.Change> changes, Models.Change next)
         {
             _repo = repo;
             _changes = changes;
+            _next = next;
 
             if (_changes == null)
                 Mode = new DiscardAllMode();
@@ -87,11 +88,17 @@ namespace SourceGit.ViewModels
             }
 
             log.Complete();
+
+            var selection = new ChangeSelection(null);
+            if (_next != null)
+                selection.Changes.Add(_next);
+            _repo.WorkingCopy.SelectedUnstaged = selection;
             _repo.MarkWorkingCopyDirtyManually();
             return true;
         }
 
         private readonly Repository _repo = null;
         private readonly List<Models.Change> _changes = null;
+        private readonly Models.Change _next = null;
     }
 }

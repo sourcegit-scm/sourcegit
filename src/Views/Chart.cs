@@ -54,7 +54,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var samples = _samples;
-            if (samples == null || samples.Count == 0)
+            if (samples == null)
                 return;
 
             var w = Bounds.Width;
@@ -93,6 +93,9 @@ namespace SourceGit.Views
                 context.DrawText(label, new Point(leftMargin - label.Width - 8.0, y - label.Height * 0.5));
                 context.DrawLine(labelPen, new Point(leftMargin, y), new Point(w, y));
             }
+
+            if (count == 0)
+                return;
 
             var step = Math.Max((w - leftMargin) / count, 10.0);
             _maxOffsetX = Math.Max(count * step - (w - leftMargin), 0);
@@ -160,6 +163,7 @@ namespace SourceGit.Views
                     {
                         var labelStartX = labelCenterX - formattedLabel.Width * 0.5;
                         var labelStartY = h - formattedLabel.Height - 2.0;
+                        context.DrawLine(new Pen(Brushes.Gray), new Point(labelCenterX, maxSampleH + 4), new Point(labelCenterX, maxSampleH));
                         context.DrawText(formattedLabel, new Point(labelStartX, labelStartY));
                         maxLabelEndX = labelStartX - 16.0;
                     }

@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
 using Avalonia.Interactivity;
@@ -43,6 +45,10 @@ namespace SourceGit.Views
             if (toplevel == null)
                 return;
 
+            var prefilled = TxtParentFolder.Text;
+            if (!string.IsNullOrWhiteSpace(prefilled) && Directory.Exists(prefilled))
+                options.SuggestedStartLocation = await toplevel.StorageProvider.TryGetFolderFromPathAsync(prefilled);
+
             try
             {
                 var selected = await toplevel.StorageProvider.OpenFolderPickerAsync(options);
@@ -67,10 +73,17 @@ namespace SourceGit.Views
             if (toplevel == null)
                 return;
 
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var startupDir = Path.Combine(home, ".ssh");
+            if (!Directory.Exists(startupDir))
+                startupDir = home;
+
+            var suggestedStartLocation = await toplevel.StorageProvider.TryGetFolderFromPathAsync(startupDir);
             var options = new FilePickerOpenOptions()
             {
                 AllowMultiple = false,
-                FileTypeFilter = [new("SSHKey") { Patterns = ["*"] }]
+                FileTypeFilter = [new("SSHKey") { Patterns = ["*"] }],
+                SuggestedStartLocation = suggestedStartLocation
             };
 
             var selected = await toplevel.StorageProvider.OpenFilePickerAsync(options);

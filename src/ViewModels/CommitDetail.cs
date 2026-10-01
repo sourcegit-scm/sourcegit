@@ -42,8 +42,8 @@ namespace SourceGit.ViewModels
                     _sharedData.ActiveTabIndex = value;
                     OnPropertyChanged(nameof(ActiveTabIndex));
 
-                    if (value == 1 && DiffContext == null && _selectedChanges is { Count: 1 })
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _selectedChanges[0]));
+                    if (DiffContext == null)
+                        UpdateDetails();
                 }
             }
         }
@@ -79,12 +79,6 @@ namespace SourceGit.ViewModels
             private set;
         }
 
-        public List<string> Children
-        {
-            get => _children;
-            private set => SetProperty(ref _children, value);
-        }
-
         public List<Models.Change> Changes
         {
             get => _changes;
@@ -97,18 +91,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _visibleChanges, value);
         }
 
-        public List<Models.Change> SelectedChanges
+        public ChangeSelection ChangeSelection
         {
-            get => _selectedChanges;
+            get => _changeSelection;
             set
             {
-                if (SetProperty(ref _selectedChanges, value))
-                {
-                    if (ActiveTabIndex != 1 || value is not { Count: 1 })
-                        DiffContext = null;
-                    else
-                        DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, value[0]), _diffContext);
-                }
+                if (SetProperty(ref _changeSelection, value))
+                    UpdateDetails();
             }
         }
 
@@ -471,7 +460,6 @@ namespace SourceGit.ViewModels
             ViewRevisionFileContent = null;
             ViewRevisionFilePath = string.Empty;
             CanOpenRevisionFileWithDefaultEditor = false;
-            Children = null;
             RevisionFileSearchFilter = string.Empty;
             RevisionFileSearchSuggestion = null;
             ScrollOffset = Vector.Zero;
@@ -480,7 +468,7 @@ namespace SourceGit.ViewModels
             {
                 Changes = [];
                 VisibleChanges = [];
-                SelectedChanges = null;
+                ChangeSelection = new(null);
                 return;
             }
 
@@ -518,22 +506,12 @@ namespace SourceGit.ViewModels
                     Dispatcher.UIThread.Post(() => SignInfo = signInfo);
             }, token);
 
-            if (Preferences.Instance.ShowChildren)
-            {
-                Task.Run(async () =>
-                {
-                    var max = Preferences.Instance.MaxHistoryCommits;
-                    var cmd = new Commands.QueryCommitChildren(_repo.FullPath, _commit.SHA, max) { CancellationToken = token };
-                    var children = await cmd.GetResultAsync().ConfigureAwait(false);
-                    if (!token.IsCancellationRequested)
-                        Dispatcher.UIThread.Post(() => Children = children);
-                }, token);
-            }
-
             Task.Run(async () =>
             {
-                var cmd = new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA) { CancellationToken = token };
-                var changes = await cmd.ReadAsync().ConfigureAwait(false);
+                var changes = await new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
+                    .ReadAsync()
+                    .ConfigureAwait(false);
+
                 var visible = changes;
                 if (!string.IsNullOrWhiteSpace(_searchChangeFilter))
                 {
@@ -553,12 +531,20 @@ namespace SourceGit.ViewModels
                         VisibleChanges = visible;
 
                         if (visible.Count == 0)
-                            SelectedChanges = null;
+                            ChangeSelection = new(null);
                         else
-                            SelectedChanges = [VisibleChanges[0]];
+                            ChangeSelection = new(VisibleChanges.GetRange(0, 1));
                     });
                 }
             }, token);
+        }
+
+        private void UpdateDetails()
+        {
+            if (ActiveTabIndex == 1 && _changeSelection is { Count: 1, HasFolder: false })
+                DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _changeSelection.Changes[0]), _diffContext);
+            else
+                DiffContext = null;
         }
 
         private async Task<Models.InlineElementCollector> ParseInlinesInMessageAsync(string message)
@@ -704,13 +690,13 @@ namespace SourceGit.ViewModels
                 else
                 {
                     var size = await new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).GetResultAsync();
-                    ViewRevisionFileContent = new Models.RevisionBinaryFile() { Size = size };
+                    ViewRevisionFileContent = new Models.RevisionBinaryFile(_repo.FullPath, file.Path, _commit.SHA, size);
                 }
 
                 return;
             }
 
-            var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _commit.SHA, file.Path);
+            await using var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _commit.SHA, file.Path);
             var content = await new StreamReader(contentStream).ReadToEndAsync();
             var lfs = Models.LFSObject.Parse(content);
             if (lfs != null)
@@ -729,25 +715,8 @@ namespace SourceGit.ViewModels
 
         private async Task SetViewingCommitAsync(Models.Object file)
         {
-            var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').Trim('/');
-            var commit = await new Commands.QuerySingleCommit(submoduleRoot, file.SHA).GetResultAsync();
-            if (commit == null)
-            {
-                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                {
-                    Commit = new Models.Commit() { SHA = file.SHA },
-                    FullMessage = new Models.CommitFullMessage()
-                };
-            }
-            else
-            {
-                var message = await new Commands.QueryCommitFullMessage(submoduleRoot, file.SHA).GetResultAsync();
-                ViewRevisionFileContent = new Models.RevisionSubmodule()
-                {
-                    Commit = commit,
-                    FullMessage = new Models.CommitFullMessage { Message = message }
-                };
-            }
+            var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').TrimEnd('/');
+            ViewRevisionFileContent = await new Commands.QuerySubmoduleRevision(submoduleRoot, file.SHA).GetResultAsync();
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
@@ -764,10 +733,9 @@ namespace SourceGit.ViewModels
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
         private Models.CommitSignInfo _signInfo = null;
-        private List<string> _children = null;
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
-        private List<Models.Change> _selectedChanges = null;
+        private ChangeSelection _changeSelection = new(null);
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
         private string _viewRevisionFilePath = string.Empty;

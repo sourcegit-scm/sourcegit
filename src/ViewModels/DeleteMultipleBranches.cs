@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +10,12 @@ namespace SourceGit.ViewModels
         {
             get;
         }
+
+        public bool Force
+        {
+            get;
+            set;
+        } = false;
 
         public DeleteMultipleBranches(Repository repo, List<Models.Branch> branches, bool isLocal)
         {
@@ -30,27 +37,41 @@ namespace SourceGit.ViewModels
                 foreach (var target in Targets)
                     await new Commands.Branch(_repo.FullPath, target.Name)
                         .Use(log)
-                        .DeleteLocalAsync(false);
+                        .DeleteLocalAsync(Force);
             }
             else
             {
                 foreach (var target in Targets)
-                {
-                    var exists = await new Commands.Remote(_repo.FullPath).HasBranchAsync(target.Remote, target.Name);
-                    if (exists)
-                        await new Commands.Push(_repo.FullPath, target.Remote, $"refs/heads/{target.Name}", true)
-                            .Use(log)
-                            .RunAsync();
-                    else
-                        await new Commands.Branch(_repo.FullPath, target.Name)
-                            .Use(log)
-                            .DeleteRemoteAsync(target.Remote);
-                }
+                    await DeleteRemoteBranchAsync(target, log);
             }
 
             log.Complete();
             _repo.MarkBranchesDirtyManually();
             return true;
+        }
+
+        private async Task<bool> DeleteRemoteBranchAsync(Models.Branch branch, CommandLog log)
+        {
+            var exists = false;
+            var remote = _repo.Remotes.Find(x => x.Name.Equals(branch.Remote, StringComparison.Ordinal));
+            if (remote != null)
+            {
+                exists = await new Commands.DoesBranchExistOnRemote(_repo.FullPath, remote, branch)
+                    .Use(log)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+            }
+
+            if (exists)
+                return await new Commands.Push(_repo.FullPath, remote, $"refs/heads/{branch.Name}", true)
+                    .Use(log)
+                    .ExecAsync()
+                    .ConfigureAwait(false);
+            else
+                return await new Commands.Branch(_repo.FullPath, branch.Name)
+                    .Use(log)
+                    .DeleteRemoteAsync(branch.Remote, Force)
+                    .ConfigureAwait(false);
         }
 
         private Repository _repo = null;

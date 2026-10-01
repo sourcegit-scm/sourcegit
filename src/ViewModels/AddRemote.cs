@@ -44,6 +44,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _sshkey, value, true);
         }
 
+        public bool FetchWithoutTags
+        {
+            get;
+            set;
+        } = false;
+
         public AddRemote(Repository repo)
         {
             _repo = repo;
@@ -101,13 +107,19 @@ namespace SourceGit.ViewModels
 
             if (succ)
             {
+                var remote = new Models.Remote()
+                {
+                    Name = _name,
+                    PrivateSSHKey = _useSSH ? _sshkey : null,
+                };
+
                 await new Commands.Config(_repo.FullPath)
                     .Use(log)
                     .SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
 
-                await new Commands.Fetch(_repo.FullPath, _name, false, false)
+                await new Commands.Fetch(_repo.FullPath, remote, FetchWithoutTags, false)
                     .Use(log)
-                    .RunAsync();
+                    .ExecAsync();
             }
 
             log.Complete();

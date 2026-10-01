@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -35,18 +34,6 @@ namespace SourceGit.Views
             set => SetAndRaise(SignInfoProperty, ref _signInfo, value);
         }
 
-        public static readonly DirectProperty<CommitBaseInfo, bool> SupportsContainsInProperty =
-            AvaloniaProperty.RegisterDirect<CommitBaseInfo, bool>(
-                nameof(SupportsContainsIn),
-                static o => o.SupportsContainsIn,
-                static (o, v) => o.SupportsContainsIn = v);
-
-        public bool SupportsContainsIn
-        {
-            get => _supportsContainsIn;
-            set => SetAndRaise(SupportsContainsInProperty, ref _supportsContainsIn, value);
-        }
-
         public static readonly DirectProperty<CommitBaseInfo, List<Models.CommitLink>> WebLinksProperty =
             AvaloniaProperty.RegisterDirect<CommitBaseInfo, List<Models.CommitLink>>(
                 nameof(WebLinks),
@@ -59,27 +46,15 @@ namespace SourceGit.Views
             set => SetAndRaise(WebLinksProperty, ref _webLinks, value);
         }
 
-        public static readonly DirectProperty<CommitBaseInfo, List<string>> ChildrenProperty =
-            AvaloniaProperty.RegisterDirect<CommitBaseInfo, List<string>>(
-                nameof(Children),
-                static o => o.Children,
-                static (o, v) => o.Children = v);
-
-        public List<string> Children
-        {
-            get => _children;
-            set => SetAndRaise(ChildrenProperty, ref _children, value);
-        }
-
-        public static readonly DirectProperty<CommitBaseInfo, bool> IsSHACopiedProperty =
+        public static readonly DirectProperty<CommitBaseInfo, bool> SupportsContainsInProperty =
             AvaloniaProperty.RegisterDirect<CommitBaseInfo, bool>(
-                nameof(IsSHACopied),
-                static o => o.IsSHACopied);
+                nameof(SupportsContainsIn),
+                static o => o.SupportsContainsIn);
 
-        public bool IsSHACopied
+        public bool SupportsContainsIn
         {
-            get => _isSHACopied;
-            set => SetAndRaise(IsSHACopiedProperty, ref _isSHACopied, value);
+            get => _supportsContainsIn;
+            private set => SetAndRaise(SupportsContainsInProperty, ref _supportsContainsIn, value);
         }
 
         public CommitBaseInfo()
@@ -87,43 +62,10 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == ContentProperty)
-            {
-                IsSHACopied = false;
-                _iconResetTimer?.Stop();
-            }
-        }
-
-        protected override void OnLoaded(RoutedEventArgs e)
-        {
-            base.OnLoaded(e);
-
-            _iconResetTimer = new DispatcherTimer();
-            _iconResetTimer.Interval = TimeSpan.FromSeconds(1.5);
-            _iconResetTimer.Tag = this;
-            _iconResetTimer.Tick += static (o, _) =>
-            {
-                if (o is DispatcherTimer { Tag: CommitBaseInfo view } timer)
-                {
-                    if (view.IsSHACopied)
-                        view.IsSHACopied = false;
-
-                    timer.IsEnabled = false;
-                }
-            };
-            _iconResetTimer.IsEnabled = false;
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            _iconResetTimer.Tag = null;
-            _iconResetTimer.IsEnabled = false;
-
-            base.OnUnloaded(e);
+            base.OnDataContextChanged(e);
+            SupportsContainsIn = DataContext is ViewModels.CommitDetail;
         }
 
         private void OnDateTimeContextMenuRequested(object sender, ContextRequestedEventArgs e)
@@ -144,16 +86,6 @@ namespace SourceGit.Views
                 menu.Open(presenter);
                 e.Handled = true;
             }
-        }
-
-        private async void OnCopyCommitSHA(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button { DataContext: Models.Commit commit })
-                await this.CopyTextAsync(commit.SHA);
-
-            IsSHACopied = true;
-            _iconResetTimer?.Start();
-            e.Handled = true;
         }
 
         private void OnOpenWebLink(object sender, RoutedEventArgs e)
@@ -229,6 +161,26 @@ namespace SourceGit.Views
                 sender is Control { DataContext: string sha })
                 detail.NavigateTo(sha);
 
+            e.Handled = true;
+        }
+
+        private void OnSHAContextRequested(object sender, ContextRequestedEventArgs e)
+        {
+            if (sender is not Control { DataContext: string sha } control)
+                return;
+
+            var copy = new MenuItem();
+            copy.Header = App.Text("Copy");
+            copy.Icon = this.CreateMenuIcon("Icons.Copy");
+            copy.Click += async (_, ev) =>
+            {
+                await this.CopyTextAsync(sha);
+                ev.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(copy);
+            menu.Open(control);
             e.Handled = true;
         }
 
@@ -310,8 +262,5 @@ namespace SourceGit.Views
         private Models.CommitSignInfo _signInfo = null;
         private bool _supportsContainsIn = false;
         private List<Models.CommitLink> _webLinks = null;
-        private List<string> _children = null;
-        private bool _isSHACopied = false;
-        private DispatcherTimer _iconResetTimer = null;
     }
 }

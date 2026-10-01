@@ -14,14 +14,17 @@
           <Border/>
         </FocusAdornerTemplate>
       </Setter>
+      
+      <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Brush.Border1}"/>
 
       <Setter Property="Template">
         <ControlTemplate>
           <Grid Background="Transparent">
             <Border x:Name="PART_Background"
-                    Background="{DynamicResource Brush.Contents}"
+                    Background="{TemplateBinding Background}"
                     BorderThickness="1"
-                    BorderBrush="{DynamicResource Brush.Border1}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
                     CornerRadius="3"/>
 
             <Grid x:Name="PART_Selected"

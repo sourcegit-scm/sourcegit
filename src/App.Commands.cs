@@ -55,9 +55,14 @@ namespace SourceGit
             }
         });
 
+        public static readonly Command OpenAppConfigDirCommand = new Command(_ =>
+        {
+            Native.OS.OpenInFileManager(Native.OS.BasicDirectories.ConfigDir);
+        });
+
         public static readonly Command OpenAppDataDirCommand = new Command(_ =>
         {
-            Native.OS.OpenInFileManager(Native.OS.DataDir);
+            Native.OS.OpenInFileManager(Native.OS.BasicDirectories.CacheDir);
         });
 
         public static readonly Command OpenAboutCommand = new Command(async _ =>
@@ -95,6 +100,16 @@ namespace SourceGit
         {
             if (OperatingSystem.IsMacOS())
                 Native.MacOSUtilities.ShowAllApplications();
+        });
+
+        public static readonly Command OpenSSHKeyHelperCommand = new Command(async _ =>
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: { } owner })
+            {
+                var vm = new ViewModels.SSHKeyHelper();
+                var dialog = new Views.SSHKeyHelper() { DataContext = vm };
+                await dialog.ShowDialog(owner);
+            }
         });
     }
 }

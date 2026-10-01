@@ -20,8 +20,10 @@ namespace SourceGit.Views
             if (launcher == null)
                 return;
 
-            var dialog = new PushToNewBranch();
-            dialog.SetRemote(push.SelectedRemote.Name);
+            var dialog = new PushToNewBranch()
+            {
+                DataContext = new ViewModels.PushToNewBranch(push.SelectedRemote.Name)
+            };
 
             var name = await dialog.ShowDialog<string>(launcher);
             if (!string.IsNullOrEmpty(name))

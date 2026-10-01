@@ -11,11 +11,16 @@
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:RevisionBinaryFile">
       <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Path Width="64" Height="64" Data="{StaticResource Icons.Error}" Fill="{DynamicResource Brush.FG2}"/>
-        <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.BinaryNotSupported}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
+        <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
+        <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.File.Binary}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}"/>
         <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
           <TextBlock Text="{Binding Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}"/>
         </StackPanel>
+        <Button Classes="flat"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Center"
+                Content="{DynamicResource Text.File.HexViewer}"
+                Click="OnOpenBinaryFileViewer"/>
       </StackPanel>
     </DataTemplate>
 
@@ -23,7 +28,6 @@
       <v:RevisionTextFileView FontFamily="{DynamicResource Fonts.Monospace}"
                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorFontSize}"
                               TabWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=EditorTabWidth}"
-                              UseSyntaxHighlighting="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting}"
                               Background="{DynamicResource Brush.Contents}"/>
     </DataTemplate>
 
@@ -92,6 +96,17 @@
           <ContentControl Content="{Binding Image}"/>
         </TabItem>
       </TabControl>
+    </DataTemplate>
+    
+    <DataTemplate DataType="m:Null">
+      <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+        <Path Width="64" Height="64" Data="{StaticResource Icons.File.Preview}" Fill="{DynamicResource Brush.FG2}"/>
+        <TextBlock Margin="0,16,0,0"
+                   Text="{DynamicResource Text.CommitDetail.Files.Tips}"
+                   FontSize="18" FontWeight="Bold"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   HorizontalAlignment="Center"/>
+      </StackPanel>
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>

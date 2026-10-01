@@ -8,6 +8,7 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="/Resources/Icons.axaml"/>
+        <ResourceInclude Source="/Resources/Fonts.axaml"/>
         <ResourceInclude Source="/Resources/Themes.axaml"/>
       </ResourceDictionary.MergedDictionaries>
 
@@ -44,6 +45,7 @@
       <NativeMenuItem Header="{DynamicResource Text.SelfUpdate}" Command="{x:Static s:App.CheckForUpdateCommand}" IsVisible="{x:Static s:App.IsCheckForUpdateCommandVisible}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" Gesture="⌘+,"/>
+      <NativeMenuItem Header="{DynamicResource Text.SSHKeyHelper}" Command="{x:Static s:App.OpenSSHKeyHelperCommand}"/>
       <NativeMenuItem Header="{DynamicResource Text.OpenAppDataDir}" Command="{x:Static s:App.OpenAppDataDirCommand}"/>
       <NativeMenuItemSeparator/>
       <NativeMenuItem Header="{DynamicResource Text.App.Hide}" Command="{x:Static s:App.HideAppCommand}" Gesture="⌘+H"/>

@@ -73,6 +73,7 @@ namespace SourceGit.ViewModels
             _cmds.Add(new("Push", "push", "Push", async () => await repo.PushAsync(false)));
             _cmds.Add(new("Stash.Title", "stash", "Stashes.Add", async () => await repo.StashAllAsync(false)));
             _cmds.Add(new("Apply.Title", "apply", "ApplyPatch", () => repo.ApplyPatch()));
+            _cmds.Add(new("Repository.DiscardAll", "discard", "Undo", () => repo.WorkingCopy.DiscardAllChanges()));
 
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
             _visibleCmds = _cmds;

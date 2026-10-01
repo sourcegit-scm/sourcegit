@@ -44,6 +44,17 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _sshkey, value, true);
         }
 
+        public bool IsResetPushURLVisible
+        {
+            get => !string.IsNullOrEmpty(_remote.PushURL);
+        }
+
+        public bool ResetPushURL
+        {
+            get;
+            set;
+        }
+
         public EditRemote(Repository repo, Models.Remote remote)
         {
             _repo = repo;
@@ -51,9 +62,8 @@ namespace SourceGit.ViewModels
             _name = remote.Name;
             _url = remote.URL;
             _useSSH = Models.Remote.IsSSH(remote.URL);
-
-            if (_useSSH)
-                _sshkey = new Commands.Config(repo.FullPath).Get($"remote.{remote.Name}.sshkey");
+            _sshkey = remote.PrivateSSHKey;
+            ResetPushURL = true;
         }
 
         public static ValidationResult ValidateRemoteName(string name, ValidationContext ctx)
@@ -112,16 +122,26 @@ namespace SourceGit.ViewModels
 
             if (_remote.URL != _url)
             {
-                var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false);
+                var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, false, false);
                 if (succ)
                     _remote.URL = _url;
             }
 
-            var pushURL = await new Commands.Remote(_repo.FullPath).GetURLAsync(_name, true);
-            if (pushURL != _url)
-                await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _url, true);
+            if (IsResetPushURLVisible && ResetPushURL)
+            {
+                var succ = await new Commands.Remote(_repo.FullPath).SetURLAsync(_name, _remote.PushURL, true, true);
+                if (succ)
+                    _remote.PushURL = null;
+            }
 
-            await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", _useSSH ? SSHKey : null);
+            // Update SSH key
+            {
+                var key = _useSSH ? SSHKey : null;
+                var succ = await new Commands.Config(_repo.FullPath).SetAsync($"remote.{_name}.sshkey", key);
+                if (succ)
+                    _remote.PrivateSSHKey = key;
+            }
+
             return true;
         }
 

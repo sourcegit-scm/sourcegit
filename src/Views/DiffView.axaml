@@ -8,8 +8,11 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DiffView"
-             x:DataType="vm:DiffContext">
-  <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}">
+             x:DataType="vm:DiffContext"
+             CornerRadius="4"
+             BorderThickness="1"
+             BorderBrush="{DynamicResource Brush.Border2}">
+  <Border CornerRadius="4" Background="{DynamicResource Brush.Window}" ClipToBounds="True">
     <Grid RowDefinitions="26,*">
       <!-- Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
@@ -246,6 +249,13 @@
 
                 <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
               </Grid>
+
+              <Button Classes="flat"
+                      Margin="0,16,0,0"
+                      HorizontalAlignment="Center"
+                      Content="{DynamicResource Text.Diff.Binary.ViewContentOfNew}"
+                      IsVisible="{Binding NewSize, Mode=OneWay, Converter={x:Static c:LongConverters.IsGreaterThanZero}}"
+                      Click="OnOpenBinaryFileViewer"/>
             </StackPanel>
           </DataTemplate>
 

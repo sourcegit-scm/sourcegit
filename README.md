@@ -72,11 +72,11 @@ You can download the latest stable from [Releases](https://github.com/sourcegit-
 
 This software creates a folder, which is platform-dependent, to store user settings, downloaded avatars and crash logs.
 
-| OS      | PATH                                      |
-|---------|-------------------------------------------|
-| Windows | `%APPDATA%\SourceGit`                     |
-| Linux   | `~/.sourcegit`                            |
-| macOS   | `~/Library/Application Support/SourceGit` |
+| OS      | PATH                                                                                             |
+|---------|--------------------------------------------------------------------------------------------------|
+| Windows | `%APPDATA%\SourceGit`                                                                            |
+| Linux   | `${XDG_CONFIG_HOME}/SourceGit` (preference.json) `${XDG_CACHE_HOME}/SourceGit` (avatars & logs)  |
+| macOS   | `~/Library/Application Support/SourceGit`                                                        |
 
 > [!TIP]
 > * You can open this data storage directory from the main menu `Open Data Storage Directory`.
@@ -163,6 +163,14 @@ For **Linux** users:
   sudo apt install sourcegit
   ```
 
+* `AOSC OS`: In addition to AMD64 and ARM64, support for LoongArch and RISC-V has been added.
+  ```shell
+  sudo oma install sourcegit
+  ```
+  
+> [!NOTE]
+> RISC-V support is untested.
+
 * `AppImage` files can be found on [AppImage hub](https://appimage.github.io/SourceGit/), `xdg-open` (`xdg-utils`) must be installed to support open native file manager.
 * Make sure [git-credential-manager](https://github.com/git-ecosystem/git-credential-manager/releases) or [git-credential-libsecret](https://pkgs.org/search/?q=git-credential-libsecret) is installed on your Linux.
 * Maybe you need to set environment variable `AVALONIA_SCREEN_SCALE_FACTORS`. See https://github.com/AvaloniaUI/Avalonia/wiki/Configuring-X11-per-monitor-DPI.
@@ -186,6 +194,12 @@ For `OpenAI`:
 
 * `Server` must be `https://api.openai.com/v1`
 
+For `OrcaRouter`:
+
+* `Server` should be `https://api.orcarouter.ai/v1`
+* `API Key` should be an OrcaRouter API key (prefixed with `sk-orca-`)
+* A good starting `Model` is `orcarouter/auto`, which routes each request to the best available model
+
 For other AI service:
 
 * The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
@@ -207,7 +221,7 @@ This app supports open repository in external tools listed in the table below.
 
 > [!NOTE]
 > This app will try to find those tools based on some pre-defined or expected locations automatically. If you are using one portable version of these tools, it will not be detected by this app.  
-> To solve this problem you can add a file named `external_editors.json` in app data storage directory and provide the path directly.  
+> To solve this problem you can add a file named `external_editors.json` in app data storage directory (config dir for Linux) and provide the path directly.  
 > User can also exclude some editors by using `external_editors.json`.
 
 The format of `external_editors.json`:

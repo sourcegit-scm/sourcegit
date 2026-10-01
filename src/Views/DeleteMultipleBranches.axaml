@@ -18,7 +18,13 @@
                  Text="{DynamicResource Text.DeleteMultiBranch}"/>
     </StackPanel>
 
-    <Border Margin="4,16,0,0"
+    <TextBlock Margin="4,16,0,0"
+               Text="{DynamicResource Text.DeleteMultiBranch.Tip}"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource Brush.FG2}"
+               FontStyle="Italic" />
+
+    <Border Margin="4,8,0,0"
             Background="{DynamicResource Brush.Contents}"
             BorderThickness="1"
             BorderBrush="{DynamicResource Brush.Border1}"
@@ -37,6 +43,12 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Height" Value="26"/>
             <Setter Property="CornerRadius" Value="4"/>
+
+            <Setter Property="FocusAdorner">
+              <FocusAdornerTemplate>
+                <Border/>
+              </FocusAdornerTemplate>
+            </Setter>
           </Style>
         </ListBox.Styles>
 
@@ -70,10 +82,9 @@
       </ListBox>
     </Border>
 
-    <TextBlock Margin="4,8,0,0"
-               Text="{DynamicResource Text.DeleteMultiBranch.Tip}"
-               TextWrapping="Wrap"
-               Foreground="{DynamicResource Brush.FG2}"
-               FontStyle="Italic" />
+    <CheckBox Margin="4,0,0,0"
+              Content="{DynamicResource Text.DeleteBranch.Force}"
+              IsChecked="{Binding Force, Mode=TwoWay}"
+              ToolTip.Tip="--force"/>
   </StackPanel>
 </UserControl>

@@ -93,8 +93,10 @@ namespace SourceGit.ViewModels
             await minDelay;
 
             var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
-            foreach (var f in found)
+            for (var i = 0; i < found.Count; i++)
             {
+                var f = found[i];
+                ProgressDescription = $"Registering ({i + 1}/{found.Count}) {f}...";
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                 if (parent.Equals(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {
@@ -104,7 +106,7 @@ namespace SourceGit.ViewModels
                 else if (parent.StartsWith(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {
                     var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
-                    var group = FindOrCreateGroupRecursive(Preferences.Instance.RepositoryNodes, relative);
+                    var group = Preferences.Instance.FindOrCreateGroupRecursive(relative);
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
                     await node.UpdateStatusAsync(false, null);
                 }
@@ -113,6 +115,10 @@ namespace SourceGit.ViewModels
             Preferences.Instance.AutoRemoveInvalidNode();
             Preferences.Instance.Save();
             Welcome.Instance.Refresh();
+
+            if (_untrusted > 0)
+                Models.Notification.Send(null, App.Text("TrustRepository.ScanSkipped", _untrusted));
+
             return true;
         }
 
@@ -152,6 +158,10 @@ namespace SourceGit.ViewModels
                         if (!IsManaged(normalized))
                             outs.Add(normalized);
                     }
+                    else if (Models.SafeDirectories.IsUntrustedRepository(test.StdErr))
+                    {
+                        _untrusted++;
+                    }
 
                     continue;
                 }
@@ -168,39 +178,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private RepositoryNode FindOrCreateGroupRecursive(List<RepositoryNode> collection, string path)
-        {
-            RepositoryNode node = null;
-            foreach (var name in path.Split('/'))
-            {
-                node = FindOrCreateGroup(collection, name);
-                collection = node.SubNodes;
-            }
-
-            return node;
-        }
-
-        private RepositoryNode FindOrCreateGroup(List<RepositoryNode> collection, string name)
-        {
-            foreach (var node in collection)
-            {
-                if (node.Name.Equals(name, StringComparison.Ordinal))
-                    return node;
-            }
-
-            var added = new RepositoryNode()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = name,
-                IsRepository = false,
-                IsExpanded = true,
-            };
-            collection.Add(added);
-
-            Preferences.Instance.SortNodes(collection);
-            return added;
-        }
-
         private bool IsManaged(string path)
         {
             if (OperatingSystem.IsLinux())
@@ -213,5 +190,6 @@ namespace SourceGit.ViewModels
         private bool _useCustomDir = false;
         private string _customDir = string.Empty;
         private Models.ScanDir _selected = null;
+        private int _untrusted = 0;
     }
 }

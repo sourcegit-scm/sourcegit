@@ -56,6 +56,7 @@
               Width="80"
               Height="30"
               Margin="4,0"
+              HotKey="Escape"
               Click="CloseWindow"
               HorizontalAlignment="Center"
               HorizontalContentAlignment="Center"

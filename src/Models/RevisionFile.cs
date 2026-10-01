@@ -6,7 +6,18 @@ namespace SourceGit.Models
 {
     public class RevisionBinaryFile
     {
+        public string Repository { get; set; } = string.Empty;
+        public string File { get; set; } = string.Empty;
+        public string Revision { get; set; } = string.Empty;
         public long Size { get; set; } = 0;
+
+        public RevisionBinaryFile(string repo, string file, string revision, long size)
+        {
+            Repository = repo;
+            File = file;
+            Revision = revision;
+            Size = size;
+        }
     }
 
     public class RevisionImageFile
@@ -40,5 +51,18 @@ namespace SourceGit.Models
         public Commit Commit { get; set; } = null;
         public CommitFullMessage FullMessage { get; set; } = null;
         public int UncommittedChanges { get; set; } = 0;
+
+        public RevisionSubmodule(string hash)
+        {
+            Commit = new Commit() { SHA = hash };
+            FullMessage = new CommitFullMessage() { Message = string.Empty };
+        }
+
+        public RevisionSubmodule(Commit commit, string message, int uncommittedChanges)
+        {
+            Commit = commit;
+            FullMessage = new CommitFullMessage() { Message = message };
+            UncommittedChanges = uncommittedChanges;
+        }
     }
 }

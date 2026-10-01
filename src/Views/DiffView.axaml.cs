@@ -46,6 +46,12 @@ namespace SourceGit.Views
             ToggleHotkeyBindings(IsEffectivelyVisible);
         }
 
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            base.OnUnloaded(e);
+            ToggleHotkeyBindings(false);
+        }
+
         private void OnGotoFirstChange(object _, RoutedEventArgs e)
         {
             this.FindDescendantOfType<ThemedTextDiffPresenter>()?.GotoChange(ViewModels.BlockNavigationDirection.First);
@@ -82,6 +88,15 @@ namespace SourceGit.Views
             {
                 var vm = new ViewModels.SubmoduleRevisionCompare(diff);
                 this.ShowWindow(vm);
+            }
+        }
+
+        private async void OnOpenBinaryFileViewer(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button { DataContext: Models.BinaryDiff diff } && diff.NewSize > 0)
+            {
+                await this.ShowDialogAsync(new ViewModels.BinaryFileViewer(diff.Repository, diff.FilePath, diff.NewRevision));
+                e.Handled = true;
             }
         }
     }
