@@ -73,6 +73,15 @@ namespace SourceGit.Views
             set => SetValue(SecondaryForegroundProperty, value);
         }
 
+        public static readonly StyledProperty<IBrush> BorderBrushProperty =
+            AvaloniaProperty.Register<PieChart, IBrush>(nameof(BorderBrush), Brushes.White);
+
+        public IBrush BorderBrush
+        {
+            get => GetValue(BorderBrushProperty);
+            set => SetValue(BorderBrushProperty, value);
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -125,10 +134,10 @@ namespace SourceGit.Views
             foreach (var author in _report.Authors)
             {
                 var percent = (double)author.Count / total;
-                var brush = s_brushes[brushIndex];
                 if (percent > 0.01)
                 {
                     var sweepAngle = percent * 2 * Math.PI;
+                    var brush = s_brushes[brushIndex];
                     DrawArc(context, startAngle, sweepAngle, brush);
 
                     var arc = new Arc(startAngle, sweepAngle, author.User.Name, author.Count, percent, brush, author);
@@ -146,10 +155,11 @@ namespace SourceGit.Views
                 else
                 {
                     var sweepAngle = remaining;
+                    var othersBrush = secondaryForeground;
                     var count = total - renderedCount;
-                    DrawArc(context, startAngle, sweepAngle, brush);
+                    DrawArc(context, startAngle, sweepAngle, othersBrush);
 
-                    var arc = new Arc(startAngle, sweepAngle, "Others", count, (double)count / total, brush, null);
+                    var arc = new Arc(startAngle, sweepAngle, "Others", count, (double)count / total, othersBrush, null);
                     _arcs.Add(arc);
                     if (arc.IsLeftSide)
                         leftArcs.Add(arc);
@@ -158,6 +168,8 @@ namespace SourceGit.Views
                     break;
                 }
             }
+
+            context.DrawLine(new Pen(BorderBrush, 1), _center, new Point(_center.X, _center.Y - _radius));
 
             if (leftArcs.Count > 0)
             {
@@ -255,6 +267,7 @@ namespace SourceGit.Views
             if (change.Property == ReportProperty ||
                 change.Property == FontFamilyProperty ||
                 change.Property == ForegroundProperty ||
+                change.Property == BorderBrushProperty ||
                 change.Property == SecondaryForegroundProperty)
                 InvalidateVisual();
         }

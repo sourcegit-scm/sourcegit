@@ -231,6 +231,7 @@
                     FontFamily="{DynamicResource Fonts.Default}"
                     SecondaryFontFamily="{DynamicResource Fonts.Monospace}"
                     Foreground="{DynamicResource Brush.FG1}"
+                    BorderBrush="{DynamicResource Brush.Window}"
                     SecondaryForeground="{DynamicResource Brush.FG2}"/>
 
         <ContentControl Grid.Row="1"
