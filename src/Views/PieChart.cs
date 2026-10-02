@@ -78,7 +78,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             _arcs.Clear();
-            _lastHoverred = null;
+            _lastHovered = null;
 
             var w = Bounds.Width;
             var h = Bounds.Height;
@@ -248,7 +248,7 @@ namespace SourceGit.Views
 
             if (change.Property == ReportProperty)
             {
-                _lastHoverred = null;
+                _lastHovered = null;
                 HoveringTip = null;
             }
 
@@ -265,7 +265,7 @@ namespace SourceGit.Views
 
             if (_report == null || _report.Authors.Count == 0)
             {
-                _lastHoverred = null;
+                _lastHovered = null;
                 HoveringTip = null;
                 return;
             }
@@ -274,7 +274,7 @@ namespace SourceGit.Views
             var distance = Math.Sqrt(Math.Pow(pos.X - _center.X, 2) + Math.Pow(pos.Y - _center.Y, 2));
             if (distance > _radius)
             {
-                _lastHoverred = null;
+                _lastHovered = null;
                 HoveringTip = null;
                 return;
             }
@@ -287,16 +287,16 @@ namespace SourceGit.Views
             {
                 if (angle >= arc.StartAngle && angle < arc.EndAngle)
                 {
-                    if (_lastHoverred == arc)
+                    if (_lastHovered == arc)
                         return;
 
-                    _lastHoverred = arc;
+                    _lastHovered = arc;
                     HoveringTip = arc.Tip;
                     return;
                 }
             }
 
-            _lastHoverred = null;
+            _lastHovered = null;
             HoveringTip = null;
         }
 
@@ -304,15 +304,15 @@ namespace SourceGit.Views
         {
             base.OnPointerPressed(e);
 
-            if (_lastHoverred != null)
+            if (_lastHovered != null)
             {
                 var statisticsView = this.FindAncestorOfType<Statistics>();
                 if (statisticsView is { DataContext: ViewModels.Statistics vm })
                 {
-                    if (_lastHoverred.Author == null || _lastHoverred.Author == vm.SelectedAuthor)
+                    if (_lastHovered.Author == null || _lastHovered.Author == vm.SelectedAuthor)
                         vm.ChangeAuthor(null);
                     else
-                        vm.ChangeAuthor(_lastHoverred.Author);
+                        vm.ChangeAuthor(_lastHovered.Author);
                 }
             }
         }
@@ -370,7 +370,7 @@ namespace SourceGit.Views
         private Point _center = new Point(0, 0);
         private double _radius = 0;
         private List<Arc> _arcs = new List<Arc>();
-        private Arc _lastHoverred = null;
+        private Arc _lastHovered = null;
         private PieChartToolTip _hoveringTip = null;
     }
 }
