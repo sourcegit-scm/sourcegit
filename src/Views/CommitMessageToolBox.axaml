@@ -19,7 +19,7 @@
                                 CornerRadius="4,4,0,0"
                                 Background="Transparent"
                                 Text="{Binding #ThisControl.CommitMessage, Mode=TwoWay}"
-                                Watermark="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
+                                PlaceholderText="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
                                 SubjectGuideLength="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength, Mode=OneWay}"
                                 GuideLineBrush="{DynamicResource Brush.Border2}"
                                 FontFamily="{DynamicResource Fonts.Monospace}">

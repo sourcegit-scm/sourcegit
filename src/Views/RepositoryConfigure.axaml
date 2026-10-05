@@ -52,7 +52,7 @@
           <TextBox Grid.Row="0" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
-                   Watermark="{DynamicResource Text.Configure.User.Placeholder}"
+                   PlaceholderText="{DynamicResource Text.Configure.User.Placeholder}"
                    Text="{Binding UserName, Mode=TwoWay}"/>
 
           <TextBlock Grid.Row="1" Grid.Column="0"
@@ -62,7 +62,7 @@
           <TextBox Grid.Row="1" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
-                   Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
+                   PlaceholderText="{DynamicResource Text.Configure.Email.Placeholder}"
                    Text="{Binding UserEmail, Mode=TwoWay}"/>
 
           <TextBlock Grid.Row="2" Grid.Column="0"
@@ -127,7 +127,7 @@
           <TextBox Grid.Row="4" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
-                   Watermark="{DynamicResource Text.Configure.Proxy.Placeholder}"
+                   PlaceholderText="{DynamicResource Text.Configure.Proxy.Placeholder}"
                    Text="{Binding HttpProxy, Mode=TwoWay}">
             <TextBox.InnerRightContent>
               <Button Classes="icon_button" IsVisible="{Binding HttpProxy, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearHttpProxy}">
@@ -143,7 +143,7 @@
           <TextBox Grid.Row="5" Grid.Column="1"
                    Height="28"
                    CornerRadius="3"
-                   Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
+                   PlaceholderText="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
           <TextBlock Grid.Row="6" Grid.Column="0"

@@ -19,7 +19,7 @@
 
     <Setter Property="Background" Value="{DynamicResource Brush.Window}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
-    <Setter Property="SystemDecorations" Value="Full"/>
+    <Setter Property="WindowDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
     <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
@@ -57,7 +57,7 @@
   <Style Selector="Window.custom_window_frame">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="SystemDecorations" Value="None"/>
+    <Setter Property="WindowDecorations" Value="None"/>
     <Setter Property="Padding" Value="12"/>
     <Setter Property="CornerRadius" Value="8"/>
 
@@ -1487,7 +1487,7 @@
                 Padding="10">
           <Grid RowDefinitions="Auto,Auto">
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-              <TextBox Watermark="{x:Static ae:SR.SearchLabel}"
+              <TextBox PlaceholderText="{x:Static ae:SR.SearchLabel}"
                        BorderBrush="{DynamicResource Brush.Border2}"
                        Name="PART_searchTextBox"
                        Width="265" Height="28"

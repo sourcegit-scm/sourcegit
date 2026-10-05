@@ -44,7 +44,7 @@
                Height="26"
                VerticalAlignment="Center"
                CornerRadius="3"
-               Watermark="{DynamicResource Text.SetSubmoduleBranch.New.Tip}"
+               PlaceholderText="{DynamicResource Text.SetSubmoduleBranch.New.Tip}"
                Text="{Binding ChangeTo, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>

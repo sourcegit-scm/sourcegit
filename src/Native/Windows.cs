@@ -9,7 +9,6 @@ using System.Text.Json;
 
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Platform;
 using Avalonia.Threading;
 
 namespace SourceGit.Native
@@ -48,7 +47,7 @@ namespace SourceGit.Native
 
         public void SetupWindow(Window window)
         {
-            window.ExtendClientAreaChromeHints = ExtendClientAreaChromeHints.NoChrome;
+            window.WindowDecorations = WindowDecorations.BorderOnly;
             window.ExtendClientAreaToDecorationsHint = true;
             window.BorderThickness = new Thickness(1);
             window.Padding = new Thickness(0);

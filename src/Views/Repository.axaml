@@ -267,7 +267,7 @@
                        BorderThickness="1"
                        CornerRadius="13"
                        BorderBrush="{DynamicResource Brush.Border2}"
-                       Watermark="{DynamicResource Text.Repository.Filter}"
+                       PlaceholderText="{DynamicResource Text.Repository.Filter}"
                        Text="{Binding Filter, Mode=TwoWay}"
                        VerticalContentAlignment="Center">
                 <TextBox.InnerLeftContent>

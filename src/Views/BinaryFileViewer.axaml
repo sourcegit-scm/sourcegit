@@ -57,7 +57,7 @@
                                     CornerRadius="13"
                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    Watermark="{DynamicResource Text.File.HexViewer.GotoAddress}"
+                                    PlaceholderText="{DynamicResource Text.File.HexViewer.GotoAddress}"
                                     TextChanged="OnGotoAddressTextChanged">
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14"

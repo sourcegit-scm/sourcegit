@@ -132,10 +132,10 @@ namespace SourceGit.Views
 
             var ro = new RenderOptions()
             {
-                TextRenderingMode = TextRenderingMode.SubpixelAntialias,
                 EdgeMode = EdgeMode.Antialias
             };
 
+            using (context.PushTextOptions(new TextOptions { TextRenderingMode = TextRenderingMode.SubpixelAntialias }))
             using (context.PushRenderOptions(ro))
             {
                 var height = Bounds.Height;

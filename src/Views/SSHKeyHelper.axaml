@@ -208,7 +208,7 @@
                                Height="28"
                                CornerRadius="3"
                                VerticalAlignment="Center"
-                               Watermark="{DynamicResource Text.SSHKeyHelper.Generator.Name.Placeholder}"
+                               PlaceholderText="{DynamicResource Text.SSHKeyHelper.Generator.Name.Placeholder}"
                                Text="{Binding Name, Mode=TwoWay}"/>
 
                       <TextBlock Grid.Row="2" Grid.Column="0"
@@ -219,7 +219,7 @@
                                Height="28"
                                CornerRadius="3"
                                VerticalAlignment="Center"
-                               Watermark="{DynamicResource Text.SSHKeyHelper.Generator.Email.Placeholder}"
+                               PlaceholderText="{DynamicResource Text.SSHKeyHelper.Generator.Email.Placeholder}"
                                Text="{Binding Email, Mode=TwoWay}"/>
 
                       <TextBlock Grid.Row="3" Grid.Column="0"

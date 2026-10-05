@@ -60,19 +60,11 @@ namespace SourceGit.Views
 
         public DateTimePresenter()
         {
-            Bind(Use24HoursProperty, new Binding()
-            {
-                Mode = BindingMode.OneWay,
-                Source = ViewModels.Preferences.Instance,
-                Path = "Use24Hours"
-            });
+            Bind(Use24HoursProperty, CompiledBinding.Create((ViewModels.Preferences pref) => pref.Use24Hours,
+                source: ViewModels.Preferences.Instance, mode: BindingMode.OneWay));
 
-            Bind(DateTimeFormatProperty, new Binding()
-            {
-                Mode = BindingMode.OneWay,
-                Source = ViewModels.Preferences.Instance,
-                Path = "DateTimeFormat"
-            });
+            Bind(DateTimeFormatProperty, CompiledBinding.Create((ViewModels.Preferences pref) => pref.DateTimeFormat,
+                source: ViewModels.Preferences.Instance, mode: BindingMode.OneWay));
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

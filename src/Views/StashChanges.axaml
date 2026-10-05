@@ -49,7 +49,7 @@
                Margin="0,4,0,0"
                CornerRadius="3"
                Text="{Binding Message, Mode=TwoWay}"
-               Watermark="{DynamicResource Text.Stash.Message.Placeholder}"
+               PlaceholderText="{DynamicResource Text.Stash.Message.Placeholder}"
                AcceptsReturn="True"
                AcceptsTab="False"
                VerticalContentAlignment="Top"
