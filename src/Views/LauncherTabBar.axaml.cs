@@ -1,12 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -254,9 +258,165 @@ namespace SourceGit.Views
 
                 var data = new DataTransfer();
                 data.Add(DataTransferItem.Create(_dndMainTabFormat, page.Node.Id));
-                await DragDrop.DoDragDropAsync(_pressedTabEvent, data, DragDropEffects.Move);
+                try
+                {
+                    BeginDragFeedback(border, page);
+                    await DragDrop.DoDragDropAsync(_pressedTabEvent, data, DragDropEffects.Move);
+                }
+                finally
+                {
+                    ClearDragFeedback();
+                    _pressedTabEvent = null;
+                    _startDragTab = false;
+                }
             }
             e.Handled = true;
+        }
+
+        private void BeginDragFeedback(Border source, ViewModels.LauncherPage page)
+        {
+            _draggedPage = page;
+            _dragSource = source;
+            _dragLayer = AdornerLayer.GetAdornerLayer(this);
+            if (_dragLayer != null)
+            {
+                var size = source.Bounds.Size;
+                var text = source.GetVisualDescendants().OfType<TextBlock>().FirstOrDefault(t => t.IsEffectivelyVisible);
+                var icon = page.Node.IsRepository
+                    ? (Control)new Bookmark { Value = page.Node.Bookmark }
+                    : new Avalonia.Controls.Shapes.Path
+                    {
+                        Data = this.FindResource("Icons.Repositories") as Geometry,
+                        Fill = this.FindResource("Brush.FG1") as IBrush
+                    };
+                icon.Width = 12;
+                icon.Height = 12;
+                icon.Margin = new Thickness(0, 0, 8, 0);
+                var content = new Grid
+                {
+                    ColumnDefinitions = new ColumnDefinitions("Auto,*"),
+                    Margin = new Thickness(12, 0),
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                content.Children.Add(icon);
+                var title = new TextBlock
+                {
+                    Text = page.Node.IsRepository ? page.Node.Name : App.Text("PageTabBar.Welcome.Title"),
+                    FontFamily = text?.FontFamily ?? FontFamily.Default,
+                    FontSize = text?.FontSize ?? 12,
+                    Foreground = this.FindResource("Brush.FG1") as IBrush,
+                    TextTrimming = TextTrimming.CharacterEllipsis,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                Grid.SetColumn(title, 1);
+                content.Children.Add(title);
+                _dragPreview = new Border
+                {
+                    Width = size.Width,
+                    Height = size.Height,
+                    Background = this.FindResource("Brush.ToolBar") as IBrush,
+                    BorderBrush = this.FindResource("Brush.Border0") as IBrush,
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(4),
+                    Opacity = 0.85,
+                    IsVisible = false,
+                    ClipToBounds = true,
+                    Child = content
+                };
+                _dropIndicator = new Border
+                {
+                    Width = 3,
+                    Height = Math.Max(0, size.Height - 4),
+                    Background = this.FindResource("Brush.Accent") as IBrush,
+                    IsVisible = false
+                };
+                _dragOverlay = new Canvas { IsHitTestVisible = false };
+                _dragOverlay.Children.Add(_dropIndicator);
+                _dragOverlay.Children.Add(_dragPreview);
+                AdornerLayer.SetAdornedElement(_dragOverlay, this);
+                AdornerLayer.SetIsClipEnabled(_dragOverlay, false);
+                _dragLayer.Children.Add(_dragOverlay);
+            }
+            source.Classes.Add("tab_drag_source");
+        }
+
+        private void DragOverTabs(object sender, DragEventArgs e)
+        {
+            if (_draggedPage == null || DataContext is not ViewModels.Launcher launcher)
+                return;
+
+            var point = e.GetPosition(this);
+            if (_dragPreview != null)
+            {
+                Canvas.SetLeft(_dragPreview, point.X + 12);
+                Canvas.SetTop(_dragPreview, point.Y + 12);
+                _dragPreview.IsVisible = true;
+            }
+
+            ClearDropTarget();
+            e.DragEffects = DragDropEffects.None;
+            var fromIndex = launcher.Pages.IndexOf(_draggedPage);
+            if (fromIndex < 0 || !new Rect(LauncherTabsScroller.Bounds.Size).Contains(e.GetPosition(LauncherTabsScroller)))
+                return;
+
+            for (var i = 0; i < LauncherTabsList.ItemCount; i++)
+            {
+                var container = LauncherTabsList.ContainerFromIndex(i);
+                var tab = container?.GetVisualDescendants().OfType<LauncherTabSizeBox>().FirstOrDefault();
+                if (tab == null || i == fromIndex)
+                    continue;
+
+                var position = e.GetPosition(tab);
+                if (!new Rect(tab.Bounds.Size).Contains(position))
+                    continue;
+
+                _dropTarget = tab;
+                tab.Classes.Add("tab_drop_target");
+                e.DragEffects = DragDropEffects.Move;
+                if (_dropIndicator != null && tab.TranslatePoint(new Point(i > fromIndex ? tab.Bounds.Width : 0, 2), this) is { } edge)
+                {
+                    Canvas.SetLeft(_dropIndicator, edge.X - 1.5);
+                    Canvas.SetTop(_dropIndicator, edge.Y);
+                    _dropIndicator.IsVisible = true;
+                }
+                break;
+            }
+            e.Handled = true;
+        }
+
+        private void DragLeaveTabs(object sender, DragEventArgs e)
+        {
+            ClearDropTarget();
+            if (_dragPreview != null)
+                _dragPreview.IsVisible = false;
+        }
+
+        private void ClearDropTarget()
+        {
+            _dropTarget?.Classes.Remove("tab_drop_target");
+            _dropTarget = null;
+            if (_dropIndicator != null)
+                _dropIndicator.IsVisible = false;
+        }
+
+        private void ClearDragFeedback()
+        {
+            ClearDropTarget();
+            _dragSource?.Classes.Remove("tab_drag_source");
+            if (_dragOverlay != null)
+                _dragLayer?.Children.Remove(_dragOverlay);
+            _draggedPage = null;
+            _dragSource = null;
+            _dragOverlay = null;
+            _dragPreview = null;
+            _dropIndicator = null;
+            _dragLayer = null;
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            ClearDragFeedback();
+            base.OnDetachedFromVisualTree(e);
         }
 
         private void DropTab(object sender, DragEventArgs e)
@@ -286,6 +446,7 @@ namespace SourceGit.Views
             if (target == to)
                 return;
 
+            ClearDragFeedback();
             launcher.MoveTab(target, to);
 
             _pressedTabEvent = null;
@@ -427,6 +588,13 @@ namespace SourceGit.Views
         private readonly Vector _scrollStep = new(64, 0);
         private PointerPressedEventArgs _pressedTabEvent = null;
         private bool _startDragTab = false;
+        private ViewModels.LauncherPage _draggedPage;
+        private Border _dragSource;
+        private LauncherTabSizeBox _dropTarget;
+        private AdornerLayer _dragLayer;
+        private Canvas _dragOverlay;
+        private Border _dragPreview;
+        private Border _dropIndicator;
         private readonly DataFormat<string> _dndMainTabFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-main-tab");
     }
 }
