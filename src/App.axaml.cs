@@ -52,6 +52,8 @@ namespace SourceGit
         {
             var builder = AppBuilder.Configure<App>();
             builder.UsePlatformDetect();
+            if (OperatingSystem.IsLinux() && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WAYLAND_DISPLAY")))
+                builder.UseWayland();
             builder.LogToTrace();
             builder.WithInterFont();
             builder.With(new FontManagerOptions()
