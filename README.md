@@ -200,6 +200,12 @@ For `OrcaRouter`:
 * `API Key` should be an OrcaRouter API key (prefixed with `sk-orca-`)
 * A good starting `Model` is `orcarouter/auto`, which routes each request to the best available model
 
+For `Cheaper Inference`:
+
+* `Server` should be `https://api.cheaperinference.com/v1`
+* `API Key` should be a Cheaper Inference API key (prefixed with `ci_live_`)
+* A good starting `Model` is `gpt-5.4-mini`
+
 For other AI service:
 
 * The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
