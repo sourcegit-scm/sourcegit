@@ -21,6 +21,7 @@
                                 Text="{Binding #ThisControl.CommitMessage, Mode=TwoWay}"
                                 Watermark="{DynamicResource Text.CommitMessageTextBox.Placeholder}"
                                 SubjectGuideLength="{Binding Source={x:Static vm:Preferences.Instance}, Path=SubjectGuideLength, Mode=OneWay}"
+                                DescriptionGuideLength="{Binding Source={x:Static vm:Preferences.Instance}, Path=DescriptionGuideLength, Mode=OneWay}"
                                 GuideLineBrush="{DynamicResource Brush.Border2}"
                                 FontFamily="{DynamicResource Fonts.Monospace}">
           <v:CommitMessageTextBox.Styles>
@@ -138,6 +139,23 @@
                        Text="{Binding #Editor.SubjectGuideLength, Mode=OneWay}"
                        VerticalAlignment="Center"/>
             <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #Editor.WarnSubjectLength, Mode=OneWay}"/>
+            <TextBlock Classes="info_label"
+                       Margin="12,0,0,0"
+                       FontSize="13"
+                       HorizontalAlignment="Left"
+                       Text="{DynamicResource Text.CommitMessageTextBox.DescriptionCount}"/>
+            <TextBlock Margin="8,0,0,0"
+                       FontSize="11"
+                       Text="{Binding #Editor.DescriptionLength}"
+                       Foreground="{Binding #Editor.WarnDescriptionLength, Converter={x:Static c:BoolConverters.IsWarningToBrush}, Mode=OneWay}"
+                       VerticalAlignment="Center"/>
+            <TextBlock FontSize="11"
+                       Text="/"
+                       VerticalAlignment="Center"/>
+            <TextBlock FontSize="11"
+                       Text="{Binding #Editor.DescriptionGuideLength, Mode=OneWay}"
+                       VerticalAlignment="Center"/>
+            <Path Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Error}" Fill="DarkGoldenrod" IsVisible="{Binding #Editor.WarnDescriptionLength, Mode=OneWay}"/>
           </StackPanel>
         </Grid>
       </Border>

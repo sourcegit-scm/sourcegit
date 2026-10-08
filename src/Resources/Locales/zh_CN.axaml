@@ -208,6 +208,7 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">签名者 ：</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">浏览器中查看</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.DescriptionCount" xml:space="preserve">描述</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">请输入提交的信息。注意：主题与具体描述中间需要空白行分隔！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比较</x:String>
@@ -700,6 +701,7 @@
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">通用配置</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">启动时检测软件更新</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">日期时间格式</x:String>
+  <x:String x:Key="Text.Preferences.General.DescriptionGuideLength" xml:space="preserve">DESCRIPTION字数检测</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">在变更列表树中启用紧凑文件夹模式</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">显示语言</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">最大历史提交数</x:String>
