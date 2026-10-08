@@ -449,7 +449,7 @@ namespace SourceGit.ViewModels
             _workingCopy = new WorkingCopy(this) { CommitMessage = _uiStates.LastCommitMessage };
             _stashesPage = new StashesPage(this);
             _selectedViewIndex = Preferences.Instance.ShowLocalChangesByDefault ? 1 : 0;
-            _lastFetchTime = DateTime.Now;
+            _lastFetchTime = DateTime.MinValue; // fetch on open, so remote state is fresh from the start
             _autoFetchTimer = new Timer(AutoFetchByTimer, null, 5000, 5000);
             RefreshAll();
         }

@@ -429,7 +429,7 @@
                              CornerRadius="3"
                              ParsingNumberStyle="Integer"
                              FormatString="0"
-                             Value="{Binding AutoFetchInterval, Mode=TwoWay, FallbackValue=10}"
+                             Value="{Binding AutoFetchInterval, Mode=TwoWay, FallbackValue=1}"
                              IsEnabled="{Binding #AutoFetchCheckBox.IsChecked}"/>
 
               <TextBlock VerticalAlignment="Center"
