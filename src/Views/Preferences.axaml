@@ -193,19 +193,31 @@
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <ComboBox Grid.Row="0" Grid.Column="1"
-                      MinHeight="28"
-                      Padding="8,0"
-                      HorizontalAlignment="Stretch"
-                      DisplayMemberBinding="{Binding Key, x:DataType=ThemeVariant}"
-                      SelectedItem="{Binding Theme, Mode=TwoWay, Converter={x:Static c:StringConverters.ToTheme}}">
-              <ComboBox.Items>
-                <ThemeVariant>Default</ThemeVariant>
-                <ThemeVariant>Dark</ThemeVariant>
-                <ThemeVariant>Light</ThemeVariant>
-              </ComboBox.Items>
-            </ComboBox>
-
+            <Grid Grid.Row="0" Grid.Column="1">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="28" /> 
+                <ColumnDefinition Width="28" />
+              </Grid.ColumnDefinitions>
+              <ComboBox Grid.Column="0" Grid.Row="0" MinHeight="28"
+                        HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
+                        Padding="8,0"
+                        ItemsSource="{Binding Themes, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedTheme, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="{x:Type m:ThemeOverrides}">
+                    <TextBlock Text="{Binding Name, Mode=OneWay}"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+              <Button Grid.Column="1" Grid.Row="0" Classes="icon_button" Width="28" Height="28" Click="OpenThemeRepository">
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+              <Button Grid.Column="2" Grid.Row="0" Classes="icon_button" Width="28" Height="28" Click="OpenThemeFolder">
+                <Path Width="14" Height="14" Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+              </Button>
+            </Grid>
+            
             <TextBlock Grid.Row="1" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.DefaultFont}"
                        HorizontalAlignment="Right"
@@ -269,27 +281,6 @@
                              CornerRadius="3"
                              Value="{Binding EditorTabWidth, Mode=TwoWay}"/>
             </Grid>
-
-            <TextBlock Grid.Row="5" Grid.Column="0"
-                       Text="{DynamicResource Text.Preferences.Appearance.ThemeOverrides}"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,16,0"/>
-            <TextBox Grid.Row="5" Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
-                     Text="{Binding ThemeOverrides, Mode=TwoWay}">
-              <TextBox.InnerRightContent>
-                <StackPanel Orientation="Horizontal">
-                  <Button Classes="icon_button" Width="28" Height="28" Click="SelectThemeOverrideFile">
-                    <Path Width="16" Height="16" Data="{StaticResource Icons.Folder.Open}" Margin="0,2,0,0" Fill="{DynamicResource Brush.FG1}"/>
-                  </Button>
-
-                  <Button Classes="icon_button" Width="28" Height="28" Click="OpenThemeRepository">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG1}"/>
-                  </Button>
-                </StackPanel>
-              </TextBox.InnerRightContent>
-            </TextBox>
 
             <CheckBox Grid.Row="6" Grid.Column="1"
                       Height="32"
