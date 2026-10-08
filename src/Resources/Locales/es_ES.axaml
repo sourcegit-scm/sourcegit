@@ -648,6 +648,7 @@
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Crear Nueva Página</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Cerrar Pestaña</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseBelow" xml:space="preserve">Cerrar Pestañas de Abajo</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Cerrar Otras Pestañas</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Cerrar Pestañas a la Derecha</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copiar Ruta del Repositorio</x:String>
@@ -689,6 +690,7 @@
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Usar barras de desplazamiento que se oculten automáticamente</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usar ancho de pestaña fijo en la barra de título</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usar marco de ventana nativo</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseVerticalTabs" xml:space="preserve">Mostrar pestañas verticalmente</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">HERRAMIENTA DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Argumentos para Diff</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">Variables disponibles: $LOCAL, $REMOTE</x:String>

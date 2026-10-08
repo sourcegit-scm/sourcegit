@@ -372,6 +372,7 @@
   <x:String x:Key="Text.Optional" xml:space="preserve">விருப்பத்தேர்வு.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">புதிய பக்கத்தை உருவாக்கு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">மூடு தாவல்</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseBelow" xml:space="preserve">கீழே உள்ள தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">பிற தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">வலதுபுறத்தில் உள்ள தாவல்களை மூடு</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">களஞ்சிய பாதை நகலெடு</x:String>
@@ -404,6 +405,7 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">கருப்பொருள் மேலெழுதப்படுகிறது</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">தலைப்புப்பட்டியில் நிலையான தாவல் அகலத்தைப் பயன்படுத்து</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">சொந்த சாளர சட்டத்தைப் பயன்படுத்து</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseVerticalTabs" xml:space="preserve">தாவல்களை செங்குத்தாகக் காட்டு</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">வேறு/ஒன்றிணை கருவி</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">நிறுவல் பாதை</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">வேறு/ஒன்றிணை கருவிக்கான பாதை உள்ளிடு</x:String>

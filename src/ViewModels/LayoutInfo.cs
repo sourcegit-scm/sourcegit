@@ -35,6 +35,12 @@ namespace SourceGit.ViewModels
             set;
         } = WindowState.Normal;
 
+        public double LauncherVerticalTabsWidth
+        {
+            get;
+            set;
+        } = 200;
+
         public double RepositorySidebarWidth
         {
             get;

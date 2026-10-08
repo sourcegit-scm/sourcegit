@@ -175,6 +175,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useFixedTabWidth, value);
         }
 
+        public bool UseVerticalTabs
+        {
+            get => _useVerticalTabs;
+            set => SetProperty(ref _useVerticalTabs, value);
+        }
+
         public bool UseAutoHideScrollBars
         {
             get => _useAutoHideScrollBars;
@@ -821,6 +827,7 @@ namespace SourceGit.ViewModels
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
+        private bool _useVerticalTabs = false;
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;
         private bool _useCompactBranchNamesInGraph = true;

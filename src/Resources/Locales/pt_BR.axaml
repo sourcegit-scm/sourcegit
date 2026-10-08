@@ -377,6 +377,7 @@
   <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Criar Nova Página</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Fechar Aba</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseBelow" xml:space="preserve">Fechar Abas Abaixo</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Fechar Outras Abas</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Fechar Abas à Direita</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copiar Caminho do Repositório</x:String>
@@ -408,6 +409,7 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Substituições de Tema</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usar largura fixa de aba na barra de título</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usar moldura de janela nativa</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseVerticalTabs" xml:space="preserve">Exibir abas verticalmente</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">FERRAMENTA DE DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Caminho de Instalação</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Insira o caminho para a ferramenta de diff/merge</x:String>
