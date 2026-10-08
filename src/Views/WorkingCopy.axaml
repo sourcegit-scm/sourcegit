@@ -26,7 +26,7 @@
 
       <!-- Search Filter -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+        <Grid ColumnDefinitions="Auto,*,Auto">
           <ToggleButton Grid.Column="0"
                         Classes="sidebar_expander"
                         Width="32"
@@ -73,10 +73,6 @@
             <Path Width="14" Height="14" Data="{StaticResource Icons.Undo}"/>
           </Button>
           
-          <v:ChangeViewModeSwitcher Grid.Column="3"
-                                    Width="26"
-                                    VerticalAlignment="Center"
-                                    ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=ChangeViewMode, Mode=TwoWay}"/>
         </Grid>
       </Border>
 
@@ -84,7 +80,7 @@
       <Grid Grid.Row="1" RowDefinitions="28,*">
         <!-- Unstaged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-          <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
+          <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto,Auto">
             <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
             <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
               <Run Text="{DynamicResource Text.WorkingCopy.Unstaged}"/>
@@ -139,6 +135,11 @@
                     Click="OnStageAllButtonClicked">
               <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
             </Button>
+            <v:ChangeViewModeSwitcher Grid.Column="9"
+                                      Width="26" Height="14"
+                                      Margin="0,1,0,0"
+                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"
+                                      SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeSortMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
 
@@ -147,7 +148,8 @@
                                 x:Name="UnstagedChangesView"
                                 IsUnstagedChange="True"
                                 Background="{DynamicResource Brush.Contents}"
-                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=ChangeViewMode}"
+                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode}"
+                                SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeSortMode}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleUnstaged}"
                                 Selection="{Binding SelectedUnstaged, Mode=TwoWay}"
@@ -167,7 +169,7 @@
       <Grid Grid.Row="3" RowDefinitions="27,*">
         <!-- Staged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-          <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto">
+          <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
             <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
             <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
               <Run Text="{DynamicResource Text.WorkingCopy.Staged}"/>
@@ -190,6 +192,11 @@
             <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="OnUnstageAllButtonClicked">
               <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
             </Button>
+            <v:ChangeViewModeSwitcher Grid.Column="6"
+                                      Width="26" Height="14"
+                                      Margin="0,1,0,0"
+                                      ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"
+                                      SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeSortMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
 
@@ -198,7 +205,8 @@
                                 x:Name="StagedChangesView"
                                 IsUnstagedChange="False"
                                 Background="{DynamicResource Brush.Contents}"
-                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=ChangeViewMode}"
+                                ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode}"
+                                SortMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeSortMode}"
                                 EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                 Changes="{Binding VisibleStaged}"
                                 Selection="{Binding SelectedStaged, Mode=TwoWay}"
