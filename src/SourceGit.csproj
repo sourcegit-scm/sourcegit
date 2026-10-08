@@ -3,7 +3,6 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <ApplicationManifest>App.manifest</ApplicationManifest>
-    <ApplicationIcon>App.ico</ApplicationIcon>
     <Version>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)\\..\\VERSION"))</Version>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
@@ -17,6 +16,14 @@
     <PackageProjectUrl>https://github.com/sourcegit-scm/sourcegit.git</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sourcegit-scm/sourcegit.git</RepositoryUrl>
     <RepositoryType>Public</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <ApplicationIcon>App.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' != 'Release'">
+    <ApplicationIcon>AppDev.ico</ApplicationIcon>
+    <DefineConstants>$(DefineConstants);DEV_BUILD</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release' and '$(DisableAOT)' != 'true'">
@@ -39,6 +46,7 @@
 
   <ItemGroup>
     <AvaloniaResource Include="App.ico" />
+    <AvaloniaResource Include="AppDev.ico" />
     <AvaloniaResource Include="Resources/Fonts/*" />
     <AvaloniaResource Include="Resources/Grammars/*" />
     <AvaloniaResource Include="Resources/Images/*" />
