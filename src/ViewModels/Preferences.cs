@@ -257,7 +257,7 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
-        } = 1;
+        } = 10;
 
         public bool IgnoreWhitespaceChangesInDiff
         {
