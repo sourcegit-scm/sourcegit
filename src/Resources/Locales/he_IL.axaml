@@ -592,6 +592,7 @@
   <x:String x:Key="Text.Optional" xml:space="preserve">לא חובה.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">צור לשונית חדשה</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">סגור לשונית</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseBelow" xml:space="preserve">סגור לשוניות מתחת</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">סגור לשוניות אחרות</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">סגור לשוניות מימין</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">העתק נתיב המאגר</x:String>
@@ -631,6 +632,7 @@
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">שימוש בפסי גלילה המוסתרים אוטומטית</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">רוחב לשונית קבוע בשורת הכותרת</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">שימוש במסגרת חלון מקומית</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseVerticalTabs" xml:space="preserve">הצג לשוניות אנכית</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">כלי DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">ארגומנטים ל־Diff</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">משתנים זמינים: $LOCAL, $REMOTE</x:String>

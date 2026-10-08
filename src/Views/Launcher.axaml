@@ -9,6 +9,7 @@
                     x:Class="SourceGit.Views.Launcher"
                     x:DataType="vm:Launcher"
                     x:Name="ThisControl"
+                    IsVerticalTabsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseVerticalTabs, Mode=OneWay}"
                     Icon="/App.ico"
                     Title="{Binding Title}"
                     MinWidth="1024" MinHeight="600">
@@ -122,7 +123,11 @@
       </Button>
 
       <!-- Pages Tabs -->
-      <v:LauncherTabBar Grid.Column="3" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="3"
+                        Height="30"
+                        Margin="0,0,16,0"
+                        VerticalAlignment="Bottom"
+                        IsVisible="{Binding !#ThisControl.IsVerticalTabsVisible}"/>
 
       <!-- Update Available Button -->
       <Button Grid.Column="4"
@@ -143,13 +148,34 @@
     </Grid>
 
     <!-- Page -->
-    <ContentControl Grid.Row="1" Content="{Binding ActivePage}" Background="{DynamicResource Brush.Window}">
-      <ContentControl.DataTemplates>
-        <DataTemplate DataType="vm:LauncherPage">
-          <v:LauncherPage/>
-        </DataTemplate>
-      </ContentControl.DataTemplates>
-    </ContentControl>
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="{Binding #ThisControl.VerticalTabsWidth, Mode=TwoWay}" MinWidth="{Binding #ThisControl.VerticalTabsMinWidth, Mode=OneWay}" MaxWidth="480"/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Vertical Pages Tabs -->
+      <v:LauncherVerticalTabBar Grid.Column="0" IsVisible="{Binding #ThisControl.IsVerticalTabsVisible, Mode=OneWay}"/>
+
+      <!-- Splitter -->
+      <GridSplitter Grid.Column="1"
+                    Width="3" MinWidth="3" MaxWidth="3"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent"
+                    BorderThickness="0,0,1,0"
+                    BorderBrush="{DynamicResource Brush.Border0}"
+                    Focusable="False"
+                    IsVisible="{Binding #ThisControl.IsVerticalTabsVisible, Mode=OneWay}"/>
+
+      <ContentControl Grid.Column="2" Content="{Binding ActivePage}" Background="{DynamicResource Brush.Window}">
+        <ContentControl.DataTemplates>
+          <DataTemplate DataType="vm:LauncherPage">
+            <v:LauncherPage/>
+          </DataTemplate>
+        </ContentControl.DataTemplates>
+      </ContentControl>
+    </Grid>
 
     <!-- Command Palette -->
     <Border Grid.Row="0" Grid.RowSpan="2"

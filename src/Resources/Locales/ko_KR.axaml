@@ -595,6 +595,7 @@
   <x:String x:Key="Text.Optional" xml:space="preserve">선택 사항.</x:String>
   <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">새 탭 만들기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">탭 닫기</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseBelow" xml:space="preserve">아래쪽 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">다른 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">오른쪽 탭 닫기</x:String>
   <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">저장소 경로 복사</x:String>
@@ -634,6 +635,7 @@
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">스크롤바 자동 숨기기 사용</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">제목 표시줄에서 고정 탭 너비 사용</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">네이티브 윈도우 프레임 사용</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseVerticalTabs" xml:space="preserve">탭을 세로로 표시</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE 도구</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">비교 인수</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">사용 가능한 변수: $LOCAL, $REMOTE</x:String>

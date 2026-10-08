@@ -21,6 +21,50 @@ namespace SourceGit.Views
             set => SetAndRaise(CaptionHeightProperty, ref _captionHeight, value);
         }
 
+        public static readonly DirectProperty<Launcher, bool> IsVerticalTabsVisibleProperty =
+            AvaloniaProperty.RegisterDirect<Launcher, bool>(
+                nameof(IsVerticalTabsVisible),
+                static o => o.IsVerticalTabsVisible,
+                static (o, v) => o.IsVerticalTabsVisible = v);
+
+        public bool IsVerticalTabsVisible
+        {
+            get => _isVerticalTabsVisible;
+            set
+            {
+                if (SetAndRaise(IsVerticalTabsVisibleProperty, ref _isVerticalTabsVisible, value))
+                    CalculateVerticalTabsWidth();
+            }
+        }
+
+        public static readonly DirectProperty<Launcher, double> VerticalTabsMinWidthProperty =
+            AvaloniaProperty.RegisterDirect<Launcher, double>(
+                nameof(VerticalTabsMinWidth),
+                static o => o.VerticalTabsMinWidth,
+                static (o, v) => o.VerticalTabsMinWidth = v);
+
+        public double VerticalTabsMinWidth
+        {
+            get => _verticalTabsMinWidth;
+            set => SetAndRaise(VerticalTabsMinWidthProperty, ref _verticalTabsMinWidth, value);
+        }
+
+        public static readonly DirectProperty<Launcher, GridLength> VerticalTabsWidthProperty =
+            AvaloniaProperty.RegisterDirect<Launcher, GridLength>(
+                nameof(VerticalTabsWidth),
+                static o => o.VerticalTabsWidth,
+                static (o, v) => o.VerticalTabsWidth = v);
+
+        public GridLength VerticalTabsWidth
+        {
+            get => _verticalTabsWidth;
+            set
+            {
+                if (SetAndRaise(VerticalTabsWidthProperty, ref _verticalTabsWidth, value) && _isVerticalTabsVisible)
+                    ViewModels.Preferences.Instance.Layout.LauncherVerticalTabsWidth = value.Value;
+            }
+        }
+
         public bool HasRightCaptionButton
         {
             get
@@ -447,8 +491,25 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void CalculateVerticalTabsWidth()
+        {
+            if (_isVerticalTabsVisible)
+            {
+                VerticalTabsMinWidth = 120;
+                VerticalTabsWidth = new GridLength(ViewModels.Preferences.Instance.Layout.LauncherVerticalTabsWidth, GridUnitType.Pixel);
+            }
+            else
+            {
+                VerticalTabsMinWidth = 0;
+                VerticalTabsWidth = new GridLength(0, GridUnitType.Pixel);
+            }
+        }
+
         private GridLength _captionHeight = new(32);
         private WindowState _lastWindowState = WindowState.Normal;
+        private bool _isVerticalTabsVisible = false;
+        private double _verticalTabsMinWidth = 0;
+        private GridLength _verticalTabsWidth = new(0, GridUnitType.Pixel);
     }
 }
 
