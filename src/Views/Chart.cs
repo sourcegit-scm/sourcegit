@@ -107,7 +107,7 @@ namespace SourceGit.Views
             var sampleW = hasUserSamples ? Math.Min(step * 0.5 - 2.5, 14.0) : Math.Min(step - 3, 28.0);
             var maxSampleH = h - 24.0;
             var maxLabelEndX = w - 4.0;
-            var labelsToDraw = new List<(FormattedText Text, Point Position, Point TickStart, Point TickEnd)>();
+            var labelsToDraw = new List<XLabel>();
 
             using (context.PushClip(new Rect(leftMargin, 0, w - leftMargin, h)))
             {
@@ -165,11 +165,7 @@ namespace SourceGit.Views
                         if (labelEndX <= maxLabelEndX)
                         {
                             var labelStartX = labelCenterX - formattedLabel.Width * 0.5;
-                            var labelStartY = h - formattedLabel.Height - 2.0;
-                            labelsToDraw.Add((formattedLabel,
-                                                new Point(labelStartX, labelStartY),
-                                                new Point(labelCenterX, maxSampleH + 4),
-                                                new Point(labelCenterX, maxSampleH)));
+                            labelsToDraw.Add(new(formattedLabel, labelStartX, labelCenterX));
                             maxLabelEndX = labelStartX - 16.0;
                         }
                     }
@@ -185,10 +181,10 @@ namespace SourceGit.Views
                 } while (true);
             }
 
-            foreach (var (text, position, tickStart, tickEnd) in labelsToDraw)
+            foreach (var label in labelsToDraw)
             {
-                context.DrawLine(tickPen, tickStart, tickEnd);
-                context.DrawText(text, position);
+                context.DrawLine(tickPen, new Point(label.TickPosition, maxSampleH + 4), new Point(label.TickPosition, maxSampleH));
+                context.DrawText(label.Text, new Point(label.TextPosition, maxSampleH + 6));
             }
         }
 
@@ -288,6 +284,7 @@ namespace SourceGit.Views
         }
 
         private record HitBox(Rect Rect, ChartToolTip ToolTip);
+        private record XLabel(FormattedText Text, double TextPosition, double TickPosition);
 
         private Models.StatisticsSamples _samples = null;
         private double _offsetX = 0;
