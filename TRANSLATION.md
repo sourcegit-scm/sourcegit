@@ -157,23 +157,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.07%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Statistics.Commits
-- Text.Statistics.TopAuthors
-- Text.Statistics.TopAuthors.Count
-- Text.Statistics.TopAuthors.Percentage
-- Text.Statistics.TopAuthors.Tip
-- Text.TrustRepository
-- Text.TrustRepository.CommandTip
-- Text.TrustRepository.Description
-- Text.TrustRepository.Path
-- Text.TrustRepository.ScanSkipped
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-89.75%25-yellow)
 
