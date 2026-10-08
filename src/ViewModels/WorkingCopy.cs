@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -191,6 +192,30 @@ namespace SourceGit.ViewModels
             get => string.IsNullOrEmpty(_filter) ? $"({_staged.Count})" : $"({_visibleStaged.Count}/{_staged.Count})";
         }
 
+        public int UnstagedAddedLines
+        {
+            get => _unstagedAddedLines;
+            private set => SetProperty(ref _unstagedAddedLines, value);
+        }
+
+        public int UnstagedDeletedLines
+        {
+            get => _unstagedDeletedLines;
+            private set => SetProperty(ref _unstagedDeletedLines, value);
+        }
+
+        public int StagedAddedLines
+        {
+            get => _stagedAddedLines;
+            private set => SetProperty(ref _stagedAddedLines, value);
+        }
+
+        public int StagedDeletedLines
+        {
+            get => _stagedDeletedLines;
+            private set => SetProperty(ref _stagedDeletedLines, value);
+        }
+
         public ChangeSelection SelectedUnstaged
         {
             get => _selectedUnstaged;
@@ -364,6 +389,29 @@ namespace SourceGit.ViewModels
 
             UpdateInProgressState();
             UpdateDetail();
+
+            _ = Task.Run(async () =>
+            {
+                var pref = Preferences.Instance;
+                var unstagedStats = await new Commands.QueryDiffLineStats(
+                        _repo.FullPath, false, pref.IgnoreWhitespaceChangesInDiff, pref.IgnoreCRAtEOLInDiff)
+                    .GetResultAsync().ConfigureAwait(false);
+                var stagedStats = await new Commands.QueryDiffLineStats(
+                        _repo.FullPath, true, pref.IgnoreWhitespaceChangesInDiff, pref.IgnoreCRAtEOLInDiff)
+                    .GetResultAsync().ConfigureAwait(false);
+
+                Dispatcher.UIThread.Post(() =>
+                {
+                    // A newer SetData may have run while fetching stats; drop this stale update.
+                    if (!ReferenceEquals(_cached, changes))
+                        return;
+
+                    UnstagedAddedLines = unstagedStats.added;
+                    UnstagedDeletedLines = unstagedStats.deleted;
+                    StagedAddedLines = stagedStats.added;
+                    StagedDeletedLines = stagedStats.deleted;
+                });
+            });
         }
 
         public async Task StageChangesAsync(List<Models.Change> changes, Models.Change next)
@@ -958,6 +1006,10 @@ namespace SourceGit.ViewModels
         private List<Models.Change> _visibleStaged = [];
         private ChangeSelection _selectedUnstaged = new(null);
         private ChangeSelection _selectedStaged = new(null);
+        private int _unstagedAddedLines = 0;
+        private int _unstagedDeletedLines = 0;
+        private int _stagedAddedLines = 0;
+        private int _stagedDeletedLines = 0;
         private object _detailContext = null;
         private string _filter = string.Empty;
         private string _commitMessage = string.Empty;
