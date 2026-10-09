@@ -302,6 +302,17 @@ namespace SourceGit.Views
 
                 if (vm.ActivePage.Data is ViewModels.Repository repo)
                 {
+                    var explore = new MenuItem();
+                    explore.Header = App.Text("Repository.Explore");
+                    explore.Icon = this.CreateMenuIcon("Icons.Explore");
+                    explore.Tag = OperatingSystem.IsMacOS() ? "⌘+E" : "Ctrl+E";
+                    explore.Click += (_, e) =>
+                    {
+                        Native.OS.OpenInFileManager(repo.FullPath);
+                        e.Handled = true;
+                    };
+                    menu.Items.Add(explore);
+
                     var refresh = new MenuItem();
                     refresh.Header = App.Text("PageTabBar.Tab.Refresh");
                     refresh.Icon = this.CreateMenuIcon("Icons.Loading");
