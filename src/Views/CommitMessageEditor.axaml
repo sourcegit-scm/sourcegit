@@ -8,11 +8,10 @@
                     x:Name="ThisControl"
                     Icon="/App.ico"
                     Title="{DynamicResource Text.CodeEditor}"
-                    Width="800"
-                    SizeToContent="Height"
-                    CanResize="False"
+                    Width="800" Height="520"
+                    MinWidth="600" MinHeight="360"
                     WindowStartupLocation="CenterScreen">
-  <Grid RowDefinitions="Auto,*">
+  <Grid RowDefinitions="Auto,*,Auto">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
@@ -35,22 +34,20 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8">
-      <v:CommitMessageToolBox x:Name="Editor" Height="400"/>
+    <v:CommitMessageToolBox Grid.Row="1" x:Name="Editor" Margin="8,8,8,0"/>
 
-      <StackPanel Margin="0,8,0,4" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
-        <Button Classes="flat primary"
-                Width="80"
-                Content="{DynamicResource Text.Sure}"
-                Click="SaveAndClose"
-                HorizontalAlignment="Center"/>
-        <Button Classes="flat"
-                Width="80"
-                Content="{DynamicResource Text.Cancel}"
-                Click="CancelAndClose"
-                HotKey="Escape"
-                HorizontalAlignment="Center"/>
-      </StackPanel>
+    <StackPanel Grid.Row="2" Margin="8,8,8,12" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+      <Button Classes="flat primary"
+              Width="80"
+              Content="{DynamicResource Text.Sure}"
+              Click="SaveAndClose"
+              HorizontalAlignment="Center"/>
+      <Button Classes="flat"
+              Width="80"
+              Content="{DynamicResource Text.Cancel}"
+              Click="CancelAndClose"
+              HotKey="Escape"
+              HorizontalAlignment="Center"/>
     </StackPanel>
   </Grid>
 </v:ChromelessWindow>
