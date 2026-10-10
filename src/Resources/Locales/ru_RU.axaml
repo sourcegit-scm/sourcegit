@@ -954,10 +954,15 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">ОТЛОЖЕННЫЕ</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">Статистика</x:String>
+  <x:String x:Key="Text.Statistics.Commits" xml:space="preserve">РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">ОБЗОР</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">МЕСЯЦ</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">НЕДЕЛЯ</x:String>
   <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit проанализирует не более 200 000 ревизий в целевой ветке.</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">ТОП АВТОРОВ</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">ПРОЦЕНТ</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">Авторы с долей менее 1% ревизий объединены в группу «Другие».</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">АВТОРЫ: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">РЕВИЗИИ: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">ПОДМОДУЛИ</x:String>
@@ -1001,6 +1006,11 @@
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">ПРЕКРАТИТЬ</x:String>
+  <x:String x:Key="Text.TrustRepository" xml:space="preserve">Недоверенный репозиторий</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">Вы хотите выполнить команду (git config --global --add safe.directory {0}), чтобы разрешить доступ к этому пути?</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Отказ гита в доступе к этому репозиторию:  </x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">Путь:</x:String>
+  <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">Пропущено репозиториев из-за недоверия к ним гитом: {0}. Пожалуйста, откройте их вручную и проверьте, можно ли им доверять.</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Обновление подмодулей</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Все подмодули</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Создавать по необходимости</x:String>
