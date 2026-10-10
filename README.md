@@ -206,6 +206,12 @@ For `Cheaper Inference`:
 * `API Key` should be a Cheaper Inference API key (prefixed with `ci_live_`)
 * A good starting `Model` is `gpt-5.4-mini`
 
+For `Opper`:
+
+* `Server` should be `https://api.opper.ai/v3/compat`
+* `API Key` should be an Opper API key, created at https://platform.opper.ai
+* A good starting `Model` is `gpt-5.4-mini`
+
 For `API Route`:
 
 * `Server` should be `https://global.api-route.com/v1`
