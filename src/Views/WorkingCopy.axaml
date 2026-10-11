@@ -81,7 +81,7 @@
       </Border>
 
       <!-- Unstaged -->
-      <Grid Grid.Row="1" RowDefinitions="28,*">
+      <Grid Grid.Row="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowStagedChangesOnTop, Converter={x:Static c:BoolConverters.IsStagedOnTopToUnstagedRow}}" RowDefinitions="28,*">
         <!-- Unstaged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
@@ -129,7 +129,7 @@
                              VerticalAlignment="Center"/>
                 </StackPanel>
               </ToolTip.Tip>
-              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowStagedChangesOnTop, Converter={x:Static c:BoolConverters.IsStagedOnTopToStageIcon}}"/>
             </Button>
             <Button Grid.Column="8"
                     Classes="icon_button"
@@ -137,7 +137,7 @@
                     Padding="0"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.StageAll}"
                     Click="OnStageAllButtonClicked">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
+              <Path Width="14" Height="14" Data="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowStagedChangesOnTop, Converter={x:Static c:BoolConverters.IsStagedOnTopToStageAllIcon}}"/>
             </Button>
           </Grid>
         </Border>
@@ -164,7 +164,7 @@
                     Focusable="False"/>
 
       <!-- Staged -->
-      <Grid Grid.Row="3" RowDefinitions="27,*">
+      <Grid Grid.Row="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowStagedChangesOnTop, Converter={x:Static c:BoolConverters.IsStagedOnTopToStagedRow}}" RowDefinitions="27,*">
         <!-- Staged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto">
@@ -185,10 +185,10 @@
                              Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </StackPanel>
               </ToolTip.Tip>
-              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowStagedChangesOnTop, Converter={x:Static c:BoolConverters.IsStagedOnTopToUnstageIcon}}"/>
             </Button>
             <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="OnUnstageAllButtonClicked">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
+              <Path Width="14" Height="14" Data="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowStagedChangesOnTop, Converter={x:Static c:BoolConverters.IsStagedOnTopToUnstageAllIcon}}"/>
             </Button>
           </Grid>
         </Border>

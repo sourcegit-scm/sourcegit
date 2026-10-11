@@ -295,6 +295,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _imageDiffActiveIdx, value);
         }
 
+        public bool ShowStagedChangesOnTop
+        {
+            get => _showStagedChangesOnTop;
+            set => SetProperty(ref _showStagedChangesOnTop, value);
+        }
+
         public bool EnableCompactFoldersInChangesTree
         {
             get => _enableCompactFoldersInChangesTree;
@@ -830,6 +836,7 @@ namespace SourceGit.ViewModels
         private string _ignoreUpdateTag = string.Empty;
 
         private bool _showTagsInGraph = true;
+        private bool _showStagedChangesOnTop = false;
         private bool _useTwoColumnsLayoutInHistories = false;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;
