@@ -64,7 +64,6 @@ namespace SourceGit.ViewModels
                     IsSetTrackOptionVisible = !string.IsNullOrEmpty(_selectedRemote.URL)
                         && value != null
                         && (value.Head == null || _selectedLocalBranch.Upstream != value.FullName);
-                    Tracking = true;
                 }
             }
         }
@@ -357,7 +356,7 @@ namespace SourceGit.ViewModels
         private List<Models.Branch> _remoteBranches = [];
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
-        private bool _tracking = true;
+        private bool _tracking = false;
         private CancellationTokenSource _cancellation = null;
     }
 }

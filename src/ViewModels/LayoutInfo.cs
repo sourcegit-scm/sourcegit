@@ -47,6 +47,12 @@ namespace SourceGit.ViewModels
             set;
         } = 250;
 
+        public bool IsSidebarCollapsedInLocalChanges
+        {
+            get => _isSidebarCollapsedInLocalChanges;
+            set => SetProperty(ref _isSidebarCollapsedInLocalChanges, value);
+        }
+
         public GridLength WorkingCopyLeftWidth
         {
             get => _workingCopyLeftWidth;
@@ -75,5 +81,6 @@ namespace SourceGit.ViewModels
         private GridLength _stashesLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _commitDetailChangesLeftWidth = new GridLength(256, GridUnitType.Pixel);
         private GridLength _commitDetailFilesLeftWidth = new GridLength(256, GridUnitType.Pixel);
+        private bool _isSidebarCollapsedInLocalChanges = false;
     }
 }

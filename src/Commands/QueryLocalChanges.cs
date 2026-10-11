@@ -46,8 +46,8 @@ namespace SourceGit.Commands
                     {
                         lock (capturedLock)
                         {
-                            if (captured is { Process: { HasExited: false } })
-                                captured.Process.Kill(true);
+                            if (captured is { Process: { HasExited: false } proc })
+                                Native.OS.TerminateProcess(proc);
                         }
                     });
                 }

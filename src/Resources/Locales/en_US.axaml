@@ -12,11 +12,6 @@
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Branch Name:</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Tracking remote branch</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">What to Checkout:</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Create New Branch</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Existing Branch</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI Assistant</x:String>
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">MODEL</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">RE-GENERATE</x:String>
@@ -63,6 +58,7 @@
   <x:String x:Key="Text.Blame.Tips" xml:space="preserve">Holding Ctrl (on Windows/Linux) or ⌘ (on macOS) when clicking commit SHA will rebuild blame data based on that revision.</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CheckoutAsWorktree" xml:space="preserve">Checkout ${0}$ as worktree...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Compare selected 2 branches</x:String>
   <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">Compare with...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
@@ -119,6 +115,14 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">The following submodules need to be updated:{0}Do you want to update them?</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Checkout &amp; Fast-Forward</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Fast-Forward to:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree" xml:space="preserve">Checkout Branch as Worktree</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.LocalBranch" xml:space="preserve">Local Branch:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName" xml:space="preserve">New Branch Name:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName.Placeholder" xml:space="preserve">Optional. Default is the destination folder name.</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.RemoteBranch" xml:space="preserve">Remote Branch:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.Tracking" xml:space="preserve">Tracking this remote branch.</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath" xml:space="preserve">Worktree Path:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath.Placeholder" xml:space="preserve">Path for this worktree. Relative path is supported.</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Checkout Branch From Stash</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">New Branch:</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">Stash:</x:String>
@@ -183,6 +187,7 @@
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS File</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Search Files...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submodule</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Tips" xml:space="preserve">SELECT FILE TO VIEW CONTENT</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMATION</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMMITTER</x:String>
@@ -199,7 +204,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signer:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Open in Browser</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">COL</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Enter commit message. Please use an empty-line to separate subject and description!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJECT</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Compare</x:String>
@@ -946,10 +950,15 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">CHANGES</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASHES</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">Statistics</x:String>
+  <x:String x:Key="Text.Statistics.Commits" xml:space="preserve">COMMITS</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">OVERVIEW</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MONTH</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">WEEK</x:String>
   <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit will only get a maximum of 200,000 commits according to the target branch for analysis.</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">TOP AUTHORS</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">COMMITS</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">PERCENTAGE</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">Authors with less than 1% commits will be grouped under Others.</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTHORS: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMMITS: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMODULES</x:String>
@@ -993,6 +1002,11 @@
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Merge ${0}$ into ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Push ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">TERMINATE</x:String>
+  <x:String x:Key="Text.TrustRepository" xml:space="preserve">Untrusted Repository</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">Do you want to run `git config --global --add safe.directory {0}` command to trust this path?</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git refused to access this repository:  </x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">Path:</x:String>
+  <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">{0} repositories were skipped because git does not trust them. Please open them manually and confirm whether to trust them.</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
@@ -1029,6 +1043,7 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">You can stage this file now.</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">Clear History</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">Are you sure you want to clear all commit message history? This action cannot be undone.</x:String>
+  <x:String x:Key="Text.WorkingCopy.CollapseSidebar" xml:space="preserve">Hide Sidebar</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">COMMIT</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">COMMIT &amp; PUSH</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Template/History</x:String>
@@ -1045,6 +1060,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">USE MINE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">USE THEIRS</x:String>
   <x:String x:Key="Text.WorkingCopy.DiscardAll" xml:space="preserve">DISCARD ALL</x:String>
+  <x:String x:Key="Text.WorkingCopy.ExpandSidebar" xml:space="preserve">Show Sidebar</x:String>
   <x:String x:Key="Text.WorkingCopy.FilterChanges" xml:space="preserve">Filter Changes...</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLUDE UNTRACKED FILES</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO RECENT INPUT MESSAGES</x:String>

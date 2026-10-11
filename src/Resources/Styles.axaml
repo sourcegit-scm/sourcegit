@@ -21,6 +21,8 @@
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
     <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
+    <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
+    <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -174,9 +176,9 @@
     <Setter Property="IsHitTestVisible" Value="False"/>
   </Style>
 
-  <Style Selector="ContentPresenter">
-    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
+  <Style Selector="PopupRoot">
+    <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
+    <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
   <Style Selector="AdornerLayer">
@@ -1360,6 +1362,40 @@
   </Style>
   <Style Selector="ToggleButton.toggle_untracked:pointerover /template/ Path#PART_IndicatorIcon">
     <Setter Property="Opacity" Value="1"/>
+  </Style>
+
+  <Style Selector="ToggleButton.sidebar_expander">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.WorkingCopy.CollapseSidebar}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="Transparent"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+          <Path x:Name="ChevronPath"
+                Width="15" Height="15"
+                Data="{StaticResource Icons.Sidebar.Expanded}"
+                Fill="{DynamicResource Brush.FG1}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:checked">
+      <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.WorkingCopy.ExpandSidebar}"/>
+    </Style>
+    <Style Selector="^:checked /template/ Path#ChevronPath">
+      <Setter Property="Data" Value="{StaticResource Icons.Sidebar.Collapsed}" />
+    </Style>
+    <Style Selector="^ Path">
+      <Setter Property="Opacity" Value="0.8"/>
+    </Style>
+    <Style Selector="^:pointerover Path">
+      <Setter Property="Opacity" Value="1"/>
+    </Style>
   </Style>
 
   <Style Selector="Slider">

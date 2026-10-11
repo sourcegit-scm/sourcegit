@@ -63,6 +63,7 @@ namespace SourceGit.Models
                     FileName = ExecFile,
                     Arguments = args,
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                 });
             }
         }

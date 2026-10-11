@@ -54,7 +54,7 @@ namespace SourceGit.Views
             base.Render(context);
 
             var samples = _samples;
-            if (samples == null || samples.Count == 0)
+            if (samples == null)
                 return;
 
             var w = Bounds.Width;
@@ -68,6 +68,7 @@ namespace SourceGit.Views
             var hasUserSamples = samples.HasSpecialUser;
 
             var labelPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), .5);
+            var tickPen = new Pen(Brushes.Gray);
             var labelTypeface = new Typeface(LabelFontFamily);
             var corner = new CornerRadius(2, 2, 0, 0);
             var sampleBrush = SampleBrush;
@@ -94,6 +95,9 @@ namespace SourceGit.Views
                 context.DrawLine(labelPen, new Point(leftMargin, y), new Point(w, y));
             }
 
+            if (count == 0)
+                return;
+
             var step = Math.Max((w - leftMargin) / count, 10.0);
             _maxOffsetX = Math.Max(count * step - (w - leftMargin), 0);
             _hitBoxes.Clear();
@@ -103,78 +107,85 @@ namespace SourceGit.Views
             var sampleW = hasUserSamples ? Math.Min(step * 0.5 - 2.5, 14.0) : Math.Min(step - 3, 28.0);
             var maxSampleH = h - 24.0;
             var maxLabelEndX = w - 4.0;
+            var labelsToDraw = new List<XLabel>();
 
-            using var clip = context.PushClip(new Rect(leftMargin, 0, w - leftMargin, h));
-            do
+            using (context.PushClip(new Rect(leftMargin, 0, w - leftMargin, h)))
             {
-                var (label, total, user) = samples.GetSample(time);
-
-                if (x - step <= w && total > 0)
+                do
                 {
-                    if (hasUserSamples)
-                    {
-                        var startX = x - step * 0.5 - 1 - sampleW;
-                        var startY = maxSampleH * (1.0 - total * 1.0 / maxValue);
-                        var rect = new Rect(startX, startY, sampleW, maxSampleH - startY);
+                    var (label, total, user) = samples.GetSample(time);
 
-                        using (context.PushOpacity(0.2))
+                    if (x - step <= w && total > 0)
+                    {
+                        if (hasUserSamples)
                         {
+                            var startX = x - step * 0.5 - 1 - sampleW;
+                            var startY = maxSampleH * (1.0 - total * 1.0 / maxValue);
+                            var rect = new Rect(startX, startY, sampleW, maxSampleH - startY);
+
+                            using (context.PushOpacity(0.2))
+                            {
+                                context.DrawRectangle(sampleBrush, null, new RoundedRect(rect, corner));
+                            }
+
+                            if (user > 0)
+                            {
+                                var userStartX = startX + sampleW + 2;
+                                var userStartY = maxSampleH * (1.0 - user * 1.0 / maxValue);
+                                var userRect = new Rect(userStartX, userStartY, sampleW, maxSampleH - userStartY);
+                                context.DrawRectangle(sampleBrush, null, new RoundedRect(userRect, corner));
+                            }
+
+                            var hitRect = new Rect(startX, startY, sampleW * 2 + 2, maxSampleH - startY);
+                            _hitBoxes.Add(new(hitRect, new(label, true, total, user)));
+                        }
+                        else
+                        {
+                            var startX = x - step * 0.5 - sampleW * 0.5;
+                            var startY = maxSampleH * (1.0 - total * 1.0 / maxValue);
+                            var rect = new Rect(startX, startY, sampleW, maxSampleH - startY);
+
                             context.DrawRectangle(sampleBrush, null, new RoundedRect(rect, corner));
+                            _hitBoxes.Add(new(rect, new(label, false, total, 0)));
                         }
+                    }
 
-                        if (user > 0)
+                    if (x <= w)
+                    {
+                        var formattedLabel = new FormattedText(
+                            label,
+                            CultureInfo.CurrentCulture,
+                            FlowDirection.LeftToRight,
+                            labelTypeface,
+                            11,
+                            Brushes.Gray);
+
+                        var labelCenterX = x - step * 0.5;
+                        var labelEndX = labelCenterX + formattedLabel.Width * 0.5;
+                        if (labelEndX <= maxLabelEndX)
                         {
-                            var userStartX = startX + sampleW + 2;
-                            var userStartY = maxSampleH * (1.0 - user * 1.0 / maxValue);
-                            var userRect = new Rect(userStartX, userStartY, sampleW, maxSampleH - userStartY);
-                            context.DrawRectangle(sampleBrush, null, new RoundedRect(userRect, corner));
+                            var labelStartX = labelCenterX - formattedLabel.Width * 0.5;
+                            labelsToDraw.Add(new(formattedLabel, labelStartX, labelCenterX));
+                            maxLabelEndX = labelStartX - 16.0;
                         }
-
-                        var hitRect = new Rect(startX, startY, sampleW * 2 + 2, maxSampleH - startY);
-                        _hitBoxes.Add(new(hitRect, new(label, true, total, user)));
                     }
-                    else
-                    {
-                        var startX = x - step * 0.5 - sampleW * 0.5;
-                        var startY = maxSampleH * (1.0 - total * 1.0 / maxValue);
-                        var rect = new Rect(startX, startY, sampleW, maxSampleH - startY);
 
-                        context.DrawRectangle(sampleBrush, null, new RoundedRect(rect, corner));
-                        _hitBoxes.Add(new(rect, new(label, false, total, 0)));
-                    }
-                }
+                    if (x <= leftMargin)
+                        break;
 
-                if (x <= w)
-                {
-                    var formattedLabel = new FormattedText(
-                        label,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        labelTypeface,
-                        11,
-                        Brushes.Gray);
+                    x -= step;
 
-                    var labelCenterX = x - step * 0.5;
-                    var labelEndX = labelCenterX + formattedLabel.Width * 0.5;
-                    if (labelEndX <= maxLabelEndX)
-                    {
-                        var labelStartX = labelCenterX - formattedLabel.Width * 0.5;
-                        var labelStartY = h - formattedLabel.Height - 2.0;
-                        context.DrawLine(new Pen(Brushes.Gray), new Point(labelCenterX, maxSampleH + 4), new Point(labelCenterX, maxSampleH));
-                        context.DrawText(formattedLabel, new Point(labelStartX, labelStartY));
-                        maxLabelEndX = labelStartX - 16.0;
-                    }
-                }
+                    time = samples.NextSampleTime(time);
+                    if (time < minTime)
+                        break;
+                } while (true);
+            }
 
-                if (x <= leftMargin)
-                    break;
-
-                x -= step;
-
-                time = samples.NextSampleTime(time);
-                if (time < minTime)
-                    break;
-            } while (true);
+            foreach (var label in labelsToDraw)
+            {
+                context.DrawLine(tickPen, new Point(label.TickPosition, maxSampleH + 4), new Point(label.TickPosition, maxSampleH));
+                context.DrawText(label.Text, new Point(label.TextPosition, maxSampleH + 6));
+            }
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -273,6 +284,7 @@ namespace SourceGit.Views
         }
 
         private record HitBox(Rect Rect, ChartToolTip ToolTip);
+        private record XLabel(FormattedText Text, double TextPosition, double TickPosition);
 
         private Models.StatisticsSamples _samples = null;
         private double _offsetX = 0;

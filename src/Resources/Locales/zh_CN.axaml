@@ -16,11 +16,6 @@
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">填写该工作树的路径。支持相对路径。</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">分支名 ：</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">选填。默认使用目标文件夹名称。</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">跟踪分支</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">设置上游跟踪分支</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">检出分支方式 ：</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">创建新分支</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">已有分支</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI助手</x:String>
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">重新生成</x:String>
@@ -67,6 +62,7 @@
   <x:String x:Key="Text.Blame.Tips" xml:space="preserve">按住 Ctrl (Windows及Linux平台) 或 ⌘ (macOS平台) 键并点击提交哈希将基于所选的提交重新计算逐行追溯</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">选中文件不支持该操作!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">检出(checkout) ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CheckoutAsWorktree" xml:space="preserve">检出 ${0}$ 为新工作树...</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">比较选中的 2 个分支</x:String>
   <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">与其他分支或标签比较...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">与当前 HEAD 比较</x:String>
@@ -123,6 +119,14 @@
   <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">以下子模块需要更新：{0}是否立即更新？</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">检出分支并快进</x:String>
   <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">上游分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree" xml:space="preserve">检出分支为新的工作树</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.LocalBranch" xml:space="preserve">本地分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName" xml:space="preserve">新分支名称 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName.Placeholder" xml:space="preserve">选填。默认使用目标文件夹名称。</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.RemoteBranch" xml:space="preserve">远程分支 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.Tracking" xml:space="preserve">新分支跟踪此远程分支</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath" xml:space="preserve">工作树路径 ：</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath.Placeholder" xml:space="preserve">必填。可填写相对路径。</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">从所选贮藏检出分支</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">新分支 ：</x:String>
   <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">所选贮藏 ：</x:String>
@@ -187,6 +191,7 @@
   <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">LFS文件</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">查找文件...</x:String>
   <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">子模块</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Tips" xml:space="preserve">请选择查看的文件</x:String>
   <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">基本信息</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">修改者</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">提交者</x:String>
@@ -203,7 +208,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">提交指纹</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">签名者 ：</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">浏览器中查看</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">列</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">请输入提交的信息。注意：主题与具体描述中间需要空白行分隔！</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">主题</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">比较</x:String>
@@ -950,10 +954,15 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">查看变更</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">贮藏列表</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">提交统计</x:String>
+  <x:String x:Key="Text.Statistics.Commits" xml:space="preserve">提交统计图</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">总览</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">本月</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">本周</x:String>
   <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit 仅会按所选分支最多取出 200000 条提交记录进行分析</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">主要贡献者</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">提交数量</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">百分比</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">提交占比小于1%的作者会被统计入Others分组</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">贡献者人数: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">提交次数: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">子模块</x:String>
@@ -997,6 +1006,11 @@
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">合并 ${0}$ 到 ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">推送 ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">终止运行</x:String>
+  <x:String x:Key="Text.TrustRepository" xml:space="preserve">不受信任的仓库</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">是否执行 `git config --global --add safe.directory {0}` 命令以信任该仓库？</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git 拒绝访问该仓库：  </x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">路径 ：</x:String>
+  <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">有 {0} 个仓库因 git 的信任检查被跳过，请手动打开它们并确认是否信任。</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">更新子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">更新所有子模块</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">如未初始化子模块，先初始化</x:String>
@@ -1033,6 +1047,7 @@
   <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">现在您已可将其加入暂存区中</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">清空历史提交信息</x:String>
   <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">您确定要清空所有的历史提交信息记录吗（执行操作后无法撤回）？</x:String>
+  <x:String x:Key="Text.WorkingCopy.CollapseSidebar" xml:space="preserve">隐藏左侧栏</x:String>
   <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">提交</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">提交并推送</x:String>
   <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">历史输入/模板</x:String>
@@ -1049,6 +1064,7 @@
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">使用 MINE</x:String>
   <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">使用 THEIRS</x:String>
   <x:String x:Key="Text.WorkingCopy.DiscardAll" xml:space="preserve">放弃所有更改</x:String>
+  <x:String x:Key="Text.WorkingCopy.ExpandSidebar" xml:space="preserve">显示左侧栏</x:String>
   <x:String x:Key="Text.WorkingCopy.FilterChanges" xml:space="preserve">查找变更...</x:String>
   <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">显示未跟踪文件</x:String>
   <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">没有提交信息记录</x:String>

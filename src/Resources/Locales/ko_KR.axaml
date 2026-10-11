@@ -16,11 +16,6 @@
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">이 워크트리의 경로입니다. 상대 경로를 지원합니다.</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">브랜치 이름:</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">선택 사항. 기본값은 대상 폴더 이름입니다.</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">추적할 브랜치:</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">원격 브랜치 추적</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">체크아웃할 대상:</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">새 브랜치 생성</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">기존 브랜치</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">AI 어시스턴트</x:String>
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">재생성</x:String>
@@ -196,7 +191,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">서명자:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">브라우저에서 열기</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">열</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">커밋 메시지를 입력하세요. 제목과 설명은 빈 줄로 구분하세요!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">제목</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">비교</x:String>
