@@ -14,12 +14,14 @@
                     MinWidth="1024" MinHeight="600">
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="{Binding #ThisControl.CaptionHeight}"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <!-- Custom TitleBar -->
-    <Grid Grid.Row="0" ColumnDefinitions="Auto,32,32,*,Auto,Auto">
+    <Grid Grid.Row="0"
+          ColumnDefinitions="Auto,32,32,*,Auto,Auto"
+          MinHeight="{Binding #ThisControl.CaptionHeight.Value}">
       <!-- Bottom border -->
       <Border Grid.Column="0" Grid.ColumnSpan="6"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
@@ -34,7 +36,7 @@
                                   IsVisible="{OnPlatform False, macOS=True}"/>
 
       <!-- Menu (Windows/Linux) -->
-      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Bottom" Margin="6,0,0,3" IsVisible="{OnPlatform True, macOS=False}">
+      <Button Grid.Column="0" Classes="icon_button" VerticalAlignment="Top" Margin="6,4,0,0" IsVisible="{OnPlatform True, macOS=False}">
         <Button.Flyout>
           <MenuFlyout Placement="BottomEdgeAlignedLeft" VerticalOffset="-6">
             <MenuItem Header="{DynamicResource Text.Preferences}" Command="{x:Static s:App.OpenPreferencesCommand}" InputGesture="Ctrl+,">
@@ -88,7 +90,7 @@
       </Button>
 
       <!-- Workspace Dropdown Menu -->
-      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenWorkspaceMenu" HotKey="{OnPlatform Ctrl+Alt+P, macOS=⌘+Alt+P}">
+      <Button Grid.Column="1" Classes="icon_button" VerticalAlignment="Top" Margin="0,4,0,0" Click="OnOpenWorkspaceMenu" HotKey="{OnPlatform Ctrl+Alt+P, macOS=⌘+Alt+P}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{DynamicResource Text.Workspace}" FontWeight="Bold" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
@@ -106,7 +108,7 @@
       </Button>
 
       <!-- Pages Switcher Toggle Button -->
-      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Bottom" Margin="0,0,0,1" Click="OnOpenPagesCommandPalette" HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}">
+      <Button Grid.Column="2" Classes="icon_button" VerticalAlignment="Top" Margin="0,4,0,0" Click="OnOpenPagesCommandPalette" HotKey="{OnPlatform Ctrl+P, macOS=⌘+P}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{DynamicResource Text.Launcher.Pages}"
@@ -122,7 +124,7 @@
       </Button>
 
       <!-- Pages Tabs -->
-      <v:LauncherTabBar Grid.Column="3" Height="30" Margin="0,0,16,0" VerticalAlignment="Bottom"/>
+      <v:LauncherTabBar Grid.Column="3" Margin="0,4,16,0" VerticalAlignment="Top"/>
 
       <!-- Update Available Button -->
       <Button Grid.Column="4"

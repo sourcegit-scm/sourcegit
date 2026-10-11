@@ -662,6 +662,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Design-Anpassungen</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Bildlaufleisten automatisch ausblenden</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Fixe Tab-Breite in Titelleiste verwenden</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseMultiLineTabs" xml:space="preserve">Repository-Tabs mehrzeilig anzeigen</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Nativen Fensterrahmen verwenden</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF- / MERGE-TOOL</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Argumente für Diff</x:String>

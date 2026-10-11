@@ -633,6 +633,7 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">테마 재정의</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">스크롤바 자동 숨기기 사용</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">제목 표시줄에서 고정 탭 너비 사용</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseMultiLineTabs" xml:space="preserve">저장소 탭을 여러 줄로 표시</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">네이티브 윈도우 프레임 사용</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE 도구</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">비교 인수</x:String>
