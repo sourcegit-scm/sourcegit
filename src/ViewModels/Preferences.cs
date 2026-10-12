@@ -135,6 +135,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _maxHistoryCommits, value);
         }
 
+        public Models.SubmoduleHistoryMode SubmoduleHistoryMode
+        {
+            get => _submoduleHistoryMode;
+            set => SetProperty(ref _submoduleHistoryMode, Enum.IsDefined(value) ? value : Models.SubmoduleHistoryMode.ChangedRange);
+        }
+
+        public int MaxExpandedSubmoduleHistories
+        {
+            get => _maxExpandedSubmoduleHistories;
+            set => SetProperty(ref _maxExpandedSubmoduleHistories, Math.Clamp(value, 1, 20));
+        }
+
         public int SubjectGuideLength
         {
             get => _subjectGuideLength;
@@ -818,6 +830,8 @@ namespace SourceGit.ViewModels
         private double _zoom = 1.0;
         private LayoutInfo _layout = new();
 
+        private Models.SubmoduleHistoryMode _submoduleHistoryMode = Models.SubmoduleHistoryMode.ChangedRange;
+        private int _maxExpandedSubmoduleHistories = 3;
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;
