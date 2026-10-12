@@ -1231,23 +1231,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.07%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Statistics.Commits
-- Text.Statistics.TopAuthors
-- Text.Statistics.TopAuthors.Count
-- Text.Statistics.TopAuthors.Percentage
-- Text.Statistics.TopAuthors.Tip
-- Text.TrustRepository
-- Text.TrustRepository.CommandTip
-- Text.TrustRepository.Description
-- Text.TrustRepository.Path
-- Text.TrustRepository.ScanSkipped
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-60.58%25-red)
 
