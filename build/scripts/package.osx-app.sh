@@ -21,5 +21,7 @@ case "$RUNTIME" in
 esac
 
 clang -arch "$ARCH" ../tools/setsid-macos/setsid.c -o SourceGit.app/Contents/MacOS/setsid -mmacosx-version-min=13.0
+codesign --force --deep --sign - SourceGit.app
+codesign --verify --deep --strict --verbose=2 SourceGit.app
 
 zip "sourcegit_$VERSION.$RUNTIME.zip" -r SourceGit.app

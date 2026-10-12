@@ -200,6 +200,25 @@ For `OrcaRouter`:
 * `API Key` should be an OrcaRouter API key (prefixed with `sk-orca-`)
 * A good starting `Model` is `orcarouter/auto`, which routes each request to the best available model
 
+For `Cheaper Inference`:
+
+* `Server` should be `https://api.cheaperinference.com/v1`
+* `API Key` should be a Cheaper Inference API key (prefixed with `ci_live_`)
+* A good starting `Model` is `gpt-5.4-mini`
+
+For `Opper`:
+
+* `Server` should be `https://api.opper.ai/v3/compat`
+* `API Key` should be an Opper API key, created at https://platform.opper.ai
+* A good starting `Model` is `gpt-5.4-mini`
+
+For `API Route`:
+
+* `Server` should be `https://global.api-route.com/v1`
+* `API Key` should be your API Route API key
+* `Model` can be `gpt-6.1-sol` if it is available to your key; otherwise select an available chat model from the fetched catalog
+* See the [API documentation](https://github.com/DennyHo0917/api-route/blob/main/API.md) for authentication and model discovery
+
 For other AI service:
 
 * The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`

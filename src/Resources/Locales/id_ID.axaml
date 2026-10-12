@@ -16,11 +16,6 @@
   <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Jalur untuk worktree ini. Jalur relatif didukung.</x:String>
   <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Nama Branch:</x:String>
   <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Opsional. Standar adalah nama folder tujuan.</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking" xml:space="preserve">Track Branch:</x:String>
-  <x:String x:Key="Text.AddWorktree.Tracking.Toggle" xml:space="preserve">Track remote branch</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout" xml:space="preserve">Yang Akan Di-Checkout:</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.CreateNew" xml:space="preserve">Buat Branch Baru</x:String>
-  <x:String x:Key="Text.AddWorktree.WhatToCheckout.Existing" xml:space="preserve">Branch Yang Ada</x:String>
   <x:String x:Key="Text.AIAssistant" xml:space="preserve">Asisten AI</x:String>
   <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">Model</x:String>
   <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">BUAT ULANG</x:String>
@@ -201,7 +196,6 @@
   <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Penanda Tangan:</x:String>
   <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Buka di Browser</x:String>
-  <x:String x:Key="Text.CommitMessageTextBox.Column" xml:space="preserve">KOL</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Masukkan pesan commit. Gunakan baris kosong untuk memisahkan subjek dan deskripsi!</x:String>
   <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">SUBJEK</x:String>
   <x:String x:Key="Text.Compare" xml:space="preserve">Perbandingan</x:String>

@@ -51,7 +51,9 @@ ln -rsf SourceGit.AppDir/opt/sourcegit/sourcegit SourceGit.AppDir/AppRun
 ln -rsf SourceGit.AppDir/usr/share/applications/com.sourcegit_scm.SourceGit.desktop SourceGit.AppDir
 cp resources/appimage/sourcegit.appdata.xml SourceGit.AppDir/usr/share/metainfo/com.sourcegit_scm.SourceGit.appdata.xml
 
-ARCH="$appimage_arch" ./appimagetool -v SourceGit.AppDir "sourcegit-$VERSION.linux.$arch.AppImage"
+ARCH="$appimage_arch" ./appimagetool -v \
+    -u "gh-releases-zsync|sourcegit-scm|sourcegit|latest|sourcegit-*.linux.$arch.AppImage.zsync" \
+    SourceGit.AppDir "sourcegit-$VERSION.linux.$arch.AppImage"
 
 mkdir -p resources/deb/opt/sourcegit/
 mkdir -p resources/deb/usr/bin

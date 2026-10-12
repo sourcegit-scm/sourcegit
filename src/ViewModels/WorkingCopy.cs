@@ -65,7 +65,11 @@ namespace SourceGit.ViewModels
         public bool IsCommitting
         {
             get => _isCommitting;
-            private set => SetProperty(ref _isCommitting, value);
+            private set
+            {
+                if (SetProperty(ref _isCommitting, value))
+                    _repo.NotifyIsSkippingOrAbortingMergeChanged();
+            }
         }
 
         public bool EnableSignOff
@@ -807,6 +811,12 @@ namespace SourceGit.ViewModels
             if (_inProgressContext != null && _inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
                 return;
 
+            // The operation that filled the commit message ended outside SourceGit (for example, a
+            // rebase or merge finished/aborted from the terminal). Drop the stale message unless the
+            // user has edited it since it was loaded.
+            if (_inProgressContext == null && oldType != null && IsAutoLoadedCommitMessage())
+                CommitMessage = string.Empty;
+
             if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
                 return;
 
@@ -816,7 +826,7 @@ namespace SourceGit.ViewModels
             if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
                 return;
 
-            CommitMessage = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
+            SetAutoLoadedCommitMessage(new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult());
         }
 
         private bool LoadCommitMessageFromFile(string file)
@@ -828,8 +838,20 @@ namespace SourceGit.ViewModels
             if (string.IsNullOrEmpty(msg))
                 return false;
 
-            CommitMessage = msg;
+            SetAutoLoadedCommitMessage(msg);
             return true;
+        }
+
+        private void SetAutoLoadedCommitMessage(string msg)
+        {
+            _autoLoadedCommitMessage = msg;
+            CommitMessage = msg;
+        }
+
+        private bool IsAutoLoadedCommitMessage()
+        {
+            return !string.IsNullOrEmpty(_autoLoadedCommitMessage) &&
+                string.Equals(_autoLoadedCommitMessage, _commitMessage, StringComparison.Ordinal);
         }
 
         private void SetDetail(Models.Change change, bool isUnstaged)
@@ -942,5 +964,6 @@ namespace SourceGit.ViewModels
 
         private bool _hasUnsolvedConflicts = false;
         private InProgressContext _inProgressContext = null;
+        private string _autoLoadedCommitMessage = null;
     }
 }

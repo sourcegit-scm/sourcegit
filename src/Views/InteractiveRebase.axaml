@@ -163,6 +163,7 @@
                                               Height="28"
                                               Margin="0,0,4,0"
                                               FontFamily="{DynamicResource Fonts.Default}"
+                                              FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
                                               CodeFontFamily="{DynamicResource Fonts.Monospace}"
                                               InlineCodeBackground="{DynamicResource Brush.InlineCode}"
                                               InlineCodeForeground="{DynamicResource Brush.InlineCodeFG}"

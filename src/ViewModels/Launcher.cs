@@ -104,7 +104,12 @@ namespace SourceGit.ViewModels
                     if (ActivePage is not { Data: Welcome { }, Popup: null })
                         AddNewTab();
 
-                    ActivePage.Popup = new Init(ActivePage.Node.Id, repo, null, 0, test.StdErr ?? "Unknown error occurred while opening the repository.");
+                    if (Models.SafeDirectories.IsUntrustedRepository(test.StdErr) &&
+                        Models.SafeDirectories.TryGetSafeDirectoryValue(repo, test.StdErr, out var safeDirectory))
+                        ActivePage.Popup = new TrustRepository(ActivePage.Node.Id, repo, test.StdErr, safeDirectory, null, false, true, 0);
+                    else
+                        ActivePage.Popup = new Init(ActivePage.Node.Id, repo, null, 0, test.StdErr ?? "Unknown error occurred while opening the repository.");
+
                     return true;
                 }
             }

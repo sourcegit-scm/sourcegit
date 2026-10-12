@@ -134,7 +134,7 @@
       <Border CornerRadius="8" ClipToBounds="True">
         <Grid RowDefinitions="Auto,*">
           <!-- In-Progress Information Bar -->
-          <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+          <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto,Auto,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
             <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="m:Commit">
@@ -219,17 +219,28 @@
                 </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>
+            
+            <v:LoadingIcon Grid.Column="1"
+                           Width="14" Height="14"
+                           Margin="8,0"
+                           IsVisible="{Binding IsSkippingOrAbortingMerge, Mode=OneWay}">
+              <v:LoadingIcon.Styles>
+                <Style Selector="Path">
+                  <Setter Property="Fill" Value="Black"/>
+                </Style>
+              </v:LoadingIcon.Styles>
+            </v:LoadingIcon>
 
-            <Button Grid.Column="1"
+            <Button Grid.Column="2"
                     Classes="flat"
                     FontWeight="Regular"
                     BorderThickness="0"
                     Content="{DynamicResource Text.Repository.Resolve}"
                     Padding="8,2" Margin="0,0,8,0"
                     Click="OnResolveInProgress"
-                    IsVisible="{Binding SelectedViewIndex, Converter={x:Static c:IntConverters.IsNotOne}}"/>
+                    IsVisible="{Binding !IsWorkingCopyVisible}"/>
 
-            <Button Grid.Column="2"
+            <Button Grid.Column="3"
                     Classes="flat"
                     FontWeight="Regular"
                     BorderThickness="0"
@@ -462,7 +473,8 @@
                             Width="14"
                             Margin="0,0,9,0"
                             Command="{Binding AddWorktree}"
-                            ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}">
+                            ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}"
+                            ToolTip.Placement="Right">
                       <Path Width="11" Height="11" Data="{StaticResource Icons.Worktree.Add}"/>
                     </Button>
                   </Grid>
@@ -684,14 +696,10 @@
                   </Grid>
 
                   <!-- History Filter Bar -->
-                  <Border Grid.Row="1" Background="{DynamicResource Brush.Popup}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-                    <Border.IsVisible>
-                      <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="SelectedViewIndex" Converter="{x:Static c:IntConverters.IsZero}"/>
-                        <Binding Path="UIStates.HistoryFilters.Count" Converter="{x:Static c:IntConverters.IsGreaterThanZero}"/>
-                      </MultiBinding>
-                    </Border.IsVisible>
-
+                  <Border Grid.Row="1"
+                          Background="{DynamicResource Brush.Popup}"
+                          BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
+                          IsVisible="{Binding UIStates.HistoryFilters.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                       <Path Grid.Column="0"
                             Margin="8,0,0,0"

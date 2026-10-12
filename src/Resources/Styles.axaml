@@ -21,6 +21,8 @@
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.WindowBorder}"/>
     <Setter Property="SystemDecorations" Value="Full"/>
     <Setter Property="Padding" Value="0"/>
+    <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
+    <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
 
     <Setter Property="Template">
       <ControlTemplate>
@@ -174,9 +176,9 @@
     <Setter Property="IsHitTestVisible" Value="False"/>
   </Style>
 
-  <Style Selector="ContentPresenter">
-    <Setter Property="FontFamily" Value="{DynamicResource Fonts.Default}"/>
-    <Setter Property="FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
+  <Style Selector="PopupRoot">
+    <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
+    <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
   </Style>
 
   <Style Selector="AdornerLayer">
