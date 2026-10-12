@@ -357,6 +357,26 @@ namespace SourceGit.Models
             return true;
         }
 
+        public bool IsCoveredByFolderFilter(string path, FilterMode mode)
+        {
+            var idx = path.LastIndexOf('/');
+            while (idx > 0)
+            {
+                var parent = path.Substring(0, idx);
+                foreach (var filter in HistoryFilters)
+                {
+                    if (filter.Type is FilterType.LocalBranchFolder or FilterType.RemoteBranchFolder &&
+                        filter.Mode == mode &&
+                        filter.Pattern.Equals(parent, StringComparison.Ordinal))
+                        return true;
+                }
+
+                idx = parent.LastIndexOf('/');
+            }
+
+            return false;
+        }
+
         public void RemoveHistoryFilter(string pattern, FilterType type)
         {
             foreach (var filter in HistoryFilters)
