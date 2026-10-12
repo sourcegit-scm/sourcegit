@@ -31,8 +31,9 @@
             <Grid Width="10" Height="10"
                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
                   IsVisible="{Binding IsFetchSucceeded}">
+              <Ellipse Fill="{DynamicResource Brush.ToolBar}"/>
               <Ellipse Fill="{DynamicResource Brush.Accent}"/>
-              <Path Width="6" Height="6" Fill="#1E1E1E" Data="{StaticResource Icons.Check}"/>
+              <Path Width="6" Height="6" Margin="0,2,0,0" Fill="#1E1E1E" Data="{StaticResource Icons.Check}"/>
             </Grid>
           </Grid>
         </Button>
@@ -59,8 +60,9 @@
             <Grid Width="10" Height="10"
                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
                   IsVisible="{Binding IsPullSucceeded}">
+              <Ellipse Fill="{DynamicResource Brush.ToolBar}"/>
               <Ellipse Fill="{DynamicResource Brush.Accent}"/>
-              <Path Width="6" Height="6" Fill="#1E1E1E" Data="{StaticResource Icons.Check}"/>
+              <Path Width="6" Height="6" Margin="0,2,0,0" Fill="#1E1E1E" Data="{StaticResource Icons.Check}"/>
             </Grid>
           </Grid>
         </Button>
@@ -87,8 +89,9 @@
             <Grid Width="10" Height="10"
                   HorizontalAlignment="Right" VerticalAlignment="Bottom"
                   IsVisible="{Binding IsPushSucceeded}">
+              <Ellipse Fill="{DynamicResource Brush.ToolBar}"/>
               <Ellipse Fill="{DynamicResource Brush.Accent}"/>
-              <Path Width="6" Height="6" Fill="#1E1E1E" Data="{StaticResource Icons.Check}"/>
+              <Path Width="6" Height="6" Margin="0,2,0,0" Fill="#1E1E1E" Data="{StaticResource Icons.Check}"/>
             </Grid>
           </Grid>
         </Button>
