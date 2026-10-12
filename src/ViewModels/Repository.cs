@@ -399,6 +399,42 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _isAutoFetching, value);
         }
 
+        public bool IsFetching
+        {
+            get => _isFetching;
+            private set => SetProperty(ref _isFetching, value);
+        }
+
+        public bool IsFetchSucceeded
+        {
+            get => _isFetchSucceeded;
+            private set => SetProperty(ref _isFetchSucceeded, value);
+        }
+
+        public bool IsPulling
+        {
+            get => _isPulling;
+            private set => SetProperty(ref _isPulling, value);
+        }
+
+        public bool IsPullSucceeded
+        {
+            get => _isPullSucceeded;
+            private set => SetProperty(ref _isPullSucceeded, value);
+        }
+
+        public bool IsPushing
+        {
+            get => _isPushing;
+            private set => SetProperty(ref _isPushing, value);
+        }
+
+        public bool IsPushSucceeded
+        {
+            get => _isPushSucceeded;
+            private set => SetProperty(ref _isPushSucceeded, value);
+        }
+
         public AvaloniaList<Models.IssueTracker> IssueTrackers
         {
             get;
@@ -494,7 +530,7 @@ namespace SourceGit.ViewModels
             if (page == null)
                 return false;
 
-            return !_isAutoFetching && page.CanCreatePopup();
+            return !_isAutoFetching && !_isFetching && !_isPulling && !_isPushing && page.CanCreatePopup();
         }
 
         public void ShowPopup(Popup popup)
@@ -662,7 +698,7 @@ namespace SourceGit.ViewModels
             }
 
             if (autoStart)
-                await ShowAndStartPopupAsync(new Fetch(this));
+                await RunPopupInBackgroundAsync(new Fetch(this), v => IsFetching = v, v => IsFetchSucceeded = v);
             else
                 ShowPopup(new Fetch(this));
         }
@@ -685,8 +721,8 @@ namespace SourceGit.ViewModels
             }
 
             var pull = new Pull(this, null);
-            if (autoStart && pull.SelectedBranch != null)
-                await ShowAndStartPopupAsync(pull);
+            if (autoStart)
+                await RunPopupInBackgroundAsync(pull, v => IsPulling = v, v => IsPullSucceeded = v);
             else
                 ShowPopup(pull);
         }
@@ -709,7 +745,7 @@ namespace SourceGit.ViewModels
             }
 
             if (autoStart)
-                await ShowAndStartPopupAsync(new Push(this, null));
+                await RunPopupInBackgroundAsync(new Push(this, null), v => IsPushing = v, v => IsPushSucceeded = v);
             else
                 ShowPopup(new Push(this, null));
         }
@@ -1888,6 +1924,46 @@ namespace SourceGit.ViewModels
             }
         }
 
+        private async Task RunPopupInBackgroundAsync(Popup popup, Action<bool> setRunning, Action<bool> setSucceeded)
+        {
+            // Falls back to the popup when the options need user input.
+            if (!popup.CanStartDirectly() || !popup.Check())
+            {
+                ShowPopup(popup);
+                return;
+            }
+
+            setSucceeded(false);
+            setRunning(true);
+
+            var succ = false;
+            try
+            {
+                succ = await popup.Sure();
+            }
+            catch (Exception e)
+            {
+                Native.OS.LogException(e);
+                SendNotification(e.Message, true);
+            }
+
+            popup.Cleanup();
+            setRunning(false);
+
+            if (succ)
+            {
+                // Briefly show the success badge on the toolbar button.
+                var key = popup.GetType();
+                var version = _backgroundSuccessVersions.GetValueOrDefault(key) + 1;
+                _backgroundSuccessVersions[key] = version;
+
+                setSucceeded(true);
+                await Task.Delay(3000);
+                if (_backgroundSuccessVersions[key] == version)
+                    setSucceeded(false);
+            }
+        }
+
         private async Task AutoFetchOnUIThread()
         {
             if (IsAutoFetching)
@@ -1970,6 +2046,13 @@ namespace SourceGit.ViewModels
         private string _navigateToCommitDelayed = string.Empty;
 
         private bool _isAutoFetching = false;
+        private bool _isFetching = false;
+        private bool _isPulling = false;
+        private bool _isPushing = false;
+        private bool _isFetchSucceeded = false;
+        private bool _isPullSucceeded = false;
+        private bool _isPushSucceeded = false;
+        private readonly Dictionary<Type, int> _backgroundSuccessVersions = new();
         private Timer _autoFetchTimer = null;
         private DateTime _lastFetchTime = DateTime.MinValue;
 

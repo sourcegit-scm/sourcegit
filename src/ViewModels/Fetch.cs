@@ -108,11 +108,12 @@ namespace SourceGit.ViewModels
             _cancellation = new CancellationTokenSource();
             var token = _cancellation.Token;
 
+            var succ = true;
             if (FetchAllRemotes)
             {
                 foreach (var remote in _repo.Remotes)
                 {
-                    await new Commands.Fetch(_repo.FullPath, remote, notags, force)
+                    succ &= await new Commands.Fetch(_repo.FullPath, remote, notags, force)
                         .WithCancellation(token)
                         .Use(log)
                         .ExecAsync();
@@ -123,7 +124,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote, notags, force)
+                succ = await new Commands.Fetch(_repo.FullPath, SelectedRemote, notags, force)
                     .WithCancellation(token)
                     .Use(log)
                     .ExecAsync();
@@ -145,7 +146,7 @@ namespace SourceGit.ViewModels
                 _repo.MarkFetched();
 
             _cancellation = null;
-            return true;
+            return succ;
         }
 
         public override void Terminate()
