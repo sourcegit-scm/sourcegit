@@ -24,25 +24,14 @@
     </StackPanel>
 
     <StackPanel Grid.Column="1" Orientation="Horizontal">
-      <Button Classes="icon_button" Width="32" Tapped="Fetch">
-        <ToolTip.Tip>
-          <StackPanel Orientation="Vertical">
-            <TextBlock Text="{DynamicResource Text.Fetch}"/>
-            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
-        </ToolTip.Tip>
-
+      <Button Classes="icon_button" Width="32" Click="Fetch" ToolTip.Tip="{DynamicResource Text.Fetch}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.Fetch}"/>
       </Button>
+      <Button Classes="icon_button" Width="14" Margin="-8,3,0,0" Click="OpenFetchOptions" ToolTip.Tip="{DynamicResource Text.Repository.ShowOptions}">
+        <Path Width="8" Height="8" Data="{StaticResource Icons.Down}"/>
+      </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}">
-        <ToolTip.Tip>
-          <StackPanel Orientation="Vertical">
-            <TextBlock Text="{DynamicResource Text.Pull}"/>
-            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
-        </ToolTip.Tip>
-        
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="Pull" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Pull}">
         <Grid Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center">
           <Path Width="14" Height="14" Data="{StaticResource Icons.Pull}"/>
           <Ellipse Width="8" Height="8"
@@ -51,15 +40,11 @@
                    IsVisible="{Binding CurrentBranch?.Behind, Mode=OneWay, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
         </Grid>
       </Button>
+      <Button Classes="icon_button" Width="14" Margin="-8,3,0,0" Click="OpenPullOptions" IsVisible="{Binding !IsBare}" IsEnabled="{Binding !IsBare}" ToolTip.Tip="{DynamicResource Text.Repository.ShowOptions}">
+        <Path Width="8" Height="8" Data="{StaticResource Icons.Down}"/>
+      </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="Push">
-        <ToolTip.Tip>
-          <StackPanel Orientation="Vertical">
-            <TextBlock Text="{DynamicResource Text.Push}"/>
-            <TextBlock Classes="small italic" Margin="0,4,0,0" Text="{DynamicResource Text.CtrlClickTip}" Foreground="{DynamicResource Brush.FG2}"/>
-          </StackPanel>
-        </ToolTip.Tip>
-
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Click="Push" ToolTip.Tip="{DynamicResource Text.Push}">
         <Grid Width="24" Height="24" HorizontalAlignment="Center" VerticalAlignment="Center">
           <Path Width="14" Height="14" Data="{StaticResource Icons.Push}"/>
           <Ellipse Width="8" Height="8"
@@ -68,8 +53,11 @@
                    IsVisible="{Binding CurrentBranch?.Ahead, Mode=OneWay, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
         </Grid>
       </Button>
+      <Button Classes="icon_button" Width="14" Margin="-8,3,0,0" Click="OpenPushOptions" ToolTip.Tip="{DynamicResource Text.Repository.ShowOptions}">
+        <Path Width="8" Height="8" Data="{StaticResource Icons.Down}"/>
+      </Button>
 
-      <Button Classes="icon_button" Width="32" Margin="16,0,0,0" Tapped="StashAll" IsVisible="{Binding !IsBare}">
+      <Button Classes="icon_button" Width="32" Margin="8,0,0,0" Tapped="StashAll" IsVisible="{Binding !IsBare}">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">
             <TextBlock Text="{DynamicResource Text.Stash}"/>

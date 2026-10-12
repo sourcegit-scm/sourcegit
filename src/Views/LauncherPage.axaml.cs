@@ -1,4 +1,4 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
@@ -55,6 +55,22 @@ namespace SourceGit.Views
         {
             if (DataContext is ViewModels.LauncherPage page)
                 page.CancelPopup();
+
+            e.Handled = true;
+        }
+
+        private void OnPopupSaveOptionsAsDefault(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.LauncherPage { Popup: { } popup })
+                popup.SaveOptionsAsDefault();
+
+            e.Handled = true;
+        }
+
+        private void OnPopupResetDefaultOptions(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.LauncherPage { Popup: { } popup })
+                popup.ResetDefaultOptions();
 
             e.Handled = true;
         }
