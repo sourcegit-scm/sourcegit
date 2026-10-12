@@ -186,6 +186,41 @@
 
         <TabItem>
           <TabItem.Header>
+            <TextBlock Classes="tab_header" Text="{DynamicResource Text.SubmoduleHistory}"/>
+          </TabItem.Header>
+          <StackPanel Margin="8" Spacing="12" MaxWidth="760">
+            <TextBlock Text="{DynamicResource Text.SubmoduleHistory.Scope}"/>
+            <ComboBox HorizontalAlignment="Stretch" SelectedIndex="{Binding SubmoduleHistoryScopeIndex, Mode=TwoWay}">
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.Scope.DirectOnly}"/>
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.Scope.Recursive}"/>
+            </ComboBox>
+            <TextBlock Text="{DynamicResource Text.SubmoduleHistory.Mode}"/>
+            <ComboBox HorizontalAlignment="Stretch" SelectedIndex="{Binding SubmoduleHistoryModeIndex, Mode=TwoWay}">
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.ChangedRange}"/>
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.FullHistory}"/>
+            </ComboBox>
+            <TextBlock Text="{DynamicResource Text.SubmoduleHistory.LabelFormat}"/>
+            <ComboBox HorizontalAlignment="Stretch" SelectedIndex="{Binding SubmoduleHistoryLabelFormatIndex, Mode=TwoWay}">
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.LabelFormat.PathAndBranch}"/>
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.LabelFormat.RepositoryPathAndBranch}"/>
+              <ComboBoxItem Content="{DynamicResource Text.SubmoduleHistory.LabelFormat.PathOnly}"/>
+            </ComboBox>
+            <CheckBox IsChecked="{Binding AutoExpandSubmoduleHistory, Mode=TwoWay}">
+              <TextBlock Text="{DynamicResource Text.SubmoduleHistory.AutoExpand}" TextWrapping="Wrap"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding AutoCollapseSubmoduleHistories, Mode=TwoWay}">
+              <TextBlock Text="{DynamicResource Text.SubmoduleHistory.AutoCollapse}" TextWrapping="Wrap"/>
+            </CheckBox>
+            <TextBlock Text="{DynamicResource Text.SubmoduleHistory.ExpansionHelp}" TextWrapping="Wrap"/>
+            <TextBlock Text="{DynamicResource Text.SubmoduleHistory.Maximum}"/>
+            <NumericUpDown Minimum="1" Maximum="20" Increment="1" FormatString="0"
+                           Value="{Binding MaxExpandedSubmoduleHistories, Mode=TwoWay}"/>
+            <TextBlock Text="{DynamicResource Text.SubmoduleHistory.Explanation}" TextWrapping="Wrap"/>
+          </StackPanel>
+        </TabItem>
+
+        <TabItem>
+          <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
           <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
