@@ -357,6 +357,17 @@ namespace SourceGit.Models
             return true;
         }
 
+        public bool IsCoveredByFolderFilter(string path, FilterType type)
+        {
+            foreach (var filter in HistoryFilters)
+            {
+                if (filter.Type == type && path.StartsWith($"{filter.Pattern}/", StringComparison.Ordinal))
+                    return true;
+            }
+
+            return false;
+        }
+
         public void RemoveHistoryFilter(string pattern, FilterType type)
         {
             foreach (var filter in HistoryFilters)
