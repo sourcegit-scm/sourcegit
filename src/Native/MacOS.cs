@@ -118,9 +118,13 @@ namespace SourceGit.Native
                 Process.Start("open", $"{path.Quoted()} -R");
         }
 
-        public void OpenTerminal(string workdir, string _)
+        public void OpenTerminal(string workdir, string args)
         {
-            Process.Start("open", $"-a {OS.ShellOrTerminal} {workdir.Quoted()}");
+            if (string.IsNullOrEmpty(args)) {
+                Process.Start("open", $"-a {OS.ShellOrTerminal} {workdir.Quoted()}");
+            } else {
+                Process.Start("open", $"-a {OS.ShellOrTerminal} --args {args} {workdir.Quoted()}");
+            }
         }
 
         public void OpenWithDefaultEditor(string file)
