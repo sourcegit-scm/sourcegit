@@ -36,8 +36,12 @@ namespace SourceGit.ViewModels
             get => _locale;
             set
             {
-                if (SetProperty(ref _locale, value) && !_isLoading)
-                    App.SetLocale(value);
+                if (SetProperty(ref _locale, value))
+                {
+                    Models.DateTimeFormat.UseCulture(value);
+                    if (!_isLoading)
+                        App.SetLocale(value);
+                }
             }
         }
 
@@ -164,6 +168,34 @@ namespace SourceGit.ViewModels
                 if (value != Models.DateTimeFormat.Use24Hours)
                 {
                     Models.DateTimeFormat.Use24Hours = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public int DayOfWeekStyle
+        {
+            get => Models.DateTimeFormat.DayOfWeekStyle;
+            set
+            {
+                if (value != Models.DateTimeFormat.DayOfWeekStyle &&
+                    value >= 0 &&
+                    value <= 2)
+                {
+                    Models.DateTimeFormat.DayOfWeekStyle = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool DateTimeUseLocalizedCulture
+        {
+            get => Models.DateTimeFormat.UseLocalizedCulture;
+            set
+            {
+                if (value != Models.DateTimeFormat.UseLocalizedCulture)
+                {
+                    Models.DateTimeFormat.UseLocalizedCulture = value;
                     OnPropertyChanged();
                 }
             }
