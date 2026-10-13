@@ -18,6 +18,18 @@ namespace SourceGit.Views
             set => SetAndRaise(ViewModeProperty, ref _viewMode, value);
         }
 
+        public static readonly DirectProperty<ChangeViewModeSwitcher, Models.ChangeSortMode> SortModeProperty =
+            AvaloniaProperty.RegisterDirect<ChangeViewModeSwitcher, Models.ChangeSortMode>(
+                nameof(SortMode),
+                static o => o.SortMode,
+                static (o, v) => o.SortMode = v);
+
+        public Models.ChangeSortMode SortMode
+        {
+            get => _sortMode;
+            set => SetAndRaise(SortModeProperty, ref _sortMode, value);
+        }
+
         public ChangeViewModeSwitcher()
         {
             InitializeComponent();
@@ -41,6 +53,19 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void SortByPath(object sender, RoutedEventArgs e)
+        {
+            SortMode = Models.ChangeSortMode.Path;
+            e.Handled = true;
+        }
+
+        private void SortByStatus(object sender, RoutedEventArgs e)
+        {
+            SortMode = Models.ChangeSortMode.Status;
+            e.Handled = true;
+        }
+
         private Models.ChangeViewMode _viewMode = Models.ChangeViewMode.List;
+        private Models.ChangeSortMode _sortMode = Models.ChangeSortMode.Path;
     }
 }
