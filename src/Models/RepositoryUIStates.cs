@@ -357,21 +357,12 @@ namespace SourceGit.Models
             return true;
         }
 
-        public bool IsCoveredByFolderFilter(string path, FilterMode mode)
+        public bool IsCoveredByFolderFilter(string path, FilterType type)
         {
-            var idx = path.LastIndexOf('/');
-            while (idx > 0)
+            foreach (var filter in HistoryFilters)
             {
-                var parent = path.Substring(0, idx);
-                foreach (var filter in HistoryFilters)
-                {
-                    if (filter.Type is FilterType.LocalBranchFolder or FilterType.RemoteBranchFolder &&
-                        filter.Mode == mode &&
-                        filter.Pattern.Equals(parent, StringComparison.Ordinal))
-                        return true;
-                }
-
-                idx = parent.LastIndexOf('/');
+                if (filter.Type == type && path.StartsWith($"{filter.Pattern}/", StringComparison.Ordinal))
+                    return true;
             }
 
             return false;
