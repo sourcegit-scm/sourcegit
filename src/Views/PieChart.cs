@@ -159,86 +159,106 @@ namespace SourceGit.Views
                 }
             }
 
-            if (leftArcs.Count > 0)
+            DrawLabels(context, leftArcs, true, typeface, secondaryTypeface, foreground, secondaryForeground);
+            DrawLabels(context, rightArcs, false, typeface, secondaryTypeface, foreground, secondaryForeground);
+        }
+
+        private void DrawLabels(
+            DrawingContext context,
+            List<Arc> arcs,
+            bool leftSide,
+            Typeface typeface,
+            Typeface secondaryTypeface,
+            IBrush foreground,
+            IBrush secondaryForeground)
+        {
+            if (arcs.Count == 0)
+                return;
+
+            var labels = new List<Label>(arcs.Count);
+            foreach (var arc in arcs)
             {
-                for (var i = leftArcs.Count - 1; i >= 0; i--)
-                {
-                    var arc = leftArcs[i];
-                    var pen = new Pen(arc.Tip.Brush, 1);
-                    var lineStartX = _center.X - _radius - 32;
+                var title = new FormattedText(
+                    arc.Tip.Title,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    12,
+                    foreground);
+                var percentage = new FormattedText(
+                    $"{arc.Tip.Percentage:P1}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    secondaryTypeface,
+                    12,
+                    secondaryForeground);
 
-                    var edgePoint = new Point(
-                        _center.X + _radius * Math.Cos(arc.MidAngle),
-                        _center.Y + _radius * Math.Sin(arc.MidAngle));
-
-                    var edgeLineStartPoint = new Point(
-                        _center.X + (_radius + 32) * Math.Cos(arc.MidAngle),
-                        _center.Y + (_radius + 32) * Math.Sin(arc.MidAngle));
-
-                    context.DrawLine(pen, new Point(lineStartX, edgeLineStartPoint.Y), edgeLineStartPoint);
-                    context.DrawLine(pen, edgeLineStartPoint, edgePoint);
-
-                    var title = new FormattedText(
-                        arc.Tip.Title,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        typeface,
-                        12,
-                        foreground);
-                    var percentage = new FormattedText(
-                        $"{arc.Tip.Percentage:P1}",
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        secondaryTypeface,
-                        12,
-                        secondaryForeground);
-
-                    var labelStartX = lineStartX - 8 - percentage.WidthIncludingTrailingWhitespace - 4 - title.WidthIncludingTrailingWhitespace;
-                    var labelMidY = edgeLineStartPoint.Y;
-                    context.DrawText(title, new Point(labelStartX, labelMidY - title.Height * 0.5));
-                    context.DrawText(percentage, new Point(labelStartX + title.WidthIncludingTrailingWhitespace + 4, labelMidY - percentage.Height * 0.5));
-                }
+                var anchorY = _center.Y + (_radius + 32) * Math.Sin(arc.MidAngle);
+                labels.Add(new Label(arc, title, percentage, anchorY, Math.Max(title.Height, percentage.Height)));
             }
 
-            if (rightArcs.Count > 0)
+            ArrangeLabels(labels);
+
+            // Fan each leader line straight to its own label so the line-to-name mapping stays readable when crowded.
+            var textX = leftSide ? _center.X - _radius - 40 : _center.X + _radius + 40;
+            var anchorX = leftSide ? textX + 4 : textX - 4;
+            foreach (var label in labels)
             {
-                for (var i = 0; i < rightArcs.Count; i++)
+                var pen = new Pen(label.Arc.Tip.Brush, 1);
+                var edgePoint = new Point(
+                    _center.X + _radius * Math.Cos(label.Arc.MidAngle),
+                    _center.Y + _radius * Math.Sin(label.Arc.MidAngle));
+                var outerPoint = new Point(
+                    _center.X + (_radius + 32) * Math.Cos(label.Arc.MidAngle),
+                    _center.Y + (_radius + 32) * Math.Sin(label.Arc.MidAngle));
+                var anchorPoint = new Point(anchorX, label.Y);
+
+                context.DrawLine(pen, edgePoint, outerPoint);
+                context.DrawLine(pen, outerPoint, anchorPoint);
+
+                if (leftSide)
                 {
-                    var arc = rightArcs[i];
-                    var pen = new Pen(arc.Tip.Brush, 1);
-                    var lineStartX = _center.X + _radius + 32;
-
-                    var edgePoint = new Point(
-                        _center.X + _radius * Math.Cos(arc.MidAngle),
-                        _center.Y + _radius * Math.Sin(arc.MidAngle));
-
-                    var edgeLineStartPoint = new Point(
-                        _center.X + (_radius + 32) * Math.Cos(arc.MidAngle),
-                        _center.Y + (_radius + 32) * Math.Sin(arc.MidAngle));
-
-                    context.DrawLine(pen, new Point(lineStartX, edgeLineStartPoint.Y), edgeLineStartPoint);
-                    context.DrawLine(pen, edgeLineStartPoint, edgePoint);
-
-                    var title = new FormattedText(
-                        arc.Tip.Title,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        typeface,
-                        12,
-                        foreground);
-                    var percentage = new FormattedText(
-                        $"{arc.Tip.Percentage:P1}",
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        secondaryTypeface,
-                        12,
-                        secondaryForeground);
-
-                    var labelStartX = lineStartX + 8;
-                    var labelMidY = edgeLineStartPoint.Y;
-                    context.DrawText(title, new Point(labelStartX, labelMidY - title.Height * 0.5));
-                    context.DrawText(percentage, new Point(labelStartX + title.WidthIncludingTrailingWhitespace + 4, labelMidY - percentage.Height * 0.5));
+                    var titleX = textX - 4 - label.Percentage.WidthIncludingTrailingWhitespace - label.Title.WidthIncludingTrailingWhitespace;
+                    context.DrawText(label.Title, new Point(titleX, label.Y - label.Title.Height * 0.5));
+                    context.DrawText(label.Percentage, new Point(titleX + label.Title.WidthIncludingTrailingWhitespace + 4, label.Y - label.Percentage.Height * 0.5));
                 }
+                else
+                {
+                    context.DrawText(label.Title, new Point(textX, label.Y - label.Title.Height * 0.5));
+                    context.DrawText(label.Percentage, new Point(textX + label.Title.WidthIncludingTrailingWhitespace + 4, label.Y - label.Percentage.Height * 0.5));
+                }
+            }
+        }
+
+        // Spread nearby anchors vertically so their labels remain readable.
+        private void ArrangeLabels(List<Label> labels)
+        {
+            labels.Sort(static (l, r) => l.Y.CompareTo(r.Y));
+
+            var totalHeight = 0.0;
+            foreach (var label in labels)
+                totalHeight += label.Height;
+
+            // A smaller gap keeps every label visible when the preferred spacing does not fit.
+            var gap = labels.Count == 1 ? 0.0 : Math.Min(2.0, (Bounds.Height - totalHeight) / (labels.Count - 1));
+
+            for (var i = 1; i < labels.Count; i++)
+                labels[i].Y = Math.Max(labels[i].Y, labels[i - 1].Y + (labels[i - 1].Height + labels[i].Height) * 0.5 + gap);
+
+            var last = labels[^1];
+            if (last.Y + last.Height * 0.5 > Bounds.Height)
+            {
+                last.Y = Bounds.Height - last.Height * 0.5;
+                for (var i = labels.Count - 2; i >= 0; i--)
+                    labels[i].Y = Math.Min(labels[i].Y, labels[i + 1].Y - (labels[i].Height + labels[i + 1].Height) * 0.5 - gap);
+            }
+
+            var first = labels[0];
+            if (first.Y - first.Height * 0.5 < 0)
+            {
+                first.Y = first.Height * 0.5;
+                for (var i = 1; i < labels.Count; i++)
+                    labels[i].Y = Math.Max(labels[i].Y, labels[i - 1].Y + (labels[i - 1].Height + labels[i].Height) * 0.5 + gap);
             }
         }
 
@@ -254,6 +274,7 @@ namespace SourceGit.Views
 
             if (change.Property == ReportProperty ||
                 change.Property == FontFamilyProperty ||
+                change.Property == SecondaryFontFamilyProperty ||
                 change.Property == ForegroundProperty ||
                 change.Property == SecondaryForegroundProperty)
                 InvalidateVisual();
@@ -350,6 +371,15 @@ namespace SourceGit.Views
                 Tip = new PieChartToolTip(title, count, percentage, brush);
                 Author = author;
             }
+        }
+
+        private class Label(Arc arc, FormattedText title, FormattedText percentage, double y, double height)
+        {
+            public Arc Arc { get; } = arc;
+            public FormattedText Title { get; } = title;
+            public FormattedText Percentage { get; } = percentage;
+            public double Height { get; } = height;
+            public double Y { get; set; } = y;
         }
 
         private static readonly IBrush[] s_brushes = new IBrush[]
