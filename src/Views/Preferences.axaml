@@ -574,7 +574,7 @@
                        Text="{Binding ShellOrTerminalArgs, Mode=TwoWay}"
                        IsVisible="{OnPlatform True, macOS=False}">
                 <TextBox.InnerRightContent>
-                  <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.Shell.Args.Tip}">
+                  <Border Width="28" Height="28" Background="Transparent" ToolTip.Tip="{DynamicResource Text.Preferences.Shell.Args.ToolTip}">
                     <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="{DynamicResource Brush.FG1}" Opacity="0.8"/>
                   </Border>
                 </TextBox.InnerRightContent>

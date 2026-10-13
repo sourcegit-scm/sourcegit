@@ -171,21 +171,19 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir, string args)
         {
-            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
-            var terminal = OS.ShellOrTerminal;
-
-            if (!File.Exists(terminal))
-            {
-                Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
-                return;
-            }
-
             var startInfo = new ProcessStartInfo();
-            startInfo.WorkingDirectory = cwd;
-            startInfo.FileName = terminal;
+            startInfo.WorkingDirectory = workdir;
+            startInfo.FileName = OS.ShellOrTerminal;
             startInfo.Arguments = args;
-            Process.Start(startInfo);
+
+            try
+            {
+                Process.Start(startInfo);
+            }
+            catch (Exception e)
+            {
+                Models.Notification.Send(workdir, $"Failed to start '{OS.ShellOrTerminal}'. Reason: {e.Message}", true);
+            }
         }
 
         public void OpenInFileManager(string path)
