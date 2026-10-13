@@ -712,7 +712,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRASI</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Argumen</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Gunakan '.' untuk menunjukkan direktori kerja</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Jalur</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>

@@ -682,7 +682,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">연동</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">셸/터미널</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">인수</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">작업 디렉터리는 `.`으로 표시하세요</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">경로</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">셸/터미널</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">원격 정리</x:String>

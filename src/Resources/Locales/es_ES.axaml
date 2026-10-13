@@ -737,7 +737,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRACIÓN</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Argumentos</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Por favor utiliza '.' para indicar el directorio de trabajo</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Ruta</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Podar Remoto</x:String>

@@ -710,7 +710,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">ΕΝΣΩΜΑΤΩΣΗ</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/ΤΕΡΜΑΤΙΚΟ</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Ορίσματα</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Χρησιμοποιήστε το '.' για να υποδείξετε τον φάκελο εργασίας</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Διαδρομή</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Τερματικό</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Εκκαθάριση απομακρυσμένου</x:String>

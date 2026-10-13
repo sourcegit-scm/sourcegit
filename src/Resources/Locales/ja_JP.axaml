@@ -727,7 +727,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">統合</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">シェル/端末</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">引数</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">作業ディレクトリの明示には '.' を使用してください</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">パス</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">シェル/端末</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">リモートを掃除</x:String>
