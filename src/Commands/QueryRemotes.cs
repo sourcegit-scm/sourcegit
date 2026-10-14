@@ -66,6 +66,9 @@ namespace SourceGit.Commands
                     DisableAutoFetch = disableAutoFetchRemotes.Contains(name)
                 };
 
+                if (Models.Remote.TryGetSSHHost(url, out var host))
+                    Models.HTTPSValidator.Add(host);
+
                 remotes.Add(r);
             }
 

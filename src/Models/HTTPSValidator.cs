@@ -21,13 +21,7 @@ namespace SourceGit.Models
                 _hosts.Add(host, true);
 
                 // Well-known hosts always support HTTPS
-                if (host.Contains("github.com", StringComparison.Ordinal) ||
-                    host.Contains("gitlab", StringComparison.Ordinal) ||
-                    host.Contains("azure.com", StringComparison.Ordinal) ||
-                    host.Equals("gitee.com", StringComparison.Ordinal) ||
-                    host.Equals("bitbucket.org", StringComparison.Ordinal) ||
-                    host.Equals("gitea.org", StringComparison.Ordinal) ||
-                    host.Equals("gitcode.com", StringComparison.Ordinal))
+                if (IsWellKnownHost(host))
                     return;
             }
 
@@ -65,6 +59,20 @@ namespace SourceGit.Models
                     _hosts[host] = supported;
                 }
             });
+        }
+
+        public static bool IsWellKnownHost(string host)
+        {
+            return host.Contains("github.com", StringComparison.Ordinal) ||
+                host.Contains("gitlab", StringComparison.Ordinal) ||
+                host.Contains("azure.com", StringComparison.Ordinal) ||
+                host.Contains("visualstudio.com", StringComparison.Ordinal) ||
+                host.Equals("gitee.com", StringComparison.Ordinal) ||
+                host.Equals("bitbucket.org", StringComparison.Ordinal) ||
+                host.Equals("gitea.org", StringComparison.Ordinal) ||
+                host.Equals("gitea.com", StringComparison.Ordinal) ||
+                host.Equals("codeberg.org", StringComparison.Ordinal) ||
+                host.Equals("gitcode.com", StringComparison.Ordinal);
         }
 
         public static bool IsSupported(string host)
