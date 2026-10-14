@@ -297,7 +297,7 @@ namespace SourceGit.Views
 
                     var midY = (_labels[0].AlignPoint.Y + info.AlignPoint.Y) * 0.5;
                     var height = Math.Ceiling(_labels.Count / 2.0) * LABEL_HEIGHT;
-                    _bottomY = midY + height * 0.5;
+                    _bottomY = Math.Max(midY + height * 0.5, _labels[0].AlignPoint.Y + height - LABEL_HEIGHT * 0.5);
                     return true;
                 }
 
@@ -324,7 +324,7 @@ namespace SourceGit.Views
                         var midY = (first.AlignPoint.Y + last.AlignPoint.Y) * 0.5;
                         var requiredHeight = Math.Ceiling(_labels.Count / 2.0) * LABEL_HEIGHT;
                         var alignedX = first.AlignPoint.X;
-                        var startY = midY - requiredHeight * 0.5;
+                        var startY = Math.Max(midY - requiredHeight * 0.5, first.AlignPoint.Y - LABEL_HEIGHT * 0.5);
                         var startX = 0.0;
 
                         for (var i = 0; i < _labels.Count; i++)
