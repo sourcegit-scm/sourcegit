@@ -60,6 +60,12 @@ namespace SourceGit.Models
             set;
         } = [];
 
+        public Dictionary<string, PullRequestPlatformType> PullRequestPlatforms
+        {
+            get;
+            set;
+        } = [];
+
         public static RepositorySettings Get(string gitCommonDir)
         {
             var fileInfo = new FileInfo(Path.Combine(gitCommonDir, "sourcegit.settings"));
