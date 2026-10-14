@@ -1027,22 +1027,19 @@ namespace SourceGit.Views
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
 
-            if (upstream != null)
+            if (upstream != null && GetRemoteHost(repo, upstream.Remote) != null)
             {
-                var remote = repo.Remotes.Find(x => x.Name.Equals(upstream.Remote, StringComparison.Ordinal));
-                if (remote != null && remote.TryGetCreatePullRequestURL(out var prURL, upstream.Name))
+                var createPR = new MenuItem();
+                createPR.Header = App.Text("BranchCM.CreatePRForUpstream", upstream.FriendlyName);
+                createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
+                createPR.Click += (_, e) =>
                 {
-                    var createPR = new MenuItem();
-                    createPR.Header = App.Text("BranchCM.CreatePRForUpstream", upstream.FriendlyName);
-                    createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
-                    createPR.Click += (_, e) =>
-                    {
-                        Native.OS.OpenBrowser(prURL);
-                        e.Handled = true;
-                    };
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.CreatePullRequest(repo, branch, null));
+                    e.Handled = true;
+                };
 
-                    menu.Items.Add(createPR);
-                }
+                menu.Items.Add(createPR);
             }
             menu.Items.Add(new MenuItem() { Header = "-" });
             TryToAddCustomActionsToBranchContextMenu(repo, menu, branch);
@@ -1352,19 +1349,28 @@ namespace SourceGit.Views
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
 
-            var remote = repo.Remotes.Find(x => x.Name.Equals(branch.Remote, StringComparison.Ordinal));
-            if (remote != null && remote.TryGetCreatePullRequestURL(out var prURL, branch.Name))
+            var head = repo.CurrentBranch;
+            var targetHost = GetRemoteHost(repo, branch.Remote);
+            if (head is { IsDetachedHead: false } && targetHost != null)
             {
-                var createPR = new MenuItem();
-                createPR.Header = App.Text("BranchCM.CreatePR");
-                createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
-                createPR.Click += (_, e) =>
+                // Clicking the upstream of current branch creates a PR for it, otherwise creates a PR from current branch into the clicked one.
+                var isUpstreamOfHead = branch.FullName.Equals(head.Upstream, StringComparison.Ordinal);
+                var headRemote = repo.Branches.Find(x => x.FullName.Equals(head.Upstream, StringComparison.Ordinal))?.Remote;
+                var headHost = string.IsNullOrEmpty(headRemote) ? null : GetRemoteHost(repo, headRemote);
+                if (isUpstreamOfHead || headHost == null || headHost.Equals(targetHost, StringComparison.OrdinalIgnoreCase))
                 {
-                    Native.OS.OpenBrowser(prURL);
-                    e.Handled = true;
-                };
+                    var createPR = new MenuItem();
+                    createPR.Header = isUpstreamOfHead ? App.Text("BranchCM.CreatePRForUpstream", name) : App.Text("BranchCM.CreatePR", head.Name, name);
+                    createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
+                    createPR.Click += (_, e) =>
+                    {
+                        if (repo.CanCreatePopup())
+                            repo.ShowPopup(new ViewModels.CreatePullRequest(repo, head, isUpstreamOfHead ? null : branch));
+                        e.Handled = true;
+                    };
 
-                menu.Items.Add(createPR);
+                    menu.Items.Add(createPR);
+                }
             }
 
             menu.Items.Add(new MenuItem() { Header = "-" });
@@ -1393,6 +1399,15 @@ namespace SourceGit.Views
             TryToAddCustomActionsToBranchContextMenu(repo, menu, branch);
             menu.Items.Add(copy);
             return menu;
+        }
+
+        private static string GetRemoteHost(ViewModels.Repository repo, string remoteName)
+        {
+            var remote = repo.Remotes.Find(x => x.Name.Equals(remoteName, StringComparison.Ordinal));
+            if (remote == null || !remote.TryGetVisitURL(out var url))
+                return null;
+
+            return new Uri(url).Host;
         }
 
         private void TryToAddCustomActionsToBranchContextMenu(ViewModels.Repository repo, ContextMenu menu, Models.Branch branch)
