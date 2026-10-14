@@ -580,6 +580,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Sostituzioni Tema</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Usa barre di scorrimento a scomparsa automatica</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Usa larghezza fissa per i tab nella barra del titolo</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseMultiLineTabs" xml:space="preserve">Disponi le schede dei repository su più righe</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Usa cornice finestra nativa</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">STRUMENTO DI DIFFERENZA/UNIONE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Argomenti Diff</x:String>

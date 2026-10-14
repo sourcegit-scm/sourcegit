@@ -630,6 +630,7 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Dérogations de thème</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Utiliser les barres de défilement masquées automatiquement</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Utiliser des onglets de taille fixe dans la barre de titre</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseMultiLineTabs" xml:space="preserve">Afficher les onglets des dépôts sur plusieurs lignes</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Utiliser un cadre de fenêtre natif</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">OUTIL DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Arguments de diff</x:String>

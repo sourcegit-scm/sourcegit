@@ -678,6 +678,7 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">テーマの上書き</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">自動的にスクロールバーを隠す</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">タイトルバーに固定タブ幅を使用</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseMultiLineTabs" xml:space="preserve">リポジトリのタブを複数行で表示</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">ネイティブなウィンドウフレームを使用</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">差分/マージツール</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">差分時の引数</x:String>

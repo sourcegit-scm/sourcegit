@@ -69,6 +69,9 @@ namespace SourceGit.Views
         {
             base.Render(context);
 
+            if (ViewModels.Preferences.Instance.UseMultiLineTabs)
+                return;
+
             if (LauncherTabsList == null || LauncherTabsList.SelectedIndex == -1)
                 return;
 
@@ -203,7 +206,8 @@ namespace SourceGit.Views
 
         private void OnTabsLayoutUpdated(object _1, EventArgs _2)
         {
-            IsScrollButtonVisible = LauncherTabsScroller.Extent.Width > LauncherTabsScroller.Viewport.Width;
+            IsScrollButtonVisible = !ViewModels.Preferences.Instance.UseMultiLineTabs &&
+                LauncherTabsScroller.Extent.Width > LauncherTabsScroller.Viewport.Width;
             InvalidateVisual();
         }
 
