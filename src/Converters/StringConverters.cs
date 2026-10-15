@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 using Avalonia.Data.Converters;
@@ -91,5 +92,30 @@ namespace SourceGit.Converters
 
         public static readonly FuncValueConverter<KeyGesture, string> FromKeyGesture =
             new FuncValueConverter<KeyGesture, string>(v => v?.ToString("p", null) ?? string.Empty);
+
+        public class ToWindowTitleConverter : IMultiValueConverter
+        {
+            public object Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+            {
+                if (values is not { Count: 2 })
+                    return "SourceGit";
+
+                var page = values[0] as string;
+                var workspace = values[1] as string;
+                if (string.IsNullOrEmpty(page))
+                    page = "Repositories";
+                if (string.IsNullOrEmpty(workspace))
+                    workspace = "Unnamed";
+
+                return $"{page} - {workspace}";
+            }
+
+            public IList<object> ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public static readonly ToWindowTitleConverter ToWindowTitle = new ToWindowTitleConverter();
     }
 }
