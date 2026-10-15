@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Histories : ObservableObject
+    public partial class Histories : ObservableObject
     {
         public bool IsLoading
         {
@@ -107,6 +107,14 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
+                CancelSubmoduleHistory();
+                _rootCommits = value;
+                _expandedSubmodules.Clear();
+                _knownSubmodules.Clear();
+                _hiddenSubmoduleOwners.Clear();
+                SubmoduleChanges = [];
+                SubmoduleStatus = string.Empty;
+                NotifyExpandedSubmodules();
                 GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
@@ -149,7 +157,10 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _detailContext, value))
+                {
                     OnPropertyChanged(nameof(IsOpenAsStandaloneVisible));
+                    NotifySubmoduleNavigation();
+                }
             }
         }
 
@@ -296,7 +307,7 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
-            var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
+            var commit = _commits.Find(x => x.SubmoduleHistory == null && x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
             if (commit != null)
             {
                 SelectedCommits = [commit];
@@ -502,15 +513,15 @@ namespace SourceGit.ViewModels
 
             var set = new HashSet<string>();
             foreach (var c in _selectedCommits)
-                set.Add(c.SHA);
+                set.Add(c.GraphKey);
 
             var selected = new List<Models.Commit>();
             foreach (var c in _commits)
             {
-                if (set.Contains(c.SHA))
+                if (set.Contains(c.GraphKey))
                 {
                     selected.Add(c);
-                    set.Remove(c.SHA);
+                    set.Remove(c.GraphKey);
                     if (set.Count == 0)
                         break;
                 }
@@ -523,6 +534,24 @@ namespace SourceGit.ViewModels
         {
             if (_ignoreSelectionChange)
                 return;
+
+            CancelSubmoduleHistory();
+            SubmoduleChanges = [];
+            if (_selectedCommits.Exists(c => c.SubmoduleHistory != null))
+            {
+                _searchCommitContext.Selected = null;
+                if (_selectedCommits.Count == 1)
+                {
+                    var selected = _selectedCommits[0];
+                    if (selected.IsSubmodulePlaceholder)
+                        _ = CompareSubmoduleAsync(selected.SubmoduleHistory, selected.SubmoduleHistory.Previous.Keys.FirstOrDefault());
+                    else
+                        _ = ShowSubmoduleCommitAsync(selected);
+                }
+                else
+                    DetailContext = new Models.Count(_selectedCommits.Count);
+                return;
+            }
 
             if (_selectedCommits.Count == 0)
             {
@@ -542,6 +571,8 @@ namespace SourceGit.ViewModels
                     detail.Commit = c;
                 else
                     DetailContext = new CommitDetail(_repo, _commitDetailSharedData) { Commit = c };
+
+                _ = DiscoverSelectedSubmodulesAsync(c);
             }
             else if (_selectedCommits.Count == 2)
             {
@@ -564,14 +595,14 @@ namespace SourceGit.ViewModels
 
         private void GenerateGraph(List<Models.Commit> commits)
         {
-            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
+            var firstParentOnly = _expandedSubmodules.Count == 0 && _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
             var highlighting = _repo.UIStates.GraphHighlighting;
             var extraHeads = new HashSet<string>();
 
             if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
             {
                 foreach (var c in _selectedCommits)
-                    extraHeads.Add(c.SHA);
+                    extraHeads.Add(c.GraphKey);
             }
 
             Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
