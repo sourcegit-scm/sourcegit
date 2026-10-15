@@ -141,6 +141,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _subjectGuideLength, value);
         }
 
+        public int DescriptionGuideLength
+        {
+            get => _descriptionGuideLength;
+            set => SetProperty(ref _descriptionGuideLength, value);
+        }
+
         public int DateTimeFormat
         {
             get => Models.DateTimeFormat.ActiveIndex;
@@ -820,6 +826,7 @@ namespace SourceGit.ViewModels
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
+        private int _descriptionGuideLength = 80;
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;

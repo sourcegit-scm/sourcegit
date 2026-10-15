@@ -81,6 +81,40 @@ namespace SourceGit.Views
             set => SetAndRaise(WarnSubjectLengthProperty, ref _warnSubjectLen, value);
         }
 
+        public static readonly DirectProperty<CommitMessageTextBox, int> DescriptionLengthProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(
+                nameof(DescriptionLength),
+                static o => o.DescriptionLength);
+
+        public int DescriptionLength
+        {
+            get => _descriptionLen;
+            set => SetAndRaise(DescriptionLengthProperty, ref _descriptionLen, value);
+        }
+
+        public static readonly DirectProperty<CommitMessageTextBox, int> DescriptionGuideLengthProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, int>(
+                nameof(DescriptionGuideLength),
+                static o => o.DescriptionGuideLength,
+                static (o, v) => o.DescriptionGuideLength = v);
+
+        public int DescriptionGuideLength
+        {
+            get => _descriptionGuideLen;
+            set => SetAndRaise(DescriptionGuideLengthProperty, ref _descriptionGuideLen, value);
+        }
+
+        public static readonly DirectProperty<CommitMessageTextBox, bool> WarnDescriptionLengthProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessageTextBox, bool>(
+                nameof(WarnDescriptionLength),
+                static o => o.WarnDescriptionLength);
+
+        public bool WarnDescriptionLength
+        {
+            get => _warnDescriptionLen;
+            set => SetAndRaise(WarnDescriptionLengthProperty, ref _warnDescriptionLen, value);
+        }
+
         public static readonly DirectProperty<CommitMessageTextBox, List<CommitMessageTextBoxSuggestion>> SuggestionsProperty =
             AvaloniaProperty.RegisterDirect<CommitMessageTextBox, List<CommitMessageTextBoxSuggestion>>(
                 nameof(Suggestions),
@@ -173,7 +207,7 @@ namespace SourceGit.Views
                 new Typeface(font),
                 ViewModels.Preferences.Instance.DefaultFontSize,
                 Brushes.White);
-            var columnGuideX = columnTest.WidthIncludingTrailingWhitespace * 80 + 5.5;
+            var columnGuideX = columnTest.WidthIncludingTrailingWhitespace * _descriptionGuideLen + 5.5;
             context.DrawLine(pen, new Point(columnGuideX, Math.Max(0, y)), new Point(columnGuideX, Bounds.Height));
         }
 
@@ -209,10 +243,12 @@ namespace SourceGit.Views
                 {
                     _subjectEndCharIdx = -1;
                     SubjectLength = 0;
+                    DescriptionLength = 0;
                     return;
                 }
 
                 var subjectLen = 0;
+                var descriptionLen = 0;
                 var lastNonLineBreakCharIdx = 0;
                 var lastLineStart = 0;
                 for (var i = 0; i < text.Length; i++)
@@ -226,7 +262,10 @@ namespace SourceGit.Views
                         if (string.IsNullOrWhiteSpace(line))
                         {
                             if (subjectLen > 0)
+                            {
+                                descriptionLen = GetMaxLineLength(text, lastLineStart);
                                 break;
+                            }
 
                             continue;
                         }
@@ -253,11 +292,17 @@ namespace SourceGit.Views
                 }
 
                 SubjectLength = subjectLen;
+                DescriptionLength = descriptionLen;
                 _subjectEndCharIdx = lastNonLineBreakCharIdx;
             }
             else if (change.Property == SubjectLengthProperty || change.Property == SubjectGuideLengthProperty)
             {
                 WarnSubjectLength = _subjectLen > _subjectGuideLen;
+            }
+            else if (change.Property == DescriptionLengthProperty || change.Property == DescriptionGuideLengthProperty)
+            {
+                WarnDescriptionLength = _descriptionLen > _descriptionGuideLen;
+                InvalidateVisual();
             }
             else if (change.Property == SubjectEndYProperty)
             {
@@ -377,6 +422,28 @@ namespace SourceGit.Views
                 base.OnKeyDown(e);
         }
 
+        private static int GetMaxLineLength(string text, int start)
+        {
+            var maxLen = 0;
+            var lineStart = start;
+            for (var i = start; i <= text.Length; i++)
+            {
+                if (i == text.Length || text[i] == '\n')
+                {
+                    var lineLen = i - lineStart;
+                    while (lineLen > 0 && char.IsWhiteSpace(text[lineStart + lineLen - 1]))
+                        lineLen--;
+
+                    if (lineLen > maxLen)
+                        maxLen = lineLen;
+
+                    lineStart = i + 1;
+                }
+            }
+
+            return maxLen;
+        }
+
         private void OnLayoutUpdated(object sender, EventArgs e)
         {
             if (_textPresenter == null || !IsEffectivelyVisible)
@@ -447,6 +514,9 @@ namespace SourceGit.Views
         private int _subjectEndCharIdx = -1;
         private double _subjectEndY = 0;
         private bool _warnSubjectLen = false;
+        private int _descriptionLen = 0;
+        private int _descriptionGuideLen = 80;
+        private bool _warnDescriptionLen = false;
         private int _suggestionMatchStartIdx = -1;
         private List<CommitMessageTextBoxSuggestion> _suggestions = null;
         private int _selectedSuggestionIdx = 0;
