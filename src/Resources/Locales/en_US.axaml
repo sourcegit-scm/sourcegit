@@ -326,13 +326,15 @@
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
   <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Overwrite existing branch</x:String>
   <x:String x:Key="Text.CreatePR" xml:space="preserve">Create Pull Request</x:String>
+  <x:String x:Key="Text.CreatePR.BranchNotPushed" xml:space="preserve">The source branch has not been pushed yet.</x:String>
   <x:String x:Key="Text.CreatePR.ClipboardHint" xml:space="preserve">This platform can not prefill the title and description. They will be copied to the clipboard so you can paste them on the opened page.</x:String>
+  <x:String x:Key="Text.CreatePR.CommitsNotPushed" xml:space="preserve">The source branch has commits that have not been pushed yet.</x:String>
   <x:String x:Key="Text.CreatePR.CopiedToClipboard" xml:space="preserve">Title and description have been copied to the clipboard. Paste them on the opened page.</x:String>
   <x:String x:Key="Text.CreatePR.Description" xml:space="preserve">Description:</x:String>
   <x:String x:Key="Text.CreatePR.NoTemplate" xml:space="preserve">(None)</x:String>
-  <x:String x:Key="Text.CreatePR.NotPushed" xml:space="preserve">The source branch has not been pushed, or has local commits that are not pushed yet.</x:String>
   <x:String x:Key="Text.CreatePR.Platform" xml:space="preserve">Platform:</x:String>
-  <x:String x:Key="Text.CreatePR.PushFirst" xml:space="preserve">Push the source branch before opening the page</x:String>
+  <x:String x:Key="Text.CreatePR.PushBranchFirst" xml:space="preserve">Push the source branch before opening the PR</x:String>
+  <x:String x:Key="Text.CreatePR.PushCommitsFirst" xml:space="preserve">Push the local commits before opening the PR</x:String>
   <x:String x:Key="Text.CreatePR.PushRemote" xml:space="preserve">Push To:</x:String>
   <x:String x:Key="Text.CreatePR.Source" xml:space="preserve">Source:</x:String>
   <x:String x:Key="Text.CreatePR.Target" xml:space="preserve">Target:</x:String>

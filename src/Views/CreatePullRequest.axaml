@@ -142,9 +142,13 @@
       <!-- Push first -->
       <CheckBox Grid.Row="7" Grid.Column="1"
                 Height="32" Margin="0,4,0,0"
-                Content="{DynamicResource Text.CreatePR.PushFirst}"
                 IsChecked="{Binding PushFirst, Mode=TwoWay}"
-                IsVisible="{Binding NeedsPush}"/>
+                IsVisible="{Binding NeedsPush}">
+        <Panel>
+          <TextBlock Text="{DynamicResource Text.CreatePR.PushBranchFirst}" IsVisible="{Binding IsPushRemoteSelectable}"/>
+          <TextBlock Text="{DynamicResource Text.CreatePR.PushCommitsFirst}" IsVisible="{Binding !IsPushRemoteSelectable}"/>
+        </Panel>
+      </CheckBox>
 
       <!-- Hints -->
       <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Vertical" Margin="0,4,0,0">
@@ -155,9 +159,15 @@
                 Data="{StaticResource Icons.Error}"
                 Fill="DarkOrange"/>
           <TextBlock Grid.Column="1" Margin="8,0,0,0"
-                     Text="{DynamicResource Text.CreatePR.NotPushed}"
+                     Text="{DynamicResource Text.CreatePR.BranchNotPushed}"
                      TextWrapping="Wrap"
-                     Foreground="DarkOrange"/>
+                     Foreground="DarkOrange"
+                     IsVisible="{Binding IsPushRemoteSelectable}"/>
+          <TextBlock Grid.Column="1" Margin="8,0,0,0"
+                     Text="{DynamicResource Text.CreatePR.CommitsNotPushed}"
+                     TextWrapping="Wrap"
+                     Foreground="DarkOrange"
+                     IsVisible="{Binding !IsPushRemoteSelectable}"/>
         </Grid>
 
         <Grid ColumnDefinitions="Auto,*" Margin="0,2" IsVisible="{Binding IsClipboardHintVisible}">
