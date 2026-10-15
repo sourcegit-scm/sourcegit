@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Text;
 
@@ -26,7 +27,14 @@ namespace SourceGit.ViewModels
         public Workspace ActiveWorkspace
         {
             get => _activeWorkspace;
-            private set => SetProperty(ref _activeWorkspace, value);
+            private set
+            {
+                if (_activeWorkspace != null)
+                    _activeWorkspace.PropertyChanged -= OnActiveWorkspacePropertyChanged;
+
+                if (SetProperty(ref _activeWorkspace, value) && _activeWorkspace != null)
+                    _activeWorkspace.PropertyChanged += OnActiveWorkspacePropertyChanged;
+            }
         }
 
         public LauncherPage ActivePage
@@ -518,6 +526,12 @@ namespace SourceGit.ViewModels
             page.Popup?.Cleanup();
             page.Popup = null;
             page.Data = null;
+        }
+
+        private void OnActiveWorkspacePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Workspace.Name))
+                PostActivePageChanged();
         }
 
         private void PostActivePageChanged()
