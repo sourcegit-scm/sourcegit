@@ -1608,6 +1608,22 @@ namespace SourceGit.Views
             submenu.Items.Add(rename);
             submenu.Items.Add(new MenuItem() { Header = "-" });
 
+            var upstreamBranch = string.IsNullOrEmpty(current.Upstream) || current.IsUpstreamGone ? null : repo.Branches.Find(x => x.FullName.Equals(current.Upstream, StringComparison.Ordinal));
+            if (ViewModels.CreatePullRequest.CanCreateForUpstream(repo, upstreamBranch))
+            {
+                var createPR = new MenuItem();
+                createPR.Header = App.Text("BranchCM.CreatePRForUpstream", upstreamBranch.FriendlyName);
+                createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
+                createPR.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.CreatePullRequest(repo, current, null));
+                    e.Handled = true;
+                };
+                submenu.Items.Add(createPR);
+                submenu.Items.Add(new MenuItem() { Header = "-" });
+            }
+
             if (!repo.IsBare)
             {
                 var type = repo.GetGitFlowType(current);
@@ -1871,6 +1887,21 @@ namespace SourceGit.Views
 
             submenu.Items.Add(compare);
             submenu.Items.Add(new MenuItem() { Header = "-" });
+
+            if (ViewModels.CreatePullRequest.CanCreateInto(repo, current, branch, out var isUpstreamOfHead))
+            {
+                var createPR = new MenuItem();
+                createPR.Header = isUpstreamOfHead ? App.Text("BranchCM.CreatePRForUpstream", name) : App.Text("BranchCM.CreatePR", current.Name, name);
+                createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
+                createPR.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.CreatePullRequest(repo, current, isUpstreamOfHead ? null : branch));
+                    e.Handled = true;
+                };
+                submenu.Items.Add(createPR);
+                submenu.Items.Add(new MenuItem() { Header = "-" });
+            }
 
             var copy = new MenuItem();
             copy.Header = App.Text("BranchCM.CopyName");

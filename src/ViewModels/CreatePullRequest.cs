@@ -157,6 +157,40 @@ namespace SourceGit.ViewModels
                 SelectDefaultTarget();
         }
 
+        /// <summary>
+        ///     Checks if a pull request can be created for the given local branch's upstream.
+        /// </summary>
+        public static bool CanCreateForUpstream(Repository repo, Models.Branch upstream)
+        {
+            return upstream != null && GetRemoteHost(repo, upstream.Remote) != null;
+        }
+
+        /// <summary>
+        ///     Checks if a pull request can be created from the current branch into the given remote branch.
+        ///     <paramref name="isUpstreamOfHead"/> is true when the remote branch is the upstream of current branch,
+        ///     in which case the pull request is created for the current branch with the remote's default branch as target.
+        /// </summary>
+        public static bool CanCreateInto(Repository repo, Models.Branch head, Models.Branch target, out bool isUpstreamOfHead)
+        {
+            isUpstreamOfHead = false;
+
+            if (head is not { IsDetachedHead: false } || target == null || target.IsLocal)
+                return false;
+
+            var targetHost = GetRemoteHost(repo, target.Remote);
+            if (targetHost == null)
+                return false;
+
+            isUpstreamOfHead = target.FullName.Equals(head.Upstream, StringComparison.Ordinal);
+            if (isUpstreamOfHead)
+                return true;
+
+            // Only allows pull requests between repositories on the same server.
+            var headRemote = repo.Branches.Find(x => x.FullName.Equals(head.Upstream, StringComparison.Ordinal))?.Remote;
+            var headHost = string.IsNullOrEmpty(headRemote) ? null : GetRemoteHost(repo, headRemote);
+            return headHost == null || headHost.Equals(targetHost, StringComparison.OrdinalIgnoreCase);
+        }
+
         public static ValidationResult ValidateTarget(Models.Branch target, ValidationContext ctx)
         {
             if (ctx.ObjectInstance is CreatePullRequest { SelectedPlatform: { SupportsCrossRepo: false } } creator &&
@@ -399,6 +433,11 @@ namespace SourceGit.ViewModels
                 return name;
 
             return char.ToUpper(name[0], CultureInfo.CurrentCulture) + name.Substring(1);
+        }
+
+        private static string GetRemoteHost(Repository repo, string remoteName)
+        {
+            return GetHost(repo.Remotes.Find(x => x.Name.Equals(remoteName, StringComparison.Ordinal)));
         }
 
         private static string GetHost(Models.Remote remote)
