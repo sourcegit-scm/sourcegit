@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 using Markdig;
@@ -29,14 +32,13 @@ namespace SourceGit.Views
             Cursor = Cursor.Parse("Hand");
             Classes.Add(url.StartsWith("commit://", StringComparison.Ordinal) ? "commit_link" : "link");
             _url = url;
-            _tooltip = null;
         }
 
-        protected override async void OnPointerEntered(PointerEventArgs e)
+        protected override void OnLoaded(RoutedEventArgs e)
         {
-            base.OnPointerEntered(e);
+            base.OnLoaded(e);
 
-            if (_tooltip != null || string.IsNullOrEmpty(_url))
+            if (string.IsNullOrEmpty(_url))
                 return;
 
             if (_url.StartsWith("commit://", StringComparison.Ordinal))
@@ -46,15 +48,21 @@ namespace SourceGit.Views
                 if (parentView is not { DataContext: ViewModels.CommitDetail detail })
                     return;
 
-                _tooltip = await detail.GetCommitAsync(commitHash);
+                var currentUrl = _url;
+                Task.Run(async () =>
+                {
+                    var c = await detail.GetCommitAsync(commitHash);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (currentUrl.Equals(_url, StringComparison.Ordinal))
+                            ToolTip.SetTip(this, c);
+                    });
+                });
             }
             else
             {
-                _tooltip = _url;
+                ToolTip.SetTip(this, _url);
             }
-
-            ToolTip.SetTip(this, _tooltip);
-            ToolTip.SetIsOpen(this, IsPointerOver);
         }
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
@@ -112,7 +120,6 @@ namespace SourceGit.Views
         }
 
         private string _url;
-        private object _tooltip;
     }
 
     public class CommitMessagePresenter : ContentControl
@@ -146,8 +153,11 @@ namespace SourceGit.Views
                 .UseAdvancedExtensions()
                 .Build();
 
+            _lastListColumn = 0;
+            _lastListBulletIdx = 0;
+
             var document = Markdown.Parse(_message, pipeline);
-            var panel = new StackPanel() { Orientation = Orientation.Vertical };
+            var panel = new StackPanel() { Orientation = Orientation.Vertical, Background = Brushes.Transparent };
             foreach (var block in document)
                 panel.Children.Add(BuildBlock(block, panel.Children.Count == 0 ? ApplyMargin.OnlyBottom : ApplyMargin.TopAndBottom));
             return panel;
@@ -245,7 +255,10 @@ namespace SourceGit.Views
 
         private Control BuildParagraph(ParagraphBlock block, ApplyMargin margin)
         {
-            var textBlock = new TextBlock() { TextWrapping = TextWrapping.Wrap };
+            var textBlock = new TextBlock()
+            {
+                TextWrapping = TextWrapping.Wrap
+            };
 
             foreach (var inline in block.Inline)
                 BuildTextInline(textBlock.Inlines, inline);
@@ -253,8 +266,8 @@ namespace SourceGit.Views
             textBlock.Margin = margin switch
             {
                 ApplyMargin.None => new Thickness(0),
-                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
-                _ => new Thickness(0, 7)
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 6),
+                _ => new Thickness(0, 6)
             };
 
             return textBlock;
@@ -265,12 +278,11 @@ namespace SourceGit.Views
             var grid = new Grid();
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(16) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
-
             grid.Margin = margin switch
             {
-                ApplyMargin.None => new Thickness(0),
-                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
-                _ => new Thickness(0, 7)
+                ApplyMargin.None => new Thickness(8, 0),
+                ApplyMargin.OnlyBottom => new Thickness(8, 0, 8, 6),
+                _ => new Thickness(8, 6)
             };
 
             var index = 0;
@@ -281,13 +293,28 @@ namespace SourceGit.Views
 
                 var bullet = new TextBlock()
                 {
-                    Text = block.IsOrdered ? $"{index + 1}." : (block.Column / 2) % 2 == 0 ? "•" : "◦",
                     Width = 16,
+                    Height = 18,
                     FontWeight = FontWeight.Bold,
                     VerticalAlignment = VerticalAlignment.Top,
                 };
 
-                var itemContent = new StackPanel() { Orientation = Orientation.Vertical };
+                if (block.IsOrdered)
+                {
+                    bullet.Text = $"{listItem.Order}.";
+                }
+                else
+                {
+                    if (_lastListColumn < block.Column)
+                        _lastListBulletIdx = (_lastListBulletIdx - 1 + s_listBullets.Length) % s_listBullets.Length;
+                    else if (_lastListColumn > block.Column)
+                        _lastListBulletIdx = (_lastListBulletIdx + 1) % s_listBullets.Length;
+
+                    bullet.Text = s_listBullets[_lastListBulletIdx];
+                    _lastListColumn = block.Column;
+                }
+
+                var itemContent = new StackPanel() { Orientation = Orientation.Vertical, MinHeight = 18 };
                 foreach (var child in listItem)
                     itemContent.Children.Add(BuildBlock(child, ApplyMargin.None));
 
@@ -318,8 +345,8 @@ namespace SourceGit.Views
             border.Margin = margin switch
             {
                 ApplyMargin.None => new Thickness(0),
-                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
-                _ => new Thickness(0, 7)
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 6),
+                _ => new Thickness(0, 6)
             };
 
             var panel = new StackPanel()
@@ -340,16 +367,16 @@ namespace SourceGit.Views
             var border = new Border()
             {
                 BorderThickness = new Thickness(0),
-                Background = new SolidColorBrush(Colors.Black, 0.15),
                 Padding = new Thickness(8, 6),
-                CornerRadius = new CornerRadius(4)
+                CornerRadius = new CornerRadius(4),
             };
+            border.Bind(Border.BackgroundProperty, new DynamicResourceExtension("Brush.InlineCode"));
 
             border.Margin = margin switch
             {
                 ApplyMargin.None => new Thickness(0),
-                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
-                _ => new Thickness(0, 7)
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 6),
+                _ => new Thickness(0, 6)
             };
 
             var textBlock = new TextBlock()
@@ -366,12 +393,12 @@ namespace SourceGit.Views
         private Control BuildTable(Table table, ApplyMargin margin)
         {
             var grid = new Grid();
-
+            grid.HorizontalAlignment = HorizontalAlignment.Left;
             grid.Margin = margin switch
             {
                 ApplyMargin.None => new Thickness(0),
-                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
-                _ => new Thickness(0, 7)
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 6),
+                _ => new Thickness(0, 6)
             };
 
             int rowCount = 0;
@@ -392,7 +419,7 @@ namespace SourceGit.Views
                 grid.RowDefinitions.Add(new() { Height = GridLength.Auto });
 
             for (int c = 0; c < colCount; c++)
-                grid.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
+                grid.ColumnDefinitions.Add(new() { Width = new GridLength(1, GridUnitType.Star) });
 
             int rowIdx = 0;
             foreach (var block in table)
@@ -562,17 +589,8 @@ namespace SourceGit.Views
                     break;
                 case TaskList task:
                     {
-                        var child = new TextBlock()
-                        {
-                            Text = task.Checked ? "☑" : "☐",
-                            Cursor = Cursor.Parse("Hand"),
-                        };
-                        var container = new InlineUIContainer()
-                        {
-                            Child = child,
-                            BaselineAlignment = BaselineAlignment.Subscript,
-                        };
-                        output.Add(container);
+                        var run = new Run(task.Checked ? "☑" : "☐");
+                        output.Add(run);
                     }
                     break;
                 default:
@@ -589,6 +607,9 @@ namespace SourceGit.Views
             TopAndBottom,
         }
 
+        private static readonly string[] s_listBullets = ["•", "◦", "▪", "▫"];
         private string _message = string.Empty;
+        private int _lastListColumn = 0;
+        private int _lastListBulletIdx = 0;
     }
 }
