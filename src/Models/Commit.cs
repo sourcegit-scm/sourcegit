@@ -127,10 +127,4 @@ namespace SourceGit.Models
 
         private bool _isHighlightedInGraph = false;
     }
-
-    public class CommitFullMessage
-    {
-        public string Message { get; set; } = string.Empty;
-        public InlineElementCollector Inlines { get; set; } = new();
-    }
 }

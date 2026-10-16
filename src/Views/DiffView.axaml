@@ -308,7 +308,7 @@
                     <ContentControl Content="{Binding Old}">
                       <ContentControl.DataTemplates>
                         <DataTemplate DataType="m:RevisionSubmodule">
-                          <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                          <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" Message="{Binding Message}"/>
                         </DataTemplate>
                       </ContentControl.DataTemplates>
                     </ContentControl>
@@ -342,7 +342,7 @@
                                        FontFamily="{DynamicResource Fonts.Monospace}"
                                        Text="{Binding UncommittedChanges, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Diff.Submodule.UncommittedChanges'}"
                                        IsVisible="{Binding UncommittedChanges, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"/>
-                            <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" FullMessage="{Binding FullMessage}"/>
+                            <v:CommitBaseInfo Margin="0,4,8,6" Content="{Binding Commit}" Message="{Binding Message}"/>
                           </StackPanel>
                         </DataTemplate>
                       </ContentControl.DataTemplates>

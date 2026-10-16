@@ -1,313 +1,594 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Net.Mail;
 
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Threading;
+using Avalonia.Layout;
+using Avalonia.Markup.Xaml.MarkupExtensions;
+using Avalonia.Media;
 using Avalonia.VisualTree;
+
+using Markdig;
+using Markdig.Extensions.Tables;
+using Markdig.Extensions.TaskLists;
+using Markdig.Syntax;
+using Markdig.Syntax.Inlines;
 
 namespace SourceGit.Views
 {
-    public class CommitMessagePresenter : SelectableTextBlock
+    public class CommitMessageInlineLink : TextBlock
     {
-        public static readonly DirectProperty<CommitMessagePresenter, Models.CommitFullMessage> FullMessageProperty =
-            AvaloniaProperty.RegisterDirect<CommitMessagePresenter, Models.CommitFullMessage>(
-                nameof(FullMessage),
-                static o => o.FullMessage,
-                static (o, v) => o.FullMessage = v);
+        protected override Type StyleKeyOverride => typeof(TextBlock);
 
-        public Models.CommitFullMessage FullMessage
+        public CommitMessageInlineLink(string url)
         {
-            get => _fullMessage;
-            set => SetAndRaise(FullMessageProperty, ref _fullMessage, value);
+            Cursor = Cursor.Parse("Hand");
+            Classes.Add(url.StartsWith("commit://", StringComparison.Ordinal) ? "commit_link" : "link");
+            _url = url;
+            _tooltip = null;
         }
 
-        protected override Type StyleKeyOverride => typeof(SelectableTextBlock);
+        protected override async void OnPointerEntered(PointerEventArgs e)
+        {
+            base.OnPointerEntered(e);
+
+            if (_tooltip != null || string.IsNullOrEmpty(_url))
+                return;
+
+            if (_url.StartsWith("commit://", StringComparison.Ordinal))
+            {
+                var commitHash = _url.Substring("commit://".Length);
+                var parentView = this.FindAncestorOfType<CommitBaseInfo>();
+                if (parentView is not { DataContext: ViewModels.CommitDetail detail })
+                    return;
+
+                _tooltip = await detail.GetCommitAsync(commitHash);
+            }
+            else
+            {
+                _tooltip = _url;
+            }
+
+            ToolTip.SetTip(this, _tooltip);
+            ToolTip.SetIsOpen(this, IsPointerOver);
+        }
+
+        protected override void OnPointerPressed(PointerPressedEventArgs e)
+        {
+            base.OnPointerPressed(e);
+
+            if (string.IsNullOrEmpty(_url))
+                return;
+
+            if (_url.StartsWith("commit://", StringComparison.Ordinal))
+            {
+                var commitHash = _url.Substring("commit://".Length);
+                var parentView = this.FindAncestorOfType<CommitBaseInfo>();
+                if (parentView is { DataContext: ViewModels.CommitDetail detail })
+                    detail.NavigateTo(commitHash);
+
+                return;
+            }
+
+            if (_url.StartsWith("mailto:", StringComparison.Ordinal))
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = _url,
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                });
+
+                return;
+            }
+
+            if (_url.IndexOf('@') > 0 && MailAddress.TryCreate(_url, out var _))
+            {
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = $"mailto:{_url}",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                });
+
+                return;
+            }
+
+            if (!Uri.IsWellFormedUriString(_url, UriKind.Absolute) ||
+                !Uri.TryCreate(_url, UriKind.Absolute, out var uri))
+                return;
+
+            if (uri.Scheme == Uri.UriSchemeHttp ||
+                uri.Scheme == Uri.UriSchemeHttps ||
+                uri.Scheme == Uri.UriSchemeFtp)
+            {
+                Native.OS.OpenBrowser(_url);
+                return;
+            }
+        }
+
+        private string _url;
+        private object _tooltip;
+    }
+
+    public class CommitMessagePresenter : ContentControl
+    {
+        public static readonly DirectProperty<CommitMessagePresenter, string> MessageProperty =
+            AvaloniaProperty.RegisterDirect<CommitMessagePresenter, string>(
+                nameof(Message),
+                static o => o.Message,
+                static (o, v) => o.Message = v);
+
+        public string Message
+        {
+            get => _message;
+            set => SetAndRaise(MessageProperty, ref _message, value);
+        }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == FullMessageProperty)
+            if (change.Property == MessageProperty)
+                Content = BuildContent();
+        }
+
+        private Control BuildContent()
+        {
+            if (string.IsNullOrEmpty(_message))
+                return null;
+
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build();
+
+            var document = Markdown.Parse(_message, pipeline);
+            var panel = new StackPanel() { Orientation = Orientation.Vertical };
+            foreach (var block in document)
+                panel.Children.Add(BuildBlock(block, panel.Children.Count == 0 ? ApplyMargin.OnlyBottom : ApplyMargin.TopAndBottom));
+            return panel;
+        }
+
+        private Control BuildBlock(Block block, ApplyMargin margin)
+        {
+            switch (block)
             {
-                Inlines!.Clear();
-                _inlineCommits.Clear();
-                _lastHover = null;
-                ClearHoveredIssueLink();
-
-                var message = _fullMessage?.Message;
-                if (string.IsNullOrEmpty(message))
-                    return;
-
-                var links = _fullMessage?.Inlines;
-                if (links == null || links.Count == 0)
-                {
-                    Inlines.Add(new Run(message));
-                    return;
-                }
-
-                var inlines = new List<Inline>();
-                var pos = 0;
-                for (var i = 0; i < links.Count; i++)
-                {
-                    var link = links[i];
-                    if (link.Start > pos)
-                        inlines.Add(new Run(message.Substring(pos, link.Start - pos)));
-
-                    var cls = link.Type switch
+                case HeadingBlock heading:
+                    return BuildHeading(heading, margin);
+                case ThematicBreakBlock thematicBreak:
+                    return BuildHorizontalLine(margin);
+                case ParagraphBlock paragraph:
+                    return BuildParagraph(paragraph, margin);
+                case ListBlock list:
+                    return BuildList(list, margin);
+                case QuoteBlock quote:
+                    return BuildQuote(quote, margin);
+                case CodeBlock code:
+                    return BuildCode(code, margin);
+                case Table table:
+                    return BuildTable(table, margin);
+                default:
+                    return new TextBlock()
                     {
-                        Models.InlineElementType.Link => "issue_link",
-                        Models.InlineElementType.CommitSHA => "commit_link",
-                        Models.InlineElementType.Code => "inline_code",
-                        _ => "normal"
+                        Text = block.ToString(),
+                        Margin = new Thickness(0, 4)
+                    };
+            }
+        }
+
+        private Control BuildHeading(HeadingBlock block, ApplyMargin margin)
+        {
+            var textBlock = new TextBlock() { TextWrapping = TextWrapping.NoWrap };
+            switch (block.Level)
+            {
+                case 1:
+                    textBlock.FontSize = 18;
+                    textBlock.FontWeight = FontWeight.Bold;
+                    break;
+                case 2:
+                    textBlock.FontSize = 17;
+                    textBlock.FontWeight = FontWeight.Bold;
+                    break;
+                case 3:
+                    textBlock.FontSize = 16;
+                    textBlock.FontWeight = FontWeight.SemiBold;
+                    break;
+                case 4:
+                    textBlock.FontSize = 15;
+                    textBlock.FontWeight = FontWeight.SemiBold;
+                    break;
+                case 5:
+                    textBlock.FontSize = 14;
+                    textBlock.FontWeight = FontWeight.Medium;
+                    break;
+                case 6:
+                    textBlock.FontSize = 13;
+                    textBlock.FontWeight = FontWeight.Medium;
+                    break;
+            }
+
+            if (block.Inline != null)
+                BuildTextInline(textBlock.Inlines, block.Inline);
+
+            textBlock.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 8),
+                _ => new Thickness(0, 8)
+            };
+
+            return textBlock;
+        }
+
+        private Control BuildHorizontalLine(ApplyMargin margin)
+        {
+            var rect = new Rectangle()
+            {
+                Height = 1,
+                Fill = Brushes.Gray,
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            rect.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 2),
+                _ => new Thickness(0, 2),
+            };
+
+            return rect;
+        }
+
+        private Control BuildParagraph(ParagraphBlock block, ApplyMargin margin)
+        {
+            var textBlock = new TextBlock() { TextWrapping = TextWrapping.Wrap };
+
+            foreach (var inline in block.Inline)
+                BuildTextInline(textBlock.Inlines, inline);
+
+            textBlock.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
+                _ => new Thickness(0, 7)
+            };
+
+            return textBlock;
+        }
+
+        private Control BuildList(ListBlock block, ApplyMargin margin)
+        {
+            var grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(16) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
+
+            grid.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
+                _ => new Thickness(0, 7)
+            };
+
+            var index = 0;
+            foreach (var item in block)
+            {
+                if (item is not ListItemBlock listItem)
+                    continue;
+
+                var bullet = new TextBlock()
+                {
+                    Text = block.IsOrdered ? $"{index + 1}." : (block.Column / 2) % 2 == 0 ? "•" : "◦",
+                    Width = 16,
+                    FontWeight = FontWeight.Bold,
+                    VerticalAlignment = VerticalAlignment.Top,
+                };
+
+                var itemContent = new StackPanel() { Orientation = Orientation.Vertical };
+                foreach (var child in listItem)
+                    itemContent.Children.Add(BuildBlock(child, ApplyMargin.None));
+
+                Grid.SetColumn(bullet, 0);
+                Grid.SetRow(bullet, index);
+                Grid.SetRow(itemContent, index);
+                Grid.SetColumn(itemContent, 1);
+
+                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                grid.Children.Add(bullet);
+                grid.Children.Add(itemContent);
+
+                index++;
+            }
+
+            return grid;
+        }
+
+        private Control BuildQuote(QuoteBlock block, ApplyMargin margin)
+        {
+            var border = new Border()
+            {
+                BorderThickness = new Thickness(4, 0, 0, 0),
+                BorderBrush = Brushes.Green,
+                Background = Brushes.Transparent,
+            };
+
+            border.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
+                _ => new Thickness(0, 7)
+            };
+
+            var panel = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(10, 0, 8, 0)
+            };
+
+            foreach (var child in block)
+                panel.Children.Add(BuildBlock(child, ApplyMargin.TopAndBottom));
+
+            border.Child = panel;
+            return border;
+        }
+
+        private Control BuildCode(CodeBlock block, ApplyMargin margin)
+        {
+            var border = new Border()
+            {
+                BorderThickness = new Thickness(0),
+                Background = new SolidColorBrush(Colors.Black, 0.15),
+                Padding = new Thickness(8, 6),
+                CornerRadius = new CornerRadius(4)
+            };
+
+            border.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
+                _ => new Thickness(0, 7)
+            };
+
+            var textBlock = new TextBlock()
+            {
+                Text = block.Lines.ToString(),
+                TextWrapping = TextWrapping.Wrap
+            };
+            textBlock.Classes.Add("monospace");
+
+            border.Child = textBlock;
+            return border;
+        }
+
+        private Control BuildTable(Table table, ApplyMargin margin)
+        {
+            var grid = new Grid();
+
+            grid.Margin = margin switch
+            {
+                ApplyMargin.None => new Thickness(0),
+                ApplyMargin.OnlyBottom => new Thickness(0, 0, 0, 7),
+                _ => new Thickness(0, 7)
+            };
+
+            int rowCount = 0;
+            int colCount = 0;
+            foreach (var row in table)
+            {
+                if (row is TableRow r)
+                {
+                    colCount = Math.Max(colCount, r.Count);
+                    rowCount++;
+                }
+            }
+
+            if (colCount == 0)
+                return grid;
+
+            for (int r = 0; r < rowCount; r++)
+                grid.RowDefinitions.Add(new() { Height = GridLength.Auto });
+
+            for (int c = 0; c < colCount; c++)
+                grid.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
+
+            int rowIdx = 0;
+            foreach (var block in table)
+            {
+                if (block is not TableRow row)
+                    continue;
+
+                int colIdx = 0;
+                foreach (var child in row)
+                {
+                    if (child is not TableCell cell)
+                    {
+                        colIdx++;
+                        continue;
+                    }
+
+                    var topBorderThickness = rowIdx == 0 ? 1.0 : 0.0;
+                    var leftBorderThickness = colIdx == 0 ? 1.0 : 0.0;
+                    var cellBorder = new Border()
+                    {
+                        BorderThickness = new Thickness(leftBorderThickness, topBorderThickness, 1, 1),
+                        BorderBrush = Brushes.DarkGray,
+                        Padding = new Thickness(4, 2),
                     };
 
-                    var run = new Run(message.Substring(link.Start, link.Length));
-                    run.Classes.Add(cls);
-                    inlines.Add(run);
+                    if (row.IsHeader)
+                        cellBorder.Bind(Border.BackgroundProperty, new DynamicResourceExtension("Brush.TableHeaderBG"));
 
-                    pos = link.Start + link.Length;
-                }
-
-                if (pos < message.Length)
-                    inlines.Add(new Run(message.Substring(pos)));
-
-                Inlines.AddRange(inlines);
-            }
-        }
-
-        protected override void OnPointerMoved(PointerEventArgs e)
-        {
-            base.OnPointerMoved(e);
-
-            if (Equals(e.Pointer.Captured, this))
-            {
-                var relativeSelfY = e.GetPosition(this).Y;
-                if (relativeSelfY <= 0 || relativeSelfY > Bounds.Height)
-                    return;
-
-                var scrollViewer = this.FindAncestorOfType<ScrollViewer>();
-                if (scrollViewer != null)
-                {
-                    var relativeY = e.GetPosition(scrollViewer).Y;
-                    if (relativeY <= 8)
-                        scrollViewer.LineUp();
-                    else if (relativeY >= scrollViewer.Bounds.Height - 8)
-                        scrollViewer.LineDown();
-                }
-            }
-            else if (_fullMessage is { Inlines: { Count: > 0 } links })
-            {
-                var point = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
-                var x = Math.Min(Math.Max(point.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
-                var y = Math.Min(Math.Max(point.Y, 0), Math.Max(TextLayout.Height, 0));
-                point = new Point(x, y);
-
-                var pos = TextLayout.HitTestPoint(point).TextPosition;
-                if (links.Intersect(pos, 1) is { } link)
-                    SetHoveredIssueLink(link);
-                else
-                    ClearHoveredIssueLink();
-            }
-        }
-
-        protected override void OnPointerPressed(PointerPressedEventArgs e)
-        {
-            var point = e.GetCurrentPoint(this);
-
-            if (_lastHover != null)
-            {
-                var link = _lastHover.Link;
-                var type = _lastHover.Type;
-                e.Pointer.Capture(null);
-
-                if (type == Models.InlineElementType.CommitSHA)
-                {
-                    var parentView = this.FindAncestorOfType<CommitBaseInfo>();
-                    if (parentView is { DataContext: ViewModels.CommitDetail detail })
+                    var cellContent = new TextBlock()
                     {
-                        if (point.Properties.IsLeftButtonPressed)
-                        {
-                            detail.NavigateTo(link);
-                        }
-                        else if (point.Properties.IsRightButtonPressed)
-                        {
-                            var open = new MenuItem();
-                            open.Header = App.Text("SHALinkCM.NavigateTo");
-                            open.Icon = this.CreateMenuIcon("Icons.Commit");
-                            open.Click += (_, ev) =>
-                            {
-                                detail.NavigateTo(link);
-                                ev.Handled = true;
-                            };
+                        TextWrapping = TextWrapping.Wrap
+                    };
 
-                            var copy = new MenuItem();
-                            copy.Header = App.Text("SHALinkCM.CopySHA");
-                            copy.Icon = this.CreateMenuIcon("Icons.Copy");
-                            copy.Click += async (_, ev) =>
-                            {
-                                await this.CopyTextAsync(link);
-                                ev.Handled = true;
-                            };
+                    foreach (var cellBlock in cell)
+                    {
+                        switch (cellBlock)
+                        {
+                            case ParagraphBlock paragraph:
+                                {
+                                    var span = new Span();
+                                    foreach (var inline in paragraph.Inline)
+                                        BuildTextInline(span.Inlines, inline);
 
-                            var menu = new ContextMenu();
-                            menu.Items.Add(open);
-                            menu.Items.Add(copy);
-                            menu.Open(this);
+                                    if (row.IsHeader)
+                                        span.FontWeight = FontWeight.Bold;
+
+                                    cellContent.Inlines.Add(span);
+                                }
+                                break;
+                            case LeafBlock leaf:
+                                {
+                                    if (leaf.Inline != null)
+                                    {
+                                        var span = new Span();
+                                        foreach (var inline in leaf.Inline)
+                                            BuildTextInline(span.Inlines, inline);
+
+                                        if (row.IsHeader)
+                                            span.FontWeight = FontWeight.Bold;
+
+                                        cellContent.Inlines.Add(span);
+                                    }
+                                    else
+                                    {
+                                        var run = new Run(leaf.ToString());
+                                        if (row.IsHeader)
+                                            run.FontWeight = FontWeight.Bold;
+                                        cellContent.Inlines.Add(run);
+                                    }
+                                }
+                                break;
+                            default:
+                                {
+                                    var run = new Run(cellBlock.ToString());
+                                    if (row.IsHeader)
+                                        run.FontWeight = FontWeight.Bold;
+                                    cellContent.Inlines.Add(run);
+                                }
+                                break;
                         }
                     }
-                }
-                else
-                {
-                    if (point.Properties.IsLeftButtonPressed)
+
+                    if (table.ColumnDefinitions != null && colIdx < table.ColumnDefinitions.Count)
                     {
-                        Native.OS.OpenBrowser(link);
-                    }
-                    else if (point.Properties.IsRightButtonPressed)
-                    {
-                        var open = new MenuItem();
-                        open.Header = App.Text("IssueLinkCM.OpenInBrowser");
-                        open.Icon = this.CreateMenuIcon("Icons.OpenWith");
-                        open.Click += (_, ev) =>
+                        var colDef = table.ColumnDefinitions[colIdx];
+                        cellContent.TextAlignment = colDef.Alignment switch
                         {
-                            Native.OS.OpenBrowser(link);
-                            ev.Handled = true;
+                            TableColumnAlign.Center => TextAlignment.Center,
+                            TableColumnAlign.Right => TextAlignment.Right,
+                            _ => TextAlignment.Left
+                        };
+                    }
+
+                    cellBorder.Child = cellContent;
+                    Grid.SetRow(cellBorder, rowIdx);
+                    Grid.SetColumn(cellBorder, colIdx);
+                    grid.Children.Add(cellBorder);
+
+                    colIdx++;
+                }
+
+                rowIdx++;
+            }
+
+            return grid;
+        }
+
+        private void BuildTextInline(InlineCollection output, Markdig.Syntax.Inlines.Inline inline)
+        {
+            switch (inline)
+            {
+                case LiteralInline literal:
+                    output.Add(new Run(literal.Content.ToString()));
+                    break;
+                case LineBreakInline:
+                    output.Add(new LineBreak());
+                    break;
+                case EmphasisInline emphasis:
+                    {
+                        var span = new Span();
+                        foreach (var child in emphasis)
+                            BuildTextInline(span.Inlines, child);
+
+                        if (emphasis.DelimiterCount >= 2)
+                            span.FontWeight = FontWeight.Bold;
+                        else
+                            span.FontStyle = FontStyle.Italic;
+
+                        output.Add(span);
+                    }
+                    break;
+                case CodeInline code:
+                    {
+                        var run = new Run(code.Content.ToString());
+                        run.Classes.Add("inline_code");
+                        output.Add(run);
+                    }
+                    break;
+                case LinkInline link:
+                    {
+                        var linkTextBlock = new CommitMessageInlineLink(link.Url);
+                        foreach (var childInline in link)
+                            BuildTextInline(linkTextBlock.Inlines, childInline);
+
+                        var container = new InlineUIContainer()
+                        {
+                            Child = linkTextBlock,
+                            BaselineAlignment = BaselineAlignment.Subscript,
                         };
 
-                        var copy = new MenuItem();
-                        copy.Header = App.Text("IssueLinkCM.CopyLink");
-                        copy.Icon = this.CreateMenuIcon("Icons.Copy");
-                        copy.Click += async (_, ev) =>
+                        output.Add(container);
+                    }
+                    break;
+                case AutolinkInline autolink:
+                    {
+                        var linkTextBlock = new CommitMessageInlineLink(autolink.Url);
+                        linkTextBlock.Text = autolink.ToString();
+
+                        var container = new InlineUIContainer()
                         {
-                            await this.CopyTextAsync(link);
-                            ev.Handled = true;
+                            Child = linkTextBlock,
+                            BaselineAlignment = BaselineAlignment.Subscript,
                         };
 
-                        var menu = new ContextMenu();
-                        menu.Items.Add(open);
-                        menu.Items.Add(copy);
-                        menu.Open(this);
+                        output.Add(container);
                     }
-                }
-
-                e.Handled = true;
-                return;
-            }
-
-            if (point.Properties.IsLeftButtonPressed && e.ClickCount == 3)
-            {
-                var text = Inlines?.Text;
-                if (string.IsNullOrEmpty(text))
-                {
-                    e.Handled = true;
-                    return;
-                }
-
-                var position = e.GetPosition(this) - new Point(Padding.Left, Padding.Top);
-                var x = Math.Min(Math.Max(position.X, 0), Math.Max(TextLayout.WidthIncludingTrailingWhitespace, 0));
-                var y = Math.Min(Math.Max(position.Y, 0), Math.Max(TextLayout.Height, 0));
-                position = new Point(x, y);
-
-                var textPos = TextLayout.HitTestPoint(position).TextPosition;
-                var lineStart = 0;
-                var lineEnd = text.IndexOf('\n', lineStart);
-                if (lineEnd <= 0)
-                {
-                    lineEnd = text.Length;
-                }
-                else
-                {
-                    while (lineEnd < textPos)
+                    break;
+                case TaskList task:
                     {
-                        lineStart = lineEnd + 1;
-                        lineEnd = text.IndexOf('\n', lineStart);
-                        if (lineEnd == -1)
+                        var child = new TextBlock()
                         {
-                            lineEnd = text.Length;
-                            break;
-                        }
+                            Text = task.Checked ? "☑" : "☐",
+                            Cursor = Cursor.Parse("Hand"),
+                        };
+                        var container = new InlineUIContainer()
+                        {
+                            Child = child,
+                            BaselineAlignment = BaselineAlignment.Subscript,
+                        };
+                        output.Add(container);
                     }
-                }
-
-                SetCurrentValue(SelectionStartProperty, lineStart);
-                SetCurrentValue(SelectionEndProperty, lineEnd);
-
-                e.Pointer.Capture(this);
-                e.Handled = true;
-                return;
+                    break;
+                default:
+                    output.Add(new Run(inline.ToString()));
+                    break;
             }
-
-            base.OnPointerPressed(e);
+            ;
         }
 
-        protected override void OnPointerExited(PointerEventArgs e)
+        private enum ApplyMargin
         {
-            base.OnPointerExited(e);
-            ClearHoveredIssueLink();
+            None = 0,
+            OnlyBottom,
+            TopAndBottom,
         }
 
-        private void ProcessHoverCommitLink(Models.InlineElement link)
-        {
-            var sha = link.Link;
-
-            if (_inlineCommits.TryGetValue(sha, out var exist))
-            {
-                ToolTip.SetTip(this, exist);
-                return;
-            }
-
-            var parentView = this.FindAncestorOfType<CommitBaseInfo>();
-            if (parentView is { DataContext: ViewModels.CommitDetail detail })
-            {
-                var lastDetailCommit = detail.Commit.SHA;
-                Task.Run(async () =>
-                {
-                    var c = await detail.GetCommitAsync(sha);
-
-                    Dispatcher.UIThread.Post(() =>
-                    {
-                        var currentParent = this.FindAncestorOfType<CommitBaseInfo>();
-                        if (currentParent is { DataContext: ViewModels.CommitDetail currentDetail } &&
-                            currentDetail.Commit.SHA.Equals(lastDetailCommit, StringComparison.Ordinal))
-                        {
-                            _inlineCommits.TryAdd(sha, c);
-                            if (_lastHover == link && c != null)
-                                ToolTip.SetTip(this, c);
-                        }
-                    });
-                });
-            }
-        }
-
-        private void SetHoveredIssueLink(Models.InlineElement link)
-        {
-            if (link == _lastHover || link.Type == Models.InlineElementType.Code)
-                return;
-
-            SetCurrentValue(CursorProperty, Cursor.Parse("Hand"));
-
-            _lastHover = link;
-            if (link.Type == Models.InlineElementType.Link)
-                ToolTip.SetTip(this, link.Link);
-            else
-                ProcessHoverCommitLink(link);
-        }
-
-        private void ClearHoveredIssueLink()
-        {
-            if (_lastHover != null)
-            {
-                ToolTip.SetTip(this, null);
-                SetCurrentValue(CursorProperty, Cursor.Parse("IBeam"));
-                _lastHover = null;
-            }
-        }
-
-        private Models.CommitFullMessage _fullMessage = null;
-        private Models.InlineElement _lastHover = null;
-        private Dictionary<string, Models.Commit> _inlineCommits = new();
+        private string _message = string.Empty;
     }
 }

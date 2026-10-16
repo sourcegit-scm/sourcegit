@@ -49,19 +49,19 @@ namespace SourceGit.Models
     public class RevisionSubmodule
     {
         public Commit Commit { get; set; } = null;
-        public CommitFullMessage FullMessage { get; set; } = null;
+        public string Message { get; set; } = null;
         public int UncommittedChanges { get; set; } = 0;
 
         public RevisionSubmodule(string hash)
         {
             Commit = new Commit() { SHA = hash };
-            FullMessage = new CommitFullMessage() { Message = string.Empty };
+            Message = string.Empty;
         }
 
         public RevisionSubmodule(Commit commit, string message, int uncommittedChanges)
         {
             Commit = commit;
-            FullMessage = new CommitFullMessage() { Message = message };
+            Message = message;
             UncommittedChanges = uncommittedChanges;
         }
     }

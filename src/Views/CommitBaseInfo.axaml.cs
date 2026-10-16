@@ -10,16 +10,16 @@ namespace SourceGit.Views
 {
     public partial class CommitBaseInfo : UserControl
     {
-        public static readonly DirectProperty<CommitBaseInfo, Models.CommitFullMessage> FullMessageProperty =
-            AvaloniaProperty.RegisterDirect<CommitBaseInfo, Models.CommitFullMessage>(
-                nameof(FullMessage),
-                static o => o.FullMessage,
-                static (o, v) => o.FullMessage = v);
+        public static readonly DirectProperty<CommitBaseInfo, string> MessageProperty =
+            AvaloniaProperty.RegisterDirect<CommitBaseInfo, string>(
+                nameof(Message),
+                static o => o.Message,
+                static (o, v) => o.Message = v);
 
-        public Models.CommitFullMessage FullMessage
+        public string Message
         {
-            get => _fullMessage;
-            set => SetAndRaise(FullMessageProperty, ref _fullMessage, value);
+            get => _message;
+            set => SetAndRaise(MessageProperty, ref _message, value);
         }
 
         public static readonly DirectProperty<CommitBaseInfo, Models.CommitSignInfo> SignInfoProperty =
@@ -227,7 +227,7 @@ namespace SourceGit.Views
         private async void OnCopyAllCommitMessage(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail)
-                await this.CopyTextAsync(detail.FullMessage.Message);
+                await this.CopyTextAsync(detail.Message);
             e.Handled = true;
         }
 
@@ -258,7 +258,7 @@ namespace SourceGit.Views
             }
         }
 
-        private Models.CommitFullMessage _fullMessage = null;
+        private string _message = null;
         private Models.CommitSignInfo _signInfo = null;
         private bool _supportsContainsIn = false;
         private List<Models.CommitLink> _webLinks = null;

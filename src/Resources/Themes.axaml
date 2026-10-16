@@ -33,6 +33,7 @@
       <Color x:Key="Color.InlineCode">#FFE4E4E4</Color>
       <Color x:Key="Color.InlineCodeFG">Black</Color>
       <Color x:Key="Color.SubPanel">#FFFBFBFB</Color>
+      <Color x:Key="Color.TableHeaderBG">Gray</Color>
     </ResourceDictionary>
 
     <ResourceDictionary x:Key="Dark">
@@ -67,6 +68,7 @@
       <Color x:Key="Color.InlineCode">#FF383838</Color>
       <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
       <Color x:Key="Color.SubPanel">#FF272727</Color>
+      <Color x:Key="Color.TableHeaderBG">#FF404040</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 
@@ -103,4 +105,5 @@
   <SolidColorBrush x:Key="Brush.InlineCode" Color="{DynamicResource Color.InlineCode}"/>
   <SolidColorBrush x:Key="Brush.InlineCodeFG" Color="{DynamicResource Color.InlineCodeFG}"/>
   <SolidColorBrush x:Key="Brush.SubPanel" Color="{DynamicResource Color.SubPanel}"/>
+  <SolidColorBrush x:Key="Brush.TableHeaderBG" Color="{DynamicResource Color.TableHeaderBG}"/>
 </ResourceDictionary>

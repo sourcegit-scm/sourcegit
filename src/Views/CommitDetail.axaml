@@ -26,13 +26,13 @@
         <StackPanel Orientation="Vertical">
           <!-- Base Information -->
           <v:CommitBaseInfo Content="{Binding Commit}"
-                            FullMessage="{Binding FullMessage}"
+                            Message="{Binding MessageMarkdown}"
                             SignInfo="{Binding SignInfo}"
                             WebLinks="{Binding WebLinks}"
                             Margin="0,0,12,0"/>
 
           <!-- Line -->
-          <Rectangle Height=".65" Margin="8,8,12,8" Fill="{DynamicResource Brush.Border2}"/>
+          <Rectangle Height=".65" Margin="8,4,12,8" Fill="{DynamicResource Brush.Border2}"/>
 
           <!-- Change List -->
           <ListBox Background="Transparent"

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,10 +62,16 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public Models.CommitFullMessage FullMessage
+        public string Message
         {
-            get => _fullMessage;
-            private set => SetProperty(ref _fullMessage, value);
+            get => _message;
+            private set => SetProperty(ref _message, value);
+        }
+
+        public string MessageMarkdown
+        {
+            get => _messageMarkdown;
+            private set => SetProperty(ref _messageMarkdown, value);
         }
 
         public Models.CommitSignInfo SignInfo
@@ -483,16 +490,13 @@ namespace SourceGit.ViewModels
                 var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA)
                     .GetResultAsync()
                     .ConfigureAwait(false);
-                var inlines = await ParseInlinesInMessageAsync(message).ConfigureAwait(false);
+                var messageMarkdown = await PrepareMessageMarkdownAsync(message).ConfigureAwait(false);
 
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Post(() =>
                     {
-                        FullMessage = new Models.CommitFullMessage
-                        {
-                            Message = message,
-                            Inlines = inlines
-                        };
+                        Message = message;
+                        MessageMarkdown = messageMarkdown;
                     });
             }, token);
 
@@ -547,26 +551,13 @@ namespace SourceGit.ViewModels
                 DiffContext = null;
         }
 
-        private async Task<Models.InlineElementCollector> ParseInlinesInMessageAsync(string message)
+        private async Task<string> PrepareMessageMarkdownAsync(string message)
         {
             var inlines = new Models.InlineElementCollector();
             if (_repo.IssueTrackers is { Count: > 0 } rules)
             {
                 foreach (var rule in rules)
                     rule.Matches(inlines, message);
-            }
-
-            var urlMatches = REG_URL_FORMAT().Matches(message);
-            foreach (Match match in urlMatches)
-            {
-                var start = match.Index;
-                var len = match.Length;
-                if (inlines.Intersect(start, len) != null)
-                    continue;
-
-                var url = message.Substring(start, len);
-                if (Uri.IsWellFormedUriString(url, UriKind.Absolute))
-                    inlines.Add(new Models.InlineElement(Models.InlineElementType.Link, start, len, url));
             }
 
             var shaMatches = REG_SHA_FORMAT().Matches(message);
@@ -583,19 +574,36 @@ namespace SourceGit.ViewModels
                     inlines.Add(new Models.InlineElement(Models.InlineElementType.CommitSHA, start, len, sha));
             }
 
-            var inlineCodeMatches = REG_INLINECODE_FORMAT().Matches(message);
-            foreach (Match match in inlineCodeMatches)
-            {
-                var start = match.Index;
-                var len = match.Length;
-                if (inlines.Intersect(start, len) != null)
-                    continue;
+            if (inlines.Count == 0)
+                return message;
 
-                inlines.Add(new Models.InlineElement(Models.InlineElementType.Code, start + 1, len - 2, string.Empty));
-            }
+            var builder = new StringBuilder();
+            var idx = 0;
 
             inlines.Sort();
-            return inlines;
+            for (var i = 0; i < inlines.Count; i++)
+            {
+                var inline = inlines[i];
+                if (idx < inline.Start)
+                    builder.Append(message.AsSpan(idx, inline.Start - idx));
+
+                builder
+                    .Append('[')
+                    .Append(message.AsSpan(inline.Start, inline.Length))
+                    .Append("](");
+
+                if (inline.Type == Models.InlineElementType.Link)
+                    builder.Append(inline.Link).Append(')');
+                else
+                    builder.Append("commit://").Append(inline.Link).Append(')');
+
+                idx = inline.Start + inline.Length;
+            }
+
+            if (idx < message.Length)
+                builder.Append(message.AsSpan(idx));
+
+            return builder.ToString();
         }
 
         private void RefreshVisibleChanges()
@@ -719,19 +727,14 @@ namespace SourceGit.ViewModels
             ViewRevisionFileContent = await new Commands.QuerySubmoduleRevision(submoduleRoot, file.SHA).GetResultAsync();
         }
 
-        [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
-        private static partial Regex REG_URL_FORMAT();
-
         [GeneratedRegex(@"\b([0-9a-fA-F]{6,64})\b")]
         private static partial Regex REG_SHA_FORMAT();
-
-        [GeneratedRegex(@"`.*?`")]
-        private static partial Regex REG_INLINECODE_FORMAT();
 
         private Repository _repo = null;
         private CommitDetailSharedData _sharedData = null;
         private Models.Commit _commit = null;
-        private Models.CommitFullMessage _fullMessage = null;
+        private string _message = string.Empty;
+        private string _messageMarkdown = string.Empty;
         private Models.CommitSignInfo _signInfo = null;
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
