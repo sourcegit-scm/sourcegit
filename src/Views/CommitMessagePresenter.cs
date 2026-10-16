@@ -337,11 +337,10 @@ namespace SourceGit.Views
         {
             var border = new Border()
             {
-                BorderThickness = new Thickness(4, 0, 0, 0),
+                BorderThickness = new Thickness(6, 0, 0, 0),
                 BorderBrush = Brushes.Green,
-                Background = Brushes.Transparent,
+                Background = new SolidColorBrush(Colors.SkyBlue, 0.15)
             };
-
             border.Margin = margin switch
             {
                 ApplyMargin.None => new Thickness(0),
@@ -371,7 +370,6 @@ namespace SourceGit.Views
                 CornerRadius = new CornerRadius(4),
             };
             border.Bind(Border.BackgroundProperty, new DynamicResourceExtension("Brush.InlineCode"));
-
             border.Margin = margin switch
             {
                 ApplyMargin.None => new Thickness(0),
