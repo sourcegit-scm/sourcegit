@@ -661,6 +661,7 @@
   <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Παρακάμψεις θέματος</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Χρήση μπαρών κύλισης αυτόματης απόκρυψης</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Χρήση σταθερού πλάτους καρτελών στη γραμμή τίτλου</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseMultiLineTabs" xml:space="preserve">Αναδίπλωση καρτελών αποθετηρίων σε πολλές σειρές</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Χρήση εγγενούς πλαισίου παραθύρου</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">ΕΡΓΑΛΕΙΟ DIFF/MERGE</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Ορίσματα Diff</x:String>
