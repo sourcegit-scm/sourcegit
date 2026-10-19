@@ -49,7 +49,9 @@ namespace SourceGit.AI
         [JsonPropertyName("ApiKey")]
         public string PersistedApiKey
         {
-            get => (Native.OS.SupportsSecretStorage() && !ReadApiKeyFromEnv) ? string.Empty : _apiKey;
+            // Only omit the key from disk once it is confirmed in the secret store; otherwise
+            // fall back to persisting it, so a failed store write can never lose the key.
+            get => (Native.OS.SupportsSecretStorage() && !ReadApiKeyFromEnv && _secretInStore) ? string.Empty : _apiKey;
             set => _apiKey = value ?? string.Empty;
         }
 
@@ -134,11 +136,13 @@ namespace SourceGit.AI
 
             if (!string.IsNullOrEmpty(_apiKey))
             {
-                Native.OS.WriteSecret(Id, _apiKey);
+                _secretInStore = Native.OS.WriteSecret(Id, _apiKey);
                 return true;
             }
 
-            _apiKey = Native.OS.ReadSecret(Id) ?? string.Empty;
+            var loaded = Native.OS.ReadSecret(Id);
+            _secretInStore = loaded != null;
+            _apiKey = loaded ?? string.Empty;
             return false;
         }
 
@@ -154,9 +158,14 @@ namespace SourceGit.AI
             EnsureId();
 
             if (ReadApiKeyFromEnv || string.IsNullOrEmpty(_apiKey))
+            {
                 Native.OS.DeleteSecret(Id);
+                _secretInStore = false;
+            }
             else
-                Native.OS.WriteSecret(Id, _apiKey);
+            {
+                _secretInStore = Native.OS.WriteSecret(Id, _apiKey);
+            }
         }
 
         /// <summary>
@@ -197,6 +206,7 @@ namespace SourceGit.AI
 
         private string _name = string.Empty;
         private string _apiKey = string.Empty;
+        private bool _secretInStore = false;
         private string _model = string.Empty;
         private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;
