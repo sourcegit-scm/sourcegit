@@ -61,11 +61,6 @@ namespace SourceGit
             return builder.ToString();
         }
 
-        public static string Escaped(this string value)
-        {
-            return value.Replace("\"", "\\\"", StringComparison.Ordinal);
-        }
-
         public static string EscapeForBRE(this string value)
         {
             return value
