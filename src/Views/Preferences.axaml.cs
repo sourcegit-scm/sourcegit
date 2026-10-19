@@ -437,8 +437,21 @@ namespace SourceGit.Views
             if (SelectedOpenAIService == null)
                 return;
 
+            SelectedOpenAIService.ClearSecret();
             ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
+            e.Handled = true;
+        }
+
+        private void OnReadApiKeyFromEnvClicked(object sender, RoutedEventArgs e)
+        {
+            // When the user switches a service to reading the key from an environment
+            // variable, the field now holds a variable name, not a secret. Clear any
+            // leftover key so a real secret is never written back to preference.json.
+            // Click fires only on user interaction, so loading a saved service is unaffected.
+            if (sender is CheckBox { IsChecked: true, DataContext: AI.Service service })
+                service.ApiKey = string.Empty;
+
             e.Handled = true;
         }
 

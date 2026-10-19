@@ -38,6 +38,11 @@ namespace SourceGit.Native
             bool SupportSetSid();
             string GetSetSidExecutable();
             void TerminateProcess(Process proc);
+
+            bool SupportsSecretStorage();
+            string ReadSecret(string key);
+            bool WriteSecret(string key, string secret);
+            void DeleteSecret(string key);
         }
 
         public static Directories BasicDirectories
@@ -318,6 +323,30 @@ namespace SourceGit.Native
         public static void TerminateProcess(Process proc)
         {
             _backend.TerminateProcess(proc);
+        }
+
+        /// <summary>
+        /// True when this platform stores secrets (such as AI API keys) in an OS secret store
+        /// rather than in preference.json.
+        /// </summary>
+        public static bool SupportsSecretStorage()
+        {
+            return _backend.SupportsSecretStorage();
+        }
+
+        public static string ReadSecret(string key)
+        {
+            return _backend.ReadSecret(key);
+        }
+
+        public static bool WriteSecret(string key, string secret)
+        {
+            return _backend.WriteSecret(key, secret);
+        }
+
+        public static void DeleteSecret(string key)
+        {
+            _backend.DeleteSecret(key);
         }
 
         private static void UpdateGitVersion()

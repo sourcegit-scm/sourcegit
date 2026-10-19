@@ -169,6 +169,28 @@ namespace SourceGit.Native
             }
         }
 
+        public bool SupportsSecretStorage()
+        {
+            return true;
+        }
+
+        public string ReadSecret(string key)
+        {
+            return MacOSKeychain.Read(KeychainService, key);
+        }
+
+        public bool WriteSecret(string key, string secret)
+        {
+            return MacOSKeychain.Write(KeychainService, key, secret);
+        }
+
+        public void DeleteSecret(string key)
+        {
+            MacOSKeychain.Delete(KeychainService, key);
+        }
+
+        private const string KeychainService = "SourceGit";
+
         private string _setsidExecutable = null;
     }
 

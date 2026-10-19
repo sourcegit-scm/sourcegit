@@ -210,6 +210,27 @@ namespace SourceGit.Native
             }
         }
 
+        // TODO: back with libsecret (Secret Service) so API keys are not stored in
+        // plaintext. Until then, keys remain in preference.json as before.
+        public bool SupportsSecretStorage()
+        {
+            return false;
+        }
+
+        public string ReadSecret(string key)
+        {
+            return null;
+        }
+
+        public bool WriteSecret(string key, string secret)
+        {
+            return false;
+        }
+
+        public void DeleteSecret(string key)
+        {
+        }
+
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;

@@ -630,10 +630,31 @@ namespace SourceGit.ViewModels
             });
         }
 
+        /// <summary>
+        /// Moves any plaintext AI API keys found in preference.json into the OS secret store
+        /// and saves, so the plaintext copies are scrubbed from disk. A no-op where there is
+        /// no secret store. Call once at startup, after the preferences become modifiable.
+        /// </summary>
+        public void MigrateAISecrets()
+        {
+            if (!Native.OS.SupportsSecretStorage())
+                return;
+
+            var migrated = false;
+            foreach (var service in OpenAIServices)
+                migrated |= service.ResolveSecret();
+
+            if (migrated)
+                Save();
+        }
+
         public void Save()
         {
             if (_isLoading || _isReadonly)
                 return;
+
+            foreach (var service in OpenAIServices)
+                service.FlushSecret();
 
             var tmpfile = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "preference_tmp.json");
             var content = JsonSerializer.Serialize(this, JsonCodeGen.Default.Preferences);

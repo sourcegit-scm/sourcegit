@@ -495,6 +495,7 @@ namespace SourceGit
 
             var pref = ViewModels.Preferences.Instance;
             pref.SetCanModify();
+            pref.MigrateAISecrets();
             pref.UpdateAvailableAIModels();
 
             _launcher = new ViewModels.Launcher(startupRepo);
