@@ -6,13 +6,10 @@
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitChanges"
-             x:DataType="vm:CommitDetail">
-  <Grid>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
-      <ColumnDefinition Width="4"/>
-      <ColumnDefinition Width="*" MinWidth="100"/>
-    </Grid.ColumnDefinitions>
+             x:DataType="vm:CommitDetail"
+             x:Name="ThisControl">
+  <v:ChangeListLayout IsFileListOnly="{Binding #ThisControl.IsFileListOnly}"
+                      ListWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}">
 
     <Grid Grid.Column="0" RowDefinitions="26,*,26">
       <!-- Search & Display Mode -->
@@ -58,7 +55,8 @@
                                   Changes="{Binding VisibleChanges, Mode=OneWay}"
                                   Selection="{Binding ChangeSelection, Mode=TwoWay}"
                                   ContextRequested="OnChangeContextRequested"
-                                  KeyDown="OnChangeCollectionViewKeyDown"/>
+                                  KeyDown="OnChangeCollectionViewKeyDown"
+                                  ChangeActivated="OnChangeActivated"/>
         </Border>
       </Border>
       
@@ -75,12 +73,13 @@
     </Grid>
 
     <GridSplitter Grid.Column="1"
+                  IsVisible="{Binding !#ThisControl.IsFileListOnly}"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"
                   Focusable="False"/>
 
-    <Grid Grid.Column="2">
+    <Grid Grid.Column="2" IsVisible="{Binding !#ThisControl.IsFileListOnly}">
       <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
           <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
@@ -100,5 +99,5 @@
         </ContentControl.DataTemplates>
       </ContentControl>
     </Grid>
-  </Grid>
+  </v:ChangeListLayout>
 </UserControl>

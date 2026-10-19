@@ -10,7 +10,8 @@
              x:Class="SourceGit.Views.Histories"
              x:DataType="vm:Histories"
              x:Name="ThisControl">
-  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories}">
+  <v:HistoriesLayout UseHorizontal="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsHorizontalHistoryLayout}"
+                     IsFocusedLayout="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsFocusedHistoryLayout}">
     <v:HistoriesLayout.RowDefinitions>
       <RowDefinition Height="{Binding TopArea, Mode=TwoWay}" MinHeight="100"/>
       <RowDefinition Height="3"/>
@@ -299,6 +300,20 @@
       </Border>
 
       <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+
+      <Grid RowDefinitions="Auto,*" Background="{DynamicResource Brush.Window}" IsVisible="{Binding IsFocusedDiffVisible}">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="8,4">
+          <TextBlock Text="{Binding FocusedDiffPath}" FontFamily="{DynamicResource Fonts.Monospace}" Margin="0,0,12,0" TextTrimming="CharacterEllipsis"/>
+          <Button Grid.Column="1" Content="{DynamicResource Text.Histories.BackToGraph}" Click="OnReturnToGraph" Padding="10,4"/>
+        </Grid>
+        <ContentControl Grid.Row="1" Content="{Binding FocusedDiff}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:DiffContext">
+              <v:DiffView/>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+      </Grid>
     </Grid>
 
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
@@ -309,8 +324,22 @@
                   Focusable="False"
                   IsEnabled="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
 
-    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" >
-      <ContentControl Content="{Binding DetailContext, Mode=OneWay}">
+    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" RowDefinitions="Auto,*"
+          Classes.focused="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsFocusedHistoryLayout}">
+      <Grid.Styles>
+        <Style Selector="ContentControl#HistoryDetailsPresenter">
+          <Setter Property="Grid.Row" Value="0"/>
+          <Setter Property="Grid.RowSpan" Value="2"/>
+        </Style>
+        <Style Selector="Grid.focused > ContentControl#HistoryDetailsPresenter">
+          <Setter Property="Grid.Row" Value="1"/>
+          <Setter Property="Grid.RowSpan" Value="1"/>
+        </Style>
+      </Grid.Styles>
+      <TextBlock Grid.Row="0" Text="{DynamicResource Text.Histories.SelectionDetails}" Margin="8,0,36,0"
+                 Foreground="{DynamicResource Brush.FG2}"
+                 IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsFocusedHistoryLayout}"/>
+      <ContentControl x:Name="HistoryDetailsPresenter" Content="{Binding DetailContext, Mode=OneWay}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Null">
             <TabControl Padding="0,4">
@@ -351,7 +380,11 @@
           </DataTemplate>
 
           <DataTemplate DataType="vm:CommitDetail">
-            <v:CommitDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
+            <Panel>
+              <v:CommitDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"
+                              IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsFocusedHistoryLayout, Converter={x:Static BoolConverters.Not}}"/>
+              <v:FocusedCommitDetail IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsFocusedHistoryLayout}"/>
+            </Panel>
           </DataTemplate>
 
           <DataTemplate DataType="vm:RevisionCompare">
@@ -369,7 +402,7 @@
                   </Border>
                 </TabItem.Header>
 
-                <v:RevisionCompare IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
+                <v:RevisionCompare IsFileListOnly="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsFocusedHistoryLayout}" IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
               </TabItem>
 
               <TabItem IsEnabled="False">
@@ -422,7 +455,7 @@
         </ContentControl.DataTemplates>
       </ContentControl>
 
-      <StackPanel Orientation="Horizontal"
+      <StackPanel Grid.Row="0" Orientation="Horizontal"
                   HorizontalAlignment="Right" VerticalAlignment="Top"
                   Margin="0,0,4,0">
         <Button Classes="icon_button"
@@ -449,7 +482,7 @@
                       Padding="0"
                       HotKey="{OnPlatform Ctrl+J, macOS=⌘+J}"
                       IsChecked="{Binding IsCollapseDetails, Mode=TwoWay}"
-                      IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseTwoColumnsLayoutInHistories, Mode=OneWay, Converter={x:Static BoolConverters.Not}}">
+                      IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=IsHorizontalHistoryLayout, Mode=OneWay, Converter={x:Static BoolConverters.Not}}">
           <ToolTip.Tip>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
               <TextBlock Text="{DynamicResource Text.CommitDetail.CollapseToBottom}" VerticalAlignment="Center"/>

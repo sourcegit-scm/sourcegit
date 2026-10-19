@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,15 @@ namespace SourceGit.Views
 {
     public class HistoriesLayout : Grid
     {
+        public static readonly StyledProperty<bool> IsFocusedLayoutProperty =
+            AvaloniaProperty.Register<HistoriesLayout, bool>(nameof(IsFocusedLayout));
+
+        public bool IsFocusedLayout
+        {
+            get => GetValue(IsFocusedLayoutProperty);
+            set => SetValue(IsFocusedLayoutProperty, value);
+        }
+
         public static readonly DirectProperty<HistoriesLayout, bool> UseHorizontalProperty =
             AvaloniaProperty.RegisterDirect<HistoriesLayout, bool>(
                 nameof(UseHorizontal),
@@ -36,7 +46,7 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == UseHorizontalProperty && IsLoaded)
+            if ((change.Property == UseHorizontalProperty || change.Property == IsFocusedLayoutProperty) && IsLoaded)
                 RefreshLayout();
         }
 
@@ -48,6 +58,7 @@ namespace SourceGit.Views
 
         private void RefreshLayout()
         {
+            ColumnDefinitions[2].MinWidth = IsFocusedLayout ? 260 : 100;
             if (UseHorizontal)
             {
                 var rowSpan = RowDefinitions.Count;
@@ -372,6 +383,48 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+            AddHandler(KeyDownEvent, OnHistoryKeyDown, RoutingStrategies.Bubble);
+        }
+
+        public void OpenFocusedDiff()
+        {
+            if (DataContext is ViewModels.Histories vm)
+                vm.OpenFocusedDiff();
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+            ViewModels.Preferences.Instance.PropertyChanged += OnHistoryLayoutChanged;
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            ViewModels.Preferences.Instance.PropertyChanged -= OnHistoryLayoutChanged;
+            base.OnDetachedFromVisualTree(e);
+        }
+
+        private void OnHistoryLayoutChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModels.Preferences.HistoryLayout) && DataContext is ViewModels.Histories vm)
+                vm.UpdateLayout();
+        }
+
+        private void OnReturnToGraph(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories vm)
+            {
+                vm.ShowGraph();
+                CommitListContainer.Focus();
+            }
+            e.Handled = true;
+        }
+
+        private void OnHistoryKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!e.Handled && e.Key == Key.Escape && e.KeyModifiers == KeyModifiers.None &&
+                DataContext is ViewModels.Histories { IsFocusedDiffVisible: true })
+                OnReturnToGraph(sender, e);
         }
 
         public async Task GotoParent()
@@ -537,24 +590,33 @@ namespace SourceGit.Views
             layout.Header = new TextBlock() { Text = App.Text("Repository.HistoriesLayout"), FontWeight = FontWeight.Bold };
             layout.IsEnabled = false;
 
-            var isHorizontal = pref.UseTwoColumnsLayoutInHistories;
+            var isHorizontal = pref.HistoryLayout == Models.HistoryLayout.SideBySide;
             var horizontal = new MenuItem();
             horizontal.Header = App.Text("Repository.HistoriesLayout.Horizontal");
             if (isHorizontal)
                 horizontal.Icon = this.CreateMenuIcon("Icons.Check");
             horizontal.Click += (_, ev) =>
             {
-                pref.UseTwoColumnsLayoutInHistories = true;
+                pref.HistoryLayout = Models.HistoryLayout.SideBySide;
                 ev.Handled = true;
             };
 
             var vertical = new MenuItem();
             vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
-            if (!isHorizontal)
+            if (pref.HistoryLayout == Models.HistoryLayout.Stacked)
                 vertical.Icon = this.CreateMenuIcon("Icons.Check");
             vertical.Click += (_, ev) =>
             {
-                pref.UseTwoColumnsLayoutInHistories = false;
+                pref.HistoryLayout = Models.HistoryLayout.Stacked;
+                ev.Handled = true;
+            };
+
+            var focused = new MenuItem { Header = App.Text("Repository.HistoriesLayout.Focused") };
+            if (pref.IsFocusedHistoryLayout)
+                focused.Icon = this.CreateMenuIcon("Icons.Check");
+            focused.Click += (_, ev) =>
+            {
+                pref.HistoryLayout = Models.HistoryLayout.Focused;
                 ev.Handled = true;
             };
 
@@ -724,6 +786,7 @@ namespace SourceGit.Views
             menu.Items.Add(layout);
             menu.Items.Add(horizontal);
             menu.Items.Add(vertical);
+            menu.Items.Add(focused);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(showFlags);
             menu.Items.Add(reflog);
@@ -858,7 +921,7 @@ namespace SourceGit.Views
 
         private void OnTabHeaderPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+            if (ViewModels.Preferences.Instance.IsHorizontalHistoryLayout)
                 return;
 
             if (DataContext is not ViewModels.Histories vm)

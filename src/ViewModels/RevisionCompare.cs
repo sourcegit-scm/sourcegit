@@ -121,8 +121,8 @@ namespace SourceGit.ViewModels
                 hashes.Contains(e.SHA))
                 return;
 
-            _startPoint = l;
-            _endPoint = r;
+            StartPoint = l;
+            EndPoint = r;
             Refresh();
         }
 
@@ -343,6 +343,9 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
+            OnPropertyChanged(nameof(LeftSideDesc));
+            OnPropertyChanged(nameof(RightSideDesc));
+
             Task.Run(async () =>
             {
                 _changes = await new Commands.CompareRevisions(_repo.FullPath, GetSHA(_startPoint), GetSHA(_endPoint))

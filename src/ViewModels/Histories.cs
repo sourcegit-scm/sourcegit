@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -149,8 +150,90 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _detailContext, value))
+                {
+                    ShowGraph();
+                    ObserveDetailContext(value);
                     OnPropertyChanged(nameof(IsOpenAsStandaloneVisible));
+                }
             }
+        }
+
+        public DiffContext FocusedDiff
+        {
+            get => _focusedDiff;
+            private set
+            {
+                if (SetProperty(ref _focusedDiff, value))
+                    OnPropertyChanged(nameof(IsFocusedDiffVisible));
+            }
+        }
+
+        public string FocusedDiffPath
+        {
+            get => _focusedDiffPath;
+            private set => SetProperty(ref _focusedDiffPath, value);
+        }
+
+        public bool IsFocusedDiffVisible => Preferences.Instance.IsFocusedHistoryLayout && FocusedDiff != null;
+
+        public void OpenFocusedDiff()
+        {
+            if (!Preferences.Instance.IsFocusedHistoryLayout)
+                return;
+
+            ChangeSelection selection;
+            DiffContext diff;
+            if (DetailContext is CommitDetail detail)
+            {
+                selection = detail.ChangeSelection;
+                if (detail.DiffContext == null)
+                    detail.UpdateDetails();
+                diff = detail.DiffContext;
+            }
+            else if (DetailContext is RevisionCompare compare)
+            {
+                selection = compare.ChangeSelection;
+                diff = compare.DiffContext;
+            }
+            else
+            {
+                return;
+            }
+
+            if (selection is { Count: 1, HasFolder: false } && diff != null)
+            {
+                FocusedDiffPath = selection.Changes[0].Path;
+                FocusedDiff = diff;
+            }
+        }
+
+        public void ShowGraph()
+        {
+            FocusedDiff = null;
+            FocusedDiffPath = string.Empty;
+        }
+
+        public void UpdateLayout()
+        {
+            ShowGraph();
+            OnPropertyChanged(nameof(RightArea));
+            OnPropertyChanged(nameof(BottomArea));
+        }
+
+        private void ObserveDetailContext(object context)
+        {
+            if (_observedDetailContext != null)
+                _observedDetailContext.PropertyChanged -= OnDetailContextPropertyChanged;
+            _observedDetailContext = context as INotifyPropertyChanged;
+            if (_observedDetailContext != null)
+                _observedDetailContext.PropertyChanged += OnDetailContextPropertyChanged;
+        }
+
+        private void OnDetailContextPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(CommitDetail.Commit) or nameof(RevisionCompare.IsLoading) or
+                nameof(RevisionCompare.StartPoint) or nameof(RevisionCompare.EndPoint))
+                ShowGraph();
         }
 
         public Models.Bisect Bisect
@@ -184,8 +267,20 @@ namespace SourceGit.ViewModels
 
         public GridLength RightArea
         {
-            get => _rightArea;
-            set => SetProperty(ref _rightArea, value);
+            get => Preferences.Instance.IsFocusedHistoryLayout ? new GridLength(_repo.UIStates.FocusedHistoryDetailsWidth) : _rightArea;
+            set
+            {
+                if (Preferences.Instance.IsFocusedHistoryLayout)
+                {
+                    if (value.IsAbsolute && value.Value >= 260)
+                    {
+                        _repo.UIStates.FocusedHistoryDetailsWidth = value.Value;
+                        OnPropertyChanged();
+                    }
+                }
+                else
+                    SetProperty(ref _rightArea, value);
+            }
         }
 
         public GridLength TopArea
@@ -199,7 +294,7 @@ namespace SourceGit.ViewModels
             get => _isCollapseDetails ? new GridLength(28, GridUnitType.Pixel) : _bottomArea;
             set
             {
-                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isCollapseDetails)
+                if (!Preferences.Instance.IsHorizontalHistoryLayout && !_isCollapseDetails)
                     SetProperty(ref _bottomArea, value);
             }
         }
@@ -220,7 +315,7 @@ namespace SourceGit.ViewModels
             get => _isCollapseDetails;
             set
             {
-                if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && SetProperty(ref _isCollapseDetails, value))
+                if (!Preferences.Instance.IsHorizontalHistoryLayout && SetProperty(ref _isCollapseDetails, value))
                 {
                     OnPropertyChanged(nameof(TopArea));
                     OnPropertyChanged(nameof(BottomArea));
@@ -588,6 +683,9 @@ namespace SourceGit.ViewModels
         private Models.Bisect _bisect = null;
         private object _detailContext = Models.Null.Instance;
         private bool _ignoreSelectionChange = false;
+        private INotifyPropertyChanged _observedDetailContext = null;
+        private DiffContext _focusedDiff = null;
+        private string _focusedDiffPath = string.Empty;
 
         private bool _isSearchingCommits = false;
         private SearchCommitContext _searchCommitContext = null;

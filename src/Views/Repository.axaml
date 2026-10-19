@@ -795,7 +795,7 @@
                                IssueTrackers="{Binding IssueTrackers, Mode=OneWay}">
                     <v:Histories.IsDetailsPanelExpanded>
                       <MultiBinding Converter="{x:Static BoolConverters.Or}">
-                        <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseTwoColumnsLayoutInHistories" Mode="OneWay"/>
+                        <Binding Source="{x:Static vm:Preferences.Instance}" Path="IsHorizontalHistoryLayout" Mode="OneWay"/>
                         <Binding Path="IsCollapseDetails" Converter="{x:Static BoolConverters.Not}" Mode="OneWay"/>
                       </MultiBinding>
                     </v:Histories.IsDetailsPanelExpanded>

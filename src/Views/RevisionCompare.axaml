@@ -8,7 +8,8 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionCompare"
-             x:DataType="vm:RevisionCompare">
+             x:DataType="vm:RevisionCompare"
+             x:Name="ThisControl">
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:Null">
       <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
@@ -45,7 +46,7 @@
 
   <Grid RowDefinitions="Auto,*" Margin="4">
     <!-- Compare Revision Info -->
-    <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
+    <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto" IsVisible="{Binding !#ThisControl.IsFileListOnly}">
       <!-- Base Revision -->
       <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
         <ContentControl Content="{Binding StartPoint}"/>
@@ -67,13 +68,22 @@
       </Button>
     </Grid>
 
+    <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" Margin="0,0,0,8" IsVisible="{Binding #ThisControl.IsFileListOnly}">
+      <StackPanel Spacing="4">
+        <TextBlock Text="{Binding LeftSideDesc}" FontFamily="{DynamicResource Fonts.Monospace}" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Text="{Binding RightSideDesc, StringFormat='→ {0}'}" FontFamily="{DynamicResource Fonts.Monospace}" TextTrimming="CharacterEllipsis"/>
+      </StackPanel>
+      <Button Grid.Column="1" Classes="icon_button" Width="28" Command="{Binding Swap}" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
+        <Path Width="16" Height="16" Data="{StaticResource Icons.Compare}"/>
+      </Button>
+      <Button Grid.Column="2" Classes="icon_button" Width="28" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
+        <Path Width="16" Height="16" Data="{StaticResource Icons.Save}"/>
+      </Button>
+    </Grid>
+
     <!-- Changes View -->
-    <Grid Grid.Row="1">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
-        <ColumnDefinition Width="4"/>
-        <ColumnDefinition Width="*" MinWidth="100"/>
-      </Grid.ColumnDefinitions>
+    <v:ChangeListLayout Grid.Row="1" IsFileListOnly="{Binding #ThisControl.IsFileListOnly}"
+                        ListWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}">
 
       <Grid Grid.Column="0" RowDefinitions="26,*,26">
         <!-- Search & Display Mode -->
@@ -113,7 +123,8 @@
                                     Changes="{Binding VisibleChanges, Mode=OneWay}"
                                     Selection="{Binding ChangeSelection, Mode=TwoWay}"
                                     ContextRequested="OnChangeContextRequested"
-                                    KeyDown="OnChangeCollectionViewKeyDown"/>            
+                                    KeyDown="OnChangeCollectionViewKeyDown"
+                                    ChangeActivated="OnChangeActivated"/>
           </Border>
         </Border>
 
@@ -135,12 +146,13 @@
       </Grid>
 
       <GridSplitter Grid.Column="1"
+                    IsVisible="{Binding !#ThisControl.IsFileListOnly}"
                     MinWidth="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="Transparent"
                     Focusable="False"/>
 
-      <Grid Grid.Column="2">
+      <Grid Grid.Column="2" IsVisible="{Binding !#ThisControl.IsFileListOnly}">
         <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
@@ -160,6 +172,6 @@
           </ContentControl.DataTemplates>
         </ContentControl>
       </Grid>
-    </Grid>
+    </v:ChangeListLayout>
   </Grid>
 </UserControl>
