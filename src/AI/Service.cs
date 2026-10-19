@@ -124,8 +124,10 @@ namespace SourceGit.AI
         /// <summary>
         /// Loads the API key from the OS secret store into memory. If a plaintext key is
         /// still present (a legacy preference.json, or a config from a platform without a
-        /// secret store), it is moved into the store; the method then returns true so the
-        /// caller can save and scrub the plaintext copy from disk.
+        /// secret store), it is moved into the store; the method then returns true when the
+        /// key is now safely stored, so the caller can save and scrub the plaintext copy
+        /// from disk. Returns false (leaving the plaintext in place to retry) if the store
+        /// write failed.
         /// </summary>
         public bool ResolveSecret()
         {
@@ -137,7 +139,7 @@ namespace SourceGit.AI
             if (!string.IsNullOrEmpty(_apiKey))
             {
                 _secretInStore = Native.OS.WriteSecret(Id, _apiKey);
-                return true;
+                return _secretInStore;
             }
 
             var loaded = Native.OS.ReadSecret(Id);

@@ -904,7 +904,8 @@
                     <CheckBox Margin="0,4,0,0"
                               Height="28"
                               Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
-                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
+                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"
+                              Click="OnReadApiKeyFromEnvClicked"/>
 
                     <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
                     <TextBox Margin="0,4,0,0"

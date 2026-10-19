@@ -18,7 +18,7 @@ namespace SourceGit.Native
         private const uint EncodingUTF8 = 0x08000100;
 
         private const int StatusSuccess = 0;
-        private const int StatusItemNotFound = -25300;
+        private const int StatusDuplicateItem = -25299;
 
         /// <summary>
         /// Reads the secret for <paramref name="account"/>, or null if none is stored.
@@ -46,13 +46,12 @@ namespace SourceGit.Native
                 }
                 finally
                 {
-                    CFRelease(result);
+                    Release(result);
                 }
             }
             finally
             {
-                if (query != IntPtr.Zero)
-                    CFRelease(query);
+                Release(query);
             }
         }
 
@@ -69,19 +68,7 @@ namespace SourceGit.Native
                 existsQuery = CreateQuery(service, account, withReturnData: false);
                 var exists = SecItemCopyMatching(existsQuery, out _) == StatusSuccess;
                 if (exists)
-                {
-                    var data = CFDataCreate(IntPtr.Zero, secretBytes, secretBytes.Length);
-                    var update = CreateDictionary([_kSecValueData.Value], [data]);
-                    try
-                    {
-                        return SecItemUpdate(existsQuery, update) == StatusSuccess;
-                    }
-                    finally
-                    {
-                        CFRelease(update);
-                        CFRelease(data);
-                    }
-                }
+                    return Update(existsQuery, secretBytes);
 
                 var addService = CreateString(service);
                 var addAccount = CreateString(account);
@@ -91,20 +78,41 @@ namespace SourceGit.Native
                     [_kSecClassGenericPassword.Value, addService, addAccount, addData]);
                 try
                 {
-                    return SecItemAdd(attributes, IntPtr.Zero) == StatusSuccess;
+                    var status = SecItemAdd(attributes, IntPtr.Zero);
+
+                    // A concurrent writer may have created the item between the check and
+                    // the add; fall back to updating it instead of failing.
+                    if (status == StatusDuplicateItem)
+                        return Update(existsQuery, secretBytes);
+
+                    return status == StatusSuccess;
                 }
                 finally
                 {
-                    CFRelease(attributes);
-                    CFRelease(addData);
-                    CFRelease(addAccount);
-                    CFRelease(addService);
+                    Release(attributes);
+                    Release(addData);
+                    Release(addAccount);
+                    Release(addService);
                 }
             }
             finally
             {
-                if (existsQuery != IntPtr.Zero)
-                    CFRelease(existsQuery);
+                Release(existsQuery);
+            }
+        }
+
+        private static bool Update(IntPtr query, byte[] secretBytes)
+        {
+            var data = CFDataCreate(IntPtr.Zero, secretBytes, secretBytes.Length);
+            var update = CreateDictionary([_kSecValueData.Value], [data]);
+            try
+            {
+                return SecItemUpdate(query, update) == StatusSuccess;
+            }
+            finally
+            {
+                Release(update);
+                Release(data);
             }
         }
 
@@ -116,15 +124,12 @@ namespace SourceGit.Native
             var query = CreateQuery(service, account, withReturnData: false);
             try
             {
-                var status = SecItemDelete(query);
-                if (status != StatusSuccess && status != StatusItemNotFound)
-                {
-                    // Nothing actionable; leaving a stale item is harmless.
-                }
+                // Best effort: a failure here just leaves a harmless stale item.
+                SecItemDelete(query);
             }
             finally
             {
-                CFRelease(query);
+                Release(query);
             }
         }
 
@@ -147,8 +152,8 @@ namespace SourceGit.Native
             }
             finally
             {
-                CFRelease(serviceRef);
-                CFRelease(accountRef);
+                Release(serviceRef);
+                Release(accountRef);
             }
         }
 
@@ -160,6 +165,16 @@ namespace SourceGit.Native
 
         private static IntPtr CreateDictionary(IntPtr[] keys, IntPtr[] values)
         {
+            // CFDictionaryCreate retains each key/value via its callbacks; a NULL entry
+            // would crash in CFRetain. Bail if any component handle failed to allocate.
+            foreach (var key in keys)
+                if (key == IntPtr.Zero)
+                    return IntPtr.Zero;
+
+            foreach (var value in values)
+                if (value == IntPtr.Zero)
+                    return IntPtr.Zero;
+
             return CFDictionaryCreate(
                 IntPtr.Zero,
                 keys,
@@ -167,6 +182,12 @@ namespace SourceGit.Native
                 keys.Length,
                 _kCFTypeDictionaryKeyCallBacks.Value,
                 _kCFTypeDictionaryValueCallBacks.Value);
+        }
+
+        private static void Release(IntPtr handle)
+        {
+            if (handle != IntPtr.Zero)
+                CFRelease(handle);
         }
 
         // Exported CFStringRef / struct constants are read once from the frameworks.
