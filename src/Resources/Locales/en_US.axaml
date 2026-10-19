@@ -662,6 +662,8 @@
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} months ago</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} years ago</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Yesterday</x:String>
+  <x:String x:Key="Text.Popup.ResetDefaults" xml:space="preserve">Reset defaults</x:String>
+  <x:String x:Key="Text.Popup.SaveAsDefault" xml:space="preserve">Save as default</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferences</x:String>
   <x:String x:Key="Text.Preferences.AI" xml:space="preserve">AI</x:String>
   <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Additional Prompt (Use `-` to list your requirements)</x:String>
@@ -850,6 +852,7 @@
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">First-parent only</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">SHOW FLAGS</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Show lost commits</x:String>
+  <x:String x:Key="Text.Repository.ShowOptions" xml:space="preserve">Show options...</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Show Submodules as Tree</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
   <x:String x:Key="Text.Repository.Skip" xml:space="preserve">SKIP</x:String>

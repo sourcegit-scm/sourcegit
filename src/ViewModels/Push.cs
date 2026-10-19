@@ -87,14 +87,14 @@ namespace SourceGit.ViewModels
 
         public bool CheckSubmodules
         {
-            get;
-            set;
-        } = true;
+            get => _checkSubmodules;
+            set => SetProperty(ref _checkSubmodules, value);
+        }
 
         public bool PushAllTags
         {
-            get => _repo.UIStates.PushAllTags;
-            set => _repo.UIStates.PushAllTags = value;
+            get => _pushAllTags;
+            set => SetProperty(ref _pushAllTags, value);
         }
 
         public bool ForcePush
@@ -105,13 +105,22 @@ namespace SourceGit.ViewModels
 
         public bool NoVerify
         {
-            get;
-            set;
+            get => _noVerify;
+            set => SetProperty(ref _noVerify, value);
+        }
+
+        public override bool HasDefaultOptions
+        {
+            get => true;
         }
 
         public Push(Repository repo, Models.Branch localBranch)
         {
             _repo = repo;
+            _tracking = repo.UIStates.SetTrackingOnPush;
+            _checkSubmodules = repo.UIStates.CheckSubmodulesOnPush;
+            _pushAllTags = repo.UIStates.PushAllTags;
+            _noVerify = repo.UIStates.NoVerifyOnPush;
             CanTerminate = true;
 
             // Gather all local branches and find current branch.
@@ -160,6 +169,30 @@ namespace SourceGit.ViewModels
             collection.Add(fake);
             RemoteBranches = collection;
             SelectedRemoteBranch = fake;
+        }
+
+        public override void SaveOptionsAsDefault()
+        {
+            _repo.UIStates.SetTrackingOnPush = _tracking;
+            _repo.UIStates.CheckSubmodulesOnPush = _checkSubmodules;
+            _repo.UIStates.PushAllTags = _pushAllTags;
+            _repo.UIStates.NoVerifyOnPush = _noVerify;
+            _repo.UIStates.Save();
+        }
+
+        public override void ResetDefaultOptions()
+        {
+            var defaults = new Models.RepositoryUIStates();
+            _repo.UIStates.SetTrackingOnPush = defaults.SetTrackingOnPush;
+            _repo.UIStates.CheckSubmodulesOnPush = defaults.CheckSubmodulesOnPush;
+            _repo.UIStates.PushAllTags = defaults.PushAllTags;
+            _repo.UIStates.NoVerifyOnPush = defaults.NoVerifyOnPush;
+            _repo.UIStates.Save();
+
+            Tracking = defaults.SetTrackingOnPush;
+            CheckSubmodules = defaults.CheckSubmodulesOnPush;
+            PushAllTags = defaults.PushAllTags;
+            NoVerify = defaults.NoVerifyOnPush;
         }
 
         public override bool CanStartDirectly()
@@ -361,6 +394,9 @@ namespace SourceGit.ViewModels
         private Models.Branch _selectedRemoteBranch = null;
         private bool _isSetTrackOptionVisible = false;
         private bool _tracking = false;
+        private bool _checkSubmodules = true;
+        private bool _pushAllTags = false;
+        private bool _noVerify = false;
         private CancellationTokenSource _cancellation = null;
     }
 }
