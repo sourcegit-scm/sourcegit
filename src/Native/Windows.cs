@@ -257,6 +257,27 @@ namespace SourceGit.Native
             }
         }
 
+        // TODO: back with the Windows Credential Manager (or DPAPI) so API keys are not
+        // stored in plaintext. Until then, keys remain in preference.json as before.
+        public bool SupportsSecretStorage()
+        {
+            return false;
+        }
+
+        public string ReadSecret(string key)
+        {
+            return null;
+        }
+
+        public bool WriteSecret(string key, string secret)
+        {
+            return false;
+        }
+
+        public void DeleteSecret(string key)
+        {
+        }
+
         #region HELPER_METHODS
         private List<Models.ExternalTool.LaunchOption> GenerateVSProjectLaunchOptions(string path)
         {

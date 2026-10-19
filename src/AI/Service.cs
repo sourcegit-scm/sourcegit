@@ -13,6 +13,14 @@ namespace SourceGit.AI
 {
     public class Service : ObservableObject
     {
+        // Stable handle used as the account name when the API key is kept in the OS
+        // secret store. Persisted so the mapping survives restarts.
+        public string Id
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public string Name
         {
             get => _name;
@@ -25,11 +33,25 @@ namespace SourceGit.AI
             set;
         } = string.Empty;
 
+        // The effective API key used at runtime and bound by the UI. On platforms with a
+        // secret store it is loaded from / saved to that store and never written to disk;
+        // see PersistedApiKey, ResolveSecret and FlushSecret.
+        [JsonIgnore]
         public string ApiKey
         {
-            get;
-            set;
-        } = string.Empty;
+            get => _apiKey;
+            set => SetProperty(ref _apiKey, value);
+        }
+
+        // The value written to preference.json under "ApiKey". On a platform with a secret
+        // store this stays empty (unless the key is only an environment variable name, which
+        // is not itself a secret), so the API key is never persisted in plaintext.
+        [JsonPropertyName("ApiKey")]
+        public string PersistedApiKey
+        {
+            get => (Native.OS.SupportsSecretStorage() && !ReadApiKeyFromEnv) ? string.Empty : _apiKey;
+            set => _apiKey = value ?? string.Empty;
+        }
 
         public bool ReadApiKeyFromEnv
         {
@@ -97,6 +119,62 @@ namespace SourceGit.AI
             return !string.IsNullOrEmpty(Model) ? GetOpenAIClient().GetChatClient(Model) : null;
         }
 
+        /// <summary>
+        /// Loads the API key from the OS secret store into memory. If a plaintext key is
+        /// still present (a legacy preference.json, or a config from a platform without a
+        /// secret store), it is moved into the store; the method then returns true so the
+        /// caller can save and scrub the plaintext copy from disk.
+        /// </summary>
+        public bool ResolveSecret()
+        {
+            if (!Native.OS.SupportsSecretStorage() || ReadApiKeyFromEnv)
+                return false;
+
+            EnsureId();
+
+            if (!string.IsNullOrEmpty(_apiKey))
+            {
+                Native.OS.WriteSecret(Id, _apiKey);
+                return true;
+            }
+
+            _apiKey = Native.OS.ReadSecret(Id) ?? string.Empty;
+            return false;
+        }
+
+        /// <summary>
+        /// Writes the current API key to the OS secret store (or removes it) so that the
+        /// serialized PersistedApiKey can stay empty. A no-op where there is no secret store.
+        /// </summary>
+        public void FlushSecret()
+        {
+            if (!Native.OS.SupportsSecretStorage())
+                return;
+
+            EnsureId();
+
+            if (ReadApiKeyFromEnv || string.IsNullOrEmpty(_apiKey))
+                Native.OS.DeleteSecret(Id);
+            else
+                Native.OS.WriteSecret(Id, _apiKey);
+        }
+
+        /// <summary>
+        /// Removes this service's secret from the OS secret store, if any. Call when the
+        /// service is deleted.
+        /// </summary>
+        public void ClearSecret()
+        {
+            if (Native.OS.SupportsSecretStorage() && !string.IsNullOrEmpty(Id))
+                Native.OS.DeleteSecret(Id);
+        }
+
+        private void EnsureId()
+        {
+            if (string.IsNullOrEmpty(Id))
+                Id = Guid.NewGuid().ToString("N");
+        }
+
         private OpenAIClient GetOpenAIClient()
         {
             var credential = new ApiKeyCredential(ReadApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
@@ -118,6 +196,7 @@ namespace SourceGit.AI
         }
 
         private string _name = string.Empty;
+        private string _apiKey = string.Empty;
         private string _model = string.Empty;
         private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;

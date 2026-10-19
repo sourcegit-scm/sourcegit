@@ -437,6 +437,7 @@ namespace SourceGit.Views
             if (SelectedOpenAIService == null)
                 return;
 
+            SelectedOpenAIService.ClearSecret();
             ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
             e.Handled = true;
