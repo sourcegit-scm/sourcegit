@@ -11,7 +11,54 @@ namespace SourceGit
     {
         public static string Quoted(this string value)
         {
-            return $"\"{Escaped(value)}\"";
+            // The result is concatenated into ProcessStartInfo.Arguments, which .NET
+            // re-parses into argv using MSVC-style rules on every platform (a backslash
+            // is significant when it precedes a double quote). Escaping only the quotes
+            // is not enough: a value ending in a backslash, or containing a backslash
+            // immediately before a quote, would be handed to the child process as a
+            // different string. Apply the same escaping .NET itself uses to build an
+            // argument (see System.PasteArguments), so the value round-trips verbatim.
+            //
+            // NOTE: tools/quote-roundtrip-test mirrors this algorithm and must be kept
+            // in sync with it.
+            var builder = new StringBuilder(value.Length + 2);
+            builder.Append('"');
+
+            var i = 0;
+            while (i < value.Length)
+            {
+                var c = value[i++];
+                if (c == '\\')
+                {
+                    var backslashes = 1;
+                    while (i < value.Length && value[i] == '\\')
+                    {
+                        i++;
+                        backslashes++;
+                    }
+
+                    if (i == value.Length)
+                        builder.Append('\\', backslashes * 2); // precede the closing quote
+                    else if (value[i] == '"')
+                    {
+                        builder.Append('\\', backslashes * 2 + 1).Append('"'); // escape the quote too
+                        i++;
+                    }
+                    else
+                        builder.Append('\\', backslashes); // not special here
+                }
+                else if (c == '"')
+                {
+                    builder.Append('\\').Append('"');
+                }
+                else
+                {
+                    builder.Append(c);
+                }
+            }
+
+            builder.Append('"');
+            return builder.ToString();
         }
 
         public static string Escaped(this string value)
