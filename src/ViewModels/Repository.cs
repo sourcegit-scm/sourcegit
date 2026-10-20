@@ -774,7 +774,8 @@ namespace SourceGit.ViewModels
                 if (folderEndIdx > 10)
                     _uiStates.ExpandedBranchNodesInSideBar.Add(created.FullName.Substring(0, folderEndIdx));
 
-                if (_historyFilterMode == Models.FilterMode.Included)
+                if (_historyFilterMode == Models.FilterMode.Included &&
+                    !_uiStates.IsCoveredByFolderFilter(created.FullName, Models.FilterType.LocalBranchFolder))
                     SetBranchFilterMode(created, Models.FilterMode.Included, false, false);
 
                 CurrentBranch = created;
@@ -817,7 +818,8 @@ namespace SourceGit.ViewModels
 
             checkouted.IsCurrent = true;
             checkouted.WorktreePath = FullPath;
-            if (_historyFilterMode == Models.FilterMode.Included)
+            if (_historyFilterMode == Models.FilterMode.Included &&
+                !_uiStates.IsCoveredByFolderFilter(checkouted.FullName, Models.FilterType.LocalBranchFolder))
                 SetBranchFilterMode(checkouted, Models.FilterMode.Included, false, false);
 
             List<Models.Branch> locals = [];

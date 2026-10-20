@@ -37,6 +37,7 @@
 
         <TextBox.InnerRightContent>
           <Button Classes="icon_button"
+                  Focusable="False"
                   Width="16"
                   Margin="0,0,6,0"
                   Command="{Binding ClearFilter}"

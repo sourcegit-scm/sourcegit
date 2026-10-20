@@ -64,15 +64,6 @@ namespace SourceGit.Views
             set => SetValue(ForegroundProperty, value);
         }
 
-        public static readonly StyledProperty<IBrush> SecondaryForegroundProperty =
-            AvaloniaProperty.Register<PieChart, IBrush>(nameof(SecondaryForeground), Brushes.Gray);
-
-        public IBrush SecondaryForeground
-        {
-            get => GetValue(SecondaryForegroundProperty);
-            set => SetValue(SecondaryForegroundProperty, value);
-        }
-
         public override void Render(DrawingContext context)
         {
             base.Render(context);
@@ -83,7 +74,6 @@ namespace SourceGit.Views
             var w = Bounds.Width;
             var h = Bounds.Height;
             var foreground = Foreground;
-            var secondaryForeground = SecondaryForeground;
             var typeface = new Typeface(FontFamily);
             var secondaryTypeface = new Typeface(SecondaryFontFamily);
 
@@ -111,7 +101,7 @@ namespace SourceGit.Views
                 context.DrawEllipse(s_brushes[0], null, _center, _radius, _radius);
                 context.DrawText(label, new Point(_center.X - label.Width / 2, _center.Y - label.Height / 2));
 
-                _arcs.Add(new(0, 2 * Math.PI, single.User.Name, single.Count, 1.0, s_brushes[0], single));
+                _arcs.Add(new(0, 2 * Math.PI, single.User.Name, single.Count, 1.0, s_brushes[0], single, _center));
                 return;
             }
 
@@ -119,8 +109,7 @@ namespace SourceGit.Views
             var renderedCount = 0;
             var startAngle = -Math.PI / 2;
             var remaining = 2 * Math.PI;
-            var leftArcs = new List<Arc>();
-            var rightArcs = new List<Arc>();
+            var labelRender = new LabelRender();
             for (var i = 0; i < _report.Authors.Count; i++)
             {
                 var author = _report.Authors[i];
@@ -130,14 +119,10 @@ namespace SourceGit.Views
                     var brushIdx = i % s_brushes.Length;
                     var brush = (i == _report.Authors.Count - 1 && brushIdx == 0) ? s_brushes[1] : s_brushes[brushIdx];
                     var sweepAngle = percent * 2 * Math.PI;
-                    DrawArc(context, startAngle, sweepAngle, brush);
-
-                    var arc = new Arc(startAngle, sweepAngle, author.User.Name, author.Count, percent, brush, author);
+                    var labelAlignPoint = DrawArc(context, startAngle, sweepAngle, brush);
+                    var arc = new Arc(startAngle, sweepAngle, author.User.Name, author.Count, percent, brush, author, labelAlignPoint);
                     _arcs.Add(arc);
-                    if (arc.IsLeftSide)
-                        leftArcs.Add(arc);
-                    else
-                        rightArcs.Add(arc);
+                    labelRender.Append(arc, typeface, secondaryTypeface, foreground);
 
                     remaining -= sweepAngle;
                     startAngle += sweepAngle;
@@ -147,99 +132,15 @@ namespace SourceGit.Views
                 {
                     var sweepAngle = remaining;
                     var count = total - renderedCount;
-                    DrawArc(context, startAngle, sweepAngle, Brushes.Gray);
-
-                    var arc = new Arc(startAngle, sweepAngle, "Others", count, (double)count / total, Brushes.Gray, null);
+                    var labelAlignPoint = DrawArc(context, startAngle, sweepAngle, Brushes.Gray);
+                    var arc = new Arc(startAngle, sweepAngle, "Others", count, (double)count / total, Brushes.Gray, null, labelAlignPoint);
                     _arcs.Add(arc);
-                    if (arc.IsLeftSide)
-                        leftArcs.Add(arc);
-                    else
-                        rightArcs.Add(arc);
+                    labelRender.Append(arc, typeface, secondaryTypeface, foreground);
                     break;
                 }
             }
 
-            if (leftArcs.Count > 0)
-            {
-                for (var i = leftArcs.Count - 1; i >= 0; i--)
-                {
-                    var arc = leftArcs[i];
-                    var pen = new Pen(arc.Tip.Brush, 1);
-                    var lineStartX = _center.X - _radius - 32;
-
-                    var edgePoint = new Point(
-                        _center.X + _radius * Math.Cos(arc.MidAngle),
-                        _center.Y + _radius * Math.Sin(arc.MidAngle));
-
-                    var edgeLineStartPoint = new Point(
-                        _center.X + (_radius + 32) * Math.Cos(arc.MidAngle),
-                        _center.Y + (_radius + 32) * Math.Sin(arc.MidAngle));
-
-                    context.DrawLine(pen, new Point(lineStartX, edgeLineStartPoint.Y), edgeLineStartPoint);
-                    context.DrawLine(pen, edgeLineStartPoint, edgePoint);
-
-                    var title = new FormattedText(
-                        arc.Tip.Title,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        typeface,
-                        12,
-                        foreground);
-                    var percentage = new FormattedText(
-                        $"{arc.Tip.Percentage:P1}",
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        secondaryTypeface,
-                        12,
-                        secondaryForeground);
-
-                    var labelStartX = lineStartX - 8 - percentage.WidthIncludingTrailingWhitespace - 4 - title.WidthIncludingTrailingWhitespace;
-                    var labelMidY = edgeLineStartPoint.Y;
-                    context.DrawText(title, new Point(labelStartX, labelMidY - title.Height * 0.5));
-                    context.DrawText(percentage, new Point(labelStartX + title.WidthIncludingTrailingWhitespace + 4, labelMidY - percentage.Height * 0.5));
-                }
-            }
-
-            if (rightArcs.Count > 0)
-            {
-                for (var i = 0; i < rightArcs.Count; i++)
-                {
-                    var arc = rightArcs[i];
-                    var pen = new Pen(arc.Tip.Brush, 1);
-                    var lineStartX = _center.X + _radius + 32;
-
-                    var edgePoint = new Point(
-                        _center.X + _radius * Math.Cos(arc.MidAngle),
-                        _center.Y + _radius * Math.Sin(arc.MidAngle));
-
-                    var edgeLineStartPoint = new Point(
-                        _center.X + (_radius + 32) * Math.Cos(arc.MidAngle),
-                        _center.Y + (_radius + 32) * Math.Sin(arc.MidAngle));
-
-                    context.DrawLine(pen, new Point(lineStartX, edgeLineStartPoint.Y), edgeLineStartPoint);
-                    context.DrawLine(pen, edgeLineStartPoint, edgePoint);
-
-                    var title = new FormattedText(
-                        arc.Tip.Title,
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        typeface,
-                        12,
-                        foreground);
-                    var percentage = new FormattedText(
-                        $"{arc.Tip.Percentage:P1}",
-                        CultureInfo.CurrentCulture,
-                        FlowDirection.LeftToRight,
-                        secondaryTypeface,
-                        12,
-                        secondaryForeground);
-
-                    var labelStartX = lineStartX + 8;
-                    var labelMidY = edgeLineStartPoint.Y;
-                    context.DrawText(title, new Point(labelStartX, labelMidY - title.Height * 0.5));
-                    context.DrawText(percentage, new Point(labelStartX + title.WidthIncludingTrailingWhitespace + 4, labelMidY - percentage.Height * 0.5));
-                }
-            }
+            labelRender.Draw(context);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -254,8 +155,8 @@ namespace SourceGit.Views
 
             if (change.Property == ReportProperty ||
                 change.Property == FontFamilyProperty ||
-                change.Property == ForegroundProperty ||
-                change.Property == SecondaryForegroundProperty)
+                change.Property == SecondaryFontFamilyProperty ||
+                change.Property == ForegroundProperty)
                 InvalidateVisual();
         }
 
@@ -317,9 +218,10 @@ namespace SourceGit.Views
             }
         }
 
-        private void DrawArc(DrawingContext context, double startAngle, double sweepAngle, IBrush brush)
+        private Point DrawArc(DrawingContext context, double startAngle, double sweepAngle, IBrush brush)
         {
             var endAngle = startAngle + sweepAngle;
+            var midAngle = (startAngle + endAngle) / 2;
             var startPoint = new Point(_center.X + _radius * Math.Cos(startAngle), _center.Y + _radius * Math.Sin(startAngle));
             var endPoint = new Point(_center.X + _radius * Math.Cos(endAngle), _center.Y + _radius * Math.Sin(endAngle));
             var geometry = new StreamGeometry();
@@ -331,6 +233,21 @@ namespace SourceGit.Views
                 ctx.LineTo(_center);
             }
             context.DrawGeometry(brush, null, geometry);
+
+            var pen = new Pen(brush, 1);
+            var lineStartX = midAngle > Math.PI * 0.5 ? _center.X - _radius - 32 : _center.X + _radius + 32;
+
+            var edgePoint = new Point(
+                _center.X + _radius * Math.Cos(midAngle),
+                _center.Y + _radius * Math.Sin(midAngle));
+
+            var edgeLineStartPoint = new Point(
+                _center.X + (_radius + 32) * Math.Cos(midAngle),
+                _center.Y + (_radius + 32) * Math.Sin(midAngle));
+
+            context.DrawLine(pen, new Point(lineStartX, edgeLineStartPoint.Y), edgeLineStartPoint);
+            context.DrawLine(pen, edgeLineStartPoint, edgePoint);
+            return new Point(lineStartX, edgeLineStartPoint.Y);
         }
 
         private class Arc
@@ -339,17 +256,181 @@ namespace SourceGit.Views
             public double EndAngle { get; set; }
             public PieChartToolTip Tip { get; set; }
             public Models.StatisticsAuthor Author { get; set; }
+            public Point LabelAlignPoint { get; set; }
+            public bool IsLeftSide => (StartAngle + EndAngle) > Math.PI;
 
-            public double MidAngle => (StartAngle + EndAngle) / 2;
-            public bool IsLeftSide => MidAngle > Math.PI * 0.5;
-
-            public Arc(double startAngle, double sweepAngle, string title, int count, double percentage, IBrush brush, Models.StatisticsAuthor author)
+            public Arc(double startAngle, double sweepAngle, string title, int count, double percentage, IBrush brush, Models.StatisticsAuthor author, Point labelAlignPoint)
             {
                 StartAngle = startAngle;
                 EndAngle = startAngle + sweepAngle;
                 Tip = new PieChartToolTip(title, count, percentage, brush);
                 Author = author;
+                LabelAlignPoint = labelAlignPoint;
             }
+        }
+
+        private class LabelRender
+        {
+            public class Label
+            {
+                public FormattedText Author { get; set; }
+                public FormattedText Percent { get; set; }
+                public IBrush Color { get; set; }
+                public Point AlignPoint { get; set; }
+                public double Width { get; set; }
+            }
+
+            public class Batch
+            {
+                public Batch(Label info, double bottomY)
+                {
+                    _labels.Add(info);
+                    _bottomY = bottomY;
+                }
+
+                public bool TryAppend(Label info, double desiredTop)
+                {
+                    if (desiredTop > _bottomY)
+                        return false;
+
+                    _labels.Add(info);
+
+                    var midY = (_labels[0].AlignPoint.Y + info.AlignPoint.Y) * 0.5;
+                    var height = Math.Ceiling(_labels.Count / 2.0) * LABEL_HEIGHT;
+                    _bottomY = Math.Max(midY + height * 0.5, _labels[0].AlignPoint.Y + height - LABEL_HEIGHT * 0.5);
+                    return true;
+                }
+
+                public void Draw(DrawingContext context, bool isLeftSide)
+                {
+                    if (_labels.Count == 0)
+                        return;
+
+                    if (_labels.Count == 1)
+                    {
+                        var label = _labels[0];
+                        var x = isLeftSide ? label.AlignPoint.X - 8 - label.Width : label.AlignPoint.X + 8;
+                        var y = label.AlignPoint.Y;
+                        context.DrawText(label.Author, new Point(x, y - label.Author.Height * 0.5));
+                        x += label.Author.WidthIncludingTrailingWhitespace + 4;
+                        context.DrawText(label.Percent, new Point(x, y - label.Percent.Height * 0.5));
+                        x += label.Percent.WidthIncludingTrailingWhitespace + 4;
+                        context.DrawEllipse(label.Color, null, new Point(x + 4, y), 4, 4);
+                    }
+                    else
+                    {
+                        var first = _labels[0];
+                        var last = _labels[^1];
+                        var midY = (first.AlignPoint.Y + last.AlignPoint.Y) * 0.5;
+                        var requiredHeight = Math.Ceiling(_labels.Count / 2.0) * LABEL_HEIGHT;
+                        var alignedX = first.AlignPoint.X;
+                        var startY = Math.Max(midY - requiredHeight * 0.5, first.AlignPoint.Y - LABEL_HEIGHT * 0.5);
+                        var startX = 0.0;
+
+                        for (var i = 0; i < _labels.Count; i++)
+                        {
+                            var info = _labels[i];
+                            if (i % 2 == 0)
+                            {
+                                if (isLeftSide)
+                                {
+                                    startX = alignedX - 8 - info.Width;
+                                    if (i + 1 < _labels.Count)
+                                        startX = startX - 8 - _labels[i + 1].Width;
+                                }
+                                else
+                                {
+                                    startX = alignedX + 8;
+                                }
+
+                                if (i > 0)
+                                    startY += LABEL_HEIGHT;
+                            }
+
+                            context.DrawText(info.Author, new Point(startX, startY));
+                            startX += info.Author.WidthIncludingTrailingWhitespace + 4;
+                            context.DrawText(info.Percent, new Point(startX, startY));
+                            startX += info.Percent.WidthIncludingTrailingWhitespace + 4;
+                            context.DrawEllipse(info.Color, null, new Point(startX + 4, startY + LABEL_HEIGHT * 0.5), 4, 4);
+                            startX += 16;
+                        }
+                    }
+                }
+
+                private List<Label> _labels = new List<Label>();
+                private double _bottomY = 0;
+            }
+
+            public void Append(Arc arc, Typeface typeface, Typeface secondaryTypeface, IBrush foreground)
+            {
+                var title = new FormattedText(
+                    arc.Tip.Title,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    12,
+                    foreground);
+                var percentage = new FormattedText(
+                    $"{arc.Tip.Percentage:P1}",
+                    CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    secondaryTypeface,
+                    12,
+                    Brushes.Gray);
+
+                var width = title.WidthIncludingTrailingWhitespace + percentage.WidthIncludingTrailingWhitespace + 16;
+                var info = new Label()
+                {
+                    Author = title,
+                    Percent = percentage,
+                    Color = arc.Tip.Brush,
+                    AlignPoint = arc.LabelAlignPoint,
+                    Width = width,
+                };
+
+                if (arc.IsLeftSide)
+                    _left.Add(info);
+                else
+                    _right.Add(info);
+            }
+
+            public void Draw(DrawingContext context)
+            {
+                var batches = new List<Batch>();
+
+                for (var i = _left.Count - 1; i >= 0; i--)
+                {
+                    var info = _left[i];
+                    var desiredTop = info.AlignPoint.Y - 8;
+                    var desiredBottom = info.AlignPoint.Y + 8;
+                    if (batches.Count == 0 || !batches[^1].TryAppend(info, desiredTop))
+                    {
+                        var batch = new Batch(info, desiredBottom);
+                        batches.Add(batch);
+                    }
+                }
+
+                foreach (var b in batches)
+                    b.Draw(context, true);
+
+                batches.Clear();
+                foreach (var info in _right)
+                {
+                    var desiredTop = info.AlignPoint.Y - 8;
+                    var desiredBottom = info.AlignPoint.Y + 8;
+                    if (batches.Count == 0 || !batches[^1].TryAppend(info, desiredTop))
+                    {
+                        var batch = new Batch(info, desiredBottom);
+                        batches.Add(batch);
+                    }
+                }
+
+                foreach (var b in batches)
+                    b.Draw(context, false);
+            }
+
+            private List<Label> _left = new List<Label>();
+            private List<Label> _right = new List<Label>();
         }
 
         private static readonly IBrush[] s_brushes = new IBrush[]
@@ -365,6 +446,8 @@ namespace SourceGit.Views
             Brushes.RoyalBlue,
             Brushes.Teal,
         };
+
+        private const double LABEL_HEIGHT = 14;
 
         private Models.StatisticsReport _report = null;
         private Point _center = new Point(0, 0);

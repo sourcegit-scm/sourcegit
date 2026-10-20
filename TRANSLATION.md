@@ -6,7 +6,9 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![de__DE](https://img.shields.io/badge/de__DE-93.94%25-yellow)
+### ![ca__ES](https://img.shields.io/badge/ca__ES-%E2%88%9A-brightgreen)
+
+### ![de__DE](https://img.shields.io/badge/de__DE-93.85%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
@@ -37,6 +39,7 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ExtraHeaders
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Remote.ResetPushURL
 - Text.RemoteCM.SetPushURL
 - Text.Repository.Search.Method
@@ -79,7 +82,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-93.48%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-93.38%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
@@ -111,6 +114,7 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ExtraHeaders
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Remote.ResetPushURL
 - Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
@@ -157,9 +161,16 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.91%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-89.75%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Preferences.Shell.Args.ToolTip
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-89.66%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
@@ -223,6 +234,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.ExtraHeaders
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Preferences.General.UseCompactBranchNames
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Rebase.Test
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
@@ -277,7 +289,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-89.75%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-89.66%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
@@ -341,6 +353,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.AI.ExtraHeaders
 - Text.Preferences.AI.ReasoningEffortLevel
 - Text.Preferences.General.UseCompactBranchNames
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Rebase.Test
 - Text.Rebase.Test.OK
 - Text.Rebase.Test.UnknownError
@@ -395,7 +408,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-93.94%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-93.85%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
@@ -425,6 +438,7 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Remote.ResetPushURL
 - Text.RemoteCM.SetPushURL
 - Text.Repository.Search.Method
@@ -468,7 +482,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-83.78%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-83.69%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -585,6 +599,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.General.Use24Hours
 - Text.Preferences.General.UseCompactBranchNames
 - Text.Preferences.Git.UseStashAndReapplyByDefault
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Rebase.NoVerify
 - Text.Rebase.Test
 - Text.Rebase.Test.OK
@@ -650,7 +665,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-97.95%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-97.86%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
@@ -665,6 +680,7 @@ This document shows the translation status of each locale file in the repository
 - Text.CheckoutAsWorktree.WorktreePath
 - Text.CheckoutAsWorktree.WorktreePath.Placeholder
 - Text.CommitDetail.Files.Tips
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Statistics.Commits
 - Text.Statistics.TopAuthors
 - Text.Statistics.TopAuthors.Count
@@ -680,7 +696,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-91.15%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-91.05%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
@@ -733,6 +749,7 @@ This document shows the translation status of each locale file in the repository
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ExtraHeaders
 - Text.Preferences.AI.ReasoningEffortLevel
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Remote.ResetPushURL
 - Text.RemoteCM.SetPushURL
 - Text.Repository.FilterCommits.Collapse
@@ -1071,7 +1088,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Push.New
 - Text.Push.Revision
 - Text.Push.Revision.Title
@@ -1231,7 +1248,14 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-99.91%25-yellow)
+
+<details>
+<summary>Missing keys in ru_RU.axaml</summary>
+
+- Text.Preferences.Shell.Args.ToolTip
+
+</details>
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-60.58%25-red)
 
@@ -1522,7 +1546,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Push.New
 - Text.Push.Revision
 - Text.Push.Revision.Title
@@ -1949,7 +1973,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Preferences.Git.UseLibsecret
 - Text.Preferences.Git.UseStashAndReapplyByDefault
 - Text.Preferences.Shell.Args
-- Text.Preferences.Shell.Args.Tip
+- Text.Preferences.Shell.Args.ToolTip
 - Text.Push.New
 - Text.Push.Revision
 - Text.Push.Revision.Title
@@ -2089,4 +2113,11 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.91%25-yellow)
+
+<details>
+<summary>Missing keys in zh_TW.axaml</summary>
+
+- Text.Preferences.Shell.Args.ToolTip
+
+</details>

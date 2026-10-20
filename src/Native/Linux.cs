@@ -145,11 +145,8 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir, string args)
         {
-            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
-
             var startInfo = new ProcessStartInfo();
-            startInfo.WorkingDirectory = cwd;
+            startInfo.WorkingDirectory = workdir;
             startInfo.FileName = OS.ShellOrTerminal;
             startInfo.Arguments = args;
 

@@ -737,7 +737,7 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">第三方工具集成</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">终端/SHELL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">启动参数</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">请使用 '.' 来指定工作目录</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.ToolTip" xml:space="preserve">您可使用 '.' 来指代工作目录，及使用 '$FOLDER_NAME' 指代其目录文件夹名</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">安装路径</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">终端/SHELL</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">清理远程已删除分支</x:String>

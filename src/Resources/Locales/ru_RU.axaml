@@ -737,7 +737,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">ВНЕДРЕНИЕ</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">ОБОЛОЧКА/ТЕРМИНАЛ</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Аргументы</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Используйте, пожалуйста, точку «.» для индикации рабочего каталога</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Путь</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Оболочка/Терминал</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Удалить внешний репозиторий</x:String>

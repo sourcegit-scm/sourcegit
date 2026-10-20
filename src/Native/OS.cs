@@ -273,9 +273,17 @@ namespace SourceGit.Native
         public static void OpenTerminal(string workdir)
         {
             if (string.IsNullOrEmpty(ShellOrTerminal))
+            {
                 Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
-            else
-                _backend.OpenTerminal(workdir, ShellOrTerminalArgs);
+                return;
+            }
+
+            var cwd = string.IsNullOrEmpty(workdir) ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) : workdir;
+            var args = ShellOrTerminalArgs;
+            if (!string.IsNullOrEmpty(args))
+                args = args.Replace("$FOLDER_NAME", Path.GetFileName(cwd.Trim().TrimEnd('/')));
+
+            _backend.OpenTerminal(cwd, args);
         }
 
         public static void OpenWithDefaultEditor(string file)
