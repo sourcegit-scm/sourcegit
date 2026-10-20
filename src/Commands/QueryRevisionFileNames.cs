@@ -13,6 +13,13 @@ namespace SourceGit.Commands
             Args = $"ls-tree -r --name-only {revision}";
         }
 
+        public QueryRevisionFileNames(string repo, string revision, string[] paths)
+        {
+            WorkingDirectory = repo;
+            Context = repo;
+            Args = $"ls-tree -r --name-only {revision} -- {string.Join(' ', paths)}";
+        }
+
         public async Task<List<string>> GetResultAsync()
         {
             var outs = new List<string>();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace SourceGit.Models
 {
@@ -19,8 +18,11 @@ namespace SourceGit.Models
         [GeneratedRegex(@"^ssh://([\w\-]+@)?[\w\.\-]+(\:[0-9]+)?/([a-zA-z0-9~%][\w\-\./~%]*)?[a-zA-Z0-9](\.git)?$")]
         private static partial Regex REG_SSH2();
 
-        [GeneratedRegex(@"^git@([\w\.\-]+):([\w\.\-/~%]+/[\w\-\.%]+)\.git$")]
-        private static partial Regex REG_TO_VISIT_URL_CAPTURE();
+        [GeneratedRegex(@"^[\w\-\.]+@([\w\.\-]+):/?([\w\.\-/~%]+/[\w\-\.%]+?)(\.git)?/?$")]
+        private static partial Regex REG_TO_VISIT_URL_CAPTURE_SCP();
+
+        [GeneratedRegex(@"^ssh://([\w\-\.]+@)?([\w\.\-]+)(\:[0-9]+)?/([\w\.\-/~%]+/[\w\-\.%]+?)(\.git)?/?$")]
+        private static partial Regex REG_TO_VISIT_URL_CAPTURE_SSH();
 
         private static readonly Regex[] URL_FORMATS = [
             REG_HTTPS(),
@@ -78,64 +80,64 @@ namespace SourceGit.Models
                 return true;
             }
 
-            var match = REG_TO_VISIT_URL_CAPTURE().Match(URL);
-            if (match.Success)
-            {
-                var host = match.Groups[1].Value;
-                var supportHTTPS = HTTPSValidator.IsSupported(host);
-                var scheme = supportHTTPS ? "https" : "http";
-                url = $"{scheme}://{host}/{match.Groups[2].Value}";
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool TryGetCreatePullRequestURL(out string url, string mergeBranch)
-        {
-            url = null;
-
-            if (!TryGetVisitURL(out var baseURL))
+            if (!TryParseSSH(URL, out var host, out var path))
                 return false;
 
-            var uri = new Uri(baseURL);
-            var host = uri.Host;
-            var encodedBranch = HttpUtility.UrlEncode(mergeBranch);
-
-            if (host.Contains("github.com", StringComparison.Ordinal))
+            // Azure DevOps uses a different path layout for SSH remotes.
+            //   git@ssh.dev.azure.com:v3/{org}/{project}/{repo} => https://dev.azure.com/{org}/{project}/_git/{repo}
+            //   {org}@vs-ssh.visualstudio.com:v3/{org}/{project}/{repo} => https://{org}.visualstudio.com/{project}/_git/{repo}
+            if (path.StartsWith("v3/", StringComparison.Ordinal))
             {
-                url = $"{baseURL}/compare/{encodedBranch}?expand=1";
+                var parts = path.Split('/');
+                if (parts.Length == 4)
+                {
+                    if (host.Equals("ssh.dev.azure.com", StringComparison.Ordinal))
+                    {
+                        url = $"https://dev.azure.com/{parts[1]}/{parts[2]}/_git/{parts[3]}";
+                        return true;
+                    }
+
+                    if (host.Equals("vs-ssh.visualstudio.com", StringComparison.Ordinal))
+                    {
+                        url = $"https://{parts[1]}.visualstudio.com/{parts[2]}/_git/{parts[3]}";
+                        return true;
+                    }
+                }
+            }
+
+            var supportHTTPS = HTTPSValidator.IsWellKnownHost(host) || HTTPSValidator.IsSupported(host);
+            var scheme = supportHTTPS ? "https" : "http";
+            url = $"{scheme}://{host}/{path}";
+            return true;
+        }
+
+        public static bool TryGetSSHHost(string url, out string host)
+        {
+            return TryParseSSH(url, out host, out _);
+        }
+
+        private static bool TryParseSSH(string url, out string host, out string path)
+        {
+            host = null;
+            path = null;
+
+            if (string.IsNullOrEmpty(url))
+                return false;
+
+            // NOTE: The port of SSH remotes is not used, since the port of web page is unknown.
+            var match = REG_TO_VISIT_URL_CAPTURE_SSH().Match(url);
+            if (match.Success)
+            {
+                host = match.Groups[2].Value;
+                path = match.Groups[4].Value;
                 return true;
             }
 
-            if (host.Contains("gitlab", StringComparison.Ordinal))
+            match = REG_TO_VISIT_URL_CAPTURE_SCP().Match(url);
+            if (match.Success)
             {
-                url = $"{baseURL}/-/merge_requests/new?merge_request%5Bsource_branch%5D={encodedBranch}";
-                return true;
-            }
-
-            if (host.Equals("gitee.com", StringComparison.Ordinal))
-            {
-                url = $"{baseURL}/pulls/new?source={encodedBranch}";
-                return true;
-            }
-
-            if (host.Equals("bitbucket.org", StringComparison.Ordinal))
-            {
-                url = $"{baseURL}/pull-requests/new?source={encodedBranch}";
-                return true;
-            }
-
-            if (host.Equals("gitea.org", StringComparison.Ordinal))
-            {
-                url = $"{baseURL}/compare/{encodedBranch}";
-                return true;
-            }
-
-            if (host.Contains("azure.com", StringComparison.Ordinal) ||
-                host.Contains("visualstudio.com", StringComparison.Ordinal))
-            {
-                url = $"{baseURL}/pullrequestcreate?sourceRef={encodedBranch}";
+                host = match.Groups[1].Value;
+                path = match.Groups[2].Value;
                 return true;
             }
 

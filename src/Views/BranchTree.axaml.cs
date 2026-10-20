@@ -1027,22 +1027,19 @@ namespace SourceGit.Views
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
 
-            if (upstream != null)
+            if (ViewModels.CreatePullRequest.CanCreateForUpstream(repo, upstream))
             {
-                var remote = repo.Remotes.Find(x => x.Name.Equals(upstream.Remote, StringComparison.Ordinal));
-                if (remote != null && remote.TryGetCreatePullRequestURL(out var prURL, upstream.Name))
+                var createPR = new MenuItem();
+                createPR.Header = App.Text("BranchCM.CreatePRForUpstream", upstream.FriendlyName);
+                createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
+                createPR.Click += (_, e) =>
                 {
-                    var createPR = new MenuItem();
-                    createPR.Header = App.Text("BranchCM.CreatePRForUpstream", upstream.FriendlyName);
-                    createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
-                    createPR.Click += (_, e) =>
-                    {
-                        Native.OS.OpenBrowser(prURL);
-                        e.Handled = true;
-                    };
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.CreatePullRequest(repo, branch, null));
+                    e.Handled = true;
+                };
 
-                    menu.Items.Add(createPR);
-                }
+                menu.Items.Add(createPR);
             }
             menu.Items.Add(new MenuItem() { Header = "-" });
             TryToAddCustomActionsToBranchContextMenu(repo, menu, branch);
@@ -1352,15 +1349,17 @@ namespace SourceGit.Views
             menu.Items.Add(createBranch);
             menu.Items.Add(createTag);
 
-            var remote = repo.Remotes.Find(x => x.Name.Equals(branch.Remote, StringComparison.Ordinal));
-            if (remote != null && remote.TryGetCreatePullRequestURL(out var prURL, branch.Name))
+            var head = repo.CurrentBranch;
+            if (ViewModels.CreatePullRequest.CanCreateInto(repo, head, branch, out var isUpstreamOfHead))
             {
+                // Clicking the upstream of current branch creates a PR for it, otherwise creates a PR from current branch into the clicked one.
                 var createPR = new MenuItem();
-                createPR.Header = App.Text("BranchCM.CreatePR");
+                createPR.Header = isUpstreamOfHead ? App.Text("BranchCM.CreatePRForUpstream", name) : App.Text("BranchCM.CreatePR", head.Name, name);
                 createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
                 createPR.Click += (_, e) =>
                 {
-                    Native.OS.OpenBrowser(prURL);
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.CreatePullRequest(repo, head, isUpstreamOfHead ? null : branch));
                     e.Handled = true;
                 };
 

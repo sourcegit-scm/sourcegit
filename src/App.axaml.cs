@@ -227,6 +227,12 @@ namespace SourceGit
             return Current is App app ? app._launcher : null;
         }
 
+        public static async Task CopyTextAsync(string text)
+        {
+            if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow.Clipboard: { } clipboard })
+                await clipboard.SetTextAsync(text);
+        }
+
         public static void Quit(int exitCode)
         {
             if (Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

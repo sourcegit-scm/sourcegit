@@ -64,7 +64,7 @@
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithSpecial" xml:space="preserve">Compare with ${0}$</x:String>
   <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copy Branch Name</x:String>
-  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Create PR...</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Create PR: ${0}$ → ${1}$...</x:String>
   <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Create PR for upstream ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Custom Action</x:String>
   <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Delete ${0}$...</x:String>
@@ -325,6 +325,21 @@
   <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Enter branch name.</x:String>
   <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Create Local Branch</x:String>
   <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Overwrite existing branch</x:String>
+  <x:String x:Key="Text.CreatePR" xml:space="preserve">Create Pull Request</x:String>
+  <x:String x:Key="Text.CreatePR.BranchNotPushed" xml:space="preserve">The source branch has not been pushed yet.</x:String>
+  <x:String x:Key="Text.CreatePR.ClipboardHint" xml:space="preserve">This platform can not prefill the title and description. They will be copied to the clipboard so you can paste them on the opened page.</x:String>
+  <x:String x:Key="Text.CreatePR.CommitsNotPushed" xml:space="preserve">The source branch has commits that have not been pushed yet.</x:String>
+  <x:String x:Key="Text.CreatePR.CopiedToClipboard" xml:space="preserve">Title and description have been copied to the clipboard. Paste them on the opened page.</x:String>
+  <x:String x:Key="Text.CreatePR.Description" xml:space="preserve">Description:</x:String>
+  <x:String x:Key="Text.CreatePR.NoTemplate" xml:space="preserve">(None)</x:String>
+  <x:String x:Key="Text.CreatePR.Platform" xml:space="preserve">Platform:</x:String>
+  <x:String x:Key="Text.CreatePR.PushBranchFirst" xml:space="preserve">Push the source branch before opening the PR</x:String>
+  <x:String x:Key="Text.CreatePR.PushCommitsFirst" xml:space="preserve">Push the local commits before opening the PR</x:String>
+  <x:String x:Key="Text.CreatePR.PushRemote" xml:space="preserve">Push To:</x:String>
+  <x:String x:Key="Text.CreatePR.Source" xml:space="preserve">Source:</x:String>
+  <x:String x:Key="Text.CreatePR.Target" xml:space="preserve">Target:</x:String>
+  <x:String x:Key="Text.CreatePR.Template" xml:space="preserve">Template:</x:String>
+  <x:String x:Key="Text.CreatePR.Title" xml:space="preserve">Title:</x:String>
   <x:String x:Key="Text.CreateTag" xml:space="preserve">Create Tag...</x:String>
   <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">New Tag At:</x:String>
   <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">GPG signing</x:String>
