@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -14,7 +16,25 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+
+            if (_autoPickerShown)
+                return;
+
+            _autoPickerShown = true;
+            if (DataContext is ViewModels.OpenLocalRepository { RepoPath: null or "" })
+                Dispatcher.UIThread.Post(async () => await SelectRepositoryFolderAsync(), DispatcherPriority.Background);
+        }
+
         private async void OnSelectRepositoryFolder(object _1, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            await SelectRepositoryFolderAsync();
+        }
+
+        private async Task SelectRepositoryFolderAsync()
         {
             if (DataContext is not ViewModels.OpenLocalRepository vm)
                 return;
@@ -49,8 +69,8 @@ namespace SourceGit.Views
             {
                 Models.Notification.Send(null, $"Failed to open repository: {exception.Message}", true);
             }
-
-            e.Handled = true;
         }
+
+        private bool _autoPickerShown = false;
     }
 }
