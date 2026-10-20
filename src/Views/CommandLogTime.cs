@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -35,22 +34,22 @@ namespace SourceGit.Views
             if (log.IsComplete)
                 return;
 
-            _refreshTimer = new Timer(_ =>
+            _refreshTimer = new DispatcherTimer();
+            _refreshTimer.Interval = TimeSpan.FromMilliseconds(100);
+            _refreshTimer.Tick += (_, _) =>
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    Text = GetDisplayText(log);
-                    if (log.IsComplete)
-                        StopTimer();
-                });
-            }, null, 0, 100);
+                Text = GetDisplayText(log);
+                if (log.IsComplete)
+                    StopTimer();
+            };
+            _refreshTimer.Start();
         }
 
         private void StopTimer()
         {
             if (_refreshTimer is not null)
             {
-                _refreshTimer.Dispose();
+                _refreshTimer.Stop();
                 _refreshTimer = null;
             }
         }
@@ -69,6 +68,6 @@ namespace SourceGit.Views
             return $"{duration.TotalMilliseconds:G3} ms";
         }
 
-        private Timer _refreshTimer = null;
+        private DispatcherTimer _refreshTimer = null;
     }
 }
