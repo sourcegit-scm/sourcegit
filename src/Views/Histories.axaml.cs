@@ -113,6 +113,8 @@ namespace SourceGit.Views
 
         public HistoriesCommitList()
         {
+            AddHandler(PointerPressedEvent, OnHistoryPointerPressed, RoutingStrategies.Tunnel, true);
+            AddHandler(PointerReleasedEvent, OnHistoryPointerReleased, RoutingStrategies.Tunnel, true);
             SelectionMode = DataGridSelectionMode.Extended;
             CanUserReorderColumns = false;
             CanUserResizeColumns = false;
@@ -190,12 +192,12 @@ namespace SourceGit.Views
                 {
                     var set = new HashSet<string>();
                     foreach (var c in old)
-                        set.Add(c.SHA);
+                        set.Add(c.GraphKey);
 
                     var equals = true;
                     foreach (var c in commits)
                     {
-                        if (!set.Contains(c.SHA))
+                        if (!set.Contains(c.GraphKey))
                         {
                             equals = false;
                             break;
@@ -210,8 +212,65 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnHistoryPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            _repeatClick = null;
+            _selectOwnerOnRelease = false;
+            if (e.ClickCount == 1 && e.KeyModifiers == KeyModifiers.None &&
+                e.GetCurrentPoint(this).Properties.IsLeftButtonPressed &&
+                e.Source is Control source && source.FindAncestorOfType<Button>(true) == null)
+            {
+                var row = source.FindAncestorOfType<DataGridRow>(true);
+                if (row?.DataContext is Models.Commit commit)
+                {
+                    var histories = this.FindAncestorOfType<Histories>()?.DataContext as ViewModels.Histories;
+                    var knownOwner = commit.SubmoduleHistory == null && histories?.HasKnownSubmoduleChanges(commit) == true;
+                    if (knownOwner || (SelectedItems.Count == 1 && SelectedItems[0] == commit))
+                    {
+                        _repeatClick = commit;
+                        _repeatClickPosition = e.GetPosition(this);
+                        if (knownOwner)
+                        {
+                            // Keep the layout stable until release; selecting now may hide the breadcrumb.
+                            _selectOwnerOnRelease = true;
+                            e.Handled = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        private async void OnHistoryPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            var repeat = _repeatClick;
+            _repeatClick = null;
+            if (repeat != null && e.InitialPressMouseButton == MouseButton.Left &&
+                Math.Abs(e.GetPosition(this).X - _repeatClickPosition.X) < 4 &&
+                Math.Abs(e.GetPosition(this).Y - _repeatClickPosition.Y) < 4 &&
+                this.InputHitTest(e.GetPosition(this)) is Control source && source.FindAncestorOfType<DataGridRow>(true)?.DataContext is Models.Commit released &&
+                released.GraphKey == repeat.GraphKey &&
+                this.FindAncestorOfType<Histories>()?.DataContext is ViewModels.Histories histories)
+            {
+                if (_selectOwnerOnRelease)
+                    histories.NavigateSubmoduleTo(repeat.GraphKey);
+                await histories.ToggleCommitSubmodulesAsync(repeat);
+            }
+        }
+
+        private bool _selectOwnerOnRelease;
+        private Models.Commit _repeatClick;
+        private Point _repeatClickPosition;
+
         protected override async void OnKeyDown(KeyEventArgs e)
         {
+            if (e.KeyModifiers == KeyModifiers.None && e.Key is Key.Space or Key.Enter &&
+                SelectedItems is { Count: 1 } && SelectedItems[0] is Models.Commit { IsSubmoduleHeader: true } header &&
+                this.FindAncestorOfType<Histories>()?.DataContext is ViewModels.Histories historiesVM)
+            {
+                e.Handled = true;
+                await historiesVM.ToggleSubmoduleHistoryAsync(header.SubmoduleHistory);
+                return;
+            }
             if (e.KeyModifiers == KeyModifiers.Alt)
             {
                 if (e.Key == Key.Up)
@@ -235,7 +294,11 @@ namespace SourceGit.Views
                 foreach (var item in selected)
                 {
                     if (item is Models.Commit commit)
-                        builder.Append(commit.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(commit.Subject);
+                    {
+                        if (!commit.IsSubmodulePlaceholder)
+                            builder.Append(commit.SHA.AsSpan(0, 10)).Append(" - ");
+                        builder.AppendLine(commit.Subject);
+                    }
                 }
 
                 e.Handled = true;
@@ -374,6 +437,122 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+            ViewModels.Preferences.Instance.PropertyChanged += OnSubmodulePreferencesChanged;
+        }
+
+        protected override void OnLoaded(RoutedEventArgs e)
+        {
+            base.OnLoaded(e);
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                if (IsLoaded && DataContext is ViewModels.Histories histories)
+                    histories.EnsureSubmodulePreferences();
+            }, Avalonia.Threading.DispatcherPriority.Background);
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            ViewModels.Preferences.Instance.PropertyChanged -= OnSubmodulePreferencesChanged;
+            if (DataContext is ViewModels.Histories histories)
+                histories.CancelSubmoduleHistory();
+            base.OnDetachedFromVisualTree(e);
+        }
+
+        private void OnSubmodulePreferencesChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories histories)
+                return;
+            if (e.PropertyName is nameof(ViewModels.Preferences.SubmoduleHistoryScope) or nameof(ViewModels.Preferences.SubmoduleHistoryMode) or nameof(ViewModels.Preferences.MaxExpandedSubmoduleHistories))
+                histories.ResetSubmoduleHistories();
+            else if (e.PropertyName is nameof(ViewModels.Preferences.SubmoduleHistoryLabelFormat) or nameof(ViewModels.Preferences.AutoCollapseSubmoduleHistories))
+                histories.UpdateSubmoduleLabels();
+        }
+
+        private void OnCollapseSubmoduleHistories(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories histories)
+                histories.CollapseSubmoduleHistories();
+            e.Handled = true;
+        }
+
+        private async void OnToggleSubmoduleHeader(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            if (DataContext is ViewModels.Histories histories && sender is Control { DataContext: Models.Commit { IsSubmoduleHeader: true } row })
+                await histories.ToggleSubmoduleHistoryAsync(row.SubmoduleHistory);
+        }
+
+        private void OnSubmoduleHistoryMenu(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories histories || sender is not Control control)
+                return;
+            var menu = new ContextMenu();
+            foreach (var section in histories.GetSubmoduleHistoryChoices())
+            {
+                var item = new MenuItem
+                {
+                    Header = $"{(string.IsNullOrEmpty(section.BranchName) ? section.Path : section.GetLabel(ViewModels.Preferences.Instance.SubmoduleHistoryLabelFormat))} ({section.OwnerSHA[..Math.Min(8, section.OwnerSHA.Length)]})",
+                };
+                if (histories.IsSubmoduleExpanded(section))
+                    item.Icon = this.CreateMenuIcon("Icons.Check");
+                item.Click += async (_, ev) =>
+                {
+                    await histories.ToggleSubmoduleHistoryAsync(section);
+                    ev.Handled = true;
+                };
+                menu.Items.Add(item);
+            }
+            if (menu.Items.Count == 0)
+                menu.Items.Add(new MenuItem { Header = App.Text("SubmoduleHistory.SelectCommit"), IsEnabled = false });
+            menu.Open(control);
+            e.Handled = true;
+        }
+
+        private void OnSubmoduleUp(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories histories)
+                histories.NavigateSubmoduleUp();
+            e.Handled = true;
+        }
+
+        private void OnSubmoduleBreadcrumb(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories histories && sender is Control { Tag: string key })
+                histories.NavigateSubmoduleTo(key);
+            e.Handled = true;
+        }
+
+        private async void OnRefreshSubmodulePointer(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Histories histories && sender is Control { DataContext: ViewModels.SubmoduleCommitDetail detail })
+                await histories.RefreshSubmodulePointerStatusAsync(detail);
+            e.Handled = true;
+        }
+
+        private void OnCompareSubmodule(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories histories || sender is not Control control)
+                return;
+            var menu = new ContextMenu();
+            foreach (var section in histories.GetSubmoduleComparisonChoices())
+            {
+                var item = new MenuItem { Header = section.Path };
+                item.Click += async (_, ev) =>
+                {
+                    await histories.CompareSubmoduleAsync(section, System.Linq.Enumerable.FirstOrDefault(section.Previous.Keys));
+                    ev.Handled = true;
+                };
+                menu.Items.Add(item);
+            }
+            if (menu.Items.Count == 0)
+                menu.Items.Add(new MenuItem { Header = App.Text("SubmoduleHistory.SelectCommit"), IsEnabled = false });
+            menu.Open(control);
+            e.Handled = true;
+        }
+
         public async Task GotoParent()
         {
             if (DataContext is not ViewModels.Histories vm)
@@ -387,6 +566,17 @@ namespace SourceGit.Views
 
             if (selected[0] is not Models.Commit { Parents.Count: > 0 } commit)
                 return;
+
+            if (commit.IsSubmodulePlaceholder)
+                return;
+
+            if (commit.SubmoduleHistory != null)
+            {
+                var parent = vm.Commits.Find(c => c.SubmoduleHistory == commit.SubmoduleHistory && commit.Parents.Contains(c.SHA));
+                if (parent != null)
+                    vm.SelectedCommits = [parent];
+                return;
+            }
 
             if (commit.Parents.Count == 1)
             {
@@ -431,10 +621,23 @@ namespace SourceGit.Views
             if (selected[0] is not Models.Commit { Parents.Count: > 0 } commit)
                 return;
 
+            if (commit.IsSubmodulePlaceholder)
+                return;
+
+            if (commit.SubmoduleHistory != null)
+            {
+                var child = vm.Commits.Find(c => c.SubmoduleHistory == commit.SubmoduleHistory && c.Parents.Contains(commit.SHA));
+                if (child != null)
+                    vm.SelectedCommits = [child];
+                return;
+            }
+
             var children = new List<Models.Commit>();
             var sha = commit.SHA;
             foreach (var c in vm.Commits)
             {
+                if (c.SubmoduleHistory != null)
+                    continue;
                 foreach (var p in c.Parents)
                 {
                     if (sha.StartsWith(p, StringComparison.Ordinal))
@@ -810,6 +1013,24 @@ namespace SourceGit.Views
                     commits.Add(c);
             }
 
+            if (commits.Exists(c => c.IsSubmodulePlaceholder))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            if (commits.Exists(c => c.SubmoduleHistory != null))
+            {
+                // Never offer parent-repository checkout/cherry-pick actions for child commits.
+                var menu = new ContextMenu();
+                var copy = new MenuItem { Header = App.Text("CommitCM.CopySHA") };
+                copy.Click += async (_, _) => await this.CopyTextAsync(string.Join("\n", commits.ConvertAll(c => c.SHA)));
+                menu.Items.Add(copy);
+                menu.Open(CommitListContainer);
+                e.Handled = true;
+                return;
+            }
+
             if (selected.Count > 1)
             {
                 var menu = CreateContextMenuForMultipleCommits(repo, commits);
@@ -832,6 +1053,9 @@ namespace SourceGit.Views
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 e.Source is Control { DataContext: Models.Commit c })
             {
+                if (c.SubmoduleHistory != null)
+                    return;
+
                 if (histories.Bisect != null)
                 {
                     histories.CheckoutCommitDetached(c);
