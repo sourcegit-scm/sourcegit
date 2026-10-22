@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -404,6 +405,30 @@ namespace SourceGit.Views
                 }
 
                 menu.Items.Add(new MenuItem() { Header = "-" });
+
+                var hasRepos = launcher.Pages.Any(p => p.Data is ViewModels.Repository);
+
+                var fetchAll = new MenuItem();
+                fetchAll.Header = App.Text("Workspace.FetchAllRepositories");
+                fetchAll.Icon = this.CreateMenuIcon("Icons.Fetch");
+                fetchAll.IsEnabled = hasRepos;
+                fetchAll.Click += async (_, ev) =>
+                {
+                    await launcher.FetchAllRepositoriesAsync();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(fetchAll);
+
+                var fetchAllParallel = new MenuItem();
+                fetchAllParallel.Header = App.Text("Workspace.FetchAllRepositoriesParallel");
+                fetchAllParallel.Icon = this.CreateMenuIcon("Icons.Fetch");
+                fetchAllParallel.IsEnabled = hasRepos;
+                fetchAllParallel.Click += async (_, ev) =>
+                {
+                    await launcher.FetchAllRepositoriesInParallelAsync();
+                    ev.Handled = true;
+                };
+                menu.Items.Add(fetchAllParallel);
 
                 var configure = new MenuItem();
                 configure.Header = App.Text("Workspace.Configure");
