@@ -89,8 +89,14 @@ namespace SourceGit.ViewModels
                 {
                     if (DeleteWorktrees)
                     {
+                        // Re-read worktrees, since a previous (failed) attempt may have already removed some of them.
+                        succ = true;
+                        var current = await new Commands.Worktree(_repo.FullPath).ReadAllAsync();
                         foreach (var wt in AttachedWorktrees)
                         {
+                            if (!current.Exists(x => x.FullPath.Equals(wt.FullPath, StringComparison.Ordinal)))
+                                continue;
+
                             succ = await new Commands.Worktree(_repo.FullPath)
                                 .Use(log)
                                 .RemoveAsync(wt.FullPath, Force);
