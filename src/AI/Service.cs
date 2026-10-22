@@ -33,9 +33,9 @@ namespace SourceGit.AI
 
         public bool ReadApiKeyFromEnv
         {
-            get;
-            set;
-        } = false;
+            get => _readApiKeyFromEnv;
+            set => SetProperty(ref _readApiKeyFromEnv, value);
+        }
 
         [JsonIgnore]
         public List<string> AvailableModels
@@ -99,7 +99,7 @@ namespace SourceGit.AI
 
         private OpenAIClient GetOpenAIClient()
         {
-            var credential = new ApiKeyCredential(ReadApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
+            var credential = new ApiKeyCredential(_readApiKeyFromEnv ? Environment.GetEnvironmentVariable(ApiKey) : ApiKey);
 
             if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
             {
@@ -119,6 +119,7 @@ namespace SourceGit.AI
 
         private string _name = string.Empty;
         private string _model = string.Empty;
+        private bool _readApiKeyFromEnv = false;
         private string _reasoningEffortLevel = Options.IgnoredReasoningEffortLevel;
         private bool _autoFetchAvailableModels = true;
     }
