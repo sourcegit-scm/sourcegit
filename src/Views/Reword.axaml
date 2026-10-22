@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="SourceGit.Views.Reword"
+             x:DataType="vm:Reword">
+  <StackPanel Orientation="Vertical" Margin="8,0">
+    <StackPanel Orientation="Horizontal">
+      <Path Width="16" Height="16"
+            Data="{StaticResource Icons.Rename}"/>
+
+      <TextBlock FontSize="18"
+                 Margin="8,0,0,0"
+                 Classes="bold"
+                 Text="{DynamicResource Text.Reword}"/>
+    </StackPanel>
+
+    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto" ColumnDefinitions="130,*">
+      <TextBlock Grid.Row="0" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Reword.Commit}"/>
+
+      <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
+        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+        <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
+                   FontFamily="{DynamicResource Fonts.Monospace}"
+                   Foreground="DarkOrange"
+                   Margin="8,0,0,0"/>
+        <TextBlock Grid.Column="2"
+                   VerticalAlignment="Center"
+                   Text="{Binding Target.Subject}"
+                   Margin="4,0,0,0"
+                   TextTrimming="CharacterEllipsis"/>
+      </Grid>
+
+      <TextBlock Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top"
+                 Margin="0,6,8,0"
+                 Text="{DynamicResource Text.Reword.Message}"/>
+
+      <Border Grid.Row="1" Grid.Column="1"
+              MaxHeight="200"
+              Background="{DynamicResource Brush.Contents}"
+              BorderThickness="1"
+              BorderBrush="{DynamicResource Brush.Border2}"
+              CornerRadius="4">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+          <TextBlock Margin="6"
+                     Text="{Binding Message}"
+                     TextWrapping="Wrap"
+                     FontFamily="{DynamicResource Fonts.Monospace}"/>
+        </ScrollViewer>
+      </Border>
+    </Grid>
+  </StackPanel>
+</UserControl>
