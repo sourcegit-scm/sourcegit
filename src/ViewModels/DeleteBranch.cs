@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SourceGit.ViewModels
@@ -32,6 +33,22 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public List<Worktree> AttachedWorktrees
+        {
+            get;
+        } = [];
+
+        public bool HasAttachedWorktrees
+        {
+            get => AttachedWorktrees.Count > 0;
+        }
+
+        public bool DeleteWorktrees
+        {
+            get;
+            set;
+        }
+
         public DeleteBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
@@ -44,6 +61,15 @@ namespace SourceGit.ViewModels
                 {
                     Upstream = upstream;
                     DeleteUpstreamTip = App.Text("DeleteBranch.WithTrackingRemote", upstream.FriendlyName);
+                }
+            }
+
+            if (branch.IsLocal)
+            {
+                foreach (var wt in _repo.Worktrees)
+                {
+                    if (!wt.IsMain && !wt.IsCurrent && wt.Backend.Branch.Equals(branch.FullName, StringComparison.Ordinal))
+                        AttachedWorktrees.Add(wt);
                 }
             }
         }
@@ -61,6 +87,22 @@ namespace SourceGit.ViewModels
             {
                 do
                 {
+                    if (DeleteWorktrees)
+                    {
+                        foreach (var wt in AttachedWorktrees)
+                        {
+                            succ = await new Commands.Worktree(_repo.FullPath)
+                                .Use(log)
+                                .RemoveAsync(wt.FullPath, Force);
+
+                            if (!succ)
+                                break;
+                        }
+
+                        if (!succ)
+                            break;
+                    }
+
                     succ = await new Commands.Branch(_repo.FullPath, Target.Name)
                         .Use(log)
                         .DeleteLocalAsync(Force);
