@@ -7,6 +7,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 
 namespace SourceGit.Views
 {
@@ -195,7 +196,11 @@ namespace SourceGit.Views
             InitializeComponent();
 
             if (OperatingSystem.IsWindows())
-                Task.Run(() => InstalledDistros = Native.WSL.ListDistros());
+                Task.Run(() =>
+                {
+                    var distros = Native.WSL.ListDistros();
+                    Dispatcher.UIThread.Post(() => InstalledDistros = distros);
+                });
         }
 
         protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
