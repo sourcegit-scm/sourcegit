@@ -86,7 +86,7 @@ namespace SourceGit.ViewModels
 
         private void Test()
         {
-            if (Native.OS.GitVersion < Models.GitVersions.REPLAY)
+            if (Native.OS.GetGitVersion(_repo.FullPath) < Models.GitVersions.REPLAY)
                 return;
 
             var head = Current.Head;

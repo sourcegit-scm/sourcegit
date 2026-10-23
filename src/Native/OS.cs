@@ -71,6 +71,12 @@ namespace SourceGit.Native
             private set;
         } = new Version(0, 0, 0);
 
+        // Repositories inside WSL use the git installed in their distro, not the Windows one.
+        public static Version GetGitVersion(string repo)
+        {
+            return WSL.TryParse(repo, out var distro, out _) ? WSL.GetGitVersion(distro) : GitVersion;
+        }
+
         public static Models.GitFlowVersion GitFlowVersion
         {
             get;

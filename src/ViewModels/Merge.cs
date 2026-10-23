@@ -150,7 +150,7 @@ namespace SourceGit.ViewModels
 
         private void Test()
         {
-            if (Native.OS.GitVersion < Models.GitVersions.TESTING_MERGE)
+            if (Native.OS.GetGitVersion(_repo.FullPath) < Models.GitVersions.TESTING_MERGE)
                 return;
 
             TestingState = MergeTestingState.Testing;

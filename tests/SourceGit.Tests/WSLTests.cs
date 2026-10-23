@@ -59,6 +59,25 @@ namespace SourceGit.Tests
         }
 
         [Fact]
+        public void UnknownDistroHasNoGitVersion()
+        {
+            Assert.Equal(new System.Version(0, 0, 0), WSL.GetGitVersion("no-such-distro-for-sourcegit-tests"));
+        }
+
+        [Fact]
+        public void ReadsGitVersionFromInstalledDistro()
+        {
+            // Needs a real distro, set WSL_TEST_DISTRO to run it.
+            var distro = System.Environment.GetEnvironmentVariable("WSL_TEST_DISTRO");
+            if (string.IsNullOrEmpty(distro))
+                return;
+
+            var version = WSL.GetGitVersion(distro);
+            Assert.True(version >= new System.Version(2, 25, 1), version.ToString());
+            Assert.Same(version, WSL.GetGitVersion(distro)); // second call is served from the cache
+        }
+
+        [Fact]
         public void RoundTripsUncPaths()
         {
             const string unc = "//wsl.localhost/Ubuntu/home/me/my repo";

@@ -65,7 +65,7 @@ namespace SourceGit.ViewModels
             {
                 if (OnlyStaged)
                 {
-                    if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
+                    if (Native.OS.GetGitVersion(_repo.FullPath) >= Models.GitVersions.STASH_PUSH_ONLY_STAGED)
                     {
                         succ = await new Commands.Stash(_repo.FullPath)
                             .Use(log)
@@ -116,7 +116,7 @@ namespace SourceGit.ViewModels
                 return true;
 
             var succ = false;
-            if (Native.OS.GitVersion >= Models.GitVersions.STASH_PUSH_WITH_PATHSPECFILE)
+            if (Native.OS.GetGitVersion(_repo.FullPath) >= Models.GitVersions.STASH_PUSH_WITH_PATHSPECFILE)
             {
                 var paths = new List<string>();
                 foreach (var c in changes)
