@@ -30,6 +30,14 @@ namespace SourceGit.Models
             _root = new DirectoryInfo(fullpath).FullName;
             _watchers = new List<FileSystemWatcher>();
 
+            // `FileSystemWatcher` does not see changes made inside a WSL distro, ask the distro itself.
+            if (Native.WSL.TryParse(fullpath, out var distro, out var linuxRoot))
+            {
+                StartWslEvents(distro, linuxRoot, gitDir);
+                _timer = new Timer(Tick, null, 100, 100);
+                return;
+            }
+
             var testGitDir = new DirectoryInfo(Path.Combine(fullpath, ".git")).FullName;
             var desiredDir = new DirectoryInfo(gitDir).FullName;
             if (testGitDir.Equals(desiredDir, StringComparison.Ordinal))
@@ -135,8 +143,75 @@ namespace SourceGit.Models
             }
 
             _watchers.Clear();
+            _wslEvents?.Dispose();
+            _pollTimer?.Dispose();
             _timer.Dispose();
             _timer = null;
+        }
+
+        private void StartWslEvents(string distro, string linuxRoot, string gitDir)
+        {
+            _wslDistro = distro;
+            _wslRoot = linuxRoot;
+            _wslGitDir = Native.WSL.ToLinux(distro, gitDir);
+
+            var roots = new List<string> { linuxRoot };
+            if (!_wslGitDir.StartsWith(linuxRoot + "/", StringComparison.Ordinal))
+                roots.Add(_wslGitDir);
+
+            _wslEvents = new WslFileEvents(distro, roots, OnWslPath, OnWslEventsLost);
+            Task.Run(async () =>
+            {
+                if (!await _wslEvents.StartAsync().ConfigureAwait(false))
+                {
+                    StartPolling();
+                    NotifyOnce(distro, $"Live refresh needs 'inotify-tools' in the WSL distro '{distro}' (sudo apt install inotify-tools). Until then the working copy is refreshed every {POLL_SECONDS} seconds.");
+                }
+            });
+        }
+
+        private void OnWslPath(string path)
+        {
+            if (path.StartsWith(_wslGitDir + "/", StringComparison.Ordinal))
+            {
+                HandleGitDirFileChanged(path.Substring(_wslGitDir.Length + 1).TrimEnd('/'));
+                return;
+            }
+
+            if (!path.StartsWith(_wslRoot + "/", StringComparison.Ordinal))
+                return;
+
+            var name = path.Substring(_wslRoot.Length + 1).TrimEnd('/');
+            if (name.Equals(".git", StringComparison.Ordinal) ||
+                name.StartsWith(".git/", StringComparison.Ordinal) ||
+                name.EndsWith("/.git", StringComparison.Ordinal))
+                return;
+
+            HandleWorkingCopyFileChanged(name, Path.GetFullPath(Native.WSL.ToWindows(_wslDistro, path)));
+        }
+
+        private void OnWslEventsLost()
+        {
+            OnWatcherError(null, null);
+            StartPolling();
+            NotifyOnce(_wslDistro, $"Live refresh in the WSL distro '{_wslDistro}' stopped (inotify watch limit reached or the distro shut down). The working copy is refreshed every {POLL_SECONDS} seconds instead.");
+        }
+
+        // shortcut: only marks the working copy dirty, branch/tag/stash changes made outside the app show up on the next in-app refresh.
+        private void StartPolling()
+        {
+            _pollTimer ??= new Timer(_ => Interlocked.Exchange(ref _updateWC, DateTime.Now.ToFileTime()), null, POLL_SECONDS * 1000, POLL_SECONDS * 1000);
+        }
+
+        private void NotifyOnce(string distro, string message)
+        {
+            lock (_notified)
+            {
+                if (!_notified.Add($"{distro}|{message}"))
+                    return;
+            }
+
+            Notification.Send(_root, message);
         }
 
         private void Tick(object sender)
@@ -373,10 +448,19 @@ namespace SourceGit.Models
             return IsInSubmodule(Path.GetDirectoryName(folder));
         }
 
+        private const int POLL_SECONDS = 5;
+        private static readonly HashSet<string> _notified = [];
+
         private readonly IRepository _repo;
         private readonly string _root;
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;
+
+        private string _wslDistro;
+        private string _wslRoot;
+        private string _wslGitDir;
+        private WslFileEvents _wslEvents;
+        private Timer _pollTimer;
 
         private long _lockCount;
         private long _updateWC;
