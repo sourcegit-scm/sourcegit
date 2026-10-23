@@ -12,12 +12,20 @@ namespace SourceGit.Commands
 
         public Result GetResult()
         {
-            return ReadToEnd();
+            return Translate(ReadToEnd());
         }
 
         public async Task<Result> GetResultAsync()
         {
-            return await ReadToEndAsync().ConfigureAwait(false);
+            return Translate(await ReadToEndAsync().ConfigureAwait(false));
+        }
+
+        private Result Translate(Result rs)
+        {
+            if (rs.IsSuccess)
+                rs.StdOut = FromGitPath(rs.StdOut.Trim());
+
+            return rs;
         }
     }
 }

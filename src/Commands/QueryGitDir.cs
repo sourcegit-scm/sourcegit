@@ -20,7 +20,7 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess)
                 return null;
 
-            var stdout = rs.StdOut.Trim();
+            var stdout = FromGitPath(rs.StdOut.Trim());
             if (string.IsNullOrEmpty(stdout))
                 return null;
 

@@ -9,12 +9,7 @@ namespace SourceGit.Commands
     {
         public static async Task<Stream> RunAsync(string repo, string revision, string file)
         {
-            var starter = new ProcessStartInfo();
-            starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = $"show {revision}:{file.Quoted()}";
-            starter.UseShellExecute = false;
-            starter.CreateNoWindow = true;
+            var starter = Command.CreateStartInfo(repo, $"show {revision}:{file.Quoted()}");
             starter.WindowStyle = ProcessWindowStyle.Hidden;
             starter.RedirectStandardOutput = true;
 
@@ -36,12 +31,7 @@ namespace SourceGit.Commands
 
         public static async Task<Stream> FromLFSAsync(string repo, string oid, long size)
         {
-            var starter = new ProcessStartInfo();
-            starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = "lfs smudge";
-            starter.UseShellExecute = false;
-            starter.CreateNoWindow = true;
+            var starter = Command.CreateStartInfo(repo, "lfs smudge");
             starter.WindowStyle = ProcessWindowStyle.Hidden;
             starter.RedirectStandardInput = true;
             starter.RedirectStandardOutput = true;

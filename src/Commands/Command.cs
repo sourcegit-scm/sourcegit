@@ -156,6 +156,21 @@ namespace SourceGit.Commands
             return rs;
         }
 
+        // For callers that stream binary data or feed stdin themselves and so manage the process on their own.
+        public static ProcessStartInfo CreateStartInfo(string repo, string args)
+        {
+            return new Command() { WorkingDirectory = repo, Args = args, Editor = EditorType.None }.CreateGitStartInfo(false);
+        }
+
+        // Absolute paths printed by git are Linux paths when the repository lives in WSL, the app works with UNC paths.
+        protected string FromGitPath(string path)
+        {
+            if (path.StartsWith('/') && Native.WSL.TryParse(WorkingDirectory, out var distro, out _))
+                return Native.WSL.ToWindows(distro, path);
+
+            return path;
+        }
+
         protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             // Repositories inside a WSL distro are driven by the distro's own git through wsl.exe.

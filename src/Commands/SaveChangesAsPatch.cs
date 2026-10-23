@@ -51,12 +51,7 @@ namespace SourceGit.Commands
 
         private static async Task<bool> ProcessSingleChangeAsync(string repo, Models.DiffOption opt, FileStream writer)
         {
-            var starter = new ProcessStartInfo();
-            starter.WorkingDirectory = repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = $"diff --no-color --no-ext-diff --ignore-cr-at-eol --unified=4 {opt}";
-            starter.UseShellExecute = false;
-            starter.CreateNoWindow = true;
+            var starter = Command.CreateStartInfo(repo, $"diff --no-color --no-ext-diff --ignore-cr-at-eol --unified=4 {opt}");
             starter.WindowStyle = ProcessWindowStyle.Hidden;
             starter.RedirectStandardOutput = true;
 

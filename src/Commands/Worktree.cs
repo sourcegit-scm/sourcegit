@@ -28,7 +28,7 @@ namespace SourceGit.Commands
                 {
                     if (line.StartsWith("worktree ", StringComparison.Ordinal))
                     {
-                        last = new Models.Worktree() { FullPath = line.Substring(9).Trim() };
+                        last = new Models.Worktree() { FullPath = FromGitPath(line.Substring(9).Trim()) };
                         worktrees.Add(last);
                         continue;
                     }

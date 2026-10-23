@@ -50,12 +50,7 @@ namespace SourceGit.Commands
 
         public async Task<bool> ExecAsync()
         {
-            var starter = new ProcessStartInfo();
-            starter.WorkingDirectory = _repo;
-            starter.FileName = Native.OS.GitExecutable;
-            starter.Arguments = "-c core.editor=true update-index --index-info";
-            starter.UseShellExecute = false;
-            starter.CreateNoWindow = true;
+            var starter = Command.CreateStartInfo(_repo, "update-index --index-info");
             starter.WindowStyle = ProcessWindowStyle.Hidden;
             starter.RedirectStandardInput = true;
             starter.RedirectStandardOutput = false;

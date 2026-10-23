@@ -18,7 +18,7 @@ namespace SourceGit.Commands
             if (!rs.IsSuccess || string.IsNullOrEmpty(rs.StdOut))
                 return string.Empty;
 
-            var dir = rs.StdOut.Trim();
+            var dir = FromGitPath(rs.StdOut.Trim());
             if (Path.IsPathRooted(dir))
                 return dir;
             return Path.GetFullPath(Path.Combine(WorkingDirectory, dir));
