@@ -279,6 +279,17 @@ namespace SourceGit
         #endregion
 
         #region Launch Ways
+        // When git runs inside WSL, the editor is launched with a Linux path.
+        private static string ParseEditorFile(string arg)
+        {
+            var file = arg.Replace('\\', '/').Trim('\"').Trim();
+            var distro = Environment.GetEnvironmentVariable("SOURCEGIT_WSL_DISTRO");
+            if (!string.IsNullOrEmpty(distro) && file.StartsWith('/'))
+                return Native.WSL.ToWindows(distro, file);
+
+            return file;
+        }
+
         private static bool TryLaunchAsRebaseTodoEditor(string[] args, out int exitCode)
         {
             exitCode = -1;
@@ -286,7 +297,7 @@ namespace SourceGit
             if (args.Length <= 1 || !args[0].Equals("--rebase-todo-editor", StringComparison.Ordinal))
                 return false;
 
-            var file = args[1].Replace('\\', '/').Trim('\"').Trim();
+            var file = ParseEditorFile(args[1]);
             var filename = Path.GetFileName(file);
             if (!filename.Equals("git-rebase-todo", StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -315,7 +326,7 @@ namespace SourceGit
 
             exitCode = 0;
 
-            var file = args[1].Replace('\\', '/').Trim('\"').Trim();
+            var file = ParseEditorFile(args[1]);
             var filename = Path.GetFileName(file);
             if (!filename.Equals("COMMIT_EDITMSG", StringComparison.OrdinalIgnoreCase))
                 return true;
@@ -424,7 +435,7 @@ namespace SourceGit
             if (args is not { Length: > 1 } || !args[0].Equals("--core-editor", StringComparison.Ordinal))
                 return false;
 
-            var file = args[1].Replace('\\', '/').Trim('\"').Trim();
+            var file = ParseEditorFile(args[1]);
             if (!File.Exists(file))
             {
                 desktop.Shutdown(-1);

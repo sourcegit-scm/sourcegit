@@ -7,7 +7,7 @@
             WorkingDirectory = repo;
             Context = repo;
             Editor = EditorType.None;
-            Args = $"format-patch {commit} -1 --output={saveTo.Quoted()}";
+            Args = $"format-patch {commit} -1 --output={ToGitPath(saveTo).Quoted()}";
         }
     }
 }

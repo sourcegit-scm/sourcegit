@@ -20,7 +20,7 @@ namespace SourceGit.Commands
             if (!string.IsNullOrEmpty(extra))
                 builder.Append(extra).Append(' ');
 
-            Args = builder.Append(file.Quoted()).ToString();
+            Args = builder.Append(ToGitPath(file).Quoted()).ToString();
         }
     }
 }

@@ -171,6 +171,15 @@ namespace SourceGit.Commands
             return path;
         }
 
+        // The reverse: Windows paths (UNC or drive) handed to git must be Linux paths when the repository lives in WSL.
+        protected string ToGitPath(string path)
+        {
+            if (Native.WSL.TryParse(WorkingDirectory, out var distro, out _))
+                return Native.WSL.ToLinux(distro, path);
+
+            return path;
+        }
+
         protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
             // Repositories inside a WSL distro are driven by the distro's own git through wsl.exe.

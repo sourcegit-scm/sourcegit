@@ -65,16 +65,16 @@ namespace SourceGit.Commands
         public async Task<bool> AddAsync(string fullpath, string name)
         {
             if (string.IsNullOrEmpty(name))
-                Args = $"worktree add {fullpath.Quoted()}";
+                Args = $"worktree add {ToGitPath(fullpath).Quoted()}";
             else
-                Args = $"worktree add -b {name} {fullpath.Quoted()}";
+                Args = $"worktree add -b {name} {ToGitPath(fullpath).Quoted()}";
 
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> AddWithLocalBranchAsync(string fullpath, string localBranch)
         {
-            Args = $"worktree add -B {localBranch} {fullpath.Quoted()} {localBranch}";
+            Args = $"worktree add -B {localBranch} {ToGitPath(fullpath).Quoted()} {localBranch}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
@@ -88,7 +88,7 @@ namespace SourceGit.Commands
             else if (!string.IsNullOrEmpty(name))
                 builder.Append("-b ").Append(name).Append(' ');
 
-            builder.Append(fullpath.Quoted()).Append(' ').Append(remoteBranch);
+            builder.Append(ToGitPath(fullpath).Quoted()).Append(' ').Append(remoteBranch);
 
             Args = builder.ToString();
             return await ExecAsync().ConfigureAwait(false);
@@ -102,22 +102,22 @@ namespace SourceGit.Commands
 
         public async Task<bool> LockAsync(string fullpath)
         {
-            Args = $"worktree lock {fullpath.Quoted()}";
+            Args = $"worktree lock {ToGitPath(fullpath).Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> UnlockAsync(string fullpath)
         {
-            Args = $"worktree unlock {fullpath.Quoted()}";
+            Args = $"worktree unlock {ToGitPath(fullpath).Quoted()}";
             return await ExecAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> RemoveAsync(string fullpath, bool force)
         {
             if (force)
-                Args = $"worktree remove -f {fullpath.Quoted()}";
+                Args = $"worktree remove -f {ToGitPath(fullpath).Quoted()}";
             else
-                Args = $"worktree remove {fullpath.Quoted()}";
+                Args = $"worktree remove {ToGitPath(fullpath).Quoted()}";
 
             return await ExecAsync().ConfigureAwait(false);
         }

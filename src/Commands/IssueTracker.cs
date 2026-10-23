@@ -16,7 +16,7 @@ namespace SourceGit.Commands
             {
                 var storage = $"{repo}/.issuetracker";
                 _isStorageFileExists = File.Exists(storage);
-                _baseArg = $"config -f {storage.Quoted()}";
+                _baseArg = $"config -f {ToGitPath(storage).Quoted()}";
             }
             else
             {

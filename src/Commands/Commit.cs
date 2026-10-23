@@ -16,7 +16,7 @@ namespace SourceGit.Commands
 
             var builder = new StringBuilder();
             builder.Append("commit --allow-empty --file=");
-            builder.Append(_tmpFile.Quoted());
+            builder.Append(ToGitPath(_tmpFile).Quoted());
             builder.Append(' ');
 
             if (signOff)

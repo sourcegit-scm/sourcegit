@@ -6,7 +6,7 @@
         {
             WorkingDirectory = repo;
             Context = repo;
-            Args = $"restore --progress --worktree --recurse-submodules --pathspec-from-file={pathspecFile.Quoted()}";
+            Args = $"restore --progress --worktree --recurse-submodules --pathspec-from-file={ToGitPath(pathspecFile).Quoted()}";
         }
     }
 }

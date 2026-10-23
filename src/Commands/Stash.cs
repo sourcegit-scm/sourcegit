@@ -47,7 +47,7 @@ namespace SourceGit.Commands
         public async Task<bool> PushAsync(string message, string pathspecFromFile, bool keepIndex)
         {
             var builder = new StringBuilder();
-            builder.Append("stash push --include-untracked --pathspec-from-file=").Append(pathspecFromFile.Quoted()).Append(" ");
+            builder.Append("stash push --include-untracked --pathspec-from-file=").Append(ToGitPath(pathspecFromFile).Quoted()).Append(" ");
             if (keepIndex)
                 builder.Append("--keep-index ");
             if (!string.IsNullOrEmpty(message))
