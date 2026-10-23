@@ -158,25 +158,34 @@ namespace SourceGit.Commands
 
         protected ProcessStartInfo CreateGitStartInfo(bool redirect)
         {
-            var useSetSid = CancellationToken.CanBeCanceled && Native.OS.SupportSetSid();
+            // Repositories inside a WSL distro are driven by the distro's own git through wsl.exe.
+            // shortcut: the `-d` value stays unquoted (wsl.exe does not strip quotes there), so distro names with spaces fail.
+            var inWsl = Native.WSL.TryParse(WorkingDirectory, out var distro, out var linuxDir);
+            var useSetSid = !inWsl && CancellationToken.CanBeCanceled && Native.OS.SupportSetSid();
             var selfExecFile = Environment.ProcessPath;
+            var editorExecFile = inWsl ? Native.WSL.ToLinux(distro, selfExecFile) : selfExecFile;
             var builder = new StringBuilder(2048);
 
-            if (useSetSid)
+            if (inWsl)
+                builder.Append("-d ").Append(distro).Append(" --cd ").Append(linuxDir.Quoted()).Append(" --exec git ");
+            else if (useSetSid)
                 builder.Append(Native.OS.GitExecutable.Quoted()).Append(' ');
 
-            builder
-                .Append("--no-pager -c core.quotepath=off -c credential.helper=")
-                .Append(Native.OS.CredentialHelper)
-                .Append(' ');
+            builder.Append("--no-pager -c core.quotepath=off ");
+
+            var credentialHelper = inWsl ? Native.WSL.CredentialHelper : Native.OS.CredentialHelper;
+            if (inWsl && credentialHelper.Length > 0)
+                builder.Append($"""-c credential.helper="\"{credentialHelper}\"" """);
+            else if (!inWsl)
+                builder.Append("-c credential.helper=").Append(credentialHelper).Append(' ');
 
             switch (Editor)
             {
                 case EditorType.CoreEditor:
-                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --core-editor" """);
+                    builder.Append($"""-c core.editor="\"{editorExecFile}\" --core-editor" """);
                     break;
                 case EditorType.RebaseEditor:
-                    builder.Append($"""-c core.editor="\"{selfExecFile}\" --rebase-message-editor" -c sequence.editor="\"{selfExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """);
+                    builder.Append($"""-c core.editor="\"{editorExecFile}\" --rebase-message-editor" -c sequence.editor="\"{editorExecFile}\" --rebase-todo-editor" -c rebase.abbreviateCommands=true """);
                     break;
                 default:
                     builder.Append("-c core.editor=true ");
@@ -186,7 +195,7 @@ namespace SourceGit.Commands
             builder.Append(Args);
 
             var start = new ProcessStartInfo();
-            start.FileName = useSetSid ? Native.OS.GetSetSidExecutable() : Native.OS.GitExecutable;
+            start.FileName = inWsl ? "wsl.exe" : useSetSid ? Native.OS.GetSetSidExecutable() : Native.OS.GitExecutable;
             start.Arguments = builder.ToString();
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
@@ -207,14 +216,31 @@ namespace SourceGit.Commands
                 start.Environment.Add("DISPLAY", "required");
 
             // If an SSH private key was provided, sets the environment.
+            var setSshCommand = false;
             if (!start.Environment.ContainsKey("GIT_SSH_COMMAND") && !string.IsNullOrEmpty(SSHKey))
-                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{SSHKey}' -o AddKeysToAgent=yes");
+            {
+                var key = inWsl ? Native.WSL.ToLinux(distro, SSHKey) : SSHKey;
+                start.Environment.Add("GIT_SSH_COMMAND", $"ssh -i '{key}' -o AddKeysToAgent=yes");
+                setSshCommand = true;
+            }
 
             // Force the C locale on Unix, so that git's output (including fatal errors) can always be parsed.
-            if (!OperatingSystem.IsWindows())
+            if (!OperatingSystem.IsWindows() || inWsl)
             {
-                start.Environment.Add("LANG", "C");
-                start.Environment.Add("LC_ALL", "C");
+                start.Environment["LANG"] = "C";
+                start.Environment["LC_ALL"] = "C";
+            }
+
+            if (inWsl)
+            {
+                // WSLENV forwards these into the distro, `/p` translates the Windows path into a Linux one.
+                start.Environment["SOURCEGIT_WSL_DISTRO"] = distro;
+                var forwarded = "SSH_ASKPASS/p:SSH_ASKPASS_REQUIRE:SOURCEGIT_LAUNCH_AS_ASKPASS:SOURCEGIT_WSL_DISTRO:DISPLAY:LANG:LC_ALL";
+                if (setSshCommand)
+                    forwarded += ":GIT_SSH_COMMAND";
+
+                start.Environment.TryGetValue("WSLENV", out var wslEnv);
+                start.Environment["WSLENV"] = string.IsNullOrEmpty(wslEnv) ? forwarded : $"{wslEnv}:{forwarded}";
             }
 
             // Working directory
