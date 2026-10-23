@@ -96,7 +96,7 @@
 
                   <Grid Grid.Column="1"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
-                        ColumnDefinitions="Auto,*"
+                        ColumnDefinitions="Auto,*,Auto"
                         IsHitTestVisible="False"
                         IsVisible="{Binding Node.IsRepository}">
                     <Ellipse Grid.Column="0"
@@ -112,6 +112,14 @@
                                TextAlignment="Center"
                                Text="{Binding Node.Name}"
                                IsHitTestVisible="False"/>
+
+                    <Border Grid.Column="2"
+                            Margin="6,0,0,0" Padding="4,0"
+                            VerticalAlignment="Center" CornerRadius="3"
+                            Background="{DynamicResource Brush.Border2}"
+                            IsVisible="{Binding Node.WslDistro, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                      <TextBlock FontSize="9" Foreground="{DynamicResource Brush.FG2}" Text="WSL"/>
+                    </Border>
                   </Grid>
 
                   <TextBlock Grid.Column="1"
