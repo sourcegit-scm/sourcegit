@@ -707,6 +707,15 @@
   <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24-Hours</x:String>
   <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">Use compact branch names in commit graph</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Generate Github style default avatar</x:String>
+  <x:String x:Key="Text.Preferences.Servers" xml:space="preserve">SERVERS</x:String>
+  <x:String x:Key="Text.Preferences.Servers.CredentialHelper" xml:space="preserve">Credential Helper</x:String>
+  <x:String x:Key="Text.Preferences.Servers.CredentialHelper.Placeholder" xml:space="preserve">Empty: Git Credential Manager of this PC, if installed</x:String>
+  <x:String x:Key="Text.Preferences.Servers.Distro" xml:space="preserve">WSL Distribution</x:String>
+  <x:String x:Key="Text.Preferences.Servers.Name" xml:space="preserve">Name</x:String>
+  <x:String x:Key="Text.Preferences.Servers.Test" xml:space="preserve">Test</x:String>
+  <x:String x:Key="Text.Preferences.Servers.TestFailed" xml:space="preserve">Git was not found in this distribution</x:String>
+  <x:String x:Key="Text.Preferences.Servers.Testing" xml:space="preserve">Testing...</x:String>
+  <x:String x:Key="Text.Preferences.Servers.ThisPC" xml:space="preserve">This PC (default)</x:String>
   <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Enable Auto CRLF</x:String>
   <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Default Clone Dir</x:String>

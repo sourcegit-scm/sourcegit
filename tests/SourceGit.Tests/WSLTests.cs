@@ -59,6 +59,29 @@ namespace SourceGit.Tests
         }
 
         [Fact]
+        public void ParsesDistroList()
+        {
+            // wsl.exe -l -q output as decoded from UTF-16LE: BOM, CRLF, NUL padding, blank lines, helper distros.
+            var output = "\uFEFFUbuntu-26.04\r\nDebian\0\r\ndocker-desktop\r\ndocker-desktop-data\r\n\r\n";
+            Assert.Equal(["Ubuntu-26.04", "Debian"], WSL.ParseDistros(output));
+            Assert.Empty(WSL.ParseDistros(string.Empty));
+        }
+
+        [Fact]
+        public void ResolvesCredentialHelperFromOverride()
+        {
+            try
+            {
+                WSL.CredentialHelperOverride = d => d == "Ubuntu" ? "  store " : string.Empty;
+                Assert.Equal("store", WSL.CredentialHelperFor("Ubuntu"));
+            }
+            finally
+            {
+                WSL.CredentialHelperOverride = null;
+            }
+        }
+
+        [Fact]
         public void UnknownDistroHasNoGitVersion()
         {
             Assert.Equal(new System.Version(0, 0, 0), WSL.GetGitVersion("no-such-distro-for-sourcegit-tests"));

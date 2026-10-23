@@ -197,11 +197,19 @@ namespace SourceGit.Commands
 
             builder.Append("--no-pager -c core.quotepath=off ");
 
-            var credentialHelper = inWsl ? Native.WSL.CredentialHelper : Native.OS.CredentialHelper;
-            if (inWsl && credentialHelper.Length > 0)
-                builder.Append($"""-c credential.helper="\"{credentialHelper}\"" """);
-            else if (!inWsl)
-                builder.Append("-c credential.helper=").Append(credentialHelper).Append(' ');
+            if (!inWsl)
+            {
+                builder.Append("-c credential.helper=").Append(Native.OS.CredentialHelper).Append(' ');
+            }
+            else
+            {
+                // An absolute path needs the same quoting as the editor, a helper name is passed as it is.
+                var helper = Native.WSL.CredentialHelperFor(distro);
+                if (helper.StartsWith('/'))
+                    builder.Append($"""-c credential.helper="\"{helper}\"" """);
+                else if (helper.Length > 0)
+                    builder.Append("-c credential.helper=").Append(helper).Append(' ');
+            }
 
             switch (Editor)
             {

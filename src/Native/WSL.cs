@@ -21,13 +21,60 @@ namespace SourceGit.Native
         [GeneratedRegex(@"^git version[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
         private static partial Regex REG_GIT_VERSION();
 
-        // Empty if Git for Windows' credential manager is not installed, then the distro's own git config is used.
-        public static string CredentialHelper => File.Exists(GCM_WINDOWS_PATH) ? GCM_LINUX_PATH : string.Empty;
+        // Lets the preferences supply the credential helper configured for a server.
+        public static Func<string, string> CredentialHelperOverride { get; set; }
+
+        // The configured helper, else Git for Windows' credential manager if installed, else empty (the distro's own git config applies).
+        public static string CredentialHelperFor(string distro)
+        {
+            var custom = CredentialHelperOverride?.Invoke(distro);
+            if (!string.IsNullOrWhiteSpace(custom))
+                return custom.Trim();
+
+            return File.Exists(GCM_WINDOWS_PATH) ? GCM_LINUX_PATH : string.Empty;
+        }
+
+        // Names of the installed distros, empty if WSL is not available.
+        public static string[] ListDistros()
+        {
+            var start = new ProcessStartInfo();
+            start.FileName = "wsl.exe";
+            start.Arguments = "-l -q";
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.RedirectStandardOutput = true;
+            start.StandardOutputEncoding = Encoding.Unicode; // wsl.exe prints its own output as UTF-16LE.
+
+            try
+            {
+                using var proc = Process.Start(start)!;
+                var output = proc.StandardOutput.ReadToEnd();
+                proc.WaitForExit();
+                return proc.ExitCode == 0 ? ParseDistros(output) : [];
+            }
+            catch
+            {
+                return [];
+            }
+        }
+
+        public static string[] ParseDistros(string output)
+        {
+            var names = new System.Collections.Generic.List<string>();
+            foreach (var line in output.Split('\n'))
+            {
+                var name = line.Replace("\0", string.Empty).Trim('﻿', '\r', ' ', '\t');
+                if (name.Length > 0 && !name.StartsWith("docker-desktop", StringComparison.OrdinalIgnoreCase))
+                    names.Add(name);
+            }
+
+            return names.ToArray();
+        }
 
         // Version of the git installed inside the distro, queried once and cached. 0.0.0 if it can not be determined.
-        public static Version GetGitVersion(string distro)
+        public static Version GetGitVersion(string distro, bool refresh = false)
         {
-            if (_gitVersions.TryGetValue(distro, out var cached))
+            if (!refresh && _gitVersions.TryGetValue(distro, out var cached))
                 return cached;
 
             var version = QueryGitVersion(distro);

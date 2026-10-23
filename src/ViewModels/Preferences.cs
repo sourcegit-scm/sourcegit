@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace SourceGit.ViewModels
                 _instance.PrepareShellOrTerminal();
                 _instance.PrepareExternalDiffMergeTool();
                 _instance.PrepareWorkspaces();
+                _instance.PrepareGitServers();
 
                 return _instance;
             }
@@ -468,6 +470,12 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public AvaloniaList<Models.GitServer> GitServers
+        {
+            get;
+            set;
+        } = [];
+
         public double LastCheckUpdateTime
         {
             get => _lastCheckUpdateTime;
@@ -694,6 +702,20 @@ namespace SourceGit.ViewModels
                 if (string.IsNullOrEmpty(Native.OS.ExternalMergeArgs))
                     Native.OS.ExternalMergeArgs = merger.MergeCmd;
             }
+        }
+
+        private void PrepareGitServers()
+        {
+            Native.WSL.CredentialHelperOverride = distro =>
+            {
+                foreach (var server in GitServers.ToArray())
+                {
+                    if (server.Distro.Equals(distro, StringComparison.OrdinalIgnoreCase))
+                        return server.CredentialHelper;
+                }
+
+                return string.Empty;
+            };
         }
 
         private void PrepareWorkspaces()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Avalonia;
@@ -117,6 +118,29 @@ namespace SourceGit.Views
             set => SetAndRaise(SelectedOpenAIServiceProperty, ref _selectedOpenAIService, value);
         }
 
+        public static readonly DirectProperty<Preferences, Models.GitServer> SelectedGitServerProperty =
+            AvaloniaProperty.RegisterDirect<Preferences, Models.GitServer>(
+                nameof(SelectedGitServer),
+                static o => o.SelectedGitServer,
+                static (o, v) => o.SelectedGitServer = v);
+
+        public Models.GitServer SelectedGitServer
+        {
+            get => _selectedGitServer;
+            set => SetAndRaise(SelectedGitServerProperty, ref _selectedGitServer, value);
+        }
+
+        public static readonly DirectProperty<Preferences, string[]> InstalledDistrosProperty =
+            AvaloniaProperty.RegisterDirect<Preferences, string[]>(
+                nameof(InstalledDistros),
+                static o => o.InstalledDistros);
+
+        public string[] InstalledDistros
+        {
+            get => _installedDistros;
+            private set => SetAndRaise(InstalledDistrosProperty, ref _installedDistros, value);
+        }
+
         public static readonly DirectProperty<Preferences, Models.CustomAction> SelectedCustomActionProperty =
             AvaloniaProperty.RegisterDirect<Preferences, Models.CustomAction>(
                 nameof(SelectedCustomAction),
@@ -169,6 +193,9 @@ namespace SourceGit.Views
 
             UpdateGitVersion();
             InitializeComponent();
+
+            if (OperatingSystem.IsWindows())
+                Task.Run(() => InstalledDistros = Native.WSL.ListDistros());
         }
 
         protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -442,6 +469,39 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private void OnAddGitServer(object sender, RoutedEventArgs e)
+        {
+            var servers = ViewModels.Preferences.Instance.GitServers;
+            var distro = Array.Find(InstalledDistros ?? [], d => !servers.Any(s => s.Distro.Equals(d, StringComparison.OrdinalIgnoreCase))) ?? string.Empty;
+            var server = new Models.GitServer() { Name = string.IsNullOrEmpty(distro) ? "WSL" : distro, Distro = distro };
+            servers.Add(server);
+            SelectedGitServer = server;
+
+            e.Handled = true;
+        }
+
+        private void OnRemoveSelectedGitServer(object sender, RoutedEventArgs e)
+        {
+            if (SelectedGitServer == null)
+                return;
+
+            ViewModels.Preferences.Instance.GitServers.Remove(SelectedGitServer);
+            SelectedGitServer = null;
+            e.Handled = true;
+        }
+
+        private async void OnTestGitServer(object sender, RoutedEventArgs e)
+        {
+            var server = SelectedGitServer;
+            if (server == null || string.IsNullOrEmpty(server.Distro))
+                return;
+
+            server.TestResult = App.Text("Preferences.Servers.Testing");
+            var version = await Task.Run(() => Native.WSL.GetGitVersion(server.Distro, true));
+            server.TestResult = version.Major > 0 ? $"git {version}" : App.Text("Preferences.Servers.TestFailed");
+            e.Handled = true;
+        }
+
         private void OnAddCustomAction(object sender, RoutedEventArgs e)
         {
             var action = new Models.CustomAction() { Name = "Unnamed Action (Global)" };
@@ -527,6 +587,8 @@ namespace SourceGit.Views
         private Models.GPGFormat _gpgFormat = Models.GPGFormat.Supported[0];
         private string _gpgExecutableFile = string.Empty;
         private AI.Service _selectedOpenAIService = null;
+        private Models.GitServer _selectedGitServer = null;
+        private string[] _installedDistros = [];
         private Models.CustomAction _selectedCustomAction = null;
     }
 }
