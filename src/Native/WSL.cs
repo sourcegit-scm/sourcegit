@@ -16,6 +16,7 @@ namespace SourceGit.Native
         private const string GCM_WINDOWS_PATH = @"C:\Program Files\Git\mingw64\bin\git-credential-manager.exe";
         private const string GCM_LINUX_PATH = "/mnt/c/Program Files/Git/mingw64/bin/git-credential-manager.exe";
 
+        private static readonly ConcurrentDictionary<string, string> _homes = new(StringComparer.OrdinalIgnoreCase);
         private static readonly ConcurrentDictionary<string, Version> _gitVersions = new(StringComparer.OrdinalIgnoreCase);
 
         [GeneratedRegex(@"^git version[\s\w]*(\d+)\.(\d+)[\.\-](\d+).*$")]
@@ -69,6 +70,36 @@ namespace SourceGit.Native
             }
 
             return names.ToArray();
+        }
+
+        // Home directory (a Linux path) of the default user of the distro, empty if it can not be determined.
+        public static string GetHomeDirectory(string distro)
+        {
+            if (_homes.TryGetValue(distro, out var cached))
+                return cached;
+
+            var start = new ProcessStartInfo();
+            start.FileName = "wsl.exe";
+            start.Arguments = $"-d {distro} --exec sh -c \"echo $HOME\"";
+            start.UseShellExecute = false;
+            start.CreateNoWindow = true;
+            start.RedirectStandardOutput = true;
+            start.StandardOutputEncoding = Encoding.UTF8;
+
+            try
+            {
+                using var proc = Process.Start(start)!;
+                var home = proc.StandardOutput.ReadToEnd().Trim();
+                proc.WaitForExit();
+                if (proc.ExitCode == 0 && home.StartsWith('/'))
+                    return _homes[distro] = home;
+            }
+            catch
+            {
+                // Ignore errors
+            }
+
+            return string.Empty;
         }
 
         // Version of the git installed inside the distro, queried once and cached. 0.0.0 if it can not be determined.

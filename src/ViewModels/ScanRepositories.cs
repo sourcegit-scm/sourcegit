@@ -42,6 +42,12 @@ namespace SourceGit.ViewModels
             if (!string.IsNullOrEmpty(Preferences.Instance.GitDefaultCloneDir))
                 ScanDirs.Add(new Models.ScanDir(Preferences.Instance.GitDefaultCloneDir, "Global"));
 
+            foreach (var server in Preferences.Instance.GetServerChoices())
+            {
+                if (!string.IsNullOrEmpty(server.Distro))
+                    ScanDirs.Add(new Models.ScanDir(Preferences.GetServerHome(server), server.Name));
+            }
+
             if (ScanDirs.Count > 0)
                 _selected = ScanDirs[0];
             else

@@ -82,6 +82,25 @@ namespace SourceGit.Tests
         }
 
         [Fact]
+        public void UnknownDistroHasNoHomeDirectory()
+        {
+            Assert.Equal(string.Empty, WSL.GetHomeDirectory("no-such-distro-for-sourcegit-tests"));
+        }
+
+        [Fact]
+        public void ReadsHomeDirectoryFromInstalledDistro()
+        {
+            // Needs a real distro, set WSL_TEST_DISTRO to run it.
+            var distro = System.Environment.GetEnvironmentVariable("WSL_TEST_DISTRO");
+            if (string.IsNullOrEmpty(distro))
+                return;
+
+            var home = WSL.GetHomeDirectory(distro);
+            Assert.StartsWith("/", home);
+            Assert.True(System.IO.Directory.Exists(WSL.ToWindows(distro, home)));
+        }
+
+        [Fact]
         public void UnknownDistroHasNoGitVersion()
         {
             Assert.Equal(new System.Version(0, 0, 0), WSL.GetGitVersion("no-such-distro-for-sourcegit-tests"));

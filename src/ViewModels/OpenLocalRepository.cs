@@ -16,6 +16,34 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _repoPath, value, true);
         }
 
+        public List<Models.GitServer> Servers
+        {
+            get;
+        }
+
+        public bool HasServers => Servers.Count > 1;
+
+        public Models.GitServer SelectedServer
+        {
+            get => _selectedServer;
+            set
+            {
+                if (value == null || !SetProperty(ref _selectedServer, value))
+                    return;
+
+                var inWsl = Native.WSL.TryParse(_repoPath, out var distro, out _);
+                if (string.IsNullOrEmpty(value.Distro))
+                {
+                    if (inWsl)
+                        RepoPath = string.Empty;
+                }
+                else if (!inWsl || !distro.Equals(value.Distro, StringComparison.OrdinalIgnoreCase))
+                {
+                    RepoPath = Preferences.GetServerHome(value);
+                }
+            }
+        }
+
         public List<TargetGroup> Groups
         {
             get;
@@ -36,6 +64,9 @@ namespace SourceGit.ViewModels
         public OpenLocalRepository(string pageId, RepositoryNode group)
         {
             _pageId = pageId;
+
+            Servers = Preferences.Instance.GetServerChoices();
+            _selectedServer = Servers[0];
 
             Groups = new List<TargetGroup>();
             Groups.Add(new TargetGroup(string.Empty, "Auto", "Based-on Default Clone Dir"));
@@ -140,6 +171,7 @@ namespace SourceGit.ViewModels
 
         private string _pageId = string.Empty;
         private string _repoPath = string.Empty;
+        private Models.GitServer _selectedServer = null;
         private int _selectedGroupIndex = 0;
         private int _bookmark = 0;
     }

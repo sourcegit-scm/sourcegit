@@ -49,6 +49,34 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _local, value);
         }
 
+        public List<Models.GitServer> Servers
+        {
+            get;
+        }
+
+        public bool HasServers => Servers.Count > 1;
+
+        public Models.GitServer SelectedServer
+        {
+            get => _selectedServer;
+            set
+            {
+                if (value == null || !SetProperty(ref _selectedServer, value))
+                    return;
+
+                var inWsl = Native.WSL.TryParse(_parentFolder, out var distro, out _);
+                if (string.IsNullOrEmpty(value.Distro))
+                {
+                    if (inWsl)
+                        ParentFolder = _defaultCloneDir;
+                }
+                else if (!inWsl || !distro.Equals(value.Distro, StringComparison.OrdinalIgnoreCase))
+                {
+                    ParentFolder = Preferences.GetServerHome(value);
+                }
+            }
+        }
+
         public List<TargetGroup> Groups
         {
             get;
@@ -88,6 +116,9 @@ namespace SourceGit.ViewModels
         {
             _pageId = pageId;
             CanTerminate = true;
+
+            Servers = Preferences.Instance.GetServerChoices();
+            _selectedServer = Servers[0];
 
             Groups = new List<TargetGroup>();
             Groups.Add(new TargetGroup(string.Empty, "Auto", "Based-on Default Clone Dir"));
@@ -240,6 +271,7 @@ namespace SourceGit.ViewModels
         private bool _useSSH = false;
         private string _sshKey = string.Empty;
         private string _parentFolder = string.Empty;
+        private Models.GitServer _selectedServer = null;
         private string _defaultCloneDir = string.Empty;
         private string _local = string.Empty;
         private string _extraArgs = string.Empty;

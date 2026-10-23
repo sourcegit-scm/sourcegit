@@ -704,6 +704,26 @@ namespace SourceGit.ViewModels
             }
         }
 
+        // This PC first, then the configured servers.
+        public List<Models.GitServer> GetServerChoices()
+        {
+            var choices = new List<Models.GitServer>() { new() { Name = App.Text("Preferences.Servers.ThisPC") } };
+            foreach (var server in GitServers)
+            {
+                if (!string.IsNullOrEmpty(server.Distro))
+                    choices.Add(server);
+            }
+
+            return choices;
+        }
+
+        // Where to start browsing on the server, as a path the app can use (UNC for WSL).
+        public static string GetServerHome(Models.GitServer server)
+        {
+            var home = Native.WSL.GetHomeDirectory(server.Distro);
+            return Native.WSL.ToWindows(server.Distro, string.IsNullOrEmpty(home) ? "/" : home);
+        }
+
         private void PrepareGitServers()
         {
             Native.WSL.CredentialHelperOverride = distro =>

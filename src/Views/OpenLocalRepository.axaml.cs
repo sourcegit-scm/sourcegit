@@ -29,6 +29,9 @@ namespace SourceGit.Views
             if (string.IsNullOrEmpty(initDir) || !Directory.Exists(initDir))
                 initDir = preference.GitDefaultCloneDir;
 
+            if (!string.IsNullOrWhiteSpace(vm.RepoPath) && Directory.Exists(vm.RepoPath))
+                initDir = vm.RepoPath;
+
             var options = new FolderPickerOpenOptions() { AllowMultiple = false };
             if (Directory.Exists(initDir))
             {

@@ -175,6 +175,18 @@ namespace SourceGit.Native
             var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
             var terminal = OS.ShellOrTerminal;
 
+            if (WSL.TryParse(workdir, out var distro, out var linuxDir))
+            {
+                // Windows Terminal hosts the shell in a tab, any other terminal gets a plain console window.
+                var wslArgs = $"-d {distro} --cd \"{linuxDir}\"";
+                if (Path.GetFileName(terminal).Equals("wt.exe", StringComparison.OrdinalIgnoreCase))
+                    Process.Start(new ProcessStartInfo(terminal, "wsl.exe " + wslArgs));
+                else
+                    Process.Start(new ProcessStartInfo("wsl.exe", wslArgs) { UseShellExecute = true });
+
+                return;
+            }
+
             if (!File.Exists(terminal))
             {
                 Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);

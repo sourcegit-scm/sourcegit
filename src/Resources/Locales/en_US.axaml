@@ -707,6 +707,7 @@
   <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24-Hours</x:String>
   <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">Use compact branch names in commit graph</x:String>
   <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Generate Github style default avatar</x:String>
+  <x:String x:Key="Text.GitServer" xml:space="preserve">Server</x:String>
   <x:String x:Key="Text.Preferences.Servers" xml:space="preserve">SERVERS</x:String>
   <x:String x:Key="Text.Preferences.Servers.CredentialHelper" xml:space="preserve">Credential Helper</x:String>
   <x:String x:Key="Text.Preferences.Servers.CredentialHelper.Placeholder" xml:space="preserve">Empty: Git Credential Manager of this PC, if installed</x:String>

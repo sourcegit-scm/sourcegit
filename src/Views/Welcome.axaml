@@ -149,6 +149,11 @@
 
               <StackPanel Grid.Column="2" Orientation="Horizontal" ClipToBounds="True">
                 <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
+                <Border Margin="6,0,0,0" Padding="4,0" VerticalAlignment="Center" CornerRadius="3"
+                        Background="{DynamicResource Brush.Border2}"
+                        IsVisible="{Binding WslDistro, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                  <TextBlock FontSize="10" Foreground="{DynamicResource Brush.FG2}" Text="{Binding WslDistro}"/>
+                </Border>
                 <TextBlock Margin="4,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Id, StringFormat=({0}), Converter={x:Static c:PathConverters.RelativeToHome}}">
                   <TextBlock.IsVisible>
                     <MultiBinding Converter="{x:Static BoolConverters.And}">

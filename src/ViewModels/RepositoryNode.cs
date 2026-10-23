@@ -58,6 +58,13 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isVisible, value);
         }
 
+        // Name of the WSL distro the repository lives in, empty for repositories on this PC.
+        [JsonIgnore]
+        public string WslDistro
+        {
+            get => Native.WSL.TryParse(_id, out var distro, out _) ? distro : string.Empty;
+        }
+
         [JsonIgnore]
         public bool IsInvalid
         {
