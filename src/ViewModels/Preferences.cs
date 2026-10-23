@@ -301,10 +301,58 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _enableCompactFoldersInChangesTree, value);
         }
 
+        public Models.ChangeViewMode UnstagedChangeViewMode
+        {
+            get => _unstagedChangeViewMode;
+            set => SetProperty(ref _unstagedChangeViewMode, value);
+        }
+
+        public Models.ChangeViewMode StagedChangeViewMode
+        {
+            get => _stagedChangeViewMode;
+            set => SetProperty(ref _stagedChangeViewMode, value);
+        }
+
+        public Models.ChangeViewMode CommitChangeViewMode
+        {
+            get => _commitChangeViewMode;
+            set => SetProperty(ref _commitChangeViewMode, value);
+        }
+
+        public Models.ChangeViewMode StashChangeViewMode
+        {
+            get => _stashChangeViewMode;
+            set => SetProperty(ref _stashChangeViewMode, value);
+        }
+
         public Models.ChangeViewMode ChangeViewMode
         {
             get => _changeViewMode;
             set => SetProperty(ref _changeViewMode, value);
+        }
+
+        public Models.ChangeSortMode UnstagedChangeSortMode
+        {
+            get => _unstagedChangeSortMode;
+            set => SetProperty(ref _unstagedChangeSortMode, value);
+        }
+
+        public Models.ChangeSortMode StagedChangeSortMode
+        {
+            get => _stagedChangeSortMode;
+            set => SetProperty(ref _stagedChangeSortMode, value);
+        }
+
+        public Models.ChangeSortMode CommitChangeSortMode
+        {
+            get => _commitChangeSortMode;
+            set => SetProperty(ref _commitChangeSortMode, value);
+        }
+
+        public Models.ChangeSortMode StashChangeSortMode
+        {
+            get => _stashChangeSortMode;
+            set => SetProperty(ref _stashChangeSortMode, value);
         }
 
         public string GitInstallPath
@@ -842,7 +890,16 @@ namespace SourceGit.ViewModels
         private int _lfsImageActiveIdx = 0;
         private int _imageDiffActiveIdx = 0;
         private bool _enableCompactFoldersInChangesTree = false;
+        private Models.ChangeViewMode _unstagedChangeViewMode = Models.ChangeViewMode.List;
+        private Models.ChangeViewMode _stagedChangeViewMode = Models.ChangeViewMode.List;
+        private Models.ChangeViewMode _commitChangeViewMode = Models.ChangeViewMode.List;
+        private Models.ChangeViewMode _stashChangeViewMode = Models.ChangeViewMode.List;
         private Models.ChangeViewMode _changeViewMode = Models.ChangeViewMode.List;
+
+        private Models.ChangeSortMode _unstagedChangeSortMode = Models.ChangeSortMode.Path;
+        private Models.ChangeSortMode _stagedChangeSortMode = Models.ChangeSortMode.Path;
+        private Models.ChangeSortMode _commitChangeSortMode = Models.ChangeSortMode.Path;
+        private Models.ChangeSortMode _stashChangeSortMode = Models.ChangeSortMode.Path;
 
         private string _gitDefaultCloneDir = string.Empty;
         private int _shellOrTerminalType = -1;
