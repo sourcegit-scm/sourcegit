@@ -206,6 +206,10 @@ namespace SourceGit.ViewModels
             if (_selectedLocalBranch == null)
                 return;
 
+            // Turn on `Set as tracking branch` if the selected local branch has no upstream.
+            // But don't change the visibility of the CheckBox, because it may be hidden by `PostSelectedRemoteChanged`.
+            Tracking = string.IsNullOrEmpty(_selectedLocalBranch.Upstream);
+
             var remotes = new List<Models.Remote>();
             remotes.AddRange(_repo.Remotes);
 

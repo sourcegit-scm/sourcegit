@@ -1,0 +1,1095 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://SourceGit/Resources/Locales/en_US.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <x:String x:Key="Text.About" xml:space="preserve">Quant a</x:String>
+  <x:String x:Key="Text.About.Menu" xml:space="preserve">Quant a SourceGit</x:String>
+  <x:String x:Key="Text.About.ReleaseDate" xml:space="preserve">Data de llançament: {0}</x:String>
+  <x:String x:Key="Text.About.ReleaseNotes" xml:space="preserve">Notes de la versió</x:String>
+  <x:String x:Key="Text.About.SubTitle" xml:space="preserve">Client Git gràfic de codi obert i gratuït</x:String>
+  <x:String x:Key="Text.AddToIgnore" xml:space="preserve">Afegeix fitxers a la llista d'ignorats</x:String>
+  <x:String x:Key="Text.AddToIgnore.Pattern" xml:space="preserve">Patró:</x:String>
+  <x:String x:Key="Text.AddToIgnore.Storage" xml:space="preserve">Fitxer:</x:String>
+  <x:String x:Key="Text.AddWorktree" xml:space="preserve">Afegeix un arbre de treball</x:String>
+  <x:String x:Key="Text.AddWorktree.Location" xml:space="preserve">Ubicació:</x:String>
+  <x:String x:Key="Text.AddWorktree.Location.Placeholder" xml:space="preserve">Ruta d'aquest arbre de treball. Es permet una ruta relativa.</x:String>
+  <x:String x:Key="Text.AddWorktree.Name" xml:space="preserve">Nom de la branca:</x:String>
+  <x:String x:Key="Text.AddWorktree.Name.Placeholder" xml:space="preserve">Opcional. Per defecte és el nom de la carpeta de destinació.</x:String>
+  <x:String x:Key="Text.AIAssistant" xml:space="preserve">Assistent d'IA</x:String>
+  <x:String x:Key="Text.AIAssistant.Model" xml:space="preserve">MODEL</x:String>
+  <x:String x:Key="Text.AIAssistant.Regen" xml:space="preserve">REGENERA</x:String>
+  <x:String x:Key="Text.AIAssistant.Tip" xml:space="preserve">Utilitza la IA per generar un missatge de comissió</x:String>
+  <x:String x:Key="Text.AIAssistant.Use" xml:space="preserve">Utilitza</x:String>
+  <x:String x:Key="Text.App.Hide" xml:space="preserve">Amaga SourceGit</x:String>
+  <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Amaga els altres</x:String>
+  <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Mostra-ho tot</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Fusió a 3 bandes</x:String>
+  <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Seleccioneu el fitxer de pedaç que cal aplicar</x:String>
+  <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Ignora els canvis d'espais en blanc</x:String>
+  <x:String x:Key="Text.Apply.Source" xml:space="preserve">Origen:</x:String>
+  <x:String x:Key="Text.Apply.Source.File" xml:space="preserve">Fitxer</x:String>
+  <x:String x:Key="Text.Apply.Source.Clipboard" xml:space="preserve">Porta-retalls</x:String>
+  <x:String x:Key="Text.Apply.Title" xml:space="preserve">Aplica el pedaç</x:String>
+  <x:String x:Key="Text.Apply.WS" xml:space="preserve">Espais en blanc:</x:String>
+  <x:String x:Key="Text.ApplyStash" xml:space="preserve">Aplica l'«stash»</x:String>
+  <x:String x:Key="Text.ApplyStash.DropAfterApply" xml:space="preserve">Suprimeix després d'aplicar</x:String>
+  <x:String x:Key="Text.ApplyStash.RestoreIndex" xml:space="preserve">Restaura els canvis de l'índex</x:String>
+  <x:String x:Key="Text.ApplyStash.Stash" xml:space="preserve">«Stash»:</x:String>
+  <x:String x:Key="Text.Archive" xml:space="preserve">Arxiva...</x:String>
+  <x:String x:Key="Text.Archive.File" xml:space="preserve">Desa l'arxiu a:</x:String>
+  <x:String x:Key="Text.Archive.File.Placeholder" xml:space="preserve">Seleccioneu la ruta del fitxer d'arxiu</x:String>
+  <x:String x:Key="Text.Archive.Revision" xml:space="preserve">Revisió:</x:String>
+  <x:String x:Key="Text.Archive.Title" xml:space="preserve">Arxiva</x:String>
+  <x:String x:Key="Text.Askpass" xml:space="preserve">Askpass de SourceGit</x:String>
+  <x:String x:Key="Text.Askpass.Passphrase" xml:space="preserve">Introduïu la frase de pas:</x:String>
+  <x:String x:Key="Text.AssumeUnchanged" xml:space="preserve">FITXERS AMB CANVIS IGNORATS</x:String>
+  <x:String x:Key="Text.AssumeUnchanged.Empty" xml:space="preserve">CAP FITXER NO TÉ ELS CANVIS IGNORATS</x:String>
+  <x:String x:Key="Text.Avatar.Load" xml:space="preserve">Carrega la imatge...</x:String>
+  <x:String x:Key="Text.Avatar.Refetch" xml:space="preserve">Actualitza</x:String>
+  <x:String x:Key="Text.Bisect">Biseca</x:String>
+  <x:String x:Key="Text.Bisect.Abort">Avorta</x:String>
+  <x:String x:Key="Text.Bisect.Bad">Dolent</x:String>
+  <x:String x:Key="Text.Bisect.Good">Bo</x:String>
+  <x:String x:Key="Text.Bisect.Skip">Omet</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForCheckoutAnother">S'està bisecant. Feu «checkout» d'una altra comissió i marqueu-la com a bona o dolenta.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstBad">S'està bisecant. Marqueu la comissió actual com a dolenta, o feu «checkout» d'una altra i marqueu-la com a dolenta.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForFirstGood">S'està bisecant. Marqueu la comissió actual com a bona o dolenta i feu «checkout» d'una altra.</x:String>
+  <x:String x:Key="Text.Bisect.WaitingForMark">S'està bisecant. El HEAD actual és bo o dolent?</x:String>
+  <x:String x:Key="Text.Blame" xml:space="preserve">«Blame»</x:String>
+  <x:String x:Key="Text.Blame.BlameOnPreviousRevision" xml:space="preserve">«Blame» de la revisió anterior</x:String>
+  <x:String x:Key="Text.Blame.IgnoreWhitespace">Ignora els canvis d'espais en blanc</x:String>
+  <x:String x:Key="Text.Blame.Tips" xml:space="preserve">Si manteniu premuda la tecla Ctrl (a Windows/Linux) o ⌘ (a macOS) en fer clic al SHA d'una comissió, es tornaran a generar les dades del «blame» a partir d'aquella revisió.</x:String>
+  <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">EL «BLAME» D'AQUEST FITXER NO S'ADMET!!!</x:String>
+  <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Fes «checkout» de ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CheckoutAsWorktree" xml:space="preserve">Fes «checkout» de ${0}$ com a arbre de treball...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Compara les 2 branques seleccionades</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">Compara amb...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compara amb HEAD</x:String>
+  <x:String x:Key="Text.BranchCM.CompareWithSpecial" xml:space="preserve">Compara amb ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.CopyName" xml:space="preserve">Copia el nom de la branca</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePR" xml:space="preserve">Crea un PR...</x:String>
+  <x:String x:Key="Text.BranchCM.CreatePRForUpstream" xml:space="preserve">Crea un PR per a la font ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CustomAction" xml:space="preserve">Acció personalitzada</x:String>
+  <x:String x:Key="Text.BranchCM.Delete" xml:space="preserve">Suprimeix ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Suprimeix les {0} branques seleccionades...</x:String>
+  <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Edita la descripció de ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Avanç ràpid a ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Obtén ${0}$ a ${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finalitza ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.InteractiveRebase.Manually" xml:space="preserve">Fes rebase interactiu de ${0}$ sobre ${1}$</x:String>
+  <x:String x:Key="Text.BranchCM.Merge" xml:space="preserve">Fusiona ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.MergeMultiBranches" xml:space="preserve">Fusiona les {0} branques seleccionades amb l'actual...</x:String>
+  <x:String x:Key="Text.BranchCM.Pull" xml:space="preserve">Baixa ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.PullInto" xml:space="preserve">Baixa ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Push" xml:space="preserve">Puja ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rebase" xml:space="preserve">Fes rebase de ${0}$ sobre ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.Rename" xml:space="preserve">Canvia el nom de ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.ResetToSelectedCommit" xml:space="preserve">Restableix ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.BranchCM.SwitchToWorktree" xml:space="preserve">Canvia a ${0}$ (arbre de treball)</x:String>
+  <x:String x:Key="Text.BranchCM.Tracking" xml:space="preserve">Estableix la branca de seguiment...</x:String>
+  <x:String x:Key="Text.BranchTree.Ahead" xml:space="preserve">{0} comissions per davant</x:String>
+  <x:String x:Key="Text.BranchTree.AheadBehind" xml:space="preserve">{0} comissions per davant, {1} comissions per darrere</x:String>
+  <x:String x:Key="Text.BranchTree.Behind" xml:space="preserve">{0} comissions per darrere</x:String>
+  <x:String x:Key="Text.BranchTree.InvalidUpstream" xml:space="preserve">No vàlida</x:String>
+  <x:String x:Key="Text.BranchTree.PushURL" xml:space="preserve">URL DE PUJADA</x:String>
+  <x:String x:Key="Text.BranchTree.Remote" xml:space="preserve">REMOT</x:String>
+  <x:String x:Key="Text.BranchTree.Status" xml:space="preserve">ESTAT</x:String>
+  <x:String x:Key="Text.BranchTree.Tracking" xml:space="preserve">SEGUIMENT</x:String>
+  <x:String x:Key="Text.BranchTree.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.BranchTree.Worktree" xml:space="preserve">ARBRE DE TREBALL</x:String>
+  <x:String x:Key="Text.Cancel" xml:space="preserve">Cancel·la</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutFirstParentRevision" xml:space="preserve">Restableix a la revisió pare</x:String>
+  <x:String x:Key="Text.ChangeCM.CheckoutThisRevision" xml:space="preserve">Restableix a aquesta revisió</x:String>
+  <x:String x:Key="Text.ChangeCM.GenerateCommitMessage" xml:space="preserve">Genera el missatge de comissió</x:String>
+  <x:String x:Key="Text.ChangeCM.Merge" xml:space="preserve">Fusiona (integrat)</x:String>
+  <x:String x:Key="Text.ChangeCM.MergeExternal" xml:space="preserve">Fusiona (extern)</x:String>
+  <x:String x:Key="Text.ChangeCM.ResetFileTo" xml:space="preserve">Restableix els fitxers a ${0}$</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode" xml:space="preserve">CANVIA EL MODE DE VISUALITZACIÓ</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Grid" xml:space="preserve">Mostra com a llista de fitxers i directoris</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.List" xml:space="preserve">Mostra com a llista de rutes</x:String>
+  <x:String x:Key="Text.ChangeDisplayMode.Tree" xml:space="preserve">Mostra com a arbre del sistema de fitxers</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl" xml:space="preserve">Canvia l'URL del submòdul</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.Submodule" xml:space="preserve">Submòdul:</x:String>
+  <x:String x:Key="Text.ChangeSubmoduleUrl.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.Checkout" xml:space="preserve">Fes «checkout» de la branca</x:String>
+  <x:String x:Key="Text.Checkout.LocalChanges" xml:space="preserve">Canvis locals:</x:String>
+  <x:String x:Key="Text.Checkout.Target" xml:space="preserve">Branca:</x:String>
+  <x:String x:Key="Text.Checkout.WarnLostCommits" xml:space="preserve">El HEAD actual conté comissions no connectades a cap branca o etiqueta! Voleu continuar?</x:String>
+  <x:String x:Key="Text.Checkout.WarnUpdatingSubmodules" xml:space="preserve">Cal actualitzar els submòduls següents:{0}Voleu actualitzar-los?</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward" xml:space="preserve">Fes «checkout» i avanç ràpid</x:String>
+  <x:String x:Key="Text.Checkout.WithFastForward.Upstream" xml:space="preserve">Avanç ràpid a:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree" xml:space="preserve">Fes «checkout» de la branca com a arbre de treball</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.LocalBranch" xml:space="preserve">Branca local:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName" xml:space="preserve">Branca nova:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.NewBranchName.Placeholder" xml:space="preserve">Opcional. Per defecte és el nom de la carpeta de destinació.</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.RemoteBranch" xml:space="preserve">Branca remota:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.Tracking" xml:space="preserve">Fes el seguiment d'aquesta branca remota.</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath" xml:space="preserve">Ubicació:</x:String>
+  <x:String x:Key="Text.CheckoutAsWorktree.WorktreePath.Placeholder" xml:space="preserve">Ruta d'aquest arbre de treball. Es permet una ruta relativa.</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash" xml:space="preserve">Fes «checkout» d'una branca des d'un «stash»</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Branch" xml:space="preserve">Branca nova:</x:String>
+  <x:String x:Key="Text.CheckoutBranchFromStash.Stash" xml:space="preserve">«Stash»:</x:String>
+  <x:String x:Key="Text.CheckoutDetached" xml:space="preserve">Fes «checkout» d'una comissió o etiqueta</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.CheckoutDetached.Warning" xml:space="preserve">Avís: després d'això, el HEAD quedarà desvinculat</x:String>
+  <x:String x:Key="Text.CherryPick" xml:space="preserve">Fes cherry-pick</x:String>
+  <x:String x:Key="Text.CherryPick.AppendSourceToMessage" xml:space="preserve">Afegeix l'origen al missatge de comissió</x:String>
+  <x:String x:Key="Text.CherryPick.Commit" xml:space="preserve">Comissions:</x:String>
+  <x:String x:Key="Text.CherryPick.CommitChanges" xml:space="preserve">Fes una comissió amb tots els canvis</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline" xml:space="preserve">Línia principal:</x:String>
+  <x:String x:Key="Text.CherryPick.Mainline.Tips" xml:space="preserve">Normalment no es pot fer cherry-pick d'una fusió perquè no se sap quin costat de la fusió ha de considerar-se la línia principal. Aquesta opció permet a cherry-pick reproduir el canvi en relació amb el pare especificat.</x:String>
+  <x:String x:Key="Text.ClearStashes" xml:space="preserve">Esborra els «stashes»</x:String>
+  <x:String x:Key="Text.ClearStashes.Message" xml:space="preserve">Esteu a punt d'esborrar tots els «stashes». Voleu continuar?</x:String>
+  <x:String x:Key="Text.Clone" xml:space="preserve">Clona un repositori remot</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam" xml:space="preserve">Paràmetres addicionals:</x:String>
+  <x:String x:Key="Text.Clone.AdditionalParam.Placeholder" xml:space="preserve">Arguments addicionals per clonar el repositori. Opcional.</x:String>
+  <x:String x:Key="Text.Clone.Bookmark" xml:space="preserve">Marcador:</x:String>
+  <x:String x:Key="Text.Clone.Group" xml:space="preserve">Grup:</x:String>
+  <x:String x:Key="Text.Clone.LocalName" xml:space="preserve">Nom local:</x:String>
+  <x:String x:Key="Text.Clone.LocalName.Placeholder" xml:space="preserve">Nom del repositori. Opcional.</x:String>
+  <x:String x:Key="Text.Clone.ParentFolder" xml:space="preserve">Carpeta pare:</x:String>
+  <x:String x:Key="Text.Clone.RecurseSubmodules" xml:space="preserve">Inicialitza i actualitza els submòduls</x:String>
+  <x:String x:Key="Text.Clone.RemoteURL" xml:space="preserve">URL del repositori:</x:String>
+  <x:String x:Key="Text.Close" xml:space="preserve">TANCA</x:String>
+  <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">Branques</x:String>
+  <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">Branques i etiquetes</x:String>
+  <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">Accions personalitzades del repositori</x:String>
+  <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">Fitxers de revisió</x:String>
+  <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Fes «checkout» de la comissió...</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPick" xml:space="preserve">Fes cherry-pick de la comissió...</x:String>
+  <x:String x:Key="Text.CommitCM.CherryPickMultiple" xml:space="preserve">Fes cherry-pick...</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithHead" xml:space="preserve">Compara amb HEAD</x:String>
+  <x:String x:Key="Text.CommitCM.CompareWithWorktree" xml:space="preserve">Compara amb l'arbre de treball</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthor" xml:space="preserve">Autor</x:String>
+  <x:String x:Key="Text.CommitCM.CopyAuthorTime" xml:space="preserve">Data de l'autor</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitMessage" xml:space="preserve">Missatge</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitter" xml:space="preserve">Comissor</x:String>
+  <x:String x:Key="Text.CommitCM.CopyCommitterTime" xml:space="preserve">Data del comissor</x:String>
+  <x:String x:Key="Text.CommitCM.CopySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitCM.CopySubject" xml:space="preserve">Assumpte</x:String>
+  <x:String x:Key="Text.CommitCM.CustomAction" xml:space="preserve">Acció personalitzada</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase" xml:space="preserve">Rebase interactiu</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Drop" xml:space="preserve">Descarta...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Edit" xml:space="preserve">Edita...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Fixup" xml:space="preserve">Fixup al pare...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Manually" xml:space="preserve">Fes rebase interactiu de ${0}$ sobre ${1}$</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Reword" xml:space="preserve">Reescriu...</x:String>
+  <x:String x:Key="Text.CommitCM.InteractiveRebase.Squash" xml:space="preserve">Squash al pare...</x:String>
+  <x:String x:Key="Text.CommitCM.MergeMultiple" xml:space="preserve">Fusiona...</x:String>
+  <x:String x:Key="Text.CommitCM.PushRevision" xml:space="preserve">Puja ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.CommitCM.Rebase" xml:space="preserve">Fes rebase de ${0}$ sobre ${1}$...</x:String>
+  <x:String x:Key="Text.CommitCM.Reset" xml:space="preserve">Restableix ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.CommitCM.Revert" xml:space="preserve">Reverteix la comissió...</x:String>
+  <x:String x:Key="Text.CommitCM.SaveAsPatch" xml:space="preserve">Desa com a pedaç...</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes" xml:space="preserve">CANVIS</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Count" xml:space="preserve">fitxer(s) modificat(s)</x:String>
+  <x:String x:Key="Text.CommitDetail.Changes.Search" xml:space="preserve">Cerca canvis...</x:String>
+  <x:String x:Key="Text.CommitDetail.CollapseToBottom" xml:space="preserve">Replega els detalls</x:String>
+  <x:String x:Key="Text.CommitDetail.Files" xml:space="preserve">FITXERS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.LFS" xml:space="preserve">Fitxer LFS</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Search" xml:space="preserve">Cerca fitxers...</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Submodule" xml:space="preserve">Submòdul</x:String>
+  <x:String x:Key="Text.CommitDetail.Files.Tips" xml:space="preserve">SELECCIONEU UN FITXER PER VEURE'N EL CONTINGUT</x:String>
+  <x:String x:Key="Text.CommitDetail.Info" xml:space="preserve">INFORMACIÓ</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Author" xml:space="preserve">AUTOR</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Committer" xml:space="preserve">COMISSOR</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn" xml:space="preserve">Comprova les referències que contenen aquesta comissió</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.ContainsIn.Title" xml:space="preserve">LA COMISSIÓ ESTÀ CONTINGUDA A</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyEmail" xml:space="preserve">Copia el correu electrònic</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyName" xml:space="preserve">Copia el nom</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.CopyNameAndEmail" xml:space="preserve">Copia el nom i el correu electrònic</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.GotoChangesPage" xml:space="preserve">Mostra només els 100 primers canvis. Consulteu tots els canvis a la pestanya CANVIS.</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Key" xml:space="preserve">Clau:</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Message" xml:space="preserve">MISSATGE</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Parents" xml:space="preserve">PARES</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Refs" xml:space="preserve">REFERÈNCIES</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.Signer" xml:space="preserve">Signant:</x:String>
+  <x:String x:Key="Text.CommitDetail.Info.WebLinks" xml:space="preserve">Obre al navegador</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.Placeholder" xml:space="preserve">Introduïu el missatge de comissió. Utilitzeu una línia buida per separar l'assumpte i la descripció.</x:String>
+  <x:String x:Key="Text.CommitMessageTextBox.SubjectCount" xml:space="preserve">ASSUMPTE</x:String>
+  <x:String x:Key="Text.Compare" xml:space="preserve">Compara</x:String>
+  <x:String x:Key="Text.Compare.Changes" xml:space="preserve">CANVIS</x:String>
+  <x:String x:Key="Text.Compare.Commits" xml:space="preserve">COMISSIONS</x:String>
+  <x:String x:Key="Text.Compare.Commits.LeftOnly" xml:space="preserve">COMISSIONS NOMÉS A L'ESQUERRA</x:String>
+  <x:String x:Key="Text.Compare.Commits.RightOnly" xml:space="preserve">COMISSIONS NOMÉS A LA DRETA</x:String>
+  <x:String x:Key="Text.Compare.Commits.Tips" xml:space="preserve">Consells: podeu fer cherry-pick de les comissions seleccionades si l'altre costat és HEAD (utilitzant el menú contextual).</x:String>
+  <x:String x:Key="Text.Configure" xml:space="preserve">Configura el repositori</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate" xml:space="preserve">PLANTILLA DE COMISSIÓ</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.BuiltinVars" xml:space="preserve">Paràmetres integrats:
+
+  ${branch_name} Nom de la branca local actual.
+  ${files_num} Nombre de fitxers modificats
+  ${files} Rutes dels fitxers modificats
+  ${files:N} Nombre màxim N de rutes dels fitxers modificats
+  ${pure_files} Com ${files}, però només els noms dels fitxers
+  ${pure_files:N} Com ${files:N}, però sense carpetes</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Content" xml:space="preserve">Contingut de la plantilla:</x:String>
+  <x:String x:Key="Text.Configure.CommitMessageTemplate.Name" xml:space="preserve">Nom de la plantilla:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction" xml:space="preserve">ACCIÓ PERSONALITZADA</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments" xml:space="preserve">Arguments:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Arguments.Tip" xml:space="preserve">Paràmetres integrats:
+
+  ${REPO} Ruta del repositori
+  ${REMOTE} Remot seleccionat o remot de la branca seleccionada
+  ${BRANCH} Branca seleccionada, sense la part ${REMOTE} per a branques remotes
+  ${BRANCH_FRIENDLY_NAME} Nom amigable de la branca seleccionada; inclou ${REMOTE} per a branques remotes
+  ${SHA} Hash de la comissió seleccionada
+  ${TAG} Etiqueta seleccionada
+  ${FILE} Fitxer seleccionat, relatiu a l'arrel del repositori
+  $1, $2 ... Valors dels controls d'entrada</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Executable" xml:space="preserve">Fitxer executable:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls" xml:space="preserve">Controls d'entrada:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.InputControls.Edit" xml:space="preserve">Edita</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Name" xml:space="preserve">Nom:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope" xml:space="preserve">Àmbit:</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Branch" xml:space="preserve">Branca</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Commit" xml:space="preserve">Comissió</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.File" xml:space="preserve">Fitxer</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Remote" xml:space="preserve">Remot</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Repository" xml:space="preserve">Repositori</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.Scope.Tag" xml:space="preserve">Etiqueta</x:String>
+  <x:String x:Key="Text.Configure.CustomAction.WaitForExit" xml:space="preserve">Espera que l'acció acabi</x:String>
+  <x:String x:Key="Text.Configure.Email" xml:space="preserve">Adreça de correu electrònic</x:String>
+  <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Adreça de correu electrònic</x:String>
+  <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Pregunta abans d'actualitzar automàticament els submòduls</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Obtén els remots automàticament</x:String>
+  <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minut(s)</x:String>
+  <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Tipus de comissió convencionals</x:String>
+  <x:String x:Key="Text.Configure.Git.DefaultRemote" xml:space="preserve">Remot per defecte</x:String>
+  <x:String x:Key="Text.Configure.Git.EnableRecursiveWhenAutoUpdatingSubmodules" xml:space="preserve">Activa `--recursive` en actualitzar automàticament els submòduls</x:String>
+  <x:String x:Key="Text.Configure.Git.PreferredMergeMode" xml:space="preserve">Mode de fusió preferit</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker" xml:space="preserve">SEGUIDOR D'INCIDÈNCIES</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleAzure" xml:space="preserve">Afegeix una regla d'Azure DevOps</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGerritChangeIdCommit" xml:space="preserve">Afegeix la regla del Change-Id de Gerrit</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteeIssue" xml:space="preserve">Afegeix una regla d'incidència de Gitee</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGiteePullRequest" xml:space="preserve">Afegeix una regla de sol·licitud d'extracció de Gitee</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitHub" xml:space="preserve">Afegeix una regla de GitHub</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabIssue" xml:space="preserve">Afegeix una regla d'incidència de GitLab</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleGitLabMergeRequest" xml:space="preserve">Afegeix una regla de sol·licitud de fusió de GitLab</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.AddSampleJira" xml:space="preserve">Afegeix una regla de Jira</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.NewRule" xml:space="preserve">Regla nova</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Regex" xml:space="preserve">Expressió regular per a la incidència:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.RuleName" xml:space="preserve">Nom de la regla:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.Share" xml:space="preserve">Comparteix aquesta regla al fitxer .issuetracker</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate" xml:space="preserve">URL resultant:</x:String>
+  <x:String x:Key="Text.Configure.IssueTracker.URLTemplate.Tip" xml:space="preserve">Utilitzeu $1, $2 per accedir als valors dels grups de l'expressió regular.</x:String>
+  <x:String x:Key="Text.Configure.OpenAI" xml:space="preserve">IA</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred" xml:space="preserve">Servei preferit:</x:String>
+  <x:String x:Key="Text.Configure.OpenAI.Preferred.Tip" xml:space="preserve">Si s'estableix el «Servei preferit», SourceGit només l'utilitzarà en aquest repositori. Si no, i hi ha més d'un servei disponible, es mostrarà un menú contextual per triar-ne un.</x:String>
+  <x:String x:Key="Text.Configure.Proxy" xml:space="preserve">Servidor intermediari HTTP</x:String>
+  <x:String x:Key="Text.Configure.Proxy.Placeholder" xml:space="preserve">Servidor intermediari HTTP utilitzat per aquest repositori</x:String>
+  <x:String x:Key="Text.Configure.User" xml:space="preserve">Nom d'usuari</x:String>
+  <x:String x:Key="Text.Configure.User.Placeholder" xml:space="preserve">Nom d'usuari per a aquest repositori</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls" xml:space="preserve">Edita els controls d'acció personalitzada</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue" xml:space="preserve">Valor si està marcat:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.CheckedValue.Tip" xml:space="preserve">Quan està marcat, aquest valor s'utilitzarà en els arguments de la línia d'ordres</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Description" xml:space="preserve">Descripció:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.DefaultValue" xml:space="preserve">Per defecte:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.IsFolder" xml:space="preserve">És una carpeta:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Label" xml:space="preserve">Etiqueta:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options" xml:space="preserve">Opcions:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Options.Tip" xml:space="preserve">Utilitzeu '|' com a delimitador d'opcions</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter" xml:space="preserve">Formatador de cadena:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringFormatter.Tip" xml:space="preserve">Opcional. S'utilitza per formatar la cadena de sortida. S'ignora quan l'entrada està buida. Utilitzeu `${VALUE}` per representar la cadena d'entrada.</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.StringValue.Tip" xml:space="preserve">Les variables integrades ${REPO}, ${REMOTE}, ${BRANCH}, ${BRANCH_FRIENDLY_NAME}, ${SHA}, ${FILE} i ${TAG} també hi estan disponibles</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.Type" xml:space="preserve">Tipus:</x:String>
+  <x:String x:Key="Text.ConfigureCustomActionControls.UseFriendlyName" xml:space="preserve">Utilitza un nom amigable:</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace" xml:space="preserve">Espais de treball</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Color" xml:space="preserve">Color</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Name" xml:space="preserve">Nom</x:String>
+  <x:String x:Key="Text.ConfigureWorkspace.Restore" xml:space="preserve">Restaura les pestanyes a l'inici</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.Continue" xml:space="preserve">CONTINUA</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.NoLocalChanges" xml:space="preserve">S'ha detectat una comissió buida. Voleu continuar (--allow-empty)?</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageAllThenCommit" xml:space="preserve">PREPARA-HO TOT I FES LA COMISSIÓ</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.StageSelectedThenCommit" xml:space="preserve">PREPARA LA SELECCIÓ I FES LA COMISSIÓ</x:String>
+  <x:String x:Key="Text.ConfirmEmptyCommit.WithLocalChanges" xml:space="preserve">S'ha detectat una comissió buida. Voleu continuar (--allow-empty) o preparar-ho automàticament i fer la comissió?</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Title" xml:space="preserve">Cal reiniciar</x:String>
+  <x:String x:Key="Text.ConfirmRestart.Message" xml:space="preserve">Heu de reiniciar aquesta aplicació perquè s'apliquin els canvis.</x:String>
+  <x:String x:Key="Text.ConventionalCommit" xml:space="preserve">Auxiliar de comissió convencional</x:String>
+  <x:String x:Key="Text.ConventionalCommit.BreakingChanges" xml:space="preserve">Canvi disruptiu:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ClosedIssue" xml:space="preserve">Incidència tancada:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Detail" xml:space="preserve">Detall dels canvis:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Scope" xml:space="preserve">Àmbit:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Descripció breu:</x:String>
+  <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Tipus de canvi:</x:String>
+  <x:String x:Key="Text.Copy" xml:space="preserve">Copia</x:String>
+  <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copia tot el text</x:String>
+  <x:String x:Key="Text.CopyAsPatch" xml:space="preserve">Copia com a pedaç</x:String>
+  <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Copia la ruta completa</x:String>
+  <x:String x:Key="Text.CopyPath" xml:space="preserve">Copia la ruta</x:String>
+  <x:String x:Key="Text.CreateBranch" xml:space="preserve">Crea una branca...</x:String>
+  <x:String x:Key="Text.CreateBranch.BasedOn" xml:space="preserve">Basat en:</x:String>
+  <x:String x:Key="Text.CreateBranch.Checkout" xml:space="preserve">Fes «checkout» de la branca creada</x:String>
+  <x:String x:Key="Text.CreateBranch.LocalChanges" xml:space="preserve">Canvis locals:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name" xml:space="preserve">Nom de la branca nova:</x:String>
+  <x:String x:Key="Text.CreateBranch.Name.Placeholder" xml:space="preserve">Introduïu el nom de la branca.</x:String>
+  <x:String x:Key="Text.CreateBranch.Title" xml:space="preserve">Crea una branca local</x:String>
+  <x:String x:Key="Text.CreateBranch.OverwriteExisting" xml:space="preserve">Sobreescriu la branca existent</x:String>
+  <x:String x:Key="Text.CreateTag" xml:space="preserve">Crea una etiqueta...</x:String>
+  <x:String x:Key="Text.CreateTag.BasedOn" xml:space="preserve">Etiqueta nova a:</x:String>
+  <x:String x:Key="Text.CreateTag.GPGSign" xml:space="preserve">Signatura GPG</x:String>
+  <x:String x:Key="Text.CreateTag.Message" xml:space="preserve">Missatge:</x:String>
+  <x:String x:Key="Text.CreateTag.Message.Placeholder" xml:space="preserve">Opcional.</x:String>
+  <x:String x:Key="Text.CreateTag.Name" xml:space="preserve">Nom:</x:String>
+  <x:String x:Key="Text.CreateTag.Name.Placeholder" xml:space="preserve">Format recomanat: v1.0.0-alpha</x:String>
+  <x:String x:Key="Text.CreateTag.PushToAllRemotes" xml:space="preserve">Puja a tots els remots un cop creada</x:String>
+  <x:String x:Key="Text.CreateTag.Title" xml:space="preserve">Crea una etiqueta</x:String>
+  <x:String x:Key="Text.CreateTag.Type" xml:space="preserve">Tipus:</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Annotated" xml:space="preserve">anotada</x:String>
+  <x:String x:Key="Text.CreateTag.Type.Lightweight" xml:space="preserve">lleugera</x:String>
+  <x:String x:Key="Text.CtrlClickTip" xml:space="preserve">Mantingueu premuda la tecla Ctrl per començar directament</x:String>
+  <x:String x:Key="Text.Cut" xml:space="preserve">Retalla</x:String>
+  <x:String x:Key="Text.Dashboard" xml:space="preserve">Tauler</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.Discard" xml:space="preserve">Descarta</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.DoNothing" xml:space="preserve">No facis res</x:String>
+  <x:String x:Key="Text.DealWithLocalChanges.StashAndReapply" xml:space="preserve">Fes «stash» i torna a aplicar</x:String>
+  <x:String x:Key="Text.DeinitSubmodule" xml:space="preserve">Desinicialitza el submòdul</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Force" xml:space="preserve">Força la desinicialització fins i tot si conté canvis locals.</x:String>
+  <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submòdul:</x:String>
+  <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Suprimeix la branca</x:String>
+  <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Branca:</x:String>
+  <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Força la supressió encara que contingui comissions sense fusionar</x:String>
+  <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Esteu a punt de suprimir una branca remota!!!</x:String>
+  <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Suprimeix també la branca remota ${0}$</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch" xml:space="preserve">Suprimeix diverses branques</x:String>
+  <x:String x:Key="Text.DeleteMultiBranch.Tip" xml:space="preserve">Esteu intentant suprimir diverses branques alhora. Assegureu-vos de revisar-ho abans de continuar!</x:String>
+  <x:String x:Key="Text.DeleteMultiTags" xml:space="preserve">Suprimeix diverses etiquetes</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.DeleteFromRemotes" xml:space="preserve">Suprimeix-les dels remots</x:String>
+  <x:String x:Key="Text.DeleteMultiTags.Tip" xml:space="preserve">Esteu intentant suprimir diverses etiquetes alhora. Assegureu-vos de revisar-ho abans de continuar!</x:String>
+  <x:String x:Key="Text.DeleteRemote" xml:space="preserve">Suprimeix el remot</x:String>
+  <x:String x:Key="Text.DeleteRemote.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Path" xml:space="preserve">Ruta:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForGroup" xml:space="preserve">Tots els elements fills se suprimiran de la llista.</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TipForRepository" xml:space="preserve">Això només el suprimirà de la llista, no del disc!</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForGroup" xml:space="preserve">Confirmeu la supressió del grup</x:String>
+  <x:String x:Key="Text.DeleteRepositoryNode.TitleForRepository" xml:space="preserve">Confirmeu la supressió del repositori</x:String>
+  <x:String x:Key="Text.DeleteSubmodule" xml:space="preserve">Suprimeix el submòdul</x:String>
+  <x:String x:Key="Text.DeleteSubmodule.Path" xml:space="preserve">Ruta del submòdul:</x:String>
+  <x:String x:Key="Text.DeleteTag" xml:space="preserve">Suprimeix l'etiqueta</x:String>
+  <x:String x:Key="Text.DeleteTag.Tag" xml:space="preserve">Etiqueta:</x:String>
+  <x:String x:Key="Text.DeleteTag.WithRemote" xml:space="preserve">Suprimeix-la dels repositoris remots</x:String>
+  <x:String x:Key="Text.Diff.Binary" xml:space="preserve">DIFERÈNCIA BINÀRIA</x:String>
+  <x:String x:Key="Text.Diff.Binary.ViewContentOfNew" xml:space="preserve">MOSTRA EL CONTINGUT NOU</x:String>
+  <x:String x:Key="Text.Diff.EmptyFile" xml:space="preserve">FITXER BUIT</x:String>
+  <x:String x:Key="Text.Diff.First" xml:space="preserve">Primera diferència</x:String>
+  <x:String x:Key="Text.Diff.IgnoreWhitespace" xml:space="preserve">Ignora els canvis d'espais en blanc</x:String>
+  <x:String x:Key="Text.Diff.Image.Blend" xml:space="preserve">MESCLA</x:String>
+  <x:String x:Key="Text.Diff.Image.Difference" xml:space="preserve">DIFERÈNCIA</x:String>
+  <x:String x:Key="Text.Diff.Image.SideBySide" xml:space="preserve">COSTAT A COSTAT</x:String>
+  <x:String x:Key="Text.Diff.Image.Swipe" xml:space="preserve">LLISCAMENT</x:String>
+  <x:String x:Key="Text.Diff.Last" xml:space="preserve">Última diferència</x:String>
+  <x:String x:Key="Text.Diff.LFS" xml:space="preserve">CANVI D'OBJECTE LFS</x:String>
+  <x:String x:Key="Text.Diff.New" xml:space="preserve">NOU</x:String>
+  <x:String x:Key="Text.Diff.Next" xml:space="preserve">Diferència següent</x:String>
+  <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SENSE CANVIS O NOMÉS CANVIS DE FI DE LÍNIA</x:String>
+  <x:String x:Key="Text.Diff.Old" xml:space="preserve">ANTIC</x:String>
+  <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Diferència anterior</x:String>
+  <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Desa com a pedaç</x:String>
+  <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Mostra els símbols ocults</x:String>
+  <x:String x:Key="Text.Diff.SideBySide" xml:space="preserve">Diferència costat a costat</x:String>
+  <x:String x:Key="Text.Diff.Submodule" xml:space="preserve">SUBMÒDUL</x:String>
+  <x:String x:Key="Text.Diff.Submodule.Deleted" xml:space="preserve">SUPRIMIT</x:String>
+  <x:String x:Key="Text.Diff.Submodule.New" xml:space="preserve">NOU</x:String>
+  <x:String x:Key="Text.Diff.Submodule.UncommittedChanges" xml:space="preserve">+ {0} canvis sense comissió</x:String>
+  <x:String x:Key="Text.Diff.SwapCommits" xml:space="preserve">Intercanvia</x:String>
+  <x:String x:Key="Text.Diff.SyntaxHighlight" xml:space="preserve">Ressaltat de sintaxi</x:String>
+  <x:String x:Key="Text.Diff.ToggleWordWrap" xml:space="preserve">Ajust de línia</x:String>
+  <x:String x:Key="Text.Diff.UseMerger" xml:space="preserve">Obre a l'eina de fusió</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.All" xml:space="preserve">Mostra totes les línies</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Decr" xml:space="preserve">Disminueix el nombre de línies visibles</x:String>
+  <x:String x:Key="Text.Diff.VisualLines.Incr" xml:space="preserve">Augmenta el nombre de línies visibles</x:String>
+  <x:String x:Key="Text.Diff.Welcome" xml:space="preserve">SELECCIONEU UN FITXER PER VEURE'N ELS CANVIS</x:String>
+  <x:String x:Key="Text.DirHistories" xml:space="preserve">Historial del directori</x:String>
+  <x:String x:Key="Text.DirtyState.HasLocalChanges" xml:space="preserve">Té canvis locals</x:String>
+  <x:String x:Key="Text.DirtyState.HasPendingPullOrPush" xml:space="preserve">No coincideix amb la font</x:String>
+  <x:String x:Key="Text.DirtyState.UpToDate" xml:space="preserve">Ja està actualitzat</x:String>
+  <x:String x:Key="Text.Discard" xml:space="preserve">Descarta els canvis</x:String>
+  <x:String x:Key="Text.Discard.All" xml:space="preserve">Tots els canvis locals de la còpia de treball.</x:String>
+  <x:String x:Key="Text.Discard.Changes" xml:space="preserve">Canvis:</x:String>
+  <x:String x:Key="Text.Discard.IncludeIgnored" xml:space="preserve">Inclou els fitxers ignorats</x:String>
+  <x:String x:Key="Text.Discard.IncludeModified" xml:space="preserve">Inclou els fitxers modificats o suprimits</x:String>
+  <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Inclou els fitxers no seguits</x:String>
+  <x:String x:Key="Text.Discard.Total" xml:space="preserve">Es descartaran {0} canvis</x:String>
+  <x:String x:Key="Text.Discard.Warning" xml:space="preserve">No es pot desfer aquesta acció!!!</x:String>
+  <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Edita la descripció de la branca</x:String>
+  <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Marcador:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Name" xml:space="preserve">Nom nou:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForGroup" xml:space="preserve">Edita el grup seleccionat</x:String>
+  <x:String x:Key="Text.EditRepositoryNode.TitleForRepository" xml:space="preserve">Edita el repositori seleccionat</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.ExecuteCustomAction.Repository" xml:space="preserve">Aquest repositori</x:String>
+  <x:String x:Key="Text.Fetch" xml:space="preserve">Obtén</x:String>
+  <x:String x:Key="Text.Fetch.AllRemotes" xml:space="preserve">Obtén tots els remots</x:String>
+  <x:String x:Key="Text.Fetch.Force" xml:space="preserve">Força la sobreescriptura de les referències locals</x:String>
+  <x:String x:Key="Text.Fetch.NoTags" xml:space="preserve">Obtén sense etiquetes</x:String>
+  <x:String x:Key="Text.Fetch.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.Fetch.Title" xml:space="preserve">Obtén els canvis remots</x:String>
+  <x:String x:Key="Text.File.Binary" xml:space="preserve">FITXER BINARI</x:String>
+  <x:String x:Key="Text.File.HexViewer" xml:space="preserve">VISOR HEXADECIMAL</x:String>
+  <x:String x:Key="Text.File.HexViewer.GotoAddress" xml:space="preserve">Vés a l'adreça...</x:String>
+  <x:String x:Key="Text.FileCM.AssumeUnchanged" xml:space="preserve">Ignora els canvis</x:String>
+  <x:String x:Key="Text.FileCM.CustomAction" xml:space="preserve">Acció personalitzada</x:String>
+  <x:String x:Key="Text.FileCM.Discard" xml:space="preserve">Descarta...</x:String>
+  <x:String x:Key="Text.FileCM.DiscardMulti" xml:space="preserve">Descarta {0} fitxers...</x:String>
+  <x:String x:Key="Text.FileCM.ResolveUsing" xml:space="preserve">Resol amb ${0}$</x:String>
+  <x:String x:Key="Text.FileCM.SaveAsPatch" xml:space="preserve">Desa com a pedaç...</x:String>
+  <x:String x:Key="Text.FileCM.Stage" xml:space="preserve">Prepara</x:String>
+  <x:String x:Key="Text.FileCM.StageMulti" xml:space="preserve">Prepara {0} fitxers</x:String>
+  <x:String x:Key="Text.FileCM.Stash" xml:space="preserve">Fes «stash»...</x:String>
+  <x:String x:Key="Text.FileCM.StashMulti" xml:space="preserve">Fes «stash» de {0} fitxers...</x:String>
+  <x:String x:Key="Text.FileCM.Unstage" xml:space="preserve">Fes «unstage»</x:String>
+  <x:String x:Key="Text.FileCM.UnstageMulti" xml:space="preserve">Fes «unstage» de {0} fitxers</x:String>
+  <x:String x:Key="Text.FileCM.UseMine" xml:space="preserve">Utilitza el meu (checkout --ours)</x:String>
+  <x:String x:Key="Text.FileCM.UseTheirs" xml:space="preserve">Utilitza el seu (checkout --theirs)</x:String>
+  <x:String x:Key="Text.FileHistory" xml:space="preserve">Historial del fitxer</x:String>
+  <x:String x:Key="Text.FileHistory.FileChange" xml:space="preserve">CANVI</x:String>
+  <x:String x:Key="Text.FileHistory.FileContent" xml:space="preserve">CONTINGUT</x:String>
+  <x:String x:Key="Text.FileModeChange" xml:space="preserve">Canvi de mode del fitxer: </x:String>
+  <x:String x:Key="Text.FileModeChange.Deleted" xml:space="preserve">Mode del fitxer suprimit: </x:String>
+  <x:String x:Key="Text.FileModeChange.Directory" xml:space="preserve">Directori</x:String>
+  <x:String x:Key="Text.FileModeChange.Executable" xml:space="preserve">Executable</x:String>
+  <x:String x:Key="Text.FileModeChange.New" xml:space="preserve">Mode del fitxer nou: </x:String>
+  <x:String x:Key="Text.FileModeChange.Normal" xml:space="preserve">Normal</x:String>
+  <x:String x:Key="Text.FileModeChange.Submodule" xml:space="preserve">Submòdul</x:String>
+  <x:String x:Key="Text.FileModeChange.Symlink" xml:space="preserve">Enllaç simbòlic</x:String>
+  <x:String x:Key="Text.FileModeChange.Unknown" xml:space="preserve">Desconegut</x:String>
+  <x:String x:Key="Text.GitFlow" xml:space="preserve">Git-Flow</x:String>
+  <x:String x:Key="Text.GitFlow.DevelopBranch" xml:space="preserve">Branca de desenvolupament:</x:String>
+  <x:String x:Key="Text.GitFlow.Feature" xml:space="preserve">Funcionalitat:</x:String>
+  <x:String x:Key="Text.GitFlow.FeaturePrefix" xml:space="preserve">Prefix de funcionalitat:</x:String>
+  <x:String x:Key="Text.GitFlow.Finish" xml:space="preserve">Finalitza ${0}$</x:String>
+  <x:String x:Key="Text.GitFlow.FinishFeature" xml:space="preserve">Finalitza la funcionalitat</x:String>
+  <x:String x:Key="Text.GitFlow.FinishHotfix" xml:space="preserve">Finalitza la correcció ràpida</x:String>
+  <x:String x:Key="Text.GitFlow.FinishRelease" xml:space="preserve">Finalitza el llançament</x:String>
+  <x:String x:Key="Text.GitFlow.FinishTarget" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithRebase" xml:space="preserve">Fes rebase abans de fusionar</x:String>
+  <x:String x:Key="Text.GitFlow.FinishWithSquash" xml:space="preserve">Fes squash durant la fusió</x:String>
+  <x:String x:Key="Text.GitFlow.Hotfix" xml:space="preserve">Correcció ràpida:</x:String>
+  <x:String x:Key="Text.GitFlow.HotfixPrefix" xml:space="preserve">Prefix de correcció ràpida:</x:String>
+  <x:String x:Key="Text.GitFlow.Init" xml:space="preserve">Inicialitza Git-Flow</x:String>
+  <x:String x:Key="Text.GitFlow.KeepBranchAfterFinish" xml:space="preserve">Conserva la branca</x:String>
+  <x:String x:Key="Text.GitFlow.ProductionBranch" xml:space="preserve">Branca de producció:</x:String>
+  <x:String x:Key="Text.GitFlow.Release" xml:space="preserve">Llançament:</x:String>
+  <x:String x:Key="Text.GitFlow.ReleasePrefix" xml:space="preserve">Prefix de llançament:</x:String>
+  <x:String x:Key="Text.GitFlow.StartAt" xml:space="preserve">Inicia a:</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeature" xml:space="preserve">Inicia una funcionalitat...</x:String>
+  <x:String x:Key="Text.GitFlow.StartFeatureTitle" xml:space="preserve">Inicia una funcionalitat</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfix" xml:space="preserve">Inicia una correcció ràpida...</x:String>
+  <x:String x:Key="Text.GitFlow.StartHotfixTitle" xml:space="preserve">Inicia una correcció ràpida</x:String>
+  <x:String x:Key="Text.GitFlow.StartName" xml:space="preserve">Nom:</x:String>
+  <x:String x:Key="Text.GitFlow.StartPlaceholder" xml:space="preserve">Introduïu el nom</x:String>
+  <x:String x:Key="Text.GitFlow.StartRelease" xml:space="preserve">Inicia un llançament...</x:String>
+  <x:String x:Key="Text.GitFlow.StartReleaseTitle" xml:space="preserve">Inicia un llançament</x:String>
+  <x:String x:Key="Text.GitFlow.TagPrefix" xml:space="preserve">Prefix de l'etiqueta de versió:</x:String>
+  <x:String x:Key="Text.GitLFS" xml:space="preserve">Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern" xml:space="preserve">Afegeix un patró de seguiment...</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.IsFilename" xml:space="preserve">El patró és un nom de fitxer</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Pattern" xml:space="preserve">Patró:</x:String>
+  <x:String x:Key="Text.GitLFS.AddTrackPattern.Title" xml:space="preserve">Afegeix un patró de seguiment a Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch" xml:space="preserve">Obtén</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Tips" xml:space="preserve">Executa `git lfs fetch` per baixar els objectes Git LFS. Això no actualitza la còpia de treball.</x:String>
+  <x:String x:Key="Text.GitLFS.Fetch.Title" xml:space="preserve">Obtén els objectes LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Install" xml:space="preserve">Instal·la els lligams Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Locks" xml:space="preserve">Mostra els bloquejos</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Empty" xml:space="preserve">No hi ha fitxers bloquejats</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Lock" xml:space="preserve">Bloqueja</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.OnlyMine" xml:space="preserve">Mostra només els meus bloquejos</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Title" xml:space="preserve">Bloquejos LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.Unlock" xml:space="preserve">Desbloqueja</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks" xml:space="preserve">Desbloqueja tots els meus bloquejos</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockAllMyLocks.Confirm" xml:space="preserve">Esteu segur que voleu desbloquejar tots els vostres fitxers bloquejats?</x:String>
+  <x:String x:Key="Text.GitLFS.Locks.UnlockForce" xml:space="preserve">Força el desbloqueig</x:String>
+  <x:String x:Key="Text.GitLFS.Prune" xml:space="preserve">Poda</x:String>
+  <x:String x:Key="Text.GitLFS.Prune.Tips" xml:space="preserve">Executa `git lfs prune` per suprimir fitxers LFS antics de l'emmagatzematge local</x:String>
+  <x:String x:Key="Text.GitLFS.Pull" xml:space="preserve">Baixa</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Tips" xml:space="preserve">Executa `git lfs pull` per baixar tots els fitxers Git LFS de la referència actual i fer-ne «checkout»</x:String>
+  <x:String x:Key="Text.GitLFS.Pull.Title" xml:space="preserve">Baixa els objectes LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Push" xml:space="preserve">Puja</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Tips" xml:space="preserve">Puja els fitxers grans encuats al punt final de Git LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Push.Title" xml:space="preserve">Puja els objectes LFS</x:String>
+  <x:String x:Key="Text.GitLFS.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.GitLFS.Track" xml:space="preserve">Segueix els fitxers anomenats «{0}»</x:String>
+  <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Segueix tots els fitxers *{0}</x:String>
+  <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Selecciona una comissió</x:String>
+  <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">Opcions avançades</x:String>
+  <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTOR</x:String>
+  <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">DATA DE L'AUTOR</x:String>
+  <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">DATA DE LA COMISSIÓ</x:String>
+  <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAF I ASSUMPTE</x:String>
+  <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">DESTACATS AL GRAF</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.All" xml:space="preserve">Tots</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Només la branca actual</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Branca actual i comissions seleccionades</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Només les comissions seleccionades</x:String>
+  <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Comissions seleccionades (només el primer pare)</x:String>
+  <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMISSIONS SELECCIONADES</x:String>
+  <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">MOSTRA LES COLUMNES</x:String>
+  <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Mantingueu premuda «Ctrl» o «Maj» per seleccionar diverses comissions.</x:String>
+  <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Mantingueu premut ⌘ o ⇧ per seleccionar diverses comissions.</x:String>
+  <x:String x:Key="Text.Histories.Tips.Prefix" xml:space="preserve">CONSELLS:</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone" xml:space="preserve">Obre en una finestra independent</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.CommitDetail" xml:space="preserve">Detall de la comissió</x:String>
+  <x:String x:Key="Text.HistoriesDetailsStandalone.RevisionCompare" xml:space="preserve">Comparació de revisions</x:String>
+  <x:String x:Key="Text.Hotkeys" xml:space="preserve">Referència de dreceres de teclat</x:String>
+  <x:String x:Key="Text.Hotkeys.Global" xml:space="preserve">GLOBAL</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Clone" xml:space="preserve">Clona un repositori remot</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.CloseTab" xml:space="preserve">Tanca la pestanya actual</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoNextTab" xml:space="preserve">Vés a la pestanya següent</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.GotoPrevTab" xml:space="preserve">Vés a la pestanya anterior</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.NewTab" xml:space="preserve">Crea una pestanya nova</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenLocalRepository" xml:space="preserve">Obre un repositori local</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.OpenPreferences" xml:space="preserve">Obre el diàleg de preferències</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.ShowWorkspaceDropdownMenu" xml:space="preserve">Mostra el menú desplegable de l'espai de treball</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.SwitchTab" xml:space="preserve">Canvia la pestanya activa</x:String>
+  <x:String x:Key="Text.Hotkeys.Global.Zoom" xml:space="preserve">Apropa/allunya</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo" xml:space="preserve">REPOSITORI</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Commit" xml:space="preserve">Fes la comissió dels canvis preparats</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitAndPush" xml:space="preserve">Fes la comissió i puja els canvis preparats</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CommitWithAutoStage" xml:space="preserve">Prepara tots els canvis i fes-ne la comissió</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.CreateBranch" xml:space="preserve">Crea una branca nova</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Fetch" xml:space="preserve">Obtén, s'inicia directament</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToChild" xml:space="preserve">Vés al fill de la comissió seleccionada</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.GoToParent" xml:space="preserve">Vés al pare de la comissió seleccionada</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.OpenCommandPalette" xml:space="preserve">Obre la paleta d'ordres</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Pull" xml:space="preserve">Baixa, s'inicia directament</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Push" xml:space="preserve">Puja, s'inicia directament</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.Refresh" xml:space="preserve">Força la recàrrega d'aquest repositori</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleCommitDetailPanel" xml:space="preserve">Desplega o replega el tauler de detalls de la comissió</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ToggleSearchCommits" xml:space="preserve">Mostra o amaga el tauler de cerca de comissions</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewChanges" xml:space="preserve">Canvia a «Canvis locals»</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewDashboard" xml:space="preserve">Canvia a «Tauler»</x:String>
+  <x:String x:Key="Text.Hotkeys.Repo.ViewStashes" xml:space="preserve">Canvia a «Stashes»</x:String>
+  <x:String x:Key="Text.Hunk.Discard" xml:space="preserve">Descarta</x:String>
+  <x:String x:Key="Text.Hunk.Stage" xml:space="preserve">Prepara</x:String>
+  <x:String x:Key="Text.Hunk.Unstage" xml:space="preserve">Fes «unstage»</x:String>
+  <x:String x:Key="Text.Init" xml:space="preserve">Inicialitza el repositori</x:String>
+  <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">Voleu executar l'ordre `git init` en aquesta ruta?</x:String>
+  <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">No s'ha pogut obrir el repositori. Motiu:  </x:String>
+  <x:String x:Key="Text.Init.Path" xml:space="preserve">Ruta:</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Cherry-pick en curs.</x:String>
+  <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">S'està processant la comissió</x:String>
+  <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Fusió en curs.</x:String>
+  <x:String x:Key="Text.InProgress.Merge.Operating" xml:space="preserve">S'està fusionant</x:String>
+  <x:String x:Key="Text.InProgress.Rebase" xml:space="preserve">Rebase en curs.</x:String>
+  <x:String x:Key="Text.InProgress.Rebase.StoppedAt" xml:space="preserve">Aturat a</x:String>
+  <x:String x:Key="Text.InProgress.Revert" xml:space="preserve">Reversió en curs.</x:String>
+  <x:String x:Key="Text.InProgress.Revert.Head" xml:space="preserve">S'està revertint la comissió</x:String>
+  <x:String x:Key="Text.InteractiveRebase" xml:space="preserve">Rebase interactiu</x:String>
+  <x:String x:Key="Text.InteractiveRebase.AutoStash" xml:space="preserve">Fes «stash» i torna a aplicar els canvis locals</x:String>
+  <x:String x:Key="Text.InteractiveRebase.NoVerify" xml:space="preserve">Omet el lligam pre-rebase</x:String>
+  <x:String x:Key="Text.InteractiveRebase.On" xml:space="preserve">Sobre:</x:String>
+  <x:String x:Key="Text.InteractiveRebase.ReorderTip" xml:space="preserve">Arrossegueu i deixeu anar per reordenar les comissions</x:String>
+  <x:String x:Key="Text.InteractiveRebase.Target" xml:space="preserve">Branca objectiu:</x:String>
+  <x:String x:Key="Text.IssueLinkCM.CopyLink" xml:space="preserve">Copia l'enllaç</x:String>
+  <x:String x:Key="Text.IssueLinkCM.OpenInBrowser" xml:space="preserve">Obre al navegador</x:String>
+  <x:String x:Key="Text.Launcher.Commands" xml:space="preserve">Ordres</x:String>
+  <x:String x:Key="Text.Launcher.Error" xml:space="preserve">ERROR</x:String>
+  <x:String x:Key="Text.Launcher.Info" xml:space="preserve">AVÍS</x:String>
+  <x:String x:Key="Text.Launcher.NewVersion" xml:space="preserve">Hi ha una versió nova disponible</x:String>
+  <x:String x:Key="Text.Launcher.OpenRepository" xml:space="preserve">Obre repositoris</x:String>
+  <x:String x:Key="Text.Launcher.Pages" xml:space="preserve">Pestanyes</x:String>
+  <x:String x:Key="Text.Launcher.Workspaces" xml:space="preserve">Espais de treball</x:String>
+  <x:String x:Key="Text.Merge" xml:space="preserve">Fusiona la branca</x:String>
+  <x:String x:Key="Text.Merge.Edit" xml:space="preserve">Personalitza el missatge de fusió</x:String>
+  <x:String x:Key="Text.Merge.Into" xml:space="preserve">A:</x:String>
+  <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opció de fusió:</x:String>
+  <x:String x:Key="Text.Merge.Source" xml:space="preserve">Origen:</x:String>
+  <x:String x:Key="Text.Merge.Test" xml:space="preserve">S'està comprovant la fusió...</x:String>
+  <x:String x:Key="Text.Merge.Test.NoConflicts" xml:space="preserve">La fusió es pot fer sense conflictes</x:String>
+  <x:String x:Key="Text.Merge.Test.UnknownError" xml:space="preserve">S'ha produït un error desconegut en comprovar la fusió</x:String>
+  <x:String x:Key="Text.Merge.Test.WillCauseConflicts" xml:space="preserve">La fusió provocarà conflictes</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.MineFirst" xml:space="preserve">Primer el meu, després el seu</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">Primer el seu, després el meu</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">UTILITZA TOTS DOS</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">Tots els conflictes estan resolts</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">Queden {0} conflictes</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">EL MEU</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Conflicte següent</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">Conflicte anterior</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">RESULTAT</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">DESA I PREPARA</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">EL SEU</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Title" xml:space="preserve">Conflictes de fusió</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UnsavedChanges" xml:space="preserve">Voleu descartar els canvis no desats?</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseMine" xml:space="preserve">UTILITZA EL MEU</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.UseTheirs" xml:space="preserve">UTILITZA EL SEU</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Undo" xml:space="preserve">DESFÉS</x:String>
+  <x:String x:Key="Text.MergeMultiple" xml:space="preserve">Fusiona (múltiples)</x:String>
+  <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Fes una comissió amb tots els canvis</x:String>
+  <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Estratègia:</x:String>
+  <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Objectius:</x:String>
+  <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Mou el submòdul</x:String>
+  <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Mou a:</x:String>
+  <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submòdul:</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Mou el node del repositori</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Seleccioneu el node pare per a:</x:String>
+  <x:String x:Key="Text.Name" xml:space="preserve">Nom:</x:String>
+  <x:String x:Key="Text.No" xml:space="preserve">NO</x:String>
+  <x:String x:Key="Text.NotConfigured" xml:space="preserve">Git NO està configurat. Aneu a [Preferències] i configureu-lo abans de continuar.</x:String>
+  <x:String x:Key="Text.Open" xml:space="preserve">Obre</x:String>
+  <x:String x:Key="Text.Open.SystemDefaultEditor" xml:space="preserve">Editor per defecte (sistema)</x:String>
+  <x:String x:Key="Text.OpenAppDataDir" xml:space="preserve">Obre el directori d'emmagatzematge de dades</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Cache" xml:space="preserve">Memòria cau</x:String>
+  <x:String x:Key="Text.OpenAppDataDir.Config" xml:space="preserve">Configuració</x:String>
+  <x:String x:Key="Text.OpenFile" xml:space="preserve">Obre el fitxer</x:String>
+  <x:String x:Key="Text.OpenInExternalMergeTool" xml:space="preserve">Obre a l'eina de fusió externa</x:String>
+  <x:String x:Key="Text.OpenLocalRepository" xml:space="preserve">Obre un repositori local</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Bookmark" xml:space="preserve">Marcador:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Group" xml:space="preserve">Grup:</x:String>
+  <x:String x:Key="Text.OpenLocalRepository.Path" xml:space="preserve">Carpeta:</x:String>
+  <x:String x:Key="Text.Optional" xml:space="preserve">Opcional.</x:String>
+  <x:String x:Key="Text.PageTabBar.New" xml:space="preserve">Crea una pestanya nova</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Close" xml:space="preserve">Tanca la pestanya</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseOther" xml:space="preserve">Tanca les altres pestanyes</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CloseRight" xml:space="preserve">Tanca les pestanyes de la dreta</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.CopyPath" xml:space="preserve">Copia la ruta del repositori</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Edit" xml:space="preserve">Edita</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.MoveToWorkspace" xml:space="preserve">Mou a l'espai de treball</x:String>
+  <x:String x:Key="Text.PageTabBar.Tab.Refresh" xml:space="preserve">Actualitza</x:String>
+  <x:String x:Key="Text.PageTabBar.Welcome.Title" xml:space="preserve">Repositoris</x:String>
+  <x:String x:Key="Text.Paste" xml:space="preserve">Enganxa</x:String>
+  <x:String x:Key="Text.Period.DaysAgo" xml:space="preserve">Fa {0} dies</x:String>
+  <x:String x:Key="Text.Period.HourAgo" xml:space="preserve">Fa 1 hora</x:String>
+  <x:String x:Key="Text.Period.HoursAgo" xml:space="preserve">Fa {0} hores</x:String>
+  <x:String x:Key="Text.Period.JustNow" xml:space="preserve">Ara mateix</x:String>
+  <x:String x:Key="Text.Period.LastMonth" xml:space="preserve">El mes passat</x:String>
+  <x:String x:Key="Text.Period.LastYear" xml:space="preserve">L'any passat</x:String>
+  <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Fa {0} minuts</x:String>
+  <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Fa {0} mesos</x:String>
+  <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Fa {0} anys</x:String>
+  <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ahir</x:String>
+  <x:String x:Key="Text.Preferences" xml:space="preserve">Preferències</x:String>
+  <x:String x:Key="Text.Preferences.AI" xml:space="preserve">IA</x:String>
+  <x:String x:Key="Text.Preferences.AI.AdditionalPrompt" xml:space="preserve">Indicació addicional (utilitzeu `-` per llistar els vostres requisits)</x:String>
+  <x:String x:Key="Text.Preferences.AI.ApiKey" xml:space="preserve">Clau de l'API</x:String>
+  <x:String x:Key="Text.Preferences.AI.ExtraHeaders" xml:space="preserve">Capçaleres addicionals (una `Nom: Valor` per línia)</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Model</x:String>
+  <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Obtén automàticament els identificadors de model disponibles</x:String>
+  <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nom</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">El valor introduït és el nom per carregar la clau de l'API des d'una variable d'entorn</x:String>
+  <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">Nivell d'esforç de raonament</x:String>
+  <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APARENÇA</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Tipus de lletra per defecte</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Amplada de tabulació de l'editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Mida de la lletra</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Per defecte</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.MonospaceFont" xml:space="preserve">Tipus de lletra monoespai</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.Theme" xml:space="preserve">Tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ThemeOverrides" xml:space="preserve">Sobreescriptures del tema</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Utilitza barres de desplaçament d'ocultació automàtica</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Utilitza una amplada de pestanya fixa a la barra de títol</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Utilitza el marc de finestra natiu</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">EINA DE DIFERÈNCIES/FUSIÓ</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Arguments de diferències</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">Variables disponibles: $LOCAL, $REMOTE</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs" xml:space="preserve">Arguments de fusió</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.MergeArgs.Tip" xml:space="preserve">Variables disponibles: $BASE, $LOCAL, $REMOTE, $MERGED</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path" xml:space="preserve">Ruta d'instal·lació</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Path.Placeholder" xml:space="preserve">Introduïu la ruta de l'eina de diferències/fusió</x:String>
+  <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Eina</x:String>
+  <x:String x:Key="Text.Preferences.General" xml:space="preserve">GENERAL</x:String>
+  <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Comprova si hi ha actualitzacions a l'inici</x:String>
+  <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Format de data</x:String>
+  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Activa les carpetes compactes a l'arbre de canvis</x:String>
+  <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Idioma</x:String>
+  <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">Comissions de l'historial</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Mostra la pàgina `CANVIS LOCALS` per defecte</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowChangesTabInCommitDetailByDefault" xml:space="preserve">Mostra la pestanya `CANVIS` al detall de la comissió per defecte</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowRelativeTimeInGraph" xml:space="preserve">Mostra el temps relatiu al graf de comissions</x:String>
+  <x:String x:Key="Text.Preferences.General.ShowTagsInGraph" xml:space="preserve">Mostra les etiquetes al graf de comissions</x:String>
+  <x:String x:Key="Text.Preferences.General.SubjectGuideLength" xml:space="preserve">Llargada de la guia de l'assumpte</x:String>
+  <x:String x:Key="Text.Preferences.General.Use24Hours" xml:space="preserve">24 hores</x:String>
+  <x:String x:Key="Text.Preferences.General.UseCompactBranchNames" xml:space="preserve">Utilitza noms de branca compactes al graf de comissions</x:String>
+  <x:String x:Key="Text.Preferences.General.UseGitHubStyleAvatar" xml:space="preserve">Genera un avatar per defecte amb l'estil de GitHub</x:String>
+  <x:String x:Key="Text.Preferences.Git" xml:space="preserve">GIT</x:String>
+  <x:String x:Key="Text.Preferences.Git.CRLF" xml:space="preserve">Activa CRLF automàtic</x:String>
+  <x:String x:Key="Text.Preferences.Git.DefaultCloneDir" xml:space="preserve">Directori de clonació per defecte</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email" xml:space="preserve">Correu electrònic de l'usuari</x:String>
+  <x:String x:Key="Text.Preferences.Git.Email.Placeholder" xml:space="preserve">Correu electrònic global de l'usuari de Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.EnablePruneOnFetch" xml:space="preserve">Poda les branques mortes després d'obtenir</x:String>
+  <x:String x:Key="Text.Preferences.Git.IgnoreCRAtEOLInDiff" xml:space="preserve">Ignora CR al final de línia en la diferència de text</x:String>
+  <x:String x:Key="Text.Preferences.Git.Invalid" xml:space="preserve">Aquesta aplicació requereix Git (&gt;= 2.25.1)</x:String>
+  <x:String x:Key="Text.Preferences.Git.Path" xml:space="preserve">Ruta d'instal·lació</x:String>
+  <x:String x:Key="Text.Preferences.Git.SSLVerify" xml:space="preserve">Activa la verificació HTTP SSL</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseLibsecret" xml:space="preserve">Utilitza git-credential-libsecret en lloc de git-credential-manager</x:String>
+  <x:String x:Key="Text.Preferences.Git.User" xml:space="preserve">Nom d'usuari</x:String>
+  <x:String x:Key="Text.Preferences.Git.User.Placeholder" xml:space="preserve">Nom d'usuari global de Git</x:String>
+  <x:String x:Key="Text.Preferences.Git.UseStashAndReapplyByDefault" xml:space="preserve">Fes «stash» i torna a aplicar els canvis per defecte en fer «checkout» o fusionar branques</x:String>
+  <x:String x:Key="Text.Preferences.Git.Version" xml:space="preserve">Versió de Git</x:String>
+  <x:String x:Key="Text.Preferences.GPG" xml:space="preserve">SIGNATURA GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.CommitEnabled" xml:space="preserve">Signatura GPG de comissions</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Format" xml:space="preserve">Format GPG</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path" xml:space="preserve">Ruta d'instal·lació del programa</x:String>
+  <x:String x:Key="Text.Preferences.GPG.Path.Placeholder" xml:space="preserve">Introduïu la ruta del programa gpg instal·lat</x:String>
+  <x:String x:Key="Text.Preferences.GPG.TagEnabled" xml:space="preserve">Signatura GPG d'etiquetes</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey" xml:space="preserve">Clau de signatura de l'usuari</x:String>
+  <x:String x:Key="Text.Preferences.GPG.UserKey.Placeholder" xml:space="preserve">Clau de signatura gpg de l'usuari</x:String>
+  <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRACIÓ</x:String>
+  <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Arguments</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.ToolTip" xml:space="preserve">Podeu utilitzar '.' per indicar el directori de treball i '$FOLDER_NAME' per al nom de la carpeta sense la ruta.</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Ruta</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
+  <x:String x:Key="Text.PruneRemote" xml:space="preserve">Poda el remot</x:String>
+  <x:String x:Key="Text.PruneRemote.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.PruneWorktrees" xml:space="preserve">Poda els arbres de treball</x:String>
+  <x:String x:Key="Text.PruneWorktrees.Tip" xml:space="preserve">Poda la informació dels arbres de treball a `$GIT_COMMON_DIR/worktrees`</x:String>
+  <x:String x:Key="Text.Pull" xml:space="preserve">Baixa</x:String>
+  <x:String x:Key="Text.Pull.Branch" xml:space="preserve">Branca remota:</x:String>
+  <x:String x:Key="Text.Pull.Into" xml:space="preserve">A:</x:String>
+  <x:String x:Key="Text.Pull.LocalChanges" xml:space="preserve">Canvis locals:</x:String>
+  <x:String x:Key="Text.Pull.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.Pull.Title" xml:space="preserve">Baixa (obtén i fusiona)</x:String>
+  <x:String x:Key="Text.Pull.UseRebase" xml:space="preserve">Utilitza rebase en lloc de fusió</x:String>
+  <x:String x:Key="Text.Push" xml:space="preserve">Puja</x:String>
+  <x:String x:Key="Text.Push.CheckSubmodules" xml:space="preserve">Assegura't que s'hagin pujat els submòduls</x:String>
+  <x:String x:Key="Text.Push.Force" xml:space="preserve">Pujada forçada</x:String>
+  <x:String x:Key="Text.Push.Local" xml:space="preserve">Branca local:</x:String>
+  <x:String x:Key="Text.Push.New" xml:space="preserve">NOVA</x:String>
+  <x:String x:Key="Text.Push.NoVerify" xml:space="preserve">Omet el lligam pre-push</x:String>
+  <x:String x:Key="Text.Push.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.Push.Revision" xml:space="preserve">Revisió:</x:String>
+  <x:String x:Key="Text.Push.Revision.Title" xml:space="preserve">Puja la revisió al remot</x:String>
+  <x:String x:Key="Text.Push.Title" xml:space="preserve">Puja els canvis al remot</x:String>
+  <x:String x:Key="Text.Push.To" xml:space="preserve">Branca remota:</x:String>
+  <x:String x:Key="Text.Push.Tracking" xml:space="preserve">Estableix com a branca de seguiment</x:String>
+  <x:String x:Key="Text.Push.WithAllTags" xml:space="preserve">Puja totes les etiquetes</x:String>
+  <x:String x:Key="Text.PushTag" xml:space="preserve">Puja l'etiqueta al remot</x:String>
+  <x:String x:Key="Text.PushTag.PushAllRemotes" xml:space="preserve">Puja a tots els remots</x:String>
+  <x:String x:Key="Text.PushTag.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.PushTag.Tag" xml:space="preserve">Etiqueta:</x:String>
+  <x:String x:Key="Text.PushToNewBranch" xml:space="preserve">Puja a una branca NOVA</x:String>
+  <x:String x:Key="Text.PushToNewBranch.Title" xml:space="preserve">Introduïu el nom de la nova branca remota:</x:String>
+  <x:String x:Key="Text.Quit" xml:space="preserve">Surt</x:String>
+  <x:String x:Key="Text.Rebase" xml:space="preserve">Fes rebase de la branca actual</x:String>
+  <x:String x:Key="Text.Rebase.AutoStash" xml:space="preserve">Fes «stash» i torna a aplicar els canvis locals</x:String>
+  <x:String x:Key="Text.Rebase.NoVerify" xml:space="preserve">Omet el lligam pre-rebase</x:String>
+  <x:String x:Key="Text.Rebase.On" xml:space="preserve">Sobre:</x:String>
+  <x:String x:Key="Text.Rebase.Test" xml:space="preserve">S'està comprovant el rebase...</x:String>
+  <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">El rebase es pot fer sense conflictes</x:String>
+  <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">S'ha produït un error desconegut en comprovar el rebase</x:String>
+  <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">El rebase provocarà conflictes</x:String>
+  <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Afegeix un remot</x:String>
+  <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Edita el remot</x:String>
+  <x:String x:Key="Text.Remote.Name" xml:space="preserve">Nom:</x:String>
+  <x:String x:Key="Text.Remote.Name.Placeholder" xml:space="preserve">Nom del remot</x:String>
+  <x:String x:Key="Text.Remote.ResetPushURL" xml:space="preserve">Restableix l'URL de pujada a l'URL d'aquest repositori</x:String>
+  <x:String x:Key="Text.Remote.URL" xml:space="preserve">URL del remot:</x:String>
+  <x:String x:Key="Text.Remote.URL.Placeholder" xml:space="preserve">URL del repositori git remot</x:String>
+  <x:String x:Key="Text.RemoteCM.CopyURL" xml:space="preserve">Copia l'URL</x:String>
+  <x:String x:Key="Text.RemoteCM.CustomAction" xml:space="preserve">Acció personalitzada</x:String>
+  <x:String x:Key="Text.RemoteCM.Delete" xml:space="preserve">Suprimeix...</x:String>
+  <x:String x:Key="Text.RemoteCM.Edit" xml:space="preserve">Edita...</x:String>
+  <x:String x:Key="Text.RemoteCM.EnableAutoFetch" xml:space="preserve">Activa l'obtenció automàtica</x:String>
+  <x:String x:Key="Text.RemoteCM.Fetch" xml:space="preserve">Obtén</x:String>
+  <x:String x:Key="Text.RemoteCM.OpenInBrowser" xml:space="preserve">Obre al navegador</x:String>
+  <x:String x:Key="Text.RemoteCM.Prune" xml:space="preserve">Poda</x:String>
+  <x:String x:Key="Text.RemoteCM.SetPushURL" xml:space="preserve">Estableix l'URL de pujada...</x:String>
+  <x:String x:Key="Text.RemoveWorktree" xml:space="preserve">Confirmeu la supressió de l'arbre de treball</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Force" xml:space="preserve">Activa l'opció `--force`</x:String>
+  <x:String x:Key="Text.RemoveWorktree.Target" xml:space="preserve">Objectiu:</x:String>
+  <x:String x:Key="Text.RenameBranch" xml:space="preserve">Canvia el nom de la branca</x:String>
+  <x:String x:Key="Text.RenameBranch.Name" xml:space="preserve">Nom nou:</x:String>
+  <x:String x:Key="Text.RenameBranch.Name.Placeholder" xml:space="preserve">Nom únic per a aquesta branca</x:String>
+  <x:String x:Key="Text.RenameBranch.Target" xml:space="preserve">Branca:</x:String>
+  <x:String x:Key="Text.Repository.Abort" xml:space="preserve">AVORTA</x:String>
+  <x:String x:Key="Text.Repository.AutoFetching" xml:space="preserve">S'estan obtenint automàticament els canvis dels remots...</x:String>
+  <x:String x:Key="Text.Repository.BranchSort" xml:space="preserve">Ordena</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByCommitterDate" xml:space="preserve">Per data del comissor</x:String>
+  <x:String x:Key="Text.Repository.BranchSort.ByName" xml:space="preserve">Per nom</x:String>
+  <x:String x:Key="Text.Repository.Clean" xml:space="preserve">Neteja (GC i poda)</x:String>
+  <x:String x:Key="Text.Repository.CleanTips" xml:space="preserve">Executa l'ordre `git gc` per a aquest repositori.</x:String>
+  <x:String x:Key="Text.Repository.ClearAllCommitsFilter" xml:space="preserve">Esborra-ho tot</x:String>
+  <x:String x:Key="Text.Repository.ClearStashes" xml:space="preserve">Esborra</x:String>
+  <x:String x:Key="Text.Repository.Configure" xml:space="preserve">Configura aquest repositori</x:String>
+  <x:String x:Key="Text.Repository.Continue" xml:space="preserve">CONTINUA</x:String>
+  <x:String x:Key="Text.Repository.CustomActions" xml:space="preserve">Accions personalitzades</x:String>
+  <x:String x:Key="Text.Repository.CustomActions.Empty" xml:space="preserve">No hi ha accions personalitzades</x:String>
+  <x:String x:Key="Text.Repository.DiscardAll" xml:space="preserve">Descarta tots els canvis</x:String>
+  <x:String x:Key="Text.Repository.Explore" xml:space="preserve">Obre al navegador de fitxers</x:String>
+  <x:String x:Key="Text.Repository.Filter" xml:space="preserve">Filtra branques/etiquetes/submòduls</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits" xml:space="preserve">Visibilitat al graf</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Collapse" xml:space="preserve">Replega els filtres</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Default" xml:space="preserve">Sense definir</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Exclude" xml:space="preserve">Amaga al graf de comissions</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Expand" xml:space="preserve">Desplega els filtres</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filtra al graf de comissions</x:String>
+  <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">filtre(s) actiu(s)</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">DISPOSICIÓ</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Horitzontal</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Vertical</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">ORDRE DE LES COMISSIONS</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.ByDate" xml:space="preserve">Data de la comissió</x:String>
+  <x:String x:Key="Text.Repository.HistoriesOrder.Topo" xml:space="preserve">Ordre topològic</x:String>
+  <x:String x:Key="Text.Repository.LocalBranches" xml:space="preserve">BRANQUES LOCALS</x:String>
+  <x:String x:Key="Text.Repository.NavigateToCurrentHead" xml:space="preserve">Vés a HEAD</x:String>
+  <x:String x:Key="Text.Repository.NewBranch" xml:space="preserve">Crea una branca</x:String>
+  <x:String x:Key="Text.Repository.Notifications.Clear" xml:space="preserve">ESBORRA LES NOTIFICACIONS</x:String>
+  <x:String x:Key="Text.Repository.OpenAsFolder" xml:space="preserve">Obre com a carpeta</x:String>
+  <x:String x:Key="Text.Repository.OpenIn" xml:space="preserve">Obre a {0}</x:String>
+  <x:String x:Key="Text.Repository.OpenWithExternalTools" xml:space="preserve">Obre amb eines externes</x:String>
+  <x:String x:Key="Text.Repository.Remotes" xml:space="preserve">REMOTS</x:String>
+  <x:String x:Key="Text.Repository.Remotes.Add" xml:space="preserve">Afegeix un remot</x:String>
+  <x:String x:Key="Text.Repository.Resolve" xml:space="preserve">RESOL</x:String>
+  <x:String x:Key="Text.Repository.Search" xml:space="preserve">CERCA COMISSIONS</x:String>
+  <x:String x:Key="Text.Repository.Search.ByAuthor" xml:space="preserve">Autor</x:String>
+  <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Contingut</x:String>
+  <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Missatge</x:String>
+  <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Ruta</x:String>
+  <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Branca actual</x:String>
+  <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">CERCA PER</x:String>
+  <x:String x:Key="Text.Repository.Search.ToolTip" xml:space="preserve">Cerca comissions</x:String>
+  <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Només comissions decorades</x:String>
+  <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Només el primer pare</x:String>
+  <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">MOSTRA ELS INDICADORS</x:String>
+  <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Mostra les comissions perdudes</x:String>
+  <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Mostra els submòduls com a arbre</x:String>
+  <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Mostra les etiquetes com a arbre</x:String>
+  <x:String x:Key="Text.Repository.Skip" xml:space="preserve">OMET</x:String>
+  <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Estadístiques</x:String>
+  <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMÒDULS</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Add" xml:space="preserve">Afegeix un submòdul</x:String>
+  <x:String x:Key="Text.Repository.Submodules.Update" xml:space="preserve">Actualitza el submòdul</x:String>
+  <x:String x:Key="Text.Repository.Tags" xml:space="preserve">ETIQUETES</x:String>
+  <x:String x:Key="Text.Repository.Tags.Add" xml:space="preserve">Crea una etiqueta</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByCreatorDate" xml:space="preserve">Per data del creador</x:String>
+  <x:String x:Key="Text.Repository.Tags.OrderByName" xml:space="preserve">Per nom</x:String>
+  <x:String x:Key="Text.Repository.Tags.Sort" xml:space="preserve">Ordena</x:String>
+  <x:String x:Key="Text.Repository.Terminal" xml:space="preserve">Obre al terminal</x:String>
+  <x:String x:Key="Text.Repository.ViewLogs" xml:space="preserve">Mostra els registres</x:String>
+  <x:String x:Key="Text.Repository.Visit" xml:space="preserve">Visita «{0}» al navegador</x:String>
+  <x:String x:Key="Text.Repository.Worktrees" xml:space="preserve">ARBRES DE TREBALL</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Add" xml:space="preserve">Afegeix un arbre de treball</x:String>
+  <x:String x:Key="Text.Repository.Worktrees.Prune" xml:space="preserve">Poda</x:String>
+  <x:String x:Key="Text.RepositoryURL" xml:space="preserve">URL del repositori Git</x:String>
+  <x:String x:Key="Text.Reset" xml:space="preserve">Restableix la branca actual a una revisió</x:String>
+  <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Mode:</x:String>
+  <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Mou a:</x:String>
+  <x:String x:Key="Text.Reset.Target" xml:space="preserve">Branca actual:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Restableix la branca (sense «checkout»)</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Mou a:</x:String>
+  <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Branca:</x:String>
+  <x:String x:Key="Text.RevealFile" xml:space="preserve">Mostra a l'explorador de fitxers</x:String>
+  <x:String x:Key="Text.Revert" xml:space="preserve">Reverteix la comissió</x:String>
+  <x:String x:Key="Text.Revert.Commit" xml:space="preserve">Comissió:</x:String>
+  <x:String x:Key="Text.Revert.CommitChanges" xml:space="preserve">Fes la comissió dels canvis de la reversió</x:String>
+  <x:String x:Key="Text.Running" xml:space="preserve">S'està executant. Espereu...</x:String>
+  <x:String x:Key="Text.Save" xml:space="preserve">DESA</x:String>
+  <x:String x:Key="Text.SaveAs" xml:space="preserve">Anomena i desa...</x:String>
+  <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">El pedaç s'ha desat correctament!</x:String>
+  <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Escaneja repositoris</x:String>
+  <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Directori arrel:</x:String>
+  <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Escaneja un altre directori personalitzat</x:String>
+  <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Comprova si hi ha actualitzacions...</x:String>
+  <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Hi ha una versió nova d'aquest programari disponible: </x:String>
+  <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Versió actual: </x:String>
+  <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">No s'ha pogut comprovar si hi ha actualitzacions!</x:String>
+  <x:String x:Key="Text.SelfUpdate.GotoDownload" xml:space="preserve">Baixa</x:String>
+  <x:String x:Key="Text.SelfUpdate.IgnoreThisVersion" xml:space="preserve">Omet aquesta versió</x:String>
+  <x:String x:Key="Text.SelfUpdate.ReleaseDate" xml:space="preserve">Data de llançament de la versió nova: </x:String>
+  <x:String x:Key="Text.SelfUpdate.Title" xml:space="preserve">Actualització de programari</x:String>
+  <x:String x:Key="Text.SelfUpdate.UpToDate" xml:space="preserve">Actualment no hi ha actualitzacions disponibles.</x:String>
+  <x:String x:Key="Text.SetPushUrl" xml:space="preserve">Estableix l'URL de pujada del remot</x:String>
+  <x:String x:Key="Text.SetPushUrl.PushURL" xml:space="preserve">URL de pujada:</x:String>
+  <x:String x:Key="Text.SetPushUrl.Remote" xml:space="preserve">Remot:</x:String>
+  <x:String x:Key="Text.SetPushUrl.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch" xml:space="preserve">Estableix la branca del submòdul</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Submodule" xml:space="preserve">Submòdul:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.Current" xml:space="preserve">Actual:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New" xml:space="preserve">Canvia a:</x:String>
+  <x:String x:Key="Text.SetSubmoduleBranch.New.Tip" xml:space="preserve">Opcional. Si queda buit, s'utilitza el valor per defecte.</x:String>
+  <x:String x:Key="Text.SetUpstream" xml:space="preserve">Estableix la branca de seguiment</x:String>
+  <x:String x:Key="Text.SetUpstream.Local" xml:space="preserve">Branca:</x:String>
+  <x:String x:Key="Text.SetUpstream.Unset" xml:space="preserve">Suprimeix la font</x:String>
+  <x:String x:Key="Text.SetUpstream.Upstream" xml:space="preserve">Font:</x:String>
+  <x:String x:Key="Text.SHALinkCM.CopySHA" xml:space="preserve">Copia el SHA</x:String>
+  <x:String x:Key="Text.SHALinkCM.NavigateTo" xml:space="preserve">Vés a</x:String>
+  <x:String x:Key="Text.SSHKey" xml:space="preserve">Clau privada SSH:</x:String>
+  <x:String x:Key="Text.SSHKey.Placeholder" xml:space="preserve">Ruta de la clau SSH privada</x:String>
+  <x:String x:Key="Text.SSHKeyHelper" xml:space="preserve">Obre l'assistent de claus SSH</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.ConfirmDeletion" xml:space="preserve">Esteu segur que voleu suprimir les claus següents?</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Fingerprint" xml:space="preserve">Empremta digital</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator" xml:space="preserve">Genera una clau SSH</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.ConfirmPassphrase" xml:space="preserve">Confirmació:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Email" xml:space="preserve">Correu electrònic:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Email.Placeholder" xml:space="preserve">Obligatori.</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Name" xml:space="preserve">Nom de la clau:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Name.Placeholder" xml:space="preserve">Obligatori. Per exemple: id_github</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Passphrase" xml:space="preserve">Frase de pas:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Start" xml:space="preserve">GENERA</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.Type" xml:space="preserve">Tipus:</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Generator.UsePassphrase" xml:space="preserve">Utilitza una frase de pas per a la clau privada</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Path" xml:space="preserve">Ruta</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.PublicKey" xml:space="preserve">Clau pública</x:String>
+  <x:String x:Key="Text.SSHKeyHelper.Title" xml:space="preserve">Assistent de claus SSH</x:String>
+  <x:String x:Key="Text.Start" xml:space="preserve">COMENÇA</x:String>
+  <x:String x:Key="Text.Stash" xml:space="preserve">«Stash»</x:String>
+  <x:String x:Key="Text.Stash.IncludeUntracked" xml:space="preserve">Inclou els fitxers no seguits</x:String>
+  <x:String x:Key="Text.Stash.Message" xml:space="preserve">Missatge:</x:String>
+  <x:String x:Key="Text.Stash.Message.Placeholder" xml:space="preserve">Opcional. Missatge d'aquest «stash»</x:String>
+  <x:String x:Key="Text.Stash.Mode" xml:space="preserve">Mode:</x:String>
+  <x:String x:Key="Text.Stash.OnlyStagedChanges" xml:space="preserve">Només fitxers preparats</x:String>
+  <x:String x:Key="Text.Stash.TipForSelectedFiles" xml:space="preserve">Es farà «stash» tant dels canvis preparats com dels no preparats dels fitxers seleccionats!!!</x:String>
+  <x:String x:Key="Text.Stash.Title" xml:space="preserve">Fes «stash» dels canvis locals</x:String>
+  <x:String x:Key="Text.StashCM.Apply" xml:space="preserve">Aplica</x:String>
+  <x:String x:Key="Text.StashCM.ApplyFileChanges" xml:space="preserve">Aplica els canvis</x:String>
+  <x:String x:Key="Text.StashCM.Branch" xml:space="preserve">Fes «checkout» d'una branca nova</x:String>
+  <x:String x:Key="Text.StashCM.CopyMessage" xml:space="preserve">Copia el missatge</x:String>
+  <x:String x:Key="Text.StashCM.Drop" xml:space="preserve">Descarta</x:String>
+  <x:String x:Key="Text.StashCM.SaveAsPatch" xml:space="preserve">Desa com a pedaç...</x:String>
+  <x:String x:Key="Text.StashDropConfirm" xml:space="preserve">Descarta l'«stash»</x:String>
+  <x:String x:Key="Text.StashDropConfirm.Label" xml:space="preserve">Descarta:</x:String>
+  <x:String x:Key="Text.Stashes" xml:space="preserve">Stashes</x:String>
+  <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">CANVIS</x:String>
+  <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">STASHES</x:String>
+  <x:String x:Key="Text.Statistics" xml:space="preserve">Estadístiques</x:String>
+  <x:String x:Key="Text.Statistics.Commits" xml:space="preserve">COMISSIONS</x:String>
+  <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">VISTA GENERAL</x:String>
+  <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">MES</x:String>
+  <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">SETMANA</x:String>
+  <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit només analitzarà un màxim de 200.000 comissions de la branca objectiu.</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">AUTORS PRINCIPALS</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">COMISSIONS</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">PERCENTATGE</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">Els autors amb menys de l'1% de les comissions s'agrupen a «Others».</x:String>
+  <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">AUTORS: </x:String>
+  <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">COMISSIONS: </x:String>
+  <x:String x:Key="Text.Submodule" xml:space="preserve">SUBMÒDULS</x:String>
+  <x:String x:Key="Text.Submodule.Add" xml:space="preserve">Afegeix un submòdul</x:String>
+  <x:String x:Key="Text.Submodule.Branch" xml:space="preserve">BRANCA</x:String>
+  <x:String x:Key="Text.Submodule.CopyBranch" xml:space="preserve">Branca</x:String>
+  <x:String x:Key="Text.Submodule.CopyPath" xml:space="preserve">Ruta relativa</x:String>
+  <x:String x:Key="Text.Submodule.Deinit" xml:space="preserve">Desinicialitza</x:String>
+  <x:String x:Key="Text.Submodule.FetchNested" xml:space="preserve">Obtén els submòduls imbricats</x:String>
+  <x:String x:Key="Text.Submodule.Histories" xml:space="preserve">Historial</x:String>
+  <x:String x:Key="Text.Submodule.Move" xml:space="preserve">Mou a</x:String>
+  <x:String x:Key="Text.Submodule.Open" xml:space="preserve">Obre el repositori</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath" xml:space="preserve">Ruta relativa:</x:String>
+  <x:String x:Key="Text.Submodule.RelativePath.Placeholder" xml:space="preserve">Carpeta relativa per emmagatzemar aquest mòdul.</x:String>
+  <x:String x:Key="Text.Submodule.Remove" xml:space="preserve">Suprimeix</x:String>
+  <x:String x:Key="Text.Submodule.SetBranch" xml:space="preserve">Estableix la branca</x:String>
+  <x:String x:Key="Text.Submodule.SetURL" xml:space="preserve">Canvia l'URL</x:String>
+  <x:String x:Key="Text.Submodule.Status" xml:space="preserve">ESTAT</x:String>
+  <x:String x:Key="Text.Submodule.Status.Modified" xml:space="preserve">modificat</x:String>
+  <x:String x:Key="Text.Submodule.Status.NotInited" xml:space="preserve">no inicialitzat</x:String>
+  <x:String x:Key="Text.Submodule.Status.RevisionChanged" xml:space="preserve">revisió canviada</x:String>
+  <x:String x:Key="Text.Submodule.Status.Unmerged" xml:space="preserve">sense fusionar</x:String>
+  <x:String x:Key="Text.Submodule.Update" xml:space="preserve">Actualitza</x:String>
+  <x:String x:Key="Text.Submodule.URL" xml:space="preserve">URL</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare" xml:space="preserve">Detalls del canvi del submòdul</x:String>
+  <x:String x:Key="Text.SubmoduleRevisionCompare.OpenDetails" xml:space="preserve">OBRE ELS DETALLS</x:String>
+  <x:String x:Key="Text.Sure" xml:space="preserve">D'acord</x:String>
+  <x:String x:Key="Text.Tag.Tagger" xml:space="preserve">ETIQUETADOR</x:String>
+  <x:String x:Key="Text.Tag.Time" xml:space="preserve">DATA</x:String>
+  <x:String x:Key="Text.TagCM.Checkout" xml:space="preserve">Fes «checkout» de l'etiqueta...</x:String>
+  <x:String x:Key="Text.TagCM.CompareTwo" xml:space="preserve">Compara 2 etiquetes</x:String>
+  <x:String x:Key="Text.TagCM.CompareWith" xml:space="preserve">Compara amb...</x:String>
+  <x:String x:Key="Text.TagCM.CompareWithHead" xml:space="preserve">Compara amb HEAD</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Message" xml:space="preserve">Missatge</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Name" xml:space="preserve">Nom</x:String>
+  <x:String x:Key="Text.TagCM.Copy.Tagger" xml:space="preserve">Etiquetador</x:String>
+  <x:String x:Key="Text.TagCM.CopyName" xml:space="preserve">Copia el nom de l'etiqueta</x:String>
+  <x:String x:Key="Text.TagCM.CustomAction" xml:space="preserve">Acció personalitzada</x:String>
+  <x:String x:Key="Text.TagCM.Delete" xml:space="preserve">Suprimeix ${0}$...</x:String>
+  <x:String x:Key="Text.TagCM.DeleteMultiple" xml:space="preserve">Suprimeix les {0} etiquetes seleccionades...</x:String>
+  <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Fusiona ${0}$ a ${1}$...</x:String>
+  <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Puja ${0}$...</x:String>
+  <x:String x:Key="Text.Terminate" xml:space="preserve">ATURA</x:String>
+  <x:String x:Key="Text.TrustRepository" xml:space="preserve">Repositori no fiable</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">Voleu executar l'ordre `git config --global --add safe.directory {0}` per confiar en aquesta ruta?</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git ha refusat accedir a aquest repositori:  </x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">Ruta:</x:String>
+  <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">S'han omès {0} repositoris perquè git no hi confia. Obriu-los manualment i confirmeu si hi voleu confiar.</x:String>
+  <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Actualitza els submòduls</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Tots els submòduls</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Inicialitza si cal</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Target" xml:space="preserve">Submòdul:</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.Recursive" xml:space="preserve">Actualitza els submòduls imbricats</x:String>
+  <x:String x:Key="Text.UpdateSubmodules.UpdateToRemoteTrackingBranch" xml:space="preserve">Actualitza a la branca de seguiment remota del submòdul</x:String>
+  <x:String x:Key="Text.URL" xml:space="preserve">URL:</x:String>
+  <x:String x:Key="Text.ViewLogs" xml:space="preserve">Registres</x:String>
+  <x:String x:Key="Text.ViewLogs.Clear" xml:space="preserve">ESBORRA-HO TOT</x:String>
+  <x:String x:Key="Text.ViewLogs.CopyLog" xml:space="preserve">Copia</x:String>
+  <x:String x:Key="Text.ViewLogs.Delete" xml:space="preserve">Suprimeix</x:String>
+  <x:String x:Key="Text.Warn" xml:space="preserve">Avís</x:String>
+  <x:String x:Key="Text.Welcome" xml:space="preserve">Pàgina de benvinguda</x:String>
+  <x:String x:Key="Text.Welcome.AddRootFolder" xml:space="preserve">Crea un grup</x:String>
+  <x:String x:Key="Text.Welcome.AddSubFolder" xml:space="preserve">Crea un subgrup</x:String>
+  <x:String x:Key="Text.Welcome.Clone" xml:space="preserve">Clona un repositori</x:String>
+  <x:String x:Key="Text.Welcome.Delete" xml:space="preserve">Suprimeix</x:String>
+  <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">S'ADMET ARROSSEGAR I DEIXAR ANAR CARPETES. S'ADMET L'AGRUPAMENT PERSONALITZAT.</x:String>
+  <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Edita</x:String>
+  <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Mou a un altre grup</x:String>
+  <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Obre tots els repositoris</x:String>
+  <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Obre el repositori</x:String>
+  <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Obre el terminal</x:String>
+  <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Torna a escanejar els repositoris al directori de clonació per defecte</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cerca repositoris...</x:String>
+  <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Canvis locals</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignora tots els fitxers *{0}</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.ExtensionInSameFolder" xml:space="preserve">Ignora els fitxers *{0} a la mateixa carpeta</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.InFolder" xml:space="preserve">Ignora els fitxers no seguits d'aquesta carpeta</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.SingleFile" xml:space="preserve">Ignora només aquest fitxer</x:String>
+  <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.UntrackedInSameFolder" xml:space="preserve">Ignora tots els fitxers no seguits de la mateixa carpeta</x:String>
+  <x:String x:Key="Text.WorkingCopy.Amend" xml:space="preserve">Esmena</x:String>
+  <x:String x:Key="Text.WorkingCopy.CanStageTip" xml:space="preserve">Ara podeu preparar aquest fitxer.</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories" xml:space="preserve">Esborra l'historial</x:String>
+  <x:String x:Key="Text.WorkingCopy.ClearCommitHistories.Confirm" xml:space="preserve">Esteu segur que voleu esborrar tot l'historial de missatges de comissió? Aquesta acció no es pot desfer.</x:String>
+  <x:String x:Key="Text.WorkingCopy.CollapseSidebar" xml:space="preserve">Amaga la barra lateral</x:String>
+  <x:String x:Key="Text.WorkingCopy.Commit" xml:space="preserve">FES LA COMISSIÓ</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitAndPush" xml:space="preserve">FES LA COMISSIÓ I PUJA</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitMessageHelper" xml:space="preserve">Plantilla/Historial</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitTip" xml:space="preserve">Activa l'esdeveniment de clic</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitToEdit" xml:space="preserve">Fes la comissió (edita)</x:String>
+  <x:String x:Key="Text.WorkingCopy.CommitWithAutoStage" xml:space="preserve">Prepara tots els canvis i fes-ne la comissió</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithDetachedHead">Esteu creant una comissió sobre un HEAD desvinculat. Voleu continuar?</x:String>
+  <x:String x:Key="Text.WorkingCopy.ConfirmCommitWithFilter">Heu preparat {0} fitxer(s), però només se'n mostren {1} ({2} estan filtrats). Voleu continuar?</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts" xml:space="preserve">CONFLICTES DETECTATS</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Merge" xml:space="preserve">FUSIONA</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.MergeExternal" xml:space="preserve">Fusiona amb una eina externa</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts" xml:space="preserve">OBRE TOTS ELS CONFLICTES EN L'EINA DE FUSIÓ EXTERNA</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.Resolved" xml:space="preserve">ELS CONFLICTES DELS FITXERS ESTAN RESOLTS</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseMine" xml:space="preserve">UTILITZA EL MEU</x:String>
+  <x:String x:Key="Text.WorkingCopy.Conflicts.UseTheirs" xml:space="preserve">UTILITZA EL SEU</x:String>
+  <x:String x:Key="Text.WorkingCopy.DiscardAll" xml:space="preserve">DESCARTA-HO TOT</x:String>
+  <x:String x:Key="Text.WorkingCopy.ExpandSidebar" xml:space="preserve">Mostra la barra lateral</x:String>
+  <x:String x:Key="Text.WorkingCopy.FilterChanges" xml:space="preserve">Filtra els canvis...</x:String>
+  <x:String x:Key="Text.WorkingCopy.IncludeUntracked" xml:space="preserve">INCLOU ELS FITXERS NO SEGUITS</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitHistories" xml:space="preserve">NO HI HA MISSATGES D'ENTRADA RECENTS</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoCommitTemplates" xml:space="preserve">NO HI HA PLANTILLES DE COMISSIÓ</x:String>
+  <x:String x:Key="Text.WorkingCopy.NoVerify" xml:space="preserve">Sense verificació</x:String>
+  <x:String x:Key="Text.WorkingCopy.ResetAuthor" xml:space="preserve">Restableix l'autor</x:String>
+  <x:String x:Key="Text.WorkingCopy.SignOff" xml:space="preserve">SignOff</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged" xml:space="preserve">PREPARATS</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.Unstage" xml:space="preserve">FES «UNSTAGE»</x:String>
+  <x:String x:Key="Text.WorkingCopy.Staged.UnstageAll" xml:space="preserve">FES «UNSTAGE» DE TOT</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged" xml:space="preserve">SENSE PREPARAR</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.Stage" xml:space="preserve">PREPARA</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.StageAll" xml:space="preserve">PREPARA-HO TOT</x:String>
+  <x:String x:Key="Text.WorkingCopy.Unstaged.ViewAssumeUnchanged" xml:space="preserve">MOSTRA ELS FITXERS AMB CANVIS IGNORATS</x:String>
+  <x:String x:Key="Text.WorkingCopy.UseCommitTemplate" xml:space="preserve">Plantilla: ${0}$</x:String>
+  <x:String x:Key="Text.Workspace" xml:space="preserve">ESPAI DE TREBALL: </x:String>
+  <x:String x:Key="Text.Workspace.Configure" xml:space="preserve">Configura els espais de treball...</x:String>
+  <x:String x:Key="Text.Worktree" xml:space="preserve">ARBRE DE TREBALL</x:String>
+  <x:String x:Key="Text.Worktree.Branch" xml:space="preserve">BRANCA</x:String>
+  <x:String x:Key="Text.Worktree.CopyPath" xml:space="preserve">Copia la ruta</x:String>
+  <x:String x:Key="Text.Worktree.Head" xml:space="preserve">HEAD</x:String>
+  <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Bloqueja</x:String>
+  <x:String x:Key="Text.Worktree.Open" xml:space="preserve">Obre</x:String>
+  <x:String x:Key="Text.Worktree.Path" xml:space="preserve">RUTA</x:String>
+  <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Suprimeix</x:String>
+  <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Desbloqueja</x:String>
+  <x:String x:Key="Text.Yes" xml:space="preserve">SÍ</x:String>
+</ResourceDictionary>

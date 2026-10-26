@@ -678,7 +678,6 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">אינטגרציה</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/טרמינל</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">ארגומנטים</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">השתמש ב־'.' לציון תיקיית העבודה</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">נתיב</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/טרמינל</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Prune Remote</x:String>

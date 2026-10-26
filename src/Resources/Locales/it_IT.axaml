@@ -625,7 +625,6 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRAZIONE</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINALE</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Argomenti</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Usa '.' per indicare la cartella di lavoro</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Percorso</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminale</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Potatura Remota</x:String>

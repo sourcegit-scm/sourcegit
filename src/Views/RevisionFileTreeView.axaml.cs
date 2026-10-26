@@ -180,37 +180,6 @@ namespace SourceGit.Views
                         e.Handled = true;
                     }
                 }
-                else if (node.Backend is { Type: Models.ObjectType.Blob } file &&
-                    e.Key == Key.S &&
-                    e.KeyModifiers == ((OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) | KeyModifiers.Shift))
-                {
-                    var detailView = this.FindAncestorOfType<CommitDetail>();
-                    if (detailView is { DataContext: ViewModels.CommitDetail detail })
-                    {
-                        var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
-                        if (storageProvider == null)
-                            return;
-
-                        var options = new FolderPickerOpenOptions() { AllowMultiple = false };
-                        try
-                        {
-                            var selected = await storageProvider.OpenFolderPickerAsync(options);
-                            if (selected.Count == 1)
-                            {
-                                var folder = selected[0];
-                                var folderPath = folder is { Path: { IsAbsoluteUri: true } path } ? path.LocalPath : folder.Path.ToString();
-                                var saveTo = Path.Combine(folderPath, Path.GetFileName(file.Path)!);
-                                await detail.SaveRevisionFileAsync(file, saveTo);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            detail.Repository.SendNotification($"Failed to save file: {ex.Message}", true);
-                        }
-
-                        e.Handled = true;
-                    }
-                }
             }
 
             if (!e.Handled)
@@ -617,7 +586,6 @@ namespace SourceGit.Views
             saveAs.Header = App.Text("SaveAs");
             saveAs.Icon = this.CreateMenuIcon("Icons.Save");
             saveAs.IsEnabled = file.Type == Models.ObjectType.Blob;
-            saveAs.Tag = OperatingSystem.IsMacOS() ? "⌘+⇧+S" : "Ctrl+Shift+S";
             saveAs.Click += async (_, ev) =>
             {
                 var storageProvider = TopLevel.GetTopLevel(this)?.StorageProvider;
