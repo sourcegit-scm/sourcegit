@@ -13,6 +13,15 @@ namespace SourceGit.Views
     {
         protected override Type StyleKeyOverride => typeof(Button);
 
+        public static readonly StyledProperty<Geometry> IconProperty =
+            AvaloniaProperty.Register<CopyButton, Geometry>(nameof(Icon));
+
+        public Geometry Icon
+        {
+            get => GetValue(IconProperty);
+            set => SetValue(IconProperty, value);
+        }
+
         public static readonly DirectProperty<CopyButton, string> CopyTextProperty =
             AvaloniaProperty.RegisterDirect<CopyButton, string>(
                 nameof(CopyText),
@@ -60,8 +69,7 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
-            if (this.FindResource("Icons.Copy") is Geometry copyGeo)
-                _copyIcon.Data = copyGeo;
+            _copyIcon.Data = Icon ?? this.FindResource("Icons.Copy") as Geometry;
             if (this.FindResource("Icons.Check") is Geometry checkGeo)
                 _checkIcon.Data = checkGeo;
 
@@ -90,7 +98,11 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == IsCopiedProperty)
+            if (change.Property == IconProperty)
+            {
+                _copyIcon.Data = Icon ?? this.FindResource("Icons.Copy") as Geometry;
+            }
+            else if (change.Property == IsCopiedProperty)
             {
                 _copyIcon.IsVisible = !_isCopied;
                 _checkIcon.IsVisible = _isCopied;

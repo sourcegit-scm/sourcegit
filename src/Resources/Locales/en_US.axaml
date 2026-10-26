@@ -313,6 +313,7 @@
   <x:String x:Key="Text.ConventionalCommit.ShortDescription" xml:space="preserve">Short Description:</x:String>
   <x:String x:Key="Text.ConventionalCommit.Type" xml:space="preserve">Type of Change:</x:String>
   <x:String x:Key="Text.Copy" xml:space="preserve">Copy</x:String>
+  <x:String x:Key="Text.CopyWithText" xml:space="preserve">Copy: {0}</x:String>
   <x:String x:Key="Text.CopyAllText" xml:space="preserve">Copy All Text</x:String>
   <x:String x:Key="Text.CopyAsPatch" xml:space="preserve">Copy as Patch</x:String>
   <x:String x:Key="Text.CopyFullPath" xml:space="preserve">Copy Full Path</x:String>

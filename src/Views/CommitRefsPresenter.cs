@@ -277,10 +277,13 @@ namespace SourceGit.Views
         {
             _items.Clear();
 
-            if (DataContext is not Models.Commit commit)
-                return new Size(0, 0);
-
-            var refs = commit.Decorators;
+            var commit = DataContext as Models.Commit;
+            List<Models.Decorator> refs = DataContext switch
+            {
+                Models.Commit c => c.Decorators,
+                Models.Decorator decorator => [decorator],
+                _ => [],
+            };
             var count = refs.Count;
             if (count == 0)
             {
@@ -294,7 +297,7 @@ namespace SourceGit.Views
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
             var fg = Foreground;
-            var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
+            var normalBG = UseGraphColor && commit != null ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
             var labelSize = FontSize;
             var requiredHeight = 16.0;
             var x = 0.0;
