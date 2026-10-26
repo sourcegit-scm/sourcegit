@@ -114,7 +114,7 @@ namespace SourceGit.Views
         public HistoriesCommitList()
         {
             SelectionMode = DataGridSelectionMode.Extended;
-            CanUserReorderColumns = false;
+            CanUserReorderColumns = true;
             CanUserResizeColumns = false;
             CanUserSortColumns = false;
             AutoGenerateColumns = false;
@@ -372,6 +372,7 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+            CommitListContainer.Columns[1].PropertyChanged += OnAuthorColumnPropertyChanged;
         }
 
         public async Task GotoParent()
@@ -465,60 +466,104 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.Histories vm)
+            {
                 CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
-        }
-
-        private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
-        {
-            if (sender is not Border border)
-                return;
-
-            if (DataContext is not ViewModels.Histories { IsAuthorColumnVisible: true } vm)
-                return;
-
-            var pos = e.GetPosition(border);
-            if (_resizingAuthorColumn)
-            {
-                var posX = CommitListContainer.Columns[0].ActualWidth;
-                var maxW = posX + CommitListContainer.Columns[1].ActualWidth - 100;
-                var delta = posX - pos.X;
-                var w = Math.Max(Math.Min(vm.AuthorColumnWidth + delta, maxW), 80);
-                CommitListContainer.Columns[1].Width = new(w, DataGridLengthUnitType.Pixel);
-                vm.AuthorColumnWidth = w;
-            }
-            else
-            {
-                var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
-                if (dis < 4 && dis > -4)
-                {
-                    if (border.Cursor != _resizingCursor)
-                        border.Cursor = _resizingCursor;
-                }
-                else if (border.Cursor != Cursor.Default)
-                {
-                    border.Cursor = Cursor.Default;
-                }
+                RestoreColumnOrder(vm);
             }
         }
 
-        private void OnCommitListHeaderPointerPressed(object sender, PointerPressedEventArgs e)
+        private void RestoreColumnOrder(ViewModels.Histories vm)
         {
-            if (sender is not Border border)
-                return;
-
-            var pos = e.GetPosition(border);
-            var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
-            if (dis > 4 || dis < -4)
-                return;
-
-            if (e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            var columns = CommitListContainer.Columns;
+            var order = new List<int>();
+            var seen = new HashSet<int>();
+            foreach (var index in vm.ColumnOrder ?? [])
             {
+                if (index >= 0 && index < columns.Count && seen.Add(index))
+                    order.Add(index);
+            }
+            for (var i = 0; i < columns.Count; i++)
+            {
+                if (seen.Add(i))
+                    order.Add(i);
+            }
+
+            _restoringColumnOrder = true;
+            try
+            {
+                for (var i = 0; i < order.Count; i++)
+                    columns[order[i]].DisplayIndex = i;
+            }
+            finally
+            {
+                _restoringColumnOrder = false;
+            }
+        }
+
+        private void OnColumnDisplayIndexChanged(object sender, DataGridColumnEventArgs e)
+        {
+            if (_restoringColumnOrder || _pendingColumnOrderSave || DataContext is not ViewModels.Histories)
+                return;
+
+            // DisplayIndex changes arrive while the grid adjusts the remaining columns.
+            // Save the complete permutation after those updates have finished.
+            _pendingColumnOrderSave = true;
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                _pendingColumnOrderSave = false;
+                if (DataContext is not ViewModels.Histories vm)
+                    return;
+
+                var columns = CommitListContainer.Columns;
+                var order = new int[columns.Count];
+                for (var i = 0; i < columns.Count; i++)
+                    order[columns[i].DisplayIndex] = i;
+                vm.ColumnOrder = [.. order];
+            });
+        }
+
+        private void OnAuthorColumnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == DataGridColumn.WidthProperty &&
+                sender is DataGridColumn column && column.Width.UnitType == DataGridLengthUnitType.Pixel &&
+                DataContext is ViewModels.Histories vm)
+                vm.AuthorColumnWidth = column.Width.Value;
+        }
+
+        private void OnAuthorResizePressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is Border border && DataContext is ViewModels.Histories vm && e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _authorResizeStartX = e.GetPosition(CommitListContainer).X;
+                _authorResizeStartWidth = vm.AuthorColumnWidth;
                 _resizingAuthorColumn = true;
+                e.Pointer.Capture(border);
                 e.Handled = true;
             }
         }
 
-        private void OnCommitListHeaderPointerReleased(object sender, PointerReleasedEventArgs e)
+        private void OnAuthorResizeMoved(object sender, PointerEventArgs e)
+        {
+            if (_resizingAuthorColumn && DataContext is ViewModels.Histories vm)
+            {
+                var width = Math.Max(80, _authorResizeStartWidth + _authorResizeStartX - e.GetPosition(CommitListContainer).X);
+                CommitListContainer.Columns[1].Width = new(width, DataGridLengthUnitType.Pixel);
+                vm.AuthorColumnWidth = width;
+                e.Handled = true;
+            }
+        }
+
+        private void OnAuthorResizeReleased(object sender, PointerReleasedEventArgs e)
+        {
+            if (_resizingAuthorColumn)
+            {
+                _resizingAuthorColumn = false;
+                e.Pointer.Capture(null);
+                e.Handled = true;
+            }
+        }
+
+        private void OnAuthorResizeCaptureLost(object sender, PointerCaptureLostEventArgs e)
         {
             _resizingAuthorColumn = false;
         }
@@ -778,7 +823,30 @@ namespace SourceGit.Views
 
             IsScrollToTopVisible = startY >= rowHeight;
 
-            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
+            var graphColumn = dataGrid.Columns[0];
+            double graphOffset = 0;
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.IsVisible && column.DisplayIndex < graphColumn.DisplayIndex)
+                    graphOffset += column.ActualWidth;
+            }
+            if (Math.Abs(CommitGraph.Margin.Left - graphOffset) > 0.01)
+                CommitGraph.Margin = new Thickness(graphOffset, 24, 0, 0);
+            if (Math.Abs(HistoryHeaderTools.Margin.Left - graphOffset) > 0.01)
+                HistoryHeaderTools.Margin = new Thickness(graphOffset, 0, 0, 0);
+
+            var authorColumn = dataGrid.Columns[1];
+            double authorOffset = 0;
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.IsVisible && column.DisplayIndex < authorColumn.DisplayIndex)
+                    authorOffset += column.ActualWidth;
+            }
+            var resizeOffset = Math.Max(0, authorOffset - 2);
+            if (Math.Abs(AuthorColumnResizeHandle.Margin.Left - resizeOffset) > 0.01)
+                AuthorColumnResizeHandle.Margin = new Thickness(resizeOffset, 0, 0, 0);
+
+            var clipWidth = Math.Max(0, graphColumn.ActualWidth - 4);
             var lastLayout = CommitGraph.Layout;
             if (lastLayout == null ||
                 Math.Abs(lastLayout.StartY - startY) > 0.01 ||
@@ -1970,6 +2038,9 @@ namespace SourceGit.Views
         private bool _isScrollToTopVisible = false;
         private bool _isDetailsPanelExpanded = true;
         private bool _resizingAuthorColumn = false;
-        private Cursor _resizingCursor = new(StandardCursorType.SizeWestEast);
+        private double _authorResizeStartX = 0;
+        private double _authorResizeStartWidth = 0;
+        private bool _restoringColumnOrder = false;
+        private bool _pendingColumnOrderSave = false;
     }
 }

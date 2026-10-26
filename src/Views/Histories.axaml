@@ -23,7 +23,7 @@
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
     </v:HistoriesLayout.ColumnDefinitions>
 
-    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" ClipToBounds="True">
       <v:HistoriesCommitList x:Name="CommitListContainer"
                              Classes="static_scrollbar"
                              ScrollViewer.AllowAutoHide="False"
@@ -31,6 +31,7 @@
                              ItemsSource="{Binding Commits, Mode=OneWay}"
                              TotalCommits="{Binding Commits.Count, Mode=OneWay}"
                              SelectedCommits="{Binding SelectedCommits, Mode=TwoWay}"
+                             ColumnDisplayIndexChanged="OnColumnDisplayIndexChanged"
                              ColumnHeaderHeight="24"
                              RowHeight="26"
                              LayoutUpdated="OnCommitListLayoutUpdated"
@@ -81,9 +82,6 @@
               </ControlTemplate>
             </Setter>
 
-            <Style Selector="^:nth-child(5)">
-              <Setter Property="AreSeparatorsVisible" Value="False"/>
-            </Style>
           </Style>
 
           <Style Selector="DataGridCell">
@@ -242,12 +240,21 @@
         </DataGrid.Columns>
       </v:HistoriesCommitList>
 
-      <Border Background="Transparent"
-              Height="24"
-              HorizontalAlignment="Stretch" VerticalAlignment="Top"
-              PointerMoved="OnCommitListHeaderPointerMoved"
-              PointerPressed="OnCommitListHeaderPointerPressed"
-              PointerReleased="OnCommitListHeaderPointerReleased">
+      <Border x:Name="AuthorColumnResizeHandle"
+              Width="4" Height="24"
+              Background="Transparent"
+              Cursor="SizeWestEast"
+              HorizontalAlignment="Left" VerticalAlignment="Top"
+              IsVisible="{Binding IsAuthorColumnVisible}"
+              PointerPressed="OnAuthorResizePressed"
+              PointerMoved="OnAuthorResizeMoved"
+              PointerReleased="OnAuthorResizeReleased"
+              PointerCaptureLost="OnAuthorResizeCaptureLost"/>
+
+      <Border x:Name="HistoryHeaderTools"
+              Background="Transparent"
+              Width="48" Height="24"
+              HorizontalAlignment="Left" VerticalAlignment="Top">
         <StackPanel Orientation="Horizontal"
                     Height="18"
                     Margin="4,0,0,0"
