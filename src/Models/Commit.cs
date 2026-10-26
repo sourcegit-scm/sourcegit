@@ -4,9 +4,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.Models
 {
-    // Bound by index to the search-method ComboBox in Views/Repository.axaml, so
-    // UI-selectable methods must stay first and in dropdown order. ByCommitter is
-    // internal-only (used by the fulltext `All` search).
+    // Bound by index to the search-method ComboBox in Views/CommitSearchView.axaml,
+    // so UI-selectable methods must stay first and in dropdown order. ByCommitter
+    // is internal-only (used by the fulltext `All` search).
     public enum CommitSearchMethod
     {
         All = 0,

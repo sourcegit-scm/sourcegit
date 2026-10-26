@@ -172,42 +172,28 @@ namespace SourceGit.ViewModels
 
         private async Task<List<Models.Commit>> SearchAllFieldsAsync()
         {
+            // Git ANDs `--grep`, `--author` and `--committer` within a single
+            // invocation, so every field needs its own `git log`. Each of those is
+            // a full history walk on large repositories, so they run concurrently
+            // instead of one after another.
+            var bySHA = SearchExactSHAAsync();
+            var byMessage = new Commands.QueryCommits(_repo, _filter, Models.CommitSearchMethod.ByMessage, _onlySearchCurrentBranch)
+                .GetResultAsync();
+            var byAuthor = new Commands.QueryCommits(_repo, _filter, Models.CommitSearchMethod.ByAuthor, _onlySearchCurrentBranch)
+                .GetResultAsync();
+            var byCommitter = new Commands.QueryCommits(_repo, _filter, Models.CommitSearchMethod.ByCommitter, _onlySearchCurrentBranch)
+                .GetResultAsync();
+
+            await Task.WhenAll(bySHA, byMessage, byAuthor, byCommitter).ConfigureAwait(false);
+
             var result = new List<Models.Commit>();
             var seen = new HashSet<string>();
 
-            var isCommitSHA = await new Commands.IsCommitSHA(_repo, _filter)
-                .GetResultAsync()
-                .ConfigureAwait(false);
+            if (bySHA.Result is { } exact && seen.Add(exact.SHA))
+                result.Add(exact);
 
-            if (isCommitSHA)
+            foreach (var matched in new[] { byMessage.Result, byAuthor.Result, byCommitter.Result })
             {
-                var commit = await new Commands.QuerySingleCommit(_repo, _filter)
-                    .GetResultAsync()
-                    .ConfigureAwait(false);
-
-                var matchesScope = commit != null;
-                if (matchesScope && _onlySearchCurrentBranch)
-                    matchesScope = await new Commands.IsAncestor(_repo, commit.SHA, "HEAD")
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-
-                if (matchesScope && seen.Add(commit.SHA))
-                    result.Add(commit);
-            }
-
-            var fields = new[]
-            {
-                Models.CommitSearchMethod.ByMessage,
-                Models.CommitSearchMethod.ByAuthor,
-                Models.CommitSearchMethod.ByCommitter,
-            };
-
-            foreach (var field in fields)
-            {
-                var matched = await new Commands.QueryCommits(_repo, _filter, field, _onlySearchCurrentBranch)
-                    .GetResultAsync()
-                    .ConfigureAwait(false);
-
                 foreach (var c in matched)
                 {
                     if (seen.Add(c.SHA))
@@ -217,6 +203,29 @@ namespace SourceGit.ViewModels
 
             result.Sort((l, r) => r.CommitterTime.CompareTo(l.CommitterTime));
             return result;
+        }
+
+        private async Task<Models.Commit> SearchExactSHAAsync()
+        {
+            var isCommitSHA = await new Commands.IsCommitSHA(_repo, _filter)
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            if (!isCommitSHA)
+                return null;
+
+            var commit = await new Commands.QuerySingleCommit(_repo, _filter)
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            if (commit == null || !_onlySearchCurrentBranch)
+                return commit;
+
+            var isInCurrentBranch = await new Commands.IsAncestor(_repo, commit.SHA, "HEAD")
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            return isInCurrentBranch ? commit : null;
         }
 
         public void EndSearch()
