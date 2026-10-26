@@ -45,6 +45,12 @@ namespace SourceGit.Models
             set;
         } = 120;
 
+        public double FocusedHistoryDetailsWidth
+        {
+            get;
+            set;
+        } = 340;
+
         public bool EnableTopoOrderInHistory
         {
             get;

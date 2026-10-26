@@ -516,6 +516,8 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Select Commit</x:String>
   <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">Advanced Options</x:String>
+  <x:String x:Key="Text.Histories.BackToGraph" xml:space="preserve">← Graph</x:String>
+  <x:String x:Key="Text.Histories.CopyCommitSHA" xml:space="preserve">Copy full commit SHA</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT TIME</x:String>
@@ -528,6 +530,7 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Selected Commits Only</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Selected Commits (First-parent Only)</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
+  <x:String x:Key="Text.Histories.SelectionDetails" xml:space="preserve">DETAILS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Hold 'Ctrl' or 'Shift' to select multiple commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Hold ⌘ or ⇧ to select multiple commits.</x:String>
@@ -823,6 +826,7 @@
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filter in commit graph</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">filter(s) enabled</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">LAYOUT</x:String>
+  <x:String x:Key="Text.Repository.HistoriesLayout.Focused" xml:space="preserve">Focused</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Horizontal</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Vertical</x:String>
   <x:String x:Key="Text.Repository.HistoriesOrder" xml:space="preserve">COMMITS ORDER</x:String>

@@ -213,8 +213,40 @@ namespace SourceGit.ViewModels
 
         public bool UseTwoColumnsLayoutInHistories
         {
-            get => _useTwoColumnsLayoutInHistories;
-            set => SetProperty(ref _useTwoColumnsLayoutInHistories, value);
+            get => IsHorizontalHistoryLayout;
+            set
+            {
+                // Keep reading older preference files. The explicit layout takes precedence,
+                // regardless of the order of properties in the JSON document.
+                if (SetProperty(ref _useTwoColumnsLayoutInHistories, value) && !_historyLayout.HasValue)
+                    NotifyHistoryLayoutChanged();
+            }
+        }
+
+        public Models.HistoryLayout HistoryLayout
+        {
+            get => _historyLayout ?? (_useTwoColumnsLayoutInHistories ? Models.HistoryLayout.SideBySide : Models.HistoryLayout.Stacked);
+            set
+            {
+                if (Enum.IsDefined(value) && _historyLayout != value)
+                {
+                    _historyLayout = value;
+                    NotifyHistoryLayoutChanged();
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsHorizontalHistoryLayout => HistoryLayout != Models.HistoryLayout.Stacked;
+
+        [JsonIgnore]
+        public bool IsFocusedHistoryLayout => HistoryLayout == Models.HistoryLayout.Focused;
+
+        private void NotifyHistoryLayoutChanged()
+        {
+            OnPropertyChanged(nameof(HistoryLayout));
+            OnPropertyChanged(nameof(IsHorizontalHistoryLayout));
+            OnPropertyChanged(nameof(IsFocusedHistoryLayout));
         }
 
         public bool DisplayTimeAsPeriodInHistories
@@ -831,6 +863,7 @@ namespace SourceGit.ViewModels
 
         private bool _showTagsInGraph = true;
         private bool _useTwoColumnsLayoutInHistories = false;
+        private Models.HistoryLayout? _historyLayout = null;
         private bool _displayTimeAsPeriodInHistories = false;
         private bool _useSideBySideDiff = false;
         private bool _ignoreWhitespaceChangesInDiff = false;
