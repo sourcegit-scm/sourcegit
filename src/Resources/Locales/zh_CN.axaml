@@ -352,6 +352,7 @@
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
+  <x:String x:Key="Text.DeleteBranch.DeleteAttachedWorktree" xml:space="preserve">同时删除与使用此分支的工作树</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">强制删除，即使包含未合并的提交</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支 ${0}$</x:String>

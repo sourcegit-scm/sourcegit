@@ -15,6 +15,11 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public Worktree AttachedWorktree
+        {
+            get;
+        }
+
         public string DeleteUpstreamTip
         {
             get;
@@ -32,18 +37,39 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool DeleteWorktree
+        {
+            get;
+            set;
+        }
+
         public DeleteBranch(Repository repo, Models.Branch branch)
         {
             _repo = repo;
             Target = branch;
 
-            if (branch.IsLocal && !string.IsNullOrEmpty(branch.Upstream))
+            if (branch.IsLocal)
             {
-                var upstream = _repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal));
-                if (upstream != null && upstream.Name.Equals(branch.Name, StringComparison.Ordinal))
+                if (!string.IsNullOrEmpty(branch.Upstream))
                 {
-                    Upstream = upstream;
-                    DeleteUpstreamTip = App.Text("DeleteBranch.WithTrackingRemote", upstream.FriendlyName);
+                    var upstream = _repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal));
+                    if (upstream != null && upstream.Name.Equals(branch.Name, StringComparison.Ordinal))
+                    {
+                        Upstream = upstream;
+                        DeleteUpstreamTip = App.Text("DeleteBranch.WithTrackingRemote", upstream.FriendlyName);
+                    }
+                }
+
+                if (branch.HasWorktree)
+                {
+                    foreach (var wt in repo.Worktrees)
+                    {
+                        if (wt.IsAttachedTo(branch))
+                        {
+                            AttachedWorktree = wt;
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -61,6 +87,19 @@ namespace SourceGit.ViewModels
             {
                 do
                 {
+                    if (AttachedWorktree != null && DeleteWorktree)
+                    {
+                        succ = await new Commands.Worktree(_repo.FullPath)
+                            .Use(log)
+                            .RemoveAsync(AttachedWorktree.FullPath, Force);
+
+                        if (!succ)
+                        {
+                            log.Complete();
+                            return false;
+                        }
+                    }
+
                     succ = await new Commands.Branch(_repo.FullPath, Target.Name)
                         .Use(log)
                         .DeleteLocalAsync(Force);
