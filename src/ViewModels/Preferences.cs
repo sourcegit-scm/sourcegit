@@ -169,6 +169,16 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public int WorkingDirectoryHeadMode
+        {
+            get => _workingDirectoryHeadMode;
+            set
+            {
+                if (value >= 0 && value <= 2)
+                    SetProperty(ref _workingDirectoryHeadMode, value);
+            }
+        }
+
         public bool UseFixedTabWidth
         {
             get => _useFixedTabWidth;
@@ -820,6 +830,7 @@ namespace SourceGit.ViewModels
 
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
+        private int _workingDirectoryHeadMode = 0;
         private bool _useFixedTabWidth = true;
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;

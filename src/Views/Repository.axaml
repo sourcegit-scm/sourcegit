@@ -806,7 +806,7 @@
 
               <!-- Local Changes Page -->
               <Border IsVisible="{Binding IsWorkingCopyVisible, Mode=OneWay}" PropertyChanged="OnRightPagePropertyChanged">
-                <v:WorkingCopy DataContext="{Binding WorkingCopy, Mode=OneWay}"/>
+                <v:WorkingCopyHost Active="{Binding IsWorkingCopyVisible}"/>
               </Border>
 
               <!-- Stashes Page -->

@@ -76,6 +76,19 @@ namespace SourceGit.Views
             }
         }
 
+        internal WorkingCopy SharedWorkingCopy
+        {
+            get
+            {
+                _sharedWorkingCopy ??= new WorkingCopy();
+                if (DataContext is ViewModels.Repository repo)
+                    _sharedWorkingCopy.DataContext = repo.WorkingCopy;
+                return _sharedWorkingCopy;
+            }
+        }
+
+        private WorkingCopy _sharedWorkingCopy;
+
         public Repository()
         {
             _sidebarWidth = new GridLength(ViewModels.Preferences.Instance.Layout.RepositorySidebarWidth);

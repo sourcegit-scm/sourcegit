@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Histories : ObservableObject
+    public class Histories : ObservableObject, IDisposable
     {
         public bool IsLoading
         {
@@ -109,8 +110,97 @@ namespace SourceGit.ViewModels
             {
                 GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
-                    PostCommitsChanged();
+                {
+                    IsUpdatingEntries = true;
+                    Entries.Clear();
+                    if (IsWorkingDirectoryVisible)
+                        Entries.Add(WorkingDirectory);
+                    Entries.AddRange(value);
+                    IsUpdatingEntries = false;
+                    if (_selectHeadAfterRefresh)
+                    {
+                        _selectHeadAfterRefresh = false;
+                        var head = value.Find(x => x.IsCurrentHead);
+                        SelectedCommits = head == null ? [] : [head];
+                        if (head == null)
+                            DetailContext = Models.Null.Instance;
+                    }
+                    else
+                        PostCommitsChanged();
+                    if (IsWorkingDirectorySelected)
+                        SelectedCommits = [];
+                }
             }
+        }
+
+        public bool IsUpdatingEntries { get; private set; }
+
+        public AvaloniaList<object> Entries { get; } = [];
+        public WorkingDirectoryEntry WorkingDirectory { get; } = new();
+        public WorkingCopy WorkingCopy => _repo.WorkingCopy;
+
+        public bool IsWorkingDirectoryVisible => !_repo.IsBare && Preferences.Instance.WorkingDirectoryHeadMode switch
+        {
+            1 => WorkingDirectory.HasChanges,
+            2 => true,
+            _ => false,
+        };
+
+        public bool IsWorkingDirectorySelected
+        {
+            get => _isWorkingDirectorySelected;
+            set
+            {
+                if ((value && !IsWorkingDirectoryVisible) || !SetProperty(ref _isWorkingDirectorySelected, value))
+                    return;
+
+                if (value)
+                {
+                    _selectHeadAfterRefresh = false;
+                    SelectedCommits = [];
+                    _searchCommitContext.Selected = null;
+                    DetailContext = WorkingCopy;
+                }
+                else if (_selectedCommits.Count == 0)
+                    DetailContext = Models.Null.Instance;
+            }
+        }
+
+        public void UpdateWorkingDirectory(List<Models.Change> changes)
+        {
+            WorkingDirectory.SetChanges(changes);
+            RefreshWorkingDirectoryVisibility(true);
+        }
+
+        private void RefreshWorkingDirectoryVisibility(bool followHeadAfterRefresh)
+        {
+            if (Entries.Contains(WorkingDirectory) == IsWorkingDirectoryVisible)
+                return;
+
+            OnPropertyChanged(nameof(IsWorkingDirectoryVisible));
+
+            if (IsWorkingDirectoryVisible)
+            {
+                _selectHeadAfterRefresh = false;
+                Entries.Insert(0, WorkingDirectory);
+            }
+            else
+            {
+                var wasSelected = IsWorkingDirectorySelected;
+                IsWorkingDirectorySelected = false;
+                Entries.Remove(WorkingDirectory);
+                if (wasSelected)
+                {
+                    var head = _commits.Find(x => x.IsCurrentHead);
+                    SelectedCommits = head == null ? [] : [head];
+                    if (head == null)
+                        DetailContext = Models.Null.Instance;
+                    // Status may finish before the history query after committing. Follow
+                    // the newly checked-out HEAD when that query arrives, unless the user navigates.
+                    _selectHeadAfterRefresh = followHeadAfterRefresh;
+                }
+            }
+            GenerateGraph(_commits);
         }
 
         public Models.CommitGraph Graph
@@ -137,6 +227,11 @@ namespace SourceGit.ViewModels
             get => _selectedCommits;
             set
             {
+                if (value.Count > 0)
+                {
+                    _selectHeadAfterRefresh = false;
+                    IsWorkingDirectorySelected = false;
+                }
                 var oldCount = _selectedCommits.Count;
                 if (SetProperty(ref _selectedCommits, value) && oldCount + value.Count > 0)
                     PostSelectedCommitsChanged();
@@ -233,6 +328,30 @@ namespace SourceGit.ViewModels
             _repo = repo;
             _commitDetailSharedData = new CommitDetailSharedData();
             _searchCommitContext = new SearchCommitContext(repo.FullPath, this);
+            Preferences.Instance.PropertyChanged += OnPreferencesChanged;
+        }
+
+        public void Dispose()
+        {
+            Preferences.Instance.PropertyChanged -= OnPreferencesChanged;
+        }
+
+        private void OnPreferencesChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Preferences.WorkingDirectoryHeadMode))
+                return;
+
+            _selectHeadAfterRefresh = false;
+            var graph = Graph;
+            RefreshWorkingDirectoryVisibility(false);
+            // Hide also restores the original graph lanes when the repository is clean.
+            if (ReferenceEquals(graph, Graph))
+                GenerateGraph(_commits);
+        }
+
+        public void CancelPendingHeadSelection()
+        {
+            _selectHeadAfterRefresh = false;
         }
 
         public bool HasShowFlag(Models.HistoryShowFlags flag)
@@ -296,6 +415,7 @@ namespace SourceGit.ViewModels
 
         public void NavigateTo(string commitSHA)
         {
+            _selectHeadAfterRefresh = false;
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
             if (commit != null)
             {
@@ -312,6 +432,7 @@ namespace SourceGit.ViewModels
                 Dispatcher.UIThread.Post(() =>
                 {
                     _ignoreSelectionChange = true;
+                    IsWorkingDirectorySelected = false;
                     SelectedCommits = [];
 
                     if (_detailContext is CommitDetail detail)
@@ -524,6 +645,12 @@ namespace SourceGit.ViewModels
             if (_ignoreSelectionChange)
                 return;
 
+            if (IsWorkingDirectorySelected)
+            {
+                DetailContext = WorkingCopy;
+                return;
+            }
+
             if (_selectedCommits.Count == 0)
             {
                 _searchCommitContext.Selected = null;
@@ -574,9 +701,14 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
+            var graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads, IsWorkingDirectoryVisible, Preferences.Instance.WorkingDirectoryHeadMode != 0);
+            if (IsWorkingDirectoryVisible)
+                WorkingDirectory.LeftMargin = graph.Dots[0].Center.X + 14;
+            Graph = graph;
         }
 
+        private bool _selectHeadAfterRefresh;
+        private bool _isWorkingDirectorySelected;
         private Repository _repo = null;
         private Models.Branch _currentBranch = null;
         private bool _hasSingleRemote = false;

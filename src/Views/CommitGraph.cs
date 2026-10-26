@@ -183,6 +183,9 @@ namespace SourceGit.Views
                 var pen = dot.IsHighlighted ? Models.CommitGraph.Pens[dot.Color] : grayedPen;
                 switch (dot.Type)
                 {
+                    case Models.CommitGraph.DotType.WorkingDirectory:
+                        context.DrawEllipse(dotFill, new Pen(pen.Brush, pen.Thickness, new DashStyle([2, 2], 0)), center, 6, 6);
+                        break;
                     case Models.CommitGraph.DotType.Head:
                         context.DrawEllipse(dotFill, pen, center, 6, 6);
                         context.DrawEllipse(pen.Brush, null, center, 3, 3);

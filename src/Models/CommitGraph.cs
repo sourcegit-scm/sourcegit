@@ -57,6 +57,7 @@ namespace SourceGit.Models
             Default,
             Head,
             Merge,
+            WorkingDirectory,
         }
 
         public class Dot
@@ -71,7 +72,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits, bool hasWorkingDirectory = false, bool reserveHeadLane = true)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -84,6 +85,17 @@ namespace SourceGit.Models
             var offsetY = -halfHeight;
             var colorPicker = new ColorPicker();
             var defHighlighting = highlighting == CommitGraphHighlighting.All;
+
+            // Keep HEAD's first-parent ancestry in the first lane, even when other
+            // branch tips appear above it. The reservation is not a Git commit or
+            // a visible edge; drawing starts when the actual HEAD is encountered.
+            PathHelper headLane = null;
+            var headCommit = commits.Find(x => x.IsCurrentHead);
+            if (reserveHeadLane && headCommit != null)
+            {
+                headLane = new PathHelper(headCommit.SHA, defHighlighting, colorPicker.Next(), new Point(10, -halfHeight));
+                unsolved.Add(headLane);
+            }
 
             foreach (var commit in commits)
             {
@@ -176,6 +188,12 @@ namespace SourceGit.Models
                 }
                 commit.IsHighlightedInGraph = isHighlighted;
 
+                if (headLane != null && commit.IsCurrentHead && major == headLane)
+                {
+                    headLane.Path.Points.Clear();
+                    headLane.Path.Points.Add(new Point(10, offsetY));
+                }
+
                 // If no path found, create new curve for branch head
                 // Otherwise, create new curve for new merged commit
                 if (major == null)
@@ -194,6 +212,9 @@ namespace SourceGit.Models
                     major.Highlight();
                     temp.Paths.Add(major.Path);
                 }
+
+                if (headLane != null && commit.IsCurrentHead && major == headLane && commit.Parents.Count > 0 && !temp.Paths.Contains(major.Path))
+                    temp.Paths.Add(major.Path);
 
                 // Calculate link position of this commit.
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
@@ -264,6 +285,37 @@ namespace SourceGit.Models
                 path.End((i + 0.5) * unitWidth + 4, endY + halfHeight, halfHeight);
             }
             unsolved.Clear();
+
+            if (hasWorkingDirectory)
+            {
+                // Add a presentation row without moving any of the existing graph lanes.
+                var offset = new Vector(0, 1);
+                foreach (var path in temp.Paths)
+                    for (var i = 0; i < path.Points.Count; i++)
+                        path.Points[i] += offset;
+                foreach (var link in temp.Links)
+                {
+                    link.Start += offset;
+                    link.Control += offset;
+                    link.End += offset;
+                }
+                foreach (var dot in temp.Dots)
+                    dot.Center += offset;
+
+                var working = new Dot { Type = DotType.WorkingDirectory, Center = new Point(10, 0.5), IsHighlighted = true };
+                var headIndex = commits.FindIndex(x => x.IsCurrentHead);
+                if (headIndex >= 0)
+                {
+                    var head = temp.Dots[headIndex];
+                    working.Center = new Point(head.Center.X, 0.5);
+                    var edge = new Path(head.Color, true);
+                    edge.Points.Add(working.Center);
+                    edge.Points.Add(head.Center);
+                    temp.Paths.Insert(0, edge);
+                    working.Color = head.Color;
+                }
+                temp.Dots.Insert(0, working);
+            }
 
             return temp;
         }

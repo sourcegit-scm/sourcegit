@@ -686,6 +686,10 @@
   <x:String x:Key="Text.Preferences.Appearance.UseAutoHideScrollBars" xml:space="preserve">Use auto-hide scrollbars</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseFixedTabWidth" xml:space="preserve">Use fixed tab width in titlebar</x:String>
   <x:String x:Key="Text.Preferences.Appearance.UseNativeWindowFrame" xml:space="preserve">Use native window frame</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead" xml:space="preserve">Working Directory Head</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.Hide" xml:space="preserve">Hide</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.WhenChanged" xml:space="preserve">Show when there are local changes</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.Always" xml:space="preserve">Show always</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge" xml:space="preserve">DIFF/MERGE TOOL</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs" xml:space="preserve">Diff Arguments</x:String>
   <x:String x:Key="Text.Preferences.DiffMerge.DiffArgs.Tip" xml:space="preserve">Available variables: $LOCAL, $REMOTE</x:String>
@@ -1089,4 +1093,9 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory">* Working Directory *</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Modified">Modified files (including renames, type changes and conflicts)</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Added">Added and untracked files</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Deleted">Deleted files</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges">LOCAL CHANGES</x:String>
 </ResourceDictionary>
