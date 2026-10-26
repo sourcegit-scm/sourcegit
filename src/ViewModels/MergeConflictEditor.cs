@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-using Avalonia;
+using AvaloniaEdit.Document;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -44,11 +44,10 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _theirsLines, value);
         }
 
-        public List<Models.ConflictLine> ResultLines
+        public TextDocument ResultDocument
         {
-            get => _resultLines;
-            private set => SetProperty(ref _resultLines, value);
-        }
+            get;
+        } = new TextDocument();
 
         public int MaxLineNumber
         {
@@ -59,13 +58,43 @@ namespace SourceGit.ViewModels
         public int UnsolvedCount
         {
             get => _unsolvedCount;
-            private set => SetProperty(ref _unsolvedCount, value);
+            private set
+            {
+                if (SetProperty(ref _unsolvedCount, value))
+                    OnPropertyChanged(nameof(NavigationDesc));
+            }
         }
 
-        public Vector ScrollOffset
+        public int CurrentConflictIndex
         {
-            get => _scrollOffset;
-            set => SetProperty(ref _scrollOffset, value);
+            get => _currentConflictIndex;
+            private set
+            {
+                if (SetProperty(ref _currentConflictIndex, value))
+                    OnPropertyChanged(nameof(NavigationDesc));
+            }
+        }
+
+        public string NavigationDesc
+        {
+            get
+            {
+                var unsolved = _unsolvedCount == 0 ?
+                    App.Text("MergeConflictEditor.AllResolved") :
+                    App.Text("MergeConflictEditor.ConflictsRemaining", _unsolvedCount);
+
+                if (_currentConflictIndex < 0 || _conflictRegions.Count == 0)
+                    return unsolved;
+
+                var position = App.Text("MergeConflictEditor.ConflictPosition", _currentConflictIndex + 1, _conflictRegions.Count);
+                return $"{position} · {unsolved}";
+            }
+        }
+
+        public bool IsDirty
+        {
+            get;
+            private set;
         }
 
         public Models.ConflictSelectedChunk SelectedChunk
@@ -78,6 +107,8 @@ namespace SourceGit.ViewModels
         {
             get => _conflictRegions;
         }
+
+        public event Action RegionsChanged;
 
         public MergeConflictEditor(Repository repo, Models.Commit head, string filePath)
         {
@@ -105,41 +136,197 @@ namespace SourceGit.ViewModels
             }
 
             ParseOriginalContent(workingCopyContent);
-            RefreshDisplayData();
+            BuildResultDocument();
+            RefreshRegionStates();
+
+            ResultDocument.Changing += OnResultDocumentChanging;
+            ResultDocument.Changed += OnResultDocumentChanged;
         }
 
-        public Models.ConflictLineState GetLineState(int line)
+        public Models.ConflictLineDecoration GetRowDecoration(int row)
         {
-            if (line >= 0 && line < _lineStates.Count)
-                return _lineStates[line];
-            return Models.ConflictLineState.Normal;
+            if (row < 0 || row >= _oursLines.Count)
+                return default;
+
+            var regionIdx = _oursLines[row].RegionIndex;
+            if (regionIdx < 0)
+                return default;
+
+            var r = _conflictRegions[regionIdx];
+            return new(Models.ConflictLineType.None, true, r.IsResolved, row == r.StartRow, row == r.EndRow);
+        }
+
+        public Models.ConflictLineDecoration GetResultLineDecoration(int line)
+        {
+            if (line >= 0 && line < _resultDecorations.Length)
+                return _resultDecorations[line];
+            return default;
+        }
+
+        public (int FirstLine, int LineCount) GetResultRange(int regionIdx)
+        {
+            var range = _ranges[regionIdx];
+            return (range.FirstLine, range.LineCount);
+        }
+
+        public int FindRegionByResultLine(int line)
+        {
+            for (var i = 0; i < _ranges.Count; i++)
+            {
+                var range = _ranges[i];
+                if (line >= range.FirstLine && line < range.FirstLine + range.LineCount)
+                    return i;
+            }
+
+            return -1;
+        }
+
+        public int RowToResultLine(int row)
+        {
+            var prevEndRow = -1;
+            var prevEndLine = 0;
+            for (var i = 0; i < _conflictRegions.Count; i++)
+            {
+                var r = _conflictRegions[i];
+                var range = _ranges[i];
+                if (row < r.StartRow)
+                    break;
+
+                if (row <= r.EndRow)
+                    return range.FirstLine + Math.Min(row - r.StartRow, Math.Max(range.LineCount - 1, 0));
+
+                prevEndRow = r.EndRow;
+                prevEndLine = range.FirstLine + range.LineCount;
+            }
+
+            return Math.Clamp(prevEndLine + (row - prevEndRow - 1), 0, Math.Max(ResultDocument.LineCount - 1, 0));
+        }
+
+        public int ResultLineToRow(int line)
+        {
+            var prevEndRow = -1;
+            var prevEndLine = 0;
+            for (var i = 0; i < _conflictRegions.Count; i++)
+            {
+                var r = _conflictRegions[i];
+                var range = _ranges[i];
+                if (line < range.FirstLine)
+                    break;
+
+                if (line < range.FirstLine + range.LineCount)
+                    return r.StartRow + Math.Min(line - range.FirstLine, r.EndRow - r.StartRow);
+
+                prevEndRow = r.EndRow;
+                prevEndLine = range.FirstLine + range.LineCount;
+            }
+
+            return Math.Clamp(prevEndRow + 1 + (line - prevEndLine), 0, Math.Max(_oursLines.Count - 1, 0));
+        }
+
+        public bool IsPicked(int regionIdx, Models.ConflictPanelType side, int index, out int order)
+        {
+            var picks = _conflictRegions[regionIdx].Picks;
+            order = picks.FindIndex(p => p.Side == side && p.Index == index);
+            return order >= 0;
+        }
+
+        public void TogglePick(int regionIdx, Models.ConflictPanelType side, int index)
+        {
+            var r = _conflictRegions[regionIdx];
+            if (r.IsCustom)
+                return;
+
+            var existing = r.Picks.FindIndex(p => p.Side == side && p.Index == index);
+            if (existing >= 0)
+                r.Picks.RemoveAt(existing);
+            else
+                r.Picks.Add(new(side, index));
+
+            r.HasChoice = r.Picks.Count > 0;
+            ApplyRegion(regionIdx);
+            CurrentConflictIndex = regionIdx;
+            OnRegionsChanged();
         }
 
         public void Resolve(object param)
         {
-            if (_selectedChunk == null)
+            if (_selectedChunk == null || param is not Models.ConflictResolution resolution)
                 return;
 
-            var region = _conflictRegions[_selectedChunk.ConflictIndex];
-            if (param is not Models.ConflictResolution resolution)
-                return;
+            ResolveRegion(_selectedChunk.ConflictIndex, resolution);
+        }
 
-            // Try to resolve a resolved region.
-            if (resolution != Models.ConflictResolution.None && region.IsResolved)
-                return;
+        public void ResolveRegion(int regionIdx, Models.ConflictResolution resolution)
+        {
+            var r = _conflictRegions[regionIdx];
+            r.Picks.Clear();
+            r.IsCustom = false;
+            r.HasChoice = resolution != Models.ConflictResolution.None;
 
-            // Try to undo an unresolved region.
-            if (resolution == Models.ConflictResolution.None && !region.IsResolved)
-                return;
+            if (resolution is Models.ConflictResolution.UseOurs or Models.ConflictResolution.UseBothMineFirst)
+                AddAllPicks(r, Models.ConflictPanelType.Ours);
 
-            region.IsResolved = resolution != Models.ConflictResolution.None;
-            region.ResolutionType = resolution;
-            RefreshDisplayData();
+            if (resolution is Models.ConflictResolution.UseTheirs or Models.ConflictResolution.UseBothMineFirst or Models.ConflictResolution.UseBothTheirsFirst)
+                AddAllPicks(r, Models.ConflictPanelType.Theirs);
+
+            if (resolution == Models.ConflictResolution.UseBothTheirsFirst)
+                AddAllPicks(r, Models.ConflictPanelType.Ours);
+
+            ApplyRegion(regionIdx);
+            CurrentConflictIndex = regionIdx;
+            SelectedChunk = null;
+            OnRegionsChanged();
+        }
+
+        public int GotoConflict(bool next)
+        {
+            if (_conflictRegions.Count == 0)
+                return -1;
+
+            var candidates = new List<int>();
+            for (var i = 0; i < _conflictRegions.Count; i++)
+            {
+                if (!_conflictRegions[i].IsResolved)
+                    candidates.Add(i);
+            }
+
+            if (candidates.Count == 0)
+            {
+                for (var i = 0; i < _conflictRegions.Count; i++)
+                    candidates.Add(i);
+            }
+
+            var target = next ? candidates[0] : candidates[^1];
+            if (next)
+            {
+                foreach (var c in candidates)
+                {
+                    if (c > _currentConflictIndex)
+                    {
+                        target = c;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (var i = candidates.Count - 1; i >= 0; i--)
+                {
+                    if (candidates[i] < _currentConflictIndex)
+                    {
+                        target = candidates[i];
+                        break;
+                    }
+                }
+            }
+
+            CurrentConflictIndex = target;
+            return target;
         }
 
         public async Task<bool> SaveAndStageAsync()
         {
-            if (_conflictRegions.Count == 0)
+            if (_conflictRegions.Count == 0 && !IsDirty)
                 return true;
 
             if (_unsolvedCount > 0)
@@ -148,56 +335,11 @@ namespace SourceGit.ViewModels
                 return false;
             }
 
-            var lines = _originalContent.Split('\n', StringSplitOptions.None);
-            var builder = new StringBuilder();
-            var lastLineIdx = 0;
-
-            foreach (var r in _conflictRegions)
-            {
-                for (var i = lastLineIdx; i < r.StartLineInOriginal; i++)
-                    builder.Append(lines[i]).Append('\n');
-
-                if (r.ResolutionType == Models.ConflictResolution.UseOurs)
-                {
-                    foreach (var l in r.OursContent)
-                        builder.Append(l).Append('\n');
-                }
-                else if (r.ResolutionType == Models.ConflictResolution.UseTheirs)
-                {
-                    foreach (var l in r.TheirsContent)
-                        builder.Append(l).Append('\n');
-                }
-                else if (r.ResolutionType == Models.ConflictResolution.UseBothMineFirst)
-                {
-                    foreach (var l in r.OursContent)
-                        builder.Append(l).Append('\n');
-
-                    foreach (var l in r.TheirsContent)
-                        builder.Append(l).Append('\n');
-                }
-                else if (r.ResolutionType == Models.ConflictResolution.UseBothTheirsFirst)
-                {
-                    foreach (var l in r.TheirsContent)
-                        builder.Append(l).Append('\n');
-
-                    foreach (var l in r.OursContent)
-                        builder.Append(l).Append('\n');
-                }
-
-                lastLineIdx = r.EndLineInOriginal + 1;
-            }
-
-            for (var j = lastLineIdx; j < lines.Length; j++)
-                builder.Append(lines[j]).Append('\n');
-
-            if (builder.Length > 1)
-                builder.Length--; // Remove extra '\n'
-
             try
             {
                 // Write merged content to file
                 var fullPath = Path.Combine(_repo.FullPath, _filePath);
-                await File.WriteAllTextAsync(fullPath, builder.ToString());
+                await File.WriteAllTextAsync(fullPath, ResultDocument.Text);
 
                 // Stage the file
                 var pathSpecFile = Path.GetTempFileName();
@@ -222,7 +364,6 @@ namespace SourceGit.ViewModels
 
         private void ParseOriginalContent(string content)
         {
-            _originalContent = content;
             _conflictRegions.Clear();
 
             if (string.IsNullOrEmpty(content))
@@ -241,14 +382,15 @@ namespace SourceGit.ViewModels
 
                 if (line.StartsWith("<<<<<<<", StringComparison.Ordinal))
                 {
+                    var regionIdx = _conflictRegions.Count;
                     var region = new Models.ConflictRegion
                     {
-                        StartLineInOriginal = i,
+                        StartRow = oursLines.Count,
                         StartMarker = line,
                     };
 
-                    oursLines.Add(new());
-                    theirsLines.Add(new());
+                    oursLines.Add(new() { RegionIndex = regionIdx });
+                    theirsLines.Add(new() { RegionIndex = regionIdx });
                     i++;
 
                     // Collect ours content
@@ -257,9 +399,9 @@ namespace SourceGit.ViewModels
                            !lines[i].StartsWith("=======", StringComparison.Ordinal))
                     {
                         line = lines[i];
+                        oursLines.Add(new(Models.ConflictLineType.Ours, line, oursLineNumber++) { RegionIndex = regionIdx, IndexInSide = region.OursContent.Count });
+                        theirsLines.Add(new() { RegionIndex = regionIdx });
                         region.OursContent.Add(line);
-                        oursLines.Add(new(Models.ConflictLineType.Ours, line, oursLineNumber++));
-                        theirsLines.Add(new());
                         i++;
                     }
 
@@ -274,8 +416,8 @@ namespace SourceGit.ViewModels
                     // Capture separator marker
                     if (i < lines.Length && lines[i].StartsWith("=======", StringComparison.Ordinal))
                     {
-                        oursLines.Add(new());
-                        theirsLines.Add(new());
+                        oursLines.Add(new() { RegionIndex = regionIdx });
+                        theirsLines.Add(new() { RegionIndex = regionIdx });
                         region.SeparatorMarker = lines[i];
                         i++;
                     }
@@ -284,23 +426,22 @@ namespace SourceGit.ViewModels
                     while (i < lines.Length && !lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
                         line = lines[i];
+                        oursLines.Add(new() { RegionIndex = regionIdx });
+                        theirsLines.Add(new(Models.ConflictLineType.Theirs, line, theirsLineNumber++) { RegionIndex = regionIdx, IndexInSide = region.TheirsContent.Count });
                         region.TheirsContent.Add(line);
-                        oursLines.Add(new());
-                        theirsLines.Add(new(Models.ConflictLineType.Theirs, line, theirsLineNumber++));
                         i++;
                     }
 
                     // Capture end marker (e.g., ">>>>>>> feature-branch")
                     if (i < lines.Length && lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
-                        oursLines.Add(new());
-                        theirsLines.Add(new());
-
+                        oursLines.Add(new() { RegionIndex = regionIdx });
+                        theirsLines.Add(new() { RegionIndex = regionIdx });
                         region.EndMarker = lines[i];
-                        region.EndLineInOriginal = i;
                         i++;
                     }
 
+                    region.EndRow = oursLines.Count - 1;
                     _conflictRegions.Add(region);
                 }
                 else
@@ -318,166 +459,236 @@ namespace SourceGit.ViewModels
             TheirsLines = theirsLines;
         }
 
-        private void RefreshDisplayData()
+        private void BuildResultDocument()
         {
-            var resultLines = new List<Models.ConflictLine>();
-            _lineStates.Clear();
+            var builder = new StringBuilder();
+            var offsets = new List<(int Start, int End)>();
+            var row = 0;
 
-            if (_oursLines == null || _oursLines.Count == 0)
+            _ranges.Clear();
+            while (row < _oursLines.Count)
             {
-                ResultLines = resultLines;
-                return;
-            }
-
-            int resultLineNumber = 1;
-            int currentLine = 0;
-            int conflictIdx = 0;
-
-            while (currentLine < _oursLines.Count)
-            {
-                // Check if we're at a conflict region
-                Models.ConflictRegion currentRegion = null;
-                if (conflictIdx < _conflictRegions.Count)
+                var regionIdx = _ranges.Count;
+                if (regionIdx < _conflictRegions.Count && _conflictRegions[regionIdx].StartRow == row)
                 {
-                    var region = _conflictRegions[conflictIdx];
-                    if (region.StartLineInOriginal == currentLine)
-                        currentRegion = region;
-                }
+                    var r = _conflictRegions[regionIdx];
+                    var range = new RegionRange();
+                    var start = builder.Length;
+                    foreach (var line in ComposeRegion(r, range.LineTypes))
+                        builder.Append(line).Append('\n');
 
-                if (currentRegion != null)
-                {
-                    int regionLines = currentRegion.EndLineInOriginal - currentRegion.StartLineInOriginal + 1;
-                    if (currentRegion.IsResolved)
-                    {
-                        var oldLineCount = resultLines.Count;
-                        var resolveType = currentRegion.ResolutionType;
-
-                        // Resolved - show resolved content with color based on resolution type
-                        if (resolveType == Models.ConflictResolution.UseBothMineFirst)
-                        {
-                            int mineCount = currentRegion.OursContent.Count;
-                            for (int i = 0; i < mineCount; i++)
-                            {
-                                resultLines.Add(new(Models.ConflictLineType.Ours, currentRegion.OursContent[i], resultLineNumber));
-                                resultLineNumber++;
-                            }
-
-                            int theirsCount = currentRegion.TheirsContent.Count;
-                            for (int i = 0; i < theirsCount; i++)
-                            {
-                                resultLines.Add(new(Models.ConflictLineType.Theirs, currentRegion.TheirsContent[i], resultLineNumber));
-                                resultLineNumber++;
-                            }
-                        }
-                        else if (resolveType == Models.ConflictResolution.UseBothTheirsFirst)
-                        {
-                            int theirsCount = currentRegion.TheirsContent.Count;
-                            for (int i = 0; i < theirsCount; i++)
-                            {
-                                resultLines.Add(new(Models.ConflictLineType.Theirs, currentRegion.TheirsContent[i], resultLineNumber));
-                                resultLineNumber++;
-                            }
-
-                            int mineCount = currentRegion.OursContent.Count;
-                            for (int i = 0; i < mineCount; i++)
-                            {
-                                resultLines.Add(new(Models.ConflictLineType.Ours, currentRegion.OursContent[i], resultLineNumber));
-                                resultLineNumber++;
-                            }
-                        }
-                        else if (resolveType == Models.ConflictResolution.UseOurs)
-                        {
-                            int mineCount = currentRegion.OursContent.Count;
-                            for (int i = 0; i < mineCount; i++)
-                            {
-                                resultLines.Add(new(Models.ConflictLineType.Ours, currentRegion.OursContent[i], resultLineNumber));
-                                resultLineNumber++;
-                            }
-                        }
-                        else if (resolveType == Models.ConflictResolution.UseTheirs)
-                        {
-                            int theirsCount = currentRegion.TheirsContent.Count;
-                            for (int i = 0; i < theirsCount; i++)
-                            {
-                                resultLines.Add(new(Models.ConflictLineType.Theirs, currentRegion.TheirsContent[i], resultLineNumber));
-                                resultLineNumber++;
-                            }
-                        }
-
-                        // Pad with empty lines to match Mine/Theirs panel height
-                        int added = resultLines.Count - oldLineCount;
-                        int padding = regionLines - added;
-                        for (int p = 0; p < padding; p++)
-                            resultLines.Add(new());
-
-                        int blockSize = resultLines.Count - oldLineCount - 2;
-                        _lineStates.Add(Models.ConflictLineState.ResolvedBlockStart);
-                        for (var i = 0; i < blockSize; i++)
-                            _lineStates.Add(Models.ConflictLineState.ResolvedBlock);
-                        _lineStates.Add(Models.ConflictLineState.ResolvedBlockEnd);
-                    }
-                    else
-                    {
-                        resultLines.Add(new(Models.ConflictLineType.Marker, currentRegion.StartMarker));
-                        _lineStates.Add(Models.ConflictLineState.ConflictBlockStart);
-
-                        foreach (var line in currentRegion.OursContent)
-                        {
-                            resultLines.Add(new(Models.ConflictLineType.Ours, line, resultLineNumber++));
-                            _lineStates.Add(Models.ConflictLineState.ConflictBlock);
-                        }
-
-                        resultLines.Add(new(Models.ConflictLineType.Marker, currentRegion.SeparatorMarker));
-                        _lineStates.Add(Models.ConflictLineState.ConflictBlock);
-
-                        foreach (var line in currentRegion.TheirsContent)
-                        {
-                            resultLines.Add(new(Models.ConflictLineType.Theirs, line, resultLineNumber++));
-                            _lineStates.Add(Models.ConflictLineState.ConflictBlock);
-                        }
-
-                        resultLines.Add(new(Models.ConflictLineType.Marker, currentRegion.EndMarker));
-                        _lineStates.Add(Models.ConflictLineState.ConflictBlockEnd);
-                    }
-
-                    currentLine = currentRegion.EndLineInOriginal + 1;
-                    conflictIdx++;
+                    offsets.Add((start, builder.Length));
+                    _ranges.Add(range);
+                    row = r.EndRow + 1;
                 }
                 else
                 {
-                    var oursLine = _oursLines[currentLine];
-                    resultLines.Add(new(oursLine.Type, oursLine.Content, resultLineNumber));
-                    _lineStates.Add(Models.ConflictLineState.Normal);
-                    resultLineNumber++;
-                    currentLine++;
+                    builder.Append(_oursLines[row].Content).Append('\n');
+                    row++;
                 }
             }
 
-            SelectedChunk = null;
-            ResultLines = resultLines;
+            if (builder.Length > 0)
+                builder.Length--; // Remove extra '\n'
 
-            var unsolved = new List<int>();
-            for (var i = 0; i < _conflictRegions.Count; i++)
+            ResultDocument.Text = builder.ToString();
+            ResultDocument.UndoStack.ClearAll();
+
+            for (var i = 0; i < _ranges.Count; i++)
             {
-                var r = _conflictRegions[i];
-                if (!r.IsResolved)
-                    unsolved.Add(i);
+                _ranges[i].Start = CreateAnchor(offsets[i].Start);
+                _ranges[i].End = CreateAnchor(Math.Min(offsets[i].End, builder.Length));
+            }
+        }
+
+        private List<string> ComposeRegion(Models.ConflictRegion r, List<Models.ConflictLineType> types)
+        {
+            var lines = new List<string>();
+            types.Clear();
+
+            if (r.HasChoice)
+            {
+                foreach (var pick in r.Picks)
+                {
+                    var isOurs = pick.Side == Models.ConflictPanelType.Ours;
+                    lines.Add(isOurs ? r.OursContent[pick.Index] : r.TheirsContent[pick.Index]);
+                    types.Add(isOurs ? Models.ConflictLineType.Ours : Models.ConflictLineType.Theirs);
+                }
+
+                return lines;
             }
 
-            UnsolvedCount = unsolved.Count;
+            lines.Add(r.StartMarker);
+            types.Add(Models.ConflictLineType.Marker);
+
+            foreach (var l in r.OursContent)
+            {
+                lines.Add(l);
+                types.Add(Models.ConflictLineType.Ours);
+            }
+
+            lines.Add(r.SeparatorMarker);
+            types.Add(Models.ConflictLineType.Marker);
+
+            foreach (var l in r.TheirsContent)
+            {
+                lines.Add(l);
+                types.Add(Models.ConflictLineType.Theirs);
+            }
+
+            lines.Add(r.EndMarker);
+            types.Add(Models.ConflictLineType.Marker);
+            return lines;
+        }
+
+        private void ApplyRegion(int regionIdx)
+        {
+            var r = _conflictRegions[regionIdx];
+            var range = _ranges[regionIdx];
+
+            var builder = new StringBuilder();
+            foreach (var line in ComposeRegion(r, range.LineTypes))
+                builder.Append(line).Append('\n');
+
+            // The last region of a file has no trailing line break of its own.
+            if (r.EndRow == _oursLines.Count - 1 && builder.Length > 0)
+                builder.Length--;
+
+            var text = builder.ToString();
+            var start = range.Start.Offset;
+
+            _isApplying = true;
+            ResultDocument.Replace(start, range.End.Offset - start, text);
+            _isApplying = false;
+
+            range.Start = CreateAnchor(start);
+            range.End = CreateAnchor(start + text.Length);
+        }
+
+        private void AddAllPicks(Models.ConflictRegion r, Models.ConflictPanelType side)
+        {
+            var count = side == Models.ConflictPanelType.Ours ? r.OursContent.Count : r.TheirsContent.Count;
+            for (var i = 0; i < count; i++)
+                r.Picks.Add(new(side, i));
+        }
+
+        private TextAnchor CreateAnchor(int offset)
+        {
+            var anchor = ResultDocument.CreateAnchor(offset);
+            anchor.MovementType = AnchorMovementType.BeforeInsertion;
+            anchor.SurviveDeletion = true;
+            return anchor;
+        }
+
+        private void OnResultDocumentChanging(object sender, DocumentChangeEventArgs e)
+        {
+            if (_isApplying)
+                return;
+
+            _touchedRegions.Clear();
+            for (var i = 0; i < _ranges.Count; i++)
+            {
+                var start = _ranges[i].Start.Offset;
+                var end = _ranges[i].End.Offset;
+                var removed = e.RemovalLength > 0 && start < e.Offset + e.RemovalLength && e.Offset < end;
+                var inserted = e.InsertionLength > 0 && start <= e.Offset && e.Offset < end;
+                if (removed || inserted)
+                    _touchedRegions.Add(i);
+            }
+        }
+
+        private void OnResultDocumentChanged(object sender, DocumentChangeEventArgs e)
+        {
+            if (_isApplying)
+                return;
+
+            foreach (var i in _touchedRegions)
+            {
+                var r = _conflictRegions[i];
+                r.IsCustom = true;
+                r.HasChoice = false;
+                r.Picks.Clear();
+                _ranges[i].LineTypes.Clear();
+            }
+
+            _touchedRegions.Clear();
+            OnRegionsChanged();
+        }
+
+        private void OnRegionsChanged()
+        {
+            IsDirty = true;
+            RefreshRegionStates();
+            RegionsChanged?.Invoke();
+        }
+
+        private void RefreshRegionStates()
+        {
+            var doc = ResultDocument;
+            var decorations = new Models.ConflictLineDecoration[doc.LineCount];
+            var unsolved = 0;
+
+            for (var i = 0; i < _ranges.Count; i++)
+            {
+                var r = _conflictRegions[i];
+                var range = _ranges[i];
+                var start = range.Start.Offset;
+                var end = range.End.Offset;
+
+                range.FirstLine = doc.GetLineByOffset(start).LineNumber - 1;
+                range.LineCount = end > start ? doc.GetLineByOffset(end - 1).LineNumber - range.FirstLine : 0;
+
+                r.IsResolved = r.IsCustom ? !ContainsMarkers(range) : r.HasChoice;
+                if (!r.IsResolved)
+                    unsolved++;
+
+                for (var k = 0; k < range.LineCount; k++)
+                {
+                    var type = !r.IsCustom && k < range.LineTypes.Count ? range.LineTypes[k] : Models.ConflictLineType.Edited;
+                    decorations[range.FirstLine + k] = new(type, true, r.IsResolved, k == 0, k == range.LineCount - 1);
+                }
+            }
+
+            _resultDecorations = decorations;
+            UnsolvedCount = unsolved;
+        }
+
+        private bool ContainsMarkers(RegionRange range)
+        {
+            var doc = ResultDocument;
+            for (var k = 0; k < range.LineCount; k++)
+            {
+                var text = doc.GetText(doc.GetLineByNumber(range.FirstLine + k + 1));
+                if (text.StartsWith("<<<<<<<", StringComparison.Ordinal) ||
+                    text.StartsWith("=======", StringComparison.Ordinal) ||
+                    text.StartsWith(">>>>>>>", StringComparison.Ordinal))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private class RegionRange
+        {
+            public TextAnchor Start { get; set; }
+            public TextAnchor End { get; set; }
+            public int FirstLine { get; set; }
+            public int LineCount { get; set; }
+            public List<Models.ConflictLineType> LineTypes { get; } = [];
         }
 
         private readonly Repository _repo;
         private readonly string _filePath;
-        private string _originalContent = string.Empty;
         private int _unsolvedCount = 0;
         private int _maxLineNumber = 0;
+        private int _currentConflictIndex = -1;
+        private bool _isApplying = false;
         private List<Models.ConflictLine> _oursLines = [];
         private List<Models.ConflictLine> _theirsLines = [];
-        private List<Models.ConflictLine> _resultLines = [];
         private List<Models.ConflictRegion> _conflictRegions = [];
-        private List<Models.ConflictLineState> _lineStates = [];
-        private Vector _scrollOffset = Vector.Zero;
+        private List<RegionRange> _ranges = [];
+        private List<int> _touchedRegions = [];
+        private Models.ConflictLineDecoration[] _resultDecorations = [];
         private Models.ConflictSelectedChunk _selectedChunk;
         private string _error = string.Empty;
     }

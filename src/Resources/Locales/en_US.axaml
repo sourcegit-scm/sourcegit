@@ -607,10 +607,14 @@
   <x:String x:Key="Text.MergeConflictEditor.AcceptBoth.TheirsFirst" xml:space="preserve">First Theirs, then Mine</x:String>
   <x:String x:Key="Text.MergeConflictEditor.UseBoth" xml:space="preserve">USE BOTH</x:String>
   <x:String x:Key="Text.MergeConflictEditor.AllResolved" xml:space="preserve">All conflicts resolved</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.CollapseUnchanged" xml:space="preserve">Collapse Unchanged Lines</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.ConflictPosition" xml:space="preserve">Conflict {0} of {1}</x:String>
   <x:String x:Key="Text.MergeConflictEditor.ConflictsRemaining" xml:space="preserve">{0} conflict(s) remaining</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.FoldedLines" xml:space="preserve">{0} unchanged lines</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Mine" xml:space="preserve">MINE</x:String>
   <x:String x:Key="Text.MergeConflictEditor.NextConflict" xml:space="preserve">Next Conflict</x:String>
   <x:String x:Key="Text.MergeConflictEditor.PrevConflict" xml:space="preserve">Previous Conflict</x:String>
+  <x:String x:Key="Text.MergeConflictEditor.Reset" xml:space="preserve">RESET</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Result" xml:space="preserve">RESULT</x:String>
   <x:String x:Key="Text.MergeConflictEditor.SaveAndStage" xml:space="preserve">SAVE &amp; STAGE</x:String>
   <x:String x:Key="Text.MergeConflictEditor.Theirs" xml:space="preserve">THEIRS</x:String>
