@@ -48,6 +48,7 @@ namespace SourceGit.ViewModels
             {
                 Preferences.Instance.SortByRenamedNode(_node);
                 Welcome.Instance.Refresh();
+                App.GetLauncher().RefreshTabDisplayNames();
             }
 
             return Task.FromResult(true);
