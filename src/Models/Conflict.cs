@@ -80,8 +80,9 @@ namespace SourceGit.Models
 
     public class ConflictRegion
     {
-        public int StartRow { get; set; }
-        public int EndRow { get; set; }
+        public int OursFirst { get; set; }
+        public int TheirsFirst { get; set; }
+        public bool IsAtEnd { get; set; }
 
         public string StartMarker { get; set; } = "<<<<<<<";
         public string SeparatorMarker { get; set; } = "=======";

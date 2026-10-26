@@ -143,17 +143,19 @@ namespace SourceGit.ViewModels
             ResultDocument.Changed += OnResultDocumentChanged;
         }
 
-        public Models.ConflictLineDecoration GetRowDecoration(int row)
+        public Models.ConflictLineDecoration GetSideLineDecoration(Models.ConflictPanelType side, int line)
         {
-            if (row < 0 || row >= _oursLines.Count)
+            var lines = side == Models.ConflictPanelType.Ours ? _oursLines : _theirsLines;
+            if (line < 0 || line >= lines.Count)
                 return default;
 
-            var regionIdx = _oursLines[row].RegionIndex;
-            if (regionIdx < 0)
+            var info = lines[line];
+            if (info.RegionIndex < 0)
                 return default;
 
-            var r = _conflictRegions[regionIdx];
-            return new(Models.ConflictLineType.None, true, r.IsResolved, row == r.StartRow, row == r.EndRow);
+            var r = _conflictRegions[info.RegionIndex];
+            var count = side == Models.ConflictPanelType.Ours ? r.OursContent.Count : r.TheirsContent.Count;
+            return new(Models.ConflictLineType.None, true, r.IsResolved, info.IndexInSide == 0, info.IndexInSide == count - 1);
         }
 
         public Models.ConflictLineDecoration GetResultLineDecoration(int line)
@@ -181,46 +183,51 @@ namespace SourceGit.ViewModels
             return -1;
         }
 
-        public int RowToResultLine(int row)
+        public (int FirstLine, int LineCount) GetRegionRange(Models.ConflictPanelType panel, int regionIdx)
         {
-            var prevEndRow = -1;
-            var prevEndLine = 0;
-            for (var i = 0; i < _conflictRegions.Count; i++)
+            var r = _conflictRegions[regionIdx];
+            return panel switch
             {
-                var r = _conflictRegions[i];
-                var range = _ranges[i];
-                if (row < r.StartRow)
-                    break;
-
-                if (row <= r.EndRow)
-                    return range.FirstLine + Math.Min(row - r.StartRow, Math.Max(range.LineCount - 1, 0));
-
-                prevEndRow = r.EndRow;
-                prevEndLine = range.FirstLine + range.LineCount;
-            }
-
-            return Math.Clamp(prevEndLine + (row - prevEndRow - 1), 0, Math.Max(ResultDocument.LineCount - 1, 0));
+                Models.ConflictPanelType.Ours => (r.OursFirst, r.OursContent.Count),
+                Models.ConflictPanelType.Theirs => (r.TheirsFirst, r.TheirsContent.Count),
+                _ => (_ranges[regionIdx].FirstLine, _ranges[regionIdx].LineCount),
+            };
         }
 
-        public int ResultLineToRow(int line)
+        public int GetPanelLineCount(Models.ConflictPanelType panel)
         {
-            var prevEndRow = -1;
-            var prevEndLine = 0;
+            return panel switch
+            {
+                Models.ConflictPanelType.Ours => _oursLines.Count,
+                Models.ConflictPanelType.Theirs => _theirsLines.Count,
+                _ => ResultDocument.LineCount,
+            };
+        }
+
+        // Maps a line between panels. Unchanged lines map one-to-one, lines inside a conflict are clamped to
+        // the size of that conflict in the target panel.
+        public int MapLine(Models.ConflictPanelType from, Models.ConflictPanelType to, int line)
+        {
+            if (from == to)
+                return line;
+
+            var prevSrcEnd = 0;
+            var prevDstEnd = 0;
             for (var i = 0; i < _conflictRegions.Count; i++)
             {
-                var r = _conflictRegions[i];
-                var range = _ranges[i];
-                if (line < range.FirstLine)
+                var (srcFirst, srcCount) = GetRegionRange(from, i);
+                var (dstFirst, dstCount) = GetRegionRange(to, i);
+                if (line < srcFirst)
                     break;
 
-                if (line < range.FirstLine + range.LineCount)
-                    return r.StartRow + Math.Min(line - range.FirstLine, r.EndRow - r.StartRow);
+                if (line < srcFirst + srcCount)
+                    return dstFirst + Math.Min(line - srcFirst, Math.Max(dstCount - 1, 0));
 
-                prevEndRow = r.EndRow;
-                prevEndLine = range.FirstLine + range.LineCount;
+                prevSrcEnd = srcFirst + srcCount;
+                prevDstEnd = dstFirst + dstCount;
             }
 
-            return Math.Clamp(prevEndRow + 1 + (line - prevEndLine), 0, Math.Max(_oursLines.Count - 1, 0));
+            return Math.Clamp(prevDstEnd + (line - prevSrcEnd), 0, Math.Max(GetPanelLineCount(to) - 1, 0));
         }
 
         public bool IsPicked(int regionIdx, Models.ConflictPanelType side, int index, out int order)
@@ -230,13 +237,16 @@ namespace SourceGit.ViewModels
             return order >= 0;
         }
 
-        public void TogglePick(int regionIdx, Models.ConflictPanelType side, int index)
+        public void SetPick(int regionIdx, Models.ConflictPanelType side, int index, bool picked)
         {
             var r = _conflictRegions[regionIdx];
             if (r.IsCustom)
                 return;
 
             var existing = r.Picks.FindIndex(p => p.Side == side && p.Index == index);
+            if (picked == existing >= 0)
+                return;
+
             if (existing >= 0)
                 r.Picks.RemoveAt(existing);
             else
@@ -365,6 +375,7 @@ namespace SourceGit.ViewModels
         private void ParseOriginalContent(string content)
         {
             _conflictRegions.Clear();
+            _layout.Clear();
 
             if (string.IsNullOrEmpty(content))
                 return;
@@ -385,12 +396,10 @@ namespace SourceGit.ViewModels
                     var regionIdx = _conflictRegions.Count;
                     var region = new Models.ConflictRegion
                     {
-                        StartRow = oursLines.Count,
+                        OursFirst = oursLines.Count,
+                        TheirsFirst = theirsLines.Count,
                         StartMarker = line,
                     };
-
-                    oursLines.Add(new() { RegionIndex = regionIdx });
-                    theirsLines.Add(new() { RegionIndex = regionIdx });
                     i++;
 
                     // Collect ours content
@@ -400,7 +409,6 @@ namespace SourceGit.ViewModels
                     {
                         line = lines[i];
                         oursLines.Add(new(Models.ConflictLineType.Ours, line, oursLineNumber++) { RegionIndex = regionIdx, IndexInSide = region.OursContent.Count });
-                        theirsLines.Add(new() { RegionIndex = regionIdx });
                         region.OursContent.Add(line);
                         i++;
                     }
@@ -416,8 +424,6 @@ namespace SourceGit.ViewModels
                     // Capture separator marker
                     if (i < lines.Length && lines[i].StartsWith("=======", StringComparison.Ordinal))
                     {
-                        oursLines.Add(new() { RegionIndex = regionIdx });
-                        theirsLines.Add(new() { RegionIndex = regionIdx });
                         region.SeparatorMarker = lines[i];
                         i++;
                     }
@@ -426,7 +432,6 @@ namespace SourceGit.ViewModels
                     while (i < lines.Length && !lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
                         line = lines[i];
-                        oursLines.Add(new() { RegionIndex = regionIdx });
                         theirsLines.Add(new(Models.ConflictLineType.Theirs, line, theirsLineNumber++) { RegionIndex = regionIdx, IndexInSide = region.TheirsContent.Count });
                         region.TheirsContent.Add(line);
                         i++;
@@ -435,19 +440,19 @@ namespace SourceGit.ViewModels
                     // Capture end marker (e.g., ">>>>>>> feature-branch")
                     if (i < lines.Length && lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
                     {
-                        oursLines.Add(new() { RegionIndex = regionIdx });
-                        theirsLines.Add(new() { RegionIndex = regionIdx });
                         region.EndMarker = lines[i];
                         i++;
                     }
 
-                    region.EndRow = oursLines.Count - 1;
+                    region.IsAtEnd = i >= lines.Length;
                     _conflictRegions.Add(region);
+                    _layout.Add((null, regionIdx));
                 }
                 else
                 {
                     oursLines.Add(new(Models.ConflictLineType.Common, line, oursLineNumber));
                     theirsLines.Add(new(Models.ConflictLineType.Common, line, theirsLineNumber));
+                    _layout.Add((line, -1));
                     i++;
                     oursLineNumber++;
                     theirsLineNumber++;
@@ -463,28 +468,22 @@ namespace SourceGit.ViewModels
         {
             var builder = new StringBuilder();
             var offsets = new List<(int Start, int End)>();
-            var row = 0;
-
             _ranges.Clear();
-            while (row < _oursLines.Count)
+            foreach (var (common, regionIdx) in _layout)
             {
-                var regionIdx = _ranges.Count;
-                if (regionIdx < _conflictRegions.Count && _conflictRegions[regionIdx].StartRow == row)
+                if (regionIdx >= 0)
                 {
-                    var r = _conflictRegions[regionIdx];
                     var range = new RegionRange();
                     var start = builder.Length;
-                    foreach (var line in ComposeRegion(r, range.LineTypes))
+                    foreach (var line in ComposeRegion(_conflictRegions[regionIdx], range.LineTypes))
                         builder.Append(line).Append('\n');
 
                     offsets.Add((start, builder.Length));
                     _ranges.Add(range);
-                    row = r.EndRow + 1;
                 }
                 else
                 {
-                    builder.Append(_oursLines[row].Content).Append('\n');
-                    row++;
+                    builder.Append(common).Append('\n');
                 }
             }
 
@@ -551,7 +550,7 @@ namespace SourceGit.ViewModels
                 builder.Append(line).Append('\n');
 
             // The last region of a file has no trailing line break of its own.
-            if (r.EndRow == _oursLines.Count - 1 && builder.Length > 0)
+            if (r.IsAtEnd && builder.Length > 0)
                 builder.Length--;
 
             var text = builder.ToString();
@@ -687,6 +686,7 @@ namespace SourceGit.ViewModels
         private List<Models.ConflictLine> _theirsLines = [];
         private List<Models.ConflictRegion> _conflictRegions = [];
         private List<RegionRange> _ranges = [];
+        private List<(string Common, int Region)> _layout = [];
         private List<int> _touchedRegions = [];
         private Models.ConflictLineDecoration[] _resultDecorations = [];
         private Models.ConflictSelectedChunk _selectedChunk;

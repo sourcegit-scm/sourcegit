@@ -176,29 +176,77 @@ namespace SourceGit.Views
             {
                 base.OnPointerPressed(e);
 
-                var lines = _presenter.Lines;
-                var view = TextView;
-                if (lines == null || view is not { VisualLinesValid: true })
-                    return;
-
                 if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
                     return;
 
                 if (_presenter.DataContext is not ViewModels.MergeConflictEditor vm)
                     return;
 
-                var visualLine = view.GetVisualLineFromVisualTop(e.GetPosition(this).Y + view.VerticalOffset);
-                if (visualLine == null || visualLine.FirstDocumentLine.LineNumber > lines.Count)
+                var info = GetLineAt(e);
+                if (info == null)
                     return;
 
-                var info = lines[visualLine.FirstDocumentLine.LineNumber - 1];
-                if (info.RegionIndex < 0 || info.IndexInSide < 0)
-                    return;
-
-                vm.TogglePick(info.RegionIndex, _presenter.PanelType, info.IndexInSide);
+                // The first line decides whether this drag selects or deselects.
+                _dragPickState = !vm.IsPicked(info.RegionIndex, _presenter.PanelType, info.IndexInSide, out _);
+                _lastDragLine = info;
+                vm.SetPick(info.RegionIndex, _presenter.PanelType, info.IndexInSide, _dragPickState.Value);
+                e.Pointer.Capture(this);
                 e.Handled = true;
             }
 
+            protected override void OnPointerMoved(PointerEventArgs e)
+            {
+                base.OnPointerMoved(e);
+
+                if (_dragPickState is not { } state || _presenter.DataContext is not ViewModels.MergeConflictEditor vm)
+                    return;
+
+                var info = GetLineAt(e);
+                if (info == null || info == _lastDragLine)
+                    return;
+
+                _lastDragLine = info;
+                vm.SetPick(info.RegionIndex, _presenter.PanelType, info.IndexInSide, state);
+                e.Handled = true;
+            }
+
+            protected override void OnPointerReleased(PointerReleasedEventArgs e)
+            {
+                base.OnPointerReleased(e);
+
+                if (_dragPickState == null)
+                    return;
+
+                _dragPickState = null;
+                _lastDragLine = null;
+                e.Pointer.Capture(null);
+                e.Handled = true;
+            }
+
+            protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e)
+            {
+                base.OnPointerCaptureLost(e);
+                _dragPickState = null;
+                _lastDragLine = null;
+            }
+
+            private Models.ConflictLine GetLineAt(PointerEventArgs e)
+            {
+                var lines = _presenter.Lines;
+                var view = TextView;
+                if (lines == null || view is not { VisualLinesValid: true })
+                    return null;
+
+                var visualLine = view.GetVisualLineFromVisualTop(e.GetPosition(this).Y + view.VerticalOffset);
+                if (visualLine == null || visualLine.FirstDocumentLine.LineNumber > lines.Count)
+                    return null;
+
+                var info = lines[visualLine.FirstDocumentLine.LineNumber - 1];
+                return info.RegionIndex >= 0 && info.IndexInSide >= 0 ? info : null;
+            }
+
+            private bool? _dragPickState;
+            private Models.ConflictLine _lastDragLine;
             private readonly MergeConflictTextPresenter _presenter;
         }
 
@@ -275,7 +323,7 @@ namespace SourceGit.Views
                         break;
 
                     var lineIndex = index - 1;
-                    var deco = isResult ? vm.GetResultLineDecoration(lineIndex) : vm.GetRowDecoration(lineIndex);
+                    var deco = isResult ? vm.GetResultLineDecoration(lineIndex) : vm.GetSideLineDecoration(_presenter.PanelType, lineIndex);
                     var type = isResult ? deco.Type : _presenter.Lines[lineIndex].Type;
                     if (!deco.InRegion && type is Models.ConflictLineType.Common or Models.ConflictLineType.None)
                         continue;
@@ -773,9 +821,9 @@ namespace SourceGit.Views
                     return;
                 }
 
-                var r = vm.ConflictRegions[regionIdx];
-                startLine = r.StartRow + 1;
-                endLine = r.EndRow + 1;
+                var (first, count) = vm.GetRegionRange(panel, regionIdx);
+                startLine = first + 1;
+                endLine = first + count;
             }
 
             if (startLine > Document.LineCount || endLine > Document.LineCount)
@@ -844,8 +892,8 @@ namespace SourceGit.Views
             var blockBGs = new SolidColorBrush[] { new(Colors.Red, 0.6), new(Colors.Green, 0.6) };
             foreach (var c in conflicts)
             {
-                var topY = c.StartRow * unitHeight;
-                var bottomY = (c.EndRow + 1) * unitHeight;
+                var topY = c.OursFirst * unitHeight;
+                var bottomY = topY + Math.Max(c.OursContent.Count * unitHeight, 2);
                 var bg = blockBGs[c.IsResolved ? 1 : 0];
                 context.DrawRectangle(bg, null, new Rect(0, topY, Bounds.Width, bottomY - topY));
             }
@@ -897,7 +945,7 @@ namespace SourceGit.Views
 
             var row = Math.Max(0, Math.Min(total - 1, (int)Math.Floor(pressedY / unitHeight)));
             var editor = this.FindAncestorOfType<MergeConflictEditor>();
-            editor?.ScrollAllToRow(row);
+            editor?.ScrollAllTo(Models.ConflictPanelType.Ours, row);
         }
 
         private ViewModels.TextLineRange _displayRange = null;
@@ -944,26 +992,24 @@ namespace SourceGit.Views
             if (!source.TryGetTopLine(out var line, out var fraction))
                 return;
 
-            var row = source.PanelType == Models.ConflictPanelType.Result ? vm.ResultLineToRow(line) : line;
             var x = source.TextArea.TextView.HorizontalOffset;
             foreach (var presenter in new[] { OursPresenter, TheirsPresenter, ResultPresenter })
             {
                 if (presenter == source)
                     continue;
 
-                var target = presenter.PanelType == Models.ConflictPanelType.Result ? vm.RowToResultLine(row) : row;
+                var target = vm.MapLine(source.PanelType, presenter.PanelType, line);
                 presenter.ScrollToLineTop(target, fraction, x);
             }
         }
 
-        public void ScrollAllToRow(int row)
+        public void ScrollAllTo(Models.ConflictPanelType panel, int line)
         {
             if (DataContext is not ViewModels.MergeConflictEditor vm)
                 return;
 
-            OursPresenter.ScrollToLineNearTop(row);
-            TheirsPresenter.ScrollToLineNearTop(row);
-            ResultPresenter.ScrollToLineNearTop(vm.RowToResultLine(row));
+            foreach (var presenter in new[] { OursPresenter, TheirsPresenter, ResultPresenter })
+                presenter.ScrollToLineNearTop(vm.MapLine(panel, presenter.PanelType, line));
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -1067,7 +1113,7 @@ namespace SourceGit.Views
             if (first < doc.LineCount)
                 ResultPresenter.TextArea.Caret.Offset = doc.GetLineByNumber(first + 1).Offset;
 
-            ScrollAllToRow(vm.ConflictRegions[idx].StartRow);
+            ScrollAllTo(Models.ConflictPanelType.Result, first);
         }
 
         private void OnCollapseUnchangedChanged(object sender, RoutedEventArgs e)
@@ -1076,17 +1122,19 @@ namespace SourceGit.Views
                 return;
 
             var rowRanges = new List<(int, int)>();
+            var theirsRanges = new List<(int, int)>();
             var resultRanges = new List<(int, int)>();
 
             if (CollapseUnchangedToggle.IsChecked == true && vm.ConflictRegions.Count > 0)
             {
                 const int context = 3;
-                var rowCount = vm.OursLines.Count;
+                var lineCount = vm.OursLines.Count;
                 var gapStart = 0;
                 for (var i = 0; i <= vm.ConflictRegions.Count; i++)
                 {
                     var isEnd = i == vm.ConflictRegions.Count;
-                    var gapEnd = isEnd ? rowCount - 1 : vm.ConflictRegions[i].StartRow - 1;
+                    var region = isEnd ? null : vm.ConflictRegions[i];
+                    var gapEnd = isEnd ? lineCount - 1 : region.OursFirst - 1;
                     var s = gapStart == 0 ? 0 : gapStart + context;
                     var t = isEnd ? gapEnd : gapEnd - context;
 
@@ -1094,16 +1142,17 @@ namespace SourceGit.Views
                     if (t - s >= 2)
                     {
                         rowRanges.Add((s, t));
-                        resultRanges.Add((vm.RowToResultLine(s), vm.RowToResultLine(t)));
+                        theirsRanges.Add((vm.MapLine(Models.ConflictPanelType.Ours, Models.ConflictPanelType.Theirs, s), vm.MapLine(Models.ConflictPanelType.Ours, Models.ConflictPanelType.Theirs, t)));
+                        resultRanges.Add((vm.MapLine(Models.ConflictPanelType.Ours, Models.ConflictPanelType.Result, s), vm.MapLine(Models.ConflictPanelType.Ours, Models.ConflictPanelType.Result, t)));
                     }
 
                     if (!isEnd)
-                        gapStart = vm.ConflictRegions[i].EndRow + 1;
+                        gapStart = region.OursFirst + region.OursContent.Count;
                 }
             }
 
             OursPresenter.SetFoldings(rowRanges);
-            TheirsPresenter.SetFoldings(rowRanges);
+            TheirsPresenter.SetFoldings(theirsRanges);
             ResultPresenter.SetFoldings(resultRanges);
             SyncScrollFrom(OursPresenter);
         }
