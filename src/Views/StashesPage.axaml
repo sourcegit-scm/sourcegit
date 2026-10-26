@@ -29,7 +29,7 @@
                 Classes="icon_button"
                 Width="26" Height="26"
                 Command="{Binding ClearStashes}"
-                ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
+                ToolTip.Tip="{v:HgText Repository.ClearStashes}">
           <Path Width="13" Height="13" Data="{StaticResource Icons.RemoveAll}"/>
         </Button>
       </Grid>

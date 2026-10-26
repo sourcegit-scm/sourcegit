@@ -144,7 +144,7 @@
               IsEnabled="{Binding PrevRevision, Converter={x:Static ObjectConverters.IsNotNull}}"
               Width="28" Margin="4,0"
               Command="{Binding GotoPrevRevision}"
-              ToolTip.Tip="{DynamicResource Text.Blame.BlameOnPreviousRevision}">
+              ToolTip.Tip="{v:HgText Blame.BlameOnPreviousRevision}">
         <Path Width="14" Height="14" Data="{StaticResource Icons.GotoParent}"/>
       </Button>
     </Grid>

@@ -455,7 +455,7 @@ namespace SourceGit.Views
                 ColumnDefinitions =
                 [
                     new ColumnDefinition(64, GridUnitType.Pixel),
-                    new ColumnDefinition(240, GridUnitType.Pixel),
+                    new ColumnDefinition(GridLength.Auto) { MinWidth = 240 },
                 ],
                 Children =
                 {
@@ -468,7 +468,7 @@ namespace SourceGit.Views
                     new TextBlock()
                     {
                         [Grid.ColumnProperty] = 1,
-                        Text = desc,
+                        Text = Models.HgTerminology.Extend($"CommitCM.InteractiveRebase.{action}", desc, ViewModels.Preferences.Instance.ExtendContextMenusWithHgTerminology),
                         Foreground = this.FindResource("Brush.FG2") as SolidColorBrush,
                     }
                 }

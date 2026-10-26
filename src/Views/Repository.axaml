@@ -92,7 +92,7 @@
         <ListBoxItem IsVisible="{Binding !IsBare}" ToolTip.Placement="Right">
           <ToolTip.Tip>
             <TextBlock>
-              <Run Text="{DynamicResource Text.Stashes}" Foreground="{DynamicResource Brush.FG1}"/>
+              <Run Text="{v:HgText Stashes}" Foreground="{DynamicResource Brush.FG1}"/>
               <Run Text=" "/>
               <Run Text="{OnPlatform Ctrl+3, macOS=⌘+3}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </TextBlock>
