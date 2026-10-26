@@ -71,13 +71,11 @@ namespace SourceGit.Commands
             if (refName.EndsWith("/HEAD", StringComparison.Ordinal))
                 return null;
 
-            branch.IsDetachedHead = refName.StartsWith(PREFIX_DETACHED_AT, StringComparison.Ordinal) ||
-                refName.StartsWith(PREFIX_DETACHED_FROM, StringComparison.Ordinal);
-
             if (refName.StartsWith(PREFIX_LOCAL, StringComparison.Ordinal))
             {
                 branch.Name = refName.Substring(PREFIX_LOCAL.Length);
                 branch.IsLocal = true;
+                branch.IsDetachedHead = false;
             }
             else if (refName.StartsWith(PREFIX_REMOTE, StringComparison.Ordinal))
             {
@@ -89,11 +87,18 @@ namespace SourceGit.Commands
                 branch.Remote = nameParts[0];
                 branch.Name = nameParts[1];
                 branch.IsLocal = false;
+                branch.IsDetachedHead = false;
+            }
+            else if (refName.StartsWith(PREFIX_DETACHED_AT, StringComparison.Ordinal) ||
+                     refName.StartsWith(PREFIX_DETACHED_FROM, StringComparison.Ordinal))
+            {
+                branch.Name = "HEAD";
+                branch.IsLocal = true;
+                branch.IsDetachedHead = true;
             }
             else
             {
-                branch.Name = refName;
-                branch.IsLocal = true;
+                return null;
             }
 
             ulong.TryParse(parts[1], out var committerDate);

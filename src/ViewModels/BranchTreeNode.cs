@@ -51,7 +51,7 @@ namespace SourceGit.ViewModels
 
         public string BranchesCount
         {
-            get => Counter > 0 ? $"({Counter})" : string.Empty;
+            get => Backend is Models.Branch { IsDetachedHead: true } ? "(Detached)" : (Counter > 0 ? $"({Counter})" : string.Empty);
         }
 
         private Models.FilterMode _filterMode = Models.FilterMode.None;
@@ -212,9 +212,6 @@ namespace SourceGit.ViewModels
             {
                 nodes.Sort((l, r) =>
                 {
-                    if (l.Backend is Models.Branch { IsDetachedHead: true })
-                        return -1;
-
                     if (l.Backend is Models.Branch)
                         return r.Backend is Models.Branch ? Models.NumericSort.Compare(l.Name, r.Name) : 1;
 
@@ -229,9 +226,6 @@ namespace SourceGit.ViewModels
             {
                 nodes.Sort((l, r) =>
                 {
-                    if (l.Backend is Models.Branch { IsDetachedHead: true })
-                        return -1;
-
                     if (l.Backend is Models.Branch)
                     {
                         if (r.Backend is Models.Branch)
