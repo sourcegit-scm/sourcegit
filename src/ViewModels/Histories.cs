@@ -148,8 +148,12 @@ namespace SourceGit.ViewModels
             get => _detailContext;
             set
             {
-                if (SetProperty(ref _detailContext, value))
-                    OnPropertyChanged(nameof(IsOpenAsStandaloneVisible));
+                if (!ReferenceEquals(_detailContext, value))
+                {
+                    (_detailContext as CommitChanges)?.Dispose();
+                    if (SetProperty(ref _detailContext, value))
+                        OnPropertyChanged(nameof(IsOpenAsStandaloneVisible));
+                }
             }
         }
 
@@ -519,6 +523,17 @@ namespace SourceGit.ViewModels
             SelectedCommits = selected;
         }
 
+        public void CompareSelectedRevisions()
+        {
+            if (_selectedCommits.Count != 2)
+                return;
+            var left = _selectedCommits[0];
+            var right = _selectedCommits[1];
+            if (_commits.IndexOf(left) < _commits.IndexOf(right))
+                (left, right) = (right, left);
+            DetailContext = new RevisionCompare(_repo, left, right);
+        }
+
         private void PostSelectedCommitsChanged()
         {
             if (_ignoreSelectionChange)
@@ -543,19 +558,27 @@ namespace SourceGit.ViewModels
                 else
                     DetailContext = new CommitDetail(_repo, _commitDetailSharedData) { Commit = c };
             }
-            else if (_selectedCommits.Count == 2)
-            {
-                _searchCommitContext.Selected = null;
-
-                if (_detailContext is RevisionCompare compare)
-                    compare.SetTargets(_selectedCommits[1], _selectedCommits[0]);
-                else
-                    DetailContext = new RevisionCompare(_repo, _selectedCommits[1], _selectedCommits[0]);
-            }
             else
             {
                 _searchCommitContext.Selected = null;
-                DetailContext = new Models.Count(_selectedCommits.Count);
+                // SelectedItems follows click order. Aggregate in displayed history
+                // order instead, matching the log rather than timestamps.
+                var selected = new Dictionary<string, Models.Commit>(StringComparer.Ordinal);
+                foreach (var commit in _selectedCommits)
+                    selected.TryAdd(commit.SHA, commit);
+                var ordered = new List<Models.Commit>();
+                foreach (var commit in _commits)
+                {
+                    if (selected.Remove(commit.SHA))
+                        ordered.Add(commit);
+                }
+                // Search results may refer to commits outside the loaded history.
+                foreach (var commit in _selectedCommits)
+                {
+                    if (selected.Remove(commit.SHA))
+                        ordered.Add(commit);
+                }
+                DetailContext = new CommitChanges(_repo, ordered);
             }
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)

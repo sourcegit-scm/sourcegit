@@ -169,7 +169,7 @@ namespace SourceGit.Views
                 else if (e.Key == Key.C &&
                     e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 {
-                    var detailView = this.FindAncestorOfType<CommitDetail>();
+                    var detailView = this.FindAncestorOfType<RevisionFiles>();
                     if (detailView is { DataContext: ViewModels.CommitDetail detail })
                     {
                         var path = node.Backend?.Path ?? string.Empty;
@@ -237,6 +237,7 @@ namespace SourceGit.Views
 
         public async Task SetSearchResultAsync(string file)
         {
+            var searchGeneration = ++_searchGeneration;
             Rows.Clear();
             _searchResult.Clear();
 
@@ -251,7 +252,10 @@ namespace SourceGit.Views
                 if (vm?.Commit == null)
                     return;
 
+                var revision = Revision;
                 var objects = await vm.GetRevisionFilesUnderFolderAsync(file);
+                if (DataContext != vm || Revision != revision || searchGeneration != _searchGeneration)
+                    return;
                 if (objects is not { Count: 1 })
                     return;
 
@@ -307,22 +311,33 @@ namespace SourceGit.Views
 
         public async Task ToggleNodeIsExpandedAsync(ViewModels.RevisionFileTreeNode node)
         {
-            _disableSelectionChangingEvent = true;
-            node.IsExpanded = !node.IsExpanded;
-
-            var depth = node.Depth;
             var idx = Rows.IndexOf(node);
-            if (idx == -1)
+            if (idx < 0)
                 return;
 
+            node.IsExpanded = !node.IsExpanded;
+            var depth = node.Depth;
             if (node.IsExpanded)
             {
                 var subtree = await GetChildrenOfTreeNodeAsync(node);
-                if (subtree is { Count: > 0 })
+                idx = Rows.IndexOf(node);
+                if (idx < 0 || !node.IsExpanded || subtree is not { Count: > 0 })
+                    return;
+
+                // A repeated expand may have already inserted these rows.
+                if (idx + 1 < Rows.Count && Rows[idx + 1].Depth > depth)
+                    return;
+
+                var subrows = new List<ViewModels.RevisionFileTreeNode>();
+                MakeRows(subrows, subtree, depth + 1);
+                _disableSelectionChangingEvent = true;
+                try
                 {
-                    var subrows = new List<ViewModels.RevisionFileTreeNode>();
-                    MakeRows(subrows, subtree, depth + 1);
                     Rows.InsertRange(idx + 1, subrows);
+                }
+                finally
+                {
+                    _disableSelectionChangingEvent = false;
                 }
             }
             else
@@ -330,16 +345,21 @@ namespace SourceGit.Views
                 var removeCount = 0;
                 for (int i = idx + 1; i < Rows.Count; i++)
                 {
-                    var row = Rows[i];
-                    if (row.Depth <= depth)
+                    if (Rows[i].Depth <= depth)
                         break;
-
                     removeCount++;
                 }
-                Rows.RemoveRange(idx + 1, removeCount);
-            }
 
-            _disableSelectionChangingEvent = false;
+                _disableSelectionChangingEvent = true;
+                try
+                {
+                    Rows.RemoveRange(idx + 1, removeCount);
+                }
+                finally
+                {
+                    _disableSelectionChangingEvent = false;
+                }
+            }
         }
 
         protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -348,8 +368,10 @@ namespace SourceGit.Views
 
             if (change.Property == RevisionProperty)
             {
+                _searchGeneration++;
                 _tree.Clear();
                 _searchResult.Clear();
+                Rows.Clear();
 
                 if (DataContext is ViewModels.CommitDetail { ActiveTabIndex: 2 } vm)
                     await ReloadTreeData(vm);
@@ -420,6 +442,9 @@ namespace SourceGit.Views
             if (objects == null || objects.Count == 0)
                 return null;
 
+            if (node.Children.Count > 0)
+                return node.Children;
+
             foreach (var obj in objects)
                 node.Children.Add(new ViewModels.RevisionFileTreeNode() { Backend = obj });
 
@@ -453,23 +478,22 @@ namespace SourceGit.Views
 
         private async Task ReloadTreeData(ViewModels.CommitDetail vm)
         {
-            if (_isReloadingTreeData)
-                return;
-
-            _isReloadingTreeData = true;
+            var generation = ++_treeGeneration;
+            var revision = Revision;
 
             if (vm?.Commit == null)
             {
                 Rows.Clear();
-                _isReloadingTreeData = false;
                 return;
             }
 
             var objects = await vm.GetRevisionFilesUnderFolderAsync(null);
+            if (generation != _treeGeneration || DataContext != vm || Revision != revision)
+                return;
+            _tree.Clear();
             if (objects == null || objects.Count == 0)
             {
                 Rows.Clear();
-                _isReloadingTreeData = false;
                 return;
             }
 
@@ -483,7 +507,6 @@ namespace SourceGit.Views
 
             Rows.Clear();
             Rows.AddRange(topTree);
-            _isReloadingTreeData = false;
         }
 
         private ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, Models.Commit commit, string path)
@@ -787,6 +810,7 @@ namespace SourceGit.Views
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
         private bool _disableSelectionChangingEvent = false;
         private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
-        private bool _isReloadingTreeData = false;
+        private int _treeGeneration;
+        private int _searchGeneration;
     }
 }

@@ -908,6 +908,23 @@ namespace SourceGit.Views
             }
 
             var menu = new ContextMenu();
+            if (selected.Count == 2)
+            {
+                var compare = new MenuItem
+                {
+                    Header = App.Text("SelectedCommitChanges.CompareRevisions"),
+                    Icon = this.CreateMenuIcon("Icons.Compare"),
+                };
+                compare.Click += (_, e) =>
+                {
+                    if (DataContext is ViewModels.Histories histories)
+                        histories.CompareSelectedRevisions();
+                    e.Handled = true;
+                };
+                menu.Items.Add(compare);
+                menu.Items.Add(new MenuItem { Header = "-" });
+            }
+
 
             if (!repo.IsBare)
             {

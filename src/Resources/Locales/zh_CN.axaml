@@ -891,6 +891,9 @@
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">扫描仓库</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">根路径 ：</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">扫描其他自定义路径</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">汇总所选提交涉及的文件；跳过提交独有的文件不会出现，但同一文件的中间改动可能包含在差异中。合并提交只包含相对所有父提交均有变化的文件，内容以第一父提交为基准。</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">所选提交或当前筛选条件下没有改动。</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">已选 {0} 个提交的汇总改动</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">检测更新...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">检测到软件有版本更新: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">当前版本 ：</x:String>
@@ -1092,4 +1095,5 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作树</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除工作树锁定</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">好的</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">比较这两个版本（不汇总提交）</x:String>
 </ResourceDictionary>
