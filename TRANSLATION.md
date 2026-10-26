@@ -2113,11 +2113,4 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-99.91%25-yellow)
-
-<details>
-<summary>Missing keys in zh_TW.axaml</summary>
-
-- Text.Preferences.Shell.Args.ToolTip
-
-</details>
+### ![zh__TW](https://img.shields.io/badge/zh__TW-%E2%88%9A-brightgreen)
