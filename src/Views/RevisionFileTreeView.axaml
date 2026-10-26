@@ -33,6 +33,8 @@
       <DataTemplate DataType="vm:RevisionFileTreeNode">
         <Grid ColumnDefinitions="16,Auto,Auto,*"
               Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+              ToolTip.Tip="{Binding Backend.Path}"
+              AutomationProperties.Name="{Binding Name}"
               Background="Transparent"
               DoubleTapped="OnTreeNodeDoubleTapped"
               ContextRequested="OnTreeNodeContextRequested">
