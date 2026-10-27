@@ -42,7 +42,12 @@ namespace SourceGit.AI
         [JsonIgnore]
         public bool IsValidStorage
         {
-            get => Storage != ApiKeyStorage.SystemCredentialManager || !OperatingSystem.IsLinux();
+            get
+            {
+                if (_storage == ApiKeyStorage.SystemCredentialManager)
+                    return Native.OS.CredentialStorage != null;
+                return true;
+            }
         }
 
         public void PrepareForSaving()

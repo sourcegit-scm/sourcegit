@@ -158,8 +158,9 @@ namespace SourceGit.Native
             }
             else if (OperatingSystem.IsLinux())
             {
-                _backend = new Linux();
-                CredentialStorage = null;
+                var impl = new Linux();
+                _backend = impl;
+                CredentialStorage = impl.CreateCredentialStorage();
             }
             else
             {
