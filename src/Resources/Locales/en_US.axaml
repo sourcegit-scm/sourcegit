@@ -631,6 +631,11 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit all changes</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategy:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Targets:</x:String>
+  <x:String x:Key="Text.MoveBranches" xml:space="preserve">Move Branches</x:String>
+  <x:String x:Key="Text.MoveBranches.Branches" xml:space="preserve">Branches:</x:String>
+  <x:String x:Key="Text.MoveBranches.Count" xml:space="preserve">{0} items</x:String>
+  <x:String x:Key="Text.MoveBranches.Root" xml:space="preserve">(top level)</x:String>
+  <x:String x:Key="Text.MoveBranches.Target" xml:space="preserve">Move Into:</x:String>
   <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Move Submodule</x:String>
   <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Move To:</x:String>
   <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submodule:</x:String>
