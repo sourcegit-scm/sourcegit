@@ -89,7 +89,7 @@
           <Style Selector="DataGridCell">
             <Setter Property="Template">
               <ControlTemplate>
-                <Grid x:Name="PART_CellRoot">
+                <Grid x:Name="PART_CellRoot" Background="Transparent">
                   <ContentPresenter Margin="0"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

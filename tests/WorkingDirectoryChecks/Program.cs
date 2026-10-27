@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media.Imaging;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -45,6 +46,7 @@ internal static class Program
             window.Show();
             PumpUntil(() => !repo.Histories.IsLoading && repo.LocalChangesCount == 1);
             CheckSelection(repo, window);
+            CheckRowHitTesting(repo, window);
             CheckStatusPipeline(repo, fixture);
             CheckCommitRefreshRace(repo, fixture);
             CheckHeadModes(repo, window);
@@ -336,6 +338,38 @@ internal static class Program
         Check(list.SelectedItems.Count == 0, "clean transition without displayed HEAD clears details");
         vm.Commits = commits;
         vm.UpdateWorkingDirectory([new Change { Path = "tracked.txt", WorkTree = ChangeState.Modified }]);
+        list.SelectedItem = vm.WorkingDirectory;
+        PumpUntil(() => vm.IsWorkingDirectorySelected);
+    }
+
+    private static void CheckRowHitTesting(Repository repo, Window window)
+    {
+        var vm = repo.Histories;
+        var list = window.GetVisualDescendants().OfType<Views.HistoriesCommitList>().Single();
+        var theme = Preferences.Instance.Theme;
+        foreach (var variant in new[] { "Light", "Dark" })
+        {
+            Preferences.Instance.Theme = variant;
+            list.SelectedItem = vm.Commits[0];
+            PumpUntil(() => !vm.IsWorkingDirectorySelected);
+            var row = list.GetVisualDescendants().OfType<DataGridRow>().Single(x => ReferenceEquals(x.DataContext, vm.WorkingDirectory));
+            foreach (var cell in row.GetVisualDescendants().OfType<DataGridCell>().Where(x => x.Bounds.Width > 0))
+            foreach (var x in new[] { 2.0, cell.Bounds.Width / 2, cell.Bounds.Width - 2 })
+            {
+                var point = cell.TranslatePoint(new Point(x, cell.Bounds.Height / 2), window).Value;
+                var hit = window.InputHitTest(point) as Control;
+                Check(hit != null && hit.FindAncestorOfType<DataGridCell>() == cell, $"working row hit target spans every cell: {variant}");
+                var pointer = new Pointer(1, PointerType.Mouse, true);
+                hit.RaiseEvent(new PointerPressedEventArgs(hit, pointer, window, point, 0,
+                    new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed), KeyModifiers.None));
+                Check(vm.IsWorkingDirectorySelected && ReferenceEquals(vm.DetailContext, repo.WorkingCopy), $"clicking working row opens Local Changes: {variant}");
+                hit.RaiseEvent(new PointerReleasedEventArgs(hit, pointer, window, point, 0,
+                    new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.LeftButtonReleased), KeyModifiers.None, MouseButton.Left));
+                list.SelectedItem = vm.Commits[0];
+                PumpUntil(() => !vm.IsWorkingDirectorySelected);
+            }
+        }
+        Preferences.Instance.Theme = theme;
         list.SelectedItem = vm.WorkingDirectory;
         PumpUntil(() => vm.IsWorkingDirectorySelected);
     }
