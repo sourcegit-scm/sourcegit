@@ -263,7 +263,7 @@ namespace SourceGit.Native
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                UseShellExecute = true,
+                UseShellExecute = false,
                 CreateNoWindow = true
             };
 
@@ -291,7 +291,7 @@ namespace SourceGit.Native
                 Arguments = $"lookup service \"sourcegit\" host {host.Quoted()} account {username.Quoted()}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                UseShellExecute = true,
+                UseShellExecute = false,
                 CreateNoWindow = true
             };
 
@@ -319,7 +319,7 @@ namespace SourceGit.Native
                 Arguments = $"clear service \"sourcegit\" host {host.Quoted()} account {username.Quoted()}",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                UseShellExecute = true,
+                UseShellExecute = false,
                 CreateNoWindow = true
             };
 
