@@ -416,6 +416,7 @@
   <x:String x:Key="Text.EditApiKey" xml:space="preserve">Edit API Key</x:String>
   <x:String x:Key="Text.EditApiKey.ApiKey" xml:space="preserve">API Key</x:String>
   <x:String x:Key="Text.EditApiKey.EnvironmentVariable" xml:space="preserve">Environment Variable</x:String>
+  <x:String x:Key="Text.EditApiKey.InvalidStorage" xml:space="preserve">Currently, saving API key to system credential manager is not supported on Linux</x:String>
   <x:String x:Key="Text.EditApiKey.Server" xml:space="preserve">Server</x:String>
   <x:String x:Key="Text.EditApiKey.Storage" xml:space="preserve">Storage</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Edit Branch's Description</x:String>

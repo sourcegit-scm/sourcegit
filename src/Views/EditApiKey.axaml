@@ -4,7 +4,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:ai="using:SourceGit.AI"
-                    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                    mc:Ignorable="d" d:DesignWidth="512" d:DesignHeight="450"
                     x:Class="SourceGit.Views.EditApiKey"
                     x:DataType="ai:ApiKey"
                     x:Name="ThisControl"
@@ -79,6 +79,20 @@
                         Width="26" Height="14"/>
         </TextBox.InnerRightContent>
       </TextBox>
+      <Grid ColumnDefinitions="Auto,*"
+            Margin="0,4,0,0"
+            IsVisible="{Binding !IsValidStorage, Mode=OneWay}">
+        <Path Grid.Column="0"
+              Width="12" Height="12"
+              Data="{StaticResource Icons.Error}"
+              Fill="DarkOrange"/>
+        <TextBlock Grid.Column="1"
+                   Margin="6,0,0,0"
+                   Text="{DynamicResource Text.EditApiKey.InvalidStorage}"
+                   FontSize="12"
+                   Foreground="{DynamicResource Brush.FG2}"
+                   TextWrapping="Wrap"/>
+      </Grid>                 
 
       <StackPanel Margin="0,12,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
         <Button Classes="flat primary"

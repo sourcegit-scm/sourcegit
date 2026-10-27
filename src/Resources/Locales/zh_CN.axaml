@@ -420,6 +420,7 @@
   <x:String x:Key="Text.EditApiKey" xml:space="preserve">编辑 API 密钥</x:String>
   <x:String x:Key="Text.EditApiKey.ApiKey" xml:space="preserve">API 密钥</x:String>
   <x:String x:Key="Text.EditApiKey.EnvironmentVariable" xml:space="preserve">环境变量</x:String>
+  <x:String x:Key="Text.EditApiKey.InvalidStorage" xml:space="preserve">当前在 Linux 上不支持将 API 密钥保存到系统凭据管理器</x:String>
   <x:String x:Key="Text.EditApiKey.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.EditApiKey.Storage" xml:space="preserve">存储方式</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">编辑分支描述</x:String>
