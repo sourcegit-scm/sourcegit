@@ -472,16 +472,16 @@ namespace SourceGit.Views
             if (sender is not Button { DataContext: AI.Service service })
                 return;
 
-            var apiKey = AI.ApiKeyManager.Get(service.Server) ?? new AI.ApiKey { Service = service.Server };
-            var editKey = apiKey.CreateEditObject();
-
-            var dialog = new EditApiKey(editKey);
-            var ok = await dialog.ShowDialog<bool>(this);
-            if (!ok)
-                return;
-
             try
             {
+                var apiKey = AI.ApiKeyManager.Get(service.Server) ?? new AI.ApiKey { Service = service.Server };
+                var editKey = apiKey.CreateEditObject();
+
+                var dialog = new EditApiKey(editKey);
+                var ok = await dialog.ShowDialog<bool>(this);
+                if (!ok)
+                    return;
+
                 editKey.PrepareForSaving();
                 AI.ApiKeyManager.AddOrUpdate(editKey);
             }
