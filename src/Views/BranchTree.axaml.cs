@@ -471,6 +471,14 @@ namespace SourceGit.Views
                 sender is not Border { DataContext: ViewModels.BranchTreeNode { Backend: Models.Branch branch } } border)
                 return;
 
+            // The release can be missed (e.g. the tree is rebuilt by a double-click checkout),
+            // so a stale press must not turn into a drag once the button is up.
+            if (!e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _pressedNodeEvent = null;
+                return;
+            }
+
             var delta = e.GetPosition(border) - _pressedNodeEvent.GetPosition(border);
             if (delta.X * delta.X + delta.Y * delta.Y < 64)
                 return;
