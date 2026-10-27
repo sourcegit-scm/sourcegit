@@ -827,7 +827,7 @@
           <Grid Margin="0,8,0,16" MinHeight="400">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="200"/>
-              <ColumnDefinition Width="*" MaxWidth="400"/>
+              <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
