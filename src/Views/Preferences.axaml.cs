@@ -432,7 +432,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRemoveSelectedOpenAIService(object sender, RoutedEventArgs e)
+        private async void OnRemoveSelectedOpenAIService(object sender, RoutedEventArgs e)
         {
             if (SelectedOpenAIService == null)
                 return;
@@ -453,7 +453,16 @@ namespace SourceGit.Views
             }
 
             if (needDeleteApiKey)
-                AI.ApiKeyCollections.Remove(server);
+            {
+                try
+                {
+                    AI.ApiKeyManager.Remove(server);
+                }
+                catch (Exception ex)
+                {
+                    await new Alert().ShowAsync(this, ex.Message, true);
+                }
+            }
 
             e.Handled = true;
         }
@@ -463,13 +472,23 @@ namespace SourceGit.Views
             if (sender is not Button { DataContext: AI.Service service })
                 return;
 
-            var apiKey = AI.ApiKeyCollections.Get(service.Server) ?? new AI.ApiKey { Service = service.Server };
+            var apiKey = AI.ApiKeyManager.Get(service.Server) ?? new AI.ApiKey { Service = service.Server };
             var editKey = apiKey.CreateEditObject();
 
             var dialog = new EditApiKey(editKey);
             var ok = await dialog.ShowDialog<bool>(this);
-            if (ok)
-                AI.ApiKeyCollections.AddOrUpdate(editKey);
+            if (!ok)
+                return;
+
+            try
+            {
+                editKey.PrepareForSaving();
+                AI.ApiKeyManager.AddOrUpdate(editKey);
+            }
+            catch (Exception ex)
+            {
+                await new Alert().ShowAsync(this, ex.Message, true);
+            }
         }
 
         private void OnAddCustomAction(object sender, RoutedEventArgs e)

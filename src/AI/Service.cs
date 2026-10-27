@@ -32,7 +32,7 @@ namespace SourceGit.AI
         [JsonIgnore]
         public bool HasValidApiKey
         {
-            get => ApiKeyCollections.Get(Server) != null;
+            get => ApiKeyManager.Get(Server) != null;
         }
 
         [JsonIgnore]
@@ -97,7 +97,7 @@ namespace SourceGit.AI
 
         private OpenAIClient GetOpenAIClient()
         {
-            var credential = ApiKeyCollections.Get(Server)?.ToCredential() ?? new ApiKeyCredential(string.Empty);
+            var credential = ApiKeyManager.Get(Server)?.ToCredential() ?? new ApiKeyCredential(string.Empty);
 
             if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
             {
