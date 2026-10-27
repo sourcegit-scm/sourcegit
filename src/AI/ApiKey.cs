@@ -11,7 +11,7 @@ namespace SourceGit.AI
     public enum ApiKeyStorage
     {
         EnvironmentVariable = 0,
-        SystemCredentialManager,
+        SystemKeychain,
         PlainText,
     }
 
@@ -28,7 +28,7 @@ namespace SourceGit.AI
             get => _storage;
             set
             {
-                if (SetProperty(ref _storage, value) && value == ApiKeyStorage.SystemCredentialManager)
+                if (SetProperty(ref _storage, value) && value == ApiKeyStorage.SystemKeychain)
                     OnPropertyChanged(nameof(IsValidStorage));
             }
         }
@@ -44,25 +44,25 @@ namespace SourceGit.AI
         {
             get
             {
-                if (_storage == ApiKeyStorage.SystemCredentialManager)
-                    return Native.OS.CredentialStorage != null;
+                if (_storage == ApiKeyStorage.SystemKeychain)
+                    return Native.OS.Keychain != null;
                 return true;
             }
         }
 
         public void PrepareForSaving()
         {
-            if (Storage == ApiKeyStorage.SystemCredentialManager)
+            if (Storage == ApiKeyStorage.SystemKeychain)
             {
-                Native.OS.CredentialStorage?.Store(Service, "SourceGit", KeyToAccess);
+                Native.OS.Keychain?.Store(Service, "SourceGit", KeyToAccess);
                 KeyToAccess = string.Empty;
             }
         }
 
         public void Cleanup()
         {
-            if (Storage == ApiKeyStorage.SystemCredentialManager)
-                Native.OS.CredentialStorage?.Erase(Service, "SourceGit");
+            if (Storage == ApiKeyStorage.SystemKeychain)
+                Native.OS.Keychain?.Erase(Service, "SourceGit");
         }
 
         public ApiKey CreateEditObject()
@@ -73,8 +73,8 @@ namespace SourceGit.AI
                 Storage = _storage,
             };
 
-            if (_storage == ApiKeyStorage.SystemCredentialManager)
-                cloned.KeyToAccess = Native.OS.CredentialStorage?.Read(Service, "SourceGit") ?? string.Empty;
+            if (_storage == ApiKeyStorage.SystemKeychain)
+                cloned.KeyToAccess = Native.OS.Keychain?.Read(Service, "SourceGit") ?? string.Empty;
             else
                 cloned.KeyToAccess = _keyToAccess;
 
@@ -89,7 +89,7 @@ namespace SourceGit.AI
             if (_storage == ApiKeyStorage.EnvironmentVariable)
                 return new ApiKeyCredential(Environment.GetEnvironmentVariable(_keyToAccess));
 
-            var rawApiKey = Native.OS.CredentialStorage?.Read(Service, "SourceGit");
+            var rawApiKey = Native.OS.Keychain?.Read(Service, "SourceGit");
             return new ApiKeyCredential(rawApiKey ?? string.Empty);
         }
 

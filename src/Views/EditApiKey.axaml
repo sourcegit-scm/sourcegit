@@ -48,7 +48,7 @@
       <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.EditApiKey.Storage}"/>
       <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Storage, Mode=TwoWay}">
         <ComboBoxItem Content="Environment Variable"/>
-        <ComboBoxItem Content="System Crendential Manager"/>
+        <ComboBoxItem Content="System Keychain"/>
         <ComboBoxItem Content="Plain Text"/>
       </ComboBox>
 

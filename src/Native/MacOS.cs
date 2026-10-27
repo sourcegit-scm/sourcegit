@@ -347,7 +347,7 @@ namespace SourceGit.Native
     }
 
     [SupportedOSPlatform("macOS")]
-    public class MacOSCredentialStorage : OS.ICredentialStorage
+    public class MacOSKeychain : OS.IKeychain
     {
         [DllImport("/System/Library/Frameworks/Security.framework/Security")]
         private static extern int SecKeychainAddGenericPassword(

@@ -207,7 +207,7 @@ namespace SourceGit.Native
             }
         }
 
-        public OS.ICredentialStorage CreateCredentialStorage()
+        public OS.IKeychain GetSecretTool()
         {
             var toolPath = FindExecutable("secret-tool");
             if (string.IsNullOrEmpty(toolPath))
@@ -216,7 +216,7 @@ namespace SourceGit.Native
             if (!File.Exists(toolPath))
                 return null;
 
-            return new LinuxCredentialStorage(toolPath);
+            return new SecretTool(toolPath);
         }
 
         private string FindExecutable(string filename)
@@ -245,9 +245,9 @@ namespace SourceGit.Native
     }
 
     [SupportedOSPlatform("linux")]
-    public class LinuxCredentialStorage : OS.ICredentialStorage
+    public class SecretTool : OS.IKeychain
     {
-        public LinuxCredentialStorage(string toolPath)
+        public SecretTool(string toolPath)
         {
             _toolPath = toolPath;
         }

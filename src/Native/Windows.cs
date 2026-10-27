@@ -474,7 +474,7 @@ namespace SourceGit.Native
     }
 
     [SupportedOSPlatform("windows")]
-    public class WindowsCredentialStorage : OS.ICredentialStorage
+    public class WindowsCredentialManager : OS.IKeychain
     {
         [DllImport("Advapi32.dll", EntryPoint = "CredWriteW", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern bool CredWriteW([In] ref CREDENTIAL userCredential, [In] uint flags);
