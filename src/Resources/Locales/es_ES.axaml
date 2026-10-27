@@ -674,7 +674,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Modelo</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Traer automáticamente los model-ids disponibles</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Nombre</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">El valor ingresado es el nombre de la clave API a cargar desde ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">Nivel de Esfuerzo de Razonamiento</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Servidor</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APARIENCIA</x:String>

@@ -664,7 +664,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">モデル</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">利用できるモデル ID を自動的に取得</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">名前</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">この値を環境変数の名前とし、そこから API キーを読み込む</x:String>
   <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">思考努力レベル</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">サーバー</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外観</x:String>
