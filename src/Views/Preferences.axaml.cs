@@ -437,9 +437,39 @@ namespace SourceGit.Views
             if (SelectedOpenAIService == null)
                 return;
 
-            ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
+            var server = SelectedOpenAIService.Server;
+            var pref = ViewModels.Preferences.Instance;
+            pref.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
+
+            var needDeleteApiKey = true;
+            foreach (var s in pref.OpenAIServices)
+            {
+                if (s.Server.Equals(server, StringComparison.Ordinal))
+                {
+                    needDeleteApiKey = false;
+                    break;
+                }
+            }
+
+            if (needDeleteApiKey)
+                AI.ApiKeyCollections.Remove(server);
+
             e.Handled = true;
+        }
+
+        private async void OnEditApiKey(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button { DataContext: AI.Service service })
+                return;
+
+            var apiKey = AI.ApiKeyCollections.Get(service.Server) ?? new AI.ApiKey { Service = service.Server };
+            var editKey = apiKey.CreateEditObject();
+
+            var dialog = new EditApiKey(editKey);
+            var ok = await dialog.ShowDialog<bool>(this);
+            if (ok)
+                AI.ApiKeyCollections.AddOrUpdate(editKey);
         }
 
         private void OnAddCustomAction(object sender, RoutedEventArgs e)

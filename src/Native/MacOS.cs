@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Text;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -343,5 +344,145 @@ namespace SourceGit.Native
             IntPtr nsDelegate = objc_msgSend_IntPtr(nsApp, nsDelegateSelector);
             objc_msgSend_Void_IntPtr(nsApp, nsMethodSelector, nsDelegate);
         }
+    }
+
+    [SupportedOSPlatform("macOS")]
+    public class MacOSCredentialStorage : OS.ICredentialStorage
+    {
+        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
+        private static extern int SecKeychainAddGenericPassword(
+            IntPtr keychain,
+            uint serviceNameLength,
+            byte[] serviceName,
+            uint accountNameLength,
+            byte[] accountName,
+            uint passwordLength,
+            byte[] passwordData,
+            out IntPtr itemRef);
+
+        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
+        private static extern int SecKeychainFindGenericPassword(
+            IntPtr keychainOrArray,
+            uint serviceNameLength,
+            byte[] serviceName,
+            uint accountNameLength,
+            byte[] accountName,
+            out uint passwordLength,
+            out IntPtr passwordData,
+            out IntPtr itemRef);
+
+        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
+        private static extern int SecKeychainItemModifyAttributesAndData(
+            IntPtr itemRef,
+            IntPtr attrList,
+            uint length,
+            byte[] data);
+
+        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
+        private static extern int SecKeychainItemDelete(IntPtr itemRef);
+
+        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
+        private static extern int SecKeychainItemFreeContent(IntPtr attrList, IntPtr data);
+
+        [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+        private static extern void CFRelease(IntPtr cf);
+
+        public void Store(string host, string username, string password)
+        {
+            var serviceBytes = Encoding.UTF8.GetBytes(host);
+            var accountBytes = Encoding.UTF8.GetBytes(username);
+            var secretBytes = Encoding.UTF8.GetBytes(password);
+
+            var status = SecKeychainAddGenericPassword(
+                IntPtr.Zero,
+                (uint)serviceBytes.Length, serviceBytes,
+                (uint)accountBytes.Length, accountBytes,
+                (uint)secretBytes.Length, secretBytes,
+                out _);
+
+            if (status == errSecDuplicateItem)
+            {
+                // If the item already exists, update it instead
+                status = SecKeychainFindGenericPassword(
+                    IntPtr.Zero,
+                    (uint)serviceBytes.Length, serviceBytes,
+                    (uint)accountBytes.Length, accountBytes,
+                    out _, out _, out var itemRef);
+
+                if (status != errSecSuccess)
+                    throw new Exception($"Failed to find original keychain item to modify: {status}");
+
+                status = SecKeychainItemModifyAttributesAndData(
+                        itemRef,
+                        IntPtr.Zero,
+                        (uint)secretBytes.Length, secretBytes);
+
+                CFRelease(itemRef);
+            }
+
+            if (status != errSecSuccess)
+                throw new Exception($"Failed to store credential to keychain: {status}");
+        }
+
+        public string Read(string host, string username)
+        {
+            var serviceBytes = Encoding.UTF8.GetBytes(host);
+            var accountBytes = Encoding.UTF8.GetBytes(username);
+
+            var status = SecKeychainFindGenericPassword(
+                IntPtr.Zero,
+                (uint)serviceBytes.Length, serviceBytes,
+                (uint)accountBytes.Length, accountBytes,
+                out var passwordLength,
+                out var passwordData,
+                out var itemRef);
+
+            if (status == errSecItemNotFound)
+                throw new Exception("Credential not found in keychain");
+
+            if (status != errSecSuccess)
+                throw new Exception($"Failed to read credential from keychain: {status}");
+
+            if (passwordLength == 0 || passwordData == IntPtr.Zero)
+            {
+                CFRelease(itemRef);
+                return string.Empty;
+            }
+
+            var passwordBytes = new byte[passwordLength];
+            Marshal.Copy(passwordData, passwordBytes, 0, (int)passwordLength);
+            CFRelease(itemRef);
+            return Encoding.UTF8.GetString(passwordBytes);
+        }
+
+        public void Erase(string host, string username)
+        {
+            var serviceBytes = Encoding.UTF8.GetBytes(host);
+            var accountBytes = Encoding.UTF8.GetBytes(username);
+
+            var status = SecKeychainFindGenericPassword(
+                IntPtr.Zero,
+                (uint)serviceBytes.Length, serviceBytes,
+                (uint)accountBytes.Length, accountBytes,
+                out var passwordLength,
+                out var passwordData,
+                out var itemRef);
+
+            if (status == errSecItemNotFound)
+                return;
+
+            if (status != errSecSuccess)
+                throw new Exception($"Failed to find credential in keychain: {status}");
+
+            status = SecKeychainItemDelete(itemRef);
+            CFRelease(itemRef);
+
+            if (status != errSecSuccess && status != errSecItemNotFound)
+                throw new Exception($"Failed to delete credential from keychain: {status}");
+        }
+
+        private const int errSecSuccess = 0;
+        private const int errSecItemNotFound = -25300;
+        private const int errSecDuplicateItem = -25299;
     }
 }

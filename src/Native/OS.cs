@@ -40,6 +40,13 @@ namespace SourceGit.Native
             void TerminateProcess(Process proc);
         }
 
+        public interface ICredentialStorage
+        {
+            void Store(string host, string username, string password);
+            string Read(string host, string username);
+            void Erase(string host, string username);
+        }
+
         public static Directories BasicDirectories
         {
             get;
@@ -131,16 +138,33 @@ namespace SourceGit.Native
             set => _enableSystemWindowFrame = value;
         }
 
+        public static ICredentialStorage CredentialStorage
+        {
+            get;
+            private set;
+        }
+
         static OS()
         {
             if (OperatingSystem.IsWindows())
+            {
                 _backend = new Windows();
+                CredentialStorage = new WindowsCredentialStorage();
+            }
             else if (OperatingSystem.IsMacOS())
+            {
                 _backend = new MacOS();
+                CredentialStorage = new MacOSCredentialStorage();
+            }
             else if (OperatingSystem.IsLinux())
+            {
                 _backend = new Linux();
+                CredentialStorage = null;
+            }
             else
+            {
                 throw new PlatformNotSupportedException();
+            }
         }
 
         public static void SetupBasicDirectories()
