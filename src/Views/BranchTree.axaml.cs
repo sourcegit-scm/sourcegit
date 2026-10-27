@@ -1551,7 +1551,7 @@ namespace SourceGit.Views
                 rebase.Click += (_, e) =>
                 {
                     if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.Rebase(repo, other, current));
+                        repo.ShowPopup(new ViewModels.Rebase(repo, current, other));
                     e.Handled = true;
                 };
 
