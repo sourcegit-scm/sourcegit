@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -431,6 +432,9 @@ namespace SourceGit.Views
 
         private void OnNodePointerPressed(object sender, PointerPressedEventArgs e)
         {
+            _pressedNodeEvent = null;
+            _startDragNode = false;
+
             var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
             if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
                 return;
@@ -448,7 +452,79 @@ namespace SourceGit.Views
             if (node.Backend is not Models.Branch branch)
                 return;
 
+            if (!branch.IsDetachedHead)
+                _pressedNodeEvent = e;
+
             repo.NavigateToCommit(branch.Head);
+        }
+
+        private void OnNodePointerReleased(object _1, PointerReleasedEventArgs _2)
+        {
+            _pressedNodeEvent = null;
+            _startDragNode = false;
+        }
+
+        private async void OnNodePointerMoved(object sender, PointerEventArgs e)
+        {
+            if (_pressedNodeEvent == null ||
+                _startDragNode ||
+                sender is not Border { DataContext: ViewModels.BranchTreeNode { Backend: Models.Branch branch } } border)
+                return;
+
+            var delta = e.GetPosition(border) - _pressedNodeEvent.GetPosition(border);
+            if (delta.X * delta.X + delta.Y * delta.Y < 64)
+                return;
+
+            _startDragNode = true;
+
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(_dndBranchFormat, branch.FullName));
+            await DragDrop.DoDragDropAsync(_pressedNodeEvent, data, DragDropEffects.Move);
+
+            _pressedNodeEvent = null;
+            _startDragNode = false;
+        }
+
+        private void OnNodeDragOver(object sender, DragEventArgs e)
+        {
+            e.DragEffects = DragDropEffects.None;
+            e.Handled = true;
+
+            if (sender is Border { DataContext: ViewModels.BranchTreeNode { Backend: Models.Branch { IsDetachedHead: false } target } node } &&
+                e.DataTransfer.TryGetValue(_dndBranchFormat) is { } fullName &&
+                !fullName.Equals(target.FullName, StringComparison.Ordinal))
+            {
+                e.DragEffects = DragDropEffects.Move;
+                node.IsDropTarget = true;
+            }
+        }
+
+        private void OnNodeDragLeave(object sender, DragEventArgs _)
+        {
+            if (sender is Border { DataContext: ViewModels.BranchTreeNode node })
+                node.IsDropTarget = false;
+        }
+
+        private async void OnNodeDrop(object sender, DragEventArgs e)
+        {
+            if (sender is not Border { DataContext: ViewModels.BranchTreeNode node })
+                return;
+
+            node.IsDropTarget = false;
+
+            if (DataContext is not ViewModels.Repository repo ||
+                node.Backend is not Models.Branch { IsDetachedHead: false } target ||
+                e.DataTransfer.TryGetValue(_dndBranchFormat) is not { } fullName)
+                return;
+
+            var source = repo.Branches.Find(x => x.FullName.Equals(fullName, StringComparison.Ordinal));
+            if (source == null || ReferenceEquals(source, target))
+                return;
+
+            e.Handled = true;
+
+            var menu = await CreateContextMenuForBranchDropAsync(repo, source, target);
+            menu.Open(this);
         }
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
@@ -1117,6 +1193,94 @@ namespace SourceGit.Views
             return menu;
         }
 
+        private async Task<ContextMenu> CreateContextMenuForBranchDropAsync(ViewModels.Repository repo, Models.Branch source, Models.Branch target)
+        {
+            var current = repo.CurrentBranch;
+            var menu = new ContextMenu();
+
+            // Merge and rebase always act on the checked-out branch, so they are only
+            // offered when exactly one of the two branches is that one.
+            if (!repo.IsBare && current != null && (source.IsCurrent || target.IsCurrent))
+            {
+                var other = target.IsCurrent ? source : target;
+
+                var merge = new MenuItem();
+                merge.Header = App.Text("BranchCM.Merge", other.FriendlyName, current.Name);
+                merge.Icon = this.CreateMenuIcon("Icons.Merge");
+                merge.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Merge(repo, other, current.Name, false));
+                    e.Handled = true;
+                };
+
+                var rebase = new MenuItem();
+                rebase.Header = App.Text("BranchCM.Rebase", current.Name, other.FriendlyName);
+                rebase.Icon = this.CreateMenuIcon("Icons.Rebase");
+                rebase.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Rebase(repo, current, other));
+                    e.Handled = true;
+                };
+
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, other.FriendlyName);
+                interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.IsEnabled = !current.Head.Equals(other.Head, StringComparison.Ordinal);
+                interactiveRebase.Click += async (_, e) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(repo.FullPath, other.Head).GetResultAsync();
+                    await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(merge);
+                menu.Items.Add(rebase);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(interactiveRebase);
+            }
+
+            // Moving a branch that is not checked out is only offered as a true fast-forward,
+            // because ResetWithoutCheckout would otherwise silently drop commits.
+            if (target.IsLocal &&
+                !target.IsCurrent &&
+                string.IsNullOrEmpty(target.WorktreePath) &&
+                !target.Head.Equals(source.Head, StringComparison.Ordinal) &&
+                await new Commands.IsAncestor(repo.FullPath, target.Head, source.Head).GetResultAsync())
+            {
+                var fastForward = new MenuItem();
+                fastForward.Header = App.Text("BranchCM.FastForwardBranch", target.Name, source.FriendlyName);
+                fastForward.Icon = this.CreateMenuIcon("Icons.FastForward");
+                fastForward.Click += async (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        await repo.ShowAndStartPopupAsync(new ViewModels.ResetWithoutCheckout(repo, target, source));
+                    e.Handled = true;
+                };
+
+                if (menu.Items.Count > 0)
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                menu.Items.Add(fastForward);
+            }
+
+            var compare = new MenuItem();
+            compare.Header = App.Text("BranchCM.CompareBranches", source.FriendlyName, target.FriendlyName);
+            compare.Icon = this.CreateMenuIcon("Icons.Compare");
+            compare.Click += (_, e) =>
+            {
+                this.ShowWindow(new ViewModels.Compare(repo, source, target));
+                e.Handled = true;
+            };
+
+            if (menu.Items.Count > 0)
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+            menu.Items.Add(compare);
+            return menu;
+        }
+
         private ContextMenu CreateContextMenuForRemote(ViewModels.Repository repo, Models.Remote remote)
         {
             var menu = new ContextMenu();
@@ -1477,5 +1641,8 @@ namespace SourceGit.Views
 
         private List<ViewModels.BranchTreeNode> _nodes = null;
         private bool _disableSelectionChangingEvent = false;
+        private PointerPressedEventArgs _pressedNodeEvent = null;
+        private bool _startDragNode = false;
+        private readonly DataFormat<string> _dndBranchFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-branch");
     }
 }
