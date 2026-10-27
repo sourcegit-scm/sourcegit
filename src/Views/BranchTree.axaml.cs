@@ -1501,21 +1501,49 @@ namespace SourceGit.Views
             var current = repo.CurrentBranch;
             var menu = new ContextMenu();
 
-            // Merge and rebase always act on the checked-out branch, so they are only
+            // Dropping A onto B merges A into B. Merging acts on the checked-out branch, so when B is not
+            // checked out it is checked out first, which is only offered when that cannot touch local changes.
+            if (!repo.IsBare && target.IsLocal)
+            {
+                var canCheckoutTarget = !target.IsCurrent &&
+                    repo.LocalChangesCount == 0 &&
+                    string.IsNullOrEmpty(target.WorktreePath);
+
+                if (target.IsCurrent || canCheckoutTarget)
+                {
+                    var merge = new MenuItem();
+                    merge.Header = target.IsCurrent ?
+                        App.Text("BranchCM.Merge", source.FriendlyName, target.Name) :
+                        App.Text("BranchCM.CheckoutAndMerge", source.FriendlyName, target.Name);
+                    merge.Icon = this.CreateMenuIcon("Icons.Merge");
+                    merge.Click += async (_, e) =>
+                    {
+                        e.Handled = true;
+
+                        if (!repo.CanCreatePopup())
+                            return;
+
+                        if (!target.IsCurrent)
+                        {
+                            await repo.CheckoutBranchAsync(target);
+
+                            // The checkout can be declined or fail; only merge when it really happened.
+                            if (!target.IsCurrent || !repo.CanCreatePopup())
+                                return;
+                        }
+
+                        repo.ShowPopup(new ViewModels.Merge(repo, source, target.Name, false));
+                    };
+
+                    menu.Items.Add(merge);
+                }
+            }
+
+            // Rebase always acts on the checked-out branch, so it is only
             // offered when exactly one of the two branches is that one.
             if (!repo.IsBare && current != null && (source.IsCurrent || target.IsCurrent))
             {
                 var other = target.IsCurrent ? source : target;
-
-                var merge = new MenuItem();
-                merge.Header = App.Text("BranchCM.Merge", other.FriendlyName, current.Name);
-                merge.Icon = this.CreateMenuIcon("Icons.Merge");
-                merge.Click += (_, e) =>
-                {
-                    if (repo.CanCreatePopup())
-                        repo.ShowPopup(new ViewModels.Merge(repo, other, current.Name, false));
-                    e.Handled = true;
-                };
 
                 var rebase = new MenuItem();
                 rebase.Header = App.Text("BranchCM.Rebase", current.Name, other.FriendlyName);
@@ -1538,7 +1566,6 @@ namespace SourceGit.Views
                     e.Handled = true;
                 };
 
-                menu.Items.Add(merge);
                 menu.Items.Add(rebase);
                 menu.Items.Add(new MenuItem() { Header = "-" });
                 menu.Items.Add(interactiveRebase);
