@@ -479,10 +479,86 @@ namespace SourceGit.Views
 
             var data = new DataTransfer();
             data.Add(DataTransferItem.Create(_dndBranchFormat, branch.FullName));
-            await DragDrop.DoDragDropAsync(_pressedNodeEvent, data, DragDropEffects.Move);
 
-            _pressedNodeEvent = null;
-            _startDragNode = false;
+            var topLevel = TopLevel.GetTopLevel(this);
+            var allowDrop = topLevel != null && DragDrop.GetAllowDrop(topLevel);
+            if (topLevel != null && OverlayLayer.GetOverlayLayer(this) is { } layer)
+            {
+                // Avalonia has no drag preview, so a chip is drawn on the overlay and moved on every DragOver
+                // of the window (which only fires for AllowDrop targets).
+                var start = _pressedNodeEvent.GetPosition(layer);
+                _dragGhost = CreateDragGhost(branch);
+                _dragGhostLayer = layer;
+                Canvas.SetLeft(_dragGhost, start.X + 14);
+                Canvas.SetTop(_dragGhost, start.Y + 14);
+                layer.Children.Add(_dragGhost);
+
+                DragDrop.SetAllowDrop(topLevel, true);
+                topLevel.AddHandler(DragDrop.DragOverEvent, OnDragGhostDragOver, RoutingStrategies.Tunnel | RoutingStrategies.Bubble, true);
+            }
+
+            try
+            {
+                await DragDrop.DoDragDropAsync(_pressedNodeEvent, data, DragDropEffects.Move);
+            }
+            finally
+            {
+                if (_dragGhost != null)
+                {
+                    topLevel?.RemoveHandler(DragDrop.DragOverEvent, OnDragGhostDragOver);
+                    _dragGhostLayer.Children.Remove(_dragGhost);
+                    _dragGhost = null;
+                    _dragGhostLayer = null;
+
+                    if (topLevel != null)
+                        DragDrop.SetAllowDrop(topLevel, allowDrop);
+                }
+
+                _pressedNodeEvent = null;
+                _startDragNode = false;
+            }
+        }
+
+        private void OnDragGhostDragOver(object sender, DragEventArgs e)
+        {
+            if (_dragGhost == null || _dragGhostLayer == null)
+                return;
+
+            var pos = e.GetPosition(_dragGhostLayer);
+            Canvas.SetLeft(_dragGhost, pos.X + 14);
+            Canvas.SetTop(_dragGhost, pos.Y + 14);
+        }
+
+        private Control CreateDragGhost(Models.Branch branch)
+        {
+            var foreground = this.FindResource("Brush.FG1") as IBrush;
+            var content = new StackPanel() { Orientation = Orientation.Horizontal, Spacing = 6 };
+
+            if (this.CreateMenuIcon("Icons.Branch") is { } icon)
+            {
+                icon.Fill = foreground;
+                content.Children.Add(icon);
+            }
+
+            content.Children.Add(new TextBlock()
+            {
+                Text = branch.FriendlyName,
+                FontWeight = FontWeight.Bold,
+                Foreground = foreground,
+                VerticalAlignment = VerticalAlignment.Center,
+            });
+
+            return new Border()
+            {
+                Child = content,
+                Padding = new Thickness(8, 4),
+                CornerRadius = new CornerRadius(4),
+                BorderThickness = new Thickness(1),
+                BorderBrush = this.FindResource("Brush.PopupBorder") as IBrush,
+                Background = this.FindResource("Brush.Popup") as IBrush,
+                Opacity = 0.92,
+                IsHitTestVisible = false,
+            };
         }
 
         private void OnNodeDragOver(object sender, DragEventArgs e)
@@ -1643,6 +1719,8 @@ namespace SourceGit.Views
         private bool _disableSelectionChangingEvent = false;
         private PointerPressedEventArgs _pressedNodeEvent = null;
         private bool _startDragNode = false;
+        private Control _dragGhost = null;
+        private OverlayLayer _dragGhostLayer = null;
         private readonly DataFormat<string> _dndBranchFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-branch");
     }
 }
