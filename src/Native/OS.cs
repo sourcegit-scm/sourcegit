@@ -40,6 +40,13 @@ namespace SourceGit.Native
             void TerminateProcess(Process proc);
         }
 
+        public interface IKeychain
+        {
+            void Store(string host, string username, string password);
+            string Read(string host, string username);
+            void Erase(string host, string username);
+        }
+
         public static Directories BasicDirectories
         {
             get;
@@ -131,16 +138,34 @@ namespace SourceGit.Native
             set => _enableSystemWindowFrame = value;
         }
 
+        public static IKeychain Keychain
+        {
+            get;
+            private set;
+        }
+
         static OS()
         {
             if (OperatingSystem.IsWindows())
+            {
                 _backend = new Windows();
+                Keychain = new WindowsCredentialManager();
+            }
             else if (OperatingSystem.IsMacOS())
+            {
                 _backend = new MacOS();
+                Keychain = new MacOSKeychain();
+            }
             else if (OperatingSystem.IsLinux())
-                _backend = new Linux();
+            {
+                var impl = new Linux();
+                _backend = impl;
+                Keychain = impl.GetSecretTool();
+            }
             else
+            {
                 throw new PlatformNotSupportedException();
+            }
         }
 
         public static void SetupBasicDirectories()

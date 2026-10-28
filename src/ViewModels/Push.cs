@@ -291,12 +291,13 @@ namespace SourceGit.ViewModels
                 var mergeTarget = new Commands.Config(_repo.FullPath).Get($"branch.\"{_selectedLocalBranch.Name}\".merge");
                 if (!string.IsNullOrEmpty(mergeTarget))
                 {
-                    var target = branches.Find(x => x.FullName.Equals(mergeTarget, StringComparison.Ordinal));
+                    var cleanName = mergeTarget.StartsWith("refs/heads/", StringComparison.Ordinal) ? mergeTarget.Substring(11) : mergeTarget;
+                    var target = branches.Find(x => x.Name.Equals(cleanName, StringComparison.Ordinal));
                     if (target == null)
                     {
                         target = new Models.Branch()
                         {
-                            Name = mergeTarget,
+                            Name = cleanName,
                             Remote = _selectedRemote.Name,
                             Head = "---", // Not used by `git push` command but used by Views
                         };

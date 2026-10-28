@@ -417,6 +417,12 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包括未跟踪的文件</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">总计{0}项选中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支持回退，请确认后继续！！！</x:String>
+  <x:String x:Key="Text.EditApiKey" xml:space="preserve">编辑 API 密钥</x:String>
+  <x:String x:Key="Text.EditApiKey.ApiKey" xml:space="preserve">API 密钥</x:String>
+  <x:String x:Key="Text.EditApiKey.EnvironmentVariable" xml:space="preserve">环境变量</x:String>
+  <x:String x:Key="Text.EditApiKey.InvalidStorage" xml:space="preserve">未检测到 `secret-tool`, 请安装后重启程序再尝试</x:String>
+  <x:String x:Key="Text.EditApiKey.Server" xml:space="preserve">服务地址</x:String>
+  <x:String x:Key="Text.EditApiKey.Storage" xml:space="preserve">存储方式</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">编辑分支描述</x:String>
   <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
@@ -675,7 +681,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">自动拉取可用模型列表</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">推理努力等级</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
