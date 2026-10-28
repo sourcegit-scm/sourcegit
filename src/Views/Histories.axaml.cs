@@ -832,8 +832,23 @@ namespace SourceGit.Views
             }
             if (Math.Abs(CommitGraph.Margin.Left - graphOffset) > 0.01)
                 CommitGraph.Margin = new Thickness(graphOffset, 24, 0, 0);
-            if (Math.Abs(HistoryHeaderTools.Margin.Left - graphOffset) > 0.01)
-                HistoryHeaderTools.Margin = new Thickness(graphOffset, 0, 0, 0);
+
+            // Keep the tools at the left edge and reserve space in the first visible header.
+            DataGridColumn firstColumn = null;
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.IsVisible && (firstColumn == null || column.DisplayIndex < firstColumn.DisplayIndex))
+                    firstColumn = column;
+            }
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.Header is Control header)
+                {
+                    var margin = column == firstColumn ? new Thickness(HistoryHeaderTools.Width, 0, 0, 0) : default;
+                    if (header.Margin != margin)
+                        header.Margin = margin;
+                }
+            }
 
             var authorColumn = dataGrid.Columns[1];
             double authorOffset = 0;

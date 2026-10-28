@@ -103,9 +103,7 @@
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
-              <Border Padding="48,0">
-                <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
-              </Border>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
