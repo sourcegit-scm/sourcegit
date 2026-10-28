@@ -50,6 +50,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsTreeColumnVisible
+        {
+            get => _repo.UIStates.IsTreeColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsTreeColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsTreeColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool IsAuthorColumnVisible
         {
             get => _repo.UIStates.IsAuthorColumnVisibleInHistory;
@@ -575,6 +588,7 @@ namespace SourceGit.ViewModels
             }
 
             Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
+
         }
 
         private Repository _repo = null;

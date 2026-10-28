@@ -86,6 +86,13 @@
             </Style>
           </Style>
 
+          <Style Selector="Border.history_message" x:DataType="m:Commit">
+            <Setter Property="Padding" Value="{Binding LeftMargin, Converter={x:Static c:DoubleConverters.ToLeftMargin}}"/>
+          </Style>
+          <Style Selector="Border.history_message.separate_tree">
+            <Setter Property="Padding" Value="0"/>
+          </Style>
+
           <Style Selector="DataGridCell">
             <Setter Property="Template">
               <ControlTemplate>
@@ -103,16 +110,40 @@
         </DataGrid.Styles>
 
         <DataGrid.Columns>
+          <DataGridTemplateColumn Width="0" MinWidth="0"
+                                  IsReadOnly="True"
+                                  IsVisible="{Binding IsTreeColumnVisible, Mode=OneWay}">
+            <DataGridTemplateColumn.Header>
+              <Canvas Height="24" ClipToBounds="True">
+                <Border Canvas.Left="48" Height="24">
+                  <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Tree}" VerticalAlignment="Center"/>
+                </Border>
+              </Canvas>
+            </DataGridTemplateColumn.Header>
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Border Background="Transparent"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
               <Border Padding="48,0">
-                <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
+                <Grid>
+                  <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"
+                             IsVisible="{Binding !IsTreeColumnVisible}"/>
+                  <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Subject}" HorizontalAlignment="Center"
+                             IsVisible="{Binding IsTreeColumnVisible}"/>
+                </Grid>
               </Border>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="{Binding LeftMargin, Converter={x:Static c:DoubleConverters.ToLeftMargin}}" ClipToBounds="True" Background="Transparent">
+                <Border Classes="history_message"
+                        Classes.separate_tree="{Binding $parent[v:Histories].((vm:Histories)DataContext).IsTreeColumnVisible}"
+                        ClipToBounds="True" Background="Transparent">
                   <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
                     <v:CommitStatusIndicator Grid.Column="0"
                                              CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
@@ -247,7 +278,8 @@
               HorizontalAlignment="Stretch" VerticalAlignment="Top"
               PointerMoved="OnCommitListHeaderPointerMoved"
               PointerPressed="OnCommitListHeaderPointerPressed"
-              PointerReleased="OnCommitListHeaderPointerReleased">
+              PointerReleased="OnCommitListHeaderPointerReleased"
+              PointerCaptureLost="OnCommitListHeaderPointerCaptureLost">
         <StackPanel Orientation="Horizontal"
                     Height="18"
                     Margin="4,0,0,0"
