@@ -352,6 +352,7 @@
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Submódulo:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Eliminar Rama</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Rama:</x:String>
+  <x:String x:Key="Text.DeleteBranch.DeleteAttachedWorktree" xml:space="preserve">Borrar árbol de trabajo para esta rama</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Forzar la eliminación incluso si contiene commit(s) sin fusionar</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">¡Estás a punto de eliminar una rama remota!</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">También eliminar la rama remota ${0}$</x:String>
@@ -416,6 +417,12 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Incluir archivos sin rastrear</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">Total {0} cambios serán descartados</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">¡No puedes deshacer esta acción!</x:String>
+  <x:String x:Key="Text.EditApiKey" xml:space="preserve">Editar la clave API</x:String>
+  <x:String x:Key="Text.EditApiKey.ApiKey" xml:space="preserve">Clave API</x:String>
+  <x:String x:Key="Text.EditApiKey.EnvironmentVariable" xml:space="preserve">Variable de Entorno</x:String>
+  <x:String x:Key="Text.EditApiKey.InvalidStorage" xml:space="preserve">Para almacenar la clave en el administrador de credenciales del sistema en Linux, deberás instalar `secret-tool`</x:String>
+  <x:String x:Key="Text.EditApiKey.Server" xml:space="preserve">Servidor</x:String>
+  <x:String x:Key="Text.EditApiKey.Storage" xml:space="preserve">Almacenamiento</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Editar la descripción de la rama</x:String>
   <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Destino:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Marcador:</x:String>
@@ -736,6 +743,7 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">INTEGRACIÓN</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">SHELL/TERMINAL</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Argumentos</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.ToolTip" xml:space="preserve">Puedes utilizar '.' para indicar el directorio de trabajo y '$FOLDER_NAME' para el nombre puro de la carpeta.</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Ruta</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Shell/Terminal</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Podar Remoto</x:String>
