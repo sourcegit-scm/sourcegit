@@ -10,6 +10,22 @@ namespace SourceGit.Views
 {
     public partial class Repository : UserControl
     {
+        public static readonly DirectProperty<Repository, bool> IsWideDetailsLayoutActiveProperty =
+            AvaloniaProperty.RegisterDirect<Repository, bool>(
+                nameof(IsWideDetailsLayoutActive),
+                static o => o.IsWideDetailsLayoutActive,
+                static (o, v) => o.IsWideDetailsLayoutActive = v);
+
+        public bool IsWideDetailsLayoutActive
+        {
+            get => _isWideDetailsLayoutActive;
+            set
+            {
+                if (SetAndRaise(IsWideDetailsLayoutActiveProperty, ref _isWideDetailsLayoutActive, value))
+                    UpdateSidebarPlacement();
+            }
+        }
+
         public static readonly DirectProperty<Repository, bool> IsCommitSearchPanelVisibleProperty =
             AvaloniaProperty.RegisterDirect<Repository, bool>(
                 nameof(IsCommitSearchPanelVisible),
@@ -85,6 +101,33 @@ namespace SourceGit.Views
         protected override void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+            UpdateSidebarPlacement();
+            UpdateLeftSidebarLayout();
+        }
+
+        private void UpdateSidebarPlacement()
+        {
+            if (MainBody == null || DashboardHistories == null || _sidebarInHistory == _isWideDetailsLayoutActive)
+                return;
+
+            var historyArea = DashboardHistories.SidebarHost;
+            var source = _sidebarInHistory ? historyArea : MainBody;
+            var target = _isWideDetailsLayoutActive ? historyArea : MainBody;
+
+            // Move the existing sidebar and its bound width together so resizing and
+            // collapse/search state work identically in either location.
+            source.Children.Remove(Sidebar);
+            source.Children.Remove(CommitSearchPanel);
+            source.Children.Remove(SidebarSplitter);
+
+            var column = source.ColumnDefinitions[0];
+            source.ColumnDefinitions[0] = target.ColumnDefinitions[0];
+            target.ColumnDefinitions[0] = column;
+
+            target.Children.Add(Sidebar);
+            target.Children.Add(CommitSearchPanel);
+            target.Children.Add(SidebarSplitter);
+            _sidebarInHistory = _isWideDetailsLayoutActive;
             UpdateLeftSidebarLayout();
         }
 
@@ -531,6 +574,8 @@ namespace SourceGit.Views
         }
 
         private bool _isNormalSidebarVisible = true;
+        private bool _isWideDetailsLayoutActive = false;
+        private bool _sidebarInHistory = false;
         private bool _isCommitSearchPanelVisible = false;
         private double _sidebarMinWidth = 200;
         private GridLength _sidebarWidth;

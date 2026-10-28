@@ -297,6 +297,8 @@ namespace SourceGit.Views
 
     public partial class Histories : UserControl
     {
+        internal Grid SidebarHost => HistoryArea;
+
         public static readonly DirectProperty<Histories, Models.Branch> CurrentBranchProperty =
             AvaloniaProperty.RegisterDirect<Histories, Models.Branch>(
                 nameof(CurrentBranch),
@@ -550,11 +552,22 @@ namespace SourceGit.Views
 
             var vertical = new MenuItem();
             vertical.Header = App.Text("Repository.HistoriesLayout.Vertical");
-            if (!isHorizontal)
+            if (!isHorizontal && !pref.UseWideDetailsLayoutInHistories)
                 vertical.Icon = this.CreateMenuIcon("Icons.Check");
             vertical.Click += (_, ev) =>
             {
                 pref.UseTwoColumnsLayoutInHistories = false;
+                pref.UseWideDetailsLayoutInHistories = false;
+                ev.Handled = true;
+            };
+
+            var wideDetails = new MenuItem();
+            wideDetails.Header = App.Text("Repository.HistoriesLayout.WideDetails");
+            if (pref.UseWideDetailsLayoutInHistories)
+                wideDetails.Icon = this.CreateMenuIcon("Icons.Check");
+            wideDetails.Click += (_, ev) =>
+            {
+                pref.UseWideDetailsLayoutInHistories = true;
                 ev.Handled = true;
             };
 
@@ -724,6 +737,7 @@ namespace SourceGit.Views
             menu.Items.Add(layout);
             menu.Items.Add(horizontal);
             menu.Items.Add(vertical);
+            menu.Items.Add(wideDetails);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(showFlags);
             menu.Items.Add(reflog);

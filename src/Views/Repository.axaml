@@ -10,6 +10,12 @@
              x:Class="SourceGit.Views.Repository"
              x:DataType="vm:Repository"
              x:Name="ThisControl">  
+  <v:Repository.IsWideDetailsLayoutActive>
+    <MultiBinding Converter="{x:Static BoolConverters.And}">
+      <Binding Source="{x:Static vm:Preferences.Instance}" Path="UseWideDetailsLayoutInHistories"/>
+      <Binding Path="IsDashboardVisible"/>
+    </MultiBinding>
+  </v:Repository.IsWideDetailsLayoutActive>
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="49"/>
@@ -250,7 +256,7 @@
           </Grid>
 
           <!-- Main Body -->
-          <Grid Grid.Row="1" Background="{DynamicResource Brush.Window}">
+          <Grid x:Name="MainBody" Grid.Row="1" Background="{DynamicResource Brush.Window}">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="{Binding #ThisControl.SidebarWidth, Mode=TwoWay}" MinWidth="{Binding #ThisControl.SidebarMinWidth, Mode=OneWay}"/>
               <ColumnDefinition Width="Auto"/>
@@ -258,7 +264,9 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar (Branches/Remotes/Tags/Submodules/Worktrees) -->
-            <Grid Grid.Column="0" RowDefinitions="Auto,*" IsVisible="{Binding #ThisControl.IsNormalSidebarVisible, Mode=OneWay}">              
+            <Grid x:Name="Sidebar" Grid.Column="0" RowDefinitions="Auto,*"
+                  DataContext="{Binding #ThisControl.DataContext}"
+                  IsVisible="{Binding #ThisControl.IsNormalSidebarVisible, Mode=OneWay}">
               <!-- Filter Branches/Tags/Submodules -->
               <TextBox Grid.Row="0"
                        x:Name="FilterBox"
@@ -575,13 +583,13 @@
             </Grid>
 
             <!-- Commit Search Panel -->
-            <v:CommitSearchView Grid.Column="0"
+            <v:CommitSearchView x:Name="CommitSearchPanel" Grid.Column="0"
                                 Margin="6,0,4,0"
                                 DataContext="{Binding Histories.SearchCommitContext, Mode=OneWay}"
                                 IsVisible="{Binding #ThisControl.IsCommitSearchPanelVisible, Mode=OneWay}"/>
 
             <!-- Splitter -->
-            <GridSplitter Grid.Column="1"
+            <GridSplitter x:Name="SidebarSplitter" Grid.Column="1"
                           Width="3" MinWidth="3" MaxWidth="3"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                           Background="Transparent"
@@ -788,7 +796,7 @@
                   </Border>
 
                   <!-- History -->
-                  <v:Histories Grid.Row="2"
+                  <v:Histories x:Name="DashboardHistories" Grid.Row="2"
                                DataContext="{Binding Histories, Mode=OneWay}"
                                CurrentBranch="{Binding CurrentBranch, Mode=OneWay}"
                                Bisect="{Binding Bisect, Mode=OneWay}"
