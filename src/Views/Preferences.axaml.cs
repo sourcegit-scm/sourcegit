@@ -474,16 +474,30 @@ namespace SourceGit.Views
 
             try
             {
-                var apiKey = AI.ApiKeyManager.Get(service.Server) ?? new AI.ApiKey { Service = service.Server };
-                var editKey = apiKey.CreateEditObject();
+                var editKey = new AI.ApiKey { Service = service.Server };
+                var existKey = AI.ApiKeyManager.Get(service.Server);
+                if (existKey != null)
+                {
+                    editKey.Storage = existKey.Storage;
+                    editKey.KeyToAccess = existKey.Storage == AI.ApiKeyStorage.SystemKeychain ? existKey.GetRawApiKey() : existKey.KeyToAccess;
+                }
 
                 var dialog = new EditApiKey(editKey);
                 var ok = await dialog.ShowDialog<bool>(this);
                 if (!ok)
                     return;
 
-                editKey.PrepareForSaving();
                 AI.ApiKeyManager.AddOrUpdate(editKey);
+
+                // Clear all cached API keys for the service to ensure that the new key is used
+                foreach (var s in ViewModels.Preferences.Instance.OpenAIServices)
+                {
+                    if (s.Server.Equals(editKey.Service, StringComparison.Ordinal))
+                    {
+                        s.CachedApiKey = string.Empty;
+                        break;
+                    }
+                }
             }
             catch (Exception ex)
             {

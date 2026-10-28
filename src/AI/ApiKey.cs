@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ClientModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -59,38 +58,21 @@ namespace SourceGit.AI
             }
         }
 
-        public void Cleanup()
+        public void CleanupForRemove()
         {
             if (Storage == ApiKeyStorage.SystemKeychain)
                 Native.OS.Keychain?.Erase(Service, "SourceGit");
         }
 
-        public ApiKey CreateEditObject()
-        {
-            var cloned = new ApiKey()
-            {
-                Service = Service,
-                Storage = _storage,
-            };
-
-            if (_storage == ApiKeyStorage.SystemKeychain)
-                cloned.KeyToAccess = Native.OS.Keychain?.Read(Service, "SourceGit") ?? string.Empty;
-            else
-                cloned.KeyToAccess = _keyToAccess;
-
-            return cloned;
-        }
-
-        public ApiKeyCredential ToCredential()
+        public string GetRawApiKey()
         {
             if (_storage == ApiKeyStorage.PlainText)
-                return new ApiKeyCredential(_keyToAccess);
+                return _keyToAccess;
 
             if (_storage == ApiKeyStorage.EnvironmentVariable)
-                return new ApiKeyCredential(Environment.GetEnvironmentVariable(_keyToAccess));
+                return Environment.GetEnvironmentVariable(_keyToAccess);
 
-            var rawApiKey = Native.OS.Keychain?.Read(Service, "SourceGit");
-            return new ApiKeyCredential(rawApiKey ?? string.Empty);
+            return Native.OS.Keychain?.Read(Service, "SourceGit") ?? string.Empty;
         }
 
         private ApiKeyStorage _storage = ApiKeyStorage.EnvironmentVariable;
@@ -129,6 +111,8 @@ namespace SourceGit.AI
 
         public static void AddOrUpdate(ApiKey key)
         {
+            key.PrepareForSaving();
+
             var changed = true;
             var existed = false;
             foreach (var k in _keys)
@@ -163,11 +147,11 @@ namespace SourceGit.AI
             if (apiKey == null)
                 return;
 
-            // Save first because `ApiKey.Cleanup` may raise exception.
+            // Save first because `ApiKey.CleanupForRemove` may raise exception.
             _keys.Remove(apiKey);
             Save();
 
-            apiKey.Cleanup();
+            apiKey.CleanupForRemove();
         }
 
         private static void Save()

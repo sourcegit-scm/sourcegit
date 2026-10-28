@@ -42,6 +42,13 @@ namespace SourceGit.AI
             private set;
         } = [];
 
+        [JsonIgnore]
+        public string CachedApiKey
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public string Model
         {
             get => _model;
@@ -97,7 +104,7 @@ namespace SourceGit.AI
 
         private OpenAIClient GetOpenAIClient()
         {
-            var credential = ApiKeyManager.Get(Server)?.ToCredential() ?? new ApiKeyCredential(string.Empty);
+            var credential = GetCredential();
 
             if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
             {
@@ -113,6 +120,15 @@ namespace SourceGit.AI
             if (!string.IsNullOrEmpty(ExtraHeaders))
                 options.AddPolicy(new ExtraHeadersPolicy(ExtraHeaders), PipelinePosition.PerCall);
             return new OpenAIClient(credential, options);
+        }
+
+        private ApiKeyCredential GetCredential()
+        {
+            if (!string.IsNullOrEmpty(CachedApiKey))
+                return new ApiKeyCredential(CachedApiKey);
+
+            CachedApiKey = ApiKeyManager.Get(Server)?.GetRawApiKey() ?? string.Empty;
+            return new ApiKeyCredential(CachedApiKey);
         }
 
         private string _name = string.Empty;
