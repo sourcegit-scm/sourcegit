@@ -115,8 +115,9 @@
                                   IsVisible="{Binding IsTreeColumnVisible, Mode=OneWay}">
             <DataGridTemplateColumn.Header>
               <Canvas Height="24" ClipToBounds="True">
-                <Border Canvas.Left="48" Height="24">
-                  <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Tree}" VerticalAlignment="Center"/>
+                <Border Width="{Binding $parent[Canvas].Bounds.Width}" Height="24">
+                  <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Tree}"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
               </Canvas>
             </DataGridTemplateColumn.Header>
