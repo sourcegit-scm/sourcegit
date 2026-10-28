@@ -349,140 +349,196 @@ namespace SourceGit.Native
     [SupportedOSPlatform("macOS")]
     public class MacOSKeychain : OS.IKeychain
     {
-        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
-        private static extern int SecKeychainAddGenericPassword(
-            IntPtr keychain,
-            uint serviceNameLength,
-            byte[] serviceName,
-            uint accountNameLength,
-            byte[] accountName,
-            uint passwordLength,
-            byte[] passwordData,
-            out IntPtr itemRef);
+        private const int errSecSuccess = 0;
+        private const int errSecItemNotFound = -25300;
+        private const int errSecDuplicateItem = -25299;
 
-        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
-        private static extern int SecKeychainFindGenericPassword(
-            IntPtr keychainOrArray,
-            uint serviceNameLength,
-            byte[] serviceName,
-            uint accountNameLength,
-            byte[] accountName,
-            out uint passwordLength,
-            out IntPtr passwordData,
-            out IntPtr itemRef);
+        private const string libCoreFoundation = "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation";
+        private const string libSecurity = "/System/Library/Frameworks/Security.framework/Security";
 
-        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
-        private static extern int SecKeychainItemModifyAttributesAndData(
-            IntPtr itemRef,
-            IntPtr attrList,
-            uint length,
-            byte[] data);
-
-        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
-        private static extern int SecKeychainItemDelete(IntPtr itemRef);
-
-        [DllImport("/System/Library/Frameworks/Security.framework/Security")]
-        private static extern int SecKeychainItemFreeContent(IntPtr attrList, IntPtr data);
-
-        [DllImport("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")]
+        [DllImport(libCoreFoundation)]
+        private static extern IntPtr CFStringCreateWithCString(IntPtr alloc, byte[] cStr, uint encoding);
+        [DllImport(libCoreFoundation)]
+        private static extern IntPtr CFDataCreate(IntPtr allocator, byte[] bytes, nint length);
+        [DllImport(libCoreFoundation)]
+        private static extern nint CFDataGetLength(IntPtr theData);
+        [DllImport(libCoreFoundation)]
+        private static extern IntPtr CFDataGetBytePtr(IntPtr theData);
+        [DllImport(libCoreFoundation)]
+        private static extern IntPtr CFDictionaryCreateMutable(IntPtr allocator, IntPtr capacity, IntPtr keyCallBacks, IntPtr valueCallBacks);
+        [DllImport(libCoreFoundation)]
+        private static extern void CFDictionarySetValue(IntPtr theDict, IntPtr key, IntPtr value);
+        [DllImport(libCoreFoundation)]
         private static extern void CFRelease(IntPtr cf);
+
+        [DllImport(libSecurity)]
+        private static extern int SecItemAdd(IntPtr attributes, IntPtr result);
+        [DllImport(libSecurity)]
+        private static extern int SecItemCopyMatching(IntPtr query, out IntPtr result);
+        [DllImport(libSecurity)]
+        private static extern int SecItemUpdate(IntPtr query, IntPtr attributesToUpdate);
+        [DllImport(libSecurity)]
+        private static extern int SecItemDelete(IntPtr query);
+
+        private static readonly Lazy<IntPtr> moduleCoreFoundation = new(() => NativeLibrary.Load(libCoreFoundation));
+        private static readonly Lazy<IntPtr> moduleSecurity = new(() => NativeLibrary.Load(libSecurity));
+
+        private static IntPtr LoadSymbol(IntPtr module, string symbol) => Marshal.ReadIntPtr(NativeLibrary.GetExport(module, symbol));
+
+        private static readonly Lazy<IntPtr> kSecClass = new(() => LoadSymbol(moduleSecurity.Value, "kSecClass"));
+        private static readonly Lazy<IntPtr> kSecClassGenericPassword = new(() => LoadSymbol(moduleSecurity.Value, "kSecClassGenericPassword"));
+        private static readonly Lazy<IntPtr> kSecAttrService = new(() => LoadSymbol(moduleSecurity.Value, "kSecAttrService"));
+        private static readonly Lazy<IntPtr> kSecAttrAccount = new(() => LoadSymbol(moduleSecurity.Value, "kSecAttrAccount"));
+        private static readonly Lazy<IntPtr> kSecValueData = new(() => LoadSymbol(moduleSecurity.Value, "kSecValueData"));
+        private static readonly Lazy<IntPtr> kSecReturnData = new(() => LoadSymbol(moduleSecurity.Value, "kSecReturnData"));
+        private static readonly Lazy<IntPtr> kSecMatchLimit = new(() => LoadSymbol(moduleSecurity.Value, "kSecMatchLimit"));
+        private static readonly Lazy<IntPtr> kSecMatchLimitOne = new(() => LoadSymbol(moduleSecurity.Value, "kSecMatchLimitOne"));
+        private static readonly Lazy<IntPtr> kCFBooleanTrue = new(() => LoadSymbol(moduleCoreFoundation.Value, "kCFBooleanTrue"));
 
         public void Store(string host, string username, string password)
         {
-            var serviceBytes = Encoding.UTF8.GetBytes(host);
-            var accountBytes = Encoding.UTF8.GetBytes(username);
-            var secretBytes = Encoding.UTF8.GetBytes(password);
+            IntPtr query = IntPtr.Zero;
+            IntPtr serviceCf = IntPtr.Zero;
+            IntPtr accountCf = IntPtr.Zero;
+            IntPtr dataCf = IntPtr.Zero;
+            IntPtr attrsToUpdate = IntPtr.Zero;
 
-            var status = SecKeychainAddGenericPassword(
-                IntPtr.Zero,
-                (uint)serviceBytes.Length, serviceBytes,
-                (uint)accountBytes.Length, accountBytes,
-                (uint)secretBytes.Length, secretBytes,
-                out _);
-
-            if (status == errSecDuplicateItem)
+            try
             {
-                // If the item already exists, update it instead
-                status = SecKeychainFindGenericPassword(
-                    IntPtr.Zero,
-                    (uint)serviceBytes.Length, serviceBytes,
-                    (uint)accountBytes.Length, accountBytes,
-                    out _, out _, out var itemRef);
+                serviceCf = CreateCFString(host);
+                accountCf = CreateCFString(username);
+                dataCf = CreateCFData(Encoding.UTF8.GetBytes(password));
+
+                query = CFDictionaryCreateMutable(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                CFDictionarySetValue(query, kSecClass.Value, kSecClassGenericPassword.Value);
+                CFDictionarySetValue(query, kSecAttrService.Value, serviceCf);
+                CFDictionarySetValue(query, kSecAttrAccount.Value, accountCf);
+                CFDictionarySetValue(query, kSecValueData.Value, dataCf);
+
+                int status = SecItemAdd(query, IntPtr.Zero);
+                if (status == errSecSuccess)
+                    return;
+
+                if (status != errSecDuplicateItem)
+                    throw new Exception($"Failed to store credential to keychain: {status}");
+
+                attrsToUpdate = CFDictionaryCreateMutable(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                CFDictionarySetValue(attrsToUpdate, kSecValueData.Value, dataCf);
+                status = SecItemUpdate(query, attrsToUpdate);
 
                 if (status != errSecSuccess)
-                    throw new Exception($"Failed to find original keychain item to modify: {status}");
-
-                status = SecKeychainItemModifyAttributesAndData(
-                        itemRef,
-                        IntPtr.Zero,
-                        (uint)secretBytes.Length, secretBytes);
-
-                CFRelease(itemRef);
+                    throw new Exception($"Failed to update credential in keychain: {status}");
             }
-
-            if (status != errSecSuccess)
-                throw new Exception($"Failed to store credential to keychain: {status}");
+            finally
+            {
+                if (query != IntPtr.Zero)
+                    CFRelease(query);
+                if (serviceCf != IntPtr.Zero)
+                    CFRelease(serviceCf);
+                if (accountCf != IntPtr.Zero)
+                    CFRelease(accountCf);
+                if (dataCf != IntPtr.Zero)
+                    CFRelease(dataCf);
+                if (attrsToUpdate != IntPtr.Zero)
+                    CFRelease(attrsToUpdate);
+            }
         }
 
         public string Read(string host, string username)
         {
-            var serviceBytes = Encoding.UTF8.GetBytes(host);
-            var accountBytes = Encoding.UTF8.GetBytes(username);
+            IntPtr query = IntPtr.Zero;
+            IntPtr serviceCf = IntPtr.Zero;
+            IntPtr accountCf = IntPtr.Zero;
+            IntPtr dataCf = IntPtr.Zero;
 
-            var status = SecKeychainFindGenericPassword(
-                IntPtr.Zero,
-                (uint)serviceBytes.Length, serviceBytes,
-                (uint)accountBytes.Length, accountBytes,
-                out var passwordLength,
-                out var passwordData,
-                out var itemRef);
-
-            if (status == errSecItemNotFound)
-                throw new Exception("Credential not found in keychain");
-
-            if (status != errSecSuccess)
-                throw new Exception($"Failed to read credential from keychain: {status}");
-
-            if (passwordLength == 0 || passwordData == IntPtr.Zero)
+            try
             {
-                CFRelease(itemRef);
-                return string.Empty;
-            }
+                serviceCf = CreateCFString(host);
+                accountCf = CreateCFString(username);
 
-            var passwordBytes = new byte[passwordLength];
-            Marshal.Copy(passwordData, passwordBytes, 0, (int)passwordLength);
-            CFRelease(itemRef);
-            return Encoding.UTF8.GetString(passwordBytes);
+                query = CFDictionaryCreateMutable(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                CFDictionarySetValue(query, kSecClass.Value, kSecClassGenericPassword.Value);
+                CFDictionarySetValue(query, kSecAttrService.Value, serviceCf);
+                CFDictionarySetValue(query, kSecAttrAccount.Value, accountCf);
+                CFDictionarySetValue(query, kSecReturnData.Value, kCFBooleanTrue.Value);
+                CFDictionarySetValue(query, kSecMatchLimit.Value, kSecMatchLimitOne.Value);
+
+                int status = SecItemCopyMatching(query, out dataCf);
+                if (status == errSecItemNotFound)
+                    throw new Exception("Credential not found in keychain");
+                if (status != errSecSuccess)
+                    throw new Exception($"Failed to read credential from keychain: {status}");
+
+                var len = CFDataGetLength(dataCf);
+                if (len <= 0)
+                    return string.Empty;
+
+                var ptr = CFDataGetBytePtr(dataCf);
+                var bytes = new byte[len];
+                Marshal.Copy(ptr, bytes, 0, (int)len);
+                return Encoding.UTF8.GetString(bytes);
+            }
+            finally
+            {
+                if (query != IntPtr.Zero)
+                    CFRelease(query);
+                if (serviceCf != IntPtr.Zero)
+                    CFRelease(serviceCf);
+                if (accountCf != IntPtr.Zero)
+                    CFRelease(accountCf);
+                if (dataCf != IntPtr.Zero)
+                    CFRelease(dataCf);
+            }
         }
 
         public void Erase(string host, string username)
         {
-            var serviceBytes = Encoding.UTF8.GetBytes(host);
-            var accountBytes = Encoding.UTF8.GetBytes(username);
+            IntPtr query = IntPtr.Zero;
+            IntPtr serviceCf = IntPtr.Zero;
+            IntPtr accountCf = IntPtr.Zero;
 
-            var status = SecKeychainFindGenericPassword(
-                IntPtr.Zero,
-                (uint)serviceBytes.Length, serviceBytes,
-                (uint)accountBytes.Length, accountBytes,
-                out var passwordLength,
-                out var passwordData,
-                out var itemRef);
+            try
+            {
+                serviceCf = CreateCFString(host);
+                accountCf = CreateCFString(username);
 
-            if (status == errSecItemNotFound)
-                return;
+                query = CFDictionaryCreateMutable(IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+                CFDictionarySetValue(query, kSecClass.Value, kSecClassGenericPassword.Value);
+                CFDictionarySetValue(query, kSecAttrService.Value, serviceCf);
+                CFDictionarySetValue(query, kSecAttrAccount.Value, accountCf);
 
-            if (status != errSecSuccess)
-                throw new Exception($"Failed to find credential in keychain: {status}");
+                int status = SecItemDelete(query);
+                if (status == errSecSuccess || status == errSecItemNotFound)
+                    return;
 
-            status = SecKeychainItemDelete(itemRef);
-            CFRelease(itemRef);
-
-            if (status != errSecSuccess && status != errSecItemNotFound)
                 throw new Exception($"Failed to delete credential from keychain: {status}");
+            }
+            finally
+            {
+                if (query != IntPtr.Zero)
+                    CFRelease(query);
+                if (serviceCf != IntPtr.Zero)
+                    CFRelease(serviceCf);
+                if (accountCf != IntPtr.Zero)
+                    CFRelease(accountCf);
+            }
         }
 
-        private const int errSecSuccess = 0;
-        private const int errSecItemNotFound = -25300;
-        private const int errSecDuplicateItem = -25299;
+        private IntPtr CreateCFString(string str)
+        {
+            var bytes = Encoding.UTF8.GetBytes(str + "\0");
+            var ptr = CFStringCreateWithCString(IntPtr.Zero, bytes, 0x08000100 /* kCFStringEncodingUTF8 */);
+            if (ptr == IntPtr.Zero)
+                throw new InvalidOperationException("CFStringCreateWithCString failed.");
+            return ptr;
+        }
+
+        private IntPtr CreateCFData(byte[] bytes)
+        {
+            var ptr = CFDataCreate(IntPtr.Zero, bytes, bytes.Length);
+            if (ptr == IntPtr.Zero)
+                throw new InvalidOperationException("CFDataCreate failed.");
+            return ptr;
+        }
     }
 }
