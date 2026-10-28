@@ -154,7 +154,7 @@ namespace SourceGit.ViewModels
                 return default;
 
             var r = _conflictRegions[info.RegionIndex];
-            var count = side == Models.ConflictPanelType.Ours ? r.OursContent.Count : r.TheirsContent.Count;
+            var count = side == Models.ConflictPanelType.Ours ? r.OursRowCount : r.TheirsRowCount;
             return new(Models.ConflictLineType.None, true, r.IsResolved, info.IndexInSide == 0, info.IndexInSide == count - 1);
         }
 
@@ -188,8 +188,8 @@ namespace SourceGit.ViewModels
             var r = _conflictRegions[regionIdx];
             return panel switch
             {
-                Models.ConflictPanelType.Ours => (r.OursFirst, r.OursContent.Count),
-                Models.ConflictPanelType.Theirs => (r.TheirsFirst, r.TheirsContent.Count),
+                Models.ConflictPanelType.Ours => (r.OursFirst, r.OursRowCount),
+                Models.ConflictPanelType.Theirs => (r.TheirsFirst, r.TheirsRowCount),
                 _ => (_ranges[regionIdx].FirstLine, _ranges[regionIdx].LineCount),
             };
         }
@@ -413,6 +413,9 @@ namespace SourceGit.ViewModels
                         i++;
                     }
 
+                    if (region.OursContent.Count == 0)
+                        oursLines.Add(new(Models.ConflictLineType.None, string.Empty) { RegionIndex = regionIdx, IndexInSide = 0 });
+
                     // Skip diff3 base section if present
                     if (i < lines.Length && lines[i].StartsWith("|||||||", StringComparison.Ordinal))
                     {
@@ -436,6 +439,9 @@ namespace SourceGit.ViewModels
                         region.TheirsContent.Add(line);
                         i++;
                     }
+
+                    if (region.TheirsContent.Count == 0)
+                        theirsLines.Add(new(Models.ConflictLineType.None, string.Empty) { RegionIndex = regionIdx, IndexInSide = 0 });
 
                     // Capture end marker (e.g., ">>>>>>> feature-branch")
                     if (i < lines.Length && lines[i].StartsWith(">>>>>>>", StringComparison.Ordinal))
@@ -510,7 +516,13 @@ namespace SourceGit.ViewModels
                 foreach (var pick in r.Picks)
                 {
                     var isOurs = pick.Side == Models.ConflictPanelType.Ours;
-                    lines.Add(isOurs ? r.OursContent[pick.Index] : r.TheirsContent[pick.Index]);
+                    var content = isOurs ? r.OursContent : r.TheirsContent;
+
+                    // The placeholder row of an empty side contributes no lines.
+                    if (pick.Index >= content.Count)
+                        continue;
+
+                    lines.Add(content[pick.Index]);
                     types.Add(isOurs ? Models.ConflictLineType.Ours : Models.ConflictLineType.Theirs);
                 }
 
@@ -566,7 +578,7 @@ namespace SourceGit.ViewModels
 
         private void AddAllPicks(Models.ConflictRegion r, Models.ConflictPanelType side)
         {
-            var count = side == Models.ConflictPanelType.Ours ? r.OursContent.Count : r.TheirsContent.Count;
+            var count = side == Models.ConflictPanelType.Ours ? r.OursRowCount : r.TheirsRowCount;
             for (var i = 0; i < count; i++)
                 r.Picks.Add(new(side, i));
         }

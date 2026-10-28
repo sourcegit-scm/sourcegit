@@ -893,7 +893,7 @@ namespace SourceGit.Views
             foreach (var c in conflicts)
             {
                 var topY = c.OursFirst * unitHeight;
-                var bottomY = topY + Math.Max(c.OursContent.Count * unitHeight, 2);
+                var bottomY = topY + Math.Max(c.OursRowCount * unitHeight, 2);
                 var bg = blockBGs[c.IsResolved ? 1 : 0];
                 context.DrawRectangle(bg, null, new Rect(0, topY, Bounds.Width, bottomY - topY));
             }
@@ -1147,7 +1147,7 @@ namespace SourceGit.Views
                     }
 
                     if (!isEnd)
-                        gapStart = region.OursFirst + region.OursContent.Count;
+                        gapStart = region.OursFirst + region.OursRowCount;
                 }
             }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SourceGit.Models
@@ -90,6 +91,10 @@ namespace SourceGit.Models
 
         public List<string> OursContent { get; set; } = new();
         public List<string> TheirsContent { get; set; } = new();
+
+        // An empty side still takes one (placeholder) row in its panel, so that it can be picked.
+        public int OursRowCount => Math.Max(OursContent.Count, 1);
+        public int TheirsRowCount => Math.Max(TheirsContent.Count, 1);
 
         public List<ConflictPick> Picks { get; set; } = new();
         public bool HasChoice { get; set; } = false;
