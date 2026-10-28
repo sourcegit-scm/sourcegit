@@ -251,7 +251,7 @@
 
       <Border x:Name="HistoryHeaderTools"
               Background="Transparent"
-              Width="48" Height="24"
+              Width="72" Height="24"
               HorizontalAlignment="Left" VerticalAlignment="Top">
         <StackPanel Orientation="Horizontal"
                     Height="18"
