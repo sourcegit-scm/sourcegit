@@ -50,6 +50,19 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool IsBranchesColumnVisible
+        {
+            get => _repo.UIStates.IsBranchesColumnVisibleInHistory;
+            set
+            {
+                if (_repo.UIStates.IsBranchesColumnVisibleInHistory != value)
+                {
+                    _repo.UIStates.IsBranchesColumnVisibleInHistory = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public bool IsAuthorColumnVisible
         {
             get => _repo.UIStates.IsAuthorColumnVisibleInHistory;
@@ -202,6 +215,12 @@ namespace SourceGit.ViewModels
                 if (!Preferences.Instance.UseTwoColumnsLayoutInHistories && !_isCollapseDetails)
                     SetProperty(ref _bottomArea, value);
             }
+        }
+
+        public double BranchesColumnWidth
+        {
+            get => _repo.UIStates.BranchesColumnWidth;
+            set => _repo.UIStates.BranchesColumnWidth = value;
         }
 
         public double AuthorColumnWidth

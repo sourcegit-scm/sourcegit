@@ -372,6 +372,8 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+            CommitListContainer.Columns[5].DisplayIndex = 0;
+            CommitListContainer.Columns[5].PropertyChanged += OnBranchesColumnPropertyChanged;
         }
 
         public async Task GotoParent()
@@ -465,7 +467,55 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.Histories vm)
+            {
                 CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+                CommitListContainer.Columns[5].Width = new(vm.BranchesColumnWidth, DataGridLengthUnitType.Pixel);
+            }
+        }
+
+        private void OnBranchesColumnPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == DataGridColumn.WidthProperty &&
+                sender is DataGridColumn column && column.Width.UnitType == DataGridLengthUnitType.Pixel &&
+                DataContext is ViewModels.Histories vm)
+                vm.BranchesColumnWidth = column.Width.Value;
+        }
+
+        private void OnBranchesResizePressed(object sender, PointerPressedEventArgs e)
+        {
+            if (sender is Border border && DataContext is ViewModels.Histories vm && e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _branchesResizeStartX = e.GetPosition(CommitListContainer).X;
+                _branchesResizeStartWidth = vm.BranchesColumnWidth;
+                _resizingBranchesColumn = true;
+                e.Pointer.Capture(border);
+                e.Handled = true;
+            }
+        }
+
+        private void OnBranchesResizeMoved(object sender, PointerEventArgs e)
+        {
+            if (_resizingBranchesColumn)
+            {
+                var width = Math.Max(100, _branchesResizeStartWidth + e.GetPosition(CommitListContainer).X - _branchesResizeStartX);
+                CommitListContainer.Columns[5].Width = new(width, DataGridLengthUnitType.Pixel);
+                e.Handled = true;
+            }
+        }
+
+        private void OnBranchesResizeReleased(object sender, PointerReleasedEventArgs e)
+        {
+            if (_resizingBranchesColumn)
+            {
+                _resizingBranchesColumn = false;
+                e.Pointer.Capture(null);
+                e.Handled = true;
+            }
+        }
+
+        private void OnBranchesResizeCaptureLost(object sender, PointerCaptureLostEventArgs e)
+        {
+            _resizingBranchesColumn = false;
         }
 
         private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
@@ -679,6 +729,16 @@ namespace SourceGit.Views
             columnsHeader.Header = new TextBlock() { Text = App.Text("Histories.ShowColumns"), FontWeight = FontWeight.Bold };
             columnsHeader.IsEnabled = false;
 
+            var branchesColumn = new MenuItem();
+            branchesColumn.Header = App.Text("Histories.Header.Branches");
+            if (histories.IsBranchesColumnVisible)
+                branchesColumn.Icon = this.CreateMenuIcon("Icons.Check");
+            branchesColumn.Click += (_, ev) =>
+            {
+                histories.IsBranchesColumnVisible = !histories.IsBranchesColumnVisible;
+                ev.Handled = true;
+            };
+
             var authorColumn = new MenuItem();
             authorColumn.Header = App.Text("Histories.Header.Author");
             if (histories.IsAuthorColumnVisible)
@@ -742,6 +802,7 @@ namespace SourceGit.Views
             menu.Items.Add(currentBranchAndSelectedCommits);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(columnsHeader);
+            menu.Items.Add(branchesColumn);
             menu.Items.Add(authorColumn);
             menu.Items.Add(shaColumn);
             menu.Items.Add(authorTimeColumn);
@@ -778,13 +839,110 @@ namespace SourceGit.Views
 
             IsScrollToTopVisible = startY >= rowHeight;
 
-            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
+            var graphColumn = dataGrid.Columns[0];
+            double graphOffset = 0;
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.IsVisible && column.DisplayIndex < graphColumn.DisplayIndex)
+                    graphOffset += column.ActualWidth;
+            }
+            if (Math.Abs(CommitGraph.Margin.Left - graphOffset) > 0.01)
+                CommitGraph.Margin = new Thickness(graphOffset, 24, 0, 0);
+            if (Math.Abs(HistoryHeaderTools.Margin.Left - graphOffset) > 0.01)
+                HistoryHeaderTools.Margin = new Thickness(graphOffset, 0, 0, 0);
+
+            var branchesColumn = dataGrid.Columns[5];
+            var branchesRight = branchesColumn.ActualWidth;
+            foreach (var column in dataGrid.Columns)
+            {
+                if (column.IsVisible && column.DisplayIndex < branchesColumn.DisplayIndex)
+                    branchesRight += column.ActualWidth;
+            }
+            var branchesResizeOffset = Math.Max(0, branchesRight - 2);
+            if (Math.Abs(BranchesColumnResizeHandle.Margin.Left - branchesResizeOffset) > 0.01)
+                BranchesColumnResizeHandle.Margin = new Thickness(branchesResizeOffset, 0, 0, 0);
+
+            var clipWidth = Math.Max(0, dataGrid.Columns[0].ActualWidth - 4);
             var lastLayout = CommitGraph.Layout;
             if (lastLayout == null ||
                 Math.Abs(lastLayout.StartY - startY) > 0.01 ||
                 Math.Abs(lastLayout.ClipWidth - clipWidth) > 0.01 ||
                 Math.Abs(lastLayout.RowHeight - rowHeight) > 0.01)
                 CommitGraph.Layout = new(startY, clipWidth, rowHeight);
+
+            UpdateBranchConnections(rowsPresenter, graphColumn, startY, rowHeight);
+        }
+
+        private void UpdateBranchConnections(DataGridRowsPresenter rowsPresenter, DataGridColumn graphColumn, double startY, double rowHeight)
+        {
+            var connections = new List<CommitBranchConnection>();
+            var branchesColumn = CommitListContainer.Columns[5];
+            var adjacent = branchesColumn.IsVisible && branchesColumn.DisplayIndex < graphColumn.DisplayIndex;
+            foreach (var column in CommitListContainer.Columns)
+            {
+                if (column.IsVisible && column.DisplayIndex > branchesColumn.DisplayIndex && column.DisplayIndex < graphColumn.DisplayIndex)
+                    adjacent = false;
+            }
+
+            if (adjacent && CommitGraph.Graph is { } graph)
+            {
+                foreach (var child in rowsPresenter.Children)
+                {
+                    if (child is not DataGridRow { IsVisible: true, DataContext: Models.Commit } row ||
+                        row.Index < 0 || row.Index >= graph.Dots.Count)
+                        continue;
+
+                    foreach (var visual in row.GetVisualDescendants())
+                    {
+                        if (visual is not CommitRefsPresenter { ShowBranchSummary: true, IsEffectivelyVisible: true } label ||
+                            label.BranchSummaryBrush == null || label.BranchSummaryRefs != null)
+                            continue;
+
+                        var dot = graph.Dots[row.Index];
+                        var end = CommitGraph.TranslatePoint(new Point(dot.Center.X, dot.Center.Y * rowHeight - startY), BranchConnections);
+                        var start = label.TranslatePoint(new Point(System.Math.Min(label.BranchSummaryRight, label.Bounds.Width), 0), BranchConnections);
+                        if (start.HasValue && end.HasValue && start.Value.X < end.Value.X &&
+                            end.Value.Y >= 0 && end.Value.Y < BranchConnections.Bounds.Height)
+                        {
+                            var branch = label.DecoratorAt(new Point(0, 0));
+                            var active = branch?.Type == Models.DecoratorType.CurrentBranchHead ||
+                                (branch?.Type == Models.DecoratorType.LocalBranchHead &&
+                                 DataContext is ViewModels.Histories { CurrentBranch: { IsDetachedHead: false } current } &&
+                                 string.Equals(branch.Name, current.Name, StringComparison.Ordinal));
+                            connections.Add(new(new Point(start.Value.X, end.Value.Y), end.Value, label.BranchSummaryBrush, active, label.BranchSummarySuffixWidth));
+                        }
+                        break;
+                    }
+                }
+            }
+
+            BranchConnections.UpdateConnections(connections);
+        }
+
+        private void OnBranchCellPointerEntered(object sender, PointerEventArgs e)
+        {
+            if (sender is not Border { DataContext: Models.Commit commit, Child: CommitRefsPresenter label } border ||
+                commit.Decorators.Exists(x => x.IsBranch) || commit.GraphBranches.Count == 0)
+                return;
+
+            // Ancestors belong to the branch but are not its HEAD.
+            label.BranchSummaryRefs = commit.GraphBranches.ConvertAll(x => new Models.Decorator
+            {
+                Name = x.Name,
+                Type = x.Type == Models.DecoratorType.CurrentBranchHead ? Models.DecoratorType.LocalBranchHead : x.Type,
+            });
+            label.Opacity = 0.7;
+            border.SetCurrentValue(ToolTip.TipProperty, string.Join("\n", commit.GraphBranches.ConvertAll(x => x.Name)));
+        }
+
+        private void OnBranchCellPointerExited(object sender, PointerEventArgs e)
+        {
+            if (sender is Border { Child: CommitRefsPresenter { BranchSummaryRefs: not null } label } border)
+            {
+                label.BranchSummaryRefs = null;
+                label.Opacity = 1;
+                border.SetCurrentValue(ToolTip.TipProperty, (border.DataContext as Models.Commit)?.BranchToolTip);
+            }
         }
 
         private void OnScrollToTopPointerPressed(object sender, PointerPressedEventArgs e)
@@ -1970,6 +2128,9 @@ namespace SourceGit.Views
         private bool _isScrollToTopVisible = false;
         private bool _isDetailsPanelExpanded = true;
         private bool _resizingAuthorColumn = false;
+        private bool _resizingBranchesColumn = false;
+        private double _branchesResizeStartX = 0;
+        private double _branchesResizeStartWidth = 0;
         private Cursor _resizingCursor = new(StandardCursorType.SizeWestEast);
     }
 }

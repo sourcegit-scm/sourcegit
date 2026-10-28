@@ -119,6 +119,26 @@ namespace SourceGit.Views
             set => SetAndRaise(IssueTrackersProperty, ref _issueTrackers, value);
         }
 
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (_needRebuildInlines)
+            {
+                _needRebuildInlines = false;
+                GenerateFormattedTextElements();
+            }
+
+            var width = 0.0;
+            var height = 0.0;
+            foreach (var inline in _inlines)
+            {
+                var padding = inline.Element is { Type: Models.InlineElementType.Code } ? 8 : 0;
+                width = inline.X + inline.Text.WidthIncludingTrailingWhitespace + padding;
+                height = Math.Max(height, inline.Text.Height);
+            }
+
+            return new Size(Math.Min(width, availableSize.Width), Math.Min(height, availableSize.Height));
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_needRebuildInlines)
@@ -174,6 +194,7 @@ namespace SourceGit.Views
             {
                 _needRebuildInlines = true;
                 GenerateInlineElements();
+                InvalidateMeasure();
                 InvalidateVisual();
             }
             else if (change.Property == IssueTrackersProperty)
@@ -193,6 +214,7 @@ namespace SourceGit.Views
                 change.Property == LinkForegroundProperty)
             {
                 _needRebuildInlines = true;
+                InvalidateMeasure();
                 InvalidateVisual();
             }
             else if (change.Property == InlineCodeBackgroundProperty ||
@@ -243,6 +265,7 @@ namespace SourceGit.Views
         {
             _needRebuildInlines = true;
             GenerateInlineElements();
+            InvalidateMeasure();
             InvalidateVisual();
         }
 
