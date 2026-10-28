@@ -41,6 +41,7 @@ namespace SourceGit.Models
             public List<Point> Points { get; } = [];
             public int Color { get; } = color;
             public bool IsHighlighted { get; } = isHighlighted;
+            public bool IsDotted { get; init; }
         }
 
         public class Link
@@ -308,10 +309,25 @@ namespace SourceGit.Models
                 {
                     var head = temp.Dots[headIndex];
                     working.Center = new Point(head.Center.X, 0.5);
-                    var edge = new Path(head.Color, true);
+                    var lastJunction = working.Center;
+                    foreach (var link in temp.Links)
+                    {
+                        if (link.End.X == head.Center.X && link.End.Y > lastJunction.Y && link.End.Y < head.Center.Y)
+                            lastJunction = link.End;
+                    }
+
+                    var connection = lastJunction == working.Center ? head.Center : lastJunction;
+                    var edge = new Path(head.Color, true) { IsDotted = true };
                     edge.Points.Add(working.Center);
-                    edge.Points.Add(head.Center);
+                    edge.Points.Add(connection);
                     temp.Paths.Insert(0, edge);
+                    if (connection != head.Center)
+                    {
+                        var continuation = new Path(head.Color, true);
+                        continuation.Points.Add(connection);
+                        continuation.Points.Add(head.Center);
+                        temp.Paths.Insert(1, continuation);
+                    }
                     working.Color = head.Color;
                 }
                 temp.Dots.Insert(0, working);

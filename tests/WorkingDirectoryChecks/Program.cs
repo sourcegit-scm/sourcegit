@@ -237,6 +237,17 @@ internal static class Program
         Check(sideGraph.Dots[0].Center.X == sideBaseline.Dots[1].Center.X && sideGraph.Dots[0].Center.X < sideGraph.Dots[1].Center.X, "HEAD is leftmost even below another branch tip");
         var newestHead = CommitGraph.Generate([sideHead], false, CommitGraphHighlighting.All, [], true);
         Check(newestHead.Paths[0].Points.All(x => x.X == newestHead.Dots[0].Center.X), "newest HEAD uses a vertical edge");
+        var mergeHead = new Commit { SHA = "merge-head", Decorators = [new SourceGit.Models.Decorator { Type = DecoratorType.CurrentBranchHead }] };
+        var mergeTip = new Commit { SHA = "merge-tip", Parents = ["other-parent", mergeHead.SHA] };
+        var lowerMergeTip = new Commit { SHA = "lower-merge-tip", Parents = ["another-parent", mergeHead.SHA] };
+        var connected = CommitGraph.Generate([mergeTip, lowerMergeTip, mergeHead], false, CommitGraphHighlighting.All, [], true);
+        var junctions = connected.Links.Where(x => x.End.X == connected.Dots[0].Center.X).ToList();
+        Check(junctions.Count == 2, "multiple branches connect above HEAD");
+        var junction = junctions.MaxBy(x => x.End.Y).End;
+        Check(connected.Paths[0].IsDotted && connected.Paths[0].Points[^1] == junction, "working connector is dotted above the last branch junction");
+        Check(!connected.Paths[1].IsDotted && connected.Paths[1].Points[0] == junction && connected.Paths[1].Points[^1] == connected.Dots[^1].Center,
+            "working connector stays continuous from the branch junction to HEAD");
+        Check(connected.Paths.Skip(1).All(x => !x.IsDotted), "real tree connections stay continuous");
         var legacyHead = new Commit { SHA = "legacy-head", Decorators = [new SourceGit.Models.Decorator { Type = DecoratorType.CurrentBranchHead }] };
         var legacyTip = new Commit { SHA = "legacy-tip", Parents = [legacyHead.SHA] };
         var legacy = CommitGraph.Generate([legacyTip, legacyHead], false, CommitGraphHighlighting.All, [], false, false);

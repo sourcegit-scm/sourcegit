@@ -108,6 +108,8 @@ namespace SourceGit.Views
 
                 var geo = new StreamGeometry();
                 var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
+                if (line.IsDotted)
+                    pen = new Pen(pen.Brush, pen.Thickness, new DashStyle([0, 2], 0), PenLineCap.Round);
 
                 using (var ctx = geo.Open())
                 {
