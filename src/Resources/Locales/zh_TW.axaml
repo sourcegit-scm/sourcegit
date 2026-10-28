@@ -530,6 +530,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">目前分支和選取的提交</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">僅選取的提交</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">僅選取的提交 (First-parent 模式)</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">本機變更</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">在本機變更頁面中開啟</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已選取 {0} 項提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">顯示欄位</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住 Ctrl 或 Shift 鍵選擇多個提交</x:String>
@@ -852,6 +854,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">只顯示分支和標籤引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">只顯示合併提交的第一父提交</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">顯示內容</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">將本機變更顯示為圖表中的節點</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">顯示失去參照的提交</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以樹狀結構顯示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以樹狀結構顯示</x:String>

@@ -530,6 +530,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Текущая ветка и выбранные ревизии</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Только выбранные ревизии</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Выбранные ревизии (Только первый родитель)</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Локальные изменения</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Открыть на странице изменений</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ВЫБРАНО РЕВИЗИЙ: {0}</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">ПОКАЗЫВАТЬ КОЛОНКИ</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Удерживайте Ctrl или Shift, чтобы выбрать несколько ревизий.</x:String>
@@ -851,6 +853,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Только оформленные ревизии</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Показывать только первый родительский</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">ПОКАЗЫВАТЬ ФЛАГИ</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Локальные изменения как узел графа</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Показывать потерянные ревизии</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Показывать подмодули как дерево</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Показывать метки как каталог</x:String>

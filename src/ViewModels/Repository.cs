@@ -1348,6 +1348,7 @@ namespace SourceGit.ViewModels
 
                     _workingCopy.SetData(changes);
                     LocalChangesCount = changes.Count;
+                    _histories?.RefreshLocalChangesNode();
                     OnPropertyChanged(nameof(InProgressContext));
                     GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasLocalChanges, changes.Count == 0);
                 });
