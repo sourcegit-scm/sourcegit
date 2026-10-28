@@ -3,7 +3,6 @@ using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 using Azure.AI.OpenAI;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -100,10 +99,12 @@ namespace SourceGit.AI
             set;
         } = string.Empty;
 
-        public async Task<OpenAIClient> GetOpenAIClientAsync()
+        public OpenAIClient GetOpenAIClient()
         {
-            var credential = await GetCredentialAsync();
+            if (string.IsNullOrEmpty(CachedApiKey))
+                CachedApiKey = ApiKeyManager.Get(Server)?.GetRawApiKey() ?? string.Empty;
 
+            var credential = new ApiKeyCredential(CachedApiKey);
             if (Server.Contains("openai.azure.com/", StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(ExtraHeaders))
@@ -118,15 +119,6 @@ namespace SourceGit.AI
             if (!string.IsNullOrEmpty(ExtraHeaders))
                 options.AddPolicy(new ExtraHeadersPolicy(ExtraHeaders), PipelinePosition.PerCall);
             return new OpenAIClient(credential, options);
-        }
-
-        private async Task<ApiKeyCredential> GetCredentialAsync()
-        {
-            if (!string.IsNullOrEmpty(CachedApiKey))
-                return new ApiKeyCredential(CachedApiKey);
-
-            CachedApiKey = ApiKeyManager.Get(Server)?.GetRawApiKey() ?? string.Empty;
-            return new ApiKeyCredential(CachedApiKey);
         }
 
         private string _name = string.Empty;

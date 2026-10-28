@@ -91,8 +91,7 @@ namespace SourceGit.ViewModels
                         builder.AppendLine("Fetching available models...");
                         Text = builder.ToString();
 
-                        var aiClient = await _service.GetOpenAIClientAsync();
-                        var models = await aiClient.GetOpenAIModelClient().GetModelsAsync();
+                        var models = await _service.GetOpenAIClient().GetOpenAIModelClient().GetModelsAsync();
                         var availableModels = new List<string>();
                         foreach (var m in models.Value)
                             availableModels.Add(m.Id);
