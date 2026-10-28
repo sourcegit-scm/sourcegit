@@ -450,6 +450,29 @@ namespace SourceGit.ViewModels
             set;
         } = [];
 
+        public List<string> IgnoreFileModeRepositories { get; set; } = [];
+
+        public bool IgnoresFileMode(string repo)
+        {
+            if (string.IsNullOrEmpty(repo))
+                return false;
+
+            var normalized = repo.Replace('\\', '/').TrimEnd('/');
+            var repositories = IgnoreFileModeRepositories;
+            return repositories != null && repositories.Exists(path =>
+                string.Equals(path, normalized, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public void SetIgnoreFileMode(string repo, bool ignore)
+        {
+            var normalized = repo.Replace('\\', '/').TrimEnd('/');
+            var repositories = new List<string>(IgnoreFileModeRepositories ?? []);
+            repositories.RemoveAll(path => string.Equals(path, normalized, StringComparison.OrdinalIgnoreCase));
+            if (ignore)
+                repositories.Add(normalized);
+            IgnoreFileModeRepositories = repositories;
+        }
+
         public List<Workspace> Workspaces
         {
             get;

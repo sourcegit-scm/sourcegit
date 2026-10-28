@@ -256,6 +256,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Адрес электронной почты</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Спрашивать перед автоматическим обновлением подмодулей.</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Автозагрузка изменений</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Минут(а/ы)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Общепринятые типы ревизии</x:String>
@@ -387,6 +389,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">НОВЫЙ</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Следующее сравнение</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">НИКАКИХ ИЗМЕНЕНИЙ ИЛИ МЕНЯЕТСЯ ТОЛЬКО EOL</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">СТАРЫЙ</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Предыдущее сравнение</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Сохранить как заплатку</x:String>

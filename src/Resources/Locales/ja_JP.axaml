@@ -246,6 +246,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">E メールアドレス</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">サブモジュールを自動更新する前に尋ねる</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">リモートから</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分ごとに自動フェッチ</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">コンベンショナルコミットの種類定義</x:String>
@@ -377,6 +379,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">新版</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">次の差分</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">変更なし、または行末コードの変更のみ</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">旧版</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">前の差分</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">パッチとして保存</x:String>

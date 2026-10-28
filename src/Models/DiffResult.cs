@@ -91,6 +91,8 @@ namespace SourceGit.Models
 
     public class NoOrEOLChange;
 
+    public class FileModeOnlyChange : NoOrEOLChange;
+
     public class SubmoduleDiff
     {
         public string FullPath { get; set; } = string.Empty;

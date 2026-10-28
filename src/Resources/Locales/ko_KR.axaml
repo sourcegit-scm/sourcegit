@@ -232,6 +232,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">이메일 주소</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">서브모듈 자동 업데이트 전에 확인</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">원격 자동 Fetch</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">분</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Conventional Commit 유형</x:String>
@@ -358,6 +360,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">신규</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">다음 차이점</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">변경 사항 없음 또는 줄바꿈(EOL) 변경만 있음</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">기존</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">이전 차이점</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">패치로 저장</x:String>

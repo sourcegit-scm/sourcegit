@@ -256,6 +256,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">邮箱地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT配置</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">在自动更新子模块前询问用户</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">忽略此仓库的可执行权限变更（Windows）</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">仅影响此 Windows 上的 SourceGit；已暂存的权限变更仍会显示。</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">启用定时自动拉取远程更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分钟</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">自定义规范化提交类型</x:String>
@@ -388,6 +390,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">变更后</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一个差异</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">没有变更或仅有换行符差异</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">文件权限已变更，其他差异可能已被隐藏。</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">变更前</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一个差异</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">保存为补丁文件</x:String>
