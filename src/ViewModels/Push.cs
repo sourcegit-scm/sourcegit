@@ -296,7 +296,7 @@ namespace SourceGit.ViewModels
                     {
                         target = new Models.Branch()
                         {
-                            Name = mergeTarget,
+                            Name = mergeTarget.StartsWith("refs/heads/", StringComparison.Ordinal) ? mergeTarget.Substring(11) : mergeTarget,
                             Remote = _selectedRemote.Name,
                             Head = "---", // Not used by `git push` command but used by Views
                         };
