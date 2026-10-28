@@ -32,6 +32,12 @@ internal static class Program
             Preferences.Instance.WorkingDirectoryHeadMode = 1;
             CheckClassification();
             CheckGraph();
+            CheckScrolledGraphRendering();
+            if (args.Contains("--graph-only"))
+            {
+                Console.WriteLine($"PASS: {_checks} graph checks");
+                return;
+            }
             Git(fixture, "init -b main");
             Git(fixture, "config user.name Test");
             Git(fixture, "config user.email test@example.com");
@@ -256,6 +262,47 @@ internal static class Program
         CheckPinnedAncestry();
         var empty = CommitGraph.Generate([], false, CommitGraphHighlighting.All, [], true);
         Check(empty.Dots.Count == 1 && empty.Paths.Count == 0, "unborn repository graph");
+    }
+
+    private static void CheckScrolledGraphRendering()
+    {
+        foreach (var headType in new[] { DecoratorType.CurrentBranchHead, DecoratorType.CurrentCommitHead })
+        {
+            var head = new Commit { SHA = "old-head", Decorators = [new SourceGit.Models.Decorator { Type = headType }] };
+            List<Commit> commits = [];
+            for (var i = 0; i < 40; i++)
+                commits.Add(new Commit { SHA = $"commit-{i}", Parents = [i == 39 ? head.SHA : $"commit-{i + 1}"] });
+            commits[30].Parents.Add(head.SHA);
+            commits.Add(head);
+            var graph = CommitGraph.Generate(commits, false, CommitGraphHighlighting.All, [], true);
+            var continuation = graph.Paths[1];
+            Check(!continuation.IsDotted && continuation.Points[0].Y > 30, "old HEAD continuation starts below the newer visible commits");
+
+            foreach (var startY in new[] { 0.0, 130.0 })
+            {
+                var actual = Render(graph, startY);
+                graph.Paths.Remove(continuation);
+                var expected = Render(graph, startY);
+                Check(actual.SequenceEqual(expected), $"offscreen HEAD continuation preserves visible tree lines at scroll offset {startY}: {headType}");
+                var paths = graph.Paths.ToList();
+                graph.Paths.Clear();
+                Check(!expected.SequenceEqual(Render(graph, startY)), "visible newer commit paths are rendered");
+                graph.Paths.AddRange(paths);
+                graph.Paths.Insert(1, continuation);
+            }
+        }
+
+        static byte[] Render(CommitGraph graph, double startY)
+        {
+            var view = new Views.CommitGraph { Graph = graph, Layout = new(startY, 120, 26), Width = 120, Height = 130 };
+            view.Measure(new Size(120, 130));
+            view.Arrange(new Rect(0, 0, 120, 130));
+            using var bitmap = new RenderTargetBitmap(new PixelSize(120, 130));
+            bitmap.Render(view);
+            using var stream = new MemoryStream();
+            bitmap.Save(stream);
+            return stream.ToArray();
+        }
     }
 
     private static void CheckPinnedAncestry()

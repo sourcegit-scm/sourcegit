@@ -30,3 +30,8 @@ Push and interactive merge/rebase workflows require additional manual testing.
 Working Directory Head defaults to Hide. The tests opt into conditional display
 for the existing graph-head scenarios, then exercise Hide and Always separately.
 The `--render` option also saves the Appearance tab with the new dropdown.
+
+Pass `--graph-only` to run preference, classification, graph, and graph-rendering
+checks without opening the repository fixture window. Rendering checks cover
+scrolling above an older attached or detached HEAD with Working Directory Head
+enabled, where an offscreen connector must not hide newer commit paths.

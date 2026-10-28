@@ -104,7 +104,9 @@ namespace SourceGit.Views
                 if (endY < top)
                     continue;
                 if (last.Y > bottom)
-                    break;
+                    // The working-directory continuation can precede paths for
+                    // newer commits, so later paths may still be visible.
+                    continue;
 
                 var geo = new StreamGeometry();
                 var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
