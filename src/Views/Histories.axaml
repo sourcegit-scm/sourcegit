@@ -249,15 +249,21 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate x:DataType="m:Commit">
-                <Border Padding="4,0" Background="Transparent" ClipToBounds="True" ToolTip.Tip="{Binding BranchToolTip}"
-                        PointerEntered="OnBranchCellPointerEntered"
-                        PointerExited="OnBranchCellPointerExited">
-                  <v:CommitRefsPresenter Background="{DynamicResource Brush.Contents}"
+                <Border Padding="4,0" Background="Transparent" ClipToBounds="True" ToolTip.Tip="{Binding #BranchLabel.BranchSummaryToolTip}">
+                  <v:CommitRefsPresenter x:Name="BranchLabel"
+                                         Background="{DynamicResource Brush.Contents}"
                                          Foreground="{DynamicResource Brush.FG1}"
                                          FontSize="12"
                                          VerticalAlignment="Center"
                                          ShowBranchSummary="True"
-                                         UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"/>
+                                         UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}">
+                    <v:CommitRefsPresenter.ShowBranchContext>
+                      <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                        <Binding Path="$parent[DataGridRow].IsPointerOver"/>
+                        <Binding Path="$parent[DataGridRow].IsSelected"/>
+                      </MultiBinding>
+                    </v:CommitRefsPresenter.ShowBranchContext>
+                  </v:CommitRefsPresenter>
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>

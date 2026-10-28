@@ -176,14 +176,20 @@ namespace SourceGit.Views
             set => SetValue(ShowBranchSummaryProperty, value);
         }
 
-        public static readonly StyledProperty<List<Models.Decorator>> BranchSummaryRefsProperty =
-            AvaloniaProperty.Register<CommitRefsPresenter, List<Models.Decorator>>(nameof(BranchSummaryRefs));
+        public static readonly StyledProperty<bool> ShowBranchContextProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(ShowBranchContext));
 
-        public List<Models.Decorator> BranchSummaryRefs
+        public bool ShowBranchContext
         {
-            get => GetValue(BranchSummaryRefsProperty);
-            set => SetValue(BranchSummaryRefsProperty, value);
+            get => GetValue(ShowBranchContextProperty);
+            set => SetValue(ShowBranchContextProperty, value);
         }
+
+        public static readonly DirectProperty<CommitRefsPresenter, string> BranchSummaryToolTipProperty =
+            AvaloniaProperty.RegisterDirect<CommitRefsPresenter, string>(nameof(BranchSummaryToolTip), static o => o.BranchSummaryToolTip);
+
+        public string BranchSummaryToolTip => _branchSummaryToolTip;
+        public bool IsContextBranchSummary { get; private set; }
 
         public double BranchSummaryRight => ShowBranchSummary && _items.Count > 0 ? _items[0].Width + 1.5 : 0;
         public IBrush BranchSummaryBrush => ShowBranchSummary && _items.Count > 0 ? _items[0].Brush : null;
@@ -311,18 +317,13 @@ namespace SourceGit.Views
                 change.Property == ShowTagsProperty ||
                 change.Property == ShowBranchSummaryProperty ||
                 change.Property == ShowBranchesProperty ||
-                change.Property == BranchSummaryRefsProperty)
+                change.Property == ShowBranchContextProperty)
                 InvalidateMeasure();
         }
 
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
-            if (BranchSummaryRefs != null)
-            {
-                SetCurrentValue(BranchSummaryRefsProperty, null);
-                SetCurrentValue(OpacityProperty, 1.0);
-            }
             InvalidateMeasure();
         }
 
@@ -341,8 +342,23 @@ namespace SourceGit.Views
                 Models.Decorator decorator => [decorator],
                 _ => [],
             };
-            if (ShowBranchSummary && BranchSummaryRefs != null)
-                refs = BranchSummaryRefs;
+            IsContextBranchSummary = ShowBranchSummary && ShowBranchContext && commit != null &&
+                !commit.Decorators.Exists(x => x.IsBranch) && commit.GraphBranches.Count > 0;
+            if (IsContextBranchSummary)
+            {
+                // Show lane identity without presenting an ancestor as the branch tip.
+                refs = commit.GraphBranches.ConvertAll(x => new Models.Decorator
+                {
+                    Name = x.Name,
+                    Type = x.Type == Models.DecoratorType.CurrentBranchHead ? Models.DecoratorType.LocalBranchHead : x.Type,
+                });
+            }
+            if (ShowBranchSummary)
+            {
+                SetCurrentValue(OpacityProperty, IsContextBranchSummary ? 0.7 : 1.0);
+                var names = refs.FindAll(x => x.IsBranch).ConvertAll(x => x.Name);
+                SetAndRaise(BranchSummaryToolTipProperty, ref _branchSummaryToolTip, names.Count > 0 ? string.Join("\n", names) : null);
+            }
             var branchCount = 0;
             var primaryHasRemote = false;
             if (ShowBranchSummary)
@@ -523,6 +539,7 @@ namespace SourceGit.Views
         private string _summaryName = string.Empty;
         private string _summaryText = string.Empty;
         private int _summaryAdditionalCount;
+        private string _branchSummaryToolTip;
         private const double SummaryOuterSpacing = 3;
 
         protected override Size ArrangeOverride(Size finalSize)

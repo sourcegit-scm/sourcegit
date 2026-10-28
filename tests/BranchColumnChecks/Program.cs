@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Input.Raw;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -135,8 +136,19 @@ internal static class Program
         Check(featureParent.GraphBranches.Select(x => x.Name).SequenceEqual(new[] { "feature", "origin/feature" }),
             "merged feature ancestry inherits its own lane branch and remote");
         Check(root.GraphBranches.Single().Name == "main", "shared ancestry follows the active branch lane");
+        var label = new Views.CommitRefsPresenter { ShowBranchSummary = true, ShowBranchContext = true, FontSize = 12, DataContext = featureParent };
+        label.Measure(new Size(180, 26));
+        Check(label.IsContextBranchSummary && label.BranchSummaryText == "feature" && label.Opacity == 0.7,
+            "visible branch context uses the commit's lane identity");
+        label.DataContext = feature;
+        label.Measure(new Size(180, 26));
+        Check(!label.IsContextBranchSummary && label.Opacity == 1, "reused presenter keeps real branch-tip badges opaque");
         CommitGraph.Generate([root], false, CommitGraphHighlighting.All, []);
         Check(root.GraphBranches.Count == 0, "graph regeneration clears branch context when no known branch reaches a commit");
+        label.DataContext = root;
+        label.Measure(new Size(180, 26));
+        Check(!label.IsContextBranchSummary && label.BranchSummaryRight == 0 && label.BranchSummaryToolTip == null,
+            "reused presenter clears context when the new commit has no branch identity");
     }
 
 
@@ -176,10 +188,15 @@ internal static class Program
         var hover = (Views.CommitRefsPresenter)cell.Child;
         Check(hover.BranchSummaryRight == 0, "unlabeled commits stay blank before hover");
         var pointer = new Pointer(8, PointerType.Mouse, true);
-        var position = cell.TranslatePoint(new Point(10, 10), window).Value;
-        cell.RaiseEvent(new PointerEventArgs(InputElement.PointerEnteredEvent, cell, pointer, window, position, 0,
-            new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.Other), KeyModifiers.None));
-        PumpUntil(() => hover.BranchSummaryText == "main");
+        var mouse = (MouseDevice)Activator.CreateInstance(typeof(MouseDevice), [pointer]);
+        var outsideRows = new Point(window.Bounds.Width - 10, window.Bounds.Height - 10);
+        foreach (var hoveredCell in row.GetVisualDescendants().OfType<DataGridCell>().Where(x => x.IsEffectivelyVisible && x.Bounds.Width > 0))
+        {
+            var position = hoveredCell.TranslatePoint(new Point(hoveredCell.Bounds.Width / 2, hoveredCell.Bounds.Height / 2), window).Value;
+            MoveMouse(mouse, window, position);
+            PumpUntil(() => row.IsPointerOver && hover.BranchSummaryText == "main");
+            Check(hover.IsContextBranchSummary && hover.Opacity == 0.7, "hovering any visible commit cell reveals the translucent branch badge");
+        }
         Check(hover.Opacity == 0.7 && hover.BranchSummaryHasRemote, "hover badge uses lane identity, combined icons, and 70 percent opacity");
         Check(hover.DecoratorAt(new Point(4, 4))?.Type == DecoratorType.LocalBranchHead && ancestor.Decorators.Count == 0,
             "hover never invents HEAD or branch refs on an ancestor");
@@ -190,10 +207,31 @@ internal static class Program
             bitmap.Render(window);
             bitmap.Save(Path.Combine(AppContext.BaseDirectory, "preview-branches.png"));
         }
-        cell.RaiseEvent(new PointerEventArgs(InputElement.PointerExitedEvent, cell, pointer, window, position, 0,
-            new PointerPointProperties(RawInputModifiers.None, PointerUpdateKind.Other), KeyModifiers.None));
+        list.SelectedItem = ancestor;
+        PumpUntil(() => row.IsSelected);
+        MoveMouse(mouse, window, outsideRows);
+        PumpUntil(() => !row.IsPointerOver);
+        Check(hover.IsContextBranchSummary && hover.BranchSummaryText == "main" && hover.Opacity == 0.7,
+            "selected row keeps its translucent branch badge after the pointer leaves");
+        Check(connections.Connections.Count == 1, "selected context badge never adds a connector");
+        list.SelectedItem = tip;
         PumpUntil(() => hover.BranchSummaryRight == 0);
-        Check(hover.BranchSummaryRefs == null && ToolTip.GetTip(cell) == null, "leaving the branch cell clears the hover badge and tooltip");
+        Check(!hover.IsContextBranchSummary && ToolTip.GetTip(cell) == null, "deselecting an unhovered row clears its context badge and tooltip");
+        list.SelectedItems.Add(ancestor);
+        PumpUntil(() => row.IsSelected && hover.IsContextBranchSummary);
+        Check(hover.BranchSummaryText == "main" && list.SelectedItems.Count == 2, "context badge remains visible for a row in a multi-selection");
+        list.SelectedItems.Remove(ancestor);
+        PumpUntil(() => hover.BranchSummaryRight == 0);
+        var subjectCell = row.GetVisualDescendants().OfType<Views.CommitSubjectPresenter>().Single();
+        var overSubject = subjectCell.TranslatePoint(new Point(2, 12), window).Value;
+        MoveMouse(mouse, window, overSubject);
+        PumpUntil(() => hover.IsContextBranchSummary);
+        list.SelectedItem = ancestor;
+        list.SelectedItems.Clear();
+        Dispatcher.UIThread.RunJobs();
+        Check(row.IsPointerOver && !row.IsSelected && hover.IsContextBranchSummary, "deselection preserves the badge while the row is still hovered");
+        MoveMouse(mouse, window, outsideRows);
+        PumpUntil(() => hover.BranchSummaryRight == 0);
 
         var handle = window.GetVisualDescendants().OfType<Border>().Single(x => x.Name == "BranchesColumnResizeHandle");
         var start = handle.TranslatePoint(new Point(2, 12), window).Value;
@@ -221,6 +259,20 @@ internal static class Program
         PumpUntil(() => !column.IsVisible && graph.Margin.Left == 0 && connections.Connections.Count == 0);
         Check(messageRefs.ShowBranches && messageRefs.DecoratorAt(new Point(4, 4))?.IsBranch == true,
             "hiding the column restores message branch labels and graph position");
+    }
+
+    private static void MoveMouse(MouseDevice mouse, Window window, Point position)
+    {
+        // Drive Avalonia's raw input pipeline so IsPointerOver updates on the whole visual ancestry.
+        var constructor = typeof(RawPointerEventArgs).GetConstructors()
+            .Single(x => x.GetParameters().Length == 6 && x.GetParameters()[4].ParameterType == typeof(Point));
+        var input = constructor.Invoke([mouse, 0UL, window, RawPointerEventType.Move, position, RawInputModifiers.None]);
+        var hit = window.InputHitTest(position);
+        typeof(RawPointerEventArgs).GetProperty("InputHitTestResult", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)
+            .SetValue(input, (hit, hit));
+        var managerType = typeof(MouseDevice).Assembly.GetType("Avalonia.Input.InputManager", true);
+        var manager = managerType.GetProperty("Instance").GetValue(null);
+        managerType.GetMethod("ProcessInput").Invoke(manager, [input]);
     }
 
     private static void PumpUntil(Func<bool> condition)

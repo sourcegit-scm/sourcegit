@@ -895,7 +895,7 @@ namespace SourceGit.Views
                     foreach (var visual in row.GetVisualDescendants())
                     {
                         if (visual is not CommitRefsPresenter { ShowBranchSummary: true, IsEffectivelyVisible: true } label ||
-                            label.BranchSummaryBrush == null || label.BranchSummaryRefs != null)
+                            label.BranchSummaryBrush == null || label.IsContextBranchSummary)
                             continue;
 
                         var dot = graph.Dots[row.Index];
@@ -917,32 +917,6 @@ namespace SourceGit.Views
             }
 
             BranchConnections.UpdateConnections(connections);
-        }
-
-        private void OnBranchCellPointerEntered(object sender, PointerEventArgs e)
-        {
-            if (sender is not Border { DataContext: Models.Commit commit, Child: CommitRefsPresenter label } border ||
-                commit.Decorators.Exists(x => x.IsBranch) || commit.GraphBranches.Count == 0)
-                return;
-
-            // Ancestors belong to the branch but are not its HEAD.
-            label.BranchSummaryRefs = commit.GraphBranches.ConvertAll(x => new Models.Decorator
-            {
-                Name = x.Name,
-                Type = x.Type == Models.DecoratorType.CurrentBranchHead ? Models.DecoratorType.LocalBranchHead : x.Type,
-            });
-            label.Opacity = 0.7;
-            border.SetCurrentValue(ToolTip.TipProperty, string.Join("\n", commit.GraphBranches.ConvertAll(x => x.Name)));
-        }
-
-        private void OnBranchCellPointerExited(object sender, PointerEventArgs e)
-        {
-            if (sender is Border { Child: CommitRefsPresenter { BranchSummaryRefs: not null } label } border)
-            {
-                label.BranchSummaryRefs = null;
-                label.Opacity = 1;
-                border.SetCurrentValue(ToolTip.TipProperty, (border.DataContext as Models.Commit)?.BranchToolTip);
-            }
         }
 
         private void OnScrollToTopPointerPressed(object sender, PointerPressedEventArgs e)
