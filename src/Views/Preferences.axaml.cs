@@ -222,7 +222,6 @@ namespace SourceGit.Views
             }
 
             var preferences = ViewModels.Preferences.Instance;
-            preferences.UpdateAvailableAIModels();
             preferences.Save();
         }
 
