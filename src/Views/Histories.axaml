@@ -158,7 +158,7 @@
                     <DataTemplate DataType="vm:WorkingDirectoryEntry">
                       <Border Padding="{Binding LeftMargin, Converter={x:Static c:DoubleConverters.ToLeftMargin}}" ClipToBounds="True" ToolTip.Tip="{DynamicResource Text.Histories.WorkingDirectory}" AutomationProperties.Name="{DynamicResource Text.Histories.WorkingDirectory}">
                         <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,4,0">
-                          <TextBlock Text="{Binding Summary}" VerticalAlignment="Center"/>
+                          <TextBlock Text="{DynamicResource Text.Histories.WorkingDirectory}" VerticalAlignment="Center"/>
                           <StackPanel Orientation="Horizontal" Spacing="4">
                             <StackPanel Orientation="Horizontal" Spacing="3" IsVisible="{Binding Modified, Converter={x:Static c:IntConverters.IsGreaterThanZero}}" ToolTip.Tip="{DynamicResource Text.Histories.WorkingDirectory.Modified}" AutomationProperties.Name="{DynamicResource Text.Histories.WorkingDirectory.Modified}">
                               <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Pencil}"/>

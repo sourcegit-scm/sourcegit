@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -137,12 +136,9 @@ namespace SourceGit.Views
 
             if (change.Property == SelectedCommitsProperty && IsLoaded && !_ignoreSelectionChanged)
             {
-                if (change.OldValue is List<Models.Commit> { Count: 1 } old &&
-                    change.NewValue is List<Models.Commit> { Count: 1 } cur &&
-                    old[0] == cur[0])
-                    ScrollIntoView(old[0], null);
-                else
-                    ApplySelection();
+                ApplySelection();
+                if (change.NewValue is List<Models.Commit> { Count: 1 } selected)
+                    ScrollIntoView(selected[0], null);
             }
         }
 
@@ -159,21 +155,13 @@ namespace SourceGit.Views
             if (DataContext is ViewModels.Histories vm)
             {
                 vm.CancelPendingHeadSelection();
-                var addedWorking = e.AddedItems.Count == 1 && e.AddedItems.Contains(vm.WorkingDirectory);
                 var containsWorking = SelectedItems.Contains(vm.WorkingDirectory);
-                if (containsWorking && SelectedItems.Count > 1)
+                if (containsWorking && SelectedItems.Count > 2)
                 {
                     _ignoreSelectionChanged = true;
-                    if (addedWorking)
-                    {
-                        SelectedItems.Clear();
-                        SelectedItems.Add(vm.WorkingDirectory);
-                    }
-                    else
-                        SelectedItems.Remove(vm.WorkingDirectory);
+                    SelectedItems.Remove(vm.WorkingDirectory);
                     _ignoreSelectionChanged = false;
                 }
-                vm.IsWorkingDirectorySelected = SelectedItems.Contains(vm.WorkingDirectory);
             }
 
             var commits = new List<Models.Commit>();
@@ -204,30 +192,10 @@ namespace SourceGit.Views
             {
                 _ignoreSelectionChanged = true;
 
-                var old = SelectedCommits;
-                if (old.Count != commits.Count)
-                {
+                if (DataContext is ViewModels.Histories histories)
+                    histories.SelectHistoryEntries(commits, SelectedItems.Contains(histories.WorkingDirectory));
+                else
                     SelectedCommits = commits;
-                }
-                else if (commits.Count > 0)
-                {
-                    var set = new HashSet<string>();
-                    foreach (var c in old)
-                        set.Add(c.SHA);
-
-                    var equals = true;
-                    foreach (var c in commits)
-                    {
-                        if (!set.Contains(c.SHA))
-                        {
-                            equals = false;
-                            break;
-                        }
-                    }
-
-                    if (!equals)
-                        SelectedCommits = commits;
-                }
 
                 _ignoreSelectionChanged = false;
             }
@@ -249,6 +217,12 @@ namespace SourceGit.Views
                     if (this.FindAncestorOfType<Histories>() is { } histories)
                         await histories.GotoParent();
                 }
+            }
+            else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
+                e.Key == Key.A && DataContext is ViewModels.Histories histories)
+            {
+                histories.SelectedCommits = new List<Models.Commit>(histories.Commits);
+                e.Handled = true;
             }
             else if (e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control) &&
                 SelectedItems is { Count: > 0 } selected &&
@@ -273,46 +247,15 @@ namespace SourceGit.Views
         private void ApplySelection()
         {
             _ignoreSelectionChanged = true;
-
+            SelectedItems.Clear();
             if (DataContext is ViewModels.Histories { IsWorkingDirectorySelected: true } vm)
-            {
-                SelectedItems.Clear();
                 SelectedItems.Add(vm.WorkingDirectory);
-            }
-            else if (SelectedCommits == null || SelectedCommits.Count == 0)
+            if (SelectedCommits != null)
             {
-                SelectedItems.Clear();
-            }
-            else
-            {
-                IncrNoSelectionChangeCount();
-                SelectedItems.Clear();
                 foreach (var c in SelectedCommits)
                     SelectedItems.Add(c);
-                DecrNoSelectionChangeCount();
             }
-
             _ignoreSelectionChanged = false;
-        }
-
-        private void IncrNoSelectionChangeCount()
-        {
-            var property = typeof(DataGrid).GetProperty("NoSelectionChangeCount", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (property != null)
-            {
-                var old = (int)property.GetValue(this)!;
-                property.SetValue(this, old + 1);
-            }
-        }
-
-        private void DecrNoSelectionChangeCount()
-        {
-            var property = typeof(DataGrid).GetProperty("NoSelectionChangeCount", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (property != null)
-            {
-                var old = (int)property.GetValue(this)!;
-                property.SetValue(this, old - 1);
-            }
         }
 
         private bool _ignoreSelectionChanged = false;
@@ -823,15 +766,16 @@ namespace SourceGit.Views
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
-            if (e.Source is Control { DataContext: ViewModels.WorkingDirectoryEntry })
-            {
-                e.Handled = true;
-                return;
-            }
-
             var repoView = this.FindAncestorOfType<Repository>();
             if (repoView is not { DataContext: ViewModels.Repository repo })
                 return;
+
+            if (e.Source is Control { DataContext: ViewModels.WorkingDirectoryEntry })
+            {
+                CreateContextMenuForWorkingDirectory(repo).Open(CommitListContainer);
+                e.Handled = true;
+                return;
+            }
 
             var selected = CommitListContainer.SelectedItems;
             if (selected is not { Count: > 0 })
@@ -868,6 +812,13 @@ namespace SourceGit.Views
         {
             e.Handled = true;
 
+            if (e.Source is Control { DataContext: ViewModels.WorkingDirectoryEntry } &&
+                this.FindAncestorOfType<Repository>() is { DataContext: ViewModels.Repository repo })
+            {
+                repo.SelectedViewIndex = 1;
+                return;
+            }
+
             if (DataContext is ViewModels.Histories histories &&
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 e.Source is Control { DataContext: Models.Commit c })
@@ -888,6 +839,32 @@ namespace SourceGit.Views
 
                 await histories.CheckoutBranchByCommitAsync(c);
             }
+        }
+
+        private ContextMenu CreateContextMenuForWorkingDirectory(ViewModels.Repository repo)
+        {
+            var stash = new MenuItem { Header = App.Text("Stash.Title"), Icon = this.CreateMenuIcon("Icons.Stashes.Add"), IsEnabled = repo.Histories.WorkingDirectory.HasChanges };
+            stash.Click += async (_, e) =>
+            {
+                await repo.StashAllAsync(false);
+                e.Handled = true;
+            };
+
+            var discard = new MenuItem { Header = App.Text("Repository.DiscardAll"), Icon = this.CreateMenuIcon("Icons.Undo"), IsEnabled = repo.Histories.WorkingDirectory.HasChanges };
+            discard.Click += (_, e) =>
+            {
+                repo.WorkingCopy.DiscardAllChanges();
+                e.Handled = true;
+            };
+
+            var openPage = new MenuItem { Header = App.Text("Histories.WorkingDirectory.OpenPage"), Icon = this.CreateMenuIcon("Icons.Changes") };
+            openPage.Click += (_, e) =>
+            {
+                repo.SelectedViewIndex = 1;
+                e.Handled = true;
+            };
+
+            return new ContextMenu { Items = { stash, discard, new Separator(), openPage } };
         }
 
         private void OnCommitGraphLoaded(object sender, RoutedEventArgs e)

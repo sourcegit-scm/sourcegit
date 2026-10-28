@@ -127,8 +127,6 @@ namespace SourceGit.ViewModels
                     }
                     else
                         PostCommitsChanged();
-                    if (IsWorkingDirectorySelected)
-                        SelectedCommits = [];
                 }
             }
         }
@@ -172,6 +170,15 @@ namespace SourceGit.ViewModels
             RefreshWorkingDirectoryVisibility(true);
         }
 
+        public void SelectHistoryEntries(List<Models.Commit> commits, bool includeWorkingDirectory)
+        {
+            _updatingSelection = true;
+            SetProperty(ref _isWorkingDirectorySelected, includeWorkingDirectory && IsWorkingDirectoryVisible && commits.Count <= 1, nameof(IsWorkingDirectorySelected));
+            SelectedCommits = commits;
+            _updatingSelection = false;
+            PostSelectedCommitsChanged();
+        }
+
         private void RefreshWorkingDirectoryVisibility(bool followHeadAfterRefresh)
         {
             if (Entries.Contains(WorkingDirectory) == IsWorkingDirectoryVisible)
@@ -187,17 +194,18 @@ namespace SourceGit.ViewModels
             else
             {
                 var wasSelected = IsWorkingDirectorySelected;
+                var comparedCommit = _selectedCommits.Count == 1 ? _selectedCommits[0] : null;
                 IsWorkingDirectorySelected = false;
                 Entries.Remove(WorkingDirectory);
                 if (wasSelected)
                 {
                     var head = _commits.Find(x => x.IsCurrentHead);
-                    SelectedCommits = head == null ? [] : [head];
-                    if (head == null)
+                    SelectedCommits = comparedCommit != null ? [comparedCommit] : head == null ? [] : [head];
+                    if (head == null && comparedCommit == null)
                         DetailContext = Models.Null.Instance;
                     // Status may finish before the history query after committing. Follow
                     // the newly checked-out HEAD when that query arrives, unless the user navigates.
-                    _selectHeadAfterRefresh = followHeadAfterRefresh;
+                    _selectHeadAfterRefresh = followHeadAfterRefresh && comparedCommit == null;
                 }
             }
             GenerateGraph(_commits);
@@ -227,7 +235,7 @@ namespace SourceGit.ViewModels
             get => _selectedCommits;
             set
             {
-                if (value.Count > 0)
+                if (!_updatingSelection && value.Count > 0)
                 {
                     _selectHeadAfterRefresh = false;
                     IsWorkingDirectorySelected = false;
@@ -613,7 +621,11 @@ namespace SourceGit.ViewModels
         private void PostCommitsChanged()
         {
             if (_selectedCommits.Count == 0)
+            {
+                if (IsWorkingDirectorySelected)
+                    SelectHistoryEntries([], true);
                 return;
+            }
 
             if (_commits.Count == 0 || _selectedCommits.Count > 20)
             {
@@ -637,21 +649,23 @@ namespace SourceGit.ViewModels
                 }
             }
 
-            SelectedCommits = selected;
+            SelectHistoryEntries(selected, IsWorkingDirectorySelected);
         }
 
         private void PostSelectedCommitsChanged()
         {
-            if (_ignoreSelectionChange)
+            if (_ignoreSelectionChange || _updatingSelection)
                 return;
 
             if (IsWorkingDirectorySelected)
             {
-                DetailContext = WorkingCopy;
-                return;
+                _searchCommitContext.Selected = null;
+                if (_selectedCommits.Count == 1)
+                    CompareWithWorktree(_selectedCommits[0]);
+                else
+                    DetailContext = WorkingCopy;
             }
-
-            if (_selectedCommits.Count == 0)
+            else if (_selectedCommits.Count == 0)
             {
                 _searchCommitContext.Selected = null;
                 DetailContext = Models.Null.Instance;
@@ -709,6 +723,7 @@ namespace SourceGit.ViewModels
 
         private bool _selectHeadAfterRefresh;
         private bool _isWorkingDirectorySelected;
+        private bool _updatingSelection;
         private Repository _repo = null;
         private Models.Branch _currentBranch = null;
         private bool _hasSingleRemote = false;

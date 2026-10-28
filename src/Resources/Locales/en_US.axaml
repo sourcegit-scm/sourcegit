@@ -1098,4 +1098,5 @@
   <x:String x:Key="Text.Histories.WorkingDirectory.Added">Added and untracked files</x:String>
   <x:String x:Key="Text.Histories.WorkingDirectory.Deleted">Deleted files</x:String>
   <x:String x:Key="Text.Histories.LocalChanges">LOCAL CHANGES</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.OpenPage" xml:space="preserve">Open in Local Changes page</x:String>
 </ResourceDictionary>

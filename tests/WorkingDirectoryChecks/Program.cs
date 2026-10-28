@@ -52,9 +52,12 @@ internal static class Program
             window.Show();
             PumpUntil(() => !repo.Histories.IsLoading && repo.LocalChangesCount == 1);
             CheckSelection(repo, window);
+            CheckWorkingDirectoryActions(repo, window);
+            CheckLiveTranslations(window);
             CheckRowHitTesting(repo, window);
             CheckStatusPipeline(repo, fixture);
             CheckCommitRefreshRace(repo, fixture);
+            CheckMultipleCommitSelection(repo, window);
             CheckHeadModes(repo, window);
             CheckLayouts(repo, window, args.Contains("--render"));
             CheckHeadDropdown(args.Contains("--render"));
@@ -106,7 +109,7 @@ internal static class Program
         pref.WorkingDirectoryHeadMode = 0;
         PumpUntil(() => !vm.Entries.Contains(vm.WorkingDirectory));
         Check(vm.Entries.SequenceEqual(vm.Commits.Cast<object>()) && vm.Graph.Dots.Count == vm.Commits.Count, "Hide contains only real commits and graph nodes");
-        Check(!vm.IsWorkingDirectorySelected && vm.DetailContext is CommitDetail && list.SelectedItem is Commit, "hiding selected working directory restores real commit details");
+        Check(!vm.IsWorkingDirectorySelected && vm.DetailContext is CommitDetail && list.SelectedItem is Commit, $"hiding selected working directory restores real commit details (working={vm.IsWorkingDirectorySelected}, details={vm.DetailContext?.GetType().Name}, row={list.SelectedItem?.GetType().Name}, commits={vm.SelectedCommits.Count})");
         Check(!second.IsWorkingDirectoryVisible && !second.Entries.Contains(second.WorkingDirectory), "preference changes update every open history");
         vm.UpdateWorkingDirectory([new Change { Path = "new.txt", WorkTree = ChangeState.Untracked }]);
         Check(!vm.Entries.Contains(vm.WorkingDirectory), "status refresh cannot reintroduce hidden head");
@@ -375,7 +378,38 @@ internal static class Program
         Check(!vm.IsWorkingDirectorySelected, "programmatic navigation restores real selection");
         list.SelectedItems.Add(vm.WorkingDirectory);
         PumpUntil(() => vm.IsWorkingDirectorySelected);
-        Check(list.SelectedItems.Count == 1 && vm.SelectedCommits.Count == 0, "working row exclusive selection");
+        Check(list.SelectedItems.Count == 2 && vm.SelectedCommits.Count == 1 && vm.DetailContext is RevisionCompare { StartPoint: Commit, EndPoint: SourceGit.Models.Null }, "commit plus working directory compares against the worktree");
+        vm.Commits = new List<Commit>(vm.Commits);
+        PumpUntil(() => list.SelectedItems.Count == 2);
+        Check(vm.IsWorkingDirectorySelected && vm.DetailContext is RevisionCompare, "history refresh preserves worktree comparison");
+        list.SelectedItems.Remove(vm.Commits[0]);
+        PumpUntil(() => vm.DetailContext is WorkingCopy);
+        Check(vm.SelectedCommits.Count == 0 && list.SelectedItems.Count == 1, "removing comparison commit returns to the shared editor");
+        list.SelectedItems.Add(vm.Commits[0]);
+        PumpUntil(() => vm.DetailContext is RevisionCompare);
+        list.SelectedItems.Remove(vm.WorkingDirectory);
+        PumpUntil(() => vm.DetailContext is CommitDetail);
+        Check(!vm.IsWorkingDirectorySelected && vm.SelectedCommits.Count == 1, "removing working row returns to commit details");
+        list.SelectedItems.Add(vm.WorkingDirectory);
+        PumpUntil(() => vm.DetailContext is RevisionCompare);
+        Preferences.Instance.WorkingDirectoryHeadMode = 0;
+        PumpUntil(() => vm.DetailContext is CommitDetail);
+        Check(vm.SelectedCommits.Count == 1, "hiding the working row preserves the compared commit");
+        Preferences.Instance.WorkingDirectoryHeadMode = 1;
+        var fullHistory = vm.Commits;
+        var filteredCommit = new Commit { SHA = fullHistory[0].SHA, Subject = fullHistory[0].Subject };
+        vm.Commits = [filteredCommit];
+        list.SelectedItem = vm.WorkingDirectory;
+        list.SelectedItems.Add(filteredCommit);
+        PumpUntil(() => vm.DetailContext is RevisionCompare);
+        Preferences.Instance.WorkingDirectoryHeadMode = 0;
+        PumpUntil(() => vm.DetailContext is CommitDetail);
+        Check(vm.SelectedCommits.Single() == filteredCommit, "hiding the working row preserves comparison target when HEAD is filtered out");
+        vm.Commits = fullHistory;
+        Preferences.Instance.WorkingDirectoryHeadMode = 1;
+        list.SelectedItem = vm.WorkingDirectory;
+        PumpUntil(() => vm.DetailContext is WorkingCopy);
+        graph = vm.Graph;
         vm.UpdateWorkingDirectory([new Change { Path = "tracked.txt", WorkTree = ChangeState.Modified },
             new Change { Path = "new.txt", WorkTree = ChangeState.Untracked }]);
         Check(vm.IsWorkingDirectorySelected && ReferenceEquals(graph, vm.Graph), "count update preserves selection and graph");
@@ -398,6 +432,74 @@ internal static class Program
         vm.UpdateWorkingDirectory([new Change { Path = "tracked.txt", WorkTree = ChangeState.Modified }]);
         list.SelectedItem = vm.WorkingDirectory;
         PumpUntil(() => vm.IsWorkingDirectorySelected);
+    }
+
+    private static void CheckWorkingDirectoryActions(Repository repo, Window window)
+    {
+        var list = window.GetVisualDescendants().OfType<Views.HistoriesCommitList>().Single();
+        var row = list.GetVisualDescendants().OfType<DataGridRow>().Single(x => ReferenceEquals(x.DataContext, repo.Histories.WorkingDirectory));
+        var label = row.GetVisualDescendants().OfType<TextBlock>().Single(x => x.Text == App.Text("Histories.WorkingDirectory"));
+        ContextMenu opened = null;
+        using var subscription = ContextMenu.OpenedEvent.AddClassHandler<ContextMenu>((menu, _) => opened = menu);
+        label.RaiseEvent(new ContextRequestedEventArgs { RoutedEvent = Control.ContextRequestedEvent });
+        PumpUntil(() => opened?.IsOpen == true);
+        var actions = opened.Items.OfType<MenuItem>().ToList();
+        Check(actions.Select(x => x.Header as string).SequenceEqual(new[] { App.Text("Stash.Title"), App.Text("Repository.DiscardAll"), App.Text("Histories.WorkingDirectory.OpenPage") }), "working row has stash, discard and navigation actions");
+        Check(actions.All(x => x.IsEnabled), "dirty working row enables its actions");
+        opened.Close();
+        actions[^1].RaiseEvent(new Avalonia.Interactivity.RoutedEventArgs(MenuItem.ClickEvent));
+        Check(repo.SelectedViewIndex == 1, "working row menu opens Local Changes");
+        repo.SelectedViewIndex = 0;
+        PumpUntil(() => window.GetVisualDescendants().OfType<Views.HistoriesCommitList>().Any());
+        var pointer = new Pointer(1, PointerType.Mouse, true);
+        var pressed = new PointerPressedEventArgs(label, pointer, window, new Point(), 0,
+            new PointerPointProperties(RawInputModifiers.LeftMouseButton, PointerUpdateKind.LeftButtonPressed), KeyModifiers.None);
+        label.RaiseEvent(new TappedEventArgs(InputElement.DoubleTappedEvent, pressed));
+        Check(repo.SelectedViewIndex == 1, "double-click working row opens Local Changes without checkout");
+        repo.SelectedViewIndex = 0;
+        Preferences.Instance.WorkingDirectoryHeadMode = 2;
+        repo.Histories.UpdateWorkingDirectory([]);
+        opened = null;
+        label.RaiseEvent(new ContextRequestedEventArgs { RoutedEvent = Control.ContextRequestedEvent });
+        PumpUntil(() => opened?.IsOpen == true);
+        actions = opened.Items.OfType<MenuItem>().ToList();
+        Check(!actions[0].IsEnabled && !actions[1].IsEnabled && actions[^1].IsEnabled, "clean working row disables stash and discard but allows navigation");
+        opened.Close();
+        repo.Histories.UpdateWorkingDirectory([new Change { Path = "tracked.txt", WorkTree = ChangeState.Modified }]);
+        Preferences.Instance.WorkingDirectoryHeadMode = 1;
+    }
+
+    private static void CheckLiveTranslations(Window window)
+    {
+        var original = Preferences.Instance.Locale;
+        var row = window.GetVisualDescendants().OfType<DataGridRow>().Single(x => x.DataContext is WorkingDirectoryEntry);
+        var label = row.GetVisualDescendants().OfType<TextBlock>().Single(x => x.Text == App.Text("Histories.WorkingDirectory"));
+        foreach (var locale in Locale.Supported)
+        {
+            Preferences.Instance.Locale = locale.Key;
+            PumpUntil(() => label.Text == App.Text("Histories.WorkingDirectory"));
+            Check(label.Text.StartsWith("* ") && label.Text.EndsWith(" *"), $"working-directory label updates live: {locale.Key}");
+            Check(!string.IsNullOrWhiteSpace(App.Text("Histories.WorkingDirectory.OpenPage")), $"working-directory action is translated: {locale.Key}");
+        }
+        Preferences.Instance.Locale = original;
+        PumpUntil(() => label.Text == App.Text("Histories.WorkingDirectory"));
+    }
+
+    private static void CheckMultipleCommitSelection(Repository repo, Window window)
+    {
+        var vm = repo.Histories;
+        var list = window.GetVisualDescendants().OfType<Views.HistoriesCommitList>().Single();
+        list.SelectedItem = vm.WorkingDirectory;
+        list.SelectedItems.Add(vm.Commits[0]);
+        PumpUntil(() => vm.DetailContext is RevisionCompare);
+        list.SelectedItems.Add(vm.Commits[1]);
+        PumpUntil(() => !vm.IsWorkingDirectorySelected);
+        Check(vm.SelectedCommits.Count == 2 && list.SelectedItems.Count == 2 && vm.DetailContext is RevisionCompare { EndPoint: Commit }, "selecting more than one commit removes the working row from comparison");
+        vm.Commits = new List<Commit>(vm.Commits);
+        PumpUntil(() => list.SelectedItems.Count == 2);
+        Check(vm.SelectedCommits.Count == 2 && !vm.IsWorkingDirectorySelected, "history refresh preserves a normal two-commit comparison");
+        list.SelectedItem = vm.WorkingDirectory;
+        PumpUntil(() => vm.DetailContext is WorkingCopy);
     }
 
     private static void CheckRowHitTesting(Repository repo, Window window)

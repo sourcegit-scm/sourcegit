@@ -20,12 +20,14 @@ the build-services telemetry task that otherwise writes outside the workspace.
 
 Coverage includes status classification and deduplication, untracked-file settings,
 staged additions edited again, renames with deletion, clean/dirty transitions,
-draft preservation, keyboard navigation, exclusive selection, real-commit counts,
+draft preservation, keyboard navigation, worktree comparison selection, real-commit counts,
 programmatic navigation, empty/filtered history, attached/detached HEAD edges, pinned leftmost first-parent ancestry,
 shared editor lifecycle, collapsed details, all three Working Directory Head modes,
 live preference changes, persisted mode values, original graph lanes in Hide mode,
-bare repositories, the Appearance dropdown, and theme/orientation rendering.
-Push and interactive merge/rebase workflows require additional manual testing.
+bare repositories, the Appearance dropdown, row context actions, double-click
+navigation, live label changes across all supported locales, and theme/orientation rendering.
+Stash/discard execution, push, and interactive merge/rebase workflows require
+additional manual testing. Row actions reuse the existing stash/discard commands.
 
 Working Directory Head defaults to Hide. The tests opt into conditional display
 for the existing graph-head scenarios, then exercise Hide and Always separately.

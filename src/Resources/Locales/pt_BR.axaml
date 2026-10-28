@@ -636,4 +636,14 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Bloquear</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remover</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Desbloquear</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead" xml:space="preserve">HEAD do diretório de trabalho</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.Hide" xml:space="preserve">Ocultar</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.WhenChanged" xml:space="preserve">Mostrar quando houver alterações locais</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.Always" xml:space="preserve">Sempre mostrar</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory" xml:space="preserve">* Diretório de trabalho *</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Modified" xml:space="preserve">Arquivos modificados (incluindo renomeações, alterações de tipo e conflitos)</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Added" xml:space="preserve">Arquivos adicionados e não rastreados</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Deleted" xml:space="preserve">Arquivos excluídos</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">ALTERAÇÕES LOCAIS</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.OpenPage" xml:space="preserve">Abrir na página de alterações locais</x:String>
 </ResourceDictionary>

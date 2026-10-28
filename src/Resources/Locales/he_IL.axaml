@@ -981,4 +981,14 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">הסר</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">שחרר נעילה</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">כן</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead" xml:space="preserve">ראש תיקיית העבודה</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.Hide" xml:space="preserve">הסתרה</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.WhenChanged" xml:space="preserve">הצגה כשיש שינויים מקומיים</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.WorkingDirectoryHead.Always" xml:space="preserve">הצגה תמיד</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory" xml:space="preserve">* תיקיית עבודה *</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Modified" xml:space="preserve">קבצים ששונו (כולל שינויי שם, שינויי סוג והתנגשויות)</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Added" xml:space="preserve">קבצים שנוספו וקבצים שאינם במעקב</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.Deleted" xml:space="preserve">קבצים שנמחקו</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">שינויים מקומיים</x:String>
+  <x:String x:Key="Text.Histories.WorkingDirectory.OpenPage" xml:space="preserve">פתיחה בדף השינויים המקומיים</x:String>
 </ResourceDictionary>
