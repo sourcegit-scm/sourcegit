@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitChanges"
@@ -81,8 +82,84 @@
                   Background="Transparent"
                   Focusable="False"/>
 
-    <Grid Grid.Column="2">
-      <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+    <Grid Grid.Column="2" x:Name="ChangesDiffArea" SizeChanged="OnDiffAreaSizeChanged">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesMessageRowHeight, Mode=TwoWay}" MinHeight="28"/>
+        <RowDefinition Height="4"/>
+        <RowDefinition Height="*" MinHeight="80"/>
+      </Grid.RowDefinitions>
+
+      <Border Grid.Row="0" x:Name="CommitMessageArea" CornerRadius="4"
+              BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
+              Background="{DynamicResource Brush.Contents}" ClipToBounds="True">
+        <Grid ColumnDefinitions="*,24" Margin="6,3,3,3">
+          <ScrollViewer Grid.Column="0" x:Name="CommitMessageScrollViewer"
+                        HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                        Offset="{Binding ChangesMessageScrollOffset, Mode=TwoWay}"
+                        IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsCommitDetailChangesMessageExpanded}">
+            <v:CommitMessagePresenter x:Name="ChangesCommitMessage"
+                                      FullMessage="{Binding FullMessage}"
+                                      FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
+                                      Foreground="{DynamicResource Brush.FG1}"
+                                      HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="Wrap">
+              <ToolTip.IsOpen>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="$self.IsPointerOver"/>
+                  <Binding Path="$self.(ToolTip.Tip)" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                </MultiBinding>
+              </ToolTip.IsOpen>
+              <v:CommitMessagePresenter.ContextFlyout>
+                <MenuFlyout>
+                  <MenuItem Header="{DynamicResource Text.Copy}"
+                            Command="{Binding $parent[SelectableTextBlock].Copy}"
+                            IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}"
+                            InputGesture="{x:Static TextBox.CopyGesture}"/>
+                  <MenuItem Header="{DynamicResource Text.CopyAllText}" Click="OnCopyCommitMessage"/>
+                </MenuFlyout>
+              </v:CommitMessagePresenter.ContextFlyout>
+              <v:CommitMessagePresenter.DataTemplates>
+                <DataTemplate DataType="m:Commit">
+                  <StackPanel MinWidth="300" MaxWidth="500">
+                    <TextBlock Text="{Binding Author.Name}" Foreground="{DynamicResource Brush.FG2}"/>
+                    <TextBlock Text="{Binding Subject}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                  </StackPanel>
+                </DataTemplate>
+              </v:CommitMessagePresenter.DataTemplates>
+            </v:CommitMessagePresenter>
+          </ScrollViewer>
+
+          <SelectableTextBlock Grid.Column="0" x:Name="CollapsedCommitMessage"
+                               Text="{Binding Commit.Subject}" MaxLines="1" TextWrapping="NoWrap"
+                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center"
+                               IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=!Layout.IsCommitDetailChangesMessageExpanded}"/>
+
+          <ToggleButton Grid.Column="1" x:Name="CommitMessageToggle" Classes="line_path"
+                        Width="20" Height="20" VerticalAlignment="Top" Focusable="False"
+                        IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsCommitDetailChangesMessageExpanded, Mode=TwoWay}">
+            <ToggleButton.Styles>
+              <Style Selector="ToggleButton">
+                <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.CommitDetail.Changes.Message.Expand}"/>
+              </Style>
+              <Style Selector="ToggleButton:checked">
+                <Setter Property="ToolTip.Tip" Value="{DynamicResource Text.CommitDetail.Changes.Message.Collapse}"/>
+              </Style>
+            </ToggleButton.Styles>
+            <Grid>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Up}"
+                    IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsCommitDetailChangesMessageExpanded}"/>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Down}"
+                    IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=!Layout.IsCommitDetailChangesMessageExpanded}"/>
+            </Grid>
+          </ToggleButton>
+        </Grid>
+      </Border>
+
+      <GridSplitter Grid.Row="1" x:Name="CommitMessageSplitter" ResizeDirection="Rows" ResizeBehavior="PreviousAndNext"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"
+                    BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,1,0,0" Focusable="False"
+                    IsEnabled="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsCommitDetailChangesMessageExpanded}"/>
+
+      <Border Grid.Row="2" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
         <StackPanel Orientation="Vertical" VerticalAlignment="Center">
           <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
           <TextBlock Margin="0,16,0,0"
@@ -93,7 +170,7 @@
         </StackPanel>
       </Border>
 
-      <ContentControl Content="{Binding DiffContext}">
+      <ContentControl Grid.Row="2" x:Name="ChangesDiffContent" Content="{Binding DiffContext}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="vm:DiffContext">
             <v:DiffView/>
