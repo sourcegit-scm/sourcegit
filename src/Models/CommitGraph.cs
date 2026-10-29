@@ -195,6 +195,12 @@ namespace SourceGit.Models
                     temp.Paths.Add(major.Path);
                 }
 
+                // Carry branch identity along the lane, independently of recycled graph colors.
+                var branches = commit.Decorators.FindAll(x => x.IsBranch);
+                commit.GraphBranches = branches.Count > 0 ? branches : major?.Branches ?? [];
+                if (major != null && branches.Count > 0)
+                    major.Branches = branches;
+
                 // Calculate link position of this commit.
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
                 var dotColor = major?.Path.Color ?? 0;
@@ -241,6 +247,7 @@ namespace SourceGit.Models
 
                             // Create new curve for parent commit that not includes before
                             var l = new PathHelper(parentHash, isHighlighted, colorPicker.Next(), position, new Point(offsetX, position.Y + halfHeight));
+                            l.Branches = commit.GraphBranches;
                             unsolved.Add(l);
                             temp.Paths.Add(l.Path);
                         }
@@ -292,6 +299,7 @@ namespace SourceGit.Models
 
         private class PathHelper
         {
+            public List<Decorator> Branches { get; set; } = [];
             public Path Path { get; private set; }
             public string Next { get; set; }
             public double LastX { get; private set; }

@@ -73,6 +73,7 @@ namespace SourceGit.Views
             public IBrush Brush { get; set; } = null;
             public bool IsHead { get; set; } = false;
             public double Width { get; set; } = 0.0;
+            public bool HasMatchingRemote { get; set; } = false;
             public List<FormattedText> Remotes { get; set; } = [];
         }
 
@@ -157,6 +158,46 @@ namespace SourceGit.Views
             set => SetValue(ShowTagsProperty, value);
         }
 
+        public static readonly StyledProperty<bool> ShowBranchesProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(ShowBranches), true);
+
+        public bool ShowBranches
+        {
+            get => GetValue(ShowBranchesProperty);
+            set => SetValue(ShowBranchesProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> ShowBranchSummaryProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(ShowBranchSummary));
+
+        public bool ShowBranchSummary
+        {
+            get => GetValue(ShowBranchSummaryProperty);
+            set => SetValue(ShowBranchSummaryProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> ShowBranchContextProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(ShowBranchContext));
+
+        public bool ShowBranchContext
+        {
+            get => GetValue(ShowBranchContextProperty);
+            set => SetValue(ShowBranchContextProperty, value);
+        }
+
+        public static readonly DirectProperty<CommitRefsPresenter, string> BranchSummaryToolTipProperty =
+            AvaloniaProperty.RegisterDirect<CommitRefsPresenter, string>(nameof(BranchSummaryToolTip), static o => o.BranchSummaryToolTip);
+
+        public string BranchSummaryToolTip => _branchSummaryToolTip;
+        public bool IsContextBranchSummary { get; private set; }
+
+        public double BranchSummaryRight => ShowBranchSummary && _items.Count > 0 ? _items[0].Width + 1.5 : 0;
+        public IBrush BranchSummaryBrush => ShowBranchSummary && _items.Count > 0 ? _items[0].Brush : null;
+        public double BranchSummarySuffixWidth => _branchCountLabel != null ? _branchCountLabel.WidthIncludingTrailingWhitespace + 8 : 0;
+        public bool BranchSummaryHasRemote => ShowBranchSummary && _items.Count > 0 && _items[0].HasMatchingRemote;
+        public string BranchSummaryText => _summaryText;
+        public int BranchSummaryAdditionalCount => _summaryAdditionalCount;
+
         public Models.Decorator DecoratorAt(Point point)
         {
             var x = 0.0;
@@ -194,6 +235,7 @@ namespace SourceGit.Views
                     y += 20.0;
                 }
 
+                var iconWidth = item.HasMatchingRemote ? 28 : 16;
                 var entireRect = new RoundedRect(new Rect(x, y, item.Width, 16), new CornerRadius(4));
                 if (item.IsHead)
                 {
@@ -211,13 +253,13 @@ namespace SourceGit.Views
                     if (bg != null)
                         context.DrawRectangle(bg, null, entireRect);
 
-                    var labelRect = new RoundedRect(new Rect(x + 16, y, item.Width - 16, 16), new CornerRadius(4, 0, 0, 4));
+                    var labelRect = new RoundedRect(new Rect(x + iconWidth, y, item.Width - iconWidth, 16), new CornerRadius(4, 0, 0, 4));
                     using (context.PushOpacity(.2))
                         context.DrawRectangle(item.Brush, null, labelRect);
                 }
 
-                context.DrawLine(new Pen(item.Brush), new Point(x + 16, y), new Point(x + 16, y + 16));
-                context.DrawText(item.Label, new Point(x + 20, y + 8.0 - item.Label.Height * 0.5));
+                context.DrawLine(new Pen(item.Brush), new Point(x + iconWidth, y), new Point(x + iconWidth, y + 16));
+                context.DrawText(item.Label, new Point(x + iconWidth + 4, y + 8.0 - item.Label.Height * 0.5));
 
                 if (item.Remotes.Count > 0)
                 {
@@ -244,9 +286,18 @@ namespace SourceGit.Views
 
                 context.DrawRectangle(null, new Pen(item.Brush), entireRect);
 
-                var icon = CommitRefsIconCache.Instance.GetIcon(item.Decorator.Type);
+                var icon = CommitRefsIconCache.Instance.GetIcon(item.HasMatchingRemote ? Models.DecoratorType.LocalBranchHead : item.Decorator.Type);
                 using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
                     context.DrawGeometry(fg, null, icon);
+
+                if (item.HasMatchingRemote)
+                {
+                    using (context.PushTransform(Matrix.CreateTranslation(x + 15, y + 3)))
+                        context.DrawGeometry(fg, null, remoteIcon);
+                }
+
+                if (_branchCountLabel != null)
+                    context.DrawText(_branchCountLabel, new Point(x + item.Width + 4, y + 8 - _branchCountLabel.Height * 0.5));
 
                 x += item.Width + 4;
             }
@@ -263,7 +314,10 @@ namespace SourceGit.Views
                 change.Property == UseCompactBranchNamesProperty ||
                 change.Property == HasSingleRemoteProperty ||
                 change.Property == BackgroundProperty ||
-                change.Property == ShowTagsProperty)
+                change.Property == ShowTagsProperty ||
+                change.Property == ShowBranchSummaryProperty ||
+                change.Property == ShowBranchesProperty ||
+                change.Property == ShowBranchContextProperty)
                 InvalidateMeasure();
         }
 
@@ -276,11 +330,74 @@ namespace SourceGit.Views
         protected override Size MeasureOverride(Size availableSize)
         {
             _items.Clear();
+            _branchCountLabel = null;
+            _summaryText = string.Empty;
+            _summaryName = string.Empty;
+            _summaryAdditionalCount = 0;
 
-            if (DataContext is not Models.Commit commit)
-                return new Size(0, 0);
+            var commit = DataContext as Models.Commit;
+            List<Models.Decorator> refs = DataContext switch
+            {
+                Models.Commit c => c.Decorators,
+                Models.Decorator decorator => [decorator],
+                _ => [],
+            };
+            IsContextBranchSummary = ShowBranchSummary && ShowBranchContext && commit != null &&
+                !commit.Decorators.Exists(x => x.IsBranch) && commit.GraphBranches.Count > 0;
+            if (IsContextBranchSummary)
+            {
+                // Show lane identity without presenting an ancestor as the branch tip.
+                refs = commit.GraphBranches.ConvertAll(x => new Models.Decorator
+                {
+                    Name = x.Name,
+                    Type = x.Type == Models.DecoratorType.CurrentBranchHead ? Models.DecoratorType.LocalBranchHead : x.Type,
+                });
+            }
+            if (ShowBranchSummary)
+            {
+                SetCurrentValue(OpacityProperty, IsContextBranchSummary ? 0.7 : 1.0);
+                var names = refs.FindAll(x => x.IsBranch).ConvertAll(x => x.Name);
+                SetAndRaise(BranchSummaryToolTipProperty, ref _branchSummaryToolTip, names.Count > 0 ? string.Join("\n", names) : null);
+            }
+            var branchCount = 0;
+            var primaryHasRemote = false;
+            if (ShowBranchSummary)
+            {
+                Models.Decorator primary = null;
+                var localNames = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var decorator in refs)
+                {
+                    if (decorator.IsBranch)
+                    {
+                        if (decorator.Type is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.LocalBranchHead)
+                            localNames.Add(decorator.Name);
+                        if (primary == null || decorator.Type < primary.Type)
+                            primary = decorator;
+                    }
+                }
 
-            var refs = commit.Decorators;
+                foreach (var decorator in refs)
+                {
+                    if (!decorator.IsBranch)
+                        continue;
+
+                    if (decorator.Type == Models.DecoratorType.RemoteBranchHead)
+                    {
+                        var slash = decorator.Name.IndexOf('/');
+                        var name = slash >= 0 ? decorator.Name.Substring(slash + 1) : decorator.Name;
+                        if (slash >= 0 && localNames.Contains(name))
+                        {
+                            primaryHasRemote |= primary?.Name == name;
+                            continue;
+                        }
+                    }
+
+                    branchCount++;
+                }
+
+                _summaryAdditionalCount = Math.Max(0, branchCount - 1);
+                refs = primary != null ? [primary] : [];
+            }
             var count = refs.Count;
             if (count == 0)
             {
@@ -294,12 +411,16 @@ namespace SourceGit.Views
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
             var fg = Foreground;
-            var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
+            var normalBG = UseGraphColor && commit != null ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
             var labelSize = FontSize;
+            if (branchCount > 1)
+                _branchCountLabel = new FormattedText($"+{branchCount - 1}", CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight, typeface, labelSize, fg);
             var requiredHeight = 16.0;
             var x = 0.0;
             var allowWrap = AllowWrap;
             var showTags = ShowTags;
+            var showBranches = ShowBranches;
             var skippedIdx = new HashSet<int>();
 
             for (var i = 0; i < count; i++)
@@ -308,6 +429,8 @@ namespace SourceGit.Views
                     continue;
 
                 var decorator = refs[i];
+                if (!showBranches && decorator.IsBranch)
+                    continue;
                 if (!showTags && decorator.Type == Models.DecoratorType.Tag)
                     continue;
 
@@ -316,13 +439,15 @@ namespace SourceGit.Views
                     Decorator = decorator,
                     Brush = decorator.Type == Models.DecoratorType.Tag ? Brushes.Gray : normalBG,
                     IsHead = decorator.Type is Models.DecoratorType.CurrentBranchHead or Models.DecoratorType.CurrentCommitHead,
+                    HasMatchingRemote = ShowBranchSummary && primaryHasRemote,
                 };
                 _items.Add(item);
 
+                var label = decorator.Name;
                 if (item.IsHead)
                 {
                     item.Label = new FormattedText(
-                        decorator.Name,
+                        label,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         typefaceHead,
@@ -332,7 +457,7 @@ namespace SourceGit.Views
                 else
                 {
                     item.Label = new FormattedText(
-                        decorator.Name,
+                        label,
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
                         typeface,
@@ -341,8 +466,13 @@ namespace SourceGit.Views
                 }
 
                 item.Width = item.Label.Width + 24;
+                if (ShowBranchSummary)
+                {
+                    _summaryName = decorator.Name;
+                    FitBranchSummary(availableSize.Width);
+                }
 
-                var findRemotes = useCompactBranchNames && (decorator.Type == Models.DecoratorType.CurrentBranchHead || decorator.Type == Models.DecoratorType.LocalBranchHead);
+                var findRemotes = !ShowBranchSummary && useCompactBranchNames && (decorator.Type == Models.DecoratorType.CurrentBranchHead || decorator.Type == Models.DecoratorType.LocalBranchHead);
                 if (findRemotes)
                 {
                     for (var j = i + 1; j < count; j++)
@@ -399,9 +529,63 @@ namespace SourceGit.Views
             }
 
             InvalidateVisual();
-            return new Size(requiredWidth, requiredHeight);
+            if (ShowBranchSummary && _items.Count > 0)
+                return new Size(_items[0].Width + SummaryOuterSpacing + BranchSummarySuffixWidth, requiredHeight);
+            return new Size(requiredWidth + BranchSummarySuffixWidth, requiredHeight);
         }
 
         private List<RenderItem> _items = new List<RenderItem>();
+        private FormattedText _branchCountLabel;
+        private string _summaryName = string.Empty;
+        private string _summaryText = string.Empty;
+        private int _summaryAdditionalCount;
+        private string _branchSummaryToolTip;
+        private const double SummaryOuterSpacing = 3;
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (ShowBranchSummary && _items.Count > 0)
+            {
+                FitBranchSummary(finalSize.Width);
+                InvalidateVisual();
+            }
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        private void FitBranchSummary(double availableWidth)
+        {
+            var item = _items[0];
+            var fixedWidth = item.HasMatchingRemote ? 36 : 24;
+            var textWidth = Math.Max(0, availableWidth - BranchSummarySuffixWidth - fixedWidth - SummaryOuterSpacing);
+            var typeface = new Typeface(FontFamily, FontStyle.Normal, item.IsHead ? FontWeight.Bold : FontWeight.Normal);
+            var fontSize = FontSize + (item.IsHead ? 1 : 0);
+            FormattedText Format(string value) => new(value, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, fontSize, Foreground);
+
+            _summaryText = _summaryName;
+            item.Label = Format(_summaryText);
+            if (item.Label.WidthIncludingTrailingWhitespace > textWidth)
+            {
+                // Truncate at grapheme boundaries so Unicode branch names remain valid.
+                var boundaries = StringInfo.ParseCombiningCharacters(_summaryName);
+                var low = 0;
+                var high = boundaries.Length;
+                while (low < high)
+                {
+                    var mid = (low + high + 1) / 2;
+                    var end = mid < boundaries.Length ? boundaries[mid] : _summaryName.Length;
+                    if (Format(_summaryName.Substring(0, end) + "...").WidthIncludingTrailingWhitespace <= textWidth)
+                        low = mid;
+                    else
+                        high = mid - 1;
+                }
+
+                var prefixEnd = low < boundaries.Length ? boundaries[low] : _summaryName.Length;
+                _summaryText = Format("...").WidthIncludingTrailingWhitespace <= textWidth ? _summaryName.Substring(0, prefixEnd) + "..." : string.Empty;
+                item.Label = Format(_summaryText);
+            }
+
+            item.Width = item.Label.WidthIncludingTrailingWhitespace + fixedWidth;
+        }
     }
 }

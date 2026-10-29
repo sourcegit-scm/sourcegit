@@ -23,6 +23,7 @@ namespace SourceGit.Models
         public string Subject { get; set; } = string.Empty;
         public List<string> Parents { get; set; } = new();
         public List<Decorator> Decorators { get; set; } = new();
+        public List<Decorator> GraphBranches { get; set; } = [];
 
         public bool IsMerged { get; set; } = false;
         public int Color { get; set; } = 0;
@@ -37,6 +38,15 @@ namespace SourceGit.Models
         public bool IsCommitterVisible => !Author.Equals(Committer) || AuthorTime != CommitterTime;
         public bool IsCurrentHead => Decorators.Find(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.CurrentCommitHead) != null;
         public bool HasDecorators => Decorators.Count > 0;
+        public string BranchToolTip
+        {
+            get
+            {
+                var branches = Decorators.FindAll(x => x.IsBranch);
+                return branches.Count > 0 ? string.Join("\n", branches.ConvertAll(x => x.Name)) : null;
+            }
+        }
+
         public string FirstParentToCompare => Parents.Count > 0 ? $"{SHA}^" : EmptyTreeHash.Guess(SHA);
 
         public string GetFriendlyName()
