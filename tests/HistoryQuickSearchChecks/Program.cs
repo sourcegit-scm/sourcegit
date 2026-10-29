@@ -130,14 +130,39 @@ internal static class Program
 
             histories.SelectedCommits = [commits[1]];
             var view = new HistoryView { DataContext = histories };
-            var window = new Window { Width = 1000, Height = 650, Content = view };
+            var sidebarSearch = new TextBox { Watermark = "Sidebar search" };
+            var shell = new Grid { RowDefinitions = RowDefinitions.Parse("28,*") };
+            shell.Children.Add(sidebarSearch);
+            Grid.SetRow(view, 1);
+            shell.Children.Add(view);
+            var window = new Window { Width = 1000, Height = 650, Content = shell };
             window.Show();
+            SetWindowActive(window, true);
             Dispatcher.UIThread.RunJobs();
             WaitFor(() => !histories.IsQuickSearching);
             view.FindControl<DataGrid>("CommitListContainer")!.Focus();
             window.KeyPressQwerty(PhysicalKey.F, RawInputModifiers.Control);
             var box = view.FindControl<TextBox>("QuickSearchBox")!;
             Check(box.IsKeyboardFocusWithin, "Ctrl+F target focuses search");
+            view.FindControl<DataGrid>("CommitListContainer")!.Focus();
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            Check(box.IsKeyboardFocusWithin && Math.Abs(box.SelectionEnd - box.SelectionStart) == box.Text.Length,
+                "F3 focuses quick search and selects its text from the commit list");
+            Check(histories.SelectedCommits.Single().SHA == first, "F3 focuses search without changing the selected commit");
+            window.KeyTextInput("body-only");
+            Check(histories.QuickSearchText == "body-only", "typing immediately after F3 replaces the search query");
+            WaitFor(() => !histories.IsQuickSearching);
+            sidebarSearch.Focus();
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            Check(box.IsKeyboardFocusWithin, "F3 focuses history search from the sidebar");
+            view.IsVisible = false;
+            sidebarSearch.Focus();
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            Check(sidebarSearch.IsKeyboardFocusWithin, "hidden history does not intercept F3");
+            view.IsVisible = true;
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            histories.QuickSearchText = "Shared";
+            WaitFor(() => !histories.IsQuickSearching);
             window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
             Check(histories.SelectedCommits.Single().SHA == second, "Enter selects next match");
             window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.Shift);
@@ -151,6 +176,41 @@ internal static class Program
             {
                 Application.Current!.RequestedThemeVariant = theme;
                 Dispatcher.UIThread.RunJobs();
+                box.Focus();
+                var textPresenter = box.GetVisualDescendants().OfType<Avalonia.Controls.Presenters.TextPresenter>()
+                    .Single(p => p.Name == "PART_TextPresenter");
+                SetWindowActive(window, false);
+                Dispatcher.UIThread.RunJobs();
+                Check(!window.IsActive && textPresenter.CaretBrush is ISolidColorBrush inactiveCaret && inactiveCaret.Color.A == 0,
+                    $"{theme}: inactive window hides the search caret");
+                Check(border.BorderBrush is ISolidColorBrush inactiveBorder && box.BorderBrush is ISolidColorBrush normalBorder &&
+                    inactiveBorder.Color == normalBorder.Color, $"{theme}: inactive search uses its normal border instead of active focus styling");
+                Check(box.SelectionBrush is ISolidColorBrush selectionBrush && box.BorderBrush is ISolidColorBrush borderBrush &&
+                    selectionBrush.Color == borderBrush.Color, $"{theme}: inactive text selection uses a neutral highlight");
+                if (args.Length > 0)
+                {
+                    window.UpdateLayout();
+                    AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+                    using var inactiveFrame = window.CaptureRenderedFrame();
+                    inactiveFrame!.Save(Path.Combine(Path.GetDirectoryName(args[0])!, $"history-inactive-{theme.ToString().ToLowerInvariant()}.png"));
+                }
+                var otherInput = new TextBox();
+                var otherWindow = new Window { Width = 200, Height = 80, Content = otherInput };
+                otherWindow.Show();
+                SetWindowActive(otherWindow, true);
+                otherInput.Focus();
+                var previousQuery = histories.QuickSearchText;
+                otherWindow.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+                otherWindow.KeyTextInput("another window");
+                Check(histories.QuickSearchText == previousQuery && otherInput.Text == "another window" &&
+                    textPresenter.CaretBrush is ISolidColorBrush hiddenCaret && hiddenCaret.Color.A == 0,
+                    $"{theme}: keys in another window do not activate or edit history search");
+                otherWindow.Close();
+                SetWindowActive(window, true);
+                box.Focus();
+                Dispatcher.UIThread.RunJobs();
+                Check((textPresenter.CaretBrush ?? textPresenter.Foreground) is ISolidColorBrush activeCaret && activeCaret.Color.A > 0,
+                    $"{theme}: reactivating the window restores the caret");
                 var list = view.FindControl<DataGrid>("CommitListContainer")!;
                 var tinted = theme == Avalonia.Styling.ThemeVariant.Light ? Color.Parse("#FFFFF9E6") : Color.Parse("#FF302D20");
                 var normal = theme == Avalonia.Styling.ThemeVariant.Light ? Color.Parse("#FFFFFFFF") : Color.Parse("#FF1C1C1C");
@@ -369,6 +429,13 @@ internal static class Program
             return row.DataContext == commit && row.IsVisible && position.HasValue &&
                 position.Value.Y >= -0.5 && position.Value.Y + row.Bounds.Height <= presenter.Bounds.Height + 0.5;
         });
+    }
+
+    private static void SetWindowActive(Window window, bool active)
+    {
+        // Simulate the platform activation callback without taking native desktop focus.
+        typeof(WindowBase).GetMethod(active ? "HandleActivated" : "HandleDeactivated",
+            BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.Invoke(window, null);
     }
 
     private static void WaitFor(Func<bool> condition)

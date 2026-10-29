@@ -379,14 +379,44 @@ namespace SourceGit.Views
         {
             InitializeComponent();
             AddHandler(KeyDownEvent, OnQuickSearchKeyDown, RoutingStrategies.Tunnel);
-            Loaded += (_, _) => (DataContext as ViewModels.Histories)?.ResumeQuickSearch();
-            Unloaded += (_, _) => (DataContext as ViewModels.Histories)?.CancelQuickSearch();
+            Loaded += OnQuickSearchLoaded;
+            Unloaded += OnQuickSearchUnloaded;
         }
 
         public void FocusQuickSearch()
         {
+            if (TopLevel.GetTopLevel(this) is Window { IsActive: false })
+                return;
+
             QuickSearchBox.Focus();
             QuickSearchBox.SelectAll();
+        }
+
+        private void OnQuickSearchLoaded(object sender, RoutedEventArgs e)
+        {
+            _quickSearchWindow = TopLevel.GetTopLevel(this) as Window;
+            _quickSearchWindow?.AddHandler(KeyDownEvent, OnQuickSearchFocusKeyDown, RoutingStrategies.Tunnel);
+            (DataContext as ViewModels.Histories)?.ResumeQuickSearch();
+        }
+
+        private void OnQuickSearchUnloaded(object sender, RoutedEventArgs e)
+        {
+            _quickSearchWindow?.RemoveHandler(KeyDownEvent, OnQuickSearchFocusKeyDown);
+            _quickSearchWindow = null;
+            (DataContext as ViewModels.Histories)?.CancelQuickSearch();
+        }
+
+        private void OnQuickSearchFocusKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.F3 || e.KeyModifiers != KeyModifiers.None ||
+                _quickSearchWindow is not { IsActive: true } || !IsEffectivelyVisible ||
+                DataContext is not ViewModels.Histories ||
+                _quickSearchWindow.DataContext is ViewModels.Launcher { CommandPalette: not null } ||
+                this.FindAncestorOfType<LauncherPage>()?.DataContext is ViewModels.LauncherPage { Popup: not null })
+                return;
+
+            FocusQuickSearch();
+            e.Handled = true;
         }
 
         private void OnQuickSearchKeyDown(object sender, KeyEventArgs e)
@@ -404,7 +434,7 @@ namespace SourceGit.Views
                 FocusQuickSearch();
                 e.Handled = true;
             }
-            else if ((e.Key == Key.F3 && (e.KeyModifiers == KeyModifiers.None || e.KeyModifiers == KeyModifiers.Shift)) ||
+            else if ((e.Key == Key.F3 && e.KeyModifiers == KeyModifiers.Shift) ||
                      (e.Key == Key.Enter && QuickSearchBox.IsKeyboardFocusWithin &&
                       (e.KeyModifiers == KeyModifiers.None || e.KeyModifiers == KeyModifiers.Shift)))
             {
@@ -2011,6 +2041,7 @@ namespace SourceGit.Views
                 await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, on, prefill));
         }
 
+        private Window _quickSearchWindow;
         private Models.Branch _currentBranch = null;
         private Models.Bisect _bisect = null;
         private bool _hasSingleRemote = false;

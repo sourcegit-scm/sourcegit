@@ -10,6 +10,7 @@ These checks use a temporary Git repository and Avalonia Headless. They cover
 literal, case-insensitive Mixed matching (SHA prefix, author name/email, full
 commit message), loaded-history scope, cancellation, streamed messages, navigation,
 filter restoration, history refresh, selection preservation, keyboard input,
+F3 focus from the list and sidebar, inactive-window caret/focus appearance,
 and the active filter background. Tests leave user preferences untouched.
 
 An optional PNG path saves light and dark theme previews:
