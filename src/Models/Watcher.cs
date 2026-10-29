@@ -145,6 +145,11 @@ namespace SourceGit.Models
                 return;
 
             var now = DateTime.Now.ToFileTime();
+            // Wait for a quiet period across all event types before refreshing anything.
+            var quietPeriod = (long)ViewModels.Preferences.Instance.RefreshThrottling * TimeSpan.TicksPerMillisecond;
+            if (now - Interlocked.Read(ref _lastChange) <= quietPeriod)
+                return;
+
             var refreshCommits = false;
             var refreshSubmodules = false;
             var refreshWC = false;
@@ -249,7 +254,7 @@ namespace SourceGit.Models
         /// </summary>
         private void OnWatcherError(object o, ErrorEventArgs e)
         {
-            var desired = DateTime.Now.AddSeconds(1).ToFileTime();
+            var desired = RecordChange();
             Interlocked.Exchange(ref _updateBranch, desired);
             Interlocked.Exchange(ref _updateTags, desired);
             Interlocked.Exchange(ref _updateStashes, desired);
@@ -293,7 +298,7 @@ namespace SourceGit.Models
                 if (name.EndsWith("/HEAD", StringComparison.Ordinal) ||
                     name.EndsWith("/ORIG_HEAD", StringComparison.Ordinal))
                 {
-                    var desired = DateTime.Now.AddSeconds(1).ToFileTime();
+                    var desired = RecordChange();
                     Interlocked.Exchange(ref _updateSubmodules, desired);
                     Interlocked.Exchange(ref _updateWC, desired);
                 }
@@ -302,15 +307,15 @@ namespace SourceGit.Models
                 name.Equals("AUTO_MERGE", StringComparison.Ordinal))
             {
                 if (_repo.MayHaveSubmodules())
-                    Interlocked.Exchange(ref _updateSubmodules, DateTime.Now.AddSeconds(1).ToFileTime());
+                    Interlocked.Exchange(ref _updateSubmodules, RecordChange());
             }
             else if (name.StartsWith("refs/tags", StringComparison.Ordinal))
             {
-                Interlocked.Exchange(ref _updateTags, DateTime.Now.AddSeconds(.5).ToFileTime());
+                Interlocked.Exchange(ref _updateTags, RecordChange());
             }
             else if (name.StartsWith("refs/stash", StringComparison.Ordinal) || name.Equals("logs/refs/stash", StringComparison.Ordinal))
             {
-                Interlocked.Exchange(ref _updateStashes, DateTime.Now.AddSeconds(.5).ToFileTime());
+                Interlocked.Exchange(ref _updateStashes, RecordChange());
             }
             else if (name.Equals("HEAD", StringComparison.Ordinal) ||
                 name.Equals("BISECT_START", StringComparison.Ordinal) ||
@@ -318,24 +323,24 @@ namespace SourceGit.Models
                 name.StartsWith("refs/remotes/", StringComparison.Ordinal) ||
                 (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/HEAD", StringComparison.Ordinal)))
             {
-                Interlocked.Exchange(ref _updateBranch, DateTime.Now.AddSeconds(.5).ToFileTime());
+                Interlocked.Exchange(ref _updateBranch, RecordChange());
             }
             else if (name.Equals("packed-refs", StringComparison.Ordinal))
             {
-                var desired = DateTime.Now.AddSeconds(.5).ToFileTime();
+                var desired = RecordChange();
                 Interlocked.Exchange(ref _updateBranch, desired);
                 Interlocked.Exchange(ref _updateTags, desired);
             }
             else if (name.StartsWith("reftable/", StringComparison.Ordinal))
             {
-                var desired = DateTime.Now.AddSeconds(.5).ToFileTime();
+                var desired = RecordChange();
                 Interlocked.Exchange(ref _updateBranch, desired);
                 Interlocked.Exchange(ref _updateTags, desired);
                 Interlocked.Exchange(ref _updateStashes, desired);
             }
             else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
             {
-                Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());
+                Interlocked.Exchange(ref _updateWC, RecordChange());
             }
         }
 
@@ -346,7 +351,7 @@ namespace SourceGit.Models
 
             if (name.Equals(".gitmodules", StringComparison.Ordinal))
             {
-                var desired = DateTime.Now.AddSeconds(1).ToFileTime();
+                var desired = RecordChange();
                 Interlocked.Exchange(ref _updateSubmodules, desired);
                 Interlocked.Exchange(ref _updateWC, desired);
                 return;
@@ -355,11 +360,11 @@ namespace SourceGit.Models
             var dir = Directory.Exists(fullpath) ? fullpath : Path.GetDirectoryName(fullpath);
             if (IsInSubmodule(dir))
             {
-                Interlocked.Exchange(ref _updateSubmodules, DateTime.Now.AddSeconds(1).ToFileTime());
+                Interlocked.Exchange(ref _updateSubmodules, RecordChange());
                 return;
             }
 
-            Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());
+            Interlocked.Exchange(ref _updateWC, RecordChange());
         }
 
         private bool IsInSubmodule(string folder)
@@ -373,12 +378,20 @@ namespace SourceGit.Models
             return IsInSubmodule(Path.GetDirectoryName(folder));
         }
 
+        private long RecordChange()
+        {
+            var now = DateTime.Now.ToFileTime();
+            Interlocked.Exchange(ref _lastChange, now);
+            return now;
+        }
+
         private readonly IRepository _repo;
         private readonly string _root;
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;
 
         private long _lockCount;
+        private long _lastChange;
         private long _updateWC;
         private long _updateBranch;
         private long _updateSubmodules;
