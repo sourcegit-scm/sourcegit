@@ -147,7 +147,39 @@ internal static class Program
             Dispatcher.UIThread.RunJobs();
             var border = box.GetVisualDescendants().OfType<Border>().First(b => b.Name == "PART_BorderElement");
             Check(histories.SelectedCommits.Single().SHA == first, "filter toggle preserves visible selection");
-            Check(border.Background is ISolidColorBrush brush && brush.Color == Color.Parse("#FFF2CC"), "focused filter box has yellow background");
+            foreach (var theme in new[] { Avalonia.Styling.ThemeVariant.Light, Avalonia.Styling.ThemeVariant.Dark })
+            {
+                Application.Current!.RequestedThemeVariant = theme;
+                Dispatcher.UIThread.RunJobs();
+                var list = view.FindControl<DataGrid>("CommitListContainer")!;
+                var tinted = theme == Avalonia.Styling.ThemeVariant.Light ? Color.Parse("#FFFFF9E6") : Color.Parse("#FF302D20");
+                var normal = theme == Avalonia.Styling.ThemeVariant.Light ? Color.Parse("#FFFFFFFF") : Color.Parse("#FF1C1C1C");
+                var presenter = list.GetVisualDescendants().OfType<Avalonia.Controls.Primitives.DataGridRowsPresenter>().Single();
+                Check(list.Background is ISolidColorBrush background && background.Color == tinted &&
+                    presenter.Background is ISolidColorBrush rows && rows.Color == tinted, $"{theme}: active filter tints history rows");
+                var headers = list.GetVisualDescendants().OfType<Avalonia.Controls.Primitives.DataGridColumnHeadersPresenter>().Single();
+                var headerColor = theme == Avalonia.Styling.ThemeVariant.Light ? Color.Parse("#FFFBFBFB") : Color.Parse("#FF272727");
+                Check(headers.Background is ISolidColorBrush headerBrush && headerBrush.Color == headerColor,
+                    $"{theme}: column headers retain normal background during filtering");
+                Check(border.Background is not ISolidColorBrush input || input.Color != tinted && input.Color != Color.Parse("#FFF2CC"),
+                    $"{theme}: search field keeps normal theme background");
+                var graph = view.FindControl<SourceGit.Views.CommitGraph>("CommitGraph")!;
+                Check(graph.DotBrush is ISolidColorBrush dots && dots.Color == tinted, $"{theme}: graph dots use history background");
+                histories.IsQuickSearchFilterEnabled = false;
+                Dispatcher.UIThread.RunJobs();
+                Check(list.Background is ISolidColorBrush unfiltered && unfiltered.Color == normal, $"{theme}: query without filter has no tint");
+                histories.IsQuickSearchFilterEnabled = true;
+                histories.QuickSearchText = string.Empty;
+                Dispatcher.UIThread.RunJobs();
+                Check(!histories.IsQuickSearchFilterActive && list.Background is ISolidColorBrush empty && empty.Color == normal,
+                    $"{theme}: enabled filter with empty query has no tint");
+                histories.QuickSearchText = "body-only";
+                WaitFor(() => !histories.IsQuickSearching);
+                Check(histories.IsQuickSearchFilterActive && list.Background is ISolidColorBrush restored && restored.Color == tinted,
+                    $"{theme}: editing nonempty query restores active tint");
+            }
+            Application.Current!.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Light;
+            Dispatcher.UIThread.RunJobs();
             if (args.Length > 0)
             {
                 AvaloniaHeadlessPlatform.ForceRenderTimerTick();
@@ -164,10 +196,22 @@ internal static class Program
             view.FindControl<DataGrid>("CommitListContainer")!.Focus();
             window.KeyPressQwerty(PhysicalKey.F, RawInputModifiers.Control);
             Check(box.IsKeyboardFocusWithin, "Ctrl+F works from commit list after clearing");
+            histories.QuickSearchText = "Shared";
+            WaitFor(() => !histories.IsQuickSearching);
+            Check(histories.SelectedCommits.Count == 1, "matching query selects a row before no-match edit");
             histories.QuickSearchText = "no such commit";
             WaitFor(() => !histories.IsQuickSearching);
+            Check(histories.SelectedCommits.Count == 0 && view.FindControl<DataGrid>("CommitListContainer")!.SelectedItems.Count == 0 &&
+                histories.DisplayedCommits.Count == 2, "no-match edit clears selection without filtering");
             histories.IsQuickSearchFilterEnabled = true;
             Check(histories.DisplayedCommits.Count == 0 && !histories.HasQuickSearchMatches, "no matches produces empty filtered history");
+            histories.QuickSearchText = "Shared";
+            WaitFor(() => !histories.IsQuickSearching);
+            Check(histories.SelectedCommits.Count == 1, "matching query restores selection while filtered");
+            histories.QuickSearchText = "no such filtered commit";
+            WaitFor(() => !histories.IsQuickSearching);
+            Check(histories.SelectedCommits.Count == 0 && view.FindControl<DataGrid>("CommitListContainer")!.SelectedItems.Count == 0,
+                "no-match edit clears selection while filtered");
             histories.ClearQuickSearch();
             for (var i = 0; i < 60; i++)
                 Git(fixture, "commit", "--allow-empty", "-m", $"Filler {i}");

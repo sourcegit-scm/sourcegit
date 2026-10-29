@@ -56,21 +56,7 @@
                  BorderBrush="{DynamicResource Brush.Border2}" VerticalContentAlignment="Center"
                  ToolTip.Tip="{OnPlatform Ctrl+F, macOS=⌘+F}"
                  Watermark="{DynamicResource Text.Histories.QuickSearch}"
-                 Text="{Binding QuickSearchText, Mode=TwoWay}"
-                 Classes.filtering="{Binding IsQuickSearchFilterEnabled}">
-          <TextBox.Styles>
-            <Style Selector="TextBox.filtering /template/ Border#PART_BorderElement">
-              <Setter Property="Background" Value="#FFF2CC"/>
-            </Style>
-            <Style Selector="TextBox.filtering Path">
-              <Setter Property="Fill" Value="#665600"/>
-            </Style>
-            <Style Selector="TextBox.filtering">
-              <Setter Property="Background" Value="#FFF2CC"/>
-              <Setter Property="Foreground" Value="#332B00"/>
-              <Setter Property="CaretBrush" Value="#332B00"/>
-            </Style>
-          </TextBox.Styles>
+                 Text="{Binding QuickSearchText, Mode=TwoWay}">
           <TextBox.InnerLeftContent>
             <Path Width="14" Height="14" Margin="6,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
           </TextBox.InnerLeftContent>
@@ -99,8 +85,8 @@
 
       <v:HistoriesCommitList Grid.Row="1" x:Name="CommitListContainer"
                              Classes="static_scrollbar"
+                             Classes.filtering="{Binding IsQuickSearchFilterActive}"
                              ScrollViewer.AllowAutoHide="False"
-                             Background="Transparent"
                              ItemsSource="{Binding DisplayedCommits, Mode=OneWay}"
                              TotalCommits="{Binding DisplayedCommits.Count, Mode=OneWay}"
                              SelectedCommits="{Binding SelectedCommits, Mode=TwoWay}"
@@ -111,21 +97,27 @@
                              DoubleTapped="OnCommitListDoubleTapped">
         <DataGrid.Styles>
           <Style Selector="DataGrid.static_scrollbar">
+            <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
               <Setter Property="Grid.RowSpan" Value="1" />
               <Setter Property="Grid.ColumnSpan" Value="2" />
-              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+              <Setter Property="Background" Value="{Binding #CommitListContainer.Background}"/>
             </Style>
             <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
               <Setter Property="Grid.Column" Value="0" />
+              <Setter Property="Background" Value="{DynamicResource Brush.SubPanel}"/>
             </Style>
             <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
               <Setter Property="Fill" Value="{DynamicResource Brush.Border0}"/>
               <Setter Property="Height" Value="0.65"/>
             </Style>
             <Style Selector="^ /template/ ScrollBar">
-              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+              <Setter Property="Background" Value="{Binding #CommitListContainer.Background}"/>
             </Style>
+          </Style>
+
+          <Style Selector="DataGrid.static_scrollbar.filtering">
+            <Setter Property="Background" Value="{DynamicResource Brush.Histories.FilteredBackground}"/>
           </Style>
 
           <Style Selector="DataGridColumnHeader">
@@ -194,13 +186,13 @@
                                              VerticalAlignment="Center"/>
 
                     <v:BisectStateIndicator Grid.Column="1"
-                                            Background="{DynamicResource Brush.Contents}"
+                                            Background="{Binding #CommitListContainer.Background}"
                                             Foreground="{DynamicResource Brush.FG1}"
                                             Bisect="{Binding $parent[v:Histories].Bisect}"
                                             VerticalAlignment="Center"/>
 
                     <v:CommitRefsPresenter Grid.Column="2"
-                                           Background="{DynamicResource Brush.Contents}"
+                                           Background="{Binding #CommitListContainer.Background}"
                                            Foreground="{DynamicResource Brush.FG1}"
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                            FontSize="12"
@@ -325,7 +317,7 @@
       <v:CommitGraph Grid.Row="1" x:Name="CommitGraph"
                      Margin="0,24,0,0"
                      Graph="{Binding Graph}"
-                     DotBrush="{DynamicResource Brush.Contents}"
+                     DotBrush="{Binding #CommitListContainer.Background}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"
