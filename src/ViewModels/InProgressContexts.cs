@@ -171,6 +171,76 @@ namespace SourceGit.ViewModels
         private readonly string _gitDir;
     }
 
+    public class AmInProgress : InProgressContext
+    {
+        public string Progress
+        {
+            get;
+        }
+
+        public bool CanSkip
+        {
+            get;
+        }
+
+        public AmInProgress(Repository repo)
+        {
+            _repo = repo;
+            Name = "Apply Patch";
+
+            _continueCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Editor = Commands.Command.EditorType.None,
+                Args = "am --continue",
+            };
+
+            _skipCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "am --skip",
+            };
+
+            _abortCmd = new Commands.Command
+            {
+                WorkingDirectory = repo.FullPath,
+                Context = repo.FullPath,
+                Args = "am --abort",
+            };
+
+            var next = ReadIntFromFile(Path.Combine(repo.GitDir, "rebase-apply", "next"));
+            var total = ReadIntFromFile(Path.Combine(repo.GitDir, "rebase-apply", "last"));
+            Progress = $"({next - 1}/{total})";
+            CanSkip = next < total;
+        }
+
+        protected override void OnAborted()
+        {
+            var rebaseApplyDir = Path.Combine(_repo.GitDir, "rebase-apply");
+            if (Directory.Exists(rebaseApplyDir))
+                Directory.Delete(rebaseApplyDir, true);
+
+            // Force update local changes.
+            _repo.MarkWorkingCopyDirtyManually();
+        }
+
+        private int ReadIntFromFile(string file)
+        {
+            if (!File.Exists(file))
+                return 0;
+
+            var content = File.ReadAllText(file).Trim();
+            if (int.TryParse(content, out var value))
+                return value;
+
+            return 0;
+        }
+
+        private readonly Repository _repo;
+    }
+
     public class RevertInProgress : InProgressContext
     {
         public Models.Commit Head

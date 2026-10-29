@@ -799,8 +799,10 @@ namespace SourceGit.ViewModels
 
             if (File.Exists(Path.Combine(_repo.GitDir, "CHERRY_PICK_HEAD")))
                 InProgressContext = new CherryPickInProgress(_repo);
-            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")) || Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
+            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
                 InProgressContext = new RebaseInProgress(_repo);
+            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
+                InProgressContext = new AmInProgress(_repo);
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
                 InProgressContext = new RevertInProgress(_repo);
             else if (File.Exists(Path.Combine(_repo.GitDir, "MERGE_HEAD")))
@@ -820,13 +822,18 @@ namespace SourceGit.ViewModels
             if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
                 return;
 
-            if (_inProgressContext is not RebaseInProgress { } rebasing)
-                return;
-
-            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
-                return;
-
-            SetAutoLoadedCommitMessage(new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult());
+            if (_inProgressContext is RebaseInProgress rebasing)
+            {
+                if (!LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-merge", "message")))
+                {
+                    var message = new Commands.QueryCommitFullMessage(_repo.FullPath, rebasing.StoppedAt.SHA).GetResult();
+                    SetAutoLoadedCommitMessage(message);
+                }
+            }
+            else if (_inProgressContext is AmInProgress applying)
+            {
+                LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "rebase-apply", "final-commit"));
+            }
         }
 
         private bool LoadCommitMessageFromFile(string file)
