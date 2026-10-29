@@ -479,6 +479,7 @@ namespace SourceGit.ViewModels
             if (_cancellationRefreshStashes is { IsCancellationRequested: false })
                 _cancellationRefreshStashes.Cancel();
 
+            _histories?.CancelQuickSearch();
             _watcher?.Dispose();
             _autoFetchTimer.Dispose();
         }
