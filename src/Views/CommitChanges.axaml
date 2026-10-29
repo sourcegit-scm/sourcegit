@@ -58,6 +58,7 @@
                                   EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                   Changes="{Binding VisibleChanges, Mode=OneWay}"
                                   Selection="{Binding ChangeSelection, Mode=TwoWay}"
+                                  ChangeDoubleTapped="OnChangeDoubleTapped"
                                   ContextRequested="OnChangeContextRequested"
                                   KeyDown="OnChangeCollectionViewKeyDown"/>
         </Border>
