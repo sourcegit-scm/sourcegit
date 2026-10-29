@@ -150,8 +150,31 @@ namespace SourceGit.Views
         {
             base.OnSelectionChanged(e);
 
-            if (ItemsSource is not IList<Models.Commit> items)
+            if (_ignoreSelectionChanged || DataContext is ViewModels.Histories { IsUpdatingEntries: true })
                 return;
+
+            if (ItemsSource is not IList<object> items)
+                return;
+
+            if (DataContext is ViewModels.Histories vm)
+            {
+                vm.CancelPendingHeadSelection();
+                var addedWorking = e.AddedItems.Count == 1 && e.AddedItems.Contains(vm.WorkingDirectory);
+                var containsWorking = SelectedItems.Contains(vm.WorkingDirectory);
+                if (containsWorking && SelectedItems.Count > 1)
+                {
+                    _ignoreSelectionChanged = true;
+                    if (addedWorking)
+                    {
+                        SelectedItems.Clear();
+                        SelectedItems.Add(vm.WorkingDirectory);
+                    }
+                    else
+                        SelectedItems.Remove(vm.WorkingDirectory);
+                    _ignoreSelectionChanged = false;
+                }
+                vm.IsWorkingDirectorySelected = SelectedItems.Contains(vm.WorkingDirectory);
+            }
 
             var commits = new List<Models.Commit>();
             foreach (var o in SelectedItems)
@@ -170,7 +193,7 @@ namespace SourceGit.Views
                 if (firstIndex > 0)
                 {
                     var prev = items[firstIndex - 1];
-                    if (commits.Contains(prev))
+                    if (prev is Models.Commit previous && commits.Contains(previous))
                         ScrollIntoView(e.AddedItems[^1], null);
                     else
                         ScrollIntoView(first, null);
@@ -239,7 +262,8 @@ namespace SourceGit.Views
                 }
 
                 e.Handled = true;
-                await this.CopyTextAsync(builder.ToString());
+                if (builder.Length > 0)
+                    await this.CopyTextAsync(builder.ToString());
             }
 
             if (!e.Handled)
@@ -250,13 +274,14 @@ namespace SourceGit.Views
         {
             _ignoreSelectionChanged = true;
 
-            if (SelectedCommits == null || SelectedCommits.Count == 0)
+            if (DataContext is ViewModels.Histories { IsWorkingDirectorySelected: true } vm)
             {
                 SelectedItems.Clear();
+                SelectedItems.Add(vm.WorkingDirectory);
             }
-            else if (SelectedCommits.Count == TotalCommits)
+            else if (SelectedCommits == null || SelectedCommits.Count == 0)
             {
-                SelectAll();
+                SelectedItems.Clear();
             }
             else
             {
@@ -790,11 +815,20 @@ namespace SourceGit.Views
         private void OnScrollToTopPointerPressed(object sender, PointerPressedEventArgs e)
         {
             if (DataContext is ViewModels.Histories histories)
-                CommitListContainer.ScrollIntoView(histories.Commits[0], null);
+            {
+                if (histories.Entries.Count > 0)
+                    CommitListContainer.ScrollIntoView(histories.Entries[0], null);
+            }
         }
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)
         {
+            if (e.Source is Control { DataContext: ViewModels.WorkingDirectoryEntry })
+            {
+                e.Handled = true;
+                return;
+            }
+
             var repoView = this.FindAncestorOfType<Repository>();
             if (repoView is not { DataContext: ViewModels.Repository repo })
                 return;
@@ -808,6 +842,12 @@ namespace SourceGit.Views
             {
                 if (selected[i] is Models.Commit c)
                     commits.Add(c);
+            }
+
+            if (commits.Count != selected.Count)
+            {
+                e.Handled = true;
+                return;
             }
 
             if (selected.Count > 1)

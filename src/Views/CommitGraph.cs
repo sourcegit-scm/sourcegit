@@ -104,10 +104,14 @@ namespace SourceGit.Views
                 if (endY < top)
                     continue;
                 if (last.Y > bottom)
-                    break;
+                    // The working-directory continuation can precede paths for
+                    // newer commits, so later paths may still be visible.
+                    continue;
 
                 var geo = new StreamGeometry();
                 var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
+                if (line.IsDotted)
+                    pen = new Pen(pen.Brush, pen.Thickness, new DashStyle([0, 2], 0), PenLineCap.Round);
 
                 using (var ctx = geo.Open())
                 {
@@ -183,6 +187,9 @@ namespace SourceGit.Views
                 var pen = dot.IsHighlighted ? Models.CommitGraph.Pens[dot.Color] : grayedPen;
                 switch (dot.Type)
                 {
+                    case Models.CommitGraph.DotType.WorkingDirectory:
+                        context.DrawEllipse(dotFill, new Pen(pen.Brush, pen.Thickness, new DashStyle([2, 2], 0)), center, 6, 6);
+                        break;
                     case Models.CommitGraph.DotType.Head:
                         context.DrawEllipse(dotFill, pen, center, 6, 6);
                         context.DrawEllipse(pen.Brush, null, center, 3, 3);

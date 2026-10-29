@@ -188,7 +188,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -291,17 +291,32 @@
               </TextBox.InnerRightContent>
             </TextBox>
 
-            <CheckBox Grid.Row="6" Grid.Column="1"
+            <TextBlock Grid.Row="6" Grid.Column="0"
+                       Text="{DynamicResource Text.Preferences.Appearance.WorkingDirectoryHead}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <ComboBox Grid.Row="6" Grid.Column="1"
+                      AutomationProperties.Name="{DynamicResource Text.Preferences.Appearance.WorkingDirectoryHead}"
+                      MinHeight="28"
+                      Padding="8,0"
+                      HorizontalAlignment="Stretch"
+                      SelectedIndex="{Binding WorkingDirectoryHeadMode, Mode=TwoWay}">
+              <ComboBoxItem Content="{DynamicResource Text.Preferences.Appearance.WorkingDirectoryHead.Hide}"/>
+              <ComboBoxItem Content="{DynamicResource Text.Preferences.Appearance.WorkingDirectoryHead.WhenChanged}"/>
+              <ComboBoxItem Content="{DynamicResource Text.Preferences.Appearance.WorkingDirectoryHead.Always}"/>
+            </ComboBox>
+
+            <CheckBox Grid.Row="7" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseFixedTabWidth}"
                       IsChecked="{Binding UseFixedTabWidth, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="7" Grid.Column="1"
+            <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseAutoHideScrollBars}"
                       IsChecked="{Binding UseAutoHideScrollBars, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="8" Grid.Column="1"
+            <CheckBox Grid.Row="9" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseNativeWindowFrame}"
                       IsChecked="{Binding UseSystemWindowFrame, Mode=OneTime}"

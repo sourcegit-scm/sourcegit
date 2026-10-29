@@ -26,7 +26,13 @@ namespace SourceGit.Models
 
         public bool IsMerged { get; set; } = false;
         public int Color { get; set; } = 0;
-        public double LeftMargin { get; set; } = 0;
+        public double LeftMargin
+        {
+            get => _leftMargin;
+            set => SetProperty(ref _leftMargin, value);
+        }
+
+        private double _leftMargin;
 
         public bool IsHighlightedInGraph
         {
