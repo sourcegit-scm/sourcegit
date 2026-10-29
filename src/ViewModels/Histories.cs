@@ -58,6 +58,7 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.IsAuthorColumnVisibleInHistory != value)
                 {
                     _repo.UIStates.IsAuthorColumnVisibleInHistory = value;
+                    _repo.UIStates.Save();
                     OnPropertyChanged();
                 }
             }
@@ -71,6 +72,7 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.IsSHAColumnVisibleInHistory != value)
                 {
                     _repo.UIStates.IsSHAColumnVisibleInHistory = value;
+                    _repo.UIStates.Save();
                     OnPropertyChanged();
                 }
             }
@@ -84,6 +86,7 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.IsAuthorTimeColumnVisibleInHistory != value)
                 {
                     _repo.UIStates.IsAuthorTimeColumnVisibleInHistory = value;
+                    _repo.UIStates.Save();
                     OnPropertyChanged();
                 }
             }
@@ -97,6 +100,7 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.IsCommitTimeColumnVisibleInHistory != value)
                 {
                     _repo.UIStates.IsCommitTimeColumnVisibleInHistory = value;
+                    _repo.UIStates.Save();
                     OnPropertyChanged();
                 }
             }
@@ -238,6 +242,28 @@ namespace SourceGit.ViewModels
         public bool HasShowFlag(Models.HistoryShowFlags flag)
         {
             return _repo.UIStates.HistoryShowFlags.HasFlag(flag);
+        }
+
+        public void SaveColumnWidths()
+        {
+            _repo.UIStates.Save();
+        }
+
+        public void ResetColumns()
+        {
+            var defaults = new Models.RepositoryUIStates();
+            var states = _repo.UIStates;
+            states.IsAuthorColumnVisibleInHistory = defaults.IsAuthorColumnVisibleInHistory;
+            states.IsSHAColumnVisibleInHistory = defaults.IsSHAColumnVisibleInHistory;
+            states.IsAuthorTimeColumnVisibleInHistory = defaults.IsAuthorTimeColumnVisibleInHistory;
+            states.IsCommitTimeColumnVisibleInHistory = defaults.IsCommitTimeColumnVisibleInHistory;
+            states.AuthorColumnWidth = defaults.AuthorColumnWidth;
+            states.Save();
+
+            OnPropertyChanged(nameof(IsAuthorColumnVisible));
+            OnPropertyChanged(nameof(IsSHAColumnVisible));
+            OnPropertyChanged(nameof(IsAuthorTimeColumnVisible));
+            OnPropertyChanged(nameof(IsCommitTimeColumnVisible));
         }
 
         public void ToggleShowFlag(Models.HistoryShowFlags flag)

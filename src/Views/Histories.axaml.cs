@@ -464,8 +464,32 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
 
-            if (DataContext is ViewModels.Histories vm)
-                CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+            ApplyAuthorColumnWidth();
+        }
+
+        private void OnCommitListSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+                ApplyAuthorColumnWidth();
+        }
+
+        private double GetMaxAuthorColumnWidth()
+        {
+            var listWidth = CommitListContainer.Bounds.Width;
+            return listWidth > 0 ? Math.Max(listWidth * MaxAuthorColumnWidthRatio, MinAuthorColumnWidth) : double.MaxValue;
+        }
+
+        private void ApplyAuthorColumnWidth()
+        {
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            // The saved width is kept as-is. It is only capped while displayed, so a width chosen on a
+            // wide screen does not squeeze the subject column on a narrow one, and comes back when wide again.
+            var w = Math.Min(vm.AuthorColumnWidth, GetMaxAuthorColumnWidth());
+            var column = CommitListContainer.Columns[1];
+            if (column.Width.UnitType != DataGridLengthUnitType.Pixel || column.Width.Value != w)
+                column.Width = new(w, DataGridLengthUnitType.Pixel);
         }
 
         private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
@@ -480,9 +504,10 @@ namespace SourceGit.Views
             if (_resizingAuthorColumn)
             {
                 var posX = CommitListContainer.Columns[0].ActualWidth;
-                var maxW = posX + CommitListContainer.Columns[1].ActualWidth - 100;
+                var curW = CommitListContainer.Columns[1].ActualWidth;
+                var maxW = Math.Min(posX + curW - 100, GetMaxAuthorColumnWidth());
                 var delta = posX - pos.X;
-                var w = Math.Max(Math.Min(vm.AuthorColumnWidth + delta, maxW), 80);
+                var w = Math.Max(Math.Min(curW + delta, maxW), MinAuthorColumnWidth);
                 CommitListContainer.Columns[1].Width = new(w, DataGridLengthUnitType.Pixel);
                 vm.AuthorColumnWidth = w;
             }
@@ -520,6 +545,9 @@ namespace SourceGit.Views
 
         private void OnCommitListHeaderPointerReleased(object sender, PointerReleasedEventArgs e)
         {
+            if (_resizingAuthorColumn && DataContext is ViewModels.Histories vm)
+                vm.SaveColumnWidths();
+
             _resizingAuthorColumn = false;
         }
 
@@ -719,6 +747,16 @@ namespace SourceGit.Views
                 ev.Handled = true;
             };
 
+            var resetColumns = new MenuItem();
+            resetColumns.Header = App.Text("Histories.ResetColumns");
+            resetColumns.Icon = this.CreateMenuIcon("Icons.Reset");
+            resetColumns.Click += (_, ev) =>
+            {
+                histories.ResetColumns();
+                ApplyAuthorColumnWidth();
+                ev.Handled = true;
+            };
+
             var menu = new ContextMenu();
             menu.Placement = PlacementMode.BottomEdgeAlignedLeft;
             menu.Items.Add(layout);
@@ -746,6 +784,8 @@ namespace SourceGit.Views
             menu.Items.Add(shaColumn);
             menu.Items.Add(authorTimeColumn);
             menu.Items.Add(commitTimeColumn);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(resetColumns);
             menu.Open(button);
         }
 
@@ -1969,6 +2009,8 @@ namespace SourceGit.Views
         private AvaloniaList<Models.IssueTracker> _issueTrackers = null;
         private bool _isScrollToTopVisible = false;
         private bool _isDetailsPanelExpanded = true;
+        private const double MinAuthorColumnWidth = 80;
+        private const double MaxAuthorColumnWidthRatio = 0.4;
         private bool _resizingAuthorColumn = false;
         private Cursor _resizingCursor = new(StandardCursorType.SizeWestEast);
     }
