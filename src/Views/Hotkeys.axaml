@@ -140,11 +140,11 @@
 
           <TextBlock Grid.Row="16" Grid.Column="0" Classes="bold" Text="F5"/>
           <TextBlock Grid.Row="16" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
-          <TextBlock Grid.Row="17" Grid.Column="0" Classes="bold" Text="{OnPlatform 'Ctrl+F / F3', macOS='⌘+F / F3'}"/>
+          <TextBlock Grid.Row="17" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
           <TextBlock Grid.Row="17" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Histories.QuickSearch}"/>
           <TextBlock Grid.Row="18" Grid.Column="0" Classes="bold" Text="Shift+F3 / Shift+Enter"/>
           <TextBlock Grid.Row="18" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Histories.QuickSearch.Previous}"/>
-          <TextBlock Grid.Row="19" Grid.Column="0" Classes="bold" Text="Enter"/>
+          <TextBlock Grid.Row="19" Grid.Column="0" Classes="bold" Text="F3 / Enter"/>
           <TextBlock Grid.Row="19" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Histories.QuickSearch.Next}"/>
         </Grid>
       </StackPanel>

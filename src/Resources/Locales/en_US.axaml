@@ -537,7 +537,7 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Selected Commits (First-parent Only)</x:String>
   <x:String x:Key="Text.Histories.QuickSearch" xml:space="preserve">Quick search (Mixed)</x:String>
   <x:String x:Key="Text.Histories.QuickSearch.Filter" xml:space="preserve">Show matching commits only</x:String>
-  <x:String x:Key="Text.Histories.QuickSearch.Next" xml:space="preserve">Next match (Enter)</x:String>
+  <x:String x:Key="Text.Histories.QuickSearch.Next" xml:space="preserve">Next match (F3 / Enter)</x:String>
   <x:String x:Key="Text.Histories.QuickSearch.Previous" xml:space="preserve">Previous match (Shift+F3 / Shift+Enter)</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>

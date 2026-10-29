@@ -54,7 +54,7 @@
         <TextBox Grid.Column="1" x:Name="QuickSearchBox" Height="26" MinWidth="80"
                  HorizontalAlignment="Stretch" Margin="10,0,4,0" CornerRadius="13" BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}" VerticalContentAlignment="Center"
-                 ToolTip.Tip="{OnPlatform 'Ctrl+F / F3', macOS='⌘+F / F3'}"
+                 ToolTip.Tip="{OnPlatform Ctrl+F, macOS=⌘+F}"
                  Watermark="{DynamicResource Text.Histories.QuickSearch}"
                  Text="{Binding QuickSearchText, Mode=TwoWay}">
           <TextBox.InnerLeftContent>

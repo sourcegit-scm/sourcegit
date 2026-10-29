@@ -146,23 +146,33 @@ internal static class Program
             Check(box.IsKeyboardFocusWithin, "Ctrl+F target focuses search");
             view.FindControl<DataGrid>("CommitListContainer")!.Focus();
             window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            Check(histories.SelectedCommits.Single().SHA == second, "F3 selects next match from the commit list");
+            Check(!box.IsKeyboardFocusWithin, "F3 keeps focus in the commit list");
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.Shift);
+            Check(histories.SelectedCommits.Single().SHA == first, "Shift+F3 selects previous match from the commit list");
+            window.KeyPressQwerty(PhysicalKey.F, RawInputModifiers.Control);
             Check(box.IsKeyboardFocusWithin && Math.Abs(box.SelectionEnd - box.SelectionStart) == box.Text.Length,
-                "F3 focuses quick search and selects its text from the commit list");
-            Check(histories.SelectedCommits.Single().SHA == first, "F3 focuses search without changing the selected commit");
+                "Ctrl+F focuses quick search and selects its text");
             window.KeyTextInput("body-only");
-            Check(histories.QuickSearchText == "body-only", "typing immediately after F3 replaces the search query");
+            Check(histories.QuickSearchText == "body-only", "typing immediately after Ctrl+F replaces the search query");
             WaitFor(() => !histories.IsQuickSearching);
             sidebarSearch.Focus();
             window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
-            Check(box.IsKeyboardFocusWithin, "F3 focuses history search from the sidebar");
+            Check(sidebarSearch.IsKeyboardFocusWithin && histories.SelectedCommits.Single().SHA == first,
+                "F3 in the sidebar does not activate history search");
             view.IsVisible = false;
             sidebarSearch.Focus();
             window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
             Check(sidebarSearch.IsKeyboardFocusWithin, "hidden history does not intercept F3");
             view.IsVisible = true;
-            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            box.Focus();
             histories.QuickSearchText = "Shared";
             WaitFor(() => !histories.IsQuickSearching);
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.None);
+            Check(histories.SelectedCommits.Single().SHA == second && box.IsKeyboardFocusWithin,
+                "F3 selects next match while retaining search-box focus");
+            window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.Shift);
+            Check(histories.SelectedCommits.Single().SHA == first, "Shift+F3 selects previous match in search box");
             window.KeyPressQwerty(PhysicalKey.Enter, RawInputModifiers.None);
             Check(histories.SelectedCommits.Single().SHA == second, "Enter selects next match");
             window.KeyPressQwerty(PhysicalKey.F3, RawInputModifiers.Shift);
