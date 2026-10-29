@@ -177,6 +177,21 @@ internal static class Program
                 WaitFor(() => !histories.IsQuickSearching);
                 Check(histories.IsQuickSearchFilterActive && list.Background is ISolidColorBrush restored && restored.Color == tinted,
                     $"{theme}: editing nonempty query restores active tint");
+                var clearButton = (Button)box.InnerRightContent!;
+                var clearIcon = (Avalonia.Controls.Shapes.Path)clearButton.Content!;
+                Check(clearButton.IsVisible && clearIcon.Fill is ISolidColorBrush iconBrush && iconBrush.Color.A > 0,
+                    $"{theme}: nonempty search shows a visible clear icon");
+                window.UpdateLayout();
+                var clearPoint = clearButton.TranslatePoint(new Point(clearButton.Bounds.Width / 2, clearButton.Bounds.Height / 2), window)!.Value;
+                window.MouseDown(clearPoint, MouseButton.Left, RawInputModifiers.None);
+                window.MouseUp(clearPoint, MouseButton.Left, RawInputModifiers.None);
+                Dispatcher.UIThread.RunJobs();
+                Check(histories.QuickSearchText.Length == 0 && box.Text.Length == 0 && histories.DisplayedCommits.Count == 2,
+                    $"{theme}: one click clears search and restores history");
+                Check(!clearButton.IsVisible && box.IsKeyboardFocusWithin, $"{theme}: empty search hides clear icon and retains focus");
+                histories.QuickSearchText = "body-only";
+                histories.IsQuickSearchFilterEnabled = true;
+                WaitFor(() => !histories.IsQuickSearching);
             }
             Application.Current!.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Light;
             Dispatcher.UIThread.RunJobs();
