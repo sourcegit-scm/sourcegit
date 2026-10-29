@@ -98,6 +98,7 @@ internal static class Program
             view.IsCommitSearchPanelVisible = true;
             Arrange(window);
             Check(view.FindControl<Views.CommitSearchView>("CommitSearchPanel").Bounds.Width >= 200, "commit search uses upper sidebar");
+            CheckCommitSearch(repo, view, window, true);
             Check(Near(details.Bounds.Width, detailsWidth), "commit search leaves full width details");
             view.IsCommitSearchPanelVisible = false;
             view.IsNormalSidebarVisible = true;
@@ -112,6 +113,7 @@ internal static class Program
                 repo.SelectedViewIndex = page;
                 Arrange(window);
                 Check(ReferenceEquals(sidebar.Parent, page == 0 ? historyArea : mainBody), "sidebar follows page selection");
+                CheckCommitSearch(repo, view, window);
             }
 
             if (render)
@@ -125,9 +127,11 @@ internal static class Program
             Arrange(window);
             Check(!pref.UseWideDetailsLayoutInHistories && ReferenceEquals(sidebar.Parent, mainBody), "Horizontal restores outer sidebar");
             Check(Near(details.Bounds.Height, layout.Bounds.Height), "Horizontal details are beside history");
+            CheckCommitSearch(repo, view, window);
             pref.UseTwoColumnsLayoutInHistories = false;
             Arrange(window);
             Check(ReferenceEquals(sidebar.Parent, mainBody) && details.Bounds.Width < mainBody.Bounds.Width - 100, "Vertical preserves original sidebar arrangement");
+            CheckCommitSearch(repo, view, window);
         }
 
         pref.UseWideDetailsLayoutInHistories = true;
@@ -135,6 +139,32 @@ internal static class Program
         pref.Save();
         using var saved = JsonDocument.Parse(File.ReadAllText(Path.Combine(SourceGit.Native.OS.BasicDirectories.ConfigDir, "preference.json")));
         Check(saved.RootElement.GetProperty("UseWideDetailsLayoutInHistories").GetBoolean(), "Wide Details preference is persisted");
+    }
+
+    private static void CheckCommitSearch(Repository repo, Views.Repository view, Window window, bool runQuery = false)
+    {
+        var search = view.FindControl<Views.CommitSearchView>("CommitSearchPanel");
+        var context = repo.Histories.SearchCommitContext;
+        Check(ReferenceEquals(search.DataContext, context), "commit search retains its context after reparenting");
+        var spinner = search.GetVisualDescendants().OfType<Views.LoadingIcon>().Single();
+        Check(!spinner.IsVisible && !context.IsQuerying, "idle commit search hides spinner before any query");
+
+        if (!runQuery)
+            return;
+
+        repo.Histories.IsSearchingCommits = true;
+        var input = search.FindControl<TextBox>("TxtSearchCommitsBox");
+        input.Text = "initial";
+        Arrange(window);
+        Check(context.Filter == "initial", "search input updates the search context");
+        context.StartSearch();
+        Check(spinner.IsVisible, "active commit search shows spinner");
+        PumpUntil(() => !context.IsQuerying);
+        Check(!spinner.IsVisible && context.Results?.Count == 1, "commit search completes with a result and hides spinner");
+        context.ClearFilter();
+        repo.Histories.IsSearchingCommits = false;
+        Arrange(window);
+        Check(string.IsNullOrEmpty(input.Text) && !spinner.IsVisible, "clearing and closing commit search resets its controls");
     }
 
     private static void CheckAdvancedOptions(Views.Histories histories, Window window)
