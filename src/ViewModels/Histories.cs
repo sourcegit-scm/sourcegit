@@ -735,7 +735,9 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
+            Graph = _isQuickSearchFilterEnabled && !string.IsNullOrEmpty(_quickSearchText) ?
+                Models.CommitGraph.GenerateFiltered(_commits, commits, firstParentOnly, highlighting, extraHeads) :
+                Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         private string _quickSearchText = string.Empty;

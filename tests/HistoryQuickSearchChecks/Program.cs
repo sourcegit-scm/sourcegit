@@ -190,10 +190,14 @@ internal static class Program
             window.UpdateLayout();
             Check(histories.SelectedCommits.Single() == longHistory[0] && IsRowVisible(grid, longHistory[0]), "previous scrolls distant match into view");
             histories.IsQuickSearchFilterEnabled = true;
+            Check(histories.Graph.Dots.Count == 2 && histories.Graph.Dots.All(dot => dot.Center.X == 10), "filtered linear history stays in one lane across hidden commits");
+            Check(histories.Graph.Paths.Count == 1, "filtered matches share their ancestral path");
             histories.IsQuickSearchFilterEnabled = false;
+            Check(longHistory[0].Parents.Single() == longHistory[1].SHA, "filtering preserves original parent hashes");
             Dispatcher.UIThread.RunJobs();
             window.UpdateLayout();
             Check(IsRowVisible(grid, histories.SelectedCommits.Single()), "filter toggle keeps selected match visible");
+            CheckFilteredGraphTopology();
             window.Close();
             histories.CancelQuickSearch();
             Console.WriteLine($"Passed {_checks} history quick search checks.");
@@ -209,6 +213,30 @@ internal static class Program
                 File.SetAttributes(file, FileAttributes.Normal);
             Directory.Delete(fixture, true);
         }
+    }
+
+    private static void CheckFilteredGraphTopology()
+    {
+        var root = new Commit { SHA = "root" };
+        var left = new Commit { SHA = "left", Parents = [root.SHA] };
+        var right = new Commit { SHA = "right", Parents = [root.SHA] };
+        var hiddenMerge = new Commit { SHA = "hidden-merge", Parents = [left.SHA, right.SHA] };
+        var tip = new Commit { SHA = "tip", Parents = [hiddenMerge.SHA] };
+        var all = new List<Commit> { tip, hiddenMerge, left, right, root };
+        var graph = CommitGraph.GenerateFiltered(all, [tip, left, right, root], false, CommitGraphHighlighting.All, []);
+        Check(graph.Dots.Count == 4 && graph.Paths.Count == 2, "hidden merge retains both visible parent paths");
+        Check(graph.Dots.Max(dot => dot.Center.X) <= 22, "hidden merge does not create extra lanes");
+        graph = CommitGraph.GenerateFiltered(all, [tip, right], true, CommitGraphHighlighting.All, []);
+        Check(graph.Paths.Count == 0, "first-parent mode does not connect through a hidden second parent");
+        graph = CommitGraph.GenerateFiltered(all, [tip], false, CommitGraphHighlighting.All, []);
+        Check(graph.Paths.Count == 0 && graph.Dots.Single().Center.X == 10, "no dangling paths for ancestors without visible matches");
+        Check(hiddenMerge.Parents.SequenceEqual([left.SHA, right.SHA]), "projecting hidden merges preserves original ancestry");
+        var sparse = Enumerable.Range(0, 600).Select(i => new Commit { SHA = $"commit-{i}", Parents = [$"commit-{i + 1}"] }).ToList();
+        var visible = sparse.Where((_, i) => i % 3 == 0).ToList();
+        graph = CommitGraph.GenerateFiltered(sparse, visible, false, CommitGraphHighlighting.All, []);
+        Check(graph.Paths.Count == 1 && graph.Dots.All(dot => dot.Center.X == 10), "hundreds of sparse matches do not accumulate phantom branches");
+        graph = CommitGraph.Generate(sparse, false, CommitGraphHighlighting.All, []);
+        Check(graph.Dots.Count == sparse.Count && graph.Dots.All(dot => dot.Center.X == 10), "unfiltered graph retains original topology");
     }
 
     private static HashSet<string> Search(string repo, List<Commit> commits, string filter) =>
