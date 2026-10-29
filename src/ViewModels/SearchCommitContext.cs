@@ -79,8 +79,7 @@ namespace SourceGit.ViewModels
         public void ClearFilter()
         {
             Filter = string.Empty;
-            Selected = null;
-            Results = null;
+            StartSearch();
         }
 
         public void ClearSuggestions()
@@ -90,6 +89,10 @@ namespace SourceGit.ViewModels
 
         public void StartSearch()
         {
+            if (_cancellation is { IsCancellationRequested: false })
+                _cancellation.Cancel();
+
+            IsQuerying = false;
             Results = null;
             Selected = null;
             Suggestions = null;
@@ -99,26 +102,25 @@ namespace SourceGit.ViewModels
 
             IsQuerying = true;
 
-            if (_cancellation is { IsCancellationRequested: false })
-                _cancellation.Cancel();
-
             _cancellation = new();
             var token = _cancellation.Token;
 
+            var method = (Models.CommitSearchMethod)_method;
+            var filter = _filter;
+            var onlyCurrentBranch = _onlySearchCurrentBranch;
             Task.Run(async () =>
             {
                 var result = new List<Models.Commit>();
-                var method = (Models.CommitSearchMethod)_method;
 
                 if (method == Models.CommitSearchMethod.BySHA)
                 {
-                    var isCommitSHA = await new Commands.IsCommitSHA(_repo, _filter)
+                    var isCommitSHA = await new Commands.IsCommitSHA(_repo, filter)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
                     if (isCommitSHA)
                     {
-                        var commit = await new Commands.QuerySingleCommit(_repo, _filter)
+                        var commit = await new Commands.QuerySingleCommit(_repo, filter)
                             .GetResultAsync()
                             .ConfigureAwait(false);
 
@@ -129,9 +131,10 @@ namespace SourceGit.ViewModels
                         result.Add(commit);
                     }
                 }
-                else if (_onlySearchCurrentBranch)
+                else if (onlyCurrentBranch)
                 {
-                    result = await new Commands.QueryCommits(_repo, _filter, method, true)
+                    result = await new Commands.QueryCommits(_repo, filter, method, true)
+                        .WithCancellation(token)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
@@ -140,9 +143,13 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    result = await new Commands.QueryCommits(_repo, _filter, method, false)
+                    result = await new Commands.QueryCommits(_repo, filter, method, false)
+                        .WithCancellation(token)
                         .GetResultAsync()
                         .ConfigureAwait(false);
+
+                    if (token.IsCancellationRequested)
+                        return;
 
                     if (result.Count > 0)
                     {
@@ -288,7 +295,7 @@ namespace SourceGit.ViewModels
         private string _repo = null;
         private Histories _histories = null;
         private CancellationTokenSource _cancellation = null;
-        private int _method = (int)Models.CommitSearchMethod.ByMessage;
+        private int _method = (int)Models.CommitSearchMethod.Mixed;
         private string _filter = string.Empty;
         private bool _onlySearchCurrentBranch = false;
         private bool _isQuerying = false;

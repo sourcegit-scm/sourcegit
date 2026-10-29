@@ -851,6 +851,8 @@
   <x:String x:Key="Text.Repository.Search.ByContent" xml:space="preserve">Content</x:String>
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Message</x:String>
   <x:String x:Key="Text.Repository.Search.ByPath" xml:space="preserve">Path</x:String>
+  <x:String x:Key="Text.Repository.Search.Mixed" xml:space="preserve">Mixed</x:String>
+  <x:String x:Key="Text.Repository.Search.Mixed.Tip" xml:space="preserve">Search SHA prefixes, author, and full commit message</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Current Branch</x:String>
   <x:String x:Key="Text.Repository.Search.Method" xml:space="preserve">SEARCH BY</x:String>
