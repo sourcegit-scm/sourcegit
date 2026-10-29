@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ClientModel;
 using System.ClientModel.Primitives;
 using System.Collections.Generic;
@@ -84,9 +84,11 @@ namespace SourceGit.AI
             }
 
             var allModels = GetOpenAIClient().GetOpenAIModelClient().GetModels();
-            AvailableModels = new List<string>();
+            AvailableModels = [];
             foreach (var model in allModels.Value)
                 AvailableModels.Add(model.Id);
+
+            AvailableModels.Sort(StringComparer.Ordinal);
 
             if (AvailableModels.Count > 0 && (string.IsNullOrEmpty(Model) || !AvailableModels.Contains(Model)))
                 Model = AvailableModels[0];
