@@ -19,11 +19,7 @@ namespace SourceGit.ViewModels
         public bool FetchAllRemotes
         {
             get => _fetchAllRemotes;
-            set
-            {
-                if (SetProperty(ref _fetchAllRemotes, value) && IsFetchAllRemoteVisible)
-                    _repo.UIStates.FetchAllRemotes = value;
-            }
+            set => SetProperty(ref _fetchAllRemotes, value);
         }
 
         public Models.Remote SelectedRemote
@@ -34,14 +30,19 @@ namespace SourceGit.ViewModels
 
         public bool NoTags
         {
-            get => _repo.UIStates.FetchWithoutTags;
-            set => _repo.UIStates.FetchWithoutTags = value;
+            get => _noTags;
+            set => SetProperty(ref _noTags, value);
         }
 
         public bool Force
         {
-            get => _repo.UIStates.EnableForceOnFetch;
-            set => _repo.UIStates.EnableForceOnFetch = value;
+            get => _force;
+            set => SetProperty(ref _force, value);
+        }
+
+        public override bool HasDefaultOptions
+        {
+            get => true;
         }
 
         public Fetch(Repository repo, Models.Remote preferredRemote = null)
@@ -49,6 +50,8 @@ namespace SourceGit.ViewModels
             _repo = repo;
             IsFetchAllRemoteVisible = repo.Remotes.Count > 1 && preferredRemote == null;
             _fetchAllRemotes = IsFetchAllRemoteVisible && _repo.UIStates.FetchAllRemotes;
+            _noTags = _repo.UIStates.FetchWithoutTags;
+            _force = _repo.UIStates.EnableForceOnFetch;
             CanTerminate = true;
 
             if (preferredRemote != null)
@@ -66,6 +69,29 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public override void SaveOptionsAsDefault()
+        {
+            if (IsFetchAllRemoteVisible)
+                _repo.UIStates.FetchAllRemotes = _fetchAllRemotes;
+
+            _repo.UIStates.FetchWithoutTags = _noTags;
+            _repo.UIStates.EnableForceOnFetch = _force;
+            _repo.UIStates.Save();
+        }
+
+        public override void ResetDefaultOptions()
+        {
+            var defaults = new Models.RepositoryUIStates();
+            _repo.UIStates.FetchAllRemotes = defaults.FetchAllRemotes;
+            _repo.UIStates.FetchWithoutTags = defaults.FetchWithoutTags;
+            _repo.UIStates.EnableForceOnFetch = defaults.EnableForceOnFetch;
+            _repo.UIStates.Save();
+
+            FetchAllRemotes = IsFetchAllRemoteVisible && defaults.FetchAllRemotes;
+            NoTags = defaults.FetchWithoutTags;
+            Force = defaults.EnableForceOnFetch;
+        }
+
         public override async Task<bool> Sure()
         {
             using var lockWatcher = _repo.LockWatcher();
@@ -74,19 +100,20 @@ namespace SourceGit.ViewModels
                 _repo.Histories.SelectedCommits.Count == 1 &&
                 _repo.Histories.SelectedCommits[0].IsCurrentHead;
 
-            var notags = _repo.UIStates.FetchWithoutTags;
-            var force = _repo.UIStates.EnableForceOnFetch;
+            var notags = _noTags;
+            var force = _force;
             var log = _repo.CreateLog("Fetch");
             Use(log);
 
             _cancellation = new CancellationTokenSource();
             var token = _cancellation.Token;
 
+            var succ = true;
             if (FetchAllRemotes)
             {
                 foreach (var remote in _repo.Remotes)
                 {
-                    await new Commands.Fetch(_repo.FullPath, remote, notags, force)
+                    succ &= await new Commands.Fetch(_repo.FullPath, remote, notags, force)
                         .WithCancellation(token)
                         .Use(log)
                         .ExecAsync();
@@ -97,7 +124,7 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                await new Commands.Fetch(_repo.FullPath, SelectedRemote, notags, force)
+                succ = await new Commands.Fetch(_repo.FullPath, SelectedRemote, notags, force)
                     .WithCancellation(token)
                     .Use(log)
                     .ExecAsync();
@@ -119,7 +146,7 @@ namespace SourceGit.ViewModels
                 _repo.MarkFetched();
 
             _cancellation = null;
-            return true;
+            return succ;
         }
 
         public override void Terminate()
@@ -130,6 +157,8 @@ namespace SourceGit.ViewModels
 
         private readonly Repository _repo = null;
         private bool _fetchAllRemotes = false;
+        private bool _noTags = false;
+        private bool _force = false;
         private CancellationTokenSource _cancellation = null;
     }
 }
