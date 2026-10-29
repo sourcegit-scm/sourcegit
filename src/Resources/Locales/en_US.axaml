@@ -20,7 +20,7 @@
   <x:String x:Key="Text.App.Hide" xml:space="preserve">Hide SourceGit</x:String>
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Hide Others</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Show All</x:String>
-  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way Merge</x:String>
+  <x:String x:Key="Text.Apply.3Way" xml:space="preserve">3-Way merge</x:String>
   <x:String x:Key="Text.Apply.CommitChanges" xml:space="preserve">Commit changes</x:String>
   <x:String x:Key="Text.Apply.CommitChanges.Tip" xml:space="preserve">Use `git am` instead of `git apply`</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Select patch file to apply</x:String>
