@@ -682,6 +682,8 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPEARANCE</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Editor Tab Width</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ExtendContextMenusWithHgTerminology" xml:space="preserve">Extend context menus with Hg terminology</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.ExtendContextMenusWithHgTerminology.Tip" xml:space="preserve">Also extend tooltips with equivalent Hg terminology.</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Default</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
