@@ -91,6 +91,8 @@ internal static class Program
             histories.QuickSearchText = "Shared";
             WaitFor(() => !histories.IsQuickSearching);
             Check(histories.HasQuickSearchMatches && histories.DisplayedCommits.Count == 2, "search retains unfiltered history");
+            Check(histories.SelectedCommits.Single().SHA == second, "search selects first match automatically");
+            histories.SelectedCommits = [];
             histories.QuickSearchNext();
             Check(histories.SelectedCommits.Single().SHA == second, "next selects first in history order");
             histories.QuickSearchNext();
@@ -121,6 +123,7 @@ internal static class Program
             histories.Commits = commits;
             WaitFor(() => !histories.IsQuickSearching);
 
+            histories.SelectedCommits = [commits[1]];
             var view = new HistoryView { DataContext = histories };
             var window = new Window { Width = 1000, Height = 650, Content = view };
             window.Show();
@@ -160,6 +163,37 @@ internal static class Program
             WaitFor(() => !histories.IsQuickSearching);
             histories.IsQuickSearchFilterEnabled = true;
             Check(histories.DisplayedCommits.Count == 0 && !histories.HasQuickSearchMatches, "no matches produces empty filtered history");
+            histories.ClearQuickSearch();
+            for (var i = 0; i < 60; i++)
+                Git(fixture, "commit", "--allow-empty", "-m", $"Filler {i}");
+            Git(fixture, "commit", "--allow-empty", "-m", "Body-only distant match");
+            var longHistory = new QueryCommits(fixture, "HEAD").GetResultAsync().GetAwaiter().GetResult();
+            histories.Commits = longHistory;
+            histories.SelectedCommits = [];
+            var grid = view.FindControl<DataGrid>("CommitListContainer")!;
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            grid.ScrollIntoView(longHistory[^1], null);
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            Check(!IsRowVisible(grid, longHistory[0]), "first match starts outside viewport");
+            histories.QuickSearchText = "body-only";
+            WaitFor(() => !histories.IsQuickSearching);
+            window.UpdateLayout();
+            Check(IsRowVisible(grid, longHistory[0]), "initial search scrolls first match into view");
+            histories.QuickSearchNext();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            Check(histories.SelectedCommits.Single() == longHistory[^1] && IsRowVisible(grid, longHistory[^1]), "next scrolls distant match into view");
+            histories.QuickSearchPrevious();
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            Check(histories.SelectedCommits.Single() == longHistory[0] && IsRowVisible(grid, longHistory[0]), "previous scrolls distant match into view");
+            histories.IsQuickSearchFilterEnabled = true;
+            histories.IsQuickSearchFilterEnabled = false;
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            Check(IsRowVisible(grid, histories.SelectedCommits.Single()), "filter toggle keeps selected match visible");
             window.Close();
             histories.CancelQuickSearch();
             Console.WriteLine($"Passed {_checks} history quick search checks.");
@@ -179,6 +213,17 @@ internal static class Program
 
     private static HashSet<string> Search(string repo, List<Commit> commits, string filter) =>
         new QueryHistoryQuickSearch(repo, commits, filter, CancellationToken.None).GetResultAsync().GetAwaiter().GetResult();
+
+    private static bool IsRowVisible(DataGrid grid, Commit commit)
+    {
+        var presenter = grid.GetVisualDescendants().OfType<Avalonia.Controls.Primitives.DataGridRowsPresenter>().First();
+        return presenter.GetVisualDescendants().OfType<DataGridRow>().Any(row =>
+        {
+            var position = row.TranslatePoint(default, presenter);
+            return row.DataContext == commit && row.IsVisible && position.HasValue &&
+                position.Value.Y >= -0.5 && position.Value.Y + row.Bounds.Height <= presenter.Bounds.Height + 0.5;
+        });
+    }
 
     private static void WaitFor(Func<bool> condition)
     {

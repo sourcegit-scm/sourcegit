@@ -209,6 +209,12 @@ namespace SourceGit.ViewModels
                 _quickSearchMatches = commits.FindAll(c => matches.Contains(c.SHA));
                 IsQuickSearching = false;
                 ApplyQuickSearchFilter();
+                if (_quickSearchMatches.Count > 0)
+                {
+                    var selected = _selectedCommits.Count == 1 ?
+                        _quickSearchMatches.Find(c => c.SHA == _selectedCommits[0].SHA) : null;
+                    SelectedCommits = [selected ?? _quickSearchMatches[0]];
+                }
                 OnPropertyChanged(nameof(HasQuickSearchMatches));
                 OnPropertyChanged(nameof(QuickSearchStatus));
             }

@@ -271,6 +271,9 @@ namespace SourceGit.Views
             }
 
             _ignoreSelectionChanged = false;
+
+            if (SelectedCommits is { Count: 1 })
+                ScrollIntoView(SelectedCommits[0], null);
         }
 
         private void IncrNoSelectionChangeCount()
