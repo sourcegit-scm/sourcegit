@@ -6,11 +6,13 @@ This document shows the translation status of each locale file in the repository
 
 ### ![en_US](https://img.shields.io/badge/en__US-%E2%88%9A-brightgreen)
 
-### ![ca__ES](https://img.shields.io/badge/ca__ES-99.35%25-yellow)
+### ![ca__ES](https://img.shields.io/badge/ca__ES-99.08%25-yellow)
 
 <details>
 <summary>Missing keys in ca_ES.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.DeleteBranch.DeleteAttachedWorktree
 - Text.EditApiKey
 - Text.EditApiKey.ApiKey
@@ -18,14 +20,17 @@ This document shows the translation status of each locale file in the repository
 - Text.EditApiKey.InvalidStorage
 - Text.EditApiKey.Server
 - Text.EditApiKey.Storage
+- Text.InProgress.Am
 
 </details>
 
-### ![de__DE](https://img.shields.io/badge/de__DE-93.23%25-yellow)
+### ![de__DE](https://img.shields.io/badge/de__DE-92.98%25-yellow)
 
 <details>
 <summary>Missing keys in de_DE.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Blame.Tips
 - Text.BranchCM.CheckoutAsWorktree
 - Text.BranchTree.PushURL
@@ -55,6 +60,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
+- Text.InProgress.Am
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ExtraHeaders
@@ -102,11 +108,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![el__GR](https://img.shields.io/badge/el__GR-92.77%25-yellow)
+### ![el__GR](https://img.shields.io/badge/el__GR-92.51%25-yellow)
 
 <details>
 <summary>Missing keys in el_GR.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Blame.Tips
 - Text.BranchCM.CheckoutAsWorktree
 - Text.BranchTree.PushURL
@@ -136,6 +144,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
+- Text.InProgress.Am
 - Text.Launcher.NewVersion
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
@@ -188,13 +197,24 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
+### ![es__ES](https://img.shields.io/badge/es__ES-99.72%25-yellow)
 
-### ![fr__FR](https://img.shields.io/badge/fr__FR-89.06%25-yellow)
+<details>
+<summary>Missing keys in es_ES.axaml</summary>
+
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
+- Text.InProgress.Am
+
+</details>
+
+### ![fr__FR](https://img.shields.io/badge/fr__FR-88.82%25-yellow)
 
 <details>
 <summary>Missing keys in fr_FR.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Apply.Source
 - Text.Apply.Source.File
 - Text.Apply.Source.Clipboard
@@ -251,6 +271,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
+- Text.InProgress.Am
 - Text.Launcher.NewVersion
 - Text.Merge.Test
 - Text.Merge.Test.NoConflicts
@@ -316,11 +337,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![he__IL](https://img.shields.io/badge/he__IL-89.06%25-yellow)
+### ![he__IL](https://img.shields.io/badge/he__IL-88.82%25-yellow)
 
 <details>
 <summary>Missing keys in he_IL.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Apply.Source
 - Text.Apply.Source.File
 - Text.Apply.Source.Clipboard
@@ -377,6 +400,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
+- Text.InProgress.Am
 - Text.Launcher.NewVersion
 - Text.Merge.Test
 - Text.Merge.Test.NoConflicts
@@ -442,11 +466,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![id__ID](https://img.shields.io/badge/id__ID-93.23%25-yellow)
+### ![id__ID](https://img.shields.io/badge/id__ID-92.98%25-yellow)
 
 <details>
 <summary>Missing keys in id_ID.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Blame.Tips
 - Text.BranchCM.CheckoutAsWorktree
 - Text.BranchTree.PushURL
@@ -476,6 +502,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
+- Text.InProgress.Am
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
 - Text.Preferences.AI.ReasoningEffortLevel
@@ -523,7 +550,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![it__IT](https://img.shields.io/badge/it__IT-83.13%25-yellow)
+### ![it__IT](https://img.shields.io/badge/it__IT-82.90%25-yellow)
 
 <details>
 <summary>Missing keys in it_IT.axaml</summary>
@@ -531,6 +558,8 @@ This document shows the translation status of each locale file in the repository
 - Text.AIAssistant.Use
 - Text.App.HideOthers
 - Text.Apply.3Way
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Apply.Source
 - Text.Apply.Source.File
 - Text.Apply.Source.Clipboard
@@ -626,6 +655,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
+- Text.InProgress.Am
 - Text.InteractiveRebase.NoVerify
 - Text.Launcher.NewVersion
 - Text.Merge.Test
@@ -713,11 +743,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ja__JP](https://img.shields.io/badge/ja__JP-97.22%25-yellow)
+### ![ja__JP](https://img.shields.io/badge/ja__JP-96.95%25-yellow)
 
 <details>
 <summary>Missing keys in ja_JP.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.BranchCM.CheckoutAsWorktree
 - Text.CheckoutAsWorktree
 - Text.CheckoutAsWorktree.LocalBranch
@@ -735,6 +767,7 @@ This document shows the translation status of each locale file in the repository
 - Text.EditApiKey.InvalidStorage
 - Text.EditApiKey.Server
 - Text.EditApiKey.Storage
+- Text.InProgress.Am
 - Text.Preferences.Shell.Args.ToolTip
 - Text.Statistics.Commits
 - Text.Statistics.TopAuthors
@@ -751,11 +784,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ko__KR](https://img.shields.io/badge/ko__KR-90.45%25-yellow)
+### ![ko__KR](https://img.shields.io/badge/ko__KR-90.20%25-yellow)
 
 <details>
 <summary>Missing keys in ko_KR.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Bisect.WaitingForCheckoutAnother
 - Text.Bisect.WaitingForFirstBad
 - Text.Blame.Tips
@@ -806,6 +841,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ToggleCommitDetailPanel
 - Text.Hotkeys.Repo.ToggleSearchCommits
 - Text.Hotkeys.Repo.ViewDashboard
+- Text.InProgress.Am
 - Text.Launcher.NewVersion
 - Text.OpenAppDataDir.Cache
 - Text.OpenAppDataDir.Config
@@ -862,7 +898,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![pt__BR](https://img.shields.io/badge/pt__BR-58.67%25-red)
+### ![pt__BR](https://img.shields.io/badge/pt__BR-58.50%25-red)
 
 <details>
 <summary>Missing keys in pt_BR.axaml</summary>
@@ -870,6 +906,8 @@ This document shows the translation status of each locale file in the repository
 - Text.AIAssistant.Use
 - Text.App.HideOthers
 - Text.Apply.3Way
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Apply.Source
 - Text.Apply.Source.File
 - Text.Apply.Source.Clipboard
@@ -1079,6 +1117,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
+- Text.InProgress.Am
 - Text.InProgress.CherryPick.Head
 - Text.InProgress.Merge.Operating
 - Text.InProgress.Rebase.StoppedAt
@@ -1316,11 +1355,13 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-99.26%25-yellow)
+### ![ru__RU](https://img.shields.io/badge/ru__RU-98.98%25-yellow)
 
 <details>
 <summary>Missing keys in ru_RU.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.DeleteBranch.DeleteAttachedWorktree
 - Text.EditApiKey
 - Text.EditApiKey.ApiKey
@@ -1328,11 +1369,12 @@ This document shows the translation status of each locale file in the repository
 - Text.EditApiKey.InvalidStorage
 - Text.EditApiKey.Server
 - Text.EditApiKey.Storage
+- Text.InProgress.Am
 - Text.Preferences.Shell.Args.ToolTip
 
 </details>
 
-### ![ta__IN](https://img.shields.io/badge/ta__IN-60.24%25-red)
+### ![ta__IN](https://img.shields.io/badge/ta__IN-60.07%25-red)
 
 <details>
 <summary>Missing keys in ta_IN.axaml</summary>
@@ -1347,6 +1389,8 @@ This document shows the translation status of each locale file in the repository
 - Text.App.HideOthers
 - Text.App.ShowAll
 - Text.Apply.3Way
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Apply.Source
 - Text.Apply.Source.File
 - Text.Apply.Source.Clipboard
@@ -1563,6 +1607,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
+- Text.InProgress.Am
 - Text.InteractiveRebase.NoVerify
 - Text.InteractiveRebase.ReorderTip
 - Text.Launcher.Commands
@@ -1769,7 +1814,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![uk__UA](https://img.shields.io/badge/uk__UA-60.98%25-red)
+### ![uk__UA](https://img.shields.io/badge/uk__UA-60.81%25-red)
 
 <details>
 <summary>Missing keys in uk_UA.axaml</summary>
@@ -1784,6 +1829,8 @@ This document shows the translation status of each locale file in the repository
 - Text.App.HideOthers
 - Text.App.ShowAll
 - Text.Apply.3Way
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.Apply.Source
 - Text.Apply.Source.File
 - Text.Apply.Source.Clipboard
@@ -1996,6 +2043,7 @@ This document shows the translation status of each locale file in the repository
 - Text.Hotkeys.Repo.ViewDashboard
 - Text.Init.CommandTip
 - Text.Init.ErrorMessageTip
+- Text.InProgress.Am
 - Text.InteractiveRebase.NoVerify
 - Text.InteractiveRebase.ReorderTip
 - Text.Launcher.Commands
@@ -2200,11 +2248,13 @@ This document shows the translation status of each locale file in the repository
 
 ### ![zh__CN](https://img.shields.io/badge/zh__CN-%E2%88%9A-brightgreen)
 
-### ![zh__TW](https://img.shields.io/badge/zh__TW-99.35%25-yellow)
+### ![zh__TW](https://img.shields.io/badge/zh__TW-99.08%25-yellow)
 
 <details>
 <summary>Missing keys in zh_TW.axaml</summary>
 
+- Text.Apply.CommitChanges
+- Text.Apply.CommitChanges.Tip
 - Text.DeleteBranch.DeleteAttachedWorktree
 - Text.EditApiKey
 - Text.EditApiKey.ApiKey
@@ -2212,5 +2262,6 @@ This document shows the translation status of each locale file in the repository
 - Text.EditApiKey.InvalidStorage
 - Text.EditApiKey.Server
 - Text.EditApiKey.Storage
+- Text.InProgress.Am
 
 </details>
