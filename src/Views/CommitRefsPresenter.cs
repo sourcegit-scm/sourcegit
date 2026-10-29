@@ -73,6 +73,8 @@ namespace SourceGit.Views
             public IBrush Brush { get; set; } = null;
             public bool IsHead { get; set; } = false;
             public double Width { get; set; } = 0.0;
+            public double LabelWidth { get; set; } = 0.0;
+            public bool IsLabelTrimmed { get; set; } = false;
             public List<FormattedText> Remotes { get; set; } = [];
         }
 
@@ -157,11 +159,47 @@ namespace SourceGit.Views
             set => SetValue(ShowTagsProperty, value);
         }
 
+        public static readonly StyledProperty<bool> FitToWidthProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(FitToWidth));
+
+        /// <summary>
+        ///     Only shows the refs that fit in the available width, followed by a `+N` badge.
+        /// </summary>
+        public bool FitToWidth
+        {
+            get => GetValue(FitToWidthProperty);
+            set => SetValue(FitToWidthProperty, value);
+        }
+
+        public static readonly StyledProperty<bool> ShowConnectorProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(ShowConnector));
+
+        /// <summary>
+        ///     Draws a line from the last ref to the right edge (towards the commit node in graph).
+        /// </summary>
+        public bool ShowConnector
+        {
+            get => GetValue(ShowConnectorProperty);
+            set => SetValue(ShowConnectorProperty, value);
+        }
+
+        public Rect? OverflowBadgeBounds
+        {
+            get => _overflowRect;
+        }
+
+        public bool IsOverflowBadgeAt(Point point)
+        {
+            return _overflowRect.HasValue && _overflowRect.Value.Inflate(2).Contains(point);
+        }
+
         public Models.Decorator DecoratorAt(Point point)
         {
             var x = 0.0;
-            foreach (var item in _items)
+            var count = FitToWidth ? _visibleCount : _items.Count;
+            for (var i = 0; i < count; i++)
             {
+                var item = _items[i];
                 x += item.Width;
                 if (point.X < x)
                     return item.Decorator;
@@ -182,12 +220,15 @@ namespace SourceGit.Views
             var x = 1.5;
             var y = 0.5;
             var remoteIcon = CommitRefsIconCache.Instance.GetIcon(Models.DecoratorType.RemoteBranchHead);
-            var hasSingleRemote = HasSingleRemote;
+            var hasSingleRemote = HasSingleRemote || FitToWidth;
 
-            context.FillRectangle(Brushes.Transparent, Bounds);
+            var count = FitToWidth ? _visibleCount : _items.Count;
 
-            foreach (var item in _items)
+            context.FillRectangle(Brushes.Transparent, new Rect(Bounds.Size));
+
+            for (var i = 0; i < count; i++)
             {
+                var item = _items[i];
                 if (allowWrap && x > 1.5 && x + item.Width > Bounds.Width)
                 {
                     x = 1.5;
@@ -250,6 +291,34 @@ namespace SourceGit.Views
 
                 x += item.Width + 4;
             }
+
+            _overflowRect = null;
+            if (count < _items.Count && _overflowLabel != null)
+            {
+                var badgeRect = new RoundedRect(new Rect(x, y, _overflowLabel.Width + 8, 16), new CornerRadius(4));
+                _overflowRect = badgeRect.Rect;
+                if (bg != null)
+                    context.DrawRectangle(bg, null, badgeRect);
+                context.DrawRectangle(null, new Pen(Brushes.Gray), badgeRect);
+                context.DrawText(_overflowLabel, new Point(x + 4, y + 8.0 - _overflowLabel.Height * 0.5));
+                x += badgeRect.Rect.Width + 4;
+            }
+
+            if (ShowConnector && DataContext is Models.Commit commit && x < Bounds.Width)
+            {
+                var graphPen = Models.CommitGraph.Pens[commit.Color];
+                var pen = useGraphColor ? graphPen : new Pen(new SolidColorBrush(Colors.Gray, 0.4), graphPen.Thickness);
+                var cy = y - 0.5 + 8.0;
+                context.DrawLine(pen, new Point(x - 4, cy), new Point(Bounds.Width, cy));
+            }
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (FitToWidth)
+                UpdateVisibleItems(finalSize.Width);
+
+            return base.ArrangeOverride(finalSize);
         }
 
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -263,8 +332,11 @@ namespace SourceGit.Views
                 change.Property == UseCompactBranchNamesProperty ||
                 change.Property == HasSingleRemoteProperty ||
                 change.Property == BackgroundProperty ||
-                change.Property == ShowTagsProperty)
+                change.Property == ShowTagsProperty ||
+                change.Property == FitToWidthProperty)
                 InvalidateMeasure();
+            else if (change.Property == ShowConnectorProperty)
+                InvalidateVisual();
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -289,7 +361,7 @@ namespace SourceGit.Views
             }
 
             var useCompactBranchNames = UseCompactBranchNames;
-            var hasSingleRemote = HasSingleRemote;
+            var hasSingleRemote = HasSingleRemote || FitToWidth;
             var typeface = new Typeface(FontFamily);
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
@@ -340,6 +412,7 @@ namespace SourceGit.Views
                         fg);
                 }
 
+                item.LabelWidth = item.Label.Width;
                 item.Width = item.Label.Width + 24;
 
                 var findRemotes = useCompactBranchNames && (decorator.Type == Models.DecoratorType.CurrentBranchHead || decorator.Type == Models.DecoratorType.LocalBranchHead);
@@ -368,8 +441,12 @@ namespace SourceGit.Views
 
                             item.Remotes.Add(remote);
 
+                            // Only one remote icon is drawn in this mode, whatever the number of remotes.
                             if (hasSingleRemote)
-                                item.Width += 18;
+                            {
+                                if (item.Remotes.Count == 1)
+                                    item.Width += 18;
+                            }
                             else
                                 item.Width += remote.WidthIncludingTrailingWhitespace + 22;
 
@@ -392,7 +469,9 @@ namespace SourceGit.Views
             double requiredWidth = 0;
             if (_items.Count > 0)
             {
-                if (allowWrap && requiredHeight > 16.0)
+                if (FitToWidth && !double.IsInfinity(availableSize.Width))
+                    requiredWidth = Math.Min(x + 2, availableSize.Width);
+                else if (allowWrap && requiredHeight > 16.0)
                     requiredWidth = double.IsInfinity(availableSize.Width) ? x + 2 : availableSize.Width;
                 else
                     requiredWidth = x + 2;
@@ -402,6 +481,81 @@ namespace SourceGit.Views
             return new Size(requiredWidth, requiredHeight);
         }
 
+        private void UpdateVisibleItems(double width)
+        {
+            var count = _items.Count;
+            var visible = count;
+            var x = 1.5;
+
+            // Restore labels that may have been trimmed by previous arrange.
+            foreach (var item in _items)
+            {
+                if (item.IsLabelTrimmed)
+                {
+                    var trimmedWidth = item.Label.Width;
+                    item.Label.MaxTextWidth = item.LabelWidth + 1;
+                    item.Label.Trimming = TextTrimming.None;
+                    item.Width += item.LabelWidth - trimmedWidth;
+                    item.IsLabelTrimmed = false;
+                }
+            }
+
+            // Trim the label of the first ref when it does not fit, so the connector is still visible.
+            if (count > 0)
+            {
+                var first = _items[0];
+                var reserved = count > 1 ? MeasureOverflowBadge(count - 1).Width + 12 : 0;
+                var overflow = 1.5 + first.Width + reserved + 12 - width;
+                if (overflow > 0)
+                {
+                    var labelWidth = Math.Max(first.LabelWidth - overflow, 24);
+                    if (labelWidth < first.LabelWidth)
+                    {
+                        first.Label.MaxTextWidth = labelWidth;
+                        first.Label.MaxLineCount = 1;
+                        first.Label.Trimming = TextTrimming.CharacterEllipsis;
+                        first.Width -= first.LabelWidth - first.Label.Width;
+                        first.IsLabelTrimmed = true;
+                    }
+                }
+            }
+
+            for (var i = 0; i < count; i++)
+            {
+                var remains = count - i - 1;
+                var reserved = remains > 0 ? MeasureOverflowBadge(remains).Width + 12 : 0;
+                if (i > 0 && x + _items[i].Width + reserved > width)
+                {
+                    visible = i;
+                    break;
+                }
+
+                x += _items[i].Width + 4;
+            }
+
+            _visibleCount = visible;
+            _overflowLabel = visible < count ? MeasureOverflowBadge(count - visible) : null;
+
+            // Show the full name of a trimmed ref on hover.
+            var trimmed = count > 0 && _items[0].IsLabelTrimmed ? _items[0].Decorator.Name : null;
+            if (!Equals(ToolTip.GetTip(this), trimmed))
+                ToolTip.SetTip(this, trimmed);
+        }
+
+        private FormattedText MeasureOverflowBadge(int hidden)
+        {
+            return new FormattedText(
+                $"+{hidden}",
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(FontFamily),
+                FontSize,
+                Foreground);
+        }
+
         private List<RenderItem> _items = new List<RenderItem>();
+        private int _visibleCount = 0;
+        private FormattedText _overflowLabel = null;
+        private Rect? _overflowRect = null;
     }
 }

@@ -526,9 +526,12 @@
   <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">Advanced Options</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
+  <x:String x:Key="Text.Histories.Header.BranchesAndTags" xml:space="preserve">BRANCH / TAG</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT TIME</x:String>
+  <x:String x:Key="Text.Histories.Header.Graph" xml:space="preserve">GRAPH</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRAPH &amp; SUBJECT</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.Header.Subject" xml:space="preserve">COMMIT MESSAGE</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph" xml:space="preserve">HIGHLIGHTS IN GRAPH</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.All" xml:space="preserve">All</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Current Branch Only</x:String>
@@ -683,6 +686,9 @@
   <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">Reasoning Effort Level</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Server</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPEARANCE</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.CommitGraphStyle" xml:space="preserve">Commit Graph Style</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.CommitGraphStyle.Avatars" xml:space="preserve">Avatars (branches, graph and message in separate columns)</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.CommitGraphStyle.Classic" xml:space="preserve">Classic</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Editor Tab Width</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
