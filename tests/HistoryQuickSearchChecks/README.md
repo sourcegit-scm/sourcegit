@@ -21,3 +21,14 @@ dotnet run --project tests/HistoryQuickSearchChecks -- /absolute/path/preview.pn
 Quick search is limited to commits already loaded in the history view, honoring
 its branch/date/commit-count constraints. It has no dependency on the separate
 `mixed-commit-search` branch or changes to the Commit Search panel.
+
+To reproduce filtered graph issues against a real repository without changing
+its files or preferences, run:
+
+```sh
+dotnet run --project tests/HistoryQuickSearchChecks -- --repository /path/to/repo /absolute/path/preview.png
+```
+
+This searches the loaded branch/tag history for `fix:`, checks graph width,
+and optionally saves previews at the first and last match. The fixture suite
+also covers hidden merges that expose redundant edges to visible ancestors.

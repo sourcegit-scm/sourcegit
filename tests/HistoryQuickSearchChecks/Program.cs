@@ -31,6 +31,11 @@ internal static class Program
             .UseHeadless(new AvaloniaHeadlessPlatformOptions { UseHeadlessDrawing = false }).SetupWithoutStarting();
         try
         {
+            if (args.Length >= 2 && args[0] == "--repository")
+            {
+                CheckRepositoryGraph(args[1], args.Length > 2 ? args[2] : null);
+                return;
+            }
             Git(fixture, "init", "-b", "main");
             Git(fixture, "config", "user.name", "Alice Shared");
             Git(fixture, "config", "user.email", "alice@example.com");
@@ -215,6 +220,44 @@ internal static class Program
         }
     }
 
+    private static void CheckRepositoryGraph(string path, string preview)
+    {
+        var commits = new QueryCommits(path, "--branches --remotes --tags HEAD --date-order -20000").GetResultAsync().GetAwaiter().GetResult();
+        var matches = Search(path, commits, "fix:");
+        var visible = commits.FindAll(c => matches.Contains(c.SHA));
+        var full = CommitGraph.Generate(commits, false, CommitGraphHighlighting.All, []);
+        var filtered = CommitGraph.GenerateFiltered(commits, visible, false, CommitGraphHighlighting.All, []);
+        var fullWidth = full.Dots.Max(dot => dot.Center.X);
+        var filteredWidth = filtered.Dots.Max(dot => dot.Center.X);
+        Console.WriteLine($"Repository: {commits.Count} commits, {visible.Count} matches; full width {fullWidth}, filtered width {filteredWidth}");
+        if (preview != null)
+        {
+            var repo = new Repository(false, path, Path.Combine(path, ".git"));
+            var histories = new Histories(repo) { Commits = commits, IsLoading = false, IsCollapseDetails = true };
+            typeof(Histories).GetField("_ignoreSelectionChange", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(histories, true);
+            var view = new HistoryView { DataContext = histories };
+            var window = new Window { Width = 1600, Height = 1000, Content = view };
+            Application.Current!.RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Dark;
+            window.Show();
+            histories.QuickSearchText = "fix:";
+            histories.IsQuickSearchFilterEnabled = true;
+            WaitFor(() => !histories.IsQuickSearching);
+            window.UpdateLayout();
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            using var frame = window.CaptureRenderedFrame();
+            frame!.Save(preview);
+            histories.SelectedCommits = [histories.DisplayedCommits[^1]];
+            Dispatcher.UIThread.RunJobs();
+            window.UpdateLayout();
+            AvaloniaHeadlessPlatform.ForceRenderTimerTick();
+            using var bottom = window.CaptureRenderedFrame();
+            bottom!.Save(Path.Combine(Path.GetDirectoryName(preview)!, Path.GetFileNameWithoutExtension(preview) + "-bottom.png"));
+            window.Close();
+            histories.CancelQuickSearch();
+        }
+        Check(filteredWidth <= fullWidth + 12, "real repository filtered graph does not grow phantom lanes");
+    }
+
     private static void CheckFilteredGraphTopology()
     {
         var root = new Commit { SHA = "root" };
@@ -231,6 +274,22 @@ internal static class Program
         graph = CommitGraph.GenerateFiltered(all, [tip], false, CommitGraphHighlighting.All, []);
         Check(graph.Paths.Count == 0 && graph.Dots.Single().Center.X == 10, "no dangling paths for ancestors without visible matches");
         Check(hiddenMerge.Parents.SequenceEqual([left.SHA, right.SHA]), "projecting hidden merges preserves original ancestry");
+        var chain = Enumerable.Range(0, 200).Select(i => new Commit { SHA = $"visible-{i}" }).ToList();
+        for (var i = 0; i < chain.Count - 1; i++)
+            chain[i].Parents = [chain[i + 1].SHA];
+        var hidden = Enumerable.Range(0, chain.Count).Select(i => new Commit { SHA = $"merge-{i}" }).ToList();
+        for (var i = 0; i < hidden.Count; i++)
+            hidden[i].Parents = i + 1 < hidden.Count ? [hidden[i + 1].SHA, chain[i].SHA] : [chain[i].SHA];
+        var mergeTip = new Commit { SHA = "merge-tip", Parents = [hidden[0].SHA] };
+        var mergedHistory = new List<Commit> { mergeTip };
+        mergedHistory.AddRange(hidden);
+        mergedHistory.AddRange(chain);
+        var mergedVisible = new List<Commit> { mergeTip };
+        mergedVisible.AddRange(chain);
+        graph = CommitGraph.GenerateFiltered(mergedHistory, mergedVisible, false, CommitGraphHighlighting.All, []);
+        Check(graph.Paths.Count == 1 && graph.Dots.All(dot => dot.Center.X == 10), "hidden merges do not connect redundantly to every visible ancestor");
+        Check(chain[0].Parents.Single() == chain[1].SHA && hidden[0].Parents.Count == 2, "removing redundant graph edges preserves real commit parents");
+
         var sparse = Enumerable.Range(0, 600).Select(i => new Commit { SHA = $"commit-{i}", Parents = [$"commit-{i + 1}"] }).ToList();
         var visible = sparse.Where((_, i) => i % 3 == 0).ToList();
         graph = CommitGraph.GenerateFiltered(sparse, visible, false, CommitGraphHighlighting.All, []);

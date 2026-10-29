@@ -77,6 +77,10 @@ namespace SourceGit.Models
             foreach (var commit in visibleCommits)
                 visible.Add(commit.SHA);
 
+            var visibleOrder = new Dictionary<string, int>();
+            for (var i = 0; i < visibleCommits.Count; i++)
+                visibleOrder[visibleCommits[i].SHA] = i;
+
             var nearest = new Dictionary<string, List<string>>();
             var parents = new Dictionary<string, List<string>>();
             // History is ordered children before parents. Resolve hidden ancestors from
@@ -105,6 +109,35 @@ namespace SourceGit.Models
                                 resolved.Add(ancestor);
                         }
                     }
+                }
+
+                if (parentCount > 1 && resolved.Count > 1)
+                {
+                    // Hidden merges can expose both a visible commit and its ancestors.
+                    // Keep only the nearest targets: the older targets are already
+                    // reachable through the nearer ones and would add redundant lanes.
+                    var candidates = new HashSet<string>(resolved);
+                    var redundant = new HashSet<string>();
+                    var visited = new HashSet<string>();
+                    var pending = new Stack<string>();
+                    var oldest = 0;
+                    foreach (var target in resolved)
+                    {
+                        oldest = Math.Max(oldest, visibleOrder[target]);
+                        foreach (var parent in parents[target])
+                            pending.Push(parent);
+                    }
+                    while (pending.TryPop(out var ancestor))
+                    {
+                        if (visibleOrder[ancestor] > oldest || !visited.Add(ancestor))
+                            continue;
+
+                        if (candidates.Contains(ancestor))
+                            redundant.Add(ancestor);
+                        foreach (var parent in parents[ancestor])
+                            pending.Push(parent);
+                    }
+                    resolved.RemoveAll(redundant.Contains);
                 }
 
                 if (visible.Contains(commit.SHA))
