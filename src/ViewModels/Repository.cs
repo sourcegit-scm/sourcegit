@@ -1008,6 +1008,11 @@ namespace SourceGit.ViewModels
 
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
+            SetTagFilterMode(tag.Name, false, mode);
+        }
+
+        public void SetTagFilterMode(string path, bool isFolder, Models.FilterMode mode)
+        {
             // Auto turn off `FocusOnCurrentBranch` when user set a tag filter manually.
             if (_uiStates.FocusOnCurrentBranch)
             {
@@ -1015,9 +1020,23 @@ namespace SourceGit.ViewModels
                 OnPropertyChanged(nameof(FocusOnCurrentBranch));
             }
 
-            var changed = _uiStates.UpdateHistoryFilters(tag.Name, Models.FilterType.Tag, mode);
-            if (changed)
-                RefreshHistoryFilters(true);
+            var type = isFolder ? Models.FilterType.TagFolder : Models.FilterType.Tag;
+            var changed = _uiStates.UpdateHistoryFilters(path, type, mode);
+            if (!changed)
+                return;
+
+            if (isFolder)
+                _uiStates.RemoveTagFiltersByPrefix(path);
+
+            var lastSepIdx = path.LastIndexOf('/');
+            while (lastSepIdx > 0)
+            {
+                path = path.Substring(0, lastSepIdx);
+                _uiStates.UpdateHistoryFilters(path, Models.FilterType.TagFolder, Models.FilterMode.None);
+                lastSepIdx = path.LastIndexOf('/');
+            }
+
+            RefreshHistoryFilters(true);
         }
 
         public void SetBranchFilterMode(Models.Branch branch, Models.FilterMode mode, bool clearExists, bool refresh)

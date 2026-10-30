@@ -88,14 +88,12 @@ namespace SourceGit.ViewModels
 
         public void UpdateFilterMode(Dictionary<string, Models.FilterMode> filters)
         {
+            FilterMode = filters.GetValueOrDefault(FullPath, Models.FilterMode.None);
+
             if (Tag == null)
             {
                 foreach (var child in Children)
                     child.UpdateFilterMode(filters);
-            }
-            else
-            {
-                FilterMode = filters.GetValueOrDefault(FullPath, Models.FilterMode.None);
             }
         }
 

@@ -406,7 +406,25 @@ namespace SourceGit.Models
 
             foreach (var filter in HistoryFilters)
             {
-                if (filter.Type == FilterType.Tag)
+                if (filter.Type is FilterType.Tag or FilterType.TagFolder)
+                    continue;
+
+                if (filter.Pattern.StartsWith(prefix, StringComparison.Ordinal))
+                    dirty.Add(filter);
+            }
+
+            foreach (var filter in dirty)
+                HistoryFilters.Remove(filter);
+        }
+
+        public void RemoveTagFiltersByPrefix(string pattern)
+        {
+            var dirty = new List<HistoryFilter>();
+            var prefix = $"{pattern}/";
+
+            foreach (var filter in HistoryFilters)
+            {
+                if (filter.Type is not (FilterType.Tag or FilterType.TagFolder))
                     continue;
 
                 if (filter.Pattern.StartsWith(prefix, StringComparison.Ordinal))
@@ -483,6 +501,8 @@ namespace SourceGit.Models
                     builder.Append($"--remotes={filter.Pattern.AsSpan(13)}/* ");
                 else if (filter.Type == FilterType.Tag)
                     builder.Append($"refs/tags/{filter.Pattern} ");
+                else if (filter.Type == FilterType.TagFolder)
+                    builder.Append($"--tags={filter.Pattern}/* ");
             }
         }
 
@@ -503,6 +523,8 @@ namespace SourceGit.Models
                     excludedRemotes.Add($"--exclude=\"{filter.Pattern.AsSpan(13)}/*\" --decorate-refs-exclude=\"{filter.Pattern}/*\" ");
                 else if (filter.Type == FilterType.Tag)
                     excludedTags.Add($"--exclude=\"{filter.Pattern}\" --decorate-refs-exclude=\"refs/tags/{filter.Pattern}\" ");
+                else if (filter.Type == FilterType.TagFolder)
+                    excludedTags.Add($"--exclude=\"{filter.Pattern}/*\" --decorate-refs-exclude=\"refs/tags/{filter.Pattern}/*\" ");
             }
 
             foreach (var b in excludedBranches)
