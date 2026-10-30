@@ -126,8 +126,7 @@ namespace SourceGit.Views
 
                 if (type == Models.InlineElementType.CommitSHA)
                 {
-                    var parentView = this.FindAncestorOfType<CommitBaseInfo>();
-                    if (parentView is { DataContext: ViewModels.CommitDetail detail })
+                    if (GetCommitDetail() is { } detail)
                     {
                         if (point.Properties.IsLeftButtonPressed)
                         {
@@ -249,6 +248,12 @@ namespace SourceGit.Views
             ClearHoveredIssueLink();
         }
 
+        private ViewModels.CommitDetail GetCommitDetail()
+        {
+            return DataContext as ViewModels.CommitDetail ??
+                this.FindAncestorOfType<CommitBaseInfo>()?.DataContext as ViewModels.CommitDetail;
+        }
+
         private void ProcessHoverCommitLink(Models.InlineElement link)
         {
             var sha = link.Link;
@@ -259,8 +264,7 @@ namespace SourceGit.Views
                 return;
             }
 
-            var parentView = this.FindAncestorOfType<CommitBaseInfo>();
-            if (parentView is { DataContext: ViewModels.CommitDetail detail })
+            if (GetCommitDetail() is { Commit: { } } detail)
             {
                 var lastDetailCommit = detail.Commit.SHA;
                 Task.Run(async () =>
@@ -269,9 +273,8 @@ namespace SourceGit.Views
 
                     Dispatcher.UIThread.Post(() =>
                     {
-                        var currentParent = this.FindAncestorOfType<CommitBaseInfo>();
-                        if (currentParent is { DataContext: ViewModels.CommitDetail currentDetail } &&
-                            currentDetail.Commit.SHA.Equals(lastDetailCommit, StringComparison.Ordinal))
+                        if (GetCommitDetail() is { Commit: { } currentCommit } &&
+                            currentCommit.SHA.Equals(lastDetailCommit, StringComparison.Ordinal))
                         {
                             _inlineCommits.TryAdd(sha, c);
                             if (_lastHover == link && c != null)
