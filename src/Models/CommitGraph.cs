@@ -195,6 +195,26 @@ namespace SourceGit.Models
                     temp.Paths.Add(major.Path);
                 }
 
+                var hasBranch = commit.Decorators.Exists(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.LocalBranchHead or DecoratorType.RemoteBranchHead);
+                if (major != null && hasBranch)
+                {
+                    if (major.HasBranch)
+                    {
+                        // A named branch can start on an existing line without a fork.
+                        // Split its color at the branch tip, preserving the lane and highlighting.
+                        var oldColor = major.Path.Color;
+                        var color = colorPicker.Next(oldColor);
+                        if (color != oldColor)
+                        {
+                            major.ChangeColor(color);
+                            if (commit.Parents.Count > 0)
+                                temp.Paths.Add(major.Path);
+                        }
+                        colorPicker.Recycle(commit.Parents.Count > 0 ? oldColor : color);
+                    }
+                    major.HasBranch = true;
+                }
+
                 // Calculate link position of this commit.
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
                 var dotColor = major?.Path.Color ?? 0;
@@ -270,15 +290,22 @@ namespace SourceGit.Models
 
         private class ColorPicker
         {
-            public int Next()
+            public int Next(int exclude = -1)
             {
-                if (_colorsQueue.Count == 0)
+                int color;
+                do
                 {
-                    for (var i = 0; i < s_penCount; i++)
-                        _colorsQueue.Enqueue(i);
-                }
+                    if (_colorsQueue.Count == 0)
+                    {
+                        for (var i = 0; i < s_penCount; i++)
+                            _colorsQueue.Enqueue(i);
+                    }
 
-                return _colorsQueue.Dequeue();
+                    color = _colorsQueue.Dequeue();
+                }
+                while (s_penCount > 1 && color == exclude);
+
+                return color;
             }
 
             public void Recycle(int idx)
@@ -292,6 +319,7 @@ namespace SourceGit.Models
 
         private class PathHelper
         {
+            public bool HasBranch { get; set; }
             public Path Path { get; private set; }
             public string Next { get; set; }
             public double LastX { get; private set; }
@@ -398,10 +426,19 @@ namespace SourceGit.Models
             /// </summary>
             public void Highlight()
             {
-                var color = Path.Color;
+                Restart(Path.Color, true);
+            }
+
+            public void ChangeColor(int color)
+            {
+                Restart(color, Path.IsHighlighted);
+            }
+
+            private void Restart(int color, bool isHighlighted)
+            {
                 Add(LastX, _lastY);
 
-                Path = new Path(color, true);
+                Path = new Path(color, isHighlighted);
                 Path.Points.Add(new Point(LastX, _lastY));
                 _endY = 0;
             }
