@@ -417,7 +417,7 @@ namespace SourceGit.Models
                 HistoryFilters.Remove(filter);
         }
 
-        public string BuildHistoryParams(string gitDir)
+        public string BuildHistoryParams_NormalMode(string gitDir)
         {
             var builder = new StringBuilder();
 
@@ -435,20 +435,39 @@ namespace SourceGit.Models
             if (HistoryShowFlags.HasFlag(HistoryShowFlags.SimplifyByDecoration))
                 builder.Append("--simplify-by-decoration ");
 
-            if (FocusOnCurrentBranch)
-            {
-                builder.Append("HEAD");
-            }
+            var mode = GetHistoryFilterMode();
+            if (mode == FilterMode.None)
+                builder.Append("--branches --remotes --tags HEAD");
+            else if (mode == FilterMode.Included)
+                BuildHistoryParamsForIncluded(builder);
             else
-            {
-                var mode = GetHistoryFilterMode();
-                if (mode == FilterMode.None)
-                    builder.Append("--branches --remotes --tags HEAD");
-                else if (mode == FilterMode.Included)
-                    BuildHistoryParamsForIncluded(builder);
-                else
-                    BuildHistoryParamsForExcluded(builder, gitDir);
-            }
+                BuildHistoryParamsForExcluded(builder, gitDir);
+
+            return builder.ToString();
+        }
+
+        public string BuildHistoryParams_FocusOnCurrentBranchMode(string upstream)
+        {
+            var builder = new StringBuilder();
+
+            if (EnableTopoOrderInHistory)
+                builder.Append("--topo-order ");
+            else
+                builder.Append("--date-order ");
+
+            if (HistoryShowFlags.HasFlag(HistoryShowFlags.Reflog))
+                builder.Append("--reflog ");
+
+            if (HistoryShowFlags.HasFlag(HistoryShowFlags.FirstParentOnly))
+                builder.Append("--first-parent ");
+
+            if (HistoryShowFlags.HasFlag(HistoryShowFlags.SimplifyByDecoration))
+                builder.Append("--simplify-by-decoration ");
+
+            builder.Append("HEAD ");
+
+            if (!string.IsNullOrEmpty(upstream))
+                builder.Append(upstream);
 
             return builder.ToString();
         }

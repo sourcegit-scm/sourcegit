@@ -832,7 +832,7 @@
   <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">filter(s) enabled</x:String>
   <x:String x:Key="Text.Repository.FocusOnCurrentBranch" xml:space="preserve">Focus on Current Branch
   
-When this is toggled, all history filters will be cleared. And only commits belongs to the current branch will be listed in `Dashboard` page.
+When this is toggled, all history filters will be cleared. And only commits belong to the current branch or its upstream (if it has one) will be listed in `Dashboard` page.
 
 Manually add a branch/tag history filter will disable this feature automatically.</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">LAYOUT</x:String>

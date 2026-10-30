@@ -1258,8 +1258,19 @@ namespace SourceGit.ViewModels
                 builder
                     .Append('-')
                     .Append(Preferences.Instance.MaxHistoryCommits)
-                    .Append(' ')
-                    .Append(_uiStates.BuildHistoryParams(GitDir));
+                    .Append(' ');
+
+                if (_uiStates.FocusOnCurrentBranch)
+                {
+                    var upstream = await new Commands.QueryUpstreamOfCurrentBranch(FullPath)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+                    builder.Append(_uiStates.BuildHistoryParams_FocusOnCurrentBranchMode(upstream));
+                }
+                else
+                {
+                    builder.Append(_uiStates.BuildHistoryParams_NormalMode(GitDir));
+                }
 
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
                     .GetResultAsync()
