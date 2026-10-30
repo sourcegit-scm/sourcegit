@@ -3,17 +3,36 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public partial class CommitSubjectPresenter : Control
     {
+        public static readonly StyledProperty<string> FullMessageProperty =
+            AvaloniaProperty.Register<CommitSubjectPresenter, string>(nameof(FullMessage));
+
+        public string FullMessage
+        {
+            get => GetValue(FullMessageProperty);
+            set => SetValue(FullMessageProperty, value);
+        }
+
+        public CommitSubjectPresenter()
+        {
+            ToolTip.SetShowDelay(this, 1000);
+            ToolTip.SetBetweenShowDelay(this, -1);
+            ToolTip.AddToolTipOpeningHandler(this, OnToolTipOpening);
+        }
+
         public static readonly StyledProperty<FontFamily> FontFamilyProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, FontFamily>(nameof(FontFamily));
 
@@ -175,6 +194,11 @@ namespace SourceGit.Views
                 _needRebuildInlines = true;
                 GenerateInlineElements();
                 InvalidateVisual();
+                UpdateMessageToolTip();
+            }
+            else if (change.Property == FullMessageProperty)
+            {
+                UpdateMessageToolTip();
             }
             else if (change.Property == IssueTrackersProperty)
             {
@@ -237,6 +261,73 @@ namespace SourceGit.Views
         {
             base.OnPointerExited(e);
             ClearHoveredIssueLink();
+        }
+
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            ToolTip.SetIsOpen(this, false);
+            ToolTip.SetIsOpen(_messageToolTipTarget ?? this, false);
+            _fullMessageTask = null;
+            ClearHoveredIssueLink();
+            UpdateMessageToolTip();
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            // The presenter can be narrower than its cell (for example, with refs after the subject).
+            // Keep the message tooltip on the whole cell, and issue-link tooltips on the presenter.
+            _messageToolTipTarget = this.FindAncestorOfType<DataGridCell>();
+            if (_messageToolTipTarget != null)
+            {
+                ToolTip.SetIsOpen(this, false);
+                ToolTip.SetTip(this, null);
+                ToolTip.SetShowDelay(_messageToolTipTarget, 1000);
+                ToolTip.SetBetweenShowDelay(_messageToolTipTarget, -1);
+                ToolTip.AddToolTipOpeningHandler(_messageToolTipTarget, OnToolTipOpening);
+            }
+
+            UpdateMessageToolTip();
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            ToolTip.SetIsOpen(this, false);
+            ClearHoveredIssueLink();
+            if (_messageToolTipTarget != null)
+            {
+                ToolTip.SetIsOpen(_messageToolTipTarget, false);
+                ToolTip.RemoveToolTipOpeningHandler(_messageToolTipTarget, OnToolTipOpening);
+                ToolTip.SetTip(_messageToolTipTarget, null);
+                _messageToolTipTarget = null;
+            }
+
+            base.OnDetachedFromVisualTree(e);
+        }
+
+        private async void OnToolTipOpening(object sender, CancelRoutedEventArgs e)
+        {
+            if (e.Cancel || _lastHover != null || !string.IsNullOrEmpty(FullMessage))
+                return;
+
+            if (DataContext is not Models.Commit commit ||
+                this.FindAncestorOfType<Histories>()?.DataContext is not ViewModels.Histories histories)
+                return;
+
+            var task = _fullMessageTask ??= histories.GetCommitFullMessageAsync(commit);
+            var message = await task;
+            if (_fullMessageTask == task && !string.IsNullOrEmpty(message))
+                _messageToolTip.Text = message;
+        }
+
+        private void UpdateMessageToolTip()
+        {
+            _messageToolTip.Text = string.IsNullOrEmpty(FullMessage) ? Subject : FullMessage;
+            if (_messageToolTipTarget != null || _lastHover == null)
+                ToolTip.SetTip(_messageToolTipTarget ?? this, string.IsNullOrEmpty(Subject) ? null : _messageToolTip);
         }
 
         private void OnIssueTrackersChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -401,10 +492,14 @@ namespace SourceGit.Views
         {
             if (_lastHover != null)
             {
+                ToolTip.SetIsOpen(this, false);
                 ToolTip.SetTip(this, null);
                 SetCurrentValue(CursorProperty, Cursor.Parse("Arrow"));
                 _lastHover = null;
             }
+
+            if (!ReferenceEquals(ToolTip.GetTip(_messageToolTipTarget ?? this), _messageToolTip))
+                UpdateMessageToolTip();
         }
 
         [GeneratedRegex(@"`.*?`")]
@@ -425,6 +520,9 @@ namespace SourceGit.Views
         }
 
         private string _subject = string.Empty;
+        private readonly TextBlock _messageToolTip = new() { MaxWidth = 640, TextWrapping = TextWrapping.Wrap };
+        private Control _messageToolTipTarget = null;
+        private Task<string> _fullMessageTask = null;
         private AvaloniaList<Models.IssueTracker> _issueTrackers = null;
         private Models.InlineElementCollector _elements = new();
         private Models.InlineElement _lastHover = null;
