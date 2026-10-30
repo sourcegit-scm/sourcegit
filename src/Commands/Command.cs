@@ -37,6 +37,16 @@ namespace SourceGit.Commands
         public bool RaiseError { get; set; } = true;
         public Models.ICommandLog Log { get; set; } = null;
 
+        internal static string GetRepositoryConfigArguments(string repo)
+        {
+            if (!OperatingSystem.IsWindows())
+                return string.Empty;
+
+            return ViewModels.Preferences.Instance.IgnoresFileMode(repo)
+                ? "-c core.longpaths=true -c core.filemode=false "
+                : "-c core.longpaths=true ";
+        }
+
         public async Task<bool> ExecAsync()
         {
             Log?.AppendLine($"$ git {Args}\n");
@@ -164,6 +174,8 @@ namespace SourceGit.Commands
 
             if (useSetSid)
                 builder.Append(Native.OS.GitExecutable.Quoted()).Append(' ');
+
+            builder.Append(GetRepositoryConfigArguments(WorkingDirectory));
 
             builder
                 .Append("--no-pager -c core.quotepath=off -c credential.helper=")

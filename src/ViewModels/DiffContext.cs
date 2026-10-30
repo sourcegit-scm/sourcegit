@@ -175,7 +175,9 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    rs = new Models.NoOrEOLChange();
+                    rs = latest.OldMode != 0 && latest.NewMode != 0 && latest.OldMode != latest.NewMode
+                        ? new Models.FileModeOnlyChange()
+                        : new Models.NoOrEOLChange();
                 }
 
                 Dispatcher.UIThread.Post(() =>
@@ -360,6 +362,8 @@ namespace SourceGit.ViewModels
             public bool IgnoreWhitespace { get; }
             public string OldHash { get; }
             public string NewHash { get; }
+            public int OldMode { get; }
+            public int NewMode { get; }
 
             public Info(Models.DiffOption option, int unifiedLines, bool ignoreWhitespace, Models.DiffResult result)
             {
@@ -368,6 +372,8 @@ namespace SourceGit.ViewModels
                 IgnoreWhitespace = ignoreWhitespace;
                 OldHash = result.OldHash;
                 NewHash = result.NewHash;
+                OldMode = result.OldMode;
+                NewMode = result.NewMode;
             }
 
             public bool IsSame(Info other)
@@ -376,7 +382,8 @@ namespace SourceGit.ViewModels
                     UnifiedLines == other.UnifiedLines &&
                     IgnoreWhitespace == other.IgnoreWhitespace &&
                     OldHash.Equals(other.OldHash, StringComparison.Ordinal) &&
-                    NewHash.Equals(other.NewHash, StringComparison.Ordinal);
+                    NewHash.Equals(other.NewHash, StringComparison.Ordinal) &&
+                    OldMode == other.OldMode && NewMode == other.NewMode;
             }
         }
 

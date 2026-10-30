@@ -95,6 +95,10 @@ namespace SourceGit.ViewModels
             set;
         }
 
+        public bool IsWindows => OperatingSystem.IsWindows();
+
+        public bool IgnoreFileModeOnWindows { get; set; }
+
         public bool AskBeforeAutoUpdatingSubmodules
         {
             get => _repo.Settings.AskBeforeAutoUpdatingSubmodules;
@@ -155,6 +159,7 @@ namespace SourceGit.ViewModels
         public RepositoryConfigure(Repository repo)
         {
             _repo = repo;
+            IgnoreFileModeOnWindows = Preferences.Instance.IgnoresFileMode(repo.FullPath);
 
             Remotes = new List<string>();
             foreach (var remote in _repo.Remotes)
@@ -273,6 +278,13 @@ namespace SourceGit.ViewModels
         public async Task SaveAsync()
         {
             _repo.Settings.Save();
+
+            if (IsWindows && IgnoreFileModeOnWindows != Preferences.Instance.IgnoresFileMode(_repo.FullPath))
+            {
+                Preferences.Instance.SetIgnoreFileMode(_repo.FullPath, IgnoreFileModeOnWindows);
+                Preferences.Instance.Save();
+                _repo.RefreshWorkingCopyChanges();
+            }
 
             await SetIfChangedAsync("user.name", UserName, "");
             await SetIfChangedAsync("user.email", UserEmail, "");

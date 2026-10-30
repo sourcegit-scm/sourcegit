@@ -1373,6 +1373,9 @@ namespace SourceGit.ViewModels
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
+                if (changes == null || token.IsCancellationRequested)
+                    return;
+
                 changes.Sort((l, r) => Models.NumericSort.Compare(l.Path, r.Path));
 
                 Dispatcher.UIThread.Invoke(() =>
