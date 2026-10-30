@@ -1097,4 +1097,48 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
+  <x:String x:Key="Text.SubmoduleHistory" xml:space="preserve">Submodule history</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.ChangedRange" xml:space="preserve">Changed range (previous pointer → selected pointer)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.CollapseAll" xml:space="preserve">Collapse all</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Explanation" xml:space="preserve">Use the arrow on a submodule's first commit to expand or collapse its history. Clicking the parent commit again hides all of its submodule rows. The limit counts expanded areas across all depths, excluding first-commit previews. Gitlink connections are visual only. Missing objects must be fetched or initialized separately.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.FullHistory" xml:space="preserve">Full history reachable from the selected and previous pointers</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Limit" xml:space="preserve">Expansion limit reached. Collapse an area or increase the limit in Preferences.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Loading" xml:space="preserve">Loading submodule history…</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.AutoExpand" xml:space="preserve">Automatically expand histories when selecting a commit</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.AutoCollapse" xml:space="preserve">Automatically collapse other submodule histories</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.ExpansionHelp" xml:space="preserve">By default, selecting a commit shows only the first log of each direct submodule. Auto-collapse keeps one expanded area per parent repository and preserves ancestor areas.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Maximum" xml:space="preserve">Maximum expanded submodule areas (1–20)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.MissingObjects" xml:space="preserve">Cannot read submodule commits. Check local objects and fetch missing history.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Mode" xml:space="preserve">History to expand</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.QueryFailed" xml:space="preserve">Cannot read gitlinks for this commit. Refresh history and try again.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.SelectCommit" xml:space="preserve">Select a commit that changes a submodule.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Truncated" xml:space="preserve">History was limited. Increase the history commit limit in Preferences to see more.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Unavailable" xml:space="preserve">Submodule is not initialized or is no longer present in this checkout.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat" xml:space="preserve">Submodule label (path relative to the top repository)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat.PathAndBranch" xml:space="preserve">[relative path:branch] (default)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat.PathOnly" xml:space="preserve">[relative path]</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat.RepositoryPathAndBranch" xml:space="preserve">[repository name:relative path:branch]</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Scope" xml:space="preserve">Nesting scope</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Scope.DirectOnly" xml:space="preserve">Direct submodules only (default)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Scope.Recursive" xml:space="preserve">Recursive exploration (expand by clicking)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Compare" xml:space="preserve">Compare gitlink change</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.NoPointer" xml:space="preserve">(none)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.PreviousPointer" xml:space="preserve">Previous pointer</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.AddedCommits" xml:space="preserve">Commits added (up to history limit)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.RemovedCommits" xml:space="preserve">Commits removed (up to history limit)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.FileDiff" xml:space="preserve">File changes between pointers</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.RecordedPointer" xml:space="preserve">Recorded gitlink</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LocalHEAD" xml:space="preserve">Local HEAD</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.RefreshPointer" xml:space="preserve">Refresh pointer status</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Matches" xml:space="preserve">Matches recorded pointer</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Differs" xml:space="preserve">Differs from recorded pointer</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Removed" xml:space="preserve">Gitlink removed at this commit</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Unavailable" xml:space="preserve">Unavailable</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Up" xml:space="preserve">Go to owner commit</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Expand" xml:space="preserve">Expand</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Expanded" xml:space="preserve">Expanded</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Collapsed" xml:space="preserve">Collapsed</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LimitShort" xml:space="preserve">Expansion limit reached</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Collapse" xml:space="preserve">Collapse</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.CollapseArea" xml:space="preserve">Collapse this area and its expanded descendants</x:String>
 </ResourceDictionary>
