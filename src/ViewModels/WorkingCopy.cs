@@ -801,7 +801,7 @@ namespace SourceGit.ViewModels
                 InProgressContext = new CherryPickInProgress(_repo);
             else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-merge")))
                 InProgressContext = new RebaseInProgress(_repo);
-            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
+            else if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")) && File.Exists(Path.Combine(_repo.GitDir, "rebase-apply", "applying")))
                 InProgressContext = new AmInProgress(_repo);
             else if (File.Exists(Path.Combine(_repo.GitDir, "REVERT_HEAD")))
                 InProgressContext = new RevertInProgress(_repo);
@@ -810,14 +810,19 @@ namespace SourceGit.ViewModels
             else
                 InProgressContext = null;
 
-            if (_inProgressContext != null && _inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
-                return;
+            if (_inProgressContext == null)
+            {
+                if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
+                    Directory.Delete(Path.Combine(_repo.GitDir, "rebase-apply"), true);
 
-            // The operation that filled the commit message ended outside SourceGit (for example, a
-            // rebase or merge finished/aborted from the terminal). Drop the stale message unless the
-            // user has edited it since it was loaded.
-            if (_inProgressContext == null && oldType != null && IsAutoLoadedCommitMessage())
-                CommitMessage = string.Empty;
+                if (oldType != null && IsAutoLoadedCommitMessage())
+                    CommitMessage = string.Empty;
+
+                return;
+            }
+
+            if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
+                return;
 
             if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
                 return;
