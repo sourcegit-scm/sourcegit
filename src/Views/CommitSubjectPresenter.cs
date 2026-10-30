@@ -268,8 +268,28 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             ToolTip.SetIsOpen(this, false);
+            ToolTip.SetIsOpen(_messageToolTipTarget ?? this, false);
             _fullMessageTask = null;
             ClearHoveredIssueLink();
+            UpdateMessageToolTip();
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            // The presenter can be narrower than its cell (for example, with refs after the subject).
+            // Keep the message tooltip on the whole cell, and issue-link tooltips on the presenter.
+            _messageToolTipTarget = this.FindAncestorOfType<DataGridCell>();
+            if (_messageToolTipTarget != null)
+            {
+                ToolTip.SetIsOpen(this, false);
+                ToolTip.SetTip(this, null);
+                ToolTip.SetShowDelay(_messageToolTipTarget, 1000);
+                ToolTip.SetBetweenShowDelay(_messageToolTipTarget, -1);
+                ToolTip.AddToolTipOpeningHandler(_messageToolTipTarget, OnToolTipOpening);
+            }
+
             UpdateMessageToolTip();
         }
 
@@ -277,6 +297,14 @@ namespace SourceGit.Views
         {
             ToolTip.SetIsOpen(this, false);
             ClearHoveredIssueLink();
+            if (_messageToolTipTarget != null)
+            {
+                ToolTip.SetIsOpen(_messageToolTipTarget, false);
+                ToolTip.RemoveToolTipOpeningHandler(_messageToolTipTarget, OnToolTipOpening);
+                ToolTip.SetTip(_messageToolTipTarget, null);
+                _messageToolTipTarget = null;
+            }
+
             base.OnDetachedFromVisualTree(e);
         }
 
@@ -298,8 +326,8 @@ namespace SourceGit.Views
         private void UpdateMessageToolTip()
         {
             _messageToolTip.Text = string.IsNullOrEmpty(FullMessage) ? Subject : FullMessage;
-            if (_lastHover == null)
-                ToolTip.SetTip(this, string.IsNullOrEmpty(Subject) ? null : _messageToolTip);
+            if (_messageToolTipTarget != null || _lastHover == null)
+                ToolTip.SetTip(_messageToolTipTarget ?? this, string.IsNullOrEmpty(Subject) ? null : _messageToolTip);
         }
 
         private void OnIssueTrackersChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -464,11 +492,13 @@ namespace SourceGit.Views
         {
             if (_lastHover != null)
             {
+                ToolTip.SetIsOpen(this, false);
+                ToolTip.SetTip(this, null);
                 SetCurrentValue(CursorProperty, Cursor.Parse("Arrow"));
                 _lastHover = null;
             }
 
-            if (!ReferenceEquals(ToolTip.GetTip(this), _messageToolTip))
+            if (!ReferenceEquals(ToolTip.GetTip(_messageToolTipTarget ?? this), _messageToolTip))
                 UpdateMessageToolTip();
         }
 
@@ -491,6 +521,7 @@ namespace SourceGit.Views
 
         private string _subject = string.Empty;
         private readonly TextBlock _messageToolTip = new() { MaxWidth = 640, TextWrapping = TextWrapping.Wrap };
+        private Control _messageToolTipTarget = null;
         private Task<string> _fullMessageTask = null;
         private AvaloniaList<Models.IssueTracker> _issueTrackers = null;
         private Models.InlineElementCollector _elements = new();
