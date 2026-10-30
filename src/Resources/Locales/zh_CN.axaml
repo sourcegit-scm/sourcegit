@@ -834,6 +834,11 @@
   <x:String x:Key="Text.Repository.FilterCommits.Expand" xml:space="preserve">展开过滤项列表</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">使用其对提交列表过滤</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">个过滤项已被启用</x:String>
+  <x:String x:Key="Text.Repository.FocusOnCurrentBranch" xml:space="preserve">专注模式
+  
+进入该模式后，历史提交列表将仅显示属于当前分支的提交，并且自动清空已设置的过滤条件。
+
+用户手动添加新的分支或标签过滤条件后，自动退出该模式。</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">布局方式</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">水平排布</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">竖直排布</x:String>

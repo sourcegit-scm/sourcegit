@@ -127,14 +127,14 @@
       <Button Width="0" Height="0" Click="FetchDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"/>
     </StackPanel>
 
-    <Grid Grid.Column="3" HorizontalAlignment="Right" ColumnDefinitions="Auto,*,32">
+    <Grid Grid.Column="3" HorizontalAlignment="Right" ColumnDefinitions="Auto,*,Auto,Auto,6">
       <Path Grid.Column="0"
             Width="13" Height="13"
             Margin="18,0,0,0"
             Data="{StaticResource Icons.Branch}"/>
 
       <Border Grid.Column="1"
-              Margin="6,0,0,0"
+              Margin="6,0"
               Background="Transparent"
               ToolTip.Tip="{Binding CurrentBranch?.Name, TargetNullValue='--', Mode=OneWay}">
         <TextBlock Text="{Binding CurrentBranch?.Name, TargetNullValue='--', Mode=OneWay}"
@@ -143,13 +143,28 @@
 
       <Button Grid.Column="2"
               Classes="icon_button"
-              Width="32"
+              Width="28"
               Click="NavigateToHead"
               ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
         <Path Width="13" Height="13"
               Margin="0,2,0,0"
               Data="{StaticResource Icons.Target}"/>
       </Button>
+
+      <ToggleButton Grid.Column="3"
+                    Classes="line_path"
+                    Width="28"
+                    IsChecked="{Binding FocusOnCurrentBranch, Mode=TwoWay}"
+                    ToolTip.Tip="{DynamicResource Text.Repository.FocusOnCurrentBranch}">
+        <ToggleButton.Styles>
+          <Style Selector="ToolTip">
+            <Setter Property="MaxWidth" Value="400"/>
+          </Style>
+        </ToggleButton.Styles>
+        
+        <Path Width="13" Height="13"
+              Data="{StaticResource Icons.Magic}"/>
+      </ToggleButton>
     </Grid>
   </Grid>
 </UserControl>

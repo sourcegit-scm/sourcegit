@@ -45,6 +45,24 @@ namespace SourceGit.ViewModels
             set;
         } = new();
 
+        public bool FocusOnCurrentBranch
+        {
+            get => _uiStates.FocusOnCurrentBranch;
+            set
+            {
+                if (value != _uiStates.FocusOnCurrentBranch)
+                {
+                    _uiStates.FocusOnCurrentBranch = value;
+                    OnPropertyChanged();
+
+                    if (value && _historyFilterMode != Models.FilterMode.None)
+                        ClearHistoryFilters();
+                    else
+                        RefreshCommits();
+                }
+            }
+        }
+
         public Models.FilterMode HistoryFilterMode
         {
             get => _historyFilterMode;
@@ -990,6 +1008,13 @@ namespace SourceGit.ViewModels
 
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
+            // Auto turn off `FocusOnCurrentBranch` when user set a tag filter manually.
+            if (_uiStates.FocusOnCurrentBranch)
+            {
+                _uiStates.FocusOnCurrentBranch = false;
+                OnPropertyChanged(nameof(FocusOnCurrentBranch));
+            }
+
             var changed = _uiStates.UpdateHistoryFilters(tag.Name, Models.FilterType.Tag, mode);
             if (changed)
                 RefreshHistoryFilters(true);
@@ -1004,6 +1029,13 @@ namespace SourceGit.ViewModels
 
         public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode, bool clearExists, bool refresh)
         {
+            // Auto turn off `FocusOnCurrentBranch` when user set a branch filter manually.
+            if (_uiStates.FocusOnCurrentBranch)
+            {
+                _uiStates.FocusOnCurrentBranch = false;
+                OnPropertyChanged(nameof(FocusOnCurrentBranch));
+            }
+
             var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
             var tree = isLocal ? _localBranchTrees : _remoteBranchTrees;
 
@@ -1224,7 +1256,9 @@ namespace SourceGit.ViewModels
 
                 var builder = new StringBuilder();
                 builder
-                    .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
+                    .Append('-')
+                    .Append(Preferences.Instance.MaxHistoryCommits)
+                    .Append(' ')
                     .Append(_uiStates.BuildHistoryParams(GitDir));
 
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())

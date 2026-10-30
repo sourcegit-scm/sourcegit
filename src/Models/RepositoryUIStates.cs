@@ -225,6 +225,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool FocusOnCurrentBranch
+        {
+            get;
+            set;
+        } = false;
+
         public AvaloniaList<HistoryFilter> HistoryFilters
         {
             get;
@@ -429,13 +435,20 @@ namespace SourceGit.Models
             if (HistoryShowFlags.HasFlag(HistoryShowFlags.SimplifyByDecoration))
                 builder.Append("--simplify-by-decoration ");
 
-            var mode = GetHistoryFilterMode();
-            if (mode == FilterMode.None)
-                builder.Append("--branches --remotes --tags HEAD");
-            else if (mode == FilterMode.Included)
-                BuildHistoryParamsForIncluded(builder);
+            if (FocusOnCurrentBranch)
+            {
+                builder.Append("HEAD");
+            }
             else
-                BuildHistoryParamsForExcluded(builder, gitDir);
+            {
+                var mode = GetHistoryFilterMode();
+                if (mode == FilterMode.None)
+                    builder.Append("--branches --remotes --tags HEAD");
+                else if (mode == FilterMode.Included)
+                    BuildHistoryParamsForIncluded(builder);
+                else
+                    BuildHistoryParamsForExcluded(builder, gitDir);
+            }
 
             return builder.ToString();
         }
