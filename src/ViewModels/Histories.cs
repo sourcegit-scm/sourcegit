@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -112,9 +113,182 @@ namespace SourceGit.ViewModels
             get => _commits;
             set
             {
-                GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
-                    PostCommitsChanged();
+                    RefreshQuickSearch(true);
+            }
+        }
+
+        public bool IsUpdatingQuickSearchFilter { get; private set; }
+
+        public List<Models.Commit> DisplayedCommits => _displayedCommits;
+
+        public string QuickSearchText
+        {
+            get => _quickSearchText;
+            set
+            {
+                if (SetProperty(ref _quickSearchText, value))
+                {
+                    OnPropertyChanged(nameof(IsQuickSearchFilterActive));
+                    RefreshQuickSearch();
+                }
+            }
+        }
+
+        public bool IsQuickSearchFilterEnabled
+        {
+            get => _isQuickSearchFilterEnabled;
+            set
+            {
+                if (SetProperty(ref _isQuickSearchFilterEnabled, value))
+                {
+                    OnPropertyChanged(nameof(IsQuickSearchFilterActive));
+                    ApplyQuickSearchFilter();
+                }
+            }
+        }
+
+        public bool IsQuickSearchFilterActive => _isQuickSearchFilterEnabled && !string.IsNullOrEmpty(_quickSearchText);
+
+        public bool IsQuickSearching
+        {
+            get => _isQuickSearching;
+            private set => SetProperty(ref _isQuickSearching, value);
+        }
+
+        public bool HasQuickSearchMatches => !IsQuickSearching && _quickSearchMatches.Count > 0;
+
+        public string QuickSearchStatus => string.IsNullOrEmpty(_quickSearchText) ? string.Empty :
+            $"{(_selectedCommits.Count == 1 ? _quickSearchMatches.FindIndex(c => c.SHA == _selectedCommits[0].SHA) + 1 : 0)} / {_quickSearchMatches.Count}";
+
+        public void ClearQuickSearch()
+        {
+            IsQuickSearchFilterEnabled = false;
+            QuickSearchText = string.Empty;
+        }
+
+        public void QuickSearchNext() => MoveQuickSearch(1);
+        public void QuickSearchPrevious() => MoveQuickSearch(-1);
+
+        private void MoveQuickSearch(int direction)
+        {
+            if (!HasQuickSearchMatches)
+                return;
+
+            var current = _selectedCommits.Count == 1 ? _commits.IndexOf(_selectedCommits[0]) : -1;
+            if (current < 0)
+                current = direction > 0 ? -1 : 0;
+
+            var matches = new HashSet<Models.Commit>(_quickSearchMatches);
+            for (var step = 1; step <= _commits.Count; step++)
+            {
+                var index = (current + direction * step + _commits.Count) % _commits.Count;
+                if (matches.Contains(_commits[index]))
+                {
+                    SelectedCommits = [_commits[index]];
+                    return;
+                }
+            }
+        }
+
+        private async void RefreshQuickSearch(bool commitsChanged = false)
+        {
+            _quickSearchCancellation?.Cancel();
+            if (string.IsNullOrEmpty(_quickSearchText))
+                _quickSearchMatches = [];
+            else if (commitsChanged)
+            {
+                var previousMatches = new HashSet<string>(_quickSearchMatches.ConvertAll(c => c.SHA));
+                _quickSearchMatches = _commits.FindAll(c => previousMatches.Contains(c.SHA));
+            }
+            IsQuickSearching = !string.IsNullOrEmpty(_quickSearchText) && _commits.Count > 0;
+            OnPropertyChanged(nameof(HasQuickSearchMatches));
+            OnPropertyChanged(nameof(QuickSearchStatus));
+            ApplyQuickSearchFilter();
+            if (!IsQuickSearching)
+            {
+                if (!string.IsNullOrEmpty(_quickSearchText))
+                    SelectedCommits = [];
+                return;
+            }
+
+            var cancellation = new CancellationTokenSource();
+            _quickSearchCancellation = cancellation;
+            var commits = _commits;
+            var filter = _quickSearchText;
+            try
+            {
+                await Task.Delay(200, cancellation.Token);
+                var matches = await Task.Run(() => new Commands.QueryHistoryQuickSearch(_repo.FullPath, commits, filter, cancellation.Token).GetResultAsync());
+                if (cancellation.IsCancellationRequested)
+                    return;
+
+                _quickSearchMatches = commits.FindAll(c => matches.Contains(c.SHA));
+                IsQuickSearching = false;
+                ApplyQuickSearchFilter();
+                if (_quickSearchMatches.Count > 0)
+                {
+                    var selected = _selectedCommits.Count == 1 ?
+                        _quickSearchMatches.Find(c => c.SHA == _selectedCommits[0].SHA) : null;
+                    SelectedCommits = [selected ?? _quickSearchMatches[0]];
+                }
+                else
+                {
+                    SelectedCommits = [];
+                }
+                OnPropertyChanged(nameof(HasQuickSearchMatches));
+                OnPropertyChanged(nameof(QuickSearchStatus));
+            }
+            catch (OperationCanceledException)
+            {
+                // A newer query or leaving the view supersedes this search.
+            }
+            catch (Exception e)
+            {
+                if (!cancellation.IsCancellationRequested)
+                {
+                    _quickSearchMatches = [];
+                    IsQuickSearching = false;
+                    ApplyQuickSearchFilter();
+                    OnPropertyChanged(nameof(HasQuickSearchMatches));
+                    OnPropertyChanged(nameof(QuickSearchStatus));
+                    Models.Notification.Send(_repo.FullPath, e.Message, true);
+                }
+            }
+            finally
+            {
+                if (_quickSearchCancellation == cancellation)
+                    _quickSearchCancellation = null;
+                cancellation.Dispose();
+            }
+        }
+
+        public void CancelQuickSearch()
+        {
+            _quickSearchCancellation?.Cancel();
+            IsQuickSearching = false;
+            OnPropertyChanged(nameof(HasQuickSearchMatches));
+        }
+
+        public void ResumeQuickSearch() => RefreshQuickSearch();
+
+        private void ApplyQuickSearchFilter()
+        {
+            var visible = IsQuickSearchFilterActive ? _quickSearchMatches : _commits;
+            if (ReferenceEquals(visible, _displayedCommits))
+                return;
+
+            _displayedCommits = visible;
+            IsUpdatingQuickSearchFilter = true;
+            try
+            {
+                GenerateGraph(DisplayedCommits);
+                OnPropertyChanged(nameof(DisplayedCommits));
+                PostCommitsChanged();
+            }
+            finally
+            {
+                IsUpdatingQuickSearchFilter = false;
             }
         }
 
@@ -132,7 +306,7 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.GraphHighlighting != value)
                 {
                     _repo.UIStates.GraphHighlighting = value;
-                    GenerateGraph(_commits);
+                    GenerateGraph(DisplayedCommits);
                 }
             }
         }
@@ -304,6 +478,8 @@ namespace SourceGit.ViewModels
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
             if (commit != null)
             {
+                if (!DisplayedCommits.Contains(commit))
+                    IsQuickSearchFilterEnabled = false;
                 SelectedCommits = [commit];
                 return;
             }
@@ -499,7 +675,7 @@ namespace SourceGit.ViewModels
             if (_selectedCommits.Count == 0)
                 return;
 
-            if (_commits.Count == 0 || _selectedCommits.Count > 20)
+            if (DisplayedCommits.Count == 0 || _selectedCommits.Count > 20)
             {
                 SelectedCommits = [];
                 return;
@@ -510,7 +686,7 @@ namespace SourceGit.ViewModels
                 set.Add(c.SHA);
 
             var selected = new List<Models.Commit>();
-            foreach (var c in _commits)
+            foreach (var c in DisplayedCommits)
             {
                 if (set.Contains(c.SHA))
                 {
@@ -526,6 +702,7 @@ namespace SourceGit.ViewModels
 
         private void PostSelectedCommitsChanged()
         {
+            OnPropertyChanged(nameof(QuickSearchStatus));
             if (_ignoreSelectionChange)
                 return;
 
@@ -564,7 +741,7 @@ namespace SourceGit.ViewModels
             }
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
-                GenerateGraph(_commits);
+                GenerateGraph(DisplayedCommits);
         }
 
         private void GenerateGraph(List<Models.Commit> commits)
@@ -579,8 +756,17 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
+            Graph = IsQuickSearchFilterActive ?
+                Models.CommitGraph.GenerateFiltered(_commits, commits, firstParentOnly, highlighting, extraHeads) :
+                Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
+
+        private string _quickSearchText = string.Empty;
+        private bool _isQuickSearchFilterEnabled = false;
+        private bool _isQuickSearching = false;
+        private List<Models.Commit> _displayedCommits = [];
+        private List<Models.Commit> _quickSearchMatches = [];
+        private CancellationTokenSource _quickSearchCancellation;
 
         private Repository _repo = null;
         private Models.Branch _currentBranch = null;
