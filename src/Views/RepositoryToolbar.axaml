@@ -24,6 +24,18 @@
     </StackPanel>
 
     <StackPanel Grid.Column="1" Orientation="Horizontal">
+      <Button Classes="icon_button" Width="32" Margin="0,0,16,0"
+              Command="{Binding RefreshAll}"
+              IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=ManualRefresh}">
+        <ToolTip.Tip>
+          <TextBlock>
+            <Run Text="{DynamicResource Text.PageTabBar.Tab.Refresh}"/>
+            <Run Text=" F5" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+          </TextBlock>
+        </ToolTip.Tip>
+        <Path Width="14" Height="14" Data="{StaticResource Icons.Loading}"/>
+      </Button>
+
       <Button Classes="icon_button" Width="32" Tapped="Fetch">
         <ToolTip.Tip>
           <StackPanel Orientation="Vertical">

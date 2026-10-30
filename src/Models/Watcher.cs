@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -79,20 +80,39 @@ namespace SourceGit.Models
             }
 
             _timer = new Timer(Tick, null, 100, 100);
+            ViewModels.Preferences.Instance.PropertyChanged += OnPreferencesChanged;
 
             // Starts filesystem watchers in another thread to avoid UI blocking
-            Task.Run(() =>
+            Task.Run(UpdateWatching);
+        }
+
+        private void UpdateWatching()
+        {
+            lock (_syncRoot)
             {
+                if (_disposed)
+                    return;
+
                 try
                 {
                     foreach (var watcher in _watchers)
-                        watcher.EnableRaisingEvents = true;
+                        watcher.EnableRaisingEvents = !ViewModels.Preferences.Instance.ManualRefresh;
                 }
                 catch
                 {
-                    // Ignore exceptions. This may occur while `Dispose` is called.
+                    // Ignore failures while starting filesystem watchers.
                 }
-            });
+            }
+        }
+
+        private void OnPreferencesChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(ViewModels.Preferences.ManualRefresh))
+                return;
+
+            UpdateWatching();
+            if (!ViewModels.Preferences.Instance.ManualRefresh)
+                OnWatcherError(null, null); // Reload changes missed while filesystem watchers were disabled.
         }
 
         public IDisposable Lock()
@@ -128,20 +148,25 @@ namespace SourceGit.Models
 
         public void Dispose()
         {
-            foreach (var watcher in _watchers)
+            ViewModels.Preferences.Instance.PropertyChanged -= OnPreferencesChanged;
+            lock (_syncRoot)
             {
-                watcher.EnableRaisingEvents = false;
-                watcher.Dispose();
-            }
+                _disposed = true;
+                foreach (var watcher in _watchers)
+                {
+                    watcher.EnableRaisingEvents = false;
+                    watcher.Dispose();
+                }
 
-            _watchers.Clear();
-            _timer.Dispose();
-            _timer = null;
+                _watchers.Clear();
+                _timer.Dispose();
+                _timer = null;
+            }
         }
 
         private void Tick(object sender)
         {
-            if (Interlocked.Read(ref _lockCount) > 0)
+            if (ViewModels.Preferences.Instance.ManualRefresh || Interlocked.Read(ref _lockCount) > 0)
                 return;
 
             var now = DateTime.Now.ToFileTime();
@@ -254,6 +279,9 @@ namespace SourceGit.Models
         /// </summary>
         private void OnWatcherError(object o, ErrorEventArgs e)
         {
+            if (ViewModels.Preferences.Instance.ManualRefresh)
+                return;
+
             var desired = RecordChange();
             Interlocked.Exchange(ref _updateBranch, desired);
             Interlocked.Exchange(ref _updateTags, desired);
@@ -288,6 +316,9 @@ namespace SourceGit.Models
 
         private void HandleGitDirFileChanged(string name)
         {
+            if (ViewModels.Preferences.Instance.ManualRefresh)
+                return;
+
             if (name.Contains("fsmonitor--daemon/", StringComparison.Ordinal) ||
                 name.EndsWith(".lock", StringComparison.Ordinal) ||
                 name.StartsWith("lfs/", StringComparison.Ordinal))
@@ -346,6 +377,9 @@ namespace SourceGit.Models
 
         private void HandleWorkingCopyFileChanged(string name, string fullpath)
         {
+            if (ViewModels.Preferences.Instance.ManualRefresh)
+                return;
+
             if (name.StartsWith(".vs/", StringComparison.Ordinal))
                 return;
 
@@ -386,6 +420,8 @@ namespace SourceGit.Models
         }
 
         private readonly IRepository _repo;
+        private readonly object _syncRoot = new object();
+        private bool _disposed;
         private readonly string _root;
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;

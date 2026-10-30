@@ -81,6 +81,36 @@ try
     Thread.Sleep(240);
     Tick();
     Check(repo.Calls.Count == 7, "Watcher overflow recovery must reload all categories.");
+    repo.Calls.Clear();
+
+    var preferences = SourceGit.ViewModels.Preferences.Instance;
+    var filesystemWatchers = (List<FileSystemWatcher>)typeof(Watcher).GetField("_watchers", flags).GetValue(watcher);
+    WorkingCopy();
+    preferences.ManualRefresh = true;
+    Check(filesystemWatchers.All(x => !x.EnableRaisingEvents), "Manual mode must disable filesystem hooks immediately.");
+    preferences.RefreshThrottling = 0;
+    WorkingCopy();
+    Git("HEAD");
+    Invoke("OnWatcherError", null, new ErrorEventArgs(new InternalBufferOverflowException()));
+    Tick();
+    Check(repo.Calls.Count == 0, "Manual mode must suppress queued changes and overflow recovery, even with zero throttling.");
+
+    using (var manualWatcher = new Watcher(repo, root, Path.Combine(root, ".git")))
+    {
+        var manualFilesystemWatchers = (List<FileSystemWatcher>)typeof(Watcher).GetField("_watchers", flags).GetValue(manualWatcher);
+        // Run the startup action explicitly as well, to check that it cannot enable hooks in manual mode.
+        typeof(Watcher).GetMethod("UpdateWatching", flags).Invoke(manualWatcher, null);
+        Check(manualFilesystemWatchers.All(x => !x.EnableRaisingEvents), "Repositories opened in manual mode must leave hooks disabled.");
+    }
+
+    preferences.ManualRefresh = false;
+    Check(filesystemWatchers.All(x => x.EnableRaisingEvents), "Returning to automatic mode must re-enable filesystem hooks.");
+    Thread.Sleep(1);
+    Tick();
+    Check(repo.Calls.Count == 7, "Returning to automatic mode must reload changes missed while hooks were disabled.");
+    repo.Calls.Clear();
+    Tick();
+    Check(repo.Calls.Count == 0, "Automatic recovery must refresh only once.");
     Console.WriteLine("Watcher checks passed.");
 }
 finally
@@ -104,9 +134,24 @@ sealed class TestRepository : IRepository
 namespace SourceGit.ViewModels
 {
     // Keep these watcher checks independent of the desktop application and user settings.
-    public sealed class Preferences
+    public sealed class Preferences : System.ComponentModel.INotifyPropertyChanged
     {
         public static Preferences Instance { get; } = new();
         public int RefreshThrottling { get; set; } = 1000;
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public bool ManualRefresh
+        {
+            get => _manualRefresh;
+            set
+            {
+                if (_manualRefresh == value)
+                    return;
+
+                _manualRefresh = value;
+                PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(nameof(ManualRefresh)));
+            }
+        }
+
+        private bool _manualRefresh;
     }
 }

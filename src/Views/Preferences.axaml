@@ -145,11 +145,12 @@
                        Text="{DynamicResource Text.Preferences.General.RefreshThrottling}"
                        HorizontalAlignment="Right"
                        Margin="0,0,16,0"/>
-            <Grid Grid.Row="5" Grid.Column="1" ColumnDefinitions="*,64">
+            <Grid Grid.Row="5" Grid.Column="1" ColumnDefinitions="*,64,Auto">
               <Slider Grid.Column="0"
                       Minimum="0" Maximum="5000"
                       TickPlacement="BottomRight" TickFrequency="100"
                       IsSnapToTickEnabled="True"
+                      IsEnabled="{Binding !ManualRefresh}"
                       VerticalAlignment="Center"
                       Foreground="{DynamicResource Brush.Border1}"
                       Value="{Binding RefreshThrottling, Mode=TwoWay}"/>
@@ -158,6 +159,10 @@
                          HorizontalAlignment="Right" VerticalAlignment="Center"
                          Foreground="{DynamicResource Brush.FG1}"
                          Text="{Binding RefreshThrottling, StringFormat='{}{0} ms'}"/>
+              <CheckBox Grid.Column="2"
+                        Margin="16,0,0,0"
+                        Content="{DynamicResource Text.Preferences.General.ManualRefresh}"
+                        IsChecked="{Binding ManualRefresh, Mode=TwoWay}"/>
             </Grid>
 
             <CheckBox Grid.Row="6" Grid.Column="1"

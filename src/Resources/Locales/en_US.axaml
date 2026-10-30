@@ -707,6 +707,7 @@
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Date Format</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Enable compact folders in changes tree</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Language</x:String>
+  <x:String x:Key="Text.Preferences.General.ManualRefresh" xml:space="preserve">Manual refresh</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
   <x:String x:Key="Text.Preferences.General.RefreshThrottling" xml:space="preserve">Refresh throttling</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Show `LOCAL CHANGES` page by default</x:String>
