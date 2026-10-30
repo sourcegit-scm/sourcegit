@@ -53,6 +53,7 @@
                   <MultiBinding Converter="{x:Static BoolConverters.And}">
                     <Binding Path="IsDashboardVisible"/>
                     <Binding Path="Histories.IsSearchingCommits" Converter="{x:Static BoolConverters.Not}"/>
+                    <Binding Source="{x:Static vm:Preferences.Instance}" Path="Layout.IsSidebarCollapsedInDashboard" Converter="{x:Static BoolConverters.Not}"/>
                   </MultiBinding>
                   <MultiBinding Converter="{x:Static BoolConverters.And}">
                     <Binding Path="IsWorkingCopyVisible"/>
