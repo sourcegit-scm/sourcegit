@@ -147,7 +147,6 @@
               Click="NavigateToHead"
               ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
         <Path Width="13" Height="13"
-              Margin="0,2,0,0"
               Data="{StaticResource Icons.Target}"/>
       </Button>
 
