@@ -728,5 +728,20 @@ sealed class Repo : IDisposable
             throw new Exception($"git {string.Join(' ', args)}: {stderr.Result}{stdout.Result}");
         return stdout.Result;
     }
-    public void Dispose() => Directory.Delete(Path, true);
+    public void Dispose()
+    {
+        // Git marks object files read-only on Windows. Only touch this fixture's
+        // generated temporary directory, and never traverse reparse points.
+        foreach (var file in Directory.EnumerateFiles(Path, "*", new EnumerationOptions
+        {
+            RecurseSubdirectories = true,
+            AttributesToSkip = FileAttributes.ReparsePoint,
+        }))
+        {
+            var attributes = File.GetAttributes(file);
+            if ((attributes & FileAttributes.ReadOnly) != 0)
+                File.SetAttributes(file, attributes & ~FileAttributes.ReadOnly);
+        }
+        Directory.Delete(Path, true);
+    }
 }
