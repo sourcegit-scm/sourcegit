@@ -264,6 +264,54 @@ namespace SourceGit.Views
             return null;
         }
 
+        public Models.Change SelectAdjacentChange(bool next)
+        {
+            if (_selection is not { Count: 1, HasFolder: false })
+                return null;
+
+            var current = _selection.Changes[0];
+            var step = next ? 1 : -1;
+            Models.Change target = null;
+
+            if (Content is ViewModels.ChangeCollectionAsTree tree)
+            {
+                var idx = -1;
+                for (var i = 0; i < tree.Rows.Count; i++)
+                {
+                    if (tree.Rows[i].Change == current)
+                    {
+                        idx = i;
+                        break;
+                    }
+                }
+
+                if (idx < 0)
+                    return null;
+
+                // Walk from the current row in the chosen direction until the first file row; folder rows are skipped.
+                for (var i = idx + step; i >= 0 && i < tree.Rows.Count; i += step)
+                {
+                    var row = tree.Rows[i];
+                    if (!row.IsFolder && row.Change != null)
+                    {
+                        target = row.Change;
+                        break;
+                    }
+                }
+            }
+            else if (_changes != null)
+            {
+                var idx = _changes.IndexOf(current);
+                if (idx >= 0 && idx + step >= 0 && idx + step < _changes.Count)
+                    target = _changes[idx + step];
+            }
+
+            if (target != null)
+                Selection = new ViewModels.ChangeSelection(new List<Models.Change>() { target });
+
+            return target;
+        }
+
         public void TakeFocus()
         {
             var container = this.FindDescendantOfType<ChangeCollectionContainer>();
