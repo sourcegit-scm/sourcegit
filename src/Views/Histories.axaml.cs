@@ -234,7 +234,7 @@ namespace SourceGit.Views
                 var builder = new StringBuilder();
                 foreach (var item in selected)
                 {
-                    if (item is Models.Commit commit)
+                    if (item is Models.Commit { IsLocalChanges: false } commit)
                         builder.Append(commit.SHA.AsSpan(0, 10)).Append(" - ").AppendLine(commit.Subject);
                 }
 
@@ -465,7 +465,10 @@ namespace SourceGit.Views
             base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.Histories vm)
+            {
                 CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+                vm.RefreshLocalChangesNode(); // `ShowLocalChangesInGraph` may have been changed in other repository.
+            }
         }
 
         private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
@@ -592,6 +595,16 @@ namespace SourceGit.Views
             simplifyByDecoration.Click += (_, ev) =>
             {
                 histories.ToggleShowFlag(Models.HistoryShowFlags.SimplifyByDecoration);
+                ev.Handled = true;
+            };
+
+            var localChanges = new MenuItem();
+            localChanges.Header = App.Text("Repository.ShowLocalChangesInGraph");
+            if (histories.ShowLocalChanges)
+                localChanges.Icon = this.CreateMenuIcon("Icons.Check");
+            localChanges.Click += (_, ev) =>
+            {
+                histories.ShowLocalChanges = !histories.ShowLocalChanges;
                 ev.Handled = true;
             };
 
@@ -729,6 +742,7 @@ namespace SourceGit.Views
             menu.Items.Add(reflog);
             menu.Items.Add(firstParentOnly);
             menu.Items.Add(simplifyByDecoration);
+            menu.Items.Add(localChanges);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(order);
             menu.Items.Add(dateOrder);
@@ -810,7 +824,15 @@ namespace SourceGit.Views
                     commits.Add(c);
             }
 
-            if (selected.Count > 1)
+            if (commits.Find(x => x.IsLocalChanges) != null)
+            {
+                if (selected.Count == 1)
+                {
+                    var menu = CreateContextMenuForLocalChanges(repo);
+                    menu.Open(CommitListContainer);
+                }
+            }
+            else if (selected.Count > 1)
             {
                 var menu = CreateContextMenuForMultipleCommits(repo, commits);
                 menu.Open(CommitListContainer);
@@ -832,6 +854,13 @@ namespace SourceGit.Views
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 e.Source is Control { DataContext: Models.Commit c })
             {
+                if (c.IsLocalChanges)
+                {
+                    if (this.FindAncestorOfType<Repository>() is { DataContext: ViewModels.Repository repo })
+                        repo.SelectedViewIndex = 1;
+                    return;
+                }
+
                 if (histories.Bisect != null)
                 {
                     histories.CheckoutCommitDetached(c);
@@ -887,6 +916,43 @@ namespace SourceGit.Views
             }
 
             e.Handled = true;
+        }
+
+        private ContextMenu CreateContextMenuForLocalChanges(ViewModels.Repository repo)
+        {
+            var stash = new MenuItem();
+            stash.Header = App.Text("Stash.Title");
+            stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
+            stash.Click += async (_, e) =>
+            {
+                await repo.StashAllAsync(false);
+                e.Handled = true;
+            };
+
+            var discard = new MenuItem();
+            discard.Header = App.Text("Repository.DiscardAll");
+            discard.Icon = this.CreateMenuIcon("Icons.Undo");
+            discard.Click += (_, e) =>
+            {
+                repo.WorkingCopy.DiscardAllChanges();
+                e.Handled = true;
+            };
+
+            var openPage = new MenuItem();
+            openPage.Header = App.Text("Histories.LocalChanges.OpenPage");
+            openPage.Icon = this.CreateMenuIcon("Icons.Changes");
+            openPage.Click += (_, e) =>
+            {
+                repo.SelectedViewIndex = 1;
+                e.Handled = true;
+            };
+
+            var menu = new ContextMenu();
+            menu.Items.Add(stash);
+            menu.Items.Add(discard);
+            menu.Items.Add(new MenuItem() { Header = "-" });
+            menu.Items.Add(openPage);
+            return menu;
         }
 
         private ContextMenu CreateContextMenuForMultipleCommits(ViewModels.Repository repo, List<Models.Commit> selected)

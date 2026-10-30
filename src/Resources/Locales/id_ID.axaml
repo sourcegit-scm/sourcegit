@@ -511,6 +511,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Hanya Branch Saat Ini</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Branch Saat Ini &amp; Commit Terpilih</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Hanya Commit Terpilih</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Perubahan lokal</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Buka di halaman Perubahan Lokal</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">DIPILIH {0} COMMIT</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">TAMPILKAN KOLOM</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Tahan 'Ctrl' atau 'Shift' untuk memilih beberapa commit.</x:String>
@@ -822,6 +824,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Hanya commit yang didekorasi</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Hanya first-parent</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">TAMPILKAN FLAG</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Perubahan lokal sebagai node grafik</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Tampilkan commit yang hilang</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Tampilkan Submodule sebagai Pohon</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Tampilkan Tag sebagai Pohon</x:String>

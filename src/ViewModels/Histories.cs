@@ -102,11 +102,25 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool ShowLocalChanges
+        {
+            get => Preferences.Instance.ShowLocalChangesInGraph;
+            set
+            {
+                if (Preferences.Instance.ShowLocalChangesInGraph != value)
+                {
+                    Preferences.Instance.ShowLocalChangesInGraph = value;
+                    RefreshLocalChangesNode();
+                }
+            }
+        }
+
         public List<Models.Commit> Commits
         {
             get => _commits;
             set
             {
+                value = ApplyLocalChangesNode(value);
                 GenerateGraph(value);
                 if (SetProperty(ref _commits, value))
                     PostCommitsChanged();
@@ -292,6 +306,13 @@ namespace SourceGit.ViewModels
                 return Models.BisectState.WaitingForFirstGood;
 
             return Models.BisectState.WaitingForMark;
+        }
+
+        public void RefreshLocalChangesNode()
+        {
+            var commits = ApplyLocalChangesNode(_commits);
+            if (commits != _commits)
+                Commits = commits;
         }
 
         public void NavigateTo(string commitSHA)
@@ -491,6 +512,12 @@ namespace SourceGit.ViewModels
 
         private void PostCommitsChanged()
         {
+            if (_followHeadAfterLocalChangesRemoved)
+            {
+                SelectCurrentHead(false);
+                return;
+            }
+
             if (_selectedCommits.Count == 0)
                 return;
 
@@ -516,11 +543,54 @@ namespace SourceGit.ViewModels
                 }
             }
 
+            // Local changes node has gone (committed, stashed or discarded), select current HEAD instead.
+            if (selected.Count == 0 && _selectedCommits is [{ IsLocalChanges: true }])
+            {
+                SelectCurrentHead(true);
+                return;
+            }
+
             SelectedCommits = selected;
+        }
+
+        private void SelectCurrentHead(bool followHeadOnNextRefresh)
+        {
+            var head = _commits.Find(x => x.IsCurrentHead);
+            SelectedCommits = head != null ? [head] : [];
+            _followHeadAfterLocalChangesRemoved = followHeadOnNextRefresh;
+        }
+
+        private List<Models.Commit> ApplyLocalChangesNode(List<Models.Commit> commits)
+        {
+            var count = _repo.LocalChangesCount;
+            var hasNode = commits.Count > 0 && commits[0].IsLocalChanges;
+
+            Models.Commit head = null;
+            if (Preferences.Instance.ShowLocalChangesInGraph && count > 0 && !_repo.IsBare)
+                head = commits.Find(x => x.IsCurrentHead);
+
+            _localChangesNode.Count = count;
+
+            if (head == null)
+                return hasNode ? commits.GetRange(1, commits.Count - 1) : commits;
+
+            if (hasNode && _localChangesNode.Parents[0].Equals(head.SHA, StringComparison.Ordinal))
+                return commits;
+
+            _localChangesNode.Parents = [head.SHA];
+
+            var list = new List<Models.Commit>(commits.Count + 1) { _localChangesNode };
+            if (hasNode)
+                list.AddRange(commits.GetRange(1, commits.Count - 1));
+            else
+                list.AddRange(commits);
+            return list;
         }
 
         private void PostSelectedCommitsChanged()
         {
+            _followHeadAfterLocalChangesRemoved = false;
+
             if (_ignoreSelectionChange)
                 return;
 
@@ -528,6 +598,11 @@ namespace SourceGit.ViewModels
             {
                 _searchCommitContext.Selected = null;
                 DetailContext = Models.Null.Instance;
+            }
+            else if (_selectedCommits is [{ IsLocalChanges: true }])
+            {
+                _searchCommitContext.Selected = null;
+                DetailContext = _repo.WorkingCopy;
             }
             else if (_selectedCommits.Count == 1)
             {
@@ -547,10 +622,19 @@ namespace SourceGit.ViewModels
             {
                 _searchCommitContext.Selected = null;
 
-                if (_detailContext is RevisionCompare compare)
+                if (_selectedCommits[0].IsLocalChanges || _selectedCommits[1].IsLocalChanges)
+                {
+                    var commit = _selectedCommits[0].IsLocalChanges ? _selectedCommits[1] : _selectedCommits[0];
+                    DetailContext = new RevisionCompare(_repo, commit, null);
+                }
+                else if (_detailContext is RevisionCompare compare)
+                {
                     compare.SetTargets(_selectedCommits[1], _selectedCommits[0]);
+                }
                 else
+                {
                     DetailContext = new RevisionCompare(_repo, _selectedCommits[1], _selectedCommits[0]);
+                }
             }
             else
             {
@@ -583,6 +667,8 @@ namespace SourceGit.ViewModels
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];
+        private Models.LocalChangesNode _localChangesNode = new();
+        private bool _followHeadAfterLocalChangesRemoved = false;
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
