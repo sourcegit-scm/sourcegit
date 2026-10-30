@@ -565,6 +565,7 @@ namespace SourceGit.Views
             var reflog = new MenuItem();
             reflog.Header = App.Text("Repository.ShowLostCommits");
             reflog.Tag = "--reflog";
+            reflog.IsEnabled = histories.CanToggleReflog;
             if (histories.HasShowFlag(Models.HistoryShowFlags.Reflog))
                 reflog.Icon = this.CreateMenuIcon("Icons.Check");
             reflog.Click += (_, ev) =>

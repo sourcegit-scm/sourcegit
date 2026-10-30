@@ -455,9 +455,6 @@ namespace SourceGit.Models
             else
                 builder.Append("--date-order ");
 
-            if (HistoryShowFlags.HasFlag(HistoryShowFlags.Reflog))
-                builder.Append("--reflog ");
-
             if (HistoryShowFlags.HasFlag(HistoryShowFlags.FirstParentOnly))
                 builder.Append("--first-parent ");
 
