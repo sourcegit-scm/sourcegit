@@ -39,7 +39,10 @@
                Watermark="{DynamicResource Text.Apply.File.Placeholder}"
                IsEnabled="{Binding !FromClipboard, Mode=OneWay}"
                IsVisible="{Binding !FromClipboard, Mode=OneWay}"
-               Text="{Binding PatchFile, Mode=TwoWay}">
+               Text="{Binding PatchFile, Mode=TwoWay}"
+               DragDrop.AllowDrop="True"
+               DragDrop.DragOver="DragOverPatchFileBox"
+               DragDrop.Drop="DropOnPatchFileBox">
         <TextBox.Styles>
           <Style Selector="TextBox:disabled Path">
             <Setter Property="Opacity" Value=".6"/>
