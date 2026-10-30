@@ -37,6 +37,7 @@ fi
 
 rm -f SourceGit/*.dbg
 rm -f SourceGit/*.pdb
+chmod 755 -R SourceGit
 
 mkdir -p SourceGit.AppDir/opt
 mkdir -p SourceGit.AppDir/usr/share/metainfo
