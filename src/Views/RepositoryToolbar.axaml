@@ -127,7 +127,7 @@
       <Button Width="0" Height="0" Click="FetchDirectlyByHotKey" IsVisible="False" HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"/>
     </StackPanel>
 
-    <Grid Grid.Column="3" HorizontalAlignment="Right" ColumnDefinitions="Auto,*,Auto,Auto,6">
+    <Grid Grid.Column="3" HorizontalAlignment="Right" ColumnDefinitions="Auto,*,32,32,6">
       <Path Grid.Column="0"
             Width="13" Height="13"
             Margin="18,0,0,0"
@@ -143,17 +143,17 @@
 
       <Button Grid.Column="2"
               Classes="icon_button"
-              Width="28"
+              Width="32"
               Click="NavigateToHead"
               ToolTip.Tip="{DynamicResource Text.Repository.NavigateToCurrentHead}">
-        <Path Width="13" Height="13"
-              Margin="0,2,0,0"
+        <Path Width="14" Height="14"
+              Margin="0,1,0,0"
               Data="{StaticResource Icons.Target}"/>
       </Button>
 
       <ToggleButton Grid.Column="3"
                     Classes="line_path"
-                    Width="28"
+                    Width="32"
                     IsChecked="{Binding FocusOnCurrentBranch, Mode=TwoWay}"
                     ToolTip.Tip="{DynamicResource Text.Repository.FocusOnCurrentBranch}">
         <ToggleButton.Styles>
@@ -162,7 +162,7 @@
           </Style>
         </ToggleButton.Styles>
         
-        <Path Width="13" Height="13"
+        <Path Width="14" Height="14"
               Data="{StaticResource Icons.Magic}"/>
       </ToggleButton>
     </Grid>
