@@ -34,6 +34,8 @@ namespace SourceGit.Models
                 Pens.Add(new Pen(c.ToUInt32(), thickness));
 
             s_penCount = colors.Count;
+            for (var i = 1; i < Bookmarks.Brushes.Length; i++)
+                Pens.Add(new Pen(Bookmarks.Brushes[i], thickness));
         }
 
         public class Path(int color, bool isHighlighted)
@@ -71,7 +73,7 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
-        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits, int bookmark = 0)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -82,12 +84,14 @@ namespace SourceGit.Models
             var unsolved = new List<PathHelper>();
             var ended = new List<PathHelper>();
             var offsetY = -halfHeight;
-            var colorPicker = new ColorPicker();
+            var headColor = commits.Exists(x => x.IsCurrentHead) ? GetBookmarkColor(bookmark) : -1;
+            var colorPicker = new ColorPicker(headColor);
             var defHighlighting = highlighting == CommitGraphHighlighting.All;
 
             foreach (var commit in commits)
             {
                 PathHelper major = null;
+                var isBookmarkedHead = commit.IsCurrentHead && headColor >= 0;
 
                 // Update current y offset
                 offsetY += unitHeight;
@@ -184,7 +188,8 @@ namespace SourceGit.Models
 
                     if (commit.Parents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isHighlighted, colorPicker.Next(), new Point(offsetX, offsetY));
+                        var color = isBookmarkedHead ? headColor : colorPicker.Next();
+                        major = new PathHelper(commit.Parents[0], isHighlighted, color, new Point(offsetX, offsetY));
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
@@ -198,7 +203,7 @@ namespace SourceGit.Models
                 var hasBranch = commit.Decorators.Exists(x => x.Type is DecoratorType.CurrentBranchHead or DecoratorType.LocalBranchHead or DecoratorType.RemoteBranchHead);
                 if (major != null && hasBranch)
                 {
-                    if (major.HasBranch)
+                    if (major.HasBranch && !isBookmarkedHead)
                     {
                         // A named branch can start on an existing line without a fork.
                         // Split its color at the branch tip, preserving the lane and highlighting.
@@ -215,9 +220,17 @@ namespace SourceGit.Models
                     major.HasBranch = true;
                 }
 
+                if (isBookmarkedHead && major != null && major.Path.Color != headColor)
+                {
+                    colorPicker.Recycle(major.Path.Color);
+                    major.ChangeColor(headColor);
+                    if (commit.Parents.Count > 0)
+                        temp.Paths.Add(major.Path);
+                }
+
                 // Calculate link position of this commit.
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
-                var dotColor = major?.Path.Color ?? 0;
+                var dotColor = major?.Path.Color ?? (isBookmarkedHead ? headColor : 0);
                 var anchor = new Dot() { Center = position, Color = dotColor, IsHighlighted = isHighlighted };
                 if (commit.IsCurrentHead)
                     anchor.Type = DotType.Head;
@@ -288,10 +301,25 @@ namespace SourceGit.Models
             return temp;
         }
 
-        private class ColorPicker
+        private static int GetBookmarkColor(int bookmark)
+        {
+            if (Bookmarks.Get(bookmark) is not ISolidColorBrush brush)
+                return -1;
+
+            for (var i = 0; i < s_penCount; i++)
+            {
+                if (Pens[i].Brush is ISolidColorBrush graphBrush && graphBrush.Color == brush.Color)
+                    return i;
+            }
+
+            return s_penCount + bookmark - 1;
+        }
+
+        private class ColorPicker(int reservedColor)
         {
             public int Next(int exclude = -1)
             {
+                var reservedCount = s_penCount > 1 && reservedColor >= 0 && reservedColor < s_penCount ? 1 : 0;
                 int color;
                 do
                 {
@@ -303,14 +331,14 @@ namespace SourceGit.Models
 
                     color = _colorsQueue.Dequeue();
                 }
-                while (s_penCount > 1 && color == exclude);
+                while ((reservedCount > 0 && color == reservedColor) || (s_penCount - reservedCount > 1 && color == exclude));
 
                 return color;
             }
 
             public void Recycle(int idx)
             {
-                if (!_colorsQueue.Contains(idx))
+                if (idx < s_penCount && idx != reservedColor && !_colorsQueue.Contains(idx))
                     _colorsQueue.Enqueue(idx);
             }
 

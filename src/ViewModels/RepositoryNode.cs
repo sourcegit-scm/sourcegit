@@ -36,7 +36,17 @@ namespace SourceGit.ViewModels
         public int Bookmark
         {
             get => _bookmark;
-            set => SetProperty(ref _bookmark, value);
+            set
+            {
+                if (!SetProperty(ref _bookmark, value) || App.GetLauncher() is not { } launcher)
+                    return;
+
+                foreach (var page in launcher.Pages)
+                {
+                    if (ReferenceEquals(page.Node, this) && page.Data is Repository repo)
+                        repo.Histories?.RefreshGraph();
+                }
+            }
         }
 
         public bool IsRepository
