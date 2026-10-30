@@ -95,14 +95,54 @@ try
     Tick();
     Check(repo.Calls.Count == 0, "Manual mode must suppress queued changes and overflow recovery, even with zero throttling.");
 
+    preferences.RefreshThrottling = 5000;
+    using (watcher.Lock())
+    {
+        using (watcher.Lock())
+        {
+            WorkingCopy();
+            Git("HEAD");
+            Tick();
+        }
+
+        Check(repo.Calls.Count == 0, "Nested application operations must not refresh before the outer operation finishes.");
+    }
+    Check(repo.Calls.Count == 7, "Application operations must refresh in manual mode without waiting for throttling.");
+    Check(filesystemWatchers.All(x => !x.EnableRaisingEvents), "Application refreshes must leave external filesystem hooks disabled.");
+    repo.Calls.Clear();
+    Tick();
+    Check(repo.Calls.Count == 0, "Completing an application operation must not enable filesystem refreshes.");
+
+    try
+    {
+        using var operation = watcher.Lock();
+        throw new OperationCanceledException();
+    }
+    catch (OperationCanceledException)
+    {
+        Check(repo.Calls.Count == 7, "Cancelled or failed operations must refresh any partial repository changes.");
+    }
+    repo.Calls.Clear();
+
+    var completedOperation = watcher.Lock();
+    completedOperation.Dispose();
+    completedOperation.Dispose();
+    Check(repo.Calls.Count == 7, "Disposing an operation twice must refresh only once and preserve the lock count.");
+    repo.Calls.Clear();
+
     using (var manualWatcher = new Watcher(repo, root, Path.Combine(root, ".git")))
     {
         var manualFilesystemWatchers = (List<FileSystemWatcher>)typeof(Watcher).GetField("_watchers", flags).GetValue(manualWatcher);
         // Run the startup action explicitly as well, to check that it cannot enable hooks in manual mode.
         typeof(Watcher).GetMethod("UpdateWatching", flags).Invoke(manualWatcher, null);
         Check(manualFilesystemWatchers.All(x => !x.EnableRaisingEvents), "Repositories opened in manual mode must leave hooks disabled.");
+        var operation = manualWatcher.Lock();
+        manualWatcher.Dispose();
+        operation.Dispose();
+        Check(repo.Calls.Count == 0, "An operation finishing after the repository closes must not refresh it.");
     }
 
+    preferences.RefreshThrottling = 0;
     preferences.ManualRefresh = false;
     Check(filesystemWatchers.All(x => x.EnableRaisingEvents), "Returning to automatic mode must re-enable filesystem hooks.");
     Thread.Sleep(1);
@@ -111,6 +151,10 @@ try
     repo.Calls.Clear();
     Tick();
     Check(repo.Calls.Count == 0, "Automatic recovery must refresh only once.");
+    using (watcher.Lock())
+    {
+    }
+    Check(repo.Calls.Count == 0, "Automatic mode must retain its existing event-driven refresh behavior.");
     Console.WriteLine("Watcher checks passed.");
 }
 finally

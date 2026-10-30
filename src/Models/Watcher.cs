@@ -19,7 +19,9 @@ namespace SourceGit.Models
 
             public void Dispose()
             {
-                Interlocked.Decrement(ref _target._lockCount);
+                var target = Interlocked.Exchange(ref _target, null);
+                if (target != null && Interlocked.Decrement(ref target._lockCount) == 0)
+                    target.RefreshAfterOperation();
             }
 
             private Watcher _target;
@@ -120,6 +122,23 @@ namespace SourceGit.Models
             return new LockContext(this);
         }
 
+        private void RefreshAfterOperation()
+        {
+            // Application operations use Lock() while changing the repository. In manual mode
+            // there are no filesystem events to trigger their final refresh, so do it explicitly
+            // when the outermost operation completes, including failed or cancelled operations.
+            if (_disposed || !ViewModels.Preferences.Instance.ManualRefresh)
+                return;
+
+            _repo.RefreshBranches();
+            _repo.RefreshWorktrees();
+            _repo.RefreshWorkingCopyChanges();
+            _repo.RefreshSubmodules();
+            _repo.RefreshStashes();
+            _repo.RefreshTags();
+            _repo.RefreshCommits();
+        }
+
         public void MarkBranchUpdated()
         {
             Interlocked.Exchange(ref _updateBranch, 0);
@@ -151,6 +170,9 @@ namespace SourceGit.Models
             ViewModels.Preferences.Instance.PropertyChanged -= OnPreferencesChanged;
             lock (_syncRoot)
             {
+                if (_disposed)
+                    return;
+
                 _disposed = true;
                 foreach (var watcher in _watchers)
                 {

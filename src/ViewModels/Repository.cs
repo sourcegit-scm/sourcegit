@@ -564,6 +564,7 @@ namespace SourceGit.ViewModels
 
         public async Task<bool> TrackLFSFileAsync(string pattern, bool isFilenameMode)
         {
+            using var lockWatcher = LockWatcher();
             var log = CreateLog("Track LFS");
             var succ = await new Commands.LFS(FullPath)
                 .Use(log)
@@ -1924,6 +1925,7 @@ namespace SourceGit.ViewModels
                 if (remotes.Count == 0)
                     return;
 
+                using var lockWatcher = LockWatcher();
                 IsAutoFetching = true;
                 log = CreateLog("Auto-Fetch");
 
