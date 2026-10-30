@@ -460,12 +460,15 @@ namespace SourceGit.Views
             }
         }
 
+        private double SubjectColumnRight => CommitListContainer.Columns[1].ActualWidth +
+            (CommitListContainer.Columns[0].IsVisible ? CommitListContainer.Columns[0].ActualWidth : 0);
+
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);
 
             if (DataContext is ViewModels.Histories vm)
-                CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
+                CommitListContainer.Columns[2].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
         }
 
         private void OnCommitListHeaderPointerMoved(object sender, PointerEventArgs e)
@@ -473,23 +476,23 @@ namespace SourceGit.Views
             if (sender is not Border border)
                 return;
 
-            if (DataContext is not ViewModels.Histories { IsAuthorColumnVisible: true } vm)
+            if (DataContext is not ViewModels.Histories vm)
                 return;
 
             var pos = e.GetPosition(border);
             if (_resizingAuthorColumn)
             {
-                var posX = CommitListContainer.Columns[0].ActualWidth;
-                var maxW = posX + CommitListContainer.Columns[1].ActualWidth - 100;
+                var posX = SubjectColumnRight;
+                var maxW = posX + CommitListContainer.Columns[2].ActualWidth - 100;
                 var delta = posX - pos.X;
                 var w = Math.Max(Math.Min(vm.AuthorColumnWidth + delta, maxW), 80);
-                CommitListContainer.Columns[1].Width = new(w, DataGridLengthUnitType.Pixel);
+                CommitListContainer.Columns[2].Width = new(w, DataGridLengthUnitType.Pixel);
                 vm.AuthorColumnWidth = w;
             }
             else
             {
-                var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
-                if (dis < 4 && dis > -4)
+                var nearAuthorEdge = vm.IsAuthorColumnVisible && Math.Abs(SubjectColumnRight - 4 - pos.X) < 4;
+                if (nearAuthorEdge)
                 {
                     if (border.Cursor != _resizingCursor)
                         border.Cursor = _resizingCursor;
@@ -506,19 +509,30 @@ namespace SourceGit.Views
             if (sender is not Border border)
                 return;
 
-            var pos = e.GetPosition(border);
-            var dis = CommitListContainer.Columns[0].ActualWidth - 4 - pos.X;
-            if (dis > 4 || dis < -4)
+            if (DataContext is not ViewModels.Histories vm || !e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
                 return;
 
-            if (e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            var pos = e.GetPosition(border);
+            if (vm.IsAuthorColumnVisible && Math.Abs(SubjectColumnRight - 4 - pos.X) < 4)
             {
                 _resizingAuthorColumn = true;
-                e.Handled = true;
             }
+            else
+            {
+                return;
+            }
+
+            e.Pointer.Capture(border);
+            e.Handled = true;
         }
 
         private void OnCommitListHeaderPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            _resizingAuthorColumn = false;
+            e.Pointer.Capture(null);
+        }
+
+        private void OnCommitListHeaderPointerCaptureLost(object sender, PointerCaptureLostEventArgs e)
         {
             _resizingAuthorColumn = false;
         }
@@ -679,6 +693,16 @@ namespace SourceGit.Views
             columnsHeader.Header = new TextBlock() { Text = App.Text("Histories.ShowColumns"), FontWeight = FontWeight.Bold };
             columnsHeader.IsEnabled = false;
 
+            var treeColumn = new MenuItem();
+            treeColumn.Header = App.Text("Histories.Header.Tree");
+            if (histories.IsTreeColumnVisible)
+                treeColumn.Icon = this.CreateMenuIcon("Icons.Check");
+            treeColumn.Click += (_, ev) =>
+            {
+                histories.IsTreeColumnVisible = !histories.IsTreeColumnVisible;
+                ev.Handled = true;
+            };
+
             var authorColumn = new MenuItem();
             authorColumn.Header = App.Text("Histories.Header.Author");
             if (histories.IsAuthorColumnVisible)
@@ -742,6 +766,7 @@ namespace SourceGit.Views
             menu.Items.Add(currentBranchAndSelectedCommits);
             menu.Items.Add(new MenuItem() { Header = "-" });
             menu.Items.Add(columnsHeader);
+            menu.Items.Add(treeColumn);
             menu.Items.Add(authorColumn);
             menu.Items.Add(shaColumn);
             menu.Items.Add(authorTimeColumn);
@@ -761,11 +786,17 @@ namespace SourceGit.Views
 
             double rowHeight = dataGrid.RowHeight;
             double startY = 0;
+            // The header must not add space beyond the visible graph lanes.
+            double treeWidth = 0;
             foreach (var child in rowsPresenter.Children)
             {
                 if (child is DataGridRow { IsVisible: true } row)
                 {
                     rowHeight = row.Bounds.Height;
+
+                    if (row.Bounds.Bottom > 0 && row.Bounds.Top < rowsPresenter.Bounds.Height &&
+                        row.DataContext is Models.Commit commit)
+                        treeWidth = Math.Max(treeWidth, commit.LeftMargin + 4);
 
                     if (row.Bounds.Top <= 0 && row.Bounds.Top > -rowHeight)
                     {
@@ -778,7 +809,11 @@ namespace SourceGit.Views
 
             IsScrollToTopVisible = startY >= rowHeight;
 
-            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
+            var graphColumn = DataContext is ViewModels.Histories { IsTreeColumnVisible: true } ? 0 : 1;
+            if (graphColumn == 0 && Math.Abs(dataGrid.Columns[0].Width.Value - treeWidth) > 0.01)
+                dataGrid.Columns[0].Width = new(treeWidth, DataGridLengthUnitType.Pixel);
+
+            var clipWidth = Math.Max(0, dataGrid.Columns[graphColumn].ActualWidth - 4);
             var lastLayout = CommitGraph.Layout;
             if (lastLayout == null ||
                 Math.Abs(lastLayout.StartY - startY) > 0.01 ||

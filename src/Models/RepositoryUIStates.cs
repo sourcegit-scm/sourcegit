@@ -15,6 +15,12 @@ namespace SourceGit.Models
             set;
         } = HistoryShowFlags.None;
 
+        public bool IsTreeColumnVisibleInHistory
+        {
+            get;
+            set;
+        } = false;
+
         public bool IsAuthorColumnVisibleInHistory
         {
             get;
