@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Collections;
@@ -11,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -431,6 +433,9 @@ namespace SourceGit.Views
 
         private void OnNodePointerPressed(object sender, PointerPressedEventArgs e)
         {
+            _pressedNodeEvent = null;
+            _startDragNode = false;
+
             var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
             if (e.KeyModifiers.HasFlag(ctrl) || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
                 return;
@@ -445,10 +450,384 @@ namespace SourceGit.Views
             if (sender is not Border { DataContext: ViewModels.BranchTreeNode node })
                 return;
 
-            if (node.Backend is not Models.Branch branch)
+            if (node.Backend is Models.Branch branch)
+            {
+                if (!branch.IsDetachedHead)
+                    BeginPress(e, node);
+
+                repo.NavigateToCommit(branch.Head);
+            }
+            else if (node.Backend == null && node.Path.StartsWith(ViewModels.MoveBranches.LocalPrefix, StringComparison.Ordinal))
+            {
+                // Local folders can be dragged too (to move all of their branches).
+                BeginPress(e, node);
+            }
+        }
+
+        private void BeginPress(PointerPressedEventArgs e, ViewModels.BranchTreeNode node)
+        {
+            _pressedNodeEvent = e;
+            _pressedDragNode = node;
+            _pressedDragPaths = CollectDragPaths(node);
+        }
+
+        // Dragging a row that is part of a multi-selection drags the whole selection; nested rows
+        // (children of a selected folder) are dropped because the folder already covers them.
+        private List<string> CollectDragPaths(ViewModels.BranchTreeNode pressed)
+        {
+            var paths = new List<string>();
+            if (pressed.IsSelected && BranchesPresenter.SelectedItems is { Count: > 1 } selected)
+            {
+                var local = pressed.Path.StartsWith(ViewModels.MoveBranches.LocalPrefix, StringComparison.Ordinal);
+                foreach (var item in selected)
+                {
+                    if (item is ViewModels.BranchTreeNode { Backend: null or Models.Branch { IsDetachedHead: false } } node &&
+                        node.Path.StartsWith(ViewModels.MoveBranches.LocalPrefix, StringComparison.Ordinal) == local)
+                        paths.Add(node.Path);
+                }
+
+                var all = paths.ToArray();
+                paths.RemoveAll(p => Array.Exists(all, q => p.StartsWith($"{q}/", StringComparison.Ordinal)));
+            }
+
+            if (paths.Count == 0)
+                paths.Add(pressed.Path);
+
+            return paths;
+        }
+
+        // The paths of the tree nodes carried by a branch drag (see `OnNodePointerMoved`).
+        public static string[] GetDraggedPaths(DragEventArgs e)
+        {
+            return e.DataTransfer.TryGetValue(DndBranchFormat) is { Length: > 0 } text
+                ? text.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                : [];
+        }
+
+        private void OnNodePointerReleased(object _1, PointerReleasedEventArgs _2)
+        {
+            _pressedNodeEvent = null;
+            _pressedDragNode = null;
+            _pressedDragPaths = null;
+            _startDragNode = false;
+        }
+
+        private async void OnNodePointerMoved(object sender, PointerEventArgs e)
+        {
+            if (_pressedNodeEvent == null ||
+                _pressedDragNode == null ||
+                _pressedDragPaths == null ||
+                _startDragNode ||
+                sender is not Border border)
                 return;
 
-            repo.NavigateToCommit(branch.Head);
+            // The release can be missed (e.g. the tree is rebuilt by a double-click checkout),
+            // so a stale press must not turn into a drag once the button is up.
+            if (!e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _pressedNodeEvent = null;
+                _pressedDragNode = null;
+                _pressedDragPaths = null;
+                return;
+            }
+
+            var delta = e.GetPosition(border) - _pressedNodeEvent.GetPosition(border);
+            if (delta.X * delta.X + delta.Y * delta.Y < 64)
+                return;
+
+            _startDragNode = true;
+
+            var pressedEvent = _pressedNodeEvent;
+            var pressedNode = _pressedDragNode;
+            var paths = _pressedDragPaths;
+
+            var data = new DataTransfer();
+            data.Add(DataTransferItem.Create(DndBranchFormat, string.Join('\n', paths)));
+
+            var topLevel = TopLevel.GetTopLevel(this);
+            var allowDrop = topLevel != null && DragDrop.GetAllowDrop(topLevel);
+            if (topLevel != null && OverlayLayer.GetOverlayLayer(this) is { } layer)
+            {
+                // Avalonia has no drag preview, so a chip is drawn on the overlay and moved on every DragOver
+                // of the window (which only fires for AllowDrop targets).
+                var start = pressedEvent.GetPosition(layer);
+                _dragGhost = CreateDragGhost(pressedNode, paths.Count);
+                _dragGhostLayer = layer;
+                Canvas.SetLeft(_dragGhost, start.X + 14);
+                Canvas.SetTop(_dragGhost, start.Y + 14);
+                layer.Children.Add(_dragGhost);
+
+                DragDrop.SetAllowDrop(topLevel, true);
+                topLevel.AddHandler(DragDrop.DragOverEvent, OnDragGhostDragOver, RoutingStrategies.Tunnel | RoutingStrategies.Bubble, true);
+
+                _lastDragPosition = pressedEvent.GetPosition(BranchesPresenter);
+                _autoScrollTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(50) };
+                _autoScrollTimer.Tick += OnAutoScrollTick;
+                _autoScrollTimer.Start();
+            }
+
+            try
+            {
+                await DragDrop.DoDragDropAsync(pressedEvent, data, DragDropEffects.Move);
+            }
+            finally
+            {
+                CancelAutoExpand();
+
+                if (_autoScrollTimer != null)
+                {
+                    _autoScrollTimer.Stop();
+                    _autoScrollTimer.Tick -= OnAutoScrollTick;
+                    _autoScrollTimer = null;
+                }
+
+                if (_dragGhost != null)
+                {
+                    topLevel?.RemoveHandler(DragDrop.DragOverEvent, OnDragGhostDragOver);
+                    _dragGhostLayer.Children.Remove(_dragGhost);
+                    _dragGhost = null;
+                    _dragGhostHint = null;
+                    _dragGhostLayer = null;
+
+                    if (topLevel != null)
+                        DragDrop.SetAllowDrop(topLevel, allowDrop);
+                }
+
+                _pressedNodeEvent = null;
+                _pressedDragNode = null;
+                _pressedDragPaths = null;
+                _startDragNode = false;
+            }
+        }
+
+        private void OnDragGhostDragOver(object sender, DragEventArgs e)
+        {
+            if (_dragGhost == null || _dragGhostLayer == null)
+                return;
+
+            var pos = e.GetPosition(_dragGhostLayer);
+            Canvas.SetLeft(_dragGhost, pos.X + 14);
+            Canvas.SetTop(_dragGhost, pos.Y + 14);
+
+            _lastDragPosition = e.GetPosition(BranchesPresenter);
+
+            // Reset before the target under the pointer (bubble phase) reports what a drop would do.
+            if (e.Route == RoutingStrategies.Tunnel)
+                SetDragHint(string.Empty, true);
+        }
+
+        private void SetDragHint(string hint, bool valid)
+        {
+            if (_dragGhost == null || _dragGhostHint == null)
+                return;
+
+            _dragGhostHint.Text = hint;
+            _dragGhostHint.IsVisible = hint.Length > 0;
+            _dragGhost.Opacity = valid ? 0.92 : 0.5;
+        }
+
+        private void OnAutoScrollTick(object sender, EventArgs e)
+        {
+            var scroll = BranchesPresenter.FindDescendantOfType<ScrollViewer>();
+            if (scroll == null)
+                return;
+
+            var width = BranchesPresenter.Bounds.Width;
+            var height = BranchesPresenter.Bounds.Height;
+            var pos = _lastDragPosition;
+            if (pos.X < 0 || pos.X > width || pos.Y < 0 || pos.Y > height)
+                return;
+
+            var zone = Math.Min(24.0, height / 4);
+            var step = pos.Y < zone ? -12.0 : (pos.Y > height - zone ? 12.0 : 0.0);
+            if (step == 0.0)
+                return;
+
+            var max = Math.Max(0.0, scroll.Extent.Height - scroll.Viewport.Height);
+            scroll.Offset = new Vector(scroll.Offset.X, Math.Clamp(scroll.Offset.Y + step, 0.0, max));
+        }
+
+        private void UpdateAutoExpand(ViewModels.BranchTreeNode node, bool wanted)
+        {
+            if (!wanted)
+            {
+                CancelAutoExpand();
+                return;
+            }
+
+            if (ReferenceEquals(_expandNode, node))
+                return;
+
+            CancelAutoExpand();
+
+            _expandNode = node;
+            _expandTimer = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(700) };
+            _expandTimer.Tick += (_, _) =>
+            {
+                var target = _expandNode;
+                CancelAutoExpand();
+
+                if (target is { IsExpanded: false })
+                    ToggleNodeIsExpanded(target);
+            };
+            _expandTimer.Start();
+        }
+
+        private void CancelAutoExpand()
+        {
+            _expandTimer?.Stop();
+            _expandTimer = null;
+            _expandNode = null;
+        }
+
+        private Control CreateDragGhost(ViewModels.BranchTreeNode node, int count)
+        {
+            var foreground = this.FindResource("Brush.FG1") as IBrush;
+            var content = new StackPanel() { Orientation = Orientation.Horizontal, Spacing = 6 };
+
+            if (this.CreateMenuIcon(node.Backend is Models.Branch ? "Icons.Branch" : "Icons.Folder") is { } icon)
+            {
+                icon.Fill = foreground;
+                content.Children.Add(icon);
+            }
+
+            string text;
+            if (count > 1)
+                text = App.Text("MoveBranches.Count", count);
+            else if (node.Backend is Models.Branch branch)
+                text = branch.FriendlyName;
+            else
+                text = node.Name;
+
+            content.Children.Add(new TextBlock()
+            {
+                Text = text,
+                FontWeight = FontWeight.Bold,
+                Foreground = foreground,
+                VerticalAlignment = VerticalAlignment.Center,
+            });
+
+            _dragGhostHint = new TextBlock()
+            {
+                Foreground = this.FindResource("Brush.FG2") as IBrush,
+                VerticalAlignment = VerticalAlignment.Center,
+                IsVisible = false,
+            };
+            content.Children.Add(_dragGhostHint);
+
+            return new Border()
+            {
+                Child = content,
+                Padding = new Thickness(8, 4),
+                CornerRadius = new CornerRadius(4),
+                BorderThickness = new Thickness(1),
+                BorderBrush = this.FindResource("Brush.PopupBorder") as IBrush,
+                Background = this.FindResource("Brush.Popup") as IBrush,
+                Opacity = 0.92,
+                IsHitTestVisible = false,
+            };
+        }
+
+        private static bool IsLocalFolder(ViewModels.BranchTreeNode node)
+        {
+            return node.Backend == null &&
+                node.Path.StartsWith(ViewModels.MoveBranches.LocalPrefix, StringComparison.Ordinal);
+        }
+
+        private void OnNodeDragOver(object sender, DragEventArgs e)
+        {
+            e.DragEffects = DragDropEffects.None;
+            e.Handled = true;
+
+            if (sender is not Border { DataContext: ViewModels.BranchTreeNode node } ||
+                DataContext is not ViewModels.Repository repo)
+                return;
+
+            var paths = GetDraggedPaths(e);
+            var accepted = false;
+            var hint = string.Empty;
+            var expandable = false;
+
+            if (paths.Length > 0)
+            {
+                if (node.Backend is Models.Branch { IsDetachedHead: false } target)
+                {
+                    if (paths.Length == 1 &&
+                        !paths[0].Equals(target.FullName, StringComparison.Ordinal) &&
+                        repo.Branches.Exists(x => x.FullName.Equals(paths[0], StringComparison.Ordinal)))
+                    {
+                        accepted = true;
+                        hint = $"→ {target.FriendlyName}";
+                    }
+                }
+                else if (IsLocalFolder(node))
+                {
+                    var prefix = node.Path.Substring(ViewModels.MoveBranches.LocalPrefix.Length);
+                    expandable = !node.IsExpanded && paths[0].StartsWith(ViewModels.MoveBranches.LocalPrefix, StringComparison.Ordinal);
+
+                    if (ViewModels.MoveBranches.CanDropOnto(paths, prefix))
+                    {
+                        accepted = true;
+                        hint = $"→ {prefix}/";
+                    }
+                }
+            }
+
+            node.IsDropTarget = accepted;
+            if (accepted)
+                e.DragEffects = DragDropEffects.Move;
+
+            SetDragHint(hint, accepted);
+            UpdateAutoExpand(node, expandable);
+        }
+
+        private void OnNodeDragLeave(object sender, DragEventArgs _)
+        {
+            if (sender is Border { DataContext: ViewModels.BranchTreeNode node })
+            {
+                node.IsDropTarget = false;
+
+                if (ReferenceEquals(_expandNode, node))
+                    CancelAutoExpand();
+            }
+        }
+
+        private async void OnNodeDrop(object sender, DragEventArgs e)
+        {
+            if (sender is not Border { DataContext: ViewModels.BranchTreeNode node })
+                return;
+
+            node.IsDropTarget = false;
+            CancelAutoExpand();
+
+            var paths = GetDraggedPaths(e);
+            if (DataContext is not ViewModels.Repository repo || paths.Length == 0)
+                return;
+
+            if (IsLocalFolder(node))
+            {
+                var prefix = node.Path.Substring(ViewModels.MoveBranches.LocalPrefix.Length);
+                if (!ViewModels.MoveBranches.CanDropOnto(paths, prefix))
+                    return;
+
+                e.Handled = true;
+
+                if (repo.CanCreatePopup())
+                    repo.ShowPopup(new ViewModels.MoveBranches(repo, paths, prefix));
+                return;
+            }
+
+            if (paths.Length != 1 || node.Backend is not Models.Branch { IsDetachedHead: false } target)
+                return;
+
+            var source = repo.Branches.Find(x => x.FullName.Equals(paths[0], StringComparison.Ordinal));
+            if (source == null || ReferenceEquals(source, target))
+                return;
+
+            e.Handled = true;
+
+            var menu = await CreateContextMenuForBranchDropAsync(repo, source, target);
+            menu.Open(this);
         }
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
@@ -1117,6 +1496,121 @@ namespace SourceGit.Views
             return menu;
         }
 
+        private async Task<ContextMenu> CreateContextMenuForBranchDropAsync(ViewModels.Repository repo, Models.Branch source, Models.Branch target)
+        {
+            var current = repo.CurrentBranch;
+            var menu = new ContextMenu();
+
+            // Dropping A onto B merges A into B. Merging acts on the checked-out branch, so when B is not
+            // checked out it is checked out first, which is only offered when that cannot touch local changes.
+            if (!repo.IsBare && target.IsLocal)
+            {
+                var canCheckoutTarget = !target.IsCurrent &&
+                    repo.LocalChangesCount == 0 &&
+                    string.IsNullOrEmpty(target.WorktreePath);
+
+                if (target.IsCurrent || canCheckoutTarget)
+                {
+                    var merge = new MenuItem();
+                    merge.Header = target.IsCurrent ?
+                        App.Text("BranchCM.Merge", source.FriendlyName, target.Name) :
+                        App.Text("BranchCM.CheckoutAndMerge", source.FriendlyName, target.Name);
+                    merge.Icon = this.CreateMenuIcon("Icons.Merge");
+                    merge.Click += async (_, e) =>
+                    {
+                        e.Handled = true;
+
+                        if (!repo.CanCreatePopup())
+                            return;
+
+                        if (!target.IsCurrent)
+                        {
+                            await repo.CheckoutBranchAsync(target);
+
+                            // The checkout can be declined or fail; only merge when it really happened.
+                            if (!target.IsCurrent || !repo.CanCreatePopup())
+                                return;
+                        }
+
+                        repo.ShowPopup(new ViewModels.Merge(repo, source, target.Name, false));
+                    };
+
+                    menu.Items.Add(merge);
+                }
+            }
+
+            // Rebase always acts on the checked-out branch, so it is only
+            // offered when exactly one of the two branches is that one.
+            if (!repo.IsBare && current != null && (source.IsCurrent || target.IsCurrent))
+            {
+                var other = target.IsCurrent ? source : target;
+
+                var rebase = new MenuItem();
+                rebase.Header = App.Text("BranchCM.Rebase", current.Name, other.FriendlyName);
+                rebase.Icon = this.CreateMenuIcon("Icons.Rebase");
+                rebase.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Rebase(repo, current, other));
+                    e.Handled = true;
+                };
+
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, other.FriendlyName);
+                interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.IsEnabled = !current.Head.Equals(other.Head, StringComparison.Ordinal);
+                interactiveRebase.Click += async (_, e) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(repo.FullPath, other.Head).GetResultAsync();
+                    await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(rebase);
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(interactiveRebase);
+            }
+
+            // Moving a branch that is not checked out is only offered as a true fast-forward,
+            // because ResetWithoutCheckout would otherwise silently drop commits.
+            if (target.IsLocal &&
+                !target.IsCurrent &&
+                string.IsNullOrEmpty(target.WorktreePath) &&
+                !target.Head.Equals(source.Head, StringComparison.Ordinal) &&
+                await new Commands.IsAncestor(repo.FullPath, target.Head, source.Head).GetResultAsync())
+            {
+                var fastForward = new MenuItem();
+                fastForward.Header = App.Text("BranchCM.FastForwardBranch", target.Name, source.FriendlyName);
+                fastForward.Icon = this.CreateMenuIcon("Icons.FastForward");
+                fastForward.Click += async (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        await repo.ShowAndStartPopupAsync(new ViewModels.ResetWithoutCheckout(repo, target, source));
+                    e.Handled = true;
+                };
+
+                if (menu.Items.Count > 0)
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+
+                menu.Items.Add(fastForward);
+            }
+
+            var compare = new MenuItem();
+            compare.Header = App.Text("BranchCM.CompareBranches", source.FriendlyName, target.FriendlyName);
+            compare.Icon = this.CreateMenuIcon("Icons.Compare");
+            compare.Click += (_, e) =>
+            {
+                this.ShowWindow(new ViewModels.Compare(repo, source, target));
+                e.Handled = true;
+            };
+
+            if (menu.Items.Count > 0)
+                menu.Items.Add(new MenuItem() { Header = "-" });
+
+            menu.Items.Add(compare);
+            return menu;
+        }
+
         private ContextMenu CreateContextMenuForRemote(ViewModels.Repository repo, Models.Remote remote)
         {
             var menu = new ContextMenu();
@@ -1475,7 +1969,20 @@ namespace SourceGit.Views
             menu.Items.Add(new MenuItem() { Header = "-" });
         }
 
+        public static readonly DataFormat<string> DndBranchFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-branch");
+
         private List<ViewModels.BranchTreeNode> _nodes = null;
         private bool _disableSelectionChangingEvent = false;
+        private PointerPressedEventArgs _pressedNodeEvent = null;
+        private ViewModels.BranchTreeNode _pressedDragNode = null;
+        private List<string> _pressedDragPaths = null;
+        private bool _startDragNode = false;
+        private Control _dragGhost = null;
+        private TextBlock _dragGhostHint = null;
+        private OverlayLayer _dragGhostLayer = null;
+        private Point _lastDragPosition = default;
+        private DispatcherTimer _autoScrollTimer = null;
+        private DispatcherTimer _expandTimer = null;
+        private ViewModels.BranchTreeNode _expandNode = null;
     }
 }
