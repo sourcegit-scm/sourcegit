@@ -889,6 +889,9 @@
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Обнаружение репозиториев</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Корневой каталог:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Сканировать другой пользовательский каталог</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Проверить обновления...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Доступна новая версия программного обеспечения: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Текущая версия: </x:String>
@@ -1090,4 +1093,5 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Удалить</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Разблокировать</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">Да</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

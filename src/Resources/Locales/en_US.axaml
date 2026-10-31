@@ -705,7 +705,7 @@
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Date Format</x:String>
-  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Enable compact folders in changes tree</x:String>
+  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Compact single-child folders</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Language</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">History Commits</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">Show `LOCAL CHANGES` page by default</x:String>
@@ -901,6 +901,9 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Scan Repositories</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Root Dir:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Scan another custom directory</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Check for Updates...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">New version of this software is available: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Current Version: </x:String>
@@ -1102,4 +1105,5 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remove</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Unlock</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">YES</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

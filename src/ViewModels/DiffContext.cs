@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -116,6 +117,7 @@ namespace SourceGit.ViewModels
 
         private void LoadContent()
         {
+            var generation = Interlocked.Increment(ref _generation);
             if (_option.Path.EndsWith('/'))
             {
                 OldMode = 0;
@@ -138,11 +140,29 @@ namespace SourceGit.ViewModels
                     .ReadAsync()
                     .ConfigureAwait(false);
 
+                // Blob-to-blob diffs omit file modes and have no meaningful path names.
+                // Restore metadata from the selected commits rather than inferred headers.
+                if (_option.CommitChange is { } joined)
+                {
+                    latest.OldMode = int.TryParse(joined.BeforeMode, out var oldMode) ? oldMode : 0;
+                    latest.NewMode = int.TryParse(joined.AfterMode, out var newMode) ? newMode : 0;
+                    latest.OldHash = joined.BeforeObject;
+                    latest.NewHash = joined.AfterObject;
+                    if (latest.TextDiff is { } text)
+                    {
+                        text.OldMode = latest.OldMode;
+                        text.NewMode = latest.NewMode;
+                        text.OldHash = latest.OldHash;
+                        text.NewHash = latest.NewHash;
+                    }
+                }
+
                 var info = new Info(_option, numLines, ignoreWhitespace, latest);
                 if (_info != null && info.IsSame(_info))
                     return;
 
-                _info = info;
+                if (generation != Volatile.Read(ref _generation))
+                    return;
 
                 object rs = null;
                 if (latest.TextDiff is { } textDiff)
@@ -180,6 +200,10 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (generation != Volatile.Read(ref _generation))
+                        return;
+
+                    _info = info;
                     OldMode = latest.OldMode;
                     NewMode = latest.NewMode;
 
@@ -219,7 +243,8 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var oldImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[0], oldPath, imgDecoder).ConfigureAwait(false);
+                    var oldRevision = _option.CommitChange?.BeforeMode == "160000" ? Models.EmptyTreeHash.Guess(_option.Revisions[0]) : _option.Revisions[0];
+                    var oldImage = await ImageSource.FromRevisionAsync(_repo, oldRevision, oldPath, imgDecoder).ConfigureAwait(false);
                     imgDiff.Old = oldImage.Bitmap;
                     imgDiff.OldFileSize = oldImage.Size;
                 }
@@ -232,7 +257,8 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    var newImage = await ImageSource.FromRevisionAsync(_repo, _option.Revisions[1], _option.Path, imgDecoder).ConfigureAwait(false);
+                    var newRevision = _option.CommitChange?.AfterMode == "160000" ? Models.EmptyTreeHash.Guess(_option.Revisions[1]) : _option.Revisions[1];
+                    var newImage = await ImageSource.FromRevisionAsync(_repo, newRevision, _option.Path, imgDecoder).ConfigureAwait(false);
                     imgDiff.New = newImage.Bitmap;
                     imgDiff.NewFileSize = newImage.Size;
                 }
@@ -278,7 +304,8 @@ namespace SourceGit.ViewModels
                 if (_option.Revisions[0].Equals("-R", StringComparison.Ordinal)) // `-R` means the old side is the working tree
                     binaryDiff.OldSize = File.Exists(fullPath) ? new FileInfo(fullPath).Length : 0;
                 else
-                    binaryDiff.OldSize = await new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).GetResultAsync().ConfigureAwait(false);
+                    binaryDiff.OldSize = _option.CommitChange?.BeforeMode == "160000" ? 0 :
+                        await new Commands.QueryFileSize(_repo, oldPath, _option.Revisions[0]).GetResultAsync().ConfigureAwait(false);
 
                 if (string.IsNullOrEmpty(_option.Revisions[1])) // Empty string in the second revision means the new side is the working tree
                 {
@@ -287,7 +314,8 @@ namespace SourceGit.ViewModels
                 }
                 else
                 {
-                    binaryDiff.NewSize = await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
+                    binaryDiff.NewSize = _option.CommitChange?.AfterMode == "160000" ? 0 :
+                        await new Commands.QueryFileSize(_repo, _option.Path, _option.Revisions[1]).GetResultAsync().ConfigureAwait(false);
                     binaryDiff.NewRevision = _option.Revisions[1];
                 }
             }
@@ -383,6 +411,7 @@ namespace SourceGit.ViewModels
         private readonly int _entireFileLines = 999999999;
         private readonly string _repo;
         private readonly Models.DiffOption _option = null;
+        private int _generation = 0;
         private int _oldMode = 0;
         private int _newMode = 0;
         private int _unifiedLines = 4;

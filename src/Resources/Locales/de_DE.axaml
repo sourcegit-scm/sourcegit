@@ -859,6 +859,9 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Durchsuche Repositorys</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Stammverzeichnis:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Anderes benutzerdefiniertes Verzeichnis durchsuchen</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Suche nach Aktualisierungen…</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Eine neue Version dieses Programms ist verfügbar: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">Derzeitige Version: </x:String>
@@ -1025,4 +1028,5 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Entfernen</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Entsperren</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">JA</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

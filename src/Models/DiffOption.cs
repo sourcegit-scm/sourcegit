@@ -11,6 +11,7 @@ namespace SourceGit.Models
         public List<string> Revisions => _revisions;
         public string Path => _path;
         public string OrgPath => _orgPath;
+        public CommitChange CommitChange { get; }
 
         /// <summary>
         ///     Only used for working copy changes
@@ -128,10 +129,41 @@ namespace SourceGit.Models
         }
 
         /// <summary>
+        ///     Compare the exact endpoints of a joined commit change. Keep revision IDs
+        ///     separate from blob IDs so image and binary readers can resolve each path.
+        /// </summary>
+        public DiffOption(CommitChange change)
+        {
+            CommitChange = change;
+            var revision = string.IsNullOrEmpty(change.BeforeRevision) ? change.AfterRevision : change.BeforeRevision;
+            var emptyTree = EmptyTreeHash.Guess(revision);
+            _revisions.Add(string.IsNullOrEmpty(change.BeforeRevision) ? emptyTree : change.BeforeRevision);
+            _revisions.Add(string.IsNullOrEmpty(change.AfterRevision) ? emptyTree : change.AfterRevision);
+            _path = string.IsNullOrEmpty(change.AfterPath) ? change.BeforePath : change.AfterPath;
+            _orgPath = !string.IsNullOrEmpty(change.BeforePath) && change.BeforePath != _path ? change.BeforePath : string.Empty;
+
+            var hasBefore = !string.IsNullOrEmpty(change.BeforeRevision) && change.BeforeMode != "160000";
+            var hasAfter = !string.IsNullOrEmpty(change.AfterRevision) && change.AfterMode != "160000";
+            if (hasBefore && hasAfter && change.BeforePath.Equals(change.AfterPath, StringComparison.Ordinal))
+                _endpointArguments = $"{change.BeforeRevision} {change.AfterRevision} -- {QuoteEndpointPath(change.AfterPath)}";
+            else if (hasBefore && hasAfter)
+                _endpointArguments = $"{change.BeforeObject} {change.AfterObject}";
+            else if (hasBefore)
+                _endpointArguments = $"{change.BeforeRevision} {emptyTree} -- {QuoteEndpointPath(change.BeforePath)}";
+            else if (hasAfter)
+                _endpointArguments = $"{emptyTree} {change.AfterRevision} -- {QuoteEndpointPath(change.AfterPath)}";
+            else
+                _endpointArguments = $"{_revisions[0]} {_revisions[1]} -- {QuoteEndpointPath(_path)}";
+        }
+
+        /// <summary>
         ///     Converts to diff command arguments.
         /// </summary>
         public override string ToString()
         {
+            if (_endpointArguments != null)
+                return _endpointArguments;
+
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(_extra))
                 builder.Append($"{_extra} ");
@@ -149,6 +181,30 @@ namespace SourceGit.Models
             return builder.ToString();
         }
 
+        // ProcessStartInfo.Arguments uses command-line quoting, not shell quoting.
+        // Backslashes must be doubled before a quote and before the closing quote.
+        private static string QuoteEndpointPath(string path)
+        {
+            var builder = new StringBuilder("\":(literal)");
+            var backslashes = 0;
+            foreach (var c in path)
+            {
+                if (c == '\\')
+                {
+                    backslashes++;
+                    continue;
+                }
+
+                builder.Append('\\', c == '\"' ? backslashes * 2 + 1 : backslashes);
+                builder.Append(c);
+                backslashes = 0;
+            }
+            builder.Append('\\', backslashes * 2);
+            builder.Append('\"');
+            return builder.ToString();
+        }
+
+        private readonly string _endpointArguments = null;
         private readonly bool _isUnstaged = false;
         private readonly string _path;
         private readonly string _orgPath = string.Empty;

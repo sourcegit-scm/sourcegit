@@ -479,6 +479,8 @@ namespace SourceGit.ViewModels
 
         public void Close()
         {
+            (_histories?.DetailContext as CommitChanges)?.Dispose();
+
             var commitMessage = _workingCopy.CommitMessage;
             if (!string.IsNullOrEmpty(commitMessage) && _workingCopy.InProgressContext != null)
                 File.WriteAllText(Path.Combine(GitDir, "MERGE_MSG"), commitMessage);

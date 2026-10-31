@@ -879,6 +879,9 @@
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">リポジトリをスキャン</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">ルートディレクトリ:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">任意の別ディレクトリをスキャン</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">更新を確認...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">このソフトウェアの新しいバージョンが利用できます: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">現在のバージョン: </x:String>
@@ -1068,4 +1071,5 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">削除</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">ロックを解除</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">はい</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

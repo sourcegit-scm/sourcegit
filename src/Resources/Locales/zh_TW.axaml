@@ -699,7 +699,7 @@
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">一般設定</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">啟動時檢查軟體更新</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">日期時間格式</x:String>
-  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">在樹狀變更目錄中啟用密集資料夾模式</x:String>
+  <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">合併僅含單個子資料夾的路徑</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">顯示語言</x:String>
   <x:String x:Key="Text.Preferences.General.MaxHistoryCommits" xml:space="preserve">最大歷史提交數</x:String>
   <x:String x:Key="Text.Preferences.General.ShowChangesPageByDefault" xml:space="preserve">預設顯示 [本機變更] 頁面</x:String>
@@ -890,6 +890,9 @@
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">掃描存放庫</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">頂層目錄:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">掃描其他自訂目錄</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">檢查更新...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">軟體有版本更新:</x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">目前版本: </x:String>
@@ -1091,4 +1094,5 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">移除工作樹</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">解除鎖定工作樹</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">是</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

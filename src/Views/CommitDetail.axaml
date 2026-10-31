@@ -23,65 +23,7 @@
                     Offset="{Binding ScrollOffset, Mode=TwoWay}"
                     HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                     IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
-        <StackPanel Orientation="Vertical">
-          <!-- Base Information -->
-          <v:CommitBaseInfo Content="{Binding Commit}"
-                            FullMessage="{Binding FullMessage}"
-                            SignInfo="{Binding SignInfo}"
-                            WebLinks="{Binding WebLinks}"
-                            Margin="0,0,12,0"/>
-
-          <!-- Line -->
-          <Rectangle Height=".65" Margin="8,8,12,8" Fill="{DynamicResource Brush.Border2}"/>
-
-          <!-- Change List -->
-          <ListBox Background="Transparent"
-                   Margin="64,0,12,4"
-                   SelectionMode="Single"
-                   ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}"
-                   KeyDown="OnCommitListKeyDown">
-            <ListBox.Styles>
-              <Style Selector="ListBoxItem">
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="MinHeight" Value="24"/>
-                <Setter Property="CornerRadius" Value="4"/>
-              </Style>
-            </ListBox.Styles>
-
-            <ListBox.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Vertical"/>
-              </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-
-            <ListBox.ItemTemplate>
-              <DataTemplate DataType="m:Change">
-                <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
-                  <ToolTip.Tip>
-                    <TextBlock TextWrapping="Wrap">
-                      <Run Text="{Binding Path, Mode=OneWay}"/>
-                      <Run Text=" • " Foreground="Gray"/>
-                      <Run Text="{Binding IndexDesc, Mode=OneWay}" Foreground="Gray"/>
-                    </TextBlock>
-                  </ToolTip.Tip>
-
-                  <v:ChangeStatusIcon Grid.Column="0"
-                                      Width="14" Height="14"
-                                      HorizontalAlignment="Left"
-                                      Margin="16,0,0,0"
-                                      Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
-                </Grid>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-
-          <!-- Only Top100 Tip -->
-          <TextBlock Margin="108,0,12,16"
-                     Text="{DynamicResource Text.CommitDetail.Info.GotoChangesPage}"
-                     Foreground="{DynamicResource Brush.FG2}"
-                     IsVisible="{Binding Changes, Converter={x:Static c:ListConverters.IsOnlyTop100Shows}}"/>
-        </StackPanel>
+        <v:CommitInformation/>
       </ScrollViewer>
     </TabItem>
 

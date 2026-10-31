@@ -819,6 +819,9 @@
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">סרוק מאגרים</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">תיקיית שורש:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">סרוק תיקייה מותאמת אישית אחרת</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">בדוק עדכונים...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">גרסה חדשה של התוכנה זמינה: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">גרסה נוכחית: </x:String>
@@ -980,4 +983,5 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">הסר</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">שחרר נעילה</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">כן</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

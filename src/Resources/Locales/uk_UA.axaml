@@ -556,6 +556,9 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Патч успішно збережено!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Сканувати сховища</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Коренева тека:</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Перевірити оновлення...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Доступна нова версія програми: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Не вдалося перевірити оновлення!</x:String>
@@ -661,4 +664,5 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Заблокувати</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Видалити</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Розблокувати</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>
