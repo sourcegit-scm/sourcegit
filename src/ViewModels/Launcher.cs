@@ -27,8 +27,17 @@ namespace SourceGit.ViewModels
             get => _activePage;
             set
             {
+                var old = _activePage;
                 if (SetProperty(ref _activePage, value))
+                {
+                    if (old is { Data: Repository oldRepo })
+                        oldRepo.SetActive(false);
+
+                    if (value is { Data: Repository newRepo })
+                        newRepo.SetActive(true);
+
                     PostActivePageChanged();
+                }
             }
         }
 

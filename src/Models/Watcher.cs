@@ -100,6 +100,15 @@ namespace SourceGit.Models
             return new LockContext(this);
         }
 
+        /// <summary>
+        ///     Inactive repositories (not shown in the active tab) still collect changes, but do not refresh
+        ///     anything until they become active again.
+        /// </summary>
+        public void SetActive(bool active)
+        {
+            _isActive = active;
+        }
+
         public void MarkBranchUpdated()
         {
             Interlocked.Exchange(ref _updateBranch, 0);
@@ -141,7 +150,7 @@ namespace SourceGit.Models
 
         private void Tick(object sender)
         {
-            if (Interlocked.Read(ref _lockCount) > 0)
+            if (!_isActive || Interlocked.Read(ref _lockCount) > 0)
                 return;
 
             var now = DateTime.Now.ToFileTime();
@@ -377,6 +386,7 @@ namespace SourceGit.Models
         private readonly string _root;
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;
+        private volatile bool _isActive = true;
 
         private long _lockCount;
         private long _updateWC;

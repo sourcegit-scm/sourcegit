@@ -504,6 +504,11 @@ namespace SourceGit.ViewModels
             _autoFetchTimer.Dispose();
         }
 
+        public void SetActive(bool active)
+        {
+            _watcher?.SetActive(active);
+        }
+
         public void SendNotification(string message, bool isError = false)
         {
             Models.Notification.Send(FullPath, message, isError);
