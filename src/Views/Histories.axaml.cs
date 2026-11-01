@@ -12,6 +12,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -135,11 +136,17 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == SelectedCommitsProperty && IsLoaded && !_ignoreSelectionChanged)
+            if (change.Property == ItemsSourceProperty && IsLoaded)
+            {
+                KeepScrollPosition(change.OldValue as List<Models.Commit>, change.NewValue as List<Models.Commit>);
+            }
+            else if (change.Property == SelectedCommitsProperty && IsLoaded && !_ignoreSelectionChanged)
             {
                 if (change.OldValue is List<Models.Commit> { Count: 1 } old &&
                     change.NewValue is List<Models.Commit> { Count: 1 } cur &&
-                    old[0] == cur[0])
+                    old[0] == cur[0] &&
+                    SelectedItems is [Models.Commit selected] &&
+                    selected == cur[0])
                     ScrollIntoView(old[0], null);
                 else
                     ApplySelection();
@@ -244,6 +251,51 @@ namespace SourceGit.Views
 
             if (!e.Handled)
                 base.OnKeyDown(e);
+        }
+
+        private void KeepScrollPosition(List<Models.Commit> oldCommits, List<Models.Commit> newCommits)
+        {
+            if (newCommits == null)
+                return;
+
+            // Changing `ItemsSource` always resets the scroll offset. When the new list only appends commits to the
+            // old one (more history has been loaded), remember the last fully visible row and scroll back to it.
+            Models.Commit anchor = null;
+            if (oldCommits is { Count: > 0 } && newCommits.Count > oldCommits.Count && newCommits[oldCommits.Count - 1] == oldCommits[^1])
+            {
+                var rowsPresenter = this.FindDescendantOfType<DataGridRowsPresenter>();
+                if (rowsPresenter != null)
+                {
+                    var lastIndex = -1;
+                    foreach (var child in rowsPresenter.Children)
+                    {
+                        if (child is DataGridRow { IsVisible: true } row &&
+                            row.Bounds.Top >= 0 &&
+                            row.Bounds.Bottom <= rowsPresenter.Bounds.Height + 0.5 &&
+                            row.Index > lastIndex)
+                            lastIndex = row.Index;
+                    }
+
+                    if (lastIndex >= 0 && lastIndex < oldCommits.Count)
+                        anchor = oldCommits[lastIndex];
+                }
+            }
+
+            var oldSelected = SelectedItems is [Models.Commit c] ? c.SHA : null;
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (ItemsSource != newCommits)
+                    return;
+
+                // Rows are not available until the next layout pass, so `ScrollIntoView` doesn't work before it.
+                UpdateLayout();
+
+                // A commit that is navigated to while loading should be visible after it is selected.
+                if (SelectedItems is [Models.Commit selected] && !selected.SHA.Equals(oldSelected, StringComparison.Ordinal))
+                    ScrollIntoView(selected, null);
+                else if (anchor != null)
+                    ScrollIntoView(anchor, null);
+            });
         }
 
         private void ApplySelection()

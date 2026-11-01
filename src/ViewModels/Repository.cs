@@ -1257,10 +1257,11 @@ namespace SourceGit.ViewModels
             {
                 await Dispatcher.UIThread.InvokeAsync(() => _histories.IsLoading = true);
 
+                var maxHistoryCommits = Preferences.Instance.MaxHistoryCommits;
                 var builder = new StringBuilder();
                 builder
                     .Append('-')
-                    .Append(Preferences.Instance.MaxHistoryCommits)
+                    .Append(maxHistoryCommits)
                     .Append(' ');
 
                 if (_uiStates.FocusOnCurrentBranch)
@@ -1275,39 +1276,27 @@ namespace SourceGit.ViewModels
                     builder.Append(_uiStates.BuildHistoryParams_NormalMode(GitDir));
                 }
 
+                // Shows the first page of commits as soon as it's ready, and keeps loading the rest in background.
+                var firstPageSize = maxHistoryCommits > 1000 ? 1000 : 0;
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
-                    .GetResultAsync()
+                    .GetResultAsync(firstPageSize, firstPage =>
+                    {
+                        MarkMergedCommits(firstPage);
+
+                        Dispatcher.UIThread.Invoke(() =>
+                        {
+                            if (!token.IsCancellationRequested && _histories != null && _histories.CanShowPartialCommits(firstPage))
+                                SetHistoryCommits(firstPage, true);
+                        });
+                    })
                     .ConfigureAwait(false);
 
-                var merged = new HashSet<string>();
-                foreach (var c in commits)
-                {
-                    if (merged.Remove(c.SHA))
-                        c.IsMerged = true;
-
-                    if (c.IsMerged)
-                    {
-                        foreach (var p in c.Parents)
-                            merged.Add(p);
-                    }
-                }
+                MarkMergedCommits(commits);
 
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    if (token.IsCancellationRequested)
-                        return;
-
-                    if (_histories != null)
-                    {
-                        _histories.IsLoading = false;
-                        _histories.Commits = commits;
-                        BisectState = _histories.UpdateBisectInfo();
-
-                        if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
-                            NavigateToCommit(_navigateToCommitDelayed);
-                    }
-
-                    _navigateToCommitDelayed = string.Empty;
+                    if (!token.IsCancellationRequested)
+                        SetHistoryCommits(commits, false);
                 });
             }, token);
         }
@@ -1809,6 +1798,38 @@ namespace SourceGit.ViewModels
                 return SubmoduleCollectionAsTree.Build(visible, _visibleSubmodules as SubmoduleCollectionAsTree);
             else
                 return new SubmoduleCollectionAsList() { Submodules = visible };
+        }
+
+        private static void MarkMergedCommits(List<Models.Commit> commits)
+        {
+            var merged = new HashSet<string>();
+            foreach (var c in commits)
+            {
+                if (merged.Remove(c.SHA))
+                    c.IsMerged = true;
+
+                if (c.IsMerged)
+                {
+                    foreach (var p in c.Parents)
+                        merged.Add(p);
+                }
+            }
+        }
+
+        private void SetHistoryCommits(List<Models.Commit> commits, bool hasMore)
+        {
+            if (_histories != null)
+            {
+                _histories.IsLoading = false;
+                _histories.IsLoadingMoreCommits = hasMore;
+                _histories.Commits = commits;
+                BisectState = _histories.UpdateBisectInfo();
+
+                if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
+                    NavigateToCommit(_navigateToCommitDelayed);
+            }
+
+            _navigateToCommitDelayed = string.Empty;
         }
 
         private void RefreshHistoryFilters(bool refresh)
