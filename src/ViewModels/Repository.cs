@@ -1292,6 +1292,11 @@ namespace SourceGit.ViewModels
                     }
                 }
 
+                if (token.IsCancellationRequested)
+                    return;
+
+                var graph = _histories.GenerateGraph(commits);
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (token.IsCancellationRequested)
@@ -1300,7 +1305,7 @@ namespace SourceGit.ViewModels
                     if (_histories != null)
                     {
                         _histories.IsLoading = false;
-                        _histories.Commits = commits;
+                        _histories.SetCommits(commits, graph);
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))

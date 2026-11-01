@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia.Collections;
@@ -110,12 +111,6 @@ namespace SourceGit.ViewModels
         public List<Models.Commit> Commits
         {
             get => _commits;
-            set
-            {
-                GenerateGraph(value);
-                if (SetProperty(ref _commits, value))
-                    PostCommitsChanged();
-            }
         }
 
         public Models.CommitGraph Graph
@@ -132,7 +127,7 @@ namespace SourceGit.ViewModels
                 if (_repo.UIStates.GraphHighlighting != value)
                 {
                     _repo.UIStates.GraphHighlighting = value;
-                    GenerateGraph(_commits);
+                    RefreshGraph();
                 }
             }
         }
@@ -252,6 +247,32 @@ namespace SourceGit.ViewModels
             else
                 _repo.UIStates.HistoryShowFlags |= flag;
             _repo.RefreshCommits();
+        }
+
+        public void SetCommits(List<Models.Commit> commits, Models.CommitGraph graph)
+        {
+            if (_cancellationRefreshGraph is { IsCancellationRequested: false })
+                _cancellationRefreshGraph.Cancel();
+
+            ApplyGraph(commits, graph);
+
+            if (SetProperty(ref _commits, commits, nameof(Commits)))
+                PostCommitsChanged();
+        }
+
+        public Models.CommitGraph GenerateGraph(List<Models.Commit> commits)
+        {
+            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
+            var highlighting = _repo.UIStates.GraphHighlighting;
+            var extraHeads = new HashSet<string>();
+
+            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+            {
+                foreach (var c in _selectedCommits)
+                    extraHeads.Add(c.SHA);
+            }
+
+            return Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
         public Models.BisectState UpdateBisectInfo()
@@ -564,22 +585,37 @@ namespace SourceGit.ViewModels
             }
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
-                GenerateGraph(_commits);
+                RefreshGraph();
         }
 
-        private void GenerateGraph(List<Models.Commit> commits)
+        private void RefreshGraph()
         {
-            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
-            var highlighting = _repo.UIStates.GraphHighlighting;
-            var extraHeads = new HashSet<string>();
+            if (_cancellationRefreshGraph is { IsCancellationRequested: false })
+                _cancellationRefreshGraph.Cancel();
 
-            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+            _cancellationRefreshGraph = new CancellationTokenSource();
+            var token = _cancellationRefreshGraph.Token;
+            var commits = _commits;
+
+            Task.Run(() =>
             {
-                foreach (var c in _selectedCommits)
-                    extraHeads.Add(c.SHA);
-            }
+                var graph = GenerateGraph(commits);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    if (!token.IsCancellationRequested)
+                        ApplyGraph(commits, graph);
+                });
+            }, token);
+        }
 
-            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
+        private void ApplyGraph(List<Models.Commit> commits, Models.CommitGraph graph)
+        {
+            // There is exactly one dot for each commit (in the same order). Update `IsHighlightedInGraph` here
+            // so that the property-changed notifications of displayed commits are raised on the UI thread.
+            for (var i = 0; i < commits.Count; i++)
+                commits[i].IsHighlightedInGraph = graph.Dots[i].IsHighlighted;
+
+            Graph = graph;
         }
 
         private Repository _repo = null;
@@ -589,6 +625,7 @@ namespace SourceGit.ViewModels
         private bool _isLoading = true;
         private List<Models.Commit> _commits = [];
         private Models.CommitGraph _graph = null;
+        private CancellationTokenSource _cancellationRefreshGraph = null;
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
         private object _detailContext = Models.Null.Instance;

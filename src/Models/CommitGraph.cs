@@ -174,7 +174,6 @@ namespace SourceGit.Models
                             break;
                     }
                 }
-                commit.IsHighlightedInGraph = isHighlighted;
 
                 // If no path found, create new curve for branch head
                 // Otherwise, create new curve for new merged commit
