@@ -759,6 +759,31 @@ namespace SourceGit.ViewModels
                 await ShowAndStartPopupAsync(new Cleanup(this));
         }
 
+        public async Task UndoLastOperationAsync()
+        {
+            if (IsBare || _currentBranch == null || InProgressContext != null || !CanCreatePopup())
+                return;
+
+            var entries = await new Commands.QueryReflog(FullPath, 2).GetResultAsync();
+            if (entries.Count < 2)
+            {
+                SendNotification(App.Text("UndoLastOperation.Empty"));
+                return;
+            }
+
+            var last = entries[0];
+            var prev = entries[1];
+            if (last.SHA.Equals(prev.SHA, StringComparison.Ordinal) || last.Message.StartsWith("checkout:", StringComparison.Ordinal))
+            {
+                SendNotification(App.Text("UndoLastOperation.Unavailable", last.Message));
+                return;
+            }
+
+            var commit = await new Commands.QuerySingleCommit(FullPath, prev.SHA).GetResultAsync();
+            if (commit != null)
+                ShowPopup(new Reset(this, _currentBranch, commit, last.Message));
+        }
+
         public void ClearFilter()
         {
             Filter = string.Empty;

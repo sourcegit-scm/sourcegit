@@ -19,21 +19,36 @@
                  Text="{DynamicResource Text.Reset}"/>
     </StackPanel>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
-      <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Reset.Target}"/>
-      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
-        <TextBlock Text="{Binding Current.Name}"/>
-      </StackPanel>
+    <Grid Margin="0,16,0,0" RowDefinitions="Auto,32,32,32" ColumnDefinitions="120,*">
+      <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            Height="32"
+            ColumnDefinitions="120,*"
+            IsVisible="{Binding UndoOperation, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+        <TextBlock Grid.Column="0"
+                   HorizontalAlignment="Right" VerticalAlignment="Center"
+                   Margin="0,0,8,0"
+                   Text="{DynamicResource Text.Reset.Undo}"/>
+        <TextBlock Grid.Column="1"
+                   VerticalAlignment="Center"
+                   Text="{Binding UndoOperation}"
+                   TextTrimming="CharacterEllipsis"
+                   ToolTip.Tip="{Binding UndoOperation}"/>
+      </Grid>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
+                 Text="{DynamicResource Text.Reset.Target}"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+        <TextBlock Text="{Binding Current.Name}"/>
+      </StackPanel>
+
+      <TextBlock Grid.Row="2" Grid.Column="0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center"
+                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.Reset.MoveTo}"/>
-      <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
+      <Grid Grid.Row="2" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
         <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
         <TextBlock Grid.Column="1"
                    Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
@@ -47,11 +62,11 @@
                    TextTrimming="CharacterEllipsis"/>
       </Grid>
 
-      <TextBlock Grid.Row="2" Grid.Column="0"
+      <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
                  Margin="0,0,8,0"
                  Text="{DynamicResource Text.Reset.Mode}"/>
-      <ComboBox Grid.Row="2" Grid.Column="1"
+      <ComboBox Grid.Row="3" Grid.Column="1"
                 x:Name="ResetMode"
                 Height="28" Padding="8,0"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"

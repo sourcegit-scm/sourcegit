@@ -153,6 +153,7 @@
   <x:String x:Key="Text.CodeEditor" xml:space="preserve">Editor</x:String>
   <x:String x:Key="Text.CommandPalette.Branches" xml:space="preserve">Branches</x:String>
   <x:String x:Key="Text.CommandPalette.BranchesAndTags" xml:space="preserve">Branches &amp; Tags</x:String>
+  <x:String x:Key="Text.CommandPalette.ReflogEntries" xml:space="preserve">Reflog of HEAD</x:String>
   <x:String x:Key="Text.CommandPalette.RepositoryActions" xml:space="preserve">Repository Custom Actions</x:String>
   <x:String x:Key="Text.CommandPalette.RevisionFiles" xml:space="preserve">Revision Files</x:String>
   <x:String x:Key="Text.CommitCM.Checkout" xml:space="preserve">Checkout Commit...</x:String>
@@ -784,6 +785,8 @@
   <x:String x:Key="Text.Rebase.Test.OK" xml:space="preserve">Rebase can be done without conflicts</x:String>
   <x:String x:Key="Text.Rebase.Test.UnknownError" xml:space="preserve">Unknown error occurs while testing for rebase</x:String>
   <x:String x:Key="Text.Rebase.Test.WillCauseConflicts" xml:space="preserve">Rebase will cause conflicts</x:String>
+  <x:String x:Key="Text.Reflog" xml:space="preserve">Reflog</x:String>
+  <x:String x:Key="Text.Reflog.ResetTo" xml:space="preserve">Reset current branch to here...</x:String>
   <x:String x:Key="Text.Remote.AddTitle" xml:space="preserve">Add Remote</x:String>
   <x:String x:Key="Text.Remote.EditTitle" xml:space="preserve">Edit Remote</x:String>
   <x:String x:Key="Text.Remote.Name" xml:space="preserve">Name:</x:String>
@@ -887,6 +890,7 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.Reset.Mode" xml:space="preserve">Reset Mode:</x:String>
   <x:String x:Key="Text.Reset.MoveTo" xml:space="preserve">Move To:</x:String>
   <x:String x:Key="Text.Reset.Target" xml:space="preserve">Current Branch:</x:String>
+  <x:String x:Key="Text.Reset.Undo" xml:space="preserve">Undo:</x:String>
   <x:String x:Key="Text.ResetWithoutCheckout" xml:space="preserve">Reset Branch (Without Checkout)</x:String>
   <x:String x:Key="Text.ResetWithoutCheckout.MoveTo" xml:space="preserve">Move To:</x:String>
   <x:String x:Key="Text.ResetWithoutCheckout.Target" xml:space="preserve">Branch:</x:String>
@@ -1021,6 +1025,9 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Git refused to access this repository:  </x:String>
   <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">Path:</x:String>
   <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">{0} repositories were skipped because git does not trust them. Please open them manually and confirm whether to trust them.</x:String>
+  <x:String x:Key="Text.UndoLastOperation" xml:space="preserve">Undo Last Operation</x:String>
+  <x:String x:Key="Text.UndoLastOperation.Empty" xml:space="preserve">Nothing to undo. No previous HEAD state found in reflog.</x:String>
+  <x:String x:Key="Text.UndoLastOperation.Unavailable" xml:space="preserve">Last operation '{0}' can NOT be undone by resetting the current branch. Use Reflog instead.</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Update Submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">All submodules</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Initialize as needed</x:String>
