@@ -99,5 +99,13 @@ namespace SourceGit.Views
                 e.Handled = true;
             }
         }
+
+        private void OnShowTooLargeDiff(object _, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.DiffContext vm)
+                vm.ShowTooLargeDiff();
+
+            e.Handled = true;
+        }
     }
 }
