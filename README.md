@@ -141,28 +141,6 @@ For **Linux** users:
 
   If your distribution isn't using `dnf`, please refer to the documentation of your distribution on how to add an `rpm` repository.
 
-* Thanks [@gadfly3173](https://github.com/gadfly3173) for providing `deb` repository, hosted on https://deb-repo.gadfly.vip
-
-  ```shell
-  # Import GPG key
-  curl -fsSL https://deb-repo.gadfly.vip/public.key | sudo gpg --dearmor -o /usr/share/keyrings/deb-repo.gpg
-
-  # Add repository (DEB822 format, recommended for Bookworm+ / 22.04+)
-  echo "Types: deb
-  URIs: https://deb-repo.gadfly.vip
-  Suites: stable
-  Components: main
-  Architectures: $(dpkg --print-architecture)
-  Signed-By: /usr/share/keyrings/deb-repo.gpg" | sudo tee /etc/apt/sources.list.d/deb-repo.sources
-  
-  # Or use one‑line format for older releases:
-  # echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/deb-repo.gpg] https://deb-repo.gadfly.vip stable main" | sudo tee /  etc/apt/sources.list.d/deb-repo.list
-  
-  # Update and install
-  sudo apt update
-  sudo apt install sourcegit
-  ```
-
 * `AOSC OS`: In addition to AMD64 and ARM64, support for LoongArch and RISC-V has been added.
   ```shell
   sudo oma install sourcegit

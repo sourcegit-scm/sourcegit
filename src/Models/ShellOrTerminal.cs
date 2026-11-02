@@ -48,6 +48,7 @@ namespace SourceGit.Models
                     new ShellOrTerminal("otty", "Otty", "Otty"),
                     new ShellOrTerminal("cmux", "cmux", "cmux"),
                     new ShellOrTerminal("mux0", "mux0", "mux0"),
+                    new ShellOrTerminal("alacritty-term", "Alacritty", "Alacritty", "--working-directory"),
                 };
             }
             else

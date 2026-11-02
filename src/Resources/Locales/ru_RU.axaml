@@ -25,6 +25,8 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">Скрыть остальные</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">Показать все</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">Трехстороннее слияние</x:String>
+  <x:String x:Key="Text.Apply.CommitChanges" xml:space="preserve">Изменения ревизии</x:String>
+  <x:String x:Key="Text.Apply.CommitChanges.Tip" xml:space="preserve">Использовать «git am» вместо «git apply»</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">Выберите файл заплатку для применения</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">Игнорировать изменения пробелов</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">Источник:</x:String>
@@ -352,6 +354,7 @@
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">Подмодуль:</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">Удалить ветку</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">Ветка:</x:String>
+  <x:String x:Key="Text.DeleteBranch.DeleteAttachedWorktree" xml:space="preserve">Удалить рабочее дерево этой ветки</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">Принудительно удалить, даже если содержит неслитые ревизии</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">Вы собираетесь удалить внешнюю ветку!!!</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">Также удалите внешнюю ветку ${0}$</x:String>
@@ -416,6 +419,12 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">Включить неотслеживаемые файлы</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">{0} изменений будут отменены</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">Вы не можете отменить это действие!!!</x:String>
+  <x:String x:Key="Text.EditApiKey" xml:space="preserve">Править ключ API</x:String>
+  <x:String x:Key="Text.EditApiKey.ApiKey" xml:space="preserve">Ключ API</x:String>
+  <x:String x:Key="Text.EditApiKey.EnvironmentVariable" xml:space="preserve">Переменная окружения</x:String>
+  <x:String x:Key="Text.EditApiKey.InvalidStorage" xml:space="preserve">Чтобы сохранить ключ в системном менеджере реквизитов в Linux, установите «secret-tool»</x:String>
+  <x:String x:Key="Text.EditApiKey.Server" xml:space="preserve">Сервер</x:String>
+  <x:String x:Key="Text.EditApiKey.Storage" xml:space="preserve">Хранилище</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">Править описание ветки</x:String>
   <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">Цель:</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">Закладка:</x:String>
@@ -574,6 +583,7 @@
   <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">Вы действительно хотите запустить команду «git init» по этому пути?</x:String>
   <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">Не удалось открыть репозиторий. Причина:  </x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">Путь:</x:String>
+  <x:String x:Key="Text.InProgress.Am" xml:space="preserve">Устанавливаются исправления</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">Выполняется частичный перенос ревизий (cherry-pick).</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">Обработка ревизии.</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">Выполняется слияние.</x:String>
@@ -674,7 +684,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Модель</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Автоматическое получение доступных идентификаторов моделей</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Имя:</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Введённое значение — это имя для загрузки API-ключа из ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">Уровень обоснованности усилий</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Сервер</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ВИД</x:String>
@@ -737,7 +746,7 @@
   <x:String x:Key="Text.Preferences.Integration" xml:space="preserve">ВНЕДРЕНИЕ</x:String>
   <x:String x:Key="Text.Preferences.Shell" xml:space="preserve">ОБОЛОЧКА/ТЕРМИНАЛ</x:String>
   <x:String x:Key="Text.Preferences.Shell.Args" xml:space="preserve">Аргументы</x:String>
-  <x:String x:Key="Text.Preferences.Shell.Args.Tip" xml:space="preserve">Используйте, пожалуйста, точку «.» для индикации рабочего каталога</x:String>
+  <x:String x:Key="Text.Preferences.Shell.Args.ToolTip" xml:space="preserve">Можете использовать «.» для обозначения рабочего каталога и '$FOLDER_NAME' для указания чистого имени каталога.</x:String>
   <x:String x:Key="Text.Preferences.Shell.Path" xml:space="preserve">Путь</x:String>
   <x:String x:Key="Text.Preferences.Shell.Type" xml:space="preserve">Оболочка/Терминал</x:String>
   <x:String x:Key="Text.PruneRemote" xml:space="preserve">Удалить внешний репозиторий</x:String>
@@ -825,6 +834,11 @@
   <x:String x:Key="Text.Repository.FilterCommits.Expand" xml:space="preserve">Развернуть фильтры</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Фильтр в графе ревизии</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">фильтры включены</x:String>
+  <x:String x:Key="Text.Repository.FocusOnCurrentBranch" xml:space="preserve">Сосредоточиться на текущей ветке
+  
+Если этот параметр включён, все фильтры истории будут сброшены. На странице обзора будут отображаться только ревизии из текущей ветки или её вышестоящей ветки (если таковая имеется).
+
+Если вручную добавить фильтр истории веток/меток, эта функция будет автоматически отключена.</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">РАСПОЛОЖЕНИЕ</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">Горизонтально</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">Вертикально</x:String>
@@ -954,10 +968,15 @@
   <x:String x:Key="Text.Stashes.Changes" xml:space="preserve">ИЗМЕНЕНИЯ</x:String>
   <x:String x:Key="Text.Stashes.Stashes" xml:space="preserve">ОТЛОЖЕННЫЕ</x:String>
   <x:String x:Key="Text.Statistics" xml:space="preserve">Статистика</x:String>
+  <x:String x:Key="Text.Statistics.Commits" xml:space="preserve">РЕВИЗИИ</x:String>
   <x:String x:Key="Text.Statistics.Overview" xml:space="preserve">ОБЗОР</x:String>
   <x:String x:Key="Text.Statistics.ThisMonth" xml:space="preserve">МЕСЯЦ</x:String>
   <x:String x:Key="Text.Statistics.ThisWeek" xml:space="preserve">НЕДЕЛЯ</x:String>
   <x:String x:Key="Text.Statistics.Tips" xml:space="preserve">SourceGit проанализирует не более 200 000 ревизий в целевой ветке.</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors" xml:space="preserve">ТОП АВТОРОВ</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Count" xml:space="preserve">РЕВИЗИИ</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Percentage" xml:space="preserve">ПРОЦЕНТ</x:String>
+  <x:String x:Key="Text.Statistics.TopAuthors.Tip" xml:space="preserve">Авторы с долей менее 1% ревизий объединены в группу «Другие».</x:String>
   <x:String x:Key="Text.Statistics.TotalAuthors" xml:space="preserve">АВТОРЫ: </x:String>
   <x:String x:Key="Text.Statistics.TotalCommits" xml:space="preserve">РЕВИЗИИ: </x:String>
   <x:String x:Key="Text.Submodule" xml:space="preserve">ПОДМОДУЛИ</x:String>
@@ -1001,6 +1020,11 @@
   <x:String x:Key="Text.TagCM.Merge" xml:space="preserve">Влить ${0}$ в ${1}$...</x:String>
   <x:String x:Key="Text.TagCM.Push" xml:space="preserve">Выложить ${0}$...</x:String>
   <x:String x:Key="Text.Terminate" xml:space="preserve">ПРЕКРАТИТЬ</x:String>
+  <x:String x:Key="Text.TrustRepository" xml:space="preserve">Недоверенный репозиторий</x:String>
+  <x:String x:Key="Text.TrustRepository.CommandTip" xml:space="preserve">Вы хотите выполнить команду (git config --global --add safe.directory {0}), чтобы разрешить доступ к этому пути?</x:String>
+  <x:String x:Key="Text.TrustRepository.Description" xml:space="preserve">Отказ гита в доступе к этому репозиторию:  </x:String>
+  <x:String x:Key="Text.TrustRepository.Path" xml:space="preserve">Путь:</x:String>
+  <x:String x:Key="Text.TrustRepository.ScanSkipped" xml:space="preserve">Пропущено репозиториев из-за недоверия к ним гитом: {0}. Пожалуйста, откройте их вручную и проверьте, можно ли им доверять.</x:String>
   <x:String x:Key="Text.UpdateSubmodules" xml:space="preserve">Обновление подмодулей</x:String>
   <x:String x:Key="Text.UpdateSubmodules.All" xml:space="preserve">Все подмодули</x:String>
   <x:String x:Key="Text.UpdateSubmodules.Init" xml:space="preserve">Создавать по необходимости</x:String>

@@ -24,7 +24,6 @@ cp -f %{_topdir}/../../SourceGit/* %{buildroot}/opt/sourcegit/
 ln -rsf %{buildroot}/opt/sourcegit/sourcegit %{buildroot}/%{_bindir}
 cp -r %{_topdir}/../_common/applications %{buildroot}/%{_datadir}
 cp -r %{_topdir}/../_common/icons %{buildroot}/%{_datadir}
-chmod 755 -R %{buildroot}/opt/sourcegit
 chmod 755 %{buildroot}/%{_datadir}/applications/sourcegit.desktop
 
 %files

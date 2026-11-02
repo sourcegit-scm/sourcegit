@@ -171,21 +171,19 @@ namespace SourceGit.Native
 
         public void OpenTerminal(string workdir, string args)
         {
-            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var cwd = string.IsNullOrEmpty(workdir) ? home : workdir;
-            var terminal = OS.ShellOrTerminal;
-
-            if (!File.Exists(terminal))
-            {
-                Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
-                return;
-            }
-
             var startInfo = new ProcessStartInfo();
-            startInfo.WorkingDirectory = cwd;
-            startInfo.FileName = terminal;
+            startInfo.WorkingDirectory = workdir;
+            startInfo.FileName = OS.ShellOrTerminal;
             startInfo.Arguments = args;
-            Process.Start(startInfo);
+
+            try
+            {
+                Process.Start(startInfo);
+            }
+            catch (Exception e)
+            {
+                Models.Notification.Send(workdir, $"Failed to start '{OS.ShellOrTerminal}'. Reason: {e.Message}", true);
+            }
         }
 
         public void OpenInFileManager(string path)
@@ -473,5 +471,141 @@ namespace SourceGit.Native
                 DwmExtendFrameIntoClientArea(platformHandle.Handle, ref margins);
             }, DispatcherPriority.Render);
         }
+    }
+
+    [SupportedOSPlatform("windows")]
+    public class WindowsCredentialManager : OS.IKeychain
+    {
+        [DllImport("Advapi32.dll", EntryPoint = "CredWriteW", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool CredWriteW([In] ref CREDENTIAL userCredential, [In] uint flags);
+
+        [DllImport("Advapi32.dll", EntryPoint = "CredReadW", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool CredReadW(
+            string target,
+            int type,
+            int reservedFlag,
+            out IntPtr credentialPtr);
+
+        [DllImport("Advapi32.dll", EntryPoint = "CredDeleteW", CharSet = CharSet.Unicode, SetLastError = true)]
+        private static extern bool CredDeleteW(
+            string target,
+            int type,
+            int flags);
+
+        [DllImport("Advapi32.dll", EntryPoint = "CredFree", SetLastError = false)]
+        private static extern void CredFree([In] IntPtr cred);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        private struct CREDENTIAL
+        {
+            public int Flags;
+            public int Type;
+            public IntPtr TargetName;
+            public IntPtr Comment;
+            public FILETIME LastWritten;
+            public int CredentialBlobSize;
+            public IntPtr CredentialBlob;
+            public int Persist;
+            public int AttributeCount;
+            public IntPtr Attributes;
+            public IntPtr TargetAlias;
+            public IntPtr UserName;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct FILETIME
+        {
+            public uint dwLowDateTime;
+            public uint dwHighDateTime;
+        }
+
+        public void Store(string host, string username, string password)
+        {
+            var secretBytes = Encoding.Unicode.GetBytes(password);
+            if (secretBytes.Length > CRED_MAX_CREDENTIAL_BLOB_SIZE)
+                throw new Exception("Password is too long. Maximum length is 2560 bytes.");
+
+            var blobPtr = Marshal.AllocCoTaskMem(secretBytes.Length);
+            Marshal.Copy(secretBytes, 0, blobPtr, secretBytes.Length);
+
+            var target = $"SourceGit - {username}@{host}";
+            var targetPtr = Marshal.StringToCoTaskMemUni(target);
+            var accountPtr = Marshal.StringToCoTaskMemUni(username);
+
+            var credential = new CREDENTIAL
+            {
+                Flags = 0,
+                Type = CRED_TYPE_GENERIC,
+                TargetName = targetPtr,
+                Comment = IntPtr.Zero,
+                LastWritten = default,
+                CredentialBlobSize = secretBytes.Length,
+                CredentialBlob = blobPtr,
+                Persist = CRED_PERSIST_LOCAL_MACHINE,
+                AttributeCount = 0,
+                Attributes = IntPtr.Zero,
+                TargetAlias = IntPtr.Zero,
+                UserName = accountPtr,
+            };
+
+            try
+            {
+                if (!CredWriteW(ref credential, 0))
+                {
+                    var error = Marshal.GetLastWin32Error();
+                    throw new Exception($"Failed to store credential. Error code: {error}");
+                }
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(blobPtr);
+                Marshal.FreeCoTaskMem(targetPtr);
+                Marshal.FreeCoTaskMem(accountPtr);
+            }
+        }
+
+        public string Read(string host, string username)
+        {
+            var target = $"SourceGit - {username}@{host}";
+            if (!CredReadW(target, CRED_TYPE_GENERIC, 0, out var credentialPtr))
+            {
+                var error = Marshal.GetLastWin32Error();
+                if (error == ERROR_NOT_FOUND)
+                    throw new Exception("Credential not found.");
+
+                throw new Exception($"Failed to read credential. Error code: {error}");
+            }
+
+            try
+            {
+                var credential = Marshal.PtrToStructure<CREDENTIAL>(credentialPtr);
+                if (credential.CredentialBlob == IntPtr.Zero || credential.CredentialBlobSize == 0)
+                    return string.Empty;
+
+                return Marshal.PtrToStringUni(credential.CredentialBlob, credential.CredentialBlobSize / 2);
+            }
+            finally
+            {
+                CredFree(credentialPtr);
+            }
+        }
+
+        public void Erase(string host, string username)
+        {
+            var target = $"SourceGit - {username}@{host}";
+            if (!CredDeleteW(target, CRED_TYPE_GENERIC, 0))
+            {
+                var error = Marshal.GetLastWin32Error();
+                if (error == ERROR_NOT_FOUND)
+                    return;
+
+                throw new Exception($"Failed to delete credential. Error code: {error}");
+            }
+        }
+
+        private const int CRED_TYPE_GENERIC = 1;
+        private const int CRED_PERSIST_LOCAL_MACHINE = 2;
+        private const int ERROR_NOT_FOUND = 1168;
+        private const int CRED_MAX_CREDENTIAL_BLOB_SIZE = 2560;
     }
 }

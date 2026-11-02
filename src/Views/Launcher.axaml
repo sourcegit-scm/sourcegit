@@ -5,13 +5,20 @@
                     xmlns:s="using:SourceGit"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:c="using:SourceGit.Converters"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Launcher"
                     x:DataType="vm:Launcher"
                     x:Name="ThisControl"
                     Icon="/App.ico"
-                    Title="{Binding Title}"
                     MinWidth="1024" MinHeight="600">
+  <v:ChromelessWindow.Title>
+    <MultiBinding Converter="{x:Static c:StringConverters.ToWindowTitle}">
+      <Binding Path="ActivePage?.Node.Name" Mode="OneWay"/>
+      <Binding Path="ActiveWorkspace?.Name" Mode="OneWay"/>
+    </MultiBinding>
+  </v:ChromelessWindow.Title>
+  
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="{Binding #ThisControl.CaptionHeight}"/>

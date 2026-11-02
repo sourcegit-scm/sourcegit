@@ -162,6 +162,7 @@
 
               <TextBox.InnerRightContent>
                 <Button Classes="icon_button"
+                        Focusable="False"
                         IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                         Command="{Binding ClearSearchFilter}">
                   <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>

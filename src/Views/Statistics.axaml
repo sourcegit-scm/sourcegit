@@ -226,12 +226,12 @@
 
         <v:PieChart Grid.Row="1"
                     x:Name="Pie"
-                    Margin="8,0"
+                    Margin="24,0"
                     Report="{Binding SelectedReport, Mode=OneWay}"
                     FontFamily="{DynamicResource Fonts.Default}"
                     SecondaryFontFamily="{DynamicResource Fonts.Monospace}"
                     Foreground="{DynamicResource Brush.FG1}"
-                    SecondaryForeground="{DynamicResource Brush.FG2}"/>
+                    ClipToBounds="True"/>
 
         <ContentControl Grid.Row="1"
                         HorizontalAlignment="Center" VerticalAlignment="Top"

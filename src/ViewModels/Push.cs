@@ -206,6 +206,10 @@ namespace SourceGit.ViewModels
             if (_selectedLocalBranch == null)
                 return;
 
+            // Turn on `Set as tracking branch` if the selected local branch has no upstream.
+            // But don't change the visibility of the CheckBox, because it may be hidden by `PostSelectedRemoteChanged`.
+            Tracking = string.IsNullOrEmpty(_selectedLocalBranch.Upstream);
+
             var remotes = new List<Models.Remote>();
             remotes.AddRange(_repo.Remotes);
 
@@ -287,12 +291,13 @@ namespace SourceGit.ViewModels
                 var mergeTarget = new Commands.Config(_repo.FullPath).Get($"branch.\"{_selectedLocalBranch.Name}\".merge");
                 if (!string.IsNullOrEmpty(mergeTarget))
                 {
-                    var target = branches.Find(x => x.FullName.Equals(mergeTarget, StringComparison.Ordinal));
+                    var cleanName = mergeTarget.StartsWith("refs/heads/", StringComparison.Ordinal) ? mergeTarget.Substring(11) : mergeTarget;
+                    var target = branches.Find(x => x.Name.Equals(cleanName, StringComparison.Ordinal));
                     if (target == null)
                     {
                         target = new Models.Branch()
                         {
-                            Name = mergeTarget,
+                            Name = cleanName,
                             Remote = _selectedRemote.Name,
                             Head = "---", // Not used by `git push` command but used by Views
                         };

@@ -45,6 +45,24 @@ namespace SourceGit.ViewModels
             set;
         } = new();
 
+        public bool FocusOnCurrentBranch
+        {
+            get => _uiStates.FocusOnCurrentBranch;
+            set
+            {
+                if (value != _uiStates.FocusOnCurrentBranch)
+                {
+                    _uiStates.FocusOnCurrentBranch = value;
+                    OnPropertyChanged();
+
+                    if (value && _historyFilterMode != Models.FilterMode.None)
+                        ClearHistoryFilters();
+                    else
+                        RefreshCommits();
+                }
+            }
+        }
+
         public Models.FilterMode HistoryFilterMode
         {
             get => _historyFilterMode;
@@ -774,7 +792,8 @@ namespace SourceGit.ViewModels
                 if (folderEndIdx > 10)
                     _uiStates.ExpandedBranchNodesInSideBar.Add(created.FullName.Substring(0, folderEndIdx));
 
-                if (_historyFilterMode == Models.FilterMode.Included)
+                if (_historyFilterMode == Models.FilterMode.Included &&
+                    !_uiStates.IsCoveredByFolderFilter(created.FullName, Models.FilterType.LocalBranchFolder))
                     SetBranchFilterMode(created, Models.FilterMode.Included, false, false);
 
                 CurrentBranch = created;
@@ -817,7 +836,8 @@ namespace SourceGit.ViewModels
 
             checkouted.IsCurrent = true;
             checkouted.WorktreePath = FullPath;
-            if (_historyFilterMode == Models.FilterMode.Included)
+            if (_historyFilterMode == Models.FilterMode.Included &&
+                !_uiStates.IsCoveredByFolderFilter(checkouted.FullName, Models.FilterType.LocalBranchFolder))
                 SetBranchFilterMode(checkouted, Models.FilterMode.Included, false, false);
 
             List<Models.Branch> locals = [];
@@ -988,6 +1008,13 @@ namespace SourceGit.ViewModels
 
         public void SetTagFilterMode(Models.Tag tag, Models.FilterMode mode)
         {
+            // Auto turn off `FocusOnCurrentBranch` when user set a tag filter manually.
+            if (_uiStates.FocusOnCurrentBranch)
+            {
+                _uiStates.FocusOnCurrentBranch = false;
+                OnPropertyChanged(nameof(FocusOnCurrentBranch));
+            }
+
             var changed = _uiStates.UpdateHistoryFilters(tag.Name, Models.FilterType.Tag, mode);
             if (changed)
                 RefreshHistoryFilters(true);
@@ -1002,6 +1029,13 @@ namespace SourceGit.ViewModels
 
         public void SetBranchFilterMode(BranchTreeNode node, Models.FilterMode mode, bool clearExists, bool refresh)
         {
+            // Auto turn off `FocusOnCurrentBranch` when user set a branch filter manually.
+            if (_uiStates.FocusOnCurrentBranch)
+            {
+                _uiStates.FocusOnCurrentBranch = false;
+                OnPropertyChanged(nameof(FocusOnCurrentBranch));
+            }
+
             var isLocal = node.Path.StartsWith("refs/heads/", StringComparison.Ordinal);
             var tree = isLocal ? _localBranchTrees : _remoteBranchTrees;
 
@@ -1222,8 +1256,21 @@ namespace SourceGit.ViewModels
 
                 var builder = new StringBuilder();
                 builder
-                    .Append('-').Append(Preferences.Instance.MaxHistoryCommits).Append(' ')
-                    .Append(_uiStates.BuildHistoryParams(GitDir));
+                    .Append('-')
+                    .Append(Preferences.Instance.MaxHistoryCommits)
+                    .Append(' ');
+
+                if (_uiStates.FocusOnCurrentBranch)
+                {
+                    var upstream = await new Commands.QueryUpstreamOfCurrentBranch(FullPath)
+                        .GetResultAsync()
+                        .ConfigureAwait(false);
+                    builder.Append(_uiStates.BuildHistoryParams_FocusOnCurrentBranchMode(upstream));
+                }
+                else
+                {
+                    builder.Append(_uiStates.BuildHistoryParams_NormalMode(GitDir));
+                }
 
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
                     .GetResultAsync()

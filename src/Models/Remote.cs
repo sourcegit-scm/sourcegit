@@ -82,6 +82,11 @@ namespace SourceGit.Models
             if (match.Success)
             {
                 var host = match.Groups[1].Value;
+
+                // Bitbucket Cloud serves SSH from `ssh.bitbucket.org`, but its web pages live on `bitbucket.org`.
+                if (host.Equals("ssh.bitbucket.org", StringComparison.Ordinal))
+                    host = "bitbucket.org";
+
                 var supportHTTPS = HTTPSValidator.IsSupported(host);
                 var scheme = supportHTTPS ? "https" : "http";
                 url = $"{scheme}://{host}/{match.Groups[2].Value}";

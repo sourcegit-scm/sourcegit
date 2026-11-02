@@ -40,6 +40,13 @@ namespace SourceGit.Native
             void TerminateProcess(Process proc);
         }
 
+        public interface IKeychain
+        {
+            void Store(string host, string username, string password);
+            string Read(string host, string username);
+            void Erase(string host, string username);
+        }
+
         public static Directories BasicDirectories
         {
             get;
@@ -131,16 +138,34 @@ namespace SourceGit.Native
             set => _enableSystemWindowFrame = value;
         }
 
+        public static IKeychain Keychain
+        {
+            get;
+            private set;
+        }
+
         static OS()
         {
             if (OperatingSystem.IsWindows())
+            {
                 _backend = new Windows();
+                Keychain = new WindowsCredentialManager();
+            }
             else if (OperatingSystem.IsMacOS())
+            {
                 _backend = new MacOS();
+                Keychain = new MacOSKeychain();
+            }
             else if (OperatingSystem.IsLinux())
-                _backend = new Linux();
+            {
+                var impl = new Linux();
+                _backend = impl;
+                Keychain = impl.GetSecretTool();
+            }
             else
+            {
                 throw new PlatformNotSupportedException();
+            }
         }
 
         public static void SetupBasicDirectories()
@@ -273,9 +298,17 @@ namespace SourceGit.Native
         public static void OpenTerminal(string workdir)
         {
             if (string.IsNullOrEmpty(ShellOrTerminal))
+            {
                 Models.Notification.Send(workdir, "Terminal is not specified! Please confirm that the correct shell/terminal has been configured.", true);
-            else
-                _backend.OpenTerminal(workdir, ShellOrTerminalArgs);
+                return;
+            }
+
+            var cwd = string.IsNullOrEmpty(workdir) ? Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) : workdir;
+            var args = ShellOrTerminalArgs;
+            if (!string.IsNullOrEmpty(args))
+                args = args.Replace("$FOLDER_NAME", Path.GetFileName(cwd.Trim().TrimEnd('/')));
+
+            _backend.OpenTerminal(cwd, args);
         }
 
         public static void OpenWithDefaultEditor(string file)

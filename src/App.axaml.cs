@@ -495,7 +495,6 @@ namespace SourceGit
 
             var pref = ViewModels.Preferences.Instance;
             pref.SetCanModify();
-            pref.UpdateAvailableAIModels();
 
             _launcher = new ViewModels.Launcher(startupRepo);
             desktop.MainWindow = new Views.Launcher() { DataContext = _launcher };

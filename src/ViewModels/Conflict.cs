@@ -49,6 +49,7 @@ namespace SourceGit.ViewModels
                 {
                     CherryPickInProgress cherryPick => (_head, cherryPick.Head),
                     RebaseInProgress rebase => (rebase.Onto, rebase.StoppedAt),
+                    AmInProgress applying => (_head, (object)"Patch"),
                     RevertInProgress revert => (_head, revert.Head),
                     MergeInProgress merge => (_head, merge.Source),
                     _ => (_head, (object)"Stash or Patch"),

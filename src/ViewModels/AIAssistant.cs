@@ -12,13 +12,24 @@ namespace SourceGit.ViewModels
     {
         public List<string> AvailableModels
         {
-            get => _service.AvailableModels;
+            get => _service.CachedAvailableModels;
         }
 
-        public string CurrentModel
+        public string SelectedModel
         {
-            get => _service.Model;
-            set => _service.Model = value;
+            get => _selectedModel;
+            set
+            {
+                if (SetProperty(ref _selectedModel, value))
+                {
+                    _service.Model = value;
+
+                    if (!_isFetchingModels)
+                    {
+                        var _ = GenAsync();
+                    }
+                }
+            }
         }
 
         public bool IsGenerating
@@ -43,6 +54,7 @@ namespace SourceGit.ViewModels
         {
             _repo = repo;
             _service = service;
+            _selectedModel = service.Model;
             _cancel = new CancellationTokenSource();
 
             var builder = new StringBuilder();
@@ -60,21 +72,60 @@ namespace SourceGit.ViewModels
                 _cancel.Cancel();
             _cancel = new CancellationTokenSource();
 
-            var agent = new AI.Agent(_service);
             var builder = new StringBuilder();
-            builder.AppendLine("Asking AI to generate commit message...").AppendLine();
-
             var responseBuilder = new StringBuilder();
             var foundResponse = false;
             var currentBranchName = _repo.CurrentBranch?.Name ?? "main";
 
-            Text = builder.ToString();
+            Text = string.Empty;
             Response = string.Empty;
             IsGenerating = true;
 
             try
             {
-                await agent.GenerateCommitMessageAsync(_repo.FullPath, currentBranchName, _changeList, _amendParent, message =>
+                if (_service.AutoFetchAvailableModels)
+                {
+                    if (_service.CachedAvailableModels.Count == 0)
+                    {
+                        _isFetchingModels = true;
+                        builder.AppendLine("Fetching available models...");
+                        Text = builder.ToString();
+
+                        var models = await _service.GetOpenAIClient().GetOpenAIModelClient().GetModelsAsync();
+                        var availableModels = new List<string>();
+                        foreach (var m in models.Value)
+                            availableModels.Add(m.Id);
+
+                        if (availableModels.Count == 0)
+                            throw new Exception("No available models found. Please check your OpenAI API key and network connection.");
+
+                        var lastUsedModel = _selectedModel;
+                        _service.CachedAvailableModels = availableModels;
+                        OnPropertyChanged(nameof(AvailableModels));
+
+                        if (!availableModels.Contains(lastUsedModel))
+                        {
+                            SelectedModel = availableModels[0];
+                            builder.AppendLine($"The model({lastUsedModel}) last used is not available. Auto change to the first available model.");
+                            Text = builder.ToString();
+                        }
+                        else
+                        {
+                            SelectedModel = null; // Force update views.
+                            SelectedModel = lastUsedModel;
+                        }
+                        _isFetchingModels = false;
+                    }
+                }
+                else if (string.IsNullOrEmpty(_selectedModel))
+                {
+                    throw new Exception("No model is selected and auto-fetching is disabled. Please select a model or enable auto-fetching.");
+                }
+
+                builder.AppendLine("Asking AI to generate commit message...").AppendLine();
+                Text = builder.ToString();
+
+                await new AI.Agent(_service).GenerateCommitMessageAsync(_repo.FullPath, currentBranchName, _changeList, _amendParent, message =>
                 {
                     builder.AppendLine(message);
 
@@ -149,6 +200,8 @@ namespace SourceGit.ViewModels
         private readonly AI.Service _service = null;
         private readonly string _changeList = null;
         private readonly string _amendParent = null;
+        private string _selectedModel = string.Empty;
+        private bool _isFetchingModels = false;
         private CancellationTokenSource _cancel = null;
         private bool _isGenerating = false;
         private string _text = string.Empty;

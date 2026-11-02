@@ -225,6 +225,12 @@ namespace SourceGit.Models
             set;
         } = string.Empty;
 
+        public bool FocusOnCurrentBranch
+        {
+            get;
+            set;
+        } = false;
+
         public AvaloniaList<HistoryFilter> HistoryFilters
         {
             get;
@@ -357,6 +363,17 @@ namespace SourceGit.Models
             return true;
         }
 
+        public bool IsCoveredByFolderFilter(string path, FilterType type)
+        {
+            foreach (var filter in HistoryFilters)
+            {
+                if (filter.Type == type && path.StartsWith($"{filter.Pattern}/", StringComparison.Ordinal))
+                    return true;
+            }
+
+            return false;
+        }
+
         public void RemoveHistoryFilter(string pattern, FilterType type)
         {
             foreach (var filter in HistoryFilters)
@@ -400,7 +417,7 @@ namespace SourceGit.Models
                 HistoryFilters.Remove(filter);
         }
 
-        public string BuildHistoryParams(string gitDir)
+        public string BuildHistoryParams_NormalMode(string gitDir)
         {
             var builder = new StringBuilder();
 
@@ -425,6 +442,29 @@ namespace SourceGit.Models
                 BuildHistoryParamsForIncluded(builder);
             else
                 BuildHistoryParamsForExcluded(builder, gitDir);
+
+            return builder.ToString();
+        }
+
+        public string BuildHistoryParams_FocusOnCurrentBranchMode(string upstream)
+        {
+            var builder = new StringBuilder();
+
+            if (EnableTopoOrderInHistory)
+                builder.Append("--topo-order ");
+            else
+                builder.Append("--date-order ");
+
+            if (HistoryShowFlags.HasFlag(HistoryShowFlags.FirstParentOnly))
+                builder.Append("--first-parent ");
+
+            if (HistoryShowFlags.HasFlag(HistoryShowFlags.SimplifyByDecoration))
+                builder.Append("--simplify-by-decoration ");
+
+            builder.Append("HEAD ");
+
+            if (!string.IsNullOrEmpty(upstream))
+                builder.Append(upstream);
 
             return builder.ToString();
         }
