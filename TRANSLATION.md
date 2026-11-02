@@ -1366,25 +1366,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![ru__RU](https://img.shields.io/badge/ru__RU-98.89%25-yellow)
-
-<details>
-<summary>Missing keys in ru_RU.axaml</summary>
-
-- Text.Apply.CommitChanges
-- Text.Apply.CommitChanges.Tip
-- Text.DeleteBranch.DeleteAttachedWorktree
-- Text.EditApiKey
-- Text.EditApiKey.ApiKey
-- Text.EditApiKey.EnvironmentVariable
-- Text.EditApiKey.InvalidStorage
-- Text.EditApiKey.Server
-- Text.EditApiKey.Storage
-- Text.InProgress.Am
-- Text.Preferences.Shell.Args.ToolTip
-- Text.Repository.FocusOnCurrentBranch
-
-</details>
+### ![ru__RU](https://img.shields.io/badge/ru__RU-%E2%88%9A-brightgreen)
 
 ### ![ta__IN](https://img.shields.io/badge/ta__IN-60.02%25-red)
 
