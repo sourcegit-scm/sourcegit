@@ -101,6 +101,15 @@ namespace SourceGit.Views
             UpdateLeftSidebarLayout();
         }
 
+        protected override void OnDataContextChanged(EventArgs e)
+        {
+            base.OnDataContextChanged(e);
+
+            // Tab switches recycle this view even when the working copy host stays active.
+            if (_sharedWorkingCopy != null)
+                _sharedWorkingCopy.DataContext = (DataContext as ViewModels.Repository)?.WorkingCopy;
+        }
+
         private async void OnOpenConfigure(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
