@@ -72,6 +72,13 @@ Pump(100);
 Check(!ToolTip.GetIsOpen(cell), "moving into another column closes the message tooltip");
 window.MouseMove(new Point(580, y));
 Pump(1200);
+// Recycle the owner while its popup is still part of its inheritance children.
+cell.DataContext = new object();
+Check(!ToolTip.GetIsOpen(cell), "recycling the tooltip owner safely closes its popup before updating descendants");
+window.MouseMove(new Point(650, y));
+Pump(100);
+window.MouseMove(new Point(580, y));
+Pump(1200);
 subject.DataContext = new object();
 subject.Subject = "Another commit";
 subject.FullMessage = "Another commit\n\nAnother body";

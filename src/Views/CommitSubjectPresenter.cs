@@ -288,6 +288,7 @@ namespace SourceGit.Views
                 ToolTip.SetShowDelay(_messageToolTipTarget, 1000);
                 ToolTip.SetBetweenShowDelay(_messageToolTipTarget, -1);
                 ToolTip.AddToolTipOpeningHandler(_messageToolTipTarget, OnToolTipOpening);
+                _messageToolTipTarget.DataContextChanged += OnMessageToolTipTargetDataContextChanged;
             }
 
             UpdateMessageToolTip();
@@ -301,11 +302,20 @@ namespace SourceGit.Views
             {
                 ToolTip.SetIsOpen(_messageToolTipTarget, false);
                 ToolTip.RemoveToolTipOpeningHandler(_messageToolTipTarget, OnToolTipOpening);
+                _messageToolTipTarget.DataContextChanged -= OnMessageToolTipTargetDataContextChanged;
                 ToolTip.SetTip(_messageToolTipTarget, null);
                 _messageToolTipTarget = null;
             }
 
             base.OnDetachedFromVisualTree(e);
+        }
+
+        private static void OnMessageToolTipTargetDataContextChanged(object sender, EventArgs e)
+        {
+            // Close the cell's popup before its new DataContext reaches the presenter. Closing it
+            // from a descendant would mutate the inheritance children Avalonia is still traversing.
+            if (sender is Control target)
+                ToolTip.SetIsOpen(target, false);
         }
 
         private async void OnToolTipOpening(object sender, CancelRoutedEventArgs e)
