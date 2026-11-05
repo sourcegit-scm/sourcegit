@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:m="using:SourceGit.Models">
   <ResourceDictionary.ThemeDictionaries>
     <ResourceDictionary x:Key="Light">
       <Color x:Key="Color.Window">#FFF4F4F4</Color>
@@ -67,6 +68,44 @@
       <Color x:Key="Color.InlineCode">#FF383838</Color>
       <Color x:Key="Color.InlineCodeFG">#FFF0F0F0</Color>
       <Color x:Key="Color.SubPanel">#FF272727</Color>
+    </ResourceDictionary>
+
+    <ResourceDictionary x:Key="{x:Static m:AppThemes.Monokai}">
+      <!-- Core Monokai: bg #272822, line #3e3d32, fg #f8f8f2, comment #75715e,
+           pink #f92672, orange #fd971f, yellow #e6db74, green #a6e22e,
+           cyan #66d9ef, purple #ae81ff -->
+      <Color x:Key="SystemAccentColor">#FFF92672</Color>
+      <Color x:Key="Color.Window">#FF272822</Color>
+      <Color x:Key="Color.WindowBorder">#FF75715E</Color>
+      <Color x:Key="Color.TitleBar">#FF272822</Color>
+      <Color x:Key="Color.ToolBar">#FF3E3D32</Color>
+      <Color x:Key="Color.Popup">#FF3E3D32</Color>
+      <Color x:Key="Color.PopupBorder">#FF75715E</Color>
+      <Color x:Key="Color.Contents">#FF272822</Color>
+      <Color x:Key="Color.Badge">#FFAE81FF</Color>
+      <Color x:Key="Color.BadgeFG">#FF272822</Color>
+      <Color x:Key="Color.Conflict">#FFFD971F</Color>
+      <Color x:Key="Color.Conflict.Foreground">#FF272822</Color>
+      <Color x:Key="Color.Conflict.MineBG">#4066D9EF</Color>
+      <Color x:Key="Color.Conflict.TheirsBG">#40F92672</Color>
+      <Color x:Key="Color.Border0">#FF3E3D32</Color>
+      <Color x:Key="Color.Border1">#FF75715E</Color>
+      <Color x:Key="Color.Border2">#FF3E3D32</Color>
+      <Color x:Key="Color.FlatButton.Background">#FF3E3D32</Color>
+      <Color x:Key="Color.FlatButton.BackgroundHovered">#FF75715E</Color>
+      <Color x:Key="Color.FlatButton.FloatingBorder">#FF75715E</Color>
+      <Color x:Key="Color.FG1">#FFF8F8F2</Color>
+      <Color x:Key="Color.FG2">#FF75715E</Color>
+      <Color x:Key="Color.Diff.EmptyBG">#403E3D32</Color>
+      <Color x:Key="Color.Diff.AddedBG">#40A6E22E</Color>
+      <Color x:Key="Color.Diff.DeletedBG">#40F92672</Color>
+      <Color x:Key="Color.Diff.AddedHighlight">#80A6E22E</Color>
+      <Color x:Key="Color.Diff.DeletedHighlight">#80F92672</Color>
+      <Color x:Key="Color.Diff.BlockBorderHighlight">#FF66D9EF</Color>
+      <Color x:Key="Color.Link">#FF66D9EF</Color>
+      <Color x:Key="Color.InlineCode">#FF3E3D32</Color>
+      <Color x:Key="Color.InlineCodeFG">#FFE6DB74</Color>
+      <Color x:Key="Color.SubPanel">#FF3E3D32</Color>
     </ResourceDictionary>
   </ResourceDictionary.ThemeDictionaries>
 

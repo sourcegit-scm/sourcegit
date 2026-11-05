@@ -122,12 +122,7 @@ namespace SourceGit
             if (Current is not App app)
                 return;
 
-            if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
-                app.RequestedThemeVariant = ThemeVariant.Light;
-            else if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
-                app.RequestedThemeVariant = ThemeVariant.Dark;
-            else
-                app.RequestedThemeVariant = ThemeVariant.Default;
+            app.RequestedThemeVariant = Models.AppThemes.FromName(theme);
 
             if (app._themeOverrides != null)
             {

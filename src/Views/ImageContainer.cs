@@ -15,7 +15,7 @@ namespace SourceGit.Views
         {
             if (_bgBrush == null)
             {
-                var maskBrush = new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? 0xFF404040 : 0xFFBBBBBB);
+                var maskBrush = new SolidColorBrush(Models.AppThemes.IsDark(ActualThemeVariant) ? 0xFF404040 : 0xFFBBBBBB);
                 var bg = new DrawingGroup()
                 {
                     Children =

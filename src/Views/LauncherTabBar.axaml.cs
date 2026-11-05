@@ -78,7 +78,7 @@ namespace SourceGit.Views
 
             var selectedIdx = LauncherTabsList.SelectedIndex;
             var count = LauncherTabsList.ItemCount;
-            var separatorPen = new Pen(new SolidColorBrush(ActualThemeVariant == ThemeVariant.Dark ? Colors.White : Colors.Black, 0.2));
+            var separatorPen = new Pen(new SolidColorBrush(Models.AppThemes.IsDark(ActualThemeVariant) ? Colors.White : Colors.Black, 0.2));
             var separatorY = (height - 18) * 0.5 + 1;
 
             if (!_isScrollButtonVisible && selectedIdx > 0)

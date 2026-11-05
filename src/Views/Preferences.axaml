@@ -203,6 +203,7 @@
                 <ThemeVariant>Default</ThemeVariant>
                 <ThemeVariant>Dark</ThemeVariant>
                 <ThemeVariant>Light</ThemeVariant>
+                <x:Static Member="m:AppThemes.Monokai"/>
               </ComboBox.Items>
             </ComboBox>
 

@@ -29,17 +29,7 @@ namespace SourceGit.Converters
         {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
             {
-                var theme = (string)value;
-                if (string.IsNullOrEmpty(theme))
-                    return ThemeVariant.Default;
-
-                if (theme.Equals("Light", StringComparison.OrdinalIgnoreCase))
-                    return ThemeVariant.Light;
-
-                if (theme.Equals("Dark", StringComparison.OrdinalIgnoreCase))
-                    return ThemeVariant.Dark;
-
-                return ThemeVariant.Default;
+                return Models.AppThemes.FromName(value as string);
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
