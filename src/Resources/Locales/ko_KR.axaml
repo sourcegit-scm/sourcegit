@@ -611,6 +611,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">작년</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0}분 전</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0}개월 전</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">1주 전</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">{0}주 전</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}년 전</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">어제</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">환경설정</x:String>

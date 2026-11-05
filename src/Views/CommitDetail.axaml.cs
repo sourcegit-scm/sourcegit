@@ -339,12 +339,22 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnChangeTapped(object sender, TappedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
+            {
+                detail.OpenMainDiffForChange(change);
+                e.Handled = true;
+            }
+        }
+
         private void OnChangeDoubleTapped(object sender, TappedEventArgs e)
         {
             if (DataContext is ViewModels.CommitDetail detail && sender is Grid { DataContext: Models.Change change })
             {
-                detail.ChangeSelection = new(new List<Models.Change> { change });
                 detail.ActiveTabIndex = 1;
+                detail.ChangeSelection = new(new List<Models.Change> { change });
+                detail.PresentMainDiff();
             }
 
             e.Handled = true;

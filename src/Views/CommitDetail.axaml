@@ -56,7 +56,7 @@
 
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Change">
-                <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
+                <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" Tapped="OnChangeTapped" DoubleTapped="OnChangeDoubleTapped">
                   <ToolTip.Tip>
                     <TextBlock TextWrapping="Wrap">
                       <Run Text="{Binding Path, Mode=OneWay}"/>

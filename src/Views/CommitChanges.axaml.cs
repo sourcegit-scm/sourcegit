@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
@@ -14,6 +15,12 @@ namespace SourceGit.Views
         public CommitChanges()
         {
             InitializeComponent();
+        }
+
+        private void OnChangeActivated(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.CommitDetail vm)
+                vm.PresentMainDiff();
         }
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)

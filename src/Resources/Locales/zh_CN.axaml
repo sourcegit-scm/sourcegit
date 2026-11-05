@@ -664,6 +664,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">一年前</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0}分钟前</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0}个月前</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">1周前</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">{0}周前</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0}年前</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">昨天</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">偏好设置</x:String>

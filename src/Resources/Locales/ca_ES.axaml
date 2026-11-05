@@ -664,6 +664,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">L'any passat</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Fa {0} minuts</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Fa {0} mesos</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">Fa 1 setmana</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">Fa {0} setmanes</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Fa {0} anys</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ahir</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferències</x:String>

@@ -215,6 +215,22 @@ namespace SourceGit.ViewModels
             get => DetailContext is CommitDetail or RevisionCompare;
         }
 
+        public DiffContext MainDiffContext
+        {
+            get => _mainDiffContext;
+            private set
+            {
+                if (SetProperty(ref _mainDiffContext, value))
+                    IsMainDiffVisible = value != null;
+            }
+        }
+
+        public bool IsMainDiffVisible
+        {
+            get => _isMainDiffVisible;
+            private set => SetProperty(ref _isMainDiffVisible, value);
+        }
+
         public bool IsCollapseDetails
         {
             get => _isCollapseDetails;
@@ -226,6 +242,27 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged(nameof(BottomArea));
                 }
             }
+        }
+
+        public void OpenMainDiff(DiffContext context)
+        {
+            if (context == null)
+            {
+                CloseMainDiff();
+                return;
+            }
+
+            MainDiffContext = context;
+            SetInlineDiffVisible(false);
+        }
+
+        public void CloseMainDiff()
+        {
+            if (_mainDiffContext == null)
+                return;
+
+            MainDiffContext = null;
+            SetInlineDiffVisible(true);
         }
 
         public Histories(Repository repo)
@@ -524,6 +561,8 @@ namespace SourceGit.ViewModels
             if (_ignoreSelectionChange)
                 return;
 
+            CloseMainDiff();
+
             if (_selectedCommits.Count == 0)
             {
                 _searchCommitContext.Selected = null;
@@ -562,6 +601,14 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
+        private void SetInlineDiffVisible(bool visible)
+        {
+            if (_detailContext is CommitDetail detail)
+                detail.IsInlineDiffVisible = visible;
+            else if (_detailContext is RevisionCompare compare)
+                compare.IsInlineDiffVisible = visible;
+        }
+
         private void GenerateGraph(List<Models.Commit> commits)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
@@ -587,6 +634,8 @@ namespace SourceGit.ViewModels
         private List<Models.Commit> _selectedCommits = [];
         private Models.Bisect _bisect = null;
         private object _detailContext = Models.Null.Instance;
+        private DiffContext _mainDiffContext = null;
+        private bool _isMainDiffVisible = false;
         private bool _ignoreSelectionChange = false;
 
         private bool _isSearchingCommits = false;

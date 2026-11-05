@@ -70,9 +70,9 @@
     <!-- Changes View -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailChangesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
-        <ColumnDefinition Width="4"/>
-        <ColumnDefinition Width="*" MinWidth="100"/>
+        <ColumnDefinition Width="{Binding ChangesListColumnWidth, Mode=TwoWay}" MinWidth="200"/>
+        <ColumnDefinition Width="{Binding DiffSplitterColumnWidth, Mode=OneWay}"/>
+        <ColumnDefinition Width="{Binding DiffPanelColumnWidth, Mode=OneWay}" MinWidth="0"/>
       </Grid.ColumnDefinitions>
 
       <Grid Grid.Column="0" RowDefinitions="26,*,26">
@@ -114,6 +114,7 @@
                                     Changes="{Binding VisibleChanges, Mode=OneWay}"
                                     Selection="{Binding ChangeSelection, Mode=TwoWay}"
                                     ContextRequested="OnChangeContextRequested"
+                                    ChangeActivated="OnChangeActivated"
                                     KeyDown="OnChangeCollectionViewKeyDown"/>            
           </Border>
         </Border>
@@ -139,9 +140,10 @@
                     MinWidth="1"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     Background="Transparent"
-                    Focusable="False"/>
+                    Focusable="False"
+                    IsVisible="{Binding IsInlineDiffVisible}"/>
 
-      <Grid Grid.Column="2">
+      <Grid Grid.Column="2" IsVisible="{Binding IsInlineDiffVisible}">
         <Border CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <StackPanel Orientation="Vertical" VerticalAlignment="Center">
             <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>

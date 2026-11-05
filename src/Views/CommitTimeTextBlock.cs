@@ -148,11 +148,18 @@ namespace SourceGit.Views
             if (localTime >= lastDay)
                 return App.Text("Period.Yesterday");
 
-            if ((localTime.Year == now.Year && localTime.Month == now.Month) || span.TotalDays < 28)
+            var diffDay = (int)(now.Date - localTime.Date).TotalDays;
+            if (diffDay < 7)
+                return App.Text("Period.DaysAgo", diffDay);
+
+            if (diffDay < 28)
             {
-                var diffDay = now.Date - localTime.Date;
-                return App.Text("Period.DaysAgo", (int)diffDay.TotalDays);
+                var weeks = diffDay / 7;
+                return weeks == 1 ? App.Text("Period.WeekAgo") : App.Text("Period.WeeksAgo", weeks);
             }
+
+            if (localTime.Year == now.Year && localTime.Month == now.Month)
+                return App.Text("Period.DaysAgo", diffDay);
 
             var lastMonth = now.AddMonths(-1).Date;
             if (localTime.Year == lastMonth.Year && localTime.Month == lastMonth.Month)

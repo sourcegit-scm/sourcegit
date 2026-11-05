@@ -608,6 +608,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">בשנה שעברה</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">לפני {0} דקות</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">לפני {0} חודשים</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">לפני שבוע</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">לפני {0} שבועות</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">לפני {0} שנים</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">אתמול</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">העדפות</x:String>

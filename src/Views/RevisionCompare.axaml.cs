@@ -16,6 +16,12 @@ namespace SourceGit.Views
             InitializeComponent();
         }
 
+        private void OnChangeActivated(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.RevisionCompare vm)
+                vm.PresentMainDiff();
+        }
+
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
         {
             if (DataContext is ViewModels.RevisionCompare { ChangeSelection: { Count: > 0 } selection } vm)

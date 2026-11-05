@@ -391,6 +391,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Ano passado</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} minutos atrás</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} meses atrás</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">1 semana atrás</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">{0} semanas atrás</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} anos atrás</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ontem</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferências</x:String>

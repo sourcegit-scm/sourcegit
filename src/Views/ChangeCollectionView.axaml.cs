@@ -163,6 +163,15 @@ namespace SourceGit.Views
             remove { RemoveHandler(ChangeDoubleTappedEvent, value); }
         }
 
+        public static readonly RoutedEvent<RoutedEventArgs> ChangeActivatedEvent =
+            RoutedEvent.Register<ChangeCollectionView, RoutedEventArgs>(nameof(ChangeActivated), RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> ChangeActivated
+        {
+            add { AddHandler(ChangeActivatedEvent, value); }
+            remove { RemoveHandler(ChangeActivatedEvent, value); }
+        }
+
         public ChangeCollectionView()
         {
             InitializeComponent();
@@ -346,6 +355,11 @@ namespace SourceGit.Views
                 Selection = selection;
 
             _disableSelectionChangingEvent = false;
+
+            // Raise even when selection is unchanged so re-clicking the auto-selected
+            // first file still opens the main-pane diff.
+            if (selection is { Count: 1, HasFolder: false })
+                RaiseEvent(new RoutedEventArgs(ChangeActivatedEvent));
         }
 
         private void MakeTreeRows(List<ViewModels.ChangeTreeNode> rows, List<ViewModels.ChangeTreeNode> nodes)

@@ -608,6 +608,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">L'an dernier</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">il y a {0} minutes</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">il y a {0} mois</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">il y a 1 semaine</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">il y a {0} semaines</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">il y a {0} ans</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Hier</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Préférences</x:String>

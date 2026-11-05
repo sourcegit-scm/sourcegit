@@ -561,6 +561,8 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">L'anno scorso</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} minuti fa</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} mesi fa</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">1 settimana fa</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">{0} settimane fa</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} anni fa</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Ieri</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Preferenze</x:String>

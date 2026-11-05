@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
+using Avalonia.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -76,8 +77,24 @@ namespace SourceGit.ViewModels
                         DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(GetSHA(_startPoint), GetSHA(_endPoint), value.Changes[0]), _diffContext);
                     else
                         DiffContext = null;
+
+                    if (_suppressMainDiff || _repo?.Histories == null)
+                        return;
+
+                    if (DiffContext != null)
+                        _repo.Histories.OpenMainDiff(DiffContext);
+                    else
+                        _repo.Histories.CloseMainDiff();
                 }
             }
+        }
+
+        public void PresentMainDiff()
+        {
+            if (_suppressMainDiff || DiffContext == null || _repo?.Histories == null)
+                return;
+
+            _repo.Histories.OpenMainDiff(DiffContext);
         }
 
         public string SearchFilter
@@ -95,6 +112,40 @@ namespace SourceGit.ViewModels
             get => _diffContext;
             private set => SetProperty(ref _diffContext, value);
         }
+
+        public bool IsInlineDiffVisible
+        {
+            get => _isInlineDiffVisible;
+            set
+            {
+                if (SetProperty(ref _isInlineDiffVisible, value))
+                {
+                    OnPropertyChanged(nameof(ChangesListColumnWidth));
+                    OnPropertyChanged(nameof(DiffSplitterColumnWidth));
+                    OnPropertyChanged(nameof(DiffPanelColumnWidth));
+                }
+            }
+        }
+
+        public GridLength ChangesListColumnWidth
+        {
+            get => _isInlineDiffVisible
+                ? Preferences.Instance.Layout.CommitDetailChangesLeftWidth
+                : new GridLength(1, GridUnitType.Star);
+            set
+            {
+                if (_isInlineDiffVisible)
+                    Preferences.Instance.Layout.CommitDetailChangesLeftWidth = value;
+            }
+        }
+
+        public GridLength DiffSplitterColumnWidth => _isInlineDiffVisible
+            ? new GridLength(4)
+            : new GridLength(0);
+
+        public GridLength DiffPanelColumnWidth => _isInlineDiffVisible
+            ? new GridLength(1, GridUnitType.Star)
+            : new GridLength(0);
 
         public RevisionCompare(Repository repo, Models.Commit startPoint, Models.Commit endPoint)
         {
@@ -366,10 +417,18 @@ namespace SourceGit.ViewModels
                     VisibleChanges = visible;
                     IsLoading = false;
 
-                    if (VisibleChanges.Count > 0)
-                        ChangeSelection = new(VisibleChanges.GetRange(0, 1));
-                    else
-                        ChangeSelection = new(null);
+                    _suppressMainDiff = true;
+                    try
+                    {
+                        if (VisibleChanges.Count > 0)
+                            ChangeSelection = new(VisibleChanges.GetRange(0, 1));
+                        else
+                            ChangeSelection = new(null);
+                    }
+                    finally
+                    {
+                        _suppressMainDiff = false;
+                    }
                 });
             });
         }
@@ -394,5 +453,7 @@ namespace SourceGit.ViewModels
         private ChangeSelection _changeSelection = new(null);
         private string _searchFilter = string.Empty;
         private DiffContext _diffContext = null;
+        private bool _isInlineDiffVisible = true;
+        private bool _suppressMainDiff = false;
     }
 }

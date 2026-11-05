@@ -640,6 +640,8 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">Letztes Jahr</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">Vor {0} Minuten</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">Vor {0} Monaten</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">Vor 1 Woche</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">Vor {0} Wochen</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">Vor {0} Jahren</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Gestern</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Einstellungen</x:String>

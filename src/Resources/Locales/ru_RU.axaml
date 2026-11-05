@@ -664,6 +664,8 @@
   <x:String x:Key="Text.Period.LastYear" xml:space="preserve">В прошлом году</x:String>
   <x:String x:Key="Text.Period.MinutesAgo" xml:space="preserve">{0} минут назад</x:String>
   <x:String x:Key="Text.Period.MonthsAgo" xml:space="preserve">{0} месяцев назад</x:String>
+  <x:String x:Key="Text.Period.WeekAgo" xml:space="preserve">1 неделю назад</x:String>
+  <x:String x:Key="Text.Period.WeeksAgo" xml:space="preserve">{0} недель назад</x:String>
   <x:String x:Key="Text.Period.YearsAgo" xml:space="preserve">{0} лет назад</x:String>
   <x:String x:Key="Text.Period.Yesterday" xml:space="preserve">Вчера</x:String>
   <x:String x:Key="Text.Preferences" xml:space="preserve">Параметры</x:String>

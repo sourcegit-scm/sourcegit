@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -43,7 +44,17 @@ namespace SourceGit.ViewModels
                     OnPropertyChanged(nameof(ActiveTabIndex));
 
                     if (DiffContext == null)
-                        UpdateDetails();
+                    {
+                        _suppressMainDiff = true;
+                        try
+                        {
+                            UpdateDetails();
+                        }
+                        finally
+                        {
+                            _suppressMainDiff = false;
+                        }
+                    }
                 }
             }
         }
@@ -106,6 +117,40 @@ namespace SourceGit.ViewModels
             get => _diffContext;
             private set => SetProperty(ref _diffContext, value);
         }
+
+        public bool IsInlineDiffVisible
+        {
+            get => _isInlineDiffVisible;
+            set
+            {
+                if (SetProperty(ref _isInlineDiffVisible, value))
+                {
+                    OnPropertyChanged(nameof(ChangesListColumnWidth));
+                    OnPropertyChanged(nameof(DiffSplitterColumnWidth));
+                    OnPropertyChanged(nameof(DiffPanelColumnWidth));
+                }
+            }
+        }
+
+        public GridLength ChangesListColumnWidth
+        {
+            get => _isInlineDiffVisible
+                ? Preferences.Instance.Layout.CommitDetailChangesLeftWidth
+                : new GridLength(1, GridUnitType.Star);
+            set
+            {
+                if (_isInlineDiffVisible)
+                    Preferences.Instance.Layout.CommitDetailChangesLeftWidth = value;
+            }
+        }
+
+        public GridLength DiffSplitterColumnWidth => _isInlineDiffVisible
+            ? new GridLength(4)
+            : new GridLength(0);
+
+        public GridLength DiffPanelColumnWidth => _isInlineDiffVisible
+            ? new GridLength(1, GridUnitType.Star)
+            : new GridLength(0);
 
         public string SearchChangeFilter
         {
@@ -530,13 +575,37 @@ namespace SourceGit.ViewModels
                         Changes = changes;
                         VisibleChanges = visible;
 
-                        if (visible.Count == 0)
-                            ChangeSelection = new(null);
-                        else
-                            ChangeSelection = new(VisibleChanges.GetRange(0, 1));
+                        _suppressMainDiff = true;
+                        try
+                        {
+                            if (visible.Count == 0)
+                                ChangeSelection = new(null);
+                            else
+                                ChangeSelection = new(VisibleChanges.GetRange(0, 1));
+                        }
+                        finally
+                        {
+                            _suppressMainDiff = false;
+                        }
                     });
                 }
             }, token);
+        }
+
+        public void PresentMainDiff()
+        {
+            if (_suppressMainDiff || DiffContext == null || _repo?.Histories == null)
+                return;
+
+            _repo.Histories.OpenMainDiff(DiffContext);
+        }
+
+        public void OpenMainDiffForChange(Models.Change change)
+        {
+            if (change == null || _commit == null || _repo?.Histories == null)
+                return;
+
+            _repo.Histories.OpenMainDiff(new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, change), _diffContext));
         }
 
         private void UpdateDetails()
@@ -545,6 +614,14 @@ namespace SourceGit.ViewModels
                 DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _changeSelection.Changes[0]), _diffContext);
             else
                 DiffContext = null;
+
+            if (_suppressMainDiff || _repo?.Histories == null)
+                return;
+
+            if (DiffContext != null)
+                _repo.Histories.OpenMainDiff(DiffContext);
+            else
+                _repo.Histories.CloseMainDiff();
         }
 
         private async Task<Models.InlineElementCollector> ParseInlinesInMessageAsync(string message)
@@ -738,6 +815,8 @@ namespace SourceGit.ViewModels
         private ChangeSelection _changeSelection = new(null);
         private string _searchChangeFilter = string.Empty;
         private DiffContext _diffContext = null;
+        private bool _isInlineDiffVisible = true;
+        private bool _suppressMainDiff = false;
         private string _viewRevisionFilePath = string.Empty;
         private object _viewRevisionFileContent = null;
         private CancellationTokenSource _cancellationSource = null;
