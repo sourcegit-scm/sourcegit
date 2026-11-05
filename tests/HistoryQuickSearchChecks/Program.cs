@@ -128,6 +128,8 @@ internal static class Program
             histories.Commits = commits;
             WaitFor(() => !histories.IsQuickSearching);
 
+            CheckSelectionDuringQuickSearchRefresh(repo, commits);
+
             histories.SelectedCommits = [commits[1]];
             var view = new HistoryView { DataContext = histories };
             var sidebarSearch = new TextBox { Watermark = "Sidebar search" };
@@ -347,6 +349,73 @@ internal static class Program
                 File.SetAttributes(file, FileAttributes.Normal);
             Directory.Delete(fixture, true);
         }
+    }
+
+    private static void CheckSelectionDuringQuickSearchRefresh(Repository repo, List<Commit> commits)
+    {
+        var histories = new Histories(repo) { Commits = commits, IsLoading = false };
+        typeof(Histories).GetField("_ignoreSelectionChange", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(histories, true);
+        histories.QuickSearchText = "body-only";
+        WaitFor(() => !histories.IsQuickSearching);
+        histories.SelectedCommits = [commits[0]];
+        histories.Commits = new QueryCommits(repo.FullPath, "HEAD").GetResultAsync().GetAwaiter().GetResult();
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Single().SHA == commits[0].SHA && histories.QuickSearchStatus == "0 / 1",
+            "history refresh preserves a selected commit outside quick search matches");
+        Check(ReferenceEquals(histories.SelectedCommits[0], histories.Commits[0]),
+            "history refresh rebinds selection to the refreshed commit");
+
+        histories.Commits = new QueryCommits(repo.FullPath, "HEAD").GetResultAsync().GetAwaiter().GetResult();
+        histories.NavigateTo(commits[0].SHA);
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Single().SHA == commits[0].SHA,
+            "delayed quick search does not undo navigation after history refresh");
+
+        var view = new HistoryView { DataContext = histories };
+        var window = new Window { Width = 1000, Height = 650, Content = view };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+        WaitFor(() => !histories.IsQuickSearching);
+        var grid = view.FindControl<DataGrid>("CommitListContainer")!;
+        Check(histories.SelectedCommits.Single().SHA == commits[0].SHA &&
+            grid.SelectedItems.Cast<Commit>().Single().SHA == commits[0].SHA,
+            "loading the history view preserves a selected commit outside quick search matches");
+
+        histories.SelectedCommits = new List<Commit>(histories.Commits);
+        histories.ResumeQuickSearch();
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Count == 2 && grid.SelectedItems.Count == 2,
+            "resuming quick search preserves multiple selected commits");
+
+        histories.SelectedCommits = [];
+        histories.ResumeQuickSearch();
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Count == 0 && grid.SelectedItems.Count == 0,
+            "resuming quick search preserves an empty selection");
+
+        histories.QuickSearchText = "alpha subject";
+        histories.SelectedCommits = [histories.Commits[0]];
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Single().SHA == commits[0].SHA,
+            "editing quick search does not overwrite a selection made while the query is pending");
+
+        histories.QuickSearchText = "second";
+        histories.IsQuickSearchFilterEnabled = true;
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Count == 1 && histories.SelectedCommits[0].SHA == commits[0].SHA,
+            "toggling the filter while an edited query is pending still selects its first match");
+        histories.IsQuickSearchFilterEnabled = false;
+
+        histories.QuickSearchText = "no such commit";
+        WaitFor(() => !histories.IsQuickSearching);
+        histories.SelectedCommits = [histories.Commits[0]];
+        histories.Commits = new List<Commit>(histories.Commits);
+        WaitFor(() => !histories.IsQuickSearching);
+        Check(histories.SelectedCommits.Single().SHA == commits[0].SHA && histories.QuickSearchStatus == "0 / 0",
+            "history refresh with no quick search matches preserves selection");
+
+        window.Close();
+        histories.CancelQuickSearch();
     }
 
     private static void CheckRepositoryGraph(string path, string preview)

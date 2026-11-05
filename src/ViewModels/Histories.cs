@@ -125,7 +125,7 @@ namespace SourceGit.ViewModels
                 if (SetProperty(ref _quickSearchText, value))
                 {
                     OnPropertyChanged(nameof(IsQuickSearchFilterActive));
-                    RefreshQuickSearch();
+                    RefreshQuickSearch(selectMatch: true);
                 }
             }
         }
@@ -186,7 +186,7 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private async void RefreshQuickSearch(bool commitsChanged = false)
+        private async void RefreshQuickSearch(bool commitsChanged = false, bool selectMatch = false)
         {
             _quickSearchCancellation?.Cancel();
             if (string.IsNullOrEmpty(_quickSearchText))
@@ -202,7 +202,7 @@ namespace SourceGit.ViewModels
             ApplyQuickSearchFilter();
             if (!IsQuickSearching)
             {
-                if (!string.IsNullOrEmpty(_quickSearchText))
+                if (selectMatch && !string.IsNullOrEmpty(_quickSearchText))
                     SelectedCommits = [];
                 return;
             }
@@ -211,6 +211,7 @@ namespace SourceGit.ViewModels
             _quickSearchCancellation = cancellation;
             var commits = _commits;
             var filter = _quickSearchText;
+            var selectionVersion = _selectionVersion;
             try
             {
                 await Task.Delay(200, cancellation.Token);
@@ -220,14 +221,17 @@ namespace SourceGit.ViewModels
 
                 _quickSearchMatches = commits.FindAll(c => matches.Contains(c.SHA));
                 IsQuickSearching = false;
+                // Refreshing cached results must not navigate, and an edited query
+                // must not overwrite a selection made while it was running.
+                var updateSelection = selectMatch && selectionVersion == _selectionVersion;
                 ApplyQuickSearchFilter();
-                if (_quickSearchMatches.Count > 0)
+                if (updateSelection && _quickSearchMatches.Count > 0)
                 {
                     var selected = _selectedCommits.Count == 1 ?
                         _quickSearchMatches.Find(c => c.SHA == _selectedCommits[0].SHA) : null;
                     SelectedCommits = [selected ?? _quickSearchMatches[0]];
                 }
-                else
+                else if (updateSelection)
                 {
                     SelectedCommits = [];
                 }
@@ -311,6 +315,9 @@ namespace SourceGit.ViewModels
             get => _selectedCommits;
             set
             {
+                if (!IsUpdatingQuickSearchFilter)
+                    _selectionVersion++;
+
                 var oldCount = _selectedCommits.Count;
                 if (SetProperty(ref _selectedCommits, value) && oldCount + value.Count > 0)
                     PostSelectedCommitsChanged();
@@ -756,6 +763,7 @@ namespace SourceGit.ViewModels
                 Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
+        private int _selectionVersion;
         private string _quickSearchText = string.Empty;
         private bool _isQuickSearchFilterEnabled = false;
         private bool _isQuickSearching = false;
