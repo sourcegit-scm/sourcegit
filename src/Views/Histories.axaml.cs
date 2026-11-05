@@ -778,7 +778,7 @@ namespace SourceGit.Views
 
             IsScrollToTopVisible = startY >= rowHeight;
 
-            var clipWidth = dataGrid.Columns[0].ActualWidth - 4;
+            var clipWidth = dataGrid.Columns[0].ActualWidth - 4 - 184; // 184 = branch/tag pill gutter (should match CommitGraph left margin)
             var lastLayout = CommitGraph.Layout;
             if (lastLayout == null ||
                 Math.Abs(lastLayout.StartY - startY) > 0.01 ||

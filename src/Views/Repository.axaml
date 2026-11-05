@@ -258,7 +258,131 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar (Branches/Remotes/Tags/Submodules/Worktrees) -->
-            <Grid Grid.Column="0" RowDefinitions="Auto,*" IsVisible="{Binding #ThisControl.IsNormalSidebarVisible, Mode=OneWay}">              
+            <Grid Grid.Column="0" IsVisible="{Binding #ThisControl.IsNormalSidebarVisible, Mode=OneWay}">
+              <!-- Collapsed icon rail -->
+              <StackPanel Margin="4,8,4,8"
+                          Spacing="10"
+                          HorizontalAlignment="Center"
+                          IsVisible="{Binding #ThisControl.IsSidebarCollapsed, Mode=OneWay}">
+                <Button Classes="icon_button"
+                        Width="40" Height="36"
+                        Tag="local"
+                        Click="OnSidebarRailSectionClicked"
+                        ToolTip.Tip="{DynamicResource Text.Repository.LocalBranches}">
+                  <Grid Width="28" Height="28">
+                    <Path Width="14" Height="14"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Data="{StaticResource Icons.Local}"
+                          Fill="{DynamicResource Brush.FG1}"/>
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top"
+                            MinWidth="14" Height="14"
+                            Padding="3,0"
+                            CornerRadius="7"
+                            Background="{DynamicResource Brush.Badge}">
+                      <TextBlock Text="{Binding LocalBranchesCount}"
+                                 FontSize="9"
+                                 Foreground="{DynamicResource Brush.BadgeFG}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                  </Grid>
+                </Button>
+
+                <Button Classes="icon_button"
+                        Width="40" Height="36"
+                        Tag="remote"
+                        Click="OnSidebarRailSectionClicked"
+                        ToolTip.Tip="{DynamicResource Text.Repository.Remotes}">
+                  <Grid Width="28" Height="28">
+                    <Path Width="14" Height="14"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Data="{StaticResource Icons.Remotes}"
+                          Fill="{DynamicResource Brush.FG1}"/>
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top"
+                            MinWidth="14" Height="14"
+                            Padding="3,0"
+                            CornerRadius="7"
+                            Background="{DynamicResource Brush.Badge}">
+                      <TextBlock Text="{Binding Remotes.Count}"
+                                 FontSize="9"
+                                 Foreground="{DynamicResource Brush.BadgeFG}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                  </Grid>
+                </Button>
+
+                <Button Classes="icon_button"
+                        Width="40" Height="36"
+                        Tag="tags"
+                        Click="OnSidebarRailSectionClicked"
+                        ToolTip.Tip="{DynamicResource Text.Repository.Tags}">
+                  <Grid Width="28" Height="28">
+                    <Path Width="14" Height="14"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Data="{StaticResource Icons.Tags}"
+                          Fill="{DynamicResource Brush.FG1}"/>
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top"
+                            MinWidth="14" Height="14"
+                            Padding="3,0"
+                            CornerRadius="7"
+                            Background="{DynamicResource Brush.Badge}">
+                      <TextBlock Text="{Binding Tags.Count}"
+                                 FontSize="9"
+                                 Foreground="{DynamicResource Brush.BadgeFG}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                  </Grid>
+                </Button>
+
+                <Button Classes="icon_button"
+                        Width="40" Height="36"
+                        Tag="submodules"
+                        Click="OnSidebarRailSectionClicked"
+                        ToolTip.Tip="{DynamicResource Text.Repository.Submodules}">
+                  <Grid Width="28" Height="28">
+                    <Path Width="14" Height="14"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Data="{StaticResource Icons.Submodules}"
+                          Fill="{DynamicResource Brush.FG1}"/>
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top"
+                            MinWidth="14" Height="14"
+                            Padding="3,0"
+                            CornerRadius="7"
+                            Background="{DynamicResource Brush.Badge}">
+                      <TextBlock Text="{Binding Submodules.Count}"
+                                 FontSize="9"
+                                 Foreground="{DynamicResource Brush.BadgeFG}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                  </Grid>
+                </Button>
+
+                <Button Classes="icon_button"
+                        Width="40" Height="36"
+                        Tag="worktrees"
+                        Click="OnSidebarRailSectionClicked"
+                        ToolTip.Tip="{DynamicResource Text.Repository.Worktrees}">
+                  <Grid Width="28" Height="28">
+                    <Path Width="14" Height="14"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Data="{StaticResource Icons.Worktrees}"
+                          Fill="{DynamicResource Brush.FG1}"/>
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Top"
+                            MinWidth="14" Height="14"
+                            Padding="3,0"
+                            CornerRadius="7"
+                            Background="{DynamicResource Brush.Badge}">
+                      <TextBlock Text="{Binding Worktrees.Count}"
+                                 FontSize="9"
+                                 Foreground="{DynamicResource Brush.BadgeFG}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                  </Grid>
+                </Button>
+              </StackPanel>
+
+              <!-- Expanded sidebar -->
+              <Grid RowDefinitions="Auto,*"
+                    IsVisible="{Binding #ThisControl.IsSidebarCollapsed, Converter={x:Static BoolConverters.Not}, Mode=OneWay}">
               <!-- Filter Branches/Tags/Submodules -->
               <TextBox Grid.Row="0"
                        x:Name="FilterBox"
@@ -572,6 +696,7 @@
                   </ListBox.ItemTemplate>
                 </ListBox>
               </Grid>
+              </Grid>
             </Grid>
 
             <!-- Commit Search Panel -->
@@ -580,7 +705,14 @@
                                 DataContext="{Binding Histories.SearchCommitContext, Mode=OneWay}"
                                 IsVisible="{Binding #ThisControl.IsCommitSearchPanelVisible, Mode=OneWay}"/>
 
-            <!-- Splitter -->
+            <!-- Collapsed sidebar divider (icon rail ↔ commit graph) -->
+            <Border Grid.Column="1"
+                    Width="1"
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="{DynamicResource Brush.Border0}"
+                    IsVisible="{Binding #ThisControl.IsSidebarCollapsed, Mode=OneWay}"/>
+
+            <!-- Splitter (expanded sidebar only) -->
             <GridSplitter Grid.Column="1"
                           Width="3" MinWidth="3" MaxWidth="3"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -589,9 +721,12 @@
                           BorderBrush="{DynamicResource Brush.Border0}"
                           Focusable="False">
               <GridSplitter.IsVisible>
-                <MultiBinding Converter="{x:Static BoolConverters.Or}">
-                  <Binding ElementName="ThisControl" Path="IsCommitSearchPanelVisible"/>
-                  <Binding ElementName="ThisControl" Path="IsNormalSidebarVisible"/>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                    <Binding ElementName="ThisControl" Path="IsCommitSearchPanelVisible"/>
+                    <Binding ElementName="ThisControl" Path="IsNormalSidebarVisible"/>
+                  </MultiBinding>
+                  <Binding ElementName="ThisControl" Path="IsSidebarCollapsed" Converter="{x:Static BoolConverters.Not}"/>
                 </MultiBinding>
               </GridSplitter.IsVisible>
             </GridSplitter>

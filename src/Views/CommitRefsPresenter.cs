@@ -23,22 +23,37 @@ namespace SourceGit.Views
         public CommitRefsIconCache()
         {
             _head = LoadIcon("Icons.Head");
-            _branch = LoadIcon("Icons.Branch");
+            _monitor = LoadIcon("Icons.Monitor");
             _remote = LoadIcon("Icons.Remote");
             _tag = LoadIcon("Icons.Tag");
         }
 
-        public Geometry GetIcon(Models.DecoratorType type)
+        public Geometry GetLeadingIcon(Models.DecoratorType type)
         {
             return type switch
             {
                 Models.DecoratorType.CurrentBranchHead => _head,
                 Models.DecoratorType.CurrentCommitHead => _head,
-                Models.DecoratorType.LocalBranchHead => _branch,
+                _ => null,
+            };
+        }
+
+        public Geometry GetTrailingIcon(Models.DecoratorType type)
+        {
+            return type switch
+            {
+                Models.DecoratorType.CurrentBranchHead => _monitor,
+                Models.DecoratorType.CurrentCommitHead => _monitor,
+                Models.DecoratorType.LocalBranchHead => _monitor,
                 Models.DecoratorType.RemoteBranchHead => _remote,
                 Models.DecoratorType.Tag => _tag,
                 _ => null,
             };
+        }
+
+        public Geometry GetIcon(Models.DecoratorType type)
+        {
+            return GetTrailingIcon(type) ?? GetLeadingIcon(type);
         }
 
         private Geometry LoadIcon(string resourceKey)
@@ -59,13 +74,18 @@ namespace SourceGit.Views
 
         private static CommitRefsIconCache _instance = null;
         private Geometry _head = null;
-        private Geometry _branch = null;
+        private Geometry _monitor = null;
         private Geometry _remote = null;
         private Geometry _tag = null;
     }
 
     public class CommitRefsPresenter : Control
     {
+        private const double PILL_HEIGHT = 16.0;
+        private const double PILL_PAD = 6.0;
+        private const double ICON_SIZE = 10.0;
+        private const double ICON_GAP = 4.0;
+
         public class RenderItem
         {
             public Models.Decorator Decorator { get; set; } = null;
@@ -175,13 +195,12 @@ namespace SourceGit.Views
             if (_items.Count == 0)
                 return;
 
-            var useGraphColor = UseGraphColor;
-            var fg = Foreground;
-            var bg = Background;
+            var fg = Brushes.White;
             var allowWrap = AllowWrap;
             var x = 1.5;
             var y = 0.5;
-            var remoteIcon = CommitRefsIconCache.Instance.GetIcon(Models.DecoratorType.RemoteBranchHead);
+            var icons = CommitRefsIconCache.Instance;
+            var remoteIcon = icons.GetTrailingIcon(Models.DecoratorType.RemoteBranchHead);
             var hasSingleRemote = HasSingleRemote;
 
             context.FillRectangle(Brushes.Transparent, Bounds);
@@ -194,59 +213,61 @@ namespace SourceGit.Views
                     y += 20.0;
                 }
 
-                var entireRect = new RoundedRect(new Rect(x, y, item.Width, 16), new CornerRadius(4));
+                var entireRect = new RoundedRect(new Rect(x, y, item.Width, PILL_HEIGHT), new CornerRadius(4));
+
+                // Solid pill fill (slightly stronger for HEAD).
                 if (item.IsHead)
                 {
-                    if (useGraphColor)
-                    {
-                        if (bg != null)
-                            context.DrawRectangle(bg, null, entireRect);
-
-                        using (context.PushOpacity(.6))
-                            context.DrawRectangle(item.Brush, null, entireRect);
-                    }
+                    context.DrawRectangle(item.Brush, null, entireRect);
                 }
                 else
                 {
-                    if (bg != null)
-                        context.DrawRectangle(bg, null, entireRect);
-
-                    var labelRect = new RoundedRect(new Rect(x + 16, y, item.Width - 16, 16), new CornerRadius(4, 0, 0, 4));
-                    using (context.PushOpacity(.2))
-                        context.DrawRectangle(item.Brush, null, labelRect);
+                    using (context.PushOpacity(0.9))
+                        context.DrawRectangle(item.Brush, null, entireRect);
                 }
 
-                context.DrawLine(new Pen(item.Brush), new Point(x + 16, y), new Point(x + 16, y + 16));
-                context.DrawText(item.Label, new Point(x + 20, y + 8.0 - item.Label.Height * 0.5));
+                var contentX = x + PILL_PAD;
+                var iconY = y + (PILL_HEIGHT - ICON_SIZE) * 0.5;
+
+                var leading = icons.GetLeadingIcon(item.Decorator.Type);
+                if (leading != null)
+                {
+                    using (context.PushTransform(Matrix.CreateTranslation(contentX, iconY)))
+                        context.DrawGeometry(fg, null, leading);
+                    contentX += ICON_SIZE + ICON_GAP;
+                }
+
+                context.DrawText(item.Label, new Point(contentX, y + PILL_HEIGHT * 0.5 - item.Label.Height * 0.5));
+                contentX += item.Label.WidthIncludingTrailingWhitespace + ICON_GAP;
+
+                var trailing = icons.GetTrailingIcon(item.Decorator.Type);
+                if (trailing != null)
+                {
+                    using (context.PushTransform(Matrix.CreateTranslation(contentX, iconY)))
+                        context.DrawGeometry(fg, null, trailing);
+                    contentX += ICON_SIZE;
+                }
 
                 if (item.Remotes.Count > 0)
                 {
-                    var rx = x + 20 + item.Label.WidthIncludingTrailingWhitespace + 4;
-
+                    contentX += ICON_GAP;
                     if (hasSingleRemote)
                     {
-                        context.DrawLine(new Pen(item.Brush), new Point(rx, y), new Point(rx, y + 16));
-                        using (context.PushTransform(Matrix.CreateTranslation(rx + 4, y + 4)))
+                        using (context.PushTransform(Matrix.CreateTranslation(contentX, iconY)))
                             context.DrawGeometry(fg, null, remoteIcon);
                     }
                     else
                     {
                         foreach (var remote in item.Remotes)
                         {
-                            context.DrawLine(new Pen(item.Brush), new Point(rx, y), new Point(rx, y + 16));
-                            using (context.PushTransform(Matrix.CreateTranslation(rx + 4, y + 4)))
+                            using (context.PushTransform(Matrix.CreateTranslation(contentX, iconY)))
                                 context.DrawGeometry(fg, null, remoteIcon);
-                            context.DrawText(remote, new Point(rx + 16, y + 8.0 - remote.Height * 0.5));
-                            rx += remote.WidthIncludingTrailingWhitespace + 22;
+                            contentX += ICON_SIZE + 2;
+                            context.DrawText(remote, new Point(contentX, y + PILL_HEIGHT * 0.5 - remote.Height * 0.5));
+                            contentX += remote.WidthIncludingTrailingWhitespace + ICON_GAP;
                         }
                     }
                 }
-
-                context.DrawRectangle(null, new Pen(item.Brush), entireRect);
-
-                var icon = CommitRefsIconCache.Instance.GetIcon(item.Decorator.Type);
-                using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
-                    context.DrawGeometry(fg, null, icon);
 
                 x += item.Width + 4;
             }
@@ -293,14 +314,15 @@ namespace SourceGit.Views
             var typeface = new Typeface(FontFamily);
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
-            var fg = Foreground;
+            var fg = Brushes.White;
             var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
             var labelSize = FontSize;
-            var requiredHeight = 16.0;
+            var requiredHeight = PILL_HEIGHT;
             var x = 0.0;
             var allowWrap = AllowWrap;
             var showTags = ShowTags;
             var skippedIdx = new HashSet<int>();
+            var icons = CommitRefsIconCache.Instance;
 
             for (var i = 0; i < count; i++)
             {
@@ -340,7 +362,12 @@ namespace SourceGit.Views
                         fg);
                 }
 
-                item.Width = item.Label.Width + 24;
+                // [pad] [optional leading] [label] [gap] [trailing] [pad] (+ compact remotes)
+                var width = PILL_PAD * 2 + item.Label.WidthIncludingTrailingWhitespace;
+                if (icons.GetLeadingIcon(decorator.Type) != null)
+                    width += ICON_SIZE + ICON_GAP;
+                if (icons.GetTrailingIcon(decorator.Type) != null)
+                    width += ICON_GAP + ICON_SIZE;
 
                 var findRemotes = useCompactBranchNames && (decorator.Type == Models.DecoratorType.CurrentBranchHead || decorator.Type == Models.DecoratorType.LocalBranchHead);
                 if (findRemotes)
@@ -369,14 +396,16 @@ namespace SourceGit.Views
                             item.Remotes.Add(remote);
 
                             if (hasSingleRemote)
-                                item.Width += 18;
+                                width += ICON_GAP + ICON_SIZE;
                             else
-                                item.Width += remote.WidthIncludingTrailingWhitespace + 22;
+                                width += ICON_GAP + ICON_SIZE + 2 + remote.WidthIncludingTrailingWhitespace;
 
                             skippedIdx.Add(j);
                         }
                     }
                 }
+
+                item.Width = width;
 
                 x += item.Width + 4;
                 if (allowWrap)
@@ -392,7 +421,7 @@ namespace SourceGit.Views
             double requiredWidth = 0;
             if (_items.Count > 0)
             {
-                if (allowWrap && requiredHeight > 16.0)
+                if (allowWrap && requiredHeight > PILL_HEIGHT)
                     requiredWidth = double.IsInfinity(availableSize.Width) ? x + 2 : availableSize.Width;
                 else
                     requiredWidth = x + 2;

@@ -42,6 +42,22 @@ namespace SourceGit.Views
             }
         }
 
+        public static readonly DirectProperty<Repository, bool> IsSidebarCollapsedProperty =
+            AvaloniaProperty.RegisterDirect<Repository, bool>(
+                nameof(IsSidebarCollapsed),
+                static o => o.IsSidebarCollapsed,
+                static (o, v) => o.IsSidebarCollapsed = v);
+
+        public bool IsSidebarCollapsed
+        {
+            get => _isSidebarCollapsed;
+            set
+            {
+                if (SetAndRaise(IsSidebarCollapsedProperty, ref _isSidebarCollapsed, value))
+                    CalculateSidebarWidth();
+            }
+        }
+
         public static readonly DirectProperty<Repository, double> SidebarMinWidthProperty =
             AvaloniaProperty.RegisterDirect<Repository, double>(
                 nameof(SidebarMinWidth),
@@ -70,7 +86,7 @@ namespace SourceGit.Views
                     var layout = ViewModels.Preferences.Instance.Layout;
                     if (_isCommitSearchPanelVisible)
                         layout.RepositorySearchCommitWidth = value.Value;
-                    else if (_isNormalSidebarVisible)
+                    else if (_isNormalSidebarVisible && !_isSidebarCollapsed)
                         layout.RepositorySidebarWidth = value.Value;
                 }
             }
@@ -518,6 +534,11 @@ namespace SourceGit.Views
                 SidebarMinWidth = 200;
                 SidebarWidth = new GridLength(layout.RepositorySearchCommitWidth, GridUnitType.Pixel);
             }
+            else if (_isNormalSidebarVisible && _isSidebarCollapsed)
+            {
+                SidebarMinWidth = COLLAPSED_SIDEBAR_WIDTH;
+                SidebarWidth = new GridLength(COLLAPSED_SIDEBAR_WIDTH, GridUnitType.Pixel);
+            }
             else if (_isNormalSidebarVisible)
             {
                 SidebarMinWidth = 200;
@@ -530,7 +551,39 @@ namespace SourceGit.Views
             }
         }
 
+        private void OnSidebarRailSectionClicked(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Control { Tag: string section } || DataContext is not ViewModels.Repository repo)
+                return;
+
+            ViewModels.Preferences.Instance.Layout.IsSidebarCollapsedInHistories = false;
+
+            switch (section)
+            {
+                case "local":
+                    repo.IsLocalBranchGroupExpanded = true;
+                    break;
+                case "remote":
+                    repo.IsRemoteGroupExpanded = true;
+                    break;
+                case "tags":
+                    repo.IsTagGroupExpanded = true;
+                    break;
+                case "submodules":
+                    repo.IsSubmoduleGroupExpanded = true;
+                    break;
+                case "worktrees":
+                    repo.IsWorktreeGroupExpanded = true;
+                    break;
+            }
+
+            e.Handled = true;
+        }
+
+        private const double COLLAPSED_SIDEBAR_WIDTH = 52;
+
         private bool _isNormalSidebarVisible = true;
+        private bool _isSidebarCollapsed = false;
         private bool _isCommitSearchPanelVisible = false;
         private double _sidebarMinWidth = 200;
         private GridLength _sidebarWidth;

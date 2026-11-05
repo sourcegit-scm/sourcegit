@@ -60,6 +60,13 @@
                   </MultiBinding>
                 </MultiBinding>
               </v:Repository.IsNormalSidebarVisible>
+
+              <v:Repository.IsSidebarCollapsed>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="IsDashboardVisible"/>
+                  <Binding Source="{x:Static vm:Preferences.Instance}" Path="Layout.IsSidebarCollapsedInHistories"/>
+                </MultiBinding>
+              </v:Repository.IsSidebarCollapsed>
             </v:Repository>
           </DataTemplate>
         </ContentControl.DataTemplates>
