@@ -147,13 +147,18 @@ namespace SourceGit.Commands
                 return Result.Failed(e.Message);
             }
 
-            var rs = new Result() { IsSuccess = true };
-            rs.StdOut = await proc.StandardOutput.ReadToEndAsync(CancellationToken).ConfigureAwait(false);
-            rs.StdErr = await proc.StandardError.ReadToEndAsync(CancellationToken).ConfigureAwait(false);
-            await proc.WaitForExitAsync(CancellationToken).ConfigureAwait(false);
+            var stdOutTask = proc.StandardOutput.ReadToEndAsync(CancellationToken);
+            var stdErrTask = proc.StandardError.ReadToEndAsync(CancellationToken);
+            var waitForExitTask = proc.WaitForExitAsync(CancellationToken);
 
-            rs.IsSuccess = proc.ExitCode == 0;
-            return rs;
+            await Task.WhenAll(stdOutTask, stdErrTask, waitForExitTask).ConfigureAwait(false);
+
+            return new Result
+            {
+                IsSuccess = proc.ExitCode == 0,
+                StdOut = await stdOutTask.ConfigureAwait(false),
+                StdErr = await stdErrTask.ConfigureAwait(false)
+            };
         }
 
         protected ProcessStartInfo CreateGitStartInfo(bool redirect)
