@@ -211,6 +211,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _useCompactBranchNamesInGraph, value);
         }
 
+        public Models.CommitGraphStyle CommitGraphStyle
+        {
+            get => _commitGraphStyle;
+            set => SetProperty(ref _commitGraphStyle, value);
+        }
+
         public bool UseTwoColumnsLayoutInHistories
         {
             get => _useTwoColumnsLayoutInHistories;
@@ -806,6 +812,7 @@ namespace SourceGit.ViewModels
         private bool _useAutoHideScrollBars = true;
         private bool _useGitHubStyleAvatar = true;
         private bool _useCompactBranchNamesInGraph = true;
+        private Models.CommitGraphStyle _commitGraphStyle = Models.CommitGraphStyle.Classic;
 
         private bool _check4UpdatesOnStartup = true;
         private double _lastCheckUpdateTime = 0;
