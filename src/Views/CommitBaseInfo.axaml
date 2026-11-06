@@ -8,7 +8,115 @@
              xmlns:c="using:SourceGit.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitBaseInfo"
-             x:Name="ThisControl">
+             x:Name="ThisControl"
+             Classes.compact="{Binding #ThisControl.IsCompact}">
+  <UserControl.Resources>
+    <DataTemplate x:Key="CompactCommitInfo" DataType="m:Commit">
+      <StackPanel Spacing="12" Margin="0,4,12,8">
+        <StackPanel Spacing="4">
+          <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
+          <Grid ColumnDefinitions="32,*">
+            <v:Avatar Width="28" Height="28" User="{Binding Author}" VerticalAlignment="Top"/>
+            <StackPanel Grid.Column="1" Margin="6,0,0,0" Spacing="2">
+              <Border Background="Transparent" Tag="{Binding Author}" ContextRequested="OnUserContextRequested">
+                <StackPanel>
+                  <SelectableTextBlock Text="{Binding Author.Name}" TextWrapping="Wrap"/>
+                  <SelectableTextBlock Text="{Binding Author.Email}" TextWrapping="Wrap" Foreground="{DynamicResource Brush.FG2}"/>
+                </StackPanel>
+              </Border>
+              <v:DateTimePresenter Timestamp="{Binding AuthorTime}" Foreground="{DynamicResource Brush.FG2}" ContextRequested="OnDateTimeContextMenuRequested"/>
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+
+        <StackPanel Spacing="4" IsVisible="{Binding IsCommitterVisible}">
+          <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
+          <Grid ColumnDefinitions="32,*">
+            <v:Avatar Width="28" Height="28" User="{Binding Committer}" VerticalAlignment="Top"/>
+            <StackPanel Grid.Column="1" Margin="6,0,0,0" Spacing="2">
+              <Border Background="Transparent" Tag="{Binding Committer}" ContextRequested="OnUserContextRequested">
+                <StackPanel>
+                  <SelectableTextBlock Text="{Binding Committer.Name}" TextWrapping="Wrap"/>
+                  <SelectableTextBlock Text="{Binding Committer.Email}" TextWrapping="Wrap" Foreground="{DynamicResource Brush.FG2}"/>
+                </StackPanel>
+              </Border>
+              <v:DateTimePresenter Timestamp="{Binding CommitterTime}" Foreground="{DynamicResource Brush.FG2}" ContextRequested="OnDateTimeContextMenuRequested"/>
+            </StackPanel>
+          </Grid>
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.SHA}"/>
+            <Button Grid.Column="1" Classes="icon_button" Width="24" Height="24" Click="OnOpenContainsIn"
+                    IsVisible="{Binding #ThisControl.SupportsContainsIn}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
+              <Path Width="14" Height="14" Data="{StaticResource Icons.Milestone}"/>
+            </Button>
+            <Button Grid.Column="2" Classes="icon_button" Width="24" Height="24" Click="OnOpenWebLink"
+                    IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
+                    ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.WebLinks}">
+              <Path Width="12" Height="12" Data="{StaticResource Icons.Link}"/>
+            </Button>
+          </Grid>
+          <SelectableTextBlock Text="{Binding SHA}" FontFamily="{DynamicResource Fonts.Monospace}" TextWrapping="Wrap"/>
+        </StackPanel>
+
+        <StackPanel Spacing="4" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+          <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Parents}"/>
+          <ItemsControl ItemsSource="{Binding Parents}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="x:String">
+                <TextBlock Text="{Binding Converter={x:Static c:StringConverters.ToShortSHA}}" FontFamily="{DynamicResource Fonts.Monospace}"
+                           Foreground="{DynamicResource Brush.Link}" TextDecorations="Underline" Cursor="Hand" Margin="0,0,12,4"
+                           PointerPressed="OnSHAPressed" ContextRequested="OnSHAContextRequested" ToolTip.Tip="{Binding}"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+
+        <StackPanel Spacing="4" IsVisible="{Binding HasDecorators}">
+          <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Refs}"/>
+          <v:CommitRefsPresenter AllowWrap="True" UseGraphColor="False" Foreground="{DynamicResource Brush.FG1}"
+                                 FontSize="12" PointerReleased="OnCommitRefsPresenterPointerReleased"/>
+        </StackPanel>
+
+        <ContentControl Content="{Binding #ThisControl.SignInfo}">
+          <ContentControl.DataTemplates>
+            <DataTemplate DataType="m:CommitSignInfo">
+              <StackPanel Spacing="4">
+                <TextBlock Text="{Binding ToolTip}" Foreground="{Binding Brush}" TextWrapping="Wrap"/>
+                <SelectableTextBlock Text="{Binding Signer}" TextWrapping="Wrap" IsVisible="{Binding HasSigner}"/>
+                <SelectableTextBlock Text="{Binding Key}" TextWrapping="Wrap" FontFamily="{DynamicResource Fonts.Monospace}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ContentControl.DataTemplates>
+        </ContentControl>
+
+        <StackPanel Spacing="4">
+          <TextBlock Classes="group_header_label" Text="{DynamicResource Text.CommitDetail.Info.Message}"/>
+          <v:CommitMessagePresenter FullMessage="{Binding #ThisControl.FullMessage}"
+                                    TextWrapping="Wrap" Foreground="{DynamicResource Brush.FG1}"
+                                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}">
+            <v:CommitMessagePresenter.ContextFlyout>
+              <MenuFlyout>
+                <MenuItem Header="{DynamicResource Text.Copy}" Command="{Binding $parent[SelectableTextBlock].Copy}"
+                          IsEnabled="{Binding $parent[SelectableTextBlock].CanCopy}" InputGesture="{x:Static TextBox.CopyGesture}"/>
+                <MenuItem Header="{DynamicResource Text.CopyAllText}" Click="OnCopyAllCommitMessage"/>
+              </MenuFlyout>
+            </v:CommitMessagePresenter.ContextFlyout>
+          </v:CommitMessagePresenter>
+        </StackPanel>
+      </StackPanel>
+    </DataTemplate>
+  </UserControl.Resources>
+  <UserControl.Styles>
+    <Style Selector="v|CommitBaseInfo.compact">
+      <Setter Property="ContentTemplate" Value="{StaticResource CompactCommitInfo}"/>
+    </Style>
+  </UserControl.Styles>
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:Commit">
       <StackPanel Orientation="Vertical">

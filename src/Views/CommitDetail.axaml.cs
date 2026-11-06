@@ -299,7 +299,7 @@ namespace SourceGit.Views
 
         private void OnTabHeaderPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (ViewModels.Preferences.Instance.UseTwoColumnsLayoutInHistories)
+            if (ViewModels.Preferences.Instance.IsHorizontalHistoryLayout)
                 return;
 
             var historiesView = this.FindAncestorOfType<Histories>();

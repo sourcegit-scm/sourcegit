@@ -539,9 +539,9 @@ namespace SourceGit.ViewModels
             }, token);
         }
 
-        private void UpdateDetails()
+        public void UpdateDetails()
         {
-            if (ActiveTabIndex == 1 && _changeSelection is { Count: 1, HasFolder: false })
+            if ((ActiveTabIndex == 1 || Preferences.Instance.IsFocusedHistoryLayout) && _changeSelection is { Count: 1, HasFolder: false })
                 DiffContext = new DiffContext(_repo.FullPath, new Models.DiffOption(_commit, _changeSelection.Changes[0]), _diffContext);
             else
                 DiffContext = null;
