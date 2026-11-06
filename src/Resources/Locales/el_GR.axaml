@@ -511,6 +511,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Μόνο ο τρέχων κλάδος</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Τρέχων κλάδος &amp; επιλεγμένα commits</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Μόνο τα επιλεγμένα commits</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Τοπικές αλλαγές</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Άνοιγμα στη σελίδα τοπικών αλλαγών</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">ΕΠΙΛΕΓΜΕΝΑ {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">ΕΜΦΑΝΙΣΗ ΣΤΗΛΩΝ</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Κρατήστε 'Ctrl' ή 'Shift' για να επιλέξετε πολλαπλά commits.</x:String>
@@ -817,6 +819,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Μόνο commits με αναφορές</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Μόνο πρώτος γονέας</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">ΕΜΦΑΝΙΣΗ ΣΗΜΑΙΩΝ</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Τοπικές αλλαγές ως κόμβος στο γράφημα</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Εμφάνιση χαμένων commits</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Εμφάνιση υπομονάδων ως δέντρο</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Εμφάνιση ετικετών ως δέντρο</x:String>

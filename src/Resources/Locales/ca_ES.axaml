@@ -530,6 +530,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Branca actual i comissions seleccionades</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Només les comissions seleccionades</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Comissions seleccionades (només el primer pare)</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Canvis locals</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Obre a la pàgina de canvis locals</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMISSIONS SELECCIONADES</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">MOSTRA LES COLUMNES</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Mantingueu premuda «Ctrl» o «Maj» per seleccionar diverses comissions.</x:String>
@@ -852,6 +854,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Només comissions decorades</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Només el primer pare</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">MOSTRA ELS INDICADORS</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Canvis locals com a node del gràfic</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Mostra les comissions perdudes</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Mostra els submòduls com a arbre</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Mostra les etiquetes com a arbre</x:String>

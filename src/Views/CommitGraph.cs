@@ -108,6 +108,8 @@ namespace SourceGit.Views
 
                 var geo = new StreamGeometry();
                 var pen = line.IsHighlighted ? Models.CommitGraph.Pens[line.Color] : grayedPen;
+                if (line.IsDashed)
+                    pen = new Pen(pen.Brush, pen.Thickness, s_dashStyle);
 
                 using (var ctx = geo.Open())
                 {
@@ -187,6 +189,9 @@ namespace SourceGit.Views
                         context.DrawEllipse(dotFill, pen, center, 6, 6);
                         context.DrawEllipse(pen.Brush, null, center, 3, 3);
                         break;
+                    case Models.CommitGraph.DotType.LocalChanges:
+                        context.DrawEllipse(dotFill, new Pen(pen.Brush, pen.Thickness, s_dashStyle), center, 6, 6);
+                        break;
                     case Models.CommitGraph.DotType.Merge:
                         context.DrawEllipse(pen.Brush, null, center, 6, 6);
                         context.DrawLine(dotFillPen, new Point(center.X, center.Y - 3), new Point(center.X, center.Y + 3));
@@ -198,6 +203,8 @@ namespace SourceGit.Views
                 }
             }
         }
+
+        private static readonly DashStyle s_dashStyle = new DashStyle([2, 2], 0);
 
         private Models.CommitGraph _graph = null;
         private Models.CommitGraphLayout _layout = null;

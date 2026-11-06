@@ -539,6 +539,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">当前分支和选中的提交</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">仅选中的提交</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">仅选中的提交 (First-parent 模式)</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">本地更改</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">在本地更改页面中打开</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">已选中 {0} 项提交</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">显示列</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">可以按住 Ctrl 或 Shift 键选择多个提交</x:String>
@@ -867,6 +869,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">仅显示分支、标签所引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">仅显示合并提交中的第一个提交</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">显示内容</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">将本地更改显示为图中的节点</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">显示丢失引用的提交</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">以树型结构展示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">以树型结构展示</x:String>

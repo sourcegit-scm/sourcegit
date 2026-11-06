@@ -511,6 +511,8 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Nur aktueller Branch</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Aktueller Branch &amp; ausgewählte Commits</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Nur ausgewählte Commits</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Lokale Änderungen</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Auf der Seite Änderungen öffnen</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS AUSGEWÄHLT</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SPALTEN ANZEIGEN</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Halte ‚Strg‘ oder ‚Umschalt‘, um mehrere Commits auszuwählen.</x:String>
@@ -821,6 +823,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Nur dekorierte Commits</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Nur ersten Vorgänger anzeigen</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">ANZEIGE-FLAGS</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Lokale Änderungen als Knoten im Graph</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Verlorene Commits anzeigen</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Zeige Submodule als Baumstruktur</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Zeige Tags als Baumstruktur</x:String>

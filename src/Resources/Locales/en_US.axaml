@@ -535,6 +535,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Current Branch &amp; Selected Commits</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Selected Commits Only</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">Selected Commits (First-parent Only)</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Local changes</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Open in Local Changes page</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECTED {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">SHOW COLUMNS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Hold 'Ctrl' or 'Shift' to select multiple commits.</x:String>
@@ -863,6 +865,7 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Decorated commits only</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">First-parent only</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">SHOW FLAGS</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Local changes as graph node</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Show lost commits</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Show Submodules as Tree</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Show Tags as Tree</x:String>
