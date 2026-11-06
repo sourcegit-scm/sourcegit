@@ -151,6 +151,7 @@
                                               LinkForeground="{DynamicResource Brush.Link}"
                                               Subject="{Binding Subject}"
                                               IssueTrackers="{Binding $parent[v:Histories].IssueTrackers}"
+                                              FontStyle="{Binding IsUncommitted, Converter={x:Static c:BoolConverters.IsItalicToFontStyle}}"
                                               FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                               Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
                   </Grid>
@@ -175,6 +176,7 @@
                             VerticalAlignment="Center"
                             User="{Binding Author}"
                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                            IsVisible="{Binding !IsUncommitted}"
                             IsHitTestVisible="False"/>
 
                   <Border Grid.Column="1" Padding="8,0" ClipToBounds="True">
@@ -199,7 +201,8 @@
                   <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              FontFamily="{DynamicResource Fonts.Monospace}"
                              FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
-                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                             Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
+                             IsVisible="{Binding !IsUncommitted}"/>
                 </Border>
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
@@ -400,6 +403,10 @@
 
           <DataTemplate DataType="vm:CommitDetail">
             <v:CommitDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:LocalChangesDetail">
+            <v:LocalChangesDetail IsDetailsPanelExpanded="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
           </DataTemplate>
 
           <DataTemplate DataType="vm:RevisionCompare">

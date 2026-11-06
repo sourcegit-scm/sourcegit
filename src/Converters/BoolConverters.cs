@@ -13,6 +13,9 @@ namespace SourceGit.Converters
         public static readonly FuncValueConverter<bool, double> IsMergedToOpacity =
             new(x => x ? 1 : 0.65);
 
+        public static readonly FuncValueConverter<bool, FontStyle> IsItalicToFontStyle =
+            new(x => x ? FontStyle.Italic : FontStyle.Normal);
+
         public static readonly FuncValueConverter<bool, IBrush> IsWarningToBrush =
             new(x => x ? Brushes.DarkGoldenrod : Application.Current?.FindResource("Brush.FG1") as IBrush);
     }

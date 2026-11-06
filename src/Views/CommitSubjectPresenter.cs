@@ -50,6 +50,15 @@ namespace SourceGit.Views
             set => SetValue(FontWeightProperty, value);
         }
 
+        public static readonly StyledProperty<FontStyle> FontStyleProperty =
+           TextBlock.FontStyleProperty.AddOwner<CommitSubjectPresenter>();
+
+        public FontStyle FontStyle
+        {
+            get => GetValue(FontStyleProperty);
+            set => SetValue(FontStyleProperty, value);
+        }
+
         public static readonly StyledProperty<IBrush> InlineCodeBackgroundProperty =
             AvaloniaProperty.Register<CommitSubjectPresenter, IBrush>(nameof(InlineCodeBackground), Brushes.Transparent);
 
@@ -189,6 +198,7 @@ namespace SourceGit.Views
                 change.Property == CodeFontFamilyProperty ||
                 change.Property == FontSizeProperty ||
                 change.Property == FontWeightProperty ||
+                change.Property == FontStyleProperty ||
                 change.Property == ForegroundProperty ||
                 change.Property == LinkForegroundProperty)
             {
@@ -322,8 +332,9 @@ namespace SourceGit.Views
             var foreground = Foreground;
             var inlineCodeForeground = InlineCodeForeground;
             var linkForeground = LinkForeground;
-            var typeface = new Typeface(fontFamily, FontStyle.Normal, FontWeight);
-            var codeTypeface = new Typeface(codeFontFamily, FontStyle.Normal, FontWeight);
+            var fontStyle = FontStyle;
+            var typeface = new Typeface(fontFamily, fontStyle, FontWeight);
+            var codeTypeface = new Typeface(codeFontFamily, fontStyle, FontWeight);
             var pos = 0;
             var x = 0.0;
             for (var i = 0; i < _elements.Count; i++)
@@ -349,7 +360,7 @@ namespace SourceGit.Views
                         subject.Substring(elem.Start, elem.Length),
                         CultureInfo.CurrentCulture,
                         FlowDirection.LeftToRight,
-                        new Typeface(fontFamily, FontStyle.Normal, FontWeight.Bold),
+                        new Typeface(fontFamily, fontStyle, FontWeight.Bold),
                         fontSize,
                         foreground);
                     _inlines.Add(new Inline(x, keyword, elem));

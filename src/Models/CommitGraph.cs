@@ -57,6 +57,7 @@ namespace SourceGit.Models
             Default,
             Head,
             Merge,
+            Uncommitted,
         }
 
         public class Dot
@@ -199,7 +200,9 @@ namespace SourceGit.Models
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
                 var dotColor = major?.Path.Color ?? 0;
                 var anchor = new Dot() { Center = position, Color = dotColor, IsHighlighted = isHighlighted };
-                if (commit.IsCurrentHead)
+                if (commit.IsUncommitted)
+                    anchor.Type = DotType.Uncommitted;
+                else if (commit.IsCurrentHead)
                     anchor.Type = DotType.Head;
                 else if (commit.Parents.Count > 1)
                     anchor.Type = DotType.Merge;

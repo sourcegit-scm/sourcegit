@@ -810,6 +810,13 @@ namespace SourceGit.Views
                     commits.Add(c);
             }
 
+            // The WIP (local changes) row has no commit context menu.
+            if (commits.Exists(x => x.IsUncommitted))
+            {
+                e.Handled = true;
+                return;
+            }
+
             if (selected.Count > 1)
             {
                 var menu = CreateContextMenuForMultipleCommits(repo, commits);
@@ -832,6 +839,12 @@ namespace SourceGit.Views
                 CommitListContainer.SelectedItems is { Count: 1 } &&
                 e.Source is Control { DataContext: Models.Commit c })
             {
+                if (c.IsUncommitted)
+                {
+                    histories.OpenLocalChanges();
+                    return;
+                }
+
                 if (histories.Bisect != null)
                 {
                     histories.CheckoutCommitDetached(c);

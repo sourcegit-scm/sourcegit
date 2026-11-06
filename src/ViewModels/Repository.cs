@@ -161,6 +161,8 @@ namespace SourceGit.ViewModels
 
                     if (value != null && !value.Head.Equals(oldHead, StringComparison.Ordinal) && _workingCopy is { UseAmend: true })
                         _workingCopy.UseAmend = false;
+
+                    SyncUncommittedRowInHistories();
                 }
             }
         }
@@ -1252,7 +1254,7 @@ namespace SourceGit.ViewModels
                     if (_histories != null)
                     {
                         _histories.IsLoading = false;
-                        _histories.Commits = commits;
+                        _histories.Commits = WithUncommittedRow(commits);
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
@@ -1348,6 +1350,7 @@ namespace SourceGit.ViewModels
 
                     _workingCopy.SetData(changes);
                     LocalChangesCount = changes.Count;
+                    SyncUncommittedRowInHistories();
                     OnPropertyChanged(nameof(InProgressContext));
                     GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasLocalChanges, changes.Count == 0);
                 });
@@ -1785,6 +1788,65 @@ namespace SourceGit.ViewModels
                 if (!node.IsBranch)
                     UpdateBranchTreeFilterMode(node.Children, map);
             }
+        }
+
+        /// <summary>
+        /// Prepends a GitKraken-style "WIP" pseudo commit to the histories list when there are
+        /// uncommitted local changes. The row is linked to the current HEAD so it sits at the
+        /// tip of the commit graph.
+        /// </summary>
+        private List<Models.Commit> WithUncommittedRow(List<Models.Commit> commits)
+        {
+            if (IsBare || _localChangesCount <= 0)
+                return commits;
+
+            var now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            var row = new Models.Commit
+            {
+                SHA = Models.Commit.UncommittedSHA,
+                Subject = App.Text("WorkingCopy"),
+                AuthorTime = now,
+                CommitterTime = now,
+                IsMerged = true,
+            };
+
+            var head = FindUncommittedRowParent(commits);
+            if (head != null)
+                row.Parents.Add(head);
+
+            return [row, .. commits];
+        }
+
+        private string FindUncommittedRowParent(List<Models.Commit> commits)
+        {
+            var head = _currentBranch?.Head;
+            if (string.IsNullOrEmpty(head))
+                return null;
+
+            return commits.Exists(c => c.SHA.Equals(head, StringComparison.Ordinal)) ? head : null;
+        }
+
+        private void SyncUncommittedRowInHistories()
+        {
+            if (_histories == null || _histories.IsLoading)
+                return;
+
+            var commits = _histories.Commits;
+            var hasRow = commits.Count > 0 && commits[0].IsUncommitted;
+            var needRow = !IsBare && _localChangesCount > 0;
+
+            if (!hasRow && !needRow)
+                return;
+
+            var core = hasRow ? commits.GetRange(1, commits.Count - 1) : commits;
+            if (hasRow && needRow)
+            {
+                var currentParent = commits[0].Parents.Count > 0 ? commits[0].Parents[0] : null;
+                if (string.Equals(currentParent, FindUncommittedRowParent(core), StringComparison.Ordinal))
+                    return;
+            }
+
+            _histories.Commits = WithUncommittedRow(core);
         }
 
         private void UpdateTagFilterMode(Dictionary<string, Models.FilterMode> map)

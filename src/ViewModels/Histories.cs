@@ -561,6 +561,18 @@ namespace SourceGit.ViewModels
             if (_ignoreSelectionChange)
                 return;
 
+            if (_selectedCommits.Count == 1 && _selectedCommits[0].IsUncommitted)
+            {
+                OpenLocalChanges();
+                return;
+            }
+
+            if (_selectedCommits.Count > 1 && _selectedCommits.Exists(x => x.IsUncommitted))
+            {
+                SelectedCommits = _selectedCommits.FindAll(x => !x.IsUncommitted);
+                return;
+            }
+
             CloseMainDiff();
 
             if (_selectedCommits.Count == 0)
@@ -596,6 +608,23 @@ namespace SourceGit.ViewModels
                 _searchCommitContext.Selected = null;
                 DetailContext = new Models.Count(_selectedCommits.Count);
             }
+
+            if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+                GenerateGraph(_commits);
+        }
+
+        /// <summary>
+        /// Shows the uncommitted changes (working copy) in the details panel while keeping the
+        /// commit graph visible.
+        /// </summary>
+        public void OpenLocalChanges()
+        {
+            CloseMainDiff();
+            _searchCommitContext.Selected = null;
+
+            _localChangesDetail ??= new LocalChangesDetail(_repo);
+            _localChangesDetail.RefreshFromWorkingCopy();
+            DetailContext = _localChangesDetail;
 
             if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
                 GenerateGraph(_commits);
@@ -638,6 +667,7 @@ namespace SourceGit.ViewModels
         private bool _isMainDiffVisible = false;
         private bool _ignoreSelectionChange = false;
 
+        private LocalChangesDetail _localChangesDetail = null;
         private bool _isSearchingCommits = false;
         private SearchCommitContext _searchCommitContext = null;
 

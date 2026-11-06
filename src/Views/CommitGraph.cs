@@ -187,6 +187,13 @@ namespace SourceGit.Views
                         context.DrawEllipse(dotFill, pen, center, 6, 6);
                         context.DrawEllipse(pen.Brush, null, center, 3, 3);
                         break;
+                    case Models.CommitGraph.DotType.Uncommitted:
+                        {
+                            // GitKraken-style WIP node: hollow dashed circle in the branch color.
+                            var dashed = new Pen(pen.Brush, 1.5, new DashStyle([2, 2], 0));
+                            context.DrawEllipse(dotFill, dashed, center, 6, 6);
+                            break;
+                        }
                     case Models.CommitGraph.DotType.Merge:
                         context.DrawEllipse(pen.Brush, null, center, 6, 6);
                         context.DrawLine(dotFillPen, new Point(center.X, center.Y - 3), new Point(center.X, center.Y + 3));
