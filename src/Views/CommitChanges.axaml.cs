@@ -19,7 +19,8 @@ namespace SourceGit.Views
 
         private void OnChangeDoubleTapped(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail vm &&
+            if (ViewModels.Preferences.Instance.ExternalMergeToolBindToDoubleClick &&
+                DataContext is ViewModels.CommitDetail vm &&
                 sender is ChangeCollectionView { Selection: { Count: 1, HasFolder: false } selection })
             {
                 vm.OpenChangeInMergeTool(selection.Changes[0]);
