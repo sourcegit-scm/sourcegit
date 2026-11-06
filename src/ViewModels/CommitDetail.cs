@@ -25,7 +25,7 @@ namespace SourceGit.ViewModels
         }
     }
 
-    public partial class CommitDetail : ObservableObject
+    public partial class CommitDetail : ObservableObject, IDisposable
     {
         public Repository Repository
         {
@@ -57,7 +57,11 @@ namespace SourceGit.ViewModels
                     return;
 
                 if (SetProperty(ref _commit, value))
-                    Refresh();
+                {
+                    _informationLoaded = false;
+                    if (!_deferInformationLoading)
+                        EnsureInformationLoaded();
+                }
             }
         }
 
@@ -157,16 +161,37 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _scrollOffset, value);
         }
 
-        public CommitDetail(Repository repo, CommitDetailSharedData sharedData)
+        public CommitDetail(Repository repo, CommitDetailSharedData sharedData, bool deferInformationLoading = false, SemaphoreSlim informationLoadGate = null)
         {
             _repo = repo;
+            _deferInformationLoading = deferInformationLoading;
+            _informationLoadGate = informationLoadGate;
             _sharedData = sharedData ?? new CommitDetailSharedData();
             WebLinks = Models.CommitLink.Get(repo.Remotes);
         }
 
-        public CommitDetail Clone()
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+            _revisionFileGeneration++;
+            _cancellationSource?.Cancel();
+            _cancellationSource?.Dispose();
+        }
+
+        public void EnsureInformationLoaded()
+        {
+            if (_disposed || _informationLoaded)
+                return;
+            _informationLoaded = true;
+            Refresh();
+        }
+
+        public CommitDetail Clone(Models.Change selectedChange = null)
         {
             var cloned = new CommitDetail(_repo, null);
+            cloned._initialChange = selectedChange;
             cloned.ActiveTabIndex = ActiveTabIndex;
             cloned.Commit = _commit;
             return cloned;
@@ -407,18 +432,23 @@ namespace SourceGit.ViewModels
 
         public async Task ViewRevisionFileAsync(Models.Object file)
         {
+            if (_disposed)
+                return;
+            var generation = ++_revisionFileGeneration;
+            var revision = _commit?.SHA;
             var obj = file ?? new Models.Object() { Path = string.Empty, Type = Models.ObjectType.None };
             ViewRevisionFilePath = obj.Path;
+            ViewRevisionFileContent = null;
 
             switch (obj.Type)
             {
                 case Models.ObjectType.Blob:
                     CanOpenRevisionFileWithDefaultEditor = true;
-                    await SetViewingBlobAsync(obj);
+                    await SetViewingBlobAsync(obj, revision, generation);
                     break;
                 case Models.ObjectType.Commit:
                     CanOpenRevisionFileWithDefaultEditor = false;
-                    await SetViewingCommitAsync(obj);
+                    await SetViewingCommitAsync(obj, generation);
                     break;
                 default:
                     CanOpenRevisionFileWithDefaultEditor = false;
@@ -453,9 +483,16 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
+            if (_disposed)
+                return;
+            _revisionFileGeneration++;
+            _cancellationSource?.Cancel();
+            _cancellationSource?.Dispose();
+            _cancellationSource = null;
             _requestingRevisionFiles = false;
             _revisionFiles = null;
 
+            FullMessage = null;
             SignInfo = null;
             ViewRevisionFileContent = null;
             ViewRevisionFilePath = string.Empty;
@@ -472,15 +509,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (_cancellationSource is { IsCancellationRequested: false })
-                _cancellationSource.Cancel();
-
             _cancellationSource = new CancellationTokenSource();
             var token = _cancellationSource.Token;
+            var commit = _commit;
 
-            Task.Run(async () =>
+            RunInformationQuery(async () =>
             {
-                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA)
+                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, commit.SHA)
                     .GetResultAsync()
                     .ConfigureAwait(false);
                 var inlines = await ParseInlinesInMessageAsync(message).ConfigureAwait(false);
@@ -488,6 +523,8 @@ namespace SourceGit.ViewModels
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Post(() =>
                     {
+                        if (_disposed || token.IsCancellationRequested)
+                            return;
                         FullMessage = new Models.CommitFullMessage
                         {
                             Message = message,
@@ -496,19 +533,23 @@ namespace SourceGit.ViewModels
                     });
             }, token);
 
-            Task.Run(async () =>
+            RunInformationQuery(async () =>
             {
-                var signInfo = await new Commands.QueryCommitSignInfo(_repo.FullPath, _commit.SHA, !_repo.HasAllowedSignersFile)
+                var signInfo = await new Commands.QueryCommitSignInfo(_repo.FullPath, commit.SHA, !_repo.HasAllowedSignersFile)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
                 if (!token.IsCancellationRequested)
-                    Dispatcher.UIThread.Post(() => SignInfo = signInfo);
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        if (!_disposed && !token.IsCancellationRequested)
+                            SignInfo = signInfo;
+                    });
             }, token);
 
-            Task.Run(async () =>
+            RunInformationQuery(async () =>
             {
-                var changes = await new Commands.CompareRevisions(_repo.FullPath, _commit.FirstParentToCompare, _commit.SHA)
+                var changes = await new Commands.CompareRevisions(_repo.FullPath, commit.FirstParentToCompare, commit.SHA)
                     .ReadAsync()
                     .ConfigureAwait(false);
 
@@ -527,16 +568,46 @@ namespace SourceGit.ViewModels
                 {
                     Dispatcher.UIThread.Post(() =>
                     {
+                        if (_disposed || token.IsCancellationRequested)
+                            return;
                         Changes = changes;
                         VisibleChanges = visible;
 
                         if (visible.Count == 0)
                             ChangeSelection = new(null);
                         else
-                            ChangeSelection = new(VisibleChanges.GetRange(0, 1));
+                            ChangeSelection = new(new List<Models.Change> { visible.Find(c => c.Path == _initialChange?.Path) ?? visible[0] });
+                        _initialChange = null;
                     });
                 }
             }, token);
+        }
+
+        private void RunInformationQuery(Func<Task> query, CancellationToken token)
+        {
+            _ = Task.Run(async () =>
+            {
+                var entered = false;
+                try
+                {
+                    if (_informationLoadGate != null)
+                    {
+                        await _informationLoadGate.WaitAsync(token).ConfigureAwait(false);
+                        entered = true;
+                    }
+                    token.ThrowIfCancellationRequested();
+                    await query().ConfigureAwait(false);
+                }
+                catch (OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    // A newer selection owns the pane; queued card work is discarded.
+                }
+                finally
+                {
+                    if (entered)
+                        _informationLoadGate.Release();
+                }
+            });
         }
 
         private void UpdateDetails()
@@ -637,7 +708,7 @@ namespace SourceGit.ViewModels
 
                         Dispatcher.UIThread.Post(() =>
                         {
-                            if (sha == Commit.SHA && _requestingRevisionFiles)
+                            if (!_disposed && sha == Commit.SHA && _requestingRevisionFiles)
                             {
                                 _revisionFiles = files;
                                 _requestingRevisionFiles = false;
@@ -676,28 +747,39 @@ namespace SourceGit.ViewModels
             RevisionFileSearchSuggestion = suggestion;
         }
 
-        private async Task SetViewingBlobAsync(Models.Object file)
+        private async Task SetViewingBlobAsync(Models.Object file, string revision, int generation)
         {
-            var isBinary = await new Commands.IsBinary(_repo.FullPath, _commit.SHA, file.Path).GetResultAsync();
+            var isBinary = await new Commands.IsBinary(_repo.FullPath, revision, file.Path).GetResultAsync();
+            if (_disposed || generation != _revisionFileGeneration)
+                return;
             if (isBinary)
             {
                 var imgDecoder = ImageSource.GetDecoder(file.Path);
                 if (imgDecoder != Models.ImageDecoder.None)
                 {
-                    var source = await ImageSource.FromRevisionAsync(_repo.FullPath, _commit.SHA, file.Path, imgDecoder);
+                    var source = await ImageSource.FromRevisionAsync(_repo.FullPath, revision, file.Path, imgDecoder);
+                    if (_disposed || generation != _revisionFileGeneration)
+                    {
+                        source.Bitmap?.Dispose();
+                        return;
+                    }
                     ViewRevisionFileContent = new Models.RevisionImageFile(file.Path, source.Bitmap, source.Size);
                 }
                 else
                 {
-                    var size = await new Commands.QueryFileSize(_repo.FullPath, file.Path, _commit.SHA).GetResultAsync();
-                    ViewRevisionFileContent = new Models.RevisionBinaryFile(_repo.FullPath, file.Path, _commit.SHA, size);
+                    var size = await new Commands.QueryFileSize(_repo.FullPath, file.Path, revision).GetResultAsync();
+                    if (_disposed || generation != _revisionFileGeneration)
+                        return;
+                    ViewRevisionFileContent = new Models.RevisionBinaryFile(_repo.FullPath, file.Path, revision, size);
                 }
 
                 return;
             }
 
-            await using var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, _commit.SHA, file.Path);
+            await using var contentStream = await Commands.QueryFileContent.RunAsync(_repo.FullPath, revision, file.Path);
             var content = await new StreamReader(contentStream).ReadToEndAsync();
+            if (_disposed || generation != _revisionFileGeneration)
+                return;
             var lfs = Models.LFSObject.Parse(content);
             if (lfs != null)
             {
@@ -713,10 +795,12 @@ namespace SourceGit.ViewModels
             }
         }
 
-        private async Task SetViewingCommitAsync(Models.Object file)
+        private async Task SetViewingCommitAsync(Models.Object file, int generation)
         {
             var submoduleRoot = Path.Combine(_repo.FullPath, file.Path).Replace('\\', '/').TrimEnd('/');
-            ViewRevisionFileContent = await new Commands.QuerySubmoduleRevision(submoduleRoot, file.SHA).GetResultAsync();
+            var content = await new Commands.QuerySubmoduleRevision(submoduleRoot, file.SHA).GetResultAsync();
+            if (!_disposed && generation == _revisionFileGeneration)
+                ViewRevisionFileContent = content;
         }
 
         [GeneratedRegex(@"\b(https?://|ftp://)[\w\d\._/\-~%@()+:?&=#!]*[\w\d/]")]
@@ -728,6 +812,12 @@ namespace SourceGit.ViewModels
         [GeneratedRegex(@"`.*?`")]
         private static partial Regex REG_INLINECODE_FORMAT();
 
+        private readonly bool _deferInformationLoading;
+        private readonly SemaphoreSlim _informationLoadGate;
+        private bool _informationLoaded;
+        private Models.Change _initialChange;
+        private bool _disposed;
+        private int _revisionFileGeneration;
         private Repository _repo = null;
         private CommitDetailSharedData _sharedData = null;
         private Models.Commit _commit = null;
