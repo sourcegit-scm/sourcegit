@@ -23,7 +23,35 @@
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
     </v:HistoriesLayout.ColumnDefinitions>
 
-    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" RowDefinitions="Auto,Auto,Auto,*">
+      <DockPanel Grid.Row="0" Margin="4,2" LastChildFill="True">
+        <Button Padding="6,2" Click="OnSubmoduleHistoryMenu" Content="{DynamicResource Text.SubmoduleHistory}"/>
+        <Button Padding="6,2" Margin="4,0,0,0" Click="OnCompareSubmodule" Content="{DynamicResource Text.SubmoduleHistory.Compare}"/>
+        <TextBlock Margin="6,0" Text="{Binding SubmoduleExpansionCount}"/>
+        <Button Padding="6,2" Click="OnCollapseSubmoduleHistories" Content="{DynamicResource Text.SubmoduleHistory.CollapseAll}"/>
+        <TextBlock Margin="8,0" Text="{Binding SubmoduleStatus}" TextTrimming="CharacterEllipsis"
+                   ToolTip.Tip="{Binding SubmoduleStatus}" Foreground="{DynamicResource Brush.FG2}"/>
+      </DockPanel>
+      <DockPanel Grid.Row="2" Margin="4,2" IsVisible="{Binding CanNavigateSubmoduleUp}">
+        <Button Padding="6,2" Margin="0,0,8,0" Click="OnSubmoduleUp" Content="{DynamicResource Text.SubmoduleHistory.Up}"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+          <ItemsControl ItemsSource="{Binding SubmoduleNavigation}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="vm:SubmoduleNavigationItem">
+                <StackPanel Orientation="Horizontal">
+                  <TextBlock Text="{Binding Separator}" Margin="0,0,4,0"/>
+                  <Button Padding="6,2" Margin="0,0,4,0" Content="{Binding Label}" Tag="{Binding GraphKey}"
+                          IsEnabled="{Binding IsAvailable}" Click="OnSubmoduleBreadcrumb"/>
+                </StackPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+      <Grid Grid.Row="3">
       <v:HistoriesCommitList x:Name="CommitListContainer"
                              Classes="static_scrollbar"
                              ScrollViewer.AllowAutoHide="False"
@@ -113,20 +141,25 @@
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
                 <Border Padding="{Binding LeftMargin, Converter={x:Static c:DoubleConverters.ToLeftMargin}}" ClipToBounds="True" Background="Transparent">
-                  <Grid ColumnDefinitions="Auto,Auto,Auto,*" Margin="2,0,4,0" ClipToBounds="True">
-                    <v:CommitStatusIndicator Grid.Column="0"
+                  <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="2,0,4,0" ClipToBounds="True">
+                    <Button Grid.Column="0" Classes="submodule_toggle" Width="30" Height="24" Padding="4,0" Margin="0,0,4,0"
+                            IsVisible="{Binding IsSubmoduleHeader}" Click="OnToggleSubmoduleHeader"
+                            Content="{Binding SubmoduleHistory.ToggleGlyph}"
+                            AutomationProperties.Name="{Binding SubmoduleHistory.ToggleDescription}"
+                            ToolTip.Tip="{Binding SubmoduleHistory.ToggleDescription}"/>
+                    <v:CommitStatusIndicator Grid.Column="1"
                                              CurrentBranch="{Binding $parent[v:Histories].CurrentBranch}"
                                              AheadBrush="{DynamicResource Brush.Accent}"
                                              BehindBrush="{DynamicResource Brush.FG1}"
                                              VerticalAlignment="Center"/>
 
-                    <v:BisectStateIndicator Grid.Column="1"
+                    <v:BisectStateIndicator Grid.Column="2"
                                             Background="{DynamicResource Brush.Contents}"
                                             Foreground="{DynamicResource Brush.FG1}"
                                             Bisect="{Binding $parent[v:Histories].Bisect}"
                                             VerticalAlignment="Center"/>
 
-                    <v:CommitRefsPresenter Grid.Column="2"
+                    <v:CommitRefsPresenter Grid.Column="3"
                                            Background="{DynamicResource Brush.Contents}"
                                            Foreground="{DynamicResource Brush.FG1}"
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
@@ -136,7 +169,7 @@
                                            UseCompactBranchNames="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseCompactBranchNamesInGraph}"
                                            HasSingleRemote="{Binding $parent[v:Histories].HasSingleRemote}"/>
 
-                    <v:CommitSubjectPresenter Grid.Column="3"
+                    <v:CommitSubjectPresenter Grid.Column="4" IsVisible="{Binding !IsSubmodulePlaceholder}"
                                               Height="26"
                                               FontFamily="{DynamicResource Fonts.Default}"
                                               FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"
@@ -149,6 +182,11 @@
                                               IssueTrackers="{Binding $parent[v:Histories].IssueTrackers}"
                                               FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                               Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"/>
+                    <TextBlock Grid.Column="4" IsVisible="{Binding IsSubmodulePlaceholder}" Text="{Binding Subject}"
+                               TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Subject}"/>
+                    <TextBlock Grid.Column="5" IsVisible="{Binding IsSubmoduleHeader}" Margin="12,0,8,0"
+                               Text="{Binding SubmoduleHistory.ExpansionState}" MaxWidth="240" TextTrimming="CharacterEllipsis"
+                               ToolTip.Tip="{Binding SubmoduleHistory.ExpansionState}" Foreground="{DynamicResource Brush.FG2}"/>
                   </Grid>
                 </Border>
               </DataTemplate>
@@ -162,7 +200,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Grid ColumnDefinitions="20,*" Background="Transparent">
+                <Grid ColumnDefinitions="20,*" Background="Transparent" IsVisible="{Binding !IsSubmodulePlaceholder}">
                   <v:Avatar Grid.Column="0"
                             Width="16" Height="16"
                             Margin="4,0,0,0"
@@ -190,7 +228,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True">
+                <Border Padding="8,0,0,0" Background="Transparent" ClipToBounds="True" IsVisible="{Binding !IsSubmodulePlaceholder}">
                   <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                              FontFamily="{DynamicResource Fonts.Monospace}"
                              FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
@@ -207,7 +245,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
+                <Border Padding="8,0" Background="Transparent" ClipToBounds="True" IsVisible="{Binding !IsSubmodulePlaceholder}">
                   <v:CommitTimeTextBlock FontFeatures="+tnum"
                                          FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
@@ -227,7 +265,7 @@
 
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="m:Commit">
-                <Border Padding="8,0" Background="Transparent" ClipToBounds="True">
+                <Border Padding="8,0" Background="Transparent" ClipToBounds="True" IsVisible="{Binding !IsSubmodulePlaceholder}">
                   <v:CommitTimeTextBlock FontWeight="{Binding IsCurrentHead, Converter={x:Static c:BoolConverters.IsBoldToFontWeight}}"
                                          FontFeatures="+tnum"
                                          Opacity="{Binding IsMerged, Converter={x:Static c:BoolConverters.IsMergedToOpacity}}"
@@ -299,6 +337,7 @@
       </Border>
 
       <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+      </Grid>
     </Grid>
 
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
@@ -348,6 +387,38 @@
                   </TabItem.Header>
                 </TabItem>
               </TabControl>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:SubmoduleComparisonDetail">
+            <Grid RowDefinitions="Auto,Auto,Auto,*" IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
+              <TextBlock Margin="8,4" Text="{Binding Path}" FontWeight="Bold"/>
+              <Grid Grid.Row="1" Margin="8,4" ColumnDefinitions="Auto,*,Auto,*">
+                <TextBlock Text="{DynamicResource Text.SubmoduleHistory.PreviousPointer}" Margin="0,0,8,0"/>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding PreviousPointers}" SelectedItem="{Binding SelectedPrevious, Mode=TwoWay}" HorizontalAlignment="Stretch"/>
+                <TextBlock Grid.Column="2" Text=" → " Margin="8,0"/>
+                <SelectableTextBlock Grid.Column="3" Text="{Binding NewPointer}" TextWrapping="Wrap"/>
+              </Grid>
+              <DockPanel Grid.Row="2" Margin="8,4">
+                <Button DockPanel.Dock="Right" Content="{DynamicResource Text.SubmoduleHistory.RefreshPointer}" Click="OnRefreshSubmodulePointer"/>
+                <SelectableTextBlock Text="{Binding PointerStatus}" TextWrapping="Wrap" Margin="0,0,8,0"/>
+              </DockPanel>
+              <TextBox Grid.Row="3" Margin="4" Text="{Binding Text, Mode=OneWay}" IsReadOnly="True"
+                       AcceptsReturn="True" FontFamily="{DynamicResource Fonts.Monospace}"
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            </Grid>
+          </DataTemplate>
+
+          <DataTemplate DataType="vm:SubmoduleCommitDetail">
+            <Grid RowDefinitions="Auto,Auto,*" IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
+              <TextBlock Grid.Row="0" Margin="8,4" Text="{Binding Path}" FontWeight="Bold"/>
+              <DockPanel Grid.Row="1" Margin="8,4">
+                <Button DockPanel.Dock="Right" Content="{DynamicResource Text.SubmoduleHistory.RefreshPointer}" Click="OnRefreshSubmodulePointer"/>
+                <SelectableTextBlock Text="{Binding PointerStatus}" TextWrapping="Wrap" Margin="0,0,8,0"/>
+              </DockPanel>
+              <TextBox Grid.Row="2" Margin="4" Text="{Binding Text, Mode=OneWay}" IsReadOnly="True"
+                       AcceptsReturn="True" FontFamily="{DynamicResource Fonts.Monospace}"
+                       ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+            </Grid>
           </DataTemplate>
 
           <DataTemplate DataType="vm:CommitDetail">

@@ -92,13 +92,22 @@ namespace SourceGit.Models
                 // Update current y offset
                 offsetY += unitHeight;
 
+                // Unavailable repositories have no Git commit node to draw.
+                if (commit.IsSubmodulePlaceholder)
+                {
+                    foreach (var lane in unsolved)
+                        lane.Pass(lane.LastX, offsetY, halfHeight);
+                    commit.LeftMargin = (unsolved.Count > 0 ? unsolved[^1].LastX : 10) + unitWidth;
+                    continue;
+                }
+
                 // Find first curves that links to this commit and marks others that links to this commit ended.
                 var offsetX = 4 - halfWidth;
                 var maxOffsetOld = unsolved.Count > 0 ? unsolved[^1].LastX : offsetX + unitWidth;
                 var isHighlighted = defHighlighting;
                 foreach (var l in unsolved)
                 {
-                    if (l.Next.Equals(commit.SHA, StringComparison.Ordinal))
+                    if (l.Next.Equals(commit.GraphKey, StringComparison.Ordinal))
                     {
                         if (major == null)
                         {
@@ -106,9 +115,9 @@ namespace SourceGit.Models
                             major = l;
                             isHighlighted = major.IsHighlighted;
 
-                            if (commit.Parents.Count > 0)
+                            if (commit.DisplayParents.Count > 0)
                             {
-                                major.Next = commit.Parents[0];
+                                major.Next = commit.DisplayParents[0];
                                 major.Goto(offsetX, offsetY, halfHeight);
                             }
                             else
@@ -151,12 +160,12 @@ namespace SourceGit.Models
                             break;
                         case CommitGraphHighlighting.SelectedCommitsOnly:
                         case CommitGraphHighlighting.SelectedCommitsOnlyFirstParent:
-                            if (highlightExtraCommits.Remove(commit.SHA))
+                            if (highlightExtraCommits.Remove(commit.GraphKey))
                             {
                                 isHighlighted = true;
                                 // Highlight first parent, other parents are dealt with later
-                                if (commit.Parents.Count > 0)
-                                    highlightExtraCommits.Add(commit.Parents[0]);
+                                if (commit.DisplayParents.Count > 0)
+                                    highlightExtraCommits.Add(commit.DisplayParents[0]);
                             }
                             break;
                         default: // CommitGraphHighlighting.CurrentBranchAndSelectedCommits
@@ -164,12 +173,12 @@ namespace SourceGit.Models
                             {
                                 isHighlighted = true;
                             }
-                            else if (highlightExtraCommits.Remove(commit.SHA))
+                            else if (highlightExtraCommits.Remove(commit.GraphKey))
                             {
                                 isHighlighted = true;
                                 // Highlight first parent, other parents are dealt with later
-                                if (commit.Parents.Count > 0)
-                                    highlightExtraCommits.Add(commit.Parents[0]);
+                                if (commit.DisplayParents.Count > 0)
+                                    highlightExtraCommits.Add(commit.DisplayParents[0]);
                             }
                             break;
                     }
@@ -182,14 +191,14 @@ namespace SourceGit.Models
                 {
                     offsetX += unitWidth;
 
-                    if (commit.Parents.Count > 0)
+                    if (commit.DisplayParents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isHighlighted, colorPicker.Next(), new Point(offsetX, offsetY));
+                        major = new PathHelper(commit.DisplayParents[0], isHighlighted, colorPicker.Next(), new Point(offsetX, offsetY));
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
                 }
-                else if (isHighlighted && !major.IsHighlighted && commit.Parents.Count > 0)
+                else if (isHighlighted && !major.IsHighlighted && commit.DisplayParents.Count > 0)
                 {
                     major.Highlight();
                     temp.Paths.Add(major.Path);
@@ -201,7 +210,7 @@ namespace SourceGit.Models
                 var anchor = new Dot() { Center = position, Color = dotColor, IsHighlighted = isHighlighted };
                 if (commit.IsCurrentHead)
                     anchor.Type = DotType.Head;
-                else if (commit.Parents.Count > 1)
+                else if (commit.DisplayParents.Count > 1)
                     anchor.Type = DotType.Merge;
                 else
                     anchor.Type = DotType.Default;
@@ -213,9 +222,9 @@ namespace SourceGit.Models
                     if (highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
                         isHighlighted = false;
 
-                    for (int j = 1; j < commit.Parents.Count; j++)
+                    for (int j = 1; j < commit.DisplayParents.Count; j++)
                     {
-                        var parentHash = commit.Parents[j];
+                        var parentHash = commit.DisplayParents[j];
                         var parent = unsolved.Find(x => x.Next.Equals(parentHash, StringComparison.Ordinal));
                         if (parent != null)
                         {

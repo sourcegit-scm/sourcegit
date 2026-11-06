@@ -24,6 +24,13 @@ namespace SourceGit.Models
         public List<string> Parents { get; set; } = new();
         public List<Decorator> Decorators { get; set; } = new();
 
+        public SubmoduleHistory SubmoduleHistory { get; set; }
+        public bool IsSubmoduleHeader { get; set; }
+        public bool IsSubmodulePlaceholder { get; set; }
+        public string GraphKey => IsSubmodulePlaceholder ? SubmoduleHistory.Key + ":unavailable" : SubmoduleHistory?.GraphKey(SHA) ?? SHA;
+        public List<string> GraphParents { get; set; }
+        public List<string> DisplayParents => GraphParents ?? Parents;
+
         public bool IsMerged { get; set; } = false;
         public int Color { get; set; } = 0;
         public double LeftMargin { get; set; } = 0;

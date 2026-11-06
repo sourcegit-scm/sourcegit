@@ -135,6 +135,75 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _maxHistoryCommits, value);
         }
 
+        public Models.SubmoduleHistoryScope SubmoduleHistoryScope
+        {
+            get => _submoduleHistoryScope;
+            set
+            {
+                if (SetProperty(ref _submoduleHistoryScope, Enum.IsDefined(value) ? value : Models.SubmoduleHistoryScope.DirectOnly))
+                    OnPropertyChanged(nameof(SubmoduleHistoryScopeIndex));
+            }
+        }
+
+        [JsonIgnore]
+        public int SubmoduleHistoryScopeIndex
+        {
+            get => (int)SubmoduleHistoryScope;
+            set => SubmoduleHistoryScope = (Models.SubmoduleHistoryScope)value;
+        }
+
+        public Models.SubmoduleHistoryMode SubmoduleHistoryMode
+        {
+            get => _submoduleHistoryMode;
+            set
+            {
+                if (SetProperty(ref _submoduleHistoryMode, Enum.IsDefined(value) ? value : Models.SubmoduleHistoryMode.ChangedRange))
+                    OnPropertyChanged(nameof(SubmoduleHistoryModeIndex));
+            }
+        }
+
+        [JsonIgnore]
+        public int SubmoduleHistoryModeIndex
+        {
+            get => (int)SubmoduleHistoryMode;
+            set => SubmoduleHistoryMode = (Models.SubmoduleHistoryMode)value;
+        }
+
+        public Models.SubmoduleHistoryLabelFormat SubmoduleHistoryLabelFormat
+        {
+            get => _submoduleHistoryLabelFormat;
+            set
+            {
+                if (SetProperty(ref _submoduleHistoryLabelFormat, Enum.IsDefined(value) ? value : Models.SubmoduleHistoryLabelFormat.PathAndBranch))
+                    OnPropertyChanged(nameof(SubmoduleHistoryLabelFormatIndex));
+            }
+        }
+
+        [JsonIgnore]
+        public int SubmoduleHistoryLabelFormatIndex
+        {
+            get => (int)SubmoduleHistoryLabelFormat;
+            set => SubmoduleHistoryLabelFormat = (Models.SubmoduleHistoryLabelFormat)value;
+        }
+
+        public bool AutoExpandSubmoduleHistory
+        {
+            get => _autoExpandSubmoduleHistory;
+            set => SetProperty(ref _autoExpandSubmoduleHistory, value);
+        }
+
+        public bool AutoCollapseSubmoduleHistories
+        {
+            get => _autoCollapseSubmoduleHistories;
+            set => SetProperty(ref _autoCollapseSubmoduleHistories, value);
+        }
+
+        public int MaxExpandedSubmoduleHistories
+        {
+            get => _maxExpandedSubmoduleHistories;
+            set => SetProperty(ref _maxExpandedSubmoduleHistories, Math.Clamp(value, 1, 20));
+        }
+
         public int SubjectGuideLength
         {
             get => _subjectGuideLength;
@@ -800,6 +869,12 @@ namespace SourceGit.ViewModels
         private double _zoom = 1.0;
         private LayoutInfo _layout = new();
 
+        private Models.SubmoduleHistoryLabelFormat _submoduleHistoryLabelFormat;
+        private Models.SubmoduleHistoryScope _submoduleHistoryScope;
+        private Models.SubmoduleHistoryMode _submoduleHistoryMode = Models.SubmoduleHistoryMode.ChangedRange;
+        private int _maxExpandedSubmoduleHistories = 3;
+        private bool _autoExpandSubmoduleHistory;
+        private bool _autoCollapseSubmoduleHistories;
         private int _maxHistoryCommits = 20000;
         private int _subjectGuideLength = 50;
         private bool _useFixedTabWidth = true;

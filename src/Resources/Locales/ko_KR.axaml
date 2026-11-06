@@ -988,4 +988,48 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">제거</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">잠금 해제</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">예</x:String>
+  <x:String x:Key="Text.SubmoduleHistory" xml:space="preserve">서브모듈 이력</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.ChangedRange" xml:space="preserve">변경 구간 (이전 포인터 → 선택한 포인터)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.CollapseAll" xml:space="preserve">모두 접기</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Explanation" xml:space="preserve">서브모듈 첫 커밋의 화살표로 상세 이력을 펼치거나 접습니다. 상위 커밋을 다시 클릭하면 해당 서브모듈 행이 모두 숨겨집니다. 개수 제한은 모든 깊이의 펼친 영역에 적용되며 첫 로그 미리보기는 제외됩니다. Gitlink 연결은 화면 표시용입니다. 누락된 객체는 별도로 가져오거나 초기화해야 합니다.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.FullHistory" xml:space="preserve">선택한 포인터와 이전 포인터에서 도달 가능한 전체 이력</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Limit" xml:space="preserve">펼침 한도에 도달했습니다. 영역을 접거나 환경설정에서 한도를 늘리세요.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Loading" xml:space="preserve">서브모듈 이력을 불러오는 중…</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.AutoExpand" xml:space="preserve">커밋 선택 시 서브모듈 상세 이력 자동 펼치기</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.AutoCollapse" xml:space="preserve">다른 서브모듈을 펼칠 때 기존 이력 자동 접기</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.ExpansionHelp" xml:space="preserve">기본적으로 커밋을 선택하면 직계 서브모듈마다 첫 로그만 표시합니다. 자동 접기는 같은 상위 저장소의 영역 하나만 펼치고, 조상 영역은 유지합니다.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Maximum" xml:space="preserve">동시에 펼칠 서브모듈 영역 수 (1–20)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.MissingObjects" xml:space="preserve">서브모듈 커밋을 읽을 수 없습니다. 로컬 객체를 확인하고 누락된 이력을 가져오세요.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Mode" xml:space="preserve">펼칠 이력</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.QueryFailed" xml:space="preserve">이 커밋의 gitlink를 읽을 수 없습니다. 이력을 새로 고친 뒤 다시 시도하세요.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.SelectCommit" xml:space="preserve">서브모듈을 변경한 커밋을 선택하세요.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Truncated" xml:space="preserve">이력 개수 제한이 적용되었습니다. 더 보려면 환경설정에서 이력 커밋 수를 늘리세요.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Unavailable" xml:space="preserve">이 체크아웃에서 서브모듈이 초기화되지 않았거나 삭제되었습니다.</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat" xml:space="preserve">서브모듈 표시 형식 (상위 저장소 기준 상대위치)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat.PathAndBranch" xml:space="preserve">[상대위치:브랜치명] (기본)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat.PathOnly" xml:space="preserve">[상대위치]</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LabelFormat.RepositoryPathAndBranch" xml:space="preserve">[저장소명:상대위치:브랜치명]</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Scope" xml:space="preserve">중첩 범위</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Scope.DirectOnly" xml:space="preserve">직계 서브모듈만 (기본값)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Scope.Recursive" xml:space="preserve">재귀적 탐색 (클릭하여 단계별 확장)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Compare" xml:space="preserve">Gitlink 변경 비교</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.NoPointer" xml:space="preserve">(없음)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.PreviousPointer" xml:space="preserve">이전 포인터</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.AddedCommits" xml:space="preserve">추가된 커밋 (이력 개수 제한 적용)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.RemovedCommits" xml:space="preserve">제외된 커밋 (이력 개수 제한 적용)</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.FileDiff" xml:space="preserve">포인터 사이의 파일 변경</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.RecordedPointer" xml:space="preserve">기록된 gitlink</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LocalHEAD" xml:space="preserve">로컬 HEAD</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.RefreshPointer" xml:space="preserve">포인터 상태 새로고침</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Matches" xml:space="preserve">기록된 포인터와 일치</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Differs" xml:space="preserve">기록된 포인터와 불일치</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Removed" xml:space="preserve">이 커밋에서 gitlink 삭제됨</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Pointer.Unavailable" xml:space="preserve">조회 불가</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Up" xml:space="preserve">상위 커밋으로 이동</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Expand" xml:space="preserve">펼치기</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Expanded" xml:space="preserve">펼침</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Collapsed" xml:space="preserve">접힘</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.LimitShort" xml:space="preserve">펼침 한도 도달</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.Collapse" xml:space="preserve">접기</x:String>
+  <x:String x:Key="Text.SubmoduleHistory.CollapseArea" xml:space="preserve">이 영역과 펼쳐진 하위 영역을 함께 접습니다</x:String>
 </ResourceDictionary>
