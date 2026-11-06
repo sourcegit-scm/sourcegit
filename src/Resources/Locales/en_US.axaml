@@ -524,6 +524,9 @@
   <x:String x:Key="Text.GitLFS.TrackByExtension" xml:space="preserve">Track all *{0} files</x:String>
   <x:String x:Key="Text.GotoRevisionSelector" xml:space="preserve">Select Commit</x:String>
   <x:String x:Key="Text.Histories.AdvancedOptions" xml:space="preserve">Advanced Options</x:String>
+  <x:String x:Key="Text.Histories.NavigateBack" xml:space="preserve">Back</x:String>
+  <x:String x:Key="Text.Histories.NavigateForward" xml:space="preserve">Forward</x:String>
+  <x:String x:Key="Text.Histories.NavigateHome" xml:space="preserve">Go to current HEAD</x:String>
   <x:String x:Key="Text.Histories.Header.Author" xml:space="preserve">AUTHOR</x:String>
   <x:String x:Key="Text.Histories.Header.AuthorTime" xml:space="preserve">AUTHOR TIME</x:String>
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">COMMIT TIME</x:String>

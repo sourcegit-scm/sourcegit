@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
 {
-    public class Histories : ObservableObject
+    public partial class Histories : ObservableObject
     {
         public bool IsLoading
         {
@@ -526,6 +526,7 @@ namespace SourceGit.ViewModels
 
         private void PostSelectedCommitsChanged()
         {
+            ScheduleNavigationVisit();
             if (_ignoreSelectionChange)
                 return;
 
