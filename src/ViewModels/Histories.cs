@@ -567,6 +567,11 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
+        public void RefreshGraph()
+        {
+            GenerateGraph(_commits);
+        }
+
         private void GenerateGraph(List<Models.Commit> commits)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
@@ -579,7 +584,7 @@ namespace SourceGit.ViewModels
                     extraHeads.Add(c.SHA);
             }
 
-            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
+            Graph = Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads, _repo.Bookmark);
         }
 
         private Repository _repo = null;
