@@ -77,6 +77,12 @@ namespace SourceGit.ViewModels
                             .Use(log)
                             .GetResultAsync();
 
+                        if (all == null)
+                        {
+                            log.Complete();
+                            return false;
+                        }
+
                         var staged = new List<Models.Change>();
                         foreach (var c in all)
                         {

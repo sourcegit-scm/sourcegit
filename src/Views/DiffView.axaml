@@ -411,6 +411,18 @@
             </StackPanel>
           </DataTemplate>
 
+          <!-- File mode changed with no visible text changes -->
+          <DataTemplate DataType="m:FileModeOnlyChange">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+              <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>
+              <TextBlock Margin="0,16,0,0"
+                         Text="{DynamicResource Text.Diff.FileModeChange}"
+                         FontSize="18" FontWeight="Bold"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         HorizontalAlignment="Center"/>
+            </StackPanel>
+          </DataTemplate>
+
           <!-- Only EOL changes -->
           <DataTemplate DataType="m:NoOrEOLChange">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
