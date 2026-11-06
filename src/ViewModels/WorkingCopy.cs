@@ -810,17 +810,15 @@ namespace SourceGit.ViewModels
             else
                 InProgressContext = null;
 
-            var mergeMsg = Path.Combine(_repo.GitDir, "MERGE_MSG");
-
             if (_inProgressContext == null)
             {
                 if (Directory.Exists(Path.Combine(_repo.GitDir, "rebase-apply")))
                     Directory.Delete(Path.Combine(_repo.GitDir, "rebase-apply"), true);
 
-                // MERGE_MSG may exist without an in-progress marker (e.g. after
-                // `git cherry-pick -n` or `git revert -n`), so try loading it first.
-                if (!LoadCommitMessageFromFile(mergeMsg) && oldType != null && IsAutoLoadedCommitMessage())
+                if (oldType != null && IsAutoLoadedCommitMessage())
                     CommitMessage = string.Empty;
+                else if (string.IsNullOrEmpty(_commitMessage))
+                    LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG"));
 
                 return;
             }
@@ -828,7 +826,7 @@ namespace SourceGit.ViewModels
             if (_inProgressContext.GetType() == oldType && !string.IsNullOrEmpty(_commitMessage))
                 return;
 
-            if (LoadCommitMessageFromFile(mergeMsg))
+            if (LoadCommitMessageFromFile(Path.Combine(_repo.GitDir, "MERGE_MSG")))
                 return;
 
             if (_inProgressContext is RebaseInProgress rebasing)

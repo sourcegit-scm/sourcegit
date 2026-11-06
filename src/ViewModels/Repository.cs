@@ -481,7 +481,10 @@ namespace SourceGit.ViewModels
         {
             var commitMessage = _workingCopy.CommitMessage;
             if (!string.IsNullOrEmpty(commitMessage) && _workingCopy.InProgressContext != null)
+            {
                 File.WriteAllText(Path.Combine(GitDir, "MERGE_MSG"), commitMessage);
+                commitMessage = string.Empty; // Clears this from ui-state, since it is already saved in MERGE_MSG file.
+            }
 
             _uiStates.LastCommitMessage = commitMessage;
             _uiStates.Save();
