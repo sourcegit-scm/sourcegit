@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Text.Json;
 using Avalonia;
 using Avalonia.Platform;
 using Avalonia.Styling;
@@ -39,12 +39,45 @@ namespace SourceGit.Models
         public static string GetScope(string file, RegistryOptions reg)
         {
             var extension = Path.GetExtension(file);
-            if (extension == ".h")
-                extension = ".cpp";
-            else if (extension is ".resx" or ".plist" or ".manifest" or ".sln" or ".slnx")
-                extension = ".xml";
-            else if (extension == ".command")
-                extension = ".sh";
+
+            switch (extension)
+            {
+                case ".h":
+                    extension = ".cpp";
+                    break;
+                case ".resx" or ".plist" or ".manifest" or ".sln" or ".slnx":
+                    extension = ".xml";
+                    break;
+                case ".command":
+                    extension = ".sh";
+                    break;
+                default:
+
+                    if (!string.IsNullOrEmpty(extension))
+                    {
+                        var customFileAssociations = Path.Combine(Native.OS.BasicDirectories.ConfigDir, "custom_file_associations.json");
+
+                        try
+                        {
+                            if (File.Exists(customFileAssociations))
+                            {
+                                using var stream = File.OpenRead(customFileAssociations);
+                                var fileAssociations = JsonSerializer.Deserialize<CustomFileAssociations>(stream) ?? new CustomFileAssociations();
+
+                                if (fileAssociations.Associations.TryGetValue(file, out var ext))
+                                {
+                                    extension = ext;
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            // Ignore
+                        }
+                    }
+
+                    break;
+            }
 
             foreach (var grammar in s_extraGrammars)
             {
