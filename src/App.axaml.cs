@@ -261,6 +261,12 @@ namespace SourceGit
                         e.Cancel = true;
                 });
 
+#if DEV_BUILD
+                var devIcon = new WindowIcon(
+                    Avalonia.Platform.AssetLoader.Open(new Uri("avares://SourceGit/AppDev.ico")));
+                Window.WindowOpenedEvent.AddClassHandler<Window>((w, _) => w.Icon = devIcon);
+#endif
+
                 if (TryLaunchAsFileHistoryViewer(desktop))
                     return;
 
