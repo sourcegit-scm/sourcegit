@@ -31,6 +31,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _popup, value);
         }
 
+        public string DisplayName
+        {
+            get => _displayName;
+            set => SetProperty(ref _displayName, value);
+        }
+
         public AvaloniaList<Models.Notification> Notifications
         {
             get;
@@ -50,6 +56,7 @@ namespace SourceGit.ViewModels
         {
             _node = node;
             _data = repo;
+            _displayName = node.Name;
         }
 
         public void ClearNotifications()
@@ -124,6 +131,7 @@ namespace SourceGit.ViewModels
 
         private RepositoryNode _node = null;
         private object _data = null;
+        private string _displayName = string.Empty;
         private Models.DirtyState _dirtyState = Models.DirtyState.None;
         private Popup _popup = null;
     }
