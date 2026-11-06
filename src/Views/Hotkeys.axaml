@@ -89,7 +89,7 @@
                    FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Increase}}"
                    Margin="0,8"/>
 
-        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
+        <Grid RowDefinitions="20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20" ColumnDefinitions="150,*">
           <TextBlock Grid.Row="0" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+1, macOS=⌘+1}"/>
           <TextBlock Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.ViewDashboard}" />
 
@@ -140,6 +140,12 @@
 
           <TextBlock Grid.Row="16" Grid.Column="0" Classes="bold" Text="F5"/>
           <TextBlock Grid.Row="16" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Hotkeys.Repo.Refresh}" />
+          <TextBlock Grid.Row="17" Grid.Column="0" Classes="bold" Text="{OnPlatform Ctrl+F, macOS=⌘+F}"/>
+          <TextBlock Grid.Row="17" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Histories.QuickSearch}"/>
+          <TextBlock Grid.Row="18" Grid.Column="0" Classes="bold" Text="Shift+F3 / Shift+Enter"/>
+          <TextBlock Grid.Row="18" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Histories.QuickSearch.Previous}"/>
+          <TextBlock Grid.Row="19" Grid.Column="0" Classes="bold" Text="F3 / Enter"/>
+          <TextBlock Grid.Row="19" Grid.Column="1" Margin="16,0,0,0" Text="{DynamicResource Text.Histories.QuickSearch.Next}"/>
         </Grid>
       </StackPanel>
     </Border>

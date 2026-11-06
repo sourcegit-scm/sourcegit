@@ -23,13 +23,73 @@
       <ColumnDefinition Width="{Binding RightArea, Mode=TwoWay}" MinWidth="100"/>
     </v:HistoriesLayout.ColumnDefinitions>
 
-    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
-      <v:HistoriesCommitList x:Name="CommitListContainer"
+    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" RowDefinitions="Auto,*" x:Name="HistoryListArea">
+      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto,100" Height="34" Margin="0,0,4,0"
+            HorizontalAlignment="Left" MaxWidth="640" Width="{Binding #HistoryListArea.Bounds.Width}">
+        <StackPanel Orientation="Horizontal"
+                    Height="18"
+                    Margin="4,0,0,0"
+                    VerticalAlignment="Center"
+                    Spacing="6">
+          <ToggleButton Classes="line_path" Width="18" IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
+            <ToolTip.Tip>
+              <TextBlock>
+                <Run Text="{DynamicResource Text.Repository.Search.ToolTip}" Foreground="{DynamicResource Brush.FG1}"/>
+                <Run Text=" "/>
+                <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
+              </TextBlock>
+            </ToolTip.Tip>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
+          </ToggleButton>
+
+          <Button Classes="icon_button"
+                  Width="18" Height="18"
+                  HorizontalAlignment="Left" VerticalAlignment="Center"
+                  Click="OnOpenAdvancedOptions"
+                  ToolTip.Tip="{DynamicResource Text.Histories.AdvancedOptions}">
+            <Path Width="12" Height="12"
+                  Data="{StaticResource Icons.Settings2}"/>
+          </Button>
+        </StackPanel>
+        <TextBox Grid.Column="1" x:Name="QuickSearchBox" Height="26" MinWidth="80"
+                 HorizontalAlignment="Stretch" Margin="10,0,4,0" CornerRadius="13" BorderThickness="1"
+                 BorderBrush="{DynamicResource Brush.Border2}" VerticalContentAlignment="Center"
+                 ToolTip.Tip="{OnPlatform Ctrl+F, macOS=⌘+F}"
+                 Watermark="{DynamicResource Text.Histories.QuickSearch}"
+                 Text="{Binding QuickSearchText, Mode=TwoWay}">
+          <TextBox.InnerLeftContent>
+            <Path Width="14" Height="14" Margin="6,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+          </TextBox.InnerLeftContent>
+          <TextBox.InnerRightContent>
+            <Button Classes="icon_button" Focusable="False" Width="16" Margin="0,0,6,0"
+                    Command="{Binding ClearQuickSearch}" IsVisible="{Binding QuickSearchText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+              <Path Width="12" Height="12" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Clear}"/>
+            </Button>
+          </TextBox.InnerRightContent>
+        </TextBox>
+        <ToggleButton Grid.Column="2" Classes="line_path" Width="24" Height="24" Focusable="False"
+                      IsChecked="{Binding IsQuickSearchFilterEnabled, Mode=TwoWay}" ToolTip.Tip="{DynamicResource Text.Histories.QuickSearch.Filter}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Filter}"/>
+        </ToggleButton>
+        <Button Grid.Column="3" Classes="icon_button" Width="24" Focusable="False" Command="{Binding QuickSearchPrevious}"
+                IsEnabled="{Binding HasQuickSearchMatches}" ToolTip.Tip="{DynamicResource Text.Histories.QuickSearch.Previous}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Up}"/>
+        </Button>
+        <Button Grid.Column="4" Classes="icon_button" Width="24" Focusable="False" Command="{Binding QuickSearchNext}"
+                IsEnabled="{Binding HasQuickSearchMatches}" ToolTip.Tip="{DynamicResource Text.Histories.QuickSearch.Next}">
+          <Path Width="12" Height="12" Data="{StaticResource Icons.Down}"/>
+        </Button>
+        <TextBlock IsVisible="{Binding !IsQuickSearching}" Grid.Column="5" Text="{Binding QuickSearchStatus}" Margin="4,0" VerticalAlignment="Center"
+                     TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding QuickSearchStatus}"/>
+        <v:LoadingIcon Grid.Column="5" Width="14" Height="14" Margin="4,0" HorizontalAlignment="Left" IsVisible="{Binding IsQuickSearching}"/>
+      </Grid>
+
+      <v:HistoriesCommitList Grid.Row="1" x:Name="CommitListContainer"
                              Classes="static_scrollbar"
+                             Classes.filtering="{Binding IsQuickSearchFilterActive}"
                              ScrollViewer.AllowAutoHide="False"
-                             Background="Transparent"
-                             ItemsSource="{Binding Commits, Mode=OneWay}"
-                             TotalCommits="{Binding Commits.Count, Mode=OneWay}"
+                             ItemsSource="{Binding DisplayedCommits, Mode=OneWay}"
+                             TotalCommits="{Binding DisplayedCommits.Count, Mode=OneWay}"
                              SelectedCommits="{Binding SelectedCommits, Mode=TwoWay}"
                              ColumnHeaderHeight="24"
                              RowHeight="26"
@@ -38,21 +98,27 @@
                              DoubleTapped="OnCommitListDoubleTapped">
         <DataGrid.Styles>
           <Style Selector="DataGrid.static_scrollbar">
+            <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">
               <Setter Property="Grid.RowSpan" Value="1" />
               <Setter Property="Grid.ColumnSpan" Value="2" />
-              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+              <Setter Property="Background" Value="{Binding #CommitListContainer.Background}"/>
             </Style>
             <Style Selector="^ /template/ DataGridColumnHeadersPresenter#PART_ColumnHeadersPresenter">
               <Setter Property="Grid.Column" Value="0" />
+              <Setter Property="Background" Value="{DynamicResource Brush.SubPanel}"/>
             </Style>
             <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
               <Setter Property="Fill" Value="{DynamicResource Brush.Border0}"/>
               <Setter Property="Height" Value="0.65"/>
             </Style>
             <Style Selector="^ /template/ ScrollBar">
-              <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
+              <Setter Property="Background" Value="{Binding #CommitListContainer.Background}"/>
             </Style>
+          </Style>
+
+          <Style Selector="DataGrid.static_scrollbar.filtering">
+            <Setter Property="Background" Value="{DynamicResource Brush.Histories.FilteredBackground}"/>
           </Style>
 
           <Style Selector="DataGridColumnHeader">
@@ -105,7 +171,7 @@
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
-              <Border Padding="48,0">
+              <Border Padding="8,0">
                 <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
               </Border>
             </DataGridTemplateColumn.Header>
@@ -121,13 +187,13 @@
                                              VerticalAlignment="Center"/>
 
                     <v:BisectStateIndicator Grid.Column="1"
-                                            Background="{DynamicResource Brush.Contents}"
+                                            Background="{Binding #CommitListContainer.Background}"
                                             Foreground="{DynamicResource Brush.FG1}"
                                             Bisect="{Binding $parent[v:Histories].Bisect}"
                                             VerticalAlignment="Center"/>
 
                     <v:CommitRefsPresenter Grid.Column="2"
-                                           Background="{DynamicResource Brush.Contents}"
+                                           Background="{Binding #CommitListContainer.Background}"
                                            Foreground="{DynamicResource Brush.FG1}"
                                            ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
                                            FontSize="12"
@@ -242,49 +308,23 @@
         </DataGrid.Columns>
       </v:HistoriesCommitList>
 
-      <Border Background="Transparent"
+      <Border Grid.Row="1" Background="Transparent"
               Height="24"
               HorizontalAlignment="Stretch" VerticalAlignment="Top"
               PointerMoved="OnCommitListHeaderPointerMoved"
               PointerPressed="OnCommitListHeaderPointerPressed"
-              PointerReleased="OnCommitListHeaderPointerReleased">
-        <StackPanel Orientation="Horizontal"
-                    Height="18"
-                    Margin="4,0,0,0"
-                    VerticalAlignment="Center"
-                    Spacing="6">
-          <ToggleButton Classes="line_path" Width="18" IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
-            <ToolTip.Tip>
-              <TextBlock>
-                <Run Text="{DynamicResource Text.Repository.Search.ToolTip}" Foreground="{DynamicResource Brush.FG1}"/>
-                <Run Text=" "/>
-                <Run Text="{OnPlatform Ctrl+Shift+F, macOS=⌘+⇧+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
-              </TextBlock>
-            </ToolTip.Tip>
-            <Path Width="14" Height="14" Data="{StaticResource Icons.Search}"/>
-          </ToggleButton>
-          
-          <Button Classes="icon_button"
-                  Width="18" Height="18"
-                  HorizontalAlignment="Left" VerticalAlignment="Center"
-                  Click="OnOpenAdvancedOptions"
-                  ToolTip.Tip="{DynamicResource Text.Histories.AdvancedOptions}">
-            <Path Width="12" Height="12"
-                  Data="{StaticResource Icons.Settings2}"/>
-          </Button>
-        </StackPanel>
-      </Border>
+              PointerReleased="OnCommitListHeaderPointerReleased"/>
 
-      <v:CommitGraph x:Name="CommitGraph"
+      <v:CommitGraph Grid.Row="1" x:Name="CommitGraph"
                      Margin="0,24,0,0"
                      Graph="{Binding Graph}"
-                     DotBrush="{DynamicResource Brush.Contents}"
+                     DotBrush="{Binding #CommitListContainer.Background}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"
                      Loaded="OnCommitGraphLoaded"/>
 
-      <Border Width="28" Height="28"
+      <Border Grid.Row="1" Width="28" Height="28"
               Margin="0,0,16,8"
               CornerRadius="14"
               Background="{DynamicResource Brush.Popup}"
@@ -298,7 +338,7 @@
               Opacity=".8"/>
       </Border>
 
-      <v:LoadingIcon Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
+      <v:LoadingIcon Grid.Row="1" Width="48" Height="48" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoading}"/>
     </Grid>
 
     <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
