@@ -67,6 +67,12 @@ namespace SourceGit.ViewModels
             private set => SetProperty(ref _fullMessage, value);
         }
 
+        public Vector ChangesMessageScrollOffset
+        {
+            get => _changesMessageScrollOffset;
+            set => SetProperty(ref _changesMessageScrollOffset, value);
+        }
+
         public Models.CommitSignInfo SignInfo
         {
             get => _signInfo;
@@ -453,6 +459,11 @@ namespace SourceGit.ViewModels
 
         private void Refresh()
         {
+            if (_cancellationSource is { IsCancellationRequested: false })
+                _cancellationSource.Cancel();
+
+            FullMessage = null;
+            ChangesMessageScrollOffset = Vector.Zero;
             _requestingRevisionFiles = false;
             _revisionFiles = null;
 
@@ -472,15 +483,13 @@ namespace SourceGit.ViewModels
                 return;
             }
 
-            if (_cancellationSource is { IsCancellationRequested: false })
-                _cancellationSource.Cancel();
-
             _cancellationSource = new CancellationTokenSource();
             var token = _cancellationSource.Token;
 
+            var messageCommitSHA = _commit.SHA;
             Task.Run(async () =>
             {
-                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, _commit.SHA)
+                var message = await new Commands.QueryCommitFullMessage(_repo.FullPath, messageCommitSHA)
                     .GetResultAsync()
                     .ConfigureAwait(false);
                 var inlines = await ParseInlinesInMessageAsync(message).ConfigureAwait(false);
@@ -488,6 +497,9 @@ namespace SourceGit.ViewModels
                 if (!token.IsCancellationRequested)
                     Dispatcher.UIThread.Post(() =>
                     {
+                        if (token.IsCancellationRequested)
+                            return;
+
                         FullMessage = new Models.CommitFullMessage
                         {
                             Message = message,
@@ -732,6 +744,7 @@ namespace SourceGit.ViewModels
         private CommitDetailSharedData _sharedData = null;
         private Models.Commit _commit = null;
         private Models.CommitFullMessage _fullMessage = null;
+        private Vector _changesMessageScrollOffset = Vector.Zero;
         private Models.CommitSignInfo _signInfo = null;
         private List<Models.Change> _changes = [];
         private List<Models.Change> _visibleChanges = [];
