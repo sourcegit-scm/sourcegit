@@ -420,7 +420,9 @@ namespace SourceGit.Views
                     };
 
                     var discard = new MenuItem();
-                    discard.Header = App.Text("FileCM.Discard");
+                    discard.Header = change.WorkTree is Models.ChangeState.Untracked or Models.ChangeState.Added
+                        ? App.Text("FileCM.Discard")
+                        : App.ContextMenuText("FileCM.Discard");
                     discard.Icon = this.CreateMenuIcon("Icons.Undo");
                     discard.Tag = "Back/Delete";
                     discard.Click += (_, e) =>
@@ -431,7 +433,7 @@ namespace SourceGit.Views
                     };
 
                     var stash = new MenuItem();
-                    stash.Header = App.Text("FileCM.Stash");
+                    stash.Header = App.ContextMenuText("FileCM.Stash");
                     stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                     stash.Click += (_, e) =>
                     {
@@ -493,7 +495,7 @@ namespace SourceGit.Views
                     if (selection.IsSingleFolder)
                     {
                         var addToIgnore = new MenuItem();
-                        addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
+                        addToIgnore.Header = App.ContextMenuText("WorkingCopy.AddToGitIgnore");
                         addToIgnore.Icon = this.CreateMenuIcon("Icons.GitIgnore");
 
                         var ignoreFolder = new MenuItem();
@@ -512,7 +514,7 @@ namespace SourceGit.Views
                     else if (!selection.HasFolder && change.WorkTree == Models.ChangeState.Untracked)
                     {
                         var addToIgnore = new MenuItem();
-                        addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
+                        addToIgnore.Header = App.ContextMenuText("WorkingCopy.AddToGitIgnore");
                         addToIgnore.Icon = this.CreateMenuIcon("Icons.GitIgnore");
 
                         var isRooted = change.Path!.IndexOf('/') <= 0;
@@ -695,7 +697,7 @@ namespace SourceGit.Views
                     };
 
                     var blame = new MenuItem();
-                    blame.Header = App.Text("Blame") + " (HEAD-only)";
+                    blame.Header = Models.HgTerminology.Extend("Blame", App.Text("Blame") + " (HEAD-only)", ViewModels.Preferences.Instance.ExtendContextMenusWithHgTerminology);
                     blame.Icon = this.CreateMenuIcon("Icons.Blame");
                     blame.Click += async (_, ev) =>
                     {
@@ -827,7 +829,9 @@ namespace SourceGit.Views
                 };
 
                 var discard = new MenuItem();
-                discard.Header = App.Text("FileCM.DiscardMulti", changes.Count);
+                discard.Header = changes.TrueForAll(c => c.WorkTree is not (Models.ChangeState.Untracked or Models.ChangeState.Added))
+                    ? App.ContextMenuText("FileCM.DiscardMulti", changes.Count)
+                    : App.Text("FileCM.DiscardMulti", changes.Count);
                 discard.Icon = this.CreateMenuIcon("Icons.Undo");
                 discard.Tag = "Back/Delete";
                 discard.Click += (_, e) =>
@@ -838,7 +842,7 @@ namespace SourceGit.Views
                 };
 
                 var stash = new MenuItem();
-                stash.Header = App.Text("FileCM.StashMulti", changes.Count);
+                stash.Header = App.ContextMenuText("FileCM.StashMulti", changes.Count);
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                 stash.Click += (_, e) =>
                 {
@@ -893,7 +897,7 @@ namespace SourceGit.Views
                     };
 
                     var addToIgnore = new MenuItem();
-                    addToIgnore.Header = App.Text("WorkingCopy.AddToGitIgnore");
+                    addToIgnore.Header = App.ContextMenuText("WorkingCopy.AddToGitIgnore");
                     addToIgnore.Icon = this.CreateMenuIcon("Icons.GitIgnore");
                     addToIgnore.Items.Add(ignoreFolder);
 
@@ -1031,7 +1035,7 @@ namespace SourceGit.Views
                 };
 
                 var stash = new MenuItem();
-                stash.Header = App.Text("FileCM.Stash");
+                stash.Header = App.ContextMenuText("FileCM.Stash");
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                 stash.IsEnabled = !vm.UseAmend;
                 stash.Click += (_, e) =>
@@ -1175,7 +1179,7 @@ namespace SourceGit.Views
                     };
 
                     var blame = new MenuItem();
-                    blame.Header = App.Text("Blame") + " (HEAD-only)";
+                    blame.Header = Models.HgTerminology.Extend("Blame", App.Text("Blame") + " (HEAD-only)", ViewModels.Preferences.Instance.ExtendContextMenusWithHgTerminology);
                     blame.Icon = this.CreateMenuIcon("Icons.Blame");
                     blame.Click += async (_, e) =>
                     {
@@ -1246,7 +1250,7 @@ namespace SourceGit.Views
                 };
 
                 var stash = new MenuItem();
-                stash.Header = App.Text("FileCM.StashMulti", changes.Count);
+                stash.Header = App.ContextMenuText("FileCM.StashMulti", changes.Count);
                 stash.Icon = this.CreateMenuIcon("Icons.Stashes.Add");
                 stash.IsEnabled = !vm.UseAmend;
                 stash.Click += (_, e) =>

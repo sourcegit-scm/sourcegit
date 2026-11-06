@@ -266,7 +266,7 @@ namespace SourceGit.Views
             if (!repo.IsBare)
             {
                 var resetToThisRevision = new MenuItem();
-                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Header = App.ContextMenuText("ChangeCM.CheckoutThisRevision");
                 resetToThisRevision.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += async (_, ev) =>
                 {
@@ -275,7 +275,7 @@ namespace SourceGit.Views
                 };
 
                 var resetToFirstParent = new MenuItem();
-                resetToFirstParent.Header = App.Text("ChangeCM.CheckoutFirstParentRevision");
+                resetToFirstParent.Header = App.ContextMenuText("ChangeCM.CheckoutFirstParentRevision");
                 resetToFirstParent.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                 resetToFirstParent.IsEnabled = commit.Parents.Count > 0;
                 resetToFirstParent.Click += async (_, ev) =>

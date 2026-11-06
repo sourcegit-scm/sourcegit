@@ -67,7 +67,7 @@
                 Height="32"
                 Content="{DynamicResource Text.Stash.IncludeUntracked}"
                 IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"
-                ToolTip.Tip="--include-untracked">
+                ToolTip.Tip="{v:HgText Stash.IncludeUntracked, Text=--include-untracked}">
         <CheckBox.IsVisible>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="HasSelectedFiles" Converter="{x:Static BoolConverters.Not}"/>

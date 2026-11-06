@@ -557,7 +557,7 @@ namespace SourceGit.Views
                     };
 
                     var deleteMulti = new MenuItem();
-                    deleteMulti.Header = App.Text("BranchCM.DeleteMultiBranches", branches.Count);
+                    deleteMulti.Header = App.ContextMenuText("BranchCM.DeleteMultiBranches", branches.Count);
                     deleteMulti.Icon = this.CreateMenuIcon("Icons.Clear");
                     deleteMulti.Tag = "Delete/Back";
                     deleteMulti.Click += (_, ev) =>
@@ -744,7 +744,7 @@ namespace SourceGit.Views
                     if (upstream != null)
                     {
                         var fastForward = new MenuItem();
-                        fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
+                        fastForward.Header = App.ContextMenuText("BranchCM.FastForward", upstream.FriendlyName);
                         fastForward.Icon = this.CreateMenuIcon("Icons.FastForward");
                         fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
                         fastForward.Click += async (_, e) =>
@@ -816,7 +816,7 @@ namespace SourceGit.Views
                 var hasNoWorktree = string.IsNullOrEmpty(branch.WorktreePath);
 
                 var checkout = new MenuItem();
-                checkout.Header = App.Text(hasNoWorktree ? "BranchCM.Checkout" : "BranchCM.SwitchToWorktree", branch.Name);
+                checkout.Header = App.ContextMenuText(hasNoWorktree ? "BranchCM.Checkout" : "BranchCM.SwitchToWorktree", branch.Name);
                 checkout.Icon = this.CreateMenuIcon("Icons.Check");
                 checkout.IsEnabled = !repo.IsBare || !hasNoWorktree;
                 checkout.Click += async (_, e) =>
@@ -845,7 +845,7 @@ namespace SourceGit.Views
                 if (upstream != null && hasNoWorktree)
                 {
                     var fastForward = new MenuItem();
-                    fastForward.Header = App.Text("BranchCM.FastForward", upstream.FriendlyName);
+                    fastForward.Header = App.ContextMenuText("BranchCM.FastForward", upstream.FriendlyName);
                     fastForward.Icon = this.CreateMenuIcon("Icons.FastForward");
                     fastForward.IsEnabled = branch.Ahead.Count == 0 && branch.Behind.Count > 0;
                     fastForward.Click += async (_, e) =>
@@ -857,7 +857,7 @@ namespace SourceGit.Views
                     menu.Items.Add(fastForward);
 
                     var fetchInto = new MenuItem();
-                    fetchInto.Header = App.Text("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
+                    fetchInto.Header = App.ContextMenuText("BranchCM.FetchInto", upstream.FriendlyName, branch.Name);
                     fetchInto.Icon = this.CreateMenuIcon("Icons.Fetch");
                     fetchInto.IsEnabled = branch.Ahead.Count == 0;
                     fetchInto.Click += async (_, e) =>
@@ -896,7 +896,7 @@ namespace SourceGit.Views
                     };
 
                     var interactiveRebase = new MenuItem();
-                    interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, branch.Name);
+                    interactiveRebase.Header = App.ContextMenuText("BranchCM.InteractiveRebase.Manually", current.Name, branch.Name);
                     interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
                     interactiveRebase.IsEnabled = !current.Head.Equals(branch.Head, StringComparison.Ordinal);
                     interactiveRebase.Click += async (_, e) =>
@@ -935,7 +935,7 @@ namespace SourceGit.Views
                     if (selectedCommit != null && !selectedCommit.SHA.Equals(branch.Head, StringComparison.Ordinal))
                     {
                         var move = new MenuItem();
-                        move.Header = App.Text("BranchCM.ResetToSelectedCommit", branch.Name, selectedCommit.SHA.Substring(0, 10));
+                        move.Header = App.ContextMenuText("BranchCM.ResetToSelectedCommit", branch.Name, selectedCommit.SHA.Substring(0, 10));
                         move.Icon = this.CreateMenuIcon("Icons.Reset");
                         move.Click += (_, e) =>
                         {
@@ -995,7 +995,7 @@ namespace SourceGit.Views
                 };
 
                 var rename = new MenuItem();
-                rename.Header = App.Text("BranchCM.Rename", branch.Name);
+                rename.Header = App.ContextMenuText("BranchCM.Rename", branch.Name);
                 rename.Icon = this.CreateMenuIcon("Icons.Rename");
                 rename.Tag = "F2";
                 rename.Click += (_, e) =>
@@ -1006,7 +1006,7 @@ namespace SourceGit.Views
                 };
 
                 var delete = new MenuItem();
-                delete.Header = App.Text("BranchCM.Delete", branch.Name);
+                delete.Header = App.ContextMenuText("BranchCM.Delete", branch.Name);
                 delete.Icon = this.CreateMenuIcon("Icons.Clear");
                 delete.Tag = "Delete/Back";
                 delete.IsEnabled = !branch.IsCurrent;
@@ -1025,7 +1025,7 @@ namespace SourceGit.Views
 
             var createBranch = new MenuItem();
             createBranch.Icon = this.CreateMenuIcon("Icons.Branch.Add");
-            createBranch.Header = App.Text("CreateBranch");
+            createBranch.Header = App.ContextMenuText("CreateBranch");
             createBranch.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
@@ -1137,7 +1137,7 @@ namespace SourceGit.Views
             }
 
             var fetch = new MenuItem();
-            fetch.Header = App.Text("RemoteCM.Fetch");
+            fetch.Header = App.ContextMenuText("RemoteCM.Fetch");
             fetch.Icon = this.CreateMenuIcon("Icons.Fetch");
             fetch.Click += (_, e) =>
             {
@@ -1163,7 +1163,7 @@ namespace SourceGit.Views
             if (ViewModels.Preferences.Instance.EnableAutoFetch)
             {
                 var toggleAutoFetch = new MenuItem();
-                toggleAutoFetch.Header = App.Text("RemoteCM.EnableAutoFetch");
+                toggleAutoFetch.Header = App.ContextMenuText("RemoteCM.EnableAutoFetch");
                 toggleAutoFetch.Icon = this.CreateMenuIcon("Icons.AutoFetch");
                 toggleAutoFetch.Tag = remote.DisableAutoFetch ? "OFF" : "ON";
                 toggleAutoFetch.Click += async (_, e) =>
@@ -1230,7 +1230,7 @@ namespace SourceGit.Views
             var name = branch.FriendlyName;
 
             var checkout = new MenuItem();
-            checkout.Header = App.Text("BranchCM.Checkout", name);
+            checkout.Header = App.ContextMenuText("BranchCM.Checkout", name);
             checkout.Icon = this.CreateMenuIcon("Icons.Check");
             checkout.IsEnabled = !repo.IsBare;
             checkout.Click += async (_, e) =>
@@ -1286,7 +1286,7 @@ namespace SourceGit.Views
                 };
 
                 var interactiveRebase = new MenuItem();
-                interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", current.Name, name);
+                interactiveRebase.Header = App.ContextMenuText("BranchCM.InteractiveRebase.Manually", current.Name, name);
                 interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
                 interactiveRebase.IsEnabled = !current.Head.Equals(branch.Head, StringComparison.Ordinal);
                 interactiveRebase.Click += async (_, e) =>
@@ -1336,7 +1336,7 @@ namespace SourceGit.Views
             };
 
             var delete = new MenuItem();
-            delete.Header = App.Text("BranchCM.Delete", name);
+            delete.Header = App.ContextMenuText("BranchCM.Delete", name);
             delete.Icon = this.CreateMenuIcon("Icons.Clear");
             delete.Tag = "Delete/Back";
             delete.Click += (_, e) =>
@@ -1352,7 +1352,7 @@ namespace SourceGit.Views
 
             var createBranch = new MenuItem();
             createBranch.Icon = this.CreateMenuIcon("Icons.Branch.Add");
-            createBranch.Header = App.Text("CreateBranch");
+            createBranch.Header = App.ContextMenuText("CreateBranch");
             createBranch.Click += (_, e) =>
             {
                 if (repo.CanCreatePopup())
