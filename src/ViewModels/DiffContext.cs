@@ -256,7 +256,7 @@ namespace SourceGit.ViewModels
                 imgDiff.Old = oldImage.Bitmap;
                 imgDiff.OldFileSize = oldImage.Size;
 
-                var newImage = await ImageSource.FromRevisionAsync(_repo, string.Empty, oldPath, imgDecoder).ConfigureAwait(false);
+                var newImage = await ImageSource.FromRevisionAsync(_repo, string.Empty, _option.Path, imgDecoder).ConfigureAwait(false);
                 imgDiff.New = newImage.Bitmap;
                 imgDiff.NewFileSize = newImage.Size;
             }
