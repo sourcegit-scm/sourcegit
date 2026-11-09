@@ -111,6 +111,11 @@ namespace SourceGit.Models
         public List<string> Excludes { get; set; } = new List<string>();
     }
 
+    public class CustomFileAssociations
+    {
+        [JsonPropertyName("associations")] public Dictionary<string, string> Associations { get; set; } = new Dictionary<string, string>();
+    }
+
     public class ExternalToolsFinder
     {
         public List<ExternalTool> Tools
