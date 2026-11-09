@@ -10,6 +10,7 @@ namespace SourceGit.Models
         RemoteBranch,
         RemoteBranchFolder,
         Tag,
+        TagFolder,
     }
 
     public enum FilterMode
