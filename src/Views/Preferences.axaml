@@ -586,7 +586,7 @@
               <TextBlock Classes="bold" Margin="4,0,0,0" Text="{DynamicResource Text.Preferences.DiffMerge}"/>
             </StackPanel>
             <Rectangle Margin="0,8" Fill="{DynamicResource Brush.Border2}" Height=".6" HorizontalAlignment="Stretch"/>
-            <Grid Margin="8,0,0,8" RowDefinitions="32,Auto,Auto,Auto">
+            <Grid Margin="8,0,0,8" RowDefinitions="32,Auto,Auto,Auto,Auto">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="IntegrationLabel"/>
                 <ColumnDefinition Width="*"/>
@@ -672,6 +672,10 @@
                   </Border>
                 </TextBox.InnerRightContent>
               </TextBox>
+
+              <CheckBox Grid.Row="4" Grid.Column="1"
+                        Content="{DynamicResource Text.Preferences.DiffMerge.BindToDoubleClick}"
+                        IsChecked="{Binding ExternalMergeToolBindToDoubleClick, Mode=TwoWay}"/>
             </Grid>
           </StackPanel>
         </TabItem>
