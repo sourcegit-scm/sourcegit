@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -40,17 +41,15 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
-                if (CancellationToken.CanBeCanceled)
+                using var registration = CancellationToken.Register(() =>
                 {
-                    CancellationToken.Register(() =>
+                    lock (capturedLock)
                     {
-                        lock (capturedLock)
-                        {
-                            if (captured is { Process: { HasExited: false } proc })
-                                Native.OS.TerminateProcess(proc);
-                        }
-                    });
-                }
+                        if (captured is { Process: { HasExited: false } running })
+                            Native.OS.TerminateProcess(running);
+                    }
+                });
+                var errorTask = proc.StandardError.ReadToEndAsync();
 
                 while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
                 {
@@ -181,14 +180,27 @@ namespace SourceGit.Commands
                         outs.Add(change);
                 }
 
+                await proc.WaitForExitAsync().ConfigureAwait(false);
+                var error = await errorTask.ConfigureAwait(false);
                 lock (capturedLock)
                 {
                     captured.Process = null;
                 }
+
+                if (CancellationToken.IsCancellationRequested)
+                    return null;
+
+                if (proc.ExitCode != 0)
+                {
+                    RaiseException(string.IsNullOrWhiteSpace(error) ? "Failed to query local changes." : error.Trim());
+                    return null;
+                }
             }
-            catch
+            catch (Exception e)
             {
-                // Ignore exceptions.
+                if (!CancellationToken.IsCancellationRequested)
+                    RaiseException($"Failed to query local changes: {e.Message}");
+                return null;
             }
 
             return outs;

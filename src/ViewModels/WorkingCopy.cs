@@ -374,24 +374,45 @@ namespace SourceGit.ViewModels
                 return;
 
             IsStaging = true;
-            _selectedUnstaged = new(next != null ? new List<Models.Change> { next } : null);
-
             using var lockWatcher = _repo.LockWatcher();
 
             var log = _repo.CreateLog("Stage");
-            var pathSpecFile = Path.GetTempFileName();
-            await using (var writer = new StreamWriter(pathSpecFile))
+            string pathSpecFile = null;
+            try
             {
-                foreach (var c in canStaged)
-                    await writer.WriteLineAsync(c.Path);
+                pathSpecFile = Path.GetTempFileName();
+                await using (var writer = new StreamWriter(pathSpecFile))
+                {
+                    foreach (var c in canStaged)
+                        await writer.WriteLineAsync(c.Path);
+                }
+
+                if (await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync())
+                    _selectedUnstaged = new(next != null ? new List<Models.Change> { next } : null);
             }
-
-            await new Commands.Add(_repo.FullPath, pathSpecFile).Use(log).ExecAsync();
-            File.Delete(pathSpecFile);
-            log.Complete();
-
-            _repo.MarkWorkingCopyDirtyManually();
-            IsStaging = false;
+            catch (Exception e)
+            {
+                _repo.SendNotification($"Failed to stage changes: {e.Message}", true);
+            }
+            finally
+            {
+                if (pathSpecFile != null)
+                {
+                    try
+                    {
+                        File.Delete(pathSpecFile);
+                    }
+                    catch (IOException)
+                    {
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                    }
+                }
+                log.Complete();
+                IsStaging = false;
+                _repo.MarkWorkingCopyDirtyManually();
+            }
         }
 
         public async Task UnstageChangesAsync(List<Models.Change> changes, Models.Change next)

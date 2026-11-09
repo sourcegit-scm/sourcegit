@@ -16,6 +16,9 @@ namespace SourceGit.Commands
             {
                 // Untracked paths that contains `.git` file (detached submodule) must be removed manually.
                 var changes = await new QueryLocalChanges(repo).GetResultAsync().ConfigureAwait(false);
+                if (changes == null)
+                    return;
+
                 try
                 {
                     foreach (var c in changes)
