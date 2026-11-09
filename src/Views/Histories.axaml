@@ -133,6 +133,7 @@
                                            FontSize="12"
                                            VerticalAlignment="Center"
                                            UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"
+                                           GraphColor="{Binding Color, Mode=OneWay}"
                                            UseCompactBranchNames="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseCompactBranchNamesInGraph}"
                                            HasSingleRemote="{Binding $parent[v:Histories].HasSingleRemote}"/>
 

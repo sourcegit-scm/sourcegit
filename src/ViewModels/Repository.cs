@@ -29,6 +29,8 @@ namespace SourceGit.ViewModels
             get;
         }
 
+        public int Bookmark => GetOwnerPage()?.Node.Bookmark ?? Preferences.Instance.FindNode(FullPath)?.Bookmark ?? 0;
+
         public Models.RepositorySettings Settings
         {
             get => _settings;
