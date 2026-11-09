@@ -249,7 +249,7 @@ namespace SourceGit.ViewModels
             _repo.RefreshCommits();
         }
 
-        public void SetCommits(List<Models.Commit> commits, Models.CommitGraph graph)
+        public void SetCommits(List<Models.Commit> commits, Models.CommitGraph graph, HashSet<string> graphExtraHeads)
         {
             if (_cancellationRefreshGraph is { IsCancellationRequested: false })
                 _cancellationRefreshGraph.Cancel();
@@ -258,20 +258,34 @@ namespace SourceGit.ViewModels
 
             if (SetProperty(ref _commits, commits, nameof(Commits)))
                 PostCommitsChanged();
+
+            // The selection may have changed while the graph was generated in background.
+            if (!graphExtraHeads.SetEquals(CollectGraphExtraHeads()))
+                RefreshGraph();
         }
 
-        public Models.CommitGraph GenerateGraph(List<Models.Commit> commits)
+        /// <summary>
+        ///     Must be called on the UI thread: `_selectedCommits` is only modified there.
+        /// </summary>
+        public HashSet<string> CollectGraphExtraHeads()
         {
-            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
-            var highlighting = _repo.UIStates.GraphHighlighting;
             var extraHeads = new HashSet<string>();
-
-            if (highlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
+            if (_repo.UIStates.GraphHighlighting >= Models.CommitGraphHighlighting.SelectedCommitsOnly)
             {
                 foreach (var c in _selectedCommits)
                     extraHeads.Add(c.SHA);
             }
 
+            return extraHeads;
+        }
+
+        /// <summary>
+        ///     Thread-safe as long as `extraHeads` is not shared with the UI thread.
+        /// </summary>
+        public Models.CommitGraph GenerateGraph(List<Models.Commit> commits, HashSet<string> extraHeads)
+        {
+            var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
+            var highlighting = _repo.UIStates.GraphHighlighting;
             return Models.CommitGraph.Generate(commits, firstParentOnly, highlighting, extraHeads);
         }
 
@@ -596,10 +610,11 @@ namespace SourceGit.ViewModels
             _cancellationRefreshGraph = new CancellationTokenSource();
             var token = _cancellationRefreshGraph.Token;
             var commits = _commits;
+            var extraHeads = CollectGraphExtraHeads();
 
             Task.Run(() =>
             {
-                var graph = GenerateGraph(commits);
+                var graph = GenerateGraph(commits, extraHeads);
                 Dispatcher.UIThread.Post(() =>
                 {
                     if (!token.IsCancellationRequested)
