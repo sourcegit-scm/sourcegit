@@ -20,6 +20,8 @@ namespace SourceGit.Models
     public class CommitGraph
     {
         public static List<Pen> Pens { get; } = [];
+        public static Pen GrayedCurvePen { get; private set; } = null;
+        public static Pen GrayedDotPen { get; private set; } = null;
 
         public static void SetDefaultPens(double thickness = 2)
         {
@@ -33,6 +35,8 @@ namespace SourceGit.Models
             foreach (var c in colors)
                 Pens.Add(new Pen(c.ToUInt32(), thickness));
 
+            GrayedCurvePen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), thickness);
+            GrayedDotPen = new Pen(Brushes.Gray, thickness);
             s_penCount = colors.Count;
         }
 
