@@ -21,10 +21,21 @@
                FontStyle="Italic"
                Text="{Binding #ThisControl.Description}"/>
 
-    <ProgressBar x:Name="ProgressBar"
-                 Margin="0,8,0,0"
-                 HorizontalAlignment="Stretch"
-                 Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"
-                 Minimum="0" Maximum="100"/>
+    <Grid Margin="0,8,0,0" ColumnDefinitions="*,Auto">
+      <ProgressBar Grid.Column="0"
+                   x:Name="ProgressBar"
+                   HorizontalAlignment="Stretch"
+                   Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"
+                   Minimum="0" Maximum="100"/>
+
+      <TextBlock Grid.Column="1"
+                 x:Name="Percentage"
+                 Margin="8,0,0,0"
+                 MinWidth="32"
+                 TextAlignment="Right"
+                 VerticalAlignment="Center"
+                 FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
+                 IsVisible="False"/>
+    </Grid>
   </StackPanel>
 </UserControl>
