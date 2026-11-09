@@ -22,6 +22,7 @@ namespace SourceGit.Models
         private static readonly ExtraGrammar[] s_extraGrammars =
         [
             new ExtraGrammar("source.toml", [".toml"], "toml.json"),
+            new ExtraGrammar("source.matlab", [".m"], "matlab.json"),
             new ExtraGrammar("source.kotlin", [".kotlin", ".kt", ".kts"], "kotlin.json"),
             new ExtraGrammar("source.hx", [".hx"], "haxe.json"),
             new ExtraGrammar("source.hxml", [".hxml"], "hxml.json"),
