@@ -1373,6 +1373,23 @@ namespace SourceGit.ViewModels
             });
         }
 
+        public void RefreshDirtyState()
+        {
+            if (IsBare)
+                return;
+
+            var includeUntracked = _uiStates.IncludeUntrackedInLocalChanges;
+            Task.Run(async () =>
+            {
+                var hasChanges = await new Commands.QueryHasLocalChanges(FullPath, includeUntracked)
+                    .GetResultAsync()
+                    .ConfigureAwait(false);
+
+                if (hasChanges is { } value)
+                    Dispatcher.UIThread.Post(() => GetOwnerPage()?.ChangeDirtyState(Models.DirtyState.HasLocalChanges, !value));
+            });
+        }
+
         public void RefreshWorkingCopyChanges()
         {
             if (IsBare)

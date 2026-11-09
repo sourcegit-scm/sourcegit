@@ -150,8 +150,14 @@ namespace SourceGit.Models
 
         private void Tick(object sender)
         {
-            if (!_isActive || Interlocked.Read(ref _lockCount) > 0)
+            if (Interlocked.Read(ref _lockCount) > 0)
                 return;
+
+            if (!_isActive)
+            {
+                CheckDirtyStateWhileInactive();
+                return;
+            }
 
             var now = DateTime.Now.ToFileTime();
             var refreshCommits = false;
@@ -235,6 +241,18 @@ namespace SourceGit.Models
 
             if (refreshCommits)
                 _repo.RefreshCommits();
+        }
+
+        private void CheckDirtyStateWhileInactive()
+        {
+            // Pending refreshes are kept as-is so they run once the repository becomes active again. Only update
+            // the dirty indicator of the tab, once per batch of changes.
+            var pending = Math.Max(Interlocked.Read(ref _updateWC), Interlocked.Read(ref _updateBranch));
+            if (pending <= 0 || pending == _lastDirtyStateCheck || DateTime.Now.ToFileTime() <= pending)
+                return;
+
+            _lastDirtyStateCheck = pending;
+            _repo.RefreshDirtyState();
         }
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
@@ -387,6 +405,7 @@ namespace SourceGit.Models
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;
         private volatile bool _isActive = true;
+        private long _lastDirtyStateCheck = 0;
 
         private long _lockCount;
         private long _updateWC;
