@@ -135,9 +135,9 @@ namespace SourceGit.ViewModels
             if (child.Change != null)
                 return;
 
-            node.FullPath = $"{node.FullPath}/{child.DisplayName}";
+            node.FullPath = child.FullPath;
             node.DisplayName = $"{node.DisplayName} / {child.DisplayName}";
-            node.IsExpanded = child.IsExpanded;
+            node.IsExpanded = node.IsExpanded && child.IsExpanded;
             node.Children = child.Children;
             Compact(node);
         }

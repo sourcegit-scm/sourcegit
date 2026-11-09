@@ -169,7 +169,7 @@ namespace SourceGit.Views
                 else if (e.Key == Key.C &&
                     e.KeyModifiers.HasFlag(OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control))
                 {
-                    var detailView = this.FindAncestorOfType<CommitDetail>();
+                    var detailView = this.FindAncestorOfType<RevisionFiles>();
                     if (detailView is { DataContext: ViewModels.CommitDetail detail })
                     {
                         var path = node.Backend?.Path ?? string.Empty;
@@ -219,6 +219,15 @@ namespace SourceGit.Views
             set => SetAndRaise(RevisionProperty, ref _revision, value);
         }
 
+        public static readonly StyledProperty<bool> EnableCompactFoldersProperty =
+            AvaloniaProperty.Register<RevisionFileTreeView, bool>(nameof(EnableCompactFolders));
+
+        public bool EnableCompactFolders
+        {
+            get => GetValue(EnableCompactFoldersProperty);
+            set => SetValue(EnableCompactFoldersProperty, value);
+        }
+
         public AvaloniaList<ViewModels.RevisionFileTreeNode> Rows { get; } = [];
 
         public static readonly RoutedEvent<RoutedEventArgs> SearchRequestedEvent =
@@ -237,12 +246,22 @@ namespace SourceGit.Views
 
         public async Task SetSearchResultAsync(string file)
         {
+            var searchGeneration = ++_searchGeneration;
+            _activeSearchFile = file;
+            _rowsGeneration++;
             Rows.Clear();
             _searchResult.Clear();
 
             var rows = new List<ViewModels.RevisionFileTreeNode>();
             if (string.IsNullOrEmpty(file))
             {
+                if (DataContext is ViewModels.CommitDetail detail)
+                {
+                    var revision = Revision;
+                    await PrepareNodesAsync(_tree, detail, revision);
+                    if (DataContext != detail || Revision != revision || searchGeneration != _searchGeneration)
+                        return;
+                }
                 MakeRows(rows, _tree, 0);
             }
             else
@@ -251,7 +270,10 @@ namespace SourceGit.Views
                 if (vm?.Commit == null)
                     return;
 
+                var revision = Revision;
                 var objects = await vm.GetRevisionFilesUnderFolderAsync(file);
+                if (DataContext != vm || Revision != revision || searchGeneration != _searchGeneration)
+                    return;
                 if (objects is not { Count: 1 })
                     return;
 
@@ -290,9 +312,13 @@ namespace SourceGit.Views
                     });
                 }
 
+                await PrepareNodesAsync(_searchResult, vm, revision);
+                if (DataContext != vm || Revision != revision || searchGeneration != _searchGeneration)
+                    return;
                 MakeRows(rows, _searchResult, 0);
             }
 
+            Rows.Clear();
             Rows.AddRange(rows);
 
             if (_searchResult.Count > 0)
@@ -307,22 +333,35 @@ namespace SourceGit.Views
 
         public async Task ToggleNodeIsExpandedAsync(ViewModels.RevisionFileTreeNode node)
         {
-            _disableSelectionChangingEvent = true;
-            node.IsExpanded = !node.IsExpanded;
-
-            var depth = node.Depth;
+            var generation = _treeGeneration;
+            var rowsGeneration = _rowsGeneration;
             var idx = Rows.IndexOf(node);
-            if (idx == -1)
+            if (idx < 0)
                 return;
 
+            node.IsExpanded = !node.IsExpanded;
+            var depth = node.Depth;
             if (node.IsExpanded)
             {
                 var subtree = await GetChildrenOfTreeNodeAsync(node);
-                if (subtree is { Count: > 0 })
+                idx = Rows.IndexOf(node);
+                if (generation != _treeGeneration || rowsGeneration != _rowsGeneration || idx < 0 || !node.IsExpanded || subtree is not { Count: > 0 })
+                    return;
+
+                // A repeated expand may have already inserted these rows.
+                if (idx + 1 < Rows.Count && Rows[idx + 1].Depth > depth)
+                    return;
+
+                var subrows = new List<ViewModels.RevisionFileTreeNode>();
+                MakeRows(subrows, subtree, depth + 1);
+                _disableSelectionChangingEvent = true;
+                try
                 {
-                    var subrows = new List<ViewModels.RevisionFileTreeNode>();
-                    MakeRows(subrows, subtree, depth + 1);
                     Rows.InsertRange(idx + 1, subrows);
+                }
+                finally
+                {
+                    _disableSelectionChangingEvent = false;
                 }
             }
             else
@@ -330,26 +369,38 @@ namespace SourceGit.Views
                 var removeCount = 0;
                 for (int i = idx + 1; i < Rows.Count; i++)
                 {
-                    var row = Rows[i];
-                    if (row.Depth <= depth)
+                    if (Rows[i].Depth <= depth)
                         break;
-
                     removeCount++;
                 }
-                Rows.RemoveRange(idx + 1, removeCount);
-            }
 
-            _disableSelectionChangingEvent = false;
+                _disableSelectionChangingEvent = true;
+                try
+                {
+                    Rows.RemoveRange(idx + 1, removeCount);
+                }
+                finally
+                {
+                    _disableSelectionChangingEvent = false;
+                }
+            }
         }
 
         protected override async void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == RevisionProperty)
+            if (change.Property == EnableCompactFoldersProperty && DataContext is ViewModels.CommitDetail detail)
             {
+                await RefreshRowsAsync(detail);
+            }
+            else if (change.Property == RevisionProperty)
+            {
+                _searchGeneration++;
+                _activeSearchFile = null;
                 _tree.Clear();
                 _searchResult.Clear();
+                Rows.Clear();
 
                 if (DataContext is ViewModels.CommitDetail { ActiveTabIndex: 2 } vm)
                     await ReloadTreeData(vm);
@@ -407,24 +458,89 @@ namespace SourceGit.Views
 
         private async Task<List<ViewModels.RevisionFileTreeNode>> GetChildrenOfTreeNodeAsync(ViewModels.RevisionFileTreeNode node)
         {
-            if (!node.IsFolder)
+            if (!node.IsFolder || DataContext is not ViewModels.CommitDetail vm)
                 return null;
 
-            if (node.Children.Count > 0)
-                return node.Children;
+            var revision = Revision;
+            var children = await node.LoadChildrenAsync(path => LoadChildrenAsync(vm, revision, path));
+            await PrepareNodesAsync(children, vm, revision);
+            SortNodes(children);
+            return children;
+        }
 
-            if (DataContext is not ViewModels.CommitDetail vm)
-                return null;
+        private Task<List<Models.Object>> LoadChildrenAsync(ViewModels.CommitDetail vm, string revision, string path)
+        {
+            if (DataContext != vm || Revision != revision)
+                return Task.FromResult<List<Models.Object>>(null);
+            return vm.GetRevisionFilesUnderFolderAsync(path);
+        }
 
-            var objects = await vm.GetRevisionFilesUnderFolderAsync(node.Backend.Path + "/");
-            if (objects == null || objects.Count == 0)
-                return null;
+        private async Task PrepareNodesAsync(List<ViewModels.RevisionFileTreeNode> nodes, ViewModels.CommitDetail vm, string revision)
+        {
+            await _preparing.WaitAsync();
+            try
+            {
+                await PrepareNodesCoreAsync(nodes, vm, revision, EnableCompactFolders);
+            }
+            finally
+            {
+                _preparing.Release();
+            }
+        }
 
-            foreach (var obj in objects)
-                node.Children.Add(new ViewModels.RevisionFileTreeNode() { Backend = obj });
+        private async Task PrepareNodesCoreAsync(List<ViewModels.RevisionFileTreeNode> nodes, ViewModels.CommitDetail vm, string revision, bool compact)
+        {
+            foreach (var node in nodes.ToArray())
+            {
+                if (DataContext != vm || Revision != revision)
+                    return;
+                await node.PrepareAsync(path => LoadChildrenAsync(vm, revision, path), compact);
+                if (node.IsExpanded && node.IsFolder)
+                {
+                    var children = await node.LoadChildrenAsync(path => LoadChildrenAsync(vm, revision, path));
+                    await PrepareNodesCoreAsync(children, vm, revision, compact);
+                }
+                SortNodes(node.Children);
+            }
+        }
 
-            SortNodes(node.Children);
-            return node.Children;
+        private async Task RefreshRowsAsync(ViewModels.CommitDetail vm)
+        {
+            var generation = _treeGeneration;
+            var rowsGeneration = ++_rowsGeneration;
+            var revision = Revision;
+            var selectedNode = RowsList.SelectedItem as ViewModels.RevisionFileTreeNode;
+            var selectedPath = selectedNode?.Backend?.Path;
+            await _preparing.WaitAsync();
+            try
+            {
+                if (generation != _treeGeneration || rowsGeneration != _rowsGeneration || DataContext != vm || Revision != revision)
+                    return;
+                var nodes = _searchResult.Count > 0 ? _searchResult : _tree;
+                await PrepareNodesCoreAsync(nodes, vm, revision, EnableCompactFolders);
+                if (generation != _treeGeneration || rowsGeneration != _rowsGeneration || DataContext != vm || Revision != revision)
+                    return;
+                var rows = new List<ViewModels.RevisionFileTreeNode>();
+                MakeRows(rows, nodes, 0);
+                _disableSelectionChangingEvent = true;
+                try
+                {
+                    Rows.Clear();
+                    Rows.AddRange(rows);
+                    RowsList.SelectedItem = rows.Find(node => node.Backend?.Path == selectedPath)
+                        ?? rows.Find(node => ReferenceEquals(node, selectedNode))
+                        ?? rows.Find(node => node.IsFolder && selectedPath != null &&
+                            node.Backend.Path.StartsWith(selectedPath + "/", StringComparison.Ordinal));
+                }
+                finally
+                {
+                    _disableSelectionChangingEvent = false;
+                }
+            }
+            finally
+            {
+                _preparing.Release();
+            }
         }
 
         private void MakeRows(List<ViewModels.RevisionFileTreeNode> rows, List<ViewModels.RevisionFileTreeNode> nodes, int depth)
@@ -453,29 +569,34 @@ namespace SourceGit.Views
 
         private async Task ReloadTreeData(ViewModels.CommitDetail vm)
         {
-            if (_isReloadingTreeData)
-                return;
-
-            _isReloadingTreeData = true;
+            var generation = ++_treeGeneration;
+            _rowsGeneration++;
+            var revision = Revision;
 
             if (vm?.Commit == null)
             {
                 Rows.Clear();
-                _isReloadingTreeData = false;
                 return;
             }
 
             var objects = await vm.GetRevisionFilesUnderFolderAsync(null);
+            if (generation != _treeGeneration || DataContext != vm || Revision != revision)
+                return;
+            _tree.Clear();
             if (objects == null || objects.Count == 0)
             {
+                if (!string.IsNullOrEmpty(_activeSearchFile))
+                    return;
                 Rows.Clear();
-                _isReloadingTreeData = false;
                 return;
             }
 
             foreach (var obj in objects)
                 _tree.Add(new ViewModels.RevisionFileTreeNode { Backend = obj });
 
+            await PrepareNodesAsync(_tree, vm, revision);
+            if (generation != _treeGeneration || !string.IsNullOrEmpty(_activeSearchFile) || DataContext != vm || Revision != revision)
+                return;
             SortNodes(_tree);
 
             var topTree = new List<ViewModels.RevisionFileTreeNode>();
@@ -483,7 +604,6 @@ namespace SourceGit.Views
 
             Rows.Clear();
             Rows.AddRange(topTree);
-            _isReloadingTreeData = false;
         }
 
         private ContextMenu CreateRevisionFileContextMenuByFolder(ViewModels.Repository repo, Models.Commit commit, string path)
@@ -787,6 +907,10 @@ namespace SourceGit.Views
         private List<ViewModels.RevisionFileTreeNode> _tree = [];
         private bool _disableSelectionChangingEvent = false;
         private List<ViewModels.RevisionFileTreeNode> _searchResult = [];
-        private bool _isReloadingTreeData = false;
+        private readonly System.Threading.SemaphoreSlim _preparing = new(1, 1);
+        private string _activeSearchFile;
+        private int _rowsGeneration;
+        private int _treeGeneration;
+        private int _searchGeneration;
     }
 }

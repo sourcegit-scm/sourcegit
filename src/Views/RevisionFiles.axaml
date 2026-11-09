@@ -18,7 +18,7 @@
 
     <!-- Left -->
     <Grid Grid.Column="0" RowDefinitions="26,*">
-      <Grid Grid.Row="0" Height="26">
+      <Grid Grid.Row="0" Height="26" ColumnDefinitions="*,Auto">
         <TextBox Grid.Row="0"
                  x:Name="TxtSearchRevisionFiles"
                  Height="26"
@@ -43,6 +43,13 @@
             </Button>
           </TextBox.InnerRightContent>
         </TextBox>
+
+        <ToggleButton Grid.Column="1" Margin="4,0,0,0" Padding="4"
+                      IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree, Mode=TwoWay}"
+                      ToolTip.Tip="{DynamicResource Text.Preferences.General.EnableCompactFolders}"
+                      AutomationProperties.Name="{DynamicResource Text.Preferences.General.EnableCompactFolders}">
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Tree}"/>
+        </ToggleButton>
 
         <Popup PlacementTarget="{Binding #TxtSearchRevisionFiles}"
                Placement="BottomEdgeAlignedLeft"
@@ -112,7 +119,10 @@
       <!-- File Tree -->
       <Border Grid.Row="1" Margin="0,4,0,0" CornerRadius="4" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1">
         <Border CornerRadius="4" Background="{DynamicResource Brush.Contents}" ClipToBounds="True">
-          <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA, FallbackValue={x:Null}}" SearchRequested="OnToggleSearch"/>          
+          <v:RevisionFileTreeView x:Name="FileTree"
+                                  EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
+                                  Revision="{Binding Commit.SHA, FallbackValue={x:Null}}"
+                                  SearchRequested="OnToggleSearch"/>
         </Border>
       </Border>
     </Grid>

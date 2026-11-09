@@ -380,42 +380,74 @@
             </TabControl>
           </DataTemplate>
 
-          <DataTemplate DataType="m:Count">
-            <TabControl Padding="0,4">
+          <DataTemplate DataType="vm:CommitChanges">
+            <TabControl SelectedIndex="{Binding ActiveTabIndex, Mode=TwoWay}" Padding="0">
               <TabItem>
                 <TabItem.Header>
                   <Border Background="Transparent" PointerPressed="OnTabHeaderPointerPressed">
                     <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Info}"/>
                   </Border>
                 </TabItem.Header>
-
-                <StackPanel Orientation="Vertical"
-                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                            IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
-
-                  <Path Width="128" Height="128"
-                        Data="{StaticResource Icons.Detail}"
-                        HorizontalAlignment="Center"
-                        Fill="{DynamicResource Brush.FG2}"/>
-
-                  <TextBlock HorizontalAlignment="Center"
-                             Margin="0,16"
-                             FontSize="24" FontWeight="Bold"
-                             Foreground="{DynamicResource Brush.FG2}"
-                             Text="{Binding Value, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Histories.Selected'}"/>
-                </StackPanel>
+                <ListBox x:Name="SelectedCommitCards" ItemsSource="{Binding InformationDetails}" SelectedItem="{Binding SelectedInformationDetail, Mode=TwoWay}"
+                         SelectionMode="Single" Background="Transparent" Margin="4,0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
+                  <ListBox.Styles>
+                    <Style Selector="ListBox#SelectedCommitCards > ListBoxItem">
+                      <Setter Property="Padding" Value="0"/>
+                      <Setter Property="Margin" Value="0,0,0,8"/>
+                      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                  </ListBox.Styles>
+                  <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                  </ListBox.ItemsPanel>
+                  <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:CommitDetail">
+                      <Border BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" CornerRadius="4" Padding="4">
+                        <v:CommitInformation OpenChangesInNewWindow="True"/>
+                      </Border>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
               </TabItem>
-
-              <TabItem IsEnabled="False">
+              <TabItem>
                 <TabItem.Header>
-                  <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Changes}"/>
+                  <Border Background="Transparent" PointerPressed="OnTabHeaderPointerPressed">
+                    <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Changes}"/>
+                  </Border>
                 </TabItem.Header>
+                <v:SelectedCommitChanges IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}"/>
               </TabItem>
-
-              <TabItem IsEnabled="False">
+              <TabItem>
                 <TabItem.Header>
-                  <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Files}"/>
+                  <Border Background="Transparent" PointerPressed="OnTabHeaderPointerPressed">
+                    <TextBlock Classes="tab_header" Text="{DynamicResource Text.CommitDetail.Files}"/>
+                  </Border>
                 </TabItem.Header>
+                <Grid RowDefinitions="Auto,*" Margin="4,0"
+                      IsVisible="{Binding #ThisControl.IsDetailsPanelExpanded, Mode=OneWay}">
+                  <ComboBox ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit, Mode=TwoWay}"
+                            HorizontalAlignment="Stretch" Margin="0,0,0,4">
+                    <ComboBox.ItemTemplate>
+                      <DataTemplate DataType="m:Commit">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                          <TextBlock Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding SHA}"/>
+                          <TextBlock Text="{Binding Subject}" TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                      </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                  </ComboBox>
+                  <ContentControl Grid.Row="1" Content="{Binding RevisionDetail}">
+                    <ContentControl.DataTemplates>
+                      <DataTemplate DataType="vm:CommitDetail">
+                        <v:RevisionFiles/>
+                      </DataTemplate>
+                    </ContentControl.DataTemplates>
+                  </ContentControl>
+                </Grid>
               </TabItem>
             </TabControl>
           </DataTemplate>
