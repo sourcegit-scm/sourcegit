@@ -229,6 +229,19 @@ namespace SourceGit.Commands
             return start;
         }
 
+        protected CancellationTokenRegistration TerminateOnCancellation(Process proc)
+        {
+            if (!CancellationToken.CanBeCanceled)
+                return default;
+
+            // Disposing the returned registration waits for a running callback, so `proc` is always valid inside it.
+            return CancellationToken.Register(() =>
+            {
+                if (!proc.HasExited)
+                    Native.OS.TerminateProcess(proc);
+            });
+        }
+
         protected void RaiseException(string error)
         {
             Models.Notification.Send(Context, error, true);

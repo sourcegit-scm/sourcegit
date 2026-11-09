@@ -59,6 +59,8 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
+                using var cancellation = TerminateOnCancellation(proc);
+
                 var findHead = false;
                 while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { } line)
                 {
@@ -82,9 +84,13 @@ namespace SourceGit.Commands
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);
 
+                if (CancellationToken.IsCancellationRequested)
+                    return commits;
+
                 if (_markMerged && !findHead && commits.Count > 0)
                 {
                     var set = await new QueryCurrentBranchCommitHashes(WorkingDirectory, commits[^1].CommitterTime)
+                        .WithCancellation(CancellationToken)
                         .GetResultAsync()
                         .ConfigureAwait(false);
 
@@ -100,7 +106,8 @@ namespace SourceGit.Commands
             }
             catch (Exception e)
             {
-                RaiseException($"Failed to query commits. Reason: {e.Message}");
+                if (!CancellationToken.IsCancellationRequested)
+                    RaiseException($"Failed to query commits. Reason: {e.Message}");
             }
 
             return commits;

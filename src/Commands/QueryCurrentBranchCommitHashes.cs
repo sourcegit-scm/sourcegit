@@ -23,6 +23,8 @@ namespace SourceGit.Commands
                 proc.StartInfo = CreateGitStartInfo(true);
                 proc.Start();
 
+                using var cancellation = TerminateOnCancellation(proc);
+
                 while (await proc.StandardOutput.ReadLineAsync().ConfigureAwait(false) is { Length: > 8 } line)
                     outs.Add(line);
 
