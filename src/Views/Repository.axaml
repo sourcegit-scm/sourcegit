@@ -217,6 +217,23 @@
                     <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Current}"/>
                   </StackPanel>
                 </DataTemplate>
+
+                <DataTemplate DataType="vm:AmInProgress">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                      <TextBlock FontWeight="Bold" Foreground="{DynamicResource Brush.Conflict.Foreground}" Text="{DynamicResource Text.InProgress.Am}"/>
+                      <TextBlock FontWeight="Bold"
+                                 Margin="4,0,0,0"
+                                 Foreground="{DynamicResource Brush.Conflict.Foreground}"
+                                 FontFamily="{DynamicResource Fonts.Monospace}"
+                                 Text="{Binding Progress, Mode=OneWay}"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0"
+                            Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"
+                            IsVisible="{Binding CanSkip}" />
+                  </Grid>
+                </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>
             

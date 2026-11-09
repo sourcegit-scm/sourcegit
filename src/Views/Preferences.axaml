@@ -827,7 +827,7 @@
           <Grid Margin="0,8,0,16" MinHeight="400">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="200"/>
-              <ColumnDefinition Width="*" MaxWidth="400"/>
+              <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0"
@@ -897,16 +897,36 @@
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Server}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Server, Mode=TwoWay}"/>
+                    <Grid ColumnDefinitions="*,Auto" 
+                          Margin="0,4,0,0"
+                          Height="28">
+                      <TextBox Grid.Column="0"
+                               Height="28"
+                               CornerRadius="3"
+                               Text="{Binding Server, Mode=TwoWay}"/>
 
-                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
-                    <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding ApiKey, Mode=TwoWay}" PasswordChar="*" RevealPassword="{Binding ReadApiKeyFromEnv, Mode=OneWay}"/>
-                    <CheckBox Margin="0,4,0,0"
+                      <Button Grid.Column="1"
+                              Classes="flat"
                               Height="28"
-                              Content="{DynamicResource Text.Preferences.AI.ReadApiKeyFromEnv}"
-                              IsChecked="{Binding ReadApiKeyFromEnv, Mode=TwoWay}"/>
+                              Margin="4,0,0,0"
+                              VerticalAlignment="Center"
+                              Click="OnEditApiKey">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Width="12" Height="12"
+                                Data="{StaticResource Icons.Edit}"
+                                IsVisible="{Binding HasValidApiKey, Mode=OneWay}"/>
+                          <Path Width="12" Height="12"
+                                Data="{StaticResource Icons.Plus}"
+                                IsVisible="{Binding !HasValidApiKey, Mode=OneWay}"/>
+                          
+                          <TextBlock Margin="6,0,0,0"
+                                     VerticalAlignment="Center"
+                                     Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>
+                        </StackPanel>
+                      </Button>
+                    </Grid>
 
-                    <TextBlock Margin="0,8,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
+                    <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Model}"/>
                     <TextBox Margin="0,4,0,0"
                              CornerRadius="3"
                              Height="28"

@@ -222,7 +222,6 @@ namespace SourceGit.Views
             }
 
             var preferences = ViewModels.Preferences.Instance;
-            preferences.UpdateAvailableAIModels();
             preferences.Save();
         }
 
@@ -432,14 +431,77 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void OnRemoveSelectedOpenAIService(object sender, RoutedEventArgs e)
+        private async void OnRemoveSelectedOpenAIService(object sender, RoutedEventArgs e)
         {
             if (SelectedOpenAIService == null)
                 return;
 
-            ViewModels.Preferences.Instance.OpenAIServices.Remove(SelectedOpenAIService);
+            var server = SelectedOpenAIService.Server;
+            var pref = ViewModels.Preferences.Instance;
+            pref.OpenAIServices.Remove(SelectedOpenAIService);
             SelectedOpenAIService = null;
+
+            var needDeleteApiKey = true;
+            foreach (var s in pref.OpenAIServices)
+            {
+                if (s.Server.Equals(server, StringComparison.Ordinal))
+                {
+                    needDeleteApiKey = false;
+                    break;
+                }
+            }
+
+            if (needDeleteApiKey)
+            {
+                try
+                {
+                    AI.ApiKeyManager.Remove(server);
+                }
+                catch (Exception ex)
+                {
+                    await new Alert().ShowAsync(this, ex.Message, true);
+                }
+            }
+
             e.Handled = true;
+        }
+
+        private async void OnEditApiKey(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Button { DataContext: AI.Service service })
+                return;
+
+            try
+            {
+                var editKey = new AI.ApiKey { Service = service.Server };
+                var existKey = AI.ApiKeyManager.Get(service.Server);
+                if (existKey != null)
+                {
+                    editKey.Storage = existKey.Storage;
+                    editKey.KeyToAccess = existKey.Storage == AI.ApiKeyStorage.SystemKeychain ? existKey.GetRawApiKey() : existKey.KeyToAccess;
+                }
+
+                var dialog = new EditApiKey(editKey);
+                var ok = await dialog.ShowDialog<bool>(this);
+                if (!ok)
+                    return;
+
+                AI.ApiKeyManager.AddOrUpdate(editKey);
+
+                // Clear all cached API keys for the service to ensure that the new key is used
+                foreach (var s in ViewModels.Preferences.Instance.OpenAIServices)
+                {
+                    if (s.Server.Equals(editKey.Service, StringComparison.Ordinal))
+                    {
+                        s.CachedApiKey = string.Empty;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await new Alert().ShowAsync(this, ex.Message, true);
+            }
         }
 
         private void OnAddCustomAction(object sender, RoutedEventArgs e)

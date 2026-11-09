@@ -26,9 +26,19 @@ namespace SourceGit.Views
 
         public static async Task CopyTextAsync(this Control control, string text)
         {
-            var clipboard = TopLevel.GetTopLevel(control)?.Clipboard;
-            if (clipboard != null)
-                await clipboard.SetTextAsync(text);
+            var topLevel = TopLevel.GetTopLevel(control) as Window;
+            if (topLevel == null)
+                return;
+
+            try
+            {
+                if (topLevel.Clipboard is { } clipboard)
+                    await clipboard.SetTextAsync(text);
+            }
+            catch (Exception e)
+            {
+                await new Alert().ShowAsync(topLevel, "Failed to copy text to clipboard: " + e.Message, true);
+            }
         }
 
         public static Path CreateMenuIcon(this Control control, string iconKey)

@@ -25,6 +25,8 @@
   <x:String x:Key="Text.App.HideOthers" xml:space="preserve">隐藏其他</x:String>
   <x:String x:Key="Text.App.ShowAll" xml:space="preserve">显示全部</x:String>
   <x:String x:Key="Text.Apply.3Way" xml:space="preserve">尝试三路合并</x:String>
+  <x:String x:Key="Text.Apply.CommitChanges" xml:space="preserve">应用并提交修改</x:String>
+  <x:String x:Key="Text.Apply.CommitChanges.Tip" xml:space="preserve">执行 `git am` 命令而非 `git apply` 命令</x:String>
   <x:String x:Key="Text.Apply.File.Placeholder" xml:space="preserve">选择补丁文件</x:String>
   <x:String x:Key="Text.Apply.IgnoreWS" xml:space="preserve">忽略空白符号</x:String>
   <x:String x:Key="Text.Apply.Source" xml:space="preserve">补丁来源 ：</x:String>
@@ -352,6 +354,7 @@
   <x:String x:Key="Text.DeinitSubmodule.Path" xml:space="preserve">子模块 ：</x:String>
   <x:String x:Key="Text.DeleteBranch" xml:space="preserve">删除分支确认</x:String>
   <x:String x:Key="Text.DeleteBranch.Branch" xml:space="preserve">分支名 ：</x:String>
+  <x:String x:Key="Text.DeleteBranch.DeleteAttachedWorktree" xml:space="preserve">同时删除与使用此分支的工作树</x:String>
   <x:String x:Key="Text.DeleteBranch.Force" xml:space="preserve">强制删除，即使包含未合并的提交</x:String>
   <x:String x:Key="Text.DeleteBranch.IsRemoteTip" xml:space="preserve">您正在删除远程上的分支，请务必小心！！！</x:String>
   <x:String x:Key="Text.DeleteBranch.WithTrackingRemote" xml:space="preserve">同时删除远程分支 ${0}$</x:String>
@@ -416,6 +419,12 @@
   <x:String x:Key="Text.Discard.IncludeUntracked" xml:space="preserve">包括未跟踪的文件</x:String>
   <x:String x:Key="Text.Discard.Total" xml:space="preserve">总计{0}项选中更改</x:String>
   <x:String x:Key="Text.Discard.Warning" xml:space="preserve">本操作不支持回退，请确认后继续！！！</x:String>
+  <x:String x:Key="Text.EditApiKey" xml:space="preserve">编辑 API 密钥</x:String>
+  <x:String x:Key="Text.EditApiKey.ApiKey" xml:space="preserve">API 密钥</x:String>
+  <x:String x:Key="Text.EditApiKey.EnvironmentVariable" xml:space="preserve">环境变量</x:String>
+  <x:String x:Key="Text.EditApiKey.InvalidStorage" xml:space="preserve">未检测到 `secret-tool`, 请安装后重启程序再尝试</x:String>
+  <x:String x:Key="Text.EditApiKey.Server" xml:space="preserve">服务地址</x:String>
+  <x:String x:Key="Text.EditApiKey.Storage" xml:space="preserve">存储方式</x:String>
   <x:String x:Key="Text.EditBranchDescription" xml:space="preserve">编辑分支描述</x:String>
   <x:String x:Key="Text.EditBranchDescription.Target" xml:space="preserve">目标 ：</x:String>
   <x:String x:Key="Text.EditRepositoryNode.Bookmark" xml:space="preserve">书签 ：</x:String>
@@ -574,6 +583,7 @@
   <x:String x:Key="Text.Init.CommandTip" xml:space="preserve">是否在该路径下执行 `git init` 命令（初始化仓库）？</x:String>
   <x:String x:Key="Text.Init.ErrorMessageTip" xml:space="preserve">打开本地仓库失败，原因：</x:String>
   <x:String x:Key="Text.Init.Path" xml:space="preserve">路径 ：</x:String>
+  <x:String x:Key="Text.InProgress.Am" xml:space="preserve">应用补丁操作进行中</x:String>
   <x:String x:Key="Text.InProgress.CherryPick" xml:space="preserve">挑选（Cherry-Pick）操作进行中。</x:String>
   <x:String x:Key="Text.InProgress.CherryPick.Head" xml:space="preserve">正在处理提交</x:String>
   <x:String x:Key="Text.InProgress.Merge" xml:space="preserve">合并操作进行中。</x:String>
@@ -674,7 +684,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">模型</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">自动拉取可用模型列表</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">配置名称</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">从环境变量（填写环境变量名）中读取API密钥</x:String>
   <x:String x:Key="Text.Preferences.AI.ReasoningEffortLevel" xml:space="preserve">推理努力等级</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">服务地址</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">外观配置</x:String>
@@ -825,6 +834,11 @@
   <x:String x:Key="Text.Repository.FilterCommits.Expand" xml:space="preserve">展开过滤项列表</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">使用其对提交列表过滤</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">个过滤项已被启用</x:String>
+  <x:String x:Key="Text.Repository.FocusOnCurrentBranch" xml:space="preserve">专注模式
+  
+进入该模式后，历史提交列表将仅显示属于当前分支及其跟踪的上游分支（如果有的话）的提交，并且自动清空已设置的过滤条件。
+
+用户手动添加新的分支或标签过滤条件后，自动退出该模式。</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout" xml:space="preserve">布局方式</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Horizontal" xml:space="preserve">水平排布</x:String>
   <x:String x:Key="Text.Repository.HistoriesLayout.Vertical" xml:space="preserve">竖直排布</x:String>

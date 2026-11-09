@@ -57,8 +57,7 @@
                 Background="Transparent"
                 VerticalAlignment="Center"
                 ItemsSource="{Binding AvailableModels, Mode=OneWay}"
-                SelectedItem="{Binding CurrentModel, Mode=TwoWay}"
-                SelectionChanged="OnModelChanged"/>
+                SelectedItem="{Binding SelectedModel, Mode=TwoWay}"/>
 
       <v:LoadingIcon Grid.Column="2"
                      Width="14" Height="14"

@@ -620,7 +620,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">모델</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">사용 가능한 모델 ID 자동 가져오기</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">이름</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">입력된 값은 환경변수(ENV)에서 API 키를 불러올 이름입니다</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">서버</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">모양</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">기본 글꼴</x:String>

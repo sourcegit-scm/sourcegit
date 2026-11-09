@@ -648,7 +648,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">Μοντέλο</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Αυτόματη ανάκτηση διαθέσιμων model-ids</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">Όνομα</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">Η τιμή που εισήχθη είναι το όνομα για φόρτωση του κλειδιού API από το ENV</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">Διακομιστής</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">ΕΜΦΑΝΙΣΗ</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Προεπιλεγμένη γραμματοσειρά</x:String>

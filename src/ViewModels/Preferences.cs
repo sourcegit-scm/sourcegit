@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+
 using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -610,24 +610,6 @@ namespace SourceGit.ViewModels
         public void AutoRemoveInvalidNode()
         {
             RemoveInvalidRepositoriesRecursive(RepositoryNodes);
-        }
-
-        public void UpdateAvailableAIModels()
-        {
-            Task.Run(() =>
-            {
-                foreach (var service in OpenAIServices)
-                {
-                    try
-                    {
-                        service.FetchAvailableModels();
-                    }
-                    catch
-                    {
-                        // Ignore errors.
-                    }
-                }
-            });
         }
 
         public void Save()

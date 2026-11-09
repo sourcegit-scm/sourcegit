@@ -207,6 +207,18 @@ namespace SourceGit.Native
             }
         }
 
+        public OS.IKeychain GetSecretTool()
+        {
+            var toolPath = FindExecutable("secret-tool");
+            if (string.IsNullOrEmpty(toolPath))
+                return null;
+
+            if (!File.Exists(toolPath))
+                return null;
+
+            return new SecretTool(toolPath);
+        }
+
         private string FindExecutable(string filename)
         {
             var pathVariable = Environment.GetEnvironmentVariable("PATH") ?? string.Empty;
@@ -230,5 +242,100 @@ namespace SourceGit.Native
 
             return Path.Combine(fallback, subDirName);
         }
+    }
+
+    [SupportedOSPlatform("linux")]
+    public class SecretTool : OS.IKeychain
+    {
+        public SecretTool(string toolPath)
+        {
+            _toolPath = toolPath;
+        }
+
+        public void Store(string host, string username, string password)
+        {
+            var label = $"sourcegit:{host}:{username}";
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = _toolPath,
+                Arguments = $"store --label={label.Quoted()} service \"sourcegit\" host {host.Quoted()} account {username.Quoted()}",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (var proc = Process.Start(psi))
+            {
+                if (proc == null)
+                    throw new Exception($"Failed to start credential helper: {_toolPath}");
+
+                proc.StandardInput.WriteLine(password);
+                proc.StandardInput.Close();
+
+                var err = proc.StandardError.ReadToEnd();
+                proc.WaitForExit();
+
+                if (proc.ExitCode != 0)
+                    throw new Exception($"Credential helper exited with code {proc.ExitCode}: {err}");
+            }
+        }
+
+        public string Read(string host, string username)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = _toolPath,
+                Arguments = $"lookup service \"sourcegit\" host {host.Quoted()} account {username.Quoted()}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (var proc = Process.Start(psi))
+            {
+                if (proc == null)
+                    throw new Exception($"Failed to start credential helper: {_toolPath}");
+
+                var output = proc.StandardOutput.ReadToEnd();
+                var err = proc.StandardError.ReadToEnd();
+                proc.WaitForExit();
+
+                if (proc.ExitCode != 0)
+                    throw new Exception($"Credential helper exited with code {proc.ExitCode}: {err}");
+
+                return output.TrimEnd('\r', '\n');
+            }
+        }
+
+        public void Erase(string host, string username)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = _toolPath,
+                Arguments = $"clear service \"sourcegit\" host {host.Quoted()} account {username.Quoted()}",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (var proc = Process.Start(psi))
+            {
+                if (proc == null)
+                    throw new Exception($"Failed to start credential helper: {_toolPath}");
+
+                var err = proc.StandardError.ReadToEnd();
+                proc.WaitForExit();
+
+                if (proc.ExitCode != 0)
+                    throw new Exception($"Credential helper exited with code {proc.ExitCode}: {err}");
+            }
+        }
+
+        private string _toolPath;
     }
 }

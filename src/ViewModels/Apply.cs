@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -38,7 +39,19 @@ namespace SourceGit.ViewModels
         {
             get;
             set;
+        } = true;
+
+        public bool CanCreateCommit
+        {
+            get => _canCreateCommit;
+            set => SetProperty(ref _canCreateCommit, value);
         }
+
+        public bool CommitChanges
+        {
+            get;
+            set;
+        } = true;
 
         public IClipboard Clipboard
         {
@@ -58,14 +71,24 @@ namespace SourceGit.ViewModels
                 return new ValidationResult("Invalid object instance!!!");
 
             if (apply.FromClipboard)
+            {
+                apply.CanCreateCommit = false;
                 return ValidationResult.Success;
+            }
 
             if (string.IsNullOrEmpty(file))
+            {
+                apply.CanCreateCommit = false;
                 return new ValidationResult("Please select a patch file!!!");
+            }
 
             if (!File.Exists(file))
+            {
+                apply.CanCreateCommit = false;
                 return new ValidationResult($"File '{file}' can NOT be found!!!");
+            }
 
+            apply.CheckPatchFileFormat(file);
             return ValidationResult.Success;
         }
 
@@ -98,9 +121,21 @@ namespace SourceGit.ViewModels
             Use(log);
 
             var extra = ThreeWayMerge ? "--3way" : string.Empty;
-            var succ = await new Commands.Apply(_repo.FullPath, finalPatchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, extra)
-                .Use(log)
-                .ExecAsync();
+            var succ = false;
+            if (!_fromClipboard && _canCreateCommit && CommitChanges)
+            {
+                _repo.ClearCommitMessage();
+
+                succ = await new Commands.Am(_repo.FullPath, finalPatchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, extra)
+                    .Use(log)
+                    .ExecAsync();
+            }
+            else
+            {
+                succ = await new Commands.Apply(_repo.FullPath, finalPatchFile, _ignoreWhiteSpace, SelectedWhiteSpaceMode.Arg, extra)
+                    .Use(log)
+                    .ExecAsync();
+            }
 
             log.Complete();
 
@@ -110,9 +145,35 @@ namespace SourceGit.ViewModels
             return succ;
         }
 
+        private void CheckPatchFileFormat(string file)
+        {
+            try
+            {
+                using var reader = new StreamReader(file);
+                var lines = new List<string>();
+                for (int i = 0; i < 4; i++)
+                {
+                    if (reader.EndOfStream)
+                        break;
+                    lines.Add(reader.ReadLine());
+                }
+
+                CanCreateCommit = lines.Count == 4 &&
+                    lines[0].StartsWith("From ", StringComparison.Ordinal) &&
+                    lines[1].StartsWith("From: ", StringComparison.Ordinal) &&
+                    lines[2].StartsWith("Date: ", StringComparison.Ordinal) &&
+                    lines[3].StartsWith("Subject: ", StringComparison.Ordinal);
+            }
+            catch
+            {
+                CanCreateCommit = false;
+            }
+        }
+
         private readonly Repository _repo = null;
         private string _patchFile = string.Empty;
         private bool _fromClipboard = false;
         private bool _ignoreWhiteSpace = true;
+        private bool _canCreateCommit = false;
     }
 }

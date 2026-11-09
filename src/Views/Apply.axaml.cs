@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
@@ -36,6 +37,53 @@ namespace SourceGit.Views
             if (selected.Count == 1)
                 TxtPatchFile.Text = selected[0].Path.LocalPath;
 
+            e.Handled = true;
+        }
+
+        private void DragOverPatchFileBox(object sender, DragEventArgs e)
+        {
+            if (!e.DataTransfer.Contains(DataFormat.File))
+            {
+                e.DragEffects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+            var files = e.DataTransfer.TryGetFiles();
+            if (files is not { Length: 1 })
+            {
+                e.DragEffects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+            var file = files[0].Path.LocalPath;
+            if (!file.EndsWith(".patch") && !file.EndsWith(".diff"))
+            {
+                e.DragEffects = DragDropEffects.None;
+                e.Handled = true;
+                return;
+            }
+
+            e.DragEffects = DragDropEffects.Move;
+            e.Handled = true;
+            return;
+        }
+
+        private void DropOnPatchFileBox(object sender, DragEventArgs e)
+        {
+            if (!e.DataTransfer.Contains(DataFormat.File))
+                return;
+
+            var files = e.DataTransfer.TryGetFiles();
+            if (files is not { Length: 1 })
+                return;
+
+            var file = files[0].Path.LocalPath;
+            if (!file.EndsWith(".patch") && !file.EndsWith(".diff"))
+                return;
+
+            TxtPatchFile.Text = file;
             e.Handled = true;
         }
     }

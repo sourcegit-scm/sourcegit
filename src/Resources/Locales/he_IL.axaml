@@ -617,7 +617,6 @@
   <x:String x:Key="Text.Preferences.AI.Model" xml:space="preserve">מודל</x:String>
   <x:String x:Key="Text.Preferences.AI.Model.AutoFetchAvailableModels" xml:space="preserve">Fetch אוטומטי של model-ids זמינים</x:String>
   <x:String x:Key="Text.Preferences.AI.Name" xml:space="preserve">שם</x:String>
-  <x:String x:Key="Text.Preferences.AI.ReadApiKeyFromEnv" xml:space="preserve">הערך שהוזן הוא שם משתנה סביבה לטעינת ה־API key</x:String>
   <x:String x:Key="Text.Preferences.AI.Server" xml:space="preserve">שרת</x:String>
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">מראה</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">גופן ברירת מחדל</x:String>
