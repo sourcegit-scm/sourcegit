@@ -1028,6 +1028,13 @@ namespace SourceGit.Views
                 }
 
                 Text = builder.ToString();
+
+                var oldLineNumberVisible = !diff.IsNewOrDeletedFile || diff.OldMode != 0;
+                var newLineNumberVisible = !diff.IsNewOrDeletedFile || diff.NewMode != 0;
+                TextArea.LeftMargins[0].IsVisible = oldLineNumberVisible;
+                TextArea.LeftMargins[1].IsVisible = oldLineNumberVisible;
+                TextArea.LeftMargins[2].IsVisible = newLineNumberVisible;
+                TextArea.LeftMargins[3].IsVisible = newLineNumberVisible;
             }
             else
             {

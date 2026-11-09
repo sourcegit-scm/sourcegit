@@ -53,6 +53,7 @@ namespace SourceGit.Models
         public int NewMode { get; set; } = 0;
         public string OldHash { get; set; } = string.Empty;
         public string NewHash { get; set; } = string.Empty;
+        public bool IsNewOrDeletedFile => OldMode != NewMode && (OldMode == 0 || NewMode == 0);
     }
 
     public class LFSDiff

@@ -25,7 +25,7 @@ namespace SourceGit.Models
 
         public static User FindOrAdd(string data)
         {
-            return _caches.GetOrAdd(data, key => new User(key));
+            return _caches.GetOrAdd(data, static key => new User(key));
         }
 
         public override string ToString()
