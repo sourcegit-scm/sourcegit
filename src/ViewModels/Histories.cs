@@ -209,6 +209,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public List<int> ColumnOrder
+        {
+            get => _repo.UIStates.HistoryColumnOrder;
+            set => _repo.UIStates.HistoryColumnOrder = value;
+        }
+
         public double AuthorColumnWidth
         {
             get => _repo.UIStates.AuthorColumnWidth;
