@@ -60,7 +60,9 @@
   <x:String x:Key="Text.Blame.Tips" xml:space="preserve">Holding Ctrl (on Windows/Linux) or ⌘ (on macOS) when clicking commit SHA will rebuild blame data based on that revision.</x:String>
   <x:String x:Key="Text.Blame.TypeNotSupported" xml:space="preserve">BLAME ON THIS FILE IS NOT SUPPORTED!!!</x:String>
   <x:String x:Key="Text.BranchCM.Checkout" xml:space="preserve">Checkout ${0}$...</x:String>
+  <x:String x:Key="Text.BranchCM.CheckoutAndMerge" xml:space="preserve">Checkout ${1}$ and merge ${0}$ into it...</x:String>
   <x:String x:Key="Text.BranchCM.CheckoutAsWorktree" xml:space="preserve">Checkout ${0}$ as worktree...</x:String>
+  <x:String x:Key="Text.BranchCM.CompareBranches" xml:space="preserve">Compare ${0}$ with ${1}$</x:String>
   <x:String x:Key="Text.BranchCM.CompareTwo" xml:space="preserve">Compare selected 2 branches</x:String>
   <x:String x:Key="Text.BranchCM.CompareWith" xml:space="preserve">Compare with...</x:String>
   <x:String x:Key="Text.BranchCM.CompareWithHead" xml:space="preserve">Compare with HEAD</x:String>
@@ -73,6 +75,7 @@
   <x:String x:Key="Text.BranchCM.DeleteMultiBranches" xml:space="preserve">Delete selected {0} branches...</x:String>
   <x:String x:Key="Text.BranchCM.EditDescription" xml:space="preserve">Edit description for ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.FastForward" xml:space="preserve">Fast-Forward to ${0}$</x:String>
+  <x:String x:Key="Text.BranchCM.FastForwardBranch" xml:space="preserve">Fast-Forward ${0}$ to ${1}$</x:String>
   <x:String x:Key="Text.BranchCM.FetchInto" xml:space="preserve">Fetch ${0}$ into ${1}$</x:String>
   <x:String x:Key="Text.BranchCM.Finish" xml:space="preserve">Git Flow - Finish ${0}$...</x:String>
   <x:String x:Key="Text.BranchCM.InteractiveRebase.Manually" xml:space="preserve">Interactively Rebase ${0}$ on ${1}$</x:String>
@@ -632,6 +635,11 @@
   <x:String x:Key="Text.MergeMultiple.CommitChanges" xml:space="preserve">Commit all changes</x:String>
   <x:String x:Key="Text.MergeMultiple.Strategy" xml:space="preserve">Strategy:</x:String>
   <x:String x:Key="Text.MergeMultiple.Targets" xml:space="preserve">Targets:</x:String>
+  <x:String x:Key="Text.MoveBranches" xml:space="preserve">Move Branches</x:String>
+  <x:String x:Key="Text.MoveBranches.Branches" xml:space="preserve">Branches:</x:String>
+  <x:String x:Key="Text.MoveBranches.Count" xml:space="preserve">{0} items</x:String>
+  <x:String x:Key="Text.MoveBranches.Root" xml:space="preserve">(top level)</x:String>
+  <x:String x:Key="Text.MoveBranches.Target" xml:space="preserve">Move Into:</x:String>
   <x:String x:Key="Text.MoveSubmodule" xml:space="preserve">Move Submodule</x:String>
   <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Move To:</x:String>
   <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submodule:</x:String>
