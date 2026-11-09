@@ -139,7 +139,7 @@ namespace SourceGit.Views
             {
                 if (change.OldValue is List<Models.Commit> { Count: 1 } old &&
                     change.NewValue is List<Models.Commit> { Count: 1 } cur &&
-                    old[0] == cur[0])
+                    old[0] == cur[0] && DataContext is not ViewModels.Histories { IsUpdatingQuickSearchFilter: true })
                     ScrollIntoView(old[0], null);
                 else
                     ApplySelection();
@@ -149,6 +149,9 @@ namespace SourceGit.Views
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
             base.OnSelectionChanged(e);
+
+            if (_ignoreSelectionChanged || DataContext is ViewModels.Histories { IsUpdatingQuickSearchFilter: true })
+                return;
 
             if (ItemsSource is not IList<Models.Commit> items)
                 return;
@@ -268,6 +271,9 @@ namespace SourceGit.Views
             }
 
             _ignoreSelectionChanged = false;
+
+            if (SelectedCommits is { Count: 1 })
+                ScrollIntoView(SelectedCommits[0], null);
         }
 
         private void IncrNoSelectionChangeCount()
@@ -372,6 +378,61 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+            AddHandler(KeyDownEvent, OnQuickSearchKeyDown, RoutingStrategies.Tunnel);
+            Loaded += OnQuickSearchLoaded;
+            Unloaded += OnQuickSearchUnloaded;
+        }
+
+        public void FocusQuickSearch()
+        {
+            if (TopLevel.GetTopLevel(this) is Window { IsActive: false })
+                return;
+
+            QuickSearchBox.Focus();
+            QuickSearchBox.SelectAll();
+        }
+
+        private void OnQuickSearchLoaded(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Histories)?.ResumeQuickSearch();
+        }
+
+        private void OnQuickSearchUnloaded(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ViewModels.Histories)?.CancelQuickSearch();
+        }
+
+        private void OnQuickSearchKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            if (!QuickSearchBox.IsKeyboardFocusWithin &&
+                e.Source is Visual source && source != CommitListContainer && !CommitListContainer.IsVisualAncestorOf(source))
+                return;
+
+            var command = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            if (e.Key == Key.F && e.KeyModifiers == command)
+            {
+                FocusQuickSearch();
+                e.Handled = true;
+            }
+            else if ((e.Key == Key.F3 && (e.KeyModifiers == KeyModifiers.None || e.KeyModifiers == KeyModifiers.Shift)) ||
+                     (e.Key == Key.Enter && QuickSearchBox.IsKeyboardFocusWithin &&
+                      (e.KeyModifiers == KeyModifiers.None || e.KeyModifiers == KeyModifiers.Shift)))
+            {
+                if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+                    vm.QuickSearchPrevious();
+                else
+                    vm.QuickSearchNext();
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape && (!string.IsNullOrEmpty(vm.QuickSearchText) || vm.IsQuickSearchFilterEnabled))
+            {
+                vm.ClearQuickSearch();
+                CommitListContainer.Focus();
+                e.Handled = true;
+            }
         }
 
         public async Task GotoParent()
@@ -790,8 +851,8 @@ namespace SourceGit.Views
 
         private void OnScrollToTopPointerPressed(object sender, PointerPressedEventArgs e)
         {
-            if (DataContext is ViewModels.Histories histories)
-                CommitListContainer.ScrollIntoView(histories.Commits[0], null);
+            if (DataContext is ViewModels.Histories histories && histories.DisplayedCommits.Count > 0)
+                CommitListContainer.ScrollIntoView(histories.DisplayedCommits[0], null);
         }
 
         private void OnCommitListContextRequested(object sender, ContextRequestedEventArgs e)

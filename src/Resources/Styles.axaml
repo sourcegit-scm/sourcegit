@@ -584,6 +584,16 @@
     <Setter Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
     <Setter Property="Background" Value="{DynamicResource Brush.Contents}"/>
   </Style>
+  <Style Selector="Window[IsActive=False] TextBox">
+    <Setter Property="CaretBrush" Value="Transparent"/>
+    <Setter Property="SelectionBrush" Value="{DynamicResource Brush.Border2}"/>
+    <Setter Property="SelectionForegroundBrush" Value="{DynamicResource Brush.FG1}"/>
+  </Style>
+  <Style Selector="Window[IsActive=False] TextBox:not(:disabled) /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="{Binding $parent[TextBox].BorderBrush}"/>
+    <Setter Property="BorderThickness" Value="{Binding $parent[TextBox].BorderThickness}"/>
+    <Setter Property="Background" Value="{Binding $parent[TextBox].Background}"/>
+  </Style>
   <Style Selector="TextBox:disabled /template/ Border#PART_BorderElement">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Opacity" Value=".6"/>

@@ -9,6 +9,7 @@
       <Color x:Key="Color.Popup">#FFFAFAFA</Color>
       <Color x:Key="Color.PopupBorder">#FFFFFFFF</Color>
       <Color x:Key="Color.Contents">#FFFFFFFF</Color>
+      <Color x:Key="Color.Histories.FilteredBackground">#FFFFF9E6</Color>
       <Color x:Key="Color.Badge">#FFB0CEE8</Color>
       <Color x:Key="Color.BadgeFG">#FF1F1F1F</Color>
       <Color x:Key="Color.Conflict">#FF836C2E</Color>
@@ -43,6 +44,7 @@
       <Color x:Key="Color.Popup">#FF2B2B2B</Color>
       <Color x:Key="Color.PopupBorder">#FF393939</Color>
       <Color x:Key="Color.Contents">#FF1C1C1C</Color>
+      <Color x:Key="Color.Histories.FilteredBackground">#FF302D20</Color>
       <Color x:Key="Color.Badge">#FF8F8F8F</Color>
       <Color x:Key="Color.BadgeFG">#FFE0E0E0</Color>
       <Color x:Key="Color.Conflict">#FFFAFAD2</Color>
@@ -77,6 +79,7 @@
   <SolidColorBrush x:Key="Brush.Popup" Color="{DynamicResource Color.Popup}"/>
   <SolidColorBrush x:Key="Brush.PopupBorder" Color="{DynamicResource Color.PopupBorder}"/>
   <SolidColorBrush x:Key="Brush.Contents" Color="{DynamicResource Color.Contents}"/>
+  <SolidColorBrush x:Key="Brush.Histories.FilteredBackground" Color="{DynamicResource Color.Histories.FilteredBackground}"/>
   <SolidColorBrush x:Key="Brush.Badge" Color="{DynamicResource Color.Badge}"/>
   <SolidColorBrush x:Key="Brush.BadgeFG" Color="{DynamicResource Color.BadgeFG}"/>
   <SolidColorBrush x:Key="Brush.Conflict" Color="{DynamicResource Color.Conflict}"/>
