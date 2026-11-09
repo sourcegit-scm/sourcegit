@@ -137,12 +137,9 @@ namespace SourceGit.Views
 
             if (change.Property == SelectedCommitsProperty && IsLoaded && !_ignoreSelectionChanged)
             {
-                if (change.OldValue is List<Models.Commit> { Count: 1 } old &&
-                    change.NewValue is List<Models.Commit> { Count: 1 } cur &&
-                    old[0] == cur[0])
-                    ScrollIntoView(old[0], null);
-                else
-                    ApplySelection();
+                ApplySelection();
+                if (change.NewValue is List<Models.Commit> { Count: 1 } selected)
+                    ScrollIntoView(selected[0], null);
             }
         }
 
@@ -372,6 +369,32 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+            AddHandler(KeyDownEvent, OnNavigationKeyDown, RoutingStrategies.Tunnel);
+            Loaded += (_, _) => (DataContext as ViewModels.Histories)?.ResumeNavigationVisits();
+            Unloaded += (_, _) => (DataContext as ViewModels.Histories)?.SuspendNavigationVisits();
+        }
+
+        private async void OnNavigationKeyDown(object sender, KeyEventArgs e)
+        {
+            if (DataContext is not ViewModels.Histories vm)
+                return;
+
+            var macCommand = OperatingSystem.IsMacOS() && e.KeyModifiers == KeyModifiers.Meta;
+            if (e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Home)
+            {
+                e.Handled = true;
+                await vm.NavigateHomeAsync();
+            }
+            else if ((e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Left) || (macCommand && e.Key == Key.OemOpenBrackets))
+            {
+                e.Handled = true;
+                await vm.NavigateBackAsync();
+            }
+            else if ((e.KeyModifiers == KeyModifiers.Alt && e.Key == Key.Right) || (macCommand && e.Key == Key.OemCloseBrackets))
+            {
+                e.Handled = true;
+                await vm.NavigateForwardAsync();
+            }
         }
 
         public async Task GotoParent()
@@ -462,7 +485,12 @@ namespace SourceGit.Views
 
         protected override void OnDataContextChanged(EventArgs e)
         {
+            _navigationHistories?.SuspendNavigationVisits();
             base.OnDataContextChanged(e);
+
+            _navigationHistories = DataContext as ViewModels.Histories;
+            if (IsLoaded)
+                _navigationHistories?.ResumeNavigationVisits();
 
             if (DataContext is ViewModels.Histories vm)
                 CommitListContainer.Columns[1].Width = new(vm.AuthorColumnWidth, DataGridLengthUnitType.Pixel);
@@ -1964,6 +1992,7 @@ namespace SourceGit.Views
                 await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, on, prefill));
         }
 
+        private ViewModels.Histories _navigationHistories = null;
         private Models.Branch _currentBranch = null;
         private Models.Bisect _bisect = null;
         private bool _hasSingleRemote = false;

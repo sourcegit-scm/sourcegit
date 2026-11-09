@@ -272,6 +272,27 @@
             <Path Width="12" Height="12"
                   Data="{StaticResource Icons.Settings2}"/>
           </Button>
+          <Button x:Name="NavigationHomeButton" Classes="icon_button" Width="18" Height="18" Focusable="False"
+                  Command="{Binding NavigateHomeAsync}">
+            <ToolTip.Tip>
+              <TextBlock><Run Text="{DynamicResource Text.Histories.NavigateHome}"/><Run Text=" (Alt+Home)"/></TextBlock>
+            </ToolTip.Tip>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Home}"/>
+          </Button>
+          <Button x:Name="NavigationBackButton" Classes="icon_button" Width="18" Height="18" Focusable="False"
+                  Command="{Binding NavigateBackAsync}" IsEnabled="{Binding CanNavigateBack}">
+            <ToolTip.Tip>
+              <TextBlock><Run Text="{DynamicResource Text.Histories.NavigateBack}"/><Run Text="{OnPlatform ' (Alt+Left)', macOS=' (⌘+[)'}"/></TextBlock>
+            </ToolTip.Tip>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Back}"/>
+          </Button>
+          <Button x:Name="NavigationForwardButton" Classes="icon_button" Width="18" Height="18" Focusable="False"
+                  Command="{Binding NavigateForwardAsync}" IsEnabled="{Binding CanNavigateForward}">
+            <ToolTip.Tip>
+              <TextBlock><Run Text="{DynamicResource Text.Histories.NavigateForward}"/><Run Text="{OnPlatform ' (Alt+Right)', macOS=' (⌘+])'}"/></TextBlock>
+            </ToolTip.Tip>
+            <Path Width="14" Height="14" Data="{StaticResource Icons.Forward}"/>
+          </Button>
         </StackPanel>
       </Border>
 
