@@ -878,6 +878,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">パッチが正常に保存されました！</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">リポジトリをスキャン</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">ルートディレクトリ:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">ターゲットグループ:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">任意の別ディレクトリをスキャン</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">更新を確認...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">このソフトウェアの新しいバージョンが利用できます: </x:String>
