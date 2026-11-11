@@ -9,7 +9,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Welcome"
              x:DataType="vm:Welcome">
-  <Grid RowDefinitions="*,Auto" Margin="8">
+  <Grid RowDefinitions="*,Auto" Margin="8" Background="Transparent">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="1*"/>
       <ColumnDefinition Width="2*" MinWidth="600"/>
@@ -67,7 +67,7 @@
                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                            ScrollViewer.VerticalScrollBarVisibility="Auto"
                            ItemsSource="{Binding Rows}"
-                           SelectionMode="Single"
+                           SelectionMode="Multiple"
                            LostFocus="OnTreeViewLostFocus"
                            DragDrop.AllowDrop="True"
                            DragDrop.DragOver="DragOverTreeView"
@@ -119,8 +119,6 @@
                   ClipToBounds="True"
                   ContextRequested="OnTreeNodeContextRequested"
                   PointerPressed="OnPointerPressedTreeNode"
-                  PointerMoved="OnPointerMovedOverTreeNode"
-                  PointerReleased="OnPointerReleasedOnTreeNode"
                   DoubleTapped="OnDoubleTappedTreeNode"
                   DragDrop.AllowDrop="True"
                   DragDrop.DragOver="DragOverTreeNode"
@@ -221,5 +219,20 @@
                  Text="{DynamicResource Text.Welcome.DragDropTip}"
                  Opacity=".5"/>
     </Border>
+
+    <!-- Rubber-band selection overlay (covers the whole page) -->
+    <Canvas x:Name="RubberBandLayer"
+            Grid.Row="0" Grid.RowSpan="2"
+            Grid.Column="0" Grid.ColumnSpan="3"
+            Margin="-8"
+            ClipToBounds="True"
+            IsHitTestVisible="False">
+      <Border x:Name="RubberBand"
+              IsVisible="False"
+              BorderThickness="1"
+              BorderBrush="{DynamicResource Brush.Accent}"
+              Background="{DynamicResource Brush.Accent}"
+              Opacity=".3"/>
+    </Canvas>
   </Grid>
 </UserControl>

@@ -133,6 +133,7 @@ namespace SourceGit.ViewModels
 
             ActiveWorkspace = to;
             to.IsActive = true;
+            Welcome.Instance.Refresh();
 
             foreach (var one in Pages)
                 CloseRepositoryInTab(one, false);

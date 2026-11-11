@@ -513,8 +513,82 @@ namespace SourceGit.ViewModels
             return first;
         }
 
+        /// <summary>
+        ///     Returns the hidden root group of the active workspace. Every "root" operation of the repository tree
+        ///     (add, move, create group...) goes into this group.
+        /// </summary>
+        public RepositoryNode GetScopeRoot()
+        {
+            if (Workspaces.Count == 0)
+                return null;
+
+            return GetWorkspaceRoot(GetActiveWorkspace());
+        }
+
+        /// <summary>
+        ///     Returns the nodes shown at the first level of the repository tree for the active workspace.
+        /// </summary>
+        public List<RepositoryNode> GetScopeNodes()
+        {
+            return GetScopeRoot()?.SubNodes ?? RepositoryNodes;
+        }
+
+        /// <summary>
+        ///     Returns the hidden root group of the given workspace, creating it when it does not exist yet.
+        /// </summary>
+        public RepositoryNode GetWorkspaceRoot(Workspace workspace)
+        {
+            if (!string.IsNullOrEmpty(workspace.RootGroupId))
+            {
+                foreach (var node in RepositoryNodes)
+                {
+                    if (!node.IsRepository && node.Id.Equals(workspace.RootGroupId, StringComparison.Ordinal))
+                        return node;
+                }
+            }
+
+            var root = new RepositoryNode()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = workspace.Name,
+                IsRepository = false,
+                IsExpanded = true,
+            };
+            RepositoryNodes.Add(root);
+            workspace.RootGroupId = root.Id;
+            return root;
+        }
+
+        /// <summary>
+        ///     Removes a workspace. Its repositories and groups are moved into the root of another workspace.
+        /// </summary>
+        public void RemoveWorkspace(Workspace workspace, Workspace moveContentTo)
+        {
+            if (workspace == moveContentTo || !Workspaces.Contains(workspace))
+                return;
+
+            var from = GetWorkspaceRoot(workspace);
+            var to = GetWorkspaceRoot(moveContentTo);
+            to.SubNodes.AddRange(from.SubNodes);
+            SortNodes(to.SubNodes);
+
+            RepositoryNodes.Remove(from);
+            Workspaces.Remove(workspace);
+        }
+
+        /// <summary>
+        ///     Keeps the name of each workspace's hidden root group equal to the workspace name.
+        /// </summary>
+        public void SyncWorkspaceRootNames()
+        {
+            foreach (var workspace in Workspaces)
+                GetWorkspaceRoot(workspace).Name = workspace.Name;
+        }
+
         public void AddNode(RepositoryNode node, RepositoryNode to, bool save)
         {
+            to ??= GetScopeRoot();
+
             var collection = to == null ? RepositoryNodes : to.SubNodes;
             collection.Add(node);
             SortNodes(collection);
@@ -541,7 +615,7 @@ namespace SourceGit.ViewModels
 
         public RepositoryNode FindOrCreateGroupRecursive(string path)
         {
-            List<RepositoryNode> collection = RepositoryNodes;
+            List<RepositoryNode> collection = GetScopeNodes();
             RepositoryNode node = null;
 
             foreach (var name in path.Split('/'))
@@ -570,8 +644,10 @@ namespace SourceGit.ViewModels
 
                 AddNode(node, parent, save);
             }
-            else if (shouldMoveNode)
+            else if (shouldMoveNode && parent != null)
             {
+                // Without an explicit parent ("the root"), a repository that already belongs to some workspace stays
+                // where it is: a repository lives in only one workspace.
                 MoveNode(node, parent, save);
             }
 
@@ -580,6 +656,10 @@ namespace SourceGit.ViewModels
 
         public void MoveNode(RepositoryNode node, RepositoryNode to, bool save)
         {
+            to ??= GetScopeRoot();
+
+            if (to == node)
+                return;
             if (to == null && RepositoryNodes.Contains(node))
                 return;
             if (to != null && to.SubNodes.Contains(node))
@@ -681,10 +761,7 @@ namespace SourceGit.ViewModels
         private void PrepareWorkspaces()
         {
             if (Workspaces.Count == 0)
-            {
                 Workspaces.Add(new Workspace() { Name = "Default" });
-                return;
-            }
 
             foreach (var workspace in Workspaces)
             {
@@ -693,6 +770,86 @@ namespace SourceGit.ViewModels
                     workspace.Repositories.Clear();
                     workspace.ActiveIdx = 0;
                 }
+
+            }
+
+            PrepareWorkspaceRoots();
+        }
+
+        /// <summary>
+        ///     Makes sure every workspace owns a hidden root group at the first level of the repository tree, and that
+        ///     nothing else lives at that level. Runs on every load but only changes something when needed:
+        ///     1. A workspace without a valid root adopts the only group with the same name (moved to the first level),
+        ///        or gets a new empty root.
+        ///     2. Any other node at the first level goes into the root of the "Default" workspace (or the first one).
+        ///     3. Root names follow workspace names.
+        /// </summary>
+        private void PrepareWorkspaceRoots()
+        {
+            var roots = new HashSet<string>(StringComparer.Ordinal);
+            var missing = new List<Workspace>();
+            foreach (var workspace in Workspaces)
+            {
+                var hasRoot = !string.IsNullOrEmpty(workspace.RootGroupId) &&
+                    RepositoryNodes.Exists(x => !x.IsRepository && x.Id.Equals(workspace.RootGroupId, StringComparison.Ordinal));
+
+                if (hasRoot)
+                    roots.Add(workspace.RootGroupId);
+                else
+                    missing.Add(workspace);
+            }
+
+            foreach (var workspace in missing)
+            {
+                var groups = new List<RepositoryNode>();
+                CollectGroupsByName(workspace.Name, RepositoryNodes, groups);
+                groups.RemoveAll(x => roots.Contains(x.Id));
+                if (groups.Count > 1)
+                    groups.RemoveAll(x => !x.Name.Equals(workspace.Name, StringComparison.Ordinal));
+
+                if (groups.Count == 1)
+                {
+                    var group = groups[0];
+                    RemoveNodeRecursive(group, RepositoryNodes);
+                    RepositoryNodes.Add(group);
+                    workspace.RootGroupId = group.Id;
+                }
+                else
+                {
+                    workspace.RootGroupId = string.Empty;
+                }
+
+                roots.Add(GetWorkspaceRoot(workspace).Id);
+            }
+
+            var fallback = Workspaces.Find(x => x.Name.Equals("Default", StringComparison.OrdinalIgnoreCase)) ?? Workspaces[0];
+            var fallbackRoot = GetWorkspaceRoot(fallback);
+            var strays = RepositoryNodes.FindAll(x => !roots.Contains(x.Id));
+            if (strays.Count > 0)
+            {
+                foreach (var node in strays)
+                {
+                    RepositoryNodes.Remove(node);
+                    fallbackRoot.SubNodes.Add(node);
+                }
+
+                SortNodes(fallbackRoot.SubNodes);
+            }
+
+            SyncWorkspaceRootNames();
+        }
+
+        private void CollectGroupsByName(string name, List<RepositoryNode> collection, List<RepositoryNode> outs)
+        {
+            foreach (var node in collection)
+            {
+                if (node.IsRepository)
+                    continue;
+
+                if (node.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                    outs.Add(node);
+
+                CollectGroupsByName(name, node.SubNodes, outs);
             }
         }
 

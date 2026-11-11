@@ -369,6 +369,7 @@
   <x:String x:Key="Text.Merge.Into" xml:space="preserve">Para:</x:String>
   <x:String x:Key="Text.Merge.Mode" xml:space="preserve">Opção de Mesclagem:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Mover nó do repositório</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Items" xml:space="preserve">{0} itens</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Selecionar nó pai para:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Nome:</x:String>
   <x:String x:Key="Text.NotConfigured" xml:space="preserve">O Git NÃO foi configurado. Por favor, vá para [Preferências] e configure primeiro.</x:String>
@@ -599,6 +600,7 @@
   <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">ARRASTAR E SOLTAR PASTAS SUPORTADO. AGRUPAMENTO PERSONALIZADO SUPORTADO.</x:String>
   <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Editar</x:String>
   <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Mover para Outro Grupo</x:String>
+  <x:String x:Key="Text.Welcome.MoveSelected" xml:space="preserve">Mover {0} Itens para Outro Grupo</x:String>
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Abrir Todos os Repositórios</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Abrir Repositório</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Abrir Terminal</x:String>

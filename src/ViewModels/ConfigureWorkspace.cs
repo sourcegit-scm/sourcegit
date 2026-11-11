@@ -36,6 +36,7 @@ namespace SourceGit.ViewModels
         {
             var workspace = new Workspace() { Name = $"Unnamed {DateTime.Now:yyyy-MM-dd HH:mm:ss}" };
             Preferences.Instance.Workspaces.Add(workspace);
+            Preferences.Instance.GetWorkspaceRoot(workspace);
             Workspaces.Add(workspace);
             Selected = workspace;
         }
@@ -45,8 +46,11 @@ namespace SourceGit.ViewModels
             if (_selected == null || _selected.IsActive)
                 return;
 
-            Preferences.Instance.Workspaces.Remove(_selected);
+            // The repositories and groups of the deleted workspace are kept in the active workspace.
+            var pref = Preferences.Instance;
+            pref.RemoveWorkspace(_selected, pref.GetActiveWorkspace());
             Workspaces.Remove(_selected);
+            Welcome.Instance.Refresh();
         }
 
         public void MoveSelectedUp()

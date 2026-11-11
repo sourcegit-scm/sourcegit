@@ -52,6 +52,16 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _defaultCloneDir, value);
         }
 
+        /// <summary>
+        ///     Id of the hidden top-level group in <see cref="Preferences.RepositoryNodes"/> that holds the
+        ///     repositories and groups of this workspace.
+        /// </summary>
+        public string RootGroupId
+        {
+            get;
+            set;
+        } = string.Empty;
+
         public IBrush Brush
         {
             get => new SolidColorBrush(_color);
