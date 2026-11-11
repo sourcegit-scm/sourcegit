@@ -685,6 +685,7 @@
   <x:String x:Key="Text.Preferences.Appearance" xml:space="preserve">APPEARANCE</x:String>
   <x:String x:Key="Text.Preferences.Appearance.DefaultFont" xml:space="preserve">Default Font</x:String>
   <x:String x:Key="Text.Preferences.Appearance.EditorTabWidth" xml:space="preserve">Editor Tab Width</x:String>
+  <x:String x:Key="Text.Preferences.Appearance.MaxDiffLineLength" xml:space="preserve">Max Diff Line Length (0 = unlimited)</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize" xml:space="preserve">Font Size</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Default" xml:space="preserve">Default</x:String>
   <x:String x:Key="Text.Preferences.Appearance.FontSize.Editor" xml:space="preserve">Editor</x:String>
@@ -831,7 +832,7 @@
   <x:String x:Key="Text.Repository.FilterCommits.Include" xml:space="preserve">Filter in commit graph</x:String>
   <x:String x:Key="Text.Repository.FilterCommits.Summary" xml:space="preserve">filter(s) enabled</x:String>
   <x:String x:Key="Text.Repository.FocusOnCurrentBranch" xml:space="preserve">Focus on Current Branch
-  
+
 When this is toggled, all history filters will be cleared. And only commits belong to the current branch or its upstream (if it has one) will be listed in `Dashboard` page.
 
 Manually add a branch/tag history filter will disable this feature automatically.</x:String>
