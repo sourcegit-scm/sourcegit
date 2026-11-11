@@ -372,6 +372,12 @@ namespace SourceGit.Views
         public Histories()
         {
             InitializeComponent();
+
+            // The commit list handles pointer presses itself (selection), so listen to handled events too in order to
+            // start dragging a branch label in the graph.
+            CommitListContainer.AddHandler(PointerPressedEvent, OnCommitListPointerPressed, RoutingStrategies.Bubble, true);
+            CommitListContainer.AddHandler(PointerMovedEvent, OnCommitListPointerMoved, RoutingStrategies.Bubble, true);
+            CommitListContainer.AddHandler(PointerReleasedEvent, OnCommitListPointerReleased, RoutingStrategies.Bubble, true);
         }
 
         public async Task GotoParent()
@@ -849,6 +855,90 @@ namespace SourceGit.Views
 
                 await histories.CheckoutBranchByCommitAsync(c);
             }
+        }
+
+        private void OnCommitListPointerPressed(object sender, PointerPressedEventArgs e)
+        {
+            _pressedBranchRefEvent = null;
+            _pressedBranchRef = null;
+
+            if (e.KeyModifiers != KeyModifiers.None || !e.GetCurrentPoint(CommitListContainer).Properties.IsLeftButtonPressed)
+                return;
+
+            if (e.Source is not CommitRefsPresenter crp)
+                return;
+
+            var branch = BranchDragDrop.FindBranch(GetRepository(), crp.HitTestDecorator(e.GetPosition(crp)));
+            if (branch == null)
+                return;
+
+            _pressedBranchRefEvent = e;
+            _pressedBranchRef = branch;
+        }
+
+        private async void OnCommitListPointerMoved(object sender, PointerEventArgs e)
+        {
+            if (_pressedBranchRefEvent == null || BranchDragDrop.Source != null)
+                return;
+
+            if (!e.GetCurrentPoint(CommitListContainer).Properties.IsLeftButtonPressed)
+            {
+                _pressedBranchRefEvent = null;
+                _pressedBranchRef = null;
+                return;
+            }
+
+            var delta = e.GetPosition(CommitListContainer) - _pressedBranchRefEvent.GetPosition(CommitListContainer);
+            if (delta.X * delta.X + delta.Y * delta.Y < 64)
+                return;
+
+            var pressed = _pressedBranchRefEvent;
+            var branch = _pressedBranchRef;
+            _pressedBranchRefEvent = null;
+            _pressedBranchRef = null;
+
+            var repo = GetRepository();
+            if (repo != null)
+                await BranchDragDrop.StartAsync(CommitListContainer, pressed, e.GetPosition(CommitListContainer), repo, branch, null);
+        }
+
+        private void OnCommitListPointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedBranchRefEvent = null;
+            _pressedBranchRef = null;
+        }
+
+        private void OnCommitListDragOver(object sender, DragEventArgs e)
+        {
+            var (branch, decorator) = FindBranchRefAt(e);
+            BranchDragDrop.HandleDragOver(e, GetRepository(), branch, decorator, null);
+        }
+
+        private void OnCommitListDragLeave(object sender, DragEventArgs e)
+        {
+            BranchDragDrop.HandleDragLeave();
+        }
+
+        private void OnCommitListDrop(object sender, DragEventArgs e)
+        {
+            var repo = GetRepository();
+            if (repo != null)
+                BranchDragDrop.HandleDrop(e, CommitListContainer, repo, FindBranchRefAt(e).Item1);
+        }
+
+        private (Models.Branch, Models.Decorator) FindBranchRefAt(DragEventArgs e)
+        {
+            // Drag events are raised on the commit list itself, so find the branch label under the pointer by hit-testing.
+            if (CommitListContainer.InputHitTest(e.GetPosition(CommitListContainer)) is not CommitRefsPresenter crp)
+                return (null, null);
+
+            var decorator = crp.HitTestDecorator(e.GetPosition(crp));
+            return (BranchDragDrop.FindBranch(GetRepository(), decorator), decorator);
+        }
+
+        private ViewModels.Repository GetRepository()
+        {
+            return this.FindAncestorOfType<Repository>()?.DataContext as ViewModels.Repository;
         }
 
         private void OnCommitGraphLoaded(object sender, RoutedEventArgs e)
@@ -1972,5 +2062,7 @@ namespace SourceGit.Views
         private bool _isDetailsPanelExpanded = true;
         private bool _resizingAuthorColumn = false;
         private Cursor _resizingCursor = new(StandardCursorType.SizeWestEast);
+        private PointerPressedEventArgs _pressedBranchRefEvent = null;
+        private Models.Branch _pressedBranchRef = null;
     }
 }
