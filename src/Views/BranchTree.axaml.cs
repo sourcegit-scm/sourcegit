@@ -6,11 +6,13 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -448,7 +450,119 @@ namespace SourceGit.Views
             if (node.Backend is not Models.Branch branch)
                 return;
 
+            _pressedBranchNodeEvent = e;
             repo.NavigateToCommit(branch.Head);
+        }
+
+        private async void OnNodePointerMoved(object sender, PointerEventArgs e)
+        {
+            if (_pressedBranchNodeEvent == null || s_dragging != null)
+                return;
+
+            if (sender is not Border { DataContext: ViewModels.BranchTreeNode { Backend: Models.Branch branch } node } border)
+                return;
+
+            if (!e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _pressedBranchNodeEvent = null;
+                return;
+            }
+
+            if (DataContext is not ViewModels.Repository { Settings: not null } repo)
+                return;
+
+            var delta = e.GetPosition(border) - _pressedBranchNodeEvent.GetPosition(border);
+            if (delta.X * delta.X + delta.Y * delta.Y < 64)
+                return;
+
+            var pressed = _pressedBranchNodeEvent;
+            _pressedBranchNodeEvent = null;
+
+            var topLevel = TopLevel.GetTopLevel(this);
+            if (topLevel == null)
+                return;
+
+            var dragging = new BranchDragState(repo, branch, node, topLevel);
+            s_dragging = dragging;
+            node.IsDragSource = true;
+            dragging.Begin(this, e.GetPosition(dragging.Overlay));
+
+            try
+            {
+                var data = new DataTransfer();
+                data.Add(DataTransferItem.Create(s_dndBranchFormat, branch.FullName));
+                await DragDrop.DoDragDropAsync(pressed, data, DragDropEffects.Move);
+            }
+            finally
+            {
+                dragging.End();
+                if (s_dragging == dragging)
+                    s_dragging = null;
+            }
+        }
+
+        private void OnNodePointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedBranchNodeEvent = null;
+        }
+
+        private void OnTreeDragOver(object sender, DragEventArgs e)
+        {
+            if (s_dragging == null || !e.DataTransfer.Contains(s_dndBranchFormat))
+                return;
+
+            var target = FindDropTarget(e);
+            s_dragging.SetDropTarget(target);
+            e.DragEffects = target != null ? DragDropEffects.Move : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void OnTreeDragLeave(object sender, DragEventArgs e)
+        {
+            s_dragging?.SetDropTarget(null);
+        }
+
+        private void OnTreeDrop(object sender, DragEventArgs e)
+        {
+            if (s_dragging == null || e.DataTransfer.TryGetValue(s_dndBranchFormat) is not { Length: > 0 } sourceFullName)
+                return;
+
+            e.Handled = true;
+
+            var target = FindDropTarget(e)?.Backend as Models.Branch;
+            s_dragging.SetDropTarget(null);
+
+            if (target == null || DataContext is not ViewModels.Repository repo)
+                return;
+
+            var source = repo.Branches.Find(x => x.FullName.Equals(sourceFullName, StringComparison.Ordinal));
+            if (source == null)
+                return;
+
+            var point = e.GetPosition(this);
+            Dispatcher.UIThread.Post(() =>
+            {
+                var menu = CreateContextMenuForBranchPair(repo, source, target);
+                menu.Placement = PlacementMode.AnchorAndGravity;
+                menu.PlacementAnchor = PopupAnchor.TopLeft;
+                menu.PlacementGravity = PopupGravity.BottomRight;
+                menu.PlacementRect = new Rect(point, new Size(1, 1));
+                menu.Open(this);
+            });
+        }
+
+        private ViewModels.BranchTreeNode FindDropTarget(DragEventArgs e)
+        {
+            if (s_dragging == null || DataContext != s_dragging.Repo)
+                return null;
+
+            // Drag events are raised on the ListBox itself, so find the row under the pointer by hit-testing.
+            var hit = BranchesPresenter.InputHitTest(e.GetPosition(BranchesPresenter)) as Visual;
+            var item = hit?.FindAncestorOfType<ListBoxItem>(true);
+            if (item?.DataContext is not ViewModels.BranchTreeNode { Backend: Models.Branch branch } node)
+                return null;
+
+            return branch.FullName.Equals(s_dragging.Branch.FullName, StringComparison.Ordinal) ? null : node;
         }
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
@@ -1417,6 +1531,103 @@ namespace SourceGit.Views
             return menu;
         }
 
+        private ContextMenu CreateContextMenuForBranchPair(ViewModels.Repository repo, Models.Branch source, Models.Branch target)
+        {
+            var menu = new ContextMenu();
+
+            var compare = new MenuItem();
+            compare.Header = App.Text("BranchCM.CompareBranches", source.FriendlyName, target.FriendlyName);
+            compare.Icon = this.CreateMenuIcon("Icons.Compare");
+            compare.Click += (_, e) =>
+            {
+                this.ShowWindow(new ViewModels.Compare(repo, target, source));
+                e.Handled = true;
+            };
+            menu.Items.Add(compare);
+
+            if (!repo.IsBare)
+            {
+                var merge = new MenuItem();
+                merge.Header = App.Text("BranchCM.Merge", source.FriendlyName, target.FriendlyName);
+                merge.Icon = this.CreateMenuIcon("Icons.Merge");
+                merge.IsEnabled = target.IsCurrent;
+                merge.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Merge(repo, source, target.Name, false));
+                    e.Handled = true;
+                };
+
+                var rebase = new MenuItem();
+                rebase.Header = App.Text("BranchCM.Rebase", source.FriendlyName, target.FriendlyName);
+                rebase.Icon = this.CreateMenuIcon("Icons.Rebase");
+                rebase.IsEnabled = source.IsCurrent;
+                rebase.Click += (_, e) =>
+                {
+                    if (repo.CanCreatePopup())
+                        repo.ShowPopup(new ViewModels.Rebase(repo, source, target));
+                    e.Handled = true;
+                };
+
+                var interactiveRebase = new MenuItem();
+                interactiveRebase.Header = App.Text("BranchCM.InteractiveRebase.Manually", source.FriendlyName, target.FriendlyName);
+                interactiveRebase.Icon = this.CreateMenuIcon("Icons.InteractiveRebase");
+                interactiveRebase.IsEnabled = source.IsCurrent && !source.Head.Equals(target.Head, StringComparison.Ordinal);
+                interactiveRebase.Click += async (_, e) =>
+                {
+                    var commit = await new Commands.QuerySingleCommit(repo.FullPath, target.Head).GetResultAsync();
+                    await this.ShowDialogAsync(new ViewModels.InteractiveRebase(repo, commit));
+                    e.Handled = true;
+                };
+
+                menu.Items.Add(new MenuItem() { Header = "-" });
+                menu.Items.Add(merge);
+                menu.Items.Add(rebase);
+                menu.Items.Add(interactiveRebase);
+            }
+
+            // A pull request needs both branches on a remote. Local branches are resolved to their upstream.
+            var remoteTarget = target.IsLocal ? FindUpstream(repo, target) : target;
+            var targetRemote = remoteTarget != null ? repo.Remotes.Find(x => x.Name.Equals(remoteTarget.Remote, StringComparison.Ordinal)) : null;
+            if (targetRemote != null)
+            {
+                var remoteSource = source.IsLocal ? FindUpstream(repo, source) : source;
+                var sourceRemote = remoteSource != null ? repo.Remotes.Find(x => x.Name.Equals(remoteSource.Remote, StringComparison.Ordinal)) : null;
+
+                string prURL = null;
+                var canCreatePR = sourceRemote != null &&
+                    !remoteSource.FullName.Equals(remoteTarget.FullName, StringComparison.Ordinal) &&
+                    targetRemote.TryGetCreatePullRequestURL(out prURL, remoteSource.Name, remoteTarget.Name, sourceRemote);
+
+                // Only offer the action when the target's host supports it. If the source is not pushed yet, show it disabled.
+                if (canCreatePR || (remoteSource == null && targetRemote.TryGetCreatePullRequestURL(out _, source.Name, remoteTarget.Name, null)))
+                {
+                    var createPR = new MenuItem();
+                    createPR.Header = App.Text("BranchCM.CreatePRFromTo", remoteSource?.FriendlyName ?? source.FriendlyName, remoteTarget.FriendlyName);
+                    createPR.Icon = this.CreateMenuIcon("Icons.CreatePR");
+                    createPR.IsEnabled = canCreatePR;
+                    createPR.Click += (_, e) =>
+                    {
+                        Native.OS.OpenBrowser(prURL);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(new MenuItem() { Header = "-" });
+                    menu.Items.Add(createPR);
+                }
+            }
+
+            return menu;
+        }
+
+        private static Models.Branch FindUpstream(ViewModels.Repository repo, Models.Branch branch)
+        {
+            if (string.IsNullOrEmpty(branch.Upstream))
+                return null;
+
+            return repo.Branches.Find(x => x.FullName.Equals(branch.Upstream, StringComparison.Ordinal));
+        }
+
         private void TryToAddCustomActionsToBranchContextMenu(ViewModels.Repository repo, ContextMenu menu, Models.Branch branch)
         {
             var actions = repo.GetCustomActions(Models.CustomActionScope.Branch);
@@ -1477,5 +1688,161 @@ namespace SourceGit.Views
 
         private List<ViewModels.BranchTreeNode> _nodes = null;
         private bool _disableSelectionChangingEvent = false;
+        private PointerPressedEventArgs _pressedBranchNodeEvent = null;
+
+        private static readonly DataFormat<string> s_dndBranchFormat = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-branch");
+        private static BranchDragState s_dragging = null;
+
+        /// <summary>
+        ///     Visual state of an ongoing branch drag: fades the dragged row, highlights the row under the pointer and
+        ///     shows a label that follows the pointer across the whole window.
+        /// </summary>
+        private class BranchDragState
+        {
+            public ViewModels.Repository Repo { get; }
+            public Models.Branch Branch { get; }
+            public OverlayLayer Overlay { get; }
+
+            public BranchDragState(ViewModels.Repository repo, Models.Branch branch, ViewModels.BranchTreeNode node, TopLevel topLevel)
+            {
+                Repo = repo;
+                Branch = branch;
+                Overlay = OverlayLayer.GetOverlayLayer(topLevel);
+                _node = node;
+                _topLevel = topLevel;
+            }
+
+            public void Begin(Control owner, Point pointer)
+            {
+                _label = new TextBlock()
+                {
+                    Foreground = Brushes.White,
+                    FontWeight = FontWeight.Bold,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(6, 0, 0, 0),
+                };
+
+                var icon = new Path()
+                {
+                    Width = 12,
+                    Height = 12,
+                    Fill = Brushes.White,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Data = owner.FindResource("Icons.Branch") as StreamGeometry,
+                };
+
+                var panel = new StackPanel() { Orientation = Orientation.Horizontal };
+                panel.Children.Add(icon);
+                panel.Children.Add(_label);
+
+                _ghost = new Border()
+                {
+                    Background = owner.FindResource("Brush.Accent") as IBrush ?? Brushes.DodgerBlue,
+                    CornerRadius = new CornerRadius(4),
+                    Padding = new Thickness(8, 4),
+                    BoxShadow = BoxShadows.Parse("0 2 8 0 #60000000"),
+                    IsHitTestVisible = false,
+                    Child = panel,
+                };
+
+                UpdateLabel();
+                MoveGhost(pointer);
+                Overlay?.Children.Add(_ghost);
+
+                // The drop targets only receive drag events while the pointer is above them. Temporarily accept
+                // drags on the whole window so the label keeps following the pointer everywhere.
+                _topLevelAllowDrop = DragDrop.GetAllowDrop(_topLevel);
+                DragDrop.SetAllowDrop(_topLevel, true);
+                _topLevel.AddHandler(DragDrop.DragOverEvent, OnTopLevelDragOver, RoutingStrategies.Bubble, true);
+                _topLevel.AddHandler(DragDrop.DragLeaveEvent, OnTopLevelDragLeave, RoutingStrategies.Bubble, true);
+                _topLevel.AddHandler(DragDrop.DropEvent, OnTopLevelDrop, RoutingStrategies.Bubble, true);
+            }
+
+            public void End()
+            {
+                _topLevel.RemoveHandler(DragDrop.DragOverEvent, OnTopLevelDragOver);
+                _topLevel.RemoveHandler(DragDrop.DragLeaveEvent, OnTopLevelDragLeave);
+                _topLevel.RemoveHandler(DragDrop.DropEvent, OnTopLevelDrop);
+                DragDrop.SetAllowDrop(_topLevel, _topLevelAllowDrop);
+
+                if (_ghost != null)
+                    Overlay?.Children.Remove(_ghost);
+
+                SetDropTarget(null);
+                _node.IsDragSource = false;
+            }
+
+            public void SetDropTarget(ViewModels.BranchTreeNode target)
+            {
+                if (_target == target)
+                    return;
+
+                if (_target != null)
+                    _target.IsDropTarget = false;
+
+                _target = target;
+
+                if (_target != null)
+                    _target.IsDropTarget = true;
+
+                UpdateLabel();
+            }
+
+            private void UpdateLabel()
+            {
+                if (_label == null)
+                    return;
+
+                _label.Text = _target?.Backend is Models.Branch target ? $"{Branch.FriendlyName}  →  {target.FriendlyName}" : Branch.FriendlyName;
+            }
+
+            private void MoveGhost(Point pointer)
+            {
+                if (_ghost == null)
+                    return;
+
+                Canvas.SetLeft(_ghost, pointer.X + 14);
+                Canvas.SetTop(_ghost, pointer.Y + 10);
+            }
+
+            private void OnTopLevelDragOver(object sender, DragEventArgs e)
+            {
+                if (!e.DataTransfer.Contains(s_dndBranchFormat))
+                    return;
+
+                if (_ghost != null && Overlay != null)
+                {
+                    _ghost.IsVisible = true;
+                    MoveGhost(e.GetPosition(Overlay));
+                }
+
+                if (!e.Handled)
+                {
+                    // Not above a branch of the same repository.
+                    SetDropTarget(null);
+                    e.DragEffects = DragDropEffects.None;
+                    e.Handled = true;
+                }
+            }
+
+            private void OnTopLevelDragLeave(object sender, DragEventArgs e)
+            {
+                if (_ghost != null)
+                    _ghost.IsVisible = false;
+            }
+
+            private void OnTopLevelDrop(object sender, DragEventArgs e)
+            {
+                if (e.DataTransfer.Contains(s_dndBranchFormat))
+                    e.Handled = true;
+            }
+
+            private readonly ViewModels.BranchTreeNode _node;
+            private readonly TopLevel _topLevel;
+            private bool _topLevelAllowDrop = false;
+            private ViewModels.BranchTreeNode _target = null;
+            private Border _ghost = null;
+            private TextBlock _label = null;
+        }
     }
 }
