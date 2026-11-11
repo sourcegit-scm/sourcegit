@@ -6,10 +6,15 @@ namespace SourceGit.ViewModels
 {
     public class MoveRepositoryNode : Popup
     {
-        public RepositoryNode Target
+        public IReadOnlyList<RepositoryNode> Targets
         {
             get;
-        } = null;
+        }
+
+        public string TargetsDescription
+        {
+            get;
+        }
 
         public List<RepositoryNode> Rows
         {
@@ -22,16 +27,23 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selected, value);
         }
 
-        public MoveRepositoryNode(RepositoryNode target)
+        public MoveRepositoryNode(RepositoryNode target) : this([target])
         {
-            Target = target;
+        }
+
+        public MoveRepositoryNode(IReadOnlyList<RepositoryNode> targets)
+        {
+            Targets = targets;
+            TargetsDescription = targets.Count == 1 ? targets[0].Name : App.Text("MoveRepositoryNode.Items", targets.Count);
+
+            var scopeRoot = Preferences.Instance.GetScopeRoot();
             Rows.Add(new RepositoryNode()
             {
-                Name = "ROOT",
+                Name = scopeRoot?.Name ?? "ROOT",
                 Depth = 0,
-                Id = Guid.NewGuid().ToString()
+                Id = scopeRoot?.Id ?? Guid.NewGuid().ToString()
             });
-            MakeRows(Preferences.Instance.RepositoryNodes, 1);
+            MakeRows(scopeRoot?.SubNodes ?? Preferences.Instance.RepositoryNodes, 1);
             Selected = Rows[0];
         }
 
@@ -40,8 +52,7 @@ namespace SourceGit.ViewModels
             if (_selected != null)
             {
                 var node = Preferences.Instance.FindNode(_selected.Id);
-                Preferences.Instance.MoveNode(Target, node, true);
-                Welcome.Instance.Refresh();
+                Welcome.Instance.MoveNodes(Targets, node);
             }
 
             return Task.FromResult(true);
@@ -51,7 +62,7 @@ namespace SourceGit.ViewModels
         {
             foreach (var node in collection)
             {
-                if (node.IsRepository || node.Id == Target.Id)
+                if (node.IsRepository || IsTarget(node))
                     continue;
 
                 var dump = new RepositoryNode()
@@ -63,6 +74,17 @@ namespace SourceGit.ViewModels
                 Rows.Add(dump);
                 MakeRows(node.SubNodes, depth + 1);
             }
+        }
+
+        private bool IsTarget(RepositoryNode node)
+        {
+            foreach (var target in Targets)
+            {
+                if (target.Id == node.Id)
+                    return true;
+            }
+
+            return false;
         }
 
         private RepositoryNode _selected = null;

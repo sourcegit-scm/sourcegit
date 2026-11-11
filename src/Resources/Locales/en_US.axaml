@@ -636,6 +636,7 @@
   <x:String x:Key="Text.MoveSubmodule.MoveTo" xml:space="preserve">Move To:</x:String>
   <x:String x:Key="Text.MoveSubmodule.Submodule" xml:space="preserve">Submodule:</x:String>
   <x:String x:Key="Text.MoveRepositoryNode" xml:space="preserve">Move Repository Node</x:String>
+  <x:String x:Key="Text.MoveRepositoryNode.Items" xml:space="preserve">{0} items</x:String>
   <x:String x:Key="Text.MoveRepositoryNode.Target" xml:space="preserve">Select parent node for:</x:String>
   <x:String x:Key="Text.Name" xml:space="preserve">Name:</x:String>
   <x:String x:Key="Text.No" xml:space="preserve">NO</x:String>
@@ -1041,6 +1042,7 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.Welcome.DragDropTip" xml:space="preserve">DRAG &amp; DROP FOLDER SUPPORTED. CUSTOM GROUPING SUPPORTED.</x:String>
   <x:String x:Key="Text.Welcome.Edit" xml:space="preserve">Edit</x:String>
   <x:String x:Key="Text.Welcome.Move" xml:space="preserve">Move to Another Group</x:String>
+  <x:String x:Key="Text.Welcome.MoveSelected" xml:space="preserve">Move {0} Items to Another Group</x:String>
   <x:String x:Key="Text.Welcome.OpenAllInNode" xml:space="preserve">Open All Repositories</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Open Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>

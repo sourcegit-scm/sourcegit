@@ -40,7 +40,7 @@ namespace SourceGit.ViewModels
             Groups = new List<TargetGroup>();
             Groups.Add(new TargetGroup(string.Empty, "Auto", "Based-on Default Clone Dir"));
             Groups.Add(new TargetGroup(string.Empty, "No Group", "Uncategorized"));
-            CollectGroups(Groups, Preferences.Instance.RepositoryNodes);
+            CollectGroups(Groups, Preferences.Instance.GetScopeNodes());
         }
 
         public static ValidationResult ValidateRepoPath(string folder, ValidationContext _)

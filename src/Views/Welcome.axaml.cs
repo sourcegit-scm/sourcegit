@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -31,7 +32,7 @@ namespace SourceGit.Views
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (SelectedItem is ViewModels.RepositoryNode node && e.KeyModifiers == KeyModifiers.None)
+            if (SelectedItems is { Count: 1 } && SelectedItem is ViewModels.RepositoryNode node && e.KeyModifiers == KeyModifiers.None)
             {
                 if (e.Key is Key.Left)
                 {
@@ -79,6 +80,15 @@ namespace SourceGit.Views
         public Welcome()
         {
             InitializeComponent();
+
+            TreeContainer.AddHandler(PointerMovedEvent, OnPointerMovedOverTree, RoutingStrategies.Tunnel, true);
+            TreeContainer.AddHandler(PointerReleasedEvent, OnPointerReleasedOnTree, RoutingStrategies.Tunnel, true);
+
+            // Rubber-band selection can start on any empty space of the page.
+            AddHandler(PointerPressedEvent, OnPagePointerPressed, RoutingStrategies.Tunnel);
+            AddHandler(PointerMovedEvent, OnPagePointerMoved, RoutingStrategies.Tunnel | RoutingStrategies.Bubble, true);
+            AddHandler(PointerReleasedEvent, OnPagePointerReleased, RoutingStrategies.Tunnel | RoutingStrategies.Bubble, true);
+            AddHandler(PointerCaptureLostEvent, (_, _) => EndRubberBand(), RoutingStrategies.Direct | RoutingStrategies.Bubble, true);
         }
 
         protected override async void OnLoaded(RoutedEventArgs e)
@@ -114,7 +124,8 @@ namespace SourceGit.Views
                 }
                 else if (e.Key == Key.Enter)
                 {
-                    if (TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+                    if (TreeContainer.SelectedItems is { Count: 1 } &&
+                        TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
                     {
                         node.Open();
                         e.Handled = true;
@@ -122,7 +133,8 @@ namespace SourceGit.Views
                 }
                 else if (e.Key == Key.Delete || e.Key == Key.Back)
                 {
-                    if (TreeContainer.SelectedItem is ViewModels.RepositoryNode node)
+                    if (TreeContainer.SelectedItems is { Count: 1 } &&
+                        TreeContainer.SelectedItem is ViewModels.RepositoryNode node)
                     {
                         node.Delete();
                         e.Handled = true;
@@ -149,6 +161,29 @@ namespace SourceGit.Views
             if (sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
             {
                 var menu = new ContextMenu();
+
+                var selected = GetSelectedNodes();
+                if (selected.Count > 1 && selected.Contains(node))
+                {
+                    var moveSelected = new MenuItem();
+                    moveSelected.Header = App.Text("Welcome.MoveSelected", selected.Count);
+                    moveSelected.Icon = this.CreateMenuIcon("Icons.MoveTo");
+                    moveSelected.Click += (_, e) =>
+                    {
+                        var activePage = App.GetLauncher().ActivePage;
+                        if (activePage != null && activePage.CanCreatePopup())
+                            activePage.Popup = new ViewModels.MoveRepositoryNode(selected);
+                        e.Handled = true;
+                    };
+
+                    menu.Items.Add(moveSelected);
+                    menu.Open(grid);
+                    ev.Handled = true;
+                    return;
+                }
+
+                if (!selected.Contains(node) || selected.Count != 1)
+                    TreeContainer.SelectedItem = node;
 
                 var edit = new MenuItem();
                 edit.Header = App.Text("Welcome.Edit");
@@ -261,47 +296,215 @@ namespace SourceGit.Views
 
         private void OnPointerPressedTreeNode(object sender, PointerPressedEventArgs e)
         {
-            if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed)
+            _pendingSingleSelect = null;
+
+            if (e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed &&
+                sender is Grid { DataContext: ViewModels.RepositoryNode pressed })
             {
                 _pressTreeNodeEvent = e;
+                _pressedTreeNode = pressed;
                 _startDragTreeNode = false;
+
+                // Pressing an item that is part of a multi-selection must keep the selection, so that the whole
+                // selection can be dragged. The single selection is applied on release if no drag happened.
+                if (e.KeyModifiers == KeyModifiers.None &&
+                    sender is Grid { DataContext: ViewModels.RepositoryNode node } &&
+                    TreeContainer.SelectedItems is { Count: > 1 } selected &&
+                    selected.Contains(node))
+                {
+                    _pendingSingleSelect = node;
+                    e.Handled = true;
+                }
             }
             else
             {
                 _pressTreeNodeEvent = null;
+                _pressedTreeNode = null;
                 _startDragTreeNode = false;
             }
         }
 
-        private void OnPointerReleasedOnTreeNode(object _1, PointerReleasedEventArgs _2)
+        // Registered on the tree itself (tunnel, handled events too): once an item is pressed the pointer may be
+        // captured by its ListBoxItem, so the item's own Grid would not receive move/release events.
+        private void OnPointerReleasedOnTree(object _1, PointerReleasedEventArgs _2)
         {
+            if (_pressTreeNodeEvent == null)
+                return;
+
+            if (_pendingSingleSelect != null && !_startDragTreeNode)
+                TreeContainer.SelectedItem = _pendingSingleSelect;
+
+            _pendingSingleSelect = null;
             _pressTreeNodeEvent = null;
+            _pressedTreeNode = null;
             _startDragTreeNode = false;
         }
 
-        private async void OnPointerMovedOverTreeNode(object sender, PointerEventArgs e)
+        private async void OnPointerMovedOverTree(object _, PointerEventArgs e)
         {
-            if (_pressTreeNodeEvent != null &&
-                !_startDragTreeNode &&
-                sender is Grid { DataContext: ViewModels.RepositoryNode node } grid)
+            if (_pressTreeNodeEvent != null && !_startDragTreeNode && _pressedTreeNode is { } node)
             {
-                var delta = e.GetPosition(grid) - _pressTreeNodeEvent.GetPosition(grid);
+                var delta = e.GetPosition(TreeContainer) - _pressTreeNodeEvent.GetPosition(TreeContainer);
                 var sizeSquired = delta.X * delta.X + delta.Y * delta.Y;
                 if (sizeSquired < 64)
                     return;
 
                 _startDragTreeNode = true;
+                _pendingSingleSelect = null;
+
+                var selected = GetSelectedNodes();
+                var dragged = selected.Contains(node) ? selected : [node];
+                var ids = new List<string>();
+                foreach (var one in dragged)
+                    ids.Add(one.Id);
 
                 var data = new DataTransfer();
-                data.Add(DataTransferItem.Create(_dndRepoNode, node.Id));
+                data.Add(DataTransferItem.Create(_dndRepoNode, string.Join('\n', ids)));
                 await DragDrop.DoDragDropAsync(_pressTreeNodeEvent, data, DragDropEffects.Move);
             }
         }
 
         private void OnTreeViewLostFocus(object _1, RoutedEventArgs _2)
         {
+            // Focus moving between the tree and its items is not a real focus loss.
+            if (TreeContainer.IsKeyboardFocusWithin)
+                return;
+
+            _pendingSingleSelect = null;
             _pressTreeNodeEvent = null;
+            _pressedTreeNode = null;
             _startDragTreeNode = false;
+        }
+
+        private void OnPagePointerPressed(object _, PointerPressedEventArgs e)
+        {
+            if (!e.GetCurrentPoint(this).Properties.IsLeftButtonPressed || e.Source is not Visual source)
+                return;
+
+            // Only start on empty space: not on an item, the search box, a button or a scroll bar.
+            if (source.FindAncestorOfType<ListBoxItem>(true) != null ||
+                source.FindAncestorOfType<ScrollBar>(true) != null ||
+                source.FindAncestorOfType<TextBox>(true) != null ||
+                source.FindAncestorOfType<Button>(true) != null)
+                return;
+
+            var ctrl = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+            _rubberBandBase = e.KeyModifiers.HasFlag(ctrl) ? GetSelectedIndexes() : [];
+            _rubberBandStartInLayer = e.GetPosition(RubberBandLayer);
+            _rubberBandStartInTree = e.GetPosition(TreeContainer);
+            _isRubberBanding = true;
+
+            Canvas.SetLeft(RubberBand, _rubberBandStartInLayer.X);
+            Canvas.SetTop(RubberBand, _rubberBandStartInLayer.Y);
+            RubberBand.Width = 0;
+            RubberBand.Height = 0;
+            RubberBand.IsVisible = true;
+
+            TreeContainer.Focus(NavigationMethod.Pointer);
+            e.Pointer.Capture(this);
+            ApplyRubberBandSelection(new Rect(_rubberBandStartInTree, _rubberBandStartInTree));
+            e.Handled = true;
+        }
+
+        private void OnPagePointerMoved(object _, PointerEventArgs e)
+        {
+            if (!_isRubberBanding)
+                return;
+
+            var layerRect = new Rect(_rubberBandStartInLayer, e.GetPosition(RubberBandLayer)).Normalize();
+            Canvas.SetLeft(RubberBand, layerRect.X);
+            Canvas.SetTop(RubberBand, layerRect.Y);
+            RubberBand.Width = layerRect.Width;
+            RubberBand.Height = layerRect.Height;
+
+            ApplyRubberBandSelection(new Rect(_rubberBandStartInTree, e.GetPosition(TreeContainer)).Normalize());
+            e.Handled = true;
+        }
+
+        private void OnPagePointerReleased(object _, PointerReleasedEventArgs e)
+        {
+            if (!_isRubberBanding)
+                return;
+
+            e.Pointer.Capture(null);
+            EndRubberBand();
+            e.Handled = true;
+        }
+
+        private void EndRubberBand()
+        {
+            _isRubberBanding = false;
+            _rubberBandBase = [];
+            RubberBand.IsVisible = false;
+        }
+
+        private void ApplyRubberBandSelection(Rect rect)
+        {
+            var indexes = new HashSet<int>(_rubberBandBase);
+            foreach (var container in TreeContainer.GetRealizedContainers())
+            {
+                var topLeft = container.TranslatePoint(new Point(0, 0), TreeContainer);
+                if (topLeft == null)
+                    continue;
+
+                var bounds = new Rect(topLeft.Value, container.Bounds.Size);
+                if (bounds.Intersects(rect))
+                {
+                    var idx = TreeContainer.IndexFromContainer(container);
+                    if (idx >= 0)
+                        indexes.Add(idx);
+                }
+            }
+
+            var selection = TreeContainer.Selection;
+            selection.BeginBatchUpdate();
+            try
+            {
+                selection.Clear();
+                foreach (var idx in indexes)
+                    selection.Select(idx);
+            }
+            finally
+            {
+                selection.EndBatchUpdate();
+            }
+        }
+
+        private List<int> GetSelectedIndexes()
+        {
+            var indexes = new List<int>();
+            foreach (var idx in TreeContainer.Selection.SelectedIndexes)
+                indexes.Add(idx);
+            return indexes;
+        }
+
+        private List<ViewModels.RepositoryNode> GetSelectedNodes()
+        {
+            var nodes = new List<ViewModels.RepositoryNode>();
+            if (TreeContainer.SelectedItems == null)
+                return nodes;
+
+            // Keep the visual order of the tree.
+            foreach (var row in ViewModels.Welcome.Instance.Rows)
+            {
+                if (TreeContainer.SelectedItems.Contains(row))
+                    nodes.Add(row);
+            }
+
+            return nodes;
+        }
+
+        private List<ViewModels.RepositoryNode> FindDraggedNodes(string data)
+        {
+            var nodes = new List<ViewModels.RepositoryNode>();
+            foreach (var id in data.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                var node = ViewModels.Welcome.Instance.FindNodeById(id);
+                if (node != null)
+                    nodes.Add(node);
+            }
+
+            return nodes;
         }
 
         private void DragOverTreeView(object sender, DragEventArgs e)
@@ -320,10 +523,9 @@ namespace SourceGit.Views
 
         private async void DropOnTreeView(object sender, DragEventArgs e)
         {
-            if (e.DataTransfer.TryGetValue(_dndRepoNode) is { Length: > 1 } nodeId)
+            if (e.DataTransfer.TryGetValue(_dndRepoNode) is { Length: > 1 } nodeIds)
             {
-                var moved = ViewModels.Welcome.Instance.FindNodeById(nodeId);
-                ViewModels.Welcome.Instance.MoveNode(moved, null);
+                ViewModels.Welcome.Instance.MoveNodes(FindDraggedNodes(nodeIds), null);
                 e.Handled = true;
             }
             else if (e.DataTransfer.Contains(DataFormat.File))
@@ -399,13 +601,10 @@ namespace SourceGit.Views
             if (to.IsRepository)
                 to = ViewModels.Welcome.Instance.FindParentGroup(to);
 
-            if (e.DataTransfer.TryGetValue(_dndRepoNode) is { } nodeId)
+            if (e.DataTransfer.TryGetValue(_dndRepoNode) is { } nodeIds)
             {
                 e.Handled = true;
-
-                var moved = ViewModels.Welcome.Instance.FindNodeById(nodeId);
-                if (to != moved)
-                    ViewModels.Welcome.Instance.MoveNode(moved, to);
+                ViewModels.Welcome.Instance.MoveNodes(FindDraggedNodes(nodeIds), to);
             }
             else if (e.DataTransfer.Contains(DataFormat.File))
             {
@@ -469,6 +668,12 @@ namespace SourceGit.Views
 
         private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
+        private ViewModels.RepositoryNode _pendingSingleSelect = null;
+        private ViewModels.RepositoryNode _pressedTreeNode = null;
+        private bool _isRubberBanding = false;
+        private Point _rubberBandStartInLayer;
+        private Point _rubberBandStartInTree;
+        private List<int> _rubberBandBase = [];
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
         private CancellationTokenSource _cancellation = new CancellationTokenSource();
     }

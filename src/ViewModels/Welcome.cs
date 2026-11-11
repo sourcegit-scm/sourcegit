@@ -35,19 +35,21 @@ namespace SourceGit.ViewModels
 
         public void Refresh()
         {
+            var nodes = Preferences.Instance.GetScopeNodes();
+
             if (string.IsNullOrWhiteSpace(_searchFilter))
             {
-                foreach (var node in Preferences.Instance.RepositoryNodes)
+                foreach (var node in nodes)
                     ResetVisibility(node);
             }
             else
             {
-                foreach (var node in Preferences.Instance.RepositoryNodes)
+                foreach (var node in nodes)
                     SetVisibilityBySearch(node);
             }
 
             var rows = new List<RepositoryNode>();
-            MakeTreeRows(rows, Preferences.Instance.RepositoryNodes);
+            MakeTreeRows(rows, nodes);
             Rows.Clear();
             Rows.AddRange(rows);
         }
@@ -61,7 +63,7 @@ namespace SourceGit.ViewModels
 
             // avoid collection was modified while enumerating.
             var nodes = new List<RepositoryNode>();
-            nodes.AddRange(Preferences.Instance.RepositoryNodes);
+            nodes.AddRange(Preferences.Instance.GetScopeNodes());
 
             foreach (var node in nodes)
                 await node.UpdateStatusAsync(force, token);
@@ -216,8 +218,68 @@ namespace SourceGit.ViewModels
 
         public void MoveNode(RepositoryNode from, RepositoryNode to)
         {
-            Preferences.Instance.MoveNode(from, to, true);
+            MoveNodes([from], to);
+        }
+
+        /// <summary>
+        ///     Moves several nodes into the given group (null means the current root, see
+        ///     <see cref="Preferences.GetScopeRoot"/>). Nodes nested inside another selected group move along with it.
+        ///     Nothing is moved when the destination is one of the selected groups or lies inside one of them.
+        /// </summary>
+        public bool MoveNodes(IReadOnlyList<RepositoryNode> nodes, RepositoryNode to)
+        {
+            var pref = Preferences.Instance;
+            var target = to ?? pref.GetScopeRoot();
+
+            var tops = new List<RepositoryNode>();
+            foreach (var node in nodes)
+            {
+                if (node == null || tops.Contains(node))
+                    continue;
+
+                var nested = false;
+                foreach (var other in nodes)
+                {
+                    if (other != null && other != node && !other.IsRepository && IsDescendantOf(node, other))
+                    {
+                        nested = true;
+                        break;
+                    }
+                }
+
+                if (!nested)
+                    tops.Add(node);
+            }
+
+            if (tops.Count == 0)
+                return false;
+
+            if (target != null)
+            {
+                foreach (var node in tops)
+                {
+                    if (node == target || (!node.IsRepository && IsDescendantOf(target, node)))
+                        return false;
+                }
+            }
+
+            foreach (var node in tops)
+                pref.MoveNode(node, target, false);
+
+            pref.Save();
             Refresh();
+            return true;
+        }
+
+        public static bool IsDescendantOf(RepositoryNode node, RepositoryNode group)
+        {
+            foreach (var sub in group.SubNodes)
+            {
+                if (sub == node || IsDescendantOf(node, sub))
+                    return true;
+            }
+
+            return false;
         }
 
         private void ResetVisibility(RepositoryNode node)

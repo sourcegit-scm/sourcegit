@@ -18,7 +18,11 @@ namespace SourceGit.Views
             base.OnClosing(e);
 
             if (!Design.IsDesignMode)
+            {
+                ViewModels.Preferences.Instance.SyncWorkspaceRootNames();
                 ViewModels.Preferences.Instance.Save();
+                ViewModels.Welcome.Instance.Refresh();
+            }
         }
 
         private async void SelectDefaultCloneDir(object _, RoutedEventArgs e)

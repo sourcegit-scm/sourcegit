@@ -84,7 +84,7 @@ namespace SourceGit.ViewModels
             CollectVisiblePages(pages);
 
             var repos = new List<RepositoryNode>();
-            CollectVisibleRepository(repos, Preferences.Instance.RepositoryNodes);
+            CollectVisibleRepository(repos, Preferences.Instance.GetScopeNodes());
 
             var autoSelectPage = _selectedPage;
             var autoSelectRepo = _selectedRepo;

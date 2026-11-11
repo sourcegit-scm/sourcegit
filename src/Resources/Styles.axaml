@@ -179,6 +179,32 @@
   <Style Selector="PopupRoot">
     <Setter Property="TextElement.FontFamily" Value="{DynamicResource Fonts.Default}"/>
     <Setter Property="TextElement.FontSize" Value="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize}"/>
+
+    <!-- Popups (context menus, sub-menus, flyouts, tooltips, drop-downs) are separate top-levels, so they don't
+         inherit the zoom applied by the window template. Apply the same zoom here so they scale with the app. -->
+    <Setter Property="Template">
+      <ControlTemplate>
+        <LayoutTransformControl LayoutTransform="{TemplateBinding Transform}">
+          <LayoutTransformControl>
+            <LayoutTransformControl.LayoutTransform>
+              <ScaleTransform ScaleX="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"
+                              ScaleY="{Binding Source={x:Static vm:Preferences.Instance}, Path=Zoom, Mode=OneWay}"/>
+            </LayoutTransformControl.LayoutTransform>
+
+            <Panel>
+              <Border Name="PART_TransparencyFallback" IsHitTestVisible="False"/>
+              <VisualLayerManager IsPopup="True">
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Background="{TemplateBinding Background}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Content="{TemplateBinding Content}"
+                                  Padding="{TemplateBinding Padding}"/>
+              </VisualLayerManager>
+            </Panel>
+          </LayoutTransformControl>
+        </LayoutTransformControl>
+      </ControlTemplate>
+    </Setter>
   </Style>
 
   <Style Selector="AdornerLayer">

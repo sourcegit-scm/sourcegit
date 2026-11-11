@@ -20,7 +20,7 @@
 
     <StackPanel Height="28" Margin="4,16,4,0" Orientation="Horizontal">
       <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Text="{DynamicResource Text.MoveRepositoryNode.Target}"/>
-      <TextBlock VerticalAlignment="Center" Text="{Binding Target.Name, Mode=OneTime}"/>
+      <TextBlock VerticalAlignment="Center" Text="{Binding TargetsDescription, Mode=OneTime}"/>
     </StackPanel>
 
     <ListBox x:Name="TreeContainer"
