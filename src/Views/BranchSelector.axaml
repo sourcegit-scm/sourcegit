@@ -76,8 +76,7 @@
                    PlacementTarget="PART_Background"
                    Placement="BottomEdgeAlignedLeft"
                    VerticalOffset="2"
-                   IsLightDismissEnabled="True"
-                   InheritsTransform="True">
+                   IsLightDismissEnabled="True">
               <Border Background="{DynamicResource Brush.Contents}"
                       BorderThickness="1"
                       BorderBrush="{DynamicResource Brush.Accent}"
