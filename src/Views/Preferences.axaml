@@ -188,7 +188,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"
@@ -269,6 +269,18 @@
                              CornerRadius="3"
                              Value="{Binding EditorTabWidth, Mode=TwoWay}"/>
             </Grid>
+
+            <TextBlock Grid.Row="9" Grid.Column="0"
+                       Text="{DynamicResource Text.Preferences.Appearance.MaxDiffLineLength}"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,16,0"/>
+            <NumericUpDown Grid.Row="9" Grid.Column="1"
+                           Minimum="0" Maximum="2147483647" Increment="100"
+                           Height="28"
+                           Padding="4"
+                           BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
+                           CornerRadius="3"
+                           Value="{Binding MaxDiffLineLength, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="5" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.ThemeOverrides}"
@@ -897,7 +909,7 @@
                     <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Name, Mode=TwoWay}"/>
 
                     <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.Preferences.AI.Server}"/>
-                    <Grid ColumnDefinitions="*,Auto" 
+                    <Grid ColumnDefinitions="*,Auto"
                           Margin="0,4,0,0"
                           Height="28">
                       <TextBox Grid.Column="0"
@@ -918,7 +930,7 @@
                           <Path Width="12" Height="12"
                                 Data="{StaticResource Icons.Plus}"
                                 IsVisible="{Binding !HasValidApiKey, Mode=OneWay}"/>
-                          
+
                           <TextBlock Margin="6,0,0,0"
                                      VerticalAlignment="Center"
                                      Text="{DynamicResource Text.Preferences.AI.ApiKey}"/>

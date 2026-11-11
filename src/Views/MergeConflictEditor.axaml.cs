@@ -379,12 +379,13 @@ namespace SourceGit.Views
             }
 
             var builder = new StringBuilder();
+            var maxLineLength = ViewModels.Preferences.Instance.MaxDiffLineLength;
             foreach (var line in lines)
             {
-                if (line.Content.Length > 1000)
+                if (maxLineLength > 0 && line.Content.Length > maxLineLength)
                 {
-                    builder.Append(line.Content.AsSpan(0, 1000));
-                    builder.Append($"...({line.Content.Length - 1000} characters trimmed)");
+                    builder.Append(line.Content.AsSpan(0, maxLineLength));
+                    builder.Append($"...({line.Content.Length - maxLineLength} characters trimmed)");
                 }
                 else
                 {
