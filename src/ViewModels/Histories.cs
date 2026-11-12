@@ -377,7 +377,7 @@ namespace SourceGit.ViewModels
                 if (rb == null)
                     return false;
 
-                var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
+                var lb = _repo.FindLocalTrackingBranch(rb);
                 if (lb == null || lb.Ahead.Count > 0)
                 {
                     if (_repo.CanCreatePopup())
@@ -423,7 +423,7 @@ namespace SourceGit.ViewModels
                     if (rb == null)
                         continue;
 
-                    var lb = _repo.Branches.Find(x => x.IsLocal && x.Upstream == rb.FullName);
+                    var lb = _repo.FindLocalTrackingBranch(rb);
                     if (lb != null && lb.Behind.Count > 0 && lb.Ahead.Count == 0)
                     {
                         if (_repo.CanCreatePopup())
