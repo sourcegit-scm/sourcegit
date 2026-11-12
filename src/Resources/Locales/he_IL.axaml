@@ -484,6 +484,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">ה־Branch הנוכחי בלבד</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">ה־Branch הנוכחי ו־Commits שנבחרו</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Commits שנבחרו בלבד</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">שינויים מקומיים</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">פתח בעמוד השינויים המקומיים</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">נבחרו {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">הצג עמודות</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">החזק 'Ctrl' או 'Shift' לבחירת מספר commits.</x:String>
@@ -781,6 +783,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Commits מעוטרים בלבד</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">First-parent בלבד</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">הצג דגלים</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">שינויים מקומיים כצומת בגרף</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">הצג commits אבודים</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">הצג Submodules כעץ</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">הצג Tags כעץ</x:String>
