@@ -68,31 +68,7 @@ namespace SourceGit.Views
             }
             else if (!_useGitHubStyleAvatar)
             {
-                var fallback = GetFallbackString(_user.Name);
-                var typeface = new Typeface("fonts:SourceGit#JetBrains Mono NL");
-                var label = new FormattedText(
-                    fallback,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    typeface,
-                    Math.Max(Bounds.Width * 0.65, 10),
-                    Brushes.White);
-
-                var chars = fallback.ToCharArray();
-                var sum = 0;
-                foreach (var c in chars)
-                    sum += Math.Abs(c);
-
-                var bg = new LinearGradientBrush()
-                {
-                    GradientStops = FALLBACK_GRADIENTS[sum % FALLBACK_GRADIENTS.Length],
-                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
-                    EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
-                };
-
-                Point textOrigin = new Point((Bounds.Width - label.Width) * 0.5, (Bounds.Height - label.Height) * 0.5);
-                context.DrawRectangle(bg, null, new Rect(0, 0, Bounds.Width, Bounds.Height), corner, corner);
-                context.DrawText(label, textOrigin);
+                DrawFallback(context, _user.Name, rect, corner);
             }
             else
             {
@@ -275,7 +251,36 @@ namespace SourceGit.Views
             menu.Open(this);
         }
 
-        private string GetFallbackString(string name)
+        public static void DrawFallback(DrawingContext context, string name, Rect rect, double corner)
+        {
+            var fallback = GetFallbackString(name);
+            var typeface = new Typeface("fonts:SourceGit#JetBrains Mono NL");
+            var label = new FormattedText(
+                fallback,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                typeface,
+                Math.Max(rect.Width * 0.65, 10),
+                Brushes.White);
+
+            var chars = fallback.ToCharArray();
+            var sum = 0;
+            foreach (var c in chars)
+                sum += Math.Abs(c);
+
+            var bg = new LinearGradientBrush()
+            {
+                GradientStops = FALLBACK_GRADIENTS[sum % FALLBACK_GRADIENTS.Length],
+                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            };
+
+            var textOrigin = new Point(rect.X + (rect.Width - label.Width) * 0.5, rect.Y + (rect.Height - label.Height) * 0.5);
+            context.DrawRectangle(bg, null, rect, corner, corner);
+            context.DrawText(label, textOrigin);
+        }
+
+        private static string GetFallbackString(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
                 return "?";

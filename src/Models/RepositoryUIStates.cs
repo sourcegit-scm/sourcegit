@@ -45,6 +45,12 @@ namespace SourceGit.Models
             set;
         } = 120;
 
+        public double GraphColumnWidth
+        {
+            get;
+            set;
+        } = 0;
+
         public bool EnableTopoOrderInHistory
         {
             get;

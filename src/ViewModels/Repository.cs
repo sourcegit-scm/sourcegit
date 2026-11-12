@@ -1468,24 +1468,40 @@ namespace SourceGit.ViewModels
             }
             else
             {
-                foreach (var b in _branches)
+                var b = FindLocalTrackingBranch(branch);
+                if (b is { Ahead.Count: 0 })
                 {
-                    if (b.IsLocal &&
-                        !string.IsNullOrEmpty(b.Upstream) &&
-                        b.Upstream.Equals(branch.FullName, StringComparison.Ordinal) &&
-                        b.Ahead.Count == 0)
-                    {
-                        if (b.Behind.Count > 0)
-                            ShowPopup(new CheckoutAndFastForward(this, b, branch));
-                        else if (!b.IsCurrent)
-                            await CheckoutBranchAsync(b);
+                    if (b.Behind.Count > 0)
+                        ShowPopup(new CheckoutAndFastForward(this, b, branch));
+                    else if (!b.IsCurrent)
+                        await CheckoutBranchAsync(b);
 
-                        return;
-                    }
+                    return;
                 }
 
                 ShowPopup(new CreateBranch(this, branch));
             }
+        }
+
+        /// <summary>
+        ///     Finds the local branch that tracks `remote`. Several local branches can track the same remote branch
+        ///     (e.g. feature branches created from `origin/main`), so the one with the same name (`main`) wins.
+        /// </summary>
+        public Models.Branch FindLocalTrackingBranch(Models.Branch remote)
+        {
+            Models.Branch fallback = null;
+            foreach (var b in _branches)
+            {
+                if (!b.IsLocal || !remote.FullName.Equals(b.Upstream, StringComparison.Ordinal))
+                    continue;
+
+                if (b.Name.Equals(remote.Name, StringComparison.Ordinal))
+                    return b;
+
+                fallback ??= b;
+            }
+
+            return fallback;
         }
 
         public async Task CheckoutTagAsync(Models.Tag tag)
