@@ -166,6 +166,49 @@ namespace SourceGit.Views
         public ChangeCollectionView()
         {
             InitializeComponent();
+            AddHandler(PointerReleasedEvent, OnChangePointerReleased, RoutingStrategies.Bubble, true);
+            AddHandler(KeyDownEvent, OnChangeKeyDown, RoutingStrategies.Bubble, true);
+        }
+
+        public static readonly RoutedEvent<RoutedEventArgs> ChangeActivatedEvent =
+            RoutedEvent.Register<ChangeCollectionView, RoutedEventArgs>(nameof(ChangeActivated), RoutingStrategies.Bubble);
+
+        public event EventHandler<RoutedEventArgs> ChangeActivated
+        {
+            add { AddHandler(ChangeActivatedEvent, value); }
+            remove { RemoveHandler(ChangeActivatedEvent, value); }
+        }
+
+        private void OnChangePointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            if (e.InitialPressMouseButton != MouseButton.Left || e.KeyModifiers != KeyModifiers.None ||
+                Selection is not { Count: 1, HasFolder: false })
+                return;
+
+            for (var source = e.Source as Control; source != null && source != this; source = source.GetVisualParent() as Control)
+            {
+                if (source is not ListBoxItem item)
+                    continue;
+
+                var change = item.DataContext switch
+                {
+                    Models.Change c => c,
+                    ViewModels.ChangeTreeNode { IsFolder: false } node => node.Change,
+                    _ => null,
+                };
+                if (change == Selection.Changes[0])
+                    RaiseEvent(new RoutedEventArgs(ChangeActivatedEvent));
+                return;
+            }
+        }
+
+        private void OnChangeKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyModifiers != KeyModifiers.None || Selection is not { Count: 1, HasFolder: false })
+                return;
+
+            if (e.Key is Key.Enter or Key.Space or Key.Up or Key.Down or Key.Home or Key.End or Key.PageUp or Key.PageDown)
+                RaiseEvent(new RoutedEventArgs(ChangeActivatedEvent));
         }
 
         public void ToggleNodeIsExpanded(ViewModels.ChangeTreeNode node)

@@ -2,18 +2,35 @@
 using System.IO;
 using System.Text;
 
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
     public partial class RevisionCompare : UserControl
     {
+        public static readonly StyledProperty<bool> IsFileListOnlyProperty =
+            AvaloniaProperty.Register<RevisionCompare, bool>(nameof(IsFileListOnly));
+
+        public bool IsFileListOnly
+        {
+            get => GetValue(IsFileListOnlyProperty);
+            set => SetValue(IsFileListOnlyProperty, value);
+        }
+
         public RevisionCompare()
         {
             InitializeComponent();
+        }
+
+        private void OnChangeActivated(object sender, RoutedEventArgs e)
+        {
+            if (IsFileListOnly && this.FindAncestorOfType<Histories>() is { } histories)
+                histories.OpenFocusedDiff();
         }
 
         private void OnChangeContextRequested(object sender, ContextRequestedEventArgs e)
