@@ -9,7 +9,11 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherTabBar"
              x:DataType="vm:Launcher"
-             x:Name="ThisControl">
+             x:Name="ThisControl"
+             DragDrop.AllowDrop="True"
+             DragDrop.DragEnter="DragOverTabs"
+             DragDrop.DragOver="DragOverTabs"
+             DragDrop.DragLeave="DragLeaveTabs">
   <Grid ColumnDefinitions="Auto,*,Auto">
     <RepeatButton Grid.Column="0"
                   Classes="icon_button"
@@ -36,6 +40,16 @@
                  SelectionChanged="OnTabsSelectionChanged"
                  LayoutUpdated="OnTabsLayoutUpdated">
           <ListBox.Styles>
+            <Style Selector="Border.launcher_tab">
+              <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            <Style Selector="Border.tab_drag_source">
+              <Setter Property="Opacity" Value="0.45"/>
+            </Style>
+            <Style Selector="Border.tab_drop_target">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
+              <Setter Property="CornerRadius" Value="4"/>
+            </Style>
             <Style Selector="ListBoxItem">
               <Setter Property="Padding" Value="0"/>
             </Style>
@@ -61,9 +75,9 @@
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:LauncherPage">
-              <v:LauncherTabSizeBox UseFixedWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth}" Height="30"
+              <v:LauncherTabSizeBox Classes="launcher_tab"
+                                    UseFixedWidth="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth}" Height="30"
                                     Padding="0,2,0,0"
-                                    Background="Transparent"
                                     PointerPressed="OnPointerPressedTab"
                                     PointerMoved="OnPointerMovedOverTab"
                                     PointerReleased="OnPointerReleasedTab"
