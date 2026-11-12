@@ -53,24 +53,6 @@ namespace SourceGit.Views
             set => SetValue(GraphStyleProperty, value);
         }
 
-        public static readonly StyledProperty<bool> ShowRefConnectorsProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(ShowRefConnectors));
-
-        public bool ShowRefConnectors
-        {
-            get => GetValue(ShowRefConnectorsProperty);
-            set => SetValue(ShowRefConnectorsProperty, value);
-        }
-
-        public static readonly StyledProperty<bool> ShowTagsProperty =
-            AvaloniaProperty.Register<CommitGraph, bool>(nameof(ShowTags), true);
-
-        public bool ShowTags
-        {
-            get => GetValue(ShowTagsProperty);
-            set => SetValue(ShowTagsProperty, value);
-        }
-
         /// <summary>
         ///     Width required to draw the given graph without clipping in `Avatars` style.
         /// </summary>
@@ -89,23 +71,6 @@ namespace SourceGit.Views
         public static double GetAvatarsStyleX(double x)
         {
             return MapX(x, AVATARS_LANE_SCALE);
-        }
-
-        public static bool HasVisibleRefs(Models.Commit commit, bool showTags)
-        {
-            if (commit == null)
-                return false;
-
-            if (showTags)
-                return commit.HasDecorators;
-
-            foreach (var d in commit.Decorators)
-            {
-                if (d.Type != Models.DecoratorType.Tag)
-                    return true;
-            }
-
-            return false;
         }
 
         public override void Render(DrawingContext context)
@@ -170,9 +135,7 @@ namespace SourceGit.Views
             if (change.Property == GraphProperty ||
                 change.Property == LayoutProperty ||
                 change.Property == DotBrushProperty ||
-                change.Property == GraphStyleProperty ||
-                change.Property == ShowRefConnectorsProperty ||
-                change.Property == ShowTagsProperty)
+                change.Property == GraphStyleProperty)
                 InvalidateVisual();
         }
 
@@ -453,8 +416,6 @@ namespace SourceGit.Views
 
         private void DrawRowDecorations(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight, double clipWidth)
         {
-            var showConnectors = ShowRefConnectors;
-            var showTags = ShowTags;
             var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
             var bandHeight = Math.Max(rowHeight - 6, 4);
 
@@ -476,10 +437,6 @@ namespace SourceGit.Views
                     using (context.PushOpacity(dot.IsHighlighted ? 0.12 : 0.05))
                         context.FillRectangle(pen.Brush, new Rect(x, y - bandHeight * 0.5, clipWidth - x, bandHeight));
                 }
-
-                // Connector from the BRANCH / TAG column to the node.
-                if (showConnectors && HasVisibleRefs(dot.Commit, showTags))
-                    context.DrawLine(pen, new Point(0, y), new Point(x, y));
             }
         }
 

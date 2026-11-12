@@ -90,7 +90,7 @@
               </ControlTemplate>
             </Setter>
 
-            <Style Selector="^:nth-child(7)">
+            <Style Selector="^:nth-child(6)">
               <Setter Property="AreSeparatorsVisible" Value="False"/>
             </Style>
           </Style>
@@ -112,47 +112,10 @@
         </DataGrid.Styles>
 
         <DataGrid.Columns>
-          <DataGridTemplateColumn IsReadOnly="True">
-            <DataGridTemplateColumn.IsVisible>
-              <MultiBinding Converter="{x:Static BoolConverters.And}">
-                <Binding Source="{x:Static vm:Preferences.Instance}" Path="CommitGraphStyle" Mode="OneWay" Converter="{x:Static c:CommitGraphStyleConverters.IsAvatars}"/>
-                <Binding Path="IsRefsColumnVisible" Mode="OneWay"/>
-              </MultiBinding>
-            </DataGridTemplateColumn.IsVisible>
-
-            <DataGridTemplateColumn.Header>
-              <Border Padding="48,0,0,0" ClipToBounds="True">
-                <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.BranchesAndTags}"/>
-              </Border>
-            </DataGridTemplateColumn.Header>
-
-            <DataGridTemplateColumn.CellTemplate>
-              <DataTemplate DataType="m:Commit">
-                <Border ClipToBounds="True" Background="Transparent">
-                  <v:CommitRefsPresenter Margin="4,0,0,0"
-                                         Background="{DynamicResource Brush.Contents}"
-                                         Foreground="{DynamicResource Brush.FG1}"
-                                         ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph}"
-                                         FontSize="12"
-                                         HorizontalAlignment="Stretch"
-                                         VerticalAlignment="Center"
-                                         FitToWidth="True"
-                                         ShowConnector="True"
-                                         PointerPressed="OnRefsColumnPointerPressed"
-                                         UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"
-                                         UseCompactBranchNames="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseCompactBranchNamesInGraph}"
-                                         HasSingleRemote="{Binding $parent[v:Histories].HasSingleRemote}"/>
-                </Border>
-              </DataTemplate>
-            </DataGridTemplateColumn.CellTemplate>
-          </DataGridTemplateColumn>
-
           <DataGridTemplateColumn IsReadOnly="True"
                                   IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitGraphStyle, Mode=OneWay, Converter={x:Static c:CommitGraphStyleConverters.IsAvatars}}">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header"
-                         Text="{DynamicResource Text.Histories.Header.Graph}"
-                         IsVisible="{Binding IsRefsColumnVisible, Mode=OneWay}"/>
+              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Graph}"/>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
@@ -238,14 +201,7 @@
                                            VerticalAlignment="Center"
                                            UseGraphColor="{Binding IsHighlightedInGraph, Mode=OneWay}"
                                            UseCompactBranchNames="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseCompactBranchNamesInGraph}"
-                                           HasSingleRemote="{Binding $parent[v:Histories].HasSingleRemote}">
-                      <v:CommitRefsPresenter.IsVisible>
-                        <MultiBinding Converter="{x:Static BoolConverters.Or}">
-                          <Binding Source="{x:Static vm:Preferences.Instance}" Path="CommitGraphStyle" Converter="{x:Static c:CommitGraphStyleConverters.IsClassic}"/>
-                          <Binding Path="$parent[v:Histories].((vm:Histories)DataContext).IsRefsColumnVisible" Converter="{x:Static BoolConverters.Not}"/>
-                        </MultiBinding>
-                      </v:CommitRefsPresenter.IsVisible>
-                    </v:CommitRefsPresenter>
+                                           HasSingleRemote="{Binding $parent[v:Histories].HasSingleRemote}"/>
 
                     <v:CommitSubjectPresenter Grid.Column="3"
                                               Height="26"
@@ -392,8 +348,6 @@
                      Graph="{Binding Graph}"
                      DotBrush="{DynamicResource Brush.Contents}"
                      GraphStyle="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitGraphStyle, Mode=OneWay}"
-                     ShowTags="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowTagsInGraph, Mode=OneWay}"
-                     ShowRefConnectors="{Binding IsRefsColumnVisible, Mode=OneWay}"
                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      IsHitTestVisible="False"
                      ClipToBounds="True"

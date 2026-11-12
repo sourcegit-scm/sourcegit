@@ -45,18 +45,6 @@ namespace SourceGit.Models
             set;
         } = 120;
 
-        public bool IsRefsColumnVisibleInHistory
-        {
-            get;
-            set;
-        } = true;
-
-        public double RefsColumnWidth
-        {
-            get;
-            set;
-        } = 180;
-
         public double GraphColumnWidth
         {
             get;

@@ -63,19 +63,6 @@ namespace SourceGit.ViewModels
             }
         }
 
-        public bool IsRefsColumnVisible
-        {
-            get => _repo.UIStates.IsRefsColumnVisibleInHistory;
-            set
-            {
-                if (_repo.UIStates.IsRefsColumnVisibleInHistory != value)
-                {
-                    _repo.UIStates.IsRefsColumnVisibleInHistory = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public bool IsSHAColumnVisible
         {
             get => _repo.UIStates.IsSHAColumnVisibleInHistory;
@@ -221,12 +208,6 @@ namespace SourceGit.ViewModels
         {
             get => _repo.UIStates.AuthorColumnWidth;
             set => _repo.UIStates.AuthorColumnWidth = value;
-        }
-
-        public double RefsColumnWidth
-        {
-            get => _repo.UIStates.RefsColumnWidth;
-            set => _repo.UIStates.RefsColumnWidth = value;
         }
 
         /// <summary>
