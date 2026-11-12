@@ -51,7 +51,7 @@ namespace SourceGit.Views
                 sender is Border { DataContext: Models.Stash stash } border)
             {
                 var apply = new MenuItem();
-                apply.Header = App.Text("StashCM.Apply");
+                apply.Header = App.ContextMenuText("StashCM.Apply");
                 apply.Icon = this.CreateMenuIcon("Icons.CheckCircled");
                 apply.Click += (_, ev) =>
                 {
@@ -69,7 +69,7 @@ namespace SourceGit.Views
                 };
 
                 var drop = new MenuItem();
-                drop.Header = App.Text("StashCM.Drop");
+                drop.Header = App.ContextMenuText("StashCM.Drop");
                 drop.Icon = this.CreateMenuIcon("Icons.Clear");
                 drop.Tag = "Back/Delete";
                 drop.Click += (_, ev) =>
@@ -195,7 +195,7 @@ namespace SourceGit.Views
                 };
 
                 var checkoutFiles = new MenuItem();
-                checkoutFiles.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                checkoutFiles.Header = App.ContextMenuText("ChangeCM.CheckoutThisRevision");
                 checkoutFiles.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                 checkoutFiles.Click += async (_, ev) =>
                 {

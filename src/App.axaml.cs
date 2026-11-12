@@ -222,6 +222,11 @@ namespace SourceGit
             return string.Format(fmt, args);
         }
 
+        public static string ContextMenuText(string key, params object[] args)
+        {
+            return Models.HgTerminology.Extend(key, Text(key, args), ViewModels.Preferences.Instance.ExtendContextMenusWithHgTerminology);
+        }
+
         public static ViewModels.Launcher GetLauncher()
         {
             return Current is App app ? app._launcher : null;
