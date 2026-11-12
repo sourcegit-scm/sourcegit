@@ -157,6 +157,99 @@ namespace SourceGit.ViewModels
         }
 
         /// <summary>
+        ///     Removes one discovered node (a repository, or a directory below the configured
+        ///     ones) from the current tree only. Nothing is persisted, so the next scan brings
+        ///     it back. That is intentional: a permanent exclusion list would make a mistake
+        ///     hard to undo, and adding the same path back is a normal thing to want.
+        ///     Directories left empty by the removal are dropped as well, so the tree does not
+        ///     keep a dead branch around.
+        /// </summary>
+        public void RemoveNode(ProjectTreeNode node)
+        {
+            if (node == null || node.Parent == null || node.IsProject)
+                return;
+
+            node.PropertyChanged -= OnNodePropertyChanged;
+            node.Parent.Children.Remove(node);
+
+            var parent = node.Parent;
+            while (parent != null && !parent.IsProject && parent.Children.Count == 0)
+            {
+                parent.PropertyChanged -= OnNodePropertyChanged;
+
+                var grandParent = parent.Parent;
+                if (grandParent == null)
+                    break;
+
+                grandParent.Children.Remove(parent);
+                parent = grandParent;
+            }
+        }
+
+        /// <summary>
+        ///     Finds the repository node that represents the given absolute path.
+        ///     Paths are compared with the same normalisation the scanner uses, so a
+        ///     tab opened from a path with a different slash style or casing still matches.
+        ///     Returns null when the repository does not belong to any project.
+        /// </summary>
+        public ProjectTreeNode FindRepository(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            var key = Models.RepositoryScanner.Key(path);
+            foreach (var root in Roots)
+            {
+                var found = FindRepository(root, key);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Expands every ancestor of the given node so that it becomes visible.
+        ///     The expansion is deliberately kept out of the persisted collapsed set:
+        ///     it follows the active tab, it is not a preference of the user.
+        /// </summary>
+        public void RevealRepository(ProjectTreeNode repositoryNode)
+        {
+            if (repositoryNode == null)
+                return;
+
+            _suppressCollapseSave = true;
+            try
+            {
+                var parent = repositoryNode.Parent;
+                while (parent != null)
+                {
+                    parent.IsExpanded = true;
+                    parent = parent.Parent;
+                }
+            }
+            finally
+            {
+                _suppressCollapseSave = false;
+            }
+        }
+
+        private static ProjectTreeNode FindRepository(ProjectTreeNode node, string key)
+        {
+            if (node.IsRepository && string.Equals(Models.RepositoryScanner.Key(node.FullPath), key, StringComparison.Ordinal))
+                return node;
+
+            foreach (var child in node.Children)
+            {
+                var found = FindRepository(child, key);
+                if (found != null)
+                    return found;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         ///     Rebuilds one project's subtree. Scanning runs on the thread pool while the tree
         ///     is updated as repositories are found, so this must be called from the UI thread.
         ///     A running scan of the previous request is cancelled.

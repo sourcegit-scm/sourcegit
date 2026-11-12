@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -20,10 +22,96 @@ namespace SourceGit.Views
             // (Launcher's view model), so the tree renders empty even when Projects is full.
             DataContext = ViewModels.Projects.Instance;
 
+            Tree.PropertyChanged += OnTreePropertyChanged;
+
             Avalonia.Threading.Dispatcher.UIThread.Post(() =>
             {
                 ViewModels.Projects.Instance.StartRestore();
+                TryHookLauncher();
             });
+
+            AttachedToVisualTree += OnAttachedToVisualTree;
+            DetachedFromVisualTree += OnDetachedFromVisualTree;
+        }
+
+        /// <summary>
+        ///     The active tab is owned by the launcher, so the tree needs a reference to it
+        ///     to follow tab switches. App.GetLauncher() can still be null while the launcher
+        ///     window is being built, so this is retried when the control enters the visual tree.
+        /// </summary>
+        private void TryHookLauncher()
+        {
+            if (_launcher != null)
+                return;
+
+            _launcher = App.GetLauncher();
+            if (_launcher == null)
+                return;
+
+            _launcher.PropertyChanged += OnLauncherPropertyChanged;
+            SyncSelection();
+        }
+
+        private void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            TryHookLauncher();
+        }
+
+        private void OnDetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+        {
+            if (_launcher == null)
+                return;
+
+            _launcher.PropertyChanged -= OnLauncherPropertyChanged;
+            _launcher = null;
+        }
+
+        private void OnLauncherPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModels.Launcher.ActivePage))
+                SyncSelection();
+        }
+
+        /// <summary>
+        ///     Follows the active tab: highlights the repository in the tree and expands the
+        ///     directories on the way to it. A welcome tab (its node id is just a generated
+        ///     id) or a repository that belongs to no project clears the selection instead.
+        /// </summary>
+        private void SyncSelection()
+        {
+            var node = App.GetLauncher()?.ActivePage?.Node;
+            if (node == null)
+                return;
+
+            var target = ViewModels.Projects.Instance.FindRepository(node.Id);
+            if (target == null)
+            {
+                Tree.SelectedItem = null;
+                return;
+            }
+
+            ViewModels.Projects.Instance.RevealRepository(target);
+            Tree.SelectedItem = target;
+            ScrollTo(target);
+        }
+
+        /// <summary>
+        ///     TreeView has no ScrollIntoView in Avalonia, so the container of the node is
+        ///     looked up after the pending layout pass and asked to bring itself into view.
+        /// </summary>
+        private void ScrollTo(ViewModels.ProjectTreeNode target)
+        {
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                foreach (var item in Tree.GetVisualDescendants().OfType<TreeViewItem>())
+                {
+                    if (!ReferenceEquals(item.DataContext, target))
+                        continue;
+
+                    item.BringIntoView();
+                    break;
+                }
+            }, Avalonia.Threading.DispatcherPriority.Background);
         }
 
         private async void OnAddProject(object sender, RoutedEventArgs e)
@@ -64,13 +152,55 @@ namespace SourceGit.Views
             await ViewModels.Projects.Instance.RebuildAsync(projectNode);
         }
 
-        private void OnRemoveProject(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///     Removes exactly what is selected: the project itself, the configured directory
+        ///     under it, or one discovered node below that. Nothing on disk is touched.
+        /// </summary>
+        private void OnRemoveSelection(object sender, RoutedEventArgs e)
         {
-            var projectNode = FindProjectNode(Tree.SelectedItem as ViewModels.ProjectTreeNode);
-            if (projectNode == null)
+            var node = Tree.SelectedItem as ViewModels.ProjectTreeNode;
+            if (node == null)
+            {
+                ViewModels.Projects.Instance.StatusText = "请先选中要移除的工程、目录或仓库";
                 return;
+            }
 
-            ViewModels.Projects.Instance.RemoveProject(projectNode);
+            if (node.IsProject)
+            {
+                ViewModels.Projects.Instance.RemoveProject(node);
+                return;
+            }
+
+            if (node.Parent?.IsProject == true)
+            {
+                ViewModels.Projects.Instance.RemoveDirectory(node.Parent, node);
+                return;
+            }
+
+            ViewModels.Projects.Instance.RemoveNode(node);
+        }
+
+        private void OnTreePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Property == TreeView.SelectedItemProperty)
+                UpdateRemoveButton();
+        }
+
+        /// <summary>
+        ///     Keeps the toolbar button honest about what it is going to remove, so the same
+        ///     button no longer silently deletes a whole project while a repository is selected.
+        /// </summary>
+        private void UpdateRemoveButton()
+        {
+            var node = Tree.SelectedItem as ViewModels.ProjectTreeNode;
+            if (node == null)
+                RemoveButton.Content = "移除";
+            else if (node.IsProject)
+                RemoveButton.Content = "移除工程";
+            else if (node.Parent?.IsProject == true)
+                RemoveButton.Content = "移除目录";
+            else
+                RemoveButton.Content = node.IsRepository ? "移除仓库" : "移除目录";
         }
 
         private void OnItemDoubleTapped(object sender, TappedEventArgs e)
@@ -215,5 +345,7 @@ namespace SourceGit.Views
 
             return result;
         }
+
+        private ViewModels.Launcher _launcher = null;
     }
 }
