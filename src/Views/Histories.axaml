@@ -115,7 +115,9 @@
           <DataGridTemplateColumn IsReadOnly="True"
                                   IsVisible="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitGraphStyle, Mode=OneWay, Converter={x:Static c:CommitGraphStyleConverters.IsAvatars}}">
             <DataGridTemplateColumn.Header>
-              <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Graph}"/>
+              <Border Padding="48,0,0,0" ClipToBounds="True">
+                <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.Graph}"/>
+              </Border>
             </DataGridTemplateColumn.Header>
 
             <DataGridTemplateColumn.CellTemplate>
