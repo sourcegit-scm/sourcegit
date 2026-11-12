@@ -46,6 +46,30 @@ namespace SourceGit.Views
             set => SetAndRaise(DateTimeFormatProperty, ref _dateTimeFormat, value);
         }
 
+        public static readonly DirectProperty<CommitTimeTextBlock, int> DayOfWeekStyleProperty =
+            AvaloniaProperty.RegisterDirect<CommitTimeTextBlock, int>(
+                nameof(DayOfWeekStyle),
+                static o => o.DayOfWeekStyle,
+                static (o, v) => o.DayOfWeekStyle = v);
+
+        public int DayOfWeekStyle
+        {
+            get => _dayOfWeekStyle;
+            set => SetAndRaise(DayOfWeekStyleProperty, ref _dayOfWeekStyle, value);
+        }
+
+        public static readonly DirectProperty<CommitTimeTextBlock, bool> UseLocalizedCultureProperty =
+            AvaloniaProperty.RegisterDirect<CommitTimeTextBlock, bool>(
+                nameof(UseLocalizedCulture),
+                static o => o.UseLocalizedCulture,
+                static (o, v) => o.UseLocalizedCulture = v);
+
+        public bool UseLocalizedCulture
+        {
+            get => _useLocalizedCulture;
+            set => SetAndRaise(UseLocalizedCultureProperty, ref _useLocalizedCulture, value);
+        }
+
         public static readonly DirectProperty<CommitTimeTextBlock, ulong> TimestampProperty =
             AvaloniaProperty.RegisterDirect<CommitTimeTextBlock, ulong>(
                 nameof(Timestamp),
@@ -83,7 +107,10 @@ namespace SourceGit.Views
                     HorizontalAlignment = HorizontalAlignment.Center;
                 }
             }
-            else if (change.Property == DateTimeFormatProperty || change.Property == Use24HoursProperty)
+            else if (change.Property == DateTimeFormatProperty ||
+                     change.Property == Use24HoursProperty ||
+                     change.Property == DayOfWeekStyleProperty ||
+                     change.Property == UseLocalizedCultureProperty)
             {
                 if (ShowAsDateTime)
                     SetCurrentValue(TextProperty, GetDisplayText());
@@ -107,14 +134,24 @@ namespace SourceGit.Views
                 }
             };
             _refreshTimer.IsEnabled = !ShowAsDateTime;
+
+            Models.DateTimeFormat.Changed += OnDateTimeFormatChanged;
         }
 
         protected override void OnUnloaded(RoutedEventArgs e)
         {
+            Models.DateTimeFormat.Changed -= OnDateTimeFormatChanged;
+
             _refreshTimer.Tag = null;
             _refreshTimer.IsEnabled = false;
 
             base.OnUnloaded(e);
+        }
+
+        private void OnDateTimeFormatChanged()
+        {
+            if (ShowAsDateTime)
+                SetCurrentValue(TextProperty, GetDisplayText());
         }
 
         protected override void OnDataContextChanged(EventArgs e)
@@ -174,6 +211,8 @@ namespace SourceGit.Views
         private bool _showAsDateTime = true;
         private bool _use24Hours = true;
         private int _dateTimeFormat = 0;
+        private int _dayOfWeekStyle = 0;
+        private bool _useLocalizedCulture = true;
         private ulong _timestamp = 0;
         private DispatcherTimer _refreshTimer = null;
     }

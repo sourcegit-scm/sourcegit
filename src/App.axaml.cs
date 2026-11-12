@@ -243,6 +243,7 @@ namespace SourceGit
 
             var pref = ViewModels.Preferences.Instance;
             SetLocale(pref.Locale);
+            Models.DateTimeFormat.UseCulture(pref.Locale);
             SetTheme(pref.Theme, pref.ThemeOverrides);
             SetFonts(pref.DefaultFontFamily, pref.MonospaceFontFamily);
         }
