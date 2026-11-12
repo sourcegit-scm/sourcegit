@@ -16,9 +16,11 @@ namespace SourceGit.Models
 
     /// <summary>
     ///     Root object persisted to projects.json.
+    ///     Nodes are expanded by default, so only the paths the user collapsed are stored.
     /// </summary>
     public class ProjectsSaveModel
     {
         public List<Project> Projects { get; set; } = new List<Project>();
+        public List<string> Collapsed { get; set; } = new List<string>();
     }
 }

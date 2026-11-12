@@ -34,7 +34,20 @@ namespace SourceGit.ViewModels
         public bool IsRepository
         {
             get => _isRepository;
-            set => SetProperty(ref _isRepository, value);
+            set
+            {
+                if (SetProperty(ref _isRepository, value))
+                    OnPropertyChanged(nameof(IsDirectory));
+            }
+        }
+
+        /// <summary>
+        ///     An intermediate directory: neither the project container nor a repository.
+        ///     Used by the view to pick the folder icon instead of the repository icon.
+        /// </summary>
+        public bool IsDirectory
+        {
+            get => !IsProject && !_isRepository;
         }
 
         public bool IsExpanded
