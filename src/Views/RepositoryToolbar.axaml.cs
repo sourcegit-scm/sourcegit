@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -162,11 +162,20 @@ namespace SourceGit.Views
             }
         }
 
-        private async void Fetch(object sender, TappedEventArgs e)
+        private async void Fetch(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await repo.FetchAsync(e.KeyModifiers is KeyModifiers.Control);
+                await repo.FetchAsync(true);
+                e.Handled = true;
+            }
+        }
+
+        private async void OpenFetchOptions(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.FetchAsync(false);
                 e.Handled = true;
             }
         }
@@ -183,11 +192,20 @@ namespace SourceGit.Views
             }
         }
 
-        private async void Pull(object sender, TappedEventArgs e)
+        private async void Pull(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await repo.PullAsync(e.KeyModifiers is KeyModifiers.Control);
+                await repo.PullAsync(true);
+                e.Handled = true;
+            }
+        }
+
+        private async void OpenPullOptions(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.PullAsync(false);
                 e.Handled = true;
             }
         }
@@ -204,11 +222,20 @@ namespace SourceGit.Views
             }
         }
 
-        private async void Push(object sender, TappedEventArgs e)
+        private async void Push(object sender, RoutedEventArgs e)
         {
             if (DataContext is ViewModels.Repository repo)
             {
-                await repo.PushAsync(e.KeyModifiers is KeyModifiers.Control);
+                await repo.PushAsync(true);
+                e.Handled = true;
+            }
+        }
+
+        private async void OpenPushOptions(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+            {
+                await repo.PushAsync(false);
                 e.Handled = true;
             }
         }
