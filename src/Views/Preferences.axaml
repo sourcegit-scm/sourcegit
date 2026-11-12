@@ -156,6 +156,10 @@
                       Content="{DynamicResource Text.Preferences.General.ShowTagsInGraph}"
                       IsChecked="{Binding ShowTagsInGraph, Mode=TwoWay}"/>
 
+            <CheckBox Grid.Row="9" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Appearance.TrimLeadingPathsInChanges}"
+                      IsChecked="{Binding TrimLeadingPathsInChanges, Mode=TwoWay}"/>
             <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowRelativeTimeInGraph}"
@@ -188,7 +192,7 @@
           <TabItem.Header>
             <TextBlock Classes="tab_header" Text="{DynamicResource Text.Preferences.Appearance}"/>
           </TabItem.Header>
-          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
+          <Grid Margin="8" RowDefinitions="32,32,32,32,32,32,32,32,Auto,32" ColumnDefinitions="Auto,*">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{DynamicResource Text.Preferences.Appearance.Theme}"
                        HorizontalAlignment="Right"

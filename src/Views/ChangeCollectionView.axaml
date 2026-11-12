@@ -122,7 +122,8 @@
                                    SelectionChanged="OnRowSelectionChanged">
         <ListBox.ItemTemplate>
           <DataTemplate DataType="m:Change">
-            <StackPanel Orientation="Horizontal"
+            <v:ChangeListRow ColumnDefinitions="Auto,Auto,*"
+                             TrimLeadingPaths="{Binding Source={x:Static vm:Preferences.Instance}, Path=TrimLeadingPathsInChanges}"
                         Height="24"
                         Background="Transparent"
                         DoubleTapped="OnRowDoubleTapped"
@@ -132,15 +133,15 @@
                                   IsUnstagedChange="{Binding #ThisControl.IsUnstagedChange}"
                                   Change="{Binding}" />
 
-              <TextBlock Text="{Binding ConflictMarker}"
+              <TextBlock Grid.Column="1" Text="{Binding ConflictMarker}"
                          Foreground="DarkOrange"
                          FontWeight="Bold"
                          Margin="4,0,0,0"
                          IsVisible="{Binding IsConflicted}"/>
 
-              <TextBlock Margin="4,0,0,0"
-                         Text="{Binding Path}"/>
-            </StackPanel>
+              <v:ChangePathTextBlock Grid.Column="2" Margin="4,0,0,0"
+                         Path="{Binding Path}"/>
+            </v:ChangeListRow>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </v:ChangeCollectionContainer>
