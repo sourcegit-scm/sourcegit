@@ -156,10 +156,6 @@
                       Content="{DynamicResource Text.Preferences.General.ShowTagsInGraph}"
                       IsChecked="{Binding ShowTagsInGraph, Mode=TwoWay}"/>
 
-            <CheckBox Grid.Row="9" Grid.Column="1"
-                      Height="32"
-                      Content="{DynamicResource Text.Preferences.Appearance.TrimLeadingPathsInChanges}"
-                      IsChecked="{Binding TrimLeadingPathsInChanges, Mode=TwoWay}"/>
             <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.General.ShowRelativeTimeInGraph}"
@@ -305,6 +301,10 @@
                       Content="{DynamicResource Text.Preferences.Appearance.UseAutoHideScrollBars}"
                       IsChecked="{Binding UseAutoHideScrollBars, Mode=TwoWay}"/>
 
+            <CheckBox Grid.Row="9" Grid.Column="1"
+                      Height="32"
+                      Content="{DynamicResource Text.Preferences.Appearance.TrimLeadingPathsInChanges}"
+                      IsChecked="{Binding TrimLeadingPathsInChanges, Mode=TwoWay}"/>
             <CheckBox Grid.Row="8" Grid.Column="1"
                       Height="32"
                       Content="{DynamicResource Text.Preferences.Appearance.UseNativeWindowFrame}"
