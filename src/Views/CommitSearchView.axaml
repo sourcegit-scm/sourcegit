@@ -145,6 +145,7 @@
                 BorderBrush="{DynamicResource Brush.Border2}"
                 SelectedIndex="{Binding Method, Mode=TwoWay}">
         <ComboBox.Items>
+          <TextBlock Text="{DynamicResource Text.Repository.Search.ByAll}"/>
           <TextBlock Text="{DynamicResource Text.Repository.Search.BySHA}"/>
           <TextBlock Text="{DynamicResource Text.Repository.Search.ByAuthor}"/>
           <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
@@ -156,7 +157,7 @@
       <CheckBox Grid.Row="1" Grid.Column="1"
                 Height="26"
                 IsChecked="{Binding OnlySearchCurrentBranch, Mode=TwoWay}"
-                IsVisible="{Binding Method, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
+                IsVisible="{Binding Method, Converter={x:Static c:IntConverters.IsNotOne}}">
         <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}"/>
       </CheckBox>
     </Grid>

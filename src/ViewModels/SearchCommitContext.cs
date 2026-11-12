@@ -129,22 +129,21 @@ namespace SourceGit.ViewModels
                         result.Add(commit);
                     }
                 }
-                else if (_onlySearchCurrentBranch)
-                {
-                    result = await new Commands.QueryCommits(_repo, _filter, method, true)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
-
-                    foreach (var c in result)
-                        c.IsMerged = true;
-                }
                 else
                 {
-                    result = await new Commands.QueryCommits(_repo, _filter, method, false)
-                        .GetResultAsync()
-                        .ConfigureAwait(false);
+                    if (method == Models.CommitSearchMethod.All)
+                        result = await SearchAllFieldsAsync().ConfigureAwait(false);
+                    else
+                        result = await new Commands.QueryCommits(_repo, _filter, method, _onlySearchCurrentBranch)
+                            .GetResultAsync()
+                            .ConfigureAwait(false);
 
-                    if (result.Count > 0)
+                    if (_onlySearchCurrentBranch)
+                    {
+                        foreach (var c in result)
+                            c.IsMerged = true;
+                    }
+                    else if (result.Count > 0)
                     {
                         var set = await new Commands.QueryCurrentBranchCommitHashes(_repo, result[^1].CommitterTime)
                             .GetResultAsync()
@@ -169,6 +168,64 @@ namespace SourceGit.ViewModels
                     }
                 });
             }, token);
+        }
+
+        private async Task<List<Models.Commit>> SearchAllFieldsAsync()
+        {
+            // Git ANDs `--grep`, `--author` and `--committer` within a single
+            // invocation, so every field needs its own `git log`. Each of those is
+            // a full history walk on large repositories, so they run concurrently
+            // instead of one after another.
+            var bySHA = SearchExactSHAAsync();
+            var byMessage = new Commands.QueryCommits(_repo, _filter, Models.CommitSearchMethod.ByMessage, _onlySearchCurrentBranch)
+                .GetResultAsync();
+            var byAuthor = new Commands.QueryCommits(_repo, _filter, Models.CommitSearchMethod.ByAuthor, _onlySearchCurrentBranch)
+                .GetResultAsync();
+            var byCommitter = new Commands.QueryCommits(_repo, _filter, Models.CommitSearchMethod.ByCommitter, _onlySearchCurrentBranch)
+                .GetResultAsync();
+
+            await Task.WhenAll(bySHA, byMessage, byAuthor, byCommitter).ConfigureAwait(false);
+
+            var result = new List<Models.Commit>();
+            var seen = new HashSet<string>();
+
+            if (bySHA.Result is { } exact && seen.Add(exact.SHA))
+                result.Add(exact);
+
+            foreach (var matched in new[] { byMessage.Result, byAuthor.Result, byCommitter.Result })
+            {
+                foreach (var c in matched)
+                {
+                    if (seen.Add(c.SHA))
+                        result.Add(c);
+                }
+            }
+
+            result.Sort((l, r) => r.CommitterTime.CompareTo(l.CommitterTime));
+            return result;
+        }
+
+        private async Task<Models.Commit> SearchExactSHAAsync()
+        {
+            var isCommitSHA = await new Commands.IsCommitSHA(_repo, _filter)
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            if (!isCommitSHA)
+                return null;
+
+            var commit = await new Commands.QuerySingleCommit(_repo, _filter)
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            if (commit == null || !_onlySearchCurrentBranch)
+                return commit;
+
+            var isInCurrentBranch = await new Commands.IsAncestor(_repo, commit.SHA, "HEAD")
+                .GetResultAsync()
+                .ConfigureAwait(false);
+
+            return isInCurrentBranch ? commit : null;
         }
 
         public void EndSearch()
@@ -288,7 +345,7 @@ namespace SourceGit.ViewModels
         private string _repo = null;
         private Histories _histories = null;
         private CancellationTokenSource _cancellation = null;
-        private int _method = (int)Models.CommitSearchMethod.ByMessage;
+        private int _method = (int)Models.CommitSearchMethod.All;
         private string _filter = string.Empty;
         private bool _onlySearchCurrentBranch = false;
         private bool _isQuerying = false;
