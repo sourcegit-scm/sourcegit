@@ -157,14 +157,28 @@ namespace SourceGit.Views
             set => SetValue(ShowTagsProperty, value);
         }
 
+        /// <summary>
+        ///     Returns the decorator whose label contains `point`, or null when the point is between or outside labels.
+        ///     Mirrors the label layout used by `Render` (1.5px start offset, 4px gap, 20px line height when wrapping).
+        /// </summary>
         public Models.Decorator DecoratorAt(Point point)
         {
-            var x = 0.0;
+            var allowWrap = AllowWrap;
+            var x = 1.5;
+            var y = 0.0;
+
             foreach (var item in _items)
             {
-                x += item.Width;
-                if (point.X < x)
+                if (allowWrap && x > 1.5 && x + item.Width > Bounds.Width)
+                {
+                    x = 1.5;
+                    y += 20.0;
+                }
+
+                if (point.X >= x && point.X < x + item.Width && (!allowWrap || (point.Y >= y && point.Y < y + 20.0)))
                     return item.Decorator;
+
+                x += item.Width + 4;
             }
 
             return null;

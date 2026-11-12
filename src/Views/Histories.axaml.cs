@@ -938,10 +938,13 @@ namespace SourceGit.Views
 
                 if (e.Source is CommitRefsPresenter crp)
                 {
+                    // A double-click on a label checks out that label's branch only, never another branch of the same commit.
                     var decorator = crp.DecoratorAt(e.GetPosition(crp));
-                    var succ = await histories.CheckoutBranchByDecoratorAsync(decorator);
-                    if (succ)
+                    if (decorator != null)
+                    {
+                        await histories.CheckoutBranchByDecoratorAsync(decorator);
                         return;
+                    }
                 }
 
                 await histories.CheckoutBranchByCommitAsync(c);
