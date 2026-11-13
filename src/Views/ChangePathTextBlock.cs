@@ -4,6 +4,8 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.TextFormatting;
+using Avalonia.Utilities;
 using Avalonia.VisualTree;
 
 namespace SourceGit.Views
@@ -78,6 +80,15 @@ namespace SourceGit.Views
 
     public class ChangePathTextBlock : TextBlock
     {
+        public static readonly StyledProperty<IBrush> DirectoryForegroundProperty =
+            AvaloniaProperty.Register<ChangePathTextBlock, IBrush>(nameof(DirectoryForeground), Brushes.Gray);
+
+        public IBrush DirectoryForeground
+        {
+            get => GetValue(DirectoryForegroundProperty);
+            set => SetValue(DirectoryForegroundProperty, value);
+        }
+
         public static readonly StyledProperty<string> PathProperty =
             AvaloniaProperty.Register<ChangePathTextBlock, string>(nameof(Path), string.Empty);
 
@@ -90,6 +101,29 @@ namespace SourceGit.Views
         static ChangePathTextBlock()
         {
             AffectsMeasure<ChangePathTextBlock>(PathProperty);
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+            if (change.Property == DirectoryForegroundProperty)
+                InvalidateTextLayout();
+        }
+
+        protected override TextLayout CreateTextLayout(string text)
+        {
+            var path = Path ?? string.Empty;
+            var filenameLength = path.Length - (path.LastIndexOf('/') + 1);
+            var directoryLength = text.Length - filenameLength;
+            if (directoryLength <= 0)
+                return base.CreateTextLayout(text);
+
+            var typeface = new Typeface(FontFamily, FontStyle, FontWeight, FontStretch);
+            var properties = new GenericTextRunProperties(typeface, FontSize, foregroundBrush: DirectoryForeground);
+            return new TextLayout(text, typeface, FontSize, Foreground,
+                textAlignment: TextAlignment, flowDirection: FlowDirection,
+                lineHeight: LineHeight, letterSpacing: LetterSpacing,
+                textStyleOverrides: [new ValueSpan<TextRunProperties>(0, directoryLength, properties)]);
         }
 
         private Size MeasureText(string text)

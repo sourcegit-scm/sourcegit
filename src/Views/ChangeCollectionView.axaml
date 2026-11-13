@@ -140,6 +140,7 @@
                          IsVisible="{Binding IsConflicted}"/>
 
               <v:ChangePathTextBlock Grid.Column="2" Margin="4,0,0,0"
+                         DirectoryForeground="{DynamicResource Brush.FG2}"
                          Path="{Binding Path}"/>
             </v:ChangeListRow>
           </DataTemplate>

@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using SourceGit.Views;
@@ -10,9 +11,11 @@ internal static class Program
     private static void Main()
     {
         SourceGit.App.BuildAvaloniaApp().SetupWithoutStarting();
-        var text = new ChangePathTextBlock { Path = "very/long/directory/structure/filename.cs" };
+        var text = new ChangePathTextBlock { Foreground = Brushes.White, Path = "very/long/directory/structure/filename.cs" };
         Measure(text, 1000);
         Check(text.Text == text.Path, "Full path fits");
+        text.DirectoryForeground = Brushes.DarkGray;
+        Measure(text, 1000);
         Measure(text, 180);
         Check(text.Text.StartsWith("…") && text.Text.EndsWith("filename.cs"), "Leading ellipsis preserves filename");
         Check(text.DesiredSize.Width <= 180, "Trimmed path fits");
@@ -57,12 +60,14 @@ internal static class Program
                 Dispatcher.UIThread.RunJobs();
             var label = view.GetVisualDescendants().OfType<ChangePathTextBlock>().Single();
             Check(label.Text.StartsWith("…") && label.Text.EndsWith("filename.cs"), "Actual staged/unstaged template truncates correctly");
+            CheckPathColors(label);
             var preferences = SourceGit.ViewModels.Preferences.Instance;
             preferences.SetCanModify();
             preferences.TrimLeadingPathsInChanges = false;
             for (var i = 0; i < 10; i++)
                 Dispatcher.UIThread.RunJobs();
             Check(label.Text == label.Path, "Preference disables trimming immediately");
+            CheckPathColors(label);
             preferences.TrimLeadingPathsInChanges = true;
             for (var i = 0; i < 10; i++)
                 Dispatcher.UIThread.RunJobs();
@@ -73,15 +78,33 @@ internal static class Program
             Check(label.Text == label.Path, "Actual template responds to resize");
             window.Close();
         }
-        Console.WriteLine("PASS: 18 changed-path layout checks");
+        Console.WriteLine("PASS: 18 changed-path layout checks and directory/filename color checks");
     }
 
     private static void Measure(Control control, double width)
     {
         control.InvalidateMeasure();
         control.Measure(new Size(width, 24));
+        if (control is ChangePathTextBlock path)
+            CheckPathColors(path);
     }
 
+    private static void CheckPathColors(ChangePathTextBlock label)
+    {
+        var filenameLength = label.Path.Length - (label.Path.LastIndexOf('/') + 1);
+        var directoryLength = label.Text.Length - filenameLength;
+        var position = 0;
+        foreach (var run in label.TextLayout.TextLines.SelectMany(line => line.TextRuns))
+        {
+            if (position >= label.Text.Length)
+                break;
+            var expected = position < directoryLength ? label.DirectoryForeground : label.Foreground;
+            Check(Equals(run.Properties.ForegroundBrush, expected), "Directory is gray and filename keeps normal foreground");
+            Check(position >= directoryLength || position + run.Length <= directoryLength, "Color boundary preserves full filename");
+            position += run.Length;
+        }
+        Check(position >= label.Text.Length, "Color checks cover displayed text");
+    }
     private static void Check(bool condition, string message)
     {
         if (!condition)
