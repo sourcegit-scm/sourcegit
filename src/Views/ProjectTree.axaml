@@ -1,0 +1,109 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
+             x:Class="SourceGit.Views.ProjectTree"
+             x:DataType="vm:Projects"
+             x:CompileBindings="False">
+  <Border Background="{DynamicResource Brush.Window}"
+          BorderThickness="0,0,1,0"
+          BorderBrush="{DynamicResource Brush.Border0}">
+    <Grid RowDefinitions="Auto,*,Auto,Auto">
+      <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto,Auto" Margin="8,6,4,4">
+        <TextBlock Text="工程" FontWeight="SemiBold" VerticalAlignment="Center"/>
+        <Button Grid.Column="1" Padding="6,2" Margin="2,0" Content="+ 工程" Click="OnAddProject" ToolTip.Tip="选择目录并新建工程"/>
+        <Button Grid.Column="2" Padding="6,2" Margin="2,0" Content="+ 目录" Click="OnAddDirectory" ToolTip.Tip="给选中的工程追加目录"/>
+        <Button Grid.Column="3" Padding="6,2" Margin="2,0" Content="扫描" Click="OnRescan" ToolTip.Tip="重新扫描选中的工程"/>
+        <Button Grid.Column="4" Padding="6,2" Margin="2,0" Content="移除" x:Name="RemoveButton" Click="OnRemoveSelection" ToolTip.Tip="移除选中的工程 / 目录 / 仓库（不删除磁盘文件）"/>
+      </Grid>
+
+      <TreeView Grid.Row="1"
+                x:Name="Tree"
+                Background="Transparent"
+                ItemsSource="{Binding Roots}"
+                DoubleTapped="OnItemDoubleTapped"
+                ContextRequested="OnContextRequested">
+        <TreeView.ContextMenu>
+          <ContextMenu x:Name="NodeMenu"/>
+        </TreeView.ContextMenu>
+        <TreeView.Styles>
+          <Style Selector="TreeViewItem">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+          </Style>
+          <Style Selector="TreeViewItem:selected TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource Brush.Accent}"/>
+          </Style>
+        </TreeView.Styles>
+        <TreeView.ItemTemplate>
+          <TreeDataTemplate ItemsSource="{Binding Children}" x:DataType="vm:ProjectTreeNode">
+            <StackPanel Orientation="Horizontal" Spacing="4" ToolTip.Tip="{Binding FullPath}">
+              <!-- Project container -->
+              <Path Width="14" Height="14"
+                    VerticalAlignment="Center"
+                    Data="{StaticResource Icons.Folder}"
+                    Fill="{DynamicResource Brush.FG1}"
+                    IsVisible="{Binding IsProject}"/>
+              <!-- Intermediate directory on the way to a repository -->
+              <Path Width="14" Height="14"
+                    VerticalAlignment="Center"
+                    Data="{StaticResource Icons.Folder.Open}"
+                    Fill="{DynamicResource Brush.FG2}"
+                    IsVisible="{Binding IsDirectory}"/>
+              <!-- Git repository, double click opens it in a tab -->
+              <Path Width="14" Height="14"
+                    VerticalAlignment="Center"
+                    Data="{StaticResource Icons.Repositories}"
+                    Fill="{DynamicResource Brush.FG1}"
+                    IsVisible="{Binding IsRepository}"/>
+              <TextBlock Text="{Binding Name}"
+                         VerticalAlignment="Center"
+                         MaxWidth="132"
+                         TextTrimming="CharacterEllipsis"/>
+              <!-- Repository with local changes: the dot keeps the tab-strip colour semantics,
+                   the text says how many files changed. -->
+              <Ellipse Width="7" Height="7"
+                       Margin="2,0,0,0"
+                       VerticalAlignment="Center"
+                       Fill="{Binding Status, Converter={x:Static c:DirtyStateConverters.ToBrush}}"
+                       IsVisible="{Binding IsRepositoryDirty}"
+                       ToolTip.Tip="{Binding Status, Converter={x:Static c:DirtyStateConverters.ToDesc}}"/>
+              <TextBlock Text="{Binding LocalChangesText}"
+                         Margin="2,0,0,0"
+                         FontSize="10"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding IsRepositoryDirty}"/>
+              <TextBlock Text="{Binding PendingText}"
+                         Margin="4,0,0,0"
+                         FontSize="10"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.Accent}"
+                         IsVisible="{Binding HasPendingPullOrPush}"/>
+              <!-- Directory/project summary: how many repositories below it have changes,
+                   readable even while the branch is collapsed. -->
+              <TextBlock Text="{Binding DirtyCountText}"
+                         Margin="4,0,0,0"
+                         FontSize="10"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding HasDirtyChildren}"/>
+            </StackPanel>
+          </TreeDataTemplate>
+        </TreeView.ItemTemplate>
+      </TreeView>
+
+      <ProgressBar Grid.Row="2"
+                   Height="2"
+                   Margin="0,0,0,2"
+                   IsIndeterminate="True"
+                   IsVisible="{Binding IsScanning}"/>
+
+      <TextBlock Grid.Row="3"
+                 Margin="8,0,8,6"
+                 FontSize="11"
+                 Opacity="0.65"
+                 TextTrimming="CharacterEllipsis"
+                 Text="{Binding StatusText}"/>
+    </Grid>
+  </Border>
+</UserControl>
