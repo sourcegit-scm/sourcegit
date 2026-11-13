@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -149,6 +150,7 @@ namespace SourceGit.ViewModels
             projectNode.Project.Directories.RemoveAt(index);
             projectNode.Children.Remove(rootNode);
             Save();
+            UpdateAggregates();
         }
 
         public void CancelScan()
@@ -184,6 +186,8 @@ namespace SourceGit.ViewModels
                 grandParent.Children.Remove(parent);
                 parent = grandParent;
             }
+
+            UpdateAggregates();
         }
 
         /// <summary>
@@ -232,6 +236,174 @@ namespace SourceGit.ViewModels
             {
                 _suppressCollapseSave = false;
             }
+        }
+
+        /// <summary>
+        ///     Recomputes the status shown on the tree: repositories that are open in a tab
+        ///     contribute the state the repository page already tracks (which updates on every
+        ///     git operation), the rest are queried in the background with a working-copy-only
+        ///     `git status`. Runs are serialised: a second request cancels the previous one.
+        /// </summary>
+        public async Task RefreshStatusAsync()
+        {
+            HookLauncher();
+
+            // Cancel only: disposing the source while a query may still hold its token would
+            // throw on the cancelled path.
+            _statusCts?.Cancel();
+
+            var cts = new CancellationTokenSource();
+            _statusCts = cts;
+
+            var repositories = new List<ProjectTreeNode>();
+            foreach (var root in Roots)
+                CollectRepositories(root, repositories);
+
+            if (repositories.Count == 0)
+                return;
+
+            Dictionary<string, int> dirty;
+            try
+            {
+                dirty = await Models.RepositoryStatusScanner.QueryDirtyAsync(repositories.Select(n => n.FullPath).ToList(), cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+            finally
+            {
+                if (ReferenceEquals(_statusCts, cts))
+                    _statusCts = null;
+            }
+
+            if (cts.IsCancellationRequested)
+                return;
+
+            foreach (var node in repositories)
+            {
+                var count = dirty.TryGetValue(Models.RepositoryScanner.Key(node.FullPath), out var changes) ? changes : 0;
+                node.LocalChanges = count;
+                node.Status = count > 0 ? Models.DirtyState.HasLocalChanges : Models.DirtyState.None;
+            }
+
+            // Open pages win over the scan: they know about pending pushes and pulls too.
+            MirrorOpenPages();
+            UpdateAggregates();
+        }
+
+        /// <summary>
+        ///     Mirrors the state of a repository page onto its tree node. Called whenever a page
+        ///     reports a new dirty state, so a commit/stage/pull in a tab shows up in the tree
+        ///     immediately instead of waiting for the next scan.
+        /// </summary>
+        public void MirrorPageStatus(LauncherPage page)
+        {
+            if (page?.Node == null)
+                return;
+
+            var node = FindRepository(page.Node.Id);
+            if (node == null)
+                return;
+
+            if (page.Data is Repository repository)
+                node.LocalChanges = repository.LocalChangesCount;
+
+            node.Status = page.DirtyState;
+            UpdateAggregates();
+        }
+
+        /// <summary>
+        ///     Subscribes to the launcher's pages once, so status changes made in a tab reach the
+        ///     tree. Safe to call repeatedly: it is a no-op once the current launcher is hooked.
+        /// </summary>
+        public void HookLauncher()
+        {
+            var launcher = App.GetLauncher();
+            if (launcher == null || ReferenceEquals(_hookedLauncher, launcher))
+                return;
+
+            if (_hookedLauncher != null)
+            {
+                _hookedLauncher.Pages.CollectionChanged -= OnPagesChanged;
+                foreach (var page in _hookedLauncher.Pages)
+                    page.PropertyChanged -= OnPagePropertyChanged;
+            }
+
+            _hookedLauncher = launcher;
+            _hookedLauncher.Pages.CollectionChanged += OnPagesChanged;
+            foreach (var page in _hookedLauncher.Pages)
+                page.PropertyChanged += OnPagePropertyChanged;
+        }
+
+        private void OnPagesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (var item in e.OldItems)
+                    if (item is LauncherPage removed)
+                        removed.PropertyChanged -= OnPagePropertyChanged;
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (var item in e.NewItems)
+                    if (item is LauncherPage added)
+                        added.PropertyChanged += OnPagePropertyChanged;
+            }
+
+            // A closed tab no longer updates its node, so re-query everything below.
+            _ = RefreshStatusAsync();
+        }
+
+        private void OnPagePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(LauncherPage.DirtyState) && sender is LauncherPage page)
+                MirrorPageStatus(page);
+        }
+
+        private void MirrorOpenPages()
+        {
+            var launcher = _hookedLauncher;
+            if (launcher == null)
+                return;
+
+            foreach (var page in launcher.Pages)
+                MirrorPageStatus(page);
+        }
+
+        private static void CollectRepositories(ProjectTreeNode node, List<ProjectTreeNode> result)
+        {
+            if (node.IsRepository)
+            {
+                result.Add(node);
+                return;
+            }
+
+            foreach (var child in node.Children)
+                CollectRepositories(child, result);
+        }
+
+        private void UpdateAggregates()
+        {
+            foreach (var root in Roots)
+                UpdateAggregates(root);
+        }
+
+        private int UpdateAggregates(ProjectTreeNode node)
+        {
+            if (node.IsRepository)
+            {
+                node.DirtyRepositories = node.IsRepositoryDirty ? 1 : 0;
+                return node.DirtyRepositories;
+            }
+
+            var count = 0;
+            foreach (var child in node.Children)
+                count += UpdateAggregates(child);
+
+            node.DirtyRepositories = count;
+            return count;
         }
 
         private static ProjectTreeNode FindRepository(ProjectTreeNode node, string key)
@@ -351,6 +523,9 @@ namespace SourceGit.ViewModels
                 return;
 
             FinalizeTree(projectNode, entries, dirs.Length);
+
+            // Repositories known now: fetch their working copy state once, in the background.
+            await RefreshStatusAsync();
         }
 
         /// <summary>
@@ -607,6 +782,8 @@ namespace SourceGit.ViewModels
         private readonly List<Models.Project> _projects = new List<Models.Project>();
         private readonly HashSet<string> _collapsed = new HashSet<string>();
         private CancellationTokenSource _scanCts = null;
+        private CancellationTokenSource _statusCts = null;
+        private Launcher _hookedLauncher = null;
         private bool _suppressCollapseSave = false;
         private bool _restored = false;
         private string _statusText = string.Empty;

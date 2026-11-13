@@ -41,6 +41,8 @@ namespace SourceGit.Views
         /// </summary>
         private void TryHookLauncher()
         {
+            HookWindow();
+
             if (_launcher != null)
                 return;
 
@@ -49,7 +51,36 @@ namespace SourceGit.Views
                 return;
 
             _launcher.PropertyChanged += OnLauncherPropertyChanged;
+            ViewModels.Projects.Instance.HookLauncher();
             SyncSelection();
+        }
+
+        /// <summary>
+        ///     Watches the host window: when the user returns to the app, files may have been
+        ///     changed outside SourceGit, so the tree statuses are re-queried.
+        /// </summary>
+        private void HookWindow()
+        {
+            var window = TopLevel.GetTopLevel(this) as Window;
+            if (window == null || ReferenceEquals(_window, window))
+                return;
+
+            if (_window != null)
+                _window.Activated -= OnWindowActivated;
+
+            _window = window;
+            _window.Activated += OnWindowActivated;
+        }
+
+        private void OnWindowActivated(object sender, EventArgs e)
+        {
+            // Throttled: alt-tabbing or closing a child window fires this repeatedly.
+            var now = DateTime.UtcNow;
+            if (now - _lastStatusRefresh < TimeSpan.FromSeconds(3))
+                return;
+
+            _lastStatusRefresh = now;
+            _ = ViewModels.Projects.Instance.RefreshStatusAsync();
         }
 
         private void OnAttachedToVisualTree(object sender, VisualTreeAttachmentEventArgs e)
@@ -59,6 +90,12 @@ namespace SourceGit.Views
 
         private void OnDetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
         {
+            if (_window != null)
+            {
+                _window.Activated -= OnWindowActivated;
+                _window = null;
+            }
+
             if (_launcher == null)
                 return;
 
@@ -347,5 +384,7 @@ namespace SourceGit.Views
         }
 
         private ViewModels.Launcher _launcher = null;
+        private Window _window = null;
+        private DateTime _lastStatusRefresh = DateTime.MinValue;
     }
 }

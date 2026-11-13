@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:c="using:SourceGit.Converters"
              x:Class="SourceGit.Views.ProjectTree"
              x:DataType="vm:Projects"
              x:CompileBindings="False">
@@ -56,8 +57,36 @@
                     IsVisible="{Binding IsRepository}"/>
               <TextBlock Text="{Binding Name}"
                          VerticalAlignment="Center"
-                         MaxWidth="176"
+                         MaxWidth="132"
                          TextTrimming="CharacterEllipsis"/>
+              <!-- Repository with local changes: the dot keeps the tab-strip colour semantics,
+                   the text says how many files changed. -->
+              <Ellipse Width="7" Height="7"
+                       Margin="2,0,0,0"
+                       VerticalAlignment="Center"
+                       Fill="{Binding Status, Converter={x:Static c:DirtyStateConverters.ToBrush}}"
+                       IsVisible="{Binding IsRepositoryDirty}"
+                       ToolTip.Tip="{Binding Status, Converter={x:Static c:DirtyStateConverters.ToDesc}}"/>
+              <TextBlock Text="{Binding LocalChangesText}"
+                         Margin="2,0,0,0"
+                         FontSize="10"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding IsRepositoryDirty}"/>
+              <TextBlock Text="{Binding PendingText}"
+                         Margin="4,0,0,0"
+                         FontSize="10"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.Accent}"
+                         IsVisible="{Binding HasPendingPullOrPush}"/>
+              <!-- Directory/project summary: how many repositories below it have changes,
+                   readable even while the branch is collapsed. -->
+              <TextBlock Text="{Binding DirtyCountText}"
+                         Margin="4,0,0,0"
+                         FontSize="10"
+                         VerticalAlignment="Center"
+                         Foreground="{DynamicResource Brush.FG2}"
+                         IsVisible="{Binding HasDirtyChildren}"/>
             </StackPanel>
           </TreeDataTemplate>
         </TreeView.ItemTemplate>

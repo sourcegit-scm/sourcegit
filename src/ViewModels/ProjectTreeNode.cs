@@ -37,7 +37,11 @@ namespace SourceGit.ViewModels
             set
             {
                 if (SetProperty(ref _isRepository, value))
+                {
                     OnPropertyChanged(nameof(IsDirectory));
+                    OnPropertyChanged(nameof(IsRepositoryDirty));
+                    OnPropertyChanged(nameof(HasDirtyChildren));
+                }
             }
         }
 
@@ -79,6 +83,84 @@ namespace SourceGit.ViewModels
         }
 
         /// <summary>
+        ///     Working copy status of a repository node. Mirrors the state the repository tab
+        ///     already computes, and is filled in by the background scan for repositories that
+        ///     are not open. Directory and project nodes never carry a state of their own.
+        /// </summary>
+        public Models.DirtyState Status
+        {
+            get => _status;
+            set
+            {
+                if (SetProperty(ref _status, value))
+                {
+                    OnPropertyChanged(nameof(IsRepositoryDirty));
+                    OnPropertyChanged(nameof(HasPendingPullOrPush));
+                    OnPropertyChanged(nameof(PendingText));
+                }
+            }
+        }
+
+        /// <summary>Repositories with local changes below this node (itself included).</summary>
+        public int DirtyRepositories
+        {
+            get => _dirtyRepositories;
+            set
+            {
+                if (SetProperty(ref _dirtyRepositories, value))
+                {
+                    OnPropertyChanged(nameof(HasDirtyChildren));
+                    OnPropertyChanged(nameof(DirtyCountText));
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Number of changed files reported by the last status query. Only meaningful for repository
+        ///     nodes; directory nodes show how many repositories below them are dirty instead.
+        /// </summary>
+        public int LocalChanges
+        {
+            get => _localChanges;
+            set
+            {
+                if (SetProperty(ref _localChanges, value))
+                    OnPropertyChanged(nameof(LocalChangesText));
+            }
+        }
+
+        public string LocalChangesText
+        {
+            get => _localChanges > 0 ? $"{_localChanges} 处改动" : string.Empty;
+        }
+
+        public bool IsRepositoryDirty
+        {
+            get => _isRepository && _status != Models.DirtyState.None;
+        }
+
+        /// <summary>True when the repository has commits to push or pull.</summary>
+        public bool HasPendingPullOrPush
+        {
+            get => _isRepository && _status.HasFlag(Models.DirtyState.HasPendingPullOrPush);
+        }
+
+        public string PendingText
+        {
+            get => HasPendingPullOrPush ? "待推拉" : string.Empty;
+        }
+
+        public bool HasDirtyChildren
+        {
+            get => !_isRepository && _dirtyRepositories > 0;
+        }
+
+        public string DirtyCountText
+        {
+            get => _dirtyRepositories > 0 ? $"{_dirtyRepositories} 个仓库有改动" : string.Empty;
+        }
+
+        /// <summary>
         ///     Opens the repository in a regular tab. The upstream implementation already
         ///     deduplicates by path, so double-clicking an already opened repository just
         ///     activates its tab instead of creating a second one.
@@ -93,5 +175,8 @@ namespace SourceGit.ViewModels
         private string _fullPath = string.Empty;
         private bool _isRepository = false;
         private bool _isExpanded = false;
+        private Models.DirtyState _status = Models.DirtyState.None;
+        private int _dirtyRepositories = 0;
+        private int _localChanges = 0;
     }
 }
