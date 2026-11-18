@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Threading;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -85,13 +84,8 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
             SearchBox.Focus(NavigationMethod.Directional);
-            await ViewModels.Welcome.Instance.UpdateStatusAsync(false, _cancellation.Token);
-        }
-
-        protected override void OnUnloaded(RoutedEventArgs e)
-        {
-            _cancellation.Cancel();
-            base.OnUnloaded(e);
+            if (ViewModels.Preferences.Instance.CheckRepositoryStatusOnWelcome)
+                await ViewModels.Welcome.Instance.UpdateStatusAsync(false, ViewModels.Welcome.Instance.StatusCheckCancellationToken);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -150,6 +144,15 @@ namespace SourceGit.Views
             {
                 var menu = new ContextMenu();
 
+                var refreshStatus = new MenuItem();
+                refreshStatus.Header = App.Text("Welcome.RefreshStatus");
+                refreshStatus.Icon = this.CreateMenuIcon("Icons.Loading");
+                refreshStatus.Click += async (_, e) =>
+                {
+                    await node.UpdateStatusAsync(true, null);
+                    e.Handled = true;
+                };
+
                 var edit = new MenuItem();
                 edit.Header = App.Text("Welcome.Edit");
                 edit.Icon = this.CreateMenuIcon("Icons.Edit");
@@ -191,6 +194,7 @@ namespace SourceGit.Views
                         };
 
                         menu.Items.Add(openAll);
+                        menu.Items.Add(refreshStatus);
                         menu.Items.Add(new MenuItem() { Header = "-" });
                     }
 
@@ -239,6 +243,7 @@ namespace SourceGit.Views
                     };
 
                     menu.Items.Add(open);
+                    menu.Items.Add(refreshStatus);
                     menu.Items.Add(new MenuItem() { Header = "-" });
                     menu.Items.Add(explore);
                     menu.Items.Add(terminal);
@@ -470,6 +475,5 @@ namespace SourceGit.Views
         private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
-        private CancellationTokenSource _cancellation = new CancellationTokenSource();
     }
 }

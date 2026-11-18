@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,9 +29,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public CancellationToken StatusCheckCancellationToken => _statusCheckCancellation.Token;
+
         public Welcome()
         {
             Refresh();
+            Preferences.Instance.PropertyChanged += OnPreferencesPropertyChanged;
         }
 
         public void Refresh()
@@ -59,14 +63,41 @@ namespace SourceGit.ViewModels
 
             _isUpdatingStatus = true;
 
-            // avoid collection was modified while enumerating.
-            var nodes = new List<RepositoryNode>();
-            nodes.AddRange(Preferences.Instance.RepositoryNodes);
+            try
+            {
+                // avoid collection was modified while enumerating.
+                var nodes = new List<RepositoryNode>();
+                nodes.AddRange(Preferences.Instance.RepositoryNodes);
 
-            foreach (var node in nodes)
-                await node.UpdateStatusAsync(force, token);
+                foreach (var node in nodes)
+                    await node.UpdateStatusAsync(force, token);
+            }
+            finally
+            {
+                _isUpdatingStatus = false;
+            }
+        }
 
-            _isUpdatingStatus = false;
+        private async void OnPreferencesPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Preferences.CheckRepositoryStatusOnWelcome))
+                return;
+
+            if (Preferences.Instance.CheckRepositoryStatusOnWelcome)
+            {
+                while (_isUpdatingStatus)
+                    await Task.Delay(50);
+
+                if (!Preferences.Instance.CheckRepositoryStatusOnWelcome)
+                    return;
+
+                await UpdateStatusAsync(false, _statusCheckCancellation.Token);
+            }
+            else
+            {
+                _statusCheckCancellation.Cancel();
+                _statusCheckCancellation = new CancellationTokenSource();
+            }
         }
 
         public void ToggleNodeIsExpanded(RepositoryNode node)
@@ -274,5 +305,6 @@ namespace SourceGit.ViewModels
 
         private string _searchFilter = string.Empty;
         private bool _isUpdatingStatus = false;
+        private CancellationTokenSource _statusCheckCancellation = new();
     }
 }

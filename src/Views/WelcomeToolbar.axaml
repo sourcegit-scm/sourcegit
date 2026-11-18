@@ -43,6 +43,19 @@
     </StackPanel>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal">
+      <Button Classes="icon_button" Width="32"
+              Padding="0"
+              Background="Transparent"
+              Click="OnToggleStatusCheckClicked"
+              ToolTip.Tip="{DynamicResource Text.Welcome.ToggleStatusCheck}">
+        <Panel>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.Eye}"
+                IsVisible="{Binding CheckRepositoryStatusOnWelcome, Source={x:Static vm:Preferences.Instance}}"/>
+          <Path Width="14" Height="14" Data="{StaticResource Icons.EyeClose}"
+                IsVisible="{Binding !CheckRepositoryStatusOnWelcome, Source={x:Static vm:Preferences.Instance}}"/>
+        </Panel>
+      </Button>
+
       <Button Classes="icon_button" Width="32" Command="{Binding AddRootNode}" ToolTip.Tip="{DynamicResource Text.Welcome.AddRootFolder}">
         <Path Width="14" Height="14" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Add}"/>
       </Button>
