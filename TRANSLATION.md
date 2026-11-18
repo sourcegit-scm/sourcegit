@@ -200,17 +200,7 @@ This document shows the translation status of each locale file in the repository
 
 </details>
 
-### ![es__ES](https://img.shields.io/badge/es__ES-99.63%25-yellow)
-
-<details>
-<summary>Missing keys in es_ES.axaml</summary>
-
-- Text.Apply.CommitChanges
-- Text.Apply.CommitChanges.Tip
-- Text.InProgress.Am
-- Text.Repository.FocusOnCurrentBranch
-
-</details>
+### ![es__ES](https://img.shields.io/badge/es__ES-%E2%88%9A-brightgreen)
 
 ### ![fr__FR](https://img.shields.io/badge/fr__FR-88.73%25-yellow)
 
