@@ -1255,7 +1255,15 @@ namespace SourceGit.ViewModels
 
             Task.Run(async () =>
             {
-                await Dispatcher.UIThread.InvokeAsync(() => _histories.IsLoading = true);
+                var graphExtraHeads = new HashSet<string>();
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    if (_histories == null)
+                        return;
+
+                    _histories.IsLoading = true;
+                    graphExtraHeads = _histories.CollectGraphExtraHeads();
+                });
 
                 var builder = new StringBuilder();
                 builder
@@ -1292,6 +1300,12 @@ namespace SourceGit.ViewModels
                     }
                 }
 
+                var histories = _histories;
+                if (token.IsCancellationRequested || histories == null)
+                    return;
+
+                var graph = histories.GenerateGraph(commits, graphExtraHeads);
+
                 Dispatcher.UIThread.Invoke(() =>
                 {
                     if (token.IsCancellationRequested)
@@ -1300,7 +1314,7 @@ namespace SourceGit.ViewModels
                     if (_histories != null)
                     {
                         _histories.IsLoading = false;
-                        _histories.Commits = commits;
+                        _histories.SetCommits(commits, graph, graphExtraHeads);
                         BisectState = _histories.UpdateBisectInfo();
 
                         if (!string.IsNullOrEmpty(_navigateToCommitDelayed))
