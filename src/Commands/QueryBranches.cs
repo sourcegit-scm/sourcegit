@@ -8,8 +8,6 @@ namespace SourceGit.Commands
     {
         private const string PREFIX_LOCAL = "refs/heads/";
         private const string PREFIX_REMOTE = "refs/remotes/";
-        private const string PREFIX_DETACHED_AT = "(HEAD detached at";
-        private const string PREFIX_DETACHED_FROM = "(HEAD detached from";
 
         public QueryBranches(string repo)
         {
@@ -89,16 +87,11 @@ namespace SourceGit.Commands
                 branch.IsLocal = false;
                 branch.IsDetachedHead = false;
             }
-            else if (refName.StartsWith(PREFIX_DETACHED_AT, StringComparison.Ordinal) ||
-                     refName.StartsWith(PREFIX_DETACHED_FROM, StringComparison.Ordinal))
+            else
             {
                 branch.Name = "HEAD";
                 branch.IsLocal = true;
                 branch.IsDetachedHead = true;
-            }
-            else
-            {
-                return null;
             }
 
             ulong.TryParse(parts[1], out var committerDate);
