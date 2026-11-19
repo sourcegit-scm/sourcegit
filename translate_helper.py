@@ -1,6 +1,6 @@
 import sys
 import io
-import os
+from pathlib import Path
 import xml.etree.ElementTree as ET
 import re
 
@@ -14,16 +14,13 @@ def register_namespaces():
     ET.register_namespace('x', X_NS)
 
 def get_locale_dir():
-    """Constructs the absolute path for the locales files"""
+    """Constructs the absolute path for the locales files."""
     try:
-        script_dir = os.path.dirname(os.path.realpath(__file__))
-        project_root = os.path.abspath(os.path.join(script_dir, '.'))
-        locales_dir = os.path.join(project_root, 'src', 'Resources', 'Locales')
+        project_root = Path(__file__).resolve().parent
     except NameError:
-        project_root = os.path.abspath(os.getcwd())
-        locales_dir = os.path.join(project_root, 'src', 'Resources', 'Locales')
+        project_root = Path.cwd().resolve()
 
-    return locales_dir
+    return project_root / 'src' / 'Resources' / 'Locales'
 
 def get_locale_files(lang_id):
     """Constructs the absolute paths for the target and reference locale files."""
@@ -32,10 +29,10 @@ def get_locale_files(lang_id):
     locales_dir = get_locale_dir()
 
     # get the target file absolute path
-    target_file = os.path.join(locales_dir, f"{lang_id}.axaml")
+    target_file = locales_dir / f"{lang_id}.axaml"
 
-    if not os.path.exists(target_file):
-        print(f"Error: Target language file not found at {target_file}")
+    if not target_file.is_file():
+        print(f"Error: Target language file path '{target_file}' does not exist or is not a file.")
         sys.exit(1)
 
     try:
@@ -55,13 +52,13 @@ def get_locale_files(lang_id):
             raise ValueError("Could not parse reference filename from Source attribute.")
         
         ref_filename = f"{ref_filename_match.group(1)}.axaml"
-        ref_file = os.path.join(locales_dir, ref_filename)
+        ref_file = locales_dir / ref_filename
     except Exception as e:
         print(f"Error parsing {target_file} to find reference file: {e}")
         sys.exit(1)
 
-    if not os.path.exists(ref_file):
-        print(f"Error: Reference language file '{ref_file}' not found.")
+    if not ref_file.is_file():
+        print(f"Error: Reference language file path '{ref_file}' does not exist or is not a file.")
         sys.exit(1)
 
     return target_file, ref_file
