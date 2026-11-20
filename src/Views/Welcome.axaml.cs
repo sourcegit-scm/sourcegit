@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -83,9 +84,21 @@ namespace SourceGit.Views
         protected override async void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+            if (_searchCancellation.IsCancellationRequested)
+            {
+                _searchCancellation.Dispose();
+                _searchCancellation = new CancellationTokenSource();
+            }
+
             SearchBox.Focus(NavigationMethod.Directional);
             if (ViewModels.Preferences.Instance.CheckRepositoryStatusOnWelcome)
                 await ViewModels.Welcome.Instance.UpdateStatusAsync(false, ViewModels.Welcome.Instance.StatusCheckCancellationToken);
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            _searchCancellation.Cancel();
+            base.OnUnloaded(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -144,7 +157,7 @@ namespace SourceGit.Views
             try
             {
                 var page = this.FindAncestorOfType<LauncherPage>()?.DataContext as ViewModels.LauncherPage;
-                if (!await ViewModels.Welcome.Instance.TryOpenSearchAsync(page, _cancellation.Token) &&
+                if (!await ViewModels.Welcome.Instance.TryOpenSearchAsync(page, _searchCancellation.Token) &&
                     TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
                     node.Open();
             }
@@ -502,6 +515,7 @@ namespace SourceGit.Views
         private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
         private bool _isOpeningSearch = false;
+        private CancellationTokenSource _searchCancellation = new();
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
     }
 }
