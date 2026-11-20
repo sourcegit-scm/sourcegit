@@ -60,8 +60,8 @@ namespace SourceGit.Commands
                     var waitingOriginalPath = false;
                     while (start < end)
                     {
-                        var lineEnd = Array.IndexOf(buffer.Array, (byte)'\0', start);
-                        var line = Encoding.UTF8.GetString(lineEnd < start ? buffer[start..] : buffer[start..lineEnd]);
+                        var lineEnd = Array.IndexOf(buffer.Array, (byte)'\0', start, end - start);
+                        var line = Encoding.UTF8.GetString(lineEnd < 0 ? buffer[start..] : buffer[start..lineEnd]);
                         if (waitingOriginalPath)
                         {
                             if (outs.Count > 0)
@@ -76,7 +76,7 @@ namespace SourceGit.Commands
                                 outs.Add(change);
                         }
 
-                        if (lineEnd < start)
+                        if (lineEnd < 0)
                             break;
 
                         start = lineEnd + 1;
@@ -117,8 +117,8 @@ namespace SourceGit.Commands
                 if (ordinary.Length != 9)
                     return null;
 
-                var index = ParseState(line[2]);
-                var worktree = ParseState(line[3]);
+                var index = Models.Change.ParseState(line[2]);
+                var worktree = Models.Change.ParseState(line[3]);
                 if (index == Models.ChangeState.None && worktree == Models.ChangeState.None)
                     return null;
 
@@ -132,16 +132,15 @@ namespace SourceGit.Commands
             // 2 <XY> <sub> <mH> <mI> <mW> <hH> <hI> <X><score> <path> - Renamed Change. The next line is the original path.
             if (ch == '2')
             {
-                hasOriginalPath = true;
-
                 var renamed = line.Split(' ', 10);
                 if (renamed.Length != 10)
                     return null;
 
                 var change = new Models.Change();
                 change.Path = renamed[9];
-                change.Index = ParseState(line[2]);
-                change.WorkTree = ParseState(line[3]);
+                change.Index = Models.Change.ParseState(line[2]);
+                change.WorkTree = Models.Change.ParseState(line[3]);
+                hasOriginalPath = true;
                 return change;
             }
 
@@ -170,20 +169,6 @@ namespace SourceGit.Commands
             }
 
             return null;
-        }
-
-        private static Models.ChangeState ParseState(char c)
-        {
-            return c switch
-            {
-                'M' => Models.ChangeState.Modified,
-                'T' => Models.ChangeState.TypeChanged,
-                'A' => Models.ChangeState.Added,
-                'D' => Models.ChangeState.Deleted,
-                'R' => Models.ChangeState.Renamed,
-                'C' => Models.ChangeState.Copied,
-                _ => Models.ChangeState.None,
-            };
         }
 
         private class CapturedProcess
