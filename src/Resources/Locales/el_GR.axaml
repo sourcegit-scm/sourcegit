@@ -967,7 +967,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Άνοιγμα αποθετηρίου</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Άνοιγμα τερματικού</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Επανασάρωση αποθετηρίων στον προεπιλεγμένο φάκελο κλωνοποίησης</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Αναζήτηση αποθετηρίων...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Αναζήτηση, φόρτωση ή άνοιγμα αποθετηρίων</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ΤΟΠΙΚΕΣ ΑΛΛΑΓΕΣ</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Αγνόηση όλων των αρχείων *{0}</x:String>

@@ -1051,7 +1051,7 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">打开终端</x:String>
   <x:String x:Key="Text.Welcome.RefreshStatus" xml:space="preserve">刷新状态</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">重新扫描默认克隆路径下的仓库</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">快速查找仓库...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">搜索、加载或打开仓库</x:String>
   <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">打开起始页时检查仓库状态</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">本地更改</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">添加至 .gitignore 忽略列表</x:String>

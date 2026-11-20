@@ -622,7 +622,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Відкрити сховище</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Відкрити термінал</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Пересканувати сховища у теці клонування за замовчуванням</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Пошук сховищ...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Знайти, завантажити або відкрити сховища</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ЛОКАЛЬНІ ЗМІНИ</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ігнорувати всі файли *{0}</x:String>

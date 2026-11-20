@@ -131,6 +131,33 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
+        private async void OnSearchBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter || e.KeyModifiers != KeyModifiers.None)
+                return;
+
+            e.Handled = true;
+            if (_isOpeningSearch)
+                return;
+
+            _isOpeningSearch = true;
+            try
+            {
+                var page = this.FindAncestorOfType<LauncherPage>()?.DataContext as ViewModels.LauncherPage;
+                if (!await ViewModels.Welcome.Instance.TryOpenSearchAsync(page, _cancellation.Token) &&
+                    TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+                    node.Open();
+            }
+            catch (Exception ex)
+            {
+                Native.OS.LogException(ex);
+            }
+            finally
+            {
+                _isOpeningSearch = false;
+            }
+        }
+
         private void OnClearSearchFilter(object sender, RoutedEventArgs e)
         {
             ViewModels.Welcome.Instance.ClearSearchFilter();
@@ -474,6 +501,7 @@ namespace SourceGit.Views
 
         private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
+        private bool _isOpeningSearch = false;
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
     }
 }

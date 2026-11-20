@@ -1049,7 +1049,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Открыть репозиторий</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Открыть терминал</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Обнаружить репозитории в каталоге клонирования по умолчанию</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Найти репозиторий...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Найти, загрузить или открыть репозитории</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Изменения</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Игнорировать Git</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Игнорировать все *{0} файлы</x:String>

@@ -928,7 +928,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Ouvrir un dépôt</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Ouvrir le terminal</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Réanalyser les repositories dans le dossier de clonage par défaut</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Chercher des dépôts...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Rechercher, charger ou ouvrir des dépôts</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Changements</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorer tous les *{0} fichiers</x:String>

@@ -928,7 +928,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">פתח מאגר</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">פתח טרמינל</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">סרוק מחדש של מאגרים בתיקיית ה־Clone ברירת מחדל</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">חיפוש מאגרים...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">חיפוש, טעינה או פתיחה של מאגרים</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">שינויים מקומיים</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">התעלמות מכל הקבצים *{0}</x:String>

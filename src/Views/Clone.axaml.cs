@@ -19,7 +19,7 @@ namespace SourceGit.Views
         {
             base.OnLoaded(e);
 
-            if (DataContext is not ViewModels.Clone vm)
+            if (DataContext is not ViewModels.Clone vm || !string.IsNullOrEmpty(vm.Remote))
                 return;
 
             var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
@@ -28,7 +28,7 @@ namespace SourceGit.Views
                 try
                 {
                     var text = await clipboard.TryGetTextAsync();
-                    if (Models.Remote.IsValidURL(text))
+                    if (string.IsNullOrEmpty(vm.Remote) && Models.Remote.IsValidURL(text))
                         vm.Remote = text;
                 }
                 catch
