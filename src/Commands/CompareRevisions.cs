@@ -52,7 +52,7 @@ namespace SourceGit.Commands
 
                     while (start < end)
                     {
-                        var lineEnd = Array.IndexOf(buffer.Array, (byte)'\0', start);
+                        var lineEnd = Array.IndexOf(buffer.Array, (byte)'\0', start, end - start);
                         var line = Encoding.UTF8.GetString(lineEnd < 0 ? buffer[start..] : buffer[start..lineEnd]);
 
                         if (waitingOriginalPath)
