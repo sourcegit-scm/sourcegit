@@ -5,7 +5,7 @@
         public string CurrentBranch { get; set; } = string.Empty;
         public int Ahead { get; set; } = 0;
         public int Behind { get; set; } = 0;
-        public int LocalChanges { get; set; } = 0;
+        public bool HasLocalChanges { get; set; } = false;
 
         public bool IsTrackingStatusVisible
         {

@@ -171,18 +171,11 @@
                 <ContentControl.DataTemplates>
                   <DataTemplate DataType="m:RepositoryStatus">
                     <StackPanel Orientation="Horizontal">
-                      <Border Margin="3,0"
-                              Height="18"
-                              CornerRadius="9"
-                              Padding="6,0"
-                              Background="{DynamicResource Brush.FG1}"
-                              VerticalAlignment="Center"
-                              IsVisible="{Binding LocalChanges, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
-                        <TextBlock Text="{Binding LocalChanges}"
-                                   FontFamily="{DynamicResource Fonts.Monospace}"
-                                   FontSize="11"
-                                   Foreground="{DynamicResource Brush.Window}"/>
-                      </Border>
+                      <Ellipse Margin="3,0"
+                               Width="8" Height="8"
+                               Fill="Gray"
+                               VerticalAlignment="Center"
+                               IsVisible="{Binding HasLocalChanges}"/>
 
                       <TextBlock Margin="3,0"
                                  Text="{Binding TrackingDescription}"

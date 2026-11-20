@@ -17,7 +17,7 @@ namespace SourceGit.Commands
 
         public async Task<Models.RepositoryStatus> GetResultAsync()
         {
-            Args = "status --porcelain=v2 -b -uall --ignore-submodules=dirty";
+            Args = "status --porcelain=v2 -b -unormal --ignore-submodules=dirty";
             var rs = await ReadToEndAsync().ConfigureAwait(false);
             if (!rs.IsSuccess)
                 return null;
@@ -36,7 +36,7 @@ namespace SourceGit.Commands
             else
                 status.CurrentBranch = head;
 
-            var localChanges = 0;
+            var hasLocalChanges = false;
             for (var i = 2; i < count; i++)
             {
                 var line = lines[i];
@@ -47,11 +47,11 @@ namespace SourceGit.Commands
                 }
                 else
                 {
-                    localChanges++;
+                    hasLocalChanges = true;
                 }
             }
 
-            status.LocalChanges = localChanges;
+            status.HasLocalChanges = hasLocalChanges;
             return status;
         }
 
