@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -49,48 +50,36 @@ namespace SourceGit.Commands
                     });
                 }
 
-                var buffer = new char[8192];
-                var record = new StringBuilder();
-                var waitingOriginalPath = false;
-                Models.Change renamed = null;
-                int count;
+                using var ms = new MemoryStream();
+                await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
 
-                while ((count = await proc.StandardOutput.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0)
+                if (!CancellationToken.IsCancellationRequested && ms.TryGetBuffer(out var buffer))
                 {
-                    var start = 0;
-                    while (start < count)
+                    var start = buffer.Offset;
+                    var end = buffer.Offset + buffer.Count;
+                    var waitingOriginalPath = false;
+                    while (start < end)
                     {
-                        var end = Array.IndexOf(buffer, '\0', start, count - start);
-                        if (end < 0)
-                        {
-                            record.Append(buffer, start, count - start);
-                            break;
-                        }
-
-                        record.Append(buffer, start, end - start);
-                        start = end + 1;
-
-                        // For renamed/copied entries, the original path is output as an extra field.
+                        var lineEnd = Array.IndexOf(buffer.Array, (byte)'\0', start);
+                        var line = Encoding.UTF8.GetString(lineEnd < start ? buffer[start..] : buffer[start..lineEnd]);
                         if (waitingOriginalPath)
                         {
-                            if (renamed != null)
-                                renamed.OriginalPath = record.ToString();
+                            if (outs.Count > 0)
+                                outs[^1].OriginalPath = line;
 
                             waitingOriginalPath = false;
-                            renamed = null;
                         }
-                        else
+                        else if (line.Length >= 3)
                         {
-                            var change = ParseRecord(record.ToString(), out waitingOriginalPath);
+                            var change = ParseLine(line, out waitingOriginalPath);
                             if (change != null)
-                            {
                                 outs.Add(change);
-                                if (waitingOriginalPath)
-                                    renamed = change;
-                            }
                         }
 
-                        record.Clear();
+                        if (lineEnd < start)
+                            break;
+
+                        start = lineEnd + 1;
                     }
                 }
 
@@ -107,102 +96,93 @@ namespace SourceGit.Commands
             return outs;
         }
 
-        private static Models.Change ParseRecord(string record, out bool hasOriginalPath)
+        private static Models.Change ParseLine(string line, out bool hasOriginalPath)
         {
+            var ch = line[0];
             hasOriginalPath = false;
-            if (record.Length < 3)
-                return null;
 
-            var change = new Models.Change();
-            switch (record[0])
+            // ? <path> - Untracked files
+            if (ch == '?')
             {
-                case '1':
-                    // 1 <XY> <sub> <mH> <mI> <mW> <hH> <hI> <path>
-                    var ordinary = record.Split(' ', 9);
-                    if (ordinary.Length != 9)
-                        return null;
-
-                    change.Path = ordinary[8];
-                    (change.Index, change.WorkTree) = ParseState(ordinary[1]);
-                    break;
-                case '2':
-                    // 2 <XY> <sub> <mH> <mI> <mW> <hH> <hI> <X><score> <path>, followed by <origPath> as the next field
-                    hasOriginalPath = true;
-
-                    var renamed = record.Split(' ', 10);
-                    if (renamed.Length != 10)
-                        return null;
-
-                    change.Path = renamed[9];
-                    (change.Index, change.WorkTree) = ParseState(renamed[1]);
-                    break;
-                case 'u':
-                    // u <XY> <sub> <m1> <m2> <m3> <mW> <h1> <h2> <h3> <path>
-                    var unmerged = record.Split(' ', 11);
-                    if (unmerged.Length != 11)
-                        return null;
-
-                    change.Path = unmerged[10];
-                    change.ConflictReason = unmerged[1] switch
-                    {
-                        "DD" => Models.ConflictReason.BothDeleted,
-                        "AU" => Models.ConflictReason.AddedByUs,
-                        "UD" => Models.ConflictReason.DeletedByThem,
-                        "UA" => Models.ConflictReason.AddedByThem,
-                        "DU" => Models.ConflictReason.DeletedByUs,
-                        "AA" => Models.ConflictReason.BothAdded,
-                        "UU" => Models.ConflictReason.BothModified,
-                        _ => Models.ConflictReason.None,
-                    };
-
-                    if (change.ConflictReason != Models.ConflictReason.None)
-                        change.WorkTree = Models.ChangeState.Conflicted;
-                    break;
-                case '?':
-                    // ? <path>
-                    change.Path = record.Substring(2);
-                    change.WorkTree = Models.ChangeState.Untracked;
-                    break;
+                var change = new Models.Change();
+                change.WorkTree = Models.ChangeState.Untracked;
+                change.Path = line.Substring(2);
+                return change;
             }
 
-            if (change.Index == Models.ChangeState.None && change.WorkTree == Models.ChangeState.None)
-                return null;
+            // 1 <XY> <sub> <mH> <mI> <mW> <hH> <hI> <path>
+            if (ch == '1')
+            {
+                var ordinary = line.Split(' ', 9);
+                if (ordinary.Length != 9)
+                    return null;
 
-            return change;
+                var index = ParseState(line[2]);
+                var worktree = ParseState(line[3]);
+                if (index == Models.ChangeState.None && worktree == Models.ChangeState.None)
+                    return null;
+
+                var change = new Models.Change();
+                change.Path = ordinary[8];
+                change.Index = index;
+                change.WorkTree = worktree;
+                return change;
+            }
+
+            // 2 <XY> <sub> <mH> <mI> <mW> <hH> <hI> <X><score> <path> - Renamed Change. The next line is the original path.
+            if (ch == '2')
+            {
+                hasOriginalPath = true;
+
+                var renamed = line.Split(' ', 10);
+                if (renamed.Length != 10)
+                    return null;
+
+                var change = new Models.Change();
+                change.Path = renamed[9];
+                change.Index = ParseState(line[2]);
+                change.WorkTree = ParseState(line[3]);
+                return change;
+            }
+
+            // u <XY> <sub> <m1> <m2> <m3> <mW> <h1> <h2> <h3> <path> - Unmerged (Conflicted)
+            if (ch == 'u')
+            {
+                var unmerged = line.Split(' ', 11);
+                if (unmerged.Length != 11)
+                    return null;
+
+                var change = new Models.Change();
+                change.Path = unmerged[10];
+                change.WorkTree = Models.ChangeState.Conflicted;
+                change.ConflictReason = unmerged[1] switch
+                {
+                    "DD" => Models.ConflictReason.BothDeleted,
+                    "AU" => Models.ConflictReason.AddedByUs,
+                    "UD" => Models.ConflictReason.DeletedByThem,
+                    "UA" => Models.ConflictReason.AddedByThem,
+                    "DU" => Models.ConflictReason.DeletedByUs,
+                    "AA" => Models.ConflictReason.BothAdded,
+                    _ => Models.ConflictReason.BothModified,
+                };
+
+                return change;
+            }
+
+            return null;
         }
 
-        private static (Models.ChangeState, Models.ChangeState) ParseState(string xy)
+        private static Models.ChangeState ParseState(char c)
         {
-            return xy switch
+            return c switch
             {
-                ".M" => (Models.ChangeState.None, Models.ChangeState.Modified),
-                ".T" => (Models.ChangeState.None, Models.ChangeState.TypeChanged),
-                ".A" => (Models.ChangeState.None, Models.ChangeState.Added),
-                ".D" => (Models.ChangeState.None, Models.ChangeState.Deleted),
-                ".R" => (Models.ChangeState.None, Models.ChangeState.Renamed),
-                ".C" => (Models.ChangeState.None, Models.ChangeState.Copied),
-                "M." => (Models.ChangeState.Modified, Models.ChangeState.None),
-                "MM" => (Models.ChangeState.Modified, Models.ChangeState.Modified),
-                "MT" => (Models.ChangeState.Modified, Models.ChangeState.TypeChanged),
-                "MD" => (Models.ChangeState.Modified, Models.ChangeState.Deleted),
-                "T." => (Models.ChangeState.TypeChanged, Models.ChangeState.None),
-                "TM" => (Models.ChangeState.TypeChanged, Models.ChangeState.Modified),
-                "TT" => (Models.ChangeState.TypeChanged, Models.ChangeState.TypeChanged),
-                "TD" => (Models.ChangeState.TypeChanged, Models.ChangeState.Deleted),
-                "A." => (Models.ChangeState.Added, Models.ChangeState.None),
-                "AM" => (Models.ChangeState.Added, Models.ChangeState.Modified),
-                "AT" => (Models.ChangeState.Added, Models.ChangeState.TypeChanged),
-                "AD" => (Models.ChangeState.Added, Models.ChangeState.Deleted),
-                "D." => (Models.ChangeState.Deleted, Models.ChangeState.None),
-                "R." => (Models.ChangeState.Renamed, Models.ChangeState.None),
-                "RM" => (Models.ChangeState.Renamed, Models.ChangeState.Modified),
-                "RT" => (Models.ChangeState.Renamed, Models.ChangeState.TypeChanged),
-                "RD" => (Models.ChangeState.Renamed, Models.ChangeState.Deleted),
-                "C." => (Models.ChangeState.Copied, Models.ChangeState.None),
-                "CM" => (Models.ChangeState.Copied, Models.ChangeState.Modified),
-                "CT" => (Models.ChangeState.Copied, Models.ChangeState.TypeChanged),
-                "CD" => (Models.ChangeState.Copied, Models.ChangeState.Deleted),
-                _ => (Models.ChangeState.None, Models.ChangeState.None),
+                'M' => Models.ChangeState.Modified,
+                'T' => Models.ChangeState.TypeChanged,
+                'A' => Models.ChangeState.Added,
+                'D' => Models.ChangeState.Deleted,
+                'R' => Models.ChangeState.Renamed,
+                'C' => Models.ChangeState.Copied,
+                _ => Models.ChangeState.None,
             };
         }
 
