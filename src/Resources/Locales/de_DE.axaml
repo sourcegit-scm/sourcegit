@@ -971,7 +971,7 @@ $1, $2, … Werte der Eingabe-Steuerelemente</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Öffne Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Öffne Terminal</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Standard Klon-Ordner erneut nach Repositorys durchsuchen</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Suche Repositorys…</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Repositorys suchen, laden oder öffnen</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ÄNDERUNGEN</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignoriere alle *{0} Dateien</x:String>

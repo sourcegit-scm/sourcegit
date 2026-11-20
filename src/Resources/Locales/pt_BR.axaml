@@ -603,7 +603,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Abrir Repositório</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Abrir Terminal</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Reescanear Repositórios no Diretório de Clone Padrão</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Buscar Repositórios...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Buscar, carregar ou abrir repositórios</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Alterações</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignorar todos os arquivos *{0}</x:String>

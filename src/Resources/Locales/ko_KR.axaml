@@ -936,7 +936,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">저장소 열기</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">터미널 열기</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">기본 복제 디렉터리의 저장소 다시 스캔</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">저장소 검색...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">저장소 검색, 불러오기 또는 열기</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">로컬 변경 사항</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git 무시</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">모든 *{0} 파일 무시</x:String>

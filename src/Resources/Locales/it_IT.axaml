@@ -867,7 +867,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Apri Repository</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Apri Terminale</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Riscansiona Repository nella Cartella Clone Predefinita</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cerca Repository...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cerca, carica o apri repository</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">MODIFICHE LOCALI</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignora tutti i file *{0}</x:String>

@@ -1047,7 +1047,7 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Open Terminal</x:String>
   <x:String x:Key="Text.Welcome.RefreshStatus" xml:space="preserve">Refresh Status</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search, load or open repositories</x:String>
   <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">Check repository status when opening the Welcome page</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Local Changes</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>

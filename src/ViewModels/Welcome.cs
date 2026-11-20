@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -162,6 +163,71 @@ namespace SourceGit.ViewModels
             var activePage = App.GetLauncher().ActivePage;
             if (activePage != null && activePage.CanCreatePopup())
                 activePage.Popup = new Clone(activePage.Node.Id);
+        }
+
+        public async Task<bool> TryOpenSearchAsync(LauncherPage page, CancellationToken token)
+        {
+            var filter = SearchFilter;
+            var input = filter?.Trim() ?? string.Empty;
+            if (input.Length > 1 && input[0] == '"' && input[^1] == '"')
+                input = input[1..^1];
+
+            var isLocal = Directory.Exists(input);
+            var isRemote = Models.Remote.IsSSH(input) ||
+                (Uri.TryCreate(input, UriKind.Absolute, out var uri) &&
+                 (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp) &&
+                 Models.Remote.IsValidURL(input));
+            if (!isLocal && !isRemote)
+                return false;
+
+            if (page == null || page.Popup != null || token.IsCancellationRequested)
+                return true;
+
+            if (!Preferences.Instance.IsGitConfigured())
+            {
+                Models.Notification.Send(page.Node.Id, App.Text("NotConfigured"), true);
+                return true;
+            }
+
+            if (isLocal)
+            {
+                var result = await GetRepositoryRootAsync(input);
+                if (token.IsCancellationRequested || SearchFilter != filter ||
+                    App.GetLauncher().ActivePage != page || page.Popup != null)
+                    return true;
+
+                if (!result.IsSuccess && !Models.SafeDirectories.IsUntrustedRepository(result.StdErr))
+                {
+                    Models.Notification.Send(page.Node.Id, result.StdErr, true);
+                    return true;
+                }
+
+                page.Popup = new OpenLocalRepository(page.Node.Id, null) { RepoPath = input };
+                await page.ProcessPopupAsync();
+            }
+            else
+            {
+                using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(token);
+                cancellation.CancelAfter(TimeSpan.FromSeconds(30));
+                var command = new Commands.Command
+                {
+                    Context = page.Node.Id,
+                    Args = $"ls-remote -- {input.Quoted()} HEAD",
+                    CancellationToken = cancellation.Token,
+                };
+                var valid = await command.ExecAsync();
+                if (cancellation.IsCancellationRequested)
+                {
+                    if (!token.IsCancellationRequested)
+                        Models.Notification.Send(page.Node.Id, "Timed out checking the remote repository.", true);
+                    return true;
+                }
+
+                if (valid && SearchFilter == filter && App.GetLauncher().ActivePage == page && page.Popup == null)
+                    page.Popup = new Clone(page.Node.Id) { Remote = input };
+            }
+
+            return true;
         }
 
         public void OpenLocalRepository()

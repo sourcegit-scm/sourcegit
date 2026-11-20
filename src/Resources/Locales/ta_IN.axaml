@@ -617,7 +617,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">களஞ்சியத்தைத் திற</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">முனையத்தைத் திற</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">இயல்புநிலை நகலி அடைவில் களஞ்சியங்களை மீண்டும் வருடு</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">களஞ்சியங்களைத் தேடு...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">களஞ்சியங்களைத் தேடு, ஏற்று அல்லது திற</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">உள்ளக மாற்றங்கள்</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">அறிவிலி புறக்கணி</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">எல்லா *{0} கோப்புகளையும் புறக்கணி</x:String>

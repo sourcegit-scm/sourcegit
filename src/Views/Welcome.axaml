@@ -29,6 +29,7 @@
                Background="{DynamicResource Brush.Contents}"
                Watermark="{DynamicResource Text.Welcome.Search}"
                VerticalContentAlignment="Center"
+               KeyDown="OnSearchBoxKeyDown"
                Text="{Binding SearchFilter, Mode=TwoWay}">
         <TextBox.Styles>
           <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">

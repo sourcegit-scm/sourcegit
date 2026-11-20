@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -83,9 +84,21 @@ namespace SourceGit.Views
         protected override async void OnLoaded(RoutedEventArgs e)
         {
             base.OnLoaded(e);
+            if (_searchCancellation.IsCancellationRequested)
+            {
+                _searchCancellation.Dispose();
+                _searchCancellation = new CancellationTokenSource();
+            }
+
             SearchBox.Focus(NavigationMethod.Directional);
             if (ViewModels.Preferences.Instance.CheckRepositoryStatusOnWelcome)
                 await ViewModels.Welcome.Instance.UpdateStatusAsync(false, ViewModels.Welcome.Instance.StatusCheckCancellationToken);
+        }
+
+        protected override void OnUnloaded(RoutedEventArgs e)
+        {
+            _searchCancellation.Cancel();
+            base.OnUnloaded(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -129,6 +142,33 @@ namespace SourceGit.Views
         {
             SearchBox.Focus(NavigationMethod.Directional);
             e.Handled = true;
+        }
+
+        private async void OnSearchBoxKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Enter || e.KeyModifiers != KeyModifiers.None)
+                return;
+
+            e.Handled = true;
+            if (_isOpeningSearch)
+                return;
+
+            _isOpeningSearch = true;
+            try
+            {
+                var page = this.FindAncestorOfType<LauncherPage>()?.DataContext as ViewModels.LauncherPage;
+                if (!await ViewModels.Welcome.Instance.TryOpenSearchAsync(page, _searchCancellation.Token) &&
+                    TreeContainer.SelectedItem is ViewModels.RepositoryNode { IsRepository: true } node)
+                    node.Open();
+            }
+            catch (Exception ex)
+            {
+                Native.OS.LogException(ex);
+            }
+            finally
+            {
+                _isOpeningSearch = false;
+            }
         }
 
         private void OnClearSearchFilter(object sender, RoutedEventArgs e)
@@ -474,6 +514,8 @@ namespace SourceGit.Views
 
         private PointerPressedEventArgs _pressTreeNodeEvent = null;
         private bool _startDragTreeNode = false;
+        private bool _isOpeningSearch = false;
+        private CancellationTokenSource _searchCancellation = new();
         private readonly DataFormat<string> _dndRepoNode = DataFormat.CreateStringApplicationFormat("sourcegit-dnd-repo-node");
     }
 }

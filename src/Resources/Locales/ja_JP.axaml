@@ -1013,7 +1013,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">リポジトリを開く</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">端末を開く</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">既定のクローンディレクトリ内のリポジトリを再スキャン</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">リポジトリを検索...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">リポジトリを検索、読み込み、または開く</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">ローカルの変更</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">無視</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">*{0} ファイルをすべて無視</x:String>

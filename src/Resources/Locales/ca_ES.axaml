@@ -1034,7 +1034,7 @@
   <x:String x:Key="Text.Welcome.OpenOrInit" xml:space="preserve">Obre el repositori</x:String>
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">Obre el terminal</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Torna a escanejar els repositoris al directori de clonació per defecte</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cerca repositoris...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Cerca, carrega o obre repositoris</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Canvis locals</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignora tots els fitxers *{0}</x:String>

@@ -1036,7 +1036,7 @@
   <x:String x:Key="Text.Welcome.OpenTerminal" xml:space="preserve">開啟終端機</x:String>
   <x:String x:Key="Text.Welcome.RefreshStatus" xml:space="preserve">重新整理狀態</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">重新掃描預設複製 (clone) 目錄下的存放庫</x:String>
-  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">篩選存放庫...</x:String>
+  <x:String x:Key="Text.Welcome.Search" xml:space="preserve">搜尋、載入或開啟存放庫</x:String>
   <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">開啟起始頁時檢查存放庫狀態</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">本機變更</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">加入至 .gitignore 忽略清單</x:String>
