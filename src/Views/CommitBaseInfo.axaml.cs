@@ -10,6 +10,15 @@ namespace SourceGit.Views
 {
     public partial class CommitBaseInfo : UserControl
     {
+        public static readonly StyledProperty<bool> IsCompactProperty =
+            AvaloniaProperty.Register<CommitBaseInfo, bool>(nameof(IsCompact));
+
+        public bool IsCompact
+        {
+            get => GetValue(IsCompactProperty);
+            set => SetValue(IsCompactProperty, value);
+        }
+
         public static readonly DirectProperty<CommitBaseInfo, Models.CommitFullMessage> FullMessageProperty =
             AvaloniaProperty.RegisterDirect<CommitBaseInfo, Models.CommitFullMessage>(
                 nameof(FullMessage),

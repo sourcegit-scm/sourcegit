@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="340" d:DesignHeight="450"
+             x:Class="SourceGit.Views.FocusedCommitDetail"
+             x:DataType="vm:CommitDetail">
+  <Grid RowDefinitions="Auto,*" Margin="8">
+    <StackPanel Grid.Row="0" Spacing="6" Margin="0,0,0,8">
+      <TextBlock Text="{Binding Commit.Subject}" FontWeight="Bold" TextWrapping="Wrap" MaxLines="2" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Commit.Subject}"/>
+      <Grid ColumnDefinitions="*,Auto,Auto">
+        <TextBlock Text="{Binding Commit.Author.Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource Brush.FG2}"/>
+        <SelectableTextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Commit.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" FontFamily="{DynamicResource Fonts.Monospace}" Margin="8,0,4,0" ToolTip.Tip="{Binding Commit.SHA}"/>
+        <v:CopyButton Grid.Column="2" VerticalAlignment="Center" Width="24" Height="24" CopyText="{Binding Commit.SHA}"
+                      ToolTip.Tip="{DynamicResource Text.Histories.CopyCommitSHA}"
+                      AutomationProperties.Name="{DynamicResource Text.Histories.CopyCommitSHA}"/>
+      </Grid>
+      <Expander Header="{DynamicResource Text.CommitDetail.Info}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+        <ScrollViewer MaxHeight="240" HorizontalScrollBarVisibility="Disabled">
+          <v:CommitBaseInfo IsCompact="True" Content="{Binding Commit}" FullMessage="{Binding FullMessage}" SignInfo="{Binding SignInfo}" WebLinks="{Binding WebLinks}"/>
+        </ScrollViewer>
+      </Expander>
+    </StackPanel>
+    <v:CommitChanges Grid.Row="1" IsFileListOnly="True"/>
+  </Grid>
+</UserControl>
