@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:v="using:SourceGit.Views"
+             xmlns:c="using:SourceGit.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SourceGit.Views.CommitInformation"
+             x:DataType="vm:CommitDetail"
+             x:Name="ThisControl">
+  <StackPanel Orientation="Vertical">
+    <!-- Base Information -->
+    <v:CommitBaseInfo Content="{Binding Commit}"
+                      FullMessage="{Binding FullMessage}"
+                      SignInfo="{Binding SignInfo}"
+                      WebLinks="{Binding WebLinks}"
+                      Margin="0,0,12,0"/>
+
+    <!-- Line -->
+    <Rectangle Height=".65" Margin="8,8,12,8" Fill="{DynamicResource Brush.Border2}"/>
+
+    <!-- Change List -->
+    <ListBox Background="Transparent"
+             Margin="64,0,12,4"
+             SelectionMode="Single"
+             ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}"
+             KeyDown="OnCommitListKeyDown">
+      <ListBox.Styles>
+        <Style Selector="ListBoxItem">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="MinHeight" Value="24"/>
+          <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+      </ListBox.Styles>
+
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Vertical"/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="m:Change">
+          <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
+            <ToolTip.Tip>
+              <TextBlock TextWrapping="Wrap">
+                <Run Text="{Binding Path, Mode=OneWay}"/>
+                <Run Text=" • " Foreground="Gray"/>
+                <Run Text="{Binding IndexDesc, Mode=OneWay}" Foreground="Gray"/>
+              </TextBlock>
+            </ToolTip.Tip>
+
+            <v:ChangeStatusIcon Grid.Column="0"
+                                Width="14" Height="14"
+                                HorizontalAlignment="Left"
+                                Margin="16,0,0,0"
+                                Change="{Binding}"/>
+            <TextBlock Grid.Column="1" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <!-- Only Top100 Tip -->
+    <StackPanel Margin="108,0,12,16" Spacing="4"
+                IsVisible="{Binding Changes, Converter={x:Static c:ListConverters.IsOnlyTop100Shows}}">
+      <TextBlock Text="{DynamicResource Text.CommitDetail.Info.GotoChangesPage}"
+                 TextWrapping="Wrap"
+                 Foreground="{DynamicResource Brush.FG2}"/>
+      <!-- The aggregate Changes tab is not this card's full file list. -->
+      <Button Content="{DynamicResource Text.HistoriesDetailsStandalone}"
+              HorizontalAlignment="Left"
+              IsVisible="{Binding #ThisControl.OpenChangesInNewWindow}"
+              Click="OnOpenAllChanges"/>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

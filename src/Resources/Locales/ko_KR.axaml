@@ -827,6 +827,9 @@
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">저장소 스캔</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">루트 디렉터리:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">다른 사용자 정의 디렉터리 스캔</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">업데이트 확인...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">이 소프트웨어의 새 버전을 사용할 수 있습니다: </x:String>
   <x:String x:Key="Text.SelfUpdate.CurrentVersion" xml:space="preserve">현재 버전:</x:String>
@@ -988,4 +991,5 @@
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">제거</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">잠금 해제</x:String>
   <x:String x:Key="Text.Yes" xml:space="preserve">예</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

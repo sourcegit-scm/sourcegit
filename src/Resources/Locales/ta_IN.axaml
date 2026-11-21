@@ -552,6 +552,9 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">ஒட்டு வெற்றிகரமாக சேமிக்கப்பட்டது!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">களஞ்சியங்களை வருடு</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">வேர் அடைவு:</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">புதுப்பிப்புகளைச் சரிபார்...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">இந்த மென்பொருளின் புதிய பதிப்பு கிடைக்கிறது: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">புதுப்பிப்புகளைச் சரிபார்க்க முடியவில்லை!</x:String>
@@ -653,4 +656,5 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">பூட்டு</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">நீக்கு</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">திற</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

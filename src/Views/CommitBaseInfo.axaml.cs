@@ -226,8 +226,8 @@ namespace SourceGit.Views
 
         private async void OnCopyAllCommitMessage(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ViewModels.CommitDetail detail)
-                await this.CopyTextAsync(detail.FullMessage.Message);
+            if (DataContext is ViewModels.CommitDetail { FullMessage: { } message })
+                await this.CopyTextAsync(message.Message);
             e.Handled = true;
         }
 

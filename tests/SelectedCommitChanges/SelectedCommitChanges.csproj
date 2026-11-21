@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../src/Models/Change.cs" Link="Production/Change.cs" />
+    <Compile Include="../../src/Models/CommitChange.cs" Link="Production/CommitChange.cs" />
+    <Compile Include="../../src/Commands/QuerySelectedCommitChanges.cs" Link="Production/QuerySelectedCommitChanges.cs" />
+    <Compile Include="../../src/Models/DiffOption.cs" Link="Production/DiffOption.cs" />
+    <Compile Include="../../src/Models/EmptyTreeHash.cs" Link="Production/EmptyTreeHash.cs" />
+    <Compile Include="../../src/ViewModels/CommitChanges.cs" Link="Production/CommitChanges.cs" />
+    <Compile Include="../../src/Models/NumericSort.cs" Link="Production/NumericSort.cs" />
+  </ItemGroup>
+</Project>

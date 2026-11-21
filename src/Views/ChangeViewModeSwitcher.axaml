@@ -3,26 +3,36 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
+             xmlns:vm="using:SourceGit.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeViewModeSwitcher"
              x:Name="ThisControl">
-  <Button Classes="icon_button" ToolTip.Tip="{DynamicResource Text.ChangeDisplayMode}">
+  <Button x:Name="ModeButton" Classes="icon_button" ToolTip.Tip="{DynamicResource Text.ChangeDisplayMode}">
     <Button.Flyout>
       <MenuFlyout Placement="BottomEdgeAlignedLeft">
-        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Click="SwitchToList">
+        <MenuItem x:Name="ListModeItem" Header="{DynamicResource Text.ChangeDisplayMode.List}" Click="SwitchToList">
           <MenuItem.Icon>
             <Path Width="12" Height="12" Data="{StaticResource Icons.List}"/>
           </MenuItem.Icon>
         </MenuItem>
-        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Click="SwitchToGrid">
+        <MenuItem x:Name="GridModeItem" Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Click="SwitchToGrid">
           <MenuItem.Icon>
             <Path Width="12" Height="12" Data="{StaticResource Icons.Grid}"/>
           </MenuItem.Icon>
         </MenuItem>
-        <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Tree}" Click="SwitchToTree">
+        <MenuItem x:Name="TreeModeItem" Header="{DynamicResource Text.ChangeDisplayMode.Tree}">
           <MenuItem.Icon>
             <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
           </MenuItem.Icon>
+          <MenuItem x:Name="CompactFoldersItem" Header="{DynamicResource Text.Preferences.General.EnableCompactFolders}"
+                    ToggleType="CheckBox"
+                    IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree, Mode=TwoWay}">
+            <MenuItem.Icon>
+              <!-- The shared MenuItem template renders Icon, but not native toggle glyphs. -->
+              <CheckBox IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree, Mode=OneWay}"
+                        IsHitTestVisible="False" Focusable="False"/>
+            </MenuItem.Icon>
+          </MenuItem>
         </MenuItem>
       </MenuFlyout>
     </Button.Flyout>

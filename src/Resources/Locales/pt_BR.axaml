@@ -543,6 +543,9 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch salvo com sucesso!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Escanear Repositórios</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Diretório Raiz:</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Description" xml:space="preserve">Only files changed by selected commits are included; intervening edits to those files may appear. Merge commits include paths changed against every parent, compared with the first parent.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Empty" xml:space="preserve">No changes match this selection or filter.</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.Title" xml:space="preserve">Changes from {0} selected commits</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Verificar atualizações...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Nova versão deste software disponível: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Falha ao verificar atualizações!</x:String>
@@ -636,4 +639,5 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Bloquear</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Remover</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Desbloquear</x:String>
+  <x:String x:Key="Text.SelectedCommitChanges.CompareRevisions">Compare these two revisions (not selected changes)</x:String>
 </ResourceDictionary>

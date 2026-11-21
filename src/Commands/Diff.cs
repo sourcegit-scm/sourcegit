@@ -41,6 +41,15 @@ namespace SourceGit.Commands
         public Diff(string repo, Models.DiffOption opt, int numContextLines, bool ignoreWhitespace, bool ignoreCRAtEOL)
         {
             _result.TextDiff = new Models.TextDiff();
+            if (opt.CommitChange is { } joined &&
+                (string.IsNullOrEmpty(joined.BeforeObject) || joined.BeforeMode == "160000") &&
+                (string.IsNullOrEmpty(joined.AfterObject) || joined.AfterMode == "160000"))
+            {
+                _result.IsSubmoduleChange = true;
+                _result.OldHash = joined.BeforeObject;
+                _result.NewHash = joined.AfterObject;
+                _result.TextDiff = null;
+            }
 
             WorkingDirectory = repo;
             Context = repo;
@@ -59,6 +68,10 @@ namespace SourceGit.Commands
 
         public async Task<Models.DiffResult> ReadAsync()
         {
+            // Gitlink targets need not exist in the superproject object database.
+            if (_result.IsSubmoduleChange)
+                return _result;
+
             try
             {
                 using var proc = new Process();
