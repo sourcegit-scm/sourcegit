@@ -34,6 +34,7 @@
                              ColumnHeaderHeight="24"
                              RowHeight="26"
                              LayoutUpdated="OnCommitListLayoutUpdated"
+                             SizeChanged="OnCommitListSizeChanged"
                              ContextRequested="OnCommitListContextRequested"
                              DoubleTapped="OnCommitListDoubleTapped">
         <DataGrid.Styles>
