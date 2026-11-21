@@ -110,7 +110,7 @@
                                VerticalAlignment="Center"
                                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                                TextAlignment="Center"
-                               Text="{Binding Node.Name}"
+                               Text="{Binding DisplayName}"
                                IsHitTestVisible="False"/>
                   </Grid>
 
