@@ -38,6 +38,10 @@ namespace SourceGit.Commands
         private const int MAX_INLINE_CONTENT_LENGTH = 1024;
         private const int MAX_INLINE_CHUNKS_PER_LINE = 16;
 
+        public const long MAX_TEXT_DIFF_SIZE = 5 * 1024 * 1024;
+
+        public bool IgnoreSizeLimit { get; set; } = false;
+
         public Diff(string repo, Models.DiffOption opt, int numContextLines, bool ignoreWhitespace, bool ignoreCRAtEOL)
         {
             _result.TextDiff = new Models.TextDiff();
@@ -66,7 +70,22 @@ namespace SourceGit.Commands
                 proc.Start();
 
                 using var ms = new MemoryStream();
-                await proc.StandardOutput.BaseStream.CopyToAsync(ms, CancellationToken).ConfigureAwait(false);
+                var stdout = proc.StandardOutput.BaseStream;
+                var chunk = new byte[81920];
+                int read;
+                while ((read = await stdout.ReadAsync(chunk, CancellationToken).ConfigureAwait(false)) > 0)
+                {
+                    ms.Write(chunk, 0, read);
+
+                    // Stop reading huge diffs (generated files, minified bundles, data dumps, etc.). Only
+                    // the diff headers will be parsed.
+                    if (!IgnoreSizeLimit && ms.Length > MAX_TEXT_DIFF_SIZE)
+                    {
+                        _result.IsTooLarge = true;
+                        proc.Kill(true);
+                        break;
+                    }
+                }
 
                 if (ms.TryGetBuffer(out var buffer))
                 {
@@ -82,7 +101,7 @@ namespace SourceGit.Commands
                         }
 
                         ParseLine(buffer[start..lineEnd]);
-                        if (_result.IsBinary)
+                        if (_result.IsBinary || (_result.IsTooLarge && _isInChunk))
                             break;
 
                         start = lineEnd + 1;
@@ -96,7 +115,7 @@ namespace SourceGit.Commands
                 // Ignore exceptions.
             }
 
-            if (_isLFS || _result.IsBinary || _result.TextDiff.Lines.Count == 0)
+            if (_isLFS || _result.IsBinary || _result.IsTooLarge || _result.TextDiff.Lines.Count == 0)
             {
                 _result.TextDiff = null;
             }

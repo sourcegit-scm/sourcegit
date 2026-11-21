@@ -92,6 +92,11 @@ namespace SourceGit.Models
 
     public class NoOrEOLChange;
 
+    public class TooLargeDiff
+    {
+        public long MaxSizeInMB { get; set; } = 0;
+    }
+
     public class SubmoduleDiff
     {
         public string FullPath { get; set; } = string.Empty;
@@ -107,6 +112,7 @@ namespace SourceGit.Models
     {
         public bool IsBinary { get; set; } = false;
         public bool IsSubmoduleChange { get; set; } = false;
+        public bool IsTooLarge { get; set; } = false;
         public string OldHash { get; set; } = string.Empty;
         public string NewHash { get; set; } = string.Empty;
         public int OldMode { get; set; } = 0;

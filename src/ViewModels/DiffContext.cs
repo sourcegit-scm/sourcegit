@@ -63,6 +63,7 @@ namespace SourceGit.ViewModels
                 _newMode = previous._newMode;
                 _unifiedLines = previous._unifiedLines;
                 _info = previous._info;
+                _ignoreSizeLimit = previous._ignoreSizeLimit && previous._option.ToString().Equals(_option.ToString(), StringComparison.Ordinal);
             }
 
             if (string.IsNullOrEmpty(_option.OrgPath) || _option.OrgPath == "/dev/null")
@@ -82,6 +83,13 @@ namespace SourceGit.ViewModels
         public void DecrUnified()
         {
             UnifiedLines = Math.Max(4, _unifiedLines - 1);
+            LoadContent();
+        }
+
+        public void ShowTooLargeDiff()
+        {
+            _ignoreSizeLimit = true;
+            _info = null;
             LoadContent();
         }
 
@@ -134,7 +142,7 @@ namespace SourceGit.ViewModels
                 var ignoreWhitespace = pref.IgnoreWhitespaceChangesInDiff;
                 var ignoreCRAtEOL = pref.IgnoreCRAtEOLInDiff;
 
-                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace, ignoreCRAtEOL)
+                var latest = await new Commands.Diff(_repo, _option, numLines, ignoreWhitespace, ignoreCRAtEOL) { IgnoreSizeLimit = _ignoreSizeLimit }
                     .ReadAsync()
                     .ConfigureAwait(false);
 
@@ -148,6 +156,10 @@ namespace SourceGit.ViewModels
                 if (latest.TextDiff is { } textDiff)
                 {
                     rs = textDiff;
+                }
+                else if (latest.IsTooLarge)
+                {
+                    rs = new Models.TooLargeDiff() { MaxSizeInMB = Commands.Diff.MAX_TEXT_DIFF_SIZE / 1024 / 1024 };
                 }
                 else if (latest.LFSDiff is { } lfs)
                 {
@@ -388,6 +400,7 @@ namespace SourceGit.ViewModels
         private int _unifiedLines = 4;
         private bool _isTextDiff = false;
         private bool _isIgnoreWhitespaceVisible = true;
+        private bool _ignoreSizeLimit = false;
         private object _content = null;
         private Info _info = null;
     }
