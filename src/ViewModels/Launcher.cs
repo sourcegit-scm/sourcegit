@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Avalonia.Collections;
 using Avalonia.Threading;
@@ -118,6 +121,101 @@ namespace SourceGit.ViewModels
                 CloseRepositoryInTab(one, false);
 
             _ignoreIndexChange = false;
+        }
+
+        public Task FetchAllRepositoriesAsync()
+            => FetchAllRepositoriesCoreAsync(parallel: false);
+
+        public Task FetchAllRepositoriesInParallelAsync()
+            => FetchAllRepositoriesCoreAsync(parallel: true);
+
+        private async Task FetchAllRepositoriesCoreAsync(bool parallel)
+        {
+            var targets = new List<(string Name, Repository Repo)>();
+            var noRemoteNames = new List<string>();
+
+            foreach (var page in Pages)
+            {
+                if (page.Data is not Repository repo)
+                    continue;
+
+                if (repo.Remotes.Count == 0)
+                    noRemoteNames.Add(page.Node.Name);
+                else
+                    targets.Add((page.Node.Name, repo));
+            }
+
+            var results = new List<(string Name, Repository.FetchAllRemotesResult Result)>();
+
+            if (parallel)
+            {
+                const int MaxConcurrentFetches = 5;
+                using var semaphore = new SemaphoreSlim(MaxConcurrentFetches);
+
+                var tasks = new List<Task<Repository.FetchAllRemotesResult>>(targets.Count);
+                foreach (var (_, Repo) in targets)
+                    tasks.Add(RunThrottledAsync(Repo, semaphore));
+
+                await Task.WhenAll(tasks).ConfigureAwait(false);
+
+                for (var i = 0; i < targets.Count; i++)
+                    results.Add((targets[i].Name, tasks[i].Result));
+            }
+            else
+            {
+                foreach (var (name, repo) in targets)
+                    results.Add((name, await repo.FetchAllRemotesAsync()));
+            }
+
+            var total = 0;
+            var succeeded = 0;
+            var skippedNames = new List<string>();
+            var failedNames = new List<string>();
+
+            foreach (var (name, result) in results)
+            {
+                switch (result.Status)
+                {
+                    case Repository.FetchAllStatus.Succeeded:
+                        total++;
+                        succeeded++;
+                        break;
+                    case Repository.FetchAllStatus.Skipped:
+                        skippedNames.Add(name);
+                        break;
+                    case Repository.FetchAllStatus.Failed:
+                        total++;
+                        failedNames.Add($"{name} (remote: {string.Join(", ", result.FailedRemotes)})");
+                        break;
+                }
+            }
+
+            var message = $"Fetched {succeeded}/{total} repositories";
+
+            if (noRemoteNames.Count > 0)
+                message += $"\n{noRemoteNames.Count} repositories skipped (no remote):\n    {string.Join("\n    ", noRemoteNames)}";
+
+            if (skippedNames.Count > 0)
+                message += $"\n{skippedNames.Count} repositories skipped:\n    {string.Join("\n    ", skippedNames)}";
+
+            if (failedNames.Count > 0)
+                message += $"\n{failedNames.Count} repositories failed:\n    {string.Join("\n    ", failedNames)}";
+
+            Models.Notification.Send(null, message, succeeded < total);
+        }
+
+        private static async Task<Repository.FetchAllRemotesResult> RunThrottledAsync(
+            Repository repo, SemaphoreSlim semaphore)
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                return await repo.FetchAllRemotesAsync();
+            }
+            finally
+            {
+                semaphore.Release();
+            }
         }
 
         public void SwitchWorkspace(Workspace to)
