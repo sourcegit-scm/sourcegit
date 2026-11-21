@@ -41,6 +41,7 @@ namespace SourceGit.Models
             public List<Point> Points { get; } = [];
             public int Color { get; } = color;
             public bool IsHighlighted { get; } = isHighlighted;
+            public bool IsDashed { get; set; } = false;
         }
 
         public class Link
@@ -57,6 +58,7 @@ namespace SourceGit.Models
             Default,
             Head,
             Merge,
+            LocalChanges,
         }
 
         public class Dot
@@ -110,6 +112,13 @@ namespace SourceGit.Models
                             {
                                 major.Next = commit.Parents[0];
                                 major.Goto(offsetX, offsetY, halfHeight);
+
+                                // The link from local changes to HEAD is dashed, but the rest of this branch is not.
+                                if (major.Path.IsDashed)
+                                {
+                                    major.Detach();
+                                    temp.Paths.Add(major.Path);
+                                }
                             }
                             else
                             {
@@ -185,6 +194,7 @@ namespace SourceGit.Models
                     if (commit.Parents.Count > 0)
                     {
                         major = new PathHelper(commit.Parents[0], isHighlighted, colorPicker.Next(), new Point(offsetX, offsetY));
+                        major.Path.IsDashed = commit.IsLocalChanges;
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
@@ -199,7 +209,9 @@ namespace SourceGit.Models
                 var position = new Point(major?.LastX ?? offsetX, offsetY);
                 var dotColor = major?.Path.Color ?? 0;
                 var anchor = new Dot() { Center = position, Color = dotColor, IsHighlighted = isHighlighted };
-                if (commit.IsCurrentHead)
+                if (commit.IsLocalChanges)
+                    anchor.Type = DotType.LocalChanges;
+                else if (commit.IsCurrentHead)
                     anchor.Type = DotType.Head;
                 else if (commit.Parents.Count > 1)
                     anchor.Type = DotType.Merge;
@@ -402,6 +414,20 @@ namespace SourceGit.Models
                 Add(LastX, _lastY);
 
                 Path = new Path(color, true);
+                Path.Points.Add(new Point(LastX, _lastY));
+                _endY = 0;
+            }
+
+            /// <summary>
+            ///     End the current path and continue with a new one (with the same color and highlighted state) from the end.
+            /// </summary>
+            public void Detach()
+            {
+                var color = Path.Color;
+                var isHighlighted = Path.IsHighlighted;
+                Add(LastX, _lastY);
+
+                Path = new Path(color, isHighlighted);
                 Path.Points.Add(new Point(LastX, _lastY));
                 _endY = 0;
             }

@@ -484,6 +484,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">Branche courante uniquement</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">Branche courante et commits sélectionnés</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">Commits sélectionnés uniquement</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Changements locaux</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Ouvrir dans la page Changements</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} COMMITS SÉLECTIONNÉS</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">AFFICHER LES COLONNES</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Maintenir 'Ctrl' ou 'Shift' enfoncée pour sélectionner plusieurs commits.</x:String>
@@ -781,6 +783,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">Commits décorés uniquement</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">Premier parent uniquement</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">AFFICHER LES FLAGS</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Changements locaux comme nœud du graphe</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">Afficher les commits perdus</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">Afficher les sous-modules en tant qu'arbre</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Voir les Tags en tant qu'arbre</x:String>

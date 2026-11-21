@@ -483,6 +483,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchOnly" xml:space="preserve">현재 브랜치만</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">현재 브랜치와 선택한 커밋</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">선택한 커밋만</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">로컬 변경 사항</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">로컬 변경 사항 페이지에서 열기</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0}개 커밋 선택됨</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">표시할 역</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">'Ctrl' 또는 'Shift' 키를 누른 채로 여러 커밋을 선택하세요.</x:String>
@@ -789,6 +791,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">장식된(Decorated) 커밋만</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">첫 번째 부모만</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">플래그 표시</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">로컬 변경 사항을 그래프 노드로 표시</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">유실된(Lost) 커밋 표시</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">서브모듈을 트리로 표시</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">태그를 트리로 표시</x:String>

@@ -327,6 +327,8 @@
   <x:String x:Key="Text.Histories.Header.CommitTime" xml:space="preserve">HORA DO COMMIT</x:String>
   <x:String x:Key="Text.Histories.Header.GraphAndSubject" xml:space="preserve">GRÁFICO &amp; ASSUNTO</x:String>
   <x:String x:Key="Text.Histories.Header.SHA" xml:space="preserve">SHA</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">Alterações locais</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">Abrir na página de alterações</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">SELECIONADO {0} COMMITS</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">Segure 'Ctrl' ou 'Shift' para selecionar múltiplos commits.</x:String>
   <x:String x:Key="Text.Histories.Tips.MacOS" xml:space="preserve">Segure ⌘ ou ⇧ para selecionar múltiplos commits.</x:String>
@@ -517,6 +519,7 @@
   <x:String x:Key="Text.Repository.Search.ByMessage" xml:space="preserve">Mensagem</x:String>
   <x:String x:Key="Text.Repository.Search.BySHA" xml:space="preserve">SHA</x:String>
   <x:String x:Key="Text.Repository.Search.InCurrentBranch" xml:space="preserve">Branch Atual</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">Alterações locais como nó do gráfico</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">Exibir Tags como Árvore</x:String>
   <x:String x:Key="Text.Repository.Statistics" xml:space="preserve">Estatísticas</x:String>
   <x:String x:Key="Text.Repository.Submodules" xml:space="preserve">SUBMÓDULOS</x:String>

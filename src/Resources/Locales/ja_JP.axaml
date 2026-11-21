@@ -520,6 +520,8 @@
   <x:String x:Key="Text.Histories.HighlightsInGraph.CurrentBranchAndSelectedCommits" xml:space="preserve">現在のブランチ &amp; 選択したコミット</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnly" xml:space="preserve">選択したコミットのみ</x:String>
   <x:String x:Key="Text.Histories.HighlightsInGraph.SelectedCommitsOnlyFirstParent" xml:space="preserve">選択したコミットかつ最初の親コミットのみ</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges" xml:space="preserve">ローカルの変更</x:String>
+  <x:String x:Key="Text.Histories.LocalChanges.OpenPage" xml:space="preserve">ローカルの変更ページで開く</x:String>
   <x:String x:Key="Text.Histories.Selected" xml:space="preserve">{0} コミットを選択しました</x:String>
   <x:String x:Key="Text.Histories.ShowColumns" xml:space="preserve">表示する列</x:String>
   <x:String x:Key="Text.Histories.Tips" xml:space="preserve">'Ctrl' または 'Shift' キーを押しながらで、複数のコミットを選択できます。</x:String>
@@ -841,6 +843,7 @@
   <x:String x:Key="Text.Repository.ShowDecoratedCommitsOnly" xml:space="preserve">参照付きのコミットのみ</x:String>
   <x:String x:Key="Text.Repository.ShowFirstParentOnly" xml:space="preserve">最初の親コミットのみ</x:String>
   <x:String x:Key="Text.Repository.ShowFlags" xml:space="preserve">表示フラグ</x:String>
+  <x:String x:Key="Text.Repository.ShowLocalChangesInGraph" xml:space="preserve">ローカルの変更をグラフのノードとして表示</x:String>
   <x:String x:Key="Text.Repository.ShowLostCommits" xml:space="preserve">消失したコミットを表示</x:String>
   <x:String x:Key="Text.Repository.ShowSubmodulesAsTree" xml:space="preserve">サブモジュールをツリー形式で表示</x:String>
   <x:String x:Key="Text.Repository.ShowTagsAsTree" xml:space="preserve">タグをツリー形式で表示</x:String>
