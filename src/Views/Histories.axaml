@@ -35,7 +35,11 @@
                              RowHeight="26"
                              LayoutUpdated="OnCommitListLayoutUpdated"
                              ContextRequested="OnCommitListContextRequested"
-                             DoubleTapped="OnCommitListDoubleTapped">
+                             DoubleTapped="OnCommitListDoubleTapped"
+                             DragDrop.AllowDrop="True"
+                             DragDrop.DragOver="OnCommitListDragOver"
+                             DragDrop.DragLeave="OnCommitListDragLeave"
+                             DragDrop.Drop="OnCommitListDrop">
         <DataGrid.Styles>
           <Style Selector="DataGrid.static_scrollbar">
             <Style Selector="^ /template/ DataGridRowsPresenter#PART_RowsPresenter">

@@ -170,6 +170,32 @@ namespace SourceGit.Views
             return null;
         }
 
+        /// <summary>
+        ///     Returns the decorator whose label contains `point`, or null when the point is between or outside labels.
+        /// </summary>
+        public Models.Decorator HitTestDecorator(Point point)
+        {
+            var allowWrap = AllowWrap;
+            var x = 1.5;
+            var y = 0.5;
+
+            foreach (var item in _items)
+            {
+                if (allowWrap && x > 1.5 && x + item.Width > Bounds.Width)
+                {
+                    x = 1.5;
+                    y += 20.0;
+                }
+
+                if (new Rect(x, y, item.Width, 16).Contains(point))
+                    return item.Decorator;
+
+                x += item.Width + 4;
+            }
+
+            return null;
+        }
+
         public override void Render(DrawingContext context)
         {
             if (_items.Count == 0)
@@ -186,6 +212,11 @@ namespace SourceGit.Views
 
             context.FillRectangle(Brushes.Transparent, Bounds);
 
+            // While a branch is dragged (see `BranchDragDrop`), fade its label and highlight the label under the pointer.
+            var dragSource = BranchDragDrop.Source;
+            var dropTarget = BranchDragDrop.Target;
+            var accent = dropTarget != null ? this.FindResource("Brush.Accent") as IBrush : null;
+
             foreach (var item in _items)
             {
                 if (allowWrap && x > 1.5 && x + item.Width > Bounds.Width)
@@ -195,6 +226,7 @@ namespace SourceGit.Views
                 }
 
                 var entireRect = new RoundedRect(new Rect(x, y, item.Width, 16), new CornerRadius(4));
+                using IDisposable fade = BranchDragDrop.IsDecoratorOf(item.Decorator, dragSource) ? context.PushOpacity(.4) : null;
                 if (item.IsHead)
                 {
                     if (useGraphColor)
@@ -248,6 +280,13 @@ namespace SourceGit.Views
                 using (context.PushTransform(Matrix.CreateTranslation(x + 3, y + 3)))
                     context.DrawGeometry(fg, null, icon);
 
+                if (accent != null && BranchDragDrop.IsDecoratorOf(item.Decorator, dropTarget))
+                {
+                    using (context.PushOpacity(.3))
+                        context.DrawRectangle(accent, null, entireRect);
+                    context.DrawRectangle(null, new Pen(accent, 2), entireRect);
+                }
+
                 x += item.Width + 4;
             }
         }
@@ -271,6 +310,18 @@ namespace SourceGit.Views
         {
             base.OnDataContextChanged(e);
             InvalidateMeasure();
+        }
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+            BranchDragDrop.StateChanged += InvalidateVisual;
+        }
+
+        protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            BranchDragDrop.StateChanged -= InvalidateVisual;
+            base.OnDetachedFromVisualTree(e);
         }
 
         protected override Size MeasureOverride(Size availableSize)

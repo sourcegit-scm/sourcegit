@@ -34,6 +34,18 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _cornerRadius, value);
         }
 
+        public bool IsDragSource
+        {
+            get => _isDragSource;
+            set => SetProperty(ref _isDragSource, value);
+        }
+
+        public bool IsDropTarget
+        {
+            get => _isDropTarget;
+            set => SetProperty(ref _isDropTarget, value);
+        }
+
         public bool IsBranch
         {
             get => Backend is Models.Branch;
@@ -57,6 +69,8 @@ namespace SourceGit.ViewModels
         private Models.FilterMode _filterMode = Models.FilterMode.None;
         private bool _isExpanded = false;
         private CornerRadius _cornerRadius = new CornerRadius(4);
+        private bool _isDragSource = false;
+        private bool _isDropTarget = false;
 
         public class Builder
         {

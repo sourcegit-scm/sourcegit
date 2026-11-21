@@ -448,7 +448,67 @@ namespace SourceGit.Views
             if (node.Backend is not Models.Branch branch)
                 return;
 
+            _pressedBranchNodeEvent = e;
             repo.NavigateToCommit(branch.Head);
+        }
+
+        private async void OnNodePointerMoved(object sender, PointerEventArgs e)
+        {
+            if (_pressedBranchNodeEvent == null || BranchDragDrop.Source != null)
+                return;
+
+            if (sender is not Border { DataContext: ViewModels.BranchTreeNode { Backend: Models.Branch branch } node } border)
+                return;
+
+            if (!e.GetCurrentPoint(border).Properties.IsLeftButtonPressed)
+            {
+                _pressedBranchNodeEvent = null;
+                return;
+            }
+
+            if (DataContext is not ViewModels.Repository { Settings: not null } repo)
+                return;
+
+            var delta = e.GetPosition(border) - _pressedBranchNodeEvent.GetPosition(border);
+            if (delta.X * delta.X + delta.Y * delta.Y < 64)
+                return;
+
+            var pressed = _pressedBranchNodeEvent;
+            _pressedBranchNodeEvent = null;
+            await BranchDragDrop.StartAsync(this, pressed, e.GetPosition(this), repo, branch, v => node.IsDragSource = v);
+        }
+
+        private void OnNodePointerReleased(object sender, PointerReleasedEventArgs e)
+        {
+            _pressedBranchNodeEvent = null;
+        }
+
+        private void OnTreeDragOver(object sender, DragEventArgs e)
+        {
+            var node = FindNodeAt(e);
+            BranchDragDrop.HandleDragOver(e, DataContext as ViewModels.Repository, node?.Backend as Models.Branch, node, v =>
+            {
+                if (node != null)
+                    node.IsDropTarget = v;
+            });
+        }
+
+        private void OnTreeDragLeave(object sender, DragEventArgs e)
+        {
+            BranchDragDrop.HandleDragLeave();
+        }
+
+        private void OnTreeDrop(object sender, DragEventArgs e)
+        {
+            if (DataContext is ViewModels.Repository repo)
+                BranchDragDrop.HandleDrop(e, this, repo, FindNodeAt(e)?.Backend as Models.Branch);
+        }
+
+        private ViewModels.BranchTreeNode FindNodeAt(DragEventArgs e)
+        {
+            // Drag events are raised on the ListBox itself, so find the row under the pointer by hit-testing.
+            var hit = BranchesPresenter.InputHitTest(e.GetPosition(BranchesPresenter)) as Visual;
+            return hit?.FindAncestorOfType<ListBoxItem>(true)?.DataContext as ViewModels.BranchTreeNode;
         }
 
         private void OnNodesSelectionChanged(object _, SelectionChangedEventArgs e)
@@ -1477,5 +1537,6 @@ namespace SourceGit.Views
 
         private List<ViewModels.BranchTreeNode> _nodes = null;
         private bool _disableSelectionChangingEvent = false;
+        private PointerPressedEventArgs _pressedBranchNodeEvent = null;
     }
 }

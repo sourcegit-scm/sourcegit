@@ -146,5 +146,77 @@ namespace SourceGit.Models
 
             return false;
         }
+
+        /// <summary>
+        ///     Builds the URL to create a pull request on this remote that merges `sourceBranch` into `targetBranch`.
+        ///     When `sourceRemote` is another remote (e.g. a fork), only GitHub is supported.
+        /// </summary>
+        public bool TryGetCreatePullRequestURL(out string url, string sourceBranch, string targetBranch, Remote sourceRemote)
+        {
+            url = null;
+
+            if (!TryGetVisitURL(out var baseURL))
+                return false;
+
+            var host = new Uri(baseURL).Host;
+            var source = HttpUtility.UrlEncode(sourceBranch);
+            var target = HttpUtility.UrlEncode(targetBranch);
+
+            if (sourceRemote != null && sourceRemote != this)
+            {
+                if (!host.Contains("github.com", StringComparison.Ordinal) || !sourceRemote.TryGetVisitURL(out var sourceURL))
+                    return false;
+
+                var sourceURI = new Uri(sourceURL);
+                if (!sourceURI.Host.Equals(host, StringComparison.Ordinal))
+                    return false;
+
+                var segments = sourceURI.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+                if (segments.Length < 2)
+                    return false;
+
+                url = $"{baseURL}/compare/{target}...{HttpUtility.UrlEncode(segments[0])}:{HttpUtility.UrlEncode(segments[1])}:{source}?expand=1";
+                return true;
+            }
+
+            if (host.Contains("github.com", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/compare/{target}...{source}?expand=1";
+                return true;
+            }
+
+            if (host.Contains("gitlab", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/-/merge_requests/new?merge_request%5Bsource_branch%5D={source}&merge_request%5Btarget_branch%5D={target}";
+                return true;
+            }
+
+            if (host.Equals("gitee.com", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/pulls/new?source={source}&target={target}";
+                return true;
+            }
+
+            if (host.Equals("bitbucket.org", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/pull-requests/new?source={source}&dest={target}";
+                return true;
+            }
+
+            if (host.Equals("gitea.org", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/compare/{target}...{source}";
+                return true;
+            }
+
+            if (host.Contains("azure.com", StringComparison.Ordinal) ||
+                host.Contains("visualstudio.com", StringComparison.Ordinal))
+            {
+                url = $"{baseURL}/pullrequestcreate?sourceRef={source}&targetRef={target}";
+                return true;
+            }
+
+            return false;
+        }
     }
 }
