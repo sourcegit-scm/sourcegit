@@ -51,9 +51,7 @@
                   <Run Text="{Binding TagsCount}" Foreground="{DynamicResource Brush.FG2}"/>
                 </TextBlock>
 
-                <Border Grid.Column="3" Margin="4,0,8,0" IsVisible="{Binding !IsFolder}">
-                  <v:FilterModeSwitchButton Mode="{Binding FilterMode}"/>
-                </Border>
+                <v:FilterModeSwitchButton Grid.Column="3" Margin="4,0,8,0" Mode="{Binding FilterMode}"/>
               </Grid>
             </Border>
           </DataTemplate>

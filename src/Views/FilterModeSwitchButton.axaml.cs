@@ -70,9 +70,9 @@ namespace SourceGit.Views
 
             var menu = new ContextMenu();
             if (DataContext is ViewModels.TagListItem tagItem)
-                FillContextMenuForTag(menu, repo, tagItem.Tag, tagItem.FilterMode);
+                FillContextMenuForTag(menu, repo, tagItem.Tag.Name, false, tagItem.FilterMode);
             else if (DataContext is ViewModels.TagTreeNode tagNode)
-                FillContextMenuForTag(menu, repo, tagNode.Tag, tagNode.FilterMode);
+                FillContextMenuForTag(menu, repo, tagNode.FullPath, tagNode.IsFolder, tagNode.FilterMode);
             else if (DataContext is ViewModels.BranchTreeNode branchNode)
                 FillContextMenuForBranch(menu, repo, branchNode, branchNode.FilterMode);
 
@@ -83,7 +83,7 @@ namespace SourceGit.Views
             e.Handled = true;
         }
 
-        private void FillContextMenuForTag(ContextMenu menu, ViewModels.Repository repo, Models.Tag tag, Models.FilterMode current)
+        private void FillContextMenuForTag(ContextMenu menu, ViewModels.Repository repo, string path, bool isFolder, Models.FilterMode current)
         {
             if (current != Models.FilterMode.None)
             {
@@ -91,7 +91,7 @@ namespace SourceGit.Views
                 unset.Header = App.Text("Repository.FilterCommits.Default");
                 unset.Click += (_, ev) =>
                 {
-                    repo.SetTagFilterMode(tag, Models.FilterMode.None);
+                    repo.SetTagFilterMode(path, isFolder, Models.FilterMode.None);
                     ev.Handled = true;
                 };
 
@@ -105,7 +105,7 @@ namespace SourceGit.Views
             include.IsEnabled = current != Models.FilterMode.Included;
             include.Click += (_, ev) =>
             {
-                repo.SetTagFilterMode(tag, Models.FilterMode.Included);
+                repo.SetTagFilterMode(path, isFolder, Models.FilterMode.Included);
                 ev.Handled = true;
             };
 
@@ -115,7 +115,7 @@ namespace SourceGit.Views
             exclude.IsEnabled = current != Models.FilterMode.Excluded;
             exclude.Click += (_, ev) =>
             {
-                repo.SetTagFilterMode(tag, Models.FilterMode.Excluded);
+                repo.SetTagFilterMode(path, isFolder, Models.FilterMode.Excluded);
                 ev.Handled = true;
             };
 
