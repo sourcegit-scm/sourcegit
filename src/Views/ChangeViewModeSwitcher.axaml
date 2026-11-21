@@ -24,6 +24,17 @@
             <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
           </MenuItem.Icon>
         </MenuItem>
+        <Separator/>
+        <MenuItem Header="{DynamicResource Text.ChangeSortMode.Path}" Click="SortByPath">
+          <MenuItem.Icon>
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Check}" IsVisible="{Binding #ThisControl.SortMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeSortMode.Path}}"/>
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{DynamicResource Text.ChangeSortMode.Status}" Click="SortByStatus">
+          <MenuItem.Icon>
+            <Path Width="12" Height="12" Data="{StaticResource Icons.Check}" IsVisible="{Binding #ThisControl.SortMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeSortMode.Status}}"/>
+          </MenuItem.Icon>
+        </MenuItem>
       </MenuFlyout>
     </Button.Flyout>
 
