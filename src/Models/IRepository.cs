@@ -10,6 +10,7 @@
         void RefreshCommits();
         void RefreshSubmodules();
         void RefreshWorkingCopyChanges();
+        void RefreshDirtyState();
         void RefreshStashes();
     }
 }

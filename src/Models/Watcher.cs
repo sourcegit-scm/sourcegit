@@ -100,6 +100,15 @@ namespace SourceGit.Models
             return new LockContext(this);
         }
 
+        /// <summary>
+        ///     Inactive repositories (not shown in the active tab) still collect changes, but do not refresh
+        ///     anything until they become active again.
+        /// </summary>
+        public void SetActive(bool active)
+        {
+            _isActive = active;
+        }
+
         public void MarkBranchUpdated()
         {
             Interlocked.Exchange(ref _updateBranch, 0);
@@ -143,6 +152,12 @@ namespace SourceGit.Models
         {
             if (Interlocked.Read(ref _lockCount) > 0)
                 return;
+
+            if (!_isActive)
+            {
+                CheckDirtyStateWhileInactive();
+                return;
+            }
 
             var now = DateTime.Now.ToFileTime();
             var refreshCommits = false;
@@ -226,6 +241,18 @@ namespace SourceGit.Models
 
             if (refreshCommits)
                 _repo.RefreshCommits();
+        }
+
+        private void CheckDirtyStateWhileInactive()
+        {
+            // Pending refreshes are kept as-is so they run once the repository becomes active again. Only update
+            // the dirty indicator of the tab, once per batch of changes.
+            var pending = Math.Max(Interlocked.Read(ref _updateWC), Interlocked.Read(ref _updateBranch));
+            if (pending <= 0 || pending == _lastDirtyStateCheck || DateTime.Now.ToFileTime() <= pending)
+                return;
+
+            _lastDirtyStateCheck = pending;
+            _repo.RefreshDirtyState();
         }
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
@@ -377,6 +404,8 @@ namespace SourceGit.Models
         private readonly string _root;
         private List<FileSystemWatcher> _watchers;
         private Timer _timer;
+        private volatile bool _isActive = true;
+        private long _lastDirtyStateCheck = 0;
 
         private long _lockCount;
         private long _updateWC;
