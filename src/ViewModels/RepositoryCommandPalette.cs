@@ -65,6 +65,9 @@ namespace SourceGit.ViewModels
             _cmds.Add(new("OpenFile", "open", "OpenWith", new OpenFileCommandPalette(repo.FullPath)));
             _cmds.Add(new("Repository.CustomActions", "custom actions", "Action", new ExecuteCustomActionCommandPalette(repo)));
 
+            if (!repo.IsBare)
+                _cmds.Add(new("Reflog", "reflog", "Logs", new ReflogCommandPalette(repo)));
+
             // Raw-Actions
             _cmds.Add(new("Repository.NewBranch", "create branch", "Branch.Add", () => repo.CreateNewBranch()));
             _cmds.Add(new("CreateTag.Title", "create tag", "Tag.Add", () => repo.CreateNewTag()));
@@ -74,6 +77,9 @@ namespace SourceGit.ViewModels
             _cmds.Add(new("Stash.Title", "stash", "Stashes.Add", async () => await repo.StashAllAsync(false)));
             _cmds.Add(new("Apply.Title", "apply", "ApplyPatch", () => repo.ApplyPatch()));
             _cmds.Add(new("Repository.DiscardAll", "discard", "Undo", () => repo.WorkingCopy.DiscardAllChanges()));
+
+            if (!repo.IsBare && repo.InProgressContext == null)
+                _cmds.Add(new("UndoLastOperation", "undo", "Reset", async () => await repo.UndoLastOperationAsync()));
 
             _cmds.Sort((l, r) => l.Label.CompareTo(r.Label));
             _visibleCmds = _cmds;

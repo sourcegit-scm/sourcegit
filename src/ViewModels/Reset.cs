@@ -20,11 +20,17 @@ namespace SourceGit.ViewModels
             set;
         }
 
-        public Reset(Repository repo, Models.Branch current, Models.Commit to)
+        public string UndoOperation
+        {
+            get;
+        }
+
+        public Reset(Repository repo, Models.Branch current, Models.Commit to, string undoOperation = null)
         {
             _repo = repo;
             Current = current;
             To = to;
+            UndoOperation = undoOperation;
             SelectedMode = Models.ResetMode.Supported[1];
         }
 
