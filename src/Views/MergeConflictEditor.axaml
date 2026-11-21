@@ -37,7 +37,7 @@
 
     <!-- Toolbar -->
     <Border Grid.Row="1" Padding="8,0" Background="{DynamicResource Brush.ToolBar}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
-      <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
         <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.File}"/>
 
         <TextBlock Grid.Column="1"
@@ -46,29 +46,39 @@
                    VerticalAlignment="Center"
                    TextTrimming="CharacterEllipsis"/>
 
-        <Button Grid.Column="2"
+        <ToggleButton Grid.Column="2"
+                      x:Name="CollapseUnchangedToggle"
+                      Classes="line_path"
+                      Width="32"
+                      Margin="0,0,8,0"
+                      ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.CollapseUnchanged}"
+                      IsCheckedChanged="OnCollapseUnchangedChanged">
+          <Path Width="13" Height="13" Data="{StaticResource Icons.Lines.All}" Margin="0,3,0,0"/>
+        </ToggleButton>
+
+        <Button Grid.Column="3"
                 Classes="icon_button"
                 Width="32"
                 ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.PrevConflict}"
                 Click="OnGotoPrevConflict"
                 HotKey="{OnPlatform Ctrl+Up, macOS=⌘+Up}"
-                IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
+                IsEnabled="{Binding ConflictRegions.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
           <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
         </Button>
 
-        <Button Grid.Column="3"
+        <Button Grid.Column="4"
                 Classes="icon_button"
                 Width="32"
                 ToolTip.Tip="{DynamicResource Text.MergeConflictEditor.NextConflict}"
                 Click="OnGotoNextConflict"
                 HotKey="{OnPlatform Ctrl+Down, macOS=⌘+Down}"
-                IsEnabled="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
+                IsEnabled="{Binding ConflictRegions.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}, Mode=OneWay}">
           <Path Width="12" Height="12" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
         </Button>
 
-        <TextBlock Grid.Column="4"
+        <TextBlock Grid.Column="5"
                    Margin="8,0,0,0"
-                   Text="{Binding UnsolvedCount, Converter={x:Static c:IntConverters.ToUnsolvedDesc}, Mode=OneWay}"
+                   Text="{Binding NavigationDesc, Mode=OneWay}"
                    VerticalAlignment="Center"/>
       </Grid>
     </Border>
@@ -221,7 +231,7 @@
           <Grid Grid.Row="1" Background="{DynamicResource Brush.Contents}">
             <v:MergeConflictTextPresenter x:Name="ResultPresenter"
                                           PanelType="Result"
-                                          Lines="{Binding ResultLines, Mode=OneWay}"
+                                          Document="{Binding ResultDocument, Mode=OneWay}"
                                           MaxLineNumber="{Binding MaxLineNumber}"
                                           FileName="{Binding FilePath}"
                                           SelectedChunk="{Binding SelectedChunk}"
@@ -282,7 +292,7 @@
                     Padding="4,2"
                     BoxShadow="0 2 8 0 #40000000">
               <Button Classes="flat"
-                      Content="{DynamicResource Text.MergeConflictEditor.Undo}"
+                      Content="{DynamicResource Text.MergeConflictEditor.Reset}"
                       Command="{Binding Resolve}"
                       CommandParameter="{x:Static m:ConflictResolution.None}"/>
             </Border>
@@ -294,7 +304,8 @@
       <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
               Margin="0,4,4,4"
               BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-        <v:MergeConflictMinimap DisplayRange="{Binding #ResultPresenter.DisplayRange, Mode=OneWay}"
+        <v:MergeConflictMinimap x:Name="Minimap"
+                                DisplayRange="{Binding #OursPresenter.DisplayRange, Mode=OneWay}"
                                 UnsolvedCount="{Binding UnsolvedCount, Mode=OneWay}"/>
       </Border>
     </Grid>
