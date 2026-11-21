@@ -55,28 +55,19 @@
         public string WorkTreeDesc => TYPE_DESCS[(int)WorkTree];
         public string IndexDesc => TYPE_DESCS[(int)Index];
 
-        public void Set(ChangeState index, ChangeState workTree = ChangeState.None)
+        public static ChangeState ParseState(char ch)
         {
-            Index = index;
-            WorkTree = workTree;
-
-            if (index == ChangeState.Renamed || index == ChangeState.Copied || workTree == ChangeState.Renamed)
+            return ch switch
             {
-                var parts = Path.Split('\t', 2);
-                if (parts.Length < 2)
-                    parts = Path.Split(" -> ", 2);
-                if (parts.Length == 2)
-                {
-                    OriginalPath = parts[0];
-                    Path = parts[1];
-                }
-            }
-
-            if (Path[0] == '"')
-                Path = Path.Substring(1, Path.Length - 2);
-
-            if (!string.IsNullOrEmpty(OriginalPath) && OriginalPath[0] == '"')
-                OriginalPath = OriginalPath.Substring(1, OriginalPath.Length - 2);
+                'M' => ChangeState.Modified,
+                'T' => ChangeState.TypeChanged,
+                'A' => ChangeState.Added,
+                'D' => ChangeState.Deleted,
+                'R' => ChangeState.Renamed,
+                'C' => ChangeState.Copied,
+                '?' => ChangeState.Untracked,
+                _ => ChangeState.None,
+            };
         }
 
         private static readonly string[] TYPE_DESCS =

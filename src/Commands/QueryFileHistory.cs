@@ -10,7 +10,7 @@ namespace SourceGit.Commands
     {
         [GeneratedRegex(@"^([MADT])\s+(.+)$")]
         private static partial Regex REG_FORMAT();
-        [GeneratedRegex(@"^([CR])[0-9]{0,4}\s+(.+)$")]
+        [GeneratedRegex(@"^([CR])[0-9]{0,4}\s+(.+)\t(.+)$")]
         private static partial Regex REG_RENAME_FORMAT();
 
         public QueryFileHistory(string repo, string path, string head)
@@ -59,36 +59,20 @@ namespace SourceGit.Commands
                 else if (last != null)
                 {
                     var match = REG_FORMAT().Match(line);
-                    if (!match.Success)
+                    if (match.Success)
                     {
-                        match = REG_RENAME_FORMAT().Match(line);
-                        if (match.Success)
-                        {
-                            var type = match.Groups[1].Value;
-                            last.Change.Path = match.Groups[2].Value;
-                            last.Change.Set(type == "R" ? Models.ChangeState.Renamed : Models.ChangeState.Copied);
-                        }
-
+                        last.Change.Path = match.Groups[2].Value;
+                        last.Change.Index = Models.Change.ParseState(match.Groups[1].Value[0]);
                         continue;
                     }
 
-                    last.Change.Path = match.Groups[2].Value;
-
-                    var status = match.Groups[1].Value;
-                    switch (status[0])
+                    match = REG_RENAME_FORMAT().Match(line);
+                    if (match.Success)
                     {
-                        case 'M':
-                            last.Change.Set(Models.ChangeState.Modified);
-                            break;
-                        case 'A':
-                            last.Change.Set(Models.ChangeState.Added);
-                            break;
-                        case 'D':
-                            last.Change.Set(Models.ChangeState.Deleted);
-                            break;
-                        case 'T':
-                            last.Change.Set(Models.ChangeState.TypeChanged);
-                            break;
+                        var type = match.Groups[1].Value;
+                        last.Change.OriginalPath = match.Groups[2].Value;
+                        last.Change.Path = match.Groups[3].Value;
+                        last.Change.Index = Models.Change.ParseState(type[0]);
                     }
                 }
             }
