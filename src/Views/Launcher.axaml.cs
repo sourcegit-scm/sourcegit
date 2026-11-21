@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 
 namespace SourceGit.Views
 {
@@ -271,6 +272,17 @@ namespace SourceGit.Views
                             vm.CommandPalette = new ViewModels.RepositoryCommandPalette(repo);
                             e.Handled = true;
                             return;
+                        case Key.F when e.KeyModifiers == cmdKey && repo.IsDashboardVisible:
+                            foreach (var visual in this.GetVisualDescendants())
+                            {
+                                if (visual is Histories histories && histories.DataContext == repo.Histories && histories.IsVisible)
+                                {
+                                    histories.FocusQuickSearch();
+                                    e.Handled = true;
+                                    return;
+                                }
+                            }
+                            break;
                         case Key.F when e.KeyModifiers.HasFlag(KeyModifiers.Shift):
                             repo.Histories.IsSearchingCommits = !repo.Histories.IsSearchingCommits;
                             e.Handled = true;

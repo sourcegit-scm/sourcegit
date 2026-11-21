@@ -71,7 +71,95 @@ namespace SourceGit.Models
         public List<Link> Links { get; } = [];
         public List<Dot> Dots { get; } = [];
 
+        public static CommitGraph GenerateFiltered(List<Commit> allCommits, List<Commit> visibleCommits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        {
+            var visible = new HashSet<string>();
+            foreach (var commit in visibleCommits)
+                visible.Add(commit.SHA);
+
+            var visibleOrder = new Dictionary<string, int>();
+            for (var i = 0; i < visibleCommits.Count; i++)
+                visibleOrder[visibleCommits[i].SHA] = i;
+
+            var nearest = new Dictionary<string, List<string>>();
+            var parents = new Dictionary<string, List<string>>();
+            // History is ordered children before parents. Resolve hidden ancestors from
+            // oldest to newest, stopping each path at its first visible commit.
+            for (var i = allCommits.Count - 1; i >= 0; i--)
+            {
+                var commit = allCommits[i];
+                var parentCount = firstParentOnlyEnabled ? Math.Min(1, commit.Parents.Count) : commit.Parents.Count;
+                List<string> resolved = [];
+                if (parentCount == 1)
+                {
+                    if (nearest.TryGetValue(commit.Parents[0], out var ancestors))
+                        resolved = ancestors;
+                }
+                else if (parentCount > 1)
+                {
+                    var seen = new HashSet<string>();
+                    for (var j = 0; j < parentCount; j++)
+                    {
+                        if (!nearest.TryGetValue(commit.Parents[j], out var ancestors))
+                            continue;
+
+                        foreach (var ancestor in ancestors)
+                        {
+                            if (seen.Add(ancestor))
+                                resolved.Add(ancestor);
+                        }
+                    }
+                }
+
+                if (parentCount > 1 && resolved.Count > 1)
+                {
+                    // Hidden merges can expose both a visible commit and its ancestors.
+                    // Keep only the nearest targets: the older targets are already
+                    // reachable through the nearer ones and would add redundant lanes.
+                    var candidates = new HashSet<string>(resolved);
+                    var redundant = new HashSet<string>();
+                    var visited = new HashSet<string>();
+                    var pending = new Stack<string>();
+                    var oldest = 0;
+                    foreach (var target in resolved)
+                    {
+                        oldest = Math.Max(oldest, visibleOrder[target]);
+                        foreach (var parent in parents[target])
+                            pending.Push(parent);
+                    }
+                    while (pending.TryPop(out var ancestor))
+                    {
+                        if (visibleOrder[ancestor] > oldest || !visited.Add(ancestor))
+                            continue;
+
+                        if (candidates.Contains(ancestor))
+                            redundant.Add(ancestor);
+                        foreach (var parent in parents[ancestor])
+                            pending.Push(parent);
+                    }
+                    resolved.RemoveAll(redundant.Contains);
+                }
+
+                if (visible.Contains(commit.SHA))
+                {
+                    parents[commit.SHA] = resolved;
+                    nearest[commit.SHA] = [commit.SHA];
+                }
+                else
+                {
+                    nearest[commit.SHA] = resolved;
+                }
+            }
+
+            return Generate(visibleCommits, firstParentOnlyEnabled, highlighting, highlightExtraCommits, parents);
+        }
+
         public static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits)
+        {
+            return Generate(commits, firstParentOnlyEnabled, highlighting, highlightExtraCommits, null);
+        }
+
+        private static CommitGraph Generate(List<Commit> commits, bool firstParentOnlyEnabled, CommitGraphHighlighting highlighting, HashSet<string> highlightExtraCommits, Dictionary<string, List<string>> parentOverrides)
         {
             const double unitWidth = 12;
             const double halfWidth = 6;
@@ -87,6 +175,7 @@ namespace SourceGit.Models
 
             foreach (var commit in commits)
             {
+                var parents = parentOverrides != null && parentOverrides.TryGetValue(commit.SHA, out var projected) ? projected : commit.Parents;
                 PathHelper major = null;
 
                 // Update current y offset
@@ -106,9 +195,9 @@ namespace SourceGit.Models
                             major = l;
                             isHighlighted = major.IsHighlighted;
 
-                            if (commit.Parents.Count > 0)
+                            if (parents.Count > 0)
                             {
-                                major.Next = commit.Parents[0];
+                                major.Next = parents[0];
                                 major.Goto(offsetX, offsetY, halfHeight);
                             }
                             else
@@ -155,8 +244,8 @@ namespace SourceGit.Models
                             {
                                 isHighlighted = true;
                                 // Highlight first parent, other parents are dealt with later
-                                if (commit.Parents.Count > 0)
-                                    highlightExtraCommits.Add(commit.Parents[0]);
+                                if (parents.Count > 0)
+                                    highlightExtraCommits.Add(parents[0]);
                             }
                             break;
                         default: // CommitGraphHighlighting.CurrentBranchAndSelectedCommits
@@ -168,8 +257,8 @@ namespace SourceGit.Models
                             {
                                 isHighlighted = true;
                                 // Highlight first parent, other parents are dealt with later
-                                if (commit.Parents.Count > 0)
-                                    highlightExtraCommits.Add(commit.Parents[0]);
+                                if (parents.Count > 0)
+                                    highlightExtraCommits.Add(parents[0]);
                             }
                             break;
                     }
@@ -182,14 +271,14 @@ namespace SourceGit.Models
                 {
                     offsetX += unitWidth;
 
-                    if (commit.Parents.Count > 0)
+                    if (parents.Count > 0)
                     {
-                        major = new PathHelper(commit.Parents[0], isHighlighted, colorPicker.Next(), new Point(offsetX, offsetY));
+                        major = new PathHelper(parents[0], isHighlighted, colorPicker.Next(), new Point(offsetX, offsetY));
                         unsolved.Add(major);
                         temp.Paths.Add(major.Path);
                     }
                 }
-                else if (isHighlighted && !major.IsHighlighted && commit.Parents.Count > 0)
+                else if (isHighlighted && !major.IsHighlighted && parents.Count > 0)
                 {
                     major.Highlight();
                     temp.Paths.Add(major.Path);
@@ -213,9 +302,9 @@ namespace SourceGit.Models
                     if (highlighting == CommitGraphHighlighting.SelectedCommitsOnlyFirstParent)
                         isHighlighted = false;
 
-                    for (int j = 1; j < commit.Parents.Count; j++)
+                    for (int j = 1; j < parents.Count; j++)
                     {
-                        var parentHash = commit.Parents[j];
+                        var parentHash = parents[j];
                         var parent = unsolved.Find(x => x.Next.Equals(parentHash, StringComparison.Ordinal));
                         if (parent != null)
                         {
