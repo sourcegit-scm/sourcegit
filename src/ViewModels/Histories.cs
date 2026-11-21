@@ -18,6 +18,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
+        public bool IsLoadingMoreCommits
+        {
+            get => _isLoadingMoreCommits;
+            set => SetProperty(ref _isLoadingMoreCommits, value);
+        }
+
         public bool IsSearchingCommits
         {
             get => _isSearchingCommits;
@@ -113,7 +119,7 @@ namespace SourceGit.ViewModels
             set
             {
                 GenerateGraph(value);
-                if (SetProperty(ref _commits, value))
+                if (SetProperty(ref _commits, value) && !NavigateToPendingCommit())
                     PostCommitsChanged();
             }
         }
@@ -299,6 +305,24 @@ namespace SourceGit.ViewModels
             return Models.BisectState.WaitingForMark;
         }
 
+        public bool CanShowPartialCommits(List<Models.Commit> commits)
+        {
+            if (_selectedCommits.Count == 0)
+                return true;
+
+            var set = new HashSet<string>();
+            foreach (var c in commits)
+                set.Add(c.SHA);
+
+            foreach (var c in _selectedCommits)
+            {
+                if (!set.Contains(c.SHA))
+                    return false;
+            }
+
+            return true;
+        }
+
         public void NavigateTo(string commitSHA)
         {
             var commit = _commits.Find(x => x.SHA.StartsWith(commitSHA, StringComparison.Ordinal));
@@ -308,6 +332,9 @@ namespace SourceGit.ViewModels
                 return;
             }
 
+            // The target commit may be in the part of history that is still loading. Select it once it's loaded.
+            _pendingNavigateTarget = (_isLoading || _isLoadingMoreCommits) ? commitSHA : null;
+
             Task.Run(async () =>
             {
                 var c = await new Commands.QuerySingleCommit(_repo.FullPath, commitSHA)
@@ -316,6 +343,9 @@ namespace SourceGit.ViewModels
 
                 Dispatcher.UIThread.Post(() =>
                 {
+                    if (_selectedCommits.Count == 1 && _selectedCommits[0].SHA.StartsWith(commitSHA, StringComparison.Ordinal))
+                        return;
+
                     _ignoreSelectionChange = true;
                     SelectedCommits = [];
 
@@ -529,6 +559,9 @@ namespace SourceGit.ViewModels
             if (_ignoreSelectionChange)
                 return;
 
+            if (_selectedCommits.Count > 0)
+                _pendingNavigateTarget = null;
+
             if (_selectedCommits.Count == 0)
             {
                 _searchCommitContext.Selected = null;
@@ -567,6 +600,26 @@ namespace SourceGit.ViewModels
                 GenerateGraph(_commits);
         }
 
+        private bool NavigateToPendingCommit()
+        {
+            if (string.IsNullOrEmpty(_pendingNavigateTarget))
+                return false;
+
+            var commit = _commits.Find(x => x.SHA.StartsWith(_pendingNavigateTarget, StringComparison.Ordinal));
+            if (commit != null)
+            {
+                _pendingNavigateTarget = null;
+                SelectedCommits = [commit];
+                return true;
+            }
+
+            if (_isLoading || _isLoadingMoreCommits)
+                return true;
+
+            _pendingNavigateTarget = null;
+            return false;
+        }
+
         private void GenerateGraph(List<Models.Commit> commits)
         {
             var firstParentOnly = _repo.UIStates.HistoryShowFlags.HasFlag(Models.HistoryShowFlags.FirstParentOnly);
@@ -587,6 +640,8 @@ namespace SourceGit.ViewModels
         private bool _hasSingleRemote = false;
         private CommitDetailSharedData _commitDetailSharedData = null;
         private bool _isLoading = true;
+        private bool _isLoadingMoreCommits = false;
+        private string _pendingNavigateTarget = null;
         private List<Models.Commit> _commits = [];
         private Models.CommitGraph _graph = null;
         private List<Models.Commit> _selectedCommits = [];

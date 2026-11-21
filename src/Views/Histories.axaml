@@ -272,6 +272,13 @@
             <Path Width="12" Height="12"
                   Data="{StaticResource Icons.Settings2}"/>
           </Button>
+
+          <v:LoadingIcon Width="12" Height="12"
+                         VerticalAlignment="Center"
+                         Background="Transparent"
+                         IsHitTestVisible="True"
+                         ToolTip.Tip="{DynamicResource Text.Histories.LoadingMoreCommits}"
+                         IsVisible="{Binding IsLoadingMoreCommits}"/>
         </StackPanel>
       </Border>
 

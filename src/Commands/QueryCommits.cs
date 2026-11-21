@@ -50,7 +50,7 @@ namespace SourceGit.Commands
             _markMerged = false;
         }
 
-        public async Task<List<Models.Commit>> GetResultAsync()
+        public async Task<List<Models.Commit>> GetResultAsync(int firstPageSize = 0, Action<List<Models.Commit>> onFirstPageLoaded = null)
         {
             var commits = new List<Models.Commit>();
             try
@@ -78,6 +78,9 @@ namespace SourceGit.Commands
 
                     if (!findHead && commit.IsMerged)
                         findHead = true;
+
+                    if (commits.Count == firstPageSize)
+                        onFirstPageLoaded?.Invoke(commits.GetRange(0, firstPageSize));
                 }
 
                 await proc.WaitForExitAsync().ConfigureAwait(false);
