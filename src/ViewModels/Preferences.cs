@@ -390,6 +390,12 @@ namespace SourceGit.ViewModels
             }
         }
 
+        public bool ExternalMergeToolBindToDoubleClick
+        {
+            get => _externalMergeToolBindToDoubleClick;
+            set => SetProperty(ref _externalMergeToolBindToDoubleClick, value);
+        }
+
         public int ExternalMergeToolType
         {
             get => Native.OS.ExternalMergerType;
@@ -835,5 +841,6 @@ namespace SourceGit.ViewModels
 
         private string _gitDefaultCloneDir = string.Empty;
         private int _shellOrTerminalType = -1;
+        private bool _externalMergeToolBindToDoubleClick = false;
     }
 }
