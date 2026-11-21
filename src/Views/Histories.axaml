@@ -105,7 +105,7 @@
         <DataGrid.Columns>
           <DataGridTemplateColumn Width="*" IsReadOnly="True">
             <DataGridTemplateColumn.Header>
-              <Border Padding="48,0">
+              <Border Padding="72,0">
                 <TextBlock Classes="table_header" Text="{DynamicResource Text.Histories.Header.GraphAndSubject}" HorizontalAlignment="Center"/>
               </Border>
             </DataGridTemplateColumn.Header>
@@ -253,6 +253,10 @@
                     Margin="4,0,0,0"
                     VerticalAlignment="Center"
                     Spacing="6">
+          <ToggleButton Classes="sidebar_expander"
+                        Width="18" Height="18"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.IsSidebarCollapsedInDashboard, Mode=TwoWay}"/>
           <ToggleButton Classes="line_path" Width="18" IsChecked="{Binding IsSearchingCommits, Mode=TwoWay}">
             <ToolTip.Tip>
               <TextBlock>
