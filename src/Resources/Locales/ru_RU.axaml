@@ -1052,7 +1052,7 @@
   <x:String x:Key="Text.Welcome.RefreshStatus" xml:space="preserve">Обновить статус</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Обнаружить репозитории в каталоге клонирования по умолчанию</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Найти репозиторий...</x:String>
-  <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">Проверять статус репозитория после открытия страницы приветствия.</x:String>
+  <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">Проверять статус репозиториев при открытии страницы приветствия.</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Изменения</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Игнорировать Git</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Игнорировать все *{0} файлы</x:String>
