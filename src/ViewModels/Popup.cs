@@ -50,9 +50,22 @@ namespace SourceGit.ViewModels
             _log?.Unsubscribe(this);
         }
 
+        public virtual bool HasDefaultOptions
+        {
+            get => false;
+        }
+
         public virtual bool CanStartDirectly()
         {
             return true;
+        }
+
+        public virtual void SaveOptionsAsDefault()
+        {
+        }
+
+        public virtual void ResetDefaultOptions()
+        {
         }
 
         public virtual Task<bool> Sure()

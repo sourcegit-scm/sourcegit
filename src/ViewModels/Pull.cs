@@ -47,14 +47,19 @@ namespace SourceGit.ViewModels
 
         public Models.DealWithLocalChanges DealWithLocalChanges
         {
-            get;
-            set;
+            get => _dealWithLocalChanges;
+            set => SetProperty(ref _dealWithLocalChanges, value);
         }
 
         public bool UseRebase
         {
-            get => _repo.UIStates.PreferRebaseInsteadOfMerge;
-            set => _repo.UIStates.PreferRebaseInsteadOfMerge = value;
+            get => _useRebase;
+            set => SetProperty(ref _useRebase, value);
+        }
+
+        public override bool HasDefaultOptions
+        {
+            get => true;
         }
 
         public Pull(Repository repo, Models.Branch specifiedRemoteBranch)
@@ -63,9 +68,8 @@ namespace SourceGit.ViewModels
             Current = repo.CurrentBranch;
             CanTerminate = true;
 
-            DealWithLocalChanges = Preferences.Instance.UseStashAndReapplyByDefault ?
-                Models.DealWithLocalChanges.StashAndReapply :
-                Models.DealWithLocalChanges.DoNothing;
+            _dealWithLocalChanges = repo.UIStates.DealWithLocalChangesOnPull ?? GetPreferredDealWithLocalChanges();
+            _useRebase = repo.UIStates.PreferRebaseInsteadOfMerge;
 
             if (specifiedRemoteBranch != null)
             {
@@ -110,6 +114,24 @@ namespace SourceGit.ViewModels
                 PostRemoteSelected();
                 HasSpecifiedRemoteBranch = false;
             }
+        }
+
+        public override void SaveOptionsAsDefault()
+        {
+            _repo.UIStates.DealWithLocalChangesOnPull = _dealWithLocalChanges;
+            _repo.UIStates.PreferRebaseInsteadOfMerge = _useRebase;
+            _repo.UIStates.Save();
+        }
+
+        public override void ResetDefaultOptions()
+        {
+            var defaults = new Models.RepositoryUIStates();
+            _repo.UIStates.DealWithLocalChangesOnPull = defaults.DealWithLocalChangesOnPull;
+            _repo.UIStates.PreferRebaseInsteadOfMerge = defaults.PreferRebaseInsteadOfMerge;
+            _repo.UIStates.Save();
+
+            DealWithLocalChanges = GetPreferredDealWithLocalChanges();
+            UseRebase = defaults.PreferRebaseInsteadOfMerge;
         }
 
         public override async Task<bool> Sure()
@@ -189,6 +211,13 @@ namespace SourceGit.ViewModels
             var _ = _cancellation?.CancelAsync();
         }
 
+        private static Models.DealWithLocalChanges GetPreferredDealWithLocalChanges()
+        {
+            return Preferences.Instance.UseStashAndReapplyByDefault ?
+                Models.DealWithLocalChanges.StashAndReapply :
+                Models.DealWithLocalChanges.DoNothing;
+        }
+
         private void PostRemoteSelected()
         {
             var remoteName = _selectedRemote.Name;
@@ -214,6 +243,8 @@ namespace SourceGit.ViewModels
         private Models.Remote _selectedRemote = null;
         private List<Models.Branch> _remoteBranches = null;
         private Models.Branch _selectedBranch = null;
+        private Models.DealWithLocalChanges _dealWithLocalChanges = Models.DealWithLocalChanges.DoNothing;
+        private bool _useRebase = true;
         private CancellationTokenSource _cancellation = null;
     }
 }

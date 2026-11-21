@@ -117,11 +117,29 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        public DealWithLocalChanges? DealWithLocalChangesOnPull
+        {
+            get;
+            set;
+        } = null;
+
         public bool CheckSubmodulesOnPush
         {
             get;
             set;
         } = true;
+
+        public bool SetTrackingOnPush
+        {
+            get;
+            set;
+        } = false;
+
+        public bool NoVerifyOnPush
+        {
+            get;
+            set;
+        } = false;
 
         public bool PushAllTags
         {

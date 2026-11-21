@@ -102,33 +102,60 @@
                       </ContentControl>
 
                       <!-- Options -->
-                      <StackPanel Margin="8,4,8,8"
-                                  Height="32"
-                                  Orientation="Horizontal"
-                                  HorizontalAlignment="Right"
-                                  IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                        <Button Width="0" Height="0"
-                                Click="OnPopupSureByHotKey"
-                                HotKey="Enter"
-                                Focusable="False"/>
-                        <Button Classes="flat primary"
-                                Width="100" Height="28"
-                                Padding="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="{DynamicResource Text.Sure}"
-                                Click="OnPopupSure"
-                                ToolTip.Tip="Enter"/>
-                        <Button Classes="flat"
-                                Width="100" Height="28"
-                                Margin="8,0,0,0"
-                                Padding="0"
-                                HorizontalContentAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                Content="{DynamicResource Text.Cancel}"
-                                Click="OnPopupCancel"
-                                ToolTip.Tip="ESC"/>
-                      </StackPanel>
+                      <Grid Margin="8,4,8,8"
+                            Height="32"
+                            ColumnDefinitions="Auto,*,Auto"
+                            IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    IsVisible="{Binding HasDefaultOptions}">
+                          <Button Classes="flat"
+                                  Width="28" Height="24"
+                                  Padding="0"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  Click="OnPopupSaveOptionsAsDefault"
+                                  ToolTip.Tip="{DynamicResource Text.Popup.SaveAsDefault}">
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.Save}"/>
+                          </Button>
+                          <Button Classes="flat"
+                                  Width="28" Height="24"
+                                  Margin="8,0,0,0"
+                                  Padding="0"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  Click="OnPopupResetDefaultOptions"
+                                  ToolTip.Tip="{DynamicResource Text.Popup.ResetDefaults}">
+                            <Path Width="12" Height="12" Data="{StaticResource Icons.ResetDefaults}"/>
+                          </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal">
+                          <Button Width="0" Height="0"
+                                  Click="OnPopupSureByHotKey"
+                                  HotKey="Enter"
+                                  Focusable="False"/>
+                          <Button Classes="flat primary"
+                                  Width="100" Height="28"
+                                  Padding="0"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  Content="{DynamicResource Text.Sure}"
+                                  Click="OnPopupSure"
+                                  ToolTip.Tip="Enter"/>
+                          <Button Classes="flat"
+                                  Width="100" Height="28"
+                                  Margin="8,0,0,0"
+                                  Padding="0"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center"
+                                  Content="{DynamicResource Text.Cancel}"
+                                  Click="OnPopupCancel"
+                                  ToolTip.Tip="ESC"/>
+                        </StackPanel>
+                      </Grid>
 
                       <!-- Running -->
                       <v:PopupRunningStatus Margin="12,8"
