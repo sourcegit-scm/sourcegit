@@ -44,7 +44,7 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32,32,32,Auto" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
                      Margin="0,0,8,0"
@@ -186,6 +186,12 @@
           <CheckBox Grid.Row="11" Grid.Column="1"
                     Content="{DynamicResource Text.Configure.Git.AskBeforeAutoUpdatingSubmodules}"
                     IsChecked="{Binding AskBeforeAutoUpdatingSubmodules, Mode=TwoWay}"/>
+
+          <CheckBox Grid.Row="12" Grid.Column="1" MinHeight="32"
+                    IsVisible="{Binding IsWindows}"
+                    Content="{DynamicResource Text.Configure.Git.IgnoreFileModeOnWindows}"
+                    ToolTip.Tip="{DynamicResource Text.Configure.Git.IgnoreFileModeOnWindows.Tip}"
+                    IsChecked="{Binding IgnoreFileModeOnWindows, Mode=TwoWay}"/>
         </Grid>
       </TabItem>
 

@@ -210,6 +210,7 @@
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">பெகோஅ பொருள் மாற்றம்</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">அடுத்த வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">மாற்றங்கள் இல்லை அல்லது  வரிமுடிவு மாற்றங்கள் மட்டும்</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">முந்தைய வேறுபாடு</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">ஒட்டாகச் சேமி</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">மறைக்கப்பட்ட சின்னங்களைக் காட்டு</x:String>
@@ -653,4 +654,6 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">பூட்டு</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">நீக்கு</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">திற</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
 </ResourceDictionary>

@@ -214,6 +214,8 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Indirizzo email</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Chiedi prima di aggiornare automaticamente i sottomoduli</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Recupera automaticamente i remoti</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minuto/i</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Tipi di Commit Convenzionali</x:String>
@@ -335,6 +337,7 @@ ${pure_files:N} Come ${files:N}, ma senza cartelle</x:String>
   <x:String x:Key="Text.Diff.New" xml:space="preserve">NUOVO</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Differenza Successiva</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">NESSUNA MODIFICA O SOLO CAMBIAMENTI DI FINE LINEA</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">VECCHIO</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Differenza Precedente</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Salva come Patch</x:String>

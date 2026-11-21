@@ -234,6 +234,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">כתובת דוא"ל</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">לבקש אישור לפני עדכון אוטומטי של submodules</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch אוטומטי מ־remotes</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">דקות</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">סוגי Conventional Commit</x:String>
@@ -359,6 +361,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">חדש</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">ההבדל הבא</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">אין שינויים או רק שינויי EOL</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">ישן</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">ההבדל הקודם</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">שמור כ־Patch</x:String>

@@ -256,6 +256,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Adreça de correu electrònic</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Pregunta abans d'actualitzar automàticament els submòduls</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Obtén els remots automàticament</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">Minut(s)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Tipus de comissió convencionals</x:String>
@@ -387,6 +389,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">NOU</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Diferència següent</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">SENSE CANVIS O NOMÉS CANVIS DE FI DE LÍNIA</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">ANTIC</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Diferència anterior</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Desa com a pedaç</x:String>

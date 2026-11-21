@@ -234,6 +234,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">Adresse e-mail</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">GIT</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">Demander avant mise à jour automatique des sous-modules</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">Fetch les dépôts distants automatiquement</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">minute(s)</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">Types de commit conventionnels</x:String>
@@ -359,6 +361,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">NOUVEAU</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Différence suivante</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">PAS DE CHANGEMENT OU SEULEMENT EN FIN DE LIGNE</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">ANCIEN</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Différence précédente</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Enregistrer en tant que patch</x:String>

@@ -214,6 +214,7 @@
   <x:String x:Key="Text.Diff.LFS" xml:space="preserve">ЗМІНА ОБ'ЄКТА LFS</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">Наступна відмінність</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">НЕМАЄ ЗМІН АБО ЛИШЕ ЗМІНИ КІНЦЯ РЯДКА</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">File permissions changed; other differences may be hidden.</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">Попередня відмінність</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">Зберегти як патч</x:String>
   <x:String x:Key="Text.Diff.ShowHiddenSymbols" xml:space="preserve">Показати приховані символи</x:String>
@@ -661,4 +662,6 @@
   <x:String x:Key="Text.Worktree.Lock" xml:space="preserve">Заблокувати</x:String>
   <x:String x:Key="Text.Worktree.Remove" xml:space="preserve">Видалити</x:String>
   <x:String x:Key="Text.Worktree.Unlock" xml:space="preserve">Розблокувати</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">Ignore executable permission changes in this repository (Windows)</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">Applies only to this SourceGit installation on Windows. Staged permission changes remain visible.</x:String>
 </ResourceDictionary>

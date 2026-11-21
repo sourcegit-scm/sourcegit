@@ -256,6 +256,8 @@
   <x:String x:Key="Text.Configure.Email.Placeholder" xml:space="preserve">電子郵件地址</x:String>
   <x:String x:Key="Text.Configure.Git" xml:space="preserve">Git 設定</x:String>
   <x:String x:Key="Text.Configure.Git.AskBeforeAutoUpdatingSubmodules" xml:space="preserve">在自動更新子模組之前先詢問</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows" xml:space="preserve">忽略此儲存庫的可執行權限變更（Windows）</x:String>
+  <x:String x:Key="Text.Configure.Git.IgnoreFileModeOnWindows.Tip" xml:space="preserve">僅影響此 Windows 上的 SourceGit；已暫存的權限變更仍會顯示。</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetch" xml:space="preserve">啟用定時自動提取 (fetch) 遠端更新</x:String>
   <x:String x:Key="Text.Configure.Git.AutoFetchIntervalSuffix" xml:space="preserve">分鐘</x:String>
   <x:String x:Key="Text.Configure.Git.ConventionalTypesOverride" xml:space="preserve">自訂約定式提交類型</x:String>
@@ -387,6 +389,7 @@
   <x:String x:Key="Text.Diff.New" xml:space="preserve">變更後</x:String>
   <x:String x:Key="Text.Diff.Next" xml:space="preserve">下一個差異</x:String>
   <x:String x:Key="Text.Diff.NoChange" xml:space="preserve">沒有變更或僅有換行字元差異</x:String>
+  <x:String x:Key="Text.Diff.FileModeChange" xml:space="preserve">檔案權限已變更，其他差異可能已被隱藏。</x:String>
   <x:String x:Key="Text.Diff.Old" xml:space="preserve">變更前</x:String>
   <x:String x:Key="Text.Diff.Prev" xml:space="preserve">上一個差異</x:String>
   <x:String x:Key="Text.Diff.SaveAsPatch" xml:space="preserve">另存為修補檔 (patch)</x:String>
