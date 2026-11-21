@@ -637,7 +637,7 @@ namespace SourceGit.Views
             };
 
             var blame = new MenuItem();
-            blame.Header = App.Text("Blame");
+            blame.Header = App.ContextMenuText("Blame");
             blame.Icon = this.CreateMenuIcon("Icons.Blame");
             blame.IsEnabled = file.Type == Models.ObjectType.Blob;
             blame.Click += (_, ev) =>
@@ -653,7 +653,7 @@ namespace SourceGit.Views
             if (!repo.IsBare)
             {
                 var resetToThisRevision = new MenuItem();
-                resetToThisRevision.Header = App.Text("ChangeCM.CheckoutThisRevision");
+                resetToThisRevision.Header = App.ContextMenuText("ChangeCM.CheckoutThisRevision");
                 resetToThisRevision.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                 resetToThisRevision.Click += async (_, ev) =>
                 {

@@ -7,6 +7,8 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
+        <!-- Selected locales override English; untranslated keys retain readable labels. -->
+        <ResourceInclude Source="/Resources/Locales/en_US.axaml"/>
         <ResourceInclude Source="/Resources/Icons.axaml"/>
         <ResourceInclude Source="/Resources/Fonts.axaml"/>
         <ResourceInclude Source="/Resources/Themes.axaml"/>

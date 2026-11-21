@@ -234,7 +234,7 @@ namespace SourceGit.Views
 
                 var createBranch = new MenuItem();
                 createBranch.Icon = this.CreateMenuIcon("Icons.Branch.Add");
-                createBranch.Header = App.Text("CreateBranch");
+                createBranch.Header = App.ContextMenuText("CreateBranch");
                 createBranch.Click += (_, ev) =>
                 {
                     if (repo.CanCreatePopup())
@@ -246,7 +246,7 @@ namespace SourceGit.Views
                 if (repo.CurrentBranch != null && !tag.SHA.Equals(repo.CurrentBranch.Head, StringComparison.Ordinal))
                 {
                     var checkoutCommit = new MenuItem();
-                    checkoutCommit.Header = App.Text("TagCM.Checkout");
+                    checkoutCommit.Header = App.ContextMenuText("TagCM.Checkout");
                     checkoutCommit.Icon = this.CreateMenuIcon("Icons.Detached");
                     checkoutCommit.Click += (_, e) =>
                     {

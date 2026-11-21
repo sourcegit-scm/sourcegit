@@ -99,7 +99,7 @@ namespace SourceGit.Views
                     if (vm.CanResetFiles)
                     {
                         var resetToLeft = new MenuItem();
-                        resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.BaseName);
+                        resetToLeft.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.BaseName);
                         resetToLeft.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToLeft.Click += async (_, ev) =>
                         {
@@ -108,7 +108,7 @@ namespace SourceGit.Views
                         };
 
                         var resetToRight = new MenuItem();
-                        resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.ToName);
+                        resetToRight.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.ToName);
                         resetToRight.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToRight.Click += async (_, ev) =>
                         {
@@ -168,7 +168,7 @@ namespace SourceGit.Views
                     if (vm.CanResetFiles)
                     {
                         var resetToLeft = new MenuItem();
-                        resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.BaseName);
+                        resetToLeft.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.BaseName);
                         resetToLeft.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToLeft.Click += async (_, ev) =>
                         {
@@ -177,7 +177,7 @@ namespace SourceGit.Views
                         };
 
                         var resetToRight = new MenuItem();
-                        resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.ToName);
+                        resetToRight.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.ToName);
                         resetToRight.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                         resetToRight.Click += async (_, ev) =>
                         {
@@ -269,7 +269,7 @@ namespace SourceGit.Views
                 if (hasCurrentHead && listBox.Tag is Models.Commit { IsCurrentHead: false })
                 {
                     var cherryPick = new MenuItem();
-                    cherryPick.Header = App.Text("CommitCM.CherryPickMultiple");
+                    cherryPick.Header = App.ContextMenuText("CommitCM.CherryPickMultiple");
                     cherryPick.Icon = this.CreateMenuIcon("Icons.CherryPick");
                     cherryPick.Click += (_, ev) =>
                     {

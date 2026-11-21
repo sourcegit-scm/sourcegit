@@ -93,7 +93,7 @@ namespace SourceGit.Views
                         menu.Items.Add(new MenuItem() { Header = "-" });
 
                     var resetToLeft = new MenuItem();
-                    resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.LeftSideDesc);
+                    resetToLeft.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.LeftSideDesc);
                     resetToLeft.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                     resetToLeft.IsEnabled = vm.CanResetToLeft;
                     resetToLeft.Click += async (_, ev) =>
@@ -103,7 +103,7 @@ namespace SourceGit.Views
                     };
 
                     var resetToRight = new MenuItem();
-                    resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.RightSideDesc);
+                    resetToRight.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.RightSideDesc);
                     resetToRight.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                     resetToRight.IsEnabled = vm.CanResetToRight;
                     resetToRight.Click += async (_, ev) =>
@@ -159,7 +159,7 @@ namespace SourceGit.Views
                     }
 
                     var resetToLeft = new MenuItem();
-                    resetToLeft.Header = App.Text("ChangeCM.ResetFileTo", vm.LeftSideDesc);
+                    resetToLeft.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.LeftSideDesc);
                     resetToLeft.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                     resetToLeft.IsEnabled = vm.CanResetToLeft;
                     resetToLeft.Click += async (_, ev) =>
@@ -169,7 +169,7 @@ namespace SourceGit.Views
                     };
 
                     var resetToRight = new MenuItem();
-                    resetToRight.Header = App.Text("ChangeCM.ResetFileTo", vm.RightSideDesc);
+                    resetToRight.Header = App.ContextMenuText("ChangeCM.ResetFileTo", vm.RightSideDesc);
                     resetToRight.Icon = this.CreateMenuIcon("Icons.File.Checkout");
                     resetToRight.IsEnabled = vm.CanResetToRight;
                     resetToRight.Click += async (_, ev) =>

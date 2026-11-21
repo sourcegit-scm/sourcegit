@@ -102,7 +102,7 @@
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.OverwriteExisting}"
                 IsChecked="{Binding AllowOverwrite, Mode=TwoWay}"
-                ToolTip.Tip="{Binding OverrideTip, Mode=OneWay}"/>
+                ToolTip.Tip="{v:HgText CreateBranch.OverwriteExisting, Label={Binding OverrideTip, Mode=OneWay}}"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.CreateBranch.Checkout}"
