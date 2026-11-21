@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.Text.Json.Serialization;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SourceGit.ViewModels
@@ -71,6 +72,37 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _commitDetailChangesLeftWidth, value);
         }
 
+        public GridLength CommitDetailChangesMessageHeight
+        {
+            get => _commitDetailChangesMessageHeight;
+            set
+            {
+                if (SetProperty(ref _commitDetailChangesMessageHeight, value))
+                    OnPropertyChanged(nameof(CommitDetailChangesMessageRowHeight));
+            }
+        }
+
+        public bool IsCommitDetailChangesMessageExpanded
+        {
+            get => _isCommitDetailChangesMessageExpanded;
+            set
+            {
+                if (SetProperty(ref _isCommitDetailChangesMessageExpanded, value))
+                    OnPropertyChanged(nameof(CommitDetailChangesMessageRowHeight));
+            }
+        }
+
+        [JsonIgnore]
+        public GridLength CommitDetailChangesMessageRowHeight
+        {
+            get => _isCommitDetailChangesMessageExpanded ? _commitDetailChangesMessageHeight : GridLength.Auto;
+            set
+            {
+                if (_isCommitDetailChangesMessageExpanded)
+                    CommitDetailChangesMessageHeight = value;
+            }
+        }
+
         public GridLength CommitDetailFilesLeftWidth
         {
             get => _commitDetailFilesLeftWidth;
@@ -81,6 +113,8 @@ namespace SourceGit.ViewModels
         private GridLength _stashesLeftWidth = new GridLength(300, GridUnitType.Pixel);
         private GridLength _commitDetailChangesLeftWidth = new GridLength(256, GridUnitType.Pixel);
         private GridLength _commitDetailFilesLeftWidth = new GridLength(256, GridUnitType.Pixel);
+        private GridLength _commitDetailChangesMessageHeight = new GridLength(96, GridUnitType.Pixel);
+        private bool _isCommitDetailChangesMessageExpanded = true;
         private bool _isSidebarCollapsedInLocalChanges = false;
     }
 }
