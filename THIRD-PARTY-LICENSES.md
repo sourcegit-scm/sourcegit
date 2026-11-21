@@ -147,3 +147,10 @@ The project uses the following third-party libraries or assets
 - **Commit**: abda279b567a0a7f35f81642c1b830f437f718d9
 - **License**: MIT License
 - **License Link**: https://github.com/jtbandes/swift-tmlanguage/blob/main/LICENSE.md
+
+### MATLAB
+
+- **Source**: https://github.com/mathworks/MATLAB-Language-grammar/blob/40d9a0cd3b628f80cdcf948bbe1747a527ed5dd5/Matlab.tmbundle/Syntaxes/MATLAB.tmLanguage
+- **Commit**: 40d9a0cd3b628f80cdcf948bbe1747a527ed5dd5
+- **License**: BSD 2-Clause License
+- **License Link**: https://github.com/mathworks/MATLAB-Language-grammar/blob/40d9a0cd3b628f80cdcf948bbe1747a527ed5dd5/license.txt
