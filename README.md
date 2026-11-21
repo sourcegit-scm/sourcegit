@@ -20,6 +20,55 @@
 
   You can find custom themes from [sourcegit-theme](https://github.com/sourcegit-scm/sourcegit-theme.git). And welcome to share your own themes.
 
+### Hierarchical submodule history
+
+Inspect submodule updates in the parent repository's history without checking out another commit. This example is an application with separate core and UI repositories. Both use a common library, which depends on a foundation library.
+
+The names on the left are **checkout paths**; the names on the right identify the **Git repositories**. Every entry marked `submodule` is a separate gitlink. `modules/` and the `deps/` prefixes are ordinary directories.
+
+```text
+demo-app/                            repository: demo-app (top level)
+└── modules/
+    ├── core/                        submodule: demo-core          [depth 1]
+    │   └── deps/common/             submodule: demo-common        [depth 2]
+    │       └── deps/foundation/     submodule: demo-foundation    [depth 3]
+    └── ui/                          submodule: demo-ui            [depth 1]
+        └── deps/common/             submodule: demo-common        [depth 2]
+            └── deps/foundation/     submodule: demo-foundation    [depth 3]
+```
+
+`modules/core` and `modules/ui` refer to different repositories. Their `deps/common` submodules use the same source repository but have separate checkouts and independently recorded pointers. The same applies to the two foundation submodules.
+
+The example includes several kinds of history:
+
+| Repository | Example commits and relationships |
+| --- | --- |
+| `demo-app` | Application configuration and documentation; core-only and UI-only pointer updates; a joint update for release; `v0.1.0` and `v0.2.0` tags. |
+| `demo-core` | Response caching, a cache expiry fix, a common-library update, and a merge of `feature/batch-requests`. |
+| `demo-ui` | Empty-state support, a loading-indicator fix, a common-library update, and a merge of `feature/dark-theme`. |
+| `demo-common` | Retry policy changes and a foundation pointer update. |
+| `demo-foundation` | Initial timeout defaults followed by connection and read timeout fixes. |
+
+**Screenshot settings.** These captures use the default **changed range** history mode and the **repository:path:branch** label format, selected in **Preferences → Submodule history**. Paths are relative to `demo-app`, so `[demo-common:modules/core/deps/common:main]` identifies both the repository and its location. The default label format remains `[path:branch]`. The area limit is set to **4** for this walkthrough (default: **3**).
+
+**1. Branch tree in one tab.** Select `build: update core and ui for release` in `demo-app`. By default, just the **first actual commit** of each direct submodule appears. Click **▸** on core's first commit to show its remaining history; click **▾** to hide it again. The first commit keeps its message, SHA, author, and date in either state—there is no separate summary row. In this screenshot core is expanded and UI retains only its first commit. Clicking that UI commit shows its commit details below.
+
+![demo-core history expanded and demo-ui retaining its first actual commit with a disclosure arrow](./screenshots/submodule_branch_tree.png)
+
+Click the parent commit again to **hide all of its submodule rows**, including the retained first commits and nested histories. Another click reveals only the direct first commits again. **Collapse all** instead reduces each visible top-level area to its first commit.
+
+**2. Explore nested modules by clicking.** Choose **Recursive exploration** and use the arrows to expand core and UI. Select `build: adopt common retry policy` inside `modules/core` to reveal common's first commit, then expand common with its arrow. Select `build: adopt foundation timeout fixes` to reveal foundation's first commit and expand it the same way. The breadcrumb and labels identify `demo-app → modules/core → deps/common → deps/foundation`. Four areas are expanded in this screenshot. UI's nested dependencies are not explored yet. First-commit previews do not count toward the expansion limit; the default scope is direct submodules only.
+
+![demo-foundation selected inside demo-core, with disclosure arrows on the first commits of each expanded area](./screenshots/submodule_nested_tree.png)
+
+In **Preferences → Submodule history**, enable **Automatically expand histories when selecting a commit** to open the detailed histories on selection. Enable **Automatically collapse other submodule histories** to have opening UI collapse core to its first commit. This replaces areas under the same parent repository while keeping the ancestors needed for nested navigation. Both options are off by default; these screenshots use those defaults.
+
+**3. Compare a submodule update from the top repository.** Return to the release update commit in `demo-app`, choose **Compare gitlink change → modules/core**, and inspect the commits added/removed between core's previous and new pointers, followed by the file patch. The patch includes the cache expiry fix, batch settings, and the nested common-library gitlink update. For a merge with several previous pointers, choose the baseline from the dropdown. The recorded gitlink and local HEAD status remain visible. This compares **two revisions of `demo-core`**, not core against UI.
+
+![demo-core gitlink comparison from demo-app, showing previous and new pointers, added commits, and file changes](./screenshots/submodule_context_diff.png)
+
+These screenshots capture the actual history panel using local example repositories. See the [feature guide](./docs/hierarchical-submodule-history.md) for settings and limitations.
+
 ## Highlights
 
 * Supports Windows/macOS/Linux
