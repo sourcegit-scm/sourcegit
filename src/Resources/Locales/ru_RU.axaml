@@ -708,7 +708,7 @@
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Инструмент</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">ОСНОВНЫЕ</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Проверить обновления при старте</x:String>
-  <x:String x:Key="Text.Preferences.General.CheckRepositoryStatusOnWelcome" xml:space="preserve">Проверять статус репозитория после открытия страницы приветствия.</x:String>
+  <x:String x:Key="Text.Preferences.General.CheckRepositoryStatusOnWelcome" xml:space="preserve">Проверять статус репозиториев при открытии страницы приветствия.</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Формат даты</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Включить компактные каталоги в дереве изменений</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Язык</x:String>
