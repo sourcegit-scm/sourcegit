@@ -35,10 +35,26 @@
 
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:BranchTreeNode">
-        <Border Background="Transparent"
+        <Border Classes="branch_node"
+                Classes.drop_target="{Binding IsDropTarget}"
                 PointerPressed="OnNodePointerPressed"
+                PointerMoved="OnNodePointerMoved"
+                PointerReleased="OnNodePointerReleased"
+                DragDrop.AllowDrop="True"
+                DragDrop.DragOver="OnNodeDragOver"
+                DragDrop.DragLeave="OnNodeDragLeave"
+                DragDrop.Drop="OnNodeDrop"
                 ToolTip.Tip="{Binding Backend}"
                 ToolTip.Placement="Right">
+          <Border.Styles>
+            <Style Selector="Border.branch_node">
+              <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            <Style Selector="Border.branch_node.drop_target">
+              <Setter Property="Background" Value="{DynamicResource Brush.AccentHovered}"/>
+            </Style>
+          </Border.Styles>
+
           <Border.DataTemplates>
             <DataTemplate DataType="m:Branch">
               <StackPanel Orientation="Vertical">

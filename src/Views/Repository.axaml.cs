@@ -368,6 +368,27 @@ namespace SourceGit.Views
             }
         }
 
+        // Dropping local branches (or folders) on the "Local Branches" header moves them to the top level.
+        private void OnLocalBranchGroupDragOver(object sender, DragEventArgs e)
+        {
+            var paths = BranchTree.GetDraggedPaths(e);
+            e.DragEffects = ViewModels.MoveBranches.CanDropOnto(paths, string.Empty) ? DragDropEffects.Move : DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void OnLocalBranchGroupDrop(object sender, DragEventArgs e)
+        {
+            var paths = BranchTree.GetDraggedPaths(e);
+            if (DataContext is not ViewModels.Repository repo ||
+                !ViewModels.MoveBranches.CanDropOnto(paths, string.Empty))
+                return;
+
+            e.Handled = true;
+
+            if (repo.CanCreatePopup())
+                repo.ShowPopup(new ViewModels.MoveBranches(repo, paths, string.Empty));
+        }
+
         private void OnOpenSortLocalBranchMenu(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && DataContext is ViewModels.Repository repo)
