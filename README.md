@@ -197,6 +197,12 @@ For `API Route`:
 * `Model` can be `gpt-6.1-sol` if it is available to your key; otherwise select an available chat model from the fetched catalog
 * See the [API documentation](https://github.com/DennyHo0917/api-route/blob/main/API.md) for authentication and model discovery
 
+For `UberLLM`:
+
+* `Server` should be `https://api.uberllm.dev/v1`
+* `API Key` should be an UberLLM API key, created at https://uberllm.dev/signup
+* A good starting `Model` is `deepseek/deepseek-v4.1-flash`; other chat models (Claude, GPT, Gemini, Qwen, GLM and more) are in the fetched catalog, with prices at https://uberllm.dev/models
+
 For other AI service:
 
 * The `Server` should fill in a URL equivalent to OpenAI's `https://api.openai.com/v1`. For example, when using `Ollama`, it should be `http://localhost:11434/v1` instead of `http://localhost:11434/api/generate`
