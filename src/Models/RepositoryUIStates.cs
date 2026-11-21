@@ -39,6 +39,9 @@ namespace SourceGit.Models
             set;
         } = true;
 
+        // Source-column indexes in display order, including hidden columns.
+        public List<int> HistoryColumnOrder { get; set; } = [];
+
         public double AuthorColumnWidth
         {
             get;
