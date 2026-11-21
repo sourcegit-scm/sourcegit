@@ -11,6 +11,7 @@ namespace SourceGit.Models
         ByMessage,
         ByPath,
         ByContent,
+        Mixed,
     }
 
     public class Commit : ObservableObject

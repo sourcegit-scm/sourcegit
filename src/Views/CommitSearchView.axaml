@@ -150,6 +150,7 @@
           <TextBlock Text="{DynamicResource Text.Repository.Search.ByMessage}"/>
           <TextBlock Text="{DynamicResource Text.Repository.Search.ByPath}"/>
           <TextBlock Text="{DynamicResource Text.Repository.Search.ByContent}"/>
+          <TextBlock Text="{DynamicResource Text.Repository.Search.Mixed}" ToolTip.Tip="{DynamicResource Text.Repository.Search.Mixed.Tip}"/>
         </ComboBox.Items>
       </ComboBox>
 
