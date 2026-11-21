@@ -704,7 +704,7 @@
   <x:String x:Key="Text.Preferences.DiffMerge.Type" xml:space="preserve">Tool</x:String>
   <x:String x:Key="Text.Preferences.General" xml:space="preserve">GENERAL</x:String>
   <x:String x:Key="Text.Preferences.General.Check4UpdatesOnStartup" xml:space="preserve">Check for updates on startup</x:String>
-  <x:String x:Key="Text.Preferences.General.CheckRepositoryStatusOnWelcome" xml:space="preserve">Check repository status when opening the Welcome page</x:String>
+  <x:String x:Key="Text.Preferences.General.CheckRepositoryStatusOnWelcome" xml:space="preserve">Check status of repositories when opening the Welcome page</x:String>
   <x:String x:Key="Text.Preferences.General.DateFormat" xml:space="preserve">Date Format</x:String>
   <x:String x:Key="Text.Preferences.General.EnableCompactFolders" xml:space="preserve">Enable compact folders in changes tree</x:String>
   <x:String x:Key="Text.Preferences.General.Locale" xml:space="preserve">Language</x:String>
@@ -1048,7 +1048,7 @@ Manually add a branch/tag history filter will disable this feature automatically
   <x:String x:Key="Text.Welcome.RefreshStatus" xml:space="preserve">Refresh Status</x:String>
   <x:String x:Key="Text.Welcome.ScanDefaultCloneDir" xml:space="preserve">Rescan Repositories in Default Clone Dir</x:String>
   <x:String x:Key="Text.Welcome.Search" xml:space="preserve">Search Repositories...</x:String>
-  <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">Check repository status when opening the Welcome page</x:String>
+  <x:String x:Key="Text.Welcome.ToggleStatusCheck" xml:space="preserve">Check status of repositories when opening the Welcome page</x:String>
   <x:String x:Key="Text.WorkingCopy" xml:space="preserve">Local Changes</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore" xml:space="preserve">Git Ignore</x:String>
   <x:String x:Key="Text.WorkingCopy.AddToGitIgnore.Extension" xml:space="preserve">Ignore all *{0} files</x:String>
