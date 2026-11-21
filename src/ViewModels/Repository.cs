@@ -1276,6 +1276,7 @@ namespace SourceGit.ViewModels
                 }
 
                 var commits = await new Commands.QueryCommits(FullPath, builder.ToString())
+                    .WithCancellation(token)
                     .GetResultAsync()
                     .ConfigureAwait(false);
 
