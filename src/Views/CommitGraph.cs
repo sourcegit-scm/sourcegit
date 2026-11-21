@@ -1,4 +1,7 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 
@@ -64,6 +67,9 @@ namespace SourceGit.Views
         {
             base.OnPropertyChanged(change);
 
+            if (change.Property == DotBrushProperty)
+                _dotFillPen = null;
+
             if (change.Property == GraphProperty ||
                 change.Property == LayoutProperty ||
                 change.Property == DotBrushProperty)
@@ -72,10 +78,13 @@ namespace SourceGit.Views
 
         private void DrawCurves(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
-            var grayedPen = new Pen(new SolidColorBrush(Colors.Gray, 0.4), Models.CommitGraph.Pens[0].Thickness);
+            var grayedPen = Models.CommitGraph.GrayedCurvePen;
 
-            foreach (var link in graph.Links)
+            // Links are ordered by their end (each link ends half a row below the commit it starts from).
+            var links = graph.Links;
+            for (var idx = FindFirstVisible(links, static l => l.End.Y, top, rowHeight); idx < links.Count; idx++)
             {
+                var link = links[idx];
                 var startY = link.Start.Y * rowHeight;
                 var endY = link.End.Y * rowHeight;
 
@@ -168,11 +177,14 @@ namespace SourceGit.Views
         private void DrawAnchors(DrawingContext context, Models.CommitGraph graph, double top, double bottom, double rowHeight)
         {
             var dotFill = DotBrush;
-            var dotFillPen = new Pen(dotFill, 2);
-            var grayedPen = new Pen(Brushes.Gray, Models.CommitGraph.Pens[0].Thickness);
+            var dotFillPen = _dotFillPen ??= new Pen(dotFill, 2);
+            var grayedPen = Models.CommitGraph.GrayedDotPen;
 
-            foreach (var dot in graph.Dots)
+            // Dots are ordered by their center (one dot per commit row).
+            var dots = graph.Dots;
+            for (var idx = FindFirstVisible(dots, static d => d.Center.Y, top, rowHeight); idx < dots.Count; idx++)
             {
+                var dot = dots[idx];
                 var center = new Point(dot.Center.X, dot.Center.Y * rowHeight);
 
                 if (center.Y < top)
@@ -199,7 +211,24 @@ namespace SourceGit.Views
             }
         }
 
+        private static int FindFirstVisible<T>(List<T> items, Func<T, double> getBottom, double top, double rowHeight)
+        {
+            var lo = 0;
+            var hi = items.Count;
+            while (lo < hi)
+            {
+                var mid = lo + (hi - lo) / 2;
+                if (getBottom(items[mid]) * rowHeight < top)
+                    lo = mid + 1;
+                else
+                    hi = mid;
+            }
+
+            return lo;
+        }
+
         private Models.CommitGraph _graph = null;
         private Models.CommitGraphLayout _layout = null;
+        private Pen _dotFillPen = null;
     }
 }
