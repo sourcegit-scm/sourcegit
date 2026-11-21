@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -226,6 +227,15 @@ namespace SourceGit.Models
 
             if (refreshCommits)
                 _repo.RefreshCommits();
+
+            var oldUpdateIgnoredDirs = Interlocked.Exchange(ref _updateIgnoredDirs, -1);
+            if (oldUpdateIgnoredDirs > 0)
+            {
+                if (now > oldUpdateIgnoredDirs)
+                    RefreshIgnoredDirs();
+                else
+                    Interlocked.CompareExchange(ref _updateIgnoredDirs, oldUpdateIgnoredDirs, -1);
+            }
         }
 
         private void OnRepositoryChanged(object o, FileSystemEventArgs e)
@@ -235,12 +245,15 @@ namespace SourceGit.Models
 
             var name = e.Name.Replace('\\', '/').TrimEnd('/');
             if (name.EndsWith("/.git", StringComparison.Ordinal))
+            {
+                _submoduleDirs.Clear();
                 return;
+            }
 
             if (name.StartsWith(".git/", StringComparison.Ordinal))
                 HandleGitDirFileChanged(name.Substring(5));
             else
-                HandleWorkingCopyFileChanged(name, e.FullPath);
+                HandleWorkingCopyFileChanged(name, e.FullPath, e.ChangeType);
         }
 
         /// <summary>
@@ -274,11 +287,16 @@ namespace SourceGit.Models
 
             var name = e.Name.Replace('\\', '/').TrimEnd('/');
             if (name.Equals(".git", StringComparison.Ordinal) ||
-                name.StartsWith(".git/", StringComparison.Ordinal) ||
-                name.EndsWith("/.git", StringComparison.Ordinal))
+                name.StartsWith(".git/", StringComparison.Ordinal))
                 return;
 
-            HandleWorkingCopyFileChanged(name, e.FullPath);
+            if (name.EndsWith("/.git", StringComparison.Ordinal))
+            {
+                _submoduleDirs.Clear();
+                return;
+            }
+
+            HandleWorkingCopyFileChanged(name, e.FullPath, e.ChangeType);
         }
 
         private void HandleGitDirFileChanged(string name)
@@ -333,26 +351,49 @@ namespace SourceGit.Models
                 Interlocked.Exchange(ref _updateTags, desired);
                 Interlocked.Exchange(ref _updateStashes, desired);
             }
-            else if (name.StartsWith("objects/", StringComparison.Ordinal) || name.Equals("index", StringComparison.Ordinal))
+            else if (name.Equals("index", StringComparison.Ordinal) || name.Equals("info/exclude", StringComparison.Ordinal))
+            {
+                // Tracked files or ignore rules may have changed, so the known ignored directories are not reliable anymore.
+                InvalidateIgnoredDirs();
+                Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());
+            }
+            else if (name.StartsWith("objects/", StringComparison.Ordinal))
             {
                 Interlocked.Exchange(ref _updateWC, DateTime.Now.AddSeconds(1).ToFileTime());
             }
+            else if (name.StartsWith("worktrees/", StringComparison.Ordinal) && name.EndsWith("/index", StringComparison.Ordinal))
+            {
+                InvalidateIgnoredDirs();
+            }
         }
 
-        private void HandleWorkingCopyFileChanged(string name, string fullpath)
+        private void HandleWorkingCopyFileChanged(string name, string fullpath, WatcherChangeTypes changeType)
         {
             if (name.StartsWith(".vs/", StringComparison.Ordinal))
                 return;
 
             if (name.Equals(".gitmodules", StringComparison.Ordinal))
             {
+                _submoduleDirs.Clear();
+
                 var desired = DateTime.Now.AddSeconds(1).ToFileTime();
                 Interlocked.Exchange(ref _updateSubmodules, desired);
                 Interlocked.Exchange(ref _updateWC, desired);
                 return;
             }
 
-            var dir = Directory.Exists(fullpath) ? fullpath : Path.GetDirectoryName(fullpath);
+            if (IsInIgnoredDir(name))
+                return;
+
+            if (name.Equals(".gitignore", StringComparison.Ordinal) || name.EndsWith("/.gitignore", StringComparison.Ordinal))
+                InvalidateIgnoredDirs();
+
+            // A new directory may be an ignored one (the output folder of the first build, for example).
+            var isDir = Directory.Exists(fullpath);
+            if (isDir && changeType is WatcherChangeTypes.Created or WatcherChangeTypes.Renamed)
+                Interlocked.Exchange(ref _updateIgnoredDirs, DateTime.Now.AddSeconds(1).ToFileTime());
+
+            var dir = isDir ? fullpath : Path.GetDirectoryName(fullpath);
             if (IsInSubmodule(dir))
             {
                 Interlocked.Exchange(ref _updateSubmodules, DateTime.Now.AddSeconds(1).ToFileTime());
@@ -367,10 +408,74 @@ namespace SourceGit.Models
             if (string.IsNullOrEmpty(folder) || folder.Equals(_root, StringComparison.Ordinal))
                 return false;
 
-            if (File.Exists($"{folder}/.git"))
+            if (_submoduleDirs.TryGetValue(folder, out var cached))
+                return cached;
+
+            var isInSubmodule = File.Exists($"{folder}/.git") || IsInSubmodule(Path.GetDirectoryName(folder));
+            _submoduleDirs.TryAdd(folder, isInSubmodule);
+            return isInSubmodule;
+        }
+
+        /// <summary>
+        ///     Changes inside a directory that git ignores entirely (for example the output folders of a build) can
+        ///     never change the result of `git status`, so there is no need to refresh the working copy for them.
+        ///     The ignored directories are queried lazily, and queried again after ignore rules or the index change.
+        /// </summary>
+        private bool IsInIgnoredDir(string name)
+        {
+            var ignoredDirs = _ignoredDirs;
+            if (ignoredDirs == null)
+            {
+                // Do NOT postpone a pending query, so that it still runs while files are written continuously.
+                if (Interlocked.Read(ref _updateIgnoredDirs) <= 0)
+                    Interlocked.Exchange(ref _updateIgnoredDirs, DateTime.Now.AddSeconds(.5).ToFileTime());
+
+                return false;
+            }
+
+            if (ignoredDirs.Count == 0)
+                return false;
+
+            if (ignoredDirs.Contains($"{name}/"))
                 return true;
 
-            return IsInSubmodule(Path.GetDirectoryName(folder));
+            var idx = name.IndexOf('/');
+            while (idx > 0)
+            {
+                if (ignoredDirs.Contains(name.Substring(0, idx + 1)))
+                    return true;
+
+                idx = name.IndexOf('/', idx + 1);
+            }
+
+            return false;
+        }
+
+        private void InvalidateIgnoredDirs()
+        {
+            lock (_ignoredDirsLock)
+            {
+                _ignoredDirsVersion++;
+                _ignoredDirs = null;
+            }
+        }
+
+        private void RefreshIgnoredDirs()
+        {
+            long version;
+            lock (_ignoredDirsLock)
+                version = _ignoredDirsVersion;
+
+            Task.Run(async () =>
+            {
+                var ignoredDirs = await new Commands.QueryIgnoredDirectories(_root).GetResultAsync().ConfigureAwait(false);
+                lock (_ignoredDirsLock)
+                {
+                    // Drop the result if ignore rules or the index have changed in the meantime.
+                    if (_ignoredDirsVersion == version)
+                        _ignoredDirs = ignoredDirs;
+                }
+            });
         }
 
         private readonly IRepository _repo;
@@ -384,5 +489,11 @@ namespace SourceGit.Models
         private long _updateSubmodules;
         private long _updateStashes;
         private long _updateTags;
+        private long _updateIgnoredDirs;
+
+        private readonly ConcurrentDictionary<string, bool> _submoduleDirs = new();
+        private readonly Lock _ignoredDirsLock = new();
+        private volatile HashSet<string> _ignoredDirs = null;
+        private long _ignoredDirsVersion;
     }
 }
