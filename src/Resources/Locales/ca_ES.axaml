@@ -889,6 +889,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">El pedaç s'ha desat correctament!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Escaneja repositoris</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Directori arrel:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Grup objectiu:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Escaneja un altre directori personalitzat</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Comprova si hi ha actualitzacions...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Hi ha una versió nova d'aquest programari disponible: </x:String>

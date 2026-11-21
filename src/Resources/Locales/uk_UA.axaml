@@ -556,6 +556,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Патч успішно збережено!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Сканувати сховища</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Коренева тека:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Цільова група:</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Перевірити оновлення...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Доступна нова версія програми: </x:String>
   <x:String x:Key="Text.SelfUpdate.Error" xml:space="preserve">Не вдалося перевірити оновлення!</x:String>

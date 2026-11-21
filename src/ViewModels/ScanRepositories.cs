@@ -31,6 +31,12 @@ namespace SourceGit.ViewModels
             set => SetProperty(ref _selected, value, true);
         }
 
+        public string TargetGroupPath
+        {
+            get => _targetGroupPath;
+            set => SetProperty(ref _targetGroupPath, value);
+        }
+
         public ScanRepositories()
         {
             ScanDirs = new List<Models.ScanDir>();
@@ -92,6 +98,21 @@ namespace SourceGit.ViewModels
             // Make sure this task takes at least 0.5s to avoid the popup panel disappearing too quickly.
             await minDelay;
 
+            RepositoryNode targetParent = null;
+            var targetCollection = Preferences.Instance.RepositoryNodes;
+            if (found.Count > 0)
+            {
+                var groupPath = string.IsNullOrWhiteSpace(_targetGroupPath)
+                    ? string.Empty
+                    : string.Join('/', _targetGroupPath.Replace('\\', '/').Split('/',
+                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+                if (!string.IsNullOrEmpty(groupPath))
+                {
+                    targetParent = Preferences.Instance.FindOrCreateGroupRecursive(groupPath);
+                    targetCollection = targetParent.SubNodes;
+                }
+            }
+
             var normalizedRoot = rootDir.FullName.Replace('\\', '/').TrimEnd('/');
             for (var i = 0; i < found.Count; i++)
             {
@@ -100,13 +121,13 @@ namespace SourceGit.ViewModels
                 var parent = new DirectoryInfo(f).Parent!.FullName.Replace('\\', '/').TrimEnd('/');
                 if (parent.Equals(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {
-                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, null, false, false);
+                    var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, targetParent, false, false);
                     await node.UpdateStatusAsync(false, null);
                 }
                 else if (parent.StartsWith(normalizedRoot, StringComparison.OrdinalIgnoreCase))
                 {
                     var relative = parent.Substring(normalizedRoot.Length).TrimStart('/');
-                    var group = Preferences.Instance.FindOrCreateGroupRecursive(relative);
+                    var group = Preferences.Instance.FindOrCreateGroupRecursive(targetCollection, relative);
                     var node = Preferences.Instance.FindOrAddNodeByRepositoryPath(f, group, false, false);
                     await node.UpdateStatusAsync(false, null);
                 }
@@ -191,5 +212,6 @@ namespace SourceGit.ViewModels
         private string _customDir = string.Empty;
         private Models.ScanDir _selected = null;
         private int _untrusted = 0;
+        private string _targetGroupPath = string.Empty;
     }
 }

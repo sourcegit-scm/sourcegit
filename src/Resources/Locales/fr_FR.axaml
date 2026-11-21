@@ -818,6 +818,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Le patch a été sauvegardé !</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Analyser les repositories</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Dossier racine :</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Groupe cible :</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Scanner un autre répertoire personnalisé</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Rechercher des mises à jour...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Une nouvelle version du logiciel est disponible :</x:String>

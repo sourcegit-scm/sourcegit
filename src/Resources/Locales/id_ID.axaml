@@ -859,6 +859,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Patch berhasil disimpan!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Pindai Repositori</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Direktori Root:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Grup Target:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Pindai direktori kustom lain</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Periksa Pembaruan...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Versi baru dari perangkat lunak ini tersedia: </x:String>

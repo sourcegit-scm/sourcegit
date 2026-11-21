@@ -854,6 +854,7 @@
   <x:String x:Key="Text.SaveAsPatchSuccess" xml:space="preserve">Το patch αποθηκεύτηκε με επιτυχία!</x:String>
   <x:String x:Key="Text.ScanRepositories" xml:space="preserve">Σάρωση αποθετηρίων</x:String>
   <x:String x:Key="Text.ScanRepositories.RootDir" xml:space="preserve">Ριζικός φάκελος:</x:String>
+  <x:String x:Key="Text.ScanRepositories.TargetGroup" xml:space="preserve">Ομάδα προορισμού:</x:String>
   <x:String x:Key="Text.ScanRepositories.UseCustomDir" xml:space="preserve">Σάρωση άλλου προσαρμοσμένου φακέλου</x:String>
   <x:String x:Key="Text.SelfUpdate" xml:space="preserve">Έλεγχος για ενημερώσεις...</x:String>
   <x:String x:Key="Text.SelfUpdate.Available" xml:space="preserve">Είναι διαθέσιμη νέα έκδοση αυτού του λογισμικού: </x:String>
