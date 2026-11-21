@@ -25,7 +25,11 @@ namespace SourceGit.Models
         public List<Decorator> Decorators { get; set; } = new();
 
         public bool IsMerged { get; set; } = false;
-        public int Color { get; set; } = 0;
+        public int Color
+        {
+            get => _color;
+            set => SetProperty(ref _color, value);
+        }
         public double LeftMargin { get; set; } = 0;
 
         public bool IsHighlightedInGraph
@@ -125,6 +129,7 @@ namespace SourceGit.Models
             });
         }
 
+        private int _color = 0;
         private bool _isHighlightedInGraph = false;
     }
 

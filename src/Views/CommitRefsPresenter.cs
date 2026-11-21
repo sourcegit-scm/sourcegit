@@ -139,6 +139,15 @@ namespace SourceGit.Views
             set => SetValue(UseGraphColorProperty, value);
         }
 
+        public static readonly StyledProperty<int> GraphColorProperty =
+            AvaloniaProperty.Register<CommitRefsPresenter, int>(nameof(GraphColor), -1);
+
+        public int GraphColor
+        {
+            get => GetValue(GraphColorProperty);
+            set => SetValue(GraphColorProperty, value);
+        }
+
         public static readonly StyledProperty<bool> AllowWrapProperty =
             AvaloniaProperty.Register<CommitRefsPresenter, bool>(nameof(AllowWrap));
 
@@ -260,6 +269,7 @@ namespace SourceGit.Views
                 change.Property == FontSizeProperty ||
                 change.Property == ForegroundProperty ||
                 change.Property == UseGraphColorProperty ||
+                change.Property == GraphColorProperty ||
                 change.Property == UseCompactBranchNamesProperty ||
                 change.Property == HasSingleRemoteProperty ||
                 change.Property == BackgroundProperty ||
@@ -294,7 +304,7 @@ namespace SourceGit.Views
             var typefaceHead = new Typeface(FontFamily, FontStyle.Normal, FontWeight.Bold);
             var typefaceRemote = new Typeface(FontFamily, FontStyle.Italic, FontWeight.Bold);
             var fg = Foreground;
-            var normalBG = UseGraphColor ? Models.CommitGraph.Pens[commit.Color].Brush : Brushes.Gray;
+            var normalBG = UseGraphColor ? Models.CommitGraph.Pens[GraphColor >= 0 ? GraphColor : commit.Color].Brush : Brushes.Gray;
             var labelSize = FontSize;
             var requiredHeight = 16.0;
             var x = 0.0;
